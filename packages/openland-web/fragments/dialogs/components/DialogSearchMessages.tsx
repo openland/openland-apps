@@ -11,6 +11,7 @@ import { DialogSearchEmptyView, DialogSearchItemRender, DialogSearchResults } fr
 import { XScrollView3, XScrollValues } from 'openland-x/XScrollView3';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { InvalidateSync } from '@openland/patterns';
+import { useListSelection } from 'openland-web/utils/useListSelection';
 
 const LOADING_HEIGHT = 200;
 
@@ -46,6 +47,7 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
     }));
 
     const [selectedIndex, setSelectedIndex] = React.useState<number>(-1);
+    const { setSelectionMode, handleMouseMove, handleMouseOver } = useListSelection({ selectedIndex, onItemHover: setSelectedIndex });
 
     const items = client.useGlobalSearch({ query: props.variables.query }, { fetchPolicy: 'cache-and-network' }).items;
     const initialData = client.useMessagesSearch(constructVariables(props.variables.query), { fetchPolicy: 'cache-and-network' }).messagesSearch;
@@ -63,6 +65,7 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
     const resultsLength = items.length + messages.length;
 
     const handleOptionUp = () => {
+        setSelectionMode('keyboard');
         if (selectedIndex === null) {
             setSelectedIndex(0);
             return;
@@ -73,6 +76,7 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
     };
 
     const handleOptionDown = () => {
+        setSelectionMode('keyboard');
         if (selectedIndex === null) {
             setSelectedIndex(0);
             return;
@@ -133,7 +137,7 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
 
     return (
         <XScrollView3 onScroll={onScroll} flexGrow={1} flexShrink={1} useDefaultScroll={true}>
-            {items.map((i, index) => <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} {...props} />)}
+            {items.map((i, index) => <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} onMouseOver={handleMouseOver} onMouseMove={handleMouseMove} selectedIndex={selectedIndex} {...props} />)}
             {messages.length > 0 && (
                 <XView height={1} alignSelf="stretch" backgroundColor="#ececec" />
             )}
@@ -167,9 +171,12 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
                             sender: message.sender.name,
                             membership: chat.__typename === 'SharedRoom' ? chat.membership : 'NONE'
                         }}
+                        onMouseOver={() => handleMouseOver(index + items.length)}
+                        onMouseMove={() => handleMouseMove(index + items.length)}
                         hovered={index === (selectedIndex - items.length)}
                         selected={selected}
                         onPress={() => props.onMessagePick(message.id)}
+                        disableHover={true}
                     />
                 );
             })}

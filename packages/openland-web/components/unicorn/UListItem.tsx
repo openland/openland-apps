@@ -46,6 +46,8 @@ export interface UListItemProps {
     avatar?: { photo?: string | null; id: string; title: string; online?: boolean };
     leftElement?: JSX.Element;
     onClick?: (event: React.MouseEvent) => void;
+    onMouseOver?: (event: React.MouseEvent) => void;
+    onMouseMove?: (event: React.MouseEvent) => void;
     path?: string;
     large?: boolean;
     useRadius?: boolean;
@@ -75,6 +77,8 @@ export const UListItem = React.memo((props: UListItemProps) => {
         avatar,
         leftElement,
         onClick,
+        onMouseOver,
+        onMouseMove,
         path,
         large,
         useRadius,
@@ -225,7 +229,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
     }
 
     return (
-        <div ref={containerRef} className={cx('x', wrapperClassName)}>
+        <div ref={containerRef} className={cx('x', wrapperClassName)} onMouseOver={onMouseOver} onMouseMove={onMouseMove}>
             <XView
                 height={height}
                 paddingHorizontal={paddingHorizontal}

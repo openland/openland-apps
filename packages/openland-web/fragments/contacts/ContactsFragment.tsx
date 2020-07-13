@@ -95,7 +95,7 @@ export const ContactsFragment = React.memo(() => {
         router.navigate(`/mail/${item.id}`);
     }, []);
 
-    const hasContacts = false;
+    const hasContacts = true;
     const didImportContacts = false;
     const noContactsContent = didImportContacts ? (
         <EmptyScreen

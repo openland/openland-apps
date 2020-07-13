@@ -45,20 +45,11 @@ const messageBtnWrapperSelected = css`
     display: flex;
 `;
 
-const userWrapper = css`
-    &:hover {
-        .${messageBtnWrapper} {
-            display: flex;
-        }
-    }
-`;
-
 export interface ContactsSearchResultsProps {
     variables: GlobalSearchVariables;
     onPick: (item: GlobalSearch_items) => void;
     onMessagePick: (item: GlobalSearch_items) => void;
     paddingHorizontal?: number;
-    isForwarding?: boolean;
 }
 
 export const ContactsSearchEmptyView = React.memo(() => (
@@ -72,10 +63,12 @@ interface ContactsSearchItemRenderProps extends ContactsSearchResultsProps {
     item: GlobalSearch_items;
     index: number;
     selectedIndex: number;
+    onMouseOver: (index: number) => void;
+    onMouseMove: (index: number) => void;
 }
 
 export const ContactsSearchItemRender = React.memo((props: ContactsSearchItemRenderProps) => {
-    const { item, index, selectedIndex, isForwarding, onPick, onMessagePick, paddingHorizontal } = props;
+    const { item, index, selectedIndex, onPick, onMouseOver, onMouseMove, onMessagePick, paddingHorizontal } = props;
 
     let selected = index === selectedIndex;
     if (item.__typename === 'Organization') {
@@ -83,51 +76,54 @@ export const ContactsSearchItemRender = React.memo((props: ContactsSearchItemRen
             <UListItem
                 key={item.id}
                 onClick={() => onPick(item)}
+                onMouseOver={() => onMouseOver(index)}
+                onMouseMove={() => onMouseMove(index)}
                 hovered={selected}
                 title={item.name}
                 description={item.about}
                 avatar={{ id: item.id, photo: item.photo, title: item.name }}
                 useRadius={false}
                 paddingHorizontal={paddingHorizontal}
+                disableHover={true}
             />
         );
     } else if (item.__typename === 'User') {
-        if (!isForwarding || !item.isBot) {
-            return (
-                <UUserView
-                    key={item.id}
-                    onClick={() => onPick(item)}
-                    hovered={selected}
-                    user={item}
-                    useRadius={false}
-                    paddingHorizontal={paddingHorizontal}
-                    wrapperClassName={userWrapper}
-                    rightElement={(
-                        <div
-                            className={cx('x', messageBtnWrapper, selected && messageBtnWrapperSelected)}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                onMessagePick(item);
-                            }}
-                        >
-                            <UIconSelectable
-                                icon={<ChatIcon />}
-                                color="var(--foregroundSecondary)"
-                                selectedColor="var(--foregroundContrast)"
-                                size={24}
-                            />
-                        </div>
-                    )}
-                />
-            );
-        }
+        return (
+            <UUserView
+                key={item.id}
+                onClick={() => onPick(item)}
+                onMouseOver={() => onMouseOver(index)}
+                onMouseMove={() => onMouseMove(index)}
+                hovered={selected}
+                user={item}
+                useRadius={false}
+                disableHover={true}
+                paddingHorizontal={paddingHorizontal}
+                rightElement={(
+                    <div
+                        className={cx('x', messageBtnWrapper, selected && messageBtnWrapperSelected)}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onMessagePick(item);
+                        }}
+                    >
+                        <UIconSelectable
+                            icon={<ChatIcon />}
+                            color="var(--foregroundSecondary)"
+                            selectedColor="var(--foregroundContrast)"
+                            size={24}
+                        />
+                    </div>
+                )}
+            />
+        );
     }
 
     return null;
 });
 
 const ContactsSearchInner = React.memo((props: ContactsSearchResultsProps) => {
-    const { items, selectedIndex } = useGlobalSearch(props);
+    const { items, selectedIndex, handleMouseOver, handleMouseMove, } = useGlobalSearch(props);
     const route = React.useContext(XViewRouteContext)!;
 
     if (items.length === 0) {
@@ -136,11 +132,13 @@ const ContactsSearchInner = React.memo((props: ContactsSearchResultsProps) => {
 
     return (
         <>
-            {items.map((i, index) => (
-                <XView key={'item-' + i.id} selected={route.path === `/contacts/${i.id}`} >
-                    <ContactsSearchItemRender item={i} index={index} selectedIndex={selectedIndex} {...props} />
-                </XView>
-            ))}
+            {items
+                .filter(item => item.__typename === 'Organization' || (item.__typename === 'User' && !item.isBot))
+                .map((i, index) => (
+                    <XView key={'item-' + i.id} selected={route.path === `/contacts/${i.id}`} >
+                        <ContactsSearchItemRender item={i} index={index} selectedIndex={selectedIndex} onMouseOver={handleMouseOver} onMouseMove={handleMouseMove} {...props} />
+                    </XView>
+                ))}
         </>
     );
 });

@@ -20,7 +20,6 @@ import SettingsActiveIcon from './navigation/icon_settings_active.svg';
 import { AuthRouter } from '../root/AuthRouter';
 import { IndexFragment } from 'openland-web/fragments/discussions/IndexFragment';
 import { useRole } from 'openland-x-permissions/XWithRole';
-// import { AppConfig } from 'openland-y-runtime/AppConfig';
 // import { ContactsFragment } from 'openland-web/fragments/contacts/ContactsFragment';
 
 const Unicorn = React.memo(() => {

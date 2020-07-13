@@ -35,7 +35,6 @@ import { DraftsFragment } from 'openland-web/fragments/discussions/DraftsFragmen
 import { DiscussionEditorFragment } from 'openland-web/fragments/discussions/DiscussionEditorFragment';
 import { SettingsCommunitiesFragment } from 'openland-web/fragments/settings/SettingsCommunitiesFragment';
 // import { ContactProfileFragment } from 'openland-web/fragments/contacts/ContactProfileFragment';
-// import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 
 // temporary stub for /mail/ -> not found bug
 const TemporaryStubMail = React.memo(() => {

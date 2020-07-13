@@ -25,7 +25,9 @@ const dialogContainer = css`
     height: 80px;
     min-width: 0;
     align-items: center;
+`;
 
+const dialogContainerWithHover = css`
     &:hover {
         background-color: #f0f2f5;
     }
@@ -205,11 +207,15 @@ const lockContainer = css`
 interface DialogViewProps {
     item: DialogListWebItem;
     onPress?: (id: string) => void;
+    onMouseOver?: () => void;
+    onMouseMove?: () => void;
     selected?: boolean;
     hovered?: boolean;
+    disableHover?: boolean;
 }
 
 export const DialogView = React.memo<DialogViewProps>(props => {
+    const containerRef = React.useRef<HTMLDivElement>(null);
     let dialog = props.item;
     let isPremium = dialog.isPremium;
     let isMuted = dialog.isMuted;
@@ -297,126 +303,137 @@ export const DialogView = React.memo<DialogViewProps>(props => {
         }
     }
 
+    React.useEffect(
+        () => {
+            if (containerRef.current && props.hovered) {
+                containerRef.current.scrollIntoView({ behavior: 'auto', block: 'nearest' });
+            }
+        },
+        [props.hovered],
+    );
+
     const highlightSecretChat =
         localStorage.getItem('highlight_secret_chat') === 'true' && dialog.kind === 'GROUP' && !isPremium;
 
     return (
-        <XView
-            selected={props.selected}
-            onMouseDown={() => props.onPress && props.onPress(dialog.key)}
-            linkSelectable={true}
-        >
-            <XViewSelectedContext.Consumer>
-                {active => (
-                    <div className={cx(dialogContainer, props.hovered && dialogHoveredContainer, active && dialogActiveContainer)}>
-                        <UAvatar
-                            title={dialog.title}
-                            titleEmoji={dialog.titlePlaceholderEmojify}
-                            id={dialog.kind === 'PRIVATE' ? dialog.flexibleId : dialog.key}
-                            photo={dialog.photo}
-                            online={dialog.online}
-                            size="large"
-                            selected={active}
-                        />
-                        <div className={dialogContentContainer}>
-                            <div className={dialogDataContainer}>
-                                <div
-                                    className={cx(
-                                        TextLabel1,
-                                        dialogDataContainer,
-                                        dialogTitleContent,
-                                        active && dialogActiveColor,
-                                        highlightSecretChat && highlightSecretChatColor,
-                                    )}
-                                >
-                                    {isPremium && <PremiumBadge active={active} />}
-                                    {highlightSecretChat && (
-                                        <div className={cx(dialogIconContainer, lockContainer)}>
-                                            <UIcon
-                                                icon={<IcLock />}
-                                                color={active ? '#fff' : '#36b36a'}
-                                            />
-                                        </div>
-                                    )}
-
-                                    <span className={dialogTitle}>{dialog.titleEmojify}</span>
-                                    {dialog.isMuted && (
-                                        <div className={cx(dialogIconContainer, mutedIcon)}>
-                                            <UIcon
-                                                size={16}
-                                                icon={<IcMuted />}
-                                                color={active ? 'var(--foregroundInverted)' : 'var(--foregroundQuaternary)'}
-                                            />
-                                        </div>
-                                    )}
-                                </div>
-                                {dialog.date && (
+        <div className="x" ref={containerRef} onMouseOver={props.onMouseOver} onMouseMove={props.onMouseMove}>
+            <XView
+                selected={props.selected}
+                onMouseDown={() => props.onPress && props.onPress(dialog.key)}
+                linkSelectable={true}
+            >
+                <XViewSelectedContext.Consumer>
+                    {active => (
+                        <div className={cx(dialogContainer, !props.disableHover && dialogContainerWithHover, props.hovered && dialogHoveredContainer, active && dialogActiveContainer)}>
+                            <UAvatar
+                                title={dialog.title}
+                                titleEmoji={dialog.titlePlaceholderEmojify}
+                                id={dialog.kind === 'PRIVATE' ? dialog.flexibleId : dialog.key}
+                                photo={dialog.photo}
+                                online={dialog.online}
+                                size="large"
+                                selected={active}
+                            />
+                            <div className={dialogContentContainer}>
+                                <div className={dialogDataContainer}>
                                     <div
                                         className={cx(
-                                            TextCaption,
-                                            dialogDateContent,
+                                            TextLabel1,
+                                            dialogDataContainer,
+                                            dialogTitleContent,
                                             active && dialogActiveColor,
+                                            highlightSecretChat && highlightSecretChatColor,
                                         )}
                                     >
-                                        <XDate
-                                            value={dialog.date.toString()}
-                                            format="datetime_short"
-                                        />
-                                    </div>
-                                )}
-                            </div>
-                            <div className={dialogDataContainer}>
-                                <div
-                                    className={cx(
-                                        TextDensed,
-                                        dialogMessageContent,
-                                        active && dialogActiveColor,
-                                    )}
-                                >
-                                    {message}
-                                </div>
-                                {(dialog.unread > 0 || dialog.hasActiveCall) && (
-                                    <div className={dialogUnreadContainer}>
-                                        {dialog.hasActiveCall && (
-                                            <div
-                                                className={cx(
-                                                    unreadCounterContainer,
-                                                    callBadgeContainer,
-                                                    active && callBadgeContainerActive
-                                                )}
-                                            >
-                                                <UIcon icon={<IcCall />} color={'var(--foregroundContrast)'} />
+                                        {isPremium && <PremiumBadge active={active} />}
+                                        {highlightSecretChat && (
+                                            <div className={cx(dialogIconContainer, lockContainer)}>
+                                                <UIcon
+                                                    icon={<IcLock />}
+                                                    color={active ? '#fff' : '#36b36a'}
+                                                />
                                             </div>
                                         )}
-                                        {haveMention && (
-                                            <div
-                                                className={cx(
-                                                    unreadCounterContainer,
-                                                    mentionContainer,
-                                                    active && mentionContainerActive
-                                                )}
-                                            >
-                                                <UIcon icon={<IcMention />} color={'var(--foregroundContrast)'} />
-                                            </div>
-                                        )}
-                                        {dialog.unread > 0 && (
-                                            <div className={unreadCounterContainer}>
-                                                <XCounter
-                                                    grey={isMuted}
-                                                    count={dialog.unread}
-                                                    active={active}
-                                                    big={true}
+
+                                        <span className={dialogTitle}>{dialog.titleEmojify}</span>
+                                        {dialog.isMuted && (
+                                            <div className={cx(dialogIconContainer, mutedIcon)}>
+                                                <UIcon
+                                                    size={16}
+                                                    icon={<IcMuted />}
+                                                    color={active ? 'var(--foregroundInverted)' : 'var(--foregroundQuaternary)'}
                                                 />
                                             </div>
                                         )}
                                     </div>
-                                )}
+                                    {dialog.date && (
+                                        <div
+                                            className={cx(
+                                                TextCaption,
+                                                dialogDateContent,
+                                                active && dialogActiveColor,
+                                            )}
+                                        >
+                                            <XDate
+                                                value={dialog.date.toString()}
+                                                format="datetime_short"
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                                <div className={dialogDataContainer}>
+                                    <div
+                                        className={cx(
+                                            TextDensed,
+                                            dialogMessageContent,
+                                            active && dialogActiveColor,
+                                        )}
+                                    >
+                                        {message}
+                                    </div>
+                                    {(dialog.unread > 0 || dialog.hasActiveCall) && (
+                                        <div className={dialogUnreadContainer}>
+                                            {dialog.hasActiveCall && (
+                                                <div
+                                                    className={cx(
+                                                        unreadCounterContainer,
+                                                        callBadgeContainer,
+                                                        active && callBadgeContainerActive
+                                                    )}
+                                                >
+                                                    <UIcon icon={<IcCall />} color={'var(--foregroundContrast)'} />
+                                                </div>
+                                            )}
+                                            {haveMention && (
+                                                <div
+                                                    className={cx(
+                                                        unreadCounterContainer,
+                                                        mentionContainer,
+                                                        active && mentionContainerActive
+                                                    )}
+                                                >
+                                                    <UIcon icon={<IcMention />} color={'var(--foregroundContrast)'} />
+                                                </div>
+                                            )}
+                                            {dialog.unread > 0 && (
+                                                <div className={unreadCounterContainer}>
+                                                    <XCounter
+                                                        grey={isMuted}
+                                                        count={dialog.unread}
+                                                        active={active}
+                                                        big={true}
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )}
-            </XViewSelectedContext.Consumer>
-        </XView>
+                    )}
+                </XViewSelectedContext.Consumer>
+            </XView>
+        </div>
     );
 });
 
