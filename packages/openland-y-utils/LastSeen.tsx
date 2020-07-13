@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { formatLastSeen } from 'openland-y-utils/formatTime';
 
-interface User {
+export interface User {
     id: string;
     online: boolean;
     lastSeen: string | null;

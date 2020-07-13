@@ -31,7 +31,7 @@ import {
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { TextDensed, TextStyles, HoverAlpha } from 'openland-web/utils/TextStyles';
 import { emoji } from 'openland-y-utils/emoji';
-import { useLastSeen } from 'openland-y-utils/LastSeen';
+import { useLastSeen, User } from 'openland-y-utils/LastSeen';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { useVideoCallModal } from 'openland-web/modules/conference/CallModal';
@@ -67,21 +67,8 @@ const disabledBtn = css`
     pointer-events: none;
 `;
 
-const HeaderLastSeen = (props: { id: string }) => {
-    const client = useClient();
-    const data = client.useOnline(
-        { userId: props.id },
-        {
-            fetchPolicy: 'network-only',
-            suspense: false,
-        },
-    );
-
-    const [sub, accent] = useLastSeen(data ? data.user : null);
-
-    if (!data) {
-        return null;
-    }
+const HeaderLastSeen = (props: { user: User }) => { // change to UPresence?
+    const [sub, accent] = useLastSeen(props.user);
 
     return <span className={accent ? secondaryAccent : undefined}>{sub}</span>;
 };
@@ -302,7 +289,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         <XView {...TextStyles.Densed} color="var(--foregroundSecondary)">
                             <span className={oneLiner}>
                                 {chat.__typename === 'PrivateRoom' && (
-                                    <HeaderLastSeen id={chat.user.id} />
+                                    <HeaderLastSeen user={chat.user} />
                                 )}
                                 {chat.__typename === 'SharedRoom' &&
                                     chat.membersCount !== null &&

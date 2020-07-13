@@ -64,6 +64,8 @@ query RoomChat($id: ID!) {
                 }
                 isBot
                 isYou
+                online
+                lastSeen
             }
             pinnedMessage {
                 ...FullMessage
