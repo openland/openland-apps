@@ -5,6 +5,10 @@ import { Container } from '../components/Container';
 const box = css`
     padding: 180px 0 100px;
 
+    @media (min-width: 768px) and (max-width: 1199px) {
+        padding: 99px 0 100px;
+    }
+
     @media (max-width: 767px) {
         display: none;
     }
@@ -15,6 +19,12 @@ const title = css`
     font-size: 62px;
     line-height: 64px;
     margin: 0 0 40px;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 40px;
+        line-height: 44px;
+        margin: 0 0 25px;
+    }
 `;
 
 const items = css`
@@ -30,6 +40,11 @@ const item = css`
     cursor: pointer;
     transition: 150ms all ease;
 
+    @media (min-width: 768px) and (max-width: 1199px) {
+        width: 234px;
+        border-radius: 12px;
+    }
+
     &:hover {
         box-shadow: 0px 4px 35px rgba(0, 0, 0, 0.07);
         background-color: #ffffff;
@@ -39,6 +54,10 @@ const item = css`
 const itemImage = css`
     height: 198px;
     background-color: #F2DDE3;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        height: 130px;
+    }
 
     &.is-c2 {
         background-color: #F7CEAC;
@@ -51,6 +70,10 @@ const itemImage = css`
 
 const itemInfo = css`
     padding: 19px 16px 22px 32px;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        padding: 12px 16px;
+    }
 `;
 
 const itemTag = css`
@@ -60,6 +83,12 @@ const itemTag = css`
     font-size: 15px;
     line-height: 20px;
     margin: 0 0 7px;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 10px;
+        line-height: 14px;
+        margin: 0 0 4px;
+    }
 `;
 
 const itemText = css`
@@ -67,6 +96,11 @@ const itemText = css`
     font-size: 26px;
     line-height: 32px;
     opacity: 0.85;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 16px;
+        line-height: 20px;
+    }
 `;
 
 export const HomeHelp = React.memo(() => (

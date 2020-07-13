@@ -28,7 +28,7 @@ const feature = css`
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.06);
     border-radius: 16px;
 
-    @media (min-width: 768px) and (max-width: 1599px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         padding: 30px;
     }
 
@@ -55,11 +55,11 @@ const name = css`
     line-height: 1.2;
     font-weight: 600;
 
-    @media (min-width: 768px) and (max-width: 1599px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 24px;
     }
 
-    @media (max-width: 959px) {
+    @media (max-width: 1199px) {
         font-size: 20px;
     }
 
@@ -73,7 +73,7 @@ const text = css`
     line-height: 1.5;
     margin-top: 16px;
 
-    @media (min-width: 768px) and (max-width: 1599px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 20px;
     }
 
@@ -95,7 +95,7 @@ const link = css`
 
     position: relative;
 
-    @media (min-width: 768px) and (max-width: 1599px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 20px;
     }
 

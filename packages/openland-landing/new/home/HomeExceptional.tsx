@@ -12,6 +12,11 @@ const box = css`
     padding: 48px 0 50px;
     background: #F2F3F5;
     border-radius: 44px;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        padding: 31px 0 28px;
+        border-radius: 32px;
+    }
 `;
 
 const title = css`
@@ -20,6 +25,12 @@ const title = css`
     line-height: 64px;
     margin: 0 0 4px;
     text-align: center;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 34px;
+        line-height: 40px;
+        margin: 0 0 5px;
+    }
 `;
 
 const text = css`
@@ -28,6 +39,12 @@ const text = css`
     color: var(--foregroundSecondary);
     margin: 0 0 28px;
     text-align: center;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 16px;
+        line-height: 24px;
+        margin: 0 0 20px;
+    }
 `;
 
 const screenshot = css`
@@ -41,12 +58,22 @@ const screenshot = css`
         url(https://cdn.openland.com/shared/landing/start/home-exceptional@2x.png) 2x
     );
     background-size: 100% 100%;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        width: 600px; height: 378px;
+        border-radius: 14px;
+        margin: 0 auto 17px;
+    }
 `;
 
 const features = css`
     display: flex;
     justify-content: center;
     padding: 24px 0 0 38px;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        padding: 12px 0 0 26px;
+    }
 `;
 
 const feature = css`
@@ -55,6 +82,12 @@ const feature = css`
     line-height: 28px;
     opacity: 0.8;
     padding: 0 40px 0 36px;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 11px;
+        line-height: 20px;
+        padding: 0 24px;
+    }
 `;
 
 export const HomeExceptional = React.memo(() => (

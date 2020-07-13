@@ -3,16 +3,16 @@ import { Container } from '../components/Container';
 import { css, cx } from 'linaria';
 import { LandingLinks } from '../components/_links';
 
+const box = css`
+    overflow: hidden;
+`;
+
 const inner = css`
     position: relative;
     padding: 157px 0 166px;
 
-    @media (min-width: 960px) and (max-width: 1599px) {
-        padding: 112px 0 170px;
-    }
-
-    @media (min-width: 768px) and (max-width: 959px) {
-        padding: 112px 0 140px;
+    @media (min-width: 768px) and (max-width: 1199px) {
+        padding: 112px 0 60px;
     }
 
     @media (max-width: 767px) {
@@ -27,6 +27,11 @@ const image = css`
     background: linear-gradient(135deg, #FFC619 0%, #FF7919 100%);
     border-radius: 527px;
 
+    @media (min-width: 768px) and (max-width: 1199px) {
+        top: 81px; right: -82px;
+        width: 380px; height: 380px;
+    }
+
     &:before {
         content: "";
         display: block;
@@ -39,6 +44,11 @@ const image = css`
         background-size: 100% 100%;
         position: absolute;
         top: -75px; left: 41px;
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            top: -55px; left: 30px;
+            width: 309px; height: 496px;
+        }
     }
 `;
 
@@ -53,6 +63,12 @@ const title = css`
     color: var(--foregroundPrimary);
     margin: 0 0 20px;
 
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 62px;
+        line-height: 66px;
+        margin: 0 0 17px;
+    }
+
     span {
         display: block;
         background: -webkit-linear-gradient(-45deg, #24BFF2 0%, #2458F2 100%);
@@ -66,6 +82,12 @@ const text = css`
     line-height: 46px;
     color: var(--foregroundSecondary);
     margin: 0 0 44px;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 22px;
+        line-height: 32px;
+        margin: 0 0 32px;
+    }
 `;
 
 const apps = css`
@@ -80,6 +102,12 @@ const app = css`
     margin: 0 24px 0 0;
     transition: 150ms all ease;
 
+    @media (min-width: 768px) and (max-width: 1199px) {
+        width: 121px;
+        height: 40px;
+        margin: 0 16px 0 0;
+    }
+
     &:hover {
         background-color: var(--foregroundSecondary);
     }
@@ -87,26 +115,33 @@ const app = css`
 
 const appAndroid = css`
     width: 180px;
+    margin: 0;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        width: 130px;
+    }
 `;
 
 export const HomeIntro = React.memo(() => (
-    <Container>
-        <div className={inner}>
-            <div className={image} />
-            <div className={info}>
-                <div className={title}>A fresh start<span>for social</span></div>
-                <div className={text}>Openland is a modern social network<br /> built for people, not advertisers</div>
-                <div className={apps}>
-                    <a
-                        className={app}
-                        href={LandingLinks.apps.ios}
-                    />
-                    <a
-                        className={cx(app, appAndroid)}
-                        href={LandingLinks.apps.android}
-                    />
+    <div className={box}>
+        <Container>
+            <div className={inner}>
+                <div className={image} />
+                <div className={info}>
+                    <div className={title}>A fresh start<span>for social</span></div>
+                    <div className={text}>Openland is a modern social network<br /> built for people, not advertisers</div>
+                    <div className={apps}>
+                        <a
+                            className={app}
+                            href={LandingLinks.apps.ios}
+                        />
+                        <a
+                            className={cx(app, appAndroid)}
+                            href={LandingLinks.apps.android}
+                        />
+                    </div>
                 </div>
             </div>
-        </div>
-    </Container>
+        </Container>
+    </div>
 ));

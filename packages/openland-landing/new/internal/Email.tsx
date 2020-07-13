@@ -5,7 +5,7 @@ import { Container } from '../components/Container';
 const box = css`
     padding: 160px 0;
 
-    @media (min-width: 768px) and (max-width: 1599px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         padding: 120px 0;
     }
 
@@ -28,7 +28,7 @@ const heading = css`
     line-height: 1.2;
     color: #272750;
 
-    @media (min-width: 768px) and (max-width: 1599px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 50px;
     }
 
@@ -55,7 +55,7 @@ const subheading = css`
     line-height: 29px;
     color: #9393a7;
 
-    @media (min-width: 768px) and (max-width: 1599px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 22px;
     }
 

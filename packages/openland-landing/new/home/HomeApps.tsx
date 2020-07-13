@@ -11,12 +11,8 @@ import { LandingLinks } from '../components/_links';
 const box = css`
     padding: 100px 0 200px;
 
-    @media (min-width: 960px) and (max-width: 1599px) {
-        padding: 100px 0 120px;
-    }
-
-    @media (min-width: 768px) and (max-width: 959px) {
-        padding: 100px 0 116px;
+    @media (min-width: 768px) and (max-width: 1199px) {
+        padding: 0 0 120px;
     }
 
     @media (max-width: 767px) {
@@ -50,12 +46,12 @@ const button = css`
         transition: color 0.01s, background-color.01s, box-shadow 0.01s;
     }
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1200px) {
         font-size: 20px;
         padding: 16px 36px;
     }
 
-    @media (min-width: 768px) and (max-width: 1599px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 15px;
         padding: 14px 32px;
     }
@@ -84,8 +80,10 @@ const subheading = css`
     line-height: 36px;
     margin-bottom: 24px;
 
-    @media (min-width: 768px) and (max-width: 1599px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 20px;
+        line-height: 32px;
+        margin: 0 0 16px;
     }
 `;
 
@@ -96,13 +94,13 @@ const webApp = css`
 `;
 
 const desktopApp = css`
-    @media (max-width: 959px) {
+    @media (max-width: 1199px) {
         display: none;
     }
 `;
 
 const mobileApp = css`
-    @media (min-width: 768px) and (max-width: 959px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         width: 368px;
     }
 
@@ -144,11 +142,11 @@ const appButton = css`
         background-color: #1d84ec;
     }
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1200px) {
         padding: 16px;
     }
 
-    @media (min-width: 768px) and (max-width: 1599px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         padding: 11px;
     }
 
@@ -181,12 +179,12 @@ const appButtonActive = css`
         transition: color 0.01s, background-color.01s, box-shadow 0.01s;
     }
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1200px) {
         font-size: 20px;
         padding: 16px 28px;
     }
 
-    @media (min-width: 768px) and (max-width: 1599px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         padding: 11px 22px;
         font-size: 16px;
     }
@@ -213,10 +211,10 @@ const title = css`
     line-height: 64px;
     margin: 0 0 28px;
 
-    @media (min-width: 768px) and (max-width: 1599px) {
-        font-size: 32px;
-        line-height: 40px;
-        margin: 0 0 8px;
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 40px;
+        line-height: 44px;
+        margin: 0 0 4px;
     }
 
     @media (max-width: 767px) {
@@ -232,7 +230,7 @@ const text = css`
     margin: 0 0 86px;
     font-weight: 600;
 
-    @media (min-width: 768px) and (max-width: 1599px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 22px;
         line-height: 32px;
         margin: 0 0 40px;
@@ -251,7 +249,7 @@ const link = css`
     font-weight: 600;
     color: #006FDE;
 
-    @media (min-width: 768px) and (max-width: 1599px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         margin-left: 5px;
     }
 

@@ -41,18 +41,18 @@ const menu = css`
     position: relative;
     margin: 10px -20px;
 
-    @media (max-width: 959px) {
+    @media (max-width: 1199px) {
         margin: 10px -10px;
     }
 
-    @media (min-width: 768px) and (max-width: 959px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         margin: 10px -15px;
     }
 
     display: flex;
     flex-wrap: wrap;
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1200px) {
         left: 25px;
     }
 
@@ -70,11 +70,11 @@ const menuItem = css`
     margin: 20px;
     z-index: 20;
 
-    @media (max-width: 959px) {
+    @media (max-width: 1199px) {
         margin: 8px;
     }
 
-    @media (min-width: 768px) and (max-width: 959px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         margin: 15px;
     }
 `;
@@ -88,7 +88,7 @@ const menuLink = css`
     will-change: color;
     transition: color 0.2s;
 
-    @media (max-width: 959px) {
+    @media (max-width: 1199px) {
         font-size: 16px;
     }
 
@@ -118,7 +118,7 @@ const social = css`
     position: relative;
     margin-top: 5px;
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1200px) {
         left: 12px;
     }
 

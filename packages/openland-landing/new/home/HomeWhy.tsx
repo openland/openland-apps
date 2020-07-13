@@ -6,12 +6,8 @@ const inner = css`
     position: relative;
     padding: 120px 0 100px;
 
-    @media (min-width: 960px) and (max-width: 1599px) {
-        padding: 181px 0 236px;
-    }
-
-    @media (min-width: 768px) and (max-width: 959px) {
-        padding: 140px 0 146px;
+    @media (min-width: 768px) and (max-width: 1199px) {
+        padding: 140px 0 72px;
     }
 
     @media (max-width: 767px) {
@@ -24,14 +20,27 @@ const box = css`
     justify-content: space-between;
     align-items: center;
     margin: 0 0 80px;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        margin: 0 0 28px;
+    }
 `;
 
 const preview = css`
     width: 524px; height: 300px;
     border-radius: 32px;
 
+    @media (min-width: 768px) and (max-width: 1199px) {
+        width: 344px; height: 196px;
+        border-radius: 16px;
+    }
+
     &:last-child {
         margin-right: 32px;
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            margin-right: 5px;
+        }
     }
 
     &.is-c1 {
@@ -66,8 +75,17 @@ const info = css`
     width: 524px;
     padding: 0 0 4px 8px;
 
+    @media (min-width: 768px) and (max-width: 1199px) {
+        width: 344px; 
+        padding: 0 0 12px 12px;
+    }
+
     &:first-child {
         padding-left: 50px;
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            padding-left: 28px;
+        }
     }
 `;
 
@@ -76,6 +94,12 @@ const title = css`
     line-height: 64px;
     font-weight: 800;
     margin: 0 0 48px;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 40px;
+        line-height: 44px;
+        margin: 0 0 25px;
+    }
 `;
 
 const subtitle = css`
@@ -83,12 +107,24 @@ const subtitle = css`
     line-height: 40px;
     font-weight: 700;
     margin: 0 0 20px;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 28px;
+        line-height: 28px;
+        margin: 0 0 8px;
+    }
 `;
 
 const text = css`
     font-size: 24px;
     line-height: 38px;
     margin: 0 0 24px;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 18px;
+        line-height: 26px;
+        margin: 0 0 12px;
+    }
 `;
 
 const features = css`
@@ -96,6 +132,12 @@ const features = css`
     line-height: 36px;
     color: #5A6782;
     padding: 0 0 0 40px;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 14px;
+        line-height: 24px;
+        padding: 0 0 0 28px;
+    }
 `;
 
 export const HomeWhy = React.memo(() => (
