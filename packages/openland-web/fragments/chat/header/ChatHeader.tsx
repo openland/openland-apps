@@ -211,6 +211,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
                     chat.id,
                     tabRouter,
                     chat.__typename === 'SharedRoom' && chat.isPremium,
+                    chat.kind === 'PUBLIC',
                 ),
         });
     }
