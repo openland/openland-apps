@@ -135,10 +135,10 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
     let isPhoneValid = !!(parsedPhone && parsedPhone.isPossible());
 
     const handleNext = React.useCallback(() => {
-        if (countryMenuOpen.current || !isPhoneValid) {
+        if (countryMenuOpen.current) {
             return;
         }
-        if (dataField.input.value.trim() === '') {
+        if (dataField.input.value.trim() === '' || !isPhoneValid) {
             return shake();
         }
         doConfirm();
@@ -280,7 +280,7 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
                     />
                 </AuthInputWrapper>
                 <AuthActionButton
-                    disable={!isPhoneValid}
+                    // disable={!isPhoneValid}
                     text={InitTexts.auth.next}
                     loading={authSending}
                     onClick={handleNext}
