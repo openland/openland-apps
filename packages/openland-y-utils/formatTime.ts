@@ -53,10 +53,27 @@ export function formatLastSeen(lastSeen: string) {
     if (lastSeen === 'never_online') {
         return 'last seen long time ago';
     } else {
-        let time = new Date(parseInt(lastSeen, 10)).getTime();
-        if (new Date().getTime() - time < 1000 * 60 * 60 * 24) {
+        let now = new Date();
+        let dt = new Date(parseInt(lastSeen, 10));
+        let time = dt.getTime();
+
+        let delta = now.getTime() - time;
+
+        let oneMinute = 1000 * 60;
+        let oneDay = oneMinute * 60 * 24;
+        let twoDays = oneDay * 2;
+
+        if (delta > oneDay && delta < twoDays) {
+            if (now.getDate() === dt.getDate() + 2) {
+                return 'last seen two days ago';
+            }
+            return 'last seen yesterday';
+        } else if (delta < oneDay) {
+            if (now.getDate() === dt.getDate() + 1) {
+                return 'last seen yesterday';
+            }
             return 'last seen ' + humanize.relativeTime(time / 1000);
-        } else if (new Date().getTime() - time < 1000 * 60) {
+        } else if (delta < oneMinute) {
             return 'just now';
         } else {
             return 'last seen ' + formatDate(time);
