@@ -9,4 +9,5 @@ fragment OrganizationMedium on Organization {
     isOwner: betaIsOwner
     isAdmin: betaIsAdmin
     isCommunity: alphaIsCommunity
+    private: alphaIsPrivate
 }

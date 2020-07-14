@@ -67,7 +67,8 @@ const disabledBtn = css`
     pointer-events: none;
 `;
 
-const HeaderLastSeen = (props: { user: User }) => { // change to UPresence?
+const HeaderLastSeen = (props: { user: User }) => {
+    // change to UPresence?
     const [sub, accent] = useLastSeen(props.user);
 
     return <span className={accent ? secondaryAccent : undefined}>{sub}</span>;
@@ -97,7 +98,11 @@ const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
     const showVideoCallModal = useVideoCallModal({ chatId: props.chat.id });
 
     return (
-        <div className={cx(currentSession && currentSession.conversationId === props.chat.id && disabledBtn)}>
+        <div
+            className={cx(
+                currentSession && currentSession.conversationId === props.chat.id && disabledBtn,
+            )}
+        >
             <UIconButton
                 icon={<PhoneIcon />}
                 onClick={() => {
@@ -117,12 +122,22 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     const chat = client.useRoomChat({ id: props.id }, { fetchPolicy: 'cache-first' }).room!;
     const messenger = React.useContext(MessengerContext);
     const [muted, setMuted] = React.useState(chat.settings.mute);
-    let calls = messenger.calls;
+    const sharedRoom = chat.__typename === 'SharedRoom' && chat;
+    const calls = messenger.calls;
     const currentSession = calls.useCurrentSession();
     const showVideoCallModal = useVideoCallModal({ chatId: chat.id });
 
+    let showInviteButton = layout === 'mobile' && sharedRoom;
+    const onlyLinkInvite = sharedRoom && !(!sharedRoom.isPremium || sharedRoom.role === 'OWNER');
+
+    if (sharedRoom && sharedRoom.organization && sharedRoom.organization.private && sharedRoom.role === 'MEMBER') {
+        if (onlyLinkInvite) {
+            showInviteButton = false;
+        }
+    }
+
     let res = new UPopperMenuBuilder();
-    if (layout === 'mobile' && chat.__typename === 'SharedRoom') {
+    if (showInviteButton) {
         res.item({
             title: 'Add people',
             icon: <InviteIcon />,
@@ -163,7 +178,11 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
 
     let contactsEnabled = false;
 
-    if (contactsEnabled && chat.__typename === 'PrivateRoom' && chat.user.id !== messenger.user.id) {
+    if (
+        contactsEnabled &&
+        chat.__typename === 'PrivateRoom' &&
+        chat.user.id !== messenger.user.id
+    ) {
         const isContact = false;
         res.item({
             title: isContact ? 'Remove from contacts' : 'Save to contacts',
@@ -203,6 +222,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     const { chat } = props;
     const layout = useLayout();
     const messenger = React.useContext(MessengerContext);
+    const sharedRoom = chat.__typename === 'SharedRoom' && chat;
     const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
     const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
     const path =
@@ -211,8 +231,16 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
             : `/group/${chat.id}`;
     const showCallButton =
         layout === 'desktop' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true);
-    const showInviteButton = !!(layout === 'desktop' && chat.__typename === 'SharedRoom');
     const titleEmojify = React.useMemo(() => emoji(title), [title]);
+
+    let showInviteButton = layout === 'desktop' && sharedRoom;
+    const onlyLinkInvite = sharedRoom && !(!sharedRoom.isPremium || sharedRoom.role === 'OWNER');
+
+    if (sharedRoom && sharedRoom.organization && sharedRoom.organization.private && sharedRoom.role === 'MEMBER') {
+        if (onlyLinkInvite) {
+            showInviteButton = false;
+        }
+    }
 
     return (
         <XView

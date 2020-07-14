@@ -460,6 +460,7 @@ internal val OrganizationShortSelector = obj(
             field("shortname", "shortname", scalar("String")),
             field("about", "about", scalar("String")),
             field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+            field("alphaIsPrivate", "private", notNull(scalar("Boolean"))),
             field("membersCount", "membersCount", notNull(scalar("Int")))
         )
 
@@ -1181,7 +1182,8 @@ internal val OrganizationMediumSelector = obj(
             field("about", "about", scalar("String")),
             field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
             field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
-            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean")))
+            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+            field("alphaIsPrivate", "private", notNull(scalar("Boolean")))
         )
 
 internal val OrganizationProfileFragmentSelector = obj(

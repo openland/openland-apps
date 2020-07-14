@@ -5,5 +5,6 @@ fragment OrganizationShort on Organization {
     shortname
     about
     isCommunity: alphaIsCommunity
+    private: alphaIsPrivate
     membersCount
 }

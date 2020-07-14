@@ -37,6 +37,7 @@ interface InviteModalProps {
     isCommunity?: boolean;
     isPremium: boolean;
     isOwner: boolean;
+    hideOwnerLink: boolean;
     hide?: () => void;
 }
 
@@ -124,16 +125,18 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                     marginBottom={-24}
                     paddingTop={8}
                 >
-                    <XView marginBottom={canAddPeople ? 16 : 24}>
-                        <SectionTitle title={`Share ${objType} link`} />
-                        <OwnerLinkComponent
-                            id={props.id}
-                            isGroup={props.isGroup}
-                            isChannel={props.isChannel}
-                            isOrganization={props.isOrganization}
-                            isCommunity={props.isCommunity}
-                        />
-                    </XView>
+                    {!props.hideOwnerLink && (
+                        <XView marginBottom={canAddPeople ? 16 : 24}>
+                            <SectionTitle title={`Share ${objType} link`} />
+                            <OwnerLinkComponent
+                                id={props.id}
+                                isGroup={props.isGroup}
+                                isChannel={props.isChannel}
+                                isOrganization={props.isOrganization}
+                                isCommunity={props.isCommunity}
+                            />
+                        </XView>
+                    )}
                     {canAddPeople && (
                         <>
                             <SectionTitle
@@ -281,21 +284,26 @@ export const AddMembersModal = React.memo(
         let data = null;
         let isPremium = false;
         let isOwner = false;
+        let hideOwnerLink = false;
 
         if (isGroup) {
             data = client.useRoomMembersShort({ roomId: id });
-            let group = client.useRoomChat({ id: id });
-            isPremium =
-                !!(group.room && group.room.__typename === 'SharedRoom') && group.room.isPremium;
-            isOwner =
-                !!(group.room && group.room.__typename === 'SharedRoom') &&
-                group.room.role === 'OWNER';
+            const chat = client.useRoomChat({ id: id }).room!;
+            const sharedRoom = chat.__typename === 'SharedRoom' && chat;
+            isPremium = sharedRoom && sharedRoom.isPremium;
+            isOwner = sharedRoom && sharedRoom.role === 'OWNER';
+
+            if (sharedRoom && sharedRoom.organization && sharedRoom.organization.private && sharedRoom.role === 'MEMBER') {
+                hideOwnerLink = true;
+            }
+
         } else if (isOrganization) {
             data = client.useOrganizationMembersShort({ organizationId: id });
         }
 
         return (
             <AddMemberModalInner
+                hideOwnerLink={hideOwnerLink}
                 hide={hide}
                 addMembers={isOrganization ? addMembersToOrganization : addMembersToRoom}
                 id={id}

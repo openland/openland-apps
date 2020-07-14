@@ -47,27 +47,6 @@ const TemporaryStubMail = React.memo(() => {
     return null;
 });
 
-// const RedirectStubDiscover = React.memo(() => {
-//     const router = useTabRouter();
-//     React.useEffect(() => {
-//         let timer: any;
-//         if (router) {
-//             router.router.switchTab(0);
-//             if (!router.router.stacks[0].pages.length) {
-//                 timer = setTimeout(() => {
-//                     if (router) {
-//                         router.router.navigate('/discover/');
-//                     }
-//                 }, 20);
-//             }
-//         }
-//
-//         return () => clearTimeout(timer);
-//     }, []);
-//
-//     return null;
-// });
-
 const routing = new URouting();
 
 // Mail

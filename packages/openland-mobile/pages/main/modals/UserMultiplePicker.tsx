@@ -79,7 +79,7 @@ const UsersList = React.memo(
         return (
             <>
                 {props.router.params.inviteLinkButton && (
-                    <View marginTop={18}>
+                    <View>
                         <ZListItem
                             leftIcon={require('assets/ic-link-glyph-24.png')}
                             text="Invite with link"
@@ -183,7 +183,7 @@ const UserMultiplePickerComponent = React.memo((props: PageProps) => {
                     keyboardShouldPersistTaps="always"
                 >
                     <View
-                        paddingTop={searchHeight - 20}
+                        paddingTop={searchHeight}
                         minHeight={Dimensions.get('screen').height - searchHeight}
                     >
                         <React.Suspense fallback={<ZLoader />}>

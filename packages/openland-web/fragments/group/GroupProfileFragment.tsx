@@ -32,6 +32,16 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         return null;
     }
 
+    const sharedRoom = group.__typename === 'SharedRoom' && group;
+    let showInviteButton = sharedRoom;
+    const onlyLinkInvite = sharedRoom && !(!sharedRoom.isPremium || sharedRoom.role === 'OWNER');
+
+    if (sharedRoom && sharedRoom.organization && sharedRoom.organization.private && sharedRoom.role === 'MEMBER') {
+        if (onlyLinkInvite) {
+            showInviteButton = false;
+        }
+    }
+
     const featuredMembers = client.useRoomFeaturedMembers(
         { roomId },
         { fetchPolicy: 'cache-and-network' },
@@ -170,18 +180,20 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
             </UListGroup>
 
             <UListHeader text="Members" counter={membersCount || 0} />
-            <UAddItem
-                title="Add people"
-                onClick={() => {
-                    showAddMembersModal({
-                        id,
-                        isChannel,
-                        isGroup: true,
-                        isOrganization: false,
-                        onGroupMembersAdd: handleAddMembers,
-                    });
-                }}
-            />
+            {showInviteButton && (
+                <UAddItem
+                    title="Add people"
+                    onClick={() => {
+                        showAddMembersModal({
+                            id,
+                            isChannel,
+                            isGroup: true,
+                            isOrganization: false,
+                            onGroupMembersAdd: handleAddMembers,
+                        });
+                    }}
+                />
+            )}
         </UFlatList>
     );
 });

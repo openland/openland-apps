@@ -205,6 +205,11 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
         [roomId],
     );
 
+    let hideOwnerLink = false;
+    if (room.organization && room.organization.private && room.role === 'MEMBER') {
+        hideOwnerLink = true;
+    }
+
     const handleAddMember = React.useCallback(() => {
         trackEvent('invite_view', { invite_type: 'group' });
         Modals.showUserMuptiplePicker(
@@ -236,7 +241,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             room.isPremium ? 'Add people for free' : 'Add people',
             members.map((m) => m.user.id),
             [getMessenger().engine.user.id],
-            { path: 'ProfileGroupLink', pathParams: { room } },
+            hideOwnerLink ? undefined : { path: 'ProfileGroupLink', pathParams: { room } },
         );
     }, [members]);
 
@@ -388,7 +393,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                     onPress={handleAddMember}
                 />
             )}
-            {(room.role === 'ADMIN' || room.role === 'OWNER' || room.role === 'MEMBER') && (
+            {!hideOwnerLink && (
                 <ZListItem
                     leftIcon={require('assets/ic-link-glyph-24.png')}
                     text={`Invite with link`}

@@ -32,7 +32,6 @@ import { InputMessageActionComponent } from './InputMessageActionComponent';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import { findSpans } from 'openland-y-utils/findSpans';
 import { DropZone } from './DropZone';
-import { showAttachConfirm } from './AttachConfirm';
 import AlertBlanket from 'openland-x/AlertBlanket';
 import { OpenlandClient } from 'openland-api/spacex';
 import { ReloadFromEndButton } from './ReloadFromEndButton';
@@ -215,19 +214,6 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     }
 
     componentDidMount() {
-        // this.activeSubscription = this.props.isActive.listen(acitive => {
-        //     if (acitive) {
-        //         this.unmounter = this.conversation!.engine.mountConversation(
-        //             this.props.conversationId,
-        //         );
-        //         this.unmounter2 = this.conversation!.subscribe(this);
-        //         if (!this.conversation) {
-        //             throw Error('conversation should be defined here');
-        //         }
-        //     } else {
-        //         this.unsubscribe();
-        //     }
-        // });
         trackEvent('mail_view');
         this.unmounter = this.conversation!.engine.mountConversation(this.props.conversationId);
         this.unmounter2 = this.conversation!.subscribe(this);
@@ -414,43 +400,6 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         if (actionState.action !== 'edit') {
             this.initialContent = text;
             localStorage.setItem('drafts-' + this.props.conversationId, JSON.stringify(text));
-        }
-    }
-
-    refreshFileUploadingTyping = (filename?: string) => {
-        const lowercaseFilename = filename && filename.toLowerCase();
-        let typingType = TypingType.FILE;
-
-        if (lowercaseFilename) {
-            if (lowercaseFilename.endsWith('.jpg') || lowercaseFilename.endsWith('.jpeg') || lowercaseFilename.endsWith('.png')) {
-                typingType = TypingType.PHOTO;
-            }
-
-            if (lowercaseFilename.endsWith('.mp4') || lowercaseFilename.endsWith('.mov')) {
-                typingType = TypingType.VIDEO;
-            }
-        }
-
-        this.props.messenger.client.mutateSetTyping({
-            conversationId: this.props.conversationId,
-            type: typingType
-        });
-    }
-
-    endFileUploadingTyping = () => {
-        this.props.messenger.client.mutateUnsetTyping({
-            conversationId: this.props.conversationId,
-        });
-    }
-
-    onAttach = (files: File[]) => {
-        if (files.length) {
-            showAttachConfirm(
-                files,
-                res => res.map(({ file, localImage }) => this.conversation!.sendFile(file, localImage)),
-                this.refreshFileUploadingTyping,
-                this.endFileUploadingTyping
-            );
         }
     }
 
