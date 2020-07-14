@@ -85,6 +85,7 @@ object Operations {
         if (name == "RoomInviteInfo") return RoomInviteInfo
         if (name == "RoomInviteLink") return RoomInviteLink
         if (name == "RoomMembersPaginated") return RoomMembersPaginated
+        if (name == "RoomMembersSearch") return RoomMembersSearch
         if (name == "RoomMembersShort") return RoomMembersShort
         if (name == "RoomMembersTiny") return RoomMembersTiny
         if (name == "RoomMetaPreview") return RoomMetaPreview

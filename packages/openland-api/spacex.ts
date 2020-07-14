@@ -244,6 +244,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, params?: QueryParameters): Promise<Types.RoomMembersPaginated> {
         return this.query('RoomMembersPaginated', variables, params);
     }
+    queryRoomMembersSearch(variables: Types.RoomMembersSearchVariables, params?: QueryParameters): Promise<Types.RoomMembersSearch> {
+        return this.query('RoomMembersSearch', variables, params);
+    }
     queryRoomMembersShort(variables: Types.RoomMembersShortVariables, params?: QueryParameters): Promise<Types.RoomMembersShort> {
         return this.query('RoomMembersShort', variables, params);
     }
@@ -556,6 +559,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, params?: QueryParameters): Promise<Types.RoomMembersPaginated> {
         return this.refetch('RoomMembersPaginated', variables, params);
     }
+    refetchRoomMembersSearch(variables: Types.RoomMembersSearchVariables, params?: QueryParameters): Promise<Types.RoomMembersSearch> {
+        return this.refetch('RoomMembersSearch', variables, params);
+    }
     refetchRoomMembersShort(variables: Types.RoomMembersShortVariables, params?: QueryParameters): Promise<Types.RoomMembersShort> {
         return this.refetch('RoomMembersShort', variables, params);
     }
@@ -867,6 +873,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, updater: (data: Types.RoomMembersPaginated) => Types.RoomMembersPaginated | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomMembersPaginated', variables);
+    }
+    updateRoomMembersSearch(variables: Types.RoomMembersSearchVariables, updater: (data: Types.RoomMembersSearch) => Types.RoomMembersSearch | null): Promise<boolean> {
+        return this.updateQuery(updater, 'RoomMembersSearch', variables);
     }
     updateRoomMembersShort(variables: Types.RoomMembersShortVariables, updater: (data: Types.RoomMembersShort) => Types.RoomMembersShort | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomMembersShort', variables);
@@ -1335,6 +1344,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersPaginated;
     useRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersPaginated | null {
         return this.useQuery('RoomMembersPaginated', variables, params);
+    }
+    useRoomMembersSearch(variables: Types.RoomMembersSearchVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMembersSearch | null;
+    useRoomMembersSearch(variables: Types.RoomMembersSearchVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersSearch;
+    useRoomMembersSearch(variables: Types.RoomMembersSearchVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersSearch | null {
+        return this.useQuery('RoomMembersSearch', variables, params);
     }
     useRoomMembersShort(variables: Types.RoomMembersShortVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMembersShort | null;
     useRoomMembersShort(variables: Types.RoomMembersShortVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersShort;
