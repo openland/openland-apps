@@ -18,10 +18,12 @@ import { GroupMemberMenu } from './components/GroupMemberMenu';
 import { RoomMembersPaginated_members, RoomMemberRole } from 'openland-api/spacex.types';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     const client = useClient();
     const unicorn = useUnicorn();
+    const onlines = React.useContext(MessengerContext).getOnlines();
     const roomId = props.id || unicorn.id;
     const group = client.useRoomChat(
         { id: roomId },
@@ -40,6 +42,11 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         { roomId, first: 15 },
         { fetchPolicy: 'cache-and-network' },
     ).members;
+
+    React.useEffect(() => {
+        initialMembers.forEach(m => onlines.onUserAppears(m.user.id));
+    }, [initialMembers]);
+
     const {
         id,
         isChannel,
@@ -75,6 +82,8 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                     ...loaded.filter(m => !current.find(m2 => m2.user.id === m.user.id)),
                 ]);
                 setLoading(false);
+
+                loaded.forEach(m => onlines.onUserAppears(m.user.id));
             }
         },
         [membersCount, members, loading],
@@ -83,6 +92,8 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     const handleAddMembers = React.useCallback(
         (addedMembers: RoomMembersPaginated_members[]) => {
             setMembers(current => [...current, ...addedMembers]);
+
+            addedMembers.forEach(m => onlines.onUserAppears(m.user.id));
         },
         [members],
     );
@@ -100,6 +111,12 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         },
         [members],
     );
+
+    React.useEffect(() => {
+        return onlines.onSingleChangeChange((user: string, online: boolean) => {
+            setMembers(current => current.map(m => m.user.id === user && online !== m.user.online ? { ...m, user: { ...m.user, online, lastSeen: Date.now().toString() } } : m));
+        });
+    }, [members]);
 
     let descriptionHero = plural(membersCount || 0, ['member', 'members']);
 
