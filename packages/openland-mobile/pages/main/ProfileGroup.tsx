@@ -38,7 +38,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
         .room as RoomChat_room_SharedRoom;
     const initialMembers = client.useRoomMembersPaginated(
         { roomId: roomId, first: 10 },
-        { fetchPolicy: 'cache-and-network' },
+        { fetchPolicy: 'network-only' },
     ).members;
 
     const typeString = room.isChannel ? 'channel' : 'group';
