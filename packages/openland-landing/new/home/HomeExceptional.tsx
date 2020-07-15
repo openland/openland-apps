@@ -1,6 +1,14 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { Container } from '../components/Container';
+import VideoIcon from './icons/ic_video_28.svg';
+import BotsIcon from './icons/ic_bots_28.svg';
+import CommunitiesIcon from './icons/ic_communities_28.svg';
+import ContactsIcon from './icons/ic_contacts_28.svg';
+import DiscoverIcon from './icons/ic_discover_28.svg';
+import MessagingIcon from './icons/ic_messaging_28.svg';
+import PaymentsIcon from './icons/ic_payments_28.svg';
+import AppearanceIcon from './icons/ic_appearance_24.svg';
 
 const wrapper = css`
     @media (max-width: 767px) {
@@ -82,11 +90,23 @@ const feature = css`
     line-height: 28px;
     opacity: 0.8;
     padding: 0 40px 0 36px;
+    position: relative;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 11px;
         line-height: 20px;
         padding: 0 24px;
+    }
+
+    svg {
+        position: absolute;
+        top: 0; left: 0;
+        width: 28px; height: 28px;
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            top: 1px;
+            width: 18px; height: 18px;
+        }
     }
 `;
 
@@ -98,16 +118,16 @@ export const HomeExceptional = React.memo(() => (
                 <div className={text}>Beautiful, simple, and ultra-fast</div>
                 <div className={screenshot} />
                 <div className={features}>
-                    <div className={feature}>Messaging</div>
-                    <div className={feature}>Video chat</div>
-                    <div className={feature}>Communities</div>
-                    <div className={feature}>Contacts</div>
+                    <div className={feature}><MessagingIcon />Messaging</div>
+                    <div className={feature}><VideoIcon />Video chat</div>
+                    <div className={feature}><CommunitiesIcon />Communities</div>
+                    <div className={feature}><ContactsIcon />Contacts</div>
                 </div>
                 <div className={features}>
-                    <div className={feature}>Discover</div>
-                    <div className={feature}>Payments</div>
-                    <div className={feature}>Bots</div>
-                    <div className={feature}>Color themes</div>
+                    <div className={feature}><DiscoverIcon />Discover</div>
+                    <div className={feature}><PaymentsIcon />Payments</div>
+                    <div className={feature}><BotsIcon />Bots</div>
+                    <div className={feature}><AppearanceIcon />Color themes</div>
                 </div>
             </div>
         </Container>
