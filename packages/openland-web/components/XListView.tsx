@@ -8,7 +8,7 @@ export interface XListViewProps<T extends DataSourceItem> {
     dataSource: ReadableDataSource<T>;
     itemHeight: number;
     loadingHeight: number;
-    renderItem: (item: T) => React.ReactElement<any>;
+    renderItem: (item: T, index: number) => React.ReactElement<any>;
     renderLoading: () => JSX.Element;
     beforeChildren?: any;
     afterChildren?: any;
@@ -48,8 +48,8 @@ export const XListView = React.memo(function <T extends DataSourceItem>(props: X
         <XScrollView3 onScroll={onScroll} flexGrow={1} flexShrink={1} useDefaultScroll={true}>
             <WrapChildrenComponent>
                 {completed && props.beforeChildren}
-                {items.map(v => (
-                    <XView key={'item-' + v.key}>{props.renderItem(v)}</XView>
+                {items.map((v, index) => (
+                    <XView key={'item-' + v.key}>{props.renderItem(v, index)}</XView>
                 ))}
                 {!completed && props.renderLoading()}
                 {completed && props.afterChildren}

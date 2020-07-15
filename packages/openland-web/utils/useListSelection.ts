@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { throttle } from 'openland-y-utils/timer';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
-export const useListSelection = (props: { selectedIndex: number, onItemHover: (index: number) => void }) => {
+export const useListSelection = (props: { maxIndex: number }) => {
+    const [selectedIndex, setSelectedIndex] = React.useState<number>(-1);
     const [selectionMode, setSelectionMode] = React.useState<'keyboard' | 'mouse'>('mouse');
     const prevIndex = React.useRef(0);
     const handleMouseOver = (index: number) => {
@@ -9,7 +11,7 @@ export const useListSelection = (props: { selectedIndex: number, onItemHover: (i
             return;
         }
         prevIndex.current = index;
-        props.onItemHover(index);
+        setSelectedIndex(index);
     };
 
     React.useEffect(() => {
@@ -22,7 +24,34 @@ export const useListSelection = (props: { selectedIndex: number, onItemHover: (i
         };
     }, []);
 
+    const handleOptionUp = () => {
+        if (selectedIndex === null) {
+            setSelectedIndex(0);
+            return;
+        }
+        setSelectionMode('keyboard');
+        setSelectedIndex(Math.min(Math.max(selectedIndex - 1, 0), props.maxIndex));
+        return;
+    };
+
+    const handleOptionDown = () => {
+        if (selectedIndex === null) {
+            setSelectedIndex(0);
+            return;
+        }
+        setSelectionMode('keyboard');
+        setSelectedIndex(Math.min(Math.max(selectedIndex + 1, 0), props.maxIndex));
+        return;
+    };
+
+    useShortcuts([
+        { keys: ['ArrowUp'], callback: handleOptionUp },
+        { keys: ['ArrowDown'], callback: handleOptionDown },
+    ]);
+
     return {
+        selectedIndex,
+        setSelectedIndex,
         selectionMode,
         setSelectionMode,
         handleMouseOver,

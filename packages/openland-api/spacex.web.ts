@@ -2738,6 +2738,37 @@ const MyCommunitiesSelector = obj(
                     fragment('Organization', OrganizationShortSelector)
                 )))))
         );
+const MyContactsSelector = obj(
+            field('myContacts', 'myContacts', args(fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('user', 'user', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    fragment('User', UserShortSelector)
+                                )))
+                        ))))),
+                    field('cursor', 'cursor', args(), scalar('String'))
+                )))
+        );
+const MyContactsSearchSelector = obj(
+            field('myContactsSearch', 'myContactsSearch', args(fieldValue("query", refValue('query')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after')), fieldValue("page", refValue('page'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('edges', 'edges', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('node', 'node', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    fragment('User', UserShortSelector)
+                                )))
+                        ))))),
+                    field('pageInfo', 'pageInfo', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('hasNextPage', 'hasNextPage', args(), notNull(scalar('Boolean'))),
+                            field('currentPage', 'currentPage', args(), notNull(scalar('Int')))
+                        )))
+                )))
+        );
 const MyNotificationCenterSelector = obj(
             field('myNotificationCenter', 'myNotificationCenter', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5062,6 +5093,18 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'MyCommunities',
         body: 'query MyCommunities{myCommunities{__typename ...OrganizationShort isOwner:betaIsOwner isAdmin:betaIsAdmin}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}',
         selector: MyCommunitiesSelector
+    },
+    MyContacts: {
+        kind: 'query',
+        name: 'MyContacts',
+        body: 'query MyContacts($first:Int!,$after:String){myContacts(first:$first,after:$after){__typename items{__typename id user{__typename ...UserShort}}cursor}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}',
+        selector: MyContactsSelector
+    },
+    MyContactsSearch: {
+        kind: 'query',
+        name: 'MyContactsSearch',
+        body: 'query MyContactsSearch($query:String,$first:Int!,$after:String,$page:Int){myContactsSearch(query:$query,first:$first,after:$after,page:$page){__typename edges{__typename node{__typename ...UserShort}}pageInfo{__typename hasNextPage currentPage}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}',
+        selector: MyContactsSearchSelector
     },
     MyNotificationCenter: {
         kind: 'query',

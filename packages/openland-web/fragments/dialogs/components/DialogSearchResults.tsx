@@ -107,16 +107,16 @@ export const DialogSearchItemRender = React.memo((props: DialogSearchItemRenderP
 });
 
 const DialogSearchInner = React.memo((props: DialogSearchResults) => {
-    const { items, selectedIndex, handleMouseOver, handleMouseMove } = useGlobalSearch(props);
+    const { items, selectedIndex, setSelectedIndex, handleMouseOver, handleMouseMove } = useGlobalSearch(props);
 
     if (items.length === 0) {
         return <DialogSearchEmptyView />;
     }
 
     return (
-        <>
+        <XView flexGrow={1} flexDirection="column" onMouseLeave={() => setSelectedIndex(-1)}>
             {items.map((i, index) => <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} onMouseOver={handleMouseOver} onMouseMove={handleMouseMove} {...props} />)}
-        </>
+        </XView>
     );
 });
 

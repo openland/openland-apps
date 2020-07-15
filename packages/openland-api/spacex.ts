@@ -151,6 +151,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryMyCommunities(params?: QueryParameters): Promise<Types.MyCommunities> {
         return this.query('MyCommunities', undefined, params);
     }
+    queryMyContacts(variables: Types.MyContactsVariables, params?: QueryParameters): Promise<Types.MyContacts> {
+        return this.query('MyContacts', variables, params);
+    }
+    queryMyContactsSearch(variables: Types.MyContactsSearchVariables, params?: QueryParameters): Promise<Types.MyContactsSearch> {
+        return this.query('MyContactsSearch', variables, params);
+    }
     queryMyNotificationCenter(params?: QueryParameters): Promise<Types.MyNotificationCenter> {
         return this.query('MyNotificationCenter', undefined, params);
     }
@@ -466,6 +472,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchMyCommunities(params?: QueryParameters): Promise<Types.MyCommunities> {
         return this.refetch('MyCommunities', undefined, params);
     }
+    refetchMyContacts(variables: Types.MyContactsVariables, params?: QueryParameters): Promise<Types.MyContacts> {
+        return this.refetch('MyContacts', variables, params);
+    }
+    refetchMyContactsSearch(variables: Types.MyContactsSearchVariables, params?: QueryParameters): Promise<Types.MyContactsSearch> {
+        return this.refetch('MyContactsSearch', variables, params);
+    }
     refetchMyNotificationCenter(params?: QueryParameters): Promise<Types.MyNotificationCenter> {
         return this.refetch('MyNotificationCenter', undefined, params);
     }
@@ -780,6 +792,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateMyCommunities(updater: (data: Types.MyCommunities) => Types.MyCommunities | null): Promise<boolean> {
         return this.updateQuery(updater, 'MyCommunities', undefined);
+    }
+    updateMyContacts(variables: Types.MyContactsVariables, updater: (data: Types.MyContacts) => Types.MyContacts | null): Promise<boolean> {
+        return this.updateQuery(updater, 'MyContacts', variables);
+    }
+    updateMyContactsSearch(variables: Types.MyContactsSearchVariables, updater: (data: Types.MyContactsSearch) => Types.MyContactsSearch | null): Promise<boolean> {
+        return this.updateQuery(updater, 'MyContactsSearch', variables);
     }
     updateMyNotificationCenter(updater: (data: Types.MyNotificationCenter) => Types.MyNotificationCenter | null): Promise<boolean> {
         return this.updateQuery(updater, 'MyNotificationCenter', undefined);
@@ -1189,6 +1207,16 @@ export class OpenlandClient extends BaseSpaceXClient {
     useMyCommunities(params?: SpaceQueryWatchParameters): Types.MyCommunities;
     useMyCommunities(params?: SpaceQueryWatchParameters): Types.MyCommunities | null {
         return this.useQuery('MyCommunities', undefined, params);
+    }
+    useMyContacts(variables: Types.MyContactsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.MyContacts | null;
+    useMyContacts(variables: Types.MyContactsVariables, params?: SpaceQueryWatchParameters): Types.MyContacts;
+    useMyContacts(variables: Types.MyContactsVariables, params?: SpaceQueryWatchParameters): Types.MyContacts | null {
+        return this.useQuery('MyContacts', variables, params);
+    }
+    useMyContactsSearch(variables: Types.MyContactsSearchVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.MyContactsSearch | null;
+    useMyContactsSearch(variables: Types.MyContactsSearchVariables, params?: SpaceQueryWatchParameters): Types.MyContactsSearch;
+    useMyContactsSearch(variables: Types.MyContactsSearchVariables, params?: SpaceQueryWatchParameters): Types.MyContactsSearch | null {
+        return this.useQuery('MyContactsSearch', variables, params);
     }
     useMyNotificationCenter(params: SpaceQueryWatchParameters & { suspense: false }): Types.MyNotificationCenter | null;
     useMyNotificationCenter(params?: SpaceQueryWatchParameters): Types.MyNotificationCenter;

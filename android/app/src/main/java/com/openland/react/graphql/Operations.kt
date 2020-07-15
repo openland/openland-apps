@@ -54,6 +54,8 @@ object Operations {
         if (name == "MyApps") return MyApps
         if (name == "MyCards") return MyCards
         if (name == "MyCommunities") return MyCommunities
+        if (name == "MyContacts") return MyContacts
+        if (name == "MyContactsSearch") return MyContactsSearch
         if (name == "MyNotificationCenter") return MyNotificationCenter
         if (name == "MyNotifications") return MyNotifications
         if (name == "MyOrganizations") return MyOrganizations

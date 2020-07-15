@@ -46,9 +46,6 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
         await client.refetchGlobalSearch({ query: props.variables.query }, { fetchPolicy: 'network-only' });
     }));
 
-    const [selectedIndex, setSelectedIndex] = React.useState<number>(-1);
-    const { setSelectionMode, handleMouseMove, handleMouseOver } = useListSelection({ selectedIndex, onItemHover: setSelectedIndex });
-
     const items = client.useGlobalSearch({ query: props.variables.query }, { fetchPolicy: 'cache-and-network' }).items;
     const initialData = client.useMessagesSearch(constructVariables(props.variables.query), { fetchPolicy: 'cache-and-network' }).messagesSearch;
 
@@ -64,31 +61,9 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
 
     const resultsLength = items.length + messages.length;
 
-    const handleOptionUp = () => {
-        setSelectionMode('keyboard');
-        if (selectedIndex === null) {
-            setSelectedIndex(0);
-            return;
-        }
-        setSelectedIndex(Math.min(Math.max(selectedIndex - 1, 0), resultsLength - 1));
-
-        return;
-    };
-
-    const handleOptionDown = () => {
-        setSelectionMode('keyboard');
-        if (selectedIndex === null) {
-            setSelectedIndex(0);
-            return;
-        }
-        setSelectedIndex(Math.min(Math.max(selectedIndex + 1, 0), resultsLength - 1));
-
-        return;
-    };
+    const { selectedIndex, setSelectedIndex, handleMouseMove, handleMouseOver } = useListSelection({ maxIndex: resultsLength - 1 });
 
     useShortcuts([
-        { keys: ['ArrowUp'], callback: handleOptionUp },
-        { keys: ['ArrowDown'], callback: handleOptionDown },
         {
             keys: ['Enter'],
             callback: () => {
@@ -136,7 +111,7 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
     }
 
     return (
-        <XScrollView3 onScroll={onScroll} flexGrow={1} flexShrink={1} useDefaultScroll={true}>
+        <XScrollView3 onScroll={onScroll} flexGrow={1} flexShrink={1} useDefaultScroll={true} onMouseLeave={() => setSelectedIndex(-1)}>
             {items.map((i, index) => <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} onMouseOver={handleMouseOver} onMouseMove={handleMouseMove} selectedIndex={selectedIndex} {...props} />)}
             {messages.length > 0 && (
                 <XView height={1} alignSelf="stretch" backgroundColor="#ececec" />

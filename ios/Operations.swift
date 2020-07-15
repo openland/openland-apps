@@ -2731,6 +2731,37 @@ private let MyCommunitiesSelector = obj(
                     fragment("Organization", OrganizationShortSelector)
                 )))))
         )
+private let MyContactsSelector = obj(
+            field("myContacts", "myContacts", arguments(fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("user", "user", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    fragment("User", UserShortSelector)
+                                )))
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                )))
+        )
+private let MyContactsSearchSelector = obj(
+            field("myContactsSearch", "myContactsSearch", arguments(fieldValue("query", refValue("query")), fieldValue("first", refValue("first")), fieldValue("after", refValue("after")), fieldValue("page", refValue("page"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    fragment("User", UserShortSelector)
+                                )))
+                        ))))),
+                    field("pageInfo", "pageInfo", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean"))),
+                            field("currentPage", "currentPage", notNull(scalar("Int")))
+                        )))
+                )))
+        )
 private let MyNotificationCenterSelector = obj(
             field("myNotificationCenter", "myNotificationCenter", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5060,6 +5091,18 @@ class Operations {
         "query MyCommunities{myCommunities{__typename ...OrganizationShort isOwner:betaIsOwner isAdmin:betaIsAdmin}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}",
         MyCommunitiesSelector
     )
+    let MyContacts = OperationDefinition(
+        "MyContacts",
+        .query, 
+        "query MyContacts($first:Int!,$after:String){myContacts(first:$first,after:$after){__typename items{__typename id user{__typename ...UserShort}}cursor}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}",
+        MyContactsSelector
+    )
+    let MyContactsSearch = OperationDefinition(
+        "MyContactsSearch",
+        .query, 
+        "query MyContactsSearch($query:String,$first:Int!,$after:String,$page:Int){myContactsSearch(query:$query,first:$first,after:$after,page:$page){__typename edges{__typename node{__typename ...UserShort}}pageInfo{__typename hasNextPage currentPage}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}",
+        MyContactsSearchSelector
+    )
     let MyNotificationCenter = OperationDefinition(
         "MyNotificationCenter",
         .query, 
@@ -6291,6 +6334,8 @@ class Operations {
         if name == "MyApps" { return MyApps }
         if name == "MyCards" { return MyCards }
         if name == "MyCommunities" { return MyCommunities }
+        if name == "MyContacts" { return MyContacts }
+        if name == "MyContactsSearch" { return MyContactsSearch }
         if name == "MyNotificationCenter" { return MyNotificationCenter }
         if name == "MyNotifications" { return MyNotifications }
         if name == "MyOrganizations" { return MyOrganizations }

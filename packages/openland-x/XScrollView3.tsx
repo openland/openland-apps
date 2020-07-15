@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { XView, XStyles } from 'react-mental';
+import { XView, XViewProps } from 'react-mental';
 import Scrollbar from 'react-scrollbars-custom';
 import { css, cx } from 'linaria';
 import { detectOS } from 'openland-x-utils/detectOS';
@@ -11,7 +11,7 @@ export interface XScrollValues {
     clientHeight: number;
 }
 
-export interface XScrollView3Props extends XStyles {
+export interface XScrollView3Props extends XViewProps {
     onScroll?: (values: XScrollValues) => void;
     innerRef?: any;
     children?: any;

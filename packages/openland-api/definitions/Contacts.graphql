@@ -1,3 +1,29 @@
 mutation PhonebookAdd($records: [PhonebookRecordInput!]!) {
     phonebookAdd(records: $records)
 }
+
+query MyContacts($first: Int!, $after: String) {
+    myContacts(first: $first, after: $after) {
+        items {
+            id
+            user {
+                ...UserShort
+            }
+        }
+        cursor
+    }
+}
+
+query MyContactsSearch($query: String, $first: Int!, $after: String, $page: Int) {
+    myContactsSearch(query: $query, first: $first, after: $after, page: $page) {
+        edges {
+            node {
+                ...UserShort
+            }
+        }
+        pageInfo {
+            hasNextPage
+            currentPage
+        }
+    }
+}
