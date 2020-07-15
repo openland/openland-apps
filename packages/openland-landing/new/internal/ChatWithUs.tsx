@@ -9,7 +9,7 @@ const root = css`
 const features = css`
     display: grid;
     grid-template-columns: auto auto;
-    grid-gap: 24px;
+    grid-gap: 27px;
 
     @media (max-width: 767px) {
         grid-template-columns: auto;
@@ -19,7 +19,7 @@ const features = css`
 `;
 
 const feature = css`
-    padding: 36px 40px;
+    padding: 36px 60px 40px 40px;
     border-radius: 24px;
     background: linear-gradient(0deg, #F7F8F9, #F7F8F9);
 
@@ -65,8 +65,8 @@ const name = css`
 
 const text = css`
     font-size: 24px;
-    line-height: 1.5;
-    margin-top: 16px;
+    line-height: 36px;
+    margin-top: 21px;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 20px;
@@ -86,7 +86,7 @@ const link = css`
     font-weight: bold;
     font-size: 20px;
     line-height: 24px;
-    margin-top: 1.5em;
+    margin-top: 20px;
 
     position: relative;
 

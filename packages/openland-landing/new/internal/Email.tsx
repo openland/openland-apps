@@ -3,7 +3,7 @@ import { css } from 'linaria';
 import { Container } from '../components/Container';
 
 const box = css`
-    padding: 140px 0;
+    padding: 139px 0 120px;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         padding: 120px 0;
@@ -19,7 +19,6 @@ const box = css`
 `;
 const aboutHeader = css`
     text-align: center;
-    padding-top: 20px;
 `;
 
 const heading = css`
@@ -54,7 +53,7 @@ const subheading = css`
     font-size: 24px;
     line-height: 29px;
     color: var(--foregroundTertiary);
-    margin: 20px 0 0;
+    margin: 21px 0 0;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 22px;
