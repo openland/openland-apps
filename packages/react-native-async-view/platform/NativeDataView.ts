@@ -10,4 +10,5 @@ export const NativeDataView = NativeModules.RNAsyncDataViewManager as {
     dataViewLoadedMoreForward(dataSourceKey: string, config: string, completed: boolean): void;
     dataViewCompleted(dataSourceKey: string): void;
     dataViewScrollToKeyReqested(dataSourceKey: string, scrollToKey: string): void;
+    dataViewScrollToTopFunc(dataSourceKey: string): void;
 };

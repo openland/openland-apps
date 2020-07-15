@@ -23,10 +23,8 @@ export const UserView = (props: UserViewProps) => {
     const { user, memberRole, badge, enabled, onPress, onLongPress, subtitle, subtitleColor, paddingRight } = props;
     const theme = React.useContext(ThemeContext);
 
-    let showCrown = false;
-    let isOwner = false;
-    showCrown = memberRole === 'OWNER' || memberRole === 'ADMIN';
-    isOwner = memberRole === 'OWNER';
+    let showCrown = memberRole === 'OWNER' || memberRole === 'ADMIN';
+    let isOwner = memberRole === 'OWNER';
 
     return (
         <ZListItemBase key={user.id} separator={false} height={56} onPress={onPress} onLongPress={onLongPress} enabled={enabled}>

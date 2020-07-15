@@ -22,6 +22,7 @@ import { DiscoverListItem } from './components/discover/DiscoverListItem';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { getRandomSeed } from './DiscoverListing';
+import { ComponentRefContext } from './Home';
 
 export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) => {
     const theme = useTheme();
@@ -132,6 +133,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
 
 const ExplorePage = (props: PageProps) => {
     let discoverDone = getClient().useDiscoverIsDone({ fetchPolicy: 'network-only' });
+    const scrollRef = React.useContext(ComponentRefContext);
 
     return (
         <>
@@ -147,7 +149,7 @@ const ExplorePage = (props: PageProps) => {
                 )}
             >
                 <React.Suspense fallback={<ZLoader />}>
-                    <SScrollView marginTop={-16}>
+                    <SScrollView marginTop={-16} scrollRef={scrollRef}>
                         <SDeferred>
                             <RoomsList router={props.router} isDiscoverDone={discoverDone.betaIsDiscoverDone} />
                         </SDeferred>

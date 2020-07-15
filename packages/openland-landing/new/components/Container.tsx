@@ -6,7 +6,7 @@ const box = css`
     padding: 0 16px;
     box-sizing: border-box;
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1200px) {
         width: 1172px;
 
         &.is-small {
@@ -14,11 +14,7 @@ const box = css`
         }
     }
 
-    @media (min-width: 960px) and (max-width: 1599px) {
-        width: 960px;
-    }
-
-    @media (min-width: 768px) and (max-width: 959px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         width: 768px;
     }
 

@@ -41,18 +41,18 @@ const menu = css`
     position: relative;
     margin: 10px -20px;
 
-    @media (max-width: 959px) {
+    @media (max-width: 1199px) {
         margin: 10px -10px;
     }
 
-    @media (min-width: 768px) and (max-width: 959px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         margin: 10px -15px;
     }
 
     display: flex;
     flex-wrap: wrap;
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1200px) {
         left: 25px;
     }
 
@@ -70,11 +70,11 @@ const menuItem = css`
     margin: 20px;
     z-index: 20;
 
-    @media (max-width: 959px) {
+    @media (max-width: 1199px) {
         margin: 8px;
     }
 
-    @media (min-width: 768px) and (max-width: 959px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         margin: 15px;
     }
 `;
@@ -88,7 +88,7 @@ const menuLink = css`
     will-change: color;
     transition: color 0.2s;
 
-    @media (max-width: 959px) {
+    @media (max-width: 1199px) {
         font-size: 16px;
     }
 
@@ -118,7 +118,7 @@ const social = css`
     position: relative;
     margin-top: 5px;
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1200px) {
         left: 12px;
     }
 
@@ -165,12 +165,6 @@ const socialLogo = css`
     display: inline-block;
     position: relative;
     top: 1.5px;
-`;
-
-const hideMobile = css`
-    @media (max-width: 767px) {
-        display: none;
-    }
 `;
 
 const apps = css`
@@ -255,29 +249,11 @@ const popupItem = css`
     cursor: pointer;
 `;
 
-const popupIcon = css`
-    margin-right: 20px;
-`;
-
 const popupText = css`
     font-size: 16px;
 `;
 
-const popupSeparator = css`
-    border-bottom: 1px solid #8e90a6;
-    opacity: 0.2;
-    margin-top: 16px;
-    margin-bottom: 8px;
-`;
-
-const hide = css`
-    @media (min-width: 768px) and (max-width: 959px) {
-        display: none;
-    }
-`;
-
 export const Footer = React.memo(() => {
-    const [appsIsOpen, appsSetOpen] = React.useState<boolean>(false);
     const [legalIsOpen, legalSetOpen] = React.useState<boolean>(false);
 
     return (
@@ -298,110 +274,19 @@ export const Footer = React.memo(() => {
                                 <XView path={LandingLinks.about}>About</XView>
                             </span>
                         </li>
-                        <li
-                            className={cx(menuItem, hideMobile, hide)}
-                            onMouseLeave={() => appsSetOpen(false)}
-                        >
-                            <span
-                                className={menuLink}
-                                onClick={() => appsSetOpen(true)}
-                                onMouseOver={() => appsSetOpen(true)}
-                            >
-                                Apps
+                        <li className={menuItem}>
+                            <span className={menuLink}>
+                                Communities
                             </span>
-
-                            {appsIsOpen && (
-                                <div
-                                    className={cx(popup, 'landingHeaderPopup')}
-                                    onMouseLeave={() => appsSetOpen(false)}
-                                >
-                                    <a
-                                        className={popupItem}
-                                        href={LandingLinks.apps.ios}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <img
-                                            className={popupIcon}
-                                            src="/static/landing/icons/ios.svg"
-                                            width="24"
-                                            height="24"
-                                            alt="ios"
-                                        />
-                                        <span className={popupText}>iOS</span>
-                                    </a>
-                                    <a
-                                        className={popupItem}
-                                        href={LandingLinks.apps.android}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <img
-                                            className={popupIcon}
-                                            src="/static/landing/icons/android.svg"
-                                            width="24"
-                                            height="24"
-                                            alt="ios"
-                                        />
-                                        <span className={popupText}>Android</span>
-                                    </a>
-                                    <div className={popupSeparator} />
-                                    <a
-                                        className={popupItem}
-                                        href={LandingLinks.apps.macos}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <img
-                                            className={popupIcon}
-                                            src="/static/landing/icons/mac.svg"
-                                            width="24"
-                                            height="24"
-                                            alt="ios"
-                                        />
-                                        <span className={popupText}>Mac</span>
-                                    </a>
-                                    <a
-                                        className={popupItem}
-                                        href={LandingLinks.apps.windows}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <img
-                                            className={popupIcon}
-                                            src="/static/landing/icons/win.svg"
-                                            width="24"
-                                            height="24"
-                                            alt="ios"
-                                        />
-                                        <span className={popupText}>Windows</span>
-                                    </a>
-                                    <a
-                                        className={popupItem}
-                                        href={LandingLinks.apps.linux}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <img
-                                            className={popupIcon}
-                                            src="/static/landing/icons/linux.svg"
-                                            width="24"
-                                            height="24"
-                                            alt="ios"
-                                        />
-                                        <span className={popupText}>Linux</span>
-                                    </a>
-                                </div>
-                            )}
+                        </li>
+                        <li className={menuItem}>
+                            <span className={menuLink}>
+                                <XView path={LandingLinks.support}>Help</XView>
+                            </span>
                         </li>
                         <li className={menuItem}>
                             <span className={menuLink}>
                                 <XView path={LandingLinks.careers}>Careers</XView>
-                            </span>
-                        </li>
-                        <li className={menuItem}>
-                            <span className={menuLink}>
-                                <XView path={LandingLinks.support}>Support</XView>
                             </span>
                         </li>
                         <div className={menuItemWrapper}>
@@ -420,13 +305,13 @@ export const Footer = React.memo(() => {
                                         onMouseLeave={() => legalSetOpen(false)}
                                     >
                                         <span className={popupItem}>
-                                            <XView path={LandingLinks.terms}>
-                                                <span className={popupText}>Terms of Service</span>
+                                            <XView path={LandingLinks.privacy}>
+                                                <span className={popupText}>Privacy Policy</span>
                                             </XView>
                                         </span>
                                         <span className={popupItem}>
-                                            <XView path={LandingLinks.privacy}>
-                                                <span className={popupText}>Privacy Policy</span>
+                                            <XView path={LandingLinks.terms}>
+                                                <span className={popupText}>Terms of Service</span>
                                             </XView>
                                         </span>
                                     </div>
@@ -451,27 +336,6 @@ export const Footer = React.memo(() => {
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/2.svg"
-                                        width="24"
-                                        height="24"
-                                    />
-                                </a>
-                            </li>
-                            <li className={socialItem}>
-                                <a className={socialLink} href={LandingSocials.facebook}>
-                                    <img
-                                        className={socialLogo}
-                                        src="/static/landing/icons/3.svg"
-                                        width="24"
-                                        height="24"
-                                    />
-                                </a>
-                            </li>
-                            <li className={socialItem}>
-                                <a className={socialLink} href={LandingSocials.angellist}>
-                                    <img
-                                        className={socialLogo}
-                                        src="/static/landing/icons/angelist.svg"
-                                        alt="Angelist"
                                         width="24"
                                         height="24"
                                     />

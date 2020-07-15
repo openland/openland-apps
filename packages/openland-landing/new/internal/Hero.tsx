@@ -24,7 +24,7 @@ const subtitle = css`
     margin-top: 12px;
     color: #525273;
 
-    @media (min-width: 768px) and (max-width: 1599px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 20px;
     }
 

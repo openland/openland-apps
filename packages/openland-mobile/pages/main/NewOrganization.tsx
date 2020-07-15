@@ -12,6 +12,7 @@ import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
+import { ZSelect } from 'openland-mobile/components/ZSelect';
 
 const NewOrganizationComponent = (props: PageProps) => {
     const isCommunity = props.router.params.isCommunity;
@@ -20,6 +21,7 @@ const NewOrganizationComponent = (props: PageProps) => {
     const nameField = useField('name', '', form);
     const photoField = useField('photoRef', null, form);
     const aboutField = useField('about', '', form);
+    const privacyField = useField<'secret' | 'public'>('privacy', 'public', form);
 
     const handleSave = () => {
         if (nameField.value === '') {
@@ -36,12 +38,16 @@ const NewOrganizationComponent = (props: PageProps) => {
                     isCommunity: isCommunity,
                     name: nameField.value,
                     photoRef: photoField.value,
+                    isPrivate: privacyField.value === 'secret',
                     ...(isCommunity && { about: aboutField.value })
                 },
             });
 
-            await client.refetchAccount();
-            await client.refetchAccountSettings();
+            await Promise.all([
+                client.refetchAccount(),
+                client.refetchAccountSettings(),
+                client.refetchMyCommunities(),
+            ]);
 
             if (props.router.params.action) {
                 await props.router.params.action(props.router);
@@ -74,6 +80,23 @@ const NewOrganizationComponent = (props: PageProps) => {
                         <>
                             <ZInput placeholder="Name" field={nameField} autoFocus={true} />
                             <ZInput placeholder="Description" field={aboutField} multiline={true} />
+                            <ZSelect
+                                label="Visibility"
+                                modalTitle="Visibility"
+                                field={privacyField}
+                                options={[
+                                    {
+                                        label: 'Public',
+                                        subtitle: 'Visible in search',
+                                        value: 'public',
+                                    },
+                                    {
+                                        label: 'Secret',
+                                        subtitle: 'Only people with invite link can see it',
+                                        value: 'secret',
+                                    },
+                                ]}
+                            />
                         </>
                     )}
                 </ZListGroup>

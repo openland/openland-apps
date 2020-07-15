@@ -1,235 +1,252 @@
 import * as React from 'react';
 import { Container } from '../components/Container';
-import { css } from 'linaria';
-import { HomeAppsMobile } from '../home/HomeApps';
+import { css, cx } from 'linaria';
+import { LandingLinks } from '../components/_links';
+import { detectOS } from 'openland-x-utils/detectOS';
 
 const box = css`
-    position: relative;
     overflow: hidden;
-    padding: 0 0 50px;
-
-    @media (min-width: 960px) and (max-width: 1599px) {
-        padding: 0 0 40px;
-    }
-
-    @media (min-width: 768px) and (max-width: 959px) {
-        padding: 0 0 32px;
-    }
 
     @media (max-width: 767px) {
-        padding: 0 0 46px;
+        overflow: initial;
     }
-`;
-
-const wrapper = css`
-    position: relative;
-    z-index: 2;
-`;
-
-const gradient = css`
-    position: absolute;
-    z-index: 1;
-    left: 0; right: 0; bottom: 0;
-    height: 518px;
-    background: linear-gradient(0deg, #F8F8F8 0%, rgba(255, 255, 255, 0) 90.74%);
 `;
 
 const inner = css`
     position: relative;
-    padding: 118px 0 185px;
+    padding: 157px 0 166px;
 
-    @media (min-width: 960px) and (max-width: 1599px) {
-        padding: 112px 0 170px;
-    }
-
-    @media (min-width: 768px) and (max-width: 959px) {
-        padding: 112px 0 140px;
+    @media (min-width: 768px) and (max-width: 1199px) {
+        padding: 112px 0 60px;
     }
 
     @media (max-width: 767px) {
-        padding: 0;
+        padding: 33px 0 56px;
     }
 `;
 
 const image = css`
     position: absolute;
-    top: 95px; right: 0;
-    width: 625px; height: 450px;
-    background: url(https://cdn.openland.com/shared/landing/meets/home-intro.png) no-repeat;
-    background-image: -webkit-image-set(
-        url(https://cdn.openland.com/shared/landing/meets/home-intro.png) 1x,
-        url(https://cdn.openland.com/shared/landing/meets/home-intro@2x.png) 2x
-    );
-    background-size: 100% 100%;
+    top: 113px; right: 0;
+    width: 527px; height: 527px;
+    background: linear-gradient(135deg, #FFC619 0%, #FF7919 100%);
+    border-radius: 527px;
 
-    @media (min-width: 960px) and (max-width: 1599px) {
-        top: 86px;
-        width: 530px; height: 381px;
-    }
-
-    @media (min-width: 768px) and (max-width: 959px) {
-        top: 75px; left: 400px; right: auto;
-        width: 560px; height: 403px;
+    @media (min-width: 768px) and (max-width: 1199px) {
+        top: 81px; right: -82px;
+        width: 380px; height: 380px;
     }
 
     @media (max-width: 767px) {
-        position: relative;
-        top: auto; right: auto;
-        width: auto; height: auto;
-        margin: 0 0 28px;
-        padding: calc((264 / 368) * 100%) 0 0;
+        display: none;
+    }
+
+    &:before {
+        content: "";
+        display: block;
+        width: 427px; height: 686px;
+        background: url(https://cdn.openland.com/shared/landing/start/home-intro.png) no-repeat;
+        background-image: -webkit-image-set(
+            url(https://cdn.openland.com/shared/landing/start/home-intro.png) 1x,
+            url(https://cdn.openland.com/shared/landing/start/home-intro@2x.png) 2x
+        );
+        background-size: 100% 100%;
+        position: absolute;
+        top: -75px; left: 41px;
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            top: -55px; left: 30px;
+            width: 309px; height: 496px;
+        }
     }
 `;
 
 const info = css`
-    width: 450px;
-
-    @media (min-width: 960px) and (max-width: 1599px) {
-        width: 366px;
-    }
-
-    @media (min-width: 768px) and (max-width: 959px) {
-        width: 366px;
-    }
+    width: 530px;
 
     @media (max-width: 767px) {
-        width: auto;
+        width: 288px;
+        margin: 0 auto;
     }
 `;
 
 const title = css`
     font-weight: 800;
-    font-size: 62px;
-    line-height: 68px;
-    color: #272750;
-    margin: 0 0 16px;
+    font-size: 88px;
+    line-height: 91px;
+    color: var(--foregroundPrimary);
+    margin: 0 0 20px;
 
-    @media (min-width: 960px) and (max-width: 1599px) {
-        font-size: 52px;
-        line-height: 54px;
-    }
-
-    @media (min-width: 768px) and (max-width: 959px) {
-        font-size: 52px;
-        line-height: 54px;
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 62px;
+        line-height: 66px;
+        margin: 0 0 17px;
     }
 
     @media (max-width: 767px) {
-        font-size: 40px;
-        line-height: 46px;
-        margin: 0 0 13px;
+        font-size: 46px;
+        line-height: 48px;
+        text-align: center;
+
+        &:before {
+            content: "👋";
+            display: block;
+            font-weight: 800;
+            font-size: 65px;
+            line-height: 48px;
+            margin: 0 0 51px;
+        }
+    }
+
+    span {
+        display: block;
+
+        @media (min-width: 768px) {
+            background: -webkit-linear-gradient(-45deg, #24BFF2 0%, #2458F2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     }
 `;
 
 const text = css`
-    font-size: 24px;
-    line-height: 38px;
-    color: #525273;
-    margin: 0 0 40px;
+    font-size: 30px;
+    line-height: 46px;
+    color: var(--foregroundSecondary);
+    margin: 0 0 44px;
 
-    @media (min-width: 960px) and (max-width: 1599px) {
-        font-size: 20px;
-        line-height: 30px;
-        margin: 0 0 32px;
-    }
-
-    @media (min-width: 768px) and (max-width: 959px) {
-        font-size: 20px;
-        line-height: 30px;
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 22px;
+        line-height: 32px;
         margin: 0 0 32px;
     }
 
     @media (max-width: 767px) {
-        font-size: 18px;
+        color: var(--foregroundPrimary);
+        font-size: 16px;
         line-height: 26px;
-        margin: 0 0 32px;
+        margin: 0 0 50px;
+        text-align: center;
     }
 `;
 
-const investors = css`
+const apps = css`
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
 
     @media (max-width: 767px) {
-        display: none;
+        justify-content: center;
     }
 `;
 
-const investorsLabel = css`
+const app = css`
+    width: 168px;
+    height: 56px;
+    margin: 0 24px 0 0;
+    transition: 150ms all ease;
+    border-radius: 10px;
+    background: var(--foregroundPrimary) url(https://cdn.openland.com/shared/landing/start/home-intro-ios-2.svg) no-repeat;
+    background-size: 100% 100%;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        width: 121px;
+        height: 40px;
+        margin: 0 16px 0 0;
+    }
+
+    @media (max-width: 767px) {
+        margin: 0;
+
+        &:not(.mobile-active) {
+            display: none;
+        }
+    }
+
+    &:hover {
+        background-color: var(--foregroundSecondary);
+    }
+`;
+
+const appAndroid = css`
+    width: 180px;
+    margin: 0;
+    background-image: url(https://cdn.openland.com/shared/landing/start/home-intro-android-2.svg);
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        width: 130px;
+    }
+`;
+
+const mobileDemo = css`
+    display: none;
+    background: linear-gradient(145.25deg, #24BFF2 0%, #2458F2 100%);
+    padding: 36px 0 48px;
+
+    @media (max-width: 767px) {
+        display: block;
+    }
+`;
+
+const mobileTitle = css`
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 32px;
+    color: #FFFFFF;
+    text-align: center;
+    margin: 0 0 4px;
+`;
+
+const mobileText = css`
+    font-weight: 600;
     font-size: 20px;
-    line-height: 40px;
-    color: #959595;
-    margin: -2px 0 2px;
-
-    @media (min-width: 960px) and (max-width: 1599px) {
-        font-size: 18px;
-        line-height: 40px;
-    }
-
-    @media (min-width: 768px) and (max-width: 959px) {
-        display: none;
-    }
-
-    &:first-child {
-        margin-right: 32px;
-
-        @media (min-width: 960px) and (max-width: 1599px) {
-            margin-right: 36px;
-        }
-    }
-
-    &:last-child {
-        margin-left: 32px;
-
-        @media (min-width: 960px) and (max-width: 1599px) {
-            margin-left: 28px;
-        }
-    }
+    line-height: 28px;
+    color: #FFFFFF;
+    text-align: center;
+    margin: 0 0 28px;
 `;
 
-const investorsLogos = css`
-    width: 793px;
-    height: 80px;
-    background: url(https://cdn.openland.com/shared/landing/meets/home-intro-logos-lg.png) center center no-repeat;
+const mobileScreen = css`
+    box-shadow: 0px 3.82066px 42.0273px rgba(0, 0, 0, 0.08);
+    width: 226px; height: 490px;
+    margin: 0 auto;
+    border-radius: 20px;
+    background: url(https://cdn.openland.com/shared/landing/start/home-intro-mobile.png) no-repeat;
     background-image: -webkit-image-set(
-        url(https://cdn.openland.com/shared/landing/meets/home-intro-logos-lg.png) 1x,
-        url(https://cdn.openland.com/shared/landing/meets/home-intro-logos-lg@2x.png) 2x
+        url(https://cdn.openland.com/shared/landing/start/home-intro-mobile.png) 1x,
+        url(https://cdn.openland.com/shared/landing/start/home-intro-mobile@2x.png) 2x
     );
-    background-size: 100% auto;
-
-    @media (min-width: 768px) and (max-width: 1599px) {
-        width: 685px;
-        background: url(https://cdn.openland.com/shared/landing/meets/home-intro-logos-md.png) center center no-repeat;
-        background-image: -webkit-image-set(
-            url(https://cdn.openland.com/shared/landing/meets/home-intro-logos-md.png) 1x,
-            url(https://cdn.openland.com/shared/landing/meets/home-intro-logos-md@2x.png) 2x
-        );
-        background-size: 100% auto;
-    }
+    background-size: 100% 100%;
 `;
 
-export const HomeIntro = React.memo(() => (
-    <div className={box}>
-        <div className={wrapper}>
+export const HomeIntro = React.memo(() => {
+    const mobileOS = detectOS() === 'Android' ? 'Android' : 'iOS';
+
+    return (
+        <div className={box}>
             <Container>
                 <div className={inner}>
                     <div className={image} />
                     <div className={info}>
-                        <div className={title}>The most creative way to&nbsp;meet online</div>
-                        <div className={text}>Make your meetings spontaneous, interactive, and visual</div>
-                        <HomeAppsMobile />
+                        <div className={title}>A fresh start<span>for social</span></div>
+                        <div className={text}>Openland is a modern social network<br /> built for people, not advertisers</div>
+                        <div className={apps}>
+                            <a
+                                className={cx(app, mobileOS === 'iOS' && 'mobile-active')}
+                                href={LandingLinks.apps.ios}
+                            />
+                            <a
+                                className={cx(app, appAndroid, mobileOS === 'Android' && 'mobile-active')}
+                                href={LandingLinks.apps.android}
+                            />
+                        </div>
                     </div>
                 </div>
-                <div className={investors}>
-                    <div className={investorsLabel}>Backed by</div>
-                    <div className={investorsLogos} />
-                    <div className={investorsLabel}>+ more</div>
-                </div>
             </Container>
-        </div>
 
-        <div className={gradient} />
-    </div>
-));
+            <div className={mobileDemo}>
+                <div className={mobileTitle}>Discover</div>
+                <div className={mobileText}>Amazing people to meet</div>
+                <div className={mobileScreen} />
+            </div>
+        </div>
+    );
+});

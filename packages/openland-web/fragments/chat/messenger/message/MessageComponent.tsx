@@ -19,6 +19,7 @@ import { defaultHover } from 'openland-web/utils/Styles';
 import IcPending from 'openland-icons/s/ic-pending-16.svg';
 import IcSuccess from 'openland-icons/s/ic-success-16.svg';
 import { isPendingAttach } from 'openland-engines/messenger/ConversationEngine';
+import { buildBaseImageUrl } from 'openland-y-utils/photoRefUtils';
 
 const senderContainer = css`
     display: flex;
@@ -83,7 +84,7 @@ const senderBadgeStyle = css`
 `;
 
 export const MessageSenderName = React.memo(
-    (props: { sender: MessageSender; senderNameEmojify?: string | JSX.Element }) => {
+    (props: { sender: MessageSender; senderNameEmojify?: string | JSX.Element; overrideName?: string | null; }) => {
         const [show] = useUserPopper({
             user: props.sender,
             noCardOnMe: false,
@@ -93,7 +94,7 @@ export const MessageSenderName = React.memo(
                 path={`/${props.sender.shortname || props.sender.id}`}
                 className={cx(TextLabel1, senderNameStyle)}
             >
-                <span onMouseEnter={show}>{props.senderNameEmojify || props.sender.name}</span>
+                <span onMouseEnter={show}>{props.overrideName || props.senderNameEmojify || props.sender.name}</span>
             </ULink>
         );
     },
@@ -128,11 +129,12 @@ interface MessageSenderContentProps {
     senderNameEmojify?: string | JSX.Element;
     senderBadgeNameEmojify?: string | JSX.Element;
     date?: number;
+    overrideName?: string | null;
 }
 
 export const MessageSenderContent = React.memo((props: MessageSenderContentProps) => (
     <div className={senderContainer}>
-        <MessageSenderName sender={props.sender} senderNameEmojify={props.senderNameEmojify} />
+        <MessageSenderName sender={props.sender} senderNameEmojify={props.senderNameEmojify} overrideName={props.overrideName} />
         {props.sender.isBot && <span className={cx(TextDensed, senderDateStyle)}>Bot</span>}
         {props.senderBadgeNameEmojify && (
             <MessageSenderFeatured senderBadgeNameEmojify={props.senderBadgeNameEmojify} />
@@ -393,9 +395,9 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
         return (
             <div className={messageAvatarWrapper} onMouseEnter={show}>
                 <MAvatar
-                    senderPhoto={message.sender.photo}
+                    senderPhoto={message.overrideAvatar ? buildBaseImageUrl(message.overrideAvatar) : message.sender.photo}
                     senderNameEmojify={message.senderNameEmojify}
-                    senderName={message.sender.name}
+                    senderName={message.overrideName || message.sender.name}
                     senderId={message.sender.id}
                 />
             </div>
@@ -408,6 +410,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             senderNameEmojify={message.senderNameEmojify}
             senderBadgeNameEmojify={message.senderBadgeNameEmojify}
             date={message.date}
+            overrideName={message.overrideName}
         />
     );
 

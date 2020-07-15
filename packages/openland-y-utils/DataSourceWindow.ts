@@ -118,6 +118,9 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
             onDataSourceScrollToKeyRequested: (key: string) => {
                 this._proxy.requestScrollToKey(key);
             },
+            onDataSourceScrollToTop: () => {
+                this._proxy.requestScrollToTop();
+            }
         });
     }
 

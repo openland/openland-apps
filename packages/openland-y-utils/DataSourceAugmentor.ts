@@ -53,6 +53,9 @@ export class DataSourceAugmentor<T extends DataSourceItem, V> {
             },
             onDataSourceScrollToKeyRequested: (key: string) => {
                 this.dataSource.requestScrollToKey(key);
+            },
+            onDataSourceScrollToTop: () => {
+                this.dataSource.requestScrollToTop();
             }
         });
     }

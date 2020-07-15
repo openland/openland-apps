@@ -64,6 +64,8 @@ query RoomChat($id: ID!) {
                 }
                 isBot
                 isYou
+                online
+                lastSeen
             }
             pinnedMessage {
                 ...FullMessage
@@ -113,7 +115,6 @@ query RoomChat($id: ID!) {
                 mute
             }
             description
-            onlineMembersCount
             previewMembers {
                 id
                 photo
@@ -414,6 +415,29 @@ query RoomMembersPaginated($roomId: ID!, $first: Int, $after: ID) {
         }
     }
 }
+
+query RoomMembersSearch($cid: ID!, $query: String, $first: Int!, $after: String) {
+    chatMembersSearch(cid: $cid, query: $query, first: $first, after: $after) {
+        edges {
+            node {
+                user {
+                    ...UserShort
+                }
+                role
+                membership
+                canKick
+                badge {
+                    ...UserBadge
+                }
+            }
+            cursor
+        }
+        pageInfo {
+            hasNextPage
+        }
+    }
+}
+
 mutation RoomSettingsUpdate($settings: RoomUserNotificaionSettingsInput!, $roomId: ID!) {
     betaRoomUpdateUserNotificationSettings(settings: $settings, roomId: $roomId) {
         id
@@ -473,7 +497,6 @@ query RoomInviteInfo($invite: String!) {
                 }
                 membership
                 membersCount
-                onlineMembersCount
                 previewMembers {
                     id
                     photo
@@ -542,7 +565,6 @@ query ResolvedInvite($key: String!) {
                     description
                     membership
                     membersCount
-                    onlineMembersCount
                     previewMembers {
                         id
                         photo
@@ -596,6 +618,11 @@ mutation RoomDeleteMessages($mids: [ID!]!) {
 mutation RoomDeleteUrlAugmentation($messageId: ID!) {
     betaMessageDeleteAugmentation(mid: $messageId)
 }
+
+mutation RoomDelete($chatId: ID!) {
+  deleteChat(chatId: $chatId)
+}
+
 mutation EditMessage(
     $messageId: ID!
     $message: String
@@ -744,7 +771,6 @@ query ChatJoin($id: ID!) {
             description
             photo
             membersCount
-            onlineMembersCount
             previewMembers {
                 id
                 photo

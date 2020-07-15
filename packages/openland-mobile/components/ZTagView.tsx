@@ -1,26 +1,38 @@
 import * as React from 'react';
-import { ScrollView, View, Text, TextInput, Dimensions, NativeSyntheticEvent, TextInputKeyPressEventData, TouchableWithoutFeedback, Platform } from 'react-native';
+import {
+    ScrollView,
+    View,
+    Text,
+    TextInput,
+    Dimensions,
+    NativeSyntheticEvent,
+    TextInputKeyPressEventData,
+    TouchableWithoutFeedback,
+    Platform,
+} from 'react-native';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
 export interface ZTagViewProps {
     title?: string;
-    items: { id: string, text: string }[];
+    items: { id: string; text: string }[];
     onChange: (query: string) => void;
     onRemoved: (id: string) => void;
     autoFocus?: boolean;
     theme: ThemeGlobal;
 }
 
-export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: string, query: string }> {
-
+export class ZTagView extends React.PureComponent<
+    ZTagViewProps,
+    { focused?: string; query: string }
+> {
     ref = React.createRef<TextInput>();
     constructor(props: ZTagViewProps) {
         super(props);
 
         this.state = {
             focused: undefined,
-            query: ''
+            query: '',
         };
     }
 
@@ -35,7 +47,9 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
             if (this.ref.current) {
                 if (Platform.OS === 'ios') {
                     this.ref.current.setNativeProps({ text: ' ' });
-                    setTimeout(() => { this.ref.current!!.setNativeProps({ text: '' }); }, 0);
+                    setTimeout(() => {
+                        this.ref.current!!.setNativeProps({ text: '' });
+                    }, 0);
                 } else {
                     this.ref.current.setNativeProps({ text: '' });
                 }
@@ -45,19 +59,19 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
     }
 
     handleChange = (text: string) => {
-        console.log('change:' + text);
         this.setState({ focused: undefined, query: text });
         this.props.onChange(text);
     }
 
     handleFocus = (id: string) => {
-        console.log('handle focus');
         this.setState({ focused: id, query: '' });
 
         if (this.ref.current) {
             if (Platform.OS === 'ios') {
                 this.ref.current.setNativeProps({ text: ' ' });
-                setTimeout(() => { this.ref.current!!.setNativeProps({ text: '' }); }, 0);
+                setTimeout(() => {
+                    this.ref.current!!.setNativeProps({ text: '' });
+                }, 0);
             } else {
                 this.ref.current.setNativeProps({ text: '' });
             }
@@ -95,10 +109,25 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
             <ScrollView keyboardShouldPersistTaps="always">
                 <View style={{ paddingHorizontal: 15, paddingVertical: 8 }}>
                     <TouchableWithoutFeedback onPress={() => this.handleTouchOutside()}>
-                        <View flexWrap="wrap" flexDirection="row" marginLeft={-7}>
+                        <View flexWrap="wrap" flexDirection="row" marginLeft={-15} paddingLeft={8}>
                             {this.props.title && (
-                                <View style={{ height: 32, paddingRight: 5, marginLeft: 8 }}>
-                                    <Text style={{ lineHeight: 32, fontSize: 15, color: this.props.theme.foregroundPrimary, opacity: 0.6 }}>{this.props.title}</Text>
+                                <View
+                                    height={28}
+                                    paddingLeft={8}
+                                    paddingRight={8}
+                                    alignItems="center"
+                                    flexDirection="row"
+                                >
+                                    <Text
+                                        style={{
+                                            fontSize: 15,
+                                            color: this.props.theme.foregroundPrimary,
+                                            opacity: 0.6,
+                                            textAlignVertical: 'center',
+                                        }}
+                                    >
+                                        {this.props.title}
+                                    </Text>
                                 </View>
                             )}
 
@@ -107,26 +136,33 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
                                     <View
                                         height={28}
                                         paddingLeft={8}
-                                        paddingRight={8}
-                                        paddingTop={4}
-                                        paddingBottom={4}
-                                        marginTop={3}
+                                        paddingRight={5}
                                         borderRadius={RadiusStyles.Medium}
-                                        backgroundColor={this.state.focused === v.id ? this.props.theme.accentPrimary : undefined}
+                                        backgroundColor={
+                                            this.state.focused === v.id
+                                                ? this.props.theme.accentPrimary
+                                                : undefined
+                                        }
+                                        flexDirection="row"
                                         alignItems="center"
                                         justifyContent="center"
                                     >
                                         <Text
                                             style={{
-                                                color: this.state.focused === v.id ? this.props.theme.foregroundInverted : this.props.theme.accentPrimary,
+                                                color:
+                                                    this.state.focused === v.id
+                                                        ? this.props.theme.foregroundInverted
+                                                        : this.props.theme.accentPrimary,
                                                 textAlignVertical: 'center',
-                                                fontSize: 15
+                                                fontSize: 15,
                                             }}
                                             numberOfLines={1}
                                             ellipsizeMode="middle"
                                         >
                                             {v.text}
-                                            <Text style={{ color: this.props.theme.accentPrimary }}>,</Text>
+                                            <Text style={{ color: this.props.theme.accentPrimary }}>
+                                                ,
+                                            </Text>
                                         </Text>
                                     </View>
                                 </TouchableWithoutFeedback>
@@ -134,10 +170,20 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
                             <TextInput
                                 padding={Platform.OS === 'android' ? 0 : undefined}
                                 ref={this.ref}
-                                minHeight={32}
+                                minHeight={28}
                                 onChangeText={this.handleChange}
                                 onKeyPress={this.handleKeyPress}
-                                style={{ minWidth: Math.min(Dimensions.get('window').width * 0.3, 250), fontSize: 15, height: 28, color: this.props.theme.foregroundPrimary }}
+                                selectionColor={this.props.theme.accentPrimary}
+                                style={{
+                                    minWidth: Math.min(
+                                        Dimensions.get('window').width * 0.3,
+                                        this.state.focused ? 5 : 250,
+                                    ),
+                                    marginLeft: 8,
+                                    fontSize: 15,
+                                    height: 28,
+                                    color: this.props.theme.foregroundPrimary,
+                                }}
                                 value={this.state.query}
                                 opacity={this.state.focused ? 0 : 1}
                                 spellCheck={false}

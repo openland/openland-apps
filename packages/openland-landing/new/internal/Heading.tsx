@@ -5,15 +5,11 @@ const box = css`
     color: #272750;
     line-height: 1.3;
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1200px) {
         font-size: 36px;
     }
 
-    @media (min-width: 960px) and (max-width: 1599px) {
-        font-size: 32px;
-    }
-
-    @media (min-width: 768px) and (max-width: 959px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 32px;
     }
 

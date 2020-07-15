@@ -327,6 +327,16 @@ enum ConferenceStrategy {
   SFU
 }
 
+type Contact {
+  id: ID!
+  user: User!
+}
+
+type ContactConnection {
+  items: [Contact!]!
+  cursor: String
+}
+
 input ContactPersonInput {
   name: String!
   photoRef: ImageRefInput
@@ -939,6 +949,7 @@ type GeneralMessage implements ModernMessage {
   senderBadge: UserBadge
   edited: Boolean!
   reactions: [ModernMessageReaction!]!
+  reactionCounters: [ReactionCounter!]!
   isMentioned: Boolean!
   source: MessageSource
   hidden: Boolean!
@@ -1784,6 +1795,7 @@ type Mutation {
   debugFixUserSettings: Boolean!
   debugFixDeletedRooms: Boolean!
   debugUnsubscribeEveryoneFromChat(cid: ID!): Int!
+  debugInviteMembersFromChat(cid: ID!, dest: ID!): Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -1872,6 +1884,8 @@ type Mutation {
   mediaStreamAnswer(id: ID!, peerId: ID!, answer: String!, seq: Int): ConferenceMedia!
   mediaStreamCandidate(id: ID!, peerId: ID!, candidate: String!): ConferenceMedia!
   mediaStreamFailed(id: ID!, peerId: ID!): ConferenceMedia!
+  addToContacts(userId: ID!): Boolean!
+  removeFromContacts(userId: ID!): Boolean!
   setEnvVar(name: String!, value: String!): Boolean!
   setEnvVarString(name: String!, value: String!): Boolean!
   setEnvVarNumber(name: String!, value: Int!): Boolean!
@@ -2719,6 +2733,8 @@ type Query {
   comments(peerId: ID!): CommentsPeer!
   conference(id: ID!): Conference!
   conferenceMedia(id: ID!, peerId: ID!): ConferenceMedia!
+  myContacts(first: Int!, after: String): ContactConnection!
+  myContactsSearch(query: String, first: Int!, after: String, page: Int): UserConnection!
   dialogsState: DialogUpdateState!
   envVars: [EnvVar!]
   envVar(name: String!): EnvVar
@@ -2798,7 +2814,7 @@ type Query {
   featuredGroups: [SharedRoom!]
   featuredCommunities: [Organization!]
   messagesSearch(query: String!, sort: String, first: Int!, after: String): MessageConnection!
-  chatMembersSearch(cid: ID!, query: String, first: Int!, after: String, page: Int): UserConnection!
+  chatMembersSearch(cid: ID!, query: String, first: Int!, after: String, page: Int): RoomMemberConnection!
   chatMentionSearch(cid: ID!, query: String, first: Int!, after: String): GlobalSearchConnection!
   messages(chatId: ID!, first: Int!, before: ID): [ModernMessage!]!
   gammaMessages(chatId: ID!, first: Int!, before: ID, after: ID, around: ID): GammaMessagesBatch
@@ -2840,6 +2856,11 @@ type Reaction {
   reaction: String!
 }
 
+type ReactionCounter {
+  reaction: MessageReactionType!
+  count: Int!
+}
+
 union ResolveInviteEntry = InviteInfo | AppInvite | RoomInvite
 
 union Room = PrivateRoom | SharedRoom
@@ -2879,6 +2900,16 @@ type RoomMember {
   membership: SharedRoomMembershipStatus!
   invitedBy: User!
   canKick: Boolean!
+}
+
+type RoomMemberConnection {
+  edges: [RoomMemberEdge!]!
+  pageInfo: PageInfo!
+}
+
+type RoomMemberEdge {
+  node: RoomMember!
+  cursor: String!
 }
 
 enum RoomMemberRole {
@@ -3162,6 +3193,7 @@ type StickerMessage implements ModernMessage {
   message: String
   spans: [MessageSpan!]!
   reactions: [ModernMessageReaction!]!
+  reactionCounters: [ReactionCounter!]!
   fallback: String!
   quotedMessages: [ModernMessage!]!
   commentsCount: Int!
@@ -3474,6 +3506,7 @@ type User {
 
   """Deprecated"""
   alphaPrimaryOrganization: Organization
+  inContacts: Boolean!
 
   """deprecated"""
   badges: [UserBadge!]!

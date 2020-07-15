@@ -399,7 +399,19 @@ internal val FullMessageSelector = obj(
                 field("reactions", "reactions", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessageReaction", MessageReactionsSelector)
-                    )))))
+                    ))))),
+                field("overrideAvatar", "overrideAvatar", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("uuid", "uuid", notNull(scalar("String"))),
+                        field("crop", "crop", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("x", "x", notNull(scalar("Int"))),
+                                field("y", "y", notNull(scalar("Int"))),
+                                field("w", "w", notNull(scalar("Int"))),
+                                field("h", "h", notNull(scalar("Int")))
+                            ))
+                    )),
+                field("overrideName", "overrideName", scalar("String"))
             )),
             inline("StickerMessage", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
@@ -416,7 +428,19 @@ internal val FullMessageSelector = obj(
                 field("reactions", "reactions", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessageReaction", MessageReactionsSelector)
-                    )))))
+                    ))))),
+                field("overrideAvatar", "overrideAvatar", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("uuid", "uuid", notNull(scalar("String"))),
+                        field("crop", "crop", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("x", "x", notNull(scalar("Int"))),
+                                field("y", "y", notNull(scalar("Int"))),
+                                field("w", "w", notNull(scalar("Int"))),
+                                field("h", "h", notNull(scalar("Int")))
+                            ))
+                    )),
+                field("overrideName", "overrideName", scalar("String"))
             )),
             inline("ServiceMessage", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
@@ -436,6 +460,7 @@ internal val OrganizationShortSelector = obj(
             field("shortname", "shortname", scalar("String")),
             field("about", "about", scalar("String")),
             field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+            field("alphaIsPrivate", "private", notNull(scalar("Boolean"))),
             field("membersCount", "membersCount", notNull(scalar("Int")))
         )
 
@@ -1157,7 +1182,8 @@ internal val OrganizationMediumSelector = obj(
             field("about", "about", scalar("String")),
             field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
             field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
-            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean")))
+            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+            field("alphaIsPrivate", "private", notNull(scalar("Boolean")))
         )
 
 internal val OrganizationProfileFragmentSelector = obj(
@@ -1377,8 +1403,7 @@ internal val SharedRoomPreviewSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("name", "name", notNull(scalar("String"))),
                     field("photo", "photo", scalar("String"))
-                ))))),
-            field("onlineMembersCount", "onlineMembersCount", notNull(scalar("Int")))
+                )))))
         )
 
 internal val SharedRoomViewSelector = obj(

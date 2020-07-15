@@ -12,7 +12,7 @@ import { css } from 'linaria';
 const box = css`
     padding: 90px 0;
 
-    @media (min-width: 768px) and (max-width: 1599px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         padding: 70px 0;
     }
 
@@ -29,7 +29,7 @@ const text = css`
     font-size: 24px;
     line-height: 1.6;
 
-    @media (min-width: 768px) and (max-width: 1599px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 20px;
     }
 

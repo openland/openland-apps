@@ -12,6 +12,8 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useRole } from 'openland-x-permissions/XWithRole';
 import BlockUserModal from 'openland-web/fragments/admin/BlockUserModalFragment';
 import { useClient } from 'openland-api/useClient';
+import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
+import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
 
 interface UserMenuProps {
     user: User_user;
@@ -42,9 +44,22 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
 
     if (props.chat && props.chat.__typename === 'PrivateRoom') {
         builder.item({
-            title: 'Shared media',
+            title: 'Media, files, links',
             icon: <AttachIcon />,
             path: `/mail/${props.chat.id}/shared`,
+        });
+    }
+
+    const contactsEnabled = false;
+
+    if (contactsEnabled && props.chat && props.chat.__typename === 'PrivateRoom' && id !== engine.user.id) {
+        const isContact = true;
+        builder.item({
+            title: isContact ? 'Remove from contacts' : 'Save to contacts',
+            icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,
+            onClick: async () => {
+                // handle contact
+            },
         });
     }
 

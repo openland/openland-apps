@@ -85,6 +85,7 @@ object Operations {
         if (name == "RoomInviteInfo") return RoomInviteInfo
         if (name == "RoomInviteLink") return RoomInviteLink
         if (name == "RoomMembersPaginated") return RoomMembersPaginated
+        if (name == "RoomMembersSearch") return RoomMembersSearch
         if (name == "RoomMembersShort") return RoomMembersShort
         if (name == "RoomMembersTiny") return RoomMembersTiny
         if (name == "RoomMetaPreview") return RoomMetaPreview
@@ -187,6 +188,7 @@ object Operations {
         if (name == "RoomAddMembers") return RoomAddMembers
         if (name == "RoomChangeRole") return RoomChangeRole
         if (name == "RoomCreate") return RoomCreate
+        if (name == "RoomDelete") return RoomDelete
         if (name == "RoomDeleteMessage") return RoomDeleteMessage
         if (name == "RoomDeleteMessages") return RoomDeleteMessages
         if (name == "RoomDeleteUrlAugmentation") return RoomDeleteUrlAugmentation

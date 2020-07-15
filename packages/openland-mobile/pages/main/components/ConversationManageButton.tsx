@@ -19,6 +19,11 @@ const useSharedHandlers = (room: RoomTiny_room_SharedRoom, router: SRouter) => {
     const client = useClient();
     const userId = getMessenger().engine.user.id;
 
+    let hideOwnerLink = false;
+    if (room.organization && room.organization.private && room.role === 'MEMBER') {
+        hideOwnerLink = true;
+    }
+
     const onInvitePress = React.useCallback(() => {
         if (!room.isPremium || room.role === 'OWNER') {
             Modals.showUserMuptiplePicker(
@@ -44,7 +49,7 @@ const useSharedHandlers = (room: RoomTiny_room_SharedRoom, router: SRouter) => {
                 room.isPremium ? 'Add people for free' : 'Add people',
                 [],
                 [userId],
-                { path: 'ProfileGroupLink', pathParams: { room } },
+                hideOwnerLink ? undefined : { path: 'ProfileGroupLink', pathParams: { room } },
             );
         } else {
             router.push('ProfileGroupLink', { room });
@@ -94,9 +99,17 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
 
     const onPress = React.useCallback(() => {
         const builder = new ActionSheetBuilder();
-        const isPrivate = room.__typename === 'PrivateRoom';
+        const sharedRoom = room.__typename === 'SharedRoom' && room;
+        let showInviteButton = sharedRoom;
+        const onlyLinkInvite = sharedRoom && !(!sharedRoom.isPremium || sharedRoom.role === 'OWNER');
 
-        if (!isPrivate) {
+        if (sharedRoom && sharedRoom.organization && sharedRoom.organization.private && sharedRoom.role === 'MEMBER') {
+            if (onlyLinkInvite) {
+                showInviteButton = false;
+            }
+        }
+
+        if (showInviteButton) {
             builder.action('Add people', onInvitePress, false, require('assets/ic-invite-24.png'));
         }
 
@@ -108,7 +121,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
 
         builder.action('Shared media', onSharedPress, false, require('assets/ic-attach-24.png'));
 
-        if (!isPrivate) {
+        if (sharedRoom) {
             if ((room as RoomTiny_room_SharedRoom).canEdit) {
                 builder.action(
                     (room as RoomTiny_room_SharedRoom).isChannel ? 'Edit channel' : 'Edit group',
@@ -119,7 +132,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
             }
         }
 
-        if (!isPrivate) {
+        if (sharedRoom) {
             builder.action('Leave group', onLeavePress, false, require('assets/ic-leave-24.png'));
         }
 

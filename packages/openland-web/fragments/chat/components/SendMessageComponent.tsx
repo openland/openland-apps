@@ -175,16 +175,19 @@ export const AutoCompleteComponent = React.memo(
             const fallbackRender = React.useRef<any>(<div className={cx(mentionsContainer, props.containerClassName)} />);
             const containerRef = React.useRef<HTMLDivElement>(null);
 
+            const lastActiveWord = React.useRef(props.activeWord);
+            const isActive = React.useRef<boolean>(false);
+
             const forceClose = React.useRef<boolean>(false);
             // Store word in state for nice disappear animation
             const [word, setWord] = React.useState(props.activeWord);
             if (word !== props.activeWord && !forceClose.current) {
                 setWord(props.activeWord);
             }
-            forceClose.current = false;
+            if (props.activeWord !== lastActiveWord.current) {
+                forceClose.current = false;
+            }
 
-            const lastActiveWord = React.useRef(props.activeWord);
-            const isActive = React.useRef<boolean>(false);
             isActive.current = false;
             lastActiveWord.current = props.activeWord;
 

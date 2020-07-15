@@ -20,6 +20,8 @@ import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
 import NotificationsOffIcon from 'openland-icons/s/ic-notifications-off-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import MutedIcon from 'openland-icons/s/ic-muted-16.svg';
+import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
+import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { showAddMembersModal } from '../showAddMembersModal';
 import {
@@ -29,7 +31,7 @@ import {
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { TextDensed, TextStyles, HoverAlpha } from 'openland-web/utils/TextStyles';
 import { emoji } from 'openland-y-utils/emoji';
-import { useLastSeen } from 'openland-y-utils/LastSeen';
+import { useLastSeen, User } from 'openland-y-utils/LastSeen';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { useVideoCallModal } from 'openland-web/modules/conference/CallModal';
@@ -65,21 +67,9 @@ const disabledBtn = css`
     pointer-events: none;
 `;
 
-const HeaderLastSeen = (props: { id: string }) => {
-    const client = useClient();
-    const data = client.useOnline(
-        { userId: props.id },
-        {
-            fetchPolicy: 'network-only',
-            suspense: false,
-        },
-    );
-
-    const [sub, accent] = useLastSeen(data ? data.user : null);
-
-    if (!data) {
-        return null;
-    }
+const HeaderLastSeen = (props: { user: User }) => {
+    // change to UPresence?
+    const [sub, accent] = useLastSeen(props.user);
 
     return <span className={accent ? secondaryAccent : undefined}>{sub}</span>;
 };
@@ -108,7 +98,11 @@ const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
     const showVideoCallModal = useVideoCallModal({ chatId: props.chat.id });
 
     return (
-        <div className={cx(currentSession && currentSession.conversationId === props.chat.id && disabledBtn)}>
+        <div
+            className={cx(
+                currentSession && currentSession.conversationId === props.chat.id && disabledBtn,
+            )}
+        >
             <UIconButton
                 icon={<PhoneIcon />}
                 onClick={() => {
@@ -128,12 +122,22 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     const chat = client.useRoomChat({ id: props.id }, { fetchPolicy: 'cache-first' }).room!;
     const messenger = React.useContext(MessengerContext);
     const [muted, setMuted] = React.useState(chat.settings.mute);
-    let calls = messenger.calls;
+    const sharedRoom = chat.__typename === 'SharedRoom' && chat;
+    const calls = messenger.calls;
     const currentSession = calls.useCurrentSession();
     const showVideoCallModal = useVideoCallModal({ chatId: chat.id });
 
+    let showInviteButton = layout === 'mobile' && sharedRoom;
+    const onlyLinkInvite = sharedRoom && !(!sharedRoom.isPremium || sharedRoom.role === 'OWNER');
+
+    if (sharedRoom && sharedRoom.organization && sharedRoom.organization.private && sharedRoom.role === 'MEMBER') {
+        if (onlyLinkInvite) {
+            showInviteButton = false;
+        }
+    }
+
     let res = new UPopperMenuBuilder();
-    if (layout === 'mobile' && chat.__typename === 'SharedRoom') {
+    if (showInviteButton) {
         res.item({
             title: 'Add people',
             icon: <InviteIcon />,
@@ -166,11 +170,29 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     });
 
     res.item({
-        title: 'Shared media',
+        title: 'Media, files, links',
         icon: <AttachIcon />,
         path: `/mail/${props.id}/shared`,
         closeDelay: 400,
     });
+
+    let contactsEnabled = false;
+
+    if (
+        contactsEnabled &&
+        chat.__typename === 'PrivateRoom' &&
+        chat.user.id !== messenger.user.id
+    ) {
+        const isContact = false;
+        res.item({
+            title: isContact ? 'Remove from contacts' : 'Save to contacts',
+            icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,
+            action: async () => {
+                // handle contact
+            },
+            closeDelay: 400,
+        });
+    }
 
     if (chat.__typename === 'SharedRoom') {
         if (chat.canEdit) {
@@ -189,6 +211,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
                     chat.id,
                     tabRouter,
                     chat.__typename === 'SharedRoom' && chat.isPremium,
+                    chat.kind === 'PUBLIC',
                 ),
         });
     }
@@ -200,6 +223,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     const { chat } = props;
     const layout = useLayout();
     const messenger = React.useContext(MessengerContext);
+    const sharedRoom = chat.__typename === 'SharedRoom' && chat;
     const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
     const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
     const path =
@@ -208,8 +232,16 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
             : `/group/${chat.id}`;
     const showCallButton =
         layout === 'desktop' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true);
-    const showInviteButton = !!(layout === 'desktop' && chat.__typename === 'SharedRoom');
     const titleEmojify = React.useMemo(() => emoji(title), [title]);
+
+    let showInviteButton = layout === 'desktop' && sharedRoom;
+    const onlyLinkInvite = sharedRoom && !(!sharedRoom.isPremium || sharedRoom.role === 'OWNER');
+
+    if (sharedRoom && sharedRoom.organization && sharedRoom.organization.private && sharedRoom.role === 'MEMBER') {
+        if (onlyLinkInvite) {
+            showInviteButton = false;
+        }
+    }
 
     return (
         <XView
@@ -286,7 +318,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         <XView {...TextStyles.Densed} color="var(--foregroundSecondary)">
                             <span className={oneLiner}>
                                 {chat.__typename === 'PrivateRoom' && (
-                                    <HeaderLastSeen id={chat.user.id} />
+                                    <HeaderLastSeen user={chat.user} />
                                 )}
                                 {chat.__typename === 'SharedRoom' &&
                                     chat.membersCount !== null &&

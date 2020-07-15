@@ -15,9 +15,12 @@ import ChatIcon from './navigation/icon_chat.svg';
 import ChatActiveIcon from './navigation/icon_chat_active.svg';
 import SettingsIcon from './navigation/icon_settings.svg';
 import SettingsActiveIcon from './navigation/icon_settings_active.svg';
+// import ProfileIcon from './navigation/icon_profile.svg';
+// import ProfileActiveIcon from './navigation/icon_profile_active.svg';
 import { AuthRouter } from '../root/AuthRouter';
 import { IndexFragment } from 'openland-web/fragments/discussions/IndexFragment';
 import { useRole } from 'openland-x-permissions/XWithRole';
+// import { ContactsFragment } from 'openland-web/fragments/contacts/ContactsFragment';
 
 const Unicorn = React.memo(() => {
     const isSuperadmin = useRole('super-admin');
@@ -34,6 +37,15 @@ const Unicorn = React.memo(() => {
                         caption: 'Discover',
                         defaultPage: true
                     },
+                    // {
+                    //     icon: <ProfileIcon />,
+                    //     iconActive: <ProfileActiveIcon />,
+                    //     path: '/contacts',
+                    //     component: <ContactsFragment />,
+                    //     caption: 'Contacts',
+                    //     defaultPage: false,
+                    //     isStackHidden: true,
+                    // },
                     {
                         icon: <ChannelsIcon />,
                         iconActive: <ChannelsActiveIcon />,
@@ -67,6 +79,15 @@ const Unicorn = React.memo(() => {
                             caption: 'Discover',
                             defaultPage: true
                         },
+                        // {
+                        //     icon: <ProfileIcon />,
+                        //     iconActive: <ProfileActiveIcon />,
+                        //     path: '/contacts',
+                        //     component: <ContactsFragment />,
+                        //     caption: 'Contacts',
+                        //     defaultPage: false,
+                        //     isStackHidden: true,
+                        // },
                         {
                             icon: <ChatIcon />,
                             iconActive: <ChatActiveIcon />,

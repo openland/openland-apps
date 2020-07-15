@@ -184,6 +184,9 @@ export class DialogListEngine {
             },
             onDataSourceScrollToKeyRequested: () => {
                 //
+            },
+            onDataSourceScrollToTop: () => {
+                //
             }
         });
         engine.getOnlines().onSingleChangeChange((user, online) => {

@@ -65,6 +65,7 @@ RCT_EXTERN_METHOD(dataViewMoveItem:(NSString *)dataSourceKey key: (NSString *)ke
 RCT_EXTERN_METHOD(dataViewLoadedMore:(NSString *)dataSourceKey config: (NSString *)config completed: (nonnull BOOL) completed)
 RCT_EXTERN_METHOD(dataViewLoadedMoreForward:(NSString *)dataSourceKey config: (NSString *)config completed: (nonnull BOOL)completed)
 RCT_EXTERN_METHOD(dataViewScrollToKeyReqested:(NSString *)dataSourceKey scrollToKey: (NSString *)scrollToKey)
+RCT_EXTERN_METHOD(dataViewScrollToTopFunc:(NSString *)dataSourceKey)
 RCT_EXTERN_METHOD(dataViewCompleted:(NSString *)dataSourceKey)
 RCT_EXTERN_METHOD(dataViewCompletedForward:(NSString *)dataSourceKey)
 @end

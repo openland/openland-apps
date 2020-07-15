@@ -168,7 +168,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
 
     let bottomContent: any[] = [];
     if (hasUrlAug) {
-        bottomContent.push(<RichAttachContent key="msg-rich" theme={theme} padded={!topContent.length} compensateBubble={compensateBubble} hasPurchase={hasPurchase} attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} socialImageLayout={richAttachSocialImageLayout} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} />);
+        bottomContent.push(<RichAttachContent key="msg-rich" theme={theme} padded={!topContent.length} compensateBubble={compensateBubble} hasPurchase={hasPurchase} attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} socialImageLayout={richAttachSocialImageLayout} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onLongPress={onLongPress} />);
     }
 
     if (!topContent.length && bottomContent.length) {
@@ -236,7 +236,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
     const fixedSize = !imageOnly && (imageLayout || richAttachImageLayout);
     const isImageBottom = hasImage && !hasText && !hasDocument;
     // sorry
-    const shiftMeta = !!(!bottomContent.length && (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment' && a.keyboard).length) 
+    const shiftMeta = !!(!bottomContent.length && (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment' && a.keyboard).length)
         || shiftReplyMeta(message, hasForward);
     const meta = <MetaInfoIndicator type={hasPurchase ? 'pay' : isImageBottom ? 'media' : 'default'} message={message} theme={theme} />;
 

@@ -43,10 +43,12 @@ interface DialogSearchItemRenderProps extends DialogSearchResults {
     item: GlobalSearch_items;
     index: number;
     selectedIndex: number;
+    onMouseOver: (index: number) => void;
+    onMouseMove: (index: number) => void;
 }
 
 export const DialogSearchItemRender = React.memo((props: DialogSearchItemRenderProps) => {
-    const { item, index, selectedIndex, isForwarding, onPick, paddingHorizontal } = props;
+    const { item, index, selectedIndex, isForwarding, onPick, onMouseOver, onMouseMove, paddingHorizontal } = props;
 
     let selected = index === selectedIndex;
     if (item.__typename === 'SharedRoom') {
@@ -55,11 +57,14 @@ export const DialogSearchItemRender = React.memo((props: DialogSearchItemRenderP
                 <UListItem
                     key={item.id}
                     onClick={() => onPick(item)}
+                    onMouseOver={() => onMouseOver(index)}
+                    onMouseMove={() => onMouseMove(index)}
                     hovered={selected}
                     title={item.title}
                     description={plural(item.membersCount || 0, ['member', 'members'])}
                     avatar={{ id: item.id, photo: item.roomPhoto, title: item.title }}
                     useRadius={false}
+                    disableHover={true}
                     paddingHorizontal={paddingHorizontal}
                 />
             );
@@ -69,11 +74,14 @@ export const DialogSearchItemRender = React.memo((props: DialogSearchItemRenderP
             <UListItem
                 key={item.id}
                 onClick={() => onPick(item)}
+                onMouseOver={() => onMouseOver(index)}
+                onMouseMove={() => onMouseMove(index)}
                 hovered={selected}
                 title={item.name}
                 description={item.about}
                 avatar={{ id: item.id, photo: item.photo, title: item.name }}
                 useRadius={false}
+                disableHover={true}
                 paddingHorizontal={paddingHorizontal}
             />
         );
@@ -83,9 +91,12 @@ export const DialogSearchItemRender = React.memo((props: DialogSearchItemRenderP
                 <UUserView
                     key={item.id}
                     onClick={() => onPick(item)}
+                    onMouseOver={() => onMouseOver(index)}
+                    onMouseMove={() => onMouseMove(index)}
                     hovered={selected}
                     user={item}
                     useRadius={false}
+                    disableHover={true}
                     paddingHorizontal={paddingHorizontal}
                 />
             );
@@ -96,7 +107,7 @@ export const DialogSearchItemRender = React.memo((props: DialogSearchItemRenderP
 });
 
 const DialogSearchInner = React.memo((props: DialogSearchResults) => {
-    const { items, selectedIndex } = useGlobalSearch(props);
+    const { items, selectedIndex, handleMouseOver, handleMouseMove } = useGlobalSearch(props);
 
     if (items.length === 0) {
         return <DialogSearchEmptyView />;
@@ -104,7 +115,7 @@ const DialogSearchInner = React.memo((props: DialogSearchResults) => {
 
     return (
         <>
-            {items.map((i, index) => <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} {...props} />)}
+            {items.map((i, index) => <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} onMouseOver={handleMouseOver} onMouseMove={handleMouseMove} {...props} />)}
         </>
     );
 });

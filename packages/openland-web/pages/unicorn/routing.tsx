@@ -34,7 +34,7 @@ import { DiscussionsFragment } from 'openland-web/fragments/discussions/Discussi
 import { DraftsFragment } from 'openland-web/fragments/discussions/DraftsFragment';
 import { DiscussionEditorFragment } from 'openland-web/fragments/discussions/DiscussionEditorFragment';
 import { SettingsCommunitiesFragment } from 'openland-web/fragments/settings/SettingsCommunitiesFragment';
-// import { useTabRouter } from 'openland-unicorn/components/TabLayout';
+// import { ContactProfileFragment } from 'openland-web/fragments/contacts/ContactProfileFragment';
 
 // temporary stub for /mail/ -> not found bug
 const TemporaryStubMail = React.memo(() => {
@@ -46,27 +46,6 @@ const TemporaryStubMail = React.memo(() => {
 
     return null;
 });
-
-// const RedirectStubDiscover = React.memo(() => {
-//     const router = useTabRouter();
-//     React.useEffect(() => {
-//         let timer: any;
-//         if (router) {
-//             router.router.switchTab(0);
-//             if (!router.router.stacks[0].pages.length) {
-//                 timer = setTimeout(() => {
-//                     if (router) {
-//                         router.router.navigate('/discover/');
-//                     }
-//                 }, 20);
-//             }
-//         }
-//
-//         return () => clearTimeout(timer);
-//     }, []);
-//
-//     return null;
-// });
 
 const routing = new URouting();
 
@@ -100,6 +79,18 @@ routing.addRoute('/discover/collections', () => DiscoverCollectionsFragment);
 routing.addRoute('/discover/collections/:collectionId', () => DiscoverCollectionFragment);
 routing.addRoute('/discover/premium', () => DiscoverTopPremiumFragment);
 routing.addRoute('/discover/free', () => DiscoverTopFreeFragment);
+
+// Contacts
+
+// let Empty = () => <div />;
+
+// routing.addRoute('/contacts', () => Empty);
+// routing.addRoute('/contacts/:id', () =>
+//     React.memo(() => {
+//         let ctx = useUnicorn();
+//         return <ContactProfileFragment id={ctx.id!} />;
+//     })
+// );
 
 // Discussions
 routing.addRoute('/channels', () => DiscussionsFragment);

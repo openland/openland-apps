@@ -77,6 +77,8 @@ export interface DataSourceMessageItem {
     reactionsReduced: ReactionReduced[];
     reactionsLabel: string;
     sticker?: Types.StickerFragment;
+    overrideAvatar?: Types.FullMessage_GeneralMessage_overrideAvatar | null;
+    overrideName?: string | null;
 
     // legacy
     isSubscribedMessageComments?: boolean;
@@ -118,6 +120,10 @@ const getReactions = (src: FullMessage_GeneralMessage | FullMessage_StickerMessa
     return src ? src.reactions || [] : [];
 };
 
+const getOverrides = (src: FullMessage | undefined) => {
+    return src ? (src.__typename === 'GeneralMessage' || src.__typename === 'StickerMessage' ? { overrideAvatar: src.overrideAvatar, overrideName: src.overrideName } : {}) : {};
+};
+
 type RecursivePartial<T> = {
     [P in keyof T]?: RecursivePartial<T[P]>;
 };
@@ -138,6 +144,8 @@ export function convertPartialMessage(src: RecursivePartial<FullMessage> & { id:
         quotedMessages: [],
         reactions: [],
         spans: [],
+        overrideAvatar: null,
+        overrideName: null
     };
     return convertMessage({ ...genericGeneralMessage, ...src as FullMessage }, chatId, engine);
 }
@@ -176,6 +184,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId
         reactionsReduced: reactions.length ? reduceReactions(reactions, engine.user.id) : [],
         reactionsLabel: reactions.length ? getReactionsLabel(reactions, engine.user.id) : '',
         sticker: stickerMessage ? stickerMessage.sticker : undefined,
+        ...getOverrides(src)
     };
 }
 
@@ -196,6 +205,8 @@ export function convertMessageBack(src: DataSourceMessageItem): Types.FullMessag
         reactions: [],
         source: src.source || null,
         sticker: src.sticker,
+        overrideAvatar: src.overrideAvatar || null,
+        overrideName: src.overrideName || null
     };
 
     return res;

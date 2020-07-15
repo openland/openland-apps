@@ -25,9 +25,11 @@ class ThemeControllerImpl {
         }
     }
 
-    watch(handler: (appearance: ThemeGlobalKind) => void) {
+    watch(handler: (appearance: ThemeGlobalKind) => void, callImmediate: boolean = true) {
         this._watchers.push(handler);
-        handler(this._appearance);
+        if (callImmediate) {
+            handler(this._appearance);
+        }
         return () => {
             let index = this._watchers.indexOf(handler);
             if (index < 0) {

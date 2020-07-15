@@ -179,7 +179,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
         this.sound!.play();
     }
 
-    displayNotification(content: { path: string; title: string; body: string; image?: string }) {
+    displayNotification(content: { path: string; title: string; body: string; image?: string, replace?: boolean }) {
         try {
             this.blinkDocumentFavicon();
             if (this.state === 'granted') {
@@ -191,7 +191,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
                 let router = this.router;
                 notification.onclick = function () {
                     if (router) {
-                        router.navigate(content.path);
+                        router.navigate(content.path, content.replace);
                     }
                     window.focus();
                     this.close();

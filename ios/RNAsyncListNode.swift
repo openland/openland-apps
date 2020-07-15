@@ -626,6 +626,16 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     }
   }
   
+  func onScrollToTopFunc(){
+    self.queue.async {
+      DispatchQueue.main.async {
+        self.settingScroll = true
+        self.node.scrollToItem(at: IndexPath(item: 0, section: 1), at: .top, animated: true)
+        self.settingScroll = false
+      }
+    }
+  }
+  
   //
   // Collection Node delegate
   //

@@ -9,7 +9,7 @@ const popup = css`
     flex-direction: column;
     width: 160px;
 
-    top: 30px;
+    top: 56px;
 
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
     border-radius: 8px;
@@ -54,13 +54,10 @@ const popupIcon = css`
     margin-right: 20px;
 `;
 
-const popupText = css``;
-
-const popupSeparator = css`
-    border-bottom: 1px solid #8e90a6;
-    opacity: 0.2;
-    margin-top: 16px;
-    margin-bottom: 8px;
+const popupText = css`
+    font-size: 16px;
+    line-height: 40px;
+    font-weight: 600;
 `;
 
 interface HeaderAppsItemProps {
@@ -101,7 +98,7 @@ export const HeaderApps = React.memo((props: HeaderAppsProps) => {
                 onClick={() => setShown(true)}
                 onMouseOver={() => setShown(true)}
             >
-                Apps
+                Desktop app
             </span>
 
             {isShown && (
@@ -109,19 +106,6 @@ export const HeaderApps = React.memo((props: HeaderAppsProps) => {
                     className={cx(popup, 'landingHeaderPopup')}
                     onMouseLeave={() => setShown(false)}
                 >
-                    <HeaderAppsItem
-                        link={LandingLinks.apps.ios}
-                        icon="/static/landing/icons/ios.svg"
-                        label="iOS"
-                    />
-                    <HeaderAppsItem
-                        link={LandingLinks.apps.android}
-                        icon="/static/landing/icons/android.svg"
-                        label="Android"
-                    />
-
-                    <div className={popupSeparator} />
-
                     <HeaderAppsItem
                         link={LandingLinks.apps.macos}
                         icon="/static/landing/icons/mac.svg"

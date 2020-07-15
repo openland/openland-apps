@@ -79,9 +79,7 @@ const ShortnameModalBody = React.memo((props: ShortnameModalBodyProps) => {
                     label="Shortname"
                     field={shortnameField}
                     remark={
-                        form.error
-                            ? undefined
-                            : 'Only a-z, 0-9 and underscores, at least 3 chars'
+                        form.error ? undefined : 'Only a-z, 0-9 and underscores, at least 3 chars'
                     }
                     errorText={form.error ? form.error : undefined}
                 />
@@ -618,6 +616,7 @@ export const showLeaveChatConfirmation = (
     chatId: string,
     tabRouter: TabRouterContextProps,
     isPremium?: boolean,
+    isPublic?: boolean,
 ) => {
     const builder = new AlertBlanketBuilder();
 
@@ -626,6 +625,8 @@ export const showLeaveChatConfirmation = (
         .message(
             isPremium
                 ? 'Leaving the group only removes it from your chat list. To cancel the associated subscription, visit Subscriptions section in your Account tab and cancel it from there.'
+                : isPublic
+                ? 'Are you sure you want to leave?'
                 : 'Are you sure you want to leave? You will need to request access to join it again in the future.',
         )
         .action(

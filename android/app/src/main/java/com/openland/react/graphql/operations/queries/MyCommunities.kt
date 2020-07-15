@@ -15,6 +15,6 @@ internal val MyCommunitiesSelector = obj(
 val MyCommunities = object: OperationDefinition {
     override val name = "MyCommunities"
     override val kind = OperationKind.QUERY
-    override val body = "query MyCommunities{myCommunities{__typename ...OrganizationShort isOwner:betaIsOwner isAdmin:betaIsAdmin}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}"
+    override val body = "query MyCommunities{myCommunities{__typename ...OrganizationShort isOwner:betaIsOwner isAdmin:betaIsAdmin}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}"
     override val selector = MyCommunitiesSelector
 }

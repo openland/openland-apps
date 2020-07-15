@@ -67,7 +67,7 @@ export const useThemeGlobal = () => {
             let r = resolveTheme(t);
             // SStatusBar.setBarStyle(r.statusBar);
             setTheme(r);
-        });
+        }, false);
     }, []);
 
     return theme;

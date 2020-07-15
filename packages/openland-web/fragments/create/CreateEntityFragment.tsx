@@ -676,13 +676,13 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
                                 value: false,
                                 labelShort: 'Public',
                                 label: 'Public',
-                                subtitle: 'For all organization/community members',
+                                subtitle: 'Visible in search',
                             },
                             {
                                 value: true,
-                                labelShort: 'Secret',
-                                label: 'Secret',
-                                subtitle: 'For people with direct invite',
+                                labelShort: 'Private',
+                                label: 'Private',
+                                subtitle: 'Only people with invite link can see it',
                             },
                         ]}
                     />

@@ -174,6 +174,7 @@ const getMenuContent = (
                     id,
                     tabRouter,
                     group.__typename === 'SharedRoom' && group.isPremium,
+                    group.kind === 'PUBLIC',
                 ),
         });
     }

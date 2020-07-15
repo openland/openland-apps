@@ -130,7 +130,7 @@ const linkedinIcon = css`
 `;
 
 const link = css`
-    @media (max-width: 959px) {
+    @media (max-width: 1199px) {
         font-size: 0;
     }
 `;
