@@ -65,7 +65,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     ).roomFeaturedMembers;
     const initialMembers = client.useRoomMembersPaginated(
         { roomId, first: 15 },
-        { fetchPolicy: 'cache-and-network' },
+        { fetchPolicy: 'network-only' },
     ).members;
 
     React.useEffect(() => {
