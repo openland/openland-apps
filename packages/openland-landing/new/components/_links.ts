@@ -4,7 +4,7 @@ export const LandingLinks = {
     creators: 'https://typeform.com/',
 
     download: '/download',
-    about: '/about',
+    about: '/new-about',
     privacy: '/privacy',
     terms: '/terms',
 

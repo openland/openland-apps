@@ -3,7 +3,7 @@ import { css } from 'linaria';
 import { Container } from '../components/Container';
 
 const box = css`
-    padding: 160px 0;
+    padding: 140px 0;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         padding: 120px 0;
@@ -23,10 +23,10 @@ const aboutHeader = css`
 `;
 
 const heading = css`
+    font-weight: 800;
     font-size: 56px;
-    font-weight: bold;
-    line-height: 1.2;
-    color: #272750;
+    line-height: 67px;
+    color: var(--foregroundPrimary);
 
     @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 50px;
@@ -50,10 +50,11 @@ const heading = css`
 `;
 
 const subheading = css`
-    margin-top: 0.7em;
+    font-weight: 600;
     font-size: 24px;
     line-height: 29px;
-    color: #9393a7;
+    color: var(--foregroundTertiary);
+    margin: 20px 0 0;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 22px;

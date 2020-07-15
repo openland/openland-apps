@@ -22,6 +22,8 @@ routes.add('/privacy', '/landing/next-privacy');
 routes.add('/privacy/', '/landing/next-privacy');
 routes.add('/new', '/landing/new');
 routes.add('/new/', '/landing/new');
+routes.add('/new-about', '/landing/new-about');
+routes.add('/new-about/', '/landing/new-about');
 
 //
 // Authentication

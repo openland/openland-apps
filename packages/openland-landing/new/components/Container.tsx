@@ -10,7 +10,7 @@ const box = css`
         width: 1172px;
 
         &.is-small {
-            width: 1027px;
+            width: 992px;
         }
     }
 

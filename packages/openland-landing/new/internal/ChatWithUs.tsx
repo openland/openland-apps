@@ -5,28 +5,24 @@ import { XView } from 'react-mental';
 import { Container } from '../components/Container';
 
 const root = css`
-    background: linear-gradient(0deg, #f7fafc, #f7fafc);
 `;
 
 const features = css`
     display: grid;
     grid-template-columns: auto auto;
     grid-gap: 24px;
-    margin-bottom: 5em;
 
     @media (max-width: 767px) {
         grid-template-columns: auto;
         max-width: 400px;
         margin: 0 auto;
-        margin-bottom: 5em;
     }
 `;
 
 const feature = css`
-    padding: 36px 46px;
-    background: white;
-    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.06);
-    border-radius: 16px;
+    padding: 36px 40px;
+    border-radius: 24px;
+    background: linear-gradient(0deg, #F7F8F9, #F7F8F9);
 
     @media (min-width: 768px) and (max-width: 1199px) {
         padding: 30px;
@@ -142,12 +138,11 @@ const link = css`
     cursor: pointer;
 `;
 
-const headingWrapper = css`
-    margin-top: 5em;
-    margin-bottom: 2em;
-    @media (max-width: 767px) {
-        text-align: center;
-    }
+const title = css`
+    font-weight: 800;
+    font-size: 46px;
+    line-height: 58px;
+    margin: 0 0 28px;
 `;
 
 interface FeatureProps {
@@ -182,31 +177,29 @@ const Feature = React.memo((props: FeatureProps) => (
 export const ChatWithUs = React.memo(() => (
     <div className={root}>
         <Container isSmall={true}>
-            <div className={headingWrapper}>
-                <Heading title="Chat with us" />
-            </div>
+            <div className={title}>Chat with us</div>
             <div className={features}>
                 <Feature
                     title="Openland Careers"
-                    icon="/static/landing/icons/careers.svg"
+                    icon="/static/landing/icons/careers-2.svg"
                     link="/invite/8GbujwA"
                     text="Explore open positions or design your own role in our team"
                 />
                 <Feature
                     title="Help and Feedback"
-                    icon="/static/landing/icons/support.svg"
+                    icon="/static/landing/icons/support-2.svg"
                     link="/invite/zOF5IpZ"
                     text="Get support, ask for features, and share your ideas for Openland"
                 />
                 <Feature
                     title="Openland News"
-                    icon="/static/landing/icons/news.svg"
+                    icon="/static/landing/icons/news-2.svg"
                     link="/invite/Iqx4dPt"
                     text="Follow our journey to the future of&nbsp;community organizing"
                 />
                 <Feature
                     title="Community Creators"
-                    icon="/static/landing/icons/community.svg"
+                    icon="/static/landing/icons/community-2.svg"
                     link="/invite/XaQDsnQ"
                     text="Get inspiration and learn from the&nbsp;best community organizers"
                 />

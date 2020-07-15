@@ -4,7 +4,7 @@ import { css, cx } from 'linaria';
 import { Heading } from './Heading';
 
 const box = css`
-    margin-top: 4em;
+    margin-top: 139px;
 
     & > * + * {
         margin-top: 2em;
@@ -135,6 +135,13 @@ const link = css`
     }
 `;
 
+const title = css`
+    font-weight: 800;
+    font-size: 46px;
+    line-height: 58px;
+    margin: 0 0 28px;
+`;
+
 interface FoundersItemProps {
     photo: string;
     name: string;
@@ -166,7 +173,8 @@ const FoundersItem = (props: FoundersItemProps) => (
 
 export const Founders = React.memo(() => (
     <div className={box}>
-        <Heading title="Founders" />
+        <div className={title}>Founders</div>
+
         <XView flexDirection="row" flexWrap="wrap">
             <FoundersItem
                 photo="/static/landing/yury-new.png"
