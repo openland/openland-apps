@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { Container } from '../components/Container';
+import GroupIcon from 'openland-icons/s/ic-group-glyph-24.svg';
+import MessageIcon from 'openland-icons/s/ic-message-filled-24.svg';
+import MailIcon from 'openland-icons/s/ic-mail-glyph-24.svg';
+import EditIcon from 'openland-icons/s/ic-edit-glyph-24.svg';
+import ReadIcon from 'openland-icons/s/ic-read-filled-24.svg';
+import MegaphoneIcon from 'openland-icons/s/ic-megaphone-glyph-24.svg';
 
 const inner = css`
     position: relative;
@@ -131,12 +137,34 @@ const features = css`
     font-size: 20px;
     line-height: 36px;
     color: #5A6782;
-    padding: 0 0 0 40px;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 14px;
         line-height: 24px;
-        padding: 0 0 0 28px;
+    }
+
+    div {
+        position: relative;
+        padding: 0 0 0 40px;
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            padding: 0 0 0 28px;
+        }
+    }
+
+    svg {
+        position: absolute;
+        top: 6px; left: 0;
+        width: 24px; height: 24px;
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            top: 4px;
+            width: 16px; height: 16px;
+        }
+
+        path {
+            fill: var(--foregroundQuaternary);
+        }
     }
 `;
 
@@ -154,8 +182,8 @@ export const HomeWhy = React.memo(() => (
                         Build friendships that last
                     </div>
                     <div className={features}>
-                        <div>Community for every interest</div>
-                        <div>World-class messenger and video chat</div>
+                        <div><GroupIcon />Community for every interest</div>
+                        <div><MessageIcon />World-class messenger and video chat</div>
                     </div>
                 </div>
             </div>
@@ -168,8 +196,8 @@ export const HomeWhy = React.memo(() => (
                         Be heard, accepted, and supported
                     </div>
                     <div className={features}>
-                        <div>Invite-only groups and communities</div>
-                        <div>Moderator-led rules and norms</div>
+                        <div><MailIcon />Invite-only groups and communities</div>
+                        <div><EditIcon />Moderator-led rules and norms</div>
                     </div>
                 </div>
                 <div className={cx(preview, 'is-c2')} />
@@ -184,8 +212,8 @@ export const HomeWhy = React.memo(() => (
                         Learn from people who've been there
                     </div>
                     <div className={features}>
-                        <div>Community-curated news</div>
-                        <div>Events and conversations with experts</div>
+                        <div><ReadIcon />Community-curated news</div>
+                        <div><MegaphoneIcon />Events and conversations with experts</div>
                     </div>
                 </div>
             </div>

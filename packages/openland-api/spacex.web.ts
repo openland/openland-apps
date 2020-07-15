@@ -3362,6 +3362,33 @@ const RoomMembersPaginatedSelector = obj(
                         ))
                 )))))
         );
+const RoomMembersSearchSelector = obj(
+            field('chatMembersSearch', 'chatMembersSearch', args(fieldValue("cid", refValue('cid')), fieldValue("query", refValue('query')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('edges', 'edges', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('node', 'node', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    field('user', 'user', args(), notNull(obj(
+                                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                            fragment('User', UserShortSelector)
+                                        ))),
+                                    field('role', 'role', args(), notNull(scalar('String'))),
+                                    field('membership', 'membership', args(), notNull(scalar('String'))),
+                                    field('canKick', 'canKick', args(), notNull(scalar('Boolean'))),
+                                    field('badge', 'badge', args(), obj(
+                                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                            fragment('UserBadge', UserBadgeSelector)
+                                        ))
+                                ))),
+                            field('cursor', 'cursor', args(), notNull(scalar('String')))
+                        ))))),
+                    field('pageInfo', 'pageInfo', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('hasNextPage', 'hasNextPage', args(), notNull(scalar('Boolean')))
+                        )))
+                )))
+        );
 const RoomMembersShortSelector = obj(
             field('roomMembers', 'members', args(fieldValue("roomId", refValue('roomId'))), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5221,6 +5248,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'RoomMembersPaginated',
         body: 'query RoomMembersPaginated($roomId:ID!,$first:Int,$after:ID){members:roomMembers(roomId:$roomId,first:$first,after:$after){__typename user{__typename ...UserShort}role membership canKick badge{__typename ...UserBadge}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}fragment UserBadge on UserBadge{__typename id name verified}',
         selector: RoomMembersPaginatedSelector
+    },
+    RoomMembersSearch: {
+        kind: 'query',
+        name: 'RoomMembersSearch',
+        body: 'query RoomMembersSearch($cid:ID!,$query:String,$first:Int!,$after:String){chatMembersSearch(cid:$cid,query:$query,first:$first,after:$after){__typename edges{__typename node{__typename user{__typename ...UserShort}role membership canKick badge{__typename ...UserBadge}}cursor}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}fragment UserBadge on UserBadge{__typename id name verified}',
+        selector: RoomMembersSearchSelector
     },
     RoomMembersShort: {
         kind: 'query',

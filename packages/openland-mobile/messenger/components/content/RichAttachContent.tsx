@@ -294,7 +294,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                                     justifyContent="center"
                                     flexGrow={1}
                                     onPress={resolveInternalLink(button.url!, () => Linking.openURL(button.url!))}
-                                    onLongPress={resolveInternalLink(button.url!, () => Linking.openURL(button.url!))}
+                                    onLongPress={this.props.onLongPress}
                                     highlightColor={theme.backgroundPrimaryActive}
                                 >
                                     <ASText

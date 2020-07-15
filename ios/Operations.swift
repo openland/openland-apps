@@ -3355,6 +3355,33 @@ private let RoomMembersPaginatedSelector = obj(
                         ))
                 )))))
         )
+private let RoomMembersSearchSelector = obj(
+            field("chatMembersSearch", "chatMembersSearch", arguments(fieldValue("cid", refValue("cid")), fieldValue("query", refValue("query")), fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("user", "user", notNull(obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            fragment("User", UserShortSelector)
+                                        ))),
+                                    field("role", "role", notNull(scalar("String"))),
+                                    field("membership", "membership", notNull(scalar("String"))),
+                                    field("canKick", "canKick", notNull(scalar("Boolean"))),
+                                    field("badge", "badge", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            fragment("UserBadge", UserBadgeSelector)
+                                        ))
+                                ))),
+                            field("cursor", "cursor", notNull(scalar("String")))
+                        ))))),
+                    field("pageInfo", "pageInfo", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean")))
+                        )))
+                )))
+        )
 private let RoomMembersShortSelector = obj(
             field("roomMembers", "members", arguments(fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5219,6 +5246,12 @@ class Operations {
         "query RoomMembersPaginated($roomId:ID!,$first:Int,$after:ID){members:roomMembers(roomId:$roomId,first:$first,after:$after){__typename user{__typename ...UserShort}role membership canKick badge{__typename ...UserBadge}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}fragment UserBadge on UserBadge{__typename id name verified}",
         RoomMembersPaginatedSelector
     )
+    let RoomMembersSearch = OperationDefinition(
+        "RoomMembersSearch",
+        .query, 
+        "query RoomMembersSearch($cid:ID!,$query:String,$first:Int!,$after:String){chatMembersSearch(cid:$cid,query:$query,first:$first,after:$after){__typename edges{__typename node{__typename user{__typename ...UserShort}role membership canKick badge{__typename ...UserBadge}}cursor}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}fragment UserBadge on UserBadge{__typename id name verified}",
+        RoomMembersSearchSelector
+    )
     let RoomMembersShort = OperationDefinition(
         "RoomMembersShort",
         .query, 
@@ -6289,6 +6322,7 @@ class Operations {
         if name == "RoomInviteInfo" { return RoomInviteInfo }
         if name == "RoomInviteLink" { return RoomInviteLink }
         if name == "RoomMembersPaginated" { return RoomMembersPaginated }
+        if name == "RoomMembersSearch" { return RoomMembersSearch }
         if name == "RoomMembersShort" { return RoomMembersShort }
         if name == "RoomMembersTiny" { return RoomMembersTiny }
         if name == "RoomMetaPreview" { return RoomMetaPreview }

@@ -4,17 +4,21 @@ import { css, cx } from 'linaria';
 import SearchIcon from 'openland-icons/ic-search-16.svg';
 import ClearIcon from 'openland-icons/ic-close-16.svg';
 import { TextBody } from 'openland-web/utils/TextStyles';
+import { SvgLoader } from 'openland-x/XLoader';
 
-const field = css`
-    appearance: textfield;
-    position: relative;
+const wrapper = css`
     background-color: var(--backgroundTertiaryTrans);
-    padding: 8px 40px 8px 36px;
     border-radius: 8px;
+    padding: 8px 40px 8px 36px;
 
     &:hover {
         background-color: var(--backgroundTertiaryHoverTrans);
     }
+`;
+
+const field = css`
+    appearance: textfield;
+    position: relative;
 
     &::-webkit-search-cancel-button {
         display: none;
@@ -30,29 +34,31 @@ const field = css`
     }
 `;
 
+const wrapperRounded = css`
+    border-radius: 100px;
+    padding: 4px 40px 4px 36px;
+`;
+
 const resetClassName = css`
     appearance: none;
     cursor: pointer;
     position: absolute;
-    top: 50%;
-    right: 12px;
-    transform: translateY(-50%);
+    top: 0;
+    right: 0;
 
-    width: 16px;
-    height: 16px;
+    width: 40px;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: opacity 0.01s cubic-bezier(0.25, 0.8, 0.25, 1);
 
     & svg * {
         fill: var(--foregroundTertiary);
-        transition: fill 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    &:hover svg *,
-    &:focus svg * {
-        transition: fill 0.01s cubic-bezier(0.25, 0.8, 0.25, 1);
-        fill: var(--foregroundSecondary);
+    &:hover, &:focus {
+        opacity: 0.56
     }
 `;
 
@@ -80,6 +86,9 @@ interface USearchInputProps extends XViewProps {
     onFocus?: React.FocusEventHandler;
     autoFocus?: boolean;
     placeholder?: string;
+    rounded?: boolean;
+    className?: string;
+    loading?: boolean;
 }
 
 export interface USearchInputRef {
@@ -88,7 +97,7 @@ export interface USearchInputRef {
 }
 
 export const USearchInput = React.forwardRef((props: USearchInputProps, ref: React.RefObject<USearchInputRef>) => {
-    const { value, onChange, autoFocus, onKeyDown, onFocus, placeholder = 'Search', ...other } = props;
+    const { value, onChange, autoFocus, onKeyDown, onFocus, rounded, loading, className, placeholder = 'Search', ...other } = props;
 
     const [val, setValue] = React.useState(typeof value === 'string' ? value : '');
     const inputRef = React.useRef<HTMLInputElement>(null);
@@ -113,25 +122,33 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
 
     return (
         <XView position="relative" {...other}>
-            <div className={searchIconWrapper}>
-                <SearchIcon />
+            <div className={cx('x', wrapper, rounded && wrapperRounded, className)}>
+                <div className={searchIconWrapper}>
+                    {loading ? <SvgLoader size="small" /> : <SearchIcon />}
+                </div>
+                <input
+                    type="search"
+                    className={cx(TextBody, field)}
+                    value={val || ''}
+                    onChange={e => handleChange(e.target.value)}
+                    onKeyDown={onKeyDown}
+                    onFocus={onFocus}
+                    placeholder={placeholder}
+                    autoFocus={autoFocus}
+                    ref={inputRef}
+                />
+                {props.value && props.value.length > 0 && (
+                    <button
+                        className={resetClassName}
+                        onClick={() => {
+                            inputRef.current?.focus();
+                            handleChange('');
+                        }}
+                    >
+                        <ClearIcon />
+                    </button>
+                )}
             </div>
-            <input
-                type="search"
-                className={cx(TextBody, field)}
-                value={val || ''}
-                onChange={e => handleChange(e.target.value)}
-                onKeyDown={onKeyDown}
-                onFocus={onFocus}
-                placeholder={placeholder}
-                autoFocus={autoFocus}
-                ref={inputRef}
-            />
-            {props.value && props.value.length > 0 && (
-                <button className={resetClassName} onClick={() => handleChange('')}>
-                    <ClearIcon />
-                </button>
-            )}
         </XView>
     );
 });

@@ -19,6 +19,21 @@ import { RoomMembersPaginated_members, RoomMemberRole } from 'openland-api/space
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
+import { css } from 'linaria';
+import { debounce } from 'openland-y-utils/timer';
+import { XView } from 'react-mental';
+import { TextStyles } from 'openland-web/utils/TextStyles';
+
+const membersSearchStyle = css`
+    width: 160px;
+    will-change: width;
+    transition: width 0.15s ease;
+
+    &:focus-within {
+        width: 240px;
+    }
+`;
 
 export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     const client = useClient();
@@ -72,9 +87,41 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
 
     const [members, setMembers] = React.useState(initialMembers);
     const [loading, setLoading] = React.useState(false);
+    const [membersQuery, setMembersQuery] = React.useState('');
+    const [membersFetching, setMembersFetching] = React.useState({ loading: 0, hasNextPage: true, cursor: '' });
+    const membersQueryRef = React.useRef('');
+
+    const loadSearchMembers = async (reseted?: boolean) => {
+        let query = membersQueryRef.current;
+        setMembersFetching(prev => ({ ...prev, loading: prev.loading + 1 }));
+        const { edges, pageInfo } = (await client.queryRoomMembersSearch({
+            cid: id,
+            query,
+            first: 10,
+            after: reseted ? undefined : membersFetching.cursor
+        },
+            { fetchPolicy: 'network-only' }
+        )).chatMembersSearch;
+        // avoid race condition
+        if (membersQueryRef.current.length === 0) {
+            return;
+        }
+        setMembers(prev => reseted ? edges.map(x => x.node) : prev.concat(edges.map(x => x.node)));
+        setMembersFetching(prev => ({
+            loading: Math.max(prev.loading - 1, 0),
+            hasNextPage: pageInfo.hasNextPage,
+            cursor: edges.length === 0 ? '' : edges[edges.length - 1].cursor
+        }));
+    };
 
     const handleLoadMore = React.useCallback(
         async () => {
+            if (membersQueryRef.current.length > 0) {
+                if (!membersFetching.loading && membersFetching.hasNextPage) {
+                    loadSearchMembers();
+                }
+                return;
+            }
             if (membersCount && (members.length < membersCount && !loading)) {
                 setLoading(true);
 
@@ -96,7 +143,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                 loaded.forEach(m => onlines.onUserAppears(m.user.id));
             }
         },
-        [membersCount, members, loading],
+        [membersCount, members, loading, membersQuery, membersFetching],
     );
 
     const handleAddMembers = React.useCallback(
@@ -134,12 +181,38 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         descriptionHero += ', ' + formatMoneyInterval(premiumSettings.price, premiumSettings.interval);
     }
 
+    if (membersQuery.length > 0) {
+        showInviteButton = false;
+    }
+
+    let handleSearchChange = React.useCallback(debounce(async (val: string) => {
+        setMembersQuery(val);
+
+        membersQueryRef.current = val;
+        if (val.length > 0) {
+            loadSearchMembers(true);
+        } else {
+            setMembers(initialMembers);
+            setMembersFetching({
+                loading: 0,
+                hasNextPage: true,
+                cursor: '',
+            });
+            // refetch in case someone is removed
+            let initial = (await client.queryRoomMembersPaginated(
+                { roomId, first: 15 },
+                { fetchPolicy: 'network-only' },
+            )).members;
+            setMembers(initial);
+        }
+    }, 100), [initialMembers]);
+
     return (
         <UFlatList
             track="group_profile"
             loadMore={handleLoadMore}
             items={members}
-            loading={loading}
+            loading={loading || (membersQuery.length > 0 && membersFetching.loading > 0 && members.length > 15)}
             title={title}
             renderItem={member => (
                 <UUserView
@@ -196,10 +269,24 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                 ))}
             </UListGroup>
 
-            <UListHeader text="Members" counter={membersCount || 0} />
+            <UListHeader
+                text="Members"
+                counter={membersCount || 0}
+                rightElement={(
+                    <USearchInput
+                        placeholder="Search"
+                        rounded={true}
+                        className={membersSearchStyle}
+                        value={membersQuery}
+                        loading={membersFetching.loading > 0}
+                        onChange={handleSearchChange}
+                    />
+                )}
+            />
             {showInviteButton && (
                 <UAddItem
                     title="Add people"
+                    titleStyle={TextStyles.Label1}
                     onClick={() => {
                         showAddMembersModal({
                             id,
@@ -210,6 +297,11 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                         });
                     }}
                 />
+            )}
+            {members.length === 0 && (
+                <XView paddingTop={32} paddingBottom={32} alignItems="center" {...TextStyles.Body} color="var(--foregroundSecondary)">
+                    Nobody found
+                </XView>
             )}
         </UFlatList>
     );
