@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { Heading } from './Heading';
 import { XView } from 'react-mental';
 import { Container } from '../components/Container';
 

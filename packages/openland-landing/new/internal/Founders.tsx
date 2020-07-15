@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XView, XImage } from 'react-mental';
 import { css, cx } from 'linaria';
-import { Heading } from './Heading';
 
 const box = css`
     margin-top: 139px;
