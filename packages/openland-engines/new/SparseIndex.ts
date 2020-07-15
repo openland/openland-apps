@@ -49,7 +49,7 @@ export class SparseIndex {
         // Process items
         for (let w of state.windows) {
             for (let i of w.items) {
-                if (i.sortKey < w.min || w.max > i.sortKey) {
+                if (i.sortKey < w.min || w.max < i.sortKey) {
                     throw Error('Broken index');
                 }
                 if (this._ids.has(i.id)) {
@@ -186,6 +186,89 @@ export class SparseIndex {
         } else {
             let w: Window = { min: args.min, max: args.max, items: args.items };
             this._windows = [...prev, w, ...post];
+        }
+    }
+
+    readAfter = (args: { after: number, limit: number }) => {
+        let window = this._windows.find((v) => v.min <= args.after && args.after <= v.max);
+        if (!window) {
+            return null;
+        }
+
+        // Find all items
+        let res: { id: string, sortKey: number }[] = [];
+        let totalCount = 0;
+        for (let i of window.items) {
+            if (i.sortKey > args.after) {
+                if (res.length < args.limit) {
+                    res.push({ id: i.id, sortKey: i.sortKey });
+                }
+                totalCount++;
+            }
+        }
+
+        if (res.length < args.limit) {
+            // If less than limit then it could be completed only for last window
+            return {
+                items: res,
+                completed: window.max === Number.MAX_SAFE_INTEGER
+            };
+        } else {
+            if (res.length < totalCount) {
+                // If there is more items in current window = mask as not-completed
+                return {
+                    items: res,
+                    completed: false
+                };
+            } else {
+                // If read all items and last window then mark as completed
+                return {
+                    items: res,
+                    completed: window.max === Number.MAX_SAFE_INTEGER
+                };
+            }
+        }
+    }
+
+    readBefore = (args: { before: number, limit: number }) => {
+        let window = this._windows.find((v) => v.min <= args.before && args.before <= v.max);
+        if (!window) {
+            return null;
+        }
+
+        // Find all items
+        let res: { id: string, sortKey: number }[] = [];
+        let totalCount = 0;
+        for (let i = window.items.length - 1; i >= 0; i--) {
+            let itm = window.items[i];
+            if (itm.sortKey < args.before) {
+                if (res.length < args.limit) {
+                    res.unshift({ id: itm.id, sortKey: itm.sortKey });
+                }
+                totalCount++;
+            }
+        }
+
+        if (res.length < args.limit) {
+            // If less than limit then it could be completed only for last window
+            return {
+                items: res,
+                completed: window.min === Number.MIN_SAFE_INTEGER
+            };
+        } else {
+            if (res.length < totalCount) {
+                // If there is more items in current window = mask as not-completed
+                return {
+                    items: res,
+                    completed: false
+                };
+            } else {
+                // If read all items and last window then mark as completed
+                return {
+                    items: res,
+                    completed: window.min === Number.MIN_SAFE_INTEGER
+                };
+            }
         }
     }
 }

@@ -130,4 +130,45 @@ describe('SparseIndex', () => {
         };
         expect(index.state).toMatchObject(state);
     });
+
+    it('should read consistently', () => {
+        let index = new SparseIndex(SparseIndex.EMPTY);
+        index.apply({ min: 10, max: 20, items: [{ id: '1', sortKey: 11 }, { id: '2', sortKey: 12 }, { id: '3', sortKey: 13 }] });
+        index.apply({ min: 25, max: 28, items: [{ id: '4', sortKey: 26 }, { id: '5', sortKey: 27 }, { id: '6', sortKey: 28 }] });
+        index.apply({ min: 50, max: 60, items: [{ id: '40', sortKey: 55 }] });
+        index.apply({ min: 100, max: 120, items: [{ id: '10', sortKey: 101 }, { id: '20', sortKey: 102 }, { id: '30', sortKey: 103 }] });
+        index.apply({ min: 200, max: SparseIndex.MAX, items: [{ id: '50', sortKey: 201 }, { id: '51', sortKey: 202 }, { id: '52', sortKey: 203 }] });
+
+        // Forward cases
+        let read = index.readAfter({ after: 11, limit: 1 });
+        expect(read).toMatchObject({ items: [{ id: '2', sortKey: 12 }], completed: false });
+
+        read = index.readAfter({ after: 11, limit: 2 });
+        expect(read).toMatchObject({ items: [{ id: '2', sortKey: 12 }, { id: '3', sortKey: 13 }], completed: false });
+
+        read = index.readAfter({ after: 11, limit: 3 });
+        expect(read).toMatchObject({ items: [{ id: '2', sortKey: 12 }, { id: '3', sortKey: 13 }], completed: false });
+
+        read = index.readAfter({ after: 22, limit: 10 });
+        expect(read).toBeNull();
+
+        read = index.readAfter({ after: 200, limit: 2 });
+        expect(read).toMatchObject({ items: [{ id: '50', sortKey: 201 }, { id: '51', sortKey: 202 }], completed: false });
+
+        read = index.readAfter({ after: 200, limit: 3 });
+        expect(read).toMatchObject({ items: [{ id: '50', sortKey: 201 }, { id: '51', sortKey: 202 }, { id: '52', sortKey: 203 }], completed: true });
+
+        // Backward cases
+        read = index.readBefore({ before: 13, limit: 1 });
+        expect(read).toMatchObject({ items: [{ id: '2', sortKey: 12 }], completed: false });
+
+        read = index.readBefore({ before: 13, limit: 2 });
+        expect(read).toMatchObject({ items: [{ id: '1', sortKey: 11 }, { id: '2', sortKey: 12 }], completed: false });
+
+        read = index.readBefore({ before: 13, limit: 3 });
+        expect(read).toMatchObject({ items: [{ id: '1', sortKey: 11 }, { id: '2', sortKey: 12 }], completed: false });
+
+        read = index.readBefore({ before: 22, limit: 10 });
+        expect(read).toBeNull();
+    });
 });
