@@ -143,7 +143,8 @@ const app = css`
     height: 56px;
     margin: 0 24px 0 0;
     transition: 150ms all ease;
-    background: url(https://cdn.openland.com/shared/landing/start/home-intro-ios.svg) no-repeat;
+    border-radius: 10px;
+    background: var(--foregroundPrimary) url(https://cdn.openland.com/shared/landing/start/home-intro-ios-2.svg) no-repeat;
     background-size: 100% 100%;
 
     @media (min-width: 768px) and (max-width: 1199px) {
@@ -168,8 +169,7 @@ const app = css`
 const appAndroid = css`
     width: 180px;
     margin: 0;
-    background: url(https://cdn.openland.com/shared/landing/start/home-intro-android.svg) no-repeat;
-    background-size: 100% 100%;
+    background-image: url(https://cdn.openland.com/shared/landing/start/home-intro-android-2.svg);
 
     @media (min-width: 768px) and (max-width: 1199px) {
         width: 130px;
