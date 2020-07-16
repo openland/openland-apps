@@ -39,7 +39,7 @@ export interface ZListItemProps {
     pathPresent?: boolean;
     onPress?: () => void;
     onLongPress?: () => void;
-    appearance?: 'default' | 'action' | 'danger';
+    appearance?: 'default' | 'secondary' | 'action' | 'danger';
     multiline?: boolean;
     linkify?: boolean;
     copy?: boolean;
@@ -48,7 +48,7 @@ export interface ZListItemProps {
     tall?: boolean;
 }
 
-const LeftIcon = (props: { theme: ThemeGlobal, src: any, flatIcon?: boolean, appearance?: 'default' | 'action' | 'danger', leftIconColor?: string }) => {
+const LeftIcon = (props: { theme: ThemeGlobal, src: any, flatIcon?: boolean, appearance?: 'default' | 'secondary' | 'action' | 'danger', leftIconColor?: string }) => {
     const { theme, src, flatIcon, appearance, leftIconColor } = props;
 
     if (flatIcon) {
@@ -59,11 +59,16 @@ const LeftIcon = (props: { theme: ThemeGlobal, src: any, flatIcon?: boolean, app
         );
     }
 
-    const backgroundColor = leftIconColor || (appearance === 'danger' ? theme.accentNegative : (theme.foregroundContrast === theme.accentPrimary ? theme.tintBlue : theme.accentPrimary));
+    let backgroundColor = leftIconColor || (appearance === 'danger' ? theme.accentNegative : (theme.foregroundContrast === theme.accentPrimary ? theme.tintBlue : theme.accentPrimary));
+    let tintColor = null;
+    if (appearance === 'secondary') {
+        backgroundColor = theme.backgroundTertiary;
+        tintColor = theme.foregroundTertiary;
+    }
 
     return (
         <View style={{ width: 40, height: 40, borderRadius: 20, alignContent: 'center', justifyContent: 'center', backgroundColor, marginLeft: 16, alignSelf: 'center' }}>
-            <Image source={src} resizeMode="contain" fadeDuration={0} style={{ width: 24, height: 24, alignSelf: 'center', tintColor: theme.foregroundContrast }} />
+            <Image source={src} resizeMode="contain" fadeDuration={0} style={{ width: 24, height: 24, alignSelf: 'center', tintColor: tintColor || theme.foregroundContrast }} />
         </View>
     );
 };

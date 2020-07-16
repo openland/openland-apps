@@ -8,6 +8,20 @@
             ]
         },
         {
+            "name": "ic-invite",
+            "src": "ic-invite-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-invite-off",
+            "src": "ic-invite-off-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-leave-glyph",
             "src": "ic-leave-glyph-24.svg",
             "sizes": [
@@ -479,6 +493,13 @@
             ]
         },
         {
+            "name": "ic-invite-off-glyph",
+            "src": "ic-invite-off-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-camera",
             "src": "ic-camera-36.svg",
             "sizes": [
@@ -789,13 +810,6 @@
         {
             "name": "ic-star",
             "src": "ic-star-24.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-invite",
-            "src": "ic-invite-24.svg",
             "sizes": [
                 24
             ]

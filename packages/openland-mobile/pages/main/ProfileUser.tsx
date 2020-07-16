@@ -31,7 +31,23 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
     );
     const theme = React.useContext(ThemeContext);
 
-    const handleAddMember = React.useCallback(() => {
+    const handleAddMemberToContacts = React.useCallback(async () => {
+        const loader = Toast.loader();
+        loader.show();
+        await getClient().mutateAddToContacts({ userId: user.id });
+        await getClient().refetchUser({ userId: user.id });
+        loader.hide();
+    }, []);
+
+    const handleRemoveMemberFromContacts = React.useCallback(async () => {
+        const loader = Toast.loader();
+        loader.show();
+        await getClient().mutateRemoveFromContacts({ userId: user.id });
+        await getClient().refetchUser({ userId: user.id });
+        loader.hide();
+    }, []);
+
+    const handleAddMemberToGroup = React.useCallback(() => {
         Modals.showGroupMuptiplePicker(props.router, {
             title: 'Add',
             action: async (groups) => {
@@ -80,15 +96,33 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
 
         if (conversation && conversation.__typename === 'PrivateRoom') {
             builder.action(
-                'Shared media',
+                'Media, files, links',
                 () => props.router.push('SharedMedia', { chatId: conversation.id }),
                 false,
                 require('assets/ic-attach-24.png'),
             );
         }
 
+        if (!user.inContacts && user.id !== myID) {
+            builder.action(
+                'Add to contacts',
+                handleAddMemberToContacts,
+                false,
+                require('assets/ic-invite-24.png'),
+            );
+        }
+
+        if (user.inContacts && user.id !== myID) {
+            builder.action(
+                'Remove from contacts',
+                handleRemoveMemberFromContacts,
+                false,
+                require('assets/ic-invite-off-24.png'),
+            );
+        }
+
         builder.show();
-    }, [user.shortname, user.id]);
+    }, [user.shortname, user.id, user.inContacts]);
 
     const phone = !!user.phone ? formatPhone(user.phone) : undefined;
     const handleContactPress = React.useCallback(async (link: string) => {
@@ -133,9 +167,9 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                     score={
                         !user.isBot && user.audienceSize > 0
                             ? {
-                                value: user.audienceSize,
-                                onPress: handleScorePress,
-                            }
+                                  value: user.audienceSize,
+                                  onPress: handleScorePress,
+                              }
                             : undefined
                     }
                 />
@@ -251,14 +285,31 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                             <ZListItem
                                 leftIcon={require('assets/ic-attach-glyph-24.png')}
                                 text="Media, files, links"
-                                onPress={() => props.router.push('SharedMedia', { chatId: conversation.id })}
+                                onPress={() =>
+                                    props.router.push('SharedMedia', { chatId: conversation.id })
+                                }
                             />
                         )}
                         {SUPER_ADMIN && !user.isBot && (
                             <ZListItem
-                                leftIcon={require('assets/ic-invite-glyph-24.png')}
+                                leftIcon={require('assets/ic-group-glyph-24.png')}
                                 text="Add to groups"
-                                onPress={handleAddMember}
+                                onPress={handleAddMemberToGroup}
+                            />
+                        )}
+                        {!user.inContacts && user.id !== myID && (
+                            <ZListItem
+                                leftIcon={require('assets/ic-invite-glyph-24.png')}
+                                text="Add to contacts"
+                                onPress={handleAddMemberToContacts}
+                            />
+                        )}
+                        {user.inContacts && user.id !== myID && (
+                            <ZListItem
+                                appearance="secondary"
+                                leftIcon={require('assets/ic-invite-off-glyph-24.png')}
+                                text="Remove from contacts"
+                                onPress={handleRemoveMemberFromContacts}
                             />
                         )}
                     </ZListGroup>
