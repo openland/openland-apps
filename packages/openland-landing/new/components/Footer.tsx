@@ -42,20 +42,18 @@ const menu = css`
     margin: 20px -20px;
     left: -10px;
 
-    @media (max-width: 1199px) {
-        margin: 10px -10px;
+    @media (min-width: 768px) and (max-width: 1199px) {
+        margin: 12px -15px;
+        left: -5px;
     }
 
-    @media (min-width: 768px) and (max-width: 1199px) {
-        margin: 10px -15px;
+    @media (max-width: 767px) {
+        margin: 10px -10px;
+        left: 3px;
     }
 
     display: flex;
     flex-wrap: wrap;
-
-    @media (max-width: 767px) {
-        left: 3px;
-    }
 
     top: 3px;
 
@@ -67,12 +65,12 @@ const menuItem = css`
     margin: 20px 31px;
     z-index: 20;
 
-    @media (max-width: 1199px) {
-        margin: 8px;
+    @media (min-width: 768px) and (max-width: 1199px) {
+        margin: 17px 23px;
     }
 
-    @media (min-width: 768px) and (max-width: 1199px) {
-        margin: 15px;
+    @media (max-width: 767px) {
+        margin: 8px;
     }
 `;
 
@@ -86,8 +84,14 @@ const menuLink = css`
     will-change: color;
     transition: color 0.2s;
 
-    @media (max-width: 1199px) {
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 20px;
+        line-height: 40px;
+    }
+
+    @media (max-width: 767px) {
         font-size: 16px;
+        display: block;
     }
 
     &:hover,
@@ -100,10 +104,6 @@ const menuLink = css`
     &:active {
         color: #248bf2;
         transition: color 0.01s;
-    }
-
-    @media (max-width: 767px) {
-        display: block;
     }
 
     cursor: pointer;
@@ -141,6 +141,12 @@ const socialItem = css`
 
     cursor: pointer;
 
+    @media (min-width: 768px) and (max-width: 1199px) {
+        width: 52px;
+        height: 52px;
+        margin: 2px -4px -2px 7px;
+    }
+
     @media (max-width: 767px) {
         background-color: #eaecf0;
     }
@@ -163,6 +169,11 @@ const socialLogo = css`
     display: inline-block;
     position: relative;
     top: 1.5px;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        width: 32px;
+        height: 32px;
+    }
 `;
 
 const apps = css`
@@ -252,6 +263,12 @@ const popupText = css`
     font-weight: 600;
 `;
 
+const hiddenTablet = css`
+@media (min-width: 768px) and (max-width: 1199px) {
+    display: none;
+}
+`;
+
 export const Footer = React.memo(() => {
     const [legalIsOpen, legalSetOpen] = React.useState<boolean>(false);
 
@@ -273,7 +290,7 @@ export const Footer = React.memo(() => {
                                 <XView path={LandingLinks.about}>About</XView>
                             </span>
                         </li>
-                        <li className={menuItem}>
+                        <li className={cx(menuItem, hiddenTablet)}>
                             <span className={menuLink}>
                                 Communities
                             </span>
