@@ -113,7 +113,7 @@ export const Header = React.memo((props: HeaderProps) => {
                     <XView path={LandingLinks.home}>
                         <img
                             className={logo}
-                            src="/static/landing/logo.svg"
+                            src="/static/landing/logo-header-2.svg"
                             width="180"
                             height="60"
                         />

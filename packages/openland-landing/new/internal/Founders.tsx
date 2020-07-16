@@ -5,13 +5,21 @@ import { css, cx } from 'linaria';
 const box = css`
     margin-top: 139px;
 
+    @media (min-width: 768px) and (max-width: 1199px) {
+        margin-top: 80px;
+    }
+
+    @media (max-width: 767px) {
+        margin-top: 60px;
+    }
+
     & > * + * {
         margin-top: 2em;
     }
 `;
 
 let founderRootClass = css`
-    padding: 13px 0 0 150px;
+    padding: 1px 0 0 150px;
     position: relative;
     width: 50%;
     min-height: 116px;
@@ -26,16 +34,12 @@ let founderRootClass = css`
             margin: 0;
         }
     }
-    @media (min-width: 550px) and (max-width: 767px) {
-        margin: 0;
-        width: 50%;
-    }
 `;
 
 let founderPhotoClass = css`
     width: 127px;
     position: absolute;
-    top: 3px;
+    top: 1px;
     left: 0;
 
     margin-right: 10px;
@@ -55,7 +59,7 @@ let founderPhotoClass = css`
 
 let founderNameClass = css`
     color: #1f3449;
-    margin: 0 0 5px;
+    margin: 0 0 8px;
     font-size: 26px;
     line-height: 30px;
     font-weight: 600;
@@ -79,7 +83,7 @@ let founderPositionClass = css`
 
 let founderLinksClass = css`
     display: flex;
-    padding: 18px 0 0;
+    padding: 24px 0 0;
 
     @media (max-width: 767px) {
         padding: 10px 0 0;
@@ -139,6 +143,18 @@ const title = css`
     font-size: 46px;
     line-height: 58px;
     margin: 0 0 28px;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 38px;
+        line-height: 42px;
+        margin: 0 0 20px;
+    }
+
+    @media (max-width: 767px) {    
+        font-size: 30px;
+        line-height: 34px;
+        margin: 0 0 12px;
+    }
 `;
 
 interface FoundersItemProps {

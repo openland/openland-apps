@@ -5,7 +5,7 @@ import { Container } from './Container';
 import { LandingLinks, LandingSocials } from './_links';
 
 const root = css`
-    padding-bottom: 4px;
+    padding-bottom: 6px;
     background: #f7fafc;
 
     @media (max-width: 767px) {
@@ -39,7 +39,8 @@ const logo = css`
 const menu = css`
     list-style-type: none;
     position: relative;
-    margin: 10px -20px;
+    margin: 20px -20px;
+    left: -10px;
 
     @media (max-width: 1199px) {
         margin: 10px -10px;
@@ -52,10 +53,6 @@ const menu = css`
     display: flex;
     flex-wrap: wrap;
 
-    @media (min-width: 1200px) {
-        left: 25px;
-    }
-
     @media (max-width: 767px) {
         left: 3px;
     }
@@ -67,7 +64,7 @@ const menu = css`
 
 const menuItem = css`
     display: inline-block;
-    margin: 20px;
+    margin: 20px 31px;
     z-index: 20;
 
     @media (max-width: 1199px) {
@@ -80,7 +77,8 @@ const menuItem = css`
 `;
 
 const menuLink = css`
-    font-size: 16px;
+    font-size: 26px;
+    line-height: 40px;
     font-weight: 600;
     color: #9393a7;
     position: relative;
@@ -129,14 +127,14 @@ const social = css`
 
 const socialItem = css`
     display: inline-block;
-    margin: 5px;
-    width: 36px;
-    height: 36px;
+    width: 64px;
+    height: 64px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     border-radius: 100%;
     background-color: transparent;
+    margin: 2px 6px -2px 0;
 
     will-change: background-color;
     transition: background-color 0.2s;
@@ -202,9 +200,9 @@ const popup = css`
 
     position: absolute;
     flex-direction: column;
-    width: 160px;
+    width: 170px;
 
-    bottom: 50px;
+    bottom: 76px;
 
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
     border-radius: 8px;
@@ -226,7 +224,7 @@ const popup = css`
 
 const popupItem = css`
     line-height: 40px;
-    padding: 0 20px;
+    padding: 0 16px;
 
     display: flex;
     align-items: center;
@@ -251,6 +249,7 @@ const popupItem = css`
 
 const popupText = css`
     font-size: 16px;
+    font-weight: 600;
 `;
 
 export const Footer = React.memo(() => {
@@ -263,9 +262,9 @@ export const Footer = React.memo(() => {
                     <XView path={LandingLinks.home}>
                         <img
                             className={logo}
-                            src="/static/landing/logo-footer.svg"
-                            width="120"
-                            height="37"
+                            src="/static/landing/logo-footer-2.svg"
+                            width="51"
+                            height="60"
                         />
                     </XView>
                     <ul className={menu}>
@@ -326,8 +325,8 @@ export const Footer = React.memo(() => {
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/1.svg"
-                                        width="24"
-                                        height="24"
+                                        width="40"
+                                        height="40"
                                     />
                                 </a>
                             </li>
@@ -336,8 +335,8 @@ export const Footer = React.memo(() => {
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/2.svg"
-                                        width="24"
-                                        height="24"
+                                        width="40"
+                                        height="40"
                                     />
                                 </a>
                             </li>
