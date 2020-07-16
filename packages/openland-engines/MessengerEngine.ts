@@ -92,7 +92,7 @@ export class MessengerEngine {
         this.wallet = new WalletEngine(this);
 
         // Contacts
-        this.contacts = new ContactsEngine();
+        this.contacts = new ContactsEngine(this);
 
         // Starting
         this.loadingPromise = this.loadingSequence();
