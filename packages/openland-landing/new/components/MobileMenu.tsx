@@ -75,15 +75,6 @@ const blue = css`
     }
 `;
 
-const appsHeading = css`
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 17px;
-    color: #9393a7;
-    margin-left: 20px;
-`;
-
 const apps = css`
     display: grid;
     grid-template-columns: auto auto;
