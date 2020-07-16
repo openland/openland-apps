@@ -59,7 +59,7 @@ export const ThemeProvider = (props: { children?: any }) => {
     );
 };
 
-export const useThemeGlobal = () => {
+export const useThemeGlobal = (callImmediately: boolean = true) => {
     let [theme, setTheme] = React.useState(resolveTheme(ThemeController.appearance));
 
     React.useEffect(() => {
@@ -67,7 +67,7 @@ export const useThemeGlobal = () => {
             let r = resolveTheme(t);
             // SStatusBar.setBarStyle(r.statusBar);
             setTheme(r);
-        }, false);
+        }, callImmediately);
     }, []);
 
     return theme;
