@@ -35,7 +35,10 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
         const loader = Toast.loader();
         loader.show();
         await getClient().mutateAddToContacts({ userId: user.id });
-        await getClient().refetchUser({ userId: user.id });
+        await Promise.all([
+            getClient().refetchUser({ userId: user.id }),
+            getClient().refetchMyContacts({ first: 10 })
+        ]);
         loader.hide();
     }, []);
 
@@ -43,7 +46,10 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
         const loader = Toast.loader();
         loader.show();
         await getClient().mutateRemoveFromContacts({ userId: user.id });
-        await getClient().refetchUser({ userId: user.id });
+        await Promise.all([
+            getClient().refetchUser({ userId: user.id }),
+            getClient().refetchMyContacts({ first: 10 })
+        ]);
         loader.hide();
     }, []);
 
