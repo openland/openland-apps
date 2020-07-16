@@ -13,6 +13,6 @@ internal val UserNanoSelector = obj(
 val UserNano = object: OperationDefinition {
     override val name = "UserNano"
     override val kind = OperationKind.QUERY
-    override val body = "query UserNano(\$id:ID!){user(id:\$id){__typename ...UserForMention}}fragment UserForMention on User{__typename id name photo shortname isBot primaryOrganization{__typename id name}}"
+    override val body = "query UserNano(\$id:ID!){user(id:\$id){__typename ...UserForMention}}fragment UserForMention on User{__typename id name photo shortname isBot inContacts primaryOrganization{__typename id name}}"
     override val selector = UserNanoSelector
 }

@@ -19,6 +19,7 @@ import { EngineOptions } from './EnginesOptions';
 import { InMemoryKeyValueStore } from 'openland-y-utils/InMemoryKeyValueStore';
 import { MessagesActionsStateEngine } from './messenger/MessagesActionsState';
 import { WalletEngine } from './wallet/WalletEngine';
+import { ContactsEngine } from './contacts/ContactsEngine';
 
 const log = createLogger('Engine');
 
@@ -37,6 +38,7 @@ export class MessengerEngine {
     readonly forwardBuffer = new Map<string, DataSourceMessageItem[]>();
     readonly activeConversations = new Map<string, ConversationEngine>();
     readonly wallet: WalletEngine;
+    readonly contacts: ContactsEngine;
     private readonly createEntityState: CreateEntityEngine;
     private readonly activeUserConversations = new Map<string, ConversationEngine>();
     private readonly mountedConversations = new Map<string, { count: number; unread: number }>();
@@ -88,6 +90,9 @@ export class MessengerEngine {
 
         // Wallet
         this.wallet = new WalletEngine(this);
+
+        // Contacts
+        this.contacts = new ContactsEngine();
 
         // Starting
         this.loadingPromise = this.loadingSequence();

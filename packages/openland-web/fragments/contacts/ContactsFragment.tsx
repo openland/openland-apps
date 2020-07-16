@@ -79,7 +79,7 @@ export const ContactsFragment = React.memo(() => {
     // TODO: when import is ready
     const didImportContacts = true;
     const isSearching = query.trim().length > 0;
-    const { items } = client.useMyContacts({ first: 20 }).myContacts;
+    const { items } = client.useMyContacts({ first: 20 }, { fetchPolicy: 'network-only' }).myContacts;
     const { selectedIndex, setSelectedIndex, handleMouseOver, handleMouseMove } = useListSelection({ maxIndex: items.length - 1 });
 
     const dataSourceRef = React.useRef<DataSource<ContactDataSourceItem>>(new DataSource(() => [], () => []));

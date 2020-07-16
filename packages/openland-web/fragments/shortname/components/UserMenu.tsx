@@ -24,10 +24,12 @@ interface UserMenuProps {
 const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperController, toastHandlers: UToastHandlers }) => {
     const engine = React.useContext(MessengerContext);
     const { ctx, user, toastHandlers } = props;
-    const { id, shortname } = user;
+    const { id, shortname, inContacts } = user;
     const builder = new UPopperMenuBuilder();
     const client = useClient();
     const [deleted, setDelete] = React.useState(false);
+    const { useIsUserContact, addUser, removeUser } = engine.contacts;
+    const isUserContact = useIsUserContact(id, inContacts);
 
     builder.item({
         title: 'Copy link',
@@ -52,13 +54,18 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
 
     const contactsEnabled = false;
 
-    if (contactsEnabled && props.chat && props.chat.__typename === 'PrivateRoom' && id !== engine.user.id) {
-        const isContact = true;
+    if (contactsEnabled && id !== engine.user.id) {
         builder.item({
-            title: isContact ? 'Remove from contacts' : 'Save to contacts',
-            icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,
+            title: isUserContact ? 'Remove from contacts' : 'Save to contacts',
+            icon: isUserContact ? <RemoveContactIcon /> : <AddContactIcon />,
             onClick: async () => {
-                // handle contact
+                if (isUserContact) {
+                    removeUser(id);
+                    client.mutateRemoveFromContacts({ userId: id });
+                } else {
+                    addUser(id);
+                    client.mutateAddToContacts({ userId: id });
+                }
             },
         });
     }
