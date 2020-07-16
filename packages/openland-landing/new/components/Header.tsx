@@ -27,6 +27,10 @@ const header = css`
 const logo = css`
     cursor: pointer;
     margin: 0 0 -4px;
+
+    @media (max-width: 767px) {
+        width: 157px; height: 54px;
+    }
 `;
 
 const menu = css`
