@@ -9,8 +9,8 @@ const root = css`
     background: #f7fafc;
 
     @media (max-width: 767px) {
+        padding-top: 25px;
         padding-bottom: 30px;
-        padding-top: 30px;
     }
 `;
 
@@ -18,11 +18,12 @@ const footer = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
 
     @media (max-width: 767px) {
         flex-direction: column;
         align-items: flex-start;
-        width: 360px;
+        width: 288px;
         margin: 0 auto;
     }
 `;
@@ -31,7 +32,16 @@ const logo = css`
     cursor: pointer;
 
     @media (max-width: 767px) {
+        display: none;
+    }
+`;
+
+const logoMobile = css`
+    display: none;
+
+    @media (max-width: 767px) {
         position: relative;
+        display: block;
         left: -5px;
     }
 `;
@@ -49,7 +59,8 @@ const menu = css`
 
     @media (max-width: 767px) {
         margin: 10px -10px;
-        left: 3px;
+        left: 0;
+        align-self: center;
     }
 
     display: flex;
@@ -70,7 +81,7 @@ const menuItem = css`
     }
 
     @media (max-width: 767px) {
-        margin: 8px;
+        margin: -2px 15px;
     }
 `;
 
@@ -121,7 +132,9 @@ const social = css`
     }
 
     @media (max-width: 767px) {
-        margin-left: -5px;
+        position: absolute;
+        top: 1px; right: -1px;
+        margin: 0;
     }
 `;
 
@@ -148,7 +161,9 @@ const socialItem = css`
     }
 
     @media (max-width: 767px) {
-        background-color: #eaecf0;
+        width: 36px;
+        height: 36px;
+        margin: 0 0 0 12px;
     }
 
     &:hover,
@@ -156,10 +171,6 @@ const socialItem = css`
     &:active {
         background-color: #eaecf0;
         transition: background-color 0.01s;
-    }
-
-    @media (max-width: 767px) {
-        margin: 10px;
     }
 `;
 
@@ -170,10 +181,15 @@ const socialLogo = css`
     position: relative;
     top: 1.5px;
 
-    @media (min-width: 768px) and (max-width: 1199px) {
-        width: 32px;
-        height: 32px;
-    }
+@media (min-width: 768px) and (max-width: 1199px) {
+    width: 32px;
+    height: 32px;
+}
+
+@media (max-width: 767px) {
+    width: 24px;
+    height: 24px;
+}
 `;
 
 const apps = css`
@@ -195,6 +211,10 @@ const links = css`
     display: flex;
     flex-direction: column;
     margin: -5px;
+
+    @media (max-width: 767px) {
+        align-self: center;
+    }
 `;
 
 const menuItemWrapper = css`
@@ -263,10 +283,10 @@ const popupText = css`
     font-weight: 600;
 `;
 
-const hiddenTablet = css`
-@media (min-width: 768px) and (max-width: 1199px) {
-    display: none;
-}
+const hiddenSmall = css`
+    @media (max-width: 1199px) {
+        display: none;
+    }
 `;
 
 export const Footer = React.memo(() => {
@@ -283,6 +303,12 @@ export const Footer = React.memo(() => {
                             width="51"
                             height="60"
                         />
+                        <img
+                            className={logoMobile}
+                            src="/static/landing/logo-header-2.svg"
+                            width="120"
+                            height="37"
+                        />
                     </XView>
                     <ul className={menu}>
                         <li className={menuItem}>
@@ -290,7 +316,7 @@ export const Footer = React.memo(() => {
                                 <XView path={LandingLinks.about}>About</XView>
                             </span>
                         </li>
-                        <li className={cx(menuItem, hiddenTablet)}>
+                        <li className={cx(menuItem, hiddenSmall)}>
                             <span className={menuLink}>
                                 Communities
                             </span>
