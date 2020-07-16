@@ -476,6 +476,7 @@ internal val UserShortSelector = obj(
             field("lastSeen", "lastSeen", scalar("String")),
             field("isBot", "isBot", notNull(scalar("Boolean"))),
             field("shortname", "shortname", scalar("String")),
+            field("inContacts", "inContacts", notNull(scalar("Boolean"))),
             field("primaryOrganization", "primaryOrganization", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationShortSelector)
@@ -1460,6 +1461,7 @@ internal val UserFullSelector = obj(
             field("facebook", "facebook", scalar("String")),
             field("shortname", "shortname", scalar("String")),
             field("audienceSize", "audienceSize", notNull(scalar("Int"))),
+            field("inContacts", "inContacts", notNull(scalar("Boolean"))),
             field("primaryOrganization", "primaryOrganization", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationShortSelector)

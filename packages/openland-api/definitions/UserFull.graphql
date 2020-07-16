@@ -18,6 +18,7 @@ fragment UserFull on User {
     facebook
     shortname
     audienceSize
+    inContacts
     primaryOrganization {
         ...OrganizationShort
     }
