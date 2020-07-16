@@ -272,7 +272,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
             <UListHeader
                 text="Members"
                 counter={membersCount || 0}
-                rightElement={(
+                rightElement={undefined && (
                     <USearchInput
                         placeholder="Search"
                         rounded={true}
