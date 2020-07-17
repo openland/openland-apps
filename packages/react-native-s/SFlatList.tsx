@@ -9,14 +9,14 @@ export interface SFlatListProps<T> extends FlatListProps<T> {
     safeAreaViaMargin?: boolean;
 }
 
+export const RenderLoader = React.memo(() => (
+    <View height={56} alignItems="center" justifyContent="center">
+        <LoaderSpinner />
+    </View>
+));
+
 export class SFlatList<T> extends React.Component<SFlatListProps<T>> {
     private contentOffset = new STrackedValue();
-
-    renderLoader = (
-        <View height={56} alignItems="center" justifyContent="center">
-            <LoaderSpinner />
-        </View>
-    );
 
     render() {
         let { safeAreaViaMargin, legacyImplementation, onEndReachedThreshold, refreshing, ListFooterComponent, ...other } = this.props;
@@ -50,7 +50,7 @@ export class SFlatList<T> extends React.Component<SFlatListProps<T>> {
                                 legacyImplementation={true}
                                 onEndReachedThreshold={1}
                                 refreshing={refreshing}
-                                ListFooterComponent={refreshing ? this.renderLoader : ListFooterComponent}
+                                ListFooterComponent={refreshing ? <RenderLoader/> : ListFooterComponent}
                             />
                         );
                     }}

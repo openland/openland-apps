@@ -19,9 +19,10 @@ import { useClient } from 'openland-api/useClient';
 import ActionSheet, { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import Toast from 'openland-mobile/components/Toast';
 import Alert from 'openland-mobile/components/AlertBlanket';
+import { SDeferred } from 'react-native-s/SDeferred';
 import { NotificationSettings } from './components/NotificationSetting';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { SFlatList } from 'react-native-s/SFlatList';
+import { SFlatList, RenderLoader } from 'react-native-s/SFlatList';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';
 import { trackEvent } from 'openland-mobile/analytics';
@@ -29,25 +30,80 @@ import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { SUPER_ADMIN } from '../Init';
 
+interface ProfileGroupUsersListProps {
+    roomId: string;
+    membersCount: number;
+    setMembers: React.Dispatch<React.SetStateAction<RoomMembersPaginated_members[]>>;
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    members: RoomMembersPaginated_members[];
+    loading: boolean;
+}
+
+interface ProfileGroupUsersListRef {
+    handleLoadMore: () => Promise<void>;
+}
+
+const ProfileGroupUsersList = React.forwardRef(
+    (props: ProfileGroupUsersListProps, ref: React.Ref<ProfileGroupUsersListRef>) => {
+        const client = useClient();
+        const initialMembers = client.useRoomMembersPaginated(
+            { roomId: props.roomId, first: 10 },
+            { fetchPolicy: 'network-only' },
+        ).members;
+
+        React.useEffect(() => {
+            if (!props.members.length) {
+                props.setMembers(initialMembers);
+            }
+        }, [initialMembers]);
+
+        const handleLoadMore = React.useCallback(async () => {
+            if (props.members.length < (props.membersCount || 0) && !props.loading) {
+                props.setLoading(true);
+
+                const loaded = (
+                    await client.queryRoomMembersPaginated(
+                        {
+                            roomId: props.roomId,
+                            first: 10,
+                            after: props.members[props.members.length - 1].user.id,
+                        },
+                        { fetchPolicy: 'network-only' },
+                    )
+                ).members;
+
+                props.setMembers((current) => [
+                    ...current,
+                    ...loaded.filter((m) => !current.find((m2) => m2.user.id === m.user.id)),
+                ]);
+                props.setLoading(false);
+            }
+        }, [props.roomId, props.members, props.loading]);
+
+        React.useImperativeHandle(ref, () => ({
+            handleLoadMore: handleLoadMore,
+        }));
+
+        return null;
+    },
+);
+
 const ProfileGroupComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const client = useClient();
     const roomId = props.router.params.id;
 
-    const room = client.useRoomChat({ id: roomId }, { fetchPolicy: 'cache-and-network' })
-        .room as RoomChat_room_SharedRoom;
-    const initialMembers = client.useRoomMembersPaginated(
-        { roomId: roomId, first: 10 },
-        { fetchPolicy: 'network-only' },
-    ).members;
+    const profilesRef = React.useRef<ProfileGroupUsersListRef>(null);
+
+    const room = client.useRoomChat({ id: roomId }, { fetchPolicy: 'cache-and-network' }).room as RoomChat_room_SharedRoom;
 
     const typeString = room.isChannel ? 'channel' : 'group';
-    const [members, setMembers] = React.useState(initialMembers);
+    const [members, setMembers] = React.useState<RoomMembersPaginated_members[]>([]);
     const [loading, setLoading] = React.useState(false);
 
     React.useEffect(() => {
         members.map((u) => u.user.id).map(getMessenger().engine.getOnlines().onUserAppears);
-    }, members);
+    }, [members]);
 
     // callbacks
     const handleAddMembers = React.useCallback(
@@ -274,25 +330,8 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     }, [room]);
 
     const handleLoadMore = React.useCallback(async () => {
-        if (members.length < (room.membersCount || 0) && !loading) {
-            setLoading(true);
-
-            const loaded = (
-                await client.queryRoomMembersPaginated(
-                    {
-                        roomId,
-                        first: 10,
-                        after: members[members.length - 1].user.id,
-                    },
-                    { fetchPolicy: 'network-only' },
-                )
-            ).members;
-
-            setMembers((current) => [
-                ...current,
-                ...loaded.filter((m) => !current.find((m2) => m2.user.id === m.user.id)),
-            ]);
-            setLoading(false);
+        if (profilesRef.current) {
+            await profilesRef.current.handleLoadMore();
         }
     }, [room, roomId, members, loading]);
 
@@ -425,16 +464,34 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                         badge={item.badge}
                         user={item.user}
                         onLongPress={() =>
-                            handleMemberLongPress(item, item.canKick, room.role === 'OWNER' || room.role === 'ADMIN' || SUPER_ADMIN)
+                            handleMemberLongPress(
+                                item,
+                                item.canKick,
+                                room.role === 'OWNER' || room.role === 'ADMIN' || SUPER_ADMIN,
+                            )
                         }
                         onPress={() => props.router.push('ProfileUser', { id: item.user.id })}
                     />
                 )}
                 keyExtractor={(item, index) => index + '-' + item.user.id}
                 ListHeaderComponent={content}
+                ListFooterComponent={members.length === room.membersCount ? undefined : <RenderLoader/>}
                 onEndReached={handleLoadMore}
                 refreshing={loading}
             />
+            <React.Suspense fallback={null}>
+                <SDeferred>
+                    <ProfileGroupUsersList
+                        loading={loading}
+                        members={members}
+                        membersCount={room.membersCount}
+                        roomId={room.id}
+                        setLoading={setLoading}
+                        setMembers={setMembers}
+                        ref={profilesRef}
+                    />
+                </SDeferred>
+            </React.Suspense>
         </>
     );
 });
