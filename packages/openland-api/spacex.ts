@@ -1534,6 +1534,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateAddStickerComment(variables: Types.AddStickerCommentVariables, params?: MutationParameters): Promise<Types.AddStickerComment> {
         return this.mutate('AddStickerComment', variables, params);
     }
+    mutateAddToContacts(variables: Types.AddToContactsVariables, params?: MutationParameters): Promise<Types.AddToContacts> {
+        return this.mutate('AddToContacts', variables, params);
+    }
     mutateBetaDiscoverSkip(variables: Types.BetaDiscoverSkipVariables, params?: MutationParameters): Promise<Types.BetaDiscoverSkip> {
         return this.mutate('BetaDiscoverSkip', variables, params);
     }
@@ -1734,6 +1737,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateRemoveCard(variables: Types.RemoveCardVariables, params?: MutationParameters): Promise<Types.RemoveCard> {
         return this.mutate('RemoveCard', variables, params);
+    }
+    mutateRemoveFromContacts(variables: Types.RemoveFromContactsVariables, params?: MutationParameters): Promise<Types.RemoveFromContacts> {
+        return this.mutate('RemoveFromContacts', variables, params);
     }
     mutateReportContent(variables: Types.ReportContentVariables, params?: MutationParameters): Promise<Types.ReportContent> {
         return this.mutate('ReportContent', variables, params);

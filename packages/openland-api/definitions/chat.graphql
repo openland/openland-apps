@@ -58,6 +58,7 @@ query RoomChat($id: ID!) {
                 firstName
                 photo
                 shortname
+                inContacts
                 primaryOrganization {
                     id
                     name

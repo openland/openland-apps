@@ -15,7 +15,7 @@ export interface AsyncServiceMessageProps {
 
 export const AsyncServiceMessage = (props: AsyncServiceMessageProps) => {
     const { message, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress } = props;
-    const theme = useThemeGlobal();
+    const theme = useThemeGlobal(false);
     let parts = renderPreprocessedText(message.textSpans, message, theme, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress);
 
     return (

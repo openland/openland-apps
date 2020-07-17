@@ -14,11 +14,38 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { SDeferred } from 'react-native-s/SDeferred';
+import Toast from 'openland-mobile/components/Toast';
 import { MyContacts_myContacts_items_user } from 'openland-api/spacex.types';
+
+// class ContactsManagerImpl {
+//     private contacts: Map<string, MyContacts_myContacts_items_user> = new Map;
+//     private cursor: string | null = null;
+//
+//     removeFromContacts(uId: string) {
+//         this.contacts.delete(uId);
+//     }
+//     addToContacts(uId: string, user: MyContacts_myContacts_items_user) {
+//         this.contacts.set(uId, user);
+//     }
+//     getContacts() {
+//         return Array.from(this.contacts.values());
+//     }
+//     setCursor(cursor: string | null) {
+//         this.cursor = cursor;
+//     }
+//     getCursor() {
+//         return this.cursor;
+//     }
+// }
+//
+// let contactsManager = new ContactsManagerImpl();
+//
+// export const useContactsManager = () => {
+//     return contactsManager;
+// };
 
 const ContactsStub = React.memo(() => {
     let theme = React.useContext(ThemeContext);
-
     return (
         <ASSafeAreaView
             flexGrow={1}
@@ -58,50 +85,69 @@ const ContactsStub = React.memo(() => {
 
 const ContactsList = React.memo((props: PageProps) => {
     const client = getClient();
-    const initialContacts = client.useMyContacts({ first: 20 }, { fetchPolicy: 'network-only' }).myContacts;
+    const initialContacts = client.useMyContacts({ first: 10 }, { fetchPolicy: 'network-only' }).myContacts;
     const [contacts, setContacts] = React.useState(initialContacts.items);
+    const [cursor, setCursor] = React.useState(initialContacts.cursor);
     const [loading, setLoading] = React.useState(false);
-    const [loadedFull, setLoadedFull] = React.useState(false);
 
-    const handleContactLongPress = React.useCallback(
-        (user: MyContacts_myContacts_items_user) => {
-            const builder = ActionSheet.builder();
-            builder.cancelable(false);
-            builder.action(
-                'Send message',
-                () => props.router.push('Conversation', { id: user.id }),
-                false,
-                require('assets/ic-message-24.png'),
-            );
+    // React.useLayoutEffect(() => {
+    //     const filtered = initialContacts.items.filter((i) => i.user.inContacts);
+    //     setContacts(filtered);
+    //     setCursor(initialContacts.cursor);
+    // }, [initialContacts]);
 
-            builder.show(true);
-        },
-        [],
-    );
+    const handleRemoveMemberFromContacts = React.useCallback(async (userId: string) => {
+        const loader = Toast.loader();
+        loader.show();
+        await client.mutateRemoveFromContacts({ userId: userId });
+        await Promise.all([
+            client.refetchMyContacts({ first: 10 }),
+            client.refetchUser({ userId: userId }),
+        ]);
+        loader.hide();
+    }, []);
+
+    const handleContactLongPress = React.useCallback((user: MyContacts_myContacts_items_user) => {
+        const builder = ActionSheet.builder();
+        builder.cancelable(false);
+        builder.action(
+            'Send message',
+            () => props.router.push('Conversation', { id: user.id }),
+            false,
+            require('assets/ic-message-24.png'),
+        );
+
+        builder.action(
+            'Remove from contacts',
+            () => handleRemoveMemberFromContacts(user.id),
+            false,
+            require('assets/ic-invite-off-24.png'),
+        );
+
+        builder.show(true);
+    }, []);
 
     const handleLoadMore = React.useCallback(async () => {
-        if (contacts.length && !loading && !loadedFull) {
+        if (cursor && !loading) {
             setLoading(true);
             const loaded = (
-                await client.queryMyContacts(
-                    {
-                        first: 10,
-                        after: initialContacts.cursor,
-                    },
-                    { fetchPolicy: 'network-only' },
-                )
+                await client.queryMyContacts({
+                    first: 20,
+                    after: cursor,
+                })
             ).myContacts;
 
-            setContacts((current) => [
-                ...current,
-                ...loaded.items.filter(c => !current.find(c2 => c2.user.id === c.user.id)),
-            ]);
-            if (!loaded.cursor) {
-                setLoadedFull(true);
-            }
+            const filtered = loaded.items.filter((i) => i.user.inContacts);
+
+            const newContacts = [
+                ...contacts,
+                ...filtered,
+            ];
+            setContacts(newContacts);
+            setCursor(loaded.cursor);
             setLoading(false);
         }
-    }, [contacts, loading, loadedFull]);
+    }, [cursor, loading]);
 
     return (
         <SFlatList
@@ -124,8 +170,20 @@ const ContactsList = React.memo((props: PageProps) => {
 const ContactsPage = React.memo((props: PageProps) => {
     const client = getClient();
     const contacts = client.useMyContacts({ first: 1 }, { fetchPolicy: 'network-only' }).myContacts.items;
-    const isEmpty = contacts.length === 0;
+
+    const [isEmpty, setIsEmpty] = React.useState(contacts.length === 0);
+
+    React.useLayoutEffect(() => {
+        const filter = contacts.filter((i) => i.user.inContacts);
+        if (!filter.length) {
+            setIsEmpty(true);
+        } else {
+            setIsEmpty(false);
+        }
+    }, [contacts]);
+
     const content = isEmpty ? <ContactsStub /> : <ContactsList {...props} />;
+
     return (
         <>
             <SHeader title="Contacts" />

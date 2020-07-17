@@ -57,6 +57,7 @@ const notificationUnsupported = (id: string): NotificationsDataSourceItem => {
                 photo: 'https://ucarecdn.com/db12b7df-6005-42d9-87d6-46f15dd5b880/',
                 isBot: false,
                 shortname: null,
+                inContacts: false,
                 primaryOrganization: null,
             },
             source: null,

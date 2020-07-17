@@ -2,6 +2,14 @@ mutation PhonebookAdd($records: [PhonebookRecordInput!]!) {
     phonebookAdd(records: $records)
 }
 
+mutation AddToContacts($userId: ID!) {
+    addToContacts(userId: $userId)
+}
+
+mutation RemoveFromContacts($userId: ID!) {
+    removeFromContacts(userId: $userId)
+}
+
 query MyContacts($first: Int!, $after: String) {
     myContacts(first: $first, after: $after) {
         items {

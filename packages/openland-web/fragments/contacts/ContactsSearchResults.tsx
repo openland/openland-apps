@@ -3,12 +3,12 @@ import { css, cx } from 'linaria';
 import { XView, XViewRouteContext } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
-import { GlobalSearch_items, MyContacts_myContacts_items_user } from 'openland-api/spacex.types';
+import { GlobalSearch_items } from 'openland-api/spacex.types';
 import { UIconSelectable } from 'openland-web/components/unicorn/UIcon';
 import ChatIcon from 'openland-icons/s/ic-message-24.svg';
-import { DataSourceItem } from 'openland-y-utils/DataSource';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { useClient } from 'openland-api/useClient';
+import { ContactDataSourceItem } from 'openland-engines/contacts/ContactsEngine';
 
 const noResultContainer = css`
     display: flex;
@@ -52,8 +52,6 @@ export const ContactsSearchEmptyView = React.memo(() => (
         <XView color="rgba(0, 0, 0, 0.5)">No results</XView>
     </div>
 ));
-
-export type ContactDataSourceItem = MyContacts_myContacts_items_user & DataSourceItem;
 
 interface ListNavigationProps {
     selectedIndex: number;

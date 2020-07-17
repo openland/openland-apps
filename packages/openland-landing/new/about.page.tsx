@@ -8,18 +8,14 @@ import { Container } from './components/Container';
 import { css } from 'linaria';
 
 const box = css`
-    padding: 112px 0 146px;
+    padding: 112px 0 149px;
 
     @media (min-width: 768px) and (max-width: 1199px) {
-        padding: 70px 0;
+        padding: 70px 0 90px;
     }
 
-    @media (min-width: 400px) and (max-width: 767px) {
-        padding: 40px 0;
-    }
-
-    @media (max-width: 399px) {
-        padding: 20px 0;
+    @media (max-width: 767px) {
+        padding: 20px 0 60px;
     }
 `;
 
@@ -29,6 +25,18 @@ const heading = css`
     line-height: 100px;
     text-align: center;
     margin: 0 0 20px;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 62px;
+        line-height: 66px;
+        margin: 0 0 14px;
+    }
+
+    @media (max-width: 767px) {
+        font-size: 46px;
+        line-height: 46px;
+        margin: 0 0 14px;
+    }
 `;
 
 const subheading = css`
@@ -37,6 +45,18 @@ const subheading = css`
     line-height: 52px;
     text-align: center;
     margin: 0 0 40px;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 28px;
+        line-height: 46px;
+        margin: 0 0 26px;
+    }
+
+    @media (max-width: 767px) {
+        font-size: 22px;
+        line-height: 30px;
+        margin: 0 0 20px;
+    }
 `;
 
 const text = css`
@@ -50,14 +70,13 @@ const text = css`
 
     @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 20px;
+        line-height: 34px;
+        margin: 0 0 10px;
     }
 
-    @media (min-width: 400px) and (max-width: 767px) {
-        font-size: 18px;
-    }
-
-    @media (max-width: 399px) {
+    @media (max-width: 767px) {
         font-size: 16px;
+        line-height: 28px;
     }
 `;
 

@@ -27,12 +27,8 @@ const feature = css`
         padding: 30px;
     }
 
-    @media (min-width: 400px) and (max-width: 767px) {
-        padding: 35px 25px;
-    }
-
-    @media (max-width: 399px) {
-        padding: 30px 40px;
+    @media (max-width: 767px) {
+        padding: 20px 30px;
     }
 `;
 
@@ -51,14 +47,10 @@ const name = css`
     font-weight: 600;
 
     @media (min-width: 768px) and (max-width: 1199px) {
-        font-size: 24px;
-    }
-
-    @media (max-width: 1199px) {
         font-size: 20px;
     }
 
-    @media (min-width: 400px) and (max-width: 767px) {
+    @media (max-width: 767px) {
         font-size: 18px;
     }
 `;
@@ -72,12 +64,9 @@ const text = css`
         font-size: 20px;
     }
 
-    @media (min-width: 400px) and (max-width: 767px) {
-        font-size: 18px;
-    }
-
-    @media (max-width: 399px) {
+    @media (max-width: 767px) {
         font-size: 16px;
+        line-height: 26px;
     }
 `;
 
@@ -94,11 +83,7 @@ const link = css`
         font-size: 20px;
     }
 
-    @media (min-width: 400px) and (max-width: 767px) {
-        font-size: 18px;
-    }
-
-    @media (max-width: 399px) {
+    @media (max-width: 767px) {
         font-size: 16px;
     }
 
@@ -142,6 +127,18 @@ const title = css`
     font-size: 46px;
     line-height: 58px;
     margin: 0 0 28px;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 38px;
+        line-height: 42px;
+        margin: 0 0 20px;
+    }
+
+    @media (max-width: 767px) {    
+        font-size: 30px;
+        line-height: 34px;
+        margin: 0 0 12px;
+    }
 `;
 
 interface FeatureProps {

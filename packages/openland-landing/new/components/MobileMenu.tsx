@@ -16,13 +16,14 @@ const mobileMenuTrigger = css`
     display: none;
 
     @media (max-width: 767px) {
-        display: initial;
+        display: block;
+        margin-top: 10px;
     }
 `;
 
 const mobileMenuInner = css`
     position: fixed;
-    background-color: white;
+    background-color: #F7FAFC;
     top: 0;
     bottom: 0;
     left: 0;
@@ -33,8 +34,7 @@ const mobileMenuHeader = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px;
-    padding-top: 16px;
+    padding: 12px 16px 20px;
 `;
 
 const mobileMenuClose = css`
@@ -75,15 +75,6 @@ const blue = css`
     }
 `;
 
-const appsHeading = css`
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 17px;
-    color: #9393a7;
-    margin-left: 20px;
-`;
-
 const apps = css`
     display: grid;
     grid-template-columns: auto auto;
@@ -109,9 +100,9 @@ export const MobileMenu = React.memo(() => {
                     <div className={mobileMenuHeader}>
                         <img
                             className={logo}
-                            src="/static/landing/logo.svg"
-                            width="155"
-                            height="48"
+                            src="/static/landing/logo-header-2.svg"
+                            width="157"
+                            height="54"
                         />
                         <span
                             className={mobileMenuClose}
@@ -129,15 +120,9 @@ export const MobileMenu = React.memo(() => {
                     <ul className={mobileMenuList}>
                         <li className={mobileMenuItem}>
                             <span className={mobileMenuLink}>
-                                <XView path={LandingLinks.discover}>Discover</XView>
+                                <XView path={LandingLinks.home}>Home</XView>
                             </span>
                         </li>
-                        <li className={mobileMenuItem}>
-                            <span className={mobileMenuLink}>
-                                <XView path={LandingLinks.creators}>Creators</XView>
-                            </span>
-                        </li>
-
                         <li className={mobileMenuItem}>
                             <span className={mobileMenuLink}>
                                 <XView path={LandingLinks.about}>About</XView>
@@ -145,12 +130,17 @@ export const MobileMenu = React.memo(() => {
                         </li>
                         <li className={mobileMenuItem}>
                             <span className={mobileMenuLink}>
-                                <XView path={LandingLinks.careers}>Careers</XView>
+                                <XView path={LandingLinks.home}>Communities</XView>
                             </span>
                         </li>
                         <li className={mobileMenuItem}>
                             <span className={mobileMenuLink}>
                                 <XView path={LandingLinks.support}>Support</XView>
+                            </span>
+                        </li>
+                        <li className={mobileMenuItem}>
+                            <span className={mobileMenuLink}>
+                                <XView path={LandingLinks.careers}>Careers</XView>
                             </span>
                         </li>
                     </ul>
@@ -163,14 +153,12 @@ export const MobileMenu = React.memo(() => {
                         </li>
                         <li className={mobileMenuItem}>
                             <span className={mobileMenuLink}>
-                                <XView path={LandingLinks.signin}>Login</XView>
+                                <XView path={LandingLinks.signin}>Sign in</XView>
                             </span>
                         </li>
                     </ul>
 
                     <div className={mobileMenuFooter}>
-                        <h2 className={appsHeading}>Install the app</h2>
-
                         <div className={apps}>
                             <a href={LandingLinks.apps.ios}>
                                 <img

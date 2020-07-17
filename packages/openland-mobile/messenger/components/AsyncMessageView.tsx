@@ -49,7 +49,7 @@ export interface AsyncMessageViewProps {
 type SendingIndicatorT = 'pending' | 'sending' | 'sent' | 'hide';
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
-    const theme = useThemeGlobal();
+    const theme = useThemeGlobal(false);
     const { conversationId, message, engine, onMessageDoublePress, onMessagePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress, onHashtagPress } = props;
     const { isOut, attachTop, attachBottom, commentsCount, reactions, sender, isSending, overrideAvatar, overrideName } = message;
 

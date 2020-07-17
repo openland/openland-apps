@@ -119,6 +119,7 @@ object Operations {
         if (name == "AddAppToChat") return AddAppToChat
         if (name == "AddComment") return AddComment
         if (name == "AddStickerComment") return AddStickerComment
+        if (name == "AddToContacts") return AddToContacts
         if (name == "BetaDiscoverSkip") return BetaDiscoverSkip
         if (name == "BetaNextDiscoverReset") return BetaNextDiscoverReset
         if (name == "BetaSubmitNextDiscover") return BetaSubmitNextDiscover
@@ -186,6 +187,7 @@ object Operations {
         if (name == "RegisterPush") return RegisterPush
         if (name == "RegisterWebPush") return RegisterWebPush
         if (name == "RemoveCard") return RemoveCard
+        if (name == "RemoveFromContacts") return RemoveFromContacts
         if (name == "ReportContent") return ReportContent
         if (name == "ReportOnline") return ReportOnline
         if (name == "RoomAddMembers") return RoomAddMembers

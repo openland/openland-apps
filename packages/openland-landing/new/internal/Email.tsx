@@ -6,15 +6,11 @@ const box = css`
     padding: 139px 0 120px;
 
     @media (min-width: 768px) and (max-width: 1199px) {
-        padding: 120px 0;
+        padding: 100px 0;
     }
 
-    @media (min-width: 400px) and (max-width: 767px) {
-        padding: 80px 0;
-    }
-
-    @media (max-width: 399px) {
-        padding: 40px 0;
+    @media (max-width: 767px) {
+        padding: 50px 0;
     }
 `;
 const aboutHeader = css`
@@ -31,12 +27,9 @@ const heading = css`
         font-size: 50px;
     }
 
-    @media (min-width: 420px) and (max-width: 767px) {
-        font-size: 40px;
-    }
-
-    @media (max-width: 419px) {
+    @media (max-width: 767px) {
         font-size: 22px;
+        line-height: 36px;
     }
     transition: opacity 0.2s;
     &:hover,
@@ -57,14 +50,13 @@ const subheading = css`
 
     @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 22px;
+        margin: 14px 0 0;
     }
 
-    @media (min-width: 420px) and (max-width: 767px) {
-        font-size: 20px;
-    }
-
-    @media (max-width: 419px) {
+    @media (max-width: 767px) {
         font-size: 16px;
+        line-height: 28px;
+        margin: 2px 0 0;
     }
 `;
 

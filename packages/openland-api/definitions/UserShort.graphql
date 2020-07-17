@@ -9,6 +9,7 @@ fragment UserShort on User {
     lastSeen
     isBot
     shortname
+    inContacts
     primaryOrganization {
         ...OrganizationShort
     }

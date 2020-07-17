@@ -17,6 +17,7 @@ fragment MessageSender on User {
     photo
     isBot
     shortname
+    inContacts
     primaryOrganization {
         id
         name

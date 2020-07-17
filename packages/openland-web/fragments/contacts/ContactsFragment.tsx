@@ -7,17 +7,17 @@ import { trackEvent } from 'openland-x-analytics';
 import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
 import { GlobalSearch_items, GlobalSearch_items_SharedRoom } from 'openland-api/spacex.types';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
-import { ContactsSearchResults, ContactsSearchItemRender, ContactDataSourceItem } from './ContactsSearchResults';
+import { ContactsSearchResults, ContactsSearchItemRender } from './ContactsSearchResults';
 import { useStackVisibility } from 'openland-unicorn/StackVisibilityContext';
 import { css, cx } from 'linaria';
 import { TextStyles, TextBody } from 'openland-web/utils/TextStyles';
 import CycleIcon from 'openland-icons/s/ic-cycle-glyph-24.svg';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { useClient } from 'openland-api/useClient';
 import { useListSelection } from 'openland-web/utils/useListSelection';
 import { XListView } from 'openland-web/components/XListView';
-import { DataSource } from 'openland-y-utils/DataSource';
 import { XLoader } from 'openland-x/XLoader';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { ContactDataSourceItem } from 'openland-engines/contacts/ContactsEngine';
 
 const emptyScreenImg = css`
     height: 200px;
@@ -68,7 +68,7 @@ const EmptyScreen = (props: { title: string, subtitle: string, imgSrcStyle: stri
 };
 
 export const ContactsFragment = React.memo(() => {
-    const client = useClient();
+    const messenger = React.useContext(MessengerContext);
     const refInput = React.useRef<USearchInputRef>(null);
     const isVisible = useVisibleTab();
     const { router } = useTabRouter();
@@ -79,15 +79,18 @@ export const ContactsFragment = React.memo(() => {
     // TODO: when import is ready
     const didImportContacts = true;
     const isSearching = query.trim().length > 0;
-    const { items } = client.useMyContacts({ first: 20 }).myContacts;
-    const { selectedIndex, setSelectedIndex, handleMouseOver, handleMouseMove } = useListSelection({ maxIndex: items.length - 1 });
 
-    const dataSourceRef = React.useRef<DataSource<ContactDataSourceItem>>(new DataSource(() => [], () => []));
-    const dataSource = dataSourceRef.current;
+    // TODO: fix max length
+    const { selectedIndex, setSelectedIndex, handleMouseOver, handleMouseMove } = useListSelection({ maxIndex: 100 });
 
     React.useEffect(() => {
-        dataSource.initialize(items.map(x => ({ ...x.user, key: x.user.id })), true, false);
-    }, items);
+        if (isVisible) {
+            messenger.contacts.start();
+        } else {
+            messenger.contacts.clear();
+        }
+    }, [isVisible]);
+
     React.useEffect(() => {
         setSelectedIndex(-1);
     }, [query]);
@@ -186,7 +189,7 @@ export const ContactsFragment = React.memo(() => {
                     </XScrollView3>
                 ) : (
                         <XListView
-                            dataSource={dataSource}
+                            dataSource={messenger.contacts.dataSource}
                             itemHeight={56}
                             loadingHeight={56}
                             renderItem={(x, i) => (

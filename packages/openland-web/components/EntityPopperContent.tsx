@@ -100,8 +100,6 @@ export const UserPopperContent = React.memo(
         hidePopper: Function;
     }) => {
         const router = React.useContext(XViewRouterContext);
-        const isContact = false;
-        const [showContactCaption] = useCaptionPopper({ text: isContact ? 'Remove from contacts' : 'Save to contacts' });
         if (noCardOnMe && isMe) {
             return (
                 <XView
@@ -119,7 +117,21 @@ export const UserPopperContent = React.memo(
         } else {
             const organizationName = user.primaryOrganization ? user.primaryOrganization.name : '';
             const contactsEnabled = false;
+            const client = useClient();
             const messenger = React.useContext(MessengerContext);
+            const { useIsUserContact, addUser, removeUser } = messenger.contacts;
+            const isUserContact = useIsUserContact(user.id, user.inContacts);
+            const [showContactCaption] = useCaptionPopper({ text: isUserContact ? 'Remove from contacts' : 'Save to contacts' });
+
+            const handleContactClick = async () => {
+                if (isUserContact) {
+                    removeUser(user.id);
+                    await client.mutateRemoveFromContacts({ userId: user.id });
+                } else {
+                    addUser(user.id);
+                    await client.mutateAddToContacts({ userId: user.id });
+                }
+            };
             React.useEffect(() => {
                 messenger.getOnlines().onUserAppears(user.id!);
             }, []);
@@ -188,7 +200,8 @@ export const UserPopperContent = React.memo(
                                     />
                                     {contactsEnabled && (
                                         <UIconButton
-                                            icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
+                                            icon={isUserContact ? <RemoveContactIcon /> : <AddContactIcon />}
+                                            onClick={handleContactClick}
                                             size="medium"
                                             onMouseEnter={showContactCaption}
                                         />
