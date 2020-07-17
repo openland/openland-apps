@@ -48,6 +48,7 @@ internal val MessageSenderSelector = obj(
             field("photo", "photo", scalar("String")),
             field("isBot", "isBot", notNull(scalar("Boolean"))),
             field("shortname", "shortname", scalar("String")),
+            field("inContacts", "inContacts", notNull(scalar("Boolean"))),
             field("primaryOrganization", "primaryOrganization", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
@@ -1433,6 +1434,7 @@ internal val UserForMentionSelector = obj(
             field("photo", "photo", scalar("String")),
             field("shortname", "shortname", scalar("String")),
             field("isBot", "isBot", notNull(scalar("Boolean"))),
+            field("inContacts", "inContacts", notNull(scalar("Boolean"))),
             field("primaryOrganization", "primaryOrganization", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
