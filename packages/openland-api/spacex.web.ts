@@ -2162,7 +2162,27 @@ const ChatMentionSearchSelector = obj(
 const ChatNewGetMessageSelector = obj(
             field('message', 'message', args(fieldValue("messageId", refValue('id'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('ModernMessage', FullMessageSelector)
+                    fragment('ModernMessage', ChatNewMessageFragmentSelector)
+                ))
+        );
+const ChatNewLoadAfterSelector = obj(
+            field('gammaMessages', 'batch', args(fieldValue("chatId", refValue('chatId')), fieldValue("first", refValue('limit')), fieldValue("after", refValue('after'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('messages', 'messages', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('ModernMessage', ChatNewMessageFragmentSelector)
+                        ))))),
+                    field('haveMoreForward', 'haveMoreForward', args(), scalar('Boolean'))
+                ))
+        );
+const ChatNewLoadBeforeSelector = obj(
+            field('gammaMessages', 'batch', args(fieldValue("chatId", refValue('chatId')), fieldValue("first", refValue('limit')), fieldValue("before", refValue('before'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('messages', 'messages', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('ModernMessage', ChatNewMessageFragmentSelector)
+                        ))))),
+                    field('haveMoreBackward', 'haveMoreBackward', args(), scalar('Boolean'))
                 ))
         );
 const ChatNewReadLastReadSelector = obj(
@@ -4929,8 +4949,20 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ChatNewGetMessage: {
         kind: 'query',
         name: 'ChatNewGetMessage',
-        body: 'query ChatNewGetMessage($id:ID!){message(messageId:$id){__typename ...FullMessage}}fragment FullMessage on ModernMessage{__typename id date sender{__typename ...MessageSender}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}spans{__typename ...MessageSpan}... on GeneralMessage{__typename id edited commentsCount attachments{__typename ...MessageAttachments}quotedMessages{__typename ...QuotedMessage}reactions{__typename ...MessageReactions}overrideAvatar{__typename uuid crop{__typename x y w h}}overrideName}... on StickerMessage{__typename id commentsCount quotedMessages{__typename ...QuotedMessage}sticker{__typename ...StickerFragment}reactions{__typename ...MessageReactions}overrideAvatar{__typename uuid crop{__typename x y w h}}overrideName}... on ServiceMessage{__typename id serviceMetadata{__typename ...ServiceMessageMetadata}}}fragment MessageSender on User{__typename id name photo isBot shortname inContacts primaryOrganization{__typename id name shortname}}fragment UserBadge on UserBadge{__typename id name verified}fragment MessageSpan on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename id name}}... on MessageSpanMultiUserMention{__typename offset length}... on MessageSpanOrganizationMention{__typename organization{__typename id name}}... on MessageSpanRoomMention{__typename room{__typename ... on PrivateRoom{__typename id user{__typename id name}}... on SharedRoom{__typename id title isPremium}}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment MessageAttachments on ModernMessageAttachment{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}socialImage{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id title style url}}fallback}... on MessageAttachmentPurchase{__typename id purchase{__typename id state amount}fallback}}fragment QuotedMessage on ModernMessage{__typename id date message sender{__typename ...MessageSender}senderBadge{__typename ...UserBadge}fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}spans{__typename ...MessageSpan}... on GeneralMessage{__typename id edited commentsCount attachments{__typename ...MessageAttachments}}... on StickerMessage{__typename id sticker{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}fragment MessageReactions on ModernMessageReaction{__typename user{__typename id name photo primaryOrganization{__typename id name}}reaction}fragment ServiceMessageMetadata on ServiceMetadata{__typename ... on InviteServiceMetadata{__typename users{__typename id}invitedBy{__typename id}}... on KickServiceMetadata{__typename user{__typename id}kickedBy{__typename id}}... on TitleChangeServiceMetadata{__typename title}... on PhotoChangeServiceMetadata{__typename photo}... on PostRespondServiceMetadata{__typename respondType}}',
+        body: 'query ChatNewGetMessage($id:ID!){message(messageId:$id){__typename ...ChatNewMessageFragment}}fragment ChatNewMessageFragment on ModernMessage{__typename id date seq sender{__typename id}message fallback}',
         selector: ChatNewGetMessageSelector
+    },
+    ChatNewLoadAfter: {
+        kind: 'query',
+        name: 'ChatNewLoadAfter',
+        body: 'query ChatNewLoadAfter($chatId:ID!,$after:ID!,$limit:Int!){batch:gammaMessages(chatId:$chatId,first:$limit,after:$after){__typename messages{__typename ...ChatNewMessageFragment}haveMoreForward}}fragment ChatNewMessageFragment on ModernMessage{__typename id date seq sender{__typename id}message fallback}',
+        selector: ChatNewLoadAfterSelector
+    },
+    ChatNewLoadBefore: {
+        kind: 'query',
+        name: 'ChatNewLoadBefore',
+        body: 'query ChatNewLoadBefore($chatId:ID!,$before:ID!,$limit:Int!){batch:gammaMessages(chatId:$chatId,first:$limit,before:$before){__typename messages{__typename ...ChatNewMessageFragment}haveMoreBackward}}fragment ChatNewMessageFragment on ModernMessage{__typename id date seq sender{__typename id}message fallback}',
+        selector: ChatNewLoadBeforeSelector
     },
     ChatNewReadLastRead: {
         kind: 'query',

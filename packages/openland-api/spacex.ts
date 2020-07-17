@@ -52,6 +52,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryChatNewGetMessage(variables: Types.ChatNewGetMessageVariables, params?: QueryParameters): Promise<Types.ChatNewGetMessage> {
         return this.query('ChatNewGetMessage', variables, params);
     }
+    queryChatNewLoadAfter(variables: Types.ChatNewLoadAfterVariables, params?: QueryParameters): Promise<Types.ChatNewLoadAfter> {
+        return this.query('ChatNewLoadAfter', variables, params);
+    }
+    queryChatNewLoadBefore(variables: Types.ChatNewLoadBeforeVariables, params?: QueryParameters): Promise<Types.ChatNewLoadBefore> {
+        return this.query('ChatNewLoadBefore', variables, params);
+    }
     queryChatNewReadLastRead(variables: Types.ChatNewReadLastReadVariables, params?: QueryParameters): Promise<Types.ChatNewReadLastRead> {
         return this.query('ChatNewReadLastRead', variables, params);
     }
@@ -379,6 +385,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchChatNewGetMessage(variables: Types.ChatNewGetMessageVariables, params?: QueryParameters): Promise<Types.ChatNewGetMessage> {
         return this.refetch('ChatNewGetMessage', variables, params);
     }
+    refetchChatNewLoadAfter(variables: Types.ChatNewLoadAfterVariables, params?: QueryParameters): Promise<Types.ChatNewLoadAfter> {
+        return this.refetch('ChatNewLoadAfter', variables, params);
+    }
+    refetchChatNewLoadBefore(variables: Types.ChatNewLoadBeforeVariables, params?: QueryParameters): Promise<Types.ChatNewLoadBefore> {
+        return this.refetch('ChatNewLoadBefore', variables, params);
+    }
     refetchChatNewReadLastRead(variables: Types.ChatNewReadLastReadVariables, params?: QueryParameters): Promise<Types.ChatNewReadLastRead> {
         return this.refetch('ChatNewReadLastRead', variables, params);
     }
@@ -705,6 +717,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateChatNewGetMessage(variables: Types.ChatNewGetMessageVariables, updater: (data: Types.ChatNewGetMessage) => Types.ChatNewGetMessage | null): Promise<boolean> {
         return this.updateQuery(updater, 'ChatNewGetMessage', variables);
+    }
+    updateChatNewLoadAfter(variables: Types.ChatNewLoadAfterVariables, updater: (data: Types.ChatNewLoadAfter) => Types.ChatNewLoadAfter | null): Promise<boolean> {
+        return this.updateQuery(updater, 'ChatNewLoadAfter', variables);
+    }
+    updateChatNewLoadBefore(variables: Types.ChatNewLoadBeforeVariables, updater: (data: Types.ChatNewLoadBefore) => Types.ChatNewLoadBefore | null): Promise<boolean> {
+        return this.updateQuery(updater, 'ChatNewLoadBefore', variables);
     }
     updateChatNewReadLastRead(variables: Types.ChatNewReadLastReadVariables, updater: (data: Types.ChatNewReadLastRead) => Types.ChatNewReadLastRead | null): Promise<boolean> {
         return this.updateQuery(updater, 'ChatNewReadLastRead', variables);
@@ -1060,6 +1078,16 @@ export class OpenlandClient extends BaseSpaceXClient {
     useChatNewGetMessage(variables: Types.ChatNewGetMessageVariables, params?: SpaceQueryWatchParameters): Types.ChatNewGetMessage;
     useChatNewGetMessage(variables: Types.ChatNewGetMessageVariables, params?: SpaceQueryWatchParameters): Types.ChatNewGetMessage | null {
         return this.useQuery('ChatNewGetMessage', variables, params);
+    }
+    useChatNewLoadAfter(variables: Types.ChatNewLoadAfterVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ChatNewLoadAfter | null;
+    useChatNewLoadAfter(variables: Types.ChatNewLoadAfterVariables, params?: SpaceQueryWatchParameters): Types.ChatNewLoadAfter;
+    useChatNewLoadAfter(variables: Types.ChatNewLoadAfterVariables, params?: SpaceQueryWatchParameters): Types.ChatNewLoadAfter | null {
+        return this.useQuery('ChatNewLoadAfter', variables, params);
+    }
+    useChatNewLoadBefore(variables: Types.ChatNewLoadBeforeVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ChatNewLoadBefore | null;
+    useChatNewLoadBefore(variables: Types.ChatNewLoadBeforeVariables, params?: SpaceQueryWatchParameters): Types.ChatNewLoadBefore;
+    useChatNewLoadBefore(variables: Types.ChatNewLoadBeforeVariables, params?: SpaceQueryWatchParameters): Types.ChatNewLoadBefore | null {
+        return this.useQuery('ChatNewLoadBefore', variables, params);
     }
     useChatNewReadLastRead(variables: Types.ChatNewReadLastReadVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ChatNewReadLastRead | null;
     useChatNewReadLastRead(variables: Types.ChatNewReadLastReadVariables, params?: SpaceQueryWatchParameters): Types.ChatNewReadLastRead;

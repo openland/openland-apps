@@ -17,6 +17,24 @@ query ChatNewReadLastRead($chatId: ID!) {
 
 query ChatNewGetMessage($id: ID!) {
     message(messageId: $id) {
-        ...FullMessage
+        ...ChatNewMessageFragment
+    }
+}
+
+query ChatNewLoadBefore($chatId: ID!, $before: ID!, $limit: Int!) {
+    batch: gammaMessages(chatId: $chatId, first: $limit, before: $before) {
+        messages {
+            ...ChatNewMessageFragment
+        }
+        haveMoreBackward
+    }
+}
+
+query ChatNewLoadAfter($chatId: ID!, $after: ID!, $limit: Int!) {
+    batch: gammaMessages(chatId: $chatId, first: $limit, after: $after) {
+        messages {
+            ...ChatNewMessageFragment
+        }
+        haveMoreForward
     }
 }

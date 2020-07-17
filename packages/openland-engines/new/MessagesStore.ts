@@ -1,3 +1,4 @@
+import { backoff } from 'openland-y-utils/timer';
 import { randomKey } from 'openland-y-utils/randomKey';
 import { MessagesApi } from './MessagesApi';
 import { Persistence } from './Persistence';
@@ -90,20 +91,95 @@ export class MessagesStore {
         this.sources.set(sourceId, source);
 
         // Init source
-        // (async () => {
-        //     let message = await this.repo.readById(id);
-        //     if (!message) {
+        backoff(async () => {
+            while (true) {
 
-        //     }
-        //     // let message = 
-        // })();
+                // Fast exit
+                if (source.closed) {
+                    return;
+                }
+
+                // Resolve message
+                let message = await this.repo.readById(id);
+                if (!message) {
+                    let msg = await this.api.loadMessage(id);
+                    if (source.closed) {
+                        return;
+                    }
+                    if (!msg) {
+                        source.update({ type: 'no-access' });
+                        source.close();
+                        return;
+                    } else {
+                        this.persistence.startTransaction();
+                        await this.repo.writeBatch({ minSeq: msg.seq, maxSeq: msg.seq, messages: [msg] });
+                        await this.persistence.commitTransaction();
+                        continue;
+                    }
+                }
+
+                // Resolve previous
+                let before = await this.repo.readBefore({ before: message.seq, limit: 20 });
+                if (source.closed) {
+                    return;
+                }
+
+                // If previous not loaded
+                if (!before || (before.items.length < 20 && !before.completed)) {
+                    let loaded = await this.api.loadMessagesBefore(this.repo.id, message.id, 20);
+                    if (source.closed) {
+                        return;
+                    }
+                    let minSeq = message.seq;
+                    if (!loaded.hasMore) {
+                        minSeq = Number.MIN_SAFE_INTEGER;
+                    } else {
+                        for (let m of loaded.messages) {
+                            minSeq = Math.min(m.seq, minSeq);
+                        }
+                    }
+
+                    // Note: maxSeq is the seq of the message that we are using as cursor not the max seq of batch
+                    this.persistence.startTransaction();
+                    await this.repo.writeBatch({ minSeq, maxSeq: message.seq, messages: loaded.messages });
+                    await this.persistence.commitTransaction();
+                    continue;
+                }
+
+                // Resolve after
+                let after = await this.repo.readAfter({ after: message.seq, limit: 20 });
+                if (source.closed) {
+                    return;
+                }
+
+                // If previous not loaded
+                if (!after || (after.items.length < 20 && !after.completed)) {
+                    let loaded = await this.api.loadMessagesAfter(this.repo.id, message.id, 20);
+                    if (source.closed) {
+                        return;
+                    }
+                    let maxSeq = message.seq;
+                    if (!loaded.hasMore) {
+                        maxSeq = Number.MAX_SAFE_INTEGER;
+                    } else {
+                        for (let m of loaded.messages) {
+                            maxSeq = Math.max(m.seq, maxSeq);
+                        }
+                    }
+
+                    // Note: minSeq is the seq of the message that we are using as cursor not the min seq of batch
+                    this.persistence.startTransaction();
+                    await this.repo.writeBatch({ minSeq: message.seq, maxSeq, messages: loaded.messages });
+                    await this.persistence.commitTransaction();
+                    continue;
+                }
+
+                let messages = [...before.items, message, ...after.items];
+                console.warn({ messages, hasMoreNext: !after.completed, hasMorePrev: !before.completed });
+                return;
+            }
+        });
 
         return source;
-        // (async () => {
-        //     let center = await this.repo.readBySeq(seq);
-        //     let before = await this.repo.readBefore({ before: seq, limit: 20 });
-        //     let after = await this.repo.readAfter({ after: seq, limit: 20 });
-        //     //
-        // })();
     }
 }
