@@ -2142,6 +2142,12 @@ const ChatMentionSearchSelector = obj(
                     field('cursor', 'cursor', args(), scalar('String'))
                 )))
         );
+const ChatNewReadLastReadSelector = obj(
+            field('lastReadedMessage', 'message', args(fieldValue("chatId", refValue('chatId'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID')))
+                ))
+        );
 const CommentsSelector = obj(
             field('comments', 'comments', args(fieldValue("peerId", refValue('peerId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -4889,6 +4895,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'ChatMentionSearch',
         body: 'query ChatMentionSearch($cid:ID!,$query:String,$first:Int!,$after:String){mentions:chatMentionSearch(cid:$cid,query:$query,first:$first,after:$after){__typename globalItems{__typename ... on Organization{__typename ...OrganizationShort}... on User{__typename ...UserForMention}... on SharedRoom{__typename ...RoomSharedNano}}localItems{__typename ...UserForMention}cursor}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}fragment UserForMention on User{__typename id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title photo membersCount settings{__typename id mute}}',
         selector: ChatMentionSearchSelector
+    },
+    ChatNewReadLastRead: {
+        kind: 'query',
+        name: 'ChatNewReadLastRead',
+        body: 'query ChatNewReadLastRead($chatId:ID!){message:lastReadedMessage(chatId:$chatId){__typename id}}',
+        selector: ChatNewReadLastReadSelector
     },
     Comments: {
         kind: 'query',

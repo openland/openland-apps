@@ -81,6 +81,15 @@ export class SparseIndex {
         };
     }
 
+    getIdBySortKey = (sortKey: number) => {
+        let res = this._sortKey.get(sortKey);
+        if (res) {
+            return res;
+        } else {
+            return null;
+        }
+    }
+
     isInIndex = (id: string) => {
         return this._ids.has(id);
     }

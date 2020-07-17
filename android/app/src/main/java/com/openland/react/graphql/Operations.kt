@@ -20,6 +20,7 @@ object Operations {
         if (name == "ChatInitFromUnread") return ChatInitFromUnread
         if (name == "ChatJoin") return ChatJoin
         if (name == "ChatMentionSearch") return ChatMentionSearch
+        if (name == "ChatNewReadLastRead") return ChatNewReadLastRead
         if (name == "Comments") return Comments
         if (name == "Conference") return Conference
         if (name == "ConferenceMedia") return ConferenceMedia

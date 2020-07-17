@@ -16,7 +16,7 @@ describe('MessagesRepository', () => {
     it('should write and read batches', async () => {
         let persistenceProvider = new PersistenceProviderInMemory();
         let persistence = new Persistence(persistenceProvider);
-        let messagesStore = await MessagesRepository.open('1', persistence);
+        let messagesStore = MessagesRepository.open('1', persistence);
 
         // Write Simple Batch
         persistence.startTransaction();
@@ -40,7 +40,7 @@ describe('MessagesRepository', () => {
         await persistence.commitTransaction();
 
         // Reload store
-        messagesStore = await MessagesRepository.open('1', persistence);
+        messagesStore = MessagesRepository.open('1', persistence);
 
         // Check read after
         let read = await messagesStore.readAfter({ after: 15, limit: 3 });
@@ -96,7 +96,7 @@ describe('MessagesRepository', () => {
     it('should handle appends', async () => {
         let persistenceProvider = new PersistenceProviderInMemory();
         let persistence = new Persistence(persistenceProvider);
-        let messagesStore = await MessagesRepository.open('1', persistence);
+        let messagesStore = MessagesRepository.open('1', persistence);
 
         // Write data
         persistence.startTransaction();
@@ -125,7 +125,7 @@ describe('MessagesRepository', () => {
         await persistence.commitTransaction();
 
         // Reload store
-        messagesStore = await MessagesRepository.open('1', persistence);
+        messagesStore = MessagesRepository.open('1', persistence);
 
         // Check read after
         let read = await messagesStore.readAfter({ after: 15, limit: 3 });

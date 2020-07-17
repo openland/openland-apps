@@ -1,0 +1,5 @@
+query ChatNewReadLastRead($chatId: ID!) {
+    message: lastReadedMessage(chatId: $chatId) {
+        id
+    }
+}

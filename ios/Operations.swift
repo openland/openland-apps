@@ -2135,6 +2135,12 @@ private let ChatMentionSearchSelector = obj(
                     field("cursor", "cursor", scalar("String"))
                 )))
         )
+private let ChatNewReadLastReadSelector = obj(
+            field("lastReadedMessage", "message", arguments(fieldValue("chatId", refValue("chatId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
+                ))
+        )
 private let CommentsSelector = obj(
             field("comments", "comments", arguments(fieldValue("peerId", refValue("peerId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -4887,6 +4893,12 @@ class Operations {
         "query ChatMentionSearch($cid:ID!,$query:String,$first:Int!,$after:String){mentions:chatMentionSearch(cid:$cid,query:$query,first:$first,after:$after){__typename globalItems{__typename ... on Organization{__typename ...OrganizationShort}... on User{__typename ...UserForMention}... on SharedRoom{__typename ...RoomSharedNano}}localItems{__typename ...UserForMention}cursor}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}fragment UserForMention on User{__typename id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title photo membersCount settings{__typename id mute}}",
         ChatMentionSearchSelector
     )
+    let ChatNewReadLastRead = OperationDefinition(
+        "ChatNewReadLastRead",
+        .query, 
+        "query ChatNewReadLastRead($chatId:ID!){message:lastReadedMessage(chatId:$chatId){__typename id}}",
+        ChatNewReadLastReadSelector
+    )
     let Comments = OperationDefinition(
         "Comments",
         .query, 
@@ -6300,6 +6312,7 @@ class Operations {
         if name == "ChatInitFromUnread" { return ChatInitFromUnread }
         if name == "ChatJoin" { return ChatJoin }
         if name == "ChatMentionSearch" { return ChatMentionSearch }
+        if name == "ChatNewReadLastRead" { return ChatNewReadLastRead }
         if name == "Comments" { return Comments }
         if name == "Conference" { return Conference }
         if name == "ConferenceMedia" { return ConferenceMedia }
