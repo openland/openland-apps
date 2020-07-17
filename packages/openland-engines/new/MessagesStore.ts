@@ -65,9 +65,13 @@ export class MessagesStore {
         return new MessagesStore(repo, persistence, api);
     }
 
+    // @ts-ignore
     private readonly repo: MessagesRepository;
+    // @ts-ignore
     private readonly persistence: Persistence;
+    // @ts-ignore
     private readonly api: MessagesApi;
+    // @ts-ignore
     private readonly queryLock = new AsyncLock();
     private readonly sources = new Map<string, MessageSourceHolder>();
 

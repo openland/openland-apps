@@ -41,6 +41,19 @@ internal val ChannelSimpleSelector = obj(
                 ))
         )
 
+internal val ChatNewMessageFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("date", "date", notNull(scalar("Date"))),
+            field("seq", "seq", scalar("Int")),
+            field("sender", "sender", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
+                ))),
+            field("message", "message", scalar("String")),
+            field("fallback", "fallback", notNull(scalar("String")))
+        )
+
 internal val MessageSenderSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),

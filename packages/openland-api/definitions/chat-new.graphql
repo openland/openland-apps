@@ -1,5 +1,22 @@
+fragment ChatNewMessageFragment on ModernMessage {
+    id
+    date
+    seq
+    sender {
+        id
+    }
+    message
+    fallback
+}
+
 query ChatNewReadLastRead($chatId: ID!) {
     message: lastReadedMessage(chatId: $chatId) {
         id
+    }
+}
+
+query ChatNewGetMessage($id: ID!) {
+    message(messageId: $id) {
+        ...FullMessage
     }
 }
