@@ -13,10 +13,12 @@ import { NotificationCenter } from './NotificationCenter';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { SSearchControlerComponent } from 'react-native-s/SSearchController';
 
 export const ActiveTabContext = React.createContext(false);
 export const SetTabContext = React.createContext<(index: number) => void>(() => {/* noop */ });
 export const ComponentRefContext = React.createContext<React.RefObject<any> | undefined>(undefined); // terrible hack here and after because of Animated.FlatList and Animated.ScrollView
+export const SSearchControllerRefContext = React.createContext<React.RefObject<SSearchControlerComponent> | undefined>(undefined);
 
 const DEFAULT_TAB = 2;
 
@@ -32,6 +34,7 @@ export const Home = React.memo((props: PageProps) => {
     const messengerEngine = getMessenger().engine;
     const exploreRef = React.createRef<any>();
     const dialogsDataSource = messengerEngine.dialogList.dataSource;
+    const dialogsSearchController = React.createRef<SSearchControlerComponent>();
     const notificationsDataSource = messengerEngine.notificationCenter.dataSource;
     const settingsRef = React.createRef<any>();
 
@@ -41,6 +44,9 @@ export const Home = React.memo((props: PageProps) => {
                 exploreRef.current.getNode().scrollTo({ y: 0 });
             } else if (tab === 2) {
                 dialogsDataSource.requestScrollToTop();
+                if (dialogsSearchController.current) {
+                    dialogsSearchController.current.handleSearchStopCompleted();
+                }
             } else if (tab === 3) {
                 notificationsDataSource.requestScrollToTop();
             } else if (tab === 4 && settingsRef.current) {
@@ -73,7 +79,9 @@ export const Home = React.memo((props: PageProps) => {
                         <HeaderContextChild enabled={tab === 2}>
                             {tab === 2 && <ZTrack event="navigate_chats" />}
                             <SetTabContext.Provider value={setTab}>
-                                <HomeDialogs {...props} />
+                                <SSearchControllerRefContext.Provider value={dialogsSearchController}>
+                                    <HomeDialogs {...props} />
+                                </SSearchControllerRefContext.Provider>
                             </SetTabContext.Provider>
                         </HeaderContextChild>
                     </View>
