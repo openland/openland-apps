@@ -10,6 +10,7 @@ import { SNativeConfig } from './SNativeConfig';
 import { SDevice } from './SDevice';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { SSearchControllerRefContext } from 'openland-mobile/pages/main/Home';
 
 export interface SSearchControlerProps {
     backgroundColor?: string;
@@ -17,7 +18,7 @@ export interface SSearchControlerProps {
     children?: any;
 }
 
-class SSearchControlerComponent extends React.PureComponent<SSearchControlerProps & { theme: ThemeGlobal }, { search: boolean, searchMounted: boolean, query: string }> {
+export class SSearchControlerComponent extends React.PureComponent<SSearchControlerProps & { theme: ThemeGlobal }, { search: boolean, searchMounted: boolean, query: string }> {
 
     private containerShadowView = new SAnimatedShadowView(UUID());
     private searchShadowView = new SAnimatedShadowView(UUID());
@@ -138,5 +139,6 @@ class SSearchControlerComponent extends React.PureComponent<SSearchControlerProp
 
 export const SSearchControler = React.memo<SSearchControlerProps>((props) => {
     let theme = React.useContext(ThemeContext);
-    return (<SSearchControlerComponent {...props} theme={theme} />);
+    const searchControllerRef = React.useContext(SSearchControllerRefContext);
+    return (<SSearchControlerComponent {...props} theme={theme} ref={searchControllerRef} />);
 });
