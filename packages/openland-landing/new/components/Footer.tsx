@@ -318,7 +318,7 @@ export const Footer = React.memo(() => {
                         </li>
                         <li className={cx(menuItem, hiddenSmall)}>
                             <span className={menuLink}>
-                                Communities
+                                <XView path={LandingLinks.discover}>Communities</XView>
                             </span>
                         </li>
                         <li className={menuItem}>
