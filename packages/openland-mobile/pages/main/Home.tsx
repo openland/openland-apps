@@ -7,7 +7,7 @@ import { HeaderContextChild } from 'react-native-s/navigation/HeaderContextChild
 import { PageProps } from '../../components/PageProps';
 import { AppBarBottom, AppBarBottomItem } from '../../components/AppBarBottom';
 import { Explore } from './Explore';
-import { Contacts } from './Contacts';
+// import { Contacts } from './Contacts';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { NotificationCenter } from './NotificationCenter';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
@@ -63,12 +63,12 @@ export const Home = React.memo((props: PageProps) => {
                             </ComponentRefContext.Provider>
                         </HeaderContextChild>
                     </View>
-                    <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 1 ? 1 : 0 }} pointerEvents={tab === 1 ? 'box-none' : 'none'}>
-                        <HeaderContextChild enabled={tab === 1}>
-                            {tab === 1 && <ZTrack event={'navigate_contacts'} />}
-                            <Contacts {...props} />
-                        </HeaderContextChild>
-                    </View>
+                    {/*<View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 1 ? 1 : 0 }} pointerEvents={tab === 1 ? 'box-none' : 'none'}>*/}
+                    {/*    <HeaderContextChild enabled={tab === 1}>*/}
+                    {/*        {tab === 1 && <ZTrack event={'navigate_contacts'} />}*/}
+                    {/*        <Contacts {...props} />*/}
+                    {/*    </HeaderContextChild>*/}
+                    {/*</View>*/}
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 2 ? 1 : 0 }} pointerEvents={tab === 2 ? 'box-none' : 'none'}>
                         <HeaderContextChild enabled={tab === 2}>
                             {tab === 2 && <ZTrack event="navigate_chats" />}
@@ -104,12 +104,12 @@ export const Home = React.memo((props: PageProps) => {
                         selected={tab === 0}
                         onPress={() => handleChangeTab(0)}
                     />
-                    <AppBarBottomItem
-                        icon={require('assets/ic-user-24.png')}
-                        iconSelected={require('assets/ic-user-filled-24.png')}
-                        selected={tab === 1}
-                        onPress={() => handleChangeTab(1)}
-                    />
+                    {/*<AppBarBottomItem*/}
+                    {/*    icon={require('assets/ic-user-24.png')}*/}
+                    {/*    iconSelected={require('assets/ic-user-filled-24.png')}*/}
+                    {/*    selected={tab === 1}*/}
+                    {/*    onPress={() => handleChangeTab(1)}*/}
+                    {/*/>*/}
                     <AppBarBottomItem
                         counter={counter && counter.alphaNotificationCounter.unreadCount || undefined}
                         icon={require('assets/ic-message-24.png')}
