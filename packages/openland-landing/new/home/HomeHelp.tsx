@@ -53,18 +53,36 @@ const item = css`
 
 const itemImage = css`
     height: 198px;
-    background-color: #F2DDE3;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         height: 130px;
     }
 
+    &.is-c1 {
+        background: #F2DDE3 url(https://cdn.openland.com/shared/landing/start/home-article-01.png) no-repeat;
+        background-image: -webkit-image-set(
+            url(https://cdn.openland.com/shared/landing/start/home-article-01.png) 1x,
+            url(https://cdn.openland.com/shared/landing/start/home-article-01@2x.png) 2x
+        );
+        background-size: 100% 100%;
+    }
+
     &.is-c2 {
-        background-color: #F7CEAC;
+        background: #F7CEAC url(https://cdn.openland.com/shared/landing/start/home-article-02.png) no-repeat;
+        background-image: -webkit-image-set(
+            url(https://cdn.openland.com/shared/landing/start/home-article-02.png) 1x,
+            url(https://cdn.openland.com/shared/landing/start/home-article-02@2x.png) 2x
+        );
+        background-size: 100% 100%;
     }
 
     &.is-c3 {
-        background-color: #FFF0C9;
+        background: #FFF0C9 url(https://cdn.openland.com/shared/landing/start/home-article-03.png) no-repeat;
+        background-image: -webkit-image-set(
+            url(https://cdn.openland.com/shared/landing/start/home-article-03.png) 1x,
+            url(https://cdn.openland.com/shared/landing/start/home-article-03@2x.png) 2x
+        );
+        background-size: 100% 100%;
     }
 `;
 
@@ -110,7 +128,7 @@ export const HomeHelp = React.memo(() => (
 
             <div className={items}>
                 <div className={item}>
-                    <div className={itemImage} />
+                    <div className={cx(itemImage, 'is-c1')} />
                     <div className={itemInfo}>
                         <div className={itemTag}>Manifesto</div>
                         <div className={itemText}>Why the world needs a&nbsp;new&nbsp;social network</div>

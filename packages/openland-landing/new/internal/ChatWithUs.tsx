@@ -19,7 +19,7 @@ const features = css`
 `;
 
 const feature = css`
-    padding: 36px 60px 40px 40px;
+    padding: 36px 80px 40px 40px;
     border-radius: 24px;
     background: linear-gradient(0deg, #F7F8F9, #F7F8F9);
 
@@ -56,8 +56,8 @@ const name = css`
 `;
 
 const text = css`
-    font-size: 24px;
-    line-height: 36px;
+    font-size: 21px;
+    line-height: 34px;
     margin-top: 21px;
 
     @media (min-width: 768px) and (max-width: 1199px) {
@@ -179,10 +179,10 @@ export const ChatWithUs = React.memo(() => (
                     title="Openland Careers"
                     icon="/static/landing/icons/careers-2.svg"
                     link="/invite/8GbujwA"
-                    text="Explore open positions or design your own role in our team"
+                    text="Explore open positions or design your&nbsp;own role in our team"
                 />
                 <Feature
-                    title="Help and Feedback"
+                    title="Openland Help"
                     icon="/static/landing/icons/support-2.svg"
                     link="/invite/zOF5IpZ"
                     text="Get support, ask for features, and share your ideas for Openland"
@@ -191,13 +191,13 @@ export const ChatWithUs = React.memo(() => (
                     title="Openland News"
                     icon="/static/landing/icons/news-2.svg"
                     link="/invite/Iqx4dPt"
-                    text="Follow our journey to the future of&nbsp;community organizing"
+                    text="Follow our journey to the future of&nbsp;social networks"
                 />
                 <Feature
                     title="Community Creators"
                     icon="/static/landing/icons/community-2.svg"
                     link="/invite/XaQDsnQ"
-                    text="Get inspiration and learn from the&nbsp;best community organizers"
+                    text="Get inspired and learn from the&nbsp;best&nbsp;community organizers"
                 />
             </div>
         </Container>

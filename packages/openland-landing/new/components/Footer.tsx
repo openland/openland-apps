@@ -86,7 +86,7 @@ const menuItem = css`
 `;
 
 const menuLink = css`
-    font-size: 26px;
+    font-size: 22px;
     line-height: 40px;
     font-weight: 600;
     color: #9393a7;

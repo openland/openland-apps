@@ -8,53 +8,53 @@ import { Container } from './components/Container';
 import { css } from 'linaria';
 
 const box = css`
-    padding: 112px 0 149px;
+    padding: 80px 0 149px;
 
     @media (min-width: 768px) and (max-width: 1199px) {
-        padding: 70px 0 90px;
+        padding: 80px 0 90px;
     }
 
     @media (max-width: 767px) {
-        padding: 20px 0 60px;
+        padding: 36px 0 60px;
     }
 `;
 
 const heading = css`
-    font-weight: 800;
-    font-size: 84px;
-    line-height: 100px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 32px;
     text-align: center;
-    margin: 0 0 20px;
+    margin: 0 0 24px;
+    color: var(--foregroundSecondary);
 
     @media (min-width: 768px) and (max-width: 1199px) {
-        font-size: 62px;
-        line-height: 66px;
-        margin: 0 0 14px;
+        font-size: 24px;
+        line-height: 32px;
+        margin: 0 0 24px;
     }
 
     @media (max-width: 767px) {
-        font-size: 46px;
-        line-height: 46px;
-        margin: 0 0 14px;
+        font-size: 20px;
+        line-height: 28px;
+        margin: 0 0 16px;
     }
 `;
 
 const subheading = css`
-    font-weight: 600;
-    font-size: 34px;
+    font-weight: 700;
+    font-size: 64px;
     line-height: 52px;
     text-align: center;
     margin: 0 0 40px;
 
     @media (min-width: 768px) and (max-width: 1199px) {
-        font-size: 28px;
-        line-height: 46px;
-        margin: 0 0 26px;
+        font-size: 58px;
+        line-height: 52px;
     }
 
     @media (max-width: 767px) {
-        font-size: 22px;
-        line-height: 30px;
+        font-size: 46px;
+        line-height: 48px;
         margin: 0 0 20px;
     }
 `;
@@ -68,21 +68,45 @@ const text = css`
         margin: 0;
     }
 
-    @media (min-width: 768px) and (max-width: 1199px) {
-        font-size: 20px;
-        line-height: 34px;
-        margin: 0 0 10px;
-    }
-
     @media (max-width: 767px) {
         font-size: 16px;
-        line-height: 28px;
+        line-height: 26px;
+    }
+`;
+
+const hero = css`
+    background: linear-gradient(180deg, #F7F8F9 0%, #F7F8F9 100%);
+    height: 332px;
+    position: relative;
+
+    @media (max-width: 767px) {
+        height: 162px;
+    }
+
+    &:before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: url(https://cdn.openland.com/shared/landing/start/about-hero.png) no-repeat;
+        background-image: -webkit-image-set(
+            url(https://cdn.openland.com/shared/landing/start/about-hero.png) 1x,
+            url(https://cdn.openland.com/shared/landing/start/about-hero@2x.png) 2x
+        );
+        background-size: auto 246px;
+        background-position: bottom center;
+
+        @media (max-width: 767px) {
+            background-size: auto 131px;
+        }
     }
 `;
 
 export const AboutPage = React.memo(() => (
-    <Page transparentHeader={true}>
+    <Page>
         <XDocumentHead title="About Openland" disableBranding={true} />
+
+        <div className={hero} />
 
         <Container isSmall={true}>
             <div className={box}>

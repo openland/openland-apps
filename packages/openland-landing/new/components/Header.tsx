@@ -46,7 +46,7 @@ const menu = css`
 
 const menuItem = css`
     display: inline-block;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 24px;
     padding: 16px 24px 16px 24px;
     z-index: 10;
