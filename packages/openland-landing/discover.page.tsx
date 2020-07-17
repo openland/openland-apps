@@ -27,7 +27,7 @@ export const DiscoverPage = React.memo(() => (
             title="Inspiring chat communities"
             titleWithoutReverse={true}
             description="Discover and join communities for your industry, role, skills, interests, and location."
-            imgUrl="https://cdn.openland.com/shared/og/og-find.png"
+            imgUrl="https://cdn.openland.com/shared/og/og-global-2.png"
         />
         <Header startLink={true} />
         <Cta />

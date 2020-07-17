@@ -23,7 +23,7 @@ type MetaTagsInfoT = {
 const MetaTags = ({
     title = 'Openland · Inspiring chat communities',
     description = 'Join Openland to connect with inspiring people, learn, get help, or start your own community.',
-    image = 'https://cdn.openland.com/shared/og/og-global.png',
+    image = 'https://cdn.openland.com/shared/og/og-global-2.png',
     url,
 }: MetaTagsInfoT) => {
     return (
@@ -59,13 +59,13 @@ const matchMetaTags: MetaTagsDescriptors = {
         title: 'Openland · Inspiring chat communities',
         description:
             'Discover and join communities for your industry, role, skills, interests, and location.',
-        image: 'https://cdn.openland.com/shared/og/og-find.png',
+        image: 'https://cdn.openland.com/shared/og/og-global-2.png',
     },
     '/start': {
         title: 'Openland · Modern platform for chat communities',
         description:
             'Openland is an all-in-one platform for building great communities. Start your community in seconds and grow fast with built-in viral growth tools.',
-        image: 'https://cdn.openland.com/shared/og/og-build.png',
+        image: 'https://cdn.openland.com/shared/og/og-global-2.png',
     },
     '/about': {
         title: 'About Openland',
@@ -123,7 +123,7 @@ export default class OpenlandDocument extends Document {
                     resolvedInvite.invite.__typename === 'AppInvite'
                 ) {
                     metaTagsInfo = {
-                        image: 'https://cdn.openland.com/shared/og/og-global.png',
+                        image: 'https://cdn.openland.com/shared/og/og-global-2.png',
                     };
                 } else if (
                     resolvedInvite &&
@@ -142,7 +142,7 @@ export default class OpenlandDocument extends Document {
                     } else if (room.photo && !room.photo.startsWith('ph://')) {
                         roomImage = room.photo;
                     } else {
-                        roomImage = 'https://cdn.openland.com/shared/og/og-global.png';
+                        roomImage = 'https://cdn.openland.com/shared/og/og-global-2.png';
                     }
 
                     metaTagsInfo = {
@@ -168,7 +168,7 @@ export default class OpenlandDocument extends Document {
                             title,
                             url: urlPrefix + originalUrl,
                             description: 'Collection of Openland chats on the topic',
-                            image: imageLink || 'https://cdn.openland.com/shared/og/og-global.png',
+                            image: imageLink || 'https://cdn.openland.com/shared/og/og-global-2.png',
                         };
                     }
                 } catch (e) {
@@ -195,7 +195,7 @@ export default class OpenlandDocument extends Document {
                                 title: `${user.name} on Openland`,
                                 url: urlPrefix + originalUrl,
                                 description: `${user.firstName} uses Openland. Want to reach them? Join Openland and write a message `,
-                                image: user.photo || 'https://cdn.openland.com/shared/og/og-global.png',
+                                image: user.photo || 'https://cdn.openland.com/shared/og/og-global-2.png',
                             };
                         } else if (shortnameData.item.__typename === 'SharedRoom') {
                             const { alphaResolveShortName: room, roomSocialImage } = await openland.queryRoomMetaPreview({ shortname: probableShortname, id: shortnameData.item.id });
@@ -210,7 +210,7 @@ export default class OpenlandDocument extends Document {
                                 } else if (room.photo && !room.photo.startsWith('ph://')) {
                                     roomImage = room.photo;
                                 } else {
-                                    roomImage = 'https://cdn.openland.com/shared/og/og-global.png';
+                                    roomImage = 'https://cdn.openland.com/shared/og/og-global-2.png';
                                 }
 
                                 metaTagsInfo = {

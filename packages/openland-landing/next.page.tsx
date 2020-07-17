@@ -27,7 +27,7 @@ export const NextPage = React.memo(() => (
             title="Modern platform for chat communities"
             titleWithoutReverse={true}
             description="Openland is an all-in-one platform for building great communities. Start your community in seconds and grow fast with built-in viral growth tools."
-            imgUrl="https://cdn.openland.com/shared/og/og-build.png"
+            imgUrl="https://cdn.openland.com/shared/og/og-global-2.png"
         />
         <Header discoverLink={true} />
         <Cta />

@@ -7,7 +7,7 @@ const DEFAULT_OG = {
     title: 'Openland',
     description:
         'A modern community platform. Learn, connect, get help, or start your own community.',
-    image: 'https://cdn.openland.com/shared/og/og-global.png',
+    image: 'https://cdn.openland.com/shared/og/og-global-2.png',
 };
 
 export type XDocumentHeadT = {
