@@ -5,7 +5,7 @@ import { trackEvent } from 'openland-x-analytics';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 
 interface PageProps {
-    track: string;
+    track?: string;
     appearance?: 'normal' | 'wide' | 'fullwidth';
     scroll?: 'disable' | 'enable';
     onScroll?: (values: XScrollValues) => void;
@@ -17,7 +17,7 @@ interface PageProps {
 export const Page = React.memo((props: PageProps) => {
     const isTabVisible = useVisibleTab();
     React.useEffect(() => {
-        if (isTabVisible) {
+        if (isTabVisible && props.track) {
             trackEvent('navigate_' + props.track);
         }
     }, [isTabVisible]);

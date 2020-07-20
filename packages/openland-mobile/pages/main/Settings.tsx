@@ -70,9 +70,10 @@ let SettingsContent = ((props: PageProps) => {
                 subtitle={resp.myProfile?.authEmail}
                 path="ProfileUser"
                 pathParams={{ id: resp.me.id }}
+                verticalMargin="bottom"
             />
             <ZListItem
-                leftIconColor={theme.tintBlue}
+                leftIconColor={theme.tintPurple}
                 leftIcon={require('assets/ic-edit-glyph-24.png')}
                 text="Edit profile"
                 path="SettingsProfile"

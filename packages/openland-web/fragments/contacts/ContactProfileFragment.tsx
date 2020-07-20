@@ -12,13 +12,14 @@ import { UListText } from 'openland-web/components/unicorn/UListText';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import MessageIcon from 'openland-icons/s/ic-message-24.svg';
-import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 import NotificationsIcon from 'openland-icons/s/ic-notifications-glyph-24.svg';
 import AttachIcon from 'openland-icons/s/ic-attach-glyph-24.svg';
 import RemoveContactIcon from 'openland-icons/s/ic-invite-off-glyph-24.svg';
 import { TextStyles } from 'openland-web/utils/TextStyles';
+import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
+import AddContactIcon from 'openland-icons/s/ic-invite-glyph-24.svg';
 
 const MessageButton = React.memo((props: { isBot: boolean, id: string }) => {
     const layout = useLayout();
@@ -35,14 +36,16 @@ const MessageButton = React.memo((props: { isBot: boolean, id: string }) => {
 });
 
 export const ContactProfileFragment = React.memo((props: { id?: string }) => {
+    if (!props.id) {
+        return null;
+    }
     const engine = React.useContext(MessengerContext);
-    const userContext = React.useContext(UserInfoContext)!.user!;
-    const uId = props.id ? props.id : userContext.id;
     const client = useClient();
-    const { user, conversation } = client.useUser({ userId: uId }, { fetchPolicy: 'cache-and-network' });
-    const { id, isBot, name, photo, about, shortname, location, phone, email, linkedin, instagram, website, twitter, facebook } = user;
+    const { user, conversation } = client.useUser({ userId: props.id }, { fetchPolicy: 'cache-and-network' });
+    const { id, isBot, name, inContacts, photo, about, shortname, location, phone, email, linkedin, instagram, website, twitter, facebook } = user;
 
     const privateConversation = conversation && conversation.__typename === 'PrivateRoom' ? conversation : undefined;
+    const { isContact, addContact, removeContact } = useLocalContact(id, inContacts);
 
     const [noficationsEnabled, setNotificationsEnabled] = React.useState(!privateConversation?.settings.mute);
     const handleNotificationsChange = React.useCallback(() => {
@@ -53,6 +56,15 @@ export const ContactProfileFragment = React.memo((props: { id?: string }) => {
             return !prev;
         });
     }, [privateConversation]);
+    const handleRemove = async () => {
+        if (isContact) {
+            removeContact(id);
+            await client.mutateRemoveFromContacts({ userId: id });
+        } else {
+            addContact(id);
+            await client.mutateAddToContacts({ userId: id });
+        }
+    };
 
     return (
         <Page padded={false} track="contact_profile">
@@ -96,7 +108,6 @@ export const ContactProfileFragment = React.memo((props: { id?: string }) => {
                     checked={noficationsEnabled}
                     onChange={handleNotificationsChange}
                     boldTitle={true}
-                    withCorners={true}
                     tall={true}
                     leftElement={(
                         <UIconButton
@@ -115,14 +126,19 @@ export const ContactProfileFragment = React.memo((props: { id?: string }) => {
                     title="Media, files, links"
                     titleStyle={TextStyles.Label1}
                     path={`/mail/${id}/shared`}
+                    useRadius={true}
                 />
-                <UListItem
-                    icon={<RemoveContactIcon />}
-                    iconColor="var(--foregroundTertiary)"
-                    iconBackground="var(--backgroundTertiary)"
-                    title="Remove from contacts"
-                    titleStyle={TextStyles.Label1}
-                />
+                {isContact ? (
+                    <UListItem
+                        icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
+                        iconColor="var(--foregroundTertiary)"
+                        iconBackground="var(--backgroundTertiary)"
+                        title={isContact ? 'Remove from contacts' : 'Save to contacts'}
+                        titleStyle={TextStyles.Label1}
+                        useRadius={true}
+                        onClick={handleRemove}
+                    />
+                ) : null}
             </UListGroup>
         </Page>
     );

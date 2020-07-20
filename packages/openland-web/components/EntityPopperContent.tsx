@@ -13,6 +13,7 @@ import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
 import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
 import { UIconButton } from './unicorn/UIconButton';
 import { useCaptionPopper } from './CaptionPopper';
+import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 
 const userStatus = css`
     color: #676d7a;
@@ -119,16 +120,15 @@ export const UserPopperContent = React.memo(
             const contactsEnabled = false;
             const client = useClient();
             const messenger = React.useContext(MessengerContext);
-            const { useIsUserContact, addUser, removeUser } = messenger.contacts;
-            const isUserContact = useIsUserContact(user.id, user.inContacts);
-            const [showContactCaption] = useCaptionPopper({ text: isUserContact ? 'Remove from contacts' : 'Save to contacts' });
+            const { isContact, addContact, removeContact } = useLocalContact(user.id, user.inContacts);
+            const [showContactCaption] = useCaptionPopper({ text: isContact ? 'Remove from contacts' : 'Save to contacts' });
 
             const handleContactClick = async () => {
-                if (isUserContact) {
-                    removeUser(user.id);
+                if (isContact) {
+                    removeContact(user.id);
                     await client.mutateRemoveFromContacts({ userId: user.id });
                 } else {
-                    addUser(user.id);
+                    addContact(user.id);
                     await client.mutateAddToContacts({ userId: user.id });
                 }
             };
@@ -200,7 +200,7 @@ export const UserPopperContent = React.memo(
                                     />
                                     {contactsEnabled && (
                                         <UIconButton
-                                            icon={isUserContact ? <RemoveContactIcon /> : <AddContactIcon />}
+                                            icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
                                             onClick={handleContactClick}
                                             size="medium"
                                             onMouseEnter={showContactCaption}
