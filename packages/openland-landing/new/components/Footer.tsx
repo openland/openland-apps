@@ -75,6 +75,7 @@ const menuItem = css`
     display: inline-block;
     margin: 20px 31px;
     z-index: 20;
+    position: relative;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         margin: 17px 23px;
@@ -220,59 +221,61 @@ const links = css`
 const menuItemWrapper = css`
     display: inline-block;
     z-index: -1;
-
-    .landingHeaderPopup:before {
-        width: 50%;
-    }
 `;
 
 const popup = css`
     display: flex;
-
     position: absolute;
     flex-direction: column;
     width: 170px;
-
-    bottom: 76px;
-
+    left: 50%;
+    bottom: 56px;
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
     border-radius: 8px;
     padding: 8px 0;
     z-index: 5;
-    background: white;
+    background: var(--backgroundSecondary);
+    transform: translate(-50%, 0);
 
     &:before {
         position: absolute;
-        bottom: -50px;
+        bottom: -16px;
         display: block;
         content: '';
         width: 100%;
-        height: 50px;
+        height: 16px;
 
         z-index: -3;
+    }
+
+    @media (max-width: 767px) {
+        bottom: 50px;
+        right: -10px;
+        left: auto;
+        transform: initial;
     }
 `;
 
 const popupItem = css`
-    line-height: 40px;
-    padding: 0 16px;
-
+    padding: 8px 16px;
     display: flex;
     align-items: center;
-
-    color: #272750;
+    color: var(--foregroundPrimary);
     font-weight: normal;
+    opacity: 0.6;
+    font-size: 16px;
+    line-height: 24px;
 
     &,
     &:hover,
     &:focus,
     &:active {
         text-decoration: none;
-        color: #272750;
+        color: var(--foregroundPrimary);
     }
 
     &:hover {
-        background-color: #f7fafc;
+        background-color: var(--backgroundTertiary);;
     }
 
     cursor: pointer;
@@ -343,7 +346,7 @@ export const Footer = React.memo(() => {
 
                                 {legalIsOpen && (
                                     <div
-                                        className={cx(popup, 'landingHeaderPopup')}
+                                        className={popup}
                                         onMouseLeave={() => legalSetOpen(false)}
                                     >
                                         <span className={popupItem}>

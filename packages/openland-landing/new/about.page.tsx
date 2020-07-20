@@ -60,8 +60,8 @@ const subheading = css`
 `;
 
 const text = css`
-    font-size: 24px;
-    line-height: 40px;
+    font-size: 22px;
+    line-height: 36px;
     margin: 0 0 12px;
 
     &:last-of-type {
@@ -76,7 +76,7 @@ const text = css`
 
 const hero = css`
     background: linear-gradient(180deg, #F7F8F9 0%, #F7F8F9 100%);
-    height: 332px;
+    height: 262px;
     position: relative;
 
     @media (max-width: 767px) {
@@ -93,7 +93,7 @@ const hero = css`
             url(https://cdn.openland.com/shared/landing/start/about-hero.png) 1x,
             url(https://cdn.openland.com/shared/landing/start/about-hero@2x.png) 2x
         );
-        background-size: auto 246px;
+        background-size: auto 190px;
         background-position: bottom center;
 
         @media (max-width: 767px) {

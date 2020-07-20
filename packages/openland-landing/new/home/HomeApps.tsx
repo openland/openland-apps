@@ -247,7 +247,7 @@ const link = css`
     display: inline-block;
     margin-left: 6px;
     font-weight: 600;
-    color: #006FDE;
+    color: var(--tintBlue);
 
     @media (min-width: 768px) and (max-width: 1199px) {
         margin-left: 5px;
@@ -263,7 +263,7 @@ const link = css`
     }
 
     span {
-        opacity: 0.5;
+        opacity: 0.4;
     }
 `;
 

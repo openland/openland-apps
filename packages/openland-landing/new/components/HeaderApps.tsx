@@ -4,37 +4,25 @@ import { LandingLinks } from './_links';
 
 const popup = css`
     display: flex;
-
     position: absolute;
     flex-direction: column;
     width: 160px;
-
+    left: 50%;
     top: 56px;
-
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
     border-radius: 8px;
     padding: 8px 0;
     z-index: 5;
-    background: white;
-
-    &:before {
-        position: absolute;
-        top: -50px;
-        display: block;
-        content: '';
-        width: 100%;
-        height: 50px;
-    }
+    background: var(--backgroundSecondary);
+    transform: translate(-50%, 0);
 `;
 
 const popupItem = css`
     line-height: 40px;
-    padding: 0 20px;
-
+    padding: 0 16px;
     display: flex;
     align-items: center;
-
-    color: #272750;
+    color: var(--foregroundPrimary);
     font-weight: normal;
 
     &,
@@ -42,22 +30,23 @@ const popupItem = css`
     &:focus,
     &:active {
         text-decoration: none;
-        color: #272750;
+        color: var(--foregroundPrimary);
     }
 
     &:hover {
-        background-color: #f7fafc;
+        background-color: var(--backgroundTertiary);
     }
 `;
 
 const popupIcon = css`
-    margin-right: 20px;
+    margin-right: 16px;
 `;
 
 const popupText = css`
     font-size: 16px;
     line-height: 40px;
     font-weight: 600;
+    opacity: 0.6;
 `;
 
 interface HeaderAppsItemProps {
@@ -93,17 +82,19 @@ export const HeaderApps = React.memo((props: HeaderAppsProps) => {
     const [isShown, setShown] = React.useState<boolean>(false);
 
     return (
-        <span className={props.className} onMouseLeave={() => setShown(false)}>
-            <span
-                onClick={() => setShown(true)}
-                onMouseOver={() => setShown(true)}
-            >
+        <span
+            className={props.className}
+            onMouseLeave={() => setShown(false)}
+            onClick={() => setShown(true)}
+            onMouseOver={() => setShown(true)}
+        >
+            <span>
                 Desktop app
             </span>
 
             {isShown && (
                 <div
-                    className={cx(popup, 'landingHeaderPopup')}
+                    className={popup}
                     onMouseLeave={() => setShown(false)}
                 >
                     <HeaderAppsItem
