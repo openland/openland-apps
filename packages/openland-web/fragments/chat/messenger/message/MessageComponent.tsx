@@ -120,12 +120,25 @@ const MessageSenderOrg = React.memo((props: { organization: MessageSender_primar
     </ULink>
 ));
 
-const MessageTime = React.memo((props: { time: number, dateFormat: 'time' | 'date-time' }) => (
-    <div className={cx(TextCaption, senderDateStyle)}>
-        {props.dateFormat === 'time' && formatTime(props.time)}
-        {props.dateFormat === 'date-time' && formatDateAtTime(props.time, 'short')}
-    </div>
-));
+const MessageTime = React.memo((props: { time: number, dateFormat: 'time' | 'date-time' }) => {
+    const tooltipText = React.useMemo(() => new Date(props.time).toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: true
+    }), [props.time]);
+
+    return (
+        <div className={cx(TextCaption, senderDateStyle)} title={tooltipText}>
+            {props.dateFormat === 'time' && formatTime(props.time)}
+            {props.dateFormat === 'date-time' && formatDateAtTime(props.time, 'short')}
+        </div>
+    );
+});
 
 interface MessageSenderContentProps {
     sender: MessageSender;
