@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css, cx } from 'linaria';
+import { css } from 'linaria';
 import { LandingLinks } from './_links';
 
 const popup = css`
