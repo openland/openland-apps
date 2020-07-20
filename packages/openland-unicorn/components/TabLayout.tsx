@@ -316,6 +316,7 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
                         <InnerContainer>
                             {props.router.stacks.map((v, i) => (
                                 <StackContent
+                                    key={i}
                                     selected={selected}
                                     layout={layout}
                                     selectedMounted={selectedMounted}

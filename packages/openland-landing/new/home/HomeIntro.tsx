@@ -14,7 +14,7 @@ const box = css`
 
 const inner = css`
     position: relative;
-    padding: 157px 0 166px;
+    padding: 136px 0 145px;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         padding: 112px 0 60px;
@@ -27,7 +27,7 @@ const inner = css`
 
 const image = css`
     position: absolute;
-    top: 113px; right: 0;
+    top: 93px; right: 0;
     width: 527px; height: 527px;
     background: linear-gradient(135deg, #FFC619 0%, #FF7919 100%);
     border-radius: 527px;
@@ -75,7 +75,7 @@ const title = css`
     font-size: 88px;
     line-height: 91px;
     color: var(--foregroundPrimary);
-    margin: 0 0 20px;
+    margin: 0 0 21px;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 62px;
@@ -142,7 +142,7 @@ const app = css`
     width: 168px;
     height: 56px;
     margin: 0 24px 0 0;
-    transition: 150ms all ease;
+    transition: 150ms box-shadow ease;
     border-radius: 10px;
     background: var(--foregroundPrimary) url(https://cdn.openland.com/shared/landing/start/home-intro-ios-2.svg) no-repeat;
     background-size: 100% 100%;
@@ -162,7 +162,7 @@ const app = css`
     }
 
     &:hover {
-        background-color: var(--foregroundSecondary);
+        box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
     }
 `;
 

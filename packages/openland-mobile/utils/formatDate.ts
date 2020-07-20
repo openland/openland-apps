@@ -41,3 +41,20 @@ export function formatDateFull(date: number) {
 
     return month + ', ' + day;
 }
+
+export function formatDateShort(date: number) {
+    let dt = new Date(date);
+    let now = new Date();
+    let month = months[dt.getMonth()];
+    let day = dt.getDate();
+
+    if (now.getFullYear() === dt.getFullYear() && now.getMonth() === dt.getMonth()) {
+        if (now.getDate() === dt.getDate()) {
+            return 'Today';
+        } else if (now.getDate() === dt.getDate() + 1) {
+            return 'Yesterday';
+        }
+    }
+
+    return month + ' ' + day;
+}

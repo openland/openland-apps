@@ -262,7 +262,7 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
             });
 
             if (orgIdFromRouter) {
-                await getClient().refetchOrganizationProfile({ organizationId: orgIdFromRouter });
+                await getClient().refetchOrganization({ organizationId: orgIdFromRouter });
             }
 
             trackEvent('navigate_new_group_add_members');

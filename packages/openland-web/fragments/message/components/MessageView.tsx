@@ -92,6 +92,7 @@ export const MessageView = React.memo((props: MessageViewProps) => {
                     sender={sender}
                     senderNameEmojify={senderNameEmojify}
                     date={parseInt(message.date, 10)}
+                    dateFormat="date-time"
                 />
                 <MessageContent
                     id={message.id}

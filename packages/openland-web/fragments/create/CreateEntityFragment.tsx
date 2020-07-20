@@ -557,6 +557,10 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
             })
         ).room;
 
+        if (props.inOrgId) {
+            await client.refetchOrganization({ organizationId: props.inOrgId });
+        }
+
         props.ctx.hide();
         router.navigate('/mail/' + group.id);
     };

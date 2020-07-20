@@ -1,23 +1,20 @@
 import * as React from 'react';
-import { XView, XViewRouterContext, XImage, XViewProps } from 'react-mental';
-import { XScrollView3 } from 'openland-x/XScrollView3';
+import { XView, XViewRouterContext, XImage, XViewProps, XViewRouteContext } from 'react-mental';
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { trackEvent } from 'openland-x-analytics';
 import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
-import { GlobalSearch_items, GlobalSearch_items_SharedRoom } from 'openland-api/spacex.types';
+import { GlobalSearch_items, GlobalSearch_items_SharedRoom, MyContacts_myContacts_items_user } from 'openland-api/spacex.types';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { ContactsSearchResults, ContactsSearchItemRender } from './ContactsSearchResults';
 import { useStackVisibility } from 'openland-unicorn/StackVisibilityContext';
 import { css, cx } from 'linaria';
 import { TextStyles, TextBody } from 'openland-web/utils/TextStyles';
-import CycleIcon from 'openland-icons/s/ic-cycle-glyph-24.svg';
-import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { useListSelection } from 'openland-web/utils/useListSelection';
-import { XListView } from 'openland-web/components/XListView';
 import { XLoader } from 'openland-x/XLoader';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { ContactDataSourceItem } from 'openland-engines/contacts/ContactsEngine';
+import { useClient } from 'openland-api/useClient';
+import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
+import { useLocalContacts } from 'openland-y-utils/contacts/LocalContacts';
 
 const emptyScreenImg = css`
     height: 200px;
@@ -67,33 +64,44 @@ const EmptyScreen = (props: { title: string, subtitle: string, imgSrcStyle: stri
     );
 };
 
-export const ContactsFragment = React.memo(() => {
-    const messenger = React.useContext(MessengerContext);
+export const ContactsFragmentComponent = React.memo(() => {
+    const client = useClient();
     const refInput = React.useRef<USearchInputRef>(null);
-    const isVisible = useVisibleTab();
     const { router } = useTabRouter();
     const stackRouter = React.useContext(XViewRouterContext)!;
+    const route = React.useContext(XViewRouteContext)!;
     const setStackVisibility = useStackVisibility();
     const [query, setQuery] = React.useState<string>('');
-    const hasContacts = true;
-    // TODO: when import is ready
+    // TODO: add fetching when import is ready
     const didImportContacts = true;
     const isSearching = query.trim().length > 0;
+    const { items: initialItems, cursor: initialAfter } = client.useMyContacts({ first: 20 }, { fetchPolicy: 'network-only' }).myContacts;
+    const [items, setItems] = React.useState<MyContacts_myContacts_items_user[]>(initialItems.map(x => x.user));
+    const { selectedIndex } = useListSelection({ maxIndex: items.length - 1 });
+    const [after, setAfter] = React.useState<string | null>(initialAfter);
+    const [loading, setLoading] = React.useState(false);
+    const [redirected, setRedirected] = React.useState(false);
+    const { localContacts } = useLocalContacts();
+    let hasContacts = items.length > 0;
 
-    // TODO: fix max length
-    const { selectedIndex, setSelectedIndex, handleMouseOver, handleMouseMove } = useListSelection({ maxIndex: 100 });
-
-    React.useEffect(() => {
-        if (isVisible) {
-            messenger.contacts.start();
-        } else {
-            messenger.contacts.clear();
+    const handleLoadMore = async () => {
+        if (!loading && after) {
+            setLoading(true);
+            const { items: newItems, cursor } = (await client.queryMyContacts({ first: 10, after }, { fetchPolicy: 'network-only' })).myContacts;
+            setItems(prev => prev.concat(newItems.map(x => x.user)));
+            setAfter(cursor);
+            setLoading(false);
         }
-    }, [isVisible]);
+    };
 
     React.useEffect(() => {
-        setSelectedIndex(-1);
-    }, [query]);
+        if (route.path === '/contacts' && items.length > 0 && !redirected) {
+            setTimeout(() => {
+                stackRouter.navigate(`/contacts/${items[0].id}`, true);
+            }, 100);
+            setRedirected(true);
+        }
+    }, [route.path, items]);
 
     const onPick = React.useCallback((item: Exclude<GlobalSearch_items, GlobalSearch_items_SharedRoom>) => {
         if (refInput && refInput.current) {
@@ -110,20 +118,29 @@ export const ContactsFragment = React.memo(() => {
         router.navigate(`/mail/${item.id}`);
     }, []);
 
-    React.useEffect(
+    React.useEffect(() => {
+        trackEvent('navigate_contacts');
+    }, []);
+
+    React.useLayoutEffect(
         () => {
-            if (isVisible) {
-                trackEvent('navigate_contacts');
+            if (hasContacts && !loading) {
+                setStackVisibility(true);
             }
         },
-        [isVisible],
+        [hasContacts, loading],
     );
 
-    React.useLayoutEffect(() => {
-        if (hasContacts) {
-            setStackVisibility(true);
-        }
-    }, [hasContacts]);
+    // TODO: Remove when subscription is ready
+    React.useEffect(() => {
+        setItems(prev => {
+            let filtered = prev.filter(user => localContacts[user.id] !== 'removed');
+            if (filtered.length === 0) {
+                setStackVisibility(false);
+            }
+            return filtered;
+        });
+    }, [localContacts]);
 
     const noContactsContent = didImportContacts ? (
         <EmptyScreen
@@ -167,47 +184,30 @@ export const ContactsFragment = React.memo(() => {
                 ref={refInput}
                 placeholder="Search"
             />
-            <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} onMouseLeave={() => setSelectedIndex(-1)}>
+            <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>
                 {isSearching ? (
-                    <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
-                        {!didImportContacts && (
-                            <UListItem
-                                icon={<CycleIcon />}
-                                iconBackground="var(--accentPrimary)"
-                                title="Import contacts"
-                                titleStyle={TextStyles.Label1}
-                            />
-                        )}
-                        <ContactsSearchResults
-                            query={query}
-                            selectedIndex={selectedIndex}
-                            onPick={onPick}
-                            onMessagePick={onMessagePick}
-                            onMouseOver={handleMouseOver}
-                            onMouseMove={handleMouseMove}
-                        />
-                    </XScrollView3>
+                    <ContactsSearchResults
+                        query={query}
+                        selectedIndex={selectedIndex}
+                        onPick={onPick}
+                        onMessagePick={onMessagePick}
+                    />
                 ) : (
-                        <XListView
-                            dataSource={messenger.contacts.dataSource}
-                            itemHeight={56}
+                        <UFlatList
                             loadingHeight={56}
+                            padded={false}
                             renderItem={(x, i) => (
                                 <ContactsSearchItemRender
-                                    item={x as ContactDataSourceItem}
+                                    item={x}
                                     index={i}
                                     selectedIndex={selectedIndex}
-                                    onMouseMove={handleMouseMove}
-                                    onMouseOver={handleMouseOver}
                                     onPick={onPick}
                                     onMessagePick={onMessagePick}
                                 />
                             )}
-                            renderLoading={() => (
-                                <XView height={56} alignItems="center" justifyContent="center">
-                                    <XLoader loading={true} />
-                                </XView>
-                            )}
+                            loading={loading}
+                            items={items}
+                            loadMore={handleLoadMore}
                         />
                     )}
             </XView>
@@ -219,4 +219,10 @@ export const ContactsFragment = React.memo(() => {
             {content}
         </XView>
     );
+});
+
+export const ContactsFragment = React.memo(() => {
+    const isVisible = useVisibleTab();
+    // TODO: remove isVisible when subscriptions are ready
+    return isVisible ? <ContactsFragmentComponent /> : <XLoader loading={true} />;
 });

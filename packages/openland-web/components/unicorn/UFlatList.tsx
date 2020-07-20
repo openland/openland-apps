@@ -13,12 +13,12 @@ const container = css`
 `;
 
 interface UFlatListProps<T> {
-    track: string;
+    track?: string;
     loadMore: () => void;
     loading: boolean;
     loadingHeight?: number;
     items: T[];
-    renderItem: (item: T) => JSX.Element;
+    renderItem: (item: T, index: number) => JSX.Element;
     padded?: boolean;
     children?: any;
     title?: string;
@@ -46,14 +46,14 @@ export const UFlatList: <T>(props: UFlatListProps<T>) => any = React.memo((props
 
             {!props.grid &&
                 items.map((item, index) => (
-                    <XView key={'item-' + index}>{props.renderItem(item)}</XView>
+                    <XView key={'item-' + index}>{props.renderItem(item, index)}</XView>
                 ))
             }
 
             {props.grid && (
                 <div className={container}>
                     {items.map((item, index) => (
-                        <XView key={'item-' + index}>{props.renderItem(item)}</XView>
+                        <XView key={'item-' + index}>{props.renderItem(item, index)}</XView>
                     ))}
                 </div>
             )}

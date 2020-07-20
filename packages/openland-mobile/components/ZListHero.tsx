@@ -11,6 +11,9 @@ const styles = StyleSheet.create({
     wrapper: {
         marginVertical: 8,
     } as ViewStyle,
+    wrapperBottomed: {
+        marginBottom: 8,
+    } as ViewStyle,
     container: {
         paddingHorizontal: 16,
         flexDirection: 'row',
@@ -69,13 +72,15 @@ export interface ZListHeroProps {
     };
     path?: string;
     pathParams?: any;
+    verticalMargin?: 'both' | 'bottom';
 }
 
 export const ZListHero = React.memo<ZListHeroProps>((props) => {
     const theme = React.useContext(ThemeContext);
-    const { photo, id, title, titleIcon, titleIconElement, titleColor, subtitle, subtitleColor, action, score, path, pathParams } = props;
+    const { photo, id, title, titleIcon, titleIconElement, titleColor, subtitle, subtitleColor, action, score, path, pathParams, verticalMargin = 'both' } = props;
     const colorTitle = titleColor ? titleColor : theme.foregroundPrimary;
     const colorSubtitle = subtitleColor ? subtitleColor : theme.foregroundTertiary;
+    const wrapperStyles = verticalMargin === 'both' ? styles.wrapper : styles.wrapperBottomed;
 
     const content = (
         <View style={styles.container}>
@@ -110,7 +115,7 @@ export const ZListHero = React.memo<ZListHeroProps>((props) => {
 
     if (!!path) {
         return (
-            <View style={styles.wrapper}>
+            <View style={wrapperStyles}>
                 <ZListItemBase path={path} pathParams={pathParams} height={null} separator={false}>
                     {content}
                 </ZListItemBase>
@@ -119,7 +124,7 @@ export const ZListHero = React.memo<ZListHeroProps>((props) => {
     }
 
     return (
-        <View style={styles.wrapper}>
+        <View style={wrapperStyles}>
             {content}
         </View>
     );
