@@ -1,3 +1,4 @@
+import { StoredMessage } from './StoredMessage';
 import { backoff } from 'openland-y-utils/timer';
 import { randomKey } from 'openland-y-utils/randomKey';
 import { MessagesApi } from './MessagesApi';
@@ -8,7 +9,7 @@ import { AsyncLock } from '@openland/patterns';
 export type MessagesState =
     | { type: 'loading' }
     | { type: 'no-access' }
-    | { type: 'messages' };
+    | { type: 'messages', messages: StoredMessage[], hasMoreNext: boolean, hasMorePrev: boolean };
 
 export interface MessagesSource {
     readonly state: MessagesState;
@@ -25,6 +26,9 @@ class MessageSourceHolder implements MessagesSource {
     private _state: MessagesState;
     private _onClose: () => void;
     private _closed = false;
+    private _inited = false;
+    private _minSeq = -1;
+    private _maxSeq = -1;
 
     constructor(id: string, state: MessagesState, onClose: () => void) {
         this.id = id;
@@ -40,7 +44,31 @@ class MessageSourceHolder implements MessagesSource {
         return this._closed;
     }
 
-    update(state: MessagesState) {
+    get minSeq() {
+        return this._minSeq;
+    }
+
+    get maxSeq() {
+        return this._maxSeq;
+    }
+
+    init(state: MessagesState, minSeq: number, maxSeq: number) {
+        if (this._closed) {
+            return;
+        }
+        if (this._inited) {
+            return;
+        }
+        this._inited = true;
+        this._minSeq = minSeq;
+        this._maxSeq = maxSeq;
+        this._state = state;
+        if (this.onUpdated) {
+            this.onUpdated(state);
+        }
+    }
+
+    abort(state: MessagesState) {
         if (this._closed) {
             return;
         }
@@ -48,6 +76,7 @@ class MessageSourceHolder implements MessagesSource {
         if (this.onUpdated) {
             this.onUpdated(state);
         }
+        this.close();
     }
 
     close() {
@@ -101,19 +130,22 @@ export class MessagesStore {
 
                 // Resolve message
                 let message = await this.repo.readById(id);
+                if (source.closed) {
+                    return;
+                }
+
                 if (!message) {
                     let msg = await this.api.loadMessage(id);
                     if (source.closed) {
                         return;
                     }
                     if (!msg) {
-                        source.update({ type: 'no-access' });
-                        source.close();
+                        source.abort({ type: 'no-access' });
                         return;
                     } else {
-                        this.persistence.startTransaction();
-                        await this.repo.writeBatch({ minSeq: msg.seq, maxSeq: msg.seq, messages: [msg] });
-                        await this.persistence.commitTransaction();
+                        await this.persistence.inTx(async (tx) => {
+                            await this.repo.writeBatch({ minSeq: msg!.seq, maxSeq: msg!.seq, messages: [msg!] }, tx);
+                        });
                         continue;
                     }
                 }
@@ -130,19 +162,19 @@ export class MessagesStore {
                     if (source.closed) {
                         return;
                     }
-                    let minSeq = message.seq;
+                    let batchMinSeq = message.seq;
                     if (!loaded.hasMore) {
-                        minSeq = Number.MIN_SAFE_INTEGER;
+                        batchMinSeq = Number.MIN_SAFE_INTEGER;
                     } else {
                         for (let m of loaded.messages) {
-                            minSeq = Math.min(m.seq, minSeq);
+                            batchMinSeq = Math.min(m.seq, batchMinSeq);
                         }
                     }
 
                     // Note: maxSeq is the seq of the message that we are using as cursor not the max seq of batch
-                    this.persistence.startTransaction();
-                    await this.repo.writeBatch({ minSeq, maxSeq: message.seq, messages: loaded.messages });
-                    await this.persistence.commitTransaction();
+                    await this.persistence.inTx(async (tx) => {
+                        await this.repo.writeBatch({ minSeq: batchMinSeq, maxSeq: message!.seq, messages: loaded.messages }, tx);
+                    });
                     continue;
                 }
 
@@ -158,24 +190,45 @@ export class MessagesStore {
                     if (source.closed) {
                         return;
                     }
-                    let maxSeq = message.seq;
+                    let batchMaxSeq = message.seq;
                     if (!loaded.hasMore) {
-                        maxSeq = Number.MAX_SAFE_INTEGER;
+                        batchMaxSeq = Number.MAX_SAFE_INTEGER;
                     } else {
                         for (let m of loaded.messages) {
-                            maxSeq = Math.max(m.seq, maxSeq);
+                            batchMaxSeq = Math.max(m.seq, batchMaxSeq);
                         }
                     }
 
                     // Note: minSeq is the seq of the message that we are using as cursor not the min seq of batch
-                    this.persistence.startTransaction();
-                    await this.repo.writeBatch({ minSeq: message.seq, maxSeq, messages: loaded.messages });
-                    await this.persistence.commitTransaction();
+                    await this.persistence.inTx(async (tx) => {
+                        await this.repo.writeBatch({ minSeq: message!.seq, maxSeq: batchMaxSeq, messages: loaded.messages }, tx);
+                    });
                     continue;
                 }
 
+                // Initial Messages
                 let messages = [...before.items, message, ...after.items];
-                console.warn({ messages, hasMoreNext: !after.completed, hasMorePrev: !before.completed });
+
+                // Max Seq
+                let maxSeq = message.seq;
+                if (after.completed) {
+                    maxSeq = Number.MAX_SAFE_INTEGER;
+                } else {
+                    for (let m of after.items) {
+                        maxSeq = Math.max(m.seq, maxSeq);
+                    }
+                }
+
+                // Min Seq
+                let minSeq = message.seq;
+                if (before.completed) {
+                    minSeq = Number.MIN_SAFE_INTEGER;
+                } else {
+                    for (let m of before.items) {
+                        minSeq = Math.min(m.seq, minSeq);
+                    }
+                }
+                source.init({ type: 'messages', messages, hasMoreNext: !after.completed, hasMorePrev: !before.completed }, minSeq, maxSeq);
                 return;
             }
         });

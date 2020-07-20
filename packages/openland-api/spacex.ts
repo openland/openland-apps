@@ -49,6 +49,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryChatMentionSearch(variables: Types.ChatMentionSearchVariables, params?: QueryParameters): Promise<Types.ChatMentionSearch> {
         return this.query('ChatMentionSearch', variables, params);
     }
+    queryChatNewChatState(variables: Types.ChatNewChatStateVariables, params?: QueryParameters): Promise<Types.ChatNewChatState> {
+        return this.query('ChatNewChatState', variables, params);
+    }
+    queryChatNewDialogsState(params?: QueryParameters): Promise<Types.ChatNewDialogsState> {
+        return this.query('ChatNewDialogsState', undefined, params);
+    }
     queryChatNewGetMessage(variables: Types.ChatNewGetMessageVariables, params?: QueryParameters): Promise<Types.ChatNewGetMessage> {
         return this.query('ChatNewGetMessage', variables, params);
     }
@@ -382,6 +388,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchChatMentionSearch(variables: Types.ChatMentionSearchVariables, params?: QueryParameters): Promise<Types.ChatMentionSearch> {
         return this.refetch('ChatMentionSearch', variables, params);
     }
+    refetchChatNewChatState(variables: Types.ChatNewChatStateVariables, params?: QueryParameters): Promise<Types.ChatNewChatState> {
+        return this.refetch('ChatNewChatState', variables, params);
+    }
+    refetchChatNewDialogsState(params?: QueryParameters): Promise<Types.ChatNewDialogsState> {
+        return this.refetch('ChatNewDialogsState', undefined, params);
+    }
     refetchChatNewGetMessage(variables: Types.ChatNewGetMessageVariables, params?: QueryParameters): Promise<Types.ChatNewGetMessage> {
         return this.refetch('ChatNewGetMessage', variables, params);
     }
@@ -714,6 +726,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateChatMentionSearch(variables: Types.ChatMentionSearchVariables, updater: (data: Types.ChatMentionSearch) => Types.ChatMentionSearch | null): Promise<boolean> {
         return this.updateQuery(updater, 'ChatMentionSearch', variables);
+    }
+    updateChatNewChatState(variables: Types.ChatNewChatStateVariables, updater: (data: Types.ChatNewChatState) => Types.ChatNewChatState | null): Promise<boolean> {
+        return this.updateQuery(updater, 'ChatNewChatState', variables);
+    }
+    updateChatNewDialogsState(updater: (data: Types.ChatNewDialogsState) => Types.ChatNewDialogsState | null): Promise<boolean> {
+        return this.updateQuery(updater, 'ChatNewDialogsState', undefined);
     }
     updateChatNewGetMessage(variables: Types.ChatNewGetMessageVariables, updater: (data: Types.ChatNewGetMessage) => Types.ChatNewGetMessage | null): Promise<boolean> {
         return this.updateQuery(updater, 'ChatNewGetMessage', variables);
@@ -1073,6 +1091,16 @@ export class OpenlandClient extends BaseSpaceXClient {
     useChatMentionSearch(variables: Types.ChatMentionSearchVariables, params?: SpaceQueryWatchParameters): Types.ChatMentionSearch;
     useChatMentionSearch(variables: Types.ChatMentionSearchVariables, params?: SpaceQueryWatchParameters): Types.ChatMentionSearch | null {
         return this.useQuery('ChatMentionSearch', variables, params);
+    }
+    useChatNewChatState(variables: Types.ChatNewChatStateVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ChatNewChatState | null;
+    useChatNewChatState(variables: Types.ChatNewChatStateVariables, params?: SpaceQueryWatchParameters): Types.ChatNewChatState;
+    useChatNewChatState(variables: Types.ChatNewChatStateVariables, params?: SpaceQueryWatchParameters): Types.ChatNewChatState | null {
+        return this.useQuery('ChatNewChatState', variables, params);
+    }
+    useChatNewDialogsState(params: SpaceQueryWatchParameters & { suspense: false }): Types.ChatNewDialogsState | null;
+    useChatNewDialogsState(params?: SpaceQueryWatchParameters): Types.ChatNewDialogsState;
+    useChatNewDialogsState(params?: SpaceQueryWatchParameters): Types.ChatNewDialogsState | null {
+        return this.useQuery('ChatNewDialogsState', undefined, params);
     }
     useChatNewGetMessage(variables: Types.ChatNewGetMessageVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ChatNewGetMessage | null;
     useChatNewGetMessage(variables: Types.ChatNewGetMessageVariables, params?: SpaceQueryWatchParameters): Types.ChatNewGetMessage;

@@ -2152,6 +2152,18 @@ private let ChatMentionSearchSelector = obj(
                     field("cursor", "cursor", scalar("String"))
                 )))
         )
+private let ChatNewChatStateSelector = obj(
+            field("conversationState", "state", arguments(fieldValue("id", refValue("chatId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("state", "state", scalar("String"))
+                )))
+        )
+private let ChatNewDialogsStateSelector = obj(
+            field("dialogsState", "state", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("state", "state", scalar("String"))
+                )))
+        )
 private let ChatNewGetMessageSelector = obj(
             field("message", "message", arguments(fieldValue("messageId", refValue("id"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -4943,6 +4955,18 @@ class Operations {
         "query ChatMentionSearch($cid:ID!,$query:String,$first:Int!,$after:String){mentions:chatMentionSearch(cid:$cid,query:$query,first:$first,after:$after){__typename globalItems{__typename ... on Organization{__typename ...OrganizationShort}... on User{__typename ...UserForMention}... on SharedRoom{__typename ...RoomSharedNano}}localItems{__typename ...UserForMention}cursor}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}fragment UserForMention on User{__typename id name photo shortname isBot inContacts primaryOrganization{__typename id name}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title photo membersCount settings{__typename id mute}}",
         ChatMentionSearchSelector
     )
+    let ChatNewChatState = OperationDefinition(
+        "ChatNewChatState",
+        .query, 
+        "query ChatNewChatState($chatId:ID!){state:conversationState(id:$chatId){__typename state}}",
+        ChatNewChatStateSelector
+    )
+    let ChatNewDialogsState = OperationDefinition(
+        "ChatNewDialogsState",
+        .query, 
+        "query ChatNewDialogsState{state:dialogsState{__typename state}}",
+        ChatNewDialogsStateSelector
+    )
     let ChatNewGetMessage = OperationDefinition(
         "ChatNewGetMessage",
         .query, 
@@ -6392,6 +6416,8 @@ class Operations {
         if name == "ChatInitFromUnread" { return ChatInitFromUnread }
         if name == "ChatJoin" { return ChatJoin }
         if name == "ChatMentionSearch" { return ChatMentionSearch }
+        if name == "ChatNewChatState" { return ChatNewChatState }
+        if name == "ChatNewDialogsState" { return ChatNewDialogsState }
         if name == "ChatNewGetMessage" { return ChatNewGetMessage }
         if name == "ChatNewLoadAfter" { return ChatNewLoadAfter }
         if name == "ChatNewLoadBefore" { return ChatNewLoadBefore }

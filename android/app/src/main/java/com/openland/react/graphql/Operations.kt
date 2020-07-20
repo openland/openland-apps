@@ -20,6 +20,8 @@ object Operations {
         if (name == "ChatInitFromUnread") return ChatInitFromUnread
         if (name == "ChatJoin") return ChatJoin
         if (name == "ChatMentionSearch") return ChatMentionSearch
+        if (name == "ChatNewChatState") return ChatNewChatState
+        if (name == "ChatNewDialogsState") return ChatNewDialogsState
         if (name == "ChatNewGetMessage") return ChatNewGetMessage
         if (name == "ChatNewLoadAfter") return ChatNewLoadAfter
         if (name == "ChatNewLoadBefore") return ChatNewLoadBefore

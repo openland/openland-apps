@@ -1796,6 +1796,7 @@ type Mutation {
   debugFixDeletedRooms: Boolean!
   debugUnsubscribeEveryoneFromChat(cid: ID!): Int!
   debugInviteMembersFromChat(cid: ID!, dest: ID!): Boolean!
+  debugDeleteAllContacts: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!

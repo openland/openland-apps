@@ -1,4 +1,4 @@
-import { Persistence } from './Persistence';
+import { Persistence, Transaction } from './Persistence';
 import { StoredMessage } from './StoredMessage';
 import { SparseIndex } from './SparseIndex';
 import { AsyncLock } from '@openland/patterns';
@@ -35,7 +35,7 @@ export class MessagesRepository {
         minSeq: number | null,
         maxSeq: number | null,
         messages: StoredMessage[]
-    }) => {
+    }, tx: Transaction) => {
         return await this._lock.inLock(async () => {
 
             // Update cache
@@ -51,7 +51,7 @@ export class MessagesRepository {
                 // Apply values if not exist already
                 if (!this._values.has(i.id)) {
                     this._values.set(i.id, i);
-                    this.persistence.write('chat.' + this.id + '.msg.' + i.id, JSON.stringify(i));
+                    tx.write('chat.' + this.id + '.msg.' + i.id, JSON.stringify(i));
                 }
             }
 
@@ -62,39 +62,39 @@ export class MessagesRepository {
                 max: args.maxSeq !== null ? args.maxSeq : SparseIndex.MAX,
                 items: filtered.map((v) => ({ id: v.id, sortKey: v.seq }))
             });
-            this.persistence.write('chat.' + this.id + '.index', JSON.stringify(this._index.state));
+            tx.write('chat.' + this.id + '.index', JSON.stringify(this._index.state));
         });
     }
 
-    handleMessageReceived = async (message: StoredMessage) => {
+    handleMessageReceived = async (message: StoredMessage, tx: Transaction) => {
         return await this._lock.inLock(async () => {
             this._values.set(message.id, message);
-            this.persistence.write('chat.' + this.id + '.msg.' + message.id, JSON.stringify(message));
+            tx.write('chat.' + this.id + '.msg.' + message.id, JSON.stringify(message));
 
             // Persist to index
             if (!this._index.isInIndex(message.id) && !this._deleted.has(message.id)) {
                 this._index.apply({ min: message.seq, max: SparseIndex.MAX, items: [{ id: message.id, sortKey: message.seq }] });
-                this.persistence.write('chat.' + this.id + '.index', JSON.stringify(this._index.state));
+                tx.write('chat.' + this.id + '.index', JSON.stringify(this._index.state));
             }
         });
     }
 
-    handleMessageUpdated = async (message: StoredMessage) => {
+    handleMessageUpdated = async (message: StoredMessage, tx: Transaction) => {
         return await this._lock.inLock(async () => {
             if (!this._deleted.has(message.id)) {
                 this._values.set(message.id, message);
-                this.persistence.write('chat.' + this.id + '.msg.' + message.id, JSON.stringify(message));
+                tx.write('chat.' + this.id + '.msg.' + message.id, JSON.stringify(message));
             }
         });
     }
 
-    handleMessageDeleted = async (id: string) => {
+    handleMessageDeleted = async (id: string, tx: Transaction) => {
         return await this._lock.inLock(async () => {
             if (!this._deleted.has(id)) {
                 this._deleted.add(id);
                 if (this._index.isInIndex(id)) {
                     this._index.delete([id]);
-                    this.persistence.write('chat.' + this.id + '.index', JSON.stringify(this._index.state));
+                    tx.write('chat.' + this.id + '.index', JSON.stringify(this._index.state));
                 }
             }
         });

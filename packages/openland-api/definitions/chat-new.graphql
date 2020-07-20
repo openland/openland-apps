@@ -38,3 +38,15 @@ query ChatNewLoadAfter($chatId: ID!, $after: ID!, $limit: Int!) {
         haveMoreForward
     }
 }
+
+query ChatNewDialogsState {
+    state: dialogsState {
+        state
+    }
+}
+
+query ChatNewChatState($chatId: ID!) {
+    state: conversationState(id: $chatId) {
+        state
+    }
+}

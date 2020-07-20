@@ -56,4 +56,22 @@ export class MessagesApi {
             hasMore: response.haveMoreForward
         };
     }
+
+    loadChatState = async (chatId: string) => {
+        return ((await this.client.queryChatNewChatState({ chatId }, { fetchPolicy: 'network-only' })).state.state)!;
+    }
+
+    loadChatAccess = async (chatId: string): Promise<boolean> => {
+        // TODO: Implement
+        return true;
+    }
+
+    //
+    // Dialogs
+    //
+
+    loadDialogsState = async () => {
+        return (await this.client.queryChatNewDialogsState({ fetchPolicy: 'network-only' })).state.state!;
+    }
+
 }

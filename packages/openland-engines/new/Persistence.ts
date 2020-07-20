@@ -1,15 +1,27 @@
 import { PersistenceProvider } from './PersistenceProvider';
 import { AsyncLock } from '@openland/patterns';
 
-class Transaction {
+class TransactionHolder {
     private completed = false;
     private keys = new Map<string, string | null>();
+    private persistence: Persistence;
 
-    write(key: string, value: string | null) {
+    constructor(persistence: Persistence) {
+        this.persistence = persistence;
+    }
+
+    write = (key: string, value: string | null) => {
         if (this.completed) {
             throw Error('Transaction already completed');
         }
         this.keys.set(key, value);
+    }
+
+    read = async (key: string): Promise<string | null> => {
+        if (this.keys.has(key)) {
+            return this.keys.get(key)!;
+        }
+        return this.persistence.readKey(key);
     }
 
     cancel() {
@@ -33,10 +45,16 @@ class Transaction {
     }
 }
 
+export interface Transaction {
+    write(key: string, value: string | null): void;
+    read(key: string): Promise<string | null>;
+}
+
 export class Persistence {
     private persistence: PersistenceProvider;
-    private transaction: Transaction | null = null;
+    private transaction: TransactionHolder | null = null;
     private lock = new AsyncLock();
+    private txLock = new AsyncLock();
 
     constructor(persistence: PersistenceProvider) {
         this.persistence = persistence;
@@ -47,28 +65,25 @@ export class Persistence {
         return res[0];
     }
 
-    startTransaction = () => {
-        if (this.transaction) {
-            throw Error('Transaction already started');
-        }
-        this.transaction = new Transaction();
-    }
-
-    write(key: string, value: string | null) {
-        if (!this.transaction) {
-            throw Error('Transaction is not started');
-        }
-        this.transaction.write(key, value);
-    }
-
-    commitTransaction = async () => {
-        if (!this.transaction) {
-            throw Error('Transaction is not started');
-        }
-        let completed = this.transaction.complete();
-        this.transaction = null;
-        if (completed.length > 0) {
-            this.lock.inLock(() => this.persistence.writeKeys(completed));
-        }
+    async inTx<T>(handler: (handler: Transaction) => Promise<T>): Promise<T> {
+        return await this.txLock.inLock(async () => {
+            if (this.transaction) {
+                throw Error('Transaction already started');
+            }
+            let holder = new TransactionHolder(this);
+            this.transaction = holder;
+            try {
+                let res = await handler(holder);
+                let completed = this.transaction.complete();
+                this.transaction = null;
+                if (completed.length > 0) {
+                    await this.lock.inLock(() => this.persistence.writeKeys(completed));
+                }
+                return res;
+            } finally {
+                // Cancel transaction
+                this.transaction = null;
+            }
+        });
     }
 }

@@ -2159,6 +2159,18 @@ const ChatMentionSearchSelector = obj(
                     field('cursor', 'cursor', args(), scalar('String'))
                 )))
         );
+const ChatNewChatStateSelector = obj(
+            field('conversationState', 'state', args(fieldValue("id", refValue('chatId'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('state', 'state', args(), scalar('String'))
+                )))
+        );
+const ChatNewDialogsStateSelector = obj(
+            field('dialogsState', 'state', args(), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('state', 'state', args(), scalar('String'))
+                )))
+        );
 const ChatNewGetMessageSelector = obj(
             field('message', 'message', args(fieldValue("messageId", refValue('id'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -4945,6 +4957,18 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'ChatMentionSearch',
         body: 'query ChatMentionSearch($cid:ID!,$query:String,$first:Int!,$after:String){mentions:chatMentionSearch(cid:$cid,query:$query,first:$first,after:$after){__typename globalItems{__typename ... on Organization{__typename ...OrganizationShort}... on User{__typename ...UserForMention}... on SharedRoom{__typename ...RoomSharedNano}}localItems{__typename ...UserForMention}cursor}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}fragment UserForMention on User{__typename id name photo shortname isBot inContacts primaryOrganization{__typename id name}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title photo membersCount settings{__typename id mute}}',
         selector: ChatMentionSearchSelector
+    },
+    ChatNewChatState: {
+        kind: 'query',
+        name: 'ChatNewChatState',
+        body: 'query ChatNewChatState($chatId:ID!){state:conversationState(id:$chatId){__typename state}}',
+        selector: ChatNewChatStateSelector
+    },
+    ChatNewDialogsState: {
+        kind: 'query',
+        name: 'ChatNewDialogsState',
+        body: 'query ChatNewDialogsState{state:dialogsState{__typename state}}',
+        selector: ChatNewDialogsStateSelector
     },
     ChatNewGetMessage: {
         kind: 'query',
