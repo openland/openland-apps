@@ -8,7 +8,7 @@ export const useGlobalSearch = (opts: DialogSearchResults) => {
     const { items } = client.useGlobalSearch(opts.variables, {
         fetchPolicy: 'cache-and-network',
     });
-    const { selectedIndex, setSelectedIndex, handleMouseOver, handleMouseMove } = useListSelection({ maxIndex: items.length - 1 });
+    const { selectedIndex, setSelectedIndex } = useListSelection({ maxIndex: items.length - 1 });
 
     useShortcuts([
         {
@@ -26,7 +26,5 @@ export const useGlobalSearch = (opts: DialogSearchResults) => {
         items,
         selectedIndex,
         setSelectedIndex,
-        handleMouseOver,
-        handleMouseMove,
     };
 };
