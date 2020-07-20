@@ -136,6 +136,7 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
                     placeholder={placeholder}
                     autoFocus={autoFocus}
                     ref={inputRef}
+                    autoComplete="off"
                 />
                 {props.value && props.value.length > 0 && (
                     <button
