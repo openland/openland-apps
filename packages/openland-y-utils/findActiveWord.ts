@@ -1,9 +1,12 @@
+const whitelist = ['\n', ',', '(', ')'];
+
 function findActiveWordStart (content: string, selection: { start: number, end: number }): number {
     let startIndex = selection.start - 1;
+    let spaceCount = 0;
     while (startIndex >= 0) {
-        let whitelist = [' ', '\n', ',', '(', ')'];
-
-        if (!(whitelist.includes(content.charAt(startIndex)))) {
+        if (content.charAt(startIndex) === ' ' && spaceCount++ > 0) {
+            break;
+        } else if (!(whitelist.includes(content.charAt(startIndex)))) {
             startIndex--;
         } else {
             break;
