@@ -24,6 +24,8 @@ import { css } from 'linaria';
 import { debounce } from 'openland-y-utils/timer';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
+import { SDeferred } from 'react-native-s/SDeferred';
+import { GroupUsersList, GroupUsersListRef } from './components/GroupUsersList';
 
 const membersSearchStyle = css`
     width: 160px;
@@ -45,6 +47,8 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         { fetchPolicy: 'cache-and-network' },
     ).room;
 
+    const profilesRef = React.useRef<GroupUsersListRef>(null);
+
     if (!group || group.__typename === 'PrivateRoom') {
         return null;
     }
@@ -63,14 +67,6 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         { roomId },
         { fetchPolicy: 'cache-and-network' },
     ).roomFeaturedMembers;
-    const initialMembers = client.useRoomMembersPaginated(
-        { roomId, first: 15 },
-        { fetchPolicy: 'network-only' },
-    ).members;
-
-    React.useEffect(() => {
-        initialMembers.forEach(m => onlines.onUserAppears(m.user.id));
-    }, [initialMembers]);
 
     const {
         id,
@@ -85,8 +81,9 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         premiumSettings
     } = group;
 
-    const [members, setMembers] = React.useState(initialMembers);
-    const [loading, setLoading] = React.useState(false);
+    const [initialMembers, setInitialMembers] = React.useState<RoomMembersPaginated_members[]>([]);
+    const [members, setMembers] = React.useState<RoomMembersPaginated_members[]>([]);
+    const [loading, setLoading] = React.useState(true);
     const [membersQuery, setMembersQuery] = React.useState('');
     const [membersFetching, setMembersFetching] = React.useState({ loading: 0, hasNextPage: true, cursor: '' });
     const membersQueryRef = React.useRef('');
@@ -122,25 +119,9 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                 }
                 return;
             }
-            if (membersCount && (members.length < membersCount && !loading)) {
-                setLoading(true);
 
-                const loaded = (await client.queryRoomMembersPaginated(
-                    {
-                        roomId: id,
-                        first: 10,
-                        after: members[members.length - 1].user.id,
-                    },
-                    { fetchPolicy: 'network-only' },
-                )).members;
-
-                setMembers(current => [
-                    ...current,
-                    ...loaded.filter(m => !current.find(m2 => m2.user.id === m.user.id)),
-                ]);
-                setLoading(false);
-
-                loaded.forEach(m => onlines.onUserAppears(m.user.id));
+            if (profilesRef.current) {
+                await profilesRef.current.handleLoadMore();
             }
         },
         [membersCount, members, loading, membersQuery, membersFetching],
@@ -208,55 +189,18 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     }, 100), [initialMembers]);
 
     return (
-        <UFlatList
-            track="group_profile"
-            loadMore={handleLoadMore}
-            items={members}
-            loading={loading || (membersQuery.length > 0 && membersFetching.loading > 0 && members.length > 15)}
-            title={title}
-            renderItem={member => (
-                <UUserView
-                    key={'member-' + member.user.id + '-' + member.role}
-                    user={member.user}
-                    role={member.role}
-                    rightElement={
-                        <GroupMemberMenu
-                            group={group}
-                            member={member}
-                            onRemove={handleRemoveMember}
-                            updateUserRole={updateUserRole}
-                        />
-                    }
-                />
-            )}
-            padded={false}
-        >
-            <UListHero
+        <>
+            <UFlatList
+                track="group_profile"
+                loadMore={handleLoadMore}
+                items={members}
+                loading={loading || (membersQuery.length > 0 && membersFetching.loading > 0 && members.length > 15)}
                 title={title}
-                titleIcon={isPremium ? <PremiumBadge /> : undefined}
-                description={descriptionHero}
-                avatar={{ photo, id, title }}
-            >
-                <UButton text="View" path={'/mail/' + id} />
-                <UNotificationsSwitch id={id} mute={!!settings.mute} marginLeft={16} />
-                <GroupMenu group={group} />
-            </UListHero>
-
-            <UListGroup header="About">
-                {!!description && <UListText value={description} />}
-            </UListGroup>
-            {organization && (
-                <UListGroup header={organization.isCommunity ? 'Community' : 'Organization'}>
-                    <UOrganizationView organization={organization} />
-                </UListGroup>
-            )}
-
-            <UListGroup header="Featured" counter={featuredMembers.length}>
-                {featuredMembers.map(member => (
+                renderItem={member => (
                     <UUserView
-                        key={'featured-member-' + member.user.id + '-' + member.role}
+                        key={'member-' + member.user.id + '-' + member.role}
                         user={member.user}
-                        badge={member.badge}
+                        role={member.role}
                         rightElement={
                             <GroupMemberMenu
                                 group={group}
@@ -266,43 +210,97 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                             />
                         }
                     />
-                ))}
-            </UListGroup>
+                )}
+                padded={false}
+            >
+                <UListHero
+                    title={title}
+                    titleIcon={isPremium ? <PremiumBadge /> : undefined}
+                    description={descriptionHero}
+                    avatar={{ photo, id, title }}
+                >
+                    <UButton text="View" path={'/mail/' + id} />
+                    <UNotificationsSwitch id={id} mute={!!settings.mute} marginLeft={16} />
+                    <GroupMenu group={group} />
+                </UListHero>
 
-            <UListHeader
-                text="Members"
-                counter={membersCount || 0}
-                rightElement={(
-                    <USearchInput
-                        placeholder="Search"
-                        rounded={true}
-                        className={membersSearchStyle}
-                        value={membersQuery}
-                        loading={membersFetching.loading > 0}
-                        onChange={handleSearchChange}
+                <UListGroup header="About">
+                    {!!description && <UListText value={description} />}
+                </UListGroup>
+                {organization && (
+                    <UListGroup header={organization.isCommunity ? 'Community' : 'Organization'}>
+                        <UOrganizationView organization={organization} />
+                    </UListGroup>
+                )}
+
+                <UListGroup header="Featured" counter={featuredMembers.length}>
+                    {featuredMembers.map(member => (
+                        <UUserView
+                            key={'featured-member-' + member.user.id + '-' + member.role}
+                            user={member.user}
+                            badge={member.badge}
+                            rightElement={
+                                <GroupMemberMenu
+                                    group={group}
+                                    member={member}
+                                    onRemove={handleRemoveMember}
+                                    updateUserRole={updateUserRole}
+                                />
+                            }
+                        />
+                    ))}
+                </UListGroup>
+
+                <UListHeader
+                    text="Members"
+                    counter={membersCount || 0}
+                    rightElement={(
+                        <USearchInput
+                            placeholder="Search"
+                            rounded={true}
+                            className={membersSearchStyle}
+                            value={membersQuery}
+                            loading={membersFetching.loading > 0}
+                            onChange={handleSearchChange}
+                        />
+                    )}
+                />
+                {showInviteButton && (
+                    <UAddItem
+                        title="Add people"
+                        titleStyle={TextStyles.Label1}
+                        onClick={() => {
+                            showAddMembersModal({
+                                id,
+                                isChannel,
+                                isGroup: true,
+                                isOrganization: false,
+                                onGroupMembersAdd: handleAddMembers,
+                            });
+                        }}
                     />
                 )}
-            />
-            {showInviteButton && (
-                <UAddItem
-                    title="Add people"
-                    titleStyle={TextStyles.Label1}
-                    onClick={() => {
-                        showAddMembersModal({
-                            id,
-                            isChannel,
-                            isGroup: true,
-                            isOrganization: false,
-                            onGroupMembersAdd: handleAddMembers,
-                        });
-                    }}
-                />
-            )}
-            {members.length === 0 && (
-                <XView paddingTop={32} paddingBottom={32} alignItems="center" {...TextStyles.Body} color="var(--foregroundSecondary)">
-                    Nobody found
-                </XView>
-            )}
-        </UFlatList>
+                {members.length === 0 && membersQuery.length > 0 && (
+                    <XView paddingTop={32} paddingBottom={32} alignItems="center" {...TextStyles.Body} color="var(--foregroundSecondary)">
+                        Nobody found
+                    </XView>
+                )}
+            </UFlatList>
+
+            <React.Suspense fallback={null}>
+                <SDeferred>
+                    <GroupUsersList
+                        loading={loading}
+                        members={members}
+                        membersCount={membersCount}
+                        roomId={id}
+                        setLoading={setLoading}
+                        setMembers={setMembers}
+                        setInitialMembers={setInitialMembers}
+                        ref={profilesRef}
+                    />
+                </SDeferred>
+            </React.Suspense>
+        </>
     );
 });
