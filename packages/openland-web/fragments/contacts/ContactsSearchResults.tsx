@@ -3,12 +3,13 @@ import { css, cx } from 'linaria';
 import { XView, XViewRouteContext } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
-import { GlobalSearch_items } from 'openland-api/spacex.types';
+import { MyContacts_myContacts_items_user, MyContactsSearch_myContactsSearch_edges_node } from 'openland-api/spacex.types';
 import { UIconSelectable } from 'openland-web/components/unicorn/UIcon';
 import ChatIcon from 'openland-icons/s/ic-message-24.svg';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { useClient } from 'openland-api/useClient';
-import { ContactDataSourceItem } from 'openland-engines/contacts/ContactsEngine';
+import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
+import { InvalidateSync } from '@openland/patterns';
 
 const noResultContainer = css`
     display: flex;
@@ -42,6 +43,14 @@ const messageBtnWrapper = css`
     }
 `;
 
+const wrapperClassName = css`
+    &:hover {
+        .${messageBtnWrapper} {
+            display: flex;
+        }
+    }
+`;
+
 const messageBtnWrapperSelected = css`
     display: flex;
 `;
@@ -55,14 +64,12 @@ export const ContactsSearchEmptyView = React.memo(() => (
 
 interface ListNavigationProps {
     selectedIndex: number;
-    onMouseOver: (index: number) => void;
-    onMouseMove: (index: number) => void;
-    onPick: (item: GlobalSearch_items) => void;
-    onMessagePick: (item: GlobalSearch_items) => void;
+    onPick: (item: MyContactsSearch_myContactsSearch_edges_node) => void;
+    onMessagePick: (item: MyContactsSearch_myContactsSearch_edges_node) => void;
 }
 
 interface ContactsSearchItemRenderProps extends ListNavigationProps {
-    item: ContactDataSourceItem;
+    item: MyContacts_myContacts_items_user;
     index: number;
 }
 
@@ -71,54 +78,75 @@ interface ContactsSearchResultsProps extends ListNavigationProps {
 }
 
 export const ContactsSearchItemRender = React.memo((props: ContactsSearchItemRenderProps) => {
-    const { item, index, selectedIndex, onPick, onMouseOver, onMouseMove, onMessagePick } = props;
+    const { item, index, selectedIndex, onPick, onMessagePick } = props;
+    const route = React.useContext(XViewRouteContext)!;
 
     let selected = index === selectedIndex;
     return (
-        <UUserView
-            key={item.id}
-            onClick={() => onPick(item)}
-            onMouseOver={() => onMouseOver(index)}
-            onMouseMove={() => onMouseMove(index)}
-            hovered={selected}
-            user={item}
-            useRadius={false}
-            disableHover={true}
-            rightElement={(
-                <div
-                    className={cx('x', messageBtnWrapper, selected && messageBtnWrapperSelected)}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onMessagePick(item);
-                    }}
-                >
-                    <UIconSelectable
-                        icon={<ChatIcon />}
-                        color="var(--foregroundSecondary)"
-                        selectedColor="var(--foregroundContrast)"
-                        size={24}
-                    />
-                </div>
-            )}
-        />
+        <XView selected={route.path === `/contacts/${item.id}`}>
+            <UUserView
+                key={item.id}
+                onClick={() => onPick(item)}
+                hovered={selected}
+                user={item}
+                wrapperClassName={wrapperClassName}
+                useRadius={false}
+                rightElement={(
+                    <div
+                        className={cx('x', messageBtnWrapper, selected && messageBtnWrapperSelected)}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onMessagePick(item);
+                        }}
+                    >
+                        <UIconSelectable
+                            icon={<ChatIcon />}
+                            color="var(--foregroundSecondary)"
+                            selectedColor="var(--foregroundContrast)"
+                            size={24}
+                        />
+                    </div>
+                )}
+            />
+        </XView>
     );
 });
 
 const ContactsSearchInner = React.memo((props: ContactsSearchResultsProps) => {
     const client = useClient();
-    const route = React.useContext(XViewRouteContext)!;
-    const { query, ...other } = props;
-    const { edges } = client.useMyContactsSearch({ query, first: 20 }).myContactsSearch;
-    const items = edges.map(x => ({ ...x.node, key: x.node.id }));
+    const { query, selectedIndex, onPick, onMessagePick } = props;
+    const { edges: initialEdges, pageInfo: initialPageInfo } = client.useMyContactsSearch({ query, first: 10, page: 0 }, { fetchPolicy: 'cache-and-network' }).myContactsSearch;
+    const [items, setItems] = React.useState<MyContactsSearch_myContactsSearch_edges_node[]>(initialEdges.map(x => x.node));
+    const [page, setPage] = React.useState<number>(initialPageInfo.currentPage);
+    const [hasNextPage, setHasNextPage] = React.useState(initialPageInfo.hasNextPage);
+    const [loading, setLoading] = React.useState(false);
+    const [invalidator] = React.useState<InvalidateSync>(new InvalidateSync(async () => {
+        await client.refetchMyContactsSearch({ query, first: 10, page: 0 }, { fetchPolicy: 'network-only' });
+    }));
+
+    const handleLoadMore = async () => {
+        if (!loading && hasNextPage) {
+            setLoading(true);
+            const { edges, pageInfo } = (await client.queryMyContactsSearch({ query, first: 10, page: page + 1 }, { fetchPolicy: 'network-only' })).myContactsSearch;
+            setItems(prev => prev.concat(edges.map(x => x.node)));
+            setPage(pageInfo.currentPage);
+            setHasNextPage(pageInfo.hasNextPage);
+            setLoading(false);
+        }
+    };
+
+    React.useEffect(() => {
+        invalidator.invalidate();
+    }, [query]);
 
     useShortcuts([
         {
             keys: ['Enter'],
             callback: () => {
-                // let d = items[selectedIndex];
-                // if (d) {
-                //     opts.onPick(d);
-                // }
+                let d = items[props.selectedIndex];
+                if (d) {
+                    props.onPick(d);
+                }
             },
         },
     ]);
@@ -128,20 +156,39 @@ const ContactsSearchInner = React.memo((props: ContactsSearchResultsProps) => {
     }
 
     return (
-        <>
-            {items.map((i, index) => (
-                <XView key={'item-' + i.id} selected={route.path === `/contacts/${i.id}`} >
-                    <ContactsSearchItemRender item={i} index={index} {...other} />
-                </XView>
-            ))}
-        </>
+        <UFlatList
+            loadingHeight={56}
+            padded={false}
+            renderItem={(x, i) => (
+                <ContactsSearchItemRender
+                    item={x}
+                    index={i}
+                    selectedIndex={selectedIndex}
+                    onPick={onPick}
+                    onMessagePick={onMessagePick}
+                />
+            )}
+            loading={loading}
+            items={items}
+            loadMore={handleLoadMore}
+        />
     );
 });
 
 export const ContactsSearchResults = (props: ContactsSearchResultsProps) => {
+    // TODO: Use when import is ready
+    // let importBtn = (
+    //     <UListItem
+    //         icon={<CycleIcon />}
+    //         iconBackground="var(--accentPrimary)"
+    //         title="Import contacts"
+    //         titleStyle={TextStyles.Label1}
+    //     />
+    // );
+
     return (
         <React.Suspense fallback={<XLoader loading={true} />}>
-            <ContactsSearchInner {...props} />
+            <ContactsSearchInner key={props.query} {...props} />
         </React.Suspense>
     );
 };

@@ -82,9 +82,7 @@ routing.addRoute('/discover/free', () => DiscoverTopFreeFragment);
 
 // Contacts
 
-// let Empty = () => <div />;
-
-// routing.addRoute('/contacts', () => Empty);
+// routing.addRoute('/contacts/', () => TemporaryStubMail);
 // routing.addRoute('/contacts/:id', () =>
 //     React.memo(() => {
 //         let ctx = useUnicorn();

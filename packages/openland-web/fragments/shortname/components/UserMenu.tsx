@@ -14,6 +14,7 @@ import BlockUserModal from 'openland-web/fragments/admin/BlockUserModalFragment'
 import { useClient } from 'openland-api/useClient';
 import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
 import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
+import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 
 interface UserMenuProps {
     user: User_user;
@@ -28,8 +29,7 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
     const builder = new UPopperMenuBuilder();
     const client = useClient();
     const [deleted, setDelete] = React.useState(false);
-    const { useIsUserContact, addUser, removeUser } = engine.contacts;
-    const isUserContact = useIsUserContact(id, inContacts);
+    const { isContact, addContact, removeContact } = useLocalContact(id, inContacts);
 
     builder.item({
         title: 'Copy link',
@@ -56,15 +56,15 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
 
     if (contactsEnabled && id !== engine.user.id) {
         builder.item({
-            title: isUserContact ? 'Remove from contacts' : 'Save to contacts',
-            icon: isUserContact ? <RemoveContactIcon /> : <AddContactIcon />,
+            title: isContact ? 'Remove from contacts' : 'Save to contacts',
+            icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,
             onClick: async () => {
-                if (isUserContact) {
-                    removeUser(id);
-                    client.mutateRemoveFromContacts({ userId: id });
+                if (isContact) {
+                    removeContact(id);
+                    await client.mutateRemoveFromContacts({ userId: id });
                 } else {
-                    addUser(id);
-                    client.mutateAddToContacts({ userId: id });
+                    addContact(id);
+                    await client.mutateAddToContacts({ userId: id });
                 }
             },
         });

@@ -21,6 +21,7 @@ import { useRole } from 'openland-x-permissions/XWithRole';
 // import ProfileIcon from './navigation/icon_profile.svg';
 // import ProfileActiveIcon from './navigation/icon_profile_active.svg';
 // import { ContactsFragment } from 'openland-web/fragments/contacts/ContactsFragment';
+import { LocalContactsProvider } from 'openland-y-utils/contacts/LocalContacts';
 
 const Unicorn = React.memo(() => {
     const isSuperadmin = useRole('super-admin');
@@ -43,7 +44,7 @@ const Unicorn = React.memo(() => {
                     //     path: '/contacts',
                     //     component: <ContactsFragment />,
                     //     caption: 'Contacts',
-                    //     defaultPage: false,
+                    //     defaultPage: true,
                     //     isStackHidden: true,
                     // },
                     {
@@ -85,7 +86,7 @@ const Unicorn = React.memo(() => {
                         //     path: '/contacts',
                         //     component: <ContactsFragment />,
                         //     caption: 'Contacts',
-                        //     defaultPage: false,
+                        //     defaultPage: true,
                         //     isStackHidden: true,
                         // },
                         {
@@ -122,7 +123,9 @@ export default React.memo(() => {
         <React.StrictMode>
             <React.Suspense fallback={<XLoader loading={true} />}>
                 <AuthRouter>
-                    <Unicorn />
+                    <LocalContactsProvider>
+                        <Unicorn />
+                    </LocalContactsProvider>
                 </AuthRouter>
             </React.Suspense>
         </React.StrictMode>

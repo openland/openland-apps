@@ -35,6 +35,7 @@ import { useLastSeen, User } from 'openland-y-utils/LastSeen';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { useVideoCallModal } from 'openland-web/modules/conference/CallModal';
+import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 
 const secondary = css`
     color: var(--foregroundSecondary);
@@ -126,9 +127,8 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     const calls = messenger.calls;
     const currentSession = calls.useCurrentSession();
     const showVideoCallModal = useVideoCallModal({ chatId: chat.id });
-    const { useIsUserContact, addUser, removeUser } = messenger.contacts;
     const chatUser = chat.__typename === 'PrivateRoom' && chat.user;
-    const isUserContact = useIsUserContact(chatUser ? chatUser.id : '', chatUser ? chatUser.inContacts : false);
+    const { isContact, addContact, removeContact } = useLocalContact(chatUser ? chatUser.id : '', chatUser ? chatUser.inContacts : false);
 
     let showInviteButton = layout === 'mobile' && sharedRoom;
     const onlyLinkInvite = sharedRoom && !(!sharedRoom.isPremium || sharedRoom.role === 'OWNER');
@@ -188,15 +188,15 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     ) {
 
         res.item({
-            title: isUserContact ? 'Remove from contacts' : 'Save to contacts',
-            icon: isUserContact ? <RemoveContactIcon /> : <AddContactIcon />,
+            title: isContact ? 'Remove from contacts' : 'Save to contacts',
+            icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,
             action: async () => {
-                if (isUserContact) {
-                    removeUser(chat.user.id);
-                    client.mutateRemoveFromContacts({ userId: chat.user.id });
+                if (isContact) {
+                    removeContact(chat.user.id);
+                    await client.mutateRemoveFromContacts({ userId: chat.user.id });
                 } else {
-                    addUser(chat.user.id);
-                    client.mutateAddToContacts({ userId: chat.user.id });
+                    addContact(chat.user.id);
+                    await client.mutateAddToContacts({ userId: chat.user.id });
                 }
             },
             closeDelay: 400,
