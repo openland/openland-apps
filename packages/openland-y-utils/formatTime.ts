@@ -3,6 +3,7 @@ import {
     formatDate,
     formatAbsoluteDate,
     formatDateFull,
+    formatDateShort,
 } from '../openland-mobile/utils/formatDate';
 
 const addLeadingZero = (time: number) => {
@@ -29,13 +30,14 @@ export function formatDateTime(date: number) {
     );
 }
 
-export function formatDateAtTime(date: number) {
+export function formatDateAtTime(date: number, monthFormat?: 'full' | 'short') {
     let dt = new Date(date);
     let hours = dt.getHours();
     let ampm = dt.getHours() < 12 ? 'AM' : 'PM';
     hours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
+    let formatedDate = monthFormat === 'short' ? formatDateShort(date) : formatDateFull(date);
     return (
-        formatDateFull(date) + ' at ' + hours + ':' + addLeadingZero(dt.getMinutes()) + thinSpace + ampm
+        formatedDate + ' at ' + hours + ':' + addLeadingZero(dt.getMinutes()) + thinSpace + ampm
     );
 }
 

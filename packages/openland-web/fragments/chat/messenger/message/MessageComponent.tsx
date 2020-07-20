@@ -7,7 +7,7 @@ import { css, cx } from 'linaria';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
 import StarIcon from 'openland-icons/s/ic-star-16.svg';
-import { formatTime } from 'openland-y-utils/formatTime';
+import { formatTime, formatDateAtTime } from 'openland-y-utils/formatTime';
 import { MessageSender, MessageSender_primaryOrganization } from 'openland-api/spacex.types';
 import { HoverMenu } from './Menu/HoverMenu';
 import { ULink } from 'openland-web/components/unicorn/ULink';
@@ -120,8 +120,11 @@ const MessageSenderOrg = React.memo((props: { organization: MessageSender_primar
     </ULink>
 ));
 
-const MessageTime = React.memo((props: { time: number }) => (
-    <div className={cx(TextCaption, senderDateStyle)}>{formatTime(props.time)}</div>
+const MessageTime = React.memo((props: { time: number, dateFormat: 'time' | 'date-time' }) => (
+    <div className={cx(TextCaption, senderDateStyle)}>
+        {props.dateFormat === 'time' && formatTime(props.time)}
+        {props.dateFormat === 'date-time' && formatDateAtTime(props.time, 'short')}
+    </div>
 ));
 
 interface MessageSenderContentProps {
@@ -129,6 +132,7 @@ interface MessageSenderContentProps {
     senderNameEmojify?: string | JSX.Element;
     senderBadgeNameEmojify?: string | JSX.Element;
     date?: number;
+    dateFormat?: 'time' | 'date-time';
     overrideName?: string | null;
 }
 
@@ -142,7 +146,7 @@ export const MessageSenderContent = React.memo((props: MessageSenderContentProps
         {props.sender.primaryOrganization && (
             <MessageSenderOrg organization={props.sender.primaryOrganization} />
         )}
-        {props.date && <MessageTime time={props.date} />}
+        {props.date && <MessageTime time={props.date} dateFormat={props.dateFormat || 'time'} />}
     </div>
 ));
 
