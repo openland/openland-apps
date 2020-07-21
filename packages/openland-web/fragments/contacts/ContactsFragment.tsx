@@ -71,8 +71,7 @@ export const ContactsFragment = React.memo(() => {
     const route = React.useContext(XViewRouteContext)!;
     const setStackVisibility = useStackVisibility();
     const [query, setQuery] = React.useState<string>('');
-    // TODO: add fetching when import is ready
-    const didImportContacts = true;
+    const didImportContacts = client.usePhonebookWasExported({ fetchPolicy: 'cache-and-network' }).phonebookWasExported;
     const isSearching = query.trim().length > 0;
     const { items: initialItems, cursor: initialAfter } = client.useMyContacts({ first: 20 }, { fetchPolicy: 'cache-and-network' }).myContacts;
     const [items, setItems] = React.useState<MyContacts_myContacts_items_user[]>(initialItems.map(x => x.user));
@@ -89,7 +88,7 @@ export const ContactsFragment = React.memo(() => {
         if (!loading && after) {
             setLoading(true);
             const { items: newItems, cursor } = (await client.queryMyContacts({ first: 10, after }, { fetchPolicy: 'network-only' })).myContacts;
-            setItems(prev => prev.concat(newItems.map(x => x.user)));
+            setItems(prev => prev.concat(newItems.map(x => x.user).filter(x => !prev.some(y => x.id === y.id))));
             setAfter(cursor);
             setLoading(false);
         }
@@ -137,7 +136,7 @@ export const ContactsFragment = React.memo(() => {
     React.useEffect(() => {
         return listenUpdates(({ addedUsers, removedUsers }) => {
             setItems(prev => {
-                const newItems = prev.filter(x => !removedUsers.some(y => y.id === x.id)).concat(addedUsers);
+                const newItems = addedUsers.concat(prev.filter(x => !removedUsers.some(y => y.id === x.id)));
                 if (newItems.length === 0) {
                     setStackVisibility(false);
                 }
@@ -148,33 +147,33 @@ export const ContactsFragment = React.memo(() => {
 
     const noContactsContent = didImportContacts ? (
         <EmptyScreen
-            title="Find your friends"
-            subtitle="Import contacts from your phone to find people you know on Openland. Install a mobile app and tap “Import contacts”"
-            imgSrcStyle={findFriendsImgSrc}
-        >
-            <XView marginTop={16} flexWrap="wrap" flexDirection="row" justifyContent="center">
-                <MobileAppButton
-                    href="https://oplnd.com/ios"
-                    image="/static/X/apps-icons/app-store-light@2x.png"
-                    isIOS={true}
-                    marginTop={16}
-                    marginHorizontal={8}
-                />
-                <MobileAppButton
-                    href="https://oplnd.com/android"
-                    image="/static/X/apps-icons/google-play-light@2x.png"
-                    isIOS={false}
-                    marginTop={16}
-                    marginHorizontal={8}
-                />
-            </XView>
-        </EmptyScreen>
+            title="No contacts yet"
+            subtitle="Invite your contacts to Openland or add people manually from their profiles, and they will appear here"
+            imgSrcStyle={noContactsImgSrc}
+        />
     ) : (
             <EmptyScreen
-                title="No contacts yet"
-                subtitle="Invite your contacts to Openland or add people manually from their profiles, and they will appear here"
-                imgSrcStyle={noContactsImgSrc}
-            />
+                title="Find your friends"
+                subtitle="Import contacts from your phone to find people you know on Openland. Install a mobile app and tap “Import contacts”"
+                imgSrcStyle={findFriendsImgSrc}
+            >
+                <XView marginTop={16} flexWrap="wrap" flexDirection="row" justifyContent="center">
+                    <MobileAppButton
+                        href="https://oplnd.com/ios"
+                        image="/static/X/apps-icons/app-store-light@2x.png"
+                        isIOS={true}
+                        marginTop={16}
+                        marginHorizontal={8}
+                    />
+                    <MobileAppButton
+                        href="https://oplnd.com/android"
+                        image="/static/X/apps-icons/google-play-light@2x.png"
+                        isIOS={false}
+                        marginTop={16}
+                        marginHorizontal={8}
+                    />
+                </XView>
+            </EmptyScreen>
         );
 
     const content = hasContacts ? (

@@ -34,7 +34,7 @@ import { DiscussionsFragment } from 'openland-web/fragments/discussions/Discussi
 import { DraftsFragment } from 'openland-web/fragments/discussions/DraftsFragment';
 import { DiscussionEditorFragment } from 'openland-web/fragments/discussions/DiscussionEditorFragment';
 import { SettingsCommunitiesFragment } from 'openland-web/fragments/settings/SettingsCommunitiesFragment';
-// import { ContactProfileFragment } from 'openland-web/fragments/contacts/ContactProfileFragment';
+import { ContactProfileFragment } from 'openland-web/fragments/contacts/ContactProfileFragment';
 
 // temporary stub for /mail/ -> not found bug
 const TemporaryStubMail = React.memo(() => {
@@ -82,13 +82,14 @@ routing.addRoute('/discover/free', () => DiscoverTopFreeFragment);
 
 // Contacts
 
-// routing.addRoute('/contacts/', () => TemporaryStubMail);
-// routing.addRoute('/contacts/:id', () =>
-//     React.memo(() => {
-//         let ctx = useUnicorn();
-//         return <ContactProfileFragment id={ctx.id!} />;
-//     })
-// );
+routing.addRoute('/contacts', () => () => <div />);
+routing.addRoute('/contacts/', () => () => <div />);
+routing.addRoute('/contacts/:id', () =>
+    React.memo(() => {
+        let ctx = useUnicorn();
+        return <ContactProfileFragment id={ctx.id!} />;
+    })
+);
 
 // Discussions
 routing.addRoute('/channels', () => DiscussionsFragment);

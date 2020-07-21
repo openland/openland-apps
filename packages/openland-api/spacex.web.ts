@@ -1448,7 +1448,6 @@ const UserForMentionSelector = obj(
             field('photo', 'photo', args(), scalar('String')),
             field('shortname', 'shortname', args(), scalar('String')),
             field('isBot', 'isBot', args(), notNull(scalar('Boolean'))),
-            field('inContacts', 'inContacts', args(), notNull(scalar('Boolean'))),
             field('primaryOrganization', 'primaryOrganization', args(), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('id', 'id', args(), notNull(scalar('ID'))),
@@ -2818,6 +2817,12 @@ const MyContactsSearchSelector = obj(
                         )))
                 )))
         );
+const MyContactsStateSelector = obj(
+            field('myContactsState', 'myContactsState', args(), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('state', 'state', args(), notNull(scalar('String')))
+                )))
+        );
 const MyNotificationCenterSelector = obj(
             field('myNotificationCenter', 'myNotificationCenter', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -2997,6 +3002,9 @@ const PermissionsSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('roles', 'roles', args(), notNull(list(notNull(scalar('String')))))
                 )))
+        );
+const PhonebookWasExportedSelector = obj(
+            field('phonebookWasExported', 'phonebookWasExported', args(), notNull(scalar('Boolean')))
         );
 const PicSharedMediaSelector = obj(
             field('chatSharedMedia', 'chatSharedMedia', args(fieldValue("chatId", refValue('chatId')), fieldValue("mediaTypes", listValue(stringValue("IMAGE"))), fieldValue("first", refValue('first')), fieldValue("after", refValue('after')), fieldValue("before", refValue('before')), fieldValue("around", refValue('around'))), notNull(obj(
@@ -3829,7 +3837,12 @@ const UserAvailableRoomsSelector = obj(
 const UserNanoSelector = obj(
             field('user', 'user', args(fieldValue("id", refValue('id'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('User', UserForMentionSelector)
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('name', 'name', args(), notNull(scalar('String'))),
+                    field('photo', 'photo', args(), scalar('String')),
+                    field('shortname', 'shortname', args(), scalar('String')),
+                    field('isBot', 'isBot', args(), notNull(scalar('Boolean'))),
+                    field('inContacts', 'inContacts', args(), notNull(scalar('Boolean')))
                 )))
         );
 const UserPicoSelector = obj(
@@ -4974,7 +4987,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ChatMentionSearch: {
         kind: 'query',
         name: 'ChatMentionSearch',
-        body: 'query ChatMentionSearch($cid:ID!,$query:String,$first:Int!,$after:String){mentions:chatMentionSearch(cid:$cid,query:$query,first:$first,after:$after){__typename globalItems{__typename ... on Organization{__typename ...OrganizationShort}... on User{__typename ...UserForMention}... on SharedRoom{__typename ...RoomSharedNano}}localItems{__typename ...UserForMention}cursor}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}fragment UserForMention on User{__typename id name photo shortname isBot inContacts primaryOrganization{__typename id name}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title photo membersCount settings{__typename id mute}}',
+        body: 'query ChatMentionSearch($cid:ID!,$query:String,$first:Int!,$after:String){mentions:chatMentionSearch(cid:$cid,query:$query,first:$first,after:$after){__typename globalItems{__typename ... on Organization{__typename ...OrganizationShort}... on User{__typename ...UserForMention}... on SharedRoom{__typename ...RoomSharedNano}}localItems{__typename ...UserForMention}cursor}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}fragment UserForMention on User{__typename id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title photo membersCount settings{__typename id mute}}',
         selector: ChatMentionSearchSelector
     },
     ChatNewGetMessage: {
@@ -5172,7 +5185,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     MessageMultiSpan: {
         kind: 'query',
         name: 'MessageMultiSpan',
-        body: 'query MessageMultiSpan($id:ID!){message(messageId:$id){__typename id spans{__typename ... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}}}}fragment UserForMention on User{__typename id name photo shortname isBot inContacts primaryOrganization{__typename id name}}',
+        body: 'query MessageMultiSpan($id:ID!){message(messageId:$id){__typename id spans{__typename ... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}}}}fragment UserForMention on User{__typename id name photo shortname isBot primaryOrganization{__typename id name}}',
         selector: MessageMultiSpanSelector
     },
     MessagesBatch: {
@@ -5216,6 +5229,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'MyContactsSearch',
         body: 'query MyContactsSearch($query:String,$first:Int!,$after:String,$page:Int){myContactsSearch(query:$query,first:$first,after:$after,page:$page){__typename edges{__typename node{__typename ...UserShort}}pageInfo{__typename hasNextPage currentPage}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}',
         selector: MyContactsSearchSelector
+    },
+    MyContactsState: {
+        kind: 'query',
+        name: 'MyContactsState',
+        body: 'query MyContactsState{myContactsState{__typename state}}',
+        selector: MyContactsStateSelector
     },
     MyNotificationCenter: {
         kind: 'query',
@@ -5318,6 +5337,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'Permissions',
         body: 'query Permissions{myPermissions{__typename roles}}',
         selector: PermissionsSelector
+    },
+    PhonebookWasExported: {
+        kind: 'query',
+        name: 'PhonebookWasExported',
+        body: 'query PhonebookWasExported{phonebookWasExported}',
+        selector: PhonebookWasExportedSelector
     },
     PicSharedMedia: {
         kind: 'query',
@@ -5544,7 +5569,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     UserNano: {
         kind: 'query',
         name: 'UserNano',
-        body: 'query UserNano($id:ID!){user(id:$id){__typename ...UserForMention}}fragment UserForMention on User{__typename id name photo shortname isBot inContacts primaryOrganization{__typename id name}}',
+        body: 'query UserNano($id:ID!){user(id:$id){__typename id name photo shortname isBot inContacts}}',
         selector: UserNanoSelector
     },
     UserPico: {
@@ -6384,7 +6409,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     MyContactsUpdates: {
         kind: 'subscription',
         name: 'MyContactsUpdates',
-        body: 'subscription MyContactsUpdates($state:String){myContactsUpdates(fromState:$state){__typename updates{__typename ... on ContactRemoved{__typename contact{__typename id user{__typename ...UserShort}}}... on ContactAdded{__typename contact{__typename id user{__typename ...UserShort}}}}state}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}',
+        body: 'subscription MyContactsUpdates($state:String!){myContactsUpdates(fromState:$state){__typename updates{__typename ... on ContactRemoved{__typename contact{__typename id user{__typename ...UserShort}}}... on ContactAdded{__typename contact{__typename id user{__typename ...UserShort}}}}state}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}',
         selector: MyContactsUpdatesSelector
     },
     MyNotificationsCenter: {

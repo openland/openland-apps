@@ -38,7 +38,12 @@ query UserPico($userId: ID!) {
 }
 query UserNano($id: ID!) {
     user(id: $id) {
-        ...UserForMention
+        id
+        name
+        photo
+        shortname
+        isBot
+        inContacts
     }
 }
 query Online($userId: ID!) {
