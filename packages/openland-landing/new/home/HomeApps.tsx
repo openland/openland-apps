@@ -7,6 +7,7 @@ import Linux from './icons/ic-linux.svg';
 import { XView } from 'react-mental';
 import { detectOS } from 'openland-x-utils/detectOS';
 import { LandingLinks } from '../components/_links';
+import { emojiAnimated } from 'openland-y-utils/emojiAnimated';
 
 const box = css`
     padding: 100px 0 200px;
@@ -222,6 +223,18 @@ const title = css`
         line-height: 40px;
         margin: 0;
     }
+
+    img {
+        display: inline-block;
+        vertical-align: top;
+        width: 128px; height: 128px;
+        margin: -48px 0 -16px 20px;
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            width: 80px; height: 80px;
+            margin: -28px 0 -8px 10px;
+        }
+    }
 `;
 
 const text = css`
@@ -304,7 +317,7 @@ export const HomeApps = React.memo(() => {
     return (
         <div className={box}>
             <Container>
-                <div className={title}>Welcome aboard  🎉</div>
+                <div className={title}>Welcome aboard{emojiAnimated('🎉')}</div>
                 <div className={text}>Join now and claim<span className={link}>openland.com/<span>name</span></span></div>
                 <div className={content}>
                     <div className={webApp}>

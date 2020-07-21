@@ -3,6 +3,7 @@ import { Container } from '../components/Container';
 import { css, cx } from 'linaria';
 import { LandingLinks } from '../components/_links';
 import { detectOS } from 'openland-x-utils/detectOS';
+import { emojiAnimated } from 'openland-y-utils/emojiAnimated';
 
 const box = css`
     overflow: hidden;
@@ -21,7 +22,7 @@ const inner = css`
     }
 
     @media (max-width: 767px) {
-        padding: 33px 0 56px;
+        padding: 6px 0 56px;
     }
 `;
 
@@ -87,15 +88,6 @@ const title = css`
         font-size: 46px;
         line-height: 48px;
         text-align: center;
-
-        &:before {
-            content: "👋";
-            display: block;
-            font-weight: 800;
-            font-size: 65px;
-            line-height: 48px;
-            margin: 0 0 51px;
-        }
     }
 
     span {
@@ -106,6 +98,21 @@ const title = css`
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+    }
+`;
+
+const emoji = css`
+    display: none;
+    width: 100px; height: 100px;
+    margin: 0 auto 24px;
+
+    @media (max-width: 767px) {
+        display: block;
+    }
+
+    img {
+        display: block;
+        width: 100px; height: 100px;
     }
 `;
 
@@ -330,6 +337,7 @@ export const HomeIntro = React.memo(() => {
                 <div className={inner}>
                     <div className={image} />
                     <div className={info}>
+                        <div className={emoji}>{emojiAnimated('👋')}</div>
                         <div className={title}>A fresh start<span>for social</span></div>
                         <div className={text}>Openland is a modern social network<br /> built for people, not advertisers</div>
                         <div className={apps}>
