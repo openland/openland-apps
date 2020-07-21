@@ -228,14 +228,14 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                             'Make admin',
                             () => handleMakeAdmin(user),
                             false,
-                            require('assets/ic-star-24.png'),
+                            require('assets/ic-premium-24.png'),
                         );
                     } else if (member.role === RoomMemberRole.ADMIN) {
                         builder.action(
                             'Dismiss as admin',
                             () => handleRevokeAdmin(user),
                             false,
-                            require('assets/ic-star-24.png'),
+                            require('assets/ic-premium-24.png'),
                         );
                     }
                 }

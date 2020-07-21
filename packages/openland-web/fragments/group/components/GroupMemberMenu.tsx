@@ -7,6 +7,7 @@ import {
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
+import CrownIcon from 'openland-icons/s/ic-premium-24.svg';
 import { MenuItem, UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { showLeaveChatConfirmation } from 'openland-web/fragments/settings/components/groupProfileModals';
@@ -147,7 +148,7 @@ const getMenuContent = (
     if ((group.role === 'OWNER' || group.role === 'ADMIN' || AppConfig.isSuperAdmin()) && user.id !== engine.user.id) {
         res.push({
             title: member.role === 'ADMIN' ? 'Revoke admin status' : 'Make admin',
-            icon: <StarIcon />,
+            icon: <CrownIcon />,
             action: async () => {
                 await client.mutateRoomChangeRole({
                     userId: user.id,

@@ -52,7 +52,8 @@ const MenuComponent = React.memo((props: WhoCanSeeItemProps & { ctx: UPopperCont
 
 export const WhoCanSee = React.memo((props: WhoCanSeeItemProps) => {
     const { text, value } = props;
-    const [menuVisible, menuShow] = usePopper({ placement: 'bottom-end', hideOnClick: true, marginTop: -64, updatedDeps: [props.value], scope: 'whocansee' }, (ctx) => <MenuComponent ctx={ctx} {...props} />);
+    const marginTop = ((WhoCanSeeLabelOrder.indexOf(value) + 1) * -48) - 16;
+    const [menuVisible, menuShow] = usePopper({ placement: 'bottom-end', hideOnClick: true, marginTop, updatedDeps: [props.value], scope: 'whocansee' }, (ctx) => <MenuComponent ctx={ctx} {...props} />);
 
     return (
         <div className={boxClass}>
