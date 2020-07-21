@@ -35,3 +35,27 @@ query MyContactsSearch($query: String, $first: Int!, $after: String, $page: Int)
         }
     }
 }
+
+subscription MyContactsUpdates($state: String) {
+    myContactsUpdates(fromState: $state) {
+        updates {
+            ... on ContactRemoved {
+                contact {
+                    id
+                    user {
+                        ...UserShort
+                    }
+                }
+            }
+            ... on ContactAdded {
+                contact {
+                    id
+                    user {
+                        ...UserShort
+                    }
+                }
+            }
+        }
+        state
+    }
+}

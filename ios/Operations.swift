@@ -4773,6 +4773,37 @@ private let GlobalEventBusSelector = obj(
                     field("message", "message", notNull(scalar("String")))
                 )))
         )
+private let MyContactsUpdatesSelector = obj(
+            field("myContactsUpdates", "myContactsUpdates", arguments(fieldValue("fromState", refValue("state"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("updates", "updates", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            inline("ContactRemoved", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("contact", "contact", notNull(obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("user", "user", notNull(obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                fragment("User", UserShortSelector)
+                                            )))
+                                    )))
+                            )),
+                            inline("ContactAdded", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("contact", "contact", notNull(obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("user", "user", notNull(obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                fragment("User", UserShortSelector)
+                                            )))
+                                    )))
+                            ))
+                        ))))),
+                    field("state", "state", notNull(scalar("String")))
+                )))
+        )
 private let MyNotificationsCenterSelector = obj(
             field("notificationCenterUpdates", "event", arguments(fieldValue("fromState", refValue("state"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -6347,6 +6378,12 @@ class Operations {
         "subscription GlobalEventBus($topic:String!){globalEventBus(topic:$topic){__typename message}}",
         GlobalEventBusSelector
     )
+    let MyContactsUpdates = OperationDefinition(
+        "MyContactsUpdates",
+        .subscription, 
+        "subscription MyContactsUpdates($state:String){myContactsUpdates(fromState:$state){__typename updates{__typename ... on ContactRemoved{__typename contact{__typename id user{__typename ...UserShort}}}... on ContactAdded{__typename contact{__typename id user{__typename ...UserShort}}}}state}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}",
+        MyContactsUpdatesSelector
+    )
     let MyNotificationsCenter = OperationDefinition(
         "MyNotificationsCenter",
         .subscription, 
@@ -6626,6 +6663,7 @@ class Operations {
         if name == "DebugEventsWatch" { return DebugEventsWatch }
         if name == "DialogsWatch" { return DialogsWatch }
         if name == "GlobalEventBus" { return GlobalEventBus }
+        if name == "MyContactsUpdates" { return MyContactsUpdates }
         if name == "MyNotificationsCenter" { return MyNotificationsCenter }
         if name == "OnlineWatch" { return OnlineWatch }
         if name == "SettingsWatch" { return SettingsWatch }
