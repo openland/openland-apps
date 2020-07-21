@@ -188,13 +188,13 @@ const slider = css`
 `;
 
 const slide = css`
-    display: none;
+    visibility: hidden;
     padding: 36px 0 48px;
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
 
     &.is-prev {
-        display: block;
+        visibility: visible;
         transform: translateX(0);
         opacity: 1;
 
@@ -212,7 +212,7 @@ const slide = css`
     }
 
     &.is-next {
-        display: block;
+        visibility: visible;
         transform: translateX(128px);
         opacity: 0;
 
@@ -230,7 +230,7 @@ const slide = css`
     }
 
     &.is-default {
-        display: block;
+        visibility: visible;
         transform: none;
         opacity: 1;
     }
