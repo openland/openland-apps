@@ -319,7 +319,7 @@ export const HomeIntro = React.memo(() => {
 
         return () => {
             clearInterval(timer);
-        }
+        };
     }, []);
 
     const isFirstIteration = activeSlide === prevSlide;
