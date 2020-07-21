@@ -250,12 +250,12 @@ const slideTitle = css`
     color: #FFFFFF;
     text-align: center;
     margin: 0 auto 28px;
-    width: 228px;
+    width: 226px;
 `;
 
 const slideImage = css`
     box-shadow: 0px 3.82066px 42.0273px rgba(0, 0, 0, 0.08);
-    width: 227px; height: 490px;
+    width: 226px; height: 490px;
     margin: 0 auto;
     border-radius: 19px;
 
