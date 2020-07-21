@@ -6,7 +6,8 @@ import { emoji } from 'openland-y-utils/emoji';
 import { css, cx } from 'linaria';
 import { PlaceholderColors } from 'openland-y-utils/themes/placeholders';
 import { useReloadImage } from 'openland-web/components/ImgWithRetry';
-import BookmarkIcon from 'openland-icons/s/ic-bookmark-white-24.svg';
+import BookmarkIcon from 'openland-icons/s/ic-bookmark-filled-24.svg';
+import { UIcon } from './UIcon';
 
 export type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'xxx-large';
 
@@ -92,7 +93,7 @@ export const AvatarSavedMessages = (props: { squared?: boolean, bookmarkSize: nu
             backgroundImage="linear-gradient(135deg, #36D9CB 0%, #3695D9 100%)"
             overflow="hidden"
         >
-            <BookmarkIcon width={props.bookmarkSize} height={props.bookmarkSize} />
+            <UIcon icon={<BookmarkIcon />} color="#FFFFFF" size={props.bookmarkSize} />
         </XView>
     );
 };
