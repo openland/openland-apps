@@ -6,8 +6,8 @@ import {
 } from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
-import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
+import CrownIcon from 'openland-icons/s/ic-premium-24.svg';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder, MenuItem } from 'openland-web/components/unicorn/UPopperMenuBuilder';
@@ -37,7 +37,7 @@ const getMenuContent = (opts: MenuContentOpts) => {
     if (user.id !== engine.user.id && isOwner) {
         res.push({
             title: role === 'MEMBER' ? 'Make admin' : 'Revoke admin status',
-            icon: <StarIcon />,
+            icon: <CrownIcon />,
             action: async () => {
                 const newRole =
                     role === 'MEMBER'
