@@ -7,6 +7,7 @@ import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { plural } from 'openland-y-utils/plural';
 import { GlobalSearch_items, GlobalSearchVariables } from 'openland-api/spacex.types';
 import { useGlobalSearch } from './useGlobalSearch';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 const noResultContainer = css`
     display: flex;
@@ -43,6 +44,7 @@ interface DialogSearchItemRenderProps extends DialogSearchResults {
     item: GlobalSearch_items;
     index: number;
     selectedIndex: number;
+    savedMessages?: boolean;
 }
 
 export const DialogSearchItemRender = React.memo((props: DialogSearchItemRenderProps) => {
@@ -87,6 +89,7 @@ export const DialogSearchItemRender = React.memo((props: DialogSearchItemRenderP
                     user={item}
                     useRadius={false}
                     paddingHorizontal={paddingHorizontal}
+                    savedMessages={props.savedMessages}
                 />
             );
         }
@@ -97,6 +100,7 @@ export const DialogSearchItemRender = React.memo((props: DialogSearchItemRenderP
 
 const DialogSearchInner = React.memo((props: DialogSearchResults) => {
     const { items, selectedIndex } = useGlobalSearch(props);
+    let messenger = React.useContext(MessengerContext);
 
     if (items.length === 0) {
         return <DialogSearchEmptyView />;
@@ -104,7 +108,7 @@ const DialogSearchInner = React.memo((props: DialogSearchResults) => {
 
     return (
         <XView flexGrow={1} flexDirection="column">
-            {items.map((i, index) => <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} {...props} />)}
+            {items.map((i, index) => <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} savedMessages={i.id === messenger.user.id} {...props} />)}
         </XView>
     );
 });

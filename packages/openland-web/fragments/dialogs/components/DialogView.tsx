@@ -212,6 +212,7 @@ interface DialogViewProps {
     selected?: boolean;
     hovered?: boolean;
     disableHover?: boolean;
+    savedMessages?: boolean;
 }
 
 export const DialogView = React.memo<DialogViewProps>(props => {
@@ -222,7 +223,10 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     let isService = dialog.isService;
     let haveMention = dialog.haveMention;
     let isPrivate = props.item.kind === 'PRIVATE';
-    let sender = dialog.isOut ? (
+    let isSavedMessages = !!props.savedMessages;
+    let sender = isSavedMessages ? (
+        ''
+    ) : dialog.isOut ? (
         'You: '
     ) : isPrivate ? (
         ''
@@ -333,6 +337,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                 online={dialog.online}
                                 size="large"
                                 selected={active}
+                                savedMessages={isSavedMessages}
                             />
                             <div className={dialogContentContainer}>
                                 <div className={dialogDataContainer}>
@@ -355,7 +360,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                             </div>
                                         )}
 
-                                        <span className={dialogTitle}>{dialog.titleEmojify}</span>
+                                        <span className={dialogTitle}>{isSavedMessages ? 'Saved messages' : dialog.titleEmojify}</span>
                                         {dialog.isMuted && (
                                             <div className={cx(dialogIconContainer, mutedIcon)}>
                                                 <UIcon

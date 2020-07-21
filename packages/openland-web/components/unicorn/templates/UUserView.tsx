@@ -48,7 +48,7 @@ interface UUserViewProps {
 }
 
 export const UUserView = React.memo((props: UUserViewProps & Partial<UListItemProps>) => {
-    const { user, badge, role, onClick, ...other } = props;
+    const { user, badge, role, onClick, savedMessages, ...other } = props;
     const { id, photo, name, online, shortname, primaryOrganization } = user;
     const badgeNameEmojify = badge ? React.useMemo(() => emoji(' · ' + badge.name), [badge.name]) : undefined;
 
@@ -56,12 +56,13 @@ export const UUserView = React.memo((props: UUserViewProps & Partial<UListItemPr
         <UListItem
             title={name}
             titleIcon={role ? <AdminIcon role={role} /> : undefined}
-            subtitle={primaryOrganization ? primaryOrganization.name : undefined}
-            description={<UPresence suffix={badgeNameEmojify} user={props.user} />}
+            subtitle={!savedMessages && primaryOrganization ? primaryOrganization.name : undefined}
+            description={savedMessages ?  undefined : <UPresence suffix={badgeNameEmojify} user={props.user} />}
             avatar={{ photo, id, title: name, online }}
             path={!onClick ? `/${shortname || id}` : undefined}
             onClick={onClick}
             useRadius={true}
+            savedMessages={savedMessages}
             {...other}
         />
     );

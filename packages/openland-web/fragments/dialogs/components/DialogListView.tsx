@@ -99,7 +99,7 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
                 ) {
                     selected = true;
                 }
-                return <DialogView item={item} selected={selected} onPress={props.onDialogClick} />;
+                return <DialogView item={item} selected={selected} onPress={props.onDialogClick} savedMessages={item.flexibleId === messenger.user.id} />;
             };
         },
         [props.onDialogClick, conversationId],

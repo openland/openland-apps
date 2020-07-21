@@ -6,6 +6,7 @@ import { emoji } from 'openland-y-utils/emoji';
 import { css, cx } from 'linaria';
 import { PlaceholderColors } from 'openland-y-utils/themes/placeholders';
 import { useReloadImage } from 'openland-web/components/ImgWithRetry';
+import BookmarkIcon from 'openland-icons/s/ic-bookmark-white-24.svg';
 
 export type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'xxx-large';
 
@@ -19,6 +20,7 @@ export interface UAvatarProps extends XViewProps {
     size?: UAvatarSize;
     selected?: boolean;
     squared?: boolean;
+    savedMessages?: boolean;
 }
 
 export const getPlaceholderIndex = (id: string) => Math.abs(doSimpleHash(id)) % PlaceholderColors.length;
@@ -78,6 +80,22 @@ export const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: numb
         </XView>
     );
 });
+
+export const AvatarSavedMessages = (props: { squared?: boolean, bookmarkSize: number }) => {
+    return (
+        <XView
+            width="100%"
+            height="100%"
+            alignItems="center"
+            justifyContent="center"
+            borderRadius={props.squared ? 0 : 100}
+            backgroundImage="linear-gradient(135deg, #36D9CB 0%, #3695D9 100%)"
+            overflow="hidden"
+        >
+            <BookmarkIcon width={props.bookmarkSize} height={props.bookmarkSize} />
+        </XView>
+    );
+};
 
 const imageWrapper = css`
     position: relative;
@@ -228,10 +246,13 @@ export const UAvatar = React.memo((props: UAvatarProps) => {
         size = 'medium',
         selected,
         squared,
+        savedMessages,
         ...other
     } = props;
     let content: any = undefined;
-    if (photo || uuid) {
+    if (savedMessages) {
+        content = <AvatarSavedMessages squared={squared} bookmarkSize={AvatarSizes[size].placeholder} />;
+    } else if (photo || uuid) {
         if (photo && photo.startsWith('ph://')) {
             const phIndex = parseInt(photo.substr(5), 10) || 0;
             content = <AvatarPlaceholder {...props} fontSize={AvatarSizes[size].placeholder} index={phIndex} />;
@@ -270,7 +291,7 @@ export const UAvatar = React.memo((props: UAvatarProps) => {
                 >
                     {content}
                 </XView>
-                {online && <OnlineDot size={size} />}
+                {!savedMessages && online && <OnlineDot size={size} />}
             </div>
         </XView>
     );

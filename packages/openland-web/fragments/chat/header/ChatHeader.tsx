@@ -242,6 +242,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     const showCallButton =
         layout === 'desktop' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true);
     const titleEmojify = React.useMemo(() => emoji(title), [title]);
+    const isSavedMessages = chat.__typename === 'PrivateRoom' && messenger.user.id === chat.user.id;
 
     let showInviteButton = layout === 'desktop' && sharedRoom;
     const onlyLinkInvite = sharedRoom && !(!sharedRoom.isPremium || sharedRoom.role === 'OWNER');
@@ -277,6 +278,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         title={title}
                         photo={photo}
                         id={chat.__typename === 'PrivateRoom' ? chat.user.id : chat.id}
+                        savedMessages={isSavedMessages}
                     />
                 </XView>
                 <XView
@@ -294,10 +296,11 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         maxWidth="100%"
                         alignSelf="flex-start"
                         color="var(--foregroundPrimary)"
+                        justifyContent={isSavedMessages ? 'center' : undefined}
                     >
                         <XView
                             fontSize={15}
-                            marginTop={6}
+                            marginTop={isSavedMessages ? 0 : 6}
                             height={24}
                             lineHeight="24px"
                             fontWeight="600"
@@ -307,8 +310,8 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         >
                             {chat.__typename === 'SharedRoom' && chat.isPremium && <PremiumBadge />}
                             <span className={titleStyle}>
-                                {titleEmojify}
-                                {chat.__typename === 'PrivateRoom' &&
+                                {isSavedMessages ? 'Saved messages' : titleEmojify}
+                                {!isSavedMessages && chat.__typename === 'PrivateRoom' &&
                                     chat.user.primaryOrganization && (
                                         <span className={cx(secondary, TextDensed)}>
                                             {chat.user.primaryOrganization.name}
@@ -324,23 +327,25 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                                 />
                             )}
                         </XView>
-                        <XView {...TextStyles.Densed} color="var(--foregroundSecondary)">
-                            <span className={oneLiner}>
-                                {chat.__typename === 'PrivateRoom' && (
-                                    <HeaderLastSeen user={chat.user} />
-                                )}
-                                {chat.__typename === 'SharedRoom' &&
-                                    chat.membersCount !== null &&
-                                    chat.membersCount !== 0 && (
-                                        <>
-                                            {chat.membersCount >= 1
-                                                ? `${chat.membersCount} members`
-                                                : `1 member`}
-                                            <ChatOnlinesTitle id={chat.id} />
-                                        </>
+                        {!isSavedMessages && (
+                            <XView {...TextStyles.Densed} color="var(--foregroundSecondary)">
+                                <span className={oneLiner}>
+                                    {chat.__typename === 'PrivateRoom' && (
+                                        <HeaderLastSeen user={chat.user} />
                                     )}
-                            </span>
-                        </XView>
+                                    {chat.__typename === 'SharedRoom' &&
+                                        chat.membersCount !== null &&
+                                        chat.membersCount !== 0 && (
+                                            <>
+                                                {chat.membersCount >= 1
+                                                    ? `${chat.membersCount} members`
+                                                    : `1 member`}
+                                                <ChatOnlinesTitle id={chat.id} />
+                                            </>
+                                        )}
+                                </span>
+                            </XView>
+                        )}
                     </XView>
                 </XView>
             </XView>
