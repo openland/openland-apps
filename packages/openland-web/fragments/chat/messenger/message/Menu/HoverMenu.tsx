@@ -10,7 +10,7 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { buildMessageMenu } from './MessageMenu';
 import { XViewRouterContext } from 'react-mental';
 import { MessageReactionType } from 'openland-api/spacex.types';
-import { ReactionPicker, ReactionPickerInstance } from '../reactions/ReactionPicker';
+import { ReactionPicker } from '../reactions/ReactionPicker';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
 import { trackEvent } from 'openland-x-analytics';
@@ -87,22 +87,12 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
     );
 
     // Sorry universe
-    const pickerRef = React.useRef<ReactionPickerInstance>(null);
     const messageIdRef = React.useRef(message.id);
     messageIdRef.current = message.id;
     const messageKeyRef = React.useRef(message.key);
     messageKeyRef.current = message.key;
-    const reactionsRef = React.useRef(message.reactions);
-    reactionsRef.current = message.reactions;
-
-    React.useEffect(
-        () => {
-            if (pickerRef && pickerRef.current) {
-                pickerRef.current.update(reactionsRef.current);
-            }
-        },
-        [pickerRef, reactionsRef.current],
-    );
+    const reactionsRef = React.useRef(message.reactionCounters);
+    reactionsRef.current = message.reactionCounters;
 
     const handleReactionClick = async (reaction: MessageReactionType) => {
         const messageId = messageIdRef.current;
@@ -140,29 +130,30 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
             }
         };
 
-        const setEmoji = () => {
-            props.engine.setReaction(messageKey, reaction);
-            trackEvent('reaction_sent', {
-                reaction_type: reaction.toLowerCase(),
-                double_tap: 'not',
-            });
-        };
-
-        const unsetEmoji = () => {
-            props.engine.unsetReaction(messageKey, reaction);
-        };
+        // const setEmoji = () => {
+        //     props.engine.setReaction(messageKey, reaction);
+        //     trackEvent('reaction_sent', {
+        //         reaction_type: reaction.toLowerCase(),
+        //         double_tap: 'not',
+        //     });
+        // };
+        //
+        // const unsetEmoji = () => {
+        //     props.engine.unsetReaction(messageKey, reaction);
+        // };
 
         if (messageId) {
-            const remove =
-                reactions &&
-                reactions.filter(
-                    userReaction =>
-                        userReaction.user.id === messenger.user.id &&
-                        userReaction.reaction === reaction,
-                ).length > 0;
+            const remove = reactions && reactions.filter(set => set.setByMe).length > 0;
+            // const remove =
+            //     reactions &&
+            //     reactions.filter(
+            //         userReaction =>
+            //             userReaction.user.id === messenger.user.id &&
+            //             userReaction.reaction === reaction,
+            //     ).length > 0;
             if (remove) {
                 if (reaction !== MessageReactionType.DONATE) {
-                    unsetEmoji();
+                    // unsetEmoji();
                     client.mutateMessageUnsetReaction({ messageId, reaction });
                 }
             } else {
@@ -170,15 +161,15 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
                     try {
                         await showDonationReactionWarning();
                         try {
-                            setEmoji();
+                            // setEmoji();
                             await donate();
                         } catch (e) {
-                            unsetEmoji();
+                            // unsetEmoji();
                         }
                     } catch (e) { /* noop */ }
                 } else {
                     client.mutateMessageSetReaction({ messageId, reaction });
-                    setEmoji();
+                    // setEmoji();
                 }
             }
         }
@@ -188,8 +179,7 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
         { placement: 'top', hideOnLeave: true, borderRadius: 20, scope: 'reaction-picker' },
         () => (
             <ReactionPicker
-                ref={pickerRef}
-                reactions={reactionsRef.current}
+                reactionCounters={message.reactionCounters}
                 onPick={handleReactionClick}
             />
         ),

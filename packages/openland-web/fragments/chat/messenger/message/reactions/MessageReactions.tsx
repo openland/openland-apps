@@ -1,12 +1,9 @@
 import * as React from 'react';
-import { MessageReactionType } from 'openland-api/spacex.types';
+import { MessageCounterReactions, MessageReactionType } from 'openland-api/spacex.types';
 import { css, cx } from 'linaria';
 import { TextDensed } from 'openland-web/utils/TextStyles';
 import { useClient } from 'openland-api/useClient';
 import { trackEvent } from 'openland-x-analytics';
-import { ReactionReducedEmojify } from 'openland-engines/reactions/types';
-import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
-import { ReactionsUsersInstance, ReactionsUsers } from 'openland-web/components/ReactionsUsers';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 
 export const reactionImage = (r: MessageReactionType) =>
@@ -52,37 +49,16 @@ const reactionsItem = css`
 `;
 
 interface ReactionItemProps {
-    value: ReactionReducedEmojify;
+    reaction: MessageReactionType;
     onClick: (reaction: MessageReactionType) => void;
 }
 
 const ReactionItem = React.memo((props: ReactionItemProps) => {
-    const { value, onClick } = props;
-
-    // Sorry universe
-    const listRef = React.useRef<ReactionsUsersInstance>(null);
-    const usersRef = React.useRef(value.users);
-    usersRef.current = value.users;
-
-    React.useEffect(
-        () => {
-            if (listRef && listRef.current) {
-                listRef.current.update(value.users);
-            }
-        },
-        [listRef, value.users],
-    );
-
-    const [show] = useCaptionPopper({
-        getText: ctx => <ReactionsUsers initialUsers={usersRef.current} ref={listRef} ctx={ctx} />,
-        placement: 'bottom',
-        scope: 'reaction-item',
-        width: 280,
-    });
+    const { onClick, reaction } = props;
 
     return (
-        <div className={reactionsItem} onClick={() => onClick(value.reaction)} onMouseEnter={show}>
-            <img src={reactionImage(value.reaction)} />
+        <div className={reactionsItem} onClick={() => onClick(reaction)}>
+            <img src={reactionImage(reaction)} />
         </div>
     );
 });
@@ -91,39 +67,39 @@ export interface MessageReactionsProps {
     message: {
         id?: string;
         key?: string;
-        reactionsReducedEmojify: ReactionReducedEmojify[];
         reactionFullCounter: string;
+        reactionCounters: MessageCounterReactions[];
     };
     engine?: ConversationEngine;
 }
 
 export const MessageReactions = React.memo<MessageReactionsProps>(props => {
-    // console.log(props.message);
-    const { engine } = props;
-    const { id, key, reactionsReducedEmojify, reactionFullCounter } = props.message;
+    console.log(props.message);
+    const { id, reactionFullCounter, reactionCounters } = props.message;
     const client = useClient();
     const handleReactionClick = React.useCallback(
         async (reaction: MessageReactionType) => {
             if (id) {
-                let remove =
-                    reactionsReducedEmojify &&
-                    reactionsReducedEmojify.filter(
-                        userReaction =>
-                            userReaction.my &&
-                            userReaction.reaction === reaction,
-                    ).length > 0;
+                const remove = reactionCounters && reactionCounters.filter(r => r.setByMe).length > 0;
+                // let remove =
+                //     reactionsReducedEmojify &&
+                //     reactionsReducedEmojify.filter(
+                //         userReaction =>
+                //             userReaction.my &&
+                //             userReaction.reaction === reaction,
+                //     ).length > 0;
                 if (reaction === MessageReactionType.DONATE) {
                     return;
                 }
                 if (remove) {
-                    if (engine && key) {
-                        engine.unsetReaction(key, reaction);
-                    }
+                    // if (engine && key) {
+                    //     engine.unsetReaction(key, reaction);
+                    // }
                     await client.mutateMessageUnsetReaction({ messageId: id, reaction });
                 } else {
-                    if (engine && key) {
-                        engine.setReaction(key, reaction);
-                    }
+                    // if (engine && key) {
+                    //     engine.setReaction(key, reaction);
+                    // }
                     trackEvent('reaction_sent', {
                         reaction_type: reaction.toLowerCase(),
                         double_tap: 'not',
@@ -133,10 +109,10 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
                 }
             }
         },
-        [id, reactionsReducedEmojify],
+        [id, reactionCounters],
     );
 
-    if (reactionsReducedEmojify.length <= 0) {
+    if (reactionCounters.length <= 0) {
         return null;
     }
 
@@ -149,10 +125,10 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
             }}
         >
             <div className={reactionsItems}>
-                {reactionsReducedEmojify.map((r, i) => (
+                {reactionCounters.map((r, i) => (
                     <ReactionItem
                         key={'reaction-' + r.reaction + '-' + i}
-                        value={r}
+                        reaction={r.reaction}
                         onClick={handleReactionClick}
                     />
                 ))}

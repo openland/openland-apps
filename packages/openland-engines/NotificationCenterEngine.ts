@@ -68,7 +68,6 @@ const notificationUnsupported = (id: string): NotificationsDataSourceItem => {
             commentsCount: 0,
             attachments: [],
             quotedMessages: [],
-            reactions: [],
             reactionCounters: [],
             spans: [{ __typename: 'MessageSpanBold', offset: 0, length: 33 }],
             overrideAvatar: null,

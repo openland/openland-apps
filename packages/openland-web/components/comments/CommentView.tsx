@@ -141,9 +141,9 @@ export const CommentView = React.memo((props: CommentViewProps) => {
     const canEdit = sender.id === messenger.user.id && message && message.length;
     const canDelete = sender.id === messenger.user.id || useRole('super-admin');
     const attachments = comment.__typename === 'GeneralMessage' ? comment.attachments : undefined;
-    const reactions =
+    const reactionCounters =
         comment.__typename === 'GeneralMessage' || comment.__typename === 'StickerMessage'
-            ? comment.reactions
+            ? comment.reactionCounters
             : [];
 
     return (
@@ -201,7 +201,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                         />
                         {!deleted && (
                             <CommentTools
-                                reactions={reactions}
+                                reactionCounters={reactionCounters}
                                 onReactionClick={() => onReactionClick(comment)}
                                 onReplyClick={() => onReplyClick(id)}
                                 onEditClick={canEdit ? () => setEdit(true) : undefined}

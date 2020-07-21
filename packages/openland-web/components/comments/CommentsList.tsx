@@ -5,15 +5,11 @@ import { StickerFragment, CommentWatch, CommentEntryFragment, MessageReactionTyp
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { css } from 'linaria';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
-import { createLogger } from 'mental-log';
-
-const log = createLogger('CommentsList');
 
 const wrapper = css`
     padding-bottom: 32px;
@@ -31,7 +27,6 @@ interface CommentsListProps {
 
 const CommentsListInner = React.memo((props: CommentsListProps & { comments: CommentEntryFragment[] }) => {
     const client = useClient();
-    const messenger = React.useContext(MessengerContext);
     const { groupId, comments, highlightId, onSent, onSentAttach, onReply, onStickerSent } = props;
     const commnetsUpdatedCounter = React.useRef(0);
     React.useEffect(() => {
@@ -51,10 +46,9 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Com
 
     const handleReactionClick = React.useCallback((comment: CommentEntryFragment_comment) => {
         if (comment.__typename === 'GeneralMessage' || comment.__typename === 'StickerMessage') {
-            const { id, reactions } = comment;
+            const { id, reactionCounters } = comment;
             const r = MessageReactionType.LIKE;
-            const remove = reactions && reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === r).length > 0;
-
+            const remove = !!reactionCounters.length && reactionCounters[0].setByMe;
             if (remove) {
                 client.mutateCommentUnsetReaction({ commentId: id, reaction: r });
             } else {
@@ -107,27 +101,15 @@ export const CommentsList = React.memo((props: CommentsListProps) => {
     const { peerId } = props;
     const client = useClient();
 
-    log.log(`render peerId: ${peerId}`);
-
     const data = client.useComments({ peerId }, { fetchPolicy: 'cache-and-network' }).comments;
 
-    log.log(`data count: ${data.count} | state: ${data.state}`);
-
     const updateHandler = React.useCallback(async () => {
-        log.log(`updateHandler refetch`);
-
         await client.refetchComments({ peerId });
     }, [peerId]);
 
     React.useEffect(() => {
-        log.log(`useEffect before subscribe`);
-
         return sequenceWatcher<CommentWatch>(data.state.state, (state, handler) => client.subscribeCommentWatch({ peerId, fromState: state }, handler), (updates) => {
-            log.log(`event recieved. start`);
-
             if (updates.event) {
-                log.log(`event recieved state: ${updates.event.state}`);
-
                 updateHandler();
                 return updates.event.state;
             } else {

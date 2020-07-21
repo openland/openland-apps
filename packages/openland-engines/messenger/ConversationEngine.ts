@@ -32,7 +32,7 @@ import { Span } from 'openland-y-utils/spans/Span';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { ReactionReduced } from 'openland-engines/reactions/types';
 import { reduceUserReactions } from 'openland-engines/reactions/reduceReactions';
-import { getReactionsLabel, getReactionFullCounter } from 'openland-engines/reactions/getReactionsLabel';
+import { getReactionFullCounter } from 'openland-engines/reactions/getReactionsLabel';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { GraphqlActiveSubscription } from '@openland/spacex';
 import { LocalImage } from 'openland-engines/messenger/types';
@@ -64,7 +64,6 @@ export interface DataSourceMessageItem {
     source?: DataSourceMessageSourceT | null;
     reactionCounters: MessageCounterReactions[];
     reactionFullCounter: string;
-    reactions: MessageUsersReactions[];
     attachments?: (MessageAttachments & { uri?: string, filePreview?: string | null })[];
     spans?: MessageSpan[];
     isSending: boolean;
@@ -77,7 +76,6 @@ export interface DataSourceMessageItem {
     fallback: string;
     textSpans: Span[];
     failed?: boolean;
-    reactionsReduced: ReactionReduced[];
     sticker?: Types.StickerFragment;
     overrideAvatar?: Types.FullMessage_GeneralMessage_overrideAvatar | null;
     overrideName?: string | null;
@@ -118,10 +116,6 @@ const getCommentsCount = (src: FullMessage_GeneralMessage | FullMessage_StickerM
     return src ? src.commentsCount : 0;
 };
 
-const getReactions = (src: FullMessage_GeneralMessage | FullMessage_StickerMessage | undefined) => {
-    return src ? src.reactions || [] : [];
-};
-
 const getReactionsCounter = (src: FullMessage_GeneralMessage | FullMessage_StickerMessage | undefined) => {
     return src ? src.reactionCounters || [] : [];
 };
@@ -148,7 +142,6 @@ export function convertPartialMessage(src: RecursivePartial<FullMessage> & { id:
         source: null,
         commentsCount: 0,
         quotedMessages: [],
-        reactions: [],
         reactionCounters: [],
         spans: [],
         overrideAvatar: null,
@@ -162,7 +155,6 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId
     const serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
     const stickerMessage = src.__typename === 'StickerMessage' ? src : undefined;
 
-    const reactions = getReactions(generalMessage || stickerMessage);
     const reactionCounters = getReactionsCounter(generalMessage || stickerMessage);
 
     return {
@@ -178,7 +170,6 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId
         isSending: false,
         attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) && (src.date - next.date < timeGroup) && ((next.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
         attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) && (prev.date - src.date < timeGroup) && ((prev.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
-        reactions,
         reactionCounters,
         reactionFullCounter: reactionCounters.length ? getReactionFullCounter(reactionCounters) : '',
         serviceMetaData: serviceMessage && serviceMessage.serviceMetadata || undefined,
@@ -191,7 +182,6 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId
         commentsCount: getCommentsCount(generalMessage || stickerMessage),
         fallback: src.fallback || src.message || '',
         textSpans: src.message ? processSpans(src.message, src.spans) : [],
-        reactionsReduced: reactions.length ? reduceUserReactions(reactions, engine.user.id) : [],
         sticker: stickerMessage ? stickerMessage.sticker : undefined,
         ...getOverrides(src)
     };
@@ -1050,11 +1040,9 @@ export class ConversationEngine implements MessageSendHandler {
                 source: undefined,
                 attachTop: prev && prev.type === 'message' ? prev.sender.id === this.engine.user.id && !prev.serviceMetaData && !prev.isService : false,
                 textSpans: src.message ? processSpans(src.message, src.spans) : [],
-                reactions: [],
                 reactionCounters: [],
                 reactionFullCounter: '',
                 fallback: src.message || '',
-                reactionsReduced: [],
                 sticker: src.sticker || undefined,
             };
         }
@@ -1203,44 +1191,44 @@ export class ConversationEngine implements MessageSendHandler {
         return res;
     }
 
-    private computeAdditionalReactionsData = (reactions: MessageUsersReactions[]) => {
-        const reactionsReduced = reduceUserReactions(reactions, this.engine.user.id);
-        const reactionsLabel = getReactionsLabel(reactions, this.engine.user.id);
-
-        return { reactionsReduced, reactionsLabel };
-    }
-
-    setReaction = (messageKey: string, reaction: MessageReactionType) => {
-        const oldMessage = this.dataSource.getItem(messageKey) as DataSourceMessageItem;
-
-        const reactions = oldMessage.reactions.concat([{
-            reaction,
-            user: this.engine.user,
-            __typename: "ModernMessageReaction"
-        }]);
-
-        const newMessage = {
-            ...oldMessage,
-            reactions,
-            ...this.computeAdditionalReactionsData(reactions)
-        };
-
-        this.dataSource.updateItem(newMessage);
-    }
-
-    unsetReaction = (messageKey: string, reaction: MessageReactionType) => {
-        const oldMessage = this.dataSource.getItem(messageKey) as DataSourceMessageItem;
-
-        const reactions = oldMessage.reactions.filter(
-            r => !(r.user.id === this.engine.user.id && r.reaction === reaction)
-        );
-
-        const newMessage = {
-            ...oldMessage,
-            reactions,
-            ...this.computeAdditionalReactionsData(reactions)
-        };
-
-        this.dataSource.updateItem(newMessage);
-    }
+    // private computeAdditionalReactionsData = (reactions: MessageUsersReactions[]) => {
+    //     const reactionsReduced = reduceUserReactions(reactions, this.engine.user.id);
+    //     const reactionsLabel = getReactionsLabel(reactions, this.engine.user.id);
+    //
+    //     return { reactionsReduced, reactionsLabel };
+    // }
+    //
+    // setReaction = (messageKey: string, reaction: MessageReactionType) => {
+    //     const oldMessage = this.dataSource.getItem(messageKey) as DataSourceMessageItem;
+    //
+    //     const reactions = oldMessage.reactions.concat([{
+    //         reaction,
+    //         user: this.engine.user,
+    //         __typename: "ModernMessageReaction"
+    //     }]);
+    //
+    //     const newMessage = {
+    //         ...oldMessage,
+    //         reactions,
+    //         ...this.computeAdditionalReactionsData(reactions)
+    //     };
+    //
+    //     this.dataSource.updateItem(newMessage);
+    // }
+    //
+    // unsetReaction = (messageKey: string, reaction: MessageReactionType) => {
+    //     const oldMessage = this.dataSource.getItem(messageKey) as DataSourceMessageItem;
+    //
+    //     const reactions = oldMessage.reactions.filter(
+    //         r => !(r.user.id === this.engine.user.id && r.reaction === reaction)
+    //     );
+    //
+    //     const newMessage = {
+    //         ...oldMessage,
+    //         reactions,
+    //         ...this.computeAdditionalReactionsData(reactions)
+    //     };
+    //
+    //     this.dataSource.updateItem(newMessage);
+    // }
 }

@@ -26,7 +26,7 @@ const MessageComponent = React.memo((props: PageProps) => {
             <ZMessageView message={message} />
 
             {(message.__typename === 'GeneralMessage' || message.__typename === 'StickerMessage') && (
-                <ReactionsView reactions={message.reactions} />
+                <ReactionsView reactionCounters={message.reactionCounters} />
             )}
         </View>
     );

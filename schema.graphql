@@ -332,6 +332,10 @@ type Contact {
   user: User!
 }
 
+type ContactAdded {
+  contact: Contact!
+}
+
 type ContactConnection {
   items: [Contact!]!
   cursor: String
@@ -345,6 +349,21 @@ input ContactPersonInput {
   phone: String
   link: String
   twitter: String
+}
+
+type ContactRemoved {
+  contact: Contact!
+}
+
+type ContactsState {
+  state: String!
+}
+
+union ContactsUpdate = ContactAdded | ContactRemoved
+
+type ContactsUpdateContainer {
+  updates: [ContactsUpdate!]!
+  state: String!
 }
 
 interface Conversation {
@@ -1157,6 +1176,22 @@ type IpLocation {
 type IsAppInstalledResponse {
   installed: Boolean!
   installedAt: Date
+}
+
+type JoinedOrganizationMember {
+  user: User!
+  role: OrganizationMemberRole!
+  joinedAt: String!
+}
+
+type JoinedOrganizationMemberEdge {
+  node: JoinedOrganizationMember!
+  cursor: String!
+}
+
+type JoinedOrganizationMembersConnection {
+  edges: [JoinedOrganizationMemberEdge!]!
+  pageInfo: PageInfo!
 }
 
 type KickServiceMetadata {
@@ -2736,6 +2771,7 @@ type Query {
   conferenceMedia(id: ID!, peerId: ID!): ConferenceMedia!
   myContacts(first: Int!, after: String): ContactConnection!
   myContactsSearch(query: String, first: Int!, after: String, page: Int): UserConnection!
+  myContactsState: ContactsState!
   dialogsState: DialogUpdateState!
   envVars: [EnvVar!]
   envVar(name: String!): EnvVar
@@ -2817,6 +2853,7 @@ type Query {
   messagesSearch(query: String!, sort: String, first: Int!, after: String): MessageConnection!
   chatMembersSearch(cid: ID!, query: String, first: Int!, after: String, page: Int): RoomMemberConnection!
   chatMentionSearch(cid: ID!, query: String, first: Int!, after: String): GlobalSearchConnection!
+  orgMembersSearch(orgId: ID!, query: String, first: Int!, after: String, page: Int): JoinedOrganizationMembersConnection!
   messages(chatId: ID!, first: Int!, before: ID): [ModernMessage!]!
   gammaMessages(chatId: ID!, first: Int!, before: ID, after: ID, around: ID): GammaMessagesBatch
   message(messageId: ID!): ModernMessage
@@ -2860,6 +2897,7 @@ type Reaction {
 type ReactionCounter {
   reaction: MessageReactionType!
   count: Int!
+  setByMe: Boolean!
 }
 
 union ResolveInviteEntry = InviteInfo | AppInvite | RoomInvite
@@ -3243,6 +3281,7 @@ type Subscription {
   commentUpdates(peerId: ID!, fromState: String): CommentUpdateContainer
   conferenceWatch(id: ID!): Conference!
   conferenceMediaWatch(id: ID!, peerId: ID!): ConferenceMedia!
+  myContactsUpdates(fromState: String!): ContactsUpdateContainer!
   dialogsUpdates(fromState: String): DialogUpdateContainer!
   homeFeedUpdates(fromState: String): FeedUpdateContainer!
   shouldShareLocationUpdates: Boolean!

@@ -11,15 +11,3 @@ export interface ReactionReduced {
     reaction: MessageReactionType;
     users: ReactionUser[];
 }
-
-export interface ReactionUserEmojify {
-    id: string;
-    name: string | JSX.Element;
-}
-
-export interface ReactionReducedEmojify {
-    count: number;
-    my: boolean;
-    reaction: MessageReactionType;
-    users: ReactionUserEmojify[];
-}

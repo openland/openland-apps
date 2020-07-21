@@ -59,6 +59,7 @@ fragment MessageSender on User {
 fragment MessageCounterReactions on ReactionCounter {
     reaction
     count
+    setByMe
 }
 
 
@@ -310,9 +311,6 @@ fragment FullMessage on ModernMessage {
         reactionCounters {
             ...MessageCounterReactions
         }
-        reactions {
-            ...MessageUsersReactions
-        }
         overrideAvatar {
             uuid
             crop {
@@ -336,9 +334,6 @@ fragment FullMessage on ModernMessage {
         }
         reactionCounters {
             ...MessageCounterReactions
-        }
-        reactions {
-            ...MessageUsersReactions
         }
         overrideAvatar {
             uuid

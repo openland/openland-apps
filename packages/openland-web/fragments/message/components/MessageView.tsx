@@ -4,14 +4,13 @@ import { convertMessage } from 'openland-engines/messenger/ConversationEngine';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { FullMessage, Message_message_GeneralMessage, Message_message_StickerMessage } from 'openland-api/spacex.types';
 import { MessageContent } from 'openland-web/fragments/chat/messenger/message/MessageContent';
-import { convertDsMessage, DataSourceWebMessageItem, emojifyReactions } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
+import { convertDsMessage, DataSourceWebMessageItem } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { Span } from 'openland-y-utils/spans/Span';
 import { emoji } from 'openland-y-utils/emoji';
 import { MessageReactions } from 'openland-web/fragments/chat/messenger/message/reactions/MessageReactions';
 import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { css } from 'linaria';
-import { ReactionReducedEmojify } from 'openland-engines/reactions/types';
 import { reduceUserReactions } from 'openland-engines/reactions/reduceReactions';
 import { getReactionFullCounter } from 'openland-engines/reactions/getReactionsLabel';
 import { XViewRouterContext } from 'react-mental';
@@ -52,7 +51,6 @@ export const MessageView = React.memo((props: MessageViewProps) => {
     const [reply, setReply] = React.useState<DataSourceWebMessageItem[]>([]);
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
     const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
-    const [reactionsReducedEmojify, setReactionsReduced] = React.useState<ReactionReducedEmojify[]>([]);
     const [reactionFullCounter, setReactionFullCounter] = React.useState<string>('');
     const router = React.useContext(XViewRouterContext)!;
 
@@ -69,9 +67,8 @@ export const MessageView = React.memo((props: MessageViewProps) => {
     }, [sender.name]);
 
     React.useEffect(() => {
-        setReactionsReduced(emojifyReactions(reduceUserReactions(message.reactions, messenger.user.id)));
         setReactionFullCounter(getReactionFullCounter(message.reactionCounters));
-    }, [message.reactions]);
+    }, [message.reactionCounters]);
 
     return (
         <div className={wrapper}>
@@ -109,7 +106,6 @@ export const MessageView = React.memo((props: MessageViewProps) => {
                     <MessageReactions
                         message={{
                             ...message,
-                            reactionsReducedEmojify,
                             reactionFullCounter
                         }}
                     />

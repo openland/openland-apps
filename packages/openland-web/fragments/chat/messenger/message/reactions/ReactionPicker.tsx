@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { MessageReactionType, FullMessage_GeneralMessage_reactions } from 'openland-api/spacex.types';
+import { MessageReactionType, MessageCounterReactions } from 'openland-api/spacex.types';
 import { css, cx } from 'linaria';
 import { reactionImage } from './MessageReactions';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 
 const SortedReactions = [
@@ -116,43 +115,28 @@ const ReactionPickerItem = React.memo<ReactionPickerItemProps>(props => {
     );
 });
 
-export interface ReactionPickerInstance {
-    update: (newReactions: FullMessage_GeneralMessage_reactions[]) => void;
-}
-
 interface ReactionPickerProps {
-    reactions: FullMessage_GeneralMessage_reactions[];
+    reactionCounters: MessageCounterReactions[];
     onPick: (reaction: MessageReactionType) => void;
 }
 
 // Sorry universe
-export const ReactionPicker = React.memo(React.forwardRef((props: ReactionPickerProps, ref: React.Ref<ReactionPickerInstance>) => {
-    const messenger = React.useContext(MessengerContext);
-    const [reactions, setReactions] = React.useState<FullMessage_GeneralMessage_reactions[]>(props.reactions);
-
-    React.useImperativeHandle(ref, () => ({
-        update: (newReactions: FullMessage_GeneralMessage_reactions[]) => {
-            setReactions(newReactions);
-        },
-    }));
-
+export const ReactionPicker = React.memo((props: ReactionPickerProps) => {
     return (
         <div className={wrapperClass}>
             {SortedReactions.map(reaction => {
-                const reactionsToRemove = reactions && reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === reaction);
-                const toRemove = reactionsToRemove && reactionsToRemove.length > 0;
-                const disabled = reaction === MessageReactionType.DONATE && (reactionsToRemove && reactionsToRemove.some(r => r.reaction === MessageReactionType.DONATE));
+                const disabled = props.reactionCounters.filter(r => r.reaction === MessageReactionType.DONATE && r.setByMe).length > 1;
 
                 return (
                     <ReactionPickerItem
                         key={'reaction-' + reaction}
                         onPick={props.onPick}
                         reaction={reaction}
-                        toRemove={toRemove}
+                        toRemove={false}
                         disabled={disabled}
                     />
                 );
             })}
         </div>
     );
-}));
+});
