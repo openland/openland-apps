@@ -26,9 +26,11 @@ export const LocalContactsProvider = React.memo((props: { children: any }) => {
             listenersRef.current = listenersRef.current.filter(x => x !== handler);
         };
     };
+    const unsubscribeRef = React.useRef<any>();
 
-    React.useEffect(() => {
-        return sequenceWatcher<MyContactsUpdates>(null, ((state, handler) => client.subscribeMyContactsUpdates({ state }, handler)), ({ myContactsUpdates }) => {
+    const startSubscription = async () => {
+        let { state: initialState } = (await client.queryMyContactsState({ fetchPolicy: 'network-only' })).myContactsState;
+        unsubscribeRef.current = sequenceWatcher<MyContactsUpdates>(initialState, ((state, handler) => client.subscribeMyContactsUpdates({ state: state! }, handler)), ({ myContactsUpdates }) => {
             let removedUsers = myContactsUpdates.updates
                 .filter(y => y.__typename === 'ContactRemoved')
                 .map(x => x.contact.user);
@@ -46,6 +48,13 @@ export const LocalContactsProvider = React.memo((props: { children: any }) => {
 
             return myContactsUpdates.state;
         });
+    };
+
+    React.useEffect(() => {
+        startSubscription();
+        return () => {
+            unsubscribeRef.current?.();
+        };
     }, []);
 
     return (

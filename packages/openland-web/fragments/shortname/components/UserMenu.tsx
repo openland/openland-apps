@@ -52,9 +52,7 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
         });
     }
 
-    const contactsEnabled = false;
-
-    if (contactsEnabled && id !== engine.user.id) {
+    if (id !== engine.user.id) {
         builder.item({
             title: isContact ? 'Remove from contacts' : 'Save to contacts',
             icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,

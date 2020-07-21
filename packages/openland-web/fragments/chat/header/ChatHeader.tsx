@@ -179,10 +179,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
         closeDelay: 400,
     });
 
-    let contactsEnabled = false;
-
     if (
-        contactsEnabled &&
         chat.__typename === 'PrivateRoom' &&
         chat.user.id !== messenger.user.id
     ) {

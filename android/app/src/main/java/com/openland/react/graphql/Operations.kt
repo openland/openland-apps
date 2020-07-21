@@ -60,6 +60,7 @@ object Operations {
         if (name == "MyCommunities") return MyCommunities
         if (name == "MyContacts") return MyContacts
         if (name == "MyContactsSearch") return MyContactsSearch
+        if (name == "MyContactsState") return MyContactsState
         if (name == "MyNotificationCenter") return MyNotificationCenter
         if (name == "MyNotifications") return MyNotifications
         if (name == "MyOrganizations") return MyOrganizations
@@ -77,6 +78,7 @@ object Operations {
         if (name == "OrganizationPublicInvite") return OrganizationPublicInvite
         if (name == "OrganizationPublicRooms") return OrganizationPublicRooms
         if (name == "Permissions") return Permissions
+        if (name == "PhonebookWasExported") return PhonebookWasExported
         if (name == "PicSharedMedia") return PicSharedMedia
         if (name == "Post") return Post
         if (name == "PostDraft") return PostDraft

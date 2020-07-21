@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XView, XViewRouterContext } from 'react-mental';
-import { UserForMention } from 'openland-api/spacex.types';
+import { UserNano_user } from 'openland-api/spacex.types';
 import { XDate } from 'openland-x/XDate';
 import { UAvatar } from './unicorn/UAvatar';
 import { emoji } from 'openland-y-utils/emoji';
@@ -21,15 +21,6 @@ const userStatus = css`
 
 const userOnlineStatus = css`
     color: #1790ff;
-`;
-
-const organizationTitle = css`
-    width: 184px;
-    margin-top: 4px;
-    color: #676d7a;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
 `;
 
 const Status = (({ variables }) => {
@@ -95,7 +86,7 @@ export const UserPopperContent = React.memo(
         user,
         hidePopper,
     }: {
-        user: UserForMention;
+        user: UserNano_user;
         isMe: boolean;
         noCardOnMe?: boolean;
         hidePopper: Function;
@@ -116,8 +107,6 @@ export const UserPopperContent = React.memo(
                 </XView>
             );
         } else {
-            const organizationName = user.primaryOrganization ? user.primaryOrganization.name : '';
-            const contactsEnabled = false;
             const client = useClient();
             const messenger = React.useContext(MessengerContext);
             const { isContact } = useLocalContact(user.id, user.inContacts);
@@ -179,11 +168,6 @@ export const UserPopperContent = React.memo(
                             <React.Suspense fallback={<div />}>
                                 <Status variables={{ userId: user.id }} />
                             </React.Suspense>
-                            {!contactsEnabled && (
-                                <div className={cx(organizationTitle, TextCaption)}>
-                                    {organizationName}
-                                </div>
-                            )}
                             {!isMe && (
                                 <XView width="100%" alignItems="center" marginTop={20} flexDirection="row" justifyContent="space-between">
                                     <UButton
@@ -196,14 +180,12 @@ export const UserPopperContent = React.memo(
                                             }
                                         }}
                                     />
-                                    {contactsEnabled && (
-                                        <UIconButton
-                                            icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
-                                            onClick={handleContactClick}
-                                            size="medium"
-                                            onMouseEnter={showContactCaption}
-                                        />
-                                    )}
+                                    <UIconButton
+                                        icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
+                                        onClick={handleContactClick}
+                                        size="medium"
+                                        onMouseEnter={showContactCaption}
+                                    />
                                 </XView>
                             )}
                         </div>
