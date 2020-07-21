@@ -39,14 +39,58 @@ query ChatNewLoadAfter($chatId: ID!, $after: ID!, $limit: Int!) {
     }
 }
 
+#
+# Dialog Updates
+#
+
 query ChatNewDialogsState {
     state: dialogsState {
         state
     }
 }
 
+#
+# Chat Updates
+#
+
 query ChatNewChatState($chatId: ID!) {
     state: conversationState(id: $chatId) {
         state
+    }
+}
+
+fragment NewChatUpdateFragment on ChatUpdate {
+    ... on ChatMessageReceived {
+        message {
+            ...ChatNewMessageFragment
+        }
+        repeatKey
+    }
+    ... on ChatMessageUpdated {
+        message {
+            ...ChatNewMessageFragment
+        }
+    }
+    ... on ChatMessageDeleted {
+        message {
+            id
+        }
+    }
+}
+
+subscription NewChatUpdates($chatId: ID!, $state: String) {
+    event: chatUpdates(chatId: $chatId, fromState: $state) {
+        ... on ChatUpdateSingle {
+            state
+            update {
+                ...NewChatUpdateFragment
+            }
+        }
+        ... on ChatUpdateBatch {
+            state
+            updates {
+                ...NewChatUpdateFragment
+            }
+        }
     }
 }

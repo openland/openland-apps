@@ -954,6 +954,32 @@ private let MediaStreamFullSelector = obj(
                 )))))
         )
 
+private let NewChatUpdateFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("ChatMessageReceived", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("message", "message", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("ModernMessage", ChatNewMessageFragmentSelector)
+                    ))),
+                field("repeatKey", "repeatKey", scalar("String"))
+            )),
+            inline("ChatMessageUpdated", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("message", "message", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("ModernMessage", ChatNewMessageFragmentSelector)
+                    )))
+            )),
+            inline("ChatMessageDeleted", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("message", "message", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
+                    )))
+            ))
+        )
+
 private let RoomSharedNanoSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -4809,6 +4835,27 @@ private let MyNotificationsCenterSelector = obj(
                     ))
                 ))
         )
+private let NewChatUpdatesSelector = obj(
+            field("chatUpdates", "event", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("fromState", refValue("state"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    inline("ChatUpdateSingle", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("update", "update", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("ChatUpdate", NewChatUpdateFragmentSelector)
+                            )))
+                    )),
+                    inline("ChatUpdateBatch", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("updates", "updates", notNull(list(notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("ChatUpdate", NewChatUpdateFragmentSelector)
+                            )))))
+                    ))
+                )))
+        )
 private let OnlineWatchSelector = obj(
             field("alphaSubscribeOnline", "alphaSubscribeOnline", arguments(fieldValue("users", refValue("users"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -6377,6 +6424,12 @@ class Operations {
         "subscription MyNotificationsCenter($state:String){event:notificationCenterUpdates(fromState:$state){__typename ... on NotificationCenterUpdateSingle{__typename seq state update{__typename ...NotificationCenterUpdateFragment}}... on NotificationCenterUpdateBatch{__typename fromSeq seq state updates{__typename ...NotificationCenterUpdateFragment}}}}fragment NotificationCenterUpdateFragment on NotificationCenterUpdate{__typename ... on NotificationReceived{__typename center{__typename id unread}notification{__typename ...NotificationFragment}}... on NotificationUpdated{__typename center{__typename id unread}notification{__typename ...NotificationFragment}}... on NotificationDeleted{__typename center{__typename id unread}notification{__typename id}}... on NotificationRead{__typename center{__typename id unread}}... on NotificationContentUpdated{__typename content{__typename ... on UpdatedNotificationContentComment{__typename peer{__typename peerRoot{__typename ... on CommentPeerRootMessage{__typename message{__typename ... on GeneralMessage{__typename id fallback message sender{__typename id name}senderBadge{__typename ...UserBadge}}}chat{__typename ...RoomNano}}... on CommentPeerRootPost{__typename post{__typename id}}}id subscription{__typename type}}comment{__typename ...CommentEntryFragment}}}}}fragment NotificationFragment on Notification{__typename id text content{__typename ... on NewCommentNotification{__typename comment{__typename ...CommentEntryFragment}peer{__typename id peerRoot{__typename ... on CommentPeerRootMessage{__typename message{__typename ... on GeneralMessage{__typename id fallback message sender{__typename id name}senderBadge{__typename ...UserBadge}}}chat{__typename ...RoomNano}}... on CommentPeerRootPost{__typename post{__typename id}}}subscription{__typename type}}}}}fragment CommentEntryFragment on CommentEntry{__typename id deleted comment:betaComment{__typename ...FullMessage}parentComment{__typename id comment:betaComment{__typename id message}}childComments{__typename id}}fragment FullMessage on ModernMessage{__typename id date sender{__typename ...MessageSender}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}spans{__typename ...MessageSpan}... on GeneralMessage{__typename id edited commentsCount attachments{__typename ...MessageAttachments}quotedMessages{__typename ...QuotedMessage}reactions{__typename ...MessageReactions}overrideAvatar{__typename uuid crop{__typename x y w h}}overrideName}... on StickerMessage{__typename id commentsCount quotedMessages{__typename ...QuotedMessage}sticker{__typename ...StickerFragment}reactions{__typename ...MessageReactions}overrideAvatar{__typename uuid crop{__typename x y w h}}overrideName}... on ServiceMessage{__typename id serviceMetadata{__typename ...ServiceMessageMetadata}}}fragment MessageSender on User{__typename id name photo isBot shortname inContacts primaryOrganization{__typename id name shortname}}fragment UserBadge on UserBadge{__typename id name verified}fragment MessageSpan on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename id name}}... on MessageSpanMultiUserMention{__typename offset length}... on MessageSpanOrganizationMention{__typename organization{__typename id name}}... on MessageSpanRoomMention{__typename room{__typename ... on PrivateRoom{__typename id user{__typename id name}}... on SharedRoom{__typename id title isPremium}}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment MessageAttachments on ModernMessageAttachment{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}socialImage{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id title style url}}fallback}... on MessageAttachmentPurchase{__typename id purchase{__typename id state amount}fallback}}fragment QuotedMessage on ModernMessage{__typename id date message sender{__typename ...MessageSender}senderBadge{__typename ...UserBadge}fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}spans{__typename ...MessageSpan}... on GeneralMessage{__typename id edited commentsCount attachments{__typename ...MessageAttachments}}... on StickerMessage{__typename id sticker{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}fragment MessageReactions on ModernMessageReaction{__typename user{__typename id name photo primaryOrganization{__typename id name}}reaction}fragment ServiceMessageMetadata on ServiceMetadata{__typename ... on InviteServiceMetadata{__typename users{__typename id}invitedBy{__typename id}}... on KickServiceMetadata{__typename user{__typename id}kickedBy{__typename id}}... on TitleChangeServiceMetadata{__typename title}... on PhotoChangeServiceMetadata{__typename photo}... on PostRespondServiceMetadata{__typename respondType}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title photo membersCount settings{__typename id mute}}",
         MyNotificationsCenterSelector
     )
+    let NewChatUpdates = OperationDefinition(
+        "NewChatUpdates",
+        .subscription, 
+        "subscription NewChatUpdates($chatId:ID!,$state:String){event:chatUpdates(chatId:$chatId,fromState:$state){__typename ... on ChatUpdateSingle{__typename state update{__typename ...NewChatUpdateFragment}}... on ChatUpdateBatch{__typename state updates{__typename ...NewChatUpdateFragment}}}}fragment NewChatUpdateFragment on ChatUpdate{__typename ... on ChatMessageReceived{__typename message{__typename ...ChatNewMessageFragment}repeatKey}... on ChatMessageUpdated{__typename message{__typename ...ChatNewMessageFragment}}... on ChatMessageDeleted{__typename message{__typename id}}}fragment ChatNewMessageFragment on ModernMessage{__typename id date seq sender{__typename id}message fallback}",
+        NewChatUpdatesSelector
+    )
     let OnlineWatch = OperationDefinition(
         "OnlineWatch",
         .subscription, 
@@ -6653,6 +6706,7 @@ class Operations {
         if name == "DialogsWatch" { return DialogsWatch }
         if name == "GlobalEventBus" { return GlobalEventBus }
         if name == "MyNotificationsCenter" { return MyNotificationsCenter }
+        if name == "NewChatUpdates" { return NewChatUpdates }
         if name == "OnlineWatch" { return OnlineWatch }
         if name == "SettingsWatch" { return SettingsWatch }
         if name == "TypingsWatch" { return TypingsWatch }

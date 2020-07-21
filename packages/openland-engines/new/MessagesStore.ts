@@ -2,7 +2,7 @@ import { StoredMessage } from './StoredMessage';
 import { backoff } from 'openland-y-utils/timer';
 import { randomKey } from 'openland-y-utils/randomKey';
 import { MessagesApi } from './MessagesApi';
-import { Persistence } from './Persistence';
+import { Persistence, Transaction } from './Persistence';
 import { MessagesRepository } from './MessagesRepository';
 import { AsyncLock } from '@openland/patterns';
 
@@ -234,5 +234,35 @@ export class MessagesStore {
         });
 
         return source;
+    }
+
+    //
+    // Handle Updates
+    //
+
+    onMessagesLostAccess = async (tx: Transaction) => {
+        // TODO: Implement
+    }
+
+    onMessagesGotAccess = async (tx: Transaction) => {
+        // TODO: Implement
+    }
+
+    onMessagesReceived = async (messages: { repeatKey: string | null, message: StoredMessage }[], tx: Transaction) => {
+        for (let m of messages) {
+            await this.repo.handleMessageReceived(m.message, tx);
+        }
+    }
+
+    onMessagesUpdated = async (messages: StoredMessage[], tx: Transaction) => {
+        for (let m of messages) {
+            await this.repo.handleMessageUpdated(m, tx);
+        }
+    }
+
+    onMessagesDeleted = async (messages: string[], tx: Transaction) => {
+        for (let m of messages) {
+            await this.repo.handleMessageDeleted(m, tx);
+        }
     }
 }

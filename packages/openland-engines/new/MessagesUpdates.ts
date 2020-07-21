@@ -1,8 +1,21 @@
+import { StoredMessage } from './StoredMessage';
 import { GraphqlActiveSubscription } from '@openland/spacex';
-import { MessagesApi } from './MessagesApi';
+import { MessagesApi, convertMessage } from './MessagesApi';
 import { Persistence, Transaction } from './Persistence';
 import { AsyncLock } from '@openland/patterns';
-import { DialogUpdateFragment, ChatUpdateFragment } from 'openland-api/spacex.types';
+import {
+    DialogUpdateFragment,
+    NewChatUpdateFragment,
+    NewChatUpdateFragment_ChatMessageReceived,
+    NewChatUpdateFragment_ChatMessageUpdated,
+    NewChatUpdateFragment_ChatMessageDeleted
+} from 'openland-api/spacex.types';
+
+export interface MessagesChatUpdates {
+    received: { message: StoredMessage, repeatKey: string | null }[];
+    updated: StoredMessage[];
+    deleted: string[];
+}
 
 export class MessagesUpdates {
 
@@ -17,7 +30,7 @@ export class MessagesUpdates {
     onDialogsUpdates?: (updates: DialogUpdateFragment[], tx: Transaction) => Promise<void>;
     onChatGotAccess?: (id: string, tx: Transaction) => Promise<void>;
     onChatLostAccess?: (id: string, tx: Transaction) => Promise<void>;
-    onChatUpdates?: (id: string, updates: ChatUpdateFragment[], tx: Transaction) => Promise<void>;
+    onChatUpdates?: (id: string, updates: MessagesChatUpdates, tx: Transaction) => Promise<void>;
 
     private readonly api: MessagesApi;
     private readonly persistence: Persistence;
@@ -110,10 +123,47 @@ export class MessagesUpdates {
         }
     }
 
-    private handleChatUpdates = async (id: string, updates: ChatUpdateFragment[], tx: Transaction) => {
-        console.log(id + ': ' + updates);
-        if (this.onChatUpdates) {
-            await this.onChatUpdates(id, updates, tx);
+    private handleChatUpdates = async (id: string, updates: NewChatUpdateFragment[], tx: Transaction) => {
+        let received = updates.filter((v): v is NewChatUpdateFragment_ChatMessageReceived => v.__typename === 'ChatMessageReceived');
+        let updated = updates.filter((v): v is NewChatUpdateFragment_ChatMessageUpdated => v.__typename === 'ChatMessageUpdated');
+        let deleted = updates.filter((v): v is NewChatUpdateFragment_ChatMessageDeleted => v.__typename === 'ChatMessageDeleted');
+        if (received.length > 0 || updated.length > 0 || deleted.length > 0) {
+
+            let mappedDeleted: string[] = [];
+            let mappedReceived: { repeatKey: string | null, message: StoredMessage }[] = [];
+            let mappedUpdated: StoredMessage[] = [];
+
+            // Collapse events if needed.
+            // NOTE: Order is important
+            let handled = new Set<string>();
+            for (let r of deleted) {
+                if (!handled.has(r.message.id)) {
+                    handled.add(r.message.id);
+                    mappedDeleted.push(r.message.id);
+                }
+            }
+            for (let r of received) {
+                if (!handled.has(r.message.id)) {
+                    handled.add(r.message.id);
+                    mappedReceived.push({ repeatKey: r.repeatKey, message: convertMessage(r.message) });
+                }
+            }
+            for (let r of updated) {
+                if (!handled.has(r.message.id)) {
+                    handled.add(r.message.id);
+                    mappedUpdated.push(convertMessage(r.message));
+                }
+            }
+
+            // Handle updates
+            let update: MessagesChatUpdates = {
+                received: mappedReceived,
+                updated: mappedUpdated,
+                deleted: mappedDeleted
+            };
+            if (this.onChatUpdates) {
+                await this.onChatUpdates(id, update, tx);
+            }
         }
     }
 
@@ -218,7 +268,7 @@ export class MessagesUpdates {
         let startState = this.chatStates.get(id);
 
         // Subscribe
-        let subscription = this.api.client.subscribeChatWatch({ state: startState, chatId: id }, (d) => {
+        let subscription = this.api.client.subscribeNewChatUpdates({ state: startState, chatId: id }, (d) => {
             if (d.type === 'stopped') {
                 // Automatically restart subscription
                 this.chatSubscriptions.delete(id);

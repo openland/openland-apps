@@ -2,7 +2,7 @@ import { StoredMessage } from './StoredMessage';
 import { ChatNewMessageFragment } from 'openland-api/spacex.types';
 import { OpenlandClient } from 'openland-api/spacex';
 
-function convertMessage(src: ChatNewMessageFragment): StoredMessage {
+export function convertMessage(src: ChatNewMessageFragment): StoredMessage {
     return {
         id: src.id,
         seq: src.seq!,

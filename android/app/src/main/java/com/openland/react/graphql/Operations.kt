@@ -257,6 +257,7 @@ object Operations {
         if (name == "DialogsWatch") return DialogsWatch
         if (name == "GlobalEventBus") return GlobalEventBus
         if (name == "MyNotificationsCenter") return MyNotificationsCenter
+        if (name == "NewChatUpdates") return NewChatUpdates
         if (name == "OnlineWatch") return OnlineWatch
         if (name == "SettingsWatch") return SettingsWatch
         if (name == "TypingsWatch") return TypingsWatch

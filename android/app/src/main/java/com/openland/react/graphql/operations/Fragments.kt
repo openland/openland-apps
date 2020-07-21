@@ -960,6 +960,32 @@ internal val MediaStreamFullSelector = obj(
                 )))))
         )
 
+internal val NewChatUpdateFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("ChatMessageReceived", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("message", "message", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("ModernMessage", ChatNewMessageFragmentSelector)
+                    ))),
+                field("repeatKey", "repeatKey", scalar("String"))
+            )),
+            inline("ChatMessageUpdated", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("message", "message", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("ModernMessage", ChatNewMessageFragmentSelector)
+                    )))
+            )),
+            inline("ChatMessageDeleted", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("message", "message", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
+                    )))
+            ))
+        )
+
 internal val RoomSharedNanoSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
