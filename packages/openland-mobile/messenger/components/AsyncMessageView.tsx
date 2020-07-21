@@ -48,10 +48,32 @@ export interface AsyncMessageViewProps {
 
 type SendingIndicatorT = 'pending' | 'sending' | 'sent' | 'hide';
 
+const AsyncMessageViewAvatar = (props: { message: DataSourceMessageItem, handleUserPress: (id: string) => void }) => {
+    useThemeGlobal(); // This line is a hack to make avatars work. Basically, there is a bug that either requires to be fixed (but I don't know how),
+                      // or for the affected components to be rerendered after each render. Moreover, it only works if rerender happens because of this line.
+                      // I have no idea why, I'll keep debugging, but this hack will have to do the job for now.
+    const { isOut, attachBottom, sender, overrideAvatar, overrideName } = props.message;
+
+    if (isOut || attachBottom) {
+        return null;
+    } else {
+        return (
+            <ASFlex marginRight={12} onPress={() => props.handleUserPress(sender.id)} alignItems="flex-end">
+                <AsyncAvatar
+                    size="small"
+                    src={overrideAvatar ? buildBaseImageUrl(overrideAvatar) : sender.photo}
+                    placeholderKey={sender.id}
+                    placeholderTitle={overrideName || sender.name}
+                />
+            </ASFlex>
+        );
+    }
+};
+
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const theme = useThemeGlobal(false);
     const { conversationId, message, engine, onMessageDoublePress, onMessagePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress, onHashtagPress } = props;
-    const { isOut, attachTop, attachBottom, commentsCount, reactions, sender, isSending, overrideAvatar, overrideName } = message;
+    const { isOut, attachTop, attachBottom, commentsCount, reactions, isSending } = message;
 
     const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
 
@@ -122,16 +144,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                 <ASFlex flexDirection="row" flexGrow={1} alignItems="stretch">
                     <ASFlex key="margin-left" renderModes={isOut ? undefined : rm({ 'selection': { width: (attachBottom ? 44 : 0) + 42 } })} width={(attachBottom ? 44 : 0) + 12} />
 
-                    {!isOut && !attachBottom &&
-                        <ASFlex marginRight={12} onPress={() => handleUserPress(sender.id)} alignItems="flex-end">
-                            <AsyncAvatar
-                                size="small"
-                                src={overrideAvatar ? buildBaseImageUrl(overrideAvatar) : sender.photo}
-                                placeholderKey={sender.id}
-                                placeholderTitle={overrideName || sender.name}
-                            />
-                        </ASFlex>
-                    }
+                    <AsyncMessageViewAvatar handleUserPress={handleUserPress} message={message} />
 
                     {isOut && (
                         <ASFlex flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" alignItems="flex-end" justifyContent="flex-end">
