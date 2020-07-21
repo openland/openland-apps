@@ -29,7 +29,7 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
     const builder = new UPopperMenuBuilder();
     const client = useClient();
     const [deleted, setDelete] = React.useState(false);
-    const { isContact, addContact, removeContact } = useLocalContact(id, inContacts);
+    const { isContact } = useLocalContact(id, inContacts);
 
     builder.item({
         title: 'Copy link',
@@ -60,10 +60,8 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
             icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,
             onClick: async () => {
                 if (isContact) {
-                    removeContact(id);
                     await client.mutateRemoveFromContacts({ userId: id });
                 } else {
-                    addContact(id);
                     await client.mutateAddToContacts({ userId: id });
                 }
             },

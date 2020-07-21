@@ -4780,6 +4780,37 @@ const GlobalEventBusSelector = obj(
                     field('message', 'message', args(), notNull(scalar('String')))
                 )))
         );
+const MyContactsUpdatesSelector = obj(
+            field('myContactsUpdates', 'myContactsUpdates', args(fieldValue("fromState", refValue('state'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('updates', 'updates', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            inline('ContactRemoved', obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('contact', 'contact', args(), notNull(obj(
+                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                        field('id', 'id', args(), notNull(scalar('ID'))),
+                                        field('user', 'user', args(), notNull(obj(
+                                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                fragment('User', UserShortSelector)
+                                            )))
+                                    )))
+                            )),
+                            inline('ContactAdded', obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('contact', 'contact', args(), notNull(obj(
+                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                        field('id', 'id', args(), notNull(scalar('ID'))),
+                                        field('user', 'user', args(), notNull(obj(
+                                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                fragment('User', UserShortSelector)
+                                            )))
+                                    )))
+                            ))
+                        ))))),
+                    field('state', 'state', args(), notNull(scalar('String')))
+                )))
+        );
 const MyNotificationsCenterSelector = obj(
             field('notificationCenterUpdates', 'event', args(fieldValue("fromState", refValue('state'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -6349,6 +6380,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'GlobalEventBus',
         body: 'subscription GlobalEventBus($topic:String!){globalEventBus(topic:$topic){__typename message}}',
         selector: GlobalEventBusSelector
+    },
+    MyContactsUpdates: {
+        kind: 'subscription',
+        name: 'MyContactsUpdates',
+        body: 'subscription MyContactsUpdates($state:String){myContactsUpdates(fromState:$state){__typename updates{__typename ... on ContactRemoved{__typename contact{__typename id user{__typename ...UserShort}}}... on ContactAdded{__typename contact{__typename id user{__typename ...UserShort}}}}state}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}',
+        selector: MyContactsUpdatesSelector
     },
     MyNotificationsCenter: {
         kind: 'subscription',

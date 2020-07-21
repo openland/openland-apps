@@ -11,7 +11,6 @@ import { useStackVisibility } from 'openland-unicorn/StackVisibilityContext';
 import { css, cx } from 'linaria';
 import { TextStyles, TextBody } from 'openland-web/utils/TextStyles';
 import { useListSelection } from 'openland-web/utils/useListSelection';
-import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-api/useClient';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { useLocalContacts } from 'openland-y-utils/contacts/LocalContacts';
@@ -64,7 +63,7 @@ const EmptyScreen = (props: { title: string, subtitle: string, imgSrcStyle: stri
     );
 };
 
-export const ContactsFragmentComponent = React.memo(() => {
+export const ContactsFragment = React.memo(() => {
     const client = useClient();
     const refInput = React.useRef<USearchInputRef>(null);
     const { router } = useTabRouter();
@@ -75,13 +74,15 @@ export const ContactsFragmentComponent = React.memo(() => {
     // TODO: add fetching when import is ready
     const didImportContacts = true;
     const isSearching = query.trim().length > 0;
-    const { items: initialItems, cursor: initialAfter } = client.useMyContacts({ first: 20 }, { fetchPolicy: 'network-only' }).myContacts;
+    const { items: initialItems, cursor: initialAfter } = client.useMyContacts({ first: 20 }, { fetchPolicy: 'cache-and-network' }).myContacts;
     const [items, setItems] = React.useState<MyContacts_myContacts_items_user[]>(initialItems.map(x => x.user));
     const { selectedIndex } = useListSelection({ maxIndex: items.length - 1 });
     const [after, setAfter] = React.useState<string | null>(initialAfter);
     const [loading, setLoading] = React.useState(false);
     const [redirected, setRedirected] = React.useState(false);
-    const { localContacts } = useLocalContacts();
+    const { listenUpdates } = useLocalContacts();
+    const isVisible = useVisibleTab();
+
     let hasContacts = items.length > 0;
 
     const handleLoadMore = async () => {
@@ -119,8 +120,10 @@ export const ContactsFragmentComponent = React.memo(() => {
     }, []);
 
     React.useEffect(() => {
-        trackEvent('navigate_contacts');
-    }, []);
+        if (isVisible) {
+            trackEvent('navigate_contacts');
+        }
+    }, [isVisible]);
 
     React.useLayoutEffect(
         () => {
@@ -131,16 +134,17 @@ export const ContactsFragmentComponent = React.memo(() => {
         [hasContacts, loading],
     );
 
-    // TODO: Remove when subscription is ready
     React.useEffect(() => {
-        setItems(prev => {
-            let filtered = prev.filter(user => localContacts[user.id] !== 'removed');
-            if (filtered.length === 0) {
-                setStackVisibility(false);
-            }
-            return filtered;
+        return listenUpdates(({ addedUsers, removedUsers }) => {
+            setItems(prev => {
+                const newItems = prev.filter(x => !removedUsers.some(y => y.id === x.id)).concat(addedUsers);
+                if (newItems.length === 0) {
+                    setStackVisibility(false);
+                }
+                return newItems;
+            });
         });
-    }, [localContacts]);
+    }, []);
 
     const noContactsContent = didImportContacts ? (
         <EmptyScreen
@@ -219,10 +223,4 @@ export const ContactsFragmentComponent = React.memo(() => {
             {content}
         </XView>
     );
-});
-
-export const ContactsFragment = React.memo(() => {
-    const isVisible = useVisibleTab();
-    // TODO: remove isVisible when subscriptions are ready
-    return isVisible ? <ContactsFragmentComponent /> : <XLoader loading={true} />;
 });

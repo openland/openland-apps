@@ -254,6 +254,7 @@ object Operations {
         if (name == "DebugEventsWatch") return DebugEventsWatch
         if (name == "DialogsWatch") return DialogsWatch
         if (name == "GlobalEventBus") return GlobalEventBus
+        if (name == "MyContactsUpdates") return MyContactsUpdates
         if (name == "MyNotificationsCenter") return MyNotificationsCenter
         if (name == "OnlineWatch") return OnlineWatch
         if (name == "SettingsWatch") return SettingsWatch

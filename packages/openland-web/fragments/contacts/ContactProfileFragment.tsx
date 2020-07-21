@@ -45,23 +45,21 @@ export const ContactProfileFragment = React.memo((props: { id?: string }) => {
     const { id, isBot, name, inContacts, photo, about, shortname, location, phone, email, linkedin, instagram, website, twitter, facebook } = user;
 
     const privateConversation = conversation && conversation.__typename === 'PrivateRoom' ? conversation : undefined;
-    const { isContact, addContact, removeContact } = useLocalContact(id, inContacts);
+    const { isContact } = useLocalContact(id, inContacts);
 
     const [noficationsEnabled, setNotificationsEnabled] = React.useState(!privateConversation?.settings.mute);
     const handleNotificationsChange = React.useCallback(() => {
         setNotificationsEnabled(prev => {
             if (privateConversation) {
-                client.mutateRoomSettingsUpdate({ roomId: privateConversation.id, settings: { mute: !prev } });
+                client.mutateRoomSettingsUpdate({ roomId: privateConversation.id, settings: { mute: prev } });
             }
             return !prev;
         });
     }, [privateConversation]);
     const handleRemove = async () => {
         if (isContact) {
-            removeContact(id);
             await client.mutateRemoveFromContacts({ userId: id });
         } else {
-            addContact(id);
             await client.mutateAddToContacts({ userId: id });
         }
     };
@@ -102,7 +100,7 @@ export const ContactProfileFragment = React.memo((props: { id?: string }) => {
                 {!!facebook && <UListField label="Facebook" value={facebook} />}
                 {!!linkedin && <UListField label="LinkedIn" value={linkedin} />}
             </UListGroup>
-            <UListGroup header="Settings">
+            <UListGroup header="Settings" marginBottom={32}>
                 <UCheckbox
                     label="Notifications"
                     checked={noficationsEnabled}
@@ -120,25 +118,25 @@ export const ContactProfileFragment = React.memo((props: { id?: string }) => {
                     )}
                     asSwitcher={true}
                 />
-                <UListItem
-                    icon={<AttachIcon />}
-                    iconBackground="var(--accentPrimary)"
-                    title="Media, files, links"
-                    titleStyle={TextStyles.Label1}
-                    path={`/mail/${id}/shared`}
-                    useRadius={true}
-                />
-                {isContact ? (
+                {privateConversation ? (
                     <UListItem
-                        icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
-                        iconColor="var(--foregroundTertiary)"
-                        iconBackground="var(--backgroundTertiary)"
-                        title={isContact ? 'Remove from contacts' : 'Save to contacts'}
+                        icon={<AttachIcon />}
+                        iconBackground="var(--accentPrimary)"
+                        title="Media, files, links"
                         titleStyle={TextStyles.Label1}
+                        path={`/mail/${privateConversation.id}/shared`}
                         useRadius={true}
-                        onClick={handleRemove}
                     />
                 ) : null}
+                <UListItem
+                    icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
+                    iconColor="var(--foregroundTertiary)"
+                    iconBackground="var(--backgroundTertiary)"
+                    title={isContact ? 'Remove from contacts' : 'Save to contacts'}
+                    titleStyle={TextStyles.Label1}
+                    useRadius={true}
+                    onClick={handleRemove}
+                />
             </UListGroup>
         </Page>
     );

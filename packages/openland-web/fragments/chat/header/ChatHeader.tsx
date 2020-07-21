@@ -128,7 +128,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     const currentSession = calls.useCurrentSession();
     const showVideoCallModal = useVideoCallModal({ chatId: chat.id });
     const chatUser = chat.__typename === 'PrivateRoom' && chat.user;
-    const { isContact, addContact, removeContact } = useLocalContact(chatUser ? chatUser.id : '', chatUser ? chatUser.inContacts : false);
+    const { isContact } = useLocalContact(chatUser ? chatUser.id : '', chatUser ? chatUser.inContacts : false);
 
     let showInviteButton = layout === 'mobile' && sharedRoom;
     const onlyLinkInvite = sharedRoom && !(!sharedRoom.isPremium || sharedRoom.role === 'OWNER');
@@ -192,10 +192,8 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
             icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,
             action: async () => {
                 if (isContact) {
-                    removeContact(chat.user.id);
                     await client.mutateRemoveFromContacts({ userId: chat.user.id });
                 } else {
-                    addContact(chat.user.id);
                     await client.mutateAddToContacts({ userId: chat.user.id });
                 }
             },

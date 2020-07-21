@@ -1972,6 +1972,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     subscribeGlobalEventBus(variables: Types.GlobalEventBusVariables, handler: GraphqlSubscriptionHandler<Types.GlobalEventBus>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.GlobalEventBus> {
         return this.subscribe(handler, 'GlobalEventBus', variables, params);
     }
+    subscribeMyContactsUpdates(variables: Types.MyContactsUpdatesVariables, handler: GraphqlSubscriptionHandler<Types.MyContactsUpdates>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.MyContactsUpdates> {
+        return this.subscribe(handler, 'MyContactsUpdates', variables, params);
+    }
     subscribeMyNotificationsCenter(variables: Types.MyNotificationsCenterVariables, handler: GraphqlSubscriptionHandler<Types.MyNotificationsCenter>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.MyNotificationsCenter> {
         return this.subscribe(handler, 'MyNotificationsCenter', variables, params);
     }
