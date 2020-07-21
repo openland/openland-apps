@@ -98,7 +98,7 @@ interface ItemUserProps extends ItemProps {
     item: GlobalSearch_items_User;
 }
 
-const GlobalSearchItemUser = React.memo((props: ItemUserProps) => {
+export const GlobalSearchItemUser = React.memo((props: ItemUserProps) => {
     const theme = useThemeGlobal();
     const { item, onPress } = props;
     const handlePress = React.useCallback(() => onPress(item.id, item.name), [item]);

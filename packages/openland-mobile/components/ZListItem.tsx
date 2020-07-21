@@ -10,7 +10,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { preprocessText } from 'openland-y-utils/TextProcessor';
-import Toast from './Toast';
+import Toast from 'openland-mobile/components/Toast';
 
 export interface ZListItemProps {
     leftAvatar?: { photo?: string | null, id?: string, title?: string };

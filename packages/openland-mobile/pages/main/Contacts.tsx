@@ -4,9 +4,8 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import ActionSheet from 'openland-mobile/components/ActionSheet';
 import { withApp } from 'openland-mobile/components/withApp';
-import { GlobalSearch } from './components/globalSearch/GlobalSearch';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { Text, Image } from 'react-native';
+import { Image, Text } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { UserView } from './components/UserView';
@@ -16,33 +15,8 @@ import { SFlatList } from 'react-native-s/SFlatList';
 import { SDeferred } from 'react-native-s/SDeferred';
 import Toast from 'openland-mobile/components/Toast';
 import { MyContacts_myContacts_items_user } from 'openland-api/spacex.types';
-
-// class ContactsManagerImpl {
-//     private contacts: Map<string, MyContacts_myContacts_items_user> = new Map;
-//     private cursor: string | null = null;
-//
-//     removeFromContacts(uId: string) {
-//         this.contacts.delete(uId);
-//     }
-//     addToContacts(uId: string, user: MyContacts_myContacts_items_user) {
-//         this.contacts.set(uId, user);
-//     }
-//     getContacts() {
-//         return Array.from(this.contacts.values());
-//     }
-//     setCursor(cursor: string | null) {
-//         this.cursor = cursor;
-//     }
-//     getCursor() {
-//         return this.cursor;
-//     }
-// }
-//
-// let contactsManager = new ContactsManagerImpl();
-//
-// export const useContactsManager = () => {
-//     return contactsManager;
-// };
+import { useLocalContacts } from 'openland-y-utils/contacts/LocalContacts';
+import { GlobalSearchContacts } from './components/globalSearch/GlobalSearchContacth';
 
 const ContactsStub = React.memo(() => {
     let theme = React.useContext(ThemeContext);
@@ -83,27 +57,21 @@ const ContactsStub = React.memo(() => {
     );
 });
 
-const ContactsList = React.memo((props: PageProps) => {
+const ContactsPage = React.memo((props: PageProps) => {
     const client = getClient();
-    const initialContacts = client.useMyContacts({ first: 10 }, { fetchPolicy: 'network-only' }).myContacts;
-    const [contacts, setContacts] = React.useState(initialContacts.items);
-    const [cursor, setCursor] = React.useState(initialContacts.cursor);
+    const { items: initialItems, cursor: initialAfter } = client.useMyContacts({ first: 20 }, { fetchPolicy: 'cache-and-network' }).myContacts;
+    const [items, setItems] = React.useState<MyContacts_myContacts_items_user[]>(initialItems.map(x => x.user));
+    const [after, setAfter] = React.useState<string | null>(initialAfter);
     const [loading, setLoading] = React.useState(false);
+    const { listenUpdates } = useLocalContacts();
 
-    // React.useLayoutEffect(() => {
-    //     const filtered = initialContacts.items.filter((i) => i.user.inContacts);
-    //     setContacts(filtered);
-    //     setCursor(initialContacts.cursor);
-    // }, [initialContacts]);
+    let hasContacts = items.length > 0;
 
     const handleRemoveMemberFromContacts = React.useCallback(async (userId: string) => {
         const loader = Toast.loader();
         loader.show();
         await client.mutateRemoveFromContacts({ userId: userId });
-        await Promise.all([
-            client.refetchMyContacts({ first: 10 }),
-            client.refetchUser({ userId: userId }),
-        ]);
+        await client.refetchUser({ userId: userId });
         loader.hide();
     }, []);
 
@@ -127,79 +95,59 @@ const ContactsList = React.memo((props: PageProps) => {
         builder.show(true);
     }, []);
 
-    const handleLoadMore = React.useCallback(async () => {
-        if (cursor && !loading) {
+    const handleLoadMore = async () => {
+        if (!loading && after) {
             setLoading(true);
-            const loaded = (
-                await client.queryMyContacts({
-                    first: 20,
-                    after: cursor,
-                })
-            ).myContacts;
-
-            const filtered = loaded.items.filter((i) => i.user.inContacts);
-
-            const newContacts = [
-                ...contacts,
-                ...filtered,
-            ];
-            setContacts(newContacts);
-            setCursor(loaded.cursor);
+            const { items: newItems, cursor } = (await client.queryMyContacts({ first: 10, after }, { fetchPolicy: 'network-only' })).myContacts;
+            setItems(prev => prev.concat(newItems.map(x => x.user)));
+            setAfter(cursor);
             setLoading(false);
         }
-    }, [cursor, loading]);
+    };
 
-    return (
-        <SFlatList
-            data={contacts}
-            onEndReached={handleLoadMore}
-            refreshing={loading}
-            keyExtractor={(item, index) => index + '-' + item.user.id}
-            renderItem={({ item }) => (
-                <UserView
-                    user={item.user}
-                    showOrganization={false}
-                    onPress={() => props.router.push('ProfileUser', { id: item.user.id })}
-                    onLongPress={() => handleContactLongPress(item.user)}
-                />
-            )}
-        />
-    );
-});
-
-const ContactsPage = React.memo((props: PageProps) => {
-    const client = getClient();
-    const contacts = client.useMyContacts({ first: 1 }, { fetchPolicy: 'network-only' }).myContacts.items;
-
-    const [isEmpty, setIsEmpty] = React.useState(contacts.length === 0);
-
-    React.useLayoutEffect(() => {
-        const filter = contacts.filter((i) => i.user.inContacts);
-        if (!filter.length) {
-            setIsEmpty(true);
-        } else {
-            setIsEmpty(false);
-        }
-    }, [contacts]);
-
-    const content = isEmpty ? <ContactsStub /> : <ContactsList {...props} />;
+    React.useEffect(() => {
+        return listenUpdates(({ addedUsers, removedUsers }) => {
+            setItems(prev => {
+                return prev.filter(x => !removedUsers.some(y => y.id === x.id)).concat(addedUsers);
+            });
+        });
+    }, []);
 
     return (
         <>
             <SHeader title="Contacts" />
-            <SSearchControler
-                searchRender={(p) => (
-                    <GlobalSearch
-                        query={p.query}
-                        router={props.router}
-                        onUserPress={(id: string) => props.router.push('ProfileUser', { id: id })}
-                    />
-                )}
-            >
-                <React.Suspense fallback={<ZLoader />}>
-                    <SDeferred>{content}</SDeferred>
-                </React.Suspense>
-            </SSearchControler>
+            {!hasContacts && (
+                <ContactsStub />
+            )}
+            {hasContacts && (
+                <SSearchControler
+                    searchRender={(p) => (
+                        <GlobalSearchContacts
+                            query={p.query}
+                            router={props.router}
+                        />
+                    )}
+                >
+                    <React.Suspense fallback={<ZLoader />}>
+                        <SDeferred>
+                            <SFlatList
+                                data={items}
+                                onEndReached={handleLoadMore}
+                                refreshing={loading}
+                                keyExtractor={(item, index) => index + '-' + item.id}
+                                renderItem={({ item }) => (
+                                    <UserView
+                                        user={item}
+                                        showOrganization={false}
+                                        onPress={() => props.router.push('ProfileUser', { id: item.id })}
+                                        onLongPress={() => handleContactLongPress(item)}
+                                    />
+                                )}
+                            />
+                        </SDeferred>
+                    </React.Suspense>
+                </SSearchControler>
+            )}
         </>
     );
 });

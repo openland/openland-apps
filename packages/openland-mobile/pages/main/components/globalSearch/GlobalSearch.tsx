@@ -30,7 +30,7 @@ export interface GlobalSearchProps {
     onMessagePress?: (id: string) => void;
 }
 
-const EmptyView = React.memo((props: { theme: ThemeGlobal }) => (
+export const EmptyView = React.memo((props: { theme: ThemeGlobal }) => (
     <View
         style={{
             flexDirection: 'column',
@@ -220,7 +220,7 @@ export const SearchMessages = React.memo((props: GlobalSearchProps & { onMessage
     );
 });
 
-const Loader = React.memo((props: { theme: ThemeGlobal }) => {
+export const Loader = React.memo((props: { theme: ThemeGlobal }) => {
     return (
         <ASSafeAreaContext.Consumer>
             {area => (

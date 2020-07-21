@@ -4,9 +4,11 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { Modals } from '../modals/Modals';
 import { SRouter } from 'react-native-s/SRouter';
+import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { RoomTiny_room, RoomMemberRole, RoomTiny_room_SharedRoom } from 'openland-api/spacex.types';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
+import Toast from 'openland-mobile/components/Toast';
 
 interface ConversationManageButtonProps {
     muted: boolean;
@@ -81,6 +83,30 @@ const useSharedHandlers = (room: RoomTiny_room_SharedRoom, router: SRouter) => {
 export const ConversationManageButton = React.memo((props: ConversationManageButtonProps) => {
     const { muted, onMutedChange, room, router } = props;
     const client = useClient();
+    const myID = getMessenger().engine.user.id;
+
+    const isUser = room.__typename === 'PrivateRoom' && room.user;
+    const { isContact } = useLocalContact(isUser ? isUser.id : '', isUser ? isUser.inContacts : false);
+
+    const handleAddMemberToContacts = React.useCallback(async () => {
+        if (isUser) {
+            const loader = Toast.loader();
+            loader.show();
+            await client.mutateAddToContacts({ userId: isUser.id });
+            await client.refetchRoomTiny({ id: room.id });
+            loader.hide();
+        }
+    }, []);
+
+    const handleRemoveMemberFromContacts = React.useCallback(async () => {
+        if (isUser) {
+            const loader = Toast.loader();
+            loader.show();
+            await client.mutateRemoveFromContacts({ userId: isUser.id });
+            await client.refetchRoomTiny({ id: room.id });
+            loader.hide();
+        }
+    }, []);
 
     const onNotificationsPress = React.useCallback(() => {
         onMutedChange();
@@ -136,8 +162,30 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
             builder.action('Leave group', onLeavePress, false, require('assets/ic-leave-24.png'));
         }
 
+        const showContacts = false;
+
+        if (isUser && showContacts) {
+            if (!isContact && isUser.id !== myID) {
+                builder.action(
+                    'Add to contacts',
+                    handleAddMemberToContacts,
+                    false,
+                    require('assets/ic-invite-24.png'),
+                );
+            }
+
+            if (isContact && isUser.id !== myID) {
+                builder.action(
+                    'Remove from contacts',
+                    handleRemoveMemberFromContacts,
+                    false,
+                    require('assets/ic-invite-off-24.png'),
+                );
+            }
+        }
+
         builder.show();
-    }, [muted, onNotificationsPress, onInvitePress, onLeavePress]);
+    }, [muted, onNotificationsPress, onInvitePress, onLeavePress, isContact]);
 
     return <ZManageButton onPress={onPress} />;
 });

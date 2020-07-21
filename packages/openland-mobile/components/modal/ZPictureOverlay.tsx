@@ -14,7 +14,7 @@ import { SStatusBar } from 'react-native-s/SStatusBar';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles, SecondarinessAlpha } from 'openland-mobile/styles/AppStyles';
-import Toast from '../Toast';
+import Toast from 'openland-mobile/components/Toast';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 
 export const ZPictureOverlay = React.memo((props: { config: ZPictureTransitionConfig, onClose: () => void }) => {
