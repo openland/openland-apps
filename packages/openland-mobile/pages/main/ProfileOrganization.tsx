@@ -366,7 +366,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                             .show();
                     },
                     false,
-                    require('assets/ic-premium-24.png'),
+                    require('assets/ic-pro-24.png'),
                 );
             }
 

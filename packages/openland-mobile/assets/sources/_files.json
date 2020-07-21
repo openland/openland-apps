@@ -1401,6 +1401,13 @@
             "sizes": [
                 16
             ]
+        },
+        {
+            "name": "ic-pro",
+            "src": "ic-pro-24.svg",
+            "sizes": [
+                24
+            ]
         }
     ]
 }

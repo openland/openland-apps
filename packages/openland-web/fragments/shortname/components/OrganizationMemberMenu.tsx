@@ -7,7 +7,7 @@ import {
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
-import CrownIcon from 'openland-icons/s/ic-premium-24.svg';
+import CrownIcon from 'openland-icons/s/ic-pro-24.svg';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder, MenuItem } from 'openland-web/components/unicorn/UPopperMenuBuilder';
