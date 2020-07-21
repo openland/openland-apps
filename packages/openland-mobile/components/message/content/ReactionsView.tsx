@@ -5,7 +5,7 @@ import { FullMessage_GeneralMessage_reactions } from 'openland-api/spacex.types'
 import { View, Image, Text, TouchableWithoutFeedback } from 'react-native';
 import { reactionsImagesMap } from 'openland-mobile/messenger/components/AsyncMessageReactionsView';
 import { showReactionsList } from '../showReactionsList';
-import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
+import { reduceUserReactions } from 'openland-engines/reactions/reduceReactions';
 import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -23,7 +23,7 @@ export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
         return null;
     }
 
-    const reactionsReduced = reduceReactions(reactions, myID);
+    const reactionsReduced = reduceUserReactions(reactions, myID);
     const reactionsLabel = getReactionsLabel(reactions, myID);
 
     return (

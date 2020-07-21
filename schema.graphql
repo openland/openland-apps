@@ -1916,9 +1916,9 @@ type Mutation {
   deleteNotification(notificationId: ID!): Boolean!
   notificationCenterMarkSeqRead(toSeq: Int!): Boolean!
   debugCreateNotification(uid: ID!, text: String!): Boolean!
-  createOrganization(input: CreateOrganizationInput!): Organization!
   updateOrganizationProfile(input: UpdateOrganizationProfileInput!, id: ID): OrganizationProfile!
   deleteOrganization(id: ID!): Boolean!
+  createOrganization(input: CreateOrganizationInput!): Organization!
   postDraftCreate(input: PostInput!): PostDraft!
   postDraftUpdate(id: ID!, input: PostInput!): PostDraft!
   postDraftPublish(id: ID!): Post!

@@ -306,18 +306,11 @@ internal val QuotedMessageSelector = obj(
             ))
         )
 
-internal val MessageReactionsSelector = obj(
+internal val MessageUsersReactionsSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("user", "user", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("name", "name", notNull(scalar("String"))),
-                    field("photo", "photo", scalar("String")),
-                    field("primaryOrganization", "primaryOrganization", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("name", "name", notNull(scalar("String")))
-                        ))
+                    field("id", "id", notNull(scalar("ID")))
                 ))),
             field("reaction", "reaction", notNull(scalar("String")))
         )
@@ -412,7 +405,7 @@ internal val FullMessageSelector = obj(
                     ))))),
                 field("reactions", "reactions", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("ModernMessageReaction", MessageReactionsSelector)
+                        fragment("ModernMessageReaction", MessageUsersReactionsSelector)
                     ))))),
                 field("overrideAvatar", "overrideAvatar", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -441,7 +434,7 @@ internal val FullMessageSelector = obj(
                     ))),
                 field("reactions", "reactions", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("ModernMessageReaction", MessageReactionsSelector)
+                        fragment("ModernMessageReaction", MessageUsersReactionsSelector)
                     ))))),
                 field("overrideAvatar", "overrideAvatar", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -958,6 +951,22 @@ internal val MediaStreamFullSelector = obj(
                     field("codecParams", "codecParams", scalar("String")),
                     field("mid", "mid", scalar("String"))
                 )))))
+        )
+
+internal val MessageUsersFullReactionsSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("user", "user", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("photo", "photo", scalar("String")),
+                    field("primaryOrganization", "primaryOrganization", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String")))
+                        ))
+                ))),
+            field("reaction", "reaction", notNull(scalar("String")))
         )
 
 internal val RoomSharedNanoSelector = obj(

@@ -52,6 +52,7 @@ object Operations {
         if (name == "GlobalSearch") return GlobalSearch
         if (name == "IpLocation") return IpLocation
         if (name == "Message") return Message
+        if (name == "MessageFullReactions") return MessageFullReactions
         if (name == "MessageMultiSpan") return MessageMultiSpan
         if (name == "MessagesBatch") return MessagesBatch
         if (name == "MessagesSearch") return MessagesSearch

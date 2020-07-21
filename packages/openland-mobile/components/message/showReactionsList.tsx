@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { MessageReactions, MessageReactions_user, MessageReactionType } from 'openland-api/spacex.types';
+import {
+    MessageUsersReactions,
+    MessageUsersReactions_user,
+    MessageReactionType
+} from 'openland-api/spacex.types';
 import { ActionSheetBuilder } from '../ActionSheet';
 import { ZModalController } from '../ZModal';
 import { View, Image, Text } from 'react-native';
@@ -12,7 +16,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 interface ReactionsListProps {
     ctx: ZModalController;
     list: {
-        [key: string]: MessageReactions_user[];
+        [key: string]: MessageUsersReactions_user[];
     };
 }
 
@@ -59,13 +63,13 @@ const ReactionsList = (props: ReactionsListProps) => {
     );
 };
 
-export const showReactionsList = (reactions: MessageReactions[]) => {
+export const showReactionsList = (reactions: MessageUsersReactions[]) => {
     if (reactions.length === 0) {
         return;
     }
 
     let builder = new ActionSheetBuilder();
-    let reactionList: { [key: string]: MessageReactions_user[]; } = {};
+    let reactionList: { [key: string]: MessageUsersReactions_user[]; } = {};
 
     reactions.map((r) => {
         if (!reactionList[r.reaction]) {

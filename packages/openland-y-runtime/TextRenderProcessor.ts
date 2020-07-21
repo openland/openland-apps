@@ -1,13 +1,13 @@
 import { TextRenderProccessorApi } from 'openland-y-runtime-api/TextRenderProcessorApi';
 import { Span, SpecSymbolsType, SpanType } from 'openland-y-utils/spans/Span';
-import { ReactionUser } from 'openland-engines/reactions/types';
+import { MessageCounterReactions } from 'openland-api/spacex.types';
 
 export const TextRenderProccessor: TextRenderProccessorApi = {
     processSpan(type: SpanType, text: string, size?: 'default' | 'big' | 'huge') {
         return text;
     },
 
-    processReactionsLabel(users: ReactionUser[]) {
+    processReactionCounters(reactions: MessageCounterReactions[]) {
         return '';
     },
 

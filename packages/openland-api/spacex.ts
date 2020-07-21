@@ -145,6 +145,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryMessage(variables: Types.MessageVariables, params?: QueryParameters): Promise<Types.Message> {
         return this.query('Message', variables, params);
     }
+    queryMessageFullReactions(variables: Types.MessageFullReactionsVariables, params?: QueryParameters): Promise<Types.MessageFullReactions> {
+        return this.query('MessageFullReactions', variables, params);
+    }
     queryMessageMultiSpan(variables: Types.MessageMultiSpanVariables, params?: QueryParameters): Promise<Types.MessageMultiSpan> {
         return this.query('MessageMultiSpan', variables, params);
     }
@@ -478,6 +481,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchMessage(variables: Types.MessageVariables, params?: QueryParameters): Promise<Types.Message> {
         return this.refetch('Message', variables, params);
     }
+    refetchMessageFullReactions(variables: Types.MessageFullReactionsVariables, params?: QueryParameters): Promise<Types.MessageFullReactions> {
+        return this.refetch('MessageFullReactions', variables, params);
+    }
     refetchMessageMultiSpan(variables: Types.MessageMultiSpanVariables, params?: QueryParameters): Promise<Types.MessageMultiSpan> {
         return this.refetch('MessageMultiSpan', variables, params);
     }
@@ -810,6 +816,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateMessage(variables: Types.MessageVariables, updater: (data: Types.Message) => Types.Message | null): Promise<boolean> {
         return this.updateQuery(updater, 'Message', variables);
+    }
+    updateMessageFullReactions(variables: Types.MessageFullReactionsVariables, updater: (data: Types.MessageFullReactions) => Types.MessageFullReactions | null): Promise<boolean> {
+        return this.updateQuery(updater, 'MessageFullReactions', variables);
     }
     updateMessageMultiSpan(variables: Types.MessageMultiSpanVariables, updater: (data: Types.MessageMultiSpan) => Types.MessageMultiSpan | null): Promise<boolean> {
         return this.updateQuery(updater, 'MessageMultiSpan', variables);
@@ -1233,6 +1242,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useMessage(variables: Types.MessageVariables, params?: SpaceQueryWatchParameters): Types.Message;
     useMessage(variables: Types.MessageVariables, params?: SpaceQueryWatchParameters): Types.Message | null {
         return this.useQuery('Message', variables, params);
+    }
+    useMessageFullReactions(variables: Types.MessageFullReactionsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.MessageFullReactions | null;
+    useMessageFullReactions(variables: Types.MessageFullReactionsVariables, params?: SpaceQueryWatchParameters): Types.MessageFullReactions;
+    useMessageFullReactions(variables: Types.MessageFullReactionsVariables, params?: SpaceQueryWatchParameters): Types.MessageFullReactions | null {
+        return this.useQuery('MessageFullReactions', variables, params);
     }
     useMessageMultiSpan(variables: Types.MessageMultiSpanVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.MessageMultiSpan | null;
     useMessageMultiSpan(variables: Types.MessageMultiSpanVariables, params?: SpaceQueryWatchParameters): Types.MessageMultiSpan;

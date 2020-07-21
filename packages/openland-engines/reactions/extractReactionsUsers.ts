@@ -1,7 +1,7 @@
-import { FullMessage_GeneralMessage_reactions } from 'openland-api/spacex.types';
+import { MessageUsersReactions } from 'openland-api/spacex.types';
 import { ReactionUser } from './types';
 
-export const extractReactionsUsers = (reactions: FullMessage_GeneralMessage_reactions[], myID: string): ReactionUser[] => {
+export const extractReactionsUsers = (reactions: MessageUsersReactions[], myID: string): ReactionUser[] => {
     return reactions
         .reduce(
             (res, r) => res.find(u => u.id === r.user.id) ? res : [...res, r.user],

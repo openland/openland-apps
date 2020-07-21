@@ -12,8 +12,8 @@ import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/mess
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { css } from 'linaria';
 import { ReactionReducedEmojify } from 'openland-engines/reactions/types';
-import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
-import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
+import { reduceUserReactions } from 'openland-engines/reactions/reduceReactions';
+import { getReactionFullCounter } from 'openland-engines/reactions/getReactionsLabel';
 import { XViewRouterContext } from 'react-mental';
 
 const avatarWrapper = css`
@@ -53,7 +53,7 @@ export const MessageView = React.memo((props: MessageViewProps) => {
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
     const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
     const [reactionsReducedEmojify, setReactionsReduced] = React.useState<ReactionReducedEmojify[]>([]);
-    const [reactionsLabelEmojify, setReactionsLabel] = React.useState<string | JSX.Element>('');
+    const [reactionFullCounter, setReactionFullCounter] = React.useState<string>('');
     const router = React.useContext(XViewRouterContext)!;
 
     React.useEffect(() => {
@@ -69,8 +69,8 @@ export const MessageView = React.memo((props: MessageViewProps) => {
     }, [sender.name]);
 
     React.useEffect(() => {
-        setReactionsReduced(emojifyReactions(reduceReactions(message.reactions, messenger.user.id)));
-        setReactionsLabel(emoji(getReactionsLabel(message.reactions, messenger.user.id)));
+        setReactionsReduced(emojifyReactions(reduceUserReactions(message.reactions, messenger.user.id)));
+        setReactionFullCounter(getReactionFullCounter(message.reactionCounters));
     }, [message.reactions]);
 
     return (
@@ -110,7 +110,7 @@ export const MessageView = React.memo((props: MessageViewProps) => {
                         message={{
                             ...message,
                             reactionsReducedEmojify,
-                            reactionsLabelEmojify
+                            reactionFullCounter
                         }}
                     />
                 </div>

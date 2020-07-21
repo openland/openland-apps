@@ -13,7 +13,6 @@ export interface DataSourceWebMessageItem extends DataSourceMessageItem {
     senderBadgeNameEmojify?: string | JSX.Element;
     replyWeb: DataSourceWebMessageItem[];
     replyQuoteTextEmojify?: string | JSX.Element;
-    reactionsLabelEmojify: string | JSX.Element;
     reactionsReducedEmojify: ReactionReducedEmojify[];
 }
 
@@ -43,7 +42,6 @@ export function convertDsMessage(src: DataSourceMessageItem): DataSourceWebMessa
         replyQuoteTextEmojify: src.replyQuoteText
             ? emoji(src.replyQuoteText)
             : undefined,
-        reactionsLabelEmojify: emoji(src.reactionsLabel),
         reactionsReducedEmojify: emojifyReactions(src.reactionsReduced || [])
     };
 }

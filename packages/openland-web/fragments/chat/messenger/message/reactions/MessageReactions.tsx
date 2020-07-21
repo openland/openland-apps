@@ -92,17 +92,18 @@ export interface MessageReactionsProps {
         id?: string;
         key?: string;
         reactionsReducedEmojify: ReactionReducedEmojify[];
-        reactionsLabelEmojify: string | JSX.Element;
+        reactionFullCounter: string;
     };
     engine?: ConversationEngine;
 }
 
 export const MessageReactions = React.memo<MessageReactionsProps>(props => {
+    // console.log(props.message);
     const { engine } = props;
-    const { id, key, reactionsReducedEmojify, reactionsLabelEmojify } = props.message;
+    const { id, key, reactionsReducedEmojify, reactionFullCounter } = props.message;
     const client = useClient();
     const handleReactionClick = React.useCallback(
-        (reaction: MessageReactionType) => {
+        async (reaction: MessageReactionType) => {
             if (id) {
                 let remove =
                     reactionsReducedEmojify &&
@@ -118,7 +119,7 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
                     if (engine && key) {
                         engine.unsetReaction(key, reaction);
                     }
-                    client.mutateMessageUnsetReaction({ messageId: id, reaction });
+                    await client.mutateMessageUnsetReaction({ messageId: id, reaction });
                 } else {
                     if (engine && key) {
                         engine.setReaction(key, reaction);
@@ -128,7 +129,7 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
                         double_tap: 'not',
                     });
 
-                    client.mutateMessageSetReaction({ messageId: id, reaction });
+                    await client.mutateMessageSetReaction({ messageId: id, reaction });
                 }
             }
         },
@@ -157,7 +158,7 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
                 ))}
             </div>
 
-            <div className={cx(TextDensed, reactionsText)}>{reactionsLabelEmojify}</div>
+            <div className={cx(TextDensed, reactionsText)}>{reactionFullCounter}</div>
         </div>
     );
 });

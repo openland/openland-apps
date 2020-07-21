@@ -11,6 +11,37 @@ query MessageMultiSpan($id: ID!) {
     }
 }
 
+fragment MessageUsersReactions on ModernMessageReaction {
+    user {
+        id
+        name
+        photo
+        primaryOrganization {
+            id
+            name
+        }
+    }
+    reaction
+}
+
+query MessageFullReactions($id: ID!) {
+    message(messageId: $id) {
+        id
+        ... on GeneralMessage {
+            id
+            reactions {
+                ...MessageUsersReactions
+            }
+        }
+        ... on StickerMessage {
+            id
+            reactions {
+                ...MessageUsersReactions
+            }
+        }
+    }
+}
+
 fragment MessageSender on User {
     id
     name
@@ -25,18 +56,11 @@ fragment MessageSender on User {
     }
 }
 
-fragment MessageReactions on ModernMessageReaction {
-    user {
-        id
-        name
-        photo
-        primaryOrganization {
-            id
-            name
-        }
-    }
+fragment MessageCounterReactions on ReactionCounter {
     reaction
+    count
 }
+
 
 fragment MessageSpan on MessageSpan {
     offset
@@ -283,8 +307,11 @@ fragment FullMessage on ModernMessage {
         quotedMessages {
             ...QuotedMessage
         }
+        reactionCounters {
+            ...MessageCounterReactions
+        }
         reactions {
-            ...MessageReactions
+            ...MessageUsersReactions
         }
         overrideAvatar {
             uuid
@@ -307,8 +334,11 @@ fragment FullMessage on ModernMessage {
         sticker {
             ...StickerFragment
         }
+        reactionCounters {
+            ...MessageCounterReactions
+        }
         reactions {
-            ...MessageReactions
+            ...MessageUsersReactions
         }
         overrideAvatar {
             uuid

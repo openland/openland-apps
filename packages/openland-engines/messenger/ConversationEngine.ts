@@ -10,7 +10,8 @@ import {
     MessageSender,
     FullMessage_GeneralMessage_source,
     FullMessage_StickerMessage_source,
-    MessageReactions,
+    MessageUsersReactions,
+    MessageCounterReactions,
     MessageAttachments,
     ServiceMessageMetadata,
     FullMessage_GeneralMessage,
@@ -30,8 +31,8 @@ import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { ReactionReduced } from 'openland-engines/reactions/types';
-import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
-import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
+import { reduceUserReactions } from 'openland-engines/reactions/reduceReactions';
+import { getReactionsLabel, getReactionFullCounter } from 'openland-engines/reactions/getReactionsLabel';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { GraphqlActiveSubscription } from '@openland/spacex';
 import { LocalImage } from 'openland-engines/messenger/types';
@@ -61,7 +62,9 @@ export interface DataSourceMessageItem {
     isEdited?: boolean;
     reply?: DataSourceMessageItem[];
     source?: DataSourceMessageSourceT | null;
-    reactions: MessageReactions[];
+    reactionCounters: MessageCounterReactions[];
+    reactionFullCounter: string;
+    reactions: MessageUsersReactions[];
     attachments?: (MessageAttachments & { uri?: string, filePreview?: string | null })[];
     spans?: MessageSpan[];
     isSending: boolean;
@@ -75,7 +78,6 @@ export interface DataSourceMessageItem {
     textSpans: Span[];
     failed?: boolean;
     reactionsReduced: ReactionReduced[];
-    reactionsLabel: string;
     sticker?: Types.StickerFragment;
     overrideAvatar?: Types.FullMessage_GeneralMessage_overrideAvatar | null;
     overrideName?: string | null;
@@ -120,6 +122,10 @@ const getReactions = (src: FullMessage_GeneralMessage | FullMessage_StickerMessa
     return src ? src.reactions || [] : [];
 };
 
+const getReactionsCounter = (src: FullMessage_GeneralMessage | FullMessage_StickerMessage | undefined) => {
+    return src ? src.reactionCounters || [] : [];
+};
+
 const getOverrides = (src: FullMessage | undefined) => {
     return src ? (src.__typename === 'GeneralMessage' || src.__typename === 'StickerMessage' ? { overrideAvatar: src.overrideAvatar, overrideName: src.overrideName } : {}) : {};
 };
@@ -143,6 +149,7 @@ export function convertPartialMessage(src: RecursivePartial<FullMessage> & { id:
         commentsCount: 0,
         quotedMessages: [],
         reactions: [],
+        reactionCounters: [],
         spans: [],
         overrideAvatar: null,
         overrideName: null
@@ -156,6 +163,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId
     const stickerMessage = src.__typename === 'StickerMessage' ? src : undefined;
 
     const reactions = getReactions(generalMessage || stickerMessage);
+    const reactionCounters = getReactionsCounter(generalMessage || stickerMessage);
 
     return {
         chatId,
@@ -171,6 +179,8 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId
         attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) && (src.date - next.date < timeGroup) && ((next.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
         attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) && (prev.date - src.date < timeGroup) && ((prev.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
         reactions,
+        reactionCounters,
+        reactionFullCounter: reactionCounters.length ? getReactionFullCounter(reactionCounters) : '',
         serviceMetaData: serviceMessage && serviceMessage.serviceMetadata || undefined,
         isService: !!serviceMessage,
         attachments: generalMessage && generalMessage.attachments,
@@ -181,8 +191,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId
         commentsCount: getCommentsCount(generalMessage || stickerMessage),
         fallback: src.fallback || src.message || '',
         textSpans: src.message ? processSpans(src.message, src.spans) : [],
-        reactionsReduced: reactions.length ? reduceReactions(reactions, engine.user.id) : [],
-        reactionsLabel: reactions.length ? getReactionsLabel(reactions, engine.user.id) : '',
+        reactionsReduced: reactions.length ? reduceUserReactions(reactions, engine.user.id) : [],
         sticker: stickerMessage ? stickerMessage.sticker : undefined,
         ...getOverrides(src)
     };
@@ -203,6 +212,7 @@ export function convertMessageBack(src: DataSourceMessageItem): Types.FullMessag
         edited: !!src.isEdited,
         quotedMessages: [],
         reactions: [],
+        reactionCounters: [],
         source: src.source || null,
         sticker: src.sticker,
         overrideAvatar: src.overrideAvatar || null,
@@ -1041,9 +1051,10 @@ export class ConversationEngine implements MessageSendHandler {
                 attachTop: prev && prev.type === 'message' ? prev.sender.id === this.engine.user.id && !prev.serviceMetaData && !prev.isService : false,
                 textSpans: src.message ? processSpans(src.message, src.spans) : [],
                 reactions: [],
+                reactionCounters: [],
+                reactionFullCounter: '',
                 fallback: src.message || '',
                 reactionsReduced: [],
-                reactionsLabel: '',
                 sticker: src.sticker || undefined,
             };
         }
@@ -1192,8 +1203,8 @@ export class ConversationEngine implements MessageSendHandler {
         return res;
     }
 
-    private computeAdditionalReactionsData = (reactions: MessageReactions[]) => {
-        const reactionsReduced = reduceReactions(reactions, this.engine.user.id);
+    private computeAdditionalReactionsData = (reactions: MessageUsersReactions[]) => {
+        const reactionsReduced = reduceUserReactions(reactions, this.engine.user.id);
         const reactionsLabel = getReactionsLabel(reactions, this.engine.user.id);
 
         return { reactionsReduced, reactionsLabel };

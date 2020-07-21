@@ -30,7 +30,7 @@ interface AsyncMessageReactionsViewProps {
 
 export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewProps>((props) => {
     const { theme, message, isChannel, onCommentsPress, onReactionsPress } = props;
-    const { reactionsReduced, reactionsLabel, commentsCount, isOut } = message;
+    const { reactionsReduced, reactionFullCounter, commentsCount, isOut } = message;
 
     return (
         <ASFlex alignItems="stretch" flexDirection="row" maxHeight={33}>
@@ -53,7 +53,7 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
                                 )
                             )}
 
-                            {!!reactionsLabel && <ASText key={'users'} fontWeight={FontStyles.Weight.Medium} marginLeft={4} fontSize={13} color={theme.foregroundTertiary}>{reactionsLabel}</ASText>}
+                            {!!reactionFullCounter && <ASText key={'users'} fontWeight={FontStyles.Weight.Medium} marginLeft={4} fontSize={13} color={theme.foregroundTertiary}>{reactionFullCounter}</ASText>}
                         </ASFlex>
                     </ASFlex>
                 )}
