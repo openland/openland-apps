@@ -24,7 +24,6 @@ import { css } from 'linaria';
 import { debounce } from 'openland-y-utils/timer';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
-import { SDeferred } from 'react-native-s/SDeferred';
 import { GroupUsersList, GroupUsersListRef } from './components/GroupUsersList';
 
 const membersSearchStyle = css`
@@ -288,18 +287,16 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
             </UFlatList>
 
             <React.Suspense fallback={null}>
-                <SDeferred>
-                    <GroupUsersList
-                        loading={loading}
-                        members={members}
-                        membersCount={membersCount}
-                        roomId={id}
-                        setLoading={setLoading}
-                        setMembers={setMembers}
-                        setInitialMembers={setInitialMembers}
-                        ref={profilesRef}
-                    />
-                </SDeferred>
+                <GroupUsersList
+                    loading={loading}
+                    members={members}
+                    membersCount={membersCount}
+                    roomId={id}
+                    setLoading={setLoading}
+                    setMembers={setMembers}
+                    setInitialMembers={setInitialMembers}
+                    ref={profilesRef}
+                />
             </React.Suspense>
         </>
     );

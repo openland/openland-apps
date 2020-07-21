@@ -3,6 +3,7 @@ import { Container } from '../components/Container';
 import { css, cx } from 'linaria';
 import { LandingLinks } from '../components/_links';
 import { detectOS } from 'openland-x-utils/detectOS';
+import { emojiAnimated } from 'openland-y-utils/emojiAnimated';
 
 const box = css`
     overflow: hidden;
@@ -14,14 +15,14 @@ const box = css`
 
 const inner = css`
     position: relative;
-    padding: 136px 0 145px;
+    padding: 136px 0 265px;
 
     @media (min-width: 768px) and (max-width: 1199px) {
-        padding: 112px 0 60px;
+        padding: 112px 0 200px;
     }
 
     @media (max-width: 767px) {
-        padding: 33px 0 56px;
+        padding: 6px 0 56px;
     }
 `;
 
@@ -87,15 +88,6 @@ const title = css`
         font-size: 46px;
         line-height: 48px;
         text-align: center;
-
-        &:before {
-            content: "👋";
-            display: block;
-            font-weight: 800;
-            font-size: 65px;
-            line-height: 48px;
-            margin: 0 0 51px;
-        }
     }
 
     span {
@@ -106,6 +98,21 @@ const title = css`
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+    }
+`;
+
+const emoji = css`
+    display: none;
+    width: 100px; height: 100px;
+    margin: 0 auto 24px;
+
+    @media (max-width: 767px) {
+        display: block;
+    }
+
+    img {
+        display: block;
+        width: 100px; height: 100px;
     }
 `;
 
@@ -176,49 +183,153 @@ const appAndroid = css`
     }
 `;
 
-const mobileDemo = css`
-    display: none;
+const slider = css`
     background: linear-gradient(145.25deg, #24BFF2 0%, #2458F2 100%);
-    padding: 36px 0 48px;
+    height: 666px;
+    position: relative;
+    overflow: hidden;
 
-    @media (max-width: 767px) {
-        display: block;
+    @media (min-width: 768px) {
+        display: none;
     }
 `;
 
-const mobileTitle = css`
+const slide = css`
+    visibility: hidden;
+    padding: 36px 0 48px;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+
+    &.is-prev {
+        visibility: visible;
+        transform: translateX(0);
+        opacity: 1;
+
+        animation: animPrev 300ms ease-in-out forwards;
+        @keyframes animPrev {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-128px);
+            }
+        }
+    }
+
+    &.is-next {
+        visibility: visible;
+        transform: translateX(128px);
+        opacity: 0;
+
+        animation: animNext 300ms ease-in-out forwards;
+        @keyframes animNext {
+            from {
+                opacity: 0;
+                transform: translateX(128px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    }
+
+    &.is-default {
+        visibility: visible;
+        transform: none;
+        opacity: 1;
+    }
+`;
+
+const slideTitle = css`
     font-weight: 800;
     font-size: 28px;
     line-height: 32px;
     color: #FFFFFF;
     text-align: center;
-    margin: 0 0 4px;
+    margin: 0 auto 28px;
+    width: 226px;
 `;
 
-const mobileText = css`
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 28px;
-    color: #FFFFFF;
-    text-align: center;
-    margin: 0 0 28px;
-`;
-
-const mobileScreen = css`
+const slideImage = css`
     box-shadow: 0px 3.82066px 42.0273px rgba(0, 0, 0, 0.08);
     width: 226px; height: 490px;
     margin: 0 auto;
-    border-radius: 20px;
-    background: url(https://cdn.openland.com/shared/landing/start/home-intro-mobile.png) no-repeat;
-    background-image: -webkit-image-set(
-        url(https://cdn.openland.com/shared/landing/start/home-intro-mobile.png) 1x,
-        url(https://cdn.openland.com/shared/landing/start/home-intro-mobile@2x.png) 2x
-    );
-    background-size: 100% 100%;
+    border-radius: 19px;
+
+    &.is-01 {
+        background: url(https://cdn.openland.com/shared/landing/start/home-slide-01.png) no-repeat;
+        background-image: -webkit-image-set(
+            url(https://cdn.openland.com/shared/landing/start/home-slide-01.png) 1x,
+            url(https://cdn.openland.com/shared/landing/start/home-slide-01@2x.png) 2x
+        );
+    }
+
+    &.is-02 {
+        background: url(https://cdn.openland.com/shared/landing/start/home-slide-02.png) no-repeat;
+        background-image: -webkit-image-set(
+            url(https://cdn.openland.com/shared/landing/start/home-slide-02.png) 1x,
+            url(https://cdn.openland.com/shared/landing/start/home-slide-02@2x.png) 2x
+        );
+    }
+
+    &.is-03 {
+        background: url(https://cdn.openland.com/shared/landing/start/home-slide-03.png) no-repeat;
+        background-image: -webkit-image-set(
+            url(https://cdn.openland.com/shared/landing/start/home-slide-03.png) 1x,
+            url(https://cdn.openland.com/shared/landing/start/home-slide-03@2x.png) 2x
+        );
+    }
+
+    &.is-04 {
+        background: url(https://cdn.openland.com/shared/landing/start/home-slide-04.png) no-repeat;
+        background-image: -webkit-image-set(
+            url(https://cdn.openland.com/shared/landing/start/home-slide-04.png) 1x,
+            url(https://cdn.openland.com/shared/landing/start/home-slide-04@2x.png) 2x
+        );
+    }
+
+    &.is-05  {
+        background: url(https://cdn.openland.com/shared/landing/start/home-slide-05.png) no-repeat;
+        background-image: -webkit-image-set(
+            url(https://cdn.openland.com/shared/landing/start/home-slide-05.png) 1x,
+            url(https://cdn.openland.com/shared/landing/start/home-slide-05@2x.png) 2x
+        );
+    }
 `;
+
+const slides = [
+    'Find your\xa0community',
+    'Share your\xa0stories',
+    'Meet new\xa0people',
+    'See what others are\xa0doing',
+    'Start your own community',
+];
 
 export const HomeIntro = React.memo(() => {
     const mobileOS = detectOS() === 'Android' ? 'Android' : 'iOS';
+    const [activeSlide, setActiveSlide] = React.useState<number>(0);
+    const [prevSlide, setPrevSlide] = React.useState<number>(0);
+
+    React.useEffect(() => {
+        const timer = setInterval(() => {
+            setActiveSlide(current => {
+                const active = (current === slides.length - 1) ? 0 : current + 1;
+
+                setPrevSlide(active === 0 ? slides.length - 1 : active - 1);
+
+                return active;
+            });
+        }, 5000);
+
+        return () => {
+            clearInterval(timer);
+        };
+    }, []);
+
+    const isFirstIteration = activeSlide === prevSlide;
 
     return (
         <div className={box}>
@@ -226,6 +337,7 @@ export const HomeIntro = React.memo(() => {
                 <div className={inner}>
                     <div className={image} />
                     <div className={info}>
+                        <div className={emoji}>{emojiAnimated('👋')}</div>
                         <div className={title}>A fresh start<span>for social</span></div>
                         <div className={text}>Openland is a modern social network<br /> built for people, not advertisers</div>
                         <div className={apps}>
@@ -242,10 +354,21 @@ export const HomeIntro = React.memo(() => {
                 </div>
             </Container>
 
-            <div className={mobileDemo}>
-                <div className={mobileTitle}>Discover</div>
-                <div className={mobileText}>Amazing people to meet</div>
-                <div className={mobileScreen} />
+            <div className={slider}>
+                {slides.map((s, i) => (
+                    <div
+                        key={i}
+                        className={cx(
+                            slide,
+                            !isFirstIteration && activeSlide === i && 'is-next',
+                            !isFirstIteration && prevSlide === i && 'is-prev',
+                            isFirstIteration && i === 0 && 'is-default'
+                        )}
+                    >
+                        <div className={slideTitle}>{s}</div>
+                        <div className={cx(slideImage, `is-0${i + 1}`)} />
+                    </div>
+                ))}
             </div>
         </div>
     );
