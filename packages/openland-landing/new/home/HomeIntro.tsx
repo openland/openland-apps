@@ -3,9 +3,6 @@ import { Container } from '../components/Container';
 import { css, cx } from 'linaria';
 import { LandingLinks } from '../components/_links';
 import { detectOS } from 'openland-x-utils/detectOS';
-import Lottie from 'react-lottie';
-import { HandAnimatedJSON } from '../components/_emoji';
-import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 
 const box = css`
     overflow: hidden;
@@ -17,14 +14,14 @@ const box = css`
 
 const inner = css`
     position: relative;
-    padding: 136px 0 265px;
+    padding: 136px 0 145px;
 
     @media (min-width: 768px) and (max-width: 1199px) {
-        padding: 112px 0 200px;
+        padding: 112px 0 60px;
     }
 
     @media (max-width: 767px) {
-        padding: 6px 0 56px;
+        padding: 33px 0 56px;
     }
 `;
 
@@ -90,6 +87,15 @@ const title = css`
         font-size: 46px;
         line-height: 48px;
         text-align: center;
+
+        &:before {
+            content: "👋";
+            display: block;
+            font-weight: 800;
+            font-size: 65px;
+            line-height: 48px;
+            margin: 0 0 51px;
+        }
     }
 
     span {
@@ -101,11 +107,6 @@ const title = css`
             -webkit-text-fill-color: transparent;
         }
     }
-`;
-
-const emoji = css`
-    width: 100px; height: 100px;
-    margin: 0 auto 24px;
 `;
 
 const text = css`
@@ -175,12 +176,17 @@ const appAndroid = css`
     }
 `;
 
-const slider = css`
+const mobileDemo = css`
+    display: none;
     background: linear-gradient(145.25deg, #24BFF2 0%, #2458F2 100%);
     padding: 36px 0 48px;
+
+    @media (max-width: 767px) {
+        display: block;
+    }
 `;
 
-const sliderTitle = css`
+const mobileTitle = css`
     font-weight: 800;
     font-size: 28px;
     line-height: 32px;
@@ -189,7 +195,7 @@ const sliderTitle = css`
     margin: 0 0 4px;
 `;
 
-const sliderText = css`
+const mobileText = css`
     font-weight: 600;
     font-size: 20px;
     line-height: 28px;
@@ -198,7 +204,7 @@ const sliderText = css`
     margin: 0 0 28px;
 `;
 
-const sliderScreen = css`
+const mobileScreen = css`
     box-shadow: 0px 3.82066px 42.0273px rgba(0, 0, 0, 0.08);
     width: 226px; height: 490px;
     margin: 0 auto;
@@ -213,28 +219,13 @@ const sliderScreen = css`
 
 export const HomeIntro = React.memo(() => {
     const mobileOS = detectOS() === 'Android' ? 'Android' : 'iOS';
-    const isMobile = useIsMobile(767);
 
     return (
         <div className={box}>
             <Container>
                 <div className={inner}>
-                    {!isMobile && <div className={image} />}
+                    <div className={image} />
                     <div className={info}>
-                        {isMobile && (
-                            <div className={emoji}>
-                                <Lottie
-                                    isStopped={false}
-                                    isPaused={false}
-                                    height={100}
-                                    width={100}
-                                    options={{
-                                        animationData: HandAnimatedJSON,
-                                        loop: true
-                                    }}
-                                />
-                            </div>
-                        )}
                         <div className={title}>A fresh start<span>for social</span></div>
                         <div className={text}>Openland is a modern social network<br /> built for people, not advertisers</div>
                         <div className={apps}>
@@ -251,13 +242,11 @@ export const HomeIntro = React.memo(() => {
                 </div>
             </Container>
 
-            {isMobile && (
-                <div className={slider}>
-                    <div className={sliderTitle}>Discover</div>
-                    <div className={sliderText}>Amazing people to meet</div>
-                    <div className={sliderScreen} />
-                </div>
-            )}
+            <div className={mobileDemo}>
+                <div className={mobileTitle}>Discover</div>
+                <div className={mobileText}>Amazing people to meet</div>
+                <div className={mobileScreen} />
+            </div>
         </div>
     );
 });

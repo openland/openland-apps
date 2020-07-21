@@ -10,10 +10,10 @@ import MegaphoneIcon from 'openland-icons/s/ic-megaphone-glyph-24.svg';
 
 const inner = css`
     position: relative;
-    padding: 0 0 100px;
+    padding: 120px 0 100px;
 
     @media (min-width: 768px) and (max-width: 1199px) {
-        padding: 0 0 72px;
+        padding: 140px 0 72px;
     }
 
     @media (max-width: 767px) {

@@ -1,10 +1,10 @@
 import { useWithWidth } from './useWithWidth';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
-export const useIsMobile = (breakpoint?: number) => {
+export const useIsMobile = () => {
     const [width] = useWithWidth();
 
-    return width ? width <= (breakpoint || 750) : null;
+    return width ? width <= 750 : null;
 };
 
 export const isMobile = () => {
