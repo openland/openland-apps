@@ -8,6 +8,7 @@ import { ASText } from 'react-native-async-view/ASText';
 import { ZAvatarSize, avatarSizes } from 'openland-mobile/components/ZAvatar';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { Image } from 'react-native';
+import { PlaceholderCyan } from 'openland-y-utils/themes/placeholders';
 
 interface ASAvatarProps {
     size: ZAvatarSize;
@@ -34,6 +35,25 @@ const getBorder = (size: ZAvatarSize) => {
 
     return res ? res.uri : undefined;
 };
+
+export function ASAvatarSavedMessages(props: { size: ZAvatarSize, theme: ThemeGlobal }) {
+    const { size, iconSize } = avatarSizes[props.size];
+    const borderRadius = size / 2;
+
+    return (
+        <ASFlex
+            width={size}
+            height={size}
+            alignItems="center"
+            justifyContent="center"
+            backgroundColor={PlaceholderCyan.start}
+            {...{ backgroundGradient: { start: PlaceholderCyan.start, end: PlaceholderCyan.end } }}
+            borderRadius={borderRadius}
+        >
+            <ASImage source={require('assets/ic-bookmark-filled-24.png')} width={iconSize} height={iconSize} tintColor={props.theme.foregroundContrast} />
+        </ASFlex>
+    );
+}
 
 export function ASAvatar(props: ASAvatarProps) {
     const { size, placeholder: textSize } = avatarSizes[props.size];

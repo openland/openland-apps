@@ -4,6 +4,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { RoomTiny_room_SharedRoom, RoomNano_PrivateRoom, RoomTiny_room } from 'openland-api/spacex.types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 export let resolveConversationProfilePath = (room: RoomTiny_room) => {
     let path: string | undefined = undefined;
@@ -41,6 +42,7 @@ const ChatHeaderAvatarContent = React.memo((props: { conversationId: string, rou
                     size="small"
                     id={privateRoom ? privateRoom.user.id : sharedRoom!.id}
                     title={privateRoom ? privateRoom.user.name : sharedRoom!.title}
+                    savedMessages={privateRoom ? privateRoom.user.id === getMessenger().engine.user.id : false}
                 />
             </View>
         </TouchableOpacity>

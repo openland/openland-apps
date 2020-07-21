@@ -13,6 +13,7 @@ import { DataSourceItem } from 'openland-y-utils/DataSource';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { avatarSizes } from 'openland-mobile/components/ZAvatar';
 import { PremiumBadgeAsync } from 'openland-mobile/components/PremiumBadge';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 const ASCounter = (props: { value: number | string, muted?: boolean, theme: ThemeGlobal }) => (
     <ASFlex borderRadius={11} backgroundColor={props.muted ? props.theme.foregroundQuaternary : props.theme.accentPrimary} height={22} minWidth={22} marginLeft={6} justifyContent="center" alignItems="center">
@@ -41,6 +42,8 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
     const { size } = avatarSizes[avatarSize];
     const shouldShowDiscover = showDiscover(item.key);
 
+    const isSavedMessages = item.flexibleId === getMessenger().engine.user.id;
+
     return (
         <ASFlex flexDirection={shouldShowDiscover ? 'column' : 'row'} flexGrow={1} alignItems="stretch">
             <ASFlex
@@ -66,6 +69,7 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                         placeholderTitle={item.title}
                         online={item.online}
                         theme={theme}
+                        savedMessages={isSavedMessages}
                     />}
                 </ASFlex>
                 <ASFlex marginLeft={paddingHorizontal} marginRight={paddingHorizontal} marginTop={6} marginBottom={6} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
@@ -73,7 +77,7 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                         {highlightGroup && <ASFlex alignItems="center" marginRight={4} marginTop={4}><ASImage opacity={CompensationAlpha} tintColor={theme.accentPositive} width={16} height={16} source={require('assets/ic-lock-16.png')} marginBottom={Platform.OS === 'android' ? 4 : 0} /></ASFlex>}
                         {item.isPremium && <ASFlex marginRight={8} marginTop={Platform.OS === 'ios' ? 5 : 2}><PremiumBadgeAsync theme={theme} /></ASFlex>}
                         <ASText {...TextStylesAsync.Label1} numberOfLines={1} flexShrink={1} color={highlightGroup ? theme.accentPositive : theme.foregroundPrimary}>
-                            {item.title}
+                            {isSavedMessages ? 'Saved messages' : item.title}
                         </ASText>
                         {item.isMuted && <ASFlex alignItems="center" marginLeft={4} marginTop={4}><ASImage tintColor={theme.foregroundQuaternary} width={16} height={16} source={require('assets/ic-muted-16.png')} marginBottom={Platform.OS === 'android' ? 4 : 0} /></ASFlex>}
                         <ASFlex marginLeft={10} marginTop={2} flexGrow={1} justifyContent="flex-end">
@@ -84,7 +88,7 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                         <ASFlex flexGrow={1}>
                             {!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
                                 <ASText {...TextStylesAsync.Subhead} color={theme.foregroundSecondary} numberOfLines={2}>
-                                    {item.showSenderName && `${item.sender}: `}
+                                    {!isSavedMessages && item.showSenderName && `${item.sender}: `}
                                     {item.fallback}
                                 </ASText>
                             </ASFlex>}

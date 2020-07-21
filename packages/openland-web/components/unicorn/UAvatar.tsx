@@ -93,7 +93,7 @@ export const AvatarSavedMessages = (props: { squared?: boolean, bookmarkSize: nu
             backgroundImage="linear-gradient(135deg, #36D9CB 0%, #3695D9 100%)"
             overflow="hidden"
         >
-            <UIcon icon={<BookmarkIcon />} color="#FFFFFF" size={props.bookmarkSize} />
+            <UIcon icon={<BookmarkIcon />} color="var(--foregroundContrast)" size={props.bookmarkSize} />
         </XView>
     );
 };

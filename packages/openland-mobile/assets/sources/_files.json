@@ -1408,6 +1408,14 @@
             "sizes": [
                 24
             ]
+        },
+        {
+            "name": "ic-bookmark-filled",
+            "src": "ic-bookmark-filled-24.svg",
+            "sizes": [
+                16,
+                24
+            ]
         }
     ]
 }
