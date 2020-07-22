@@ -72,6 +72,7 @@ object Operations {
         if (name == "Online") return Online
         if (name == "Organization") return Organization
         if (name == "OrganizationMembers") return OrganizationMembers
+        if (name == "OrganizationMembersSearch") return OrganizationMembersSearch
         if (name == "OrganizationMembersShort") return OrganizationMembersShort
         if (name == "OrganizationPico") return OrganizationPico
         if (name == "OrganizationProfile") return OrganizationProfile

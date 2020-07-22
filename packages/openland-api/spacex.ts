@@ -205,6 +205,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryOrganizationMembers(variables: Types.OrganizationMembersVariables, params?: QueryParameters): Promise<Types.OrganizationMembers> {
         return this.query('OrganizationMembers', variables, params);
     }
+    queryOrganizationMembersSearch(variables: Types.OrganizationMembersSearchVariables, params?: QueryParameters): Promise<Types.OrganizationMembersSearch> {
+        return this.query('OrganizationMembersSearch', variables, params);
+    }
     queryOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: QueryParameters): Promise<Types.OrganizationMembersShort> {
         return this.query('OrganizationMembersShort', variables, params);
     }
@@ -544,6 +547,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchOrganizationMembers(variables: Types.OrganizationMembersVariables, params?: QueryParameters): Promise<Types.OrganizationMembers> {
         return this.refetch('OrganizationMembers', variables, params);
     }
+    refetchOrganizationMembersSearch(variables: Types.OrganizationMembersSearchVariables, params?: QueryParameters): Promise<Types.OrganizationMembersSearch> {
+        return this.refetch('OrganizationMembersSearch', variables, params);
+    }
     refetchOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: QueryParameters): Promise<Types.OrganizationMembersShort> {
         return this.refetch('OrganizationMembersShort', variables, params);
     }
@@ -882,6 +888,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateOrganizationMembers(variables: Types.OrganizationMembersVariables, updater: (data: Types.OrganizationMembers) => Types.OrganizationMembers | null): Promise<boolean> {
         return this.updateQuery(updater, 'OrganizationMembers', variables);
+    }
+    updateOrganizationMembersSearch(variables: Types.OrganizationMembersSearchVariables, updater: (data: Types.OrganizationMembersSearch) => Types.OrganizationMembersSearch | null): Promise<boolean> {
+        return this.updateQuery(updater, 'OrganizationMembersSearch', variables);
     }
     updateOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, updater: (data: Types.OrganizationMembersShort) => Types.OrganizationMembersShort | null): Promise<boolean> {
         return this.updateQuery(updater, 'OrganizationMembersShort', variables);
@@ -1351,6 +1360,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useOrganizationMembers(variables: Types.OrganizationMembersVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembers;
     useOrganizationMembers(variables: Types.OrganizationMembersVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembers | null {
         return this.useQuery('OrganizationMembers', variables, params);
+    }
+    useOrganizationMembersSearch(variables: Types.OrganizationMembersSearchVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationMembersSearch | null;
+    useOrganizationMembersSearch(variables: Types.OrganizationMembersSearchVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembersSearch;
+    useOrganizationMembersSearch(variables: Types.OrganizationMembersSearchVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembersSearch | null {
+        return this.useQuery('OrganizationMembersSearch', variables, params);
     }
     useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationMembersShort | null;
     useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembersShort;

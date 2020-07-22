@@ -97,6 +97,24 @@ query OrganizationMembers($organizationId: ID!, $first: Int, $after: ID) {
         }
     }
 }
+
+query OrganizationMembersSearch($orgId: ID!, $query: String, $first: Int!, $after: String, $page: Int) {
+    orgMembersSearch(orgId: $orgId, query: $query, first: $first, after: $after, page: $page) {
+        edges {
+            node {
+                role
+                user {
+                    ...UserShort
+                }
+            }
+            cursor
+        }
+        pageInfo {
+            hasNextPage
+        }
+    }
+}
+
 query OrganizationProfile($organizationId: ID!) {
     organizationProfile(id: $organizationId) {
         ...OrganizationProfileFragment
