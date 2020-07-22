@@ -33,8 +33,6 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
     const { isContact } = useLocalContact(user.id, user.inContacts);
     const theme = React.useContext(ThemeContext);
 
-    const showContacts = false;
-
     const handleAddMemberToContacts = React.useCallback(async () => {
         const loader = Toast.loader();
         loader.show();
@@ -105,24 +103,22 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
             );
         }
 
-        if (showContacts) {
-            if (!isContact && user.id !== myID) {
-                builder.action(
-                    'Add to contacts',
-                    handleAddMemberToContacts,
-                    false,
-                    require('assets/ic-invite-24.png'),
-                );
-            }
+        if (!isContact && user.id !== myID) {
+            builder.action(
+                'Add to contacts',
+                handleAddMemberToContacts,
+                false,
+                require('assets/ic-invite-24.png'),
+            );
+        }
 
-            if (isContact && user.id !== myID) {
-                builder.action(
-                    'Remove from contacts',
-                    handleRemoveMemberFromContacts,
-                    false,
-                    require('assets/ic-invite-off-24.png'),
-                );
-            }
+        if (isContact && user.id !== myID) {
+            builder.action(
+                'Remove from contacts',
+                handleRemoveMemberFromContacts,
+                false,
+                require('assets/ic-invite-off-24.png'),
+            );
         }
 
         builder.show();
@@ -301,24 +297,20 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                                 onPress={handleAddMemberToGroup}
                             />
                         )}
-                        {showContacts && (
-                            <>
-                                {!isContact && user.id !== myID && (
-                                    <ZListItem
-                                        leftIcon={require('assets/ic-invite-glyph-24.png')}
-                                        text="Add to contacts"
-                                        onPress={handleAddMemberToContacts}
-                                    />
-                                )}
-                                {isContact && user.id !== myID && (
-                                    <ZListItem
-                                        appearance="secondary"
-                                        leftIcon={require('assets/ic-invite-off-glyph-24.png')}
-                                        text="Remove from contacts"
-                                        onPress={handleRemoveMemberFromContacts}
-                                    />
-                                )}
-                            </>
+                        {!isContact && user.id !== myID && (
+                            <ZListItem
+                                leftIcon={require('assets/ic-invite-glyph-24.png')}
+                                text="Add to contacts"
+                                onPress={handleAddMemberToContacts}
+                            />
+                        )}
+                        {isContact && user.id !== myID && (
+                            <ZListItem
+                                appearance="secondary"
+                                leftIcon={require('assets/ic-invite-off-glyph-24.png')}
+                                text="Remove from contacts"
+                                onPress={handleRemoveMemberFromContacts}
+                            />
                         )}
                     </ZListGroup>
                 )}

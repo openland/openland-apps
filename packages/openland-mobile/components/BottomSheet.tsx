@@ -14,6 +14,7 @@ export interface BottomSheetConfig {
     view: (ctx: ModalProps) => React.ReactElement;
     cancelable?: boolean;
     title?: string;
+    titleAlign?: 'left';
     buttonTitle?: string;
     containerStyle?: ViewStyle;
     showAnimation?: ModalConfiguration['showAnimation'];
@@ -26,7 +27,7 @@ export function showBottomSheet(config: BottomSheetConfig) {
         return (
             <ThemeContext.Provider value={theme}>
                 {!!config.title && (
-                    <View paddingTop={16} paddingBottom={10} alignItems="center">
+                    <View paddingTop={16} paddingLeft={16} paddingRight={16} paddingBottom={10} alignItems={config.titleAlign ? undefined : 'center'}>
                         <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
                             {config.title}
                         </Text>

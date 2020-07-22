@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Platform, PermissionsAndroid } from 'react-native';
+import * as ContactsPermission from 'react-native-contacts';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
@@ -13,13 +15,16 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { SDeferred } from 'react-native-s/SDeferred';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import Toast from 'openland-mobile/components/Toast';
 import { MyContacts_myContacts_items_user } from 'openland-api/spacex.types';
 import { useLocalContacts } from 'openland-y-utils/contacts/LocalContacts';
+import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
 import { GlobalSearchContacts } from './components/globalSearch/GlobalSearchContacth';
+import { ComponentRefContext } from './Home';
 
-const ContactsStub = React.memo(() => {
-    let theme = React.useContext(ThemeContext);
+const ContactsWasImportStub = React.memo(() => {
+    const theme = React.useContext(ThemeContext);
     return (
         <ASSafeAreaView
             flexGrow={1}
@@ -32,23 +37,23 @@ const ContactsStub = React.memo(() => {
                 style={{ width: 270, height: 180, marginBottom: 1 }}
             />
             <Text
+                allowFontScaling={false}
                 style={{
                     ...TextStyles.Title2,
                     color: theme.foregroundPrimary,
                     textAlign: 'center',
                     marginBottom: 4,
                 }}
-                allowFontScaling={false}
             >
                 No contacts yet
             </Text>
             <Text
+                allowFontScaling={false}
                 style={{
                     ...TextStyles.Body,
                     color: theme.foregroundSecondary,
                     textAlign: 'center',
                 }}
-                allowFontScaling={false}
             >
                 Invite your contacts to Openland or add people manually from their profiles, and
                 they will appear here
@@ -57,9 +62,65 @@ const ContactsStub = React.memo(() => {
     );
 });
 
+const ContactsNoImportStub = React.memo(() => {
+    const theme = React.useContext(ThemeContext);
+    const handleImportPress = React.useCallback(async() => {
+        if (Platform.OS === 'ios') {
+            ContactsPermission.checkPermission((errorCheck, permissionCheck) => {
+                if (permissionCheck === 'denied') {
+                    handlePermissionDismiss('contacts');
+                }
+            });
+        } else if (Platform.OS === 'android') {
+            const permission = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS);
+            if (permission === 'never_ask_again') {
+                handlePermissionDismiss('contacts');
+            }
+        }
+    }, []);
+    return (
+        <ASSafeAreaView
+            flexGrow={1}
+            paddingHorizontal={32}
+            alignItems="center"
+            justifyContent="center"
+        >
+            <Image
+                source={require('assets/img-contacts-import.png')}
+                style={{ width: 270, height: 180, marginBottom: 12 }}
+            />
+            <Text
+                style={{
+                    ...TextStyles.Title2,
+                    color: theme.foregroundPrimary,
+                    textAlign: 'center',
+                    marginBottom: 4,
+                }}
+                allowFontScaling={false}
+            >
+                Find your friends
+            </Text>
+            <Text
+                style={{
+                    ...TextStyles.Body,
+                    color: theme.foregroundSecondary,
+                    textAlign: 'center',
+                    marginBottom: 16,
+                }}
+                allowFontScaling={false}
+            >
+                Import contacts from your device to find people you know on Openland
+            </Text>
+            <ZButton title="Import contacts" onPress={handleImportPress}/>
+        </ASSafeAreaView>
+    );
+});
+
 const ContactsPage = React.memo((props: PageProps) => {
     const client = getClient();
-    const { items: initialItems, cursor: initialAfter } = client.useMyContacts({ first: 20 }, { fetchPolicy: 'cache-and-network' }).myContacts;
+    const scrollRef = React.useContext(ComponentRefContext);
+    const { items: initialItems, cursor: initialAfter } = client.useMyContacts({ first: 20 }, { fetchPolicy: 'network-only' }).myContacts;
+    const contactsWasExported = client.usePhonebookWasExported({ fetchPolicy: 'network-only' }).phonebookWasExported;
     const [items, setItems] = React.useState<MyContacts_myContacts_items_user[]>(initialItems.map(x => x.user));
     const [after, setAfter] = React.useState<string | null>(initialAfter);
     const [loading, setLoading] = React.useState(false);
@@ -78,6 +139,7 @@ const ContactsPage = React.memo((props: PageProps) => {
     const handleContactLongPress = React.useCallback((user: MyContacts_myContacts_items_user) => {
         const builder = ActionSheet.builder();
         builder.cancelable(false);
+        builder.title(user.name, 'left');
         builder.action(
             'Send message',
             () => props.router.push('Conversation', { id: user.id }),
@@ -99,7 +161,7 @@ const ContactsPage = React.memo((props: PageProps) => {
         if (!loading && after) {
             setLoading(true);
             const { items: newItems, cursor } = (await client.queryMyContacts({ first: 10, after }, { fetchPolicy: 'network-only' })).myContacts;
-            setItems(prev => prev.concat(newItems.map(x => x.user)));
+            setItems(prev => prev.concat(newItems.map(x => x.user).filter(x => !prev.some(y => x.id === y.id))));
             setAfter(cursor);
             setLoading(false);
         }
@@ -108,16 +170,19 @@ const ContactsPage = React.memo((props: PageProps) => {
     React.useEffect(() => {
         return listenUpdates(({ addedUsers, removedUsers }) => {
             setItems(prev => {
-                return prev.filter(x => !removedUsers.some(y => y.id === x.id)).concat(addedUsers);
+                return addedUsers.concat(prev.filter(x => !removedUsers.some(y => y.id === x.id)));
             });
         });
     }, []);
 
     return (
         <>
-            <SHeader title="Contacts" />
-            {!hasContacts && (
-                <ContactsStub />
+            <SHeader title="Contacts" searchPlaceholder="Name or organization" />
+            {!hasContacts && contactsWasExported && (
+                <ContactsWasImportStub />
+            )}
+            {!hasContacts && !contactsWasExported && (
+                <ContactsNoImportStub />
             )}
             {hasContacts && (
                 <SSearchControler
@@ -131,6 +196,7 @@ const ContactsPage = React.memo((props: PageProps) => {
                     <React.Suspense fallback={<ZLoader />}>
                         <SDeferred>
                             <SFlatList
+                                scrollRef={scrollRef}
                                 data={items}
                                 onEndReached={handleLoadMore}
                                 refreshing={loading}
@@ -152,4 +218,4 @@ const ContactsPage = React.memo((props: PageProps) => {
     );
 });
 
-export const Contacts = withApp(ContactsPage, { navigationAppearance: 'large' });
+export const Contacts = withApp(ContactsPage, { navigationAppearance: 'large', });

@@ -28,6 +28,7 @@ interface ActionSheetBuilderViewItem {
 
 export class ActionSheetBuilder {
     private _title: string | undefined;
+    private _titleAlign: 'left' | undefined;
     private _items: (ActionSheetBuilderActionItem | ActionSheetBuilderViewItem)[] = [];
     private _cancelable: boolean;
     private _buttonTitle: string = 'Cancel';
@@ -40,8 +41,9 @@ export class ActionSheetBuilder {
         }
     }
 
-    title(title: string): ActionSheetBuilder {
+    title(title: string, titleAlign?: 'left'): ActionSheetBuilder {
         this._title = title;
+        this._titleAlign = titleAlign;
 
         return this;
     }
@@ -135,7 +137,7 @@ export class ActionSheetBuilder {
                 );
             }, this._title);
         } else {
-            showBottomSheet({ view: this.renderItems, title: this._title, cancelable: this._cancelable, buttonTitle: this._buttonTitle });
+            showBottomSheet({ view: this.renderItems, title: this._title, titleAlign: this._titleAlign, cancelable: this._cancelable, buttonTitle: this._buttonTitle });
         }
     }
 }

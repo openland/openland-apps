@@ -162,9 +162,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
             builder.action('Leave group', onLeavePress, false, require('assets/ic-leave-24.png'));
         }
 
-        const showContacts = false;
-
-        if (isUser && showContacts) {
+        if (isUser) {
             if (!isContact && isUser.id !== myID) {
                 builder.action(
                     'Add to contacts',
