@@ -54,7 +54,7 @@ const userContainer = css`
     flex-direction: column;
     max-width: 400px;
     min-width: 360px;
-    height: 144px;
+    height: 128px;
     position: relative;
     border-radius: 8px;
     overflow: hidden;
@@ -62,11 +62,12 @@ const userContainer = css`
 
 const userAbout = css`
     padding-top: 12px;
-    padding-bottom: 16px;
+    padding-bottom: 12px;
     padding-left: 0;
-    padding-right: 16px;
+    padding-right: 12px;
 
     display: flex;
+    flex-grow: 1;
     flex-direction: column;
     align-items: flex-start;
     text-overflow: ellipsis;
@@ -169,8 +170,9 @@ export const UserPopperContent = React.memo(
                                 <Status variables={{ userId: user.id }} />
                             </React.Suspense>
                             {!isMe && (
-                                <XView width="100%" alignItems="center" marginTop={20} flexDirection="row" justifyContent="space-between">
+                                <XView flexGrow={1} width="100%" alignItems="flex-end" flexDirection="row" justifyContent="space-between">
                                     <UButton
+                                        marginBottom={4}
                                         text="Message"
                                         onClick={(e: React.MouseEvent) => {
                                             e.preventDefault();

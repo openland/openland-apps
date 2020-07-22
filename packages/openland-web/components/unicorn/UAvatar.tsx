@@ -51,7 +51,7 @@ export const AvatarSizes: {
     large: { size: 56, placeholder: 24, dotSize: 12, dotPosition: 2, dotBorderWidth: 2 },
     'x-large': { size: 72, placeholder: 32, dotSize: 14, dotPosition: 4, dotBorderWidth: 2 },
     'xx-large': { size: 96, placeholder: 40, dotSize: 16, dotPosition: 6, dotBorderWidth: 2 },
-    'xxx-large': { size: 144, placeholder: 40, dotSize: 16, dotPosition: 6, dotBorderWidth: 2 },
+    'xxx-large': { size: 128, placeholder: 40, dotSize: 16, dotPosition: 6, dotBorderWidth: 2 },
 };
 
 const avatarPlaceholderStyle = css`
