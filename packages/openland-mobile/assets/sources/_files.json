@@ -8,6 +8,13 @@
             ]
         },
         {
+            "name": "ic-search-glyph",
+            "src": "ic-search-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-invite",
             "src": "ic-invite-24.svg",
             "sizes": [

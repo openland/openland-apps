@@ -73,6 +73,7 @@ import { Explore } from './pages/main/Explore';
 import { Collections } from './pages/main/Collections';
 import { Donation } from './pages/wallet/Donation';
 import { SettingsCommunities } from './pages/main/SettingsCommunities';
+import { MembersSearch } from './pages/main/modals/MembersSearch';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -106,6 +107,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('UserMultiplePicker', UserMultiplePicker)
   .addRoute('UserPicker', UserPicker)
   .addRoute('CountryPicker', CountryPicker)
+  .addRoute('MembersSearch', MembersSearch)
   .addRoute('ProfileGroupLink', ProfileGroupLink)
   .addRoute('ProfileOrganizationGroups', ProfileOrganizationGroups)
   .addRoute('DiscoverListing', DiscoverListing)

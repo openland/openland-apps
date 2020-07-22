@@ -439,6 +439,11 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                     onPress={() => props.router.push('ProfileGroupLink', { room })}
                 />
             )}
+            {/* <ZListItem
+                text="Search members"
+                leftIcon={require('assets/ic-search-glyph-24.png')}
+                onPress={() => Modals.showMembersSearch(props.router, room.id, room.membersCount, members)}
+            /> */}
 
             {room.featuredMembersCount > 0 && (
                 <ZListItem
@@ -475,7 +480,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 )}
                 keyExtractor={(item, index) => index + '-' + item.user.id}
                 ListHeaderComponent={content}
-                ListFooterComponent={members.length === room.membersCount ? undefined : <RenderLoader/>}
+                ListFooterComponent={members.length === room.membersCount ? undefined : <RenderLoader />}
                 onEndReached={handleLoadMore}
                 refreshing={loading}
             />
