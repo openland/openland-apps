@@ -2954,6 +2954,27 @@ const OrganizationMembersSelector = obj(
                         )))))
                 )))
         );
+const OrganizationMembersSearchSelector = obj(
+            field('orgMembersSearch', 'orgMembersSearch', args(fieldValue("orgId", refValue('orgId')), fieldValue("query", refValue('query')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after')), fieldValue("page", refValue('page'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('edges', 'edges', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('node', 'node', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    field('role', 'role', args(), notNull(scalar('String'))),
+                                    field('user', 'user', args(), notNull(obj(
+                                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                            fragment('User', UserShortSelector)
+                                        )))
+                                ))),
+                            field('cursor', 'cursor', args(), notNull(scalar('String')))
+                        ))))),
+                    field('pageInfo', 'pageInfo', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('hasNextPage', 'hasNextPage', args(), notNull(scalar('Boolean')))
+                        )))
+                )))
+        );
 const OrganizationMembersShortSelector = obj(
             field('organization', 'organization', args(fieldValue("id", refValue('organizationId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5301,6 +5322,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'OrganizationMembers',
         body: 'query OrganizationMembers($organizationId:ID!,$first:Int,$after:ID){organization(id:$organizationId){__typename id members:alphaOrganizationMembers(first:$first,after:$after){__typename role user{__typename ...UserShort}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}',
         selector: OrganizationMembersSelector
+    },
+    OrganizationMembersSearch: {
+        kind: 'query',
+        name: 'OrganizationMembersSearch',
+        body: 'query OrganizationMembersSearch($orgId:ID!,$query:String,$first:Int!,$after:String,$page:Int){orgMembersSearch(orgId:$orgId,query:$query,first:$first,after:$after,page:$page){__typename edges{__typename node{__typename role user{__typename ...UserShort}}cursor}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}',
+        selector: OrganizationMembersSearchSelector
     },
     OrganizationMembersShort: {
         kind: 'query',

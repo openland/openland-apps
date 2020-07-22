@@ -187,13 +187,15 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         }
     }, 100), [initialMembers]);
 
+    const isSearching = membersQuery.length > 0;
+
     return (
         <>
             <UFlatList
                 track="group_profile"
                 loadMore={handleLoadMore}
                 items={members}
-                loading={loading || (membersQuery.length > 0 && membersFetching.loading > 0 && members.length > 15)}
+                loading={loading || (isSearching && membersFetching.loading > 0 && members.length > 15)}
                 title={title}
                 renderItem={member => (
                     <UUserView
@@ -264,7 +266,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                         />
                     )}
                 />
-                {showInviteButton && (
+                {showInviteButton && !isSearching && (
                     <UAddItem
                         title="Add people"
                         titleStyle={TextStyles.Label1}
@@ -279,7 +281,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                         }}
                     />
                 )}
-                {members.length === 0 && membersQuery.length > 0 && (
+                {members.length === 0 && isSearching && (
                     <XView paddingTop={32} paddingBottom={32} alignItems="center" {...TextStyles.Body} color="var(--foregroundSecondary)">
                         Nobody found
                     </XView>

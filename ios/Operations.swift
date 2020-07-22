@@ -2947,6 +2947,27 @@ private let OrganizationMembersSelector = obj(
                         )))))
                 )))
         )
+private let OrganizationMembersSearchSelector = obj(
+            field("orgMembersSearch", "orgMembersSearch", arguments(fieldValue("orgId", refValue("orgId")), fieldValue("query", refValue("query")), fieldValue("first", refValue("first")), fieldValue("after", refValue("after")), fieldValue("page", refValue("page"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("role", "role", notNull(scalar("String"))),
+                                    field("user", "user", notNull(obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            fragment("User", UserShortSelector)
+                                        )))
+                                ))),
+                            field("cursor", "cursor", notNull(scalar("String")))
+                        ))))),
+                    field("pageInfo", "pageInfo", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean")))
+                        )))
+                )))
+        )
 private let OrganizationMembersShortSelector = obj(
             field("organization", "organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5299,6 +5320,12 @@ class Operations {
         "query OrganizationMembers($organizationId:ID!,$first:Int,$after:ID){organization(id:$organizationId){__typename id members:alphaOrganizationMembers(first:$first,after:$after){__typename role user{__typename ...UserShort}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}",
         OrganizationMembersSelector
     )
+    let OrganizationMembersSearch = OperationDefinition(
+        "OrganizationMembersSearch",
+        .query, 
+        "query OrganizationMembersSearch($orgId:ID!,$query:String,$first:Int!,$after:String,$page:Int){orgMembersSearch(orgId:$orgId,query:$query,first:$first,after:$after,page:$page){__typename edges{__typename node{__typename role user{__typename ...UserShort}}cursor}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}",
+        OrganizationMembersSearchSelector
+    )
     let OrganizationMembersShort = OperationDefinition(
         "OrganizationMembersShort",
         .query, 
@@ -6506,6 +6533,7 @@ class Operations {
         if name == "Online" { return Online }
         if name == "Organization" { return Organization }
         if name == "OrganizationMembers" { return OrganizationMembers }
+        if name == "OrganizationMembersSearch" { return OrganizationMembersSearch }
         if name == "OrganizationMembersShort" { return OrganizationMembersShort }
         if name == "OrganizationPico" { return OrganizationPico }
         if name == "OrganizationProfile" { return OrganizationProfile }
