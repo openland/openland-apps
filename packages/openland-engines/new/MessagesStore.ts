@@ -1,92 +1,11 @@
-import { StoredMessage } from './StoredMessage';
 import { backoff } from 'openland-y-utils/timer';
+import { MessageViewSnapshot } from './MessageViewSnapshot';
+import { MessageView } from './MessageView';
+import { StoredMessage } from './StoredMessage';
 import { randomKey } from 'openland-y-utils/randomKey';
 import { MessagesApi } from './MessagesApi';
 import { Persistence, Transaction } from './Persistence';
 import { MessagesRepository } from './MessagesRepository';
-import { AsyncLock } from '@openland/patterns';
-
-export type MessagesState =
-    | { type: 'loading' }
-    | { type: 'no-access' }
-    | { type: 'messages', messages: StoredMessage[], hasMoreNext: boolean, hasMorePrev: boolean };
-
-export interface MessagesSource {
-    readonly state: MessagesState;
-    readonly closed: boolean;
-    onUpdated: ((state: MessagesState) => void) | undefined;
-    close(): void;
-}
-
-class MessageSourceHolder implements MessagesSource {
-
-    readonly id: string;
-    onUpdated: ((state: MessagesState) => void) | undefined = undefined;
-
-    private _state: MessagesState;
-    private _onClose: () => void;
-    private _closed = false;
-    private _inited = false;
-    private _minSeq = -1;
-    private _maxSeq = -1;
-
-    constructor(id: string, state: MessagesState, onClose: () => void) {
-        this.id = id;
-        this._state = state;
-        this._onClose = onClose;
-    }
-
-    get state() {
-        return this._state;
-    }
-
-    get closed() {
-        return this._closed;
-    }
-
-    get minSeq() {
-        return this._minSeq;
-    }
-
-    get maxSeq() {
-        return this._maxSeq;
-    }
-
-    init(state: MessagesState, minSeq: number, maxSeq: number) {
-        if (this._closed) {
-            return;
-        }
-        if (this._inited) {
-            return;
-        }
-        this._inited = true;
-        this._minSeq = minSeq;
-        this._maxSeq = maxSeq;
-        this._state = state;
-        if (this.onUpdated) {
-            this.onUpdated(state);
-        }
-    }
-
-    abort(state: MessagesState) {
-        if (this._closed) {
-            return;
-        }
-        this._state = state;
-        if (this.onUpdated) {
-            this.onUpdated(state);
-        }
-        this.close();
-    }
-
-    close() {
-        if (this._closed) {
-            return;
-        }
-        this._closed = true;
-        this._onClose();
-    }
-}
 
 export class MessagesStore {
 
@@ -95,15 +14,11 @@ export class MessagesStore {
         return new MessagesStore(repo, persistence, api);
     }
 
-    // @ts-ignore
+    readonly persistence: Persistence;
+    readonly api: MessagesApi;
     private readonly repo: MessagesRepository;
-    // @ts-ignore
-    private readonly persistence: Persistence;
-    // @ts-ignore
-    private readonly api: MessagesApi;
-    // @ts-ignore
-    private readonly queryLock = new AsyncLock();
-    private readonly sources = new Map<string, MessageSourceHolder>();
+    private readonly views = new Map<string, MessageView>();
+    private access: undefined | boolean = undefined;
 
     private constructor(repo: MessagesRepository, persistence: Persistence, api: MessagesApi) {
         this.repo = repo;
@@ -111,56 +26,49 @@ export class MessagesStore {
         this.api = api;
     }
 
-    createSourceAt = (id: string): MessagesSource => {
-        // Create Message Source
-        let sourceId = randomKey();
-        let source = new MessageSourceHolder(sourceId, { type: 'loading' }, () => {
-            this.sources.delete(sourceId);
-        });
-        this.sources.set(sourceId, source);
+    loadCachedMessage = async (id: string, tx: Transaction) => {
+        return await this.repo.readById(id, tx);
+    }
 
-        // Init source
-        backoff(async () => {
+    loadMessage = async (id: string) => {
+        return await backoff(async () => {
             while (true) {
-
-                // Fast exit
-                if (source.closed) {
-                    return;
+                let message = await this.persistence.inTx(async (tx) => await this.repo.readById(id, tx));
+                if (message) {
+                    return message;
                 }
 
-                // Resolve message
-                let message = await this.repo.readById(id);
-                if (source.closed) {
-                    return;
+                let msg = await this.api.loadMessage(id);
+                if (!msg) {
+                    return null;
+                } else {
+                    await this.persistence.inTx(async (tx) => {
+                        await this.repo.writeBatch({ minSeq: msg!.seq, maxSeq: msg!.seq, messages: [msg!] }, tx);
+                    });
                 }
+            }
+        });
+    }
 
-                if (!message) {
-                    let msg = await this.api.loadMessage(id);
-                    if (source.closed) {
-                        return;
-                    }
-                    if (!msg) {
-                        source.abort({ type: 'no-access' });
-                        return;
-                    } else {
-                        await this.persistence.inTx(async (tx) => {
-                            await this.repo.writeBatch({ minSeq: msg!.seq, maxSeq: msg!.seq, messages: [msg!] }, tx);
-                        });
-                        continue;
-                    }
-                }
+    loadCachedBefore = async (seq: number, tx: Transaction) => {
+        return await this.repo.readBefore({ before: seq, limit: 20 }, tx);
+    }
 
+    loadBefore = async (id: string) => {
+        let message = (await this.loadMessage(id))!;
+        if (!message) {
+            return null;
+        }
+        return await backoff(async () => {
+            while (true) {
                 // Resolve previous
-                let before = await this.repo.readBefore({ before: message.seq, limit: 20 });
-                if (source.closed) {
-                    return;
-                }
+                let before = await this.persistence.inTx(async (tx) => await this.repo.readBefore({ before: message.seq, limit: 20 }, tx));
 
                 // If previous not loaded
                 if (!before || (before.items.length < 20 && !before.completed)) {
                     let loaded = await this.api.loadMessagesBefore(this.repo.id, message.id, 20);
-                    if (source.closed) {
-                        return;
+                    if (!loaded) {
+                        return null;
                     }
                     let batchMinSeq = message.seq;
                     if (!loaded.hasMore) {
@@ -173,22 +81,35 @@ export class MessagesStore {
 
                     // Note: maxSeq is the seq of the message that we are using as cursor not the max seq of batch
                     await this.persistence.inTx(async (tx) => {
-                        await this.repo.writeBatch({ minSeq: batchMinSeq, maxSeq: message!.seq, messages: loaded.messages }, tx);
+                        await this.repo.writeBatch({ minSeq: batchMinSeq, maxSeq: message!.seq, messages: loaded!.messages }, tx);
                     });
                     continue;
                 }
 
+                return before;
+            }
+        });
+    }
+
+    loadCachedAfter = async (seq: number, tx: Transaction) => {
+        return await this.repo.readAfter({ after: seq, limit: 20 }, tx);
+    }
+
+    loadAfter = async (id: string) => {
+        let message = (await this.loadMessage(id))!;
+        if (!message) {
+            return null;
+        }
+        return await backoff(async () => {
+            while (true) {
                 // Resolve after
-                let after = await this.repo.readAfter({ after: message.seq, limit: 20 });
-                if (source.closed) {
-                    return;
-                }
+                let after = await this.persistence.inTx(async (tx) => await this.repo.readAfter({ after: message.seq, limit: 20 }, tx));
 
                 // If previous not loaded
                 if (!after || (after.items.length < 20 && !after.completed)) {
                     let loaded = await this.api.loadMessagesAfter(this.repo.id, message.id, 20);
-                    if (source.closed) {
-                        return;
+                    if (!loaded) {
+                        return null;
                     }
                     let batchMaxSeq = message.seq;
                     if (!loaded.hasMore) {
@@ -201,39 +122,31 @@ export class MessagesStore {
 
                     // Note: minSeq is the seq of the message that we are using as cursor not the min seq of batch
                     await this.persistence.inTx(async (tx) => {
-                        await this.repo.writeBatch({ minSeq: message!.seq, maxSeq: batchMaxSeq, messages: loaded.messages }, tx);
+                        await this.repo.writeBatch({ minSeq: message!.seq, maxSeq: batchMaxSeq, messages: loaded!.messages }, tx);
                     });
                     continue;
                 }
-
-                // Initial Messages
-                let messages = [...before.items, message, ...after.items];
-
-                // Max Seq
-                let maxSeq = message.seq;
-                if (after.completed) {
-                    maxSeq = Number.MAX_SAFE_INTEGER;
-                } else {
-                    for (let m of after.items) {
-                        maxSeq = Math.max(m.seq, maxSeq);
-                    }
-                }
-
-                // Min Seq
-                let minSeq = message.seq;
-                if (before.completed) {
-                    minSeq = Number.MIN_SAFE_INTEGER;
-                } else {
-                    for (let m of before.items) {
-                        minSeq = Math.min(m.seq, minSeq);
-                    }
-                }
-                source.init({ type: 'messages', messages, hasMoreNext: !after.completed, hasMorePrev: !before.completed }, minSeq, maxSeq);
-                return;
+                return after;
             }
         });
+    }
 
-        return source;
+    createSnapshotViewAt = (id: string): MessageViewSnapshot => {
+        // Create View
+        let viewId = randomKey();
+        let view = new MessageViewSnapshot(this, { type: 'message', id }, () => {
+            this.views.delete(viewId);
+        });
+        this.views.set(viewId, view);
+
+        // Initialize access
+        if (this.access === true) {
+            view.onMessagesGotAccess();
+        } else if (this.access === false) {
+            view.onMessagesLostAccess();
+        }
+
+        return view;
     }
 
     //
@@ -241,28 +154,58 @@ export class MessagesStore {
     //
 
     onMessagesLostAccess = async (tx: Transaction) => {
-        // TODO: Implement
+        if (this.access !== false) {
+            this.access = false;
+            tx.afterTransaction(() => {
+                for (let v of this.views) {
+                    v[1].onMessagesLostAccess();
+                }
+            });
+        }
     }
 
     onMessagesGotAccess = async (tx: Transaction) => {
-        // TODO: Implement
+        if (this.access !== true) {
+            this.access = true;
+            tx.afterTransaction(() => {
+                for (let v of this.views) {
+                    v[1].onMessagesGotAccess();
+                }
+            });
+        }
     }
 
     onMessagesReceived = async (messages: { repeatKey: string | null, message: StoredMessage }[], tx: Transaction) => {
         for (let m of messages) {
             await this.repo.handleMessageReceived(m.message, tx);
         }
+
+        tx.afterTransaction(() => {
+            for (let v of this.views) {
+                v[1].onMessagesReceived(messages);
+            }
+        });
     }
 
     onMessagesUpdated = async (messages: StoredMessage[], tx: Transaction) => {
         for (let m of messages) {
             await this.repo.handleMessageUpdated(m, tx);
         }
+        tx.afterTransaction(() => {
+            for (let v of this.views) {
+                v[1].onMessagesUpdated(messages);
+            }
+        });
     }
 
     onMessagesDeleted = async (messages: string[], tx: Transaction) => {
         for (let m of messages) {
             await this.repo.handleMessageDeleted(m, tx);
         }
+        tx.afterTransaction(() => {
+            for (let v of this.views) {
+                v[1].onMessagesDeleted(messages);
+            }
+        });
     }
 }

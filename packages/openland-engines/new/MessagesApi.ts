@@ -6,11 +6,25 @@ export function convertMessage(src: ChatNewMessageFragment): StoredMessage {
     return {
         id: src.id,
         seq: src.seq!,
-        sender: src.sender.id
+        sender: src.sender.id,
+        text: src.message,
+        fallback: src.fallback
     };
 }
 
-export class MessagesApi {
+export interface MessagesApi {
+    loadMessage(id: string): Promise<StoredMessage | null>;
+    loadMessagesBefore(id: string, before: string, limit: number): Promise<{ hasMore: boolean, messages: StoredMessage[] } | null>;
+    loadMessagesAfter(id: string, after: string, limit: number): Promise<{ hasMore: boolean, messages: StoredMessage[] } | null>;
+
+    loadLastRead(id: string): Promise<string | null>;
+    loadChatState(id: string): Promise<string>;
+    loadChatAccess(id: string): Promise<boolean>;
+
+    loadDialogsState(): Promise<string>;
+}
+
+export class MessagesApiClient implements MessagesApi {
     readonly client: OpenlandClient;
 
     constructor(client: OpenlandClient) {
@@ -38,22 +52,22 @@ export class MessagesApi {
     loadMessagesBefore = async (chatId: string, before: string, limit: number) => {
         let response = (await this.client.queryChatNewLoadBefore({ chatId: chatId, before: before, limit: limit }, { fetchPolicy: 'network-only' })).batch;
         if (!response) {
-            throw Error('No access');
+            return null;
         }
         return {
             messages: response.messages.map((v) => convertMessage(v)).reverse(),
-            hasMore: response.haveMoreBackward
+            hasMore: response.haveMoreBackward || false
         };
     }
 
     loadMessagesAfter = async (chatId: string, after: string, limit: number) => {
         let response = (await this.client.queryChatNewLoadAfter({ chatId: chatId, after: after, limit: limit }, { fetchPolicy: 'network-only' })).batch;
         if (!response) {
-            throw Error('No access');
+            return null;
         }
         return {
             messages: response.messages.map((v) => convertMessage(v)).reverse(),
-            hasMore: response.haveMoreForward
+            hasMore: response.haveMoreForward || false
         };
     }
 

@@ -5,9 +5,17 @@ class TransactionHolder {
     private completed = false;
     private keys = new Map<string, string | null>();
     private persistence: Persistence;
+    private handlers: (() => void)[] = [];
 
     constructor(persistence: Persistence) {
         this.persistence = persistence;
+    }
+
+    afterTransaction(handler: () => void) {
+        if (this.completed) {
+            throw Error('Transaction already completed');
+        }
+        this.handlers.push(handler);
     }
 
     write = (key: string, value: string | null) => {
@@ -41,13 +49,14 @@ class TransactionHolder {
         for (let e of this.keys.entries()) {
             res.push({ key: e[0], value: e[1] });
         }
-        return res;
+        return { changes: res, handlers: [...this.handlers] };
     }
 }
 
 export interface Transaction {
     write(key: string, value: string | null): void;
     read(key: string): Promise<string | null>;
+    afterTransaction(handler: () => void): void;
 }
 
 export class Persistence {
@@ -76,8 +85,11 @@ export class Persistence {
                 let res = await handler(holder);
                 let completed = this.transaction.complete();
                 this.transaction = null;
-                if (completed.length > 0) {
-                    await this.lock.inLock(() => this.persistence.writeKeys(completed));
+                if (completed.changes.length > 0) {
+                    await this.lock.inLock(() => this.persistence.writeKeys(completed.changes));
+                }
+                for (let h of completed.handlers) {
+                    h();
                 }
                 return res;
             } finally {

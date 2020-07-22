@@ -1,8 +1,9 @@
 import { MessagesStore } from 'openland-engines/new/MessagesStore';
 import { Persistence, Transaction } from './Persistence';
-import { MessagesApi } from './MessagesApi';
+import { MessagesApi, MessagesApiClient } from './MessagesApi';
 import { MessagesUpdates, MessagesChatUpdates } from './MessagesUpdates';
 import { DialogUpdateFragment } from 'openland-api/spacex.types';
+import { OpenlandClient } from 'openland-api/spacex';
 
 export class Messages {
 
@@ -11,10 +12,10 @@ export class Messages {
     private readonly updates: MessagesUpdates;
     private readonly stores = new Map<string, MessagesStore>();
 
-    constructor(api: MessagesApi, persistence: Persistence) {
-        this.api = api;
+    constructor(client: OpenlandClient, persistence: Persistence) {
+        this.api = new MessagesApiClient(client);
         this.persistence = persistence;
-        this.updates = MessagesUpdates.open(persistence, api);
+        this.updates = MessagesUpdates.open(persistence, this.api, client);
         this.updates.onChatUpdates = this.onChatUpdates;
         this.updates.onDialogsUpdates = this.onDialogsUpdates;
         this.updates.onChatGotAccess = this.onChatGotAccess;

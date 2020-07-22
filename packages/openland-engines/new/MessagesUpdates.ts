@@ -10,6 +10,7 @@ import {
     NewChatUpdateFragment_ChatMessageUpdated,
     NewChatUpdateFragment_ChatMessageDeleted
 } from 'openland-api/spacex.types';
+import { OpenlandClient } from 'openland-api/spacex';
 
 export interface MessagesChatUpdates {
     received: { message: StoredMessage, repeatKey: string | null }[];
@@ -19,8 +20,8 @@ export interface MessagesChatUpdates {
 
 export class MessagesUpdates {
 
-    static open(persistence: Persistence, api: MessagesApi) {
-        return new MessagesUpdates(persistence, api);
+    static open(persistence: Persistence, api: MessagesApi, client: OpenlandClient) {
+        return new MessagesUpdates(persistence, api, client);
     }
 
     //
@@ -33,6 +34,7 @@ export class MessagesUpdates {
     onChatUpdates?: (id: string, updates: MessagesChatUpdates, tx: Transaction) => Promise<void>;
 
     private readonly api: MessagesApi;
+    private readonly client: OpenlandClient;
     private readonly persistence: Persistence;
     private readonly updatesLock = new AsyncLock();
     private started = false;
@@ -44,8 +46,9 @@ export class MessagesUpdates {
     private chatNeeded = new Set<string>();
     private chatSubscriptions = new Map<string, GraphqlActiveSubscription<any>>();
 
-    private constructor(persistence: Persistence, api: MessagesApi) {
+    private constructor(persistence: Persistence, api: MessagesApi, client: OpenlandClient) {
         this.persistence = persistence;
+        this.client = client;
         this.api = api;
     }
 
@@ -95,7 +98,7 @@ export class MessagesUpdates {
             this.dialogsSubscription.destroy();
             this.dialogsSubscription = null;
         }
-        this.dialogsSubscription = this.api.client.subscribeDialogsWatch({ state: this.dialogsState }, (d) => {
+        this.dialogsSubscription = this.client.subscribeDialogsWatch({ state: this.dialogsState }, (d) => {
             // Automatically resubscribe for dialogs when subscription stopped
             if (d.type === 'stopped') {
                 this.resubscribeForDialogs();
@@ -268,7 +271,7 @@ export class MessagesUpdates {
         let startState = this.chatStates.get(id);
 
         // Subscribe
-        let subscription = this.api.client.subscribeNewChatUpdates({ state: startState, chatId: id }, (d) => {
+        let subscription = this.client.subscribeNewChatUpdates({ state: startState, chatId: id }, (d) => {
             if (d.type === 'stopped') {
                 // Automatically restart subscription
                 this.chatSubscriptions.delete(id);

@@ -8,7 +8,9 @@ function createMessage(seq: number): StoredMessage {
     return {
         id: '' + seq,
         seq,
-        sender: 'user_id'
+        sender: 'user_id',
+        text: 'text',
+        fallback: '!'
     };
 }
 
@@ -43,7 +45,7 @@ describe('MessagesRepository', () => {
         messagesStore = MessagesRepository.open('1', persistence);
 
         // Check read after
-        let read = await messagesStore.readAfter({ after: 15, limit: 3 });
+        let read = await persistence.inTx(async (tx) => await messagesStore.readAfter({ after: 15, limit: 3 }, tx));
         expect(read).toMatchObject({
             items: [
                 createMessage(16),
@@ -54,7 +56,7 @@ describe('MessagesRepository', () => {
         });
 
         // Check continuity of read after
-        read = await messagesStore.readAfter({ after: 18, limit: 3 });
+        read = await persistence.inTx(async (tx) => await messagesStore.readAfter({ after: 18, limit: 3 }, tx));
         expect(read).toMatchObject({
             items: [
                 createMessage(19),
@@ -64,7 +66,7 @@ describe('MessagesRepository', () => {
         });
 
         // Check read before
-        read = await messagesStore.readBefore({ before: 15, limit: 3 });
+        read = await persistence.inTx(async (tx) => await messagesStore.readBefore({ before: 15, limit: 3 }, tx));
         expect(read).toMatchObject({
             items: [
                 createMessage(12),
@@ -75,7 +77,7 @@ describe('MessagesRepository', () => {
         });
 
         // Check continuity of read before
-        read = await messagesStore.readBefore({ before: 12, limit: 3 });
+        read = await persistence.inTx(async (tx) => await messagesStore.readBefore({ before: 12, limit: 3 }, tx));
         expect(read).toMatchObject({
             items: [
                 createMessage(10),
@@ -85,11 +87,11 @@ describe('MessagesRepository', () => {
         });
 
         // Check read from end
-        read = await messagesStore.readBefore({ before: SparseIndex.MAX, limit: 3 });
+        read = await persistence.inTx(async (tx) => await messagesStore.readBefore({ before: SparseIndex.MAX, limit: 3 }, tx));
         expect(read).toBeNull();
 
         // Check read from begining
-        read = await messagesStore.readAfter({ after: SparseIndex.MIN, limit: 3 });
+        read = await persistence.inTx(async (tx) => await messagesStore.readAfter({ after: SparseIndex.MIN, limit: 3 }, tx));
         expect(read).toBeNull();
     });
 
@@ -129,7 +131,7 @@ describe('MessagesRepository', () => {
         messagesStore = MessagesRepository.open('1', persistence);
 
         // Check read after
-        let read = await messagesStore.readAfter({ after: 15, limit: 3 });
+        let read = await persistence.inTx(async (tx) => await messagesStore.readAfter({ after: 15, limit: 3 }, tx));
         expect(read).toMatchObject({
             items: [
                 createMessage(16),
@@ -140,7 +142,7 @@ describe('MessagesRepository', () => {
         });
 
         // Check continuity of read after
-        read = await messagesStore.readAfter({ after: 18, limit: 3 });
+        read = await persistence.inTx(async (tx) => await messagesStore.readAfter({ after: 18, limit: 3 }, tx));
         expect(read).toMatchObject({
             items: [
                 createMessage(19),
@@ -154,7 +156,7 @@ describe('MessagesRepository', () => {
             await messagesStore.handleMessageReceived(createMessage(21), tx);
         });
 
-        read = await messagesStore.readAfter({ after: 18, limit: 3 });
+        read = await persistence.inTx(async (tx) => await messagesStore.readAfter({ after: 18, limit: 3 }, tx));
         expect(read).toMatchObject({
             items: [
                 createMessage(19),
