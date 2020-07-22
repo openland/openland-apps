@@ -22,8 +22,6 @@ export const SSearchControllerRefContext = React.createContext<React.RefObject<S
 
 const DEFAULT_TAB = 2;
 
-const showContacts = false;
-
 export const Home = React.memo((props: PageProps) => {
     const router = React.useContext(SRouterContext);
     const [tab, setTab] = React.useState(router && router.params && typeof router.params.initialTab === 'number' ? router.params.initialTab : DEFAULT_TAB);
@@ -35,6 +33,7 @@ export const Home = React.memo((props: PageProps) => {
 
     const messengerEngine = getMessenger().engine;
     const exploreRef = React.createRef<any>();
+    const contactsRef = React.createRef<any>();
     const dialogsDataSource = messengerEngine.dialogList.dataSource;
     const dialogsSearchController = React.createRef<SSearchControlerComponent>();
     const notificationsDataSource = messengerEngine.notificationCenter.dataSource;
@@ -44,6 +43,8 @@ export const Home = React.memo((props: PageProps) => {
         if (newTab === tab) {
             if (tab === 0 && exploreRef.current) {
                 exploreRef.current.getNode().scrollTo({ y: 0 });
+            } else if (tab === 1 && contactsRef.current) {
+                contactsRef.current.getNode().scrollToOffset({ animated: true, offset: 0 });
             } else if (tab === 2) {
                 dialogsDataSource.requestScrollToTop();
                 if (dialogsSearchController.current) {
@@ -71,14 +72,14 @@ export const Home = React.memo((props: PageProps) => {
                             </ComponentRefContext.Provider>
                         </HeaderContextChild>
                     </View>
-                    {showContacts && (
-                        <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 1 ? 1 : 0 }} pointerEvents={tab === 1 ? 'box-none' : 'none'}>
-                            <HeaderContextChild enabled={tab === 1}>
-                                {tab === 1 && <ZTrack event={'navigate_contacts'} />}
+                    <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 1 ? 1 : 0 }} pointerEvents={tab === 1 ? 'box-none' : 'none'}>
+                        <HeaderContextChild enabled={tab === 1}>
+                            {tab === 1 && <ZTrack event={'navigate_contacts'} />}
+                            <ComponentRefContext.Provider value={contactsRef}>
                                 <Contacts {...props} />
-                            </HeaderContextChild>
-                        </View>
-                    )}
+                            </ComponentRefContext.Provider>
+                        </HeaderContextChild>
+                    </View>
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 2 ? 1 : 0 }} pointerEvents={tab === 2 ? 'box-none' : 'none'}>
                         <HeaderContextChild enabled={tab === 2}>
                             {tab === 2 && <ZTrack event="navigate_chats" />}
@@ -116,14 +117,12 @@ export const Home = React.memo((props: PageProps) => {
                         selected={tab === 0}
                         onPress={() => handleChangeTab(0)}
                     />
-                    {showContacts && (
-                        <AppBarBottomItem
-                            icon={require('assets/ic-user-24.png')}
-                            iconSelected={require('assets/ic-user-filled-24.png')}
-                            selected={tab === 1}
-                            onPress={() => handleChangeTab(1)}
-                        />
-                    )}
+                    <AppBarBottomItem
+                        icon={require('assets/ic-user-24.png')}
+                        iconSelected={require('assets/ic-user-filled-24.png')}
+                        selected={tab === 1}
+                        onPress={() => handleChangeTab(1)}
+                    />
                     <AppBarBottomItem
                         counter={counter && counter.alphaNotificationCounter.unreadCount || undefined}
                         icon={require('assets/ic-message-24.png')}

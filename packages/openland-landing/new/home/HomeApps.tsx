@@ -7,7 +7,6 @@ import Linux from './icons/ic-linux.svg';
 import { XView } from 'react-mental';
 import { detectOS } from 'openland-x-utils/detectOS';
 import { LandingLinks } from '../components/_links';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 const box = css`
     padding: 100px 0 200px;
@@ -18,6 +17,19 @@ const box = css`
 
     @media (max-width: 767px) {
         display: none;
+    }
+
+    opacity: 0;
+    transform: translateY(100px);
+    transition: transform cubic-bezier(0, 0, 0.2, 1) 300ms, opacity cubic-bezier(0, 0, 0.2, 1) 300ms;
+
+    &.in-viewport {
+        opacity: 1;
+        transform: translateY(0);
+
+        .party-emoji {
+            transform: scale(1);
+        }
     }
 `;
 
@@ -213,25 +225,21 @@ const titleWrapper = css`
     @media (min-width: 768px) and (max-width: 1199px) {
         margin: 0 0 4px;
     }
+`;
 
-    & .party-emoji {
-        font-size: 64px;
-        line-height: 64px;
-        position: absolute;
-        top: 0; left: calc(100% + 26px);
-        transform: scale(0);
-        transition: 1s transform ease;
-        transform-origin: center center;
+const emoji = css`
+    font-size: 64px;
+    line-height: 64px;
+    position: absolute;
+    top: 0; left: calc(100% + 26px);
+    transform: scale(0);
+    transition: 1s transform ease;
+    transform-origin: center center;
 
-        @media (min-width: 768px) and (max-width: 1199px) {
-            font-size: 42px;
-            line-height: 44px;
-            left: calc(100% + 16px);
-        }
-    }
-
-    &.in-viewport .party-emoji {
-        transform: scale(1);
+    @media (min-width: 768px) and (max-width: 1199px) {
+        font-size: 42px;
+        line-height: 44px;
+        left: calc(100% + 16px);
     }
 `;
 
@@ -321,41 +329,15 @@ export const HomeAppsMobile = React.memo(() => (
     </div>
 ));
 
-export const HomeApps = React.memo(() => {
+export const HomeApps = React.forwardRef((props: {}, ref: React.Ref<HTMLDivElement>) => {
     const os = detectOS() || 'Mac';
-    const titleRef = React.useRef<HTMLDivElement>(null);
-
-    React.useEffect(() => {
-        const handleScroll = () => {
-            if (titleRef.current) {
-                const scrollPosition = window.pageYOffset;
-                const viewportHeight = window.innerHeight;
-                const emojiPosition = titleRef.current.offsetTop;
-
-                if (scrollPosition + viewportHeight - 150 >= emojiPosition) {
-                    titleRef.current.className = cx(titleWrapper, 'in-viewport');
-
-                    window.removeEventListener('scroll', handleScroll);
-                }
-            }
-        };
-        if (canUseDOM) {
-            window.addEventListener('scroll', handleScroll, { passive: true });
-            handleScroll();
-        }
-        return () => {
-            if (canUseDOM) {
-                window.removeEventListener('scroll', handleScroll);
-            }
-        };
-    }, []);
 
     return (
-        <div className={box}>
+        <div ref={ref} className={box}>
             <Container>
-                <div ref={titleRef} className={titleWrapper}>
+                <div className={titleWrapper}>
                     <div className={title}>Welcome aboard
-                        <div className="party-emoji">🎉</div>
+                        <div className={cx(emoji, 'party-emoji')}>🎉</div>
                     </div>
                 </div>
                 <div className={text}>Join now and claim<span className={link}>openland.com/<span>name</span></span></div>

@@ -23,7 +23,7 @@ const HashtagView = React.memo((props: { text: string }) => {
     const isSuperAdmin = useRole('super-admin');
 
     const handleClick = () => {
-        tabRouter.setTab(isSuperAdmin ? 2 : 1);
+        tabRouter.setTab(isSuperAdmin ? 3 : 2);
         globalSearch.onChange(props.text);
     };
 
@@ -46,7 +46,7 @@ export const UText = React.memo((props: UTextProps) => {
                 );
             } else if (v.type === 'hashtag' && v.hashtag && v.text) {
                 return (
-                    <HashtagView key={'hashtag-' + i} text={v.text}/>
+                    <HashtagView key={'hashtag-' + i} text={v.text} />
                 );
             } else {
                 return <span key={'text-' + i}>{proccessText ? proccessText(v.text) : v.text}</span>;

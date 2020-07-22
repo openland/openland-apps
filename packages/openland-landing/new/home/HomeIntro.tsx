@@ -6,10 +6,17 @@ import { detectOS } from 'openland-x-utils/detectOS';
 import { emojiAnimated } from 'openland-y-utils/emojiAnimated';
 
 const box = css`
-    overflow: hidden;
+    @media (min-width: 768px) {
+        overflow: hidden;
+    }
 
-    @media (max-width: 767px) {
-        overflow: initial;
+    opacity: 0;
+    transform: translateY(100px);
+    transition: transform cubic-bezier(0, 0, 0.2, 1) 300ms, opacity cubic-bezier(0, 0, 0.2, 1) 300ms;
+
+    &.in-viewport {
+        opacity: 1;
+        transform: translateY(0);
     }
 `;
 
@@ -308,7 +315,7 @@ const slides = [
     'Start your own community',
 ];
 
-export const HomeIntro = React.memo(() => {
+export const HomeIntro = React.forwardRef((props: {}, ref: React.Ref<HTMLDivElement>) => {
     const mobileOS = detectOS() === 'Android' ? 'Android' : 'iOS';
     const [activeSlide, setActiveSlide] = React.useState<number>(0);
     const [prevSlide, setPrevSlide] = React.useState<number>(0);
@@ -332,7 +339,7 @@ export const HomeIntro = React.memo(() => {
     const isFirstIteration = activeSlide === prevSlide;
 
     return (
-        <div className={box}>
+        <div ref={ref} className={box}>
             <Container>
                 <div className={inner}>
                     <div className={image} />

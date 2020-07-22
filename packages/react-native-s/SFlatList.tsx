@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, FlatListProps, View } from 'react-native';
+import { Animated, FlatList, FlatListProps, View } from 'react-native';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderConfigRegistrator } from './navigation/HeaderConfigRegistrator';
 import { STrackedValue } from './STrackedValue';
@@ -7,6 +7,7 @@ import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 
 export interface SFlatListProps<T> extends FlatListProps<T> {
     safeAreaViaMargin?: boolean;
+    scrollRef?: React.RefObject<FlatList<any>>;
 }
 
 export const RenderLoader = React.memo(() => (
@@ -19,7 +20,7 @@ export class SFlatList<T> extends React.Component<SFlatListProps<T>> {
     private contentOffset = new STrackedValue();
 
     render() {
-        let { safeAreaViaMargin, legacyImplementation, onEndReachedThreshold, refreshing, ListFooterComponent, ...other } = this.props;
+        let { safeAreaViaMargin, legacyImplementation, onEndReachedThreshold, refreshing, ListFooterComponent, scrollRef, ...other } = this.props;
         let AnimatedFlatList = (Animated as any).FlatList;
         return (
             <>
@@ -31,6 +32,7 @@ export class SFlatList<T> extends React.Component<SFlatListProps<T>> {
                                 keyboardShouldPersistTaps="always"
                                 keyboardDismissMode="interactive"
                                 {...other}
+                                ref={scrollRef}
                                 style={{
                                     // backgroundColor: Platform.OS === 'ios' ? '#fff' : undefined,
                                     // Work-around for freezing navive animation driver

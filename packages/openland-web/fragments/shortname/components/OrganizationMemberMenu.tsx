@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-    OrganizationMembers_organization_members,
     Organization_organization,
     OrganizationMemberRole,
 } from 'openland-api/spacex.types';
@@ -14,10 +13,11 @@ import { UPopperMenuBuilder, MenuItem } from 'openland-web/components/unicorn/UP
 import { OpenlandClient } from 'openland-api/spacex';
 import { useClient } from 'openland-api/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { OrganizationMember } from '../OrganizationProfileFragment';
 
 interface MenuContentOpts {
     organization: Organization_organization;
-    memberRef: React.MutableRefObject<OrganizationMembers_organization_members>;
+    memberRef: React.MutableRefObject<OrganizationMember>;
     onRemove: (memberId: string) => void;
     onChangeRole: (memberId: string, newRole: OrganizationMemberRole) => void;
     client: OpenlandClient;
@@ -130,7 +130,7 @@ const MenuComponent = React.memo((props: { ctx: UPopperController; items: MenuIt
 
 interface OrganizationMemberMenuProps {
     organization: Organization_organization;
-    member: OrganizationMembers_organization_members;
+    member: OrganizationMember;
     onRemove: (memberId: string) => void;
     onChangeRole: (memberId: string, newRole: OrganizationMemberRole) => void;
 }

@@ -2,7 +2,7 @@ import { Platform, Linking } from 'react-native';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import AndroidOpenSettings from 'react-native-android-open-settings';
 
-export type permissionsType = 'gallery' | 'gallery-add' | 'microphone' | 'camera' | 'android-storage';
+export type permissionsType = 'gallery' | 'gallery-add' | 'microphone' | 'camera' | 'android-storage' | 'contacts';
 
 interface AlertOpenSettingsLabels {
     ios?: {
@@ -44,6 +44,18 @@ const AlertOpenSettings = (labels: AlertOpenSettingsLabels) => {
 };
 
 export const handlePermissionDismiss = (permission: permissionsType) => {
+    if (permission === 'contacts') {
+        AlertOpenSettings({
+            ios: {
+                title: 'Allow Openland access to your contacts',
+                message: 'Go to your device’s settings, tap Openland and turn on Contacts'
+            },
+            android: {
+                title: 'Allow Openland to access your phone\'s contacts?',
+                message: 'To share photos, allow Openland access to your library. Tap Settings > Permissions, and turn on Contacts.'
+            }
+        });
+    }
     if (permission === 'gallery') {
         AlertOpenSettings({
             ios: {
