@@ -54,6 +54,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
     const [membersQuery, setMembersQuery] = React.useState('');
     const [membersFetching, setMembersFetching] = React.useState({ loading: 0, hasNextPage: true, cursor: '' });
     const membersQueryRef = React.useRef('');
+    const [hasSearched, setHasSearched] = React.useState(false);
 
     const loadSearchMembers = async (reseted?: boolean) => {
         let query = membersQueryRef.current;
@@ -76,6 +77,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
             hasNextPage: pageInfo.hasNextPage,
             cursor: edges.length === 0 ? '' : edges[edges.length - 1].cursor
         }));
+        setHasSearched(true);
     };
 
     let handleSearchChange = React.useCallback(debounce(async (val: string) => {
@@ -91,6 +93,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 hasNextPage: true,
                 cursor: '',
             });
+            setHasSearched(false);
             // refetch in case someone is removed
             let initial = (await client.queryOrganizationMembers(
                 { organizationId: props.id, first: 15 },
@@ -155,6 +158,8 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
     }, [members]);
 
     const isSearching = membersQuery.length > 0;
+    // compensate "add people" button and empty view when searching
+    const heightCompensation = hasSearched ? (members.length === 0 ? -32 : 56) : 0;
 
     return (
         <UFlatList
@@ -163,6 +168,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
             items={members}
             loading={loading || (isSearching && membersFetching.loading > 0 && members.length > 15)}
             title={name}
+            listMinHeight={Math.min(56 * membersCount + heightCompensation, 700)}
             renderItem={member => (
                 <UUserView
                     key={'member-' + member.user.id + '-' + member.role}
@@ -243,7 +249,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                     />
                 )}
             />
-            {organization.isMine && !isSearching && (
+            {organization.isMine && !hasSearched && (
                 <UAddItem
                     title="Add people"
                     onClick={() => {
