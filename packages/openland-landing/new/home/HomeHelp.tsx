@@ -12,6 +12,15 @@ const box = css`
     @media (max-width: 767px) {
         display: none;
     }
+
+    opacity: 0;
+    transform: translateY(100px);
+    transition: transform cubic-bezier(0, 0, 0.2, 1) 300ms, opacity cubic-bezier(0, 0, 0.2, 1) 300ms;
+
+    &.in-viewport {
+        opacity: 1;
+        transform: translateY(0);
+    }
 `;
 
 const title = css`
@@ -121,8 +130,8 @@ const itemText = css`
     }
 `;
 
-export const HomeHelp = React.memo(() => (
-    <div className={box}>
+export const HomeHelp = React.forwardRef((props: {}, ref: React.Ref<HTMLDivElement>) => (
+    <div ref={ref} className={box}>
         <Container>
             <div className={title}>Always here to help</div>
 

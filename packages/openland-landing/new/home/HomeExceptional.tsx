@@ -10,13 +10,22 @@ import MessagingIcon from './icons/ic_messaging_28.svg';
 import PaymentsIcon from './icons/ic_payments_28.svg';
 import AppearanceIcon from './icons/ic_appearance_24.svg';
 
-const wrapper = css`
+const box = css`
     @media (max-width: 767px) {
         display: none;
     }
+
+    opacity: 0;
+    transform: translateY(100px);
+    transition: transform cubic-bezier(0, 0, 0.2, 1) 300ms, opacity cubic-bezier(0, 0, 0.2, 1) 300ms;
+
+    &.in-viewport {
+        opacity: 1;
+        transform: translateY(0);
+    }
 `;
 
-const box = css`
+const wrapper = css`
     padding: 48px 0 50px;
     background: #F2F3F5;
     border-radius: 44px;
@@ -110,10 +119,10 @@ const feature = css`
     }
 `;
 
-export const HomeExceptional = React.memo(() => (
-    <div className={wrapper}>
+export const HomeExceptional = React.forwardRef((props: {}, ref: React.Ref<HTMLDivElement>) => (
+    <div ref={ref} className={box}>
         <Container>
-            <div className={box}>
+            <div className={wrapper}>
                 <div className={title}>Exceptional apps</div>
                 <div className={text}>Beautiful, simple, and ultra-fast</div>
                 <div className={screenshot} />
