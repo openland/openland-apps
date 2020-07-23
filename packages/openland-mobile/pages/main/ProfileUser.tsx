@@ -103,7 +103,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
             );
         }
 
-        if (!isContact && user.id !== myID) {
+        if (!isContact && user.id !== myID && !user.isBot) {
             builder.action(
                 'Add to contacts',
                 handleAddMemberToContacts,
@@ -112,7 +112,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
             );
         }
 
-        if (isContact && user.id !== myID) {
+        if (isContact && user.id !== myID && !user.isBot) {
             builder.action(
                 'Remove from contacts',
                 handleRemoveMemberFromContacts,
@@ -297,14 +297,14 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                                 onPress={handleAddMemberToGroup}
                             />
                         )}
-                        {!isContact && user.id !== myID && (
+                        {!isContact && user.id !== myID && !user.isBot && (
                             <ZListItem
                                 leftIcon={require('assets/ic-invite-glyph-24.png')}
                                 text="Add to contacts"
                                 onPress={handleAddMemberToContacts}
                             />
                         )}
-                        {isContact && user.id !== myID && (
+                        {isContact && user.id !== myID && !user.isBot && (
                             <ZListItem
                                 appearance="secondary"
                                 leftIcon={require('assets/ic-invite-off-glyph-24.png')}

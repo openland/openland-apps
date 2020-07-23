@@ -163,7 +163,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         }
 
         if (isUser) {
-            if (!isContact && isUser.id !== myID) {
+            if (!isContact && isUser.id !== myID && !isUser.isBot) {
                 builder.action(
                     'Add to contacts',
                     handleAddMemberToContacts,
@@ -172,7 +172,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
                 );
             }
 
-            if (isContact && isUser.id !== myID) {
+            if (isContact && isUser.id !== myID && !isUser.isBot) {
                 builder.action(
                     'Remove from contacts',
                     handleRemoveMemberFromContacts,
