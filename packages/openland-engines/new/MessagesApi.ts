@@ -13,9 +13,15 @@ export function convertMessage(src: ChatNewMessageFragment): StoredMessage {
 }
 
 export interface MessagesApi {
+
+    //
+    // Messages List
+    //
+
     loadMessage(id: string): Promise<StoredMessage | null>;
     loadMessagesBefore(id: string, before: string, limit: number): Promise<{ hasMore: boolean, messages: StoredMessage[] } | null>;
     loadMessagesAfter(id: string, after: string, limit: number): Promise<{ hasMore: boolean, messages: StoredMessage[] } | null>;
+    loadLastMessage(id: string): Promise<StoredMessage | null>;
 
     loadLastRead(id: string): Promise<string | null>;
     loadChatState(id: string): Promise<string>;
@@ -76,8 +82,16 @@ export class MessagesApiClient implements MessagesApi {
     }
 
     loadChatAccess = async (chatId: string): Promise<boolean> => {
-        // TODO: Implement
-        return true;
+        return (await this.client.queryChatNewHaveAccess({ chatId }, { fetchPolicy: 'network-only' })).haveAccessToChat;
+    }
+
+    loadLastMessage = async (chatId: string): Promise<StoredMessage | null> => {
+        let res = (await this.client.queryChatNewLoadLastMessage({ chatId }, { fetchPolicy: 'network-only' })).messages;
+        if (res.length === 0) {
+            return null;
+        } else {
+            return convertMessage(res[0]);
+        }
     }
 
     //

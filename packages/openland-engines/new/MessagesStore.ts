@@ -26,6 +26,41 @@ export class MessagesStore {
         this.api = api;
     }
 
+    loadCachedLatest = async (tx: Transaction) => {
+        let latest = await this.repo.readBefore({ before: Number.MAX_SAFE_INTEGER, limit: 1 }, tx);
+        if (!latest) {
+            return undefined;
+        }
+        if (latest.items.length === 0) {
+            return null;
+        } else {
+            return latest.items[0];
+        }
+    }
+
+    loadLatest = async () => {
+        return await backoff(async () => {
+            while (true) {
+                let message = await this.persistence.inTx(async (tx) => await this.loadCachedLatest(tx));
+                if (message !== undefined) {
+                    return message;
+                }
+
+                // Load latest
+                let lastMessage = await this.api.loadLastMessage(this.repo.id);
+                if (lastMessage === null) {
+                    await this.persistence.inTx(async (tx) => {
+                        await this.repo.writeBatch({ minSeq: Number.MIN_SAFE_INTEGER, maxSeq: Number.MAX_SAFE_INTEGER, messages: [] }, tx);
+                    });
+                } else {
+                    await this.persistence.inTx(async (tx) => {
+                        await this.repo.writeBatch({ minSeq: lastMessage!.seq, maxSeq: Number.MAX_SAFE_INTEGER, messages: [lastMessage!] }, tx);
+                    });
+                }
+            }
+        });
+    }
+
     loadCachedMessage = async (id: string, tx: Transaction) => {
         return await this.repo.readById(id, tx);
     }
@@ -135,6 +170,24 @@ export class MessagesStore {
         // Create View
         let viewId = randomKey();
         let view = new MessageViewSnapshot(this, { type: 'message', id }, () => {
+            this.views.delete(viewId);
+        });
+        this.views.set(viewId, view);
+
+        // Initialize access
+        if (this.access === true) {
+            view.onMessagesGotAccess();
+        } else if (this.access === false) {
+            view.onMessagesLostAccess();
+        }
+
+        return view;
+    }
+
+    createSnapshotViewAtLatest = (): MessageViewSnapshot => {
+        // Create View
+        let viewId = randomKey();
+        let view = new MessageViewSnapshot(this, { type: 'latest' }, () => {
             this.views.delete(viewId);
         });
         this.views.set(viewId, view);

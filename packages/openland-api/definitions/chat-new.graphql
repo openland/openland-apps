@@ -39,6 +39,16 @@ query ChatNewLoadAfter($chatId: ID!, $after: ID!, $limit: Int!) {
     }
 }
 
+query ChatNewLoadLastMessage($chatId: ID!) {
+    messages(chatId: $chatId, first: 1) {
+        ...ChatNewMessageFragment
+    }
+}
+
+query ChatNewHaveAccess($chatId: ID!) {
+    haveAccessToChat(chatId: $chatId)
+}
+
 #
 # Dialog Updates
 #

@@ -355,6 +355,10 @@ type ContactRemoved {
   contact: Contact!
 }
 
+type ContactsState {
+  state: String!
+}
+
 union ContactsUpdate = ContactAdded | ContactRemoved
 
 type ContactsUpdateContainer {
@@ -620,11 +624,19 @@ type DialogDeleted {
   globalUnread: Int!
 }
 
+type DialogGotAccess {
+  cid: ID!
+}
+
 enum DialogKind {
   PRIVATE
   INTERNAL
   PUBLIC
   GROUP
+}
+
+type DialogLostAccess {
+  cid: ID!
 }
 
 """depricated"""
@@ -700,7 +712,7 @@ type DialogTitleUpdated {
   title: String!
 }
 
-union DialogUpdate = DialogMessageReceived | DialogMessageUpdated | DialogMessageDeleted | DialogMessageRead | DialogTitleUpdated | DialogDeleted | DialogPhotoUpdated | DialogMuteChanged | DialogMentionedChanged | DialogBump | DialogPeerUpdated | DialogCallStateChanged
+union DialogUpdate = DialogMessageReceived | DialogMessageUpdated | DialogMessageDeleted | DialogMessageRead | DialogTitleUpdated | DialogDeleted | DialogPhotoUpdated | DialogMuteChanged | DialogMentionedChanged | DialogBump | DialogPeerUpdated | DialogCallStateChanged | DialogGotAccess | DialogLostAccess
 
 type DialogUpdateBatch {
   updates: [DialogUpdate!]!
@@ -1828,6 +1840,9 @@ type Mutation {
   debugUnsubscribeEveryoneFromChat(cid: ID!): Int!
   debugInviteMembersFromChat(cid: ID!, dest: ID!): Boolean!
   debugDeleteAllContacts: Boolean!
+  debugChangeGlobalCounterTypeForAll: Boolean!
+  debugReindexOrganizationMembers: Boolean!
+  debugDeleteTask(taskType: String!, id: String!): Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2706,6 +2721,9 @@ type Query {
   appInviteFromUser(shortname: String!): String!
   appInviteInfo(key: String!): AppInvite
   alphaResolveInvite(key: String!): ResolveInviteEntry
+
+  """phonebookRecords(first: Int!, after: ID!): PhonebookRecordConnection!"""
+  phonebookWasExported: Boolean!
   channels: [Channel!]!
   channel(id: ID!): Channel
   debugParseID(id: ID!): DebugID!
@@ -2767,6 +2785,7 @@ type Query {
   conferenceMedia(id: ID!, peerId: ID!): ConferenceMedia!
   myContacts(first: Int!, after: String): ContactConnection!
   myContactsSearch(query: String, first: Int!, after: String, page: Int): UserConnection!
+  myContactsState: ContactsState!
   dialogsState: DialogUpdateState!
   envVars: [EnvVar!]
   envVar(name: String!): EnvVar
@@ -2855,6 +2874,7 @@ type Query {
   lastReadedMessage(chatId: ID!): ModernMessage
   chatSharedMedia(chatId: ID!, mediaTypes: [SharedMediaType!]!, first: Int!, after: ID, before: ID, around: ID): SharedMediaConnection!
   chatSharedMediaCounters(chatId: ID!): SharedMediaCounters!
+  haveAccessToChat(chatId: ID!): Boolean!
   room(id: ID!): Room
   rooms(ids: [ID!]!): [Room!]!
   roomSuper(id: ID!): RoomSuper
@@ -2892,6 +2912,7 @@ type Reaction {
 type ReactionCounter {
   reaction: MessageReactionType!
   count: Int!
+  setByMe: Boolean!
 }
 
 union ResolveInviteEntry = InviteInfo | AppInvite | RoomInvite
@@ -3275,7 +3296,7 @@ type Subscription {
   commentUpdates(peerId: ID!, fromState: String): CommentUpdateContainer
   conferenceWatch(id: ID!): Conference!
   conferenceMediaWatch(id: ID!, peerId: ID!): ConferenceMedia!
-  myContactsUpdates(fromState: String): ContactsUpdateContainer!
+  myContactsUpdates(fromState: String!): ContactsUpdateContainer!
   dialogsUpdates(fromState: String): DialogUpdateContainer!
   homeFeedUpdates(fromState: String): FeedUpdateContainer!
   shouldShareLocationUpdates: Boolean!

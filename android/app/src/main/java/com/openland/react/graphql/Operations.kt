@@ -23,8 +23,10 @@ object Operations {
         if (name == "ChatNewChatState") return ChatNewChatState
         if (name == "ChatNewDialogsState") return ChatNewDialogsState
         if (name == "ChatNewGetMessage") return ChatNewGetMessage
+        if (name == "ChatNewHaveAccess") return ChatNewHaveAccess
         if (name == "ChatNewLoadAfter") return ChatNewLoadAfter
         if (name == "ChatNewLoadBefore") return ChatNewLoadBefore
+        if (name == "ChatNewLoadLastMessage") return ChatNewLoadLastMessage
         if (name == "ChatNewReadLastRead") return ChatNewReadLastRead
         if (name == "Comments") return Comments
         if (name == "Conference") return Conference

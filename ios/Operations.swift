@@ -2196,6 +2196,9 @@ private let ChatNewGetMessageSelector = obj(
                     fragment("ModernMessage", ChatNewMessageFragmentSelector)
                 ))
         )
+private let ChatNewHaveAccessSelector = obj(
+            field("haveAccessToChat", "haveAccessToChat", arguments(fieldValue("chatId", refValue("chatId"))), notNull(scalar("Boolean")))
+        )
 private let ChatNewLoadAfterSelector = obj(
             field("gammaMessages", "batch", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("first", refValue("limit")), fieldValue("after", refValue("after"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -2215,6 +2218,12 @@ private let ChatNewLoadBeforeSelector = obj(
                         ))))),
                     field("haveMoreBackward", "haveMoreBackward", scalar("Boolean"))
                 ))
+        )
+private let ChatNewLoadLastMessageSelector = obj(
+            field("messages", "messages", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("first", intValue(1))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("ModernMessage", ChatNewMessageFragmentSelector)
+                )))))
         )
 private let ChatNewReadLastReadSelector = obj(
             field("lastReadedMessage", "message", arguments(fieldValue("chatId", refValue("chatId"))), obj(
@@ -5020,6 +5029,12 @@ class Operations {
         "query ChatNewGetMessage($id:ID!){message(messageId:$id){__typename ...ChatNewMessageFragment}}fragment ChatNewMessageFragment on ModernMessage{__typename id date seq sender{__typename id}message fallback}",
         ChatNewGetMessageSelector
     )
+    let ChatNewHaveAccess = OperationDefinition(
+        "ChatNewHaveAccess",
+        .query, 
+        "query ChatNewHaveAccess($chatId:ID!){haveAccessToChat(chatId:$chatId)}",
+        ChatNewHaveAccessSelector
+    )
     let ChatNewLoadAfter = OperationDefinition(
         "ChatNewLoadAfter",
         .query, 
@@ -5031,6 +5046,12 @@ class Operations {
         .query, 
         "query ChatNewLoadBefore($chatId:ID!,$before:ID!,$limit:Int!){batch:gammaMessages(chatId:$chatId,first:$limit,before:$before){__typename messages{__typename ...ChatNewMessageFragment}haveMoreBackward}}fragment ChatNewMessageFragment on ModernMessage{__typename id date seq sender{__typename id}message fallback}",
         ChatNewLoadBeforeSelector
+    )
+    let ChatNewLoadLastMessage = OperationDefinition(
+        "ChatNewLoadLastMessage",
+        .query, 
+        "query ChatNewLoadLastMessage($chatId:ID!){messages(chatId:$chatId,first:1){__typename ...ChatNewMessageFragment}}fragment ChatNewMessageFragment on ModernMessage{__typename id date seq sender{__typename id}message fallback}",
+        ChatNewLoadLastMessageSelector
     )
     let ChatNewReadLastRead = OperationDefinition(
         "ChatNewReadLastRead",
@@ -6472,8 +6493,10 @@ class Operations {
         if name == "ChatNewChatState" { return ChatNewChatState }
         if name == "ChatNewDialogsState" { return ChatNewDialogsState }
         if name == "ChatNewGetMessage" { return ChatNewGetMessage }
+        if name == "ChatNewHaveAccess" { return ChatNewHaveAccess }
         if name == "ChatNewLoadAfter" { return ChatNewLoadAfter }
         if name == "ChatNewLoadBefore" { return ChatNewLoadBefore }
+        if name == "ChatNewLoadLastMessage" { return ChatNewLoadLastMessage }
         if name == "ChatNewReadLastRead" { return ChatNewReadLastRead }
         if name == "Comments" { return Comments }
         if name == "Conference" { return Conference }

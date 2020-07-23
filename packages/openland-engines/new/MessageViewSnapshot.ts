@@ -1,3 +1,4 @@
+import { backoff, delay } from 'openland-y-utils/timer';
 import * as React from 'react';
 import { MessagesStore } from './MessagesStore';
 import { StoredMessage } from './StoredMessage';
@@ -5,7 +6,7 @@ import { MessageView } from './MessageView';
 
 export type MessageViewSnapshotLoadFrom =
     | { type: 'message', id: string }
-    | { type: 'end' };
+    | { type: 'latest' };
 
 export type Snapshot =
     | { type: 'loading' }
@@ -76,7 +77,7 @@ export class MessageViewSnapshot implements MessageView {
     private doInit() {
         if (this.loadFrom.type === 'message') {
             let id = this.loadFrom.id;
-            (async () => {
+            backoff(async () => {
                 while (true) {
                     if (this._closed) {
                         return;
@@ -159,7 +160,69 @@ export class MessageViewSnapshot implements MessageView {
                         break;
                     }
                 }
-            })();
+            });
+        } else if (this.loadFrom.type === 'latest') {
+            backoff(async () => {
+                while (true) {
+                    if (this._closed) {
+                        return;
+                    }
+
+                    let loaded = await this.store.persistence.inTx(async (tx) => {
+                        let cachedMessage = await this.store.loadCachedLatest(tx);
+                        if (cachedMessage === undefined) {
+                            return false;
+                        }
+
+                        // Empty chat
+                        if (cachedMessage === null) {
+                            this._messages = [];
+                            this._maxSeq = Number.MAX_SAFE_INTEGER;
+                            this._minSeq = Number.MIN_SAFE_INTEGER;
+                            this._started = true;
+                            return true;
+                        } else {
+
+                            let prev = await this.store.loadCachedBefore(cachedMessage.seq, tx);
+                            if (!prev || (!prev.completed && prev.items.length < 20)) {
+                                return false;
+                            }
+
+                            this._messages = [...prev.items, cachedMessage];
+                            this._minSeq = cachedMessage.seq;
+                            if (prev.completed) {
+                                this._minSeq = Number.MIN_SAFE_INTEGER;
+                            } else {
+                                for (let m of prev.items) {
+                                    this._minSeq = Math.min(m.seq, this._minSeq);
+                                }
+                            }
+                            this._maxSeq = Number.MAX_SAFE_INTEGER;
+                            this._started = true;
+                            this.setMessagesState();
+                            return true;
+                        }
+                    });
+
+                    // Loaded needed
+                    if (!loaded) {
+                        let message = await this.store.loadLatest();
+                        if (this._closed) {
+                            return;
+                        }
+                        if (message) {
+                            let prev = await this.store.loadBefore(message.id);
+                            if (!prev) {
+                                this.setState({ type: 'no-access' });
+                                this.close();
+                                return;
+                            }
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            });
         }
     }
 

@@ -2203,6 +2203,9 @@ const ChatNewGetMessageSelector = obj(
                     fragment('ModernMessage', ChatNewMessageFragmentSelector)
                 ))
         );
+const ChatNewHaveAccessSelector = obj(
+            field('haveAccessToChat', 'haveAccessToChat', args(fieldValue("chatId", refValue('chatId'))), notNull(scalar('Boolean')))
+        );
 const ChatNewLoadAfterSelector = obj(
             field('gammaMessages', 'batch', args(fieldValue("chatId", refValue('chatId')), fieldValue("first", refValue('limit')), fieldValue("after", refValue('after'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -2222,6 +2225,12 @@ const ChatNewLoadBeforeSelector = obj(
                         ))))),
                     field('haveMoreBackward', 'haveMoreBackward', args(), scalar('Boolean'))
                 ))
+        );
+const ChatNewLoadLastMessageSelector = obj(
+            field('messages', 'messages', args(fieldValue("chatId", refValue('chatId')), fieldValue("first", intValue(1))), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('ModernMessage', ChatNewMessageFragmentSelector)
+                )))))
         );
 const ChatNewReadLastReadSelector = obj(
             field('lastReadedMessage', 'message', args(fieldValue("chatId", refValue('chatId'))), obj(
@@ -5023,6 +5032,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query ChatNewGetMessage($id:ID!){message(messageId:$id){__typename ...ChatNewMessageFragment}}fragment ChatNewMessageFragment on ModernMessage{__typename id date seq sender{__typename id}message fallback}',
         selector: ChatNewGetMessageSelector
     },
+    ChatNewHaveAccess: {
+        kind: 'query',
+        name: 'ChatNewHaveAccess',
+        body: 'query ChatNewHaveAccess($chatId:ID!){haveAccessToChat(chatId:$chatId)}',
+        selector: ChatNewHaveAccessSelector
+    },
     ChatNewLoadAfter: {
         kind: 'query',
         name: 'ChatNewLoadAfter',
@@ -5034,6 +5049,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'ChatNewLoadBefore',
         body: 'query ChatNewLoadBefore($chatId:ID!,$before:ID!,$limit:Int!){batch:gammaMessages(chatId:$chatId,first:$limit,before:$before){__typename messages{__typename ...ChatNewMessageFragment}haveMoreBackward}}fragment ChatNewMessageFragment on ModernMessage{__typename id date seq sender{__typename id}message fallback}',
         selector: ChatNewLoadBeforeSelector
+    },
+    ChatNewLoadLastMessage: {
+        kind: 'query',
+        name: 'ChatNewLoadLastMessage',
+        body: 'query ChatNewLoadLastMessage($chatId:ID!){messages(chatId:$chatId,first:1){__typename ...ChatNewMessageFragment}}fragment ChatNewMessageFragment on ModernMessage{__typename id date seq sender{__typename id}message fallback}',
+        selector: ChatNewLoadLastMessageSelector
     },
     ChatNewReadLastRead: {
         kind: 'query',
