@@ -114,10 +114,10 @@ export const AboutPage = React.memo(() => (
                 <div className={subheading}>Building the future of social</div>
                 <div>
                     <div className={text}>
-                        Openland is a modern platform for chat communities. Anyone can start a community as a simple chat and add more activies as it grows. Openland provides tools for sharing and organizing community knowledge and connecting community members via 1-1 introductions.
+                        Openland is&nbsp;a&nbsp;modern social network built for people, not advertisers. It&nbsp;is&nbsp;focused on&nbsp;fundamental human needs: making new friends, safe self-expression, and learning from other people. Openland is&nbsp;a&nbsp;home for some of&nbsp;the most active and supportive chat communities on&nbsp;the Internet. Anyone can start and grow their own community on&nbsp;Openland, for free.
                     </div>
                     <div className={text}>
-                        The company was founded in 2017 and is based in San Francisco. Openland is backed by 30 prominent venture investors, including Y Combinator, Gagarin Capital, Sinai Ventures, Soma Capital, Liquid 2 Ventures, and Rainfall Ventures.
+                        Openland was founded in&nbsp;2017 and is&nbsp;based in&nbsp;San Francisco. The company is&nbsp;backed by&nbsp;30&nbsp;prominent venture investors, including Y&nbsp;Combinator, Gagarin Capital, Sinai Ventures, Soma Capital, Liquid 2&nbsp;Ventures, and Rainfall Ventures.
                     </div>
                 </div>
 

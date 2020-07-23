@@ -46,8 +46,10 @@ const item = css`
     border-radius: 32px;
     overflow: hidden;
     background-color: #F7F8F9;
-    cursor: pointer;
+    display: block;
     transition: 150ms all ease;
+    color: var(--foregroundPrimary)!important;
+    text-decoration: none!important;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         width: 234px;
@@ -136,29 +138,29 @@ export const HomeHelp = React.forwardRef((props: {}, ref: React.Ref<HTMLDivEleme
             <div className={title}>Always here to help</div>
 
             <div className={items}>
-                <div className={item}>
+                <a href="https://www.notion.so/openland/Why-The-World-Needs-a-New-Social-Network-a1f8dcd410264613a2035d1ad53b83fc" target="_blank" className={item}>
                     <div className={cx(itemImage, 'is-c1')} />
                     <div className={itemInfo}>
                         <div className={itemTag}>Manifesto</div>
                         <div className={itemText}>Why the world needs a&nbsp;new&nbsp;social network</div>
                     </div>
-                </div>
+                </a>
 
-                <div className={item}>
+                <a href="https://www.notion.so/openland/Welcome-guide-a249051153614aef9c5b87ad8b2ef0ac" target="_blank" className={item}>
                     <div className={cx(itemImage, 'is-c2')} />
                     <div className={itemInfo}>
                         <div className={itemTag}>Welcome guide</div>
                         <div className={itemText}>Making friends through communities</div>
                     </div>
-                </div>
+                </a>
 
-                <div className={item}>
+                <a href="https://www.notion.so/openland/Community-building-guide-4ab523afd827403c802d21ca22dcb143" target="_blank" className={item}>
                     <div className={cx(itemImage, 'is-c3')} />
                     <div className={itemInfo}>
                         <div className={itemTag}>Organizers</div>
                         <div className={itemText}>Building communities on&nbsp;Openland</div>
                     </div>
-                </div>
+                </a>
             </div>
         </Container>
     </div>

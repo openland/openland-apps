@@ -75,6 +75,7 @@ interface ContactsSearchItemRenderProps extends ListNavigationProps {
 
 interface ContactsSearchResultsProps extends ListNavigationProps {
     query: string;
+    onItemsCountChange: (count: number) => void;
 }
 
 export const ContactsSearchItemRender = React.memo((props: ContactsSearchItemRenderProps) => {
@@ -138,6 +139,10 @@ const ContactsSearchInner = React.memo((props: ContactsSearchResultsProps) => {
     React.useEffect(() => {
         invalidator.invalidate();
     }, [query]);
+
+    React.useEffect(() => {
+        props.onItemsCountChange(items.length);
+    }, [items]);
 
     useShortcuts([
         {

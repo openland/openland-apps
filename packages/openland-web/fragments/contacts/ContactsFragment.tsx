@@ -75,12 +75,13 @@ export const ContactsFragment = React.memo(() => {
     const isSearching = query.trim().length > 0;
     const { items: initialItems, cursor: initialAfter } = client.useMyContacts({ first: 20 }, { fetchPolicy: 'cache-and-network' }).myContacts;
     const [items, setItems] = React.useState<MyContacts_myContacts_items_user[]>(initialItems.map(x => x.user));
-    const { selectedIndex } = useListSelection({ maxIndex: items.length - 1 });
     const [after, setAfter] = React.useState<string | null>(initialAfter);
     const [loading, setLoading] = React.useState(false);
     const [redirected, setRedirected] = React.useState(false);
     const { listenUpdates } = useLocalContacts();
     const isVisible = useVisibleTab();
+    const [searchItemsCount, setSearchItemsCount] = React.useState(0);
+    const { selectedIndex, setSelectedIndex } = useListSelection({ maxIndex: isSearching ? searchItemsCount - 1 : items.length - 1 });
 
     let hasContacts = items.length > 0;
 
@@ -112,11 +113,15 @@ export const ContactsFragment = React.memo(() => {
     }, []);
 
     const onMessagePick = React.useCallback((item: GlobalSearch_items) => {
+        const newPath = `/mail/${item.id}`;
+        if (route.path === newPath) {
+            return;
+        }
         if (refInput && refInput.current) {
             refInput.current.reset();
         }
-        router.navigate(`/mail/${item.id}`);
-    }, []);
+        router.navigate(newPath);
+    }, [route.path]);
 
     React.useEffect(() => {
         if (isVisible) {
@@ -144,6 +149,10 @@ export const ContactsFragment = React.memo(() => {
             });
         });
     }, []);
+
+    React.useEffect(() => {
+        setSelectedIndex(-1);
+    }, [query]);
 
     const noContactsContent = didImportContacts ? (
         <EmptyScreen
@@ -194,6 +203,7 @@ export const ContactsFragment = React.memo(() => {
                         selectedIndex={selectedIndex}
                         onPick={onPick}
                         onMessagePick={onMessagePick}
+                        onItemsCountChange={setSearchItemsCount}
                     />
                 ) : (
                         <UFlatList

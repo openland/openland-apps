@@ -19,14 +19,7 @@ const box = css`
         display: none;
     }
 
-    opacity: 0;
-    transform: translateY(100px);
-    transition: transform cubic-bezier(0, 0, 0.2, 1) 300ms, opacity cubic-bezier(0, 0, 0.2, 1) 300ms;
-
     &.in-viewport {
-        opacity: 1;
-        transform: translateY(0);
-
         .party-emoji {
             transform: scale(1);
         }
@@ -279,6 +272,7 @@ const link = css`
     margin-left: 6px;
     font-weight: 600;
     color: var(--tintBlue);
+    opacity: 0.8;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         margin-left: 5px;
@@ -294,7 +288,7 @@ const link = css`
     }
 
     span {
-        opacity: 0.4;
+        opacity: 0.5;
     }
 `;
 

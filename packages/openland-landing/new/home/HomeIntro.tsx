@@ -9,15 +9,6 @@ const box = css`
     @media (min-width: 768px) {
         overflow: hidden;
     }
-
-    opacity: 0;
-    transform: translateY(100px);
-    transition: transform cubic-bezier(0, 0, 0.2, 1) 300ms, opacity cubic-bezier(0, 0, 0.2, 1) 300ms;
-
-    &.in-viewport {
-        opacity: 1;
-        transform: translateY(0);
-    }
 `;
 
 const inner = css`
@@ -162,8 +153,8 @@ const app = css`
     background-size: 100% 100%;
 
     @media (min-width: 768px) and (max-width: 1199px) {
-        width: 121px;
-        height: 40px;
+        width: 150px;
+        height: 50px;
         margin: 0 16px 0 0;
     }
 
@@ -186,7 +177,7 @@ const appAndroid = css`
     background-image: url(https://cdn.openland.com/shared/landing/start/home-intro-android-2.svg);
 
     @media (min-width: 768px) and (max-width: 1199px) {
-        width: 130px;
+        width: 160px;
     }
 `;
 

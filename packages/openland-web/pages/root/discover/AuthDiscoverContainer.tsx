@@ -11,6 +11,7 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import BackIcon from 'openland-icons/s/ic-back-24.svg';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 const rootContainer = css`
     display: flex;
@@ -87,18 +88,26 @@ export const AuthDiscoverContainer = React.memo((props: { title: string, showBac
     const isMobile = useIsMobile();
 
     return (
-        <div className={rootContainer}>
-            {!isMobile && <AuthSidebarComponent />}
-            <div className={mainContainer}>
-                {isMobile && <AuthMobileHeader />}
-                <div className={boxContainer}>
-                    <AuthDiscoverHeader title={props.title} showBack={props.showBack} />
+        <>
+            <XDocumentHead
+                title="Discover"
+                description="Explore chat communities on Openland. Top charts, popular now, curated collections, and personal recommendations."
+                titleWithoutReverse={true}
+            />
 
-                    <React.Suspense fallback={<XLoader loading={true} />}>
-                        {props.children}
-                    </React.Suspense>
+            <div className={rootContainer}>
+                {!isMobile && <AuthSidebarComponent />}
+                <div className={mainContainer}>
+                    {isMobile && <AuthMobileHeader />}
+                    <div className={boxContainer}>
+                        <AuthDiscoverHeader title={props.title} showBack={props.showBack} />
+
+                        <React.Suspense fallback={<XLoader loading={true} />}>
+                            {props.children}
+                        </React.Suspense>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 });
