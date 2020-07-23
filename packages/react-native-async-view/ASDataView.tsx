@@ -10,7 +10,7 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 
 class ItemRenderHolder<T extends DataSourceItem> {
     item: T;
-    private _currentState: any;
+    currentState: any;
     currentStateHash: number;
     readonly dataView: ASDataView<T>;
 
@@ -37,16 +37,6 @@ class ItemRenderHolder<T extends DataSourceItem> {
         );
         this.currentState = this.container.getState();
         this.currentStateHash = doSimpleHash(JSON.stringify(this.currentState));
-    }
-
-    set currentState(val: any) {
-        this._currentState = Object.assign({}, val); // clone the value so currentState does not get changed from external sources
-                                                     // If you need to set an already cloned object or an object that will not be changed from outside,
-                                                     // please create a separate method to set currentState directly, without cloning.
-    }
-
-    get currentState() {
-        return this._currentState;
     }
 
     updateItem(item: T) {
