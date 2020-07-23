@@ -6,7 +6,7 @@ import { isElectron } from 'openland-y-utils/isElectron';
 const DEFAULT_OG = {
     title: 'Openland',
     description:
-        'A modern community platform. Learn, connect, get help, or start your own community.',
+        'Openland is a modern social network built for people, not advertisers. Join to make new friends, share stories, and do things together.',
     image: 'https://cdn.openland.com/shared/og/og-global-2.png',
 };
 

@@ -350,13 +350,13 @@ export const Footer = React.memo(() => {
                                         onMouseLeave={() => legalSetOpen(false)}
                                     >
                                         <span className={popupItem}>
-                                            <XView path={LandingLinks.privacy}>
-                                                <span className={popupText}>Privacy Policy</span>
+                                            <XView path={LandingLinks.terms}>
+                                                <span className={popupText}>Terms of Service</span>
                                             </XView>
                                         </span>
                                         <span className={popupItem}>
-                                            <XView path={LandingLinks.terms}>
-                                                <span className={popupText}>Terms of Service</span>
+                                            <XView path={LandingLinks.privacy}>
+                                                <span className={popupText}>Privacy Policy</span>
                                             </XView>
                                         </span>
                                     </div>
