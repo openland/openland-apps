@@ -13,6 +13,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { UserView } from './components/UserView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { ZButton } from 'openland-mobile/components/ZButton';
@@ -62,22 +63,25 @@ const ContactsWasImportStub = React.memo(() => {
     );
 });
 
-const ContactsNoImportStub = React.memo(() => {
-    const theme = React.useContext(ThemeContext);
-    const handleImportPress = React.useCallback(async() => {
-        if (Platform.OS === 'ios') {
-            ContactsPermission.checkPermission((errorCheck, permissionCheck) => {
-                if (permissionCheck === 'denied') {
-                    handlePermissionDismiss('contacts');
-                }
-            });
-        } else if (Platform.OS === 'android') {
-            const permission = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS);
-            if (permission === 'never_ask_again') {
+const handleImportPress = async () => {
+    if (Platform.OS === 'ios') {
+        ContactsPermission.checkPermission((errorCheck, permissionCheck) => {
+            if (permissionCheck === 'denied') {
                 handlePermissionDismiss('contacts');
             }
+        });
+    } else if (Platform.OS === 'android') {
+        const permission = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+        );
+        if (permission === 'never_ask_again') {
+            handlePermissionDismiss('contacts');
         }
-    }, []);
+    }
+};
+
+const ContactsNoImportStub = React.memo(() => {
+    const theme = React.useContext(ThemeContext);
     return (
         <ASSafeAreaView
             flexGrow={1}
@@ -111,7 +115,7 @@ const ContactsNoImportStub = React.memo(() => {
             >
                 Import contacts from your device to find people you know on Openland
             </Text>
-            <ZButton title="Import contacts" onPress={handleImportPress}/>
+            <ZButton title="Import contacts" onPress={handleImportPress} />
         </ASSafeAreaView>
     );
 });
@@ -119,9 +123,15 @@ const ContactsNoImportStub = React.memo(() => {
 const ContactsPage = React.memo((props: PageProps) => {
     const client = getClient();
     const scrollRef = React.useContext(ComponentRefContext);
-    const { items: initialItems, cursor: initialAfter } = client.useMyContacts({ first: 20 }, { fetchPolicy: 'network-only' }).myContacts;
-    const contactsWasExported = client.usePhonebookWasExported({ fetchPolicy: 'network-only' }).phonebookWasExported;
-    const [items, setItems] = React.useState<MyContacts_myContacts_items_user[]>(initialItems.map(x => x.user));
+    const { items: initialItems, cursor: initialAfter } = client.useMyContacts(
+        { first: 20 },
+        { fetchPolicy: 'network-only' },
+    ).myContacts;
+    const contactsWasExported = client.usePhonebookWasExported({ fetchPolicy: 'network-only' })
+        .phonebookWasExported;
+    const [items, setItems] = React.useState<MyContacts_myContacts_items_user[]>(
+        initialItems.map((x) => x.user),
+    );
     const [after, setAfter] = React.useState<string | null>(initialAfter);
     const [loading, setLoading] = React.useState(false);
     const { listenUpdates } = useLocalContacts();
@@ -160,8 +170,14 @@ const ContactsPage = React.memo((props: PageProps) => {
     const handleLoadMore = async () => {
         if (!loading && after) {
             setLoading(true);
-            const { items: newItems, cursor } = (await client.queryMyContacts({ first: 10, after }, { fetchPolicy: 'network-only' })).myContacts;
-            setItems(prev => prev.concat(newItems.map(x => x.user).filter(x => !prev.some(y => x.id === y.id))));
+            const { items: newItems, cursor } = (
+                await client.queryMyContacts({ first: 10, after }, { fetchPolicy: 'network-only' })
+            ).myContacts;
+            setItems((prev) =>
+                prev.concat(
+                    newItems.map((x) => x.user).filter((x) => !prev.some((y) => x.id === y.id)),
+                ),
+            );
             setAfter(cursor);
             setLoading(false);
         }
@@ -169,28 +185,32 @@ const ContactsPage = React.memo((props: PageProps) => {
 
     React.useEffect(() => {
         return listenUpdates(({ addedUsers, removedUsers }) => {
-            setItems(prev => {
-                return addedUsers.concat(prev.filter(x => !removedUsers.some(y => y.id === x.id)));
+            setItems((prev) => {
+                return addedUsers.concat(
+                    prev.filter((x) => !removedUsers.some((y) => y.id === x.id)),
+                );
             });
         });
     }, []);
 
+    const ImportItem = () => (
+        <ZListItem
+            text="Import contacts"
+            leftIcon={require('assets/ic-cycle-glyph-24.png')}
+            small={false}
+            onPress={handleImportPress}
+        />
+    );
+
     return (
         <>
             <SHeader title="Contacts" searchPlaceholder="Name or organization" />
-            {!hasContacts && contactsWasExported && (
-                <ContactsWasImportStub />
-            )}
-            {!hasContacts && !contactsWasExported && (
-                <ContactsNoImportStub />
-            )}
+            {!hasContacts && contactsWasExported && <ContactsWasImportStub />}
+            {!hasContacts && !contactsWasExported && <ContactsNoImportStub />}
             {hasContacts && (
                 <SSearchControler
                     searchRender={(p) => (
-                        <GlobalSearchContacts
-                            query={p.query}
-                            router={props.router}
-                        />
+                        <GlobalSearchContacts query={p.query} router={props.router} />
                     )}
                 >
                     <React.Suspense fallback={<ZLoader />}>
@@ -200,12 +220,15 @@ const ContactsPage = React.memo((props: PageProps) => {
                                 data={items}
                                 onEndReached={handleLoadMore}
                                 refreshing={loading}
+                                ListHeaderComponent={!contactsWasExported ? ImportItem : undefined}
                                 keyExtractor={(item, index) => index + '-' + item.id}
                                 renderItem={({ item }) => (
                                     <UserView
                                         user={item}
                                         showOrganization={false}
-                                        onPress={() => props.router.push('ProfileUser', { id: item.id })}
+                                        onPress={() =>
+                                            props.router.push('ProfileUser', { id: item.id })
+                                        }
                                         onLongPress={() => handleContactLongPress(item)}
                                     />
                                 )}
@@ -218,4 +241,4 @@ const ContactsPage = React.memo((props: PageProps) => {
     );
 });
 
-export const Contacts = withApp(ContactsPage, { navigationAppearance: 'large', });
+export const Contacts = withApp(ContactsPage, { navigationAppearance: 'large' });

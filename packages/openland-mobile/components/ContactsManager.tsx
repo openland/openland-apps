@@ -160,6 +160,7 @@ class ContactsRegistrator {
                         phones: c.phones.map(p => p.number)
                     }))
                 });
+                await this.client.refetchPhonebookWasExported();
             });
 
             await AsyncStorage.multiSet(batch.map(p => ([
