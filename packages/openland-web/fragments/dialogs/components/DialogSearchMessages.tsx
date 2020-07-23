@@ -112,7 +112,7 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
 
     return (
         <XScrollView3 onScroll={onScroll} flexGrow={1} flexShrink={1} useDefaultScroll={true}>
-            {items.map((i, index) => <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} {...props} />)}
+            {items.map((i, index) => <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} savedMessages={i.id === messenger.user.id} {...props} />)}
             {messages.length > 0 && (
                 <XView height={1} alignSelf="stretch" backgroundColor="#ececec" />
             )}
@@ -149,6 +149,7 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
                         hovered={index === (selectedIndex - items.length)}
                         selected={selected}
                         onPress={() => props.onMessagePick(message.id)}
+                        savedMessages={chat.__typename === 'PrivateRoom' && chat.user.id === messenger.user.id}
                     />
                 );
             })}
