@@ -53,8 +53,7 @@ const screens = css`
 `;
 
 const screenback = css`
-    width: 227px;
-    height: 493px;
+    width: 227px; height: 493px;
     top: 18px; left: 206px;
     position: absolute;
     box-shadow: 0px 4.56288px 34.2216px rgba(0, 0, 0, 0.08);
@@ -66,11 +65,15 @@ const screenback = css`
         url(https://cdn.openland.com/shared/landing/start/home-intro-screen-02@2x.png) 2x
     );
     background-size: 100% 100%;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        width: 164px; height: 356px;
+        top: 13px; left: 150px;
+    }
 `;
 
 const screenfront = css`
-    width: 270px;
-    height: 585px;
+    width: 270px; height: 585px;
     top: -29px; left: 92px;
     position: absolute;
     box-shadow: 0px 4.56288px 50.1917px rgba(0, 0, 0, 0.08);
@@ -82,6 +85,11 @@ const screenfront = css`
         url(https://cdn.openland.com/shared/landing/start/home-intro-screen-01@2x.png) 2x
     );
     background-size: 100% 100%;
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+        width: 195px; height: 423px;
+        top: -21px; left: 67px;
+    }
 `;
 
 const info = css`
