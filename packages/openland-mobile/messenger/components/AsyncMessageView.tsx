@@ -49,9 +49,6 @@ export interface AsyncMessageViewProps {
 type SendingIndicatorT = 'pending' | 'sending' | 'sent' | 'hide';
 
 const AsyncMessageViewAvatar = (props: { message: DataSourceMessageItem, handleUserPress: (id: string) => void }) => {
-    useThemeGlobal(); // This line is a hack to make avatars work. Basically, there is a bug that either requires to be fixed (but I don't know how),
-                      // or for the affected components to be rerendered after each render. Moreover, it only works if rerender happens because of this line.
-                      // I have no idea why, I'll keep debugging, but this hack will have to do the job for now.
     const { isOut, attachBottom, sender, overrideAvatar, overrideName } = props.message;
 
     if (isOut || attachBottom) {
