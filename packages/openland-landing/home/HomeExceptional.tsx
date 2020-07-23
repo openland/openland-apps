@@ -69,17 +69,17 @@ const screenshot = css`
     border-radius: 20px;
     margin: 0 auto 26px;
     box-shadow: 0px 4.70932px 40.5751px rgba(0, 0, 0, 0.1);
-    background: url(https://cdn.openland.com/shared/landing/start/home-exceptional.png) no-repeat;
-    background-image: -webkit-image-set(
-        url(https://cdn.openland.com/shared/landing/start/home-exceptional.png) 1x,
-        url(https://cdn.openland.com/shared/landing/start/home-exceptional@2x.png) 2x
-    );
-    background-size: 100% 100%;
+    overflow: hidden;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         width: 600px; height: 378px;
         border-radius: 14px;
         margin: 0 auto 17px;
+    }
+
+    img {
+        display: block;
+        width: 100%; height: 100%;
     }
 `;
 
@@ -125,7 +125,13 @@ export const HomeExceptional = React.forwardRef((props: {}, ref: React.Ref<HTMLD
             <div className={wrapper}>
                 <div className={title}>Exceptional apps</div>
                 <div className={text}>Beautiful, simple, and ultra-fast</div>
-                <div className={screenshot} />
+                <div className={screenshot}>
+                    <img
+                        src="https://cdn.openland.com/shared/landing/start/home-exceptional.png"
+                        srcSet="https://cdn.openland.com/shared/landing/start/home-exceptional@2x.png 2x"
+                        alt=""
+                    />
+                </div>
                 <div className={features}>
                     <div className={feature}><MessagingIcon />Messaging</div>
                     <div className={feature}><VideoIcon />Video chat</div>

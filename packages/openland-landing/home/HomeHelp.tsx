@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css, cx } from 'linaria';
+import { css } from 'linaria';
 import { Container } from '../components/Container';
 
 const box = css`
@@ -69,31 +69,9 @@ const itemImage = css`
         height: 130px;
     }
 
-    &.is-c1 {
-        background: #F2DDE3 url(https://cdn.openland.com/shared/landing/start/home-article-01.png) no-repeat;
-        background-image: -webkit-image-set(
-            url(https://cdn.openland.com/shared/landing/start/home-article-01.png) 1x,
-            url(https://cdn.openland.com/shared/landing/start/home-article-01@2x.png) 2x
-        );
-        background-size: 100% 100%;
-    }
-
-    &.is-c2 {
-        background: #F7CEAC url(https://cdn.openland.com/shared/landing/start/home-article-02.png) no-repeat;
-        background-image: -webkit-image-set(
-            url(https://cdn.openland.com/shared/landing/start/home-article-02.png) 1x,
-            url(https://cdn.openland.com/shared/landing/start/home-article-02@2x.png) 2x
-        );
-        background-size: 100% 100%;
-    }
-
-    &.is-c3 {
-        background: #FFF0C9 url(https://cdn.openland.com/shared/landing/start/home-article-03.png) no-repeat;
-        background-image: -webkit-image-set(
-            url(https://cdn.openland.com/shared/landing/start/home-article-03.png) 1x,
-            url(https://cdn.openland.com/shared/landing/start/home-article-03@2x.png) 2x
-        );
-        background-size: 100% 100%;
+    img {
+        display: block;
+        width: 100%; height: 100%;
     }
 `;
 
@@ -139,7 +117,13 @@ export const HomeHelp = React.forwardRef((props: {}, ref: React.Ref<HTMLDivEleme
 
             <div className={items}>
                 <a href="https://www.notion.so/openland/Why-The-World-Needs-a-New-Social-Network-a1f8dcd410264613a2035d1ad53b83fc" target="_blank" className={item}>
-                    <div className={cx(itemImage, 'is-c1')} />
+                    <div className={itemImage}>
+                        <img
+                            src="https://cdn.openland.com/shared/landing/start/home-article-01.png"
+                            srcSet="https://cdn.openland.com/shared/landing/start/home-article-01@2x.png 2x"
+                            alt=""
+                        />
+                    </div>
                     <div className={itemInfo}>
                         <div className={itemTag}>Manifesto</div>
                         <div className={itemText}>Why the world needs a&nbsp;new&nbsp;social network</div>
@@ -147,7 +131,13 @@ export const HomeHelp = React.forwardRef((props: {}, ref: React.Ref<HTMLDivEleme
                 </a>
 
                 <a href="https://www.notion.so/openland/Welcome-guide-a249051153614aef9c5b87ad8b2ef0ac" target="_blank" className={item}>
-                    <div className={cx(itemImage, 'is-c2')} />
+                    <div className={itemImage}>
+                        <img
+                            src="https://cdn.openland.com/shared/landing/start/home-article-02.png"
+                            srcSet="https://cdn.openland.com/shared/landing/start/home-article-02@2x.png 2x"
+                            alt=""
+                        />
+                    </div>
                     <div className={itemInfo}>
                         <div className={itemTag}>Welcome guide</div>
                         <div className={itemText}>Making friends through communities</div>
@@ -155,7 +145,13 @@ export const HomeHelp = React.forwardRef((props: {}, ref: React.Ref<HTMLDivEleme
                 </a>
 
                 <a href="https://www.notion.so/openland/Community-building-guide-4ab523afd827403c802d21ca22dcb143" target="_blank" className={item}>
-                    <div className={cx(itemImage, 'is-c3')} />
+                    <div className={itemImage}>
+                        <img
+                            src="https://cdn.openland.com/shared/landing/start/home-article-03.png"
+                            srcSet="https://cdn.openland.com/shared/landing/start/home-article-03@2x.png 2x"
+                            alt=""
+                        />
+                    </div>
                     <div className={itemInfo}>
                         <div className={itemTag}>Organizers</div>
                         <div className={itemText}>Building communities on&nbsp;Openland</div>

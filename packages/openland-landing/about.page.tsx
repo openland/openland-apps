@@ -77,27 +77,20 @@ const text = css`
 const hero = css`
     background: linear-gradient(180deg, #F7F8F9 0%, #F7F8F9 100%);
     height: 262px;
-    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
 
     @media (max-width: 767px) {
         height: 162px;
     }
 
-    &:before {
-        content: "";
+    img {
         display: block;
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: url(https://cdn.openland.com/shared/landing/start/about-hero.png) no-repeat;
-        background-image: -webkit-image-set(
-            url(https://cdn.openland.com/shared/landing/start/about-hero.png) 1x,
-            url(https://cdn.openland.com/shared/landing/start/about-hero@2x.png) 2x
-        );
-        background-size: auto 190px;
-        background-position: bottom center;
+        width: 375px; height: 190px;
 
         @media (max-width: 767px) {
-            background-size: auto 131px;
+            width: 259px; height: 131px;
         }
     }
 `;
@@ -106,7 +99,13 @@ export const AboutPage = React.memo(() => (
     <Page>
         <XDocumentHead title="About Openland" disableBranding={true} />
 
-        <div className={hero} />
+        <div className={hero}>
+            <img
+                src="https://cdn.openland.com/shared/landing/start/about-hero.png"
+                srcSet="https://cdn.openland.com/shared/landing/start/about-hero@2x.png 2x"
+                alt=""
+            />
+        </div>
 
         <Container isSmall={true}>
             <div className={box}>

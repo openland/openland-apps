@@ -90,61 +90,20 @@ const message = css`
 
 const avatar = css`
     width: 46px; height: 46px;
-    border-radius: 23px;
-    border: 1px solid var(--border);
-    background-size: 100% 100%!important;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         width: 30px; height: 30px;
-        border-radius: 15px;
     }
 
-    &.is-01 {
-        background: url(https://cdn.openland.com/shared/landing/start/avatar-01.png) no-repeat;
-        background-image: -webkit-image-set(
-            url(https://cdn.openland.com/shared/landing/start/avatar-01.png) 1x,
-            url(https://cdn.openland.com/shared/landing/start/avatar-01@2x.png) 2x
-        );
-    }
+    img {
+        display: block;
+        overflow: hidden;
+        border-radius: 23px;
+        border: 1px solid var(--border);
 
-    &.is-02 {
-        background: url(https://cdn.openland.com/shared/landing/start/avatar-02.png) no-repeat;
-        background-image: -webkit-image-set(
-            url(https://cdn.openland.com/shared/landing/start/avatar-02.png) 1x,
-            url(https://cdn.openland.com/shared/landing/start/avatar-02@2x.png) 2x
-        );
-    }
-
-    &.is-03 {
-        background: url(https://cdn.openland.com/shared/landing/start/avatar-03.png) no-repeat;
-        background-image: -webkit-image-set(
-            url(https://cdn.openland.com/shared/landing/start/avatar-03.png) 1x,
-            url(https://cdn.openland.com/shared/landing/start/avatar-03@2x.png) 2x
-        );
-    }
-
-    &.is-04 {
-        background: url(https://cdn.openland.com/shared/landing/start/avatar-04.png) no-repeat;
-        background-image: -webkit-image-set(
-            url(https://cdn.openland.com/shared/landing/start/avatar-04.png) 1x,
-            url(https://cdn.openland.com/shared/landing/start/avatar-04@2x.png) 2x
-        );
-    }
-
-    &.is-05 {
-        background: url(https://cdn.openland.com/shared/landing/start/avatar-05.png) no-repeat;
-        background-image: -webkit-image-set(
-            url(https://cdn.openland.com/shared/landing/start/avatar-05.png) 1x,
-            url(https://cdn.openland.com/shared/landing/start/avatar-05@2x.png) 2x
-        );
-    }
-
-    &.is-06 {
-        background: url(https://cdn.openland.com/shared/landing/start/avatar-06.png) no-repeat;
-        background-image: -webkit-image-set(
-            url(https://cdn.openland.com/shared/landing/start/avatar-06.png) 1x,
-            url(https://cdn.openland.com/shared/landing/start/avatar-06@2x.png) 2x
-        );
+        @media (min-width: 768px) and (max-width: 1199px) {
+            border-radius: 15px;
+        }
     }
 `;
 
@@ -210,14 +169,26 @@ export const TiltPreview = React.memo((props: TiltPreviewProps) => (
                 <div className={serviceMessage}>People who loved The Last Jedi</div>
                 <div className={group}>
                     <div className={message}>
-                        <div className={cx(avatar, 'is-01')} />
+                        <div className={avatar}>
+                            <img
+                                src="https://cdn.openland.com/shared/landing/start/avatar-01.png"
+                                srcSet="https://cdn.openland.com/shared/landing/start/avatar-01@2x.png 2x"
+                                alt=""
+                            />
+                        </div>
                         <div className={bubble}>I am not alone 🤩</div>
                     </div>
                 </div>
                 <div className={group}>
                     <div className={cx(message, 'is-reversed')}>
                         <div className={cx(bubble, 'is-cyan')}>Let's jump on a call!</div>
-                        <div className={cx(avatar, 'is-02')} />
+                        <div className={avatar}>
+                            <img
+                                src="https://cdn.openland.com/shared/landing/start/avatar-02.png"
+                                srcSet="https://cdn.openland.com/shared/landing/start/avatar-02@2x.png 2x"
+                                alt=""
+                            />
+                        </div>
                     </div>
                 </div>
             </>
@@ -226,7 +197,13 @@ export const TiltPreview = React.memo((props: TiltPreviewProps) => (
             <>
                 <div className={group}>
                     <div className={message}>
-                        <div className={cx(avatar, 'is-03')} />
+                        <div className={avatar}>
+                            <img
+                                src="https://cdn.openland.com/shared/landing/start/avatar-03.png"
+                                srcSet="https://cdn.openland.com/shared/landing/start/avatar-03@2x.png 2x"
+                                alt=""
+                            />
+                        </div>
                         <div className={bubble}>Got a new idea today ✨</div>
                     </div>
                 </div>
@@ -237,7 +214,13 @@ export const TiltPreview = React.memo((props: TiltPreviewProps) => (
                     </div>
                     <div className={cx(message, 'is-reversed')}>
                         <div className={cx(bubble, 'is-purple')}>How can I help?</div>
-                        <div className={cx(avatar, 'is-04')} />
+                        <div className={avatar}>
+                            <img
+                                src="https://cdn.openland.com/shared/landing/start/avatar-04.png"
+                                srcSet="https://cdn.openland.com/shared/landing/start/avatar-04@2x.png 2x"
+                                alt=""
+                            />
+                        </div>
                     </div>
                 </div>
             </>
@@ -246,7 +229,13 @@ export const TiltPreview = React.memo((props: TiltPreviewProps) => (
             <>
                 <div className={group}>
                     <div className={message}>
-                        <div className={cx(avatar, 'is-05')} />
+                        <div className={avatar}>
+                            <img
+                                src="https://cdn.openland.com/shared/landing/start/avatar-05.png"
+                                srcSet="https://cdn.openland.com/shared/landing/start/avatar-05@2x.png 2x"
+                                alt=""
+                            />
+                        </div>
                         <div className={cx(bubble, 'is-big')}>
                             <strong>Megan Lee</strong> will be here next week with Q&A and a few personal sessions!
                         </div>
@@ -255,7 +244,13 @@ export const TiltPreview = React.memo((props: TiltPreviewProps) => (
                 <div className={group}>
                     <div className={cx(message, 'is-reversed')}>
                         <div className={cx(bubble, 'is-orange')}>Awesome, can I book a slot?</div>
-                        <div className={cx(avatar, 'is-06')} />
+                        <div className={avatar}>
+                            <img
+                                src="https://cdn.openland.com/shared/landing/start/avatar-06.png"
+                                srcSet="https://cdn.openland.com/shared/landing/start/avatar-06@2x.png 2x"
+                                alt=""
+                            />
+                        </div>
                     </div>
                 </div>
             </>

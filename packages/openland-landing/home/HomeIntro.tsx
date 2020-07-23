@@ -59,16 +59,17 @@ const screenback = css`
     box-shadow: 0px 4.56288px 34.2216px rgba(0, 0, 0, 0.08);
     border-radius: 19px;
     transform: translateZ(20px);
-    background: #ffffff url(https://cdn.openland.com/shared/landing/start/home-intro-screen-02.png) no-repeat;
-    background-image: -webkit-image-set(
-        url(https://cdn.openland.com/shared/landing/start/home-intro-screen-02.png) 1x,
-        url(https://cdn.openland.com/shared/landing/start/home-intro-screen-02@2x.png) 2x
-    );
-    background-size: 100% 100%;
+    background: #ffffff;
+    overflow: hidden;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         width: 164px; height: 356px;
         top: 13px; left: 150px;
+    }
+
+    img {
+        display: block;
+        width: 100%; height: 100%;
     }
 `;
 
@@ -79,16 +80,17 @@ const screenfront = css`
     box-shadow: 0px 4.56288px 50.1917px rgba(0, 0, 0, 0.08);
     border-radius: 23px;
     transform: translateZ(40px);
-    background: #ffffff url(https://cdn.openland.com/shared/landing/start/home-intro-screen-01.png) no-repeat;
-    background-image: -webkit-image-set(
-        url(https://cdn.openland.com/shared/landing/start/home-intro-screen-01.png) 1x,
-        url(https://cdn.openland.com/shared/landing/start/home-intro-screen-01@2x.png) 2x
-    );
-    background-size: 100% 100%;
+    background: #ffffff;
+    overflow: hidden;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         width: 195px; height: 423px;
         top: -21px; left: 67px;
+    }
+
+    img {
+        display: block;
+        width: 100%; height: 100%;
     }
 `;
 
@@ -288,45 +290,11 @@ const slideImage = css`
     width: 226px; height: 490px;
     margin: 0 auto;
     border-radius: 19px;
+    overflow: hidden;
 
-    &.is-01 {
-        background: url(https://cdn.openland.com/shared/landing/start/home-slide-01.png) no-repeat;
-        background-image: -webkit-image-set(
-            url(https://cdn.openland.com/shared/landing/start/home-slide-01.png) 1x,
-            url(https://cdn.openland.com/shared/landing/start/home-slide-01@2x.png) 2x
-        );
-    }
-
-    &.is-02 {
-        background: url(https://cdn.openland.com/shared/landing/start/home-slide-02.png) no-repeat;
-        background-image: -webkit-image-set(
-            url(https://cdn.openland.com/shared/landing/start/home-slide-02.png) 1x,
-            url(https://cdn.openland.com/shared/landing/start/home-slide-02@2x.png) 2x
-        );
-    }
-
-    &.is-03 {
-        background: url(https://cdn.openland.com/shared/landing/start/home-slide-03.png) no-repeat;
-        background-image: -webkit-image-set(
-            url(https://cdn.openland.com/shared/landing/start/home-slide-03.png) 1x,
-            url(https://cdn.openland.com/shared/landing/start/home-slide-03@2x.png) 2x
-        );
-    }
-
-    &.is-04 {
-        background: url(https://cdn.openland.com/shared/landing/start/home-slide-04.png) no-repeat;
-        background-image: -webkit-image-set(
-            url(https://cdn.openland.com/shared/landing/start/home-slide-04.png) 1x,
-            url(https://cdn.openland.com/shared/landing/start/home-slide-04@2x.png) 2x
-        );
-    }
-
-    &.is-05  {
-        background: url(https://cdn.openland.com/shared/landing/start/home-slide-05.png) no-repeat;
-        background-image: -webkit-image-set(
-            url(https://cdn.openland.com/shared/landing/start/home-slide-05.png) 1x,
-            url(https://cdn.openland.com/shared/landing/start/home-slide-05@2x.png) 2x
-        );
+    img {
+        display: block;
+        width: 100%; height: 100%;
     }
 `;
 
@@ -366,8 +334,20 @@ export const HomeIntro = React.forwardRef((props: {}, ref: React.Ref<HTMLDivElem
             <Container>
                 <div className={inner}>
                     <Tilt options={{ max: 20, scale: 1 }} className={screens}>
-                        <div className={screenback} />
-                        <div className={screenfront} />
+                        <div className={screenback}>
+                            <img
+                                src="https://cdn.openland.com/shared/landing/start/home-intro-screen-02.png"
+                                srcSet="https://cdn.openland.com/shared/landing/start/home-intro-screen-02@2x.png 2x"
+                                alt=""
+                            />
+                        </div>
+                        <div className={screenfront}>
+                            <img
+                                src="https://cdn.openland.com/shared/landing/start/home-intro-screen-01.png"
+                                srcSet="https://cdn.openland.com/shared/landing/start/home-intro-screen-01@2x.png 2x"
+                                alt=""
+                            />
+                        </div>
                     </Tilt>
                     <div className={info}>
                         <div className={emoji}>{emojiAnimated('👋')}</div>
@@ -399,7 +379,13 @@ export const HomeIntro = React.forwardRef((props: {}, ref: React.Ref<HTMLDivElem
                         )}
                     >
                         <div className={slideTitle}>{s}</div>
-                        <div className={cx(slideImage, `is-0${i + 1}`)} />
+                        <div className={slideImage}>
+                            <img
+                                src={`https://cdn.openland.com/shared/landing/start/home-slide-0${i + 1}.png`}
+                                srcSet={`https://cdn.openland.com/shared/landing/start/home-slide-0${i + 1}@2x.png 2x`}
+                                alt=""
+                            />
+                        </div>
                     </div>
                 ))}
             </div>
