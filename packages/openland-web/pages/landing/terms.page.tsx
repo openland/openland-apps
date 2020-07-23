@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TermsPage } from 'openland-landing/next-terms.page';
+import { TermsPage } from 'openland-landing/terms.page';
 
 const Terms = () => {
     return <TermsPage />;

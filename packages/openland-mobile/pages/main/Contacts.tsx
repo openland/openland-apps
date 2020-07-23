@@ -204,7 +204,7 @@ const ContactsPage = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title="Contacts" searchPlaceholder="Name or organization" />
+            <SHeader title="Contacts" searchPlaceholder="Search" />
             {!hasContacts && contactsWasExported && <ContactsWasImportStub />}
             {!hasContacts && !contactsWasExported && <ContactsNoImportStub />}
             {hasContacts && (

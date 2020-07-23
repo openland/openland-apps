@@ -14,6 +14,7 @@ import { useListSelection } from 'openland-web/utils/useListSelection';
 import { useClient } from 'openland-api/useClient';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { useLocalContacts } from 'openland-y-utils/contacts/LocalContacts';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 const emptyScreenImg = css`
     height: 200px;
@@ -137,6 +138,14 @@ export const ContactsFragment = React.memo(() => {
         },
         [hasContacts, loading],
     );
+
+    const onlines = React.useContext(MessengerContext).getOnlines();
+
+    React.useEffect(() => {
+        return onlines.onSingleChangeChange((user: string, online: boolean) => {
+            setItems(current => current.map(item => item.id === user && online !== item.online ? { ...item, online, lastSeen: Date.now().toString() } : item));
+        });
+    }, [items]);
 
     React.useEffect(() => {
         return listenUpdates(({ addedUsers, removedUsers }) => {

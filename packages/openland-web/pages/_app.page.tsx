@@ -67,7 +67,7 @@ import { EnvironmentContext } from './root/EnvironmentContext';
 import { OpenlandClient } from 'openland-api/spacex';
 import { GQLClientContext } from 'openland-api/useClient';
 import { QueryCacheProvider } from '@openland/spacex';
-import { DiscoverPage as LandingHomePage } from 'openland-landing/discover.page';
+import { HomePage as LandingHomePage } from 'openland-landing/home.page';
 
 const ErrorBoundary = bugsnagClient.getPlugin('react');
 

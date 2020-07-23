@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { HomePage } from 'openland-landing/new/home.page';
+import { HomePage } from 'openland-landing/home.page';
 
 const Home = () => {
     return <HomePage />;
