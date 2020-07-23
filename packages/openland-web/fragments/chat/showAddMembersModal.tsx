@@ -139,13 +139,15 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                     )}
                     {canAddPeople && (
                         <>
-                            <SectionTitle
-                                title={
-                                    props.isPremium
-                                        ? 'Add people directly and for free'
-                                        : 'Add people directly'
-                                }
-                            />
+                            {!props.hideOwnerLink && (
+                                <SectionTitle
+                                    title={
+                                        props.isPremium
+                                            ? 'Add people directly and for free'
+                                            : 'Add people directly'
+                                    }
+                                />
+                            )}
                             <XView>
                                 <SearchBox
                                     small={true}
