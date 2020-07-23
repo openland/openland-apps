@@ -238,7 +238,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 paddingHorizontal={paddingHorizontal}
                 alignItems="center"
                 flexDirection="row"
-                backgroundColor={hovered ? 'var(--backgroundPrimaryHover)' : undefined}
+                backgroundColor={hovered && !selected ? 'var(--backgroundPrimaryHover)' : undefined}
                 hoverBackgroundColor={props.disableHover ? undefined : 'var(--backgroundPrimaryHover)'}
                 hoverTextDecoration="none"
                 selectedBackgroundColor="var(--accentMuted)"
