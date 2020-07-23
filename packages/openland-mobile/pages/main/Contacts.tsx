@@ -21,6 +21,7 @@ import Toast from 'openland-mobile/components/Toast';
 import { MyContacts_myContacts_items_user } from 'openland-api/spacex.types';
 import { useLocalContacts } from 'openland-y-utils/contacts/LocalContacts';
 import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 import { GlobalSearchContacts } from './components/globalSearch/GlobalSearchContacth';
 import { ComponentRefContext } from './Home';
 
@@ -122,6 +123,7 @@ const ContactsNoImportStub = React.memo(() => {
 
 const ContactsPage = React.memo((props: PageProps) => {
     const client = getClient();
+    const onlines = getMessenger().engine.getOnlines();
     const scrollRef = React.useContext(ComponentRefContext);
     const { items: initialItems, cursor: initialAfter } = client.useMyContacts(
         { first: 20 },
@@ -192,6 +194,18 @@ const ContactsPage = React.memo((props: PageProps) => {
             });
         });
     }, []);
+
+    React.useEffect(() => {
+        return onlines.onSingleChangeChange((user: string, online: boolean) => {
+            setItems((current) =>
+                current.map((item) =>
+                    item.id === user && online !== item.online
+                        ? { ...item, online, lastSeen: Date.now().toString() }
+                        : item,
+                ),
+            );
+        });
+    }, [items]);
 
     const ImportItem = () => (
         <ZListItem
