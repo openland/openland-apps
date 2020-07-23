@@ -6,7 +6,6 @@ import { Priority } from 'openland-api/Priority';
 import { parsePhoneNumberFromString, CountryCode, isSupportedCountry } from 'libphonenumber-js';
 import * as Localize from "react-native-localize";
 import { backoff } from 'openland-y-utils/timer';
-import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
 
 /*
     TODO:
@@ -40,10 +39,7 @@ class ContactsRegistrator {
 
     constructor(client: OpenlandClient) {
         this.client = client.withParameters({ defaultPriority: Priority.LOW });
-
-        if (NON_PRODUCTION) {
-            this.init();
-        }
+        this.init();
     }
 
     init = async () => {
@@ -173,7 +169,7 @@ class ContactsRegistrator {
     }
 }
 
-var registrator: ContactsRegistrator | null = null;
+let registrator: ContactsRegistrator | null = null;
 
 export class ContactsManager extends React.PureComponent<{ client: OpenlandClient }> {
     componentDidMount() {
