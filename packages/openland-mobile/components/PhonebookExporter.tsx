@@ -6,7 +6,6 @@ import { Priority } from 'openland-api/Priority';
 import { parsePhoneNumberFromString, CountryCode, isSupportedCountry } from 'libphonenumber-js';
 import * as Localize from "react-native-localize";
 import { backoff } from 'openland-y-utils/timer';
-import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
 
 /*
     TODO:
@@ -32,7 +31,7 @@ interface LocaleContact {
     sent: boolean;
 }
 
-class ContactsRegistrator {
+class PhonebookExporterImpl {
     private client: OpenlandClient;
     private pending: LocaleContact[] = [];
     private defaultCountry: CountryCode = 'US';
@@ -40,10 +39,7 @@ class ContactsRegistrator {
 
     constructor(client: OpenlandClient) {
         this.client = client.withParameters({ defaultPriority: Priority.LOW });
-
-        if (NON_PRODUCTION) {
-            this.init();
-        }
+        this.init();
     }
 
     init = async () => {
@@ -173,12 +169,12 @@ class ContactsRegistrator {
     }
 }
 
-var registrator: ContactsRegistrator | null = null;
+let exporter: PhonebookExporterImpl | null = null;
 
-export class ContactsManager extends React.PureComponent<{ client: OpenlandClient }> {
+export class PhonebookExporter extends React.PureComponent<{ client: OpenlandClient }> {
     componentDidMount() {
-        if (registrator === null) {
-            registrator = new ContactsRegistrator(this.props.client);
+        if (exporter === null) {
+            exporter = new PhonebookExporterImpl(this.props.client);
         }
     }
 

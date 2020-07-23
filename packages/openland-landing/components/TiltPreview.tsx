@@ -12,6 +12,7 @@ const box = css`
     justify-content: center;
     flex-direction: column;
     user-select: none;
+    transform: perspective(1000px);
 
     @media (min-width: 768px) and (max-width: 1199px) {
         width: 344px; height: 196px;
@@ -47,7 +48,6 @@ const serviceMessage = css`
     line-height: 24px;
     text-align: center;
     color: #035667;
-    transform: translateZ(20px);
     margin: 0 0 37px;
 
     @media (min-width: 768px) and (max-width: 1199px) {
