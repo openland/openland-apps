@@ -16,11 +16,12 @@ export const GlobalSearchMessage = React.memo<GlobalSearchMessageProps>((props) 
     const theme = React.useContext(ThemeContext);
     const messenger = getMessenger();
     const { chat, message } = props.item;
-    const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
+    const isSavedMessages = chat.__typename === 'PrivateRoom' && chat.user.id === messenger.engine.user.id;
+    const title = isSavedMessages ? 'Saved messages' : (chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title);
     const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
     const highlightGroup = chat.__typename === 'PrivateRoom' ? false : chat.kind === 'GROUP';
     const date = parseInt(message.date, 10);
-    const sender = message.sender.id === messenger.engine.user.id ? 'You' : message.sender.name;
+    const sender = isSavedMessages ? '' : (message.sender.id === messenger.engine.user.id ? 'You' : message.sender.name) + ': ';
 
     return (
         <TouchableHighlight activeOpacity={1} underlayColor={theme.backgroundPrimaryActive} onPress={props.onPress}>
@@ -34,6 +35,7 @@ export const GlobalSearchMessage = React.memo<GlobalSearchMessageProps>((props) 
                         photo={photo}
                         title={title}
                         id={chat.id}
+                        savedMessages={isSavedMessages}
                     />
                 </View>
                 <View marginLeft={16} marginRight={16} marginTop={8} marginBottom={8} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
@@ -53,7 +55,7 @@ export const GlobalSearchMessage = React.memo<GlobalSearchMessageProps>((props) 
                         <View flexGrow={1}>
                             <View flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
                                 <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} numberOfLines={2} allowFontScaling={false} ellipsizeMode="tail">
-                                    {sender}{': '}{message.fallback}
+                                    {sender}{message.fallback}
                                 </Text>
                             </View>
                         </View>
