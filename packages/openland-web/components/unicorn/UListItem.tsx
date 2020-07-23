@@ -94,6 +94,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
         wrapperClassName,
         savedMessages,
     } = props;
+    const selected = React.useContext(XViewSelectedContext);
     const height = large ? 80 : !!avatar || !!leftElement || !!iconBackground ? 56 : 48;
     const titleFont = !!description || savedMessages ? TextStyles.Label1 : TextStyles.Body;
     const subtitleFont = TextStyles.Caption;
@@ -142,7 +143,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
             )}
             {!!avatar && !icon && (
                 <XView marginRight={16}>
-                    <UAvatar {...avatar} size={large ? 'large' : 'medium'} savedMessages={savedMessages} />
+                    <UAvatar {...avatar} selected={selected} size={large ? 'large' : 'medium'} savedMessages={savedMessages} />
                 </XView>
             )}
             {!!leftElement && !icon && <XView marginRight={16}>{leftElement}</XView>}
