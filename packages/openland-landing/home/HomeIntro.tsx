@@ -4,6 +4,8 @@ import { css, cx } from 'linaria';
 import { LandingLinks } from '../components/_links';
 import { detectOS } from 'openland-x-utils/detectOS';
 import { emojiAnimated } from 'openland-y-utils/emojiAnimated';
+// @ts-ignore
+import Tilt from 'react-tilt';
 
 const box = css`
     @media (min-width: 768px) {
@@ -24,12 +26,14 @@ const inner = css`
     }
 `;
 
-const image = css`
+const screens = css`
     position: absolute;
     top: 93px; right: 0;
     width: 527px; height: 527px;
     background: linear-gradient(135deg, #FFC619 0%, #FF7919 100%);
     border-radius: 527px;
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
 
     @media (min-width: 768px) and (max-width: 1199px) {
         top: 81px; right: -82px;
@@ -43,21 +47,41 @@ const image = css`
     &:before {
         content: "";
         display: block;
-        width: 427px; height: 686px;
-        background: url(https://cdn.openland.com/shared/landing/start/home-intro.png) no-repeat;
-        background-image: -webkit-image-set(
-            url(https://cdn.openland.com/shared/landing/start/home-intro.png) 1x,
-            url(https://cdn.openland.com/shared/landing/start/home-intro@2x.png) 2x
-        );
-        background-size: 100% 100%;
         position: absolute;
-        top: -75px; left: 41px;
-
-        @media (min-width: 768px) and (max-width: 1199px) {
-            top: -55px; left: 30px;
-            width: 309px; height: 496px;
-        }
+        top: -50px; left: 0; right: 0; bottom: -50px;
     }
+`;
+
+const screenback = css`
+    width: 227px;
+    height: 493px;
+    top: 18px; left: 206px;
+    position: absolute;
+    box-shadow: 0px 4.56288px 34.2216px rgba(0, 0, 0, 0.08);
+    border-radius: 19px;
+    transform: translateZ(20px);
+    background: #ffffff url(https://cdn.openland.com/shared/landing/start/home-intro-screen-02.png) no-repeat;
+    background-image: -webkit-image-set(
+        url(https://cdn.openland.com/shared/landing/start/home-intro-screen-02.png) 1x,
+        url(https://cdn.openland.com/shared/landing/start/home-intro-screen-02@2x.png) 2x
+    );
+    background-size: 100% 100%;
+`;
+
+const screenfront = css`
+    width: 270px;
+    height: 585px;
+    top: -29px; left: 92px;
+    position: absolute;
+    box-shadow: 0px 4.56288px 50.1917px rgba(0, 0, 0, 0.08);
+    border-radius: 23px;
+    transform: translateZ(40px);
+    background: #ffffff url(https://cdn.openland.com/shared/landing/start/home-intro-screen-01.png) no-repeat;
+    background-image: -webkit-image-set(
+        url(https://cdn.openland.com/shared/landing/start/home-intro-screen-01.png) 1x,
+        url(https://cdn.openland.com/shared/landing/start/home-intro-screen-01@2x.png) 2x
+    );
+    background-size: 100% 100%;
 `;
 
 const info = css`
@@ -333,7 +357,10 @@ export const HomeIntro = React.forwardRef((props: {}, ref: React.Ref<HTMLDivElem
         <div ref={ref} className={box}>
             <Container>
                 <div className={inner}>
-                    <div className={image} />
+                    <Tilt options={{ max: 20, scale: 1 }} className={screens}>
+                        <div className={screenback} />
+                        <div className={screenfront} />
+                    </Tilt>
                     <div className={info}>
                         <div className={emoji}>{emojiAnimated('👋')}</div>
                         <div className={title}>A fresh start<span>for social</span></div>
