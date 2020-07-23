@@ -221,18 +221,19 @@ const titleWrapper = css`
 `;
 
 const emoji = css`
-    font-size: 64px;
-    line-height: 64px;
     position: absolute;
-    top: 0; left: calc(100% + 26px);
+    top: -14px; left: calc(100% + 26px);
     transform: scale(0);
     transition: 1s transform ease;
     transform-origin: center center;
+    width: 80px; height: 80px;
+    background: url(https://cdn.openland.com/shared/emoji/512/1f389.png) no-repeat;
+    background-size: 100% 100%;
 
     @media (min-width: 768px) and (max-width: 1199px) {
-        font-size: 42px;
-        line-height: 44px;
         left: calc(100% + 16px);
+        width: 50px; height: 50px;
+        top: -7px;
     }
 `;
 
@@ -331,7 +332,7 @@ export const HomeApps = React.forwardRef((props: {}, ref: React.Ref<HTMLDivEleme
             <Container>
                 <div className={titleWrapper}>
                     <div className={title}>Welcome aboard
-                        <div className={cx(emoji, 'party-emoji')}>🎉</div>
+                        <div className={cx(emoji, 'party-emoji')} />
                     </div>
                 </div>
                 <div className={text}>Join now and claim<span className={link}>openland.com/<span>name</span></span></div>
