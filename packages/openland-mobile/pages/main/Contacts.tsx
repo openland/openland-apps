@@ -150,7 +150,6 @@ const ContactsPage = React.memo((props: PageProps) => {
 
     const handleContactLongPress = React.useCallback((user: MyContacts_myContacts_items_user) => {
         const builder = ActionSheet.builder();
-        builder.cancelable(false);
         builder.title(user.name, 'left');
         builder.action(
             'Send message',

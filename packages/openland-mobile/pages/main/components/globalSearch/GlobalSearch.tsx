@@ -158,68 +158,6 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
     );
 };
 
-export const SearchMessages = React.memo((props: GlobalSearchProps & { onMessagePress: (id: string) => void; }) => {
-    const theme = React.useContext(ThemeContext);
-    const client = getClient();
-    const area = React.useContext(ASSafeAreaContext);
-
-    const [messagesInvalidator] = React.useState<InvalidateSync>(new InvalidateSync(async () => {
-        await client.refetchMessagesSearch(constructVariables(props.query), { fetchPolicy: 'network-only' });
-    }));
-
-    const initialData = client.useMessagesSearch(constructVariables(props.query), { fetchPolicy: 'cache-and-network' }).messagesSearch;
-
-    const initialCursor = getCursor(initialData);
-
-    const [loadingMore, setLoadingMore] = React.useState(false);
-    const [after, setAfter] = React.useState<string | null>(initialCursor);
-    const [messages, setMessages] = React.useState(initialData.edges);
-
-    React.useEffect(() => {
-        messagesInvalidator.invalidate();
-    }, [props.query]);
-
-    const handleNeedMore = React.useCallback(async () => {
-        if (loadingMore || !after) {
-            return;
-        }
-
-        setLoadingMore(true);
-
-        const loaded = (await client.queryMessagesSearch(constructVariables(props.query, after))).messagesSearch;
-        const cursor = getCursor(loaded);
-
-        setAfter(cursor);
-        setMessages(prev => prev.concat(loaded.edges));
-        setLoadingMore(false);
-    }, [after, loadingMore]);
-
-    if ((messages.length === 0)) {
-        return <EmptyView theme={theme} />;
-    }
-
-    return (
-        <SFlatList
-            data={messages}
-            renderItem={({ item }) => <GlobalSearchMessage item={item.node} key={item.node.message.id} onPress={() => props.onMessagePress(item.node.message.id)} />}
-            keyboardShouldPersistTaps="always"
-            keyboardDismissMode="on-drag"
-            scrollEventThrottle={1}
-            legacyImplementation={true}
-            onEndReachedThreshold={1}
-            backgroundColor={theme.backgroundPrimary}
-            onEndReached={handleNeedMore}
-            refreshing={loadingMore}
-            scrollIndicatorInsets={{ top: area.top - DeviceConfig.statusBarHeight, bottom: area.bottom - SDevice.safeArea.bottom }}
-            ListFooterComponent={loadingMore ? (
-                <View height={56} alignItems="center" justifyContent="center">
-                    <LoaderSpinner />
-                </View>
-            ) : undefined}
-        />
-    );
-});
-
 export const Loader = React.memo((props: { theme: ThemeGlobal }) => {
     return (
         <ASSafeAreaContext.Consumer>
