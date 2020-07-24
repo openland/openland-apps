@@ -163,7 +163,7 @@ const ContactsPage = React.memo((props: PageProps) => {
     React.useEffect(() => {
         (async () => {
             const permissions = await AsyncStorage.getItem('haveContactsPermission');
-            if (permissions === 'true') {
+            if (permissions === 'true' || contactsWasExported) {
                 setHaveContactsPermission(true);
             }
         })();
