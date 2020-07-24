@@ -27,6 +27,13 @@ async function start() {
     const server = express();
 
     //
+    // Internals
+    //
+    server.get('/_internal/version', (req, res) => {
+        res.send(releaseId);
+    });
+
+    //
     // Health
     //
     server.get('/status', (req, res) => {

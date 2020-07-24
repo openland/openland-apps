@@ -72,6 +72,13 @@ const bannerNotification = css`
     justify-content: center;
 `;
 
+const bannerUpdate = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+`;
+
 const BannerContainer = (props: { onClosePress?: () => void; banner?: any }) => {
     return (
         <div className={bannerContainetClass}>
@@ -180,6 +187,13 @@ const MobileAppsBanner = () => {
     );
 };
 
+interface Banner {
+    show: boolean;
+    onClose: () => void;
+    BannerComponent: () => JSX.Element;
+    electronEnabled?: boolean;
+}
+
 let useMobileAppsBanner = () => {
     let [show, setShow] = React.useState(!window.localStorage.getItem('banner-apps-closed'));
 
@@ -233,20 +247,70 @@ let useNotificationsBanner = () => {
     return { show, onClose, BannerComponent: NotificationsBanner };
 };
 
+const UpdateBanner = () => {
+    React.useEffect(() => {
+        trackEvent('banner_update_appear');
+    }, []);
+    let onPress = React.useCallback(() => {
+        trackEvent('banner_update_action');
+        location.reload();
+    }, []);
+
+    return (
+        <div className={bannerUpdate}>
+            <div className={cx(TextLabel1, bannerTextClass)}>A new version of Openland is available</div>
+            <BannerButton text={isElectron ? 'Update' : 'Refresh'} onClick={onPress} />
+        </div>
+    );
+};
+
+const queryVersion = async () => await (await fetch('/_internal/version')).text();
+
+let useUpdateBanner = () => {
+    let [show, setShow] = React.useState(false);
+    let onClose = React.useCallback(() => {
+        trackEvent('banner_update_close');
+        setShow(false);
+    }, []);
+    React.useEffect(() => {
+        const checkVersion = async () => {
+            let ignoreVersions = [await queryVersion()]; // ignore current version
+            let timeout: any = undefined;
+            setInterval(async () => {
+                const newVersion = await queryVersion();
+                if (!ignoreVersions.includes(newVersion)) {
+                    ignoreVersions.push(newVersion);
+                    if (timeout !== undefined) {
+                        clearTimeout(timeout);
+                    }
+                    timeout = setTimeout(async () => {
+                        timeout = undefined;
+                        setShow(true);
+                    }, 60000);
+                }
+            }, 15000);
+        };
+
+        checkVersion();
+    }, []);
+
+    return { show, onClose, BannerComponent: UpdateBanner, electronEnabled: true };
+};
+
 export const Banners = () => {
     let layout = useLayout();
-    let banners = [useNotificationsBanner(), useMobileAppsBanner()];
+    let banners: Banner[] = [useNotificationsBanner(), useMobileAppsBanner(), useUpdateBanner()];
 
     let BannerComponent, onClose;
     for (let b of banners) {
-        if (b.show) {
+        if (b.show && (!isElectron || b.electronEnabled)) {
             BannerComponent = b.BannerComponent;
             onClose = b.onClose;
             break;
         }
     }
 
-    if (BannerComponent && layout === 'desktop' && !isElectron) {
+    if (BannerComponent && layout === 'desktop') {
         return <BannerContainer onClosePress={onClose} banner={<BannerComponent />} />;
     }
     return null;
