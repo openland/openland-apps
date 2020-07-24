@@ -167,7 +167,7 @@ const ContactsPage = React.memo((props: PageProps) => {
                 setHaveContactsPermission(true);
             }
         })();
-    }, []);
+    }, [contactsWasExported]);
 
     const onImportPress = React.useCallback(async () => {
         const loader = Toast.loader();
