@@ -5,6 +5,7 @@ import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { css, cx } from 'linaria';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 interface MessageProps {
     children: string | string[];
@@ -44,6 +45,8 @@ export const PrivatePlaceholder = React.memo((props: ChatEmptyComponentPrivatePr
     const canSendMessage = props.conversation.canSendMessage;
     const sendMessage = (text: string) => props.conversation.sendMessage(text, null);
     const layout = useLayout();
+    const messenger = React.useContext(MessengerContext);
+    const isSavedMessages = messenger.user.id === props.conversation.user!.id;
 
     return (
         <div className={wrapper}>
@@ -60,22 +63,26 @@ export const PrivatePlaceholder = React.memo((props: ChatEmptyComponentPrivatePr
                         <XView marginTop={16}>
                             <h2 className={TextTitle1}>No messages yet</h2>
                         </XView>
-                        <XView marginTop={8} color="var(--foregroundSecondary)">
-                            <p className={cx(TextBody, subtitle)}>Start a conversation with {userName}</p>
-                        </XView>
-                        <XView
-                            marginTop={24}
-                            justifyContent="center"
-                            flexDirection="row"
-                            flexWrap="wrap"
-                            maxWidth={layout !== 'mobile' ? 400 : 200}
-                        >
-                            <Message sendMessage={sendMessage}>👋</Message>
-                            <Message sendMessage={sendMessage}>Hello, {trimUserName(userName)}!</Message>
-                            <Message sendMessage={sendMessage}>Happy to connect!</Message>
-                            {layout !== 'mobile' && <Message sendMessage={sendMessage}>What are you working on?</Message>}
-                            {layout !== 'mobile' && <Message sendMessage={sendMessage}>How can I help?</Message>}
-                        </XView>
+                        {!isSavedMessages && (
+                            <>
+                                <XView marginTop={8} color="var(--foregroundSecondary)">
+                                    <p className={cx(TextBody, subtitle)}>Start a conversation with {userName}</p>
+                                </XView>
+                                <XView
+                                    marginTop={24}
+                                    justifyContent="center"
+                                    flexDirection="row"
+                                    flexWrap="wrap"
+                                    maxWidth={layout !== 'mobile' ? 400 : 200}
+                                >
+                                    <Message sendMessage={sendMessage}>👋</Message>
+                                    <Message sendMessage={sendMessage}>Hello, {trimUserName(userName)}!</Message>
+                                    <Message sendMessage={sendMessage}>Happy to connect!</Message>
+                                    {layout !== 'mobile' && <Message sendMessage={sendMessage}>What are you working on?</Message>}
+                                    {layout !== 'mobile' && <Message sendMessage={sendMessage}>How can I help?</Message>}
+                                </XView>
+                            </>
+                        )}
                     </>
                 ) : (
                         <XView color="var(--foregroundSecondary)">
