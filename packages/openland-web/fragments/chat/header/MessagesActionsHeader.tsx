@@ -10,11 +10,11 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import CloseIcon from 'openland-icons/s/ic-close-16.svg';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import { showDeleteMessageModal as showDeleteMessagesModal } from '../components/MessengerRootComponent';
-import { showChatPicker } from '../showChatPicker';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { useRole } from 'openland-x-permissions/XWithRole';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
+import { forward } from '../messenger/message/actions/forward';
 
 const containerClass = css`
     position: absolute;
@@ -155,10 +155,7 @@ const Buttons = (props: {
     }, []);
     const router = React.useContext(XViewRouterContext);
     let forwardCallback = React.useCallback(() => {
-        showChatPicker((id: string) => {
-            props.messenger.forward(props.engine, id);
-            router!.navigate('/mail/' + id);
-        });
+        forward(props.engine, props.messenger, router!);
     }, []);
     let replyCallback = React.useCallback(() => {
         props.engine.reply();

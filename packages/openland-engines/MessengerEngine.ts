@@ -156,14 +156,18 @@ export class MessengerEngine {
         }
         return this.activeConversations.get(conversationId)!!;
     }
-    forward(from: MessagesActionsStateEngine | DataSourceMessageItem[], toId: string) {
-        let messages: DataSourceMessageItem[] = [];
-        if (Array.isArray(from)) {
-            messages = from;
+
+    convertForward(forward: MessagesActionsStateEngine | DataSourceMessageItem[]) {
+        if (Array.isArray(forward)) {
+            return forward;
         } else {
-            messages = from.getState().messages;
-            from.clear();
+            const messages = forward.getState().messages;
+            forward.clear();
+            return messages;
         }
+    }
+    forward(from: MessagesActionsStateEngine | DataSourceMessageItem[], toId: string) {
+        let messages: DataSourceMessageItem[] = this.convertForward(from);
         let target = this.activeUserConversations.get(toId) || this.activeConversations.get(toId);
         if (!target) {
             this.forwardBuffer.set(toId, messages);
