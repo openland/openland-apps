@@ -304,9 +304,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     render() {
         let { messagesActionsState } = this.state;
 
+        let isSavedMessages = this.props.chat.__typename === 'PrivateRoom' && this.props.engine.user.id === this.props.chat.user.id;
+
         let path = resolveConversationProfilePath(this.props.chat);
         let header = (
-            <TouchableOpacity disabled={!path.path} onPress={() => this.props.router.push(path.path!, path.pathArgs)}>
+            <TouchableOpacity disabled={isSavedMessages || !path.path} onPress={() => this.props.router.push(path.path!, path.pathArgs)}>
                 <View flexDirection="row" flexShrink={1} marginLeft={Platform.OS === 'android' ? -12 : 0}>
                     <ChatHeaderAvatar conversationId={this.engine.conversationId} router={this.props.router} />
                     <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />
@@ -384,7 +386,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                         {header}
                     </SHeaderView>
                 )}
-                {!isBot && !showSelectedMessagesActions && (
+                {!isSavedMessages && !isBot && !showSelectedMessagesActions && (
                     <SHeaderButton
                         title="Call"
                         icon={require('assets/ic-call-24.png')}

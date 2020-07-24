@@ -3,10 +3,13 @@ import { XView, XViewProps } from 'react-mental';
 import { css, cx } from 'linaria';
 import SearchIcon from 'openland-icons/ic-search-16.svg';
 import ClearIcon from 'openland-icons/ic-close-16.svg';
+import ThinLoaderIcon from 'openland-icons/s/ic-loader-thin-16.svg';
 import { TextBody } from 'openland-web/utils/TextStyles';
-import { SvgLoader } from 'openland-x/XLoader';
+import { rotate } from 'openland-x/XLoader';
 
-const wrapper = css`
+const field = css`
+    appearance: textfield;
+    position: relative;
     background-color: var(--backgroundTertiaryTrans);
     border-radius: 8px;
     padding: 8px 40px 8px 36px;
@@ -14,11 +17,6 @@ const wrapper = css`
     &:hover {
         background-color: var(--backgroundTertiaryHoverTrans);
     }
-`;
-
-const field = css`
-    appearance: textfield;
-    position: relative;
 
     &::-webkit-search-cancel-button {
         display: none;
@@ -34,7 +32,7 @@ const field = css`
     }
 `;
 
-const wrapperRounded = css`
+const fieldRounded = css`
     border-radius: 100px;
     padding: 4px 40px 4px 36px;
 `;
@@ -52,13 +50,18 @@ const resetClassName = css`
     align-items: center;
     justify-content: center;
     transition: opacity 0.01s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 1;
 
     & svg * {
         fill: var(--foregroundTertiary);
     }
 
     &:hover, &:focus {
-        opacity: 0.56
+        opacity: 0.56;
+    }
+
+    &:hover+.${field} {
+        background-color: var(--backgroundTertiaryHoverTrans);
     }
 `;
 
@@ -84,6 +87,7 @@ interface USearchInputProps extends XViewProps {
     onChange?: (e: string) => void;
     onKeyDown?: React.KeyboardEventHandler;
     onFocus?: React.FocusEventHandler;
+    onBlur?: React.FocusEventHandler;
     autoFocus?: boolean;
     placeholder?: string;
     rounded?: boolean;
@@ -94,10 +98,11 @@ interface USearchInputProps extends XViewProps {
 export interface USearchInputRef {
     reset: () => void;
     focus: () => void;
+    blur: () => void;
 }
 
 export const USearchInput = React.forwardRef((props: USearchInputProps, ref: React.RefObject<USearchInputRef>) => {
-    const { value, onChange, autoFocus, onKeyDown, onFocus, rounded, loading, className, placeholder = 'Search', ...other } = props;
+    const { value, onChange, autoFocus, onKeyDown, onFocus, onBlur, rounded, loading, className, placeholder = 'Search', ...other } = props;
 
     const [val, setValue] = React.useState(typeof value === 'string' ? value : '');
     const inputRef = React.useRef<HTMLInputElement>(null);
@@ -118,38 +123,39 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
     React.useImperativeHandle<any, { reset: () => void }>(ref, () => ({
         reset: () => handleChange(''),
         focus: () => inputRef.current?.focus(),
+        blur: () => inputRef.current?.blur(),
     }));
 
     return (
         <XView position="relative" {...other}>
-            <div className={cx('x', wrapper, rounded && wrapperRounded, className)}>
-                <div className={searchIconWrapper}>
-                    {loading ? <SvgLoader size="small" /> : <SearchIcon />}
-                </div>
-                <input
-                    type="search"
-                    className={cx(TextBody, field)}
-                    value={val || ''}
-                    onChange={e => handleChange(e.target.value)}
-                    onKeyDown={onKeyDown}
-                    onFocus={onFocus}
-                    placeholder={placeholder}
-                    autoFocus={autoFocus}
-                    ref={inputRef}
-                    autoComplete="off"
-                />
-                {props.value && props.value.length > 0 && (
-                    <button
-                        className={resetClassName}
-                        onClick={() => {
-                            inputRef.current?.focus();
-                            handleChange('');
-                        }}
-                    >
-                        <ClearIcon />
-                    </button>
-                )}
+            <div className={searchIconWrapper}>
+                {loading ? <ThinLoaderIcon className={rotate} /> : <SearchIcon />}
             </div>
+            {props.value && props.value.length > 0 && (
+                <div
+                    tabIndex={-1}
+                    className={resetClassName}
+                    onClick={() => {
+                        inputRef.current?.focus();
+                        handleChange('');
+                    }}
+                >
+                    <ClearIcon />
+                </div>
+            )}
+            <input
+                type="search"
+                className={cx('x', TextBody, field, rounded && fieldRounded)}
+                value={val || ''}
+                onChange={e => handleChange(e.target.value)}
+                onKeyDown={onKeyDown}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                placeholder={placeholder}
+                autoFocus={autoFocus}
+                ref={inputRef}
+                autoComplete="off"
+            />
         </XView>
     );
 });

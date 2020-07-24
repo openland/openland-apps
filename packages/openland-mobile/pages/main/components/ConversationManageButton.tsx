@@ -141,11 +141,13 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
             builder.action('Add people', onInvitePress, false, require('assets/ic-invite-24.png'));
         }
 
-        const notificationsTitle = `${muted ? 'Unmute' : 'Mute'} notifications`;
-        const notificationsIcon = muted
-            ? require('assets/ic-notifications-24.png')
-            : require('assets/ic-notifications-off-24.png');
-        builder.action(notificationsTitle, onNotificationsPress, false, notificationsIcon);
+        if (isUser && isUser.id !== myID) {
+            const notificationsTitle = `${muted ? 'Unmute' : 'Mute'} notifications`;
+            const notificationsIcon = muted
+                ? require('assets/ic-notifications-24.png')
+                : require('assets/ic-notifications-off-24.png');
+            builder.action(notificationsTitle, onNotificationsPress, false, notificationsIcon);
+        }
 
         builder.action('Shared media', onSharedPress, false, require('assets/ic-attach-24.png'));
 
