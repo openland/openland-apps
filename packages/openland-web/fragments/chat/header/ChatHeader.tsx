@@ -116,7 +116,7 @@ const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
     );
 };
 
-const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
+const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessages: boolean }) => {
     const layout = useLayout();
     const client = useClient();
     const tabRouter = useTabRouter();
@@ -149,7 +149,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
         });
     }
 
-    if (layout === 'mobile' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true)) {
+    if (!props.savedMessages && layout === 'mobile' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true)) {
         res.item({
             title: 'Call',
             icon: <PhoneIcon />,
@@ -161,16 +161,18 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
         });
     }
 
-    res.item({
-        title: `${muted ? 'Unmute' : 'Mute'} notifications`,
-        icon: muted ? <NotificationsIcon /> : <NotificationsOffIcon />,
-        action: async () => {
-            let newMuted = !chat.settings.mute;
-            client.mutateRoomSettingsUpdate({ roomId: chat.id, settings: { mute: newMuted } });
-            setMuted(newMuted);
-        },
-        closeDelay: 400,
-    });
+    if (!props.savedMessages) {
+        res.item({
+            title: `${muted ? 'Unmute' : 'Mute'} notifications`,
+            icon: muted ? <NotificationsIcon /> : <NotificationsOffIcon />,
+            action: async () => {
+                let newMuted = !chat.settings.mute;
+                client.mutateRoomSettingsUpdate({ roomId: chat.id, settings: { mute: newMuted } });
+                setMuted(newMuted);
+            },
+            closeDelay: 400,
+        });
+    }
 
     res.item({
         title: 'Media, files, links',
@@ -227,17 +229,18 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     const { chat } = props;
     const layout = useLayout();
     const messenger = React.useContext(MessengerContext);
+    const isSavedMessages = chat.__typename === 'PrivateRoom' && messenger.user.id === chat.user.id;
     const sharedRoom = chat.__typename === 'SharedRoom' && chat;
     const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
     const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
     const path =
-        chat.__typename === 'PrivateRoom'
-            ? `/${chat.user.shortname || chat.user.id}`
-            : `/group/${chat.id}`;
+        isSavedMessages ? undefined :
+            chat.__typename === 'PrivateRoom'
+                ? `/${chat.user.shortname || chat.user.id}`
+                : `/group/${chat.id}`;
     const showCallButton =
         layout === 'desktop' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true);
-    const titleEmojify = React.useMemo(() => emoji(title), [title]);
-    const isSavedMessages = chat.__typename === 'PrivateRoom' && messenger.user.id === chat.user.id;
+    const titleEmojify = isSavedMessages ? 'Saved messages' : React.useMemo(() => emoji(title), [title]);
 
     let showInviteButton = layout === 'desktop' && sharedRoom;
     const onlyLinkInvite = sharedRoom && !(!sharedRoom.isPremium || sharedRoom.role === 'OWNER');
@@ -259,13 +262,13 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
             paddingHorizontal={16}
         >
             <XView
-                hoverOpacity={HoverAlpha}
+                hoverOpacity={isSavedMessages ? undefined : HoverAlpha}
                 flexDirection="row"
                 flexShrink={1}
                 flexGrow={0}
                 minWidth={0}
                 path={path}
-                cursor="pointer"
+                cursor={isSavedMessages ? undefined : 'pointer'}
             >
                 <XView paddingTop={8} paddingRight={16}>
                     <UAvatar
@@ -305,7 +308,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         >
                             {chat.__typename === 'SharedRoom' && chat.isPremium && <PremiumBadge />}
                             <span className={titleStyle}>
-                                {isSavedMessages ? 'Saved messages' : titleEmojify}
+                                {titleEmojify}
                                 {!isSavedMessages && chat.__typename === 'PrivateRoom' &&
                                     chat.user.primaryOrganization && (
                                         <span className={cx(secondary, TextDensed)}>
@@ -358,12 +361,12 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         size="large"
                     />
                 )}
-                {showCallButton && <CallButton chat={chat} messenger={messenger} />}
+                {!isSavedMessages && showCallButton && <CallButton chat={chat} messenger={messenger} />}
 
                 <UMoreButton
                     menu={(ctx) => (
                         <React.Suspense fallback={<div style={{ width: 240, height: 100 }} />}>
-                            <MenuComponent ctx={ctx} id={chat.id} />
+                            <MenuComponent ctx={ctx} id={chat.id} savedMessages={isSavedMessages} />
                         </React.Suspense>
                     )}
                     useWrapper={false}

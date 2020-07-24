@@ -26,6 +26,7 @@ import { DocContent } from './DocContent';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { convertPartialMessage } from 'openland-engines/messenger/ConversationEngine';
 import { RichContent } from './RichContent';
+import { forward } from '../messenger/message/actions/forward';
 
 interface SharedMediaProps {
     chatId: string;
@@ -110,13 +111,11 @@ export const sharedItemMenu = (messenger: MessengerEngine, router: XViewRouter, 
     const builder = new UPopperMenuBuilder();
     builder.item({
         title: 'Forward', icon: <ForwardIcon />, onClick: () => {
-            showChatPicker(id => {
-                if (item.message.__typename !== 'GeneralMessage') {
-                    return;
-                }
-                messenger.forward([convertPartialMessage(item.message, 'somewhere', messenger)], id);
-                router.navigate('/mail/' + id);
-            });
+            if (item.message.__typename !== 'GeneralMessage') {
+                showChatPicker(() => { /* noop */ });
+            } else {
+                forward([convertPartialMessage(item.message, 'somewhere', messenger)], messenger, router);
+            }
         }
     });
     return builder.build(ctx);
