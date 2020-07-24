@@ -11,7 +11,7 @@ const box = css`
 `;
 
 const grey = css`
-    background-color: #f7fafc;
+    background-color: #F7F8F9;
 `;
 
 const header = css`
