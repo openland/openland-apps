@@ -7,9 +7,10 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { USelect, OptionType } from 'openland-web/components/unicorn/USelect';
 import { XScrollViewAnchored } from 'openland-x/XScrollViewAnchored';
 import { css } from 'linaria';
+import { InvertedDiv } from 'openland-web/fragments/new/InvertedDiv';
 
 const NativeStyle = css`
-    overflow-y: overlay;
+    overflow-y: scroll;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     overflow-anchor: none;
@@ -51,7 +52,7 @@ const DynamicView = React.memo(() => {
                     return 100;
                 }
             });
-        }, 5000);
+        }, 1000);
         return () => clearInterval(it);
     }, []);
 
@@ -72,17 +73,17 @@ const DynamicView = React.memo(() => {
 });
 
 const TestComponent = React.memo(() => {
-    const [engine, setEngine] = React.useState<'XScrollViewReverse2' | 'XScrollViewAnchored' | 'Native'>('XScrollViewReverse2');
+    const [engine, setEngine] = React.useState<'XScrollViewReverse2' | 'XScrollViewAnchored' | 'Native' | 'InvertedDiv'>('InvertedDiv');
     const [countStart, setCountStart] = React.useState(0);
-    const [count, setCount] = React.useState(20);
+    const [count, setCount] = React.useState(2);
     const [height, setHeight] = React.useState(400);
     const [width, setWidth] = React.useState(600);
-    
+
     let items: any[] = [];
     for (let i = countStart; i < count; i++) {
-        if (i === 0) {
-            items.push(<DynamicView key="dyno" />);
-        }
+        // if (i === 0) {
+        //     items.push(<DynamicView key="dyno" />);
+        // }
         items.push(
             <XView flexWrap="wrap" flexDirection="row" key={'l-' + i}>
                 <XView
@@ -105,6 +106,8 @@ const TestComponent = React.memo(() => {
         value: 'XScrollViewReverse2', label: 'XScrollViewReverse2'
     }, {
         value: 'XScrollViewAnchored', label: 'XScrollViewAnchored'
+    }, {
+        value: 'InvertedDiv', label: 'InvertedDiv'
     }, {
         value: 'Native', label: 'Native'
     }];
@@ -147,6 +150,11 @@ const TestComponent = React.memo(() => {
                 <NativeScroll>
                     {items}
                 </NativeScroll>
+            )}
+            {engine === 'InvertedDiv' && (
+                <InvertedDiv onScroll={(e) => console.log(e)}>
+                    {items}
+                </InvertedDiv>
             )}
         </XView>
     );
