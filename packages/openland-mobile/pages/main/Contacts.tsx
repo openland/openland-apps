@@ -24,6 +24,7 @@ import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handl
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { GlobalSearchContacts } from './components/globalSearch/GlobalSearchContacth';
 import { ComponentRefContext } from './Home';
+import { contactsExporter } from '../../components/PhonebookExporter';
 
 const ContactsWasImportStub = React.memo(() => {
     const theme = React.useContext(ThemeContext);
@@ -64,14 +65,14 @@ const ContactsWasImportStub = React.memo(() => {
     );
 });
 
-const handleImportPress = async (setPermissions: React.Dispatch<React.SetStateAction<boolean>>) => {
+const handleImportPress = async (onImportPress: Function) => {
     if (Platform.OS === 'ios') {
         ContactsPermission.checkPermission((errorCheck, permissionCheck) => {
             if (permissionCheck === 'denied') {
                 handlePermissionDismiss('contacts');
                 return;
             } else {
-                setPermissions(true);
+                onImportPress();
             }
         });
     } else if (Platform.OS === 'android') {
@@ -85,55 +86,56 @@ const handleImportPress = async (setPermissions: React.Dispatch<React.SetStateAc
         if (permission === 'denied') {
             return;
         } else {
-            setPermissions(true);
+            if (contactsExporter) {
+                await contactsExporter.init();
+            }
+            onImportPress();
         }
     }
 };
 
-const ContactsNoImportStub = React.memo(
-    (props: { setPermissions: React.Dispatch<React.SetStateAction<boolean>> }) => {
-        const theme = React.useContext(ThemeContext);
-        return (
-            <ASSafeAreaView
-                flexGrow={1}
-                paddingHorizontal={32}
-                alignItems="center"
-                justifyContent="center"
+const ContactsNoImportStub = React.memo((props: { onImportPress: Function }) => {
+    const theme = React.useContext(ThemeContext);
+    return (
+        <ASSafeAreaView
+            flexGrow={1}
+            paddingHorizontal={32}
+            alignItems="center"
+            justifyContent="center"
+        >
+            <Image
+                source={require('assets/img-contacts-import.png')}
+                style={{ width: 270, height: 180, marginBottom: 12 }}
+            />
+            <Text
+                style={{
+                    ...TextStyles.Title2,
+                    color: theme.foregroundPrimary,
+                    textAlign: 'center',
+                    marginBottom: 4,
+                }}
+                allowFontScaling={false}
             >
-                <Image
-                    source={require('assets/img-contacts-import.png')}
-                    style={{ width: 270, height: 180, marginBottom: 12 }}
-                />
-                <Text
-                    style={{
-                        ...TextStyles.Title2,
-                        color: theme.foregroundPrimary,
-                        textAlign: 'center',
-                        marginBottom: 4,
-                    }}
-                    allowFontScaling={false}
-                >
-                    Find your friends
-                </Text>
-                <Text
-                    style={{
-                        ...TextStyles.Body,
-                        color: theme.foregroundSecondary,
-                        textAlign: 'center',
-                        marginBottom: 16,
-                    }}
-                    allowFontScaling={false}
-                >
-                    Import contacts from your device to find people you know on Openland
-                </Text>
-                <ZButton
-                    title="Import contacts"
-                    onPress={() => handleImportPress(props.setPermissions)}
-                />
-            </ASSafeAreaView>
-        );
-    },
-);
+                Find your friends
+            </Text>
+            <Text
+                style={{
+                    ...TextStyles.Body,
+                    color: theme.foregroundSecondary,
+                    textAlign: 'center',
+                    marginBottom: 16,
+                }}
+                allowFontScaling={false}
+            >
+                Import contacts from your device to find people you know on Openland
+            </Text>
+            <ZButton
+                title="Import contacts"
+                onPress={() => handleImportPress(props.onImportPress)}
+            />
+        </ASSafeAreaView>
+    );
+});
 
 const ContactsPage = React.memo((props: PageProps) => {
     const client = getClient();
@@ -162,6 +164,18 @@ const ContactsPage = React.memo((props: PageProps) => {
                 setHaveContactsPermission(true);
             }
         })();
+    }, []);
+
+    const onImportPress = React.useCallback(async () => {
+        const loader = Toast.loader();
+        loader.show();
+        await client.refetchMyContacts({ first: 20 }, { fetchPolicy: 'network-only' });
+        await client.refetchPhonebookWasExported();
+        const permissions = await AsyncStorage.getItem('haveContactsPermission');
+        if (permissions === 'true' || contactsWasExported) {
+            setHaveContactsPermission(true);
+        }
+        loader.hide();
     }, []);
 
     const handleRemoveMemberFromContacts = React.useCallback(async (userId: string) => {
@@ -235,7 +249,7 @@ const ContactsPage = React.memo((props: PageProps) => {
             text="Import contacts"
             leftIcon={require('assets/ic-cycle-glyph-24.png')}
             small={false}
-            onPress={() => handleImportPress(setHaveContactsPermission)}
+            onPress={() => handleImportPress(onImportPress)}
         />
     );
 
@@ -244,7 +258,7 @@ const ContactsPage = React.memo((props: PageProps) => {
             <SHeader title="Contacts" searchPlaceholder="Search" />
             {!hasContacts && haveContactsPermission && <ContactsWasImportStub />}
             {!hasContacts && !haveContactsPermission && (
-                <ContactsNoImportStub setPermissions={setHaveContactsPermission} />
+                <ContactsNoImportStub onImportPress={onImportPress} />
             )}
             {hasContacts && (
                 <SSearchControler

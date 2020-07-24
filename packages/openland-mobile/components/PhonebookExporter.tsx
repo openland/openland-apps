@@ -171,12 +171,12 @@ class PhonebookExporterImpl {
     }
 }
 
-let exporter: PhonebookExporterImpl | null = null;
+export let contactsExporter: PhonebookExporterImpl | null = null;
 
 export class PhonebookExporter extends React.PureComponent<{ client: OpenlandClient }> {
     componentDidMount() {
-        if (exporter === null) {
-            exporter = new PhonebookExporterImpl(this.props.client);
+        if (contactsExporter === null) {
+            contactsExporter = new PhonebookExporterImpl(this.props.client);
         }
     }
 
