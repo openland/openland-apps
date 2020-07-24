@@ -4,7 +4,7 @@ import { Heading } from '../internal/Heading';
 import { Container } from '../components/Container';
 
 const box = css`
-    background-color: #f7fafc;
+    background-color: #F7F8F9;
 `;
 
 const inner = css`
