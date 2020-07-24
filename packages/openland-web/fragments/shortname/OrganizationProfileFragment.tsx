@@ -17,11 +17,12 @@ import MoreHIcon from 'openland-icons/s/ic-more-h-24.svg';
 import { CreateGroupButton } from './components/CreateGroupButton';
 import { OrganizationMembers_organization_members, OrganizationMemberRole, UserShort } from 'openland-api/spacex.types';
 import { PrivateCommunityView } from '../settings/components/PrivateCommunityView';
-import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
-import { css } from 'linaria';
+import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
+import { css, cx } from 'linaria';
 import { debounce } from 'openland-y-utils/timer';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const membersSearchStyle = css`
     width: 160px;
@@ -32,6 +33,46 @@ const membersSearchStyle = css`
         width: 240px;
     }
 `;
+
+const membersSearchFilledStyle = css`
+    width: 240px;
+`;
+
+const MembersSearchInput = (props: {
+    query: string,
+    loading: boolean,
+    onChange: (v: string) => void,
+}) => {
+    const { query, loading, onChange } = props;
+    const searchInputRef = React.useRef<USearchInputRef>(null);
+    const [searchFocused, setSearchFocused] = React.useState(false);
+    useShortcuts({
+        keys: ['Escape'],
+        callback: () => {
+            if (searchFocused) {
+                onChange('');
+                searchInputRef.current?.blur();
+                return true;
+            }
+            return false;
+        },
+    });
+
+    return (
+        <div className={cx(membersSearchStyle, query.length > 0 && membersSearchFilledStyle)}>
+            <USearchInput
+                ref={searchInputRef}
+                placeholder="Search"
+                rounded={true}
+                value={query}
+                loading={loading}
+                onChange={onChange}
+                onFocus={() => setSearchFocused(true)}
+                onBlur={() => setSearchFocused(false)}
+            />
+        </div>
+    );
+};
 
 export type OrganizationMember = {
     role: OrganizationMemberRole,
@@ -237,13 +278,10 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
             </UListGroup>
             <UListHeader
                 text="Members"
-                counter={membersCount}
+                counter={hasSearched ? undefined : (membersCount || 0)}
                 rightElement={(
-                    <USearchInput
-                        placeholder="Search"
-                        rounded={true}
-                        className={membersSearchStyle}
-                        value={membersQuery}
+                    <MembersSearchInput
+                        query={membersQuery}
                         loading={membersFetching.loading > 0}
                         onChange={handleSearchChange}
                     />

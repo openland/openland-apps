@@ -19,12 +19,13 @@ import { RoomMembersPaginated_members, RoomMemberRole } from 'openland-api/space
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
-import { css } from 'linaria';
+import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
+import { css, cx } from 'linaria';
 import { debounce } from 'openland-y-utils/timer';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { GroupUsersList, GroupUsersListRef } from './components/GroupUsersList';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const membersSearchStyle = css`
     width: 160px;
@@ -35,6 +36,46 @@ const membersSearchStyle = css`
         width: 240px;
     }
 `;
+
+const membersSearchFilledStyle = css`
+    width: 240px;
+`;
+
+const MembersSearchInput = (props: {
+    query: string,
+    loading: boolean,
+    onChange: (v: string) => void,
+}) => {
+    const { query, loading, onChange } = props;
+    const searchInputRef = React.useRef<USearchInputRef>(null);
+    const [searchFocused, setSearchFocused] = React.useState(false);
+    useShortcuts({
+        keys: ['Escape'],
+        callback: () => {
+            if (searchFocused) {
+                onChange('');
+                searchInputRef.current?.blur();
+                return true;
+            }
+            return false;
+        },
+    });
+
+    return (
+        <div className={cx(membersSearchStyle, query.length > 0 && membersSearchFilledStyle)}>
+            <USearchInput
+                ref={searchInputRef}
+                placeholder="Search"
+                rounded={true}
+                value={query}
+                loading={loading}
+                onChange={onChange}
+                onFocus={() => setSearchFocused(true)}
+                onBlur={() => setSearchFocused(false)}
+            />
+        </div>
+    );
+};
 
 export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     const client = useClient();
@@ -163,10 +204,6 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         descriptionHero += ', ' + formatMoneyInterval(premiumSettings.price, premiumSettings.interval);
     }
 
-    if (membersQuery.length > 0) {
-        showInviteButton = false;
-    }
-
     let handleSearchChange = React.useCallback(debounce(async (val: string) => {
         setMembersQuery(val);
 
@@ -260,13 +297,10 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
 
                 <UListHeader
                     text="Members"
-                    counter={membersCount || 0}
+                    counter={hasSearched ? undefined : (membersCount || 0)}
                     rightElement={(
-                        <USearchInput
-                            placeholder="Search"
-                            rounded={true}
-                            className={membersSearchStyle}
-                            value={membersQuery}
+                        <MembersSearchInput
+                            query={membersQuery}
                             loading={membersFetching.loading > 0}
                             onChange={handleSearchChange}
                         />

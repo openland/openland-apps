@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 
-type LoaderSize = 'medium' | 'small' | 'large';
+type LoaderSize = 'x-small' | 'small' | 'medium' | 'large';
 
 interface XLoaderProps {
     loading?: boolean;
@@ -29,7 +29,7 @@ const base = css`
     left: 0;
 `;
 
-const rotate = css`
+export const rotate = css`
     animation: rotate 0.752s linear infinite;
     @keyframes rotate {
         from {
@@ -63,6 +63,7 @@ interface LoaderRenderProps {
 
 export const SvgLoader = React.memo((props: LoaderRenderProps) => {
     const size = {
+        'x-small': '16-thin',
         small: '16',
         medium: '24',
         large: '32',
@@ -86,7 +87,7 @@ export const XLoader = React.forwardRef((props: XLoaderProps, ref: React.Ref<HTM
                 base,
                 displayFlex,
                 props.className,
-                props.size === 'small'
+                props.size === 'small' || props.size === 'x-small'
                     ? minHeightSmall
                     : props.size === 'medium'
                         ? minHeightMedium
