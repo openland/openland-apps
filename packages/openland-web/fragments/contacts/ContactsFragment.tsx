@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView, XViewRouterContext, XImage, XViewProps, XViewRouteContext } from 'react-mental';
+import { XView, XViewRouterContext, XViewProps, XViewRouteContext } from 'react-mental';
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { trackEvent } from 'openland-x-analytics';
@@ -15,6 +15,9 @@ import { useClient } from 'openland-api/useClient';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { useLocalContacts } from 'openland-y-utils/contacts/LocalContacts';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import AppleIcon from 'openland-icons/s/ic-apple-glyph-24.svg';
+import GoogleIcon from 'openland-icons/s/ic-google-play-glyph-24.svg';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
 const emptyScreenImg = css`
     height: 200px;
@@ -28,8 +31,8 @@ const emptyScreenSubtitle = cx(TextBody, css`
 `);
 
 const findFriendsImgSrc = css`
-    background: url(https://cdn.openland.com/shared/art/art-find-friends.png) center center no-repeat;
-    background-image: -webkit-image-set(url(https://cdn.openland.com/shared/art/art-find-friends.png) 1x, url(https://cdn.openland.com/shared/art/art-find-friends@2x.png) 2x, url(https://cdn.openland.com/shared/art/art-find-friends@3x.png) 3x);
+    background: url(https://cdn.openland.com/shared/art/art-crowd.png) center center no-repeat;
+    background-image: -webkit-image-set(url(https://cdn.openland.com/shared/art/art-crowd.png) 1x, url(https://cdn.openland.com/shared/art/art-crowd@2x.png) 2x, url(https://cdn.openland.com/shared/art/art-crowd@3x.png) 3x);
 `;
 
 const noContactsImgSrc = css`
@@ -37,18 +40,37 @@ const noContactsImgSrc = css`
     background-image: -webkit-image-set(url(https://cdn.openland.com/shared/art/art-shared.png) 1x, url(https://cdn.openland.com/shared/art/art-shared@2x.png) 2x, url(https://cdn.openland.com/shared/art/art-shared@3x.png) 3x);
 `;
 
-const MobileAppButton = (props: { image: string, isIOS: boolean } & XViewProps) => {
-    const { image, ...other } = props;
+const MobileAppButton = (props: { isIOS: boolean } & XViewProps) => {
+    const { isIOS, ...other } = props;
     const onClick = React.useCallback(() => {
         trackEvent('app_download_action', {
-            os: props.isIOS ? 'ios' : 'android',
+            os: isIOS ? 'ios' : 'android',
             app_platform: 'mobile',
         });
     }, []);
 
     return (
-        <XView as="a" target="_blank" hoverOpacity={0.8} hoverTextDecoration="none" onClick={onClick} {...other}>
-            <XImage width={200} height={56} src={props.image} />
+        <XView
+            as="a"
+            target="_blank"
+            flexDirection="row"
+            paddingHorizontal={16}
+            paddingVertical={8}
+            backgroundColor="var(--backgroundTertiaryTrans)"
+            hoverBackgroundColor="var(--backgroundTertiaryHoverTrans)"
+            borderRadius={8}
+            onClick={onClick}
+            width={200}
+            hoverTextDecoration="none"
+            {...other}
+        >
+            <XView justifyContent="center" marginRight={16} opacity={0.72}>
+                <UIcon icon={isIOS ? <AppleIcon /> : <GoogleIcon />} color="var(--foregroundSecondary)" />
+            </XView>
+            <XView>
+                <XView {...TextStyles.Caption} color="var(--foregroundSecondary)">{isIOS ? 'Download on the' : 'Get it on'}</XView>
+                <XView {...TextStyles.Label1} color="var(--foregroundSecondary)" marginTop={-2}>{isIOS ? 'App Store' : 'Google Play'}</XView>
+            </XView>
         </XView>
     );
 };
@@ -82,7 +104,7 @@ export const ContactsFragment = React.memo(() => {
     const { listenUpdates } = useLocalContacts();
     const isVisible = useVisibleTab();
     const [searchItemsCount, setSearchItemsCount] = React.useState(0);
-    const { selectedIndex, setSelectedIndex } = useListSelection({ maxIndex: isSearching ? searchItemsCount - 1 : items.length - 1 });
+    const { selectedIndex, setSelectedIndex } = useListSelection({ disable: !isVisible, maxIndex: isSearching ? searchItemsCount - 1 : items.length - 1 });
 
     let hasContacts = items.length > 0;
 
@@ -178,14 +200,12 @@ export const ContactsFragment = React.memo(() => {
                 <XView marginTop={16} flexWrap="wrap" flexDirection="row" justifyContent="center">
                     <MobileAppButton
                         href="https://oplnd.com/ios"
-                        image="/static/X/apps-icons/app-store-light@2x.png"
                         isIOS={true}
                         marginTop={16}
                         marginHorizontal={8}
                     />
                     <MobileAppButton
                         href="https://oplnd.com/android"
-                        image="/static/X/apps-icons/google-play-light@2x.png"
                         isIOS={false}
                         marginTop={16}
                         marginHorizontal={8}

@@ -130,8 +130,8 @@ export const ContactProfileFragment = React.memo((props: { id?: string }) => {
                 ) : null}
                 <UListItem
                     icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
-                    iconColor="var(--foregroundTertiary)"
-                    iconBackground="var(--backgroundTertiary)"
+                    iconColor={isContact ? 'var(--foregroundContrast)' : 'var(--foregroundTertiary)'}
+                    iconBackground={isContact ? 'var(--accentNegative)' : 'var(--backgroundTertiary)'}
                     title={isContact ? 'Remove from contacts' : 'Save to contacts'}
                     titleStyle={TextStyles.Label1}
                     useRadius={true}
