@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, PermissionsAndroid } from 'react-native';
+import { Platform, PermissionsAndroid, AsyncStorage } from 'react-native';
 import * as ContactsPermission from 'react-native-contacts';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
@@ -24,6 +24,7 @@ import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handl
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { GlobalSearchContacts } from './components/globalSearch/GlobalSearchContacth';
 import { ComponentRefContext } from './Home';
+import { contactsExporter } from '../../components/PhonebookExporter';
 
 const ContactsWasImportStub = React.memo(() => {
     const theme = React.useContext(ThemeContext);
@@ -64,11 +65,14 @@ const ContactsWasImportStub = React.memo(() => {
     );
 });
 
-const handleImportPress = async () => {
+const handleImportPress = async (onImportPress: Function) => {
     if (Platform.OS === 'ios') {
         ContactsPermission.checkPermission((errorCheck, permissionCheck) => {
             if (permissionCheck === 'denied') {
                 handlePermissionDismiss('contacts');
+                return;
+            } else {
+                onImportPress();
             }
         });
     } else if (Platform.OS === 'android') {
@@ -77,11 +81,20 @@ const handleImportPress = async () => {
         );
         if (permission === 'never_ask_again') {
             handlePermissionDismiss('contacts');
+            return;
+        }
+        if (permission === 'denied') {
+            return;
+        } else {
+            if (contactsExporter) {
+                await contactsExporter.init();
+            }
+            onImportPress();
         }
     }
 };
 
-const ContactsNoImportStub = React.memo(() => {
+const ContactsNoImportStub = React.memo((props: { onImportPress: Function }) => {
     const theme = React.useContext(ThemeContext);
     return (
         <ASSafeAreaView
@@ -116,7 +129,10 @@ const ContactsNoImportStub = React.memo(() => {
             >
                 Import contacts from your device to find people you know on Openland
             </Text>
-            <ZButton title="Import contacts" onPress={handleImportPress} />
+            <ZButton
+                title="Import contacts"
+                onPress={() => handleImportPress(props.onImportPress)}
+            />
         </ASSafeAreaView>
     );
 });
@@ -136,9 +152,31 @@ const ContactsPage = React.memo((props: PageProps) => {
     );
     const [after, setAfter] = React.useState<string | null>(initialAfter);
     const [loading, setLoading] = React.useState(false);
+    const [haveContactsPermission, setHaveContactsPermission] = React.useState(false);
     const { listenUpdates } = useLocalContacts();
 
     let hasContacts = items.length > 0;
+
+    React.useEffect(() => {
+        (async () => {
+            const permissions = await AsyncStorage.getItem('haveContactsPermission');
+            if (permissions === 'true') {
+                setHaveContactsPermission(true);
+            }
+        })();
+    }, []);
+
+    const onImportPress = React.useCallback(async () => {
+        const loader = Toast.loader();
+        loader.show();
+        await client.refetchMyContacts({ first: 20 }, { fetchPolicy: 'network-only' });
+        await client.refetchPhonebookWasExported();
+        const permissions = await AsyncStorage.getItem('haveContactsPermission');
+        if (permissions === 'true' || contactsWasExported) {
+            setHaveContactsPermission(true);
+        }
+        loader.hide();
+    }, []);
 
     const handleRemoveMemberFromContacts = React.useCallback(async (userId: string) => {
         const loader = Toast.loader();
@@ -211,15 +249,17 @@ const ContactsPage = React.memo((props: PageProps) => {
             text="Import contacts"
             leftIcon={require('assets/ic-cycle-glyph-24.png')}
             small={false}
-            onPress={handleImportPress}
+            onPress={() => handleImportPress(onImportPress)}
         />
     );
 
     return (
         <>
             <SHeader title="Contacts" searchPlaceholder="Search" />
-            {!hasContacts && contactsWasExported && <ContactsWasImportStub />}
-            {!hasContacts && !contactsWasExported && <ContactsNoImportStub />}
+            {!hasContacts && haveContactsPermission && <ContactsWasImportStub />}
+            {!hasContacts && !haveContactsPermission && (
+                <ContactsNoImportStub onImportPress={onImportPress} />
+            )}
             {hasContacts && (
                 <SSearchControler
                     searchRender={(p) => (
@@ -233,7 +273,11 @@ const ContactsPage = React.memo((props: PageProps) => {
                                 data={items}
                                 onEndReached={handleLoadMore}
                                 refreshing={loading}
-                                ListHeaderComponent={!contactsWasExported ? ImportItem : undefined}
+                                ListHeaderComponent={
+                                    !haveContactsPermission && !contactsWasExported
+                                        ? ImportItem
+                                        : undefined
+                                }
                                 keyExtractor={(item, index) => index + '-' + item.id}
                                 renderItem={({ item }) => (
                                     <UserView

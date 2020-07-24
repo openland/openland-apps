@@ -109,6 +109,7 @@ class PhonebookExporterImpl {
     }
 
     private findContacts = async () => {
+        await AsyncStorage.setItem('haveContactsPermission', 'true');
         Contacts.getAllWithoutPhotos(async (error, contacts) => {
             for (const c of contacts) {
                 const storageKey = this._sitem(c.recordID);
@@ -157,6 +158,7 @@ class PhonebookExporterImpl {
                     }))
                 });
                 await this.client.refetchPhonebookWasExported();
+                await this.client.refetchMyContacts({ first: 20 }, { fetchPolicy: 'network-only' });
             });
 
             await AsyncStorage.multiSet(batch.map(p => ([
@@ -169,12 +171,12 @@ class PhonebookExporterImpl {
     }
 }
 
-let exporter: PhonebookExporterImpl | null = null;
+export let contactsExporter: PhonebookExporterImpl | null = null;
 
 export class PhonebookExporter extends React.PureComponent<{ client: OpenlandClient }> {
     componentDidMount() {
-        if (exporter === null) {
-            exporter = new PhonebookExporterImpl(this.props.client);
+        if (contactsExporter === null) {
+            contactsExporter = new PhonebookExporterImpl(this.props.client);
         }
     }
 
