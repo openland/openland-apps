@@ -2,7 +2,7 @@ import * as React from 'react';
 import { throttle } from 'openland-y-utils/timer';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
-export const useListSelection = (props: { maxIndex: number }) => {
+export const useListSelection = (props: { maxIndex: number, disable?: boolean }) => {
     const [selectedIndex, setSelectedIndex] = React.useState<number>(-1);
     const [selectionMode, setSelectionMode] = React.useState<'keyboard' | 'mouse'>('mouse');
     const prevIndex = React.useRef(0);
@@ -25,6 +25,9 @@ export const useListSelection = (props: { maxIndex: number }) => {
     }, []);
 
     const handleOptionUp = () => {
+        if (props.disable) {
+            return false;
+        }
         if (selectedIndex === null) {
             setSelectedIndex(0);
             return false;
@@ -35,6 +38,9 @@ export const useListSelection = (props: { maxIndex: number }) => {
     };
 
     const handleOptionDown = () => {
+        if (props.disable) {
+            return false;
+        }
         if (selectedIndex === null) {
             setSelectedIndex(0);
             return false;

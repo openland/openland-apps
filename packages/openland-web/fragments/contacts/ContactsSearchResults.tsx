@@ -4,12 +4,12 @@ import { XView, XViewRouteContext } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { MyContacts_myContacts_items_user, MyContactsSearch_myContactsSearch_edges_node } from 'openland-api/spacex.types';
-import { UIconSelectable } from 'openland-web/components/unicorn/UIcon';
 import ChatIcon from 'openland-icons/s/ic-message-24.svg';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { useClient } from 'openland-api/useClient';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { InvalidateSync } from '@openland/patterns';
+import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 
 const noResultContainer = css`
     display: flex;
@@ -35,12 +35,6 @@ const messageBtnWrapper = css`
     justify-content: center;
     display: none;
     margin-right: -5px;
-
-    &:hover {
-        svg path {
-            opacity: 0.6;
-        }
-    }
 `;
 
 const wrapperClassName = css`
@@ -82,29 +76,28 @@ export const ContactsSearchItemRender = React.memo((props: ContactsSearchItemRen
     const { item, index, selectedIndex, onPick, onMessagePick } = props;
     const route = React.useContext(XViewRouteContext)!;
 
-    let selected = index === selectedIndex;
+    let hovered = index === selectedIndex;
+    let selected = route.path === `/contacts/${item.id}`;
     return (
-        <XView selected={route.path === `/contacts/${item.id}`}>
+        <XView selected={selected}>
             <UUserView
                 key={item.id}
                 onClick={() => onPick(item)}
-                hovered={selected}
+                hovered={hovered}
                 user={item}
                 wrapperClassName={wrapperClassName}
                 useRadius={false}
                 rightElement={(
                     <div
-                        className={cx('x', messageBtnWrapper, selected && messageBtnWrapperSelected)}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            onMessagePick(item);
-                        }}
+                        className={cx('x', messageBtnWrapper, hovered && messageBtnWrapperSelected)}
                     >
-                        <UIconSelectable
+                        <UIconButton
                             icon={<ChatIcon />}
-                            color="var(--foregroundSecondary)"
-                            selectedColor="var(--foregroundContrast)"
-                            size={24}
+                            color={selected ? 'var(--foregroundContrast)' : 'var(--foregroundSecondary)'}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onMessagePick(item);
+                            }}
                         />
                     </div>
                 )}
