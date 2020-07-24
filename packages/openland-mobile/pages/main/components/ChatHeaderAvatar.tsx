@@ -11,8 +11,12 @@ export let resolveConversationProfilePath = (room: RoomTiny_room) => {
     let pathArgs: any = {};
     let sharedRoom = room.__typename === 'SharedRoom' ? room as RoomTiny_room_SharedRoom : null;
     let privateRoom = room.__typename === 'PrivateRoom' ? room as RoomNano_PrivateRoom : null;
+    let isSavedMessages = privateRoom && privateRoom.user.id === getMessenger().engine.user.id;
 
-    if (privateRoom) {
+    if (isSavedMessages) {
+        path = 'SharedMedia';
+        pathArgs = { chatId: room.id };
+    } else if (privateRoom) {
         path = 'ProfileUser';
         pathArgs = { id: privateRoom.user.id };
     } else if (sharedRoom && sharedRoom.kind === 'INTERNAL') {

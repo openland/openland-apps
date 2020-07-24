@@ -36,7 +36,7 @@ const ContactsWasImportStub = React.memo(() => {
             justifyContent="center"
         >
             <Image
-                source={require('assets/img-contacts-empty.png')}
+                source={require('assets/art-empty.png')}
                 style={{ width: 240, height: 140, marginBottom: 12 }}
             />
             <Text
