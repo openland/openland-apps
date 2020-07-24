@@ -27,21 +27,21 @@ export const useListSelection = (props: { maxIndex: number }) => {
     const handleOptionUp = () => {
         if (selectedIndex === null) {
             setSelectedIndex(0);
-            return;
+            return false;
         }
         setSelectionMode('keyboard');
         setSelectedIndex(Math.min(Math.max(selectedIndex - 1, 0), props.maxIndex));
-        return;
+        return false;
     };
 
     const handleOptionDown = () => {
         if (selectedIndex === null) {
             setSelectedIndex(0);
-            return;
+            return false;
         }
         setSelectionMode('keyboard');
         setSelectedIndex(Math.min(Math.max(selectedIndex + 1, 0), props.maxIndex));
-        return;
+        return false;
     };
 
     useShortcuts([
