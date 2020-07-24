@@ -95,6 +95,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
             await client.mutateAddToContacts({ userId: isUser.id });
             await client.refetchRoomTiny({ id: room.id });
             loader.hide();
+            Toast.success({ duration: 1000}).show();
         }
     }, []);
 
@@ -105,6 +106,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
             await client.mutateRemoveFromContacts({ userId: isUser.id });
             await client.refetchRoomTiny({ id: room.id });
             loader.hide();
+            Toast.success({ duration: 1000}).show();
         }
     }, []);
 
@@ -167,7 +169,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         if (isUser) {
             if (!isContact && isUser.id !== myID && !isUser.isBot) {
                 builder.action(
-                    'Add to contacts',
+                    'Save to contacts',
                     handleAddMemberToContacts,
                     false,
                     require('assets/ic-invite-24.png'),

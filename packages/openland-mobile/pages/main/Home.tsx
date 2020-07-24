@@ -14,6 +14,7 @@ import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { SSearchControlerComponent } from 'react-native-s/SSearchController';
+import { AppStorage } from 'openland-y-runtime/AppStorage';
 
 export const ActiveTabContext = React.createContext(false);
 export const SetTabContext = React.createContext<(index: number) => void>(() => {/* noop */ });
@@ -30,6 +31,7 @@ export const Home = React.memo((props: PageProps) => {
     const discoverDone = getClient().useDiscoverIsDone({ suspense: false });
     const wallet = getClient().useMyWallet({ suspense: false });
     const failingPaymentsCount = wallet && wallet.myWallet.failingPaymentsCount || undefined;
+    const [exploreSeen, setExploreSeen] = React.useState<boolean | null>(null);
 
     const messengerEngine = getMessenger().engine;
     const exploreRef = React.createRef<any>();
@@ -38,6 +40,14 @@ export const Home = React.memo((props: PageProps) => {
     const dialogsSearchController = React.createRef<SSearchControlerComponent>();
     const notificationsDataSource = messengerEngine.notificationCenter.dataSource;
     const settingsRef = React.createRef<any>();
+
+    const readExploreSeen = async () => {
+        let seen = await AppStorage.readKey('explore_tab_seen');
+        setExploreSeen(!!seen);
+    };
+    React.useLayoutEffect(() => {
+        readExploreSeen();
+    }, []);
 
     const handleChangeTab = (newTab: number) => {
         if (newTab === tab) {
@@ -57,6 +67,8 @@ export const Home = React.memo((props: PageProps) => {
             }
         } else {
             setTab(newTab);
+            setExploreSeen(true);
+            AppStorage.writeKey('explore_tab_seen', true);
         }
     };
 
@@ -111,7 +123,7 @@ export const Home = React.memo((props: PageProps) => {
             <View style={{ position: Platform.OS === 'ios' ? 'absolute' : 'relative', bottom: 0, left: 0, right: 0 }}>
                 <AppBarBottom>
                     <AppBarBottomItem
-                        dot={discoverDone !== null && !discoverDone.betaIsDiscoverDone}
+                        dot={discoverDone !== null && !discoverDone.betaIsDiscoverDone && exploreSeen !== null && !exploreSeen}
                         icon={require('assets/ic-discover-24.png')}
                         iconSelected={require('assets/ic-discover-filled-24.png')}
                         selected={tab === 0}

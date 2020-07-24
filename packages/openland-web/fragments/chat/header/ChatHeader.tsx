@@ -234,7 +234,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
     const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
     const path =
-        isSavedMessages ? undefined :
+        isSavedMessages ? `/mail/${chat.id}/shared` :
             chat.__typename === 'PrivateRoom'
                 ? `/${chat.user.shortname || chat.user.id}`
                 : `/group/${chat.id}`;
@@ -262,13 +262,13 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
             paddingHorizontal={16}
         >
             <XView
-                hoverOpacity={isSavedMessages ? undefined : HoverAlpha}
+                hoverOpacity={HoverAlpha}
                 flexDirection="row"
                 flexShrink={1}
                 flexGrow={0}
                 minWidth={0}
                 path={path}
-                cursor={isSavedMessages ? undefined : 'pointer'}
+                cursor="pointer"
             >
                 <XView paddingTop={8} paddingRight={16}>
                     <UAvatar

@@ -36,8 +36,8 @@ const ContactsWasImportStub = React.memo(() => {
             justifyContent="center"
         >
             <Image
-                source={require('assets/img-contacts-empty.png')}
-                style={{ width: 270, height: 180, marginBottom: 1 }}
+                source={require('assets/art-empty.png')}
+                style={{ width: 240, height: 140, marginBottom: 12 }}
             />
             <Text
                 allowFontScaling={false}
@@ -72,6 +72,9 @@ const handleImportPress = async (onImportPress: Function) => {
                 handlePermissionDismiss('contacts');
                 return;
             } else {
+                if (contactsExporter) {
+                    contactsExporter.init();
+                }
                 onImportPress();
             }
         });
@@ -104,8 +107,8 @@ const ContactsNoImportStub = React.memo((props: { onImportPress: Function }) => 
             justifyContent="center"
         >
             <Image
-                source={require('assets/img-contacts-import.png')}
-                style={{ width: 270, height: 180, marginBottom: 12 }}
+                source={require('assets/art-crowd.png')}
+                style={{ width: 240, height: 140, marginBottom: 12 }}
             />
             <Text
                 style={{
@@ -160,22 +163,21 @@ const ContactsPage = React.memo((props: PageProps) => {
     React.useEffect(() => {
         (async () => {
             const permissions = await AsyncStorage.getItem('haveContactsPermission');
-            if (permissions === 'true') {
+            if (permissions === 'true' || contactsWasExported) {
                 setHaveContactsPermission(true);
             }
         })();
-    }, []);
+    }, [contactsWasExported]);
 
     const onImportPress = React.useCallback(async () => {
         const loader = Toast.loader();
         loader.show();
-        await client.refetchMyContacts({ first: 20 }, { fetchPolicy: 'network-only' });
-        await client.refetchPhonebookWasExported();
         const permissions = await AsyncStorage.getItem('haveContactsPermission');
         if (permissions === 'true' || contactsWasExported) {
             setHaveContactsPermission(true);
         }
         loader.hide();
+        Toast.success({ duration: 1000}).show();
     }, []);
 
     const handleRemoveMemberFromContacts = React.useCallback(async (userId: string) => {
@@ -184,6 +186,7 @@ const ContactsPage = React.memo((props: PageProps) => {
         await client.mutateRemoveFromContacts({ userId: userId });
         await client.refetchUser({ userId: userId });
         loader.hide();
+        Toast.success({ duration: 1000}).show();
     }, []);
 
     const handleContactLongPress = React.useCallback((user: MyContacts_myContacts_items_user) => {
