@@ -14,6 +14,8 @@ import IcAndroid from 'openland-icons/s/ic-android-16.svg';
 import IcWin from 'openland-icons/s/ic-win-16.svg';
 import IcMac from 'openland-icons/s/ic-mac-16.svg';
 import IcLinux from 'openland-icons/s/ic-linux-16.svg';
+import { getConfig } from 'openland-web/config';
+import { delay } from 'openland-y-utils/timer';
 
 const bannerContainetClass = css`
     display: flex;
@@ -273,25 +275,20 @@ let useUpdateBanner = () => {
         setShow(false);
     }, []);
     React.useEffect(() => {
-        const checkVersion = async () => {
-            let ignoreVersions = [await queryVersion()]; // ignore current version
-            let timeout: any = undefined;
-            setInterval(async () => {
-                const newVersion = await queryVersion();
-                if (!ignoreVersions.includes(newVersion)) {
-                    ignoreVersions.push(newVersion);
-                    if (timeout !== undefined) {
-                        clearTimeout(timeout);
-                    }
-                    timeout = setTimeout(async () => {
-                        timeout = undefined;
-                        setShow(true);
-                    }, 60000);
-                }
-            }, 15000);
-        };
+        let lastStableVersion = getConfig().release || '';
 
-        checkVersion();
+        let interval: any = setInterval(async () => {
+            const newVersion = await queryVersion();
+            if (newVersion !== lastStableVersion) {
+                await delay(60000);
+                if (await queryVersion() === newVersion) {
+                    lastStableVersion = newVersion;
+                    setShow(true);
+                }
+            }
+        }, 15000);
+
+        return () => clearInterval(interval);
     }, []);
 
     return { show, onClose, BannerComponent: UpdateBanner, electronEnabled: true };
