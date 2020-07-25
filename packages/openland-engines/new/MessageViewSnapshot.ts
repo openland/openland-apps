@@ -11,7 +11,7 @@ export type MessageViewSnapshotLoadFrom =
 export type Snapshot =
     | { type: 'loading' }
     | { type: 'no-access' }
-    | { type: 'messages', hasMoreNext: boolean, hasMorePrev: boolean, messages: StoredMessage[] };
+    | { type: 'messages', focusSeq: number | null, hasMoreNext: boolean, hasMorePrev: boolean, messages: StoredMessage[] };
 
 export class MessageViewSnapshot implements MessageView {
     private _closed = false;
@@ -24,7 +24,11 @@ export class MessageViewSnapshot implements MessageView {
     private _messages: StoredMessage[] = [];
     private _minSeq: number = 0;
     private _maxSeq: number = 0;
+    private _focusSeq: number | null = null;
+
     private _listeners: ((src: Snapshot) => void)[] = [];
+    private _loadingNext = false;
+    private _loadingPrev = false;
 
     constructor(store: MessagesStore, loadFrom: MessageViewSnapshotLoadFrom, onClosed: () => void) {
         this.store = store;
@@ -71,7 +75,13 @@ export class MessageViewSnapshot implements MessageView {
     }
 
     private setMessagesState() {
-        this.setState({ type: 'messages', messages: this._messages, hasMoreNext: this._maxSeq !== Number.MAX_SAFE_INTEGER, hasMorePrev: this._minSeq !== Number.MIN_SAFE_INTEGER });
+        this.setState({
+            type: 'messages',
+            focusSeq: this._focusSeq,
+            messages: this._messages,
+            hasMoreNext: this._maxSeq !== Number.MAX_SAFE_INTEGER,
+            hasMorePrev: this._minSeq !== Number.MIN_SAFE_INTEGER
+        });
     }
 
     private doInit() {
@@ -98,6 +108,7 @@ export class MessageViewSnapshot implements MessageView {
 
                         // Set initial state
                         this._messages = [...prev.items, cachedMessage, ...next.items];
+                        this._focusSeq = cachedMessage.seq;
                         this._started = true;
                         // Max Seq
                         this._maxSeq = cachedMessage.seq;
@@ -227,6 +238,100 @@ export class MessageViewSnapshot implements MessageView {
     }
 
     //
+    // Loading
+    //
+
+    requestLoadNextIfNeeded = () => {
+        if (this._loadingNext) {
+            return;
+        }
+        if (this._closed) {
+            return;
+        }
+        if (this._maxSeq === Number.MAX_SAFE_INTEGER) {
+            return;
+        }
+        this._loadingNext = true;
+        backoff(async () => {
+            while (true) {
+                if (this._closed) {
+                    return;
+                }
+                let loaded = await this.store.persistence.inTx(async (tx) => {
+                    let after = await this.store.loadCachedAfter(this._maxSeq, tx);
+                    if (!after || (after.items.length === 0) && !after.completed) {
+                        return false;
+                    }
+                    this._messages = [...this._messages, ...after.items];
+                    if (after.completed) {
+                        this._maxSeq = Number.MAX_SAFE_INTEGER;
+                    } else {
+                        for (let i of after.items) {
+                            this._maxSeq = Math.max(i.seq, this._minSeq);
+                        }
+                    }
+                    this.setMessagesState();
+                    return true;
+                });
+
+                if (!loaded) {
+                    await this.store.loadAfter(this._messages[this._messages.length - 1].id);
+                } else {
+                    break;
+                }
+            }
+
+            // Mark as loaded
+            this._loadingNext = false;
+        });
+    }
+
+    requestLoadPrevIfNeeded = () => {
+        if (this._loadingPrev) {
+            return;
+        }
+        if (this._closed) {
+            return;
+        }
+        if (this._minSeq === Number.MIN_SAFE_INTEGER) {
+            return;
+        }
+        this._loadingPrev = true;
+        backoff(async () => {
+            while (true) {
+                if (this._closed) {
+                    return;
+                }
+                let loaded = await this.store.persistence.inTx(async (tx) => {
+                    let before = await this.store.loadCachedBefore(this._minSeq, tx);
+                    if (!before || (before.items.length === 0) && !before.completed) {
+                        return false;
+                    }
+                    this._messages = [...before.items, ...this._messages];
+                    if (before.completed) {
+                        this._minSeq = Number.MIN_SAFE_INTEGER;
+                    } else {
+                        for (let i of before.items) {
+                            this._minSeq = Math.min(i.seq, this._minSeq);
+                        }
+                    }
+                    this.setMessagesState();
+                    return true;
+                });
+
+                if (!loaded) {
+                    await this.store.loadBefore(this._messages[0].id);
+                } else {
+                    break;
+                }
+            }
+
+            // Mark as loaded
+            this._loadingPrev = false;
+        });
+    }
+
+    //
     // Closing
     //
 
@@ -262,6 +367,11 @@ export class MessageViewSnapshot implements MessageView {
             this.doInit();
         }
     }
+
+    //
+    // Updates
+    //
+
     onMessagesReceived(messages: { repeatKey: string | null, message: StoredMessage }[]) {
         if (this._closed) {
             return;

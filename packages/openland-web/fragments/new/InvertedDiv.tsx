@@ -57,15 +57,23 @@ const contentClassName = css`
 export interface ScrollValues {
     scrollHeight: number;
     scrollTop: number;
+    scrollBottom: number;
     clientHeight: number;
 }
 
 export interface InvertedDivProps {
     onScroll?: (values: ScrollValues) => void;
+    useLastItemAsPadding?: boolean;
     children?: any;
 }
 
-export const InvertedDiv = React.memo((props: InvertedDivProps) => {
+export interface InvertedDivInstance {
+    scrollToBottom(): void;
+    scrollToIndex(index: number): void;
+    scrollToTop(): void;
+}
+
+export const InvertedDiv = React.memo(React.forwardRef<InvertedDivInstance, InvertedDivProps>((props, ref) => {
     const outerRef = React.useRef<HTMLDivElement>(null);
     const innerRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
@@ -73,10 +81,48 @@ export const InvertedDiv = React.memo((props: InvertedDivProps) => {
     const outerHeight = React.useRef<number>(0);
     const contentHeight = React.useRef<number>(0);
 
+    const useLastItemAsPadding = React.useMemo(() => (props.useLastItemAsPadding || false), []);
+    if (useLastItemAsPadding !== (props.useLastItemAsPadding || false)) {
+        throw Error('useLastItemAsPadding could not be changed');
+    }
+
     const onScrollProps = React.useRef(props.onScroll);
     React.useEffect(() => {
         onScrollProps.current = props.onScroll;
     }, [props.onScroll]);
+
+    React.useImperativeHandle(ref, () => ({
+        scrollToBottom: () => {
+            let outerDiv = outerRef.current;
+            let innerDiv = innerRef.current;
+            if (outerDiv && innerDiv) {
+                outerDiv.scrollTop = innerDiv.clientHeight;
+            }
+        },
+        scrollToIndex: (index: number) => {
+            let outerDiv = outerRef.current;
+            let contentDiv = contentRef.current;
+            if (outerDiv && contentDiv && (index < contentDiv.childNodes.length)) {
+                let node = contentDiv.childNodes.item(index) as HTMLDivElement;
+                let offsetTop = node.offsetTop;
+                let height = node.clientHeight;
+
+                if (height < outerDiv.clientHeight) {
+                    // Center in view
+                    outerDiv.scrollTop = offsetTop - (outerDiv.clientHeight - height) / 2;
+                } else {
+                    // Top in view
+                    outerDiv.scrollTop = offsetTop;
+                }
+            }
+        },
+        scrollToTop: () => {
+            let outerDiv = outerRef.current;
+            if (outerDiv) {
+                outerDiv.scrollTop = 0;
+            }
+        }
+    }));
 
     // Initialization
     React.useLayoutEffect(() => {
@@ -85,6 +131,7 @@ export const InvertedDiv = React.memo((props: InvertedDivProps) => {
         const contentDiv = contentRef.current!;
         const childHeight = new Map<HTMLDivElement, number>();
         const childTop = new Map<HTMLDivElement, number>();
+        let lastKnownBottomHeight: number = 0;
         let lastKnownScroll: number;
 
         // Set initial inner div size and scroll
@@ -103,13 +150,13 @@ export const InvertedDiv = React.memo((props: InvertedDivProps) => {
         function recalculateTopOffsets() {
             let acc = 0;
             for (let i = 0; i < contentRef.current!.childElementCount; i++) {
-                let node = contentRef.current!.childNodes[i] as HTMLDivElement;
+                let node = contentRef.current!.childNodes.item(i) as HTMLDivElement;
                 let h = childHeight.get(node);
-                if (h) {
+                if (h !== undefined) {
                     childTop.set(node, acc);
                     acc += h;
                 } else {
-                    console.warn('Unable to find cached child height for ', node);
+                    console.warn('Unable to find cached child height for ', node, ' at ' + i);
                 }
             }
         }
@@ -117,12 +164,15 @@ export const InvertedDiv = React.memo((props: InvertedDivProps) => {
         //
         // Initial sizes
         //
-        
+
         outerHeight.current = outerDiv.clientHeight;
         contentHeight.current = contentDiv.clientHeight;
-        for (let i = 0; i < contentRef.current!.childElementCount; i++) {
-            let node = contentRef.current!.childNodes[i] as HTMLDivElement;
+        for (let i = 0; i < contentDiv.childElementCount; i++) {
+            let node = contentDiv.childNodes[i] as HTMLDivElement;
             childHeight.set(node, node.clientHeight);
+        }
+        if (contentDiv.childElementCount > 0) {
+            lastKnownBottomHeight = (contentDiv.childNodes[contentDiv.childElementCount - 1] as HTMLDivElement).clientHeight;
         }
         recalculateTopOffsets();
 
@@ -145,26 +195,53 @@ export const InvertedDiv = React.memo((props: InvertedDivProps) => {
                 reportedScrollTop = lastKnownScroll;
                 reportedClientHeight = clientHeight;
                 let callback = onScrollProps.current;
+                let scrollTop = lastKnownScroll;
+                let scrollBottom = Math.max(0, scrollHeight - clientHeight - scrollTop);
                 if (callback) {
                     callback({
                         scrollHeight,
-                        scrollTop: lastKnownScroll,
+                        scrollTop,
+                        scrollBottom,
                         clientHeight,
                     });
                 }
             }
-        }, 150);
+        }, 50);
         const onScrollHandler = () => {
             lastKnownScroll = outerDiv.scrollTop;
             reportScroll();
         };
         outerDiv.addEventListener('scroll', onScrollHandler, { passive: true });
 
+        function getCurrentScroll() {
+            let maxScroll = outerDiv.clientHeight - innerDiv.clientHeight;
+            let scroll = outerDiv.scrollTop;
+            if (scroll < 0) {
+                return 0;
+            }
+            if (scroll > maxScroll) {
+                return maxScroll;
+            }
+            return scroll;
+        }
+
         // Observe resizes
         let observer = new ResizeObserver(src => {
+
+            // Update last height if possible
+            if (contentDiv.hasChildNodes()) {
+                let last = contentDiv.lastChild! as HTMLDivElement;
+                for (let s of src) {
+                    if (s.target === last) {
+                        lastKnownBottomHeight = s.contentRect.height;
+                    }
+                }
+            }
+
+            // Initial values
             let delta = 0;
-            let topWindow = outerDiv.scrollTop;
-            let bottomWindow = topWindow + outerDiv.clientHeight;
+            let topWindow = getCurrentScroll();
+            let bottomWindow = topWindow + outerDiv.clientHeight - (useLastItemAsPadding && (lastKnownBottomHeight > 0) ? (lastKnownBottomHeight + 1) : 0);
 
             // Load current values
             let outer = outerHeight.current;
@@ -206,6 +283,7 @@ export const InvertedDiv = React.memo((props: InvertedDivProps) => {
                             // then adjust scrolling position
                             if (top <= bottomWindow || bottom <= bottomWindow) {
                                 delta += d;
+                                bottomWindow += d; // Move bottom of the window since change moved current window down
                             }
                         }
                     }
@@ -230,6 +308,7 @@ export const InvertedDiv = React.memo((props: InvertedDivProps) => {
                 contentDiv.style.top = `0px`;
             }
             outerDiv.scrollTop = sourceScroll + delta;
+            lastKnownScroll = sourceScroll + delta;
 
             // Report scroll if needed
             reportScroll();
@@ -248,15 +327,19 @@ export const InvertedDiv = React.memo((props: InvertedDivProps) => {
 
         // Observer childs
         let childObserver = new MutationObserver((mutations) => {
-            console.log('child-updated:start');
+
+            // Reload bottom element height
+            if (contentDiv.childElementCount > 0) {
+                lastKnownBottomHeight = (contentDiv.childNodes[contentDiv.childElementCount - 1] as HTMLDivElement).clientHeight;
+            } else {
+                lastKnownBottomHeight = 0;
+            }
 
             let delta = 0;
-            let topWindow = outerDiv.scrollTop;
-            let bottomWindow = topWindow + outerDiv.clientHeight;
-
+            let topWindow = getCurrentScroll();
+            let bottomWindow = topWindow + outerDiv.clientHeight - (useLastItemAsPadding && (lastKnownBottomHeight > 0) ? (lastKnownBottomHeight + 1) : 0);
             for (let m of mutations) {
                 if (m.type === 'childList') {
-
                     // Removed nodes
                     for (let ri = 0; ri < m.removedNodes.length; ri++) {
                         let r = m.removedNodes[ri] as HTMLDivElement;
@@ -287,6 +370,7 @@ export const InvertedDiv = React.memo((props: InvertedDivProps) => {
                         // of the bottom of viewport
                         if (top <= bottomWindow || bottom <= bottomWindow) {
                             delta += r.clientHeight;
+                            bottomWindow += r.clientHeight; // Move bottom of the window since new added item moved current window down
                         }
 
                         // Set initial values
@@ -304,13 +388,16 @@ export const InvertedDiv = React.memo((props: InvertedDivProps) => {
             // Update inner div height and scroll
             // NOTE: We need to update div height first since 
             //       otherwise we could get invalid scroll value
-            innerDiv.style.height = Math.floor(Math.max(sourceContentHeight, sourceOuterHeight)) + 'px';
+
+            let innerDivHeight = Math.floor(Math.max(sourceContentHeight, sourceOuterHeight));
+            innerDiv.style.height = innerDivHeight + 'px';
             if (sourceContentHeight < sourceOuterHeight) {
                 contentDiv.style.top = `${sourceOuterHeight - sourceContentHeight}px`;
             } else {
                 contentDiv.style.top = `0px`;
             }
             outerDiv.scrollTop = sourceScroll + delta;
+            lastKnownScroll = sourceScroll + delta;
 
             // Persist new content height
             contentHeight.current = sourceContentHeight;
@@ -343,4 +430,4 @@ export const InvertedDiv = React.memo((props: InvertedDivProps) => {
             </div>
         </div>
     );
-});
+}));

@@ -22,8 +22,8 @@ export default withApp('Pegasus', ['super-admin', 'software-developer'], props =
 
     return (
         <DevDocsScaffold title="Pegasus">
-            <XView height={800} backgroundColor="red">
-                <MessagesComponent store={store} loadFrom={{ type: 'latest' }} />
+            <XView height={800}>
+                <MessagesComponent store={store} loadFrom={{ type: 'message', id: 'dB9xPD0Q5KtwpnR7nLbgUomZb1' }} />
             </XView>
         </DevDocsScaffold>
     );
