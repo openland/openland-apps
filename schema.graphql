@@ -1702,6 +1702,12 @@ type ModernMessageReaction {
   reaction: MessageReactionType!
 }
 
+type ModernMessagesBatch {
+  messages: [ModernMessage!]!
+  haveMoreForward: Boolean!
+  haveMoreBackward: Boolean!
+}
+
 type MultiselectMatchmakingAnswer {
   question: MultiselectMatchmakingQuestion!
   tags: [String!]!
@@ -2870,6 +2876,7 @@ type Query {
   orgMembersSearch(orgId: ID!, query: String, first: Int!, after: String, page: Int): JoinedOrganizationMembersConnection!
   messages(chatId: ID!, first: Int!, before: ID): [ModernMessage!]!
   gammaMessages(chatId: ID!, first: Int!, before: ID, after: ID, around: ID): GammaMessagesBatch
+  modernMessages(chatId: ID!, first: Int!, before: ID, after: ID, around: ID): GammaMessagesBatch
   message(messageId: ID!): ModernMessage
   lastReadedMessage(chatId: ID!): ModernMessage
   chatSharedMedia(chatId: ID!, mediaTypes: [SharedMediaType!]!, first: Int!, after: ID, before: ID, around: ID): SharedMediaConnection!

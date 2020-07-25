@@ -1,3 +1,11 @@
+fragment ChatNewUserFragment on User {
+    id
+    firstName
+    lastName
+    isBot
+    shortname
+}
+
 fragment ChatNewMessageFragment on ModernMessage {
     id
     date
@@ -47,6 +55,12 @@ query ChatNewLoadLastMessage($chatId: ID!) {
 
 query ChatNewHaveAccess($chatId: ID!) {
     haveAccessToChat(chatId: $chatId)
+}
+
+query ChatNewUser($id: ID!)  {
+    user(id: $id) {
+        ...ChatNewUserFragment
+    }
 }
 
 #

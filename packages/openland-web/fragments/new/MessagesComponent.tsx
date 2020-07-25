@@ -6,7 +6,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { StoredMessage } from 'openland-engines/new/StoredMessage';
 
 type LoadFrom = { type: 'latest' } | { type: 'message', id: string };
-const EDGE_DISTANCE = 300;
+const EDGE_DISTANCE = 1200;
 
 const SnapshotMessagesRenderer = React.memo((props: {
     hasMoreNext: boolean,

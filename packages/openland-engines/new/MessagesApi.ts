@@ -1,3 +1,4 @@
+import { MessageUser } from './Message';
 import { StoredMessage } from './StoredMessage';
 import { ChatNewMessageFragment } from 'openland-api/spacex.types';
 import { OpenlandClient } from 'openland-api/spacex';
@@ -7,6 +8,7 @@ export function convertMessage(src: ChatNewMessageFragment): StoredMessage {
         id: src.id,
         seq: src.seq!,
         sender: src.sender.id,
+        date: parseInt(src.date, 10),
         text: src.message,
         fallback: src.fallback
     };
@@ -28,6 +30,12 @@ export interface MessagesApi {
     loadChatAccess(id: string): Promise<boolean>;
 
     loadDialogsState(): Promise<string>;
+
+    //
+    // Users
+    // 
+
+    loadUser(ud: string): Promise<MessageUser>;
 }
 
 export class MessagesApiClient implements MessagesApi {
@@ -102,4 +110,18 @@ export class MessagesApiClient implements MessagesApi {
         return (await this.client.queryChatNewDialogsState({ fetchPolicy: 'network-only' })).state.state!;
     }
 
+    //
+    // Users
+    //
+
+    loadUser = async (uid: string) => {
+        let user = (await this.client.queryChatNewUser({ id: uid }, { fetchPolicy: 'cache-first' })).user;
+        return {
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            isBot: user.isBot,
+            username: user.shortname
+        };
+    }
 }

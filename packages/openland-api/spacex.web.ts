@@ -55,6 +55,15 @@ const ChatNewMessageFragmentSelector = obj(
             field('fallback', 'fallback', args(), notNull(scalar('String')))
         );
 
+const ChatNewUserFragmentSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('firstName', 'firstName', args(), notNull(scalar('String'))),
+            field('lastName', 'lastName', args(), scalar('String')),
+            field('isBot', 'isBot', args(), notNull(scalar('Boolean'))),
+            field('shortname', 'shortname', args(), scalar('String'))
+        );
+
 const MessageSenderSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -2237,6 +2246,12 @@ const ChatNewReadLastReadSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('id', 'id', args(), notNull(scalar('ID')))
                 ))
+        );
+const ChatNewUserSelector = obj(
+            field('user', 'user', args(fieldValue("id", refValue('id'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('User', ChatNewUserFragmentSelector)
+                )))
         );
 const CommentsSelector = obj(
             field('comments', 'comments', args(fieldValue("peerId", refValue('peerId'))), notNull(obj(
@@ -5061,6 +5076,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'ChatNewReadLastRead',
         body: 'query ChatNewReadLastRead($chatId:ID!){message:lastReadedMessage(chatId:$chatId){__typename id}}',
         selector: ChatNewReadLastReadSelector
+    },
+    ChatNewUser: {
+        kind: 'query',
+        name: 'ChatNewUser',
+        body: 'query ChatNewUser($id:ID!){user(id:$id){__typename ...ChatNewUserFragment}}fragment ChatNewUserFragment on User{__typename id firstName lastName isBot shortname}',
+        selector: ChatNewUserSelector
     },
     Comments: {
         kind: 'query',

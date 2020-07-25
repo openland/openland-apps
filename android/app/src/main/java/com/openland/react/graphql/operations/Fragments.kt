@@ -54,6 +54,15 @@ internal val ChatNewMessageFragmentSelector = obj(
             field("fallback", "fallback", notNull(scalar("String")))
         )
 
+internal val ChatNewUserFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("firstName", "firstName", notNull(scalar("String"))),
+            field("lastName", "lastName", scalar("String")),
+            field("isBot", "isBot", notNull(scalar("Boolean"))),
+            field("shortname", "shortname", scalar("String"))
+        )
+
 internal val MessageSenderSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),

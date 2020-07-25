@@ -48,6 +48,15 @@ private let ChatNewMessageFragmentSelector = obj(
             field("fallback", "fallback", notNull(scalar("String")))
         )
 
+private let ChatNewUserFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("firstName", "firstName", notNull(scalar("String"))),
+            field("lastName", "lastName", scalar("String")),
+            field("isBot", "isBot", notNull(scalar("Boolean"))),
+            field("shortname", "shortname", scalar("String"))
+        )
+
 private let MessageSenderSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -2230,6 +2239,12 @@ private let ChatNewReadLastReadSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID")))
                 ))
+        )
+private let ChatNewUserSelector = obj(
+            field("user", "user", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("User", ChatNewUserFragmentSelector)
+                )))
         )
 private let CommentsSelector = obj(
             field("comments", "comments", arguments(fieldValue("peerId", refValue("peerId"))), notNull(obj(
@@ -5059,6 +5074,12 @@ class Operations {
         "query ChatNewReadLastRead($chatId:ID!){message:lastReadedMessage(chatId:$chatId){__typename id}}",
         ChatNewReadLastReadSelector
     )
+    let ChatNewUser = OperationDefinition(
+        "ChatNewUser",
+        .query, 
+        "query ChatNewUser($id:ID!){user(id:$id){__typename ...ChatNewUserFragment}}fragment ChatNewUserFragment on User{__typename id firstName lastName isBot shortname}",
+        ChatNewUserSelector
+    )
     let Comments = OperationDefinition(
         "Comments",
         .query, 
@@ -6498,6 +6519,7 @@ class Operations {
         if name == "ChatNewLoadBefore" { return ChatNewLoadBefore }
         if name == "ChatNewLoadLastMessage" { return ChatNewLoadLastMessage }
         if name == "ChatNewReadLastRead" { return ChatNewReadLastRead }
+        if name == "ChatNewUser" { return ChatNewUser }
         if name == "Comments" { return Comments }
         if name == "Conference" { return Conference }
         if name == "ConferenceMedia" { return ConferenceMedia }

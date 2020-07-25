@@ -28,6 +28,7 @@ object Operations {
         if (name == "ChatNewLoadBefore") return ChatNewLoadBefore
         if (name == "ChatNewLoadLastMessage") return ChatNewLoadLastMessage
         if (name == "ChatNewReadLastRead") return ChatNewReadLastRead
+        if (name == "ChatNewUser") return ChatNewUser
         if (name == "Comments") return Comments
         if (name == "Conference") return Conference
         if (name == "ConferenceMedia") return ConferenceMedia

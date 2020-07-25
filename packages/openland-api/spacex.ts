@@ -73,6 +73,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryChatNewReadLastRead(variables: Types.ChatNewReadLastReadVariables, params?: QueryParameters): Promise<Types.ChatNewReadLastRead> {
         return this.query('ChatNewReadLastRead', variables, params);
     }
+    queryChatNewUser(variables: Types.ChatNewUserVariables, params?: QueryParameters): Promise<Types.ChatNewUser> {
+        return this.query('ChatNewUser', variables, params);
+    }
     queryComments(variables: Types.CommentsVariables, params?: QueryParameters): Promise<Types.Comments> {
         return this.query('Comments', variables, params);
     }
@@ -418,6 +421,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchChatNewReadLastRead(variables: Types.ChatNewReadLastReadVariables, params?: QueryParameters): Promise<Types.ChatNewReadLastRead> {
         return this.refetch('ChatNewReadLastRead', variables, params);
     }
+    refetchChatNewUser(variables: Types.ChatNewUserVariables, params?: QueryParameters): Promise<Types.ChatNewUser> {
+        return this.refetch('ChatNewUser', variables, params);
+    }
     refetchComments(variables: Types.CommentsVariables, params?: QueryParameters): Promise<Types.Comments> {
         return this.refetch('Comments', variables, params);
     }
@@ -762,6 +768,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateChatNewReadLastRead(variables: Types.ChatNewReadLastReadVariables, updater: (data: Types.ChatNewReadLastRead) => Types.ChatNewReadLastRead | null): Promise<boolean> {
         return this.updateQuery(updater, 'ChatNewReadLastRead', variables);
+    }
+    updateChatNewUser(variables: Types.ChatNewUserVariables, updater: (data: Types.ChatNewUser) => Types.ChatNewUser | null): Promise<boolean> {
+        return this.updateQuery(updater, 'ChatNewUser', variables);
     }
     updateComments(variables: Types.CommentsVariables, updater: (data: Types.Comments) => Types.Comments | null): Promise<boolean> {
         return this.updateQuery(updater, 'Comments', variables);
@@ -1149,6 +1158,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useChatNewReadLastRead(variables: Types.ChatNewReadLastReadVariables, params?: SpaceQueryWatchParameters): Types.ChatNewReadLastRead;
     useChatNewReadLastRead(variables: Types.ChatNewReadLastReadVariables, params?: SpaceQueryWatchParameters): Types.ChatNewReadLastRead | null {
         return this.useQuery('ChatNewReadLastRead', variables, params);
+    }
+    useChatNewUser(variables: Types.ChatNewUserVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ChatNewUser | null;
+    useChatNewUser(variables: Types.ChatNewUserVariables, params?: SpaceQueryWatchParameters): Types.ChatNewUser;
+    useChatNewUser(variables: Types.ChatNewUserVariables, params?: SpaceQueryWatchParameters): Types.ChatNewUser | null {
+        return this.useQuery('ChatNewUser', variables, params);
     }
     useComments(variables: Types.CommentsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.Comments | null;
     useComments(variables: Types.CommentsVariables, params?: SpaceQueryWatchParameters): Types.Comments;

@@ -1,11 +1,12 @@
 import { backoff } from 'openland-y-utils/timer';
 import { MessageViewSnapshot } from './MessageViewSnapshot';
 import { MessageView } from './MessageView';
-import { StoredMessage } from './StoredMessage';
+import { StoredMessage, extractUsers } from './StoredMessage';
 import { randomKey } from 'openland-y-utils/randomKey';
 import { MessagesApi } from './MessagesApi';
 import { Persistence, Transaction } from './Persistence';
 import { MessagesRepository } from './MessagesRepository';
+import { MessageUser } from './Message';
 
 export class MessagesStore {
 
@@ -19,12 +20,57 @@ export class MessagesStore {
     private readonly repo: MessagesRepository;
     private readonly views = new Map<string, MessageView>();
     private access: undefined | boolean = undefined;
+    private users = new Map<string, MessageUser>();
 
     private constructor(repo: MessagesRepository, persistence: Persistence, api: MessagesApi) {
         this.repo = repo;
         this.persistence = persistence;
         this.api = api;
     }
+
+    //
+    // Views
+    //
+
+    createSnapshotViewAt = (id: string): MessageViewSnapshot => {
+        // Create View
+        let viewId = randomKey();
+        let view = new MessageViewSnapshot(this, { type: 'message', id }, () => {
+            this.views.delete(viewId);
+        });
+        this.views.set(viewId, view);
+
+        // Initialize access
+        if (this.access === true) {
+            view.onMessagesGotAccess();
+        } else if (this.access === false) {
+            view.onMessagesLostAccess();
+        }
+
+        return view;
+    }
+
+    createSnapshotViewAtLatest = (): MessageViewSnapshot => {
+        // Create View
+        let viewId = randomKey();
+        let view = new MessageViewSnapshot(this, { type: 'latest' }, () => {
+            this.views.delete(viewId);
+        });
+        this.views.set(viewId, view);
+
+        // Initialize access
+        if (this.access === true) {
+            view.onMessagesGotAccess();
+        } else if (this.access === false) {
+            view.onMessagesLostAccess();
+        }
+
+        return view;
+    }
+
+    //
+    // Operations
+    //
 
     loadCachedLatest = async (tx: Transaction) => {
         let latest = await this.repo.readBefore({ before: Number.MAX_SAFE_INTEGER, limit: 1 }, tx);
@@ -53,6 +99,10 @@ export class MessagesStore {
                         await this.repo.writeBatch({ minSeq: Number.MIN_SAFE_INTEGER, maxSeq: Number.MAX_SAFE_INTEGER, messages: [] }, tx);
                     });
                 } else {
+                    // Load required users
+                    await this.loadUsersFromMessagesIfNeeded([lastMessage]);
+
+                    // Write message to repo
                     await this.persistence.inTx(async (tx) => {
                         await this.repo.writeBatch({ minSeq: lastMessage!.seq, maxSeq: Number.MAX_SAFE_INTEGER, messages: [lastMessage!] }, tx);
                     });
@@ -77,6 +127,11 @@ export class MessagesStore {
                 if (!msg) {
                     return null;
                 } else {
+
+                    // Load required users
+                    await this.loadUsersFromMessagesIfNeeded([msg]);
+
+                    // Write message to repo
                     await this.persistence.inTx(async (tx) => {
                         await this.repo.writeBatch({ minSeq: msg!.seq, maxSeq: msg!.seq, messages: [msg!] }, tx);
                     });
@@ -105,6 +160,11 @@ export class MessagesStore {
                     if (!loaded) {
                         return null;
                     }
+
+                    // Load required users
+                    await this.loadUsersFromMessagesIfNeeded(loaded.messages);
+
+                    // Resolve seq
                     let batchMinSeq = message.seq;
                     if (!loaded.hasMore) {
                         batchMinSeq = Number.MIN_SAFE_INTEGER;
@@ -146,6 +206,11 @@ export class MessagesStore {
                     if (!loaded) {
                         return null;
                     }
+
+                    // Load required users
+                    await this.loadUsersFromMessagesIfNeeded(loaded.messages);
+
+                    // Resolve seq
                     let batchMaxSeq = message.seq;
                     if (!loaded.hasMore) {
                         batchMaxSeq = Number.MAX_SAFE_INTEGER;
@@ -164,42 +229,6 @@ export class MessagesStore {
                 return after;
             }
         });
-    }
-
-    createSnapshotViewAt = (id: string): MessageViewSnapshot => {
-        // Create View
-        let viewId = randomKey();
-        let view = new MessageViewSnapshot(this, { type: 'message', id }, () => {
-            this.views.delete(viewId);
-        });
-        this.views.set(viewId, view);
-
-        // Initialize access
-        if (this.access === true) {
-            view.onMessagesGotAccess();
-        } else if (this.access === false) {
-            view.onMessagesLostAccess();
-        }
-
-        return view;
-    }
-
-    createSnapshotViewAtLatest = (): MessageViewSnapshot => {
-        // Create View
-        let viewId = randomKey();
-        let view = new MessageViewSnapshot(this, { type: 'latest' }, () => {
-            this.views.delete(viewId);
-        });
-        this.views.set(viewId, view);
-
-        // Initialize access
-        if (this.access === true) {
-            view.onMessagesGotAccess();
-        } else if (this.access === false) {
-            view.onMessagesLostAccess();
-        }
-
-        return view;
     }
 
     //
@@ -229,10 +258,15 @@ export class MessagesStore {
     }
 
     onMessagesReceived = async (messages: { repeatKey: string | null, message: StoredMessage }[], tx: Transaction) => {
+        // Load required users if missing in cache
+        await this.loadUsersFromMessagesIfNeeded(messages.map((v) => v.message));
+
+        // Apply updates
         for (let m of messages) {
             await this.repo.handleMessageReceived(m.message, tx);
         }
 
+        // Notify views
         tx.afterTransaction(() => {
             for (let v of this.views) {
                 v[1].onMessagesReceived(messages);
@@ -241,9 +275,16 @@ export class MessagesStore {
     }
 
     onMessagesUpdated = async (messages: StoredMessage[], tx: Transaction) => {
+
+        // Load required users if missing in cache
+        await this.loadUsersFromMessagesIfNeeded(messages);
+
+        // Apply updates
         for (let m of messages) {
             await this.repo.handleMessageUpdated(m, tx);
         }
+
+        // Notify views
         tx.afterTransaction(() => {
             for (let v of this.views) {
                 v[1].onMessagesUpdated(messages);
@@ -260,5 +301,30 @@ export class MessagesStore {
                 v[1].onMessagesDeleted(messages);
             }
         });
+    }
+
+    //
+    // Users
+    //
+
+    private loadUsersFromMessagesIfNeeded = async (messages: StoredMessage[]) => {
+        let users = new Set<string>();
+        for (let m of messages) {
+            extractUsers(m, users);
+        }
+        for (let u of users) {
+            await this.loadUserIfNeeded(u);
+        }
+    }
+
+    private loadUserIfNeeded = async (id: string) => {
+        if (this.users.has(id)) {
+            return;
+        }
+        let user = await this.api.loadUser(id);
+        if (this.users.has(id)) {
+            return;
+        }
+        this.users.set(id, user);
     }
 }
