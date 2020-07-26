@@ -52,6 +52,7 @@ export const XDocumentHead = React.memo((props: XDocumentHeadT) => {
     return (
         <Head>
             <title key="page_title">{title}</title>
+            <meta key="description" name="description" content={description} />
             <meta
                 key="og_title"
                 property="og:title"
