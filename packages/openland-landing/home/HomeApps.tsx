@@ -91,6 +91,14 @@ const subheading = css`
         line-height: 32px;
         margin: 0 0 16px;
     }
+
+    span {
+        display: none;
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            display: initial;
+        }
+    }
 `;
 
 const webApp = css`
@@ -373,7 +381,7 @@ export const HomeApps = React.forwardRef((props: {}, ref: React.Ref<HTMLDivEleme
                     </div>
 
                     <div className={mobileApp}>
-                        <h2 className={subheading}>Mobile app</h2>
+                        <h2 className={subheading}>Mobile app<span>s</span></h2>
                         <HomeAppsMobile />
                     </div>
                 </div>
