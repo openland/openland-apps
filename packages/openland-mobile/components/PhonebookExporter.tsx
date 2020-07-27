@@ -14,7 +14,7 @@ import { backoff } from 'openland-y-utils/timer';
     - think about alternative data formats and storages
 */
 
-const CONTACTS_STORAGE_VERSION = 1;
+const CONTACTS_STORAGE_VERSION = 2;
 const BATCH_SIZE = 100;
 
 interface LocalePhoneNumber extends Contacts.PhoneNumber {
