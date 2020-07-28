@@ -29,7 +29,7 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
     const builder = new UPopperMenuBuilder();
     const client = useClient();
     const [deleted, setDelete] = React.useState(false);
-    const { isContact, addContact, removeContact } = useLocalContact(id, inContacts);
+    const { isContact } = useLocalContact(id, inContacts);
 
     builder.item({
         title: 'Copy link',
@@ -52,19 +52,24 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
         });
     }
 
-    const contactsEnabled = false;
-
-    if (contactsEnabled && id !== engine.user.id) {
+    if (id !== engine.user.id) {
         builder.item({
-            title: isContact ? 'Remove from contacts' : 'Save to contacts',
+            title: isContact ? 'Remove from contacts' : 'Add to contacts',
             icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,
-            onClick: async () => {
+            closeAfterAction: false,
+            action: async () => {
                 if (isContact) {
-                    removeContact(id);
                     await client.mutateRemoveFromContacts({ userId: id });
+                    toastHandlers.show({
+                        type: 'success',
+                        text: 'Removed from contacts',
+                    });
                 } else {
-                    addContact(id);
                     await client.mutateAddToContacts({ userId: id });
+                    toastHandlers.show({
+                        type: 'success',
+                        text: 'Added to contacts',
+                    });
                 }
             },
         });

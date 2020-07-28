@@ -15,8 +15,69 @@ import { UListText } from 'openland-web/components/unicorn/UListText';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import MoreHIcon from 'openland-icons/s/ic-more-h-24.svg';
 import { CreateGroupButton } from './components/CreateGroupButton';
-import { OrganizationMembers_organization_members, OrganizationMemberRole } from 'openland-api/spacex.types';
+import { OrganizationMembers_organization_members, OrganizationMemberRole, UserShort } from 'openland-api/spacex.types';
 import { PrivateCommunityView } from '../settings/components/PrivateCommunityView';
+import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
+import { css, cx } from 'linaria';
+import { debounce } from 'openland-y-utils/timer';
+import { XView } from 'react-mental';
+import { TextStyles } from 'openland-web/utils/TextStyles';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+
+const membersSearchStyle = css`
+    width: 160px;
+    will-change: width;
+    transition: width 0.15s ease;
+
+    &:focus-within {
+        width: 240px;
+    }
+`;
+
+const membersSearchFilledStyle = css`
+    width: 240px;
+`;
+
+const MembersSearchInput = (props: {
+    query: string,
+    loading: boolean,
+    onChange: (v: string) => void,
+}) => {
+    const { query, loading, onChange } = props;
+    const searchInputRef = React.useRef<USearchInputRef>(null);
+    const [searchFocused, setSearchFocused] = React.useState(false);
+    useShortcuts({
+        keys: ['Escape'],
+        callback: () => {
+            if (searchFocused) {
+                onChange('');
+                searchInputRef.current?.blur();
+                return true;
+            }
+            return false;
+        },
+    });
+
+    return (
+        <div className={cx(membersSearchStyle, query.length > 0 && membersSearchFilledStyle)}>
+            <USearchInput
+                ref={searchInputRef}
+                placeholder="Search"
+                rounded={true}
+                value={query}
+                loading={loading}
+                onChange={onChange}
+                onFocus={() => setSearchFocused(true)}
+                onBlur={() => setSearchFocused(false)}
+            />
+        </div>
+    );
+};
+
+export type OrganizationMember = {
+    role: OrganizationMemberRole,
+    user: UserShort,
+};
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
@@ -29,10 +90,68 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
     const { id, name, photo, about, shortname, website, twitter, facebook, membersCount, isCommunity,
         linkedin, instagram, isMine, roomsCount } = organization;
 
-    const [members, setMembers] = React.useState(initialMembers);
+    const [members, setMembers] = React.useState<OrganizationMember[]>(initialMembers);
     const [loading, setLoading] = React.useState(false);
+    const [membersQuery, setMembersQuery] = React.useState('');
+    const [membersFetching, setMembersFetching] = React.useState({ loading: 0, hasNextPage: true, cursor: '' });
+    const membersQueryRef = React.useRef('');
+    const [hasSearched, setHasSearched] = React.useState(false);
+
+    const loadSearchMembers = async (reseted?: boolean) => {
+        let query = membersQueryRef.current;
+        setMembersFetching(prev => ({ ...prev, loading: prev.loading + 1 }));
+        const { edges, pageInfo } = (await client.queryOrganizationMembersSearch({
+            orgId: id,
+            query,
+            first: 10,
+            after: reseted ? undefined : membersFetching.cursor
+        },
+            { fetchPolicy: 'network-only' }
+        )).orgMembersSearch;
+        // avoid race condition
+        if (membersQueryRef.current.length === 0) {
+            return;
+        }
+        setMembers(prev => reseted ? edges.map(x => x.node) : prev.concat(edges.map(x => x.node)));
+        setMembersFetching(prev => ({
+            loading: Math.max(prev.loading - 1, 0),
+            hasNextPage: pageInfo.hasNextPage,
+            cursor: edges.length === 0 ? '' : edges[edges.length - 1].cursor
+        }));
+        setHasSearched(true);
+    };
+
+    let handleSearchChange = React.useCallback(debounce(async (val: string) => {
+        setMembersQuery(val);
+
+        membersQueryRef.current = val;
+        if (val.length > 0) {
+            loadSearchMembers(true);
+        } else {
+            setMembers(initialMembers);
+            setMembersFetching({
+                loading: 0,
+                hasNextPage: true,
+                cursor: '',
+            });
+            setHasSearched(false);
+            // refetch in case someone is removed
+            let initial = (await client.queryOrganizationMembers(
+                { organizationId: props.id, first: 15 },
+                { fetchPolicy: 'network-only' },
+            )).organization.members;
+            setMembers(initial);
+        }
+    }, 100), [initialMembers]);
 
     const handleLoadMore = React.useCallback(async () => {
+        if (membersQueryRef.current.length > 0) {
+            if (!membersFetching.loading && membersFetching.hasNextPage) {
+                loadSearchMembers();
+            }
+            return;
+        }
+
         if (members.length < membersCount && !loading) {
             setLoading(true);
 
@@ -45,7 +164,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
             setMembers(current => [...current, ...loaded.filter(m => !current.find(m2 => m2.user.id === m.user.id))]);
             setLoading(false);
         }
-    }, [membersCount, members, loading]);
+    }, [membersCount, members, loading, membersFetching]);
 
     const initialGroups = client.useOrganizationPublicRooms({ organizationId: props.id, first: 10 }, { fetchPolicy: 'cache-and-network' }).organizationPublicRooms;
     const [displayGroups, setDisplayGroups] = React.useState(initialGroups.items);
@@ -79,13 +198,18 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
         setMembers(current => current.map(m => m.user.id === memberId ? { ...m, role: newRole } : m));
     }, [members]);
 
+    const isSearching = membersQuery.length > 0;
+    // compensate "add people" button and empty view when searching
+    const heightCompensation = hasSearched ? (members.length === 0 ? -32 : 56) : 0;
+
     return (
         <UFlatList
             track={`${organization.isCommunity ? 'community' : 'org'}_profile`}
             loadMore={handleLoadMore}
             items={members}
-            loading={loading}
+            loading={loading || (isSearching && membersFetching.loading > 0 && members.length > 15)}
             title={name}
+            listMinHeight={Math.min(56 * membersCount + heightCompensation, 700)}
             renderItem={member => (
                 <UUserView
                     key={'member-' + member.user.id + '-' + member.role}
@@ -152,8 +276,18 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                     />
                 )}
             </UListGroup>
-            <UListHeader text="Members" counter={membersCount} />
-            {organization.isMine && (
+            <UListHeader
+                text="Members"
+                counter={hasSearched ? undefined : (membersCount || 0)}
+                rightElement={(
+                    <MembersSearchInput
+                        query={membersQuery}
+                        loading={membersFetching.loading > 0}
+                        onChange={handleSearchChange}
+                    />
+                )}
+            />
+            {organization.isMine && !hasSearched && (
                 <UAddItem
                     title="Add people"
                     onClick={() => {
@@ -166,6 +300,11 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                         });
                     }}
                 />
+            )}
+            {members.length === 0 && isSearching && (
+                <XView paddingTop={32} paddingBottom={32} alignItems="center" {...TextStyles.Body} color="var(--foregroundSecondary)">
+                    Nobody found
+                </XView>
             )}
         </UFlatList>
     );

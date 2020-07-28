@@ -95,10 +95,12 @@ const PrivateChatHeaderContent = React.memo((props: { room: RoomTiny_room_Privat
         }
     }
 
+    const isSavedMessages = room.user.id === getMessenger().engine.user.id;
+
     return (
         <View flexDirection="column" alignItems="flex-start" alignSelf="center" justifyContent="center" pointerEvents="box-none" height={44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
             <View flexDirection="row">
-                <Text style={[styles.title, { color: theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
+                <Text style={[styles.title, { color: theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{isSavedMessages ? 'Saved messages' : title}</Text>
                 {room.settings.mute && (
                     <Image
                         alignSelf="center"
@@ -108,85 +110,87 @@ const PrivateChatHeaderContent = React.memo((props: { room: RoomTiny_room_Privat
                 )}
             </View>
 
-            <View flexDirection="row" alignItems="center">
+            {!isSavedMessages && (
+                <View flexDirection="row" alignItems="center">
 
-                {/* default typing */}
-                {typing && typingType === TypingType.TEXT && (
-                    <Lottie
-                        loop={true}
-                        autoPlay={true}
-                        resizeMode="contain"
-                        source={require('assets/animations/typing.json')}
-                        style={{
-                            width: 16,
-                            height: 16,
-                            marginRight: 8,
-                            marginTop: 0.3,
-                        }}
-                        colorFilters={[{
-                            keypath: "1",
-                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
-                        }, {
-                            keypath: "2",
-                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
-                        }, {
-                            keypath: "3",
-                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
-                        }]}
-                    />
-                )}
+                    {/* default typing */}
+                    {typing && typingType === TypingType.TEXT && (
+                        <Lottie
+                            loop={true}
+                            autoPlay={true}
+                            resizeMode="contain"
+                            source={require('assets/animations/typing.json')}
+                            style={{
+                                width: 16,
+                                height: 16,
+                                marginRight: 8,
+                                marginTop: 0.3,
+                            }}
+                            colorFilters={[{
+                                keypath: "1",
+                                color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                            }, {
+                                keypath: "2",
+                                color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                            }, {
+                                keypath: "3",
+                                color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                            }]}
+                        />
+                    )}
 
-                {/* sticker typing */}
-                {typing && typingType === TypingType.STICKER && (
-                    <Lottie
-                        loop={true}
-                        autoPlay={true}
-                        resizeMode="contain"
-                        source={require('assets/animations/stickerTyping.json')}
-                        style={{
-                            width: 16,
-                            height: 16,
-                            marginRight: 8,
-                            marginTop: 0.3,
-                        }}
-                        colorFilters={[{
-                            keypath: "1",
-                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
-                        }, {
-                            keypath: "2",
-                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
-                        }]}
-                    />
-                )}
+                    {/* sticker typing */}
+                    {typing && typingType === TypingType.STICKER && (
+                        <Lottie
+                            loop={true}
+                            autoPlay={true}
+                            resizeMode="contain"
+                            source={require('assets/animations/stickerTyping.json')}
+                            style={{
+                                width: 16,
+                                height: 16,
+                                marginRight: 8,
+                                marginTop: 0.3,
+                            }}
+                            colorFilters={[{
+                                keypath: "1",
+                                color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                            }, {
+                                keypath: "2",
+                                color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                            }]}
+                        />
+                    )}
 
-                {/* file typing */}
-                {typing && typingType !== TypingType.TEXT && typingType !== TypingType.STICKER && (
-                    <Lottie
-                        loop={true}
-                        autoPlay={true}
-                        resizeMode="contain"
-                        source={require('assets/animations/fileTyping.json')}
-                        style={{
-                            width: 16,
-                            height: 16,
-                            marginRight: 8,
-                            marginTop: 0.3,
-                        }}
-                        colorFilters={[{
-                            keypath: "1",
-                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
-                        }, {
-                            keypath: "2",
-                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
-                        }, {
-                            keypath: "Mask",
-                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
-                        }]}
-                    />
-                )}
+                    {/* file typing */}
+                    {typing && typingType !== TypingType.TEXT && typingType !== TypingType.STICKER && (
+                        <Lottie
+                            loop={true}
+                            autoPlay={true}
+                            resizeMode="contain"
+                            source={require('assets/animations/fileTyping.json')}
+                            style={{
+                                width: 16,
+                                height: 16,
+                                marginRight: 8,
+                                marginTop: 0.3,
+                            }}
+                            colorFilters={[{
+                                keypath: "1",
+                                color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                            }, {
+                                keypath: "2",
+                                color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                            }, {
+                                keypath: "Mask",
+                                color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                            }]}
+                        />
+                    )}
 
-                <Text style={[styles.subTitle, { color: accent ? theme.accentPrimary : theme.foregroundSecondary }]} allowFontScaling={false}>{subtitle}</Text>
-            </View>
+                    <Text style={[styles.subTitle, { color: accent ? theme.accentPrimary : theme.foregroundSecondary }]} allowFontScaling={false}>{subtitle}</Text>
+                </View>
+            )}
 
         </View>
     );

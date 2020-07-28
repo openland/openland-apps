@@ -8,6 +8,13 @@
             ]
         },
         {
+            "name": "ic-search-glyph",
+            "src": "ic-search-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-invite",
             "src": "ic-invite-24.svg",
             "sizes": [
@@ -1400,6 +1407,21 @@
             "src": "ic-speaking-bold-16.svg",
             "sizes": [
                 16
+            ]
+        },
+        {
+            "name": "ic-pro",
+            "src": "ic-pro-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-bookmark-filled",
+            "src": "ic-bookmark-filled-24.svg",
+            "sizes": [
+                16,
+                24
             ]
         }
     ]

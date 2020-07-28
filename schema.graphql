@@ -1832,6 +1832,7 @@ type Mutation {
   debugUnsubscribeEveryoneFromChat(cid: ID!): Int!
   debugInviteMembersFromChat(cid: ID!, dest: ID!): Boolean!
   debugDeleteAllContacts: Boolean!
+  debugChangeGlobalCounterTypeForAll: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2710,6 +2711,9 @@ type Query {
   appInviteFromUser(shortname: String!): String!
   appInviteInfo(key: String!): AppInvite
   alphaResolveInvite(key: String!): ResolveInviteEntry
+
+  """phonebookRecords(first: Int!, after: ID!): PhonebookRecordConnection!"""
+  phonebookWasExported: Boolean!
   channels: [Channel!]!
   channel(id: ID!): Channel
   debugParseID(id: ID!): DebugID!

@@ -19,13 +19,13 @@ import { RoomMembersPaginated_members, RoomMemberRole } from 'openland-api/space
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
-import { css } from 'linaria';
+import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
+import { css, cx } from 'linaria';
 import { debounce } from 'openland-y-utils/timer';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
-import { SDeferred } from 'react-native-s/SDeferred';
 import { GroupUsersList, GroupUsersListRef } from './components/GroupUsersList';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const membersSearchStyle = css`
     width: 160px;
@@ -36,6 +36,46 @@ const membersSearchStyle = css`
         width: 240px;
     }
 `;
+
+const membersSearchFilledStyle = css`
+    width: 240px;
+`;
+
+const MembersSearchInput = (props: {
+    query: string,
+    loading: boolean,
+    onChange: (v: string) => void,
+}) => {
+    const { query, loading, onChange } = props;
+    const searchInputRef = React.useRef<USearchInputRef>(null);
+    const [searchFocused, setSearchFocused] = React.useState(false);
+    useShortcuts({
+        keys: ['Escape'],
+        callback: () => {
+            if (searchFocused) {
+                onChange('');
+                searchInputRef.current?.blur();
+                return true;
+            }
+            return false;
+        },
+    });
+
+    return (
+        <div className={cx(membersSearchStyle, query.length > 0 && membersSearchFilledStyle)}>
+            <USearchInput
+                ref={searchInputRef}
+                placeholder="Search"
+                rounded={true}
+                value={query}
+                loading={loading}
+                onChange={onChange}
+                onFocus={() => setSearchFocused(true)}
+                onBlur={() => setSearchFocused(false)}
+            />
+        </div>
+    );
+};
 
 export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     const client = useClient();
@@ -87,6 +127,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     const [membersQuery, setMembersQuery] = React.useState('');
     const [membersFetching, setMembersFetching] = React.useState({ loading: 0, hasNextPage: true, cursor: '' });
     const membersQueryRef = React.useRef('');
+    const [hasSearched, setHasSearched] = React.useState(false);
 
     const loadSearchMembers = async (reseted?: boolean) => {
         let query = membersQueryRef.current;
@@ -109,6 +150,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
             hasNextPage: pageInfo.hasNextPage,
             cursor: edges.length === 0 ? '' : edges[edges.length - 1].cursor
         }));
+        setHasSearched(true);
     };
 
     const handleLoadMore = React.useCallback(
@@ -162,10 +204,6 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         descriptionHero += ', ' + formatMoneyInterval(premiumSettings.price, premiumSettings.interval);
     }
 
-    if (membersQuery.length > 0) {
-        showInviteButton = false;
-    }
-
     let handleSearchChange = React.useCallback(debounce(async (val: string) => {
         setMembersQuery(val);
 
@@ -179,6 +217,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                 hasNextPage: true,
                 cursor: '',
             });
+            setHasSearched(false);
             // refetch in case someone is removed
             let initial = (await client.queryRoomMembersPaginated(
                 { roomId, first: 15 },
@@ -188,14 +227,19 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         }
     }, 100), [initialMembers]);
 
+    const isSearching = membersQuery.length > 0;
+    // compensate "add people" button and empty view when searching
+    const heightCompensation = hasSearched ? (members.length === 0 ? -32 : 56) : 0;
+
     return (
         <>
             <UFlatList
                 track="group_profile"
                 loadMore={handleLoadMore}
                 items={members}
-                loading={loading || (membersQuery.length > 0 && membersFetching.loading > 0 && members.length > 15)}
+                loading={loading || (isSearching && membersFetching.loading > 0 && members.length > 15)}
                 title={title}
+                listMinHeight={Math.min(56 * membersCount + heightCompensation, 700)}
                 renderItem={member => (
                     <UUserView
                         key={'member-' + member.user.id + '-' + member.role}
@@ -253,19 +297,16 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
 
                 <UListHeader
                     text="Members"
-                    counter={membersCount || 0}
+                    counter={hasSearched ? undefined : (membersCount || 0)}
                     rightElement={(
-                        <USearchInput
-                            placeholder="Search"
-                            rounded={true}
-                            className={membersSearchStyle}
-                            value={membersQuery}
+                        <MembersSearchInput
+                            query={membersQuery}
                             loading={membersFetching.loading > 0}
                             onChange={handleSearchChange}
                         />
                     )}
                 />
-                {showInviteButton && (
+                {showInviteButton && !hasSearched && (
                     <UAddItem
                         title="Add people"
                         titleStyle={TextStyles.Label1}
@@ -280,7 +321,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                         }}
                     />
                 )}
-                {members.length === 0 && membersQuery.length > 0 && (
+                {members.length === 0 && isSearching && (
                     <XView paddingTop={32} paddingBottom={32} alignItems="center" {...TextStyles.Body} color="var(--foregroundSecondary)">
                         Nobody found
                     </XView>
@@ -288,18 +329,16 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
             </UFlatList>
 
             <React.Suspense fallback={null}>
-                <SDeferred>
-                    <GroupUsersList
-                        loading={loading}
-                        members={members}
-                        membersCount={membersCount}
-                        roomId={id}
-                        setLoading={setLoading}
-                        setMembers={setMembers}
-                        setInitialMembers={setInitialMembers}
-                        ref={profilesRef}
-                    />
-                </SDeferred>
+                <GroupUsersList
+                    loading={loading}
+                    members={members}
+                    membersCount={membersCount}
+                    roomId={id}
+                    setLoading={setLoading}
+                    setMembers={setMembers}
+                    setInitialMembers={setInitialMembers}
+                    ref={profilesRef}
+                />
             </React.Suspense>
         </>
     );

@@ -38,6 +38,7 @@ import { AsyncSharedDate } from 'openland-mobile/pages/shared-media/AsyncSharedD
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { showCheckLock } from 'openland-mobile/pages/main/modals/PayConfirm';
 import { showDonationReactionWarning } from './components/showDonationReactionWarning';
+import UUID from 'uuid/v4';
 
 const SortedReactions = [
     MessageReactionType.LIKE,
@@ -54,15 +55,26 @@ if (Platform.OS !== 'ios') {
 }
 
 export const forward = (conversationEngine: ConversationEngine, messages: DataSourceMessageItem[]) => {
-
+    const messenger = getMessenger().engine;
     getMessenger().history.navigationManager.push('HomeDialogs', {
-        title: 'Forward to', pressCallback: (id: string) => {
-            getMessenger().engine.forward(messages, id);
-            const userId = conversationEngine.user && conversationEngine.user.id;
-            if (conversationEngine.conversationId === id || id === userId) {
-                getMessenger().history.navigationManager.pushAndReset('Conversation', { id });
+        title: 'Forward to', pressCallback: async (id: string) => {
+            const room = await messenger.client.queryRoomChat({ id });
+            if (room.room && room.room.__typename === 'PrivateRoom' && messenger.user.id === room.room.user.id) {
+                await messenger.client.mutateSendMessage({
+                    repeatKey: UUID(),
+                    chatId: room.room.id,
+                    replyMessages: messenger.convertForward(messages).map(e => e.id!)
+                });
+                Toast.success({ duration: 1000}).show();
+                getMessenger().history.navigationManager.pop();
             } else {
-                getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
+                messenger.forward(messages, id);
+                const userId = conversationEngine.user && conversationEngine.user.id;
+                if (conversationEngine.conversationId === id || id === userId) {
+                    getMessenger().history.navigationManager.pushAndReset('Conversation', { id });
+                } else {
+                    getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
+                }
             }
         }
     });

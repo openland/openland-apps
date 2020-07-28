@@ -10,6 +10,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { Platform } from 'react-native';
 import { ASView } from 'react-native-async-view/ASView';
 import { GlobalSearchProps } from './GlobalSearch';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 interface ItemBaseProps {
     avatar: JSX.Element;
@@ -98,14 +99,16 @@ interface ItemUserProps extends ItemProps {
     item: GlobalSearch_items_User;
 }
 
-const GlobalSearchItemUser = React.memo((props: ItemUserProps) => {
+export const GlobalSearchItemUser = React.memo((props: ItemUserProps) => {
     const theme = useThemeGlobal();
+    const messenger = getMessenger();
     const { item, onPress } = props;
     const handlePress = React.useCallback(() => onPress(item.id, item.name), [item]);
+    const isSavedMessages = item.id === messenger.engine.user.id;
 
     return (
         <ItemBase
-            name={item.name}
+            name={isSavedMessages ? 'Saved messages' : item.name}
             onPress={handlePress}
             theme={theme}
             avatar={
@@ -116,6 +119,7 @@ const GlobalSearchItemUser = React.memo((props: ItemUserProps) => {
                     placeholderTitle={item.name}
                     online={item.online}
                     theme={theme}
+                    savedMessages={isSavedMessages}
                 />
             }
         />

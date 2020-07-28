@@ -7,7 +7,7 @@ import {
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
-import CrownIcon from 'openland-icons/s/ic-premium-24.svg';
+import CrownIcon from 'openland-icons/s/ic-pro-24.svg';
 import { MenuItem, UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { showLeaveChatConfirmation } from 'openland-web/fragments/settings/components/groupProfileModals';

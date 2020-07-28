@@ -1,5 +1,6 @@
 import { SRouter } from 'react-native-s/SRouter';
 import { UserShort } from 'openland-api/spacex.types';
+import { MemberType } from './MembersSearch';
 
 export const Modals = {
     showGroupMuptiplePicker(
@@ -66,5 +67,13 @@ export const Modals = {
     },
     showFilePreview(router: SRouter, uuid: string, name: string, size: number) {
         router.push('FilePreview', { config: { uuid, name, size } });
+    },
+    showMembersSearch(
+        router: SRouter,
+        roomId: string,
+        membersCount: number,
+        initialMembers?: MemberType[],
+    ) {
+        router.push('MembersSearch', { roomId, membersCount, initialMembers });
     }
 };

@@ -22,6 +22,7 @@ import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import Toast from 'openland-mobile/components/Toast';
 import { formatPhone } from 'openland-y-utils/auth/formatPhone';
+import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 const ProfileUserComponent = React.memo((props: PageProps) => {
@@ -29,29 +30,24 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
         { userId: props.router.params.id },
         { fetchPolicy: 'cache-and-network' },
     );
+    const { isContact } = useLocalContact(user.id, user.inContacts);
     const theme = React.useContext(ThemeContext);
 
-    // const handleAddMemberToContacts = React.useCallback(async () => {
-    //     const loader = Toast.loader();
-    //     loader.show();
-    //     await getClient().mutateAddToContacts({ userId: user.id });
-    //     await Promise.all([
-    //         getClient().refetchUser({ userId: user.id }),
-    //         getClient().refetchMyContacts({ first: 10 })
-    //     ]);
-    //     loader.hide();
-    // }, []);
-    //
-    // const handleRemoveMemberFromContacts = React.useCallback(async () => {
-    //     const loader = Toast.loader();
-    //     loader.show();
-    //     await getClient().mutateRemoveFromContacts({ userId: user.id });
-    //     await Promise.all([
-    //         getClient().refetchUser({ userId: user.id }),
-    //         getClient().refetchMyContacts({ first: 10 })
-    //     ]);
-    //     loader.hide();
-    // }, []);
+    const handleAddMemberToContacts = React.useCallback(async () => {
+        const loader = Toast.loader();
+        loader.show();
+        await getClient().mutateAddToContacts({ userId: user.id });
+        loader.hide();
+        Toast.success({ duration: 1000}).show();
+    }, []);
+
+    const handleRemoveMemberFromContacts = React.useCallback(async () => {
+        const loader = Toast.loader();
+        loader.show();
+        await getClient().mutateRemoveFromContacts({ userId: user.id });
+        loader.hide();
+        Toast.success({ duration: 1000}).show();
+    }, []);
 
     const handleAddMemberToGroup = React.useCallback(() => {
         Modals.showGroupMuptiplePicker(props.router, {
@@ -99,33 +95,6 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
             false,
             require('assets/ic-link-24.png'),
         );
-
-        if (conversation && conversation.__typename === 'PrivateRoom') {
-            builder.action(
-                'Media, files, links',
-                () => props.router.push('SharedMedia', { chatId: conversation.id }),
-                false,
-                require('assets/ic-attach-24.png'),
-            );
-        }
-
-        // if (!user.inContacts && user.id !== myID) {
-        //     builder.action(
-        //         'Add to contacts',
-        //         handleAddMemberToContacts,
-        //         false,
-        //         require('assets/ic-invite-24.png'),
-        //     );
-        // }
-        //
-        // if (user.inContacts && user.id !== myID) {
-        //     builder.action(
-        //         'Remove from contacts',
-        //         handleRemoveMemberFromContacts,
-        //         false,
-        //         require('assets/ic-invite-off-24.png'),
-        //     );
-        // }
 
         builder.show();
     }, [user.shortname, user.id, user.inContacts]);
@@ -303,21 +272,21 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                                 onPress={handleAddMemberToGroup}
                             />
                         )}
-                        {/*{!user.inContacts && user.id !== myID && (*/}
-                        {/*    <ZListItem*/}
-                        {/*        leftIcon={require('assets/ic-invite-glyph-24.png')}*/}
-                        {/*        text="Add to contacts"*/}
-                        {/*        onPress={handleAddMemberToContacts}*/}
-                        {/*    />*/}
-                        {/*)}*/}
-                        {/*{user.inContacts && user.id !== myID && (*/}
-                        {/*    <ZListItem*/}
-                        {/*        appearance="secondary"*/}
-                        {/*        leftIcon={require('assets/ic-invite-off-glyph-24.png')}*/}
-                        {/*        text="Remove from contacts"*/}
-                        {/*        onPress={handleRemoveMemberFromContacts}*/}
-                        {/*    />*/}
-                        {/*)}*/}
+                        {!isContact && user.id !== myID && !user.isBot && (
+                            <ZListItem
+                                leftIcon={require('assets/ic-invite-glyph-24.png')}
+                                text="Add to contacts"
+                                onPress={handleAddMemberToContacts}
+                            />
+                        )}
+                        {isContact && user.id !== myID && !user.isBot && (
+                            <ZListItem
+                                appearance="danger"
+                                leftIcon={require('assets/ic-invite-off-glyph-24.png')}
+                                text="Remove from contacts"
+                                onPress={handleRemoveMemberFromContacts}
+                            />
+                        )}
                     </ZListGroup>
                 )}
 

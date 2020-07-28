@@ -14,6 +14,8 @@ import IcAndroid from 'openland-icons/s/ic-android-16.svg';
 import IcWin from 'openland-icons/s/ic-win-16.svg';
 import IcMac from 'openland-icons/s/ic-mac-16.svg';
 import IcLinux from 'openland-icons/s/ic-linux-16.svg';
+import { getConfig } from 'openland-web/config';
+import { delay } from 'openland-y-utils/timer';
 
 const bannerContainetClass = css`
     display: flex;
@@ -66,6 +68,13 @@ const bannerMobileApps = css`
 `;
 
 const bannerNotification = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+`;
+
+const bannerUpdate = css`
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -180,6 +189,13 @@ const MobileAppsBanner = () => {
     );
 };
 
+interface Banner {
+    show: boolean;
+    onClose: () => void;
+    BannerComponent: () => JSX.Element;
+    electronEnabled?: boolean;
+}
+
 let useMobileAppsBanner = () => {
     let [show, setShow] = React.useState(!window.localStorage.getItem('banner-apps-closed'));
 
@@ -233,20 +249,65 @@ let useNotificationsBanner = () => {
     return { show, onClose, BannerComponent: NotificationsBanner };
 };
 
+const UpdateBanner = () => {
+    React.useEffect(() => {
+        trackEvent('banner_update_appear');
+    }, []);
+    let onPress = React.useCallback(() => {
+        trackEvent('banner_update_action');
+        location.reload();
+    }, []);
+
+    return (
+        <div className={bannerUpdate}>
+            <div className={cx(TextLabel1, bannerTextClass)}>A new version of Openland is available</div>
+            <BannerButton text={isElectron ? 'Update' : 'Refresh'} onClick={onPress} />
+        </div>
+    );
+};
+
+const queryVersion = async () => await (await fetch('/_internal/version')).text();
+
+let useUpdateBanner = () => {
+    let [show, setShow] = React.useState(false);
+    let onClose = React.useCallback(() => {
+        trackEvent('banner_update_close');
+        setShow(false);
+    }, []);
+    React.useEffect(() => {
+        let lastStableVersion = getConfig().release || '';
+
+        let interval: any = setInterval(async () => {
+            const newVersion = await queryVersion();
+            if (newVersion !== lastStableVersion) {
+                await delay(60000);
+                if (await queryVersion() === newVersion) {
+                    lastStableVersion = newVersion;
+                    setShow(true);
+                }
+            }
+        }, 15000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    return { show, onClose, BannerComponent: UpdateBanner, electronEnabled: true };
+};
+
 export const Banners = () => {
     let layout = useLayout();
-    let banners = [useNotificationsBanner(), useMobileAppsBanner()];
+    let banners: Banner[] = [useNotificationsBanner(), useMobileAppsBanner(), useUpdateBanner()];
 
     let BannerComponent, onClose;
     for (let b of banners) {
-        if (b.show) {
+        if (b.show && (!isElectron || b.electronEnabled)) {
             BannerComponent = b.BannerComponent;
             onClose = b.onClose;
             break;
         }
     }
 
-    if (BannerComponent && layout === 'desktop' && !isElectron) {
+    if (BannerComponent && layout === 'desktop') {
         return <BannerContainer onClosePress={onClose} banner={<BannerComponent />} />;
     }
     return null;

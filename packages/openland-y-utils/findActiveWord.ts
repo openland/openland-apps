@@ -13,7 +13,7 @@ function findActiveWordStart (content: string, selection: { start: number, end: 
                 spaceIndex = startIndex;
                 startIndex--;
             }
-        } else if (prefixes.includes(char) && startIndex > 0 && content.charAt(startIndex - 1) === ' ') {
+        } else if (prefixes.includes(char) && (startIndex === 0 || (startIndex > 0 && content.charAt(startIndex - 1) === ' '))) {
             return startIndex;
         } else if (!stoplist.includes(char)) {
             startIndex--;

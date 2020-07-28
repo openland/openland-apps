@@ -11,7 +11,7 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 class ItemRenderHolder<T extends DataSourceItem> {
     item: T;
     currentState: any;
-    currentStateHash = 0;
+    currentStateHash: number;
     readonly dataView: ASDataView<T>;
 
     private container: AsyncRenderer;
@@ -33,9 +33,10 @@ class ItemRenderHolder<T extends DataSourceItem> {
                     this.currentStateHash = hs;
                 }
             },
-            render(initial));
-            this.currentState = this.container.getState();
-
+            render(initial)
+        );
+        this.currentState = this.container.getState();
+        this.currentStateHash = doSimpleHash(JSON.stringify(this.currentState));
     }
 
     updateItem(item: T) {

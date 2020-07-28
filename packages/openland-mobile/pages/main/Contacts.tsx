@@ -1,51 +1,33 @@
 import * as React from 'react';
+import { Platform, PermissionsAndroid, AsyncStorage } from 'react-native';
+import * as ContactsPermission from 'react-native-contacts';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import ActionSheet from 'openland-mobile/components/ActionSheet';
 import { withApp } from 'openland-mobile/components/withApp';
-import { GlobalSearch } from './components/globalSearch/GlobalSearch';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { Text, Image } from 'react-native';
+import { Image, Text } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { UserView } from './components/UserView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { SDeferred } from 'react-native-s/SDeferred';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import Toast from 'openland-mobile/components/Toast';
 import { MyContacts_myContacts_items_user } from 'openland-api/spacex.types';
+import { useLocalContacts } from 'openland-y-utils/contacts/LocalContacts';
+import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
+import { getMessenger } from 'openland-mobile/utils/messenger';
+import { GlobalSearchContacts } from './components/globalSearch/GlobalSearchContacth';
+import { ComponentRefContext } from './Home';
+import { contactsExporter } from '../../components/PhonebookExporter';
 
-// class ContactsManagerImpl {
-//     private contacts: Map<string, MyContacts_myContacts_items_user> = new Map;
-//     private cursor: string | null = null;
-//
-//     removeFromContacts(uId: string) {
-//         this.contacts.delete(uId);
-//     }
-//     addToContacts(uId: string, user: MyContacts_myContacts_items_user) {
-//         this.contacts.set(uId, user);
-//     }
-//     getContacts() {
-//         return Array.from(this.contacts.values());
-//     }
-//     setCursor(cursor: string | null) {
-//         this.cursor = cursor;
-//     }
-//     getCursor() {
-//         return this.cursor;
-//     }
-// }
-//
-// let contactsManager = new ContactsManagerImpl();
-//
-// export const useContactsManager = () => {
-//     return contactsManager;
-// };
-
-const ContactsStub = React.memo(() => {
-    let theme = React.useContext(ThemeContext);
+const ContactsWasImportStub = React.memo(() => {
+    const theme = React.useContext(ThemeContext);
     return (
         <ASSafeAreaView
             flexGrow={1}
@@ -54,8 +36,79 @@ const ContactsStub = React.memo(() => {
             justifyContent="center"
         >
             <Image
-                source={require('assets/img-contacts-empty.png')}
-                style={{ width: 270, height: 180, marginBottom: 1 }}
+                source={require('assets/art-empty.png')}
+                style={{ width: 240, height: 140, marginBottom: 12 }}
+            />
+            <Text
+                allowFontScaling={false}
+                style={{
+                    ...TextStyles.Title2,
+                    color: theme.foregroundPrimary,
+                    textAlign: 'center',
+                    marginBottom: 4,
+                }}
+            >
+                No contacts yet
+            </Text>
+            <Text
+                allowFontScaling={false}
+                style={{
+                    ...TextStyles.Body,
+                    color: theme.foregroundSecondary,
+                    textAlign: 'center',
+                }}
+            >
+                Invite your contacts to Openland or add people manually from their profiles, and
+                they will appear here
+            </Text>
+        </ASSafeAreaView>
+    );
+});
+
+const handleImportPress = async (onImportPress: Function) => {
+    if (Platform.OS === 'ios') {
+        ContactsPermission.checkPermission((errorCheck, permissionCheck) => {
+            if (permissionCheck === 'denied') {
+                handlePermissionDismiss('contacts');
+                return;
+            } else {
+                if (contactsExporter) {
+                    contactsExporter.init();
+                }
+                onImportPress();
+            }
+        });
+    } else if (Platform.OS === 'android') {
+        const permission = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+        );
+        if (permission === 'never_ask_again') {
+            handlePermissionDismiss('contacts');
+            return;
+        }
+        if (permission === 'denied') {
+            return;
+        } else {
+            if (contactsExporter) {
+                await contactsExporter.init();
+            }
+            onImportPress();
+        }
+    }
+};
+
+const ContactsNoImportStub = React.memo((props: { onImportPress: Function }) => {
+    const theme = React.useContext(ThemeContext);
+    return (
+        <ASSafeAreaView
+            flexGrow={1}
+            paddingHorizontal={32}
+            alignItems="center"
+            justifyContent="center"
+        >
+            <Image
+                source={require('assets/art-crowd.png')}
+                style={{ width: 240, height: 140, marginBottom: 12 }}
             />
             <Text
                 style={{
@@ -66,50 +119,79 @@ const ContactsStub = React.memo(() => {
                 }}
                 allowFontScaling={false}
             >
-                No contacts yet
+                Find your friends
             </Text>
             <Text
                 style={{
                     ...TextStyles.Body,
                     color: theme.foregroundSecondary,
                     textAlign: 'center',
+                    marginBottom: 16,
                 }}
                 allowFontScaling={false}
             >
-                Invite your contacts to Openland or add people manually from their profiles, and
-                they will appear here
+                Import contacts from your device to find people you know on Openland
             </Text>
+            <ZButton
+                title="Import contacts"
+                onPress={() => handleImportPress(props.onImportPress)}
+            />
         </ASSafeAreaView>
     );
 });
 
-const ContactsList = React.memo((props: PageProps) => {
+const ContactsPage = React.memo((props: PageProps) => {
     const client = getClient();
-    const initialContacts = client.useMyContacts({ first: 10 }, { fetchPolicy: 'network-only' }).myContacts;
-    const [contacts, setContacts] = React.useState(initialContacts.items);
-    const [cursor, setCursor] = React.useState(initialContacts.cursor);
+    const onlines = getMessenger().engine.getOnlines();
+    const scrollRef = React.useContext(ComponentRefContext);
+    const { items: initialItems, cursor: initialAfter } = client.useMyContacts(
+        { first: 20 },
+        { fetchPolicy: 'network-only' },
+    ).myContacts;
+    const contactsWasExported = client.usePhonebookWasExported({ fetchPolicy: 'network-only' })
+        .phonebookWasExported;
+    const [items, setItems] = React.useState<MyContacts_myContacts_items_user[]>(
+        initialItems.map((x) => x.user),
+    );
+    const [after, setAfter] = React.useState<string | null>(initialAfter);
     const [loading, setLoading] = React.useState(false);
+    const [haveContactsPermission, setHaveContactsPermission] = React.useState(false);
+    const { listenUpdates } = useLocalContacts();
 
-    // React.useLayoutEffect(() => {
-    //     const filtered = initialContacts.items.filter((i) => i.user.inContacts);
-    //     setContacts(filtered);
-    //     setCursor(initialContacts.cursor);
-    // }, [initialContacts]);
+    let hasContacts = items.length > 0;
+
+    React.useEffect(() => {
+        (async () => {
+            const permissions = await AsyncStorage.getItem('haveContactsPermission');
+            if (permissions === 'true' || contactsWasExported) {
+                setHaveContactsPermission(true);
+            }
+        })();
+    }, [contactsWasExported]);
+
+    const onImportPress = React.useCallback(async () => {
+        const loader = Toast.loader();
+        loader.show();
+        const permissions = await AsyncStorage.getItem('haveContactsPermission');
+        if (permissions === 'true' || contactsWasExported) {
+            setHaveContactsPermission(true);
+        }
+        loader.hide();
+        Toast.success({ duration: 1000}).show();
+    }, []);
 
     const handleRemoveMemberFromContacts = React.useCallback(async (userId: string) => {
         const loader = Toast.loader();
         loader.show();
         await client.mutateRemoveFromContacts({ userId: userId });
-        await Promise.all([
-            client.refetchMyContacts({ first: 10 }),
-            client.refetchUser({ userId: userId }),
-        ]);
+        await client.refetchUser({ userId: userId });
         loader.hide();
+        Toast.success({ duration: 1000}).show();
     }, []);
 
     const handleContactLongPress = React.useCallback((user: MyContacts_myContacts_items_user) => {
         const builder = ActionSheet.builder();
-        builder.cancelable(false);
+        builder.title(user.name, 'left');
         builder.action(
             'Send message',
             () => props.router.push('Conversation', { id: user.id }),
@@ -127,79 +209,94 @@ const ContactsList = React.memo((props: PageProps) => {
         builder.show(true);
     }, []);
 
-    const handleLoadMore = React.useCallback(async () => {
-        if (cursor && !loading) {
+    const handleLoadMore = async () => {
+        if (!loading && after) {
             setLoading(true);
-            const loaded = (
-                await client.queryMyContacts({
-                    first: 20,
-                    after: cursor,
-                })
+            const { items: newItems, cursor } = (
+                await client.queryMyContacts({ first: 10, after }, { fetchPolicy: 'network-only' })
             ).myContacts;
-
-            const filtered = loaded.items.filter((i) => i.user.inContacts);
-
-            const newContacts = [
-                ...contacts,
-                ...filtered,
-            ];
-            setContacts(newContacts);
-            setCursor(loaded.cursor);
+            setItems((prev) =>
+                prev.concat(
+                    newItems.map((x) => x.user).filter((x) => !prev.some((y) => x.id === y.id)),
+                ),
+            );
+            setAfter(cursor);
             setLoading(false);
         }
-    }, [cursor, loading]);
+    };
 
-    return (
-        <SFlatList
-            data={contacts}
-            onEndReached={handleLoadMore}
-            refreshing={loading}
-            keyExtractor={(item, index) => index + '-' + item.user.id}
-            renderItem={({ item }) => (
-                <UserView
-                    user={item.user}
-                    showOrganization={false}
-                    onPress={() => props.router.push('ProfileUser', { id: item.user.id })}
-                    onLongPress={() => handleContactLongPress(item.user)}
-                />
-            )}
+    React.useEffect(() => {
+        return listenUpdates(({ addedUsers, removedUsers }) => {
+            setItems((prev) => {
+                return addedUsers.concat(
+                    prev.filter((x) => !removedUsers.some((y) => y.id === x.id)),
+                );
+            });
+        });
+    }, []);
+
+    React.useEffect(() => {
+        return onlines.onSingleChangeChange((user: string, online: boolean) => {
+            setItems((current) =>
+                current.map((item) =>
+                    item.id === user && online !== item.online
+                        ? { ...item, online, lastSeen: Date.now().toString() }
+                        : item,
+                ),
+            );
+        });
+    }, [items]);
+
+    const ImportItem = () => (
+        <ZListItem
+            text="Import contacts"
+            leftIcon={require('assets/ic-cycle-glyph-24.png')}
+            small={false}
+            onPress={() => handleImportPress(onImportPress)}
         />
     );
-});
-
-const ContactsPage = React.memo((props: PageProps) => {
-    const client = getClient();
-    const contacts = client.useMyContacts({ first: 1 }, { fetchPolicy: 'network-only' }).myContacts.items;
-
-    const [isEmpty, setIsEmpty] = React.useState(contacts.length === 0);
-
-    React.useLayoutEffect(() => {
-        const filter = contacts.filter((i) => i.user.inContacts);
-        if (!filter.length) {
-            setIsEmpty(true);
-        } else {
-            setIsEmpty(false);
-        }
-    }, [contacts]);
-
-    const content = isEmpty ? <ContactsStub /> : <ContactsList {...props} />;
 
     return (
         <>
-            <SHeader title="Contacts" />
-            <SSearchControler
-                searchRender={(p) => (
-                    <GlobalSearch
-                        query={p.query}
-                        router={props.router}
-                        onUserPress={(id: string) => props.router.push('ProfileUser', { id: id })}
-                    />
-                )}
-            >
-                <React.Suspense fallback={<ZLoader />}>
-                    <SDeferred>{content}</SDeferred>
-                </React.Suspense>
-            </SSearchControler>
+            <SHeader title="Contacts" searchPlaceholder="Search" />
+            {!hasContacts && haveContactsPermission && <ContactsWasImportStub />}
+            {!hasContacts && !haveContactsPermission && (
+                <ContactsNoImportStub onImportPress={onImportPress} />
+            )}
+            {hasContacts && (
+                <SSearchControler
+                    searchRender={(p) => (
+                        <GlobalSearchContacts query={p.query} router={props.router} />
+                    )}
+                >
+                    <React.Suspense fallback={<ZLoader />}>
+                        <SDeferred>
+                            <SFlatList
+                                scrollRef={scrollRef}
+                                data={items}
+                                onEndReached={handleLoadMore}
+                                refreshing={loading}
+                                ListHeaderComponent={
+                                    !haveContactsPermission && !contactsWasExported
+                                        ? ImportItem
+                                        : undefined
+                                }
+                                keyExtractor={(item, index) => index + '-' + item.id}
+                                renderItem={({ item }) => (
+                                    <UserView
+                                        user={item}
+                                        showOrganization={false}
+                                        onPress={() =>
+                                            props.router.push('ProfileUser', { id: item.id })
+                                        }
+                                        onLongPress={() => handleContactLongPress(item)}
+                                    />
+                                )}
+                            />
+                        </SDeferred>
+                    </React.Suspense>
+                </SSearchControler>
+            )}
         </>
     );
 });

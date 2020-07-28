@@ -95,7 +95,7 @@ export class UPopperMenuBuilder {
                 {this._items.map((item, index) => {
                     if (item._type === 'item') {
                         return (
-                            <MenuItemComponent item={item} ctx={ctx} key={`item-${index}`} />
+                            <MenuItemComponent item={item} ctx={ctx} key={`item-${index}-${item.title}`} />
                         );
                     } else if (item._type === 'element') {
                         return <div key={`item-${index}`}>{item.element(ctx)}</div>;

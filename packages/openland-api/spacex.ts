@@ -172,6 +172,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryMyContactsSearch(variables: Types.MyContactsSearchVariables, params?: QueryParameters): Promise<Types.MyContactsSearch> {
         return this.query('MyContactsSearch', variables, params);
     }
+    queryMyContactsState(params?: QueryParameters): Promise<Types.MyContactsState> {
+        return this.query('MyContactsState', undefined, params);
+    }
     queryMyNotificationCenter(params?: QueryParameters): Promise<Types.MyNotificationCenter> {
         return this.query('MyNotificationCenter', undefined, params);
     }
@@ -205,6 +208,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryOrganizationMembers(variables: Types.OrganizationMembersVariables, params?: QueryParameters): Promise<Types.OrganizationMembers> {
         return this.query('OrganizationMembers', variables, params);
     }
+    queryOrganizationMembersSearch(variables: Types.OrganizationMembersSearchVariables, params?: QueryParameters): Promise<Types.OrganizationMembersSearch> {
+        return this.query('OrganizationMembersSearch', variables, params);
+    }
     queryOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: QueryParameters): Promise<Types.OrganizationMembersShort> {
         return this.query('OrganizationMembersShort', variables, params);
     }
@@ -222,6 +228,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryPermissions(params?: QueryParameters): Promise<Types.Permissions> {
         return this.query('Permissions', undefined, params);
+    }
+    queryPhonebookWasExported(params?: QueryParameters): Promise<Types.PhonebookWasExported> {
+        return this.query('PhonebookWasExported', undefined, params);
     }
     queryPicSharedMedia(variables: Types.PicSharedMediaVariables, params?: QueryParameters): Promise<Types.PicSharedMedia> {
         return this.query('PicSharedMedia', variables, params);
@@ -508,6 +517,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchMyContactsSearch(variables: Types.MyContactsSearchVariables, params?: QueryParameters): Promise<Types.MyContactsSearch> {
         return this.refetch('MyContactsSearch', variables, params);
     }
+    refetchMyContactsState(params?: QueryParameters): Promise<Types.MyContactsState> {
+        return this.refetch('MyContactsState', undefined, params);
+    }
     refetchMyNotificationCenter(params?: QueryParameters): Promise<Types.MyNotificationCenter> {
         return this.refetch('MyNotificationCenter', undefined, params);
     }
@@ -541,6 +553,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchOrganizationMembers(variables: Types.OrganizationMembersVariables, params?: QueryParameters): Promise<Types.OrganizationMembers> {
         return this.refetch('OrganizationMembers', variables, params);
     }
+    refetchOrganizationMembersSearch(variables: Types.OrganizationMembersSearchVariables, params?: QueryParameters): Promise<Types.OrganizationMembersSearch> {
+        return this.refetch('OrganizationMembersSearch', variables, params);
+    }
     refetchOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: QueryParameters): Promise<Types.OrganizationMembersShort> {
         return this.refetch('OrganizationMembersShort', variables, params);
     }
@@ -558,6 +573,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchPermissions(params?: QueryParameters): Promise<Types.Permissions> {
         return this.refetch('Permissions', undefined, params);
+    }
+    refetchPhonebookWasExported(params?: QueryParameters): Promise<Types.PhonebookWasExported> {
+        return this.refetch('PhonebookWasExported', undefined, params);
     }
     refetchPicSharedMedia(variables: Types.PicSharedMediaVariables, params?: QueryParameters): Promise<Types.PicSharedMedia> {
         return this.refetch('PicSharedMedia', variables, params);
@@ -844,6 +862,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateMyContactsSearch(variables: Types.MyContactsSearchVariables, updater: (data: Types.MyContactsSearch) => Types.MyContactsSearch | null): Promise<boolean> {
         return this.updateQuery(updater, 'MyContactsSearch', variables);
     }
+    updateMyContactsState(updater: (data: Types.MyContactsState) => Types.MyContactsState | null): Promise<boolean> {
+        return this.updateQuery(updater, 'MyContactsState', undefined);
+    }
     updateMyNotificationCenter(updater: (data: Types.MyNotificationCenter) => Types.MyNotificationCenter | null): Promise<boolean> {
         return this.updateQuery(updater, 'MyNotificationCenter', undefined);
     }
@@ -877,6 +898,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateOrganizationMembers(variables: Types.OrganizationMembersVariables, updater: (data: Types.OrganizationMembers) => Types.OrganizationMembers | null): Promise<boolean> {
         return this.updateQuery(updater, 'OrganizationMembers', variables);
     }
+    updateOrganizationMembersSearch(variables: Types.OrganizationMembersSearchVariables, updater: (data: Types.OrganizationMembersSearch) => Types.OrganizationMembersSearch | null): Promise<boolean> {
+        return this.updateQuery(updater, 'OrganizationMembersSearch', variables);
+    }
     updateOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, updater: (data: Types.OrganizationMembersShort) => Types.OrganizationMembersShort | null): Promise<boolean> {
         return this.updateQuery(updater, 'OrganizationMembersShort', variables);
     }
@@ -894,6 +918,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updatePermissions(updater: (data: Types.Permissions) => Types.Permissions | null): Promise<boolean> {
         return this.updateQuery(updater, 'Permissions', undefined);
+    }
+    updatePhonebookWasExported(updater: (data: Types.PhonebookWasExported) => Types.PhonebookWasExported | null): Promise<boolean> {
+        return this.updateQuery(updater, 'PhonebookWasExported', undefined);
     }
     updatePicSharedMedia(variables: Types.PicSharedMediaVariables, updater: (data: Types.PicSharedMedia) => Types.PicSharedMedia | null): Promise<boolean> {
         return this.updateQuery(updater, 'PicSharedMedia', variables);
@@ -1288,6 +1315,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useMyContactsSearch(variables: Types.MyContactsSearchVariables, params?: SpaceQueryWatchParameters): Types.MyContactsSearch | null {
         return this.useQuery('MyContactsSearch', variables, params);
     }
+    useMyContactsState(params: SpaceQueryWatchParameters & { suspense: false }): Types.MyContactsState | null;
+    useMyContactsState(params?: SpaceQueryWatchParameters): Types.MyContactsState;
+    useMyContactsState(params?: SpaceQueryWatchParameters): Types.MyContactsState | null {
+        return this.useQuery('MyContactsState', undefined, params);
+    }
     useMyNotificationCenter(params: SpaceQueryWatchParameters & { suspense: false }): Types.MyNotificationCenter | null;
     useMyNotificationCenter(params?: SpaceQueryWatchParameters): Types.MyNotificationCenter;
     useMyNotificationCenter(params?: SpaceQueryWatchParameters): Types.MyNotificationCenter | null {
@@ -1343,6 +1375,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useOrganizationMembers(variables: Types.OrganizationMembersVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembers | null {
         return this.useQuery('OrganizationMembers', variables, params);
     }
+    useOrganizationMembersSearch(variables: Types.OrganizationMembersSearchVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationMembersSearch | null;
+    useOrganizationMembersSearch(variables: Types.OrganizationMembersSearchVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembersSearch;
+    useOrganizationMembersSearch(variables: Types.OrganizationMembersSearchVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembersSearch | null {
+        return this.useQuery('OrganizationMembersSearch', variables, params);
+    }
     useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationMembersShort | null;
     useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembersShort;
     useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembersShort | null {
@@ -1372,6 +1409,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     usePermissions(params?: SpaceQueryWatchParameters): Types.Permissions;
     usePermissions(params?: SpaceQueryWatchParameters): Types.Permissions | null {
         return this.useQuery('Permissions', undefined, params);
+    }
+    usePhonebookWasExported(params: SpaceQueryWatchParameters & { suspense: false }): Types.PhonebookWasExported | null;
+    usePhonebookWasExported(params?: SpaceQueryWatchParameters): Types.PhonebookWasExported;
+    usePhonebookWasExported(params?: SpaceQueryWatchParameters): Types.PhonebookWasExported | null {
+        return this.useQuery('PhonebookWasExported', undefined, params);
     }
     usePicSharedMedia(variables: Types.PicSharedMediaVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.PicSharedMedia | null;
     usePicSharedMedia(variables: Types.PicSharedMediaVariables, params?: SpaceQueryWatchParameters): Types.PicSharedMedia;
@@ -1985,6 +2027,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     subscribeGlobalEventBus(variables: Types.GlobalEventBusVariables, handler: GraphqlSubscriptionHandler<Types.GlobalEventBus>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.GlobalEventBus> {
         return this.subscribe(handler, 'GlobalEventBus', variables, params);
+    }
+    subscribeMyContactsUpdates(variables: Types.MyContactsUpdatesVariables, handler: GraphqlSubscriptionHandler<Types.MyContactsUpdates>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.MyContactsUpdates> {
+        return this.subscribe(handler, 'MyContactsUpdates', variables, params);
     }
     subscribeMyNotificationsCenter(variables: Types.MyNotificationsCenterVariables, handler: GraphqlSubscriptionHandler<Types.MyNotificationsCenter>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.MyNotificationsCenter> {
         return this.subscribe(handler, 'MyNotificationsCenter', variables, params);

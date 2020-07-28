@@ -1448,7 +1448,6 @@ private let UserForMentionSelector = obj(
             field("photo", "photo", scalar("String")),
             field("shortname", "shortname", scalar("String")),
             field("isBot", "isBot", notNull(scalar("Boolean"))),
-            field("inContacts", "inContacts", notNull(scalar("Boolean"))),
             field("primaryOrganization", "primaryOrganization", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
@@ -2840,6 +2839,12 @@ private let MyContactsSearchSelector = obj(
                         )))
                 )))
         )
+private let MyContactsStateSelector = obj(
+            field("myContactsState", "myContactsState", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("state", "state", notNull(scalar("String")))
+                )))
+        )
 private let MyNotificationCenterSelector = obj(
             field("myNotificationCenter", "myNotificationCenter", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -2971,6 +2976,27 @@ private let OrganizationMembersSelector = obj(
                         )))))
                 )))
         )
+private let OrganizationMembersSearchSelector = obj(
+            field("orgMembersSearch", "orgMembersSearch", arguments(fieldValue("orgId", refValue("orgId")), fieldValue("query", refValue("query")), fieldValue("first", refValue("first")), fieldValue("after", refValue("after")), fieldValue("page", refValue("page"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("role", "role", notNull(scalar("String"))),
+                                    field("user", "user", notNull(obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            fragment("User", UserShortSelector)
+                                        )))
+                                ))),
+                            field("cursor", "cursor", notNull(scalar("String")))
+                        ))))),
+                    field("pageInfo", "pageInfo", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean")))
+                        )))
+                )))
+        )
 private let OrganizationMembersShortSelector = obj(
             field("organization", "organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -3019,6 +3045,9 @@ private let PermissionsSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("roles", "roles", notNull(list(notNull(scalar("String")))))
                 )))
+        )
+private let PhonebookWasExportedSelector = obj(
+            field("phonebookWasExported", "phonebookWasExported", notNull(scalar("Boolean")))
         )
 private let PicSharedMediaSelector = obj(
             field("chatSharedMedia", "chatSharedMedia", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("mediaTypes", listValue(stringValue("IMAGE"))), fieldValue("first", refValue("first")), fieldValue("after", refValue("after")), fieldValue("before", refValue("before")), fieldValue("around", refValue("around"))), notNull(obj(
@@ -3851,7 +3880,12 @@ private let UserAvailableRoomsSelector = obj(
 private let UserNanoSelector = obj(
             field("user", "user", arguments(fieldValue("id", refValue("id"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("User", UserForMentionSelector)
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("photo", "photo", scalar("String")),
+                    field("shortname", "shortname", scalar("String")),
+                    field("isBot", "isBot", notNull(scalar("Boolean"))),
+                    field("inContacts", "inContacts", notNull(scalar("Boolean")))
                 )))
         )
 private let UserPicoSelector = obj(
@@ -4802,6 +4836,37 @@ private let GlobalEventBusSelector = obj(
                     field("message", "message", notNull(scalar("String")))
                 )))
         )
+private let MyContactsUpdatesSelector = obj(
+            field("myContactsUpdates", "myContactsUpdates", arguments(fieldValue("fromState", refValue("state"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("updates", "updates", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            inline("ContactRemoved", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("contact", "contact", notNull(obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("user", "user", notNull(obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                fragment("User", UserShortSelector)
+                                            )))
+                                    )))
+                            )),
+                            inline("ContactAdded", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("contact", "contact", notNull(obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("user", "user", notNull(obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                fragment("User", UserShortSelector)
+                                            )))
+                                    )))
+                            ))
+                        ))))),
+                    field("state", "state", notNull(scalar("String")))
+                )))
+        )
 private let MyNotificationsCenterSelector = obj(
             field("notificationCenterUpdates", "event", arguments(fieldValue("fromState", refValue("state"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -4969,7 +5034,7 @@ class Operations {
     let ChatMentionSearch = OperationDefinition(
         "ChatMentionSearch",
         .query, 
-        "query ChatMentionSearch($cid:ID!,$query:String,$first:Int!,$after:String){mentions:chatMentionSearch(cid:$cid,query:$query,first:$first,after:$after){__typename globalItems{__typename ... on Organization{__typename ...OrganizationShort}... on User{__typename ...UserForMention}... on SharedRoom{__typename ...RoomSharedNano}}localItems{__typename ...UserForMention}cursor}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}fragment UserForMention on User{__typename id name photo shortname isBot inContacts primaryOrganization{__typename id name}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title photo membersCount settings{__typename id mute}}",
+        "query ChatMentionSearch($cid:ID!,$query:String,$first:Int!,$after:String){mentions:chatMentionSearch(cid:$cid,query:$query,first:$first,after:$after){__typename globalItems{__typename ... on Organization{__typename ...OrganizationShort}... on User{__typename ...UserForMention}... on SharedRoom{__typename ...RoomSharedNano}}localItems{__typename ...UserForMention}cursor}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}fragment UserForMention on User{__typename id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title photo membersCount settings{__typename id mute}}",
         ChatMentionSearchSelector
     )
     let ChatNewGetMessage = OperationDefinition(
@@ -5173,7 +5238,7 @@ class Operations {
     let MessageMultiSpan = OperationDefinition(
         "MessageMultiSpan",
         .query, 
-        "query MessageMultiSpan($id:ID!){message(messageId:$id){__typename id spans{__typename ... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}}}}fragment UserForMention on User{__typename id name photo shortname isBot inContacts primaryOrganization{__typename id name}}",
+        "query MessageMultiSpan($id:ID!){message(messageId:$id){__typename id spans{__typename ... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}}}}fragment UserForMention on User{__typename id name photo shortname isBot primaryOrganization{__typename id name}}",
         MessageMultiSpanSelector
     )
     let MessagesBatch = OperationDefinition(
@@ -5217,6 +5282,12 @@ class Operations {
         .query, 
         "query MyContactsSearch($query:String,$first:Int!,$after:String,$page:Int){myContactsSearch(query:$query,first:$first,after:$after,page:$page){__typename edges{__typename node{__typename ...UserShort}}pageInfo{__typename hasNextPage currentPage}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}",
         MyContactsSearchSelector
+    )
+    let MyContactsState = OperationDefinition(
+        "MyContactsState",
+        .query, 
+        "query MyContactsState{myContactsState{__typename state}}",
+        MyContactsStateSelector
     )
     let MyNotificationCenter = OperationDefinition(
         "MyNotificationCenter",
@@ -5284,6 +5355,12 @@ class Operations {
         "query OrganizationMembers($organizationId:ID!,$first:Int,$after:ID){organization(id:$organizationId){__typename id members:alphaOrganizationMembers(first:$first,after:$after){__typename role user{__typename ...UserShort}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}",
         OrganizationMembersSelector
     )
+    let OrganizationMembersSearch = OperationDefinition(
+        "OrganizationMembersSearch",
+        .query, 
+        "query OrganizationMembersSearch($orgId:ID!,$query:String,$first:Int!,$after:String,$page:Int){orgMembersSearch(orgId:$orgId,query:$query,first:$first,after:$after,page:$page){__typename edges{__typename node{__typename role user{__typename ...UserShort}}cursor}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}",
+        OrganizationMembersSearchSelector
+    )
     let OrganizationMembersShort = OperationDefinition(
         "OrganizationMembersShort",
         .query, 
@@ -5319,6 +5396,12 @@ class Operations {
         .query, 
         "query Permissions{myPermissions{__typename roles}}",
         PermissionsSelector
+    )
+    let PhonebookWasExported = OperationDefinition(
+        "PhonebookWasExported",
+        .query, 
+        "query PhonebookWasExported{phonebookWasExported}",
+        PhonebookWasExportedSelector
     )
     let PicSharedMedia = OperationDefinition(
         "PicSharedMedia",
@@ -5545,7 +5628,7 @@ class Operations {
     let UserNano = OperationDefinition(
         "UserNano",
         .query, 
-        "query UserNano($id:ID!){user(id:$id){__typename ...UserForMention}}fragment UserForMention on User{__typename id name photo shortname isBot inContacts primaryOrganization{__typename id name}}",
+        "query UserNano($id:ID!){user(id:$id){__typename id name photo shortname isBot inContacts}}",
         UserNanoSelector
     )
     let UserPico = OperationDefinition(
@@ -6382,6 +6465,12 @@ class Operations {
         "subscription GlobalEventBus($topic:String!){globalEventBus(topic:$topic){__typename message}}",
         GlobalEventBusSelector
     )
+    let MyContactsUpdates = OperationDefinition(
+        "MyContactsUpdates",
+        .subscription, 
+        "subscription MyContactsUpdates($state:String!){myContactsUpdates(fromState:$state){__typename updates{__typename ... on ContactRemoved{__typename contact{__typename id user{__typename ...UserShort}}}... on ContactAdded{__typename contact{__typename id user{__typename ...UserShort}}}}state}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}",
+        MyContactsUpdatesSelector
+    )
     let MyNotificationsCenter = OperationDefinition(
         "MyNotificationsCenter",
         .subscription, 
@@ -6468,6 +6557,7 @@ class Operations {
         if name == "MyCommunities" { return MyCommunities }
         if name == "MyContacts" { return MyContacts }
         if name == "MyContactsSearch" { return MyContactsSearch }
+        if name == "MyContactsState" { return MyContactsState }
         if name == "MyNotificationCenter" { return MyNotificationCenter }
         if name == "MyNotifications" { return MyNotifications }
         if name == "MyOrganizations" { return MyOrganizations }
@@ -6479,12 +6569,14 @@ class Operations {
         if name == "Online" { return Online }
         if name == "Organization" { return Organization }
         if name == "OrganizationMembers" { return OrganizationMembers }
+        if name == "OrganizationMembersSearch" { return OrganizationMembersSearch }
         if name == "OrganizationMembersShort" { return OrganizationMembersShort }
         if name == "OrganizationPico" { return OrganizationPico }
         if name == "OrganizationProfile" { return OrganizationProfile }
         if name == "OrganizationPublicInvite" { return OrganizationPublicInvite }
         if name == "OrganizationPublicRooms" { return OrganizationPublicRooms }
         if name == "Permissions" { return Permissions }
+        if name == "PhonebookWasExported" { return PhonebookWasExported }
         if name == "PicSharedMedia" { return PicSharedMedia }
         if name == "Post" { return Post }
         if name == "PostDraft" { return PostDraft }
@@ -6662,6 +6754,7 @@ class Operations {
         if name == "DebugEventsWatch" { return DebugEventsWatch }
         if name == "DialogsWatch" { return DialogsWatch }
         if name == "GlobalEventBus" { return GlobalEventBus }
+        if name == "MyContactsUpdates" { return MyContactsUpdates }
         if name == "MyNotificationsCenter" { return MyNotificationsCenter }
         if name == "OnlineWatch" { return OnlineWatch }
         if name == "SettingsWatch" { return SettingsWatch }

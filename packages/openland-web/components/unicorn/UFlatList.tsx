@@ -24,10 +24,11 @@ interface UFlatListProps<T> {
     title?: string;
     grid?: boolean;
     gap?: number;
+    listMinHeight?: number;
 }
 
 export const UFlatList: <T>(props: UFlatListProps<T>) => any = React.memo((props) => {
-    const { loadMore, loading, loadingHeight = 200, children, items, track, padded } = props;
+    const { loadMore, loading, loadingHeight = 200, children, items, track, padded, listMinHeight } = props;
     const onScroll = (values: XScrollValues) => {
         const d = values.scrollHeight - (values.clientHeight + values.scrollTop);
 
@@ -44,19 +45,21 @@ export const UFlatList: <T>(props: UFlatListProps<T>) => any = React.memo((props
             )}
             {children}
 
-            {!props.grid &&
-                items.map((item, index) => (
-                    <XView key={'item-' + index}>{props.renderItem(item, index)}</XView>
-                ))
-            }
-
-            {props.grid && (
-                <div className={container}>
-                    {items.map((item, index) => (
+            <XView minHeight={listMinHeight}>
+                {!props.grid &&
+                    items.map((item, index) => (
                         <XView key={'item-' + index}>{props.renderItem(item, index)}</XView>
-                    ))}
-                </div>
-            )}
+                    ))
+                }
+
+                {props.grid && (
+                    <div className={container}>
+                        {items.map((item, index) => (
+                            <XView key={'item-' + index}>{props.renderItem(item, index)}</XView>
+                        ))}
+                    </div>
+                )}
+            </XView>
 
             <XView height={56} alignItems="center" justifyContent="center">
                 {loading && <XLoader loading={true} />}

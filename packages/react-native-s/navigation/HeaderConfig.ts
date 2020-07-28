@@ -29,6 +29,7 @@ export interface HeaderConfig {
     appearance?: SHeaderAppearance;
     hairline?: SHeaderHairline;
 
+    searchPlaceholder?: string;
     searchContext?: SearchContext;
     search?: boolean;
     searchUnderlay?: SAnimatedShadowView;
@@ -51,6 +52,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let titleView: any | undefined;
     let hairline: SHeaderHairline | undefined;
     let headerHidden: boolean | undefined;
+    let searchPlaceholder: string | undefined;
     let search: boolean | undefined;
     let searchActive: boolean | undefined;
     let searchChanged: ((text: string) => void) | undefined;
@@ -87,6 +89,9 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
         }
         if (c.hairline) {
             hairline = c.hairline;
+        }
+        if (c.searchPlaceholder !== undefined) {
+            searchPlaceholder = c.searchPlaceholder;
         }
         if (c.search !== undefined) {
             search = c.search;
@@ -131,7 +136,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
             searchContext = c.searchContext;
         }
     }
-    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress, searchContainer, searchClosingCompleted, searchChanged, searchContext, headerHidden, accentColor, iconColor, hideBackText, hideIcon, backgroundColor, backButtonRootFallback };
+    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchPlaceholder, searchActive, searchClosed, searchPress, searchContainer, searchClosingCompleted, searchChanged, searchContext, headerHidden, accentColor, iconColor, hideBackText, hideIcon, backgroundColor, backButtonRootFallback };
 }
 
 export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
@@ -148,6 +153,9 @@ export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
         return false;
     }
     if (a.searchUnderlay !== b.searchUnderlay) {
+        return false;
+    }
+    if (a.searchPlaceholder !== b.searchPlaceholder) {
         return false;
     }
     if (a.hideBackText !== b.hideBackText) {

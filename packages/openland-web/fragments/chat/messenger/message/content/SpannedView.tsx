@@ -163,7 +163,8 @@ const MentionedUser = React.memo(
                 scope: 'entity-popper',
                 useWrapper: useWrapper,
                 showTimeout: 400,
-                hideOnChildClick: true,
+                hideOnChildClick: false,
+                hideOnClick: false,
                 updatedDeps: userId,
             },
             (ctx) => (
@@ -240,8 +241,8 @@ const MentionedOtherUsersPopperContent = React.memo(
                                             user.isBot
                                                 ? 'Bot'
                                                 : user.primaryOrganization
-                                                ? user.primaryOrganization.name
-                                                : undefined
+                                                    ? user.primaryOrganization.name
+                                                    : undefined
                                         }
                                     />
                                 </XView>

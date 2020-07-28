@@ -4,14 +4,19 @@ import { SRouter } from 'react-native-s/SRouter';
 import { RoomTiny_room_SharedRoom, RoomNano_PrivateRoom, RoomTiny_room } from 'openland-api/spacex.types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 export let resolveConversationProfilePath = (room: RoomTiny_room) => {
     let path: string | undefined = undefined;
     let pathArgs: any = {};
     let sharedRoom = room.__typename === 'SharedRoom' ? room as RoomTiny_room_SharedRoom : null;
     let privateRoom = room.__typename === 'PrivateRoom' ? room as RoomNano_PrivateRoom : null;
+    let isSavedMessages = privateRoom && privateRoom.user.id === getMessenger().engine.user.id;
 
-    if (privateRoom) {
+    if (isSavedMessages) {
+        path = 'SharedMedia';
+        pathArgs = { chatId: room.id };
+    } else if (privateRoom) {
         path = 'ProfileUser';
         pathArgs = { id: privateRoom.user.id };
     } else if (sharedRoom && sharedRoom.kind === 'INTERNAL') {
@@ -41,6 +46,7 @@ const ChatHeaderAvatarContent = React.memo((props: { conversationId: string, rou
                     size="small"
                     id={privateRoom ? privateRoom.user.id : sharedRoom!.id}
                     title={privateRoom ? privateRoom.user.name : sharedRoom!.title}
+                    savedMessages={privateRoom ? privateRoom.user.id === getMessenger().engine.user.id : false}
                 />
             </View>
         </TouchableOpacity>

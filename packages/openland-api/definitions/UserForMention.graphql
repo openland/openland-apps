@@ -4,7 +4,6 @@ fragment UserForMention on User {
     photo
     shortname
     isBot
-    inContacts
     primaryOrganization {
         id
         name

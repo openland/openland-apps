@@ -355,6 +355,7 @@
         "native:ngrok": "ngrok http 8081 -subdomain=openland --region=eu",
         "native:adb": "adb reverse tcp:8081 tcp:8081",
         "native:res": "node ./packages/openland-mobile/assets/sources/_extract.js",
+        "native:res:linux": "node ./packages/openland-mobile/assets/sources/_extract_linux.js",
         "native:babel": "yarn tsc --project ./packages/react-native-async-view-babel",
         "native:pods": "cd ios && pod install && cd ..",
         "schema": "yarn schema:download && yarn schema:generate",

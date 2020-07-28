@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XView, XViewRouterContext } from 'react-mental';
-import { UserForMention } from 'openland-api/spacex.types';
+import { UserNano_user } from 'openland-api/spacex.types';
 import { XDate } from 'openland-x/XDate';
 import { UAvatar } from './unicorn/UAvatar';
 import { emoji } from 'openland-y-utils/emoji';
@@ -14,6 +14,7 @@ import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
 import { UIconButton } from './unicorn/UIconButton';
 import { useCaptionPopper } from './CaptionPopper';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
+import { useToast } from './unicorn/UToast';
 
 const userStatus = css`
     color: #676d7a;
@@ -21,15 +22,6 @@ const userStatus = css`
 
 const userOnlineStatus = css`
     color: #1790ff;
-`;
-
-const organizationTitle = css`
-    width: 184px;
-    margin-top: 4px;
-    color: #676d7a;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
 `;
 
 const Status = (({ variables }) => {
@@ -63,7 +55,7 @@ const userContainer = css`
     flex-direction: column;
     max-width: 400px;
     min-width: 360px;
-    height: 144px;
+    height: 128px;
     position: relative;
     border-radius: 8px;
     overflow: hidden;
@@ -71,11 +63,12 @@ const userContainer = css`
 
 const userAbout = css`
     padding-top: 12px;
-    padding-bottom: 16px;
+    padding-bottom: 12px;
     padding-left: 0;
-    padding-right: 16px;
+    padding-right: 12px;
 
     display: flex;
+    flex-grow: 1;
     flex-direction: column;
     align-items: flex-start;
     text-overflow: ellipsis;
@@ -95,12 +88,13 @@ export const UserPopperContent = React.memo(
         user,
         hidePopper,
     }: {
-        user: UserForMention;
+        user: UserNano_user;
         isMe: boolean;
         noCardOnMe?: boolean;
         hidePopper: Function;
     }) => {
         const router = React.useContext(XViewRouterContext);
+        const toastHandlers = useToast();
         if (noCardOnMe && isMe) {
             return (
                 <XView
@@ -116,22 +110,36 @@ export const UserPopperContent = React.memo(
                 </XView>
             );
         } else {
-            const organizationName = user.primaryOrganization ? user.primaryOrganization.name : '';
-            const contactsEnabled = false;
             const client = useClient();
             const messenger = React.useContext(MessengerContext);
-            const { isContact, addContact, removeContact } = useLocalContact(user.id, user.inContacts);
-            const [showContactCaption] = useCaptionPopper({ text: isContact ? 'Remove from contacts' : 'Save to contacts' });
+            const { isContact } = useLocalContact(user.id, user.inContacts);
+            const [showContactCaption] = useCaptionPopper({ text: isContact ? 'Remove from contacts' : 'Add to contacts' });
+            const [loading, setLoading] = React.useState(false);
 
             const handleContactClick = async () => {
+                setLoading(true);
                 if (isContact) {
-                    removeContact(user.id);
                     await client.mutateRemoveFromContacts({ userId: user.id });
+                    toastHandlers.show({
+                        type: 'success',
+                        text: 'Removed from contacts',
+                    });
                 } else {
-                    addContact(user.id);
                     await client.mutateAddToContacts({ userId: user.id });
+                    toastHandlers.show({
+                        type: 'success',
+                        text: 'Added to contacts',
+                    });
                 }
             };
+            const prevIsContactRef = React.useRef(isContact);
+            React.useEffect(() => {
+                if (loading && prevIsContactRef.current !== isContact) {
+                    setLoading(false);
+                }
+                prevIsContactRef.current = isContact;
+            }, [loading, isContact]);
+
             React.useEffect(() => {
                 messenger.getOnlines().onUserAppears(user.id!);
             }, []);
@@ -181,14 +189,10 @@ export const UserPopperContent = React.memo(
                             <React.Suspense fallback={<div />}>
                                 <Status variables={{ userId: user.id }} />
                             </React.Suspense>
-                            {!contactsEnabled && (
-                                <div className={cx(organizationTitle, TextCaption)}>
-                                    {organizationName}
-                                </div>
-                            )}
                             {!isMe && (
-                                <XView width="100%" alignItems="center" marginTop={20} flexDirection="row" justifyContent="space-between">
+                                <XView flexGrow={1} width="100%" alignItems="flex-end" flexDirection="row" justifyContent="space-between">
                                     <UButton
+                                        marginBottom={4}
                                         text="Message"
                                         onClick={(e: React.MouseEvent) => {
                                             e.preventDefault();
@@ -198,14 +202,20 @@ export const UserPopperContent = React.memo(
                                             }
                                         }}
                                     />
-                                    {contactsEnabled && (
+                                    {loading ? (
                                         <UIconButton
+                                            loading={true}
                                             icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
-                                            onClick={handleContactClick}
                                             size="medium"
-                                            onMouseEnter={showContactCaption}
                                         />
-                                    )}
+                                    ) : (
+                                            <UIconButton
+                                                icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
+                                                onClick={handleContactClick}
+                                                size="medium"
+                                                onMouseEnter={showContactCaption}
+                                            />
+                                        )}
                                 </XView>
                             )}
                         </div>

@@ -25,9 +25,7 @@ interface OtherUsersContentProps {
 
 const OtherUsersContent = React.memo((props: OtherUsersContentProps) => {
     const client = useClient();
-    const message = client.useMessageMultiSpan(
-        { id: props.mId || '' },
-    ).message;
+    const message = client.useMessageMultiSpan({ id: props.mId || '' }).message;
 
     if (!message) {
         return null;
@@ -68,7 +66,13 @@ export const OthersUsersWrapper = React.memo((props: OthersUsersWrapperProps) =>
         let builder = new ActionSheetBuilder();
 
         builder.view((ctx: ZModalController) => (
-            <React.Suspense fallback={<ZLoader />}>
+            <React.Suspense
+                fallback={
+                    <View height={40} marginTop={-16}>
+                        <ZLoader />
+                    </View>
+                }
+            >
                 <OtherUsersContent onUserPress={props.onUserPress} mId={props.mId} ctx={ctx} />
             </React.Suspense>
         ));

@@ -6,7 +6,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { Platform } from 'react-native';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { GlobalSearch, SearchMessages } from './components/globalSearch/GlobalSearch';
+import { GlobalSearch } from './components/globalSearch/GlobalSearch';
 import { ASDataView } from 'react-native-async-view/ASDataView';
 import { DialogItemViewAsync } from 'openland-mobile/messenger/components/DialogItemViewAsync';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
@@ -24,7 +24,7 @@ const DialogsComponent = React.memo((props: PageProps) => {
                 if (props.router.params.share.files) {
                     for (let attach of props.router.params.share.files) {
                         let path = attach.split('/');
-                        UploadManagerInstance.registerMessageUpload(id, path[path.length - 1], attach);
+                        await UploadManagerInstance.registerMessageUpload(id, path[path.length - 1], attach);
                     }
                 }
 
@@ -88,10 +88,11 @@ const DialogsComponent = React.memo((props: PageProps) => {
                 </SSearchControler>
             )}
             {globalSearchValue && (
-                <SearchMessages
+                <GlobalSearch
                     query={globalSearchValue}
                     router={props.router}
                     onMessagePress={handleMessagePress}
+                    onUserPress={(id) => props.router.push('ProfileUser', { id: id })}
                 />
             )}
         </ZTrack>

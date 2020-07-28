@@ -9,9 +9,9 @@ import EditIcon from 'openland-icons/s/ic-edit-24.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
 import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
 import { XViewRouter } from 'react-mental';
 import { showDeleteMessageModal } from 'openland-web/fragments/chat/components/MessengerRootComponent';
+import { forward } from '../actions/forward';
 
 export const buildMessageMenu = (ctx: UPopperController, message: DataSourceWebMessageItem, engine: ConversationEngine, router: XViewRouter) => {
     let menu = new UPopperMenuBuilder();
@@ -22,11 +22,7 @@ export const buildMessageMenu = (ctx: UPopperController, message: DataSourceWebM
     }
     menu.item({
         title: 'Forward', icon: <ForwardIcon />, onClick: () => {
-            //
-            showChatPicker((id: string) => {
-                engine.engine.forward([message], id);
-                router.navigate('/mail/' + id);
-            });
+            forward([message], engine.engine, router);
         }
     });
     if (engine.canPin && message.id) {

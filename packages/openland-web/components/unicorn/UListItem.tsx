@@ -61,6 +61,7 @@ export interface UListItemProps {
     disableHover?: boolean;
     href?: string;
     wrapperClassName?: string;
+    savedMessages?: boolean;
 }
 
 export const UListItem = React.memo((props: UListItemProps) => {
@@ -91,9 +92,11 @@ export const UListItem = React.memo((props: UListItemProps) => {
         linkSelectable = true,
         href,
         wrapperClassName,
+        savedMessages,
     } = props;
+    const selected = React.useContext(XViewSelectedContext);
     const height = large ? 80 : !!avatar || !!leftElement || !!iconBackground ? 56 : 48;
-    const titleFont = !!description ? TextStyles.Label1 : TextStyles.Body;
+    const titleFont = !!description || savedMessages ? TextStyles.Label1 : TextStyles.Body;
     const subtitleFont = TextStyles.Caption;
     const descriptionFont = large ? TextStyles.Densed : TextStyles.Caption;
     const textRightFont = TextStyles.Body;
@@ -108,7 +111,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
         [hovered],
     );
 
-    const titleEmojify = typeof title === 'string' ? React.useMemo(() => emoji(title), [title]) : title;
+    const titleEmojify = savedMessages ? 'Saved messages' : typeof title === 'string' ? React.useMemo(() => emoji(title), [title]) : title;
     const descriptionEmojify = typeof description === 'string' ? React.useMemo(() => emoji(description), [description]) : description;
     const subtitleEmojify = typeof subtitle === 'string' ? React.useMemo(() => emoji(subtitle), [subtitle]) : subtitle;
 
@@ -140,7 +143,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
             )}
             {!!avatar && !icon && (
                 <XView marginRight={16}>
-                    <UAvatar {...avatar} size={large ? 'large' : 'medium'} />
+                    <UAvatar {...avatar} selected={selected} size={large ? 'large' : 'medium'} savedMessages={savedMessages} />
                 </XView>
             )}
             {!!leftElement && !icon && <XView marginRight={16}>{leftElement}</XView>}
@@ -235,7 +238,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 paddingHorizontal={paddingHorizontal}
                 alignItems="center"
                 flexDirection="row"
-                backgroundColor={hovered ? 'var(--backgroundPrimaryHover)' : undefined}
+                backgroundColor={hovered && !selected ? 'var(--backgroundPrimaryHover)' : undefined}
                 hoverBackgroundColor={props.disableHover ? undefined : 'var(--backgroundPrimaryHover)'}
                 hoverTextDecoration="none"
                 selectedBackgroundColor="var(--accentMuted)"

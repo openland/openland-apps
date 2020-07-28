@@ -36,6 +36,7 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { useVideoCallModal } from 'openland-web/modules/conference/CallModal';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
+import { useToast } from 'openland-web/components/unicorn/UToast';
 
 const secondary = css`
     color: var(--foregroundSecondary);
@@ -116,7 +117,7 @@ const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
     );
 };
 
-const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
+const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessages: boolean }) => {
     const layout = useLayout();
     const client = useClient();
     const tabRouter = useTabRouter();
@@ -128,7 +129,8 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     const currentSession = calls.useCurrentSession();
     const showVideoCallModal = useVideoCallModal({ chatId: chat.id });
     const chatUser = chat.__typename === 'PrivateRoom' && chat.user;
-    const { isContact, addContact, removeContact } = useLocalContact(chatUser ? chatUser.id : '', chatUser ? chatUser.inContacts : false);
+    const { isContact } = useLocalContact(chatUser ? chatUser.id : '', chatUser ? chatUser.inContacts : false);
+    const toastHandlers = useToast();
 
     let showInviteButton = layout === 'mobile' && sharedRoom;
     const onlyLinkInvite = sharedRoom && !(!sharedRoom.isPremium || sharedRoom.role === 'OWNER');
@@ -149,7 +151,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
         });
     }
 
-    if (layout === 'mobile' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true)) {
+    if (!props.savedMessages && layout === 'mobile' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true)) {
         res.item({
             title: 'Call',
             icon: <PhoneIcon />,
@@ -161,16 +163,18 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
         });
     }
 
-    res.item({
-        title: `${muted ? 'Unmute' : 'Mute'} notifications`,
-        icon: muted ? <NotificationsIcon /> : <NotificationsOffIcon />,
-        action: async () => {
-            let newMuted = !chat.settings.mute;
-            client.mutateRoomSettingsUpdate({ roomId: chat.id, settings: { mute: newMuted } });
-            setMuted(newMuted);
-        },
-        closeDelay: 400,
-    });
+    if (!props.savedMessages) {
+        res.item({
+            title: `${muted ? 'Unmute' : 'Mute'} notifications`,
+            icon: muted ? <NotificationsIcon /> : <NotificationsOffIcon />,
+            action: async () => {
+                let newMuted = !chat.settings.mute;
+                client.mutateRoomSettingsUpdate({ roomId: chat.id, settings: { mute: newMuted } });
+                setMuted(newMuted);
+            },
+            closeDelay: 400,
+        });
+    }
 
     res.item({
         title: 'Media, files, links',
@@ -179,24 +183,28 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
         closeDelay: 400,
     });
 
-    let contactsEnabled = false;
-
     if (
-        contactsEnabled &&
         chat.__typename === 'PrivateRoom' &&
         chat.user.id !== messenger.user.id
     ) {
 
         res.item({
-            title: isContact ? 'Remove from contacts' : 'Save to contacts',
+            title: isContact ? 'Remove from contacts' : 'Add to contacts',
             icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,
+            closeAfterAction: false,
             action: async () => {
                 if (isContact) {
-                    removeContact(chat.user.id);
                     await client.mutateRemoveFromContacts({ userId: chat.user.id });
+                    toastHandlers.show({
+                        type: 'success',
+                        text: 'Removed from contacts',
+                    });
                 } else {
-                    addContact(chat.user.id);
                     await client.mutateAddToContacts({ userId: chat.user.id });
+                    toastHandlers.show({
+                        type: 'success',
+                        text: 'Added to contacts',
+                    });
                 }
             },
             closeDelay: 400,
@@ -232,16 +240,18 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     const { chat } = props;
     const layout = useLayout();
     const messenger = React.useContext(MessengerContext);
+    const isSavedMessages = chat.__typename === 'PrivateRoom' && messenger.user.id === chat.user.id;
     const sharedRoom = chat.__typename === 'SharedRoom' && chat;
     const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
     const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
     const path =
-        chat.__typename === 'PrivateRoom'
-            ? `/${chat.user.shortname || chat.user.id}`
-            : `/group/${chat.id}`;
+        isSavedMessages ? `/mail/${chat.id}/shared` :
+            chat.__typename === 'PrivateRoom'
+                ? `/${chat.user.shortname || chat.user.id}`
+                : `/group/${chat.id}`;
     const showCallButton =
         layout === 'desktop' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true);
-    const titleEmojify = React.useMemo(() => emoji(title), [title]);
+    const titleEmojify = isSavedMessages ? 'Saved messages' : React.useMemo(() => emoji(title), [title]);
 
     let showInviteButton = layout === 'desktop' && sharedRoom;
     const onlyLinkInvite = sharedRoom && !(!sharedRoom.isPremium || sharedRoom.role === 'OWNER');
@@ -277,6 +287,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         title={title}
                         photo={photo}
                         id={chat.__typename === 'PrivateRoom' ? chat.user.id : chat.id}
+                        savedMessages={isSavedMessages}
                     />
                 </XView>
                 <XView
@@ -294,10 +305,11 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         maxWidth="100%"
                         alignSelf="flex-start"
                         color="var(--foregroundPrimary)"
+                        justifyContent={isSavedMessages ? 'center' : undefined}
                     >
                         <XView
                             fontSize={15}
-                            marginTop={6}
+                            marginTop={isSavedMessages ? 0 : 6}
                             height={24}
                             lineHeight="24px"
                             fontWeight="600"
@@ -308,7 +320,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                             {chat.__typename === 'SharedRoom' && chat.isPremium && <PremiumBadge />}
                             <span className={titleStyle}>
                                 {titleEmojify}
-                                {chat.__typename === 'PrivateRoom' &&
+                                {!isSavedMessages && chat.__typename === 'PrivateRoom' &&
                                     chat.user.primaryOrganization && (
                                         <span className={cx(secondary, TextDensed)}>
                                             {chat.user.primaryOrganization.name}
@@ -324,23 +336,25 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                                 />
                             )}
                         </XView>
-                        <XView {...TextStyles.Densed} color="var(--foregroundSecondary)">
-                            <span className={oneLiner}>
-                                {chat.__typename === 'PrivateRoom' && (
-                                    <HeaderLastSeen user={chat.user} />
-                                )}
-                                {chat.__typename === 'SharedRoom' &&
-                                    chat.membersCount !== null &&
-                                    chat.membersCount !== 0 && (
-                                        <>
-                                            {chat.membersCount >= 1
-                                                ? `${chat.membersCount} members`
-                                                : `1 member`}
-                                            <ChatOnlinesTitle id={chat.id} />
-                                        </>
+                        {!isSavedMessages && (
+                            <XView {...TextStyles.Densed} color="var(--foregroundSecondary)">
+                                <span className={oneLiner}>
+                                    {chat.__typename === 'PrivateRoom' && (
+                                        <HeaderLastSeen user={chat.user} />
                                     )}
-                            </span>
-                        </XView>
+                                    {chat.__typename === 'SharedRoom' &&
+                                        chat.membersCount !== null &&
+                                        chat.membersCount !== 0 && (
+                                            <>
+                                                {chat.membersCount >= 1
+                                                    ? `${chat.membersCount} members`
+                                                    : `1 member`}
+                                                <ChatOnlinesTitle id={chat.id} />
+                                            </>
+                                        )}
+                                </span>
+                            </XView>
+                        )}
                     </XView>
                 </XView>
             </XView>
@@ -358,12 +372,12 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         size="large"
                     />
                 )}
-                {showCallButton && <CallButton chat={chat} messenger={messenger} />}
+                {!isSavedMessages && showCallButton && <CallButton chat={chat} messenger={messenger} />}
 
                 <UMoreButton
                     menu={(ctx) => (
                         <React.Suspense fallback={<div style={{ width: 240, height: 100 }} />}>
-                            <MenuComponent ctx={ctx} id={chat.id} />
+                            <MenuComponent ctx={ctx} id={chat.id} savedMessages={isSavedMessages} />
                         </React.Suspense>
                     )}
                     useWrapper={false}

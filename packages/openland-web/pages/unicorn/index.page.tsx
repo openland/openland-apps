@@ -18,10 +18,11 @@ import SettingsActiveIcon from './navigation/icon_settings_active.svg';
 import { AuthRouter } from '../root/AuthRouter';
 import { IndexFragment } from 'openland-web/fragments/discussions/IndexFragment';
 import { useRole } from 'openland-x-permissions/XWithRole';
-// import ProfileIcon from './navigation/icon_profile.svg';
-// import ProfileActiveIcon from './navigation/icon_profile_active.svg';
-// import { ContactsFragment } from 'openland-web/fragments/contacts/ContactsFragment';
+import ProfileIcon from './navigation/icon_profile.svg';
+import ProfileActiveIcon from './navigation/icon_profile_active.svg';
+import { ContactsFragment } from 'openland-web/fragments/contacts/ContactsFragment';
 import { LocalContactsProvider } from 'openland-y-utils/contacts/LocalContacts';
+import { UToastProvider } from 'openland-web/components/unicorn/UToast';
 
 const Unicorn = React.memo(() => {
     const isSuperadmin = useRole('super-admin');
@@ -38,15 +39,15 @@ const Unicorn = React.memo(() => {
                         caption: 'Discover',
                         defaultPage: true
                     },
-                    // {
-                    //     icon: <ProfileIcon />,
-                    //     iconActive: <ProfileActiveIcon />,
-                    //     path: '/contacts',
-                    //     component: <ContactsFragment />,
-                    //     caption: 'Contacts',
-                    //     defaultPage: true,
-                    //     isStackHidden: true,
-                    // },
+                    {
+                        icon: <ProfileIcon />,
+                        iconActive: <ProfileActiveIcon />,
+                        path: '/contacts',
+                        component: <ContactsFragment />,
+                        caption: 'Contacts',
+                        defaultPage: true,
+                        isStackHidden: true,
+                    },
                     {
                         icon: <ChannelsIcon />,
                         iconActive: <ChannelsActiveIcon />,
@@ -80,15 +81,15 @@ const Unicorn = React.memo(() => {
                             caption: 'Discover',
                             defaultPage: true
                         },
-                        // {
-                        //     icon: <ProfileIcon />,
-                        //     iconActive: <ProfileActiveIcon />,
-                        //     path: '/contacts',
-                        //     component: <ContactsFragment />,
-                        //     caption: 'Contacts',
-                        //     defaultPage: true,
-                        //     isStackHidden: true,
-                        // },
+                        {
+                            icon: <ProfileIcon />,
+                            iconActive: <ProfileActiveIcon />,
+                            path: '/contacts',
+                            component: <ContactsFragment />,
+                            caption: 'Contacts',
+                            defaultPage: true,
+                            isStackHidden: true,
+                        },
                         {
                             icon: <ChatIcon />,
                             iconActive: <ChatActiveIcon />,
@@ -106,7 +107,7 @@ const Unicorn = React.memo(() => {
                             defaultPage: true
                         },
                     ],
-                isSuperadmin ? 2 : 1,
+                isSuperadmin ? 3 : 2,
                 Routing,
             ),
         [],
@@ -124,7 +125,9 @@ export default React.memo(() => {
             <React.Suspense fallback={<XLoader loading={true} />}>
                 <AuthRouter>
                     <LocalContactsProvider>
-                        <Unicorn />
+                        <UToastProvider>
+                            <Unicorn />
+                        </UToastProvider>
                     </LocalContactsProvider>
                 </AuthRouter>
             </React.Suspense>

@@ -570,8 +570,8 @@ export const SettingsPrivacyFragment = React.memo(() => {
                 </XView>
             </UListGroup>
             <UListGroup header="Privacy" padded={false}>
-                <WhoCanSee text="Who can see my phone" value={whoCanSeePhone} onClick={v => handleChangeWhoCanSee({ whoCanSeePhone: v })} />
-                <WhoCanSee text="Who can see my email" value={whoCanSeeEmail} onClick={v => handleChangeWhoCanSee({ whoCanSeeEmail: v })} />
+                <WhoCanSee key={'phone-' + whoCanSeePhone} text="Who can see my phone" value={whoCanSeePhone} onClick={v => handleChangeWhoCanSee({ whoCanSeePhone: v })} />
+                <WhoCanSee key={'email-' + whoCanSeeEmail} text="Who can see my email" value={whoCanSeeEmail} onClick={v => handleChangeWhoCanSee({ whoCanSeeEmail: v })} />
             </UListGroup>
         </Page>
     );

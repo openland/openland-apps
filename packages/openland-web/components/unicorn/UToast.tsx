@@ -109,9 +109,14 @@ export interface UToastHandlers {
     hide: () => void;
 }
 
-export const UToastContext = React.createContext<UToastHandlers>({ show: () => {/* noop */ }, hide: () => {/* noop */ } });
+export type UToastContextProps = UToastHandlers & {
+    visible: boolean;
+    config: UToastConfig;
+};
 
-export const useToastContext = (): { visible: boolean, config: UToastConfig, handlers: UToastHandlers } => {
+export const UToastContext = React.createContext<UToastContextProps>({ show: () => {/* noop */ }, hide: () => {/* noop */ }, visible: false, config: {} });
+
+export const UToastProvider = React.memo((props: { children: any }) => {
     const [visible, setVisible] = React.useState(false);
     const [config, setConfig] = React.useState({});
     const handlers = React.useRef({
@@ -122,12 +127,8 @@ export const useToastContext = (): { visible: boolean, config: UToastConfig, han
         hide: () => setVisible(false),
     }).current;
 
-    return {
-        visible,
-        config,
-        handlers
-    };
-};
+    return <UToastContext.Provider value={{ show: handlers.show, hide: handlers.hide, visible, config }}>{props.children}</UToastContext.Provider>;
+});
 
 export const useToast = () => {
     return React.useContext(UToastContext);

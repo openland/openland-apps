@@ -11,6 +11,7 @@ import { useChatSelectionMode } from 'openland-engines/messenger/MessagesActions
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 export interface MessagesListProps {
     engine: ConversationEngine;
@@ -107,6 +108,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
     render() {
         const userName = this.props.engine.user ? this.props.engine.user.firstName : '';
         const canSendMessage = this.props.engine.canSendMessage;
+        const isSavedMessages = this.props.engine.user && getMessenger().engine.user.id === this.props.engine.user.id;
 
         return (
             <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -androidMessageInputListOverlap })}>
@@ -128,21 +130,25 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                                         No messages yet
                                     </Text>
 
-                                    <Text style={[styles.subtitle, { color: this.props.theme.foregroundSecondary }]} allowFontScaling={false}>
-                                        Start a conversation with&nbsp;{userName}
-                                    </Text>
+                                    {!isSavedMessages && (
+                                        <>
+                                            <Text style={[styles.subtitle, { color: this.props.theme.foregroundSecondary }]} allowFontScaling={false}>
+                                                Start a conversation with&nbsp;{userName}
+                                            </Text>
 
-                                    <View marginBottom={16} flexDirection="row">
-                                        <ZButton style="secondary" title="👋" onPress={() => this.sendMessage('👋')} />
-                                        <View marginLeft={16}>
-                                            <ZButton
-                                                style="secondary"
-                                                title={`Hello, ${userName}!`}
-                                                onPress={() => this.sendMessage(`Hello, ${userName}!`)}
-                                            />
-                                        </View>
-                                    </View>
-                                    <ZButton style="secondary" title="Happy to connect!" onPress={() => this.sendMessage('Happy to connect!')} />
+                                            <View marginBottom={16} flexDirection="row">
+                                                <ZButton style="secondary" title="👋" onPress={() => this.sendMessage('👋')} />
+                                                <View marginLeft={16}>
+                                                    <ZButton
+                                                        style="secondary"
+                                                        title={`Hello, ${userName}!`}
+                                                        onPress={() => this.sendMessage(`Hello, ${userName}!`)}
+                                                    />
+                                                </View>
+                                            </View>
+                                            <ZButton style="secondary" title="Happy to connect!" onPress={() => this.sendMessage('Happy to connect!')} />
+                                        </>
+                                    )}
                                 </>
                             )}
 

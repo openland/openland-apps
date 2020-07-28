@@ -23,6 +23,6 @@ internal val MessageMultiSpanSelector = obj(
 val MessageMultiSpan = object: OperationDefinition {
     override val name = "MessageMultiSpan"
     override val kind = OperationKind.QUERY
-    override val body = "query MessageMultiSpan(\$id:ID!){message(messageId:\$id){__typename id spans{__typename ... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}}}}fragment UserForMention on User{__typename id name photo shortname isBot inContacts primaryOrganization{__typename id name}}"
+    override val body = "query MessageMultiSpan(\$id:ID!){message(messageId:\$id){__typename id spans{__typename ... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}}}}fragment UserForMention on User{__typename id name photo shortname isBot primaryOrganization{__typename id name}}"
     override val selector = MessageMultiSpanSelector
 }
