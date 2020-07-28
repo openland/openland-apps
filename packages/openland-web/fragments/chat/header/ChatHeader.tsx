@@ -187,7 +187,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessage
     ) {
 
         res.item({
-            title: isContact ? 'Remove from contacts' : 'Save to contacts',
+            title: isContact ? 'Remove from contacts' : 'Add to contacts',
             icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,
             action: async () => {
                 if (isContact) {

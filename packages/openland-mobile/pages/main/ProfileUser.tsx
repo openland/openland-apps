@@ -275,7 +275,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                         {!isContact && user.id !== myID && !user.isBot && (
                             <ZListItem
                                 leftIcon={require('assets/ic-invite-glyph-24.png')}
-                                text="Save to contacts"
+                                text="Add to contacts"
                                 onPress={handleAddMemberToContacts}
                             />
                         )}

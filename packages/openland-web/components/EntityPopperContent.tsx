@@ -111,7 +111,7 @@ export const UserPopperContent = React.memo(
             const client = useClient();
             const messenger = React.useContext(MessengerContext);
             const { isContact } = useLocalContact(user.id, user.inContacts);
-            const [showContactCaption] = useCaptionPopper({ text: isContact ? 'Remove from contacts' : 'Save to contacts' });
+            const [showContactCaption] = useCaptionPopper({ text: isContact ? 'Remove from contacts' : 'Add to contacts' });
 
             const handleContactClick = async () => {
                 if (isContact) {

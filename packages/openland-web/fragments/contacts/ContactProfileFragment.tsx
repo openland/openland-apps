@@ -132,7 +132,7 @@ export const ContactProfileFragment = React.memo((props: { id?: string }) => {
                     icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
                     iconColor={isContact ? 'var(--foregroundContrast)' : 'var(--foregroundTertiary)'}
                     iconBackground={isContact ? 'var(--accentNegative)' : 'var(--backgroundTertiary)'}
-                    title={isContact ? 'Remove from contacts' : 'Save to contacts'}
+                    title={isContact ? 'Remove from contacts' : 'Add to contacts'}
                     titleStyle={TextStyles.Label1}
                     useRadius={true}
                     onClick={handleRemove}
