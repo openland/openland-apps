@@ -6,7 +6,7 @@ import { ZImage } from './ZImage';
 import { ZLinearGradient } from './visual/ZLinearGradient.native';
 import { ZStyles } from './ZStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { PlaceholderCyan } from 'openland-y-utils/themes/placeholders';
+import { PlaceholderOrange } from 'openland-y-utils/themes/placeholders';
 
 export type ZAvatarSize = 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
 
@@ -58,8 +58,8 @@ const ZAvatarInner = React.memo((props: ZAvatarProps) => {
                     width={size}
                     height={size}
                     borderRadius={size / 2}
-                    fallbackColor={PlaceholderCyan.start}
-                    colors={[PlaceholderCyan.start, PlaceholderCyan.end]}
+                    fallbackColor={PlaceholderOrange.start}
+                    colors={[PlaceholderOrange.start, PlaceholderOrange.end]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
                 >

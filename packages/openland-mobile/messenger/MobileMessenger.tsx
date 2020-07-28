@@ -62,9 +62,10 @@ export const forward = (conversationEngine: ConversationEngine, messages: DataSo
             if (room.room && room.room.__typename === 'PrivateRoom' && messenger.user.id === room.room.user.id) {
                 await messenger.client.mutateSendMessage({
                     repeatKey: UUID(),
-                    chatId: id,
+                    chatId: room.room.id,
                     replyMessages: messenger.convertForward(messages).map(e => e.id!)
                 });
+                Toast.success({ duration: 1000}).show();
                 getMessenger().history.navigationManager.pop();
             } else {
                 messenger.forward(messages, id);
