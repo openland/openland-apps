@@ -14,6 +14,7 @@ import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
 import { UIconButton } from './unicorn/UIconButton';
 import { useCaptionPopper } from './CaptionPopper';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
+import { useToast } from './unicorn/UToast';
 
 const userStatus = css`
     color: #676d7a;
@@ -93,6 +94,7 @@ export const UserPopperContent = React.memo(
         hidePopper: Function;
     }) => {
         const router = React.useContext(XViewRouterContext);
+        const toastHandlers = useToast();
         if (noCardOnMe && isMe) {
             return (
                 <XView
@@ -116,8 +118,16 @@ export const UserPopperContent = React.memo(
             const handleContactClick = async () => {
                 if (isContact) {
                     await client.mutateRemoveFromContacts({ userId: user.id });
+                    toastHandlers.show({
+                        type: 'success',
+                        text: 'Removed from contacts',
+                    });
                 } else {
                     await client.mutateAddToContacts({ userId: user.id });
+                    toastHandlers.show({
+                        type: 'success',
+                        text: 'Added to contacts',
+                    });
                 }
             };
             React.useEffect(() => {

@@ -36,6 +36,7 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { useVideoCallModal } from 'openland-web/modules/conference/CallModal';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
+import { useToast } from 'openland-web/components/unicorn/UToast';
 
 const secondary = css`
     color: var(--foregroundSecondary);
@@ -129,6 +130,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessage
     const showVideoCallModal = useVideoCallModal({ chatId: chat.id });
     const chatUser = chat.__typename === 'PrivateRoom' && chat.user;
     const { isContact } = useLocalContact(chatUser ? chatUser.id : '', chatUser ? chatUser.inContacts : false);
+    const toastHandlers = useToast();
 
     let showInviteButton = layout === 'mobile' && sharedRoom;
     const onlyLinkInvite = sharedRoom && !(!sharedRoom.isPremium || sharedRoom.role === 'OWNER');
@@ -192,8 +194,16 @@ const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessage
             action: async () => {
                 if (isContact) {
                     await client.mutateRemoveFromContacts({ userId: chat.user.id });
+                    toastHandlers.show({
+                        type: 'success',
+                        text: 'Removed from contacts',
+                    });
                 } else {
                     await client.mutateAddToContacts({ userId: chat.user.id });
+                    toastHandlers.show({
+                        type: 'success',
+                        text: 'Added to contacts',
+                    });
                 }
             },
             closeDelay: 400,

@@ -20,6 +20,7 @@ import RemoveContactIcon from 'openland-icons/s/ic-invite-off-glyph-24.svg';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import AddContactIcon from 'openland-icons/s/ic-invite-glyph-24.svg';
+import { useToast } from 'openland-web/components/unicorn/UToast';
 
 const MessageButton = React.memo((props: { isBot: boolean, id: string }) => {
     const layout = useLayout();
@@ -41,6 +42,7 @@ export const ContactProfileFragment = React.memo((props: { id?: string }) => {
     }
     const engine = React.useContext(MessengerContext);
     const client = useClient();
+    const toastHandlers = useToast();
     const { user, conversation } = client.useUser({ userId: props.id }, { fetchPolicy: 'cache-and-network' });
     const { id, isBot, name, inContacts, photo, about, shortname, location, phone, email, linkedin, instagram, website, twitter, facebook } = user;
 
@@ -59,8 +61,16 @@ export const ContactProfileFragment = React.memo((props: { id?: string }) => {
     const handleRemove = async () => {
         if (isContact) {
             await client.mutateRemoveFromContacts({ userId: id });
+            toastHandlers.show({
+                type: 'success',
+                text: 'Removed from contacts',
+            });
         } else {
             await client.mutateAddToContacts({ userId: id });
+            toastHandlers.show({
+                type: 'success',
+                text: 'Added to contacts',
+            });
         }
     };
 
@@ -130,8 +140,8 @@ export const ContactProfileFragment = React.memo((props: { id?: string }) => {
                 ) : null}
                 <UListItem
                     icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
-                    iconColor={isContact ? 'var(--foregroundContrast)' : 'var(--foregroundTertiary)'}
-                    iconBackground={isContact ? 'var(--accentNegative)' : 'var(--backgroundTertiary)'}
+                    iconColor="var(--foregroundContrast)"
+                    iconBackground={isContact ? 'var(--accentNegative)' : 'var(--accentPrimary)'}
                     title={isContact ? 'Remove from contacts' : 'Add to contacts'}
                     titleStyle={TextStyles.Label1}
                     useRadius={true}
