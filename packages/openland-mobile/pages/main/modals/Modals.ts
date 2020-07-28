@@ -68,12 +68,14 @@ export const Modals = {
     showFilePreview(router: SRouter, uuid: string, name: string, size: number) {
         router.push('FilePreview', { config: { uuid, name, size } });
     },
-    showMembersSearch(
+    showMembersSearch({ router, roomId, membersCount, initialMembers, onLongPress }: {
         router: SRouter,
         roomId: string,
         membersCount: number,
         initialMembers?: MemberType[],
+        onLongPress: (member: MemberType) => void,
+    }
     ) {
-        router.push('MembersSearch', { roomId, membersCount, initialMembers });
+        router.push('MembersSearch', { roomId, membersCount, initialMembers, onLongPress });
     }
 };

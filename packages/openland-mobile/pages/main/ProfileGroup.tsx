@@ -29,6 +29,7 @@ import { trackEvent } from 'openland-mobile/analytics';
 import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { SUPER_ADMIN } from '../Init';
+import { MemberType } from './modals/MembersSearch';
 
 interface ProfileGroupUsersListProps {
     roomId: string;
@@ -209,7 +210,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     );
 
     const handleMemberLongPress = React.useCallback(
-        (member: RoomMembersPaginated_members, canKick: boolean, canEdit: boolean) => {
+        (member: MemberType, canKick: boolean, canEdit: boolean) => {
             let builder = ActionSheet.builder();
 
             let user = member.user;
@@ -442,7 +443,18 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             {/* <ZListItem
                 text="Search members"
                 leftIcon={require('assets/ic-search-glyph-24.png')}
-                onPress={() => Modals.showMembersSearch(props.router, room.id, room.membersCount, members)}
+                onPress={() => Modals.showMembersSearch({
+                    router: props.router,
+                    roomId: room.id,
+                    membersCount: room.membersCount,
+                    initialMembers: members,
+                    onLongPress: (member: MemberType) => handleMemberLongPress(
+                        member,
+                        member.canKick,
+                        room.role === 'OWNER' || room.role === 'ADMIN' || SUPER_ADMIN
+                    )
+                })
+                }
             /> */}
 
             {room.featuredMembersCount > 0 && (

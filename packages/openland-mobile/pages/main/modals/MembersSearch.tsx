@@ -7,18 +7,21 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { SDeferred } from 'react-native-s/SDeferred';
-import { UserShort } from 'openland-api/spacex.types';
+import { UserShort, RoomMemberRole } from 'openland-api/spacex.types';
 import { GlobalSearchMembers } from '../components/globalSearch/GlobaSearchMembers';
 import { UserView } from '../components/UserView';
 
 export type MemberType = {
     user: UserShort,
+    role: RoomMemberRole,
+    canKick: boolean,
 };
 
 const MembersSearchPageInner = React.memo((props: PageProps) => {
     const roomId = props.router.params.roomId as string;
     const membersCount = props.router.params.membersCount as number;
     const initialMembers = (props.router.params.initialMembers || []) as MemberType[];
+    const onLongPress = props.router.params.onLongPress as (member: MemberType) => void;
     // const isGroup = props.router.params.isGroup as boolean;
     const client = getClient();
     const [items, setItems] = React.useState<MemberType[]>(initialMembers);
@@ -62,6 +65,7 @@ const MembersSearchPageInner = React.memo((props: PageProps) => {
                     user={item.user}
                     showOrganization={true}
                     onPress={() => props.router.push('ProfileUser', { id: item.user.id })}
+                    onLongPress={() => onLongPress(item)}
                 />
             )}
         />
@@ -69,28 +73,18 @@ const MembersSearchPageInner = React.memo((props: PageProps) => {
 });
 
 const MembersSearchPage = React.memo((props: PageProps) => {
-    // const handleContactLongPress = React.useCallback((user: MyContacts_myContacts_items_user) => {
-    //     const builder = ActionSheet.builder();
-    //     builder.cancelable(false);
-    //     builder.action(
-    //         'Send message',
-    //         () => props.router.push('Conversation', { id: user.id }),
-    //         false,
-    //         require('assets/ic-message-24.png'),
-    //     );
-
-    //     builder.show(true);
-    // }, []);
+    const onLongPress = props.router.params.onLongPress as (member: MemberType) => void;
 
     return (
         <>
-            <SHeader title="Members" />
+            <SHeader title="Members" searchPlaceholder="Search members" />
 
             <SSearchControler
                 searchRender={(p) => (
                     <GlobalSearchMembers
                         query={p.query}
                         router={props.router}
+                        onLongPress={(member: MemberType) => onLongPress(member)}
                     />
                 )}
             >
