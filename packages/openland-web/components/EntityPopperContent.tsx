@@ -114,8 +114,10 @@ export const UserPopperContent = React.memo(
             const messenger = React.useContext(MessengerContext);
             const { isContact } = useLocalContact(user.id, user.inContacts);
             const [showContactCaption] = useCaptionPopper({ text: isContact ? 'Remove from contacts' : 'Add to contacts' });
+            const [loading, setLoading] = React.useState(false);
 
             const handleContactClick = async () => {
+                setLoading(true);
                 if (isContact) {
                     await client.mutateRemoveFromContacts({ userId: user.id });
                     toastHandlers.show({
@@ -130,6 +132,14 @@ export const UserPopperContent = React.memo(
                     });
                 }
             };
+            const prevIsContactRef = React.useRef(isContact);
+            React.useEffect(() => {
+                if (loading && prevIsContactRef.current !== isContact) {
+                    setLoading(false);
+                }
+                prevIsContactRef.current = isContact;
+            }, [loading, isContact]);
+
             React.useEffect(() => {
                 messenger.getOnlines().onUserAppears(user.id!);
             }, []);
@@ -192,12 +202,20 @@ export const UserPopperContent = React.memo(
                                             }
                                         }}
                                     />
-                                    <UIconButton
-                                        icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
-                                        onClick={handleContactClick}
-                                        size="medium"
-                                        onMouseEnter={showContactCaption}
-                                    />
+                                    {loading ? (
+                                        <UIconButton
+                                            loading={true}
+                                            icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
+                                            size="medium"
+                                        />
+                                    ) : (
+                                            <UIconButton
+                                                icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
+                                                onClick={handleContactClick}
+                                                size="medium"
+                                                onMouseEnter={showContactCaption}
+                                            />
+                                        )}
                                 </XView>
                             )}
                         </div>

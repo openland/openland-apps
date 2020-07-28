@@ -191,6 +191,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessage
         res.item({
             title: isContact ? 'Remove from contacts' : 'Add to contacts',
             icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,
+            closeAfterAction: false,
             action: async () => {
                 if (isContact) {
                     await client.mutateRemoveFromContacts({ userId: chat.user.id });

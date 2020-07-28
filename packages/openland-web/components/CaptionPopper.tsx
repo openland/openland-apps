@@ -58,6 +58,7 @@ export const useCaptionPopper = (opts: CaptionPopperConfig) => {
             marginLeft: opts.marginLeft,
             marginTop: opts.marginTop,
             marginBottom: opts.marginBottom,
+            updatedDeps: text,
         },
         ctx => (
             <div

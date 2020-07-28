@@ -56,7 +56,8 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
         builder.item({
             title: isContact ? 'Remove from contacts' : 'Add to contacts',
             icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,
-            onClick: async () => {
+            closeAfterAction: false,
+            action: async () => {
                 if (isContact) {
                     await client.mutateRemoveFromContacts({ userId: id });
                     toastHandlers.show({
