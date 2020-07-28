@@ -14,7 +14,7 @@ import { backoff } from 'openland-y-utils/timer';
     - think about alternative data formats and storages
 */
 
-const CONTACTS_STORAGE_VERSION = 2;
+const CONTACTS_STORAGE_VERSION = 3;
 const BATCH_SIZE = 100;
 
 interface LocalePhoneNumber extends Contacts.PhoneNumber {
@@ -108,6 +108,10 @@ class PhonebookExporterImpl {
         return res;
     }
 
+    private validateContact = (c: LocaleContact) => {
+        return (typeof c.firstName === 'string' && c.phones.length > 0);
+    }
+
     private findContacts = async () => {
         await AsyncStorage.setItem('haveContactsPermission', 'true');
         Contacts.getAllWithoutPhotos(async (error, contacts) => {
@@ -129,9 +133,11 @@ class PhonebookExporterImpl {
                 if (needToSync) {
                     const converted = this.convertContact(c);
 
-                    this.pending.push(converted);
+                    if (this.validateContact(converted)) {
+                        this.pending.push(converted);
 
-                    await AsyncStorage.setItem(storageKey, JSON.stringify(converted));
+                        await AsyncStorage.setItem(storageKey, JSON.stringify(converted));
+                    }
                 }
             }
 
