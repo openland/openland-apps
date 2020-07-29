@@ -28,13 +28,13 @@ function createHybridMessage(key: string, seq: number): HybridMessage {
     };
 }
 
-function createHybridPendingMessage(key: string): HybridMessage {
+function createHybridPendingMessage(key: string, date: number): HybridMessage {
     return {
         key,
         sender: 'user_id',
         text: 'text',
         fallback: '!',
-        date: 0,
+        date,
         type: 'pending'
     };
 }
@@ -116,6 +116,95 @@ describe('HybridRepository', () => {
             createHybridMessage('2', 3),
             createHybridMessage('3', 4),
             createHybridMessage('4', 5),
+        ]);
+    });
+
+    it('should maintain latest messages', async () => {
+        let persistenceProvider = new PersistenceProviderInMemory();
+        let persistence = new Persistence(persistenceProvider);
+        let repo = HybridRepository.open('1', persistence);
+
+        // Inital messages
+        await persistence.inTx(async (tx) => {
+            await repo.handleMessageReceived(createMessage(1), null, tx);
+            await repo.handleMessageReceived(createMessage(2), null, tx);
+            await repo.handleMessageReceived(createMessage(3), null, tx);
+            await repo.handleMessageReceived(createMessage(4), null, tx);
+            await repo.handleMessageReceived(createMessage(5), null, tx);
+            await repo.handleMessageReceived(createMessage(6), null, tx);
+            await repo.handleMessageReceived(createMessage(7), null, tx);
+            await repo.handleMessageReceived(createMessage(8), null, tx);
+            await repo.handleMessageReceived(createMessage(9), null, tx);
+            await repo.handleMessageReceived(createMessage(10), null, tx);
+            await repo.handleMessageReceived(createMessage(11), null, tx);
+        });
+
+        // Append pending message
+        let appended = await persistence.inTx(async (tx) => {
+            return await repo.handlePendingMessageCreated({ sender: 'user_id', text: 'text', fallback: '!', repeatKey: 'repeat1' }, tx);
+        });
+        expect(appended).toMatchObject(createHybridPendingMessage('11', appended.date));
+
+        // Check readAfter
+        let read = await persistence.inTx(async (tx) => {
+            return await repo.readAfter({ after: 6 }, tx);
+        });
+        expect(read.completed).toBe(true);
+        expect(read.partial).toBe(false);
+        expect(read.maxSeq).toBe(11);
+        expect(read.items).toMatchObject([
+            createHybridMessage('6', 7),
+            createHybridMessage('7', 8),
+            createHybridMessage('8', 9),
+            createHybridMessage('9', 10),
+            createHybridMessage('10', 11),
+            createHybridPendingMessage('11', appended.date)
+        ]);
+
+        // Append new message
+        let received = await persistence.inTx(async (tx) => {
+            return await repo.handleMessageReceived(createMessage(12), null, tx);
+        });
+        expect(received).not.toBe(null);
+
+        // Check readAfter
+        read = await persistence.inTx(async (tx) => {
+            return await repo.readAfter({ after: 6 }, tx);
+        });
+        expect(read.completed).toBe(true);
+        expect(read.partial).toBe(false);
+        expect(read.maxSeq).toBe(12);
+        expect(read.items).toMatchObject([
+            createHybridMessage('6', 7),
+            createHybridMessage('7', 8),
+            createHybridMessage('8', 9),
+            createHybridMessage('9', 10),
+            createHybridMessage('10', 11),
+            createHybridPendingMessage('11', appended.date),
+            createHybridMessage('12', 12),
+        ]);
+
+        // Mark as sent
+        let sent = await persistence.inTx(async (tx) => {
+            return await repo.handleMessageReceived(createMessage(13), 'repeat1', tx);
+        });
+        expect(sent.key).toBe(appended.key);
+
+        // Check readAfter
+        read = await persistence.inTx(async (tx) => {
+            return await repo.readAfter({ after: 6 }, tx);
+        });
+        expect(read.completed).toBe(true);
+        expect(read.partial).toBe(false);
+        expect(read.maxSeq).toBe(13);
+        expect(read.items).toMatchObject([
+            createHybridMessage('6', 7),
+            createHybridMessage('7', 8),
+            createHybridMessage('8', 9),
+            createHybridMessage('9', 10),
+            createHybridMessage('10', 11),
+            createHybridMessage('12', 12),
+            createHybridMessage('13', 13),
         ]);
     });
 });

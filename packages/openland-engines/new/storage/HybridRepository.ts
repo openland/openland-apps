@@ -66,6 +66,28 @@ export class HybridRepository {
     // Read
     //
 
+    readLast = async (tx: Transaction) => {
+        let latest = await this.repo.readBefore({ before: Number.MAX_SAFE_INTEGER, limit: 1 }, tx);
+        if (!latest) {
+            return undefined;
+        }
+        if (latest.items.length === 0) {
+            return null;
+        } else {
+            // Resolve Key
+            let key = this.resolveKey(latest.items[0].id);
+
+            // Handle cache
+            let cached = this.cache.get(key);
+            if (cached) {
+                return cached;
+            }
+            let hybrid = convertStoredMessage(key, latest.items[0]);
+            this.cache.set(key, hybrid);
+            return hybrid;
+        }
+    }
+
     readById = async (id: string, tx: Transaction) => {
 
         // Ignore deleted
@@ -149,7 +171,7 @@ export class HybridRepository {
 
                 // Resolve item key
                 let key = this.resolveKey(i.id);
-                
+
                 // Filter out latest
                 if (this.latestSet.has(key)) {
                     hasLatest = true;
@@ -246,7 +268,7 @@ export class HybridRepository {
 
         // Ignore if already deleted
         if (this.deletedIds.has(message.id)) {
-            return;
+            return null;
         }
 
         // Resolve key
@@ -295,52 +317,43 @@ export class HybridRepository {
         // Write to repo
         await this.repo.handleMessageDeleted(id, tx);
 
-        // TODO: Handle
+        // Ignore already deleted
+        if (this.deletedIds.has(id)) {
+            return;
+        }
 
-        // let key = this.idToKey.get(id);
-        // if (key) {
-        // }
-        // Delete from latest
-        // let key = this.lastestIds.get(id);
-        // if (key) {
-        //     this.lastestIds.delete(key);
-        //     this.latestValues.delete(key);
-        //     let ex = this.latest.findIndex((v) => v.key === key);
-        //     if (ex >= 0) {
-        //         this.latest.splice(ex, 1);
-        //     }
-        //     return key;
-        // } else {
-        //     return id;
-        // }
+        // Mark as deleted
+        this.deletedIds.add(id);
+
+        // Find key
+        let key = this.idToKey.get(id);
+        if (key) {
+
+            // Delete key/id mapping
+            this.keyToId.delete(key);
+            this.idToKey.delete(id);
+
+            // Delete cached
+            this.cache.delete(key);
+
+            // Delete from latest
+            if (this.latestSet.has(id)) {
+                this.latestSet.delete(id);
+                let ex = this.latest.findIndex((v) => v === key);
+                if (ex >= 0) {
+                    this.latest.splice(ex, 1);
+                }
+            }
+
+            return key;
+        } else {
+            return null;
+        }
     }
 
     //
     // Pending Updates
     //
-
-    handlePendingMessageCanceled = async (key: string, tx: Transaction) => {
-        let repeatKey = this.keyToRepeat.get(key);
-        if (!repeatKey) {
-            // Ignore invalid values
-            return;
-        }
-
-        // Remove from latest
-        this.latestSet.delete(key);
-        let index = this.latest.findIndex((v) => v === key);
-        if (index >= 0) {
-            this.latest.splice(index, 1);
-        }
-        this.clampLatest();
-
-        // Delete message
-        this.cache.delete(key);
-
-        // Unregister repeat key
-        this.repeatToKey.delete(repeatKey);
-        this.keyToRepeat.delete(key);
-    }
 
     handlePendingMessageCreated = async (message: PendingMessage, tx: Transaction) => {
 
@@ -363,6 +376,31 @@ export class HybridRepository {
         this.keyToRepeat.set(key, message.repeatKey);
 
         return hybrid;
+    }
+
+    handlePendingMessageCanceled = async (key: string, tx: Transaction) => {
+        let repeatKey = this.keyToRepeat.get(key);
+        if (!repeatKey) {
+            // Ignore invalid values
+            return null;
+        }
+
+        // Remove from latest
+        this.latestSet.delete(key);
+        let index = this.latest.findIndex((v) => v === key);
+        if (index >= 0) {
+            this.latest.splice(index, 1);
+        }
+        this.clampLatest();
+
+        // Delete message
+        this.cache.delete(key);
+
+        // Unregister repeat key
+        this.repeatToKey.delete(repeatKey);
+        this.keyToRepeat.delete(key);
+
+        return key;
     }
 
     //
