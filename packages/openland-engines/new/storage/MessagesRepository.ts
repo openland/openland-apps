@@ -1,8 +1,10 @@
-import { Persistence, Transaction } from './Persistence';
-import { StoredMessage } from './StoredMessage';
+import { Persistence, Transaction } from '../persistence/Persistence';
+import { WireMessage } from '../WireMessage';
 import { SparseIndex } from './SparseIndex';
-import { AsyncLock } from '@openland/patterns';
 
+/**
+ * Repository for persisted and sent messages
+ */
 export class MessagesRepository {
 
     static open(id: string, persistence: Persistence) {
@@ -13,7 +15,7 @@ export class MessagesRepository {
     readonly persistence: Persistence;
 
     private _index!: SparseIndex;
-    private _values = new Map<string, StoredMessage>();
+    private _values = new Map<string, WireMessage>();
     private _deleted = new Set<string>();
 
     private constructor(id: string, persistence: Persistence) {
@@ -24,7 +26,7 @@ export class MessagesRepository {
     writeBatch = async (args: {
         minSeq: number | null,
         maxSeq: number | null,
-        messages: StoredMessage[]
+        messages: WireMessage[]
     }, tx: Transaction) => {
         await this.loadIndexIfNeeded(tx);
 
@@ -32,7 +34,7 @@ export class MessagesRepository {
         for (let i of args.messages.filter((v) => !this._values.has(v.id))) {
             // Load not loaded values
             if (!this._values.has(i.id)) {
-                let existing = await this.persistence.readKey('chat.' + this.id + '.msg.' + i.id);
+                let existing = await tx.read('chat.' + this.id + '.msg.' + i.id);
                 if (existing) {
                     this._values.set(i.id, JSON.parse(existing));
                 }
@@ -55,7 +57,7 @@ export class MessagesRepository {
         tx.write('chat.' + this.id + '.index', JSON.stringify(this._index.state));
     }
 
-    handleMessageReceived = async (message: StoredMessage, tx: Transaction) => {
+    handleMessageReceived = async (message: WireMessage, tx: Transaction) => {
         await this.loadIndexIfNeeded(tx);
 
         this._values.set(message.id, message);
@@ -68,7 +70,7 @@ export class MessagesRepository {
         }
     }
 
-    handleMessageUpdated = async (message: StoredMessage, tx: Transaction) => {
+    handleMessageUpdated = async (message: WireMessage, tx: Transaction) => {
         await this.loadIndexIfNeeded(tx);
 
         if (!this._deleted.has(message.id)) {
@@ -120,41 +122,6 @@ export class MessagesRepository {
         }
     }
 
-    readBySeq = async (seq: number, tx: Transaction) => {
-        await this.loadIndexIfNeeded(tx);
-
-        let id = this._index.getIdBySortKey(seq);
-        if (!id) {
-            return null;
-        }
-        if (!this._values.has(id)) {
-            let existing = await this.persistence.readKey('chat.' + this.id + '.msg.' + id);
-            if (existing) {
-                this._values.set(id, JSON.parse(existing));
-            } else {
-                throw Error('Internal error');
-            }
-        }
-        return this._values.get(id)!;
-    }
-
-    readById = async (id: string, tx: Transaction) => {
-        await this.loadIndexIfNeeded(tx);
-
-        if (!this._index.isInIndex(id)) {
-            return null;
-        }
-        if (!this._values.has(id)) {
-            let existing = await this.persistence.readKey('chat.' + this.id + '.msg.' + id);
-            if (existing) {
-                this._values.set(id, JSON.parse(existing));
-            } else {
-                throw Error('Internal error');
-            }
-        }
-        return this._values.get(id)!;
-    }
-
     readBefore = async (args: { before: number, limit: number }, tx: Transaction) => {
         await this.loadIndexIfNeeded(tx);
 
@@ -166,7 +133,7 @@ export class MessagesRepository {
             // Load not loaded values
             for (let i of after.items) {
                 if (!this._values.has(i.id)) {
-                    let existing = await this.persistence.readKey('chat.' + this.id + '.msg.' + i.id);
+                    let existing = await tx.read('chat.' + this.id + '.msg.' + i.id);
                     if (existing) {
                         this._values.set(i.id, JSON.parse(existing));
                     } else {
@@ -182,10 +149,27 @@ export class MessagesRepository {
         }
     }
 
+    readById = async (id: string, tx: Transaction) => {
+        await this.loadIndexIfNeeded(tx);
+
+        if (!this._index.isInIndex(id)) {
+            return null;
+        }
+        if (!this._values.has(id)) {
+            let existing = await tx.read('chat.' + this.id + '.msg.' + id);
+            if (existing) {
+                this._values.set(id, JSON.parse(existing));
+            } else {
+                throw Error('Internal error');
+            }
+        }
+        return this._values.get(id)!;
+    }
+
     private loadIndexIfNeeded = async (tx: Transaction) => {
         if (!this._index) {
             let state = SparseIndex.EMPTY;
-            let persistedState = await this.persistence.readKey('chat.' + this.id + '.index');
+            let persistedState = await tx.read('chat.' + this.id + '.index');
             if (persistedState) {
                 state = JSON.parse(persistedState);
             }

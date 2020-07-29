@@ -1,7 +1,7 @@
 import { backoff, delay } from 'openland-y-utils/timer';
 import * as React from 'react';
 import { MessagesStore } from './MessagesStore';
-import { StoredMessage } from './StoredMessage';
+import { WireMessage } from './WireMessage';
 import { MessageView } from './MessageView';
 
 export type MessageViewSnapshotLoadFrom =
@@ -11,7 +11,7 @@ export type MessageViewSnapshotLoadFrom =
 export type Snapshot =
     | { type: 'loading' }
     | { type: 'no-access' }
-    | { type: 'messages', focusSeq: number | null, hasMoreNext: boolean, hasMorePrev: boolean, messages: StoredMessage[] };
+    | { type: 'messages', focusSeq: number | null, hasMoreNext: boolean, hasMorePrev: boolean, messages: WireMessage[] };
 
 export class MessageViewSnapshot implements MessageView {
     private _closed = false;
@@ -21,7 +21,7 @@ export class MessageViewSnapshot implements MessageView {
     private _inited = false;
     private _state: Snapshot = { type: 'loading' };
     private _started = false;
-    private _messages: StoredMessage[] = [];
+    private _messages: WireMessage[] = [];
     private _minSeq: number = 0;
     private _maxSeq: number = 0;
     private _focusSeq: number | null = null;
@@ -372,7 +372,7 @@ export class MessageViewSnapshot implements MessageView {
     // Updates
     //
 
-    onMessagesReceived(messages: { repeatKey: string | null, message: StoredMessage }[]) {
+    onMessagesReceived(messages: { repeatKey: string | null, message: WireMessage }[]) {
         if (this._closed) {
             return;
         }
@@ -387,7 +387,7 @@ export class MessageViewSnapshot implements MessageView {
             this.setMessagesState();
         }
     }
-    onMessagesUpdated(messages: StoredMessage[]) {
+    onMessagesUpdated(messages: WireMessage[]) {
         if (this._closed) {
             return;
         }

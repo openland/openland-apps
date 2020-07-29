@@ -1,11 +1,12 @@
+import { SparseIndex } from './storage/SparseIndex';
 import { backoff } from 'openland-y-utils/timer';
 import { MessageViewSnapshot } from './MessageViewSnapshot';
 import { MessageView } from './MessageView';
-import { StoredMessage, extractUsers } from './StoredMessage';
+import { WireMessage, extractUsers } from './WireMessage';
 import { randomKey } from 'openland-y-utils/randomKey';
 import { MessagesApi } from './MessagesApi';
-import { Persistence, Transaction } from './Persistence';
-import { MessagesRepository } from './MessagesRepository';
+import { Persistence, Transaction } from './persistence/Persistence';
+import { MessagesRepository } from './storage/MessagesRepository';
 import { MessageUser } from './Message';
 
 export class MessagesStore {
@@ -19,8 +20,13 @@ export class MessagesStore {
     readonly api: MessagesApi;
     private readonly repo: MessagesRepository;
     private readonly views = new Map<string, MessageView>();
+    private readonly users = new Map<string, MessageUser>();
+    
+    // Latest Index
+    private readonly latestIndex = new SparseIndex({ windows: [] });
+    private latestIndexSeq = 0;
+
     private access: undefined | boolean = undefined;
-    private users = new Map<string, MessageUser>();
 
     private constructor(repo: MessagesRepository, persistence: Persistence, api: MessagesApi) {
         this.repo = repo;
@@ -257,7 +263,7 @@ export class MessagesStore {
         }
     }
 
-    onMessagesReceived = async (messages: { repeatKey: string | null, message: StoredMessage }[], tx: Transaction) => {
+    onMessagesReceived = async (messages: { repeatKey: string | null, message: WireMessage }[], tx: Transaction) => {
         // Load required users if missing in cache
         await this.loadUsersFromMessagesIfNeeded(messages.map((v) => v.message));
 
@@ -274,7 +280,7 @@ export class MessagesStore {
         });
     }
 
-    onMessagesUpdated = async (messages: StoredMessage[], tx: Transaction) => {
+    onMessagesUpdated = async (messages: WireMessage[], tx: Transaction) => {
 
         // Load required users if missing in cache
         await this.loadUsersFromMessagesIfNeeded(messages);
@@ -307,7 +313,7 @@ export class MessagesStore {
     // Users
     //
 
-    private loadUsersFromMessagesIfNeeded = async (messages: StoredMessage[]) => {
+    private loadUsersFromMessagesIfNeeded = async (messages: WireMessage[]) => {
         let users = new Set<string>();
         for (let m of messages) {
             extractUsers(m, users);

@@ -1,9 +1,9 @@
 import { MessageUser } from './Message';
-import { StoredMessage } from './StoredMessage';
+import { WireMessage } from './WireMessage';
 import { ChatNewMessageFragment } from 'openland-api/spacex.types';
 import { OpenlandClient } from 'openland-api/spacex';
 
-export function convertMessage(src: ChatNewMessageFragment): StoredMessage {
+export function convertMessage(src: ChatNewMessageFragment): WireMessage {
     return {
         id: src.id,
         seq: src.seq!,
@@ -20,10 +20,10 @@ export interface MessagesApi {
     // Messages List
     //
 
-    loadMessage(id: string): Promise<StoredMessage | null>;
-    loadMessagesBefore(id: string, before: string, limit: number): Promise<{ hasMore: boolean, messages: StoredMessage[] } | null>;
-    loadMessagesAfter(id: string, after: string, limit: number): Promise<{ hasMore: boolean, messages: StoredMessage[] } | null>;
-    loadLastMessage(id: string): Promise<StoredMessage | null>;
+    loadMessage(id: string): Promise<WireMessage | null>;
+    loadMessagesBefore(id: string, before: string, limit: number): Promise<{ hasMore: boolean, messages: WireMessage[] } | null>;
+    loadMessagesAfter(id: string, after: string, limit: number): Promise<{ hasMore: boolean, messages: WireMessage[] } | null>;
+    loadLastMessage(id: string): Promise<WireMessage | null>;
 
     loadLastRead(id: string): Promise<string | null>;
     loadChatState(id: string): Promise<string>;
@@ -93,7 +93,7 @@ export class MessagesApiClient implements MessagesApi {
         return (await this.client.queryChatNewHaveAccess({ chatId }, { fetchPolicy: 'network-only' })).haveAccessToChat;
     }
 
-    loadLastMessage = async (chatId: string): Promise<StoredMessage | null> => {
+    loadLastMessage = async (chatId: string): Promise<WireMessage | null> => {
         let res = (await this.client.queryChatNewLoadLastMessage({ chatId }, { fetchPolicy: 'network-only' })).messages;
         if (res.length === 0) {
             return null;

@@ -3,7 +3,7 @@ import { MessagesStore } from 'openland-engines/new/MessagesStore';
 import { XView } from 'react-mental';
 import { InvertedDiv, ScrollValues, InvertedDivInstance } from './InvertedDiv';
 import { XLoader } from 'openland-x/XLoader';
-import { StoredMessage } from 'openland-engines/new/StoredMessage';
+import { WireMessage } from 'openland-engines/new/WireMessage';
 
 type LoadFrom = { type: 'latest' } | { type: 'message', id: string };
 const EDGE_DISTANCE = 1200;
@@ -11,7 +11,7 @@ const EDGE_DISTANCE = 1200;
 const SnapshotMessagesRenderer = React.memo((props: {
     hasMoreNext: boolean,
     hasMorePrev: boolean,
-    messages: StoredMessage[],
+    messages: WireMessage[],
     focusSeq: number | null,
     onTopReached: () => void,
     onBottomReached: () => void

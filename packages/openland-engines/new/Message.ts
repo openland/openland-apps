@@ -7,14 +7,20 @@ export interface MessageUser {
     username: string | null;
 }
 
-export interface Message {
-
+export type Message = {
     id: string;
     sender: MessageUser;
-    state: 'sending' | 'sent';
     date: number;
-    cursor: string;
 
     text: string | null;
     fallback: string;
-}
+} & (
+        | {
+            state: 'sending',
+            seq: null
+        }
+        | {
+            state: 'sent',
+            seq: number;
+        }
+);

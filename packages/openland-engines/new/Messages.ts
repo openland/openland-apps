@@ -1,5 +1,5 @@
 import { MessagesStore } from 'openland-engines/new/MessagesStore';
-import { Persistence, Transaction } from './Persistence';
+import { Persistence, Transaction } from './persistence/Persistence';
 import { MessagesApi, MessagesApiClient } from './MessagesApi';
 import { MessagesUpdates, MessagesChatUpdates } from './MessagesUpdates';
 import { DialogUpdateFragment } from 'openland-api/spacex.types';

@@ -1,16 +1,17 @@
 import { SparseIndex } from './SparseIndex';
-import { StoredMessage } from './StoredMessage';
-import { PersistenceProviderInMemory } from './PersistenceProviderInMemory';
+import { WireMessage } from '../WireMessage';
+import { PersistenceProviderInMemory } from '../persistence/PersistenceProviderInMemory';
 import { MessagesRepository } from './MessagesRepository';
-import { Persistence } from './Persistence';
+import { Persistence } from '../persistence/Persistence';
 
-function createMessage(seq: number): StoredMessage {
+function createMessage(seq: number): WireMessage {
     return {
         id: '' + seq,
         seq,
         sender: 'user_id',
         text: 'text',
-        fallback: '!'
+        fallback: '!',
+        date: 0
     };
 }
 

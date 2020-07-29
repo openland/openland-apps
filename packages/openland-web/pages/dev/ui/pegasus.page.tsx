@@ -3,7 +3,7 @@ import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { useClient } from 'openland-api/useClient';
 import { PersistenceProviderInMemory } from 'openland-engines/new/PersistenceProviderInMemory';
-import { Persistence } from 'openland-engines/new/Persistence';
+import { Persistence } from 'openland-engines/new/persistence/Persistence';
 import { Messages } from 'openland-engines/new/Messages';
 import { MessagesComponent } from 'openland-web/fragments/new/MessagesComponent';
 import { XView } from 'react-mental';

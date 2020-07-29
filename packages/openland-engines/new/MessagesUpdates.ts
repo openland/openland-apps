@@ -1,7 +1,7 @@
-import { StoredMessage } from './StoredMessage';
+import { WireMessage } from './WireMessage';
 import { GraphqlActiveSubscription } from '@openland/spacex';
 import { MessagesApi, convertMessage } from './MessagesApi';
-import { Persistence, Transaction } from './Persistence';
+import { Persistence, Transaction } from './persistence/Persistence';
 import { AsyncLock } from '@openland/patterns';
 import {
     DialogUpdateFragment,
@@ -13,8 +13,8 @@ import {
 import { OpenlandClient } from 'openland-api/spacex';
 
 export interface MessagesChatUpdates {
-    received: { message: StoredMessage, repeatKey: string | null }[];
-    updated: StoredMessage[];
+    received: { message: WireMessage, repeatKey: string | null }[];
+    updated: WireMessage[];
     deleted: string[];
 }
 
@@ -133,8 +133,8 @@ export class MessagesUpdates {
         if (received.length > 0 || updated.length > 0 || deleted.length > 0) {
 
             let mappedDeleted: string[] = [];
-            let mappedReceived: { repeatKey: string | null, message: StoredMessage }[] = [];
-            let mappedUpdated: StoredMessage[] = [];
+            let mappedReceived: { repeatKey: string | null, message: WireMessage }[] = [];
+            let mappedUpdated: WireMessage[] = [];
 
             // Collapse events if needed.
             // NOTE: Order is important

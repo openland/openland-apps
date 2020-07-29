@@ -1,4 +1,4 @@
-import { StoredMessage } from './StoredMessage';
+import { WireMessage } from './WireMessage';
 
 export interface MessageView {
 
@@ -7,7 +7,7 @@ export interface MessageView {
 
     onMessagesLostAccess(): void;
     onMessagesGotAccess(): void;
-    onMessagesReceived(messages: { repeatKey: string | null, message: StoredMessage }[]): void;
-    onMessagesUpdated(messages: StoredMessage[]): void;
+    onMessagesReceived(messages: { repeatKey: string | null, message: WireMessage }[]): void;
+    onMessagesUpdated(messages: WireMessage[]): void;
     onMessagesDeleted(messages: string[]): void;
 }

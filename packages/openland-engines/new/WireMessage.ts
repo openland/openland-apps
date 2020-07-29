@@ -1,4 +1,4 @@
-export type StoredMessage = {
+export type WireMessage = {
     id: string;
     seq: number;
     date: number;
@@ -7,6 +7,6 @@ export type StoredMessage = {
     fallback: string;
 };
 
-export function extractUsers(message: StoredMessage, to: Set<string>) {
+export function extractUsers(message: WireMessage, to: Set<string>) {
     to.add(message.sender);
 }
