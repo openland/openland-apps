@@ -229,7 +229,8 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         // MESSAGE COMMENT
         //
         let messageCommentPattern = new UrlPattern(patternBase + 'message/:id/comment/:commentId');
-        let matchMessageComment = messageCommentPattern.match(link);
+        let messageCommentPatternDeep = new UrlPattern(patternBaseDeep + 'message/:id/comment/:commentId');
+        let matchMessageComment = messageCommentPattern.match(link) || messageCommentPatternDeep.match(link);
         if (matchMessageComment && matchMessageComment.id && matchMessageComment.commentId) {
             navigate('Message', { messageId: matchMessageComment.id, highlightId: matchMessageComment.commentId });
             return;
