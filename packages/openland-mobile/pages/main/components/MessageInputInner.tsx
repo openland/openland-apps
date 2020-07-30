@@ -115,7 +115,7 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
                 </View>
             )}
             {props.showLoader && (
-                <View width={52} height={52} alignItems="center" justifyContent="center">
+                <View width={56} height={52} alignItems="center" justifyContent="center">
                     <LoaderSpinner />
                 </View>
             )}
