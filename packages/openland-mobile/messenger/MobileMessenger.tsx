@@ -306,7 +306,7 @@ export class MobileMessenger {
         this.history.navigationManager.push('Conversation', { id });
     }
 
-    handleReactionSetUnset = async (message: DataSourceMessageItem, r: MessageReactionType, doubleTap?: boolean) => {
+    handleReactionSetUnset = async (message: DataSourceMessageItem, reaction: MessageReactionType, doubleTap?: boolean) => {
         const donate = async() => {
             let loader = Toast.loader();
             try {
@@ -327,30 +327,29 @@ export class MobileMessenger {
         };
         try {
             const conversation: ConversationEngine = this.engine.getConversation(message.chatId);
-
-            let remove = message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;
+            const remove = !!message.reactionCounters.find(r => r.reaction === reaction && r.setByMe);
             if (remove) {
-                if (r === MessageReactionType.DONATE) {
+                if (reaction === MessageReactionType.DONATE) {
                     return;
                 }
-                conversation.unsetReaction(message.key, r);
+                conversation.unsetReaction(message.key, reaction);
 
-                this.engine.client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: r });
+                await this.engine.client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: reaction });
             } else {
-                if (r === MessageReactionType.DONATE) {
+                if (reaction === MessageReactionType.DONATE) {
                     try {
                         await showDonationReactionWarning();
                         try {
-                            conversation.setReaction(message.key, r);
+                            conversation.setReaction(message.key, reaction);
                             await donate();
                         } catch (e) {
-                            conversation.unsetReaction(message.key, r);
+                            conversation.unsetReaction(message.key, reaction);
                         }
                     } catch (e) { /* noop */ }
                 } else {
-                    conversation.setReaction(message.key, r);
-                    trackEvent('reaction_sent', { reaction_type: r.toLowerCase(), double_tap: doubleTap ? 'yes' : 'not' });
-                    await this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: r });
+                    conversation.setReaction(message.key, reaction);
+                    trackEvent('reaction_sent', { reaction_type: reaction.toLowerCase(), double_tap: doubleTap ? 'yes' : 'not' });
+                    await this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: reaction });
                 }
             }
         } catch (e) {
@@ -398,21 +397,21 @@ export class MobileMessenger {
 
         builder.view((ctx: ZModalController) => (
             <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={52} paddingHorizontal={10}>
-                {SortedReactions.map(r => {
-                    const isDisabled = r === MessageReactionType.DONATE 
-                        && message.reactions.some(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === MessageReactionType.DONATE);
+                {SortedReactions.map(reaction => {
+                    const remove = !!message.reactionCounters.find(r => r.reaction === reaction && r.setByMe);
+                    const isDisabled = reaction === MessageReactionType.DONATE && remove;
                     return (
                         <TouchableOpacity
-                            key={r}
+                            key={reaction}
                             style={{opacity: isDisabled ? 0.35 : undefined}}
                             disabled={isDisabled}
                             onPress={() => {
                                 ctx.hide();
-                                this.handleReactionSetUnset(message, r);
+                                this.handleReactionSetUnset(message, reaction);
                             }}
                         >
                             <View style={{ width: 52, height: 52, alignItems: 'center', justifyContent: 'center' }}>
-                                <Image source={reactionsImagesMap[r]} style={{ width: 36, height: 36 }} />
+                                <Image source={reactionsImagesMap[reaction]} style={{ width: 36, height: 36 }} />
                             </View>
                         </TouchableOpacity>
                     );
@@ -498,8 +497,8 @@ export class MobileMessenger {
     }
 
     private handleReactionsClick = (message: DataSourceMessageItem) => {
-        if (message.reactions.length > 0) {
-            showReactionsList(message.reactions);
+        if (message.reactionCounters.length > 0 && message.id) {
+            showReactionsList(message.id);
         }
     }
 }

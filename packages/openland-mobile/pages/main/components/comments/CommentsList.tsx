@@ -84,11 +84,12 @@ export const CommentsList = (props: CommentsListProps) => {
             </View>
 
             {commentsSorted.map(commentEntry => {
-                const isHighlighted = (typeof highlightedId === 'string' && highlightedId === commentEntry.comment.id) ? true : false;
+                const isHighlighted = (typeof highlightedId === 'string' && highlightedId === commentEntry.comment.id);
 
                 return (
                     <CommentView
                         key={`comment-${commentEntry.comment.id}`}
+                        entryId={commentEntry.id}
                         scrollRef={scrollRef}
                         comment={commentEntry.comment}
                         deleted={commentEntry.deleted}

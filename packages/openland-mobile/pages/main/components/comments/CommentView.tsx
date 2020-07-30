@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
 
 export interface CommentViewProps {
     comment: CommentEntryFragment_comment;
+    entryId: string;
     depth: number;
     deleted: boolean;
     highlighted: boolean;
@@ -50,13 +51,12 @@ export interface CommentViewProps {
 }
 
 export const CommentView = React.memo<CommentViewProps>((props) => {
-    const { comment, deleted, depth, highlighted, theme, scrollRef } = props;
+    const { comment, entryId, deleted, depth, highlighted, theme, scrollRef } = props;
     const { sender, date } = comment;
-    const reactions = (comment.__typename === 'GeneralMessage' || comment.__typename === 'StickerMessage') ? comment.reactions : [];
+    const reactions = (comment.__typename === 'GeneralMessage' || comment.__typename === 'StickerMessage') ? comment.reactionCounters : [];
     const edited = comment.__typename === 'GeneralMessage' ? comment.edited : false;
 
     let messenger = getMessenger();
-    let engine = messenger.engine;
     let client = getClient();
     let router = messenger.history.navigationManager;
 
@@ -70,17 +70,17 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     };
 
     const handleReactionPress = React.useCallback(async (useLoader: boolean) => {
-        let r = MessageReactionType.LIKE;
+        const reactionType = MessageReactionType.LIKE;
         const loader = Toast.loader();
         if (useLoader) {
             loader.show();
         }
         try {
-            let remove = reactions && reactions.filter(userReaction => userReaction.user.id === engine.user.id && userReaction.reaction === r).length > 0;
+            const remove = !!reactions.find(r => r.setByMe);
             if (remove) {
-                await client.mutateCommentUnsetReaction({ commentId: comment.id, reaction: r });
+                await client.mutateCommentUnsetReaction({ commentId: comment.id, reaction: reactionType });
             } else {
-                await client.mutateCommentSetReaction({ commentId: comment.id, reaction: r });
+                await client.mutateCommentSetReaction({ commentId: comment.id, reaction: reactionType });
             }
         } catch (e) {
             Alert.alert(e.message);
@@ -90,7 +90,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     }, [comment, reactions]);
 
     const handleReactionListPress = React.useCallback(() => {
-        showReactionsList(reactions);
+        showReactionsList(entryId, true);
     }, [comment, reactions]);
 
     let lastTap: number = 0;
@@ -108,8 +108,8 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     }, [comment, lastTap]);
 
     const branchIndent = (depth > 0) ? (((16 + 24) * Math.min(depth, 2)) + 16) : 16;
-    const likesCount = reactions.length;
-    const myLike = reactions.filter(r => r.user.id === messenger.engine.user.id).length > 0;
+    const likesCount = reactions.length > 0 ? reactions[0].count : 0;
+    const likedByMe = (reactions.length > 0 && reactions[0].setByMe);
 
     let avatar = (
         <View marginRight={16}>
@@ -151,7 +151,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                     )}
 
                     <ZLabelButton label="Reply" onPress={() => props.onReplyPress(comment)} />
-                    <ZLabelButton label={myLike ? 'Liked' : 'Like'} style={myLike ? 'danger' : 'default'} onPress={() => handleReactionPress(true)} />
+                    <ZLabelButton label={likedByMe ? 'Liked' : 'Like'} style={likedByMe ? 'danger' : 'default'} onPress={() => handleReactionPress(true)} />
 
                     {likesCount > 0 && <ZLabelButton label={plural(likesCount, ['like', 'likes'])} onPress={handleReactionListPress} />}
                 </>

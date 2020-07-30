@@ -5,7 +5,6 @@ import { StickerFragment, CommentWatch, CommentEntryFragment, MessageReactionTyp
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { css } from 'linaria';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { XView } from 'react-mental';
@@ -31,7 +30,6 @@ interface CommentsListProps {
 
 const CommentsListInner = React.memo((props: CommentsListProps & { comments: CommentEntryFragment[] }) => {
     const client = useClient();
-    const messenger = React.useContext(MessengerContext);
     const { groupId, comments, highlightId, onSent, onSentAttach, onReply, onStickerSent } = props;
     const commnetsUpdatedCounter = React.useRef(0);
     React.useEffect(() => {
@@ -51,14 +49,14 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Com
 
     const handleReactionClick = React.useCallback((comment: CommentEntryFragment_comment) => {
         if (comment.__typename === 'GeneralMessage' || comment.__typename === 'StickerMessage') {
-            const { id, reactions } = comment;
-            const r = MessageReactionType.LIKE;
-            const remove = reactions && reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === r).length > 0;
+            const { id, reactionCounters } = comment;
+            const reactionType = MessageReactionType.LIKE;
+            const remove = !!reactionCounters.find(r => r.setByMe);
 
             if (remove) {
-                client.mutateCommentUnsetReaction({ commentId: id, reaction: r });
+                client.mutateCommentUnsetReaction({ commentId: id, reaction: reactionType });
             } else {
-                client.mutateCommentSetReaction({ commentId: id, reaction: r });
+                client.mutateCommentSetReaction({ commentId: id, reaction: reactionType });
             }
         }
     }, []);
@@ -86,6 +84,7 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Com
                 <CommentView
                     generation={commnetsUpdatedCounter.current}
                     key={'comment-' + item.id}
+                    entryId={item.id}
                     comment={item.comment}
                     deleted={item.deleted}
                     depth={getDepthOfComment(item, commentsMap)}

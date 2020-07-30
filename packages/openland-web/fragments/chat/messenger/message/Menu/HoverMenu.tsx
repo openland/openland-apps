@@ -11,7 +11,6 @@ import { buildMessageMenu } from './MessageMenu';
 import { XViewRouterContext } from 'react-mental';
 import { MessageReactionType } from 'openland-api/spacex.types';
 import { ReactionPicker, ReactionPickerInstance } from '../reactions/ReactionPicker';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
 import { trackEvent } from 'openland-x-analytics';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
@@ -49,11 +48,10 @@ interface HoverMenuProps {
     engine: ConversationEngine;
 }
 
-export const HoverMenu = React.memo<HoverMenuProps>(props => {
+export const HoverMenu = React.memo((props: HoverMenuProps) => {
     const { message } = props;
     const [width] = useWithWidth();
     const client = useClient();
-    const messenger = React.useContext(MessengerContext);
     const router = React.useContext(XViewRouterContext);
     const messageRef = React.useRef(message);
     const [menuPlacement, setMenuPlacement] = React.useState<Placement>('bottom-end');
@@ -92,8 +90,9 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
     messageIdRef.current = message.id;
     const messageKeyRef = React.useRef(message.key);
     messageKeyRef.current = message.key;
-    const reactionsRef = React.useRef(message.reactions);
-    reactionsRef.current = message.reactions;
+    // const reactionsRef = React.useRef(message.reactions);
+    const reactionsRef = React.useRef(message.reactionCounters);
+    reactionsRef.current = message.reactionCounters;
 
     React.useEffect(
         () => {
@@ -153,17 +152,11 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
         };
 
         if (messageId) {
-            const remove =
-                reactions &&
-                reactions.filter(
-                    userReaction =>
-                        userReaction.user.id === messenger.user.id &&
-                        userReaction.reaction === reaction,
-                ).length > 0;
+            const remove = !!reactions.find(r => r.reaction === reaction && r.setByMe);
             if (remove) {
                 if (reaction !== MessageReactionType.DONATE) {
                     unsetEmoji();
-                    client.mutateMessageUnsetReaction({ messageId, reaction });
+                    await client.mutateMessageUnsetReaction({ messageId, reaction });
                 }
             } else {
                 if (reaction === MessageReactionType.DONATE) {
@@ -177,8 +170,8 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
                         }
                     } catch (e) { /* noop */ }
                 } else {
-                    client.mutateMessageSetReaction({ messageId, reaction });
                     setEmoji();
+                    await client.mutateMessageSetReaction({ messageId, reaction });
                 }
             }
         }
@@ -189,7 +182,7 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
         () => (
             <ReactionPicker
                 ref={pickerRef}
-                reactions={reactionsRef.current}
+                reactionCounters={reactionsRef.current}
                 onPick={handleReactionClick}
             />
         ),

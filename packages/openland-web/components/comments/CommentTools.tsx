@@ -1,17 +1,17 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { UIconLabeled } from 'openland-web/components/unicorn/UIconLabeled';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import LikeIcon from 'openland-icons/s/ic-like-16.svg';
 import LikeFilledIcon from 'openland-icons/s/ic-like-filled-16.svg';
 import ReplyIcon from 'openland-icons/s/ic-reply-16.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-16.svg';
 import EditIcon from 'openland-icons/s/ic-edit-16.svg';
-import { FullMessage_GeneralMessage_reactions } from 'openland-api/spacex.types';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { MessageReactionCounter } from 'openland-api/spacex.types';
 import { plural } from 'openland-y-utils/plural';
-import { extractReactionsUsers } from 'openland-engines/reactions/extractReactionsUsers';
-import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
-import { ReactionsUsersInstance, ReactionsUsers } from 'openland-web/components/ReactionsUsers';
+import { defaultHover } from 'openland-web/utils/Styles';
+import { TextLabel2 } from 'openland-web/utils/TextStyles';
+import { showReactionsList } from 'openland-web/fragments/chat/messenger/message/reactions/showReactionsList';
 
 const wrapperClass = css`
     display: flex;
@@ -19,8 +19,19 @@ const wrapperClass = css`
     margin: 5px 0 0 -8px;
 `;
 
+const likesStubClass = css`
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    padding: 0 8px;
+    color: var(--foregroundSecondary);
+`;
+
 interface CommentToolsProps {
-    reactions: FullMessage_GeneralMessage_reactions[];
+    reactionCounters: MessageReactionCounter[];
+    entryId: string;
     onReactionClick: () => void;
     onReplyClick: () => void;
     onEditClick?: () => void;
@@ -28,50 +39,22 @@ interface CommentToolsProps {
 }
 
 export const CommentTools = React.memo((props: CommentToolsProps) => {
-    const messenger = React.useContext(MessengerContext);
-    const { reactions, onReactionClick, onReplyClick, onDeleteClick, onEditClick } = props;
-
-    const myLike = reactions.filter(r => r.user.id === messenger.user.id).length > 0;
-    const likeLabel =
-        myLike && reactions.length === 1
-            ? 'Liked'
-            : reactions.length > 0
-                ? plural(reactions.length, ['like', 'likes'])
-                : 'Like';
-
-    // Sorry universe
-    const listRef = React.useRef<ReactionsUsersInstance>(null);
-    const usersRef = React.useRef(extractReactionsUsers(reactions, messenger.user.id));
-    usersRef.current = extractReactionsUsers(reactions, messenger.user.id);
-
-    React.useEffect(
-        () => {
-            if (listRef && listRef.current) {
-                listRef.current.update(extractReactionsUsers(reactions, messenger.user.id));
-            }
-        },
-        [listRef, reactions],
-    );
-
-    const [show] = useCaptionPopper({
-        getText: ctx => <ReactionsUsers initialUsers={usersRef.current} ref={listRef} ctx={ctx} />,
-        placement: 'bottom',
-        scope: 'reaction-item',
-        width: 280,
-    });
-
+    const { reactionCounters, entryId, onReactionClick, onReplyClick, onDeleteClick, onEditClick } = props;
+    const likedByMe = (reactionCounters.length > 0 && reactionCounters[0].setByMe);
     return (
         <div className={wrapperClass}>
             <UIconLabeled
-                icon={myLike ? <LikeFilledIcon /> : <LikeIcon />}
-                label={likeLabel}
-                style={myLike ? 'danger' : 'default'}
+                icon={likedByMe ? <LikeFilledIcon /> : <LikeIcon />}
+                label={likedByMe ? 'Liked' : 'Like'}
+                style={likedByMe ? 'danger' : 'default'}
                 onClick={onReactionClick}
-                onMouseEnter={reactions.length > 0 ? show : undefined}
             />
-
+            {reactionCounters.length > 0 && (
+                <XView onClick={() => showReactionsList(entryId, true)}>
+                    <div className={cx(likesStubClass, defaultHover, TextLabel2)}>{plural(reactionCounters[0].count, ['like', 'likes'])}</div>
+                </XView>
+            )}
             <UIconLabeled icon={<ReplyIcon />} label="Reply" onClick={onReplyClick} />
-
             {!!onEditClick && <UIconLabeled icon={<EditIcon />} label="Edit" onClick={onEditClick} />}
             {!!onDeleteClick && <UIconLabeled icon={<DeleteIcon />} label="Delete" onClick={onDeleteClick} />}
         </div>

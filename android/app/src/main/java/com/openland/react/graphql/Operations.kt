@@ -24,6 +24,7 @@ object Operations {
         if (name == "ChatNewLoadAfter") return ChatNewLoadAfter
         if (name == "ChatNewLoadBefore") return ChatNewLoadBefore
         if (name == "ChatNewReadLastRead") return ChatNewReadLastRead
+        if (name == "CommentFullReactions") return CommentFullReactions
         if (name == "Comments") return Comments
         if (name == "Conference") return Conference
         if (name == "ConferenceMedia") return ConferenceMedia
@@ -52,6 +53,7 @@ object Operations {
         if (name == "GlobalSearch") return GlobalSearch
         if (name == "IpLocation") return IpLocation
         if (name == "Message") return Message
+        if (name == "MessageFullReactions") return MessageFullReactions
         if (name == "MessageMultiSpan") return MessageMultiSpan
         if (name == "MessagesBatch") return MessagesBatch
         if (name == "MessagesSearch") return MessagesSearch

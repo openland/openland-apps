@@ -70,7 +70,14 @@ const AsyncMessageViewAvatar = (props: { message: DataSourceMessageItem, handleU
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const theme = useThemeGlobal(false);
     const { conversationId, message, engine, onMessageDoublePress, onMessagePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress, onHashtagPress } = props;
-    const { isOut, attachTop, attachBottom, commentsCount, reactions, isSending } = message;
+    const {
+        isOut,
+        attachTop,
+        attachBottom,
+        commentsCount,
+        reactionCounters,
+        isSending
+    } = message;
 
     const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
 
@@ -129,7 +136,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
         res = <UnsupportedContent message={message} theme={theme} />;
     }
 
-    const showReactions = ((engine.isChannel || commentsCount > 0) || reactions.length > 0) && !isSending;
+    const showReactions = ((engine.isChannel || commentsCount > 0) || reactionCounters.length > 0) && !isSending;
     const marginTop = attachTop ? 4 : 12;
     const marginBottom = attachBottom && showReactions ? 6 : 0;
 

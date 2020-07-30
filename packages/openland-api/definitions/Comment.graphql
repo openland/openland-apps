@@ -15,3 +15,15 @@ fragment CommentEntryFragment on CommentEntry {
         id
     }
 }
+
+query CommentFullReactions($id: ID!) {
+    commentEntry(entryId: $id) {
+        id
+        comment {
+            id
+            reactions {
+                ...MessageUsersReactions
+            }
+        }
+    }
+}

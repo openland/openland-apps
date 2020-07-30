@@ -7,7 +7,7 @@ import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { EmojiSuggestions, EmojiSuggestionsRow } from '../suggestions/EmojiSuggestions';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { MentionsSuggestions } from '../suggestions/MentionsSuggestions';
-import { CommentsList } from '../comments/CommentsList';
+import { CommentsList } from './CommentsList';
 import { SDevice } from 'react-native-s/SDevice';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import Alert from 'openland-mobile/components/AlertBlanket';
@@ -305,7 +305,6 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
     const client = useClient();
     const { peerId } = props;
     const comments = client.useComments({ peerId }, { fetchPolicy: 'cache-and-network' }).comments.comments;
-
     const updateHandler = React.useCallback(async () => {
         await client.refetchComments({ peerId });
     }, [peerId]);

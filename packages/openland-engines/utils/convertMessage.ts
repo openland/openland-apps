@@ -33,7 +33,7 @@ export const convertMessage = (
         isSending: false,
         attachTop: false,
         attachBottom: false,
-        reactions: generalMessage ? generalMessage.reactions : stickerMessage ? stickerMessage.reactions : [],
+        reactionCounters: generalMessage ? generalMessage.reactionCounters : stickerMessage ? stickerMessage.reactionCounters : [],
         serviceMetaData: (serviceMessage && serviceMessage.serviceMetadata) || undefined,
         isService: !!serviceMessage,
         attachments: generalMessage && generalMessage.attachments,
@@ -43,8 +43,6 @@ export const convertMessage = (
         commentsCount: generalMessage ? generalMessage.commentsCount : 0,
         textSpans: src.message ? processSpans(src.message, src.spans) : [],
         fallback: src.message || '',
-        reactionsReduced: [],
-        reactionsLabel: '',
         reply,
     };
 };

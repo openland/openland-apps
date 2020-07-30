@@ -624,11 +624,19 @@ type DialogDeleted {
   globalUnread: Int!
 }
 
+type DialogGotAccess {
+  cid: ID!
+}
+
 enum DialogKind {
   PRIVATE
   INTERNAL
   PUBLIC
   GROUP
+}
+
+type DialogLostAccess {
+  cid: ID!
 }
 
 """depricated"""
@@ -704,7 +712,7 @@ type DialogTitleUpdated {
   title: String!
 }
 
-union DialogUpdate = DialogMessageReceived | DialogMessageUpdated | DialogMessageDeleted | DialogMessageRead | DialogTitleUpdated | DialogDeleted | DialogPhotoUpdated | DialogMuteChanged | DialogMentionedChanged | DialogBump | DialogPeerUpdated | DialogCallStateChanged
+union DialogUpdate = DialogMessageReceived | DialogMessageUpdated | DialogMessageDeleted | DialogMessageRead | DialogTitleUpdated | DialogDeleted | DialogPhotoUpdated | DialogMuteChanged | DialogMentionedChanged | DialogBump | DialogPeerUpdated | DialogCallStateChanged | DialogGotAccess | DialogLostAccess
 
 type DialogUpdateBatch {
   updates: [DialogUpdate!]!
@@ -1694,6 +1702,12 @@ type ModernMessageReaction {
   reaction: MessageReactionType!
 }
 
+type ModernMessagesBatch {
+  messages: [ModernMessage!]!
+  haveMoreForward: Boolean!
+  haveMoreBackward: Boolean!
+}
+
 type MultiselectMatchmakingAnswer {
   question: MultiselectMatchmakingQuestion!
   tags: [String!]!
@@ -1729,13 +1743,6 @@ type Mutation {
   alphaChatCopyGroup(conversationId: ID!, title: String, extraMembers: [ID!], message: String!): GroupChatUpdateResponse!
   alphaChatLeave(conversationId: ID!): ConversationUpdateResponse!
   alphaUpdateConversationSettings(settings: UpdateConversationSettingsInput!, conversationId: ID!): ConversationSettings!
-  profileCreate(input: ProfileInput!, inviteKey: String): Profile!
-  profileUpdate(input: ProfileInput!, uid: ID, inviteKey: String): Profile!
-
-  """Deprecated"""
-  createProfile(input: CreateProfileInput!): Profile!
-  updateProfile(input: UpdateProfileInput!, uid: ID): Profile!
-  alphaCreateUserProfileAndOrganization(user: ProfileInput!, organization: CreateOrganizationInput!): AlphaSignupData!
 
   """Payment Method management"""
   cardCreateSetupIntent(retryKey: String!): CardSetupIntent!
@@ -1833,6 +1840,8 @@ type Mutation {
   debugInviteMembersFromChat(cid: ID!, dest: ID!): Boolean!
   debugDeleteAllContacts: Boolean!
   debugChangeGlobalCounterTypeForAll: Boolean!
+  debugReindexOrganizationMembers: Boolean!
+  debugDeleteTask(taskType: String!, id: String!): Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -1865,6 +1874,13 @@ type Mutation {
   alphaReportActive(timeout: Int!, platform: Platform): String!
   alphaSetDesktopInstalled(at: Date!): Boolean!
   alphaSetMobileInstalled(at: Date!): Boolean!
+  profileCreate(input: ProfileInput!, inviteKey: String): Profile!
+  profileUpdate(input: ProfileInput!, uid: ID, inviteKey: String): Profile!
+
+  """Deprecated"""
+  createProfile(input: CreateProfileInput!): Profile!
+  updateProfile(input: UpdateProfileInput!, uid: ID): Profile!
+  alphaCreateUserProfileAndOrganization(user: ProfileInput!, organization: CreateOrganizationInput!): AlphaSignupData!
   superAccountAdd(title: String!): SuperAccount!
   superAccountRename(id: ID!, title: String!): SuperAccount!
   superAccountActivate(id: ID!): SuperAccount!
@@ -2403,7 +2419,7 @@ type PhonebookRecord {
 }
 """
 input PhonebookRecordInput {
-  firstName: String!
+  firstName: String
   lastName: String
   info: String
   phones: [String!]!
@@ -2624,6 +2640,7 @@ type Profile {
   twitter: String
   facebook: String
   authEmail: String
+  badge: ProfileBadge
 
   """Deprecated"""
   alphaLinkedin: String
@@ -2641,6 +2658,15 @@ type Profile {
   """deprecated"""
   primaryBadge: UserBadge
   shortname: String
+}
+
+type ProfileBadge {
+  type: ProfileBadgeType!
+  text: String!
+}
+
+enum ProfileBadgeType {
+  ORGANIZATION
 }
 
 input ProfileInput {
@@ -2699,7 +2725,6 @@ type Query {
   alphaChatsSearchForCompose(query: String, organizations: Boolean, limit: Int): [ComposeSearchResult!]!
   alphaChatSearch(members: [ID!]!): Conversation
   alphaGroupConversationMembers(conversationId: ID!): [GroupConversationMember!]!
-  myProfile: Profile
   myCards: [CreditCard!]!
   myWallet: WalletAccount!
   transactionsPending: [WalletTransaction!]!
@@ -2734,6 +2759,7 @@ type Query {
   debugEntitiesCounter(name: String!): Int!
   debugEntitiesCleanerProgress(name: String!): Int!
   debugUserSearch(query: String!): String!
+  debugMentionSearch(query: String!, first: Int!): String!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!
@@ -2748,6 +2774,7 @@ type Query {
   waitingPermissionRequests: [PermissionRequest!]!
   isDesktopInstalled: IsAppInstalledResponse!
   isMobileInstalled: IsAppInstalledResponse!
+  myProfile: Profile
   superAccounts: [SuperAccount!]!
   superAccount(id: ID!, viaOrgId: Boolean): SuperAccount!
   superAdmins: [SuperAdmin!]!
@@ -2771,6 +2798,7 @@ type Query {
   feedItemComments(feedItemId: ID!): CommentsPeer!
   postComments(postId: ID!): CommentsPeer!
   comments(peerId: ID!): CommentsPeer!
+  commentEntry(entryId: ID!): CommentEntry
   conference(id: ID!): Conference!
   conferenceMedia(id: ID!, peerId: ID!): ConferenceMedia!
   myContacts(first: Int!, after: String): ContactConnection!
@@ -2860,10 +2888,12 @@ type Query {
   orgMembersSearch(orgId: ID!, query: String, first: Int!, after: String, page: Int): JoinedOrganizationMembersConnection!
   messages(chatId: ID!, first: Int!, before: ID): [ModernMessage!]!
   gammaMessages(chatId: ID!, first: Int!, before: ID, after: ID, around: ID): GammaMessagesBatch
+  modernMessages(chatId: ID!, first: Int!, before: ID, after: ID): ModernMessagesBatch!
   message(messageId: ID!): ModernMessage
   lastReadedMessage(chatId: ID!): ModernMessage
   chatSharedMedia(chatId: ID!, mediaTypes: [SharedMediaType!]!, first: Int!, after: ID, before: ID, around: ID): SharedMediaConnection!
   chatSharedMediaCounters(chatId: ID!): SharedMediaCounters!
+  haveAccessToChat(chatId: ID!): Boolean!
   room(id: ID!): Room
   rooms(ids: [ID!]!): [Room!]!
   roomSuper(id: ID!): RoomSuper
@@ -3529,6 +3559,7 @@ type User {
   twitter: String
   facebook: String
   audienceSize: Int!
+  badge: ProfileBadge
 
   """TODO: Refactor"""
   channelsJoined: [ChannelConversation!]!

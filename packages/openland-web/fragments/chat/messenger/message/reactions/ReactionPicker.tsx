@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { MessageReactionType, FullMessage_GeneralMessage_reactions } from 'openland-api/spacex.types';
+import {
+    MessageReactionType,
+    MessageReactionCounter,
+} from 'openland-api/spacex.types';
 import { css, cx } from 'linaria';
 import { reactionImage } from './MessageReactions';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 
 const SortedReactions = [
@@ -23,7 +25,8 @@ const wrapperClass = css`
 `;
 
 const reactionClass = css`
-    width: 36px; height: 40px;
+    width: 36px; 
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -31,14 +34,17 @@ const reactionClass = css`
     position: relative;
 
     img.reaction-main {
-        width: 24px; height: 24px;
+        width: 24px; 
+        height: 24px;
         transition: transform 100ms ease-in-out;
     }
 
     img.reaction-duplicate {
-        width: 32px; height: 32px;
+        width: 32px; 
+        height: 32px;
         position: absolute;
-        top: 4px; left: 2px;
+        top: 4px; 
+        left: 2px;
         opacity: 0;
     }
 
@@ -74,7 +80,7 @@ const reactionDisabledClass = css`
     pointer-events: none;
 `;
 
-const texts: {[reaction in MessageReactionType]: string} = {
+export const reactionLabel: {[reaction in MessageReactionType]: string} = {
     ANGRY: 'Angry',
     CRYING: 'Sad',
     JOY: 'Haha',
@@ -94,7 +100,7 @@ interface ReactionPickerItemProps {
 const ReactionPickerItem = React.memo<ReactionPickerItemProps>(props => {
     const { onPick, reaction, toRemove, disabled } = props;
     const [animate, setAnimate] = React.useState(false);
-    const [show] = useCaptionPopper({text: texts[reaction], scope: 'reactions'});
+    const [show] = useCaptionPopper({text: reactionLabel[reaction], scope: 'reactions'});
     const handleClick = () => {
         if (animate) {
             return;
@@ -117,21 +123,20 @@ const ReactionPickerItem = React.memo<ReactionPickerItemProps>(props => {
 });
 
 export interface ReactionPickerInstance {
-    update: (newReactions: FullMessage_GeneralMessage_reactions[]) => void;
+    update: (newReactions: MessageReactionCounter[]) => void;
 }
 
 interface ReactionPickerProps {
-    reactions: FullMessage_GeneralMessage_reactions[];
+    reactionCounters: MessageReactionCounter[];
     onPick: (reaction: MessageReactionType) => void;
 }
 
 // Sorry universe
 export const ReactionPicker = React.memo(React.forwardRef((props: ReactionPickerProps, ref: React.Ref<ReactionPickerInstance>) => {
-    const messenger = React.useContext(MessengerContext);
-    const [reactions, setReactions] = React.useState<FullMessage_GeneralMessage_reactions[]>(props.reactions);
+    const [reactions, setReactions] = React.useState<MessageReactionCounter[]>(props.reactionCounters);
 
     React.useImperativeHandle(ref, () => ({
-        update: (newReactions: FullMessage_GeneralMessage_reactions[]) => {
+        update: (newReactions: MessageReactionCounter[]) => {
             setReactions(newReactions);
         },
     }));
@@ -139,16 +144,15 @@ export const ReactionPicker = React.memo(React.forwardRef((props: ReactionPicker
     return (
         <div className={wrapperClass}>
             {SortedReactions.map(reaction => {
-                const reactionsToRemove = reactions && reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === reaction);
-                const toRemove = reactionsToRemove && reactionsToRemove.length > 0;
-                const disabled = reaction === MessageReactionType.DONATE && (reactionsToRemove && reactionsToRemove.some(r => r.reaction === MessageReactionType.DONATE));
+                const remove = !!reactions.find(r => r.reaction === reaction && r.setByMe);
+                const disabled = reaction === MessageReactionType.DONATE && remove;
 
                 return (
                     <ReactionPickerItem
                         key={'reaction-' + reaction}
                         onPick={props.onPick}
                         reaction={reaction}
-                        toRemove={toRemove}
+                        toRemove={remove}
                         disabled={disabled}
                     />
                 );

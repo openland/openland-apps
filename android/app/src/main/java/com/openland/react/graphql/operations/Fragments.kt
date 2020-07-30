@@ -306,20 +306,11 @@ internal val QuotedMessageSelector = obj(
             ))
         )
 
-internal val MessageReactionsSelector = obj(
+internal val MessageReactionCounterSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
-            field("user", "user", notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("name", "name", notNull(scalar("String"))),
-                    field("photo", "photo", scalar("String")),
-                    field("primaryOrganization", "primaryOrganization", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("name", "name", notNull(scalar("String")))
-                        ))
-                ))),
-            field("reaction", "reaction", notNull(scalar("String")))
+            field("reaction", "reaction", notNull(scalar("String"))),
+            field("count", "count", notNull(scalar("Int"))),
+            field("setByMe", "setByMe", notNull(scalar("Boolean")))
         )
 
 internal val ServiceMessageMetadataSelector = obj(
@@ -410,9 +401,9 @@ internal val FullMessageSelector = obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", QuotedMessageSelector)
                     ))))),
-                field("reactions", "reactions", notNull(list(notNull(obj(
+                field("reactionCounters", "reactionCounters", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("ModernMessageReaction", MessageReactionsSelector)
+                        fragment("ReactionCounter", MessageReactionCounterSelector)
                     ))))),
                 field("overrideAvatar", "overrideAvatar", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -439,9 +430,9 @@ internal val FullMessageSelector = obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("Sticker", StickerFragmentSelector)
                     ))),
-                field("reactions", "reactions", notNull(list(notNull(obj(
+                field("reactionCounters", "reactionCounters", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("ModernMessageReaction", MessageReactionsSelector)
+                        fragment("ReactionCounter", MessageReactionCounterSelector)
                     ))))),
                 field("overrideAvatar", "overrideAvatar", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -958,6 +949,22 @@ internal val MediaStreamFullSelector = obj(
                     field("codecParams", "codecParams", scalar("String")),
                     field("mid", "mid", scalar("String"))
                 )))))
+        )
+
+internal val MessageUsersReactionsSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("user", "user", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("photo", "photo", scalar("String")),
+                    field("primaryOrganization", "primaryOrganization", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String")))
+                        ))
+                ))),
+            field("reaction", "reaction", notNull(scalar("String")))
         )
 
 internal val RoomSharedNanoSelector = obj(

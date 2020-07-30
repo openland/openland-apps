@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
@@ -30,7 +29,14 @@ interface AsyncMessageReactionsViewProps {
 
 export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewProps>((props) => {
     const { theme, message, isChannel, onCommentsPress, onReactionsPress } = props;
-    const { reactionsReduced, reactionsLabel, commentsCount, isOut } = message;
+    const {
+        reactionCounters,
+        commentsCount,
+        isOut
+    } = message;
+
+    let reactionsCount: number = 0;
+    reactionCounters.forEach(r => reactionsCount += r.count);
 
     return (
         <ASFlex alignItems="stretch" flexDirection="row" maxHeight={33}>
@@ -44,16 +50,14 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
                 marginTop={0}
                 alignItems="center"
             >
-                {reactionsReduced.length > 0 && (
+                {reactionCounters.length > 0 && (
                     <ASFlex onPress={onReactionsPress}>
                         <ASFlex marginLeft={4} marginRight={8} height={28} marginTop={4} alignItems="center" justifyContent="center">
-                            {reactionsReduced.map((i) =>
-                                (
-                                    <ASImage key={'k' + i.reaction} marginLeft={4} source={reactionsImagesMap[i.reaction]} width={20} height={20} />
-                                )
-                            )}
+                            {reactionCounters.map((i) => (
+                                <ASImage key={'k' + i.reaction} marginLeft={4} source={reactionsImagesMap[i.reaction]} width={20} height={20} />
+                            ))}
 
-                            {!!reactionsLabel && <ASText key={'users'} fontWeight={FontStyles.Weight.Medium} marginLeft={4} fontSize={13} color={theme.foregroundTertiary}>{reactionsLabel}</ASText>}
+                            {!!reactionsCount && <ASText key={'users'} fontWeight={FontStyles.Weight.Medium} marginLeft={4} fontSize={13} color={theme.foregroundTertiary}>{reactionsCount}</ASText>}
                         </ASFlex>
                     </ASFlex>
                 )}

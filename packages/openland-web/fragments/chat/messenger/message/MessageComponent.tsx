@@ -487,10 +487,15 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                         </div>
                         {(message.commentsCount > 0 ||
                             engine.isChannel ||
-                            message.reactions.length > 0) &&
-                            buttons}
+                            message.reactionCounters.length > 0) &&
+                        buttons}
                     </div>
-                    {layout !== 'mobile' && <HoverMenu message={message} engine={engine} />}
+                    {layout !== 'mobile' && (
+                        <HoverMenu
+                            message={message}
+                            engine={engine}
+                        />
+                    )}
                 </div>
             </div>
         </div>
