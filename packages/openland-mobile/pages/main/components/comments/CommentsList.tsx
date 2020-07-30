@@ -66,7 +66,7 @@ export const CommentsList = (props: CommentsListProps) => {
 
     const commentsMap = {};
 
-    comments.map(comment => {
+    comments.forEach(comment => {
         commentsMap[comment.id] = comment;
     });
 
