@@ -92,9 +92,19 @@ const ReactionsList = React.memo((props: ReactionsListProps) => {
     const router = React.useContext(XViewRouterContext)!;
     const { hide, mId, isComment } = props;
     const message = isComment
-        ? client.useCommentFullReactions({ id: mId }, { fetchPolicy: 'cache-and-network' })
-              .commentEntry
-        : client.useMessageFullReactions({ id: mId }, { fetchPolicy: 'cache-and-network' }).message;
+        ? client.useCommentFullReactions({ id: mId }, { fetchPolicy: 'network-only' }).commentEntry
+        : client.useMessageFullReactions({ id: mId }, { fetchPolicy: 'network-only' }).message;
+
+    // this huck because updating reactions dont updated list
+    React.useEffect(() => {
+        (async () => {
+            if (isComment) {
+                await client.refetchCommentFullReactions({ id: mId });
+            } else {
+                await client.refetchMessageFullReactions({ id: mId });
+            }
+        })();
+    }, []);
 
     if (!message) {
         return null;
