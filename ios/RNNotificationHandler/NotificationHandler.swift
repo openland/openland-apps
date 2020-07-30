@@ -29,17 +29,23 @@ import Foundation
   }
   
   @objc func handleNotification(userInfo: NSDictionary){
-    let conversationId = userInfo.object(forKey: "conversationId");
-    switch conversationId {
-    case is String:
-       let url = "openland://deep/mail/\(conversationId!)"
-       if nativeInstance != nil && nativeInstance.bridge != nil {
+    if let messageId = userInfo.object(forKey: "messageId") as? String {
+      if let commentId = userInfo.object(forKey: "commentId") as? String {
+        let url = "openland://deep/message/\(messageId)/comment/\(commentId)"
+        if nativeInstance != nil && nativeInstance.bridge != nil {
           nativeInstance.sendEvent(withName: "onUrl", body: url)
-       }else{
+        } else {
+          self.url = url
+        }
+      }
+    }
+    if let conversationId = userInfo.object(forKey: "conversationId") as? String {
+      let url = "openland://deep/mail/\(conversationId)"
+      if nativeInstance != nil && nativeInstance.bridge != nil {
+        nativeInstance.sendEvent(withName: "onUrl", body: url)
+      } else {
         self.url = url
       }
-    default:
-      print("ok swift, here is your default executable statement")
     }
   }
 }

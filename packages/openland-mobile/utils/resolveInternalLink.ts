@@ -219,9 +219,20 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         // MESSAGEE
         //
         let messagePattern = new UrlPattern(patternBase + 'message/:id');
-        let matchMessageProfile = messagePattern.match(link);
-        if (matchMessageProfile && matchMessageProfile.id) {
-            navigate('Message', { messageId: matchMessageProfile.id });
+        let matchMessage = messagePattern.match(link);
+        if (matchMessage && matchMessage.id) {
+            navigate('Message', { messageId: matchMessage.id });
+            return;
+        }
+
+        //
+        // MESSAGE COMMENT
+        //
+        let messageCommentPattern = new UrlPattern(patternBase + 'message/:id/comment/:commentId');
+        let messageCommentPatternDeep = new UrlPattern(patternBaseDeep + 'message/:id/comment/:commentId');
+        let matchMessageComment = messageCommentPattern.match(link) || messageCommentPatternDeep.match(link);
+        if (matchMessageComment && matchMessageComment.id && matchMessageComment.commentId) {
+            navigate('Message', { messageId: matchMessageComment.id, highlightId: matchMessageComment.commentId });
             return;
         }
 

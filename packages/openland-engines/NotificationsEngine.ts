@@ -44,6 +44,7 @@ export class NotificationsEngine {
         }
 
         const { key, sender, peerRootId, text, fallback, room } = comment;
+        const path = '/message/' + peerRootId + (!!comment.id ? ('/comment/' + comment.id) : '');
 
         AppNotifications.playIncomingSound();
 
@@ -51,7 +52,7 @@ export class NotificationsEngine {
             AppNotifications.displayNotification({
                 title: sender.name + ' commented in @' + room.title,
                 body: text || fallback,
-                path: '/message/' + peerRootId,
+                path,
                 image: sender.photo || undefined,
                 id: doSimpleHash(key).toString(),
                 replace: false
@@ -60,7 +61,7 @@ export class NotificationsEngine {
             AppNotifications.displayNotification({
                 title: sender.name + ' commented',
                 body: text || fallback,
-                path: '/message/' + peerRootId,
+                path,
                 image: sender.photo || undefined,
                 id: doSimpleHash(key).toString(),
                 replace: false

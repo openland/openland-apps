@@ -64,6 +64,12 @@ class MainActivity : ReactActivity() {
             }
 
             override fun onNewIntent(intent: Intent?): Boolean {
+                if (intent != null && intent.getStringExtra("messageId") !== null && intent.getStringExtra("commentId") !== null) {
+                    val res = Intent(Intent.ACTION_VIEW)
+                    res.data = Uri.parse("openland://deep/message/" + intent.getStringExtra("messageId") + "/comment/" + intent.getStringExtra("commentId"))
+                    super.onNewIntent(res)
+                    return true
+                }
                 if (intent != null && intent.getStringExtra("conversationId") !== null) {
                     val res = Intent(Intent.ACTION_VIEW)
                     res.data = Uri.parse("openland://deep/mail/" + intent.getStringExtra("conversationId"))

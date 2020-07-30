@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform, ScrollView, Keyboard, TextInput } from 'react-native';
 import { MessageInputBar } from '../MessageInputBar';
-import { CommentEntryFragment_comment, FileAttachmentInput, Message_message_GeneralMessage_source_MessageSourceChat_chat, CommentEntryFragment, CommentWatch } from 'openland-api/spacex.types';
+import { CommentEntryFragment_comment, FileAttachmentInput, Message_message_GeneralMessage_source_MessageSourceChat_chat, CommentEntryFragment, CommentWatch, CommentUpdateFragment } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { EmojiSuggestions, EmojiSuggestionsRow } from '../suggestions/EmojiSuggestions';
@@ -304,16 +304,65 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
 export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
     const client = useClient();
     const { peerId } = props;
-    const comments = client.useComments({ peerId }, { fetchPolicy: 'cache-and-network' }).comments.comments;
-    const updateHandler = React.useCallback(async () => {
-        await client.refetchComments({ peerId });
-    }, [peerId]);
+
+    const initialComments = client.useComments({ peerId }, { fetchPolicy: 'network-only' }).comments.comments;
+    const commentsMap: React.MutableRefObject<Map<string, CommentEntryFragment>> = React.useRef(new Map(initialComments.map(c => [c.id, c])));
+    const [comments, setComments] = React.useState(initialComments);
+
+    const deleteCommentIfNeeded = (comment: CommentEntryFragment) => {
+        if (comment.deleted && comment.childComments.length === 0) {
+            commentsMap.current.delete(comment.id);
+            if (comment.parentComment) {
+                const parent = commentsMap.current.get(comment.parentComment.id);
+                if (parent) {
+                    const idx = parent.childComments.findIndex(c => c.id === comment.id);
+                    if (idx >= -1) {
+                        parent.childComments.splice(idx, 1);
+                    }
+                    deleteCommentIfNeeded(parent);
+                }
+            }
+            return true;
+        }
+        return false;
+    };
+
+    const handleUpdate = (update: CommentUpdateFragment) => {
+        console.warn(update);
+        const newComment = update.comment;
+        if (update.__typename === 'CommentReceived') {
+            commentsMap.current.set(newComment.id, newComment);
+            if (newComment.parentComment) {
+                const parent = commentsMap.current.get(newComment.parentComment.id);
+                if (parent) {
+                    parent.childComments.push(newComment);
+                }
+            }
+        } else if (update.__typename === 'CommentUpdated') {
+            if (!deleteCommentIfNeeded(newComment)) {
+                commentsMap.current.set(newComment.id, newComment);
+                if (newComment.parentComment) {
+                    const parent = commentsMap.current.get(newComment.parentComment.id);
+                    if (parent) {
+                        const idx = parent.childComments.findIndex(c => c.id === newComment.id);
+                        parent.childComments[idx] = newComment;
+                    }
+                }
+            }
+        }
+    };
 
     React.useEffect(() => {
         return sequenceWatcher<CommentWatch>(null, (state, handler) => client.subscribeCommentWatch({ peerId, fromState: state }, handler), (updates) => {
             if (updates.event) {
-                updateHandler();
-                return updates.event.state;
+                const evt = updates.event;
+                if (evt.__typename === 'CommentUpdateSingle') {
+                    handleUpdate(evt.update);
+                } else if (evt.__typename === 'CommentUpdateBatch') {
+                    evt.updates.forEach(u => handleUpdate(u));
+                }
+                setComments(Array.from(commentsMap.current.values()));
+                return evt.state;
             } else {
                 return null;
             }

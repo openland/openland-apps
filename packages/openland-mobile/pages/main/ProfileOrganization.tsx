@@ -30,6 +30,7 @@ import { trackEvent } from 'openland-mobile/analytics';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { OrgMemberType } from './modals/MembersSearch';
 
 const PrivateProfile = React.memo((props: PageProps & { organization: Organization_organization }) => {
     const { organization } = props;
@@ -121,9 +122,9 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     const canMakePrimary =
         organization.isMine &&
         organization.id !==
-            (settings.me &&
-                settings.me.primaryOrganization &&
-                settings.me.primaryOrganization.id) &&
+        (settings.me &&
+            settings.me.primaryOrganization &&
+            settings.me.primaryOrganization.id) &&
         !organization.isCommunity;
     const canEdit = organization.isOwner || organization.isAdmin;
     const canLeave = organization.isMine;
@@ -311,7 +312,13 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     );
 
     const handleMemberLongPress = React.useCallback(
-        (member: OrganizationMembers_organization_members) => {
+        (
+            member: OrganizationMembers_organization_members,
+            callbacks?: {
+                onRoleChange: (memberId: string, role: OrganizationMemberRole) => void,
+                onKick: (memberId: string) => void,
+            }
+        ) => {
             const { user } = member;
 
             let builder = new ActionSheetBuilder();
@@ -361,6 +368,9 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                                     });
 
                                     handleChangeMemberRole(user.id, newRole);
+                                    if (callbacks?.onRoleChange) {
+                                        callbacks.onRoleChange(user.id, newRole);
+                                    }
                                 },
                             )
                             .show();
@@ -383,8 +393,10 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                                     userId: user.id,
                                     organizationId: props.router.params.id,
                                 });
-                                await client.refetchMyOrganizations();
-                                await client.refetchAccount();
+                                await Promise.all([
+                                    client.refetchMyOrganizations(),
+                                    client.refetchAccount(),
+                                ]);
                                 props.router.back();
                             })
                             .show();
@@ -411,6 +423,9 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                                     organizationId: props.router.params.id,
                                 });
                                 handleRemoveMember(user.id);
+                                if (callbacks?.onKick) {
+                                    callbacks.onKick(user.id);
+                                }
                             })
                             .show();
                     },
@@ -492,13 +507,13 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 actionRight={
                     organization.roomsCount > 3
                         ? {
-                              title: 'See all',
-                              onPress: () =>
-                                  props.router.push('ProfileOrganizationGroups', {
-                                      organizationId: organization.id,
-                                      title: organization.name,
-                                  }),
-                          }
+                            title: 'See all',
+                            onPress: () =>
+                                props.router.push('ProfileOrganizationGroups', {
+                                    organizationId: organization.id,
+                                    title: organization.name,
+                                }),
+                        }
                         : undefined
                 }
             >
@@ -527,6 +542,18 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                     onPress={handleAddMember}
                 />
             )}
+            <ZListItem
+                text="Search members"
+                leftIcon={require('assets/ic-search-glyph-24.png')}
+                onPress={() => Modals.showOrgMembersSearch({
+                    router: props.router,
+                    orgId: organization.id,
+                    membersCount: organization.membersCount,
+                    initialMembers: members,
+                    onPress: (member: OrgMemberType) => props.router.push('ProfileUser', { id: member.user.id }),
+                    onLongPress: handleMemberLongPress,
+                })}
+            />
         </>
     );
 

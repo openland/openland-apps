@@ -14,7 +14,7 @@ import { SSearchControllerRefContext } from 'openland-mobile/pages/main/Home';
 
 export interface SSearchControlerProps {
     backgroundColor?: string;
-    searchRender: React.ComponentType<{ query: string }>;
+    searchRender: (params: { query: string }) => JSX.Element;
     children?: any;
 }
 
@@ -55,8 +55,6 @@ export class SSearchControlerComponent extends React.PureComponent<SSearchContro
     }
 
     render() {
-
-        const Render = this.props.searchRender;
         const content = Platform.OS === 'ios'
             ? (
                 <>
@@ -84,7 +82,7 @@ export class SSearchControlerComponent extends React.PureComponent<SSearchContro
                                 <ASSafeAreaProvider top={-SDevice.navigationBarHeight}>
                                     <View width="100%" height="100%">
                                         <React.Suspense fallback={SNativeConfig.loader}>
-                                            <Render query={this.state.query} />
+                                            {this.props.searchRender({ query: this.state.query })}
                                         </React.Suspense>
                                     </View>
                                 </ASSafeAreaProvider>
@@ -107,7 +105,7 @@ export class SSearchControlerComponent extends React.PureComponent<SSearchContro
                                 <ASSafeAreaProvider top={-56}>
                                     <View width="100%" height="100%">
                                         <React.Suspense fallback={SNativeConfig.loader}>
-                                            <Render query={this.state.query} />
+                                            {this.props.searchRender({ query: this.state.query })}
                                         </React.Suspense>
                                     </View>
                                 </ASSafeAreaProvider>

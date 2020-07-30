@@ -29,6 +29,7 @@ import { trackEvent } from 'openland-mobile/analytics';
 import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { SUPER_ADMIN } from '../Init';
+import { RoomMemberType } from './modals/MembersSearch';
 
 interface ProfileGroupUsersListProps {
     roomId: string;
@@ -153,17 +154,22 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     }, [roomId]);
 
     const handleKick = React.useCallback(
-        (user: UserShort) => {
+        (user: UserShort, onKick?: (memberId: string) => void) => {
             Alert.builder()
                 .title(`Remove ${user.name} from ${typeString}?`)
                 .button('Cancel', 'cancel')
                 .action('Remove', 'destructive', async () => {
                     await client.mutateRoomKick({ userId: user.id, roomId });
-                    await client.refetchRoomChat({ id: roomId });
-                    await client.refetchRoomMembersShort({ roomId: roomId });
-                    await client.refetchRoomFeaturedMembers({ roomId: roomId });
+                    await Promise.all([
+                        client.refetchRoomChat({ id: roomId }),
+                        client.refetchRoomMembersShort({ roomId: roomId }),
+                        client.refetchRoomFeaturedMembers({ roomId: roomId }),
+                    ]);
 
                     handleRemoveMember(user.id);
+                    if (onKick) {
+                        onKick(user.id);
+                    }
                 })
                 .show();
         },
@@ -171,7 +177,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     );
 
     const handleMakeAdmin = React.useCallback(
-        (user: UserShort) => {
+        (user: UserShort, onRoleChange?: (memberId: string, role: RoomMemberRole) => void) => {
             Alert.builder()
                 .title(`Make ${user.name} admin?`)
                 .button('Cancel', 'cancel')
@@ -183,6 +189,9 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                     });
                     await client.refetchRoomMembersShort({ roomId: roomId });
                     handleChangeMemberRole(user.id, RoomMemberRole.ADMIN);
+                    if (onRoleChange) {
+                        onRoleChange(user.id, RoomMemberRole.ADMIN);
+                    }
                 })
                 .show();
         },
@@ -190,7 +199,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     );
 
     const handleRevokeAdmin = React.useCallback(
-        (user: UserShort) => {
+        (user: UserShort, onRoleChange?: (memberId: string, role: RoomMemberRole) => void) => {
             Alert.builder()
                 .title(`Dismiss ${user.name} as admin?`)
                 .button('Cancel', 'cancel')
@@ -202,6 +211,9 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                     });
                     await client.refetchRoomMembersShort({ roomId: roomId });
                     handleChangeMemberRole(user.id, RoomMemberRole.MEMBER);
+                    if (onRoleChange) {
+                        onRoleChange(user.id, RoomMemberRole.MEMBER);
+                    }
                 })
                 .show();
         },
@@ -209,7 +221,15 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     );
 
     const handleMemberLongPress = React.useCallback(
-        (member: RoomMembersPaginated_members, canKick: boolean, canEdit: boolean) => {
+        (
+            member: RoomMemberType,
+            canKick: boolean,
+            canEdit: boolean,
+            callbacks?: {
+                onRoleChange: (memberId: string, role: RoomMemberRole) => void,
+                onKick: (memberId: string) => void,
+            }
+        ) => {
             let builder = ActionSheet.builder();
 
             let user = member.user;
@@ -226,14 +246,14 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                     if (member.role === RoomMemberRole.MEMBER) {
                         builder.action(
                             'Make admin',
-                            () => handleMakeAdmin(user),
+                            () => handleMakeAdmin(user, callbacks?.onRoleChange),
                             false,
                             require('assets/ic-pro-24.png'),
                         );
                     } else if (member.role === RoomMemberRole.ADMIN) {
                         builder.action(
                             'Dismiss as admin',
-                            () => handleRevokeAdmin(user),
+                            () => handleRevokeAdmin(user, callbacks?.onRoleChange),
                             false,
                             require('assets/ic-pro-24.png'),
                         );
@@ -242,7 +262,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 if (canKick) {
                     builder.action(
                         `Remove from ${typeString}`,
-                        () => handleKick(user),
+                        () => handleKick(user, callbacks?.onKick),
                         false,
                         require('assets/ic-leave-24.png'),
                     );
@@ -439,11 +459,27 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                     onPress={() => props.router.push('ProfileGroupLink', { room })}
                 />
             )}
-            {/* <ZListItem
+            <ZListItem
                 text="Search members"
                 leftIcon={require('assets/ic-search-glyph-24.png')}
-                onPress={() => Modals.showMembersSearch(props.router, room.id, room.membersCount, members)}
-            /> */}
+                onPress={() => Modals.showRoomMembersSearch({
+                    router: props.router,
+                    roomId: room.id,
+                    membersCount: room.membersCount,
+                    initialMembers: members,
+                    onPress: (member: RoomMemberType) => props.router.push('ProfileUser', { id: member.user.id }),
+                    onLongPress: (member: RoomMemberType, callbacks: {
+                        onRoleChange: (memberId: string, role: RoomMemberRole) => void,
+                        onKick: (memberId: string) => void,
+                    }) => handleMemberLongPress(
+                        member,
+                        member.canKick,
+                        room.role === 'OWNER' || room.role === 'ADMIN' || SUPER_ADMIN,
+                        callbacks
+                    ),
+                })
+                }
+            />
 
             {room.featuredMembersCount > 0 && (
                 <ZListItem
