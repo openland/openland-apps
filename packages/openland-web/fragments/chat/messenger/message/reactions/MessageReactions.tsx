@@ -43,7 +43,12 @@ const reactionsItem = css`
     margin-right: 4px;
     flex-shrink: 0;
 
+    &:hover img {
+        transform: translateY(-2px);
+    }
+
     img {
+        transition: transform 0.1s ease-in;
         display: block;
         width: 16px;
         height: 16px;
@@ -59,10 +64,7 @@ const ReactionItem = React.memo((props: ReactionItemProps) => {
     const { value, onClick } = props;
 
     return (
-        <div
-            className={reactionsItem}
-            onClick={() => onClick(value.reaction)}
-        >
+        <div className={reactionsItem} onClick={() => onClick(value.reaction)}>
             <img src={reactionImage(value.reaction)} />
         </div>
     );
