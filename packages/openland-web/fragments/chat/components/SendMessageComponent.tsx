@@ -544,6 +544,10 @@ const loaderContainer = css`
 
 const hideScrollStyle = css`
     margin-right: -17px;
+    
+    .emojiPickerIcon {
+        right: 17px;
+    }
 `;
 
 export const SendMessageComponent = React.memo((props: SendMessageComponentProps) => {
@@ -580,8 +584,6 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             let ed = ref.current;
             if (ed) {
                 let text = ed.getText();
-
-                console.warn('boom', text);
 
                 if (text.length > 0) {
                     if (props.onTextSentAsync) {
@@ -700,6 +702,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 maxHeight={250}
                 flexDirection="column"
                 overflow={(isWindows || isLinux) ? 'hidden' : undefined}
+                borderRadius={(isWindows || isLinux) ? 8 : undefined}
             >
                 <URickInput
                     ref={ref}
