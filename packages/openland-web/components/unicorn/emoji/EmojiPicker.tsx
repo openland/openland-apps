@@ -701,7 +701,7 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
 
     return (
         <div
-            className={cx(emojiPickerIcon, visible && emojiPickerIconOpen)}
+            className={cx(emojiPickerIcon, visible && emojiPickerIconOpen, 'emojiPickerIcon')}
             onMouseEnter={showWithEvent}
         >
             <UIcon icon={<IcSticker />} size={20} />
