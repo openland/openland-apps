@@ -41,7 +41,7 @@ export const CardView = (props: CardViewProps) => {
         const builder = new ActionSheetBuilder();
 
         builder.view(ctx => (
-            <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} paddingTop={16} paddingBottom={32} alignItems="center" marginBottom={16}>
+            <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} paddingTop={16} paddingBottom={16} alignItems="center" marginBottom={16}>
                 <View width={263} height={166} backgroundColor={theme.backgroundTertiaryTrans} borderRadius={RadiusStyles.Medium} paddingTop={20} paddingHorizontal={24}>
                     <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
                         {getPaymentMethodName(brand)}

@@ -39,7 +39,7 @@ export function showBottomSheet(config: BottomSheetConfig) {
                         {config.view(ctx)}
                     </React.Suspense>
                 </GQLClientContext.Provider>
-                {config.cancelable &&
+                {config.cancelable ? (
                     <View padding={16} >
                         <ZButton
                             title={config.buttonTitle ? config.buttonTitle : 'Cancel'}
@@ -48,11 +48,14 @@ export function showBottomSheet(config: BottomSheetConfig) {
                             onPress={() => ctx.hide()}
                         />
                     </View>
+                ) : (
+                        <View height={16} />
+                    )
                 }
             </ThemeContext.Provider >
         );
     }, {
-        containerStyle: { backgroundColor: theme.backgroundSecondary, padding: 0, marginHorizontal: 8, ...config.containerStyle },
+        containerStyle: { backgroundColor: theme.backgroundSecondary, padding: 0, marginHorizontal: 8, marginBottom: Platform.OS === 'android' ? 8 : undefined, ...config.containerStyle },
         showAnimation: (contentHeight, views) => {
             if (config.showAnimation) {
                 config.showAnimation(contentHeight, views);

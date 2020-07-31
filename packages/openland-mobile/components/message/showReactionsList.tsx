@@ -51,10 +51,10 @@ const ReactionsList = (props: ReactionsListProps) => {
     let reactions: MessageUsersReactions[] = generalMessage
         ? generalMessage.reactions
         : stickerMessage
-        ? stickerMessage.reactions
-        : commentMessage
-        ? commentMessage.comment.reactions
-        : [];
+            ? stickerMessage.reactions
+            : commentMessage
+                ? commentMessage.comment.reactions
+                : [];
 
     let reactionList: { [key: string]: MessageUsersReactions_user[] } = {};
 
@@ -68,11 +68,11 @@ const ReactionsList = (props: ReactionsListProps) => {
 
     return (
         <View flexGrow={1}>
-            {Object.keys(reactionList).map((r, i) => {
+            {Object.keys(reactionList).map((r, i, arr) => {
                 const users = reactionList[r];
 
                 return (
-                    <View key={'reaction-' + i} paddingBottom={16}>
+                    <View key={'reaction-' + i} paddingBottom={i === arr.length - 1 ? 0 : 16}>
                         <View
                             height={48}
                             paddingHorizontal={16}
@@ -127,7 +127,7 @@ export const showReactionsList = (mId: string, isComment?: boolean) => {
     builder.view((ctx: ZModalController) => (
         <React.Suspense
             fallback={
-                <View height={40} marginTop={-16}>
+                <View height={40}>
                     <ZLoader />
                 </View>
             }

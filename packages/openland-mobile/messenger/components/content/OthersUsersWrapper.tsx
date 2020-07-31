@@ -68,7 +68,7 @@ export const OthersUsersWrapper = React.memo((props: OthersUsersWrapperProps) =>
         builder.view((ctx: ZModalController) => (
             <React.Suspense
                 fallback={
-                    <View height={40} marginTop={-16}>
+                    <View height={40}>
                         <ZLoader />
                     </View>
                 }
@@ -95,20 +95,20 @@ export const OthersUsersWrapper = React.memo((props: OthersUsersWrapperProps) =>
             {props.children}
         </ASText>
     ) : (
-        <Text
-            key={'service_text'}
-            style={{
-                color: props.theme.foregroundSecondary,
-                fontWeight: FontStyles.Weight.Bold,
-                fontSize: 13,
-                lineHeight: 18,
-                marginLeft: 6,
-                marginRight: 6,
-            }}
-            onPress={() => handlePress()}
-            allowFontScaling={false}
-        >
-            {props.children}
-        </Text>
-    );
+            <Text
+                key={'service_text'}
+                style={{
+                    color: props.theme.foregroundSecondary,
+                    fontWeight: FontStyles.Weight.Bold,
+                    fontSize: 13,
+                    lineHeight: 18,
+                    marginLeft: 6,
+                    marginRight: 6,
+                }}
+                onPress={() => handlePress()}
+                allowFontScaling={false}
+            >
+                {props.children}
+            </Text>
+        );
 });

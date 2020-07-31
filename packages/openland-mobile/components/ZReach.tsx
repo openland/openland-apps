@@ -34,7 +34,7 @@ export const showReachInfo = ((value: number, theme: ThemeGlobal) => {
     const builder = new ActionSheetBuilder();
 
     builder.view(ctx => (
-        <View marginHorizontal={20} marginBottom={20}>
+        <View marginHorizontal={20}>
             <View flexDirection="row" alignItems="center" marginBottom={5}>
                 <Text style={{ color: theme.foregroundPrimary, fontSize: 18, fontWeight: FontStyles.Weight.Medium, lineHeight: 21, marginRight: 8 }} allowFontScaling={false}>
                     Reach

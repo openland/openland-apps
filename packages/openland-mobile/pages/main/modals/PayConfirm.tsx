@@ -56,14 +56,14 @@ const ConfirmPaymentComponent = React.memo((props: PaymentProps & { ctx: ModalPr
                     </View>
                 </View>
             )}
-            <View marginTop={cards.length === 0 ? 16 : 32} marginBottom={16}>
+            <View marginTop={cards.length === 0 ? 16 : 32}>
                 <ZButton enabled={cards.length !== 0} title="Confirm" action={onSubmit} style="primary" size="large" loading={loading} />
             </View>
         </View >
     );
 });
 
-export const showCheckLock = (props: {onSuccess: () => void}) => {
+export const showCheckLock = (props: { onSuccess: () => void }) => {
     const builder = new AlertBlanketBuilder();
 
     builder.title('Update payment method');
@@ -103,6 +103,6 @@ export const showPayConfirm = (props: PaymentProps) => {
     if (!locked) {
         showBottomSheet({ cancelable: false, view: (ctx) => <ConfirmPaymentComponent {...props} ctx={ctx} />, title: 'Payment' });
     } else {
-        showCheckLock({onSuccess: () => props.router.push('Wallet')});
+        showCheckLock({ onSuccess: () => props.router.push('Wallet') });
     }
 };
