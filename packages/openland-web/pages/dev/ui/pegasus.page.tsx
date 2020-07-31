@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { useClient } from 'openland-api/useClient';
-import { PersistenceProviderInMemory } from 'openland-engines/new/PersistenceProviderInMemory';
+import { PersistenceProviderInMemory } from 'openland-engines/new/persistence/PersistenceProviderInMemory';
 import { Persistence } from 'openland-engines/new/persistence/Persistence';
 import { Messages } from 'openland-engines/new/Messages';
 import { MessagesComponent } from 'openland-web/fragments/new/MessagesComponent';

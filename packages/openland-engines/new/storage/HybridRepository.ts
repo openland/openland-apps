@@ -22,7 +22,7 @@ function convertPendingMessage(key: string, message: PendingMessage): HybridMess
         key,
         type: 'pending',
         sender: message.sender,
-        date: Date.now(),
+        date: message.date,
         text: message.text,
         fallback: message.fallback
     };
@@ -66,28 +66,6 @@ export class HybridRepository {
     // Read
     //
 
-    readLast = async (tx: Transaction) => {
-        let latest = await this.repo.readBefore({ before: Number.MAX_SAFE_INTEGER, limit: 1 }, tx);
-        if (!latest) {
-            return undefined;
-        }
-        if (latest.items.length === 0) {
-            return null;
-        } else {
-            // Resolve Key
-            let key = this.resolveKey(latest.items[0].id);
-
-            // Handle cache
-            let cached = this.cache.get(key);
-            if (cached) {
-                return cached;
-            }
-            let hybrid = convertStoredMessage(key, latest.items[0]);
-            this.cache.set(key, hybrid);
-            return hybrid;
-        }
-    }
-
     readById = async (id: string, tx: Transaction) => {
 
         // Ignore deleted
@@ -111,26 +89,111 @@ export class HybridRepository {
             this.cache.set(key, hybrid);
             return hybrid;
         } else {
-            return null;
+            return undefined;
         }
     }
 
-    readBefore = async (args: { before: number }, tx: Transaction) => {
-        let read = await this.repo.readBefore({ before: args.before, limit: 20 }, tx);
+    readLatest = async (tx: Transaction) => {
+        // Read from storage
+        let read = await this.repo.readBefore({ before: Number.MAX_SAFE_INTEGER, limit: 20 }, tx);
+
+        // If no latest - use repository
+        if (this.latest.length === 0) {
+            if (!read) {
+                return {
+                    items: [],
+                    partial: true,
+                    completed: false
+                };
+            } else {
+                let res: HybridMessage[] = [];
+                for (let i of read.items) {
+                    let key = this.resolveKey(i.id);
+                    let cached = this.cache.get(key);
+                    if (cached) {
+                        res.push(cached);
+                    } else {
+                        let hybrid = convertStoredMessage(key, i);
+                        this.cache.set(key, hybrid);
+                        res.push(hybrid);
+                    }
+                }
+                return {
+                    items: res,
+                    partial: !read.completed && read.items.length < 20,
+                    completed: read.completed
+                };
+            }
+        } else {
+
+            // Read from hybrid
+            let res: HybridMessage[] = [];
+
+            // Append store read
+            if (read) {
+                for (let i of read.items) {
+                    let key = this.resolveKey(i.id);
+
+                    // Ignore latest
+                    if (this.latestSet.has(key)) {
+                        continue;
+                    }
+
+                    let cached = this.cache.get(key);
+                    if (cached) {
+                        res.push(cached);
+                    } else {
+                        let hybrid = convertStoredMessage(key, i);
+                        this.cache.set(key, hybrid);
+                        res.push(hybrid);
+                    }
+                }
+            }
+
+            // Append latest
+            for (let l of this.latest) {
+                let ex = this.cache.get(l)!;
+                res.push(ex);
+            }
+
+            return {
+                items: res,
+                partial: !!(read && !read.completed && read.items.length < 20),
+                completed: !!(read && read.completed)
+            };
+        }
+    }
+
+    readBefore = async (args: { before: number | null }, tx: Transaction) => {
+        let before = Number.MAX_SAFE_INTEGER;
+        let cursor: { id: string, seq: number } | null = null;
+        if (args.before !== null) {
+            before = args.before;
+        } else {
+            // Skip all latest messages
+            for (let l of this.latest) {
+                let m = this.cache.get(l)!;
+                if (m.type === 'sent') {
+                    if (before === null || m.seq < before) {
+                        before = m.seq;
+                        cursor = { id: m.id, seq: m.seq };
+                    }
+                }
+            }
+        }
+        let read = await this.repo.readBefore({ before, limit: 20 }, tx);
         if (!read) {
             return {
                 items: [],
                 partial: true,
-                minSeq: args.before,
-                completed: false
+                completed: false,
+                cursor
             };
         } else {
-            let minSeq = args.before;
             let res: HybridMessage[] = [];
             for (let i of read.items) {
                 let key = this.resolveKey(i.id);
                 let cached = this.cache.get(key);
-                minSeq = Math.min(minSeq, i.seq);
                 if (cached) {
                     res.push(cached);
                 } else {
@@ -142,8 +205,8 @@ export class HybridRepository {
             return {
                 items: res,
                 partial: !read.completed && res.length < 20,
-                minSeq,
-                completed: read.completed
+                completed: read.completed,
+                cursor
             };
         }
     }
@@ -154,20 +217,15 @@ export class HybridRepository {
             return {
                 items: [],
                 partial: true,
-                maxSeq: args.after,
                 completed: false
             };
         } else {
 
             let res: HybridMessage[] = [];
-            let maxSeq: number = args.after;
             let hasLatest = false;
 
             // Process all items
             for (let i of read.items) {
-
-                // Update Max Seq
-                maxSeq = Math.max(maxSeq, i.seq);
 
                 // Resolve item key
                 let key = this.resolveKey(i.id);
@@ -199,7 +257,6 @@ export class HybridRepository {
 
             return {
                 items: res,
-                maxSeq,
                 partial: !read.completed && !hasLatest && read.items.length < 20,
                 completed: read.completed || hasLatest
             };
@@ -278,10 +335,45 @@ export class HybridRepository {
         let hybrid = convertStoredMessage(key, message);
         this.cache.set(key, hybrid);
 
-        // If we are tracking latest messages: append to latest list
+        // If we are tracking latest messages: insert to a latest list
         if (this.latest.length > 0) {
-            this.latest.push(key);
-            this.latestSet.add(key);
+
+            // Find first persisted message that have seq smallther than current message
+            let offset = -1;
+            let hasSent = false;
+            for (let i = this.latest.length - 1; i--; i >= 0) {
+                let ch = this.cache.get(this.latest[i])!;
+                if (ch.type === 'sent') {
+                    hasSent = true;
+                    if (ch.seq < message.seq) {
+                        offset = i;
+                        break;
+                    }
+                }
+            }
+
+            if (!hasSent) {
+                // First sent message: simply append
+                this.latestSet.add(key);
+                this.latest.push(key);
+
+            } else if (offset >= 0) {
+
+                // Find first stored message
+                // NOTE: That first message is always pending and 
+                //       actual value is always bigger than zero
+                let storeIndex = this.latest.length;
+                for (let i = offset + 1; i < this.latest.length; i++) {
+                    let ch = this.cache.get(this.latest[i])!;
+                    if (ch.type !== 'pending') {
+                        storeIndex = i;
+                        break;
+                    }
+                }
+
+                this.latestSet.add(key);
+                this.latest.splice(storeIndex + 1, 0, key);
+            }
         }
 
         return hybrid;
@@ -319,7 +411,7 @@ export class HybridRepository {
 
         // Ignore already deleted
         if (this.deletedIds.has(id)) {
-            return;
+            return null;
         }
 
         // Mark as deleted

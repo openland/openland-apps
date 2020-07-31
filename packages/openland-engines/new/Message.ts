@@ -8,19 +8,18 @@ export interface MessageUser {
 }
 
 export type Message = {
-    id: string;
-    sender: MessageUser;
+    key: string;
     date: number;
-
+    sender: MessageUser;
     text: string | null;
     fallback: string;
 } & (
         | {
-            state: 'sending',
-            seq: null
+            state: 'sending'
         }
         | {
             state: 'sent',
+            id: string;
             seq: number;
         }
-);
+    );

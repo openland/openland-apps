@@ -3,7 +3,7 @@ import { MessagesStore } from 'openland-engines/new/MessagesStore';
 import { XView } from 'react-mental';
 import { InvertedDiv, ScrollValues, InvertedDivInstance } from './InvertedDiv';
 import { XLoader } from 'openland-x/XLoader';
-import { WireMessage } from 'openland-engines/new/WireMessage';
+import { Message } from 'openland-engines/new/Message';
 
 type LoadFrom = { type: 'latest' } | { type: 'message', id: string };
 const EDGE_DISTANCE = 1200;
@@ -11,7 +11,7 @@ const EDGE_DISTANCE = 1200;
 const SnapshotMessagesRenderer = React.memo((props: {
     hasMoreNext: boolean,
     hasMorePrev: boolean,
-    messages: WireMessage[],
+    messages: Message[],
     focusSeq: number | null,
     onTopReached: () => void,
     onBottomReached: () => void
@@ -33,7 +33,7 @@ const SnapshotMessagesRenderer = React.memo((props: {
     React.useLayoutEffect(() => {
         let div = ref.current!;
         if (props.focusSeq !== null) {
-            let index = props.messages.findIndex((v) => v.seq >= props.focusSeq!);
+            let index = props.messages.findIndex((v) => v.state === 'sent' && v.seq >= props.focusSeq!);
             if (index >= 0) {
                 div.scrollToIndex(index + 1 /* Skip header view */);
             }
@@ -46,7 +46,7 @@ const SnapshotMessagesRenderer = React.memo((props: {
                 {props.hasMorePrev && <XLoader loading={true} />}
             </XView>
             {props.messages.map((m) => (
-                <XView height={100} key={m.id} backgroundColor={m.seq === props.focusSeq ? 'red' : undefined}>
+                <XView height={100} key={m.key} backgroundColor={m.state === 'sent' && m.seq === props.focusSeq ? 'red' : undefined}>
                     {m.fallback}
                 </XView>
             ))}
