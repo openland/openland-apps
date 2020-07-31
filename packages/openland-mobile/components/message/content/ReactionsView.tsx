@@ -19,6 +19,7 @@ export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
         return null;
     }
 
+    const likedByMe = !!reactionCounters.find(r => r.setByMe);
     let reactionsCount: number = 0;
     reactionCounters.forEach((r) => (reactionsCount += r.count));
 
@@ -52,7 +53,7 @@ export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
                             numberOfLines={1}
                             allowFontScaling={false}
                         >
-                            {reactionsCount}
+                            {likedByMe && reactionsCount === 1 ? 'You' : likedByMe ? `You + ${reactionsCount - 1}` : reactionsCount}
                         </Text>
                     )}
                 </View>

@@ -35,6 +35,7 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
         isOut
     } = message;
 
+    const likedByMe = !!reactionCounters.find(r => r.setByMe);
     let reactionsCount: number = 0;
     reactionCounters.forEach(r => reactionsCount += r.count);
 
@@ -57,7 +58,11 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
                                 <ASImage key={'k' + i.reaction} marginLeft={4} source={reactionsImagesMap[i.reaction]} width={20} height={20} />
                             ))}
 
-                            {!!reactionsCount && <ASText key={'users'} fontWeight={FontStyles.Weight.Medium} marginLeft={4} fontSize={13} color={theme.foregroundTertiary}>{reactionsCount}</ASText>}
+                            {!!reactionsCount && (
+                                <ASText key={'users'} fontWeight={FontStyles.Weight.Medium} marginLeft={4} fontSize={13} color={theme.foregroundTertiary}>
+                                    {likedByMe && reactionsCount === 1 ? 'You' : likedByMe ? `You + ${reactionsCount - 1}` : reactionsCount}
+                                </ASText>
+                            )}
                         </ASFlex>
                     </ASFlex>
                 )}
