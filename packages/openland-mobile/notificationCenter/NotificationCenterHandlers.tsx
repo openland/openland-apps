@@ -51,12 +51,12 @@ class NotificationCenterHandlersClass {
         if (peerRootType === 'CommentPeerRootMessage') {
             getMessenger().history.navigationManager.push('Message', {
                 messageId: peerRootId,
-                highlightCommentId: item.id
+                highlightId: item.id
             });
         } else if (peerRootType === 'CommentPeerRootFeedItem') {
             getMessenger().history.navigationManager.push('FeedItem', {
                 feedItemId: peerRootId,
-                highlightCommentId: item.id
+                highlightId: item.id
             });
         }
     }
