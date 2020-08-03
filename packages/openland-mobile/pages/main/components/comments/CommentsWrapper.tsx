@@ -328,7 +328,6 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
     };
 
     const handleUpdate = (update: CommentUpdateFragment) => {
-        console.warn(update);
         const newComment = update.comment;
         if (update.__typename === 'CommentReceived') {
             commentsMap.current.set(newComment.id, newComment);
