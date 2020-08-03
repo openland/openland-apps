@@ -7,13 +7,14 @@ import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { MentionsPlaceholder, MentionsPlaceholderType, MentionsPlaceholderView } from './MentionsPlaceholder';
+import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 
 interface MentionsSuggestionsProps {
     activeWord: string;
     groupId: string;
     isChannel: boolean;
     isPrivate?: boolean;
-    onMentionPress: (word: string | undefined, mention: MentionViewT) => void;
+    onMentionPress: (word: string | undefined, mention: MentionToSend) => void;
 }
 
 export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) => {
@@ -29,7 +30,13 @@ export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) 
     const listRef = React.useRef<FlatList<MentionViewT | MentionsDividerType>>(null);
 
     const handleOnPress = React.useCallback((mention: MentionViewT) => {
-        onMentionPress(activeWord, mention);
+        if (mention.__typename === 'MentionSearchUser') {
+            onMentionPress(activeWord, mention.user);
+        } else if (mention.__typename === 'MentionSearchOrganization') {
+            onMentionPress(activeWord, mention.organization);
+        } else if (mention.__typename === 'MentionSearchSharedRoom') {
+            onMentionPress(activeWord, mention.room);
+        }
     }, [activeWord, onMentionPress]);
 
     const handleReload = React.useCallback(async () => {
@@ -53,14 +60,17 @@ export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) 
 
         lastCursor.current = data.cursor;
 
-        const items: MentionViewT[] = data.localItems;
+        const dataLocalItems = data.items.filter((mention) => mention.__typename === 'MentionSearchUser' && mention.fromSameChat);
+        const dataGlobalItems = data.items.filter((mention) => mention.__typename === 'MentionSearchUser' ? !mention.fromSameChat : true);
+
+        const items: MentionViewT[] = dataLocalItems;
 
         if ('@all'.startsWith(activeWord.toLowerCase())) {
             items.unshift({ __typename: 'AllMention' });
         }
 
         setLocalItems(items);
-        setGlobalItems(data.globalItems);
+        setGlobalItems(dataGlobalItems);
 
         setLoadingQuery(false);
         setLoadingPagination(false);
@@ -92,8 +102,11 @@ export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) 
 
         lastCursor.current = data.cursor;
 
-        setLocalItems(current => [...current, ...data.localItems]);
-        setGlobalItems(current => [...current, ...data.globalItems]);
+        const dataLocalItems = data.items.filter((mention) => mention.__typename === 'MentionSearchUser' && mention.fromSameChat);
+        const dataGlobalItems = data.items.filter((mention) => mention.__typename === 'MentionSearchUser' ? !mention.fromSameChat : true);
+
+        setLocalItems(current => [...current, ...dataLocalItems]);
+        setGlobalItems(current => [...current, ...dataGlobalItems]);
 
         setLoadingPagination(false);
     }, [activeWord]);
@@ -120,14 +133,16 @@ export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) 
             <FlatList
                 ref={listRef}
                 data={mergedItems}
-                renderItem={({ item }) => item.__typename === 'GlobalDivider' 
+                renderItem={({ item }) => item.__typename === 'GlobalDivider'
                     ? <MentionsDividerView />
                     : item.__typename === 'MentionsPlaceholder' ? <MentionsPlaceholderView />
-                    : <MentionView mention={item} onPress={() => handleOnPress(item)} isChannel={isChannel} />}
-                keyExtractor={(item, index) => item.__typename === 'GlobalDivider'  ? `${index}-divider` 
-                    : item.__typename === 'AllMention' ? `${index}-all` 
-                    : item.__typename === 'MentionsPlaceholder' ? `${index}-placeholder`
-                    : `${index}-${item.id}`}
+                        : <MentionView mention={item} onPress={() => handleOnPress(item)} isChannel={isChannel} />}
+                keyExtractor={(item, index) => item.__typename === 'GlobalDivider' ? `${index}-divider`
+                    : item.__typename === 'AllMention' ? `${index}-all`
+                        : item.__typename === 'MentionsPlaceholder' ? `${index}-placeholder`
+                            : item.__typename === 'MentionSearchUser' ? `${index}-${item.user.id}`
+                                : item.__typename === 'MentionSearchSharedRoom' ? `${index}-${item.room.id}`
+                                    : `${index}-${item.organization.id}`}
                 alwaysBounceVertical={false}
                 keyboardShouldPersistTaps="always"
                 maxHeight={188}

@@ -11,7 +11,7 @@ import AtIcon from 'openland-icons/s/ic-at-24.svg';
 import SendIcon from 'openland-icons/s/ic-send-24.svg';
 import { UNavigableListRef } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { useClient } from 'openland-api/useClient';
-import { StickerFragment, ChatMentionSearch_mentions_globalItems } from 'openland-api/spacex.types';
+import { StickerFragment, ChatMentionSearch_mentions_items } from 'openland-api/spacex.types';
 import { emojiSuggest } from 'openland-y-utils/emojiSuggest';
 import { emojiComponent } from 'openland-y-utils/emojiComponent';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -153,7 +153,7 @@ interface Divider { __typename: 'divider'; }
 
 interface Placeholder { __typename: 'placeholder'; }
 
-type ListItem = (ChatMentionSearch_mentions_globalItems | { __typename: 'AllMention' } | Cursor | Divider | Placeholder) & { selectable?: boolean };
+type ListItem = (ChatMentionSearch_mentions_items | { __typename: 'AllMention' } | Cursor | Divider | Placeholder) & { selectable?: boolean };
 
 export const AutoCompleteComponent = React.memo(
     React.forwardRef(
@@ -257,7 +257,7 @@ export const AutoCompleteComponent = React.memo(
                     if (v.__typename === 'cursor') {
                         (async () => {
                             const lastq = lastQuery.current;
-                            const { localItems, globalItems, cursor } = (await client.queryChatMentionSearch({
+                            const { items, cursor } = (await client.queryChatMentionSearch({
                                 cid: props.groupId!,
                                 query: lastQuery.current,
                                 first: 20,
@@ -267,17 +267,20 @@ export const AutoCompleteComponent = React.memo(
                                 return;
                             }
 
+                            const dataLocalItems = items.filter((mention) => mention.__typename === 'MentionSearchUser' && mention.fromSameChat);
+                            const dataGlobalItems = items.filter((mention) => mention.__typename === 'MentionSearchUser' ? !mention.fromSameChat : true);
+
                             setUsers(currentUsers => {
                                 let res: ListItem[] = currentUsers.filter(c => c.__typename !== 'cursor');
 
                                 if (currentUsers.filter(c => c.__typename === 'divider').length > 0 || props.isPrivate) {
-                                    res.push(...globalItems);
+                                    res.push(...dataGlobalItems);
                                 } else {
-                                    res.push(...localItems);
+                                    res.push(...dataLocalItems);
 
-                                    if (globalItems.length > 0) {
+                                    if (dataGlobalItems.length > 0) {
                                         res.push({ __typename: 'divider', selectable: false });
-                                        res.push(...globalItems);
+                                        res.push(...dataGlobalItems);
                                     }
                                 }
 
@@ -326,30 +329,30 @@ export const AutoCompleteComponent = React.memo(
                                 </span>
                             </div>
                         );
-                    } else if (v.__typename === 'User') {
+                    } else if (v.__typename === 'MentionSearchUser') {
                         return (
                             <MentionItemComponent
-                                id={v.id}
-                                photo={v.photo}
-                                title={v.name}
-                                subtitle={v.isBot ? 'Bot' : v.primaryOrganization ? v.primaryOrganization.name : undefined}
+                                id={v.user.id}
+                                photo={v.user.photo}
+                                title={v.user.name}
+                                subtitle={v.user.isBot ? 'Bot' : v.user.primaryOrganization ? v.user.primaryOrganization.name : undefined}
                             />
                         );
-                    } else if (v.__typename === 'Organization') {
+                    } else if (v.__typename === 'MentionSearchOrganization') {
                         return (
                             <MentionItemComponent
-                                id={v.id}
-                                photo={v.photo}
-                                title={v.name}
-                                subtitle={v.isCommunity ? 'Community' : 'Organization'}
+                                id={v.organization.id}
+                                photo={v.organization.photo}
+                                title={v.organization.name}
+                                subtitle={v.organization.isCommunity ? 'Community' : 'Organization'}
                             />
                         );
-                    } else if (v.__typename === 'SharedRoom') {
+                    } else if (v.__typename === 'MentionSearchSharedRoom') {
                         return (
                             <MentionItemComponent
-                                id={v.id}
-                                photo={v.photo}
-                                title={v.title}
+                                id={v.room.id}
+                                photo={v.room.photo}
+                                title={v.room.title}
                                 subtitle="Group"
                             />
                         );
@@ -384,11 +387,14 @@ export const AutoCompleteComponent = React.memo(
                 if (mentions && query !== lastQuery.current) {
                     lastQuery.current = query;
 
-                    const { localItems, globalItems, cursor } = mentions.mentions;
+                    const { items, cursor } = mentions.mentions;
+
+                    const dataLocalItems = items.filter((mention) => mention.__typename === 'MentionSearchUser' && mention.fromSameChat);
+                    const dataGlobalItems = items.filter((mention) => mention.__typename === 'MentionSearchUser' ? !mention.fromSameChat : true);
 
                     let res: ListItem[] = props.isPrivate
-                        ? [...globalItems]
-                        : [...localItems, ...(globalItems.length > 0 ? [{ __typename: 'divider', selectable: false } as Divider, ...globalItems] : [])];
+                        ? [...dataGlobalItems]
+                        : [...dataLocalItems, ...(dataGlobalItems.length > 0 ? [{ __typename: 'divider', selectable: false } as Divider, ...dataGlobalItems] : [])];
 
                     if (!!cursor) {
                         res.push({
