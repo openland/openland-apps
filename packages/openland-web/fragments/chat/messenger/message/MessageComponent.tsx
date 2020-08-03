@@ -123,17 +123,19 @@ const MessageSenderOrg = React.memo((props: { organization: MessageSender_primar
 const MessageTime = React.memo((props: { time: number, dateFormat: 'time' | 'date-time' }) => {
     const tooltipText = React.useMemo(() => new Date(props.time).toLocaleString('en-US', {
         year: 'numeric',
-        month: 'long',
+        month: 'short',
         day: 'numeric',
-        weekday: 'long',
+        weekday: 'short',
         hour: 'numeric',
         minute: 'numeric',
         second: 'numeric',
         hour12: true
     }), [props.time]);
 
+    const [show] = useCaptionPopper({ text: tooltipText, placement: 'top', scope: 'message-date' });
+
     return (
-        <div className={cx(TextCaption, senderDateStyle)} title={tooltipText}>
+        <div className={cx(TextCaption, senderDateStyle)} onMouseEnter={show}>
             {props.dateFormat === 'time' && formatTime(props.time)}
             {props.dateFormat === 'date-time' && formatDateAtTime(props.time, 'short')}
         </div>
