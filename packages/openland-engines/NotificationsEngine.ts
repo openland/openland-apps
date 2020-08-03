@@ -37,6 +37,10 @@ export class NotificationsEngine {
     handleIncomingNotification = async (comment: NotificationsDataSourceItem) => {
         let settings = (await this.engine.client.querySettings())!.settings;
 
+        if ((AppConfig.getPlatform() === 'mobile' && settings.mobile.comments.sound) || (AppConfig.getPlatform() === 'desktop' && settings.desktop.comments.sound)) {
+            AppNotifications.playIncomingSound();
+        }
+
         if (AppConfig.getPlatform() === 'mobile' && !settings.mobile.comments.showNotification) {
             return;
         } else if (AppConfig.getPlatform() === 'desktop' && !settings.desktop.comments.showNotification) {
@@ -45,8 +49,6 @@ export class NotificationsEngine {
 
         const { key, sender, peerRootId, text, fallback, room } = comment;
         const path = '/message/' + peerRootId + (!!comment.id ? ('/comment/' + comment.id) : '');
-
-        AppNotifications.playIncomingSound();
 
         if (room && room.__typename === 'SharedRoom') {
             AppNotifications.displayNotification({
