@@ -425,9 +425,15 @@ export const AutoCompleteComponent = React.memo(
 
             isActive.current = !!filtered.length || !!matched.length;
 
-            let onSelected = React.useCallback((mention: MentionToSend & { selectable?: boolean }) => {
+            let onSelected = React.useCallback((mention: ListItem & { selectable?: boolean }) => {
                 if (isActive.current) {
-                    props.onSelected(mention);
+                    if (mention.__typename === 'MentionSearchUser') {
+                        props.onSelected(mention.user);
+                    } else if (mention.__typename === 'MentionSearchOrganization') {
+                        props.onSelected(mention.organization);
+                    } else if (mention.__typename === 'MentionSearchSharedRoom') {
+                        props.onSelected(mention.room);
+                    }
                 }
             }, [props.membersCount]);
 
