@@ -19,9 +19,8 @@ export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
         return null;
     }
 
+    const count = reactionCounters.reduce((sum, r) => sum + r.count, 0);
     const likedByMe = !!reactionCounters.find(r => r.setByMe);
-    let reactionsCount: number = 0;
-    reactionCounters.forEach((r) => (reactionsCount += r.count));
 
     return (
         <View marginBottom={-10}>
@@ -40,7 +39,7 @@ export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
                             style={{ width: 20, height: 20 }}
                         />
                     ))}
-                    {!!reactionsCount && (
+                    {!!count && (
                         <Text
                             style={{
                                 fontWeight: FontStyles.Weight.Medium,
@@ -53,7 +52,7 @@ export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
                             numberOfLines={1}
                             allowFontScaling={false}
                         >
-                            {likedByMe && reactionsCount === 1 ? 'You' : likedByMe ? `You + ${reactionsCount - 1}` : reactionsCount}
+                            {likedByMe && count === 1 ? 'You' : likedByMe ? `You + ${count - 1}` : count}
                         </Text>
                     )}
                 </View>

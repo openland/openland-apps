@@ -1205,9 +1205,8 @@ export class ConversationEngine implements MessageSendHandler {
 
         const newMessage = {
             ...oldMessage,
-            newReactions,
+            reactionCounters: newReactions,
         };
-
         this.dataSource.updateItem(newMessage);
     }
 
@@ -1231,9 +1230,8 @@ export class ConversationEngine implements MessageSendHandler {
 
         const newMessage = {
             ...oldMessage,
-            newReactions,
+            reactionCounters: newReactions,
         };
-
         this.dataSource.updateItem(newMessage);
     }
 }

@@ -115,9 +115,8 @@ export const MessageReactions = React.memo<MessageReactionsProps>((props) => {
         return null;
     }
 
+    const count = reactionCounters.reduce((sum, r) => sum + r.count, 0);
     const likedByMe = !!reactionCounters.find(r => r.setByMe);
-    let reactionsCount: number = 0;
-    reactionCounters.forEach((r) => (reactionsCount += r.count));
 
     return (
         <div
@@ -141,7 +140,7 @@ export const MessageReactions = React.memo<MessageReactionsProps>((props) => {
                 className={cx(TextDensed, reactionsText)}
                 onClick={() => showReactionsList(props.message.id || '')}
             >
-                {likedByMe && reactionsCount === 1 ? 'You' : likedByMe ? `You + ${reactionsCount - 1}` : reactionsCount}
+                {likedByMe && count === 1 ? 'You' : likedByMe ? `You + ${count - 1}` : count}
             </div>
         </div>
     );
