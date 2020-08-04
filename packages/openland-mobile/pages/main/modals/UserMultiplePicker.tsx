@@ -44,12 +44,13 @@ export const CheckListBoxWraper = React.memo(
                         position="absolute"
                         pointerEvents="none"
                         alignSelf="center"
+                        alignItems="center"
+                        justifyContent="center"
                         right={16}
                         backgroundColor={
                             props.checked ? theme.accentPrimary : theme.backgroundPrimary
                         }
-                        opacity={props.checked ? 1 : 0.8}
-                        borderColor={props.checked ? theme.accentPrimary : theme.foregroundTertiary}
+                        borderColor={props.checked ? theme.accentPrimary : theme.foregroundQuaternary}
                         borderWidth={2}
                         borderRadius={RadiusStyles.Medium}
                         width={22}
@@ -57,9 +58,8 @@ export const CheckListBoxWraper = React.memo(
                     >
                         {props.checked && (
                             <Image
-                                marginLeft={2}
-                                marginTop={2}
-                                source={require('assets/ic-checkmark.png')}
+                                marginRight={1}
+                                source={require('assets/ic-checkmark-11.png')}
                                 style={{ tintColor: theme.foregroundInverted }}
                             />
                         )}
@@ -82,7 +82,7 @@ const UsersList = React.memo(
                     <View>
                         <ZListItem
                             leftIcon={require('assets/ic-link-glyph-24.png')}
-                            text="Invite with link"
+                            text="Invite with a link"
                             onPress={
                                 props.router.params.inviteLinkButton.onPress
                                     ? props.router.params.inviteLinkButton.onPress
@@ -107,6 +107,7 @@ const UsersList = React.memo(
                                 user={v.node}
                                 enabled={!(disableUsers.indexOf(v.node.id) > -1)}
                                 onPress={() => props.onAdd(v.node)}
+                                showOrganization={false}
                                 paddingRight={56}
                             />
                         </CheckListBoxWraper>
@@ -168,6 +169,7 @@ const UserMultiplePickerComponent = React.memo((props: PageProps) => {
             <SHeaderButton
                 key={'bk-' + users.length}
                 title={buttonTitle}
+                disabled={users.length === 0}
                 onPress={
                     isEmpty
                         ? () => props.router.params.action.actionEmpty()

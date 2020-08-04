@@ -19,8 +19,20 @@ export const ActionButton = React.memo((props: ActionButtonProps) => {
     if (icon) {
         return (
             <STouchable onPress={onPress} disabled={disabled}>
-                <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
-                    <Image source={icon} style={{ width: 24, height: 24, tintColor: iconColor }} resizeMode="contain" fadeDuration={0} />
+                <View
+                    style={{
+                        width: size,
+                        height: size,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <Image
+                        source={icon}
+                        style={{ width: 24, height: 24, tintColor: iconColor }}
+                        resizeMode="contain"
+                        fadeDuration={0}
+                    />
                 </View>
             </STouchable>
         );
@@ -29,7 +41,18 @@ export const ActionButton = React.memo((props: ActionButtonProps) => {
     return (
         <STouchable onPress={onPress} disabled={disabled}>
             <View style={{ height: size, alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={[TextStyles.Label1, { marginLeft: 12, marginRight: 12, color: disabled ? iconColor : accentColor }]} allowFontScaling={false}>
+                <Text
+                    style={[
+                        TextStyles.Label1,
+                        {
+                            marginLeft: 12,
+                            marginRight: 12,
+                            opacity: disabled ? 0.56 : undefined,
+                            color: accentColor,
+                        },
+                    ]}
+                    allowFontScaling={false}
+                >
                     {title}
                 </Text>
             </View>
@@ -43,7 +66,14 @@ interface ActionButtonViewProps {
 }
 
 export const ActionButtonView = React.memo((props: ActionButtonViewProps) => (
-    <STouchable style={{ alignItems: 'center', justifyContent: 'center', height: Platform.OS === 'ios' ? 44 : 48 }} onPress={props.onPress}>
+    <STouchable
+        style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: Platform.OS === 'ios' ? 44 : 48,
+        }}
+        onPress={props.onPress}
+    >
         {props.children}
     </STouchable>
 ));

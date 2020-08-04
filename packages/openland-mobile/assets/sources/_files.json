@@ -8,6 +8,27 @@
             ]
         },
         {
+            "name": "ic-done",
+            "src": "ic-done-16.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
+            "name": "ic-done-bold",
+            "src": "ic-done-bold-16.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
+            "name": "ic-checkmark",
+            "src": "ic-checkmark.svg",
+            "sizes": [
+                11
+            ]
+        },
+        {
             "name": "ic-search-glyph",
             "src": "ic-search-glyph-24.svg",
             "sizes": [

@@ -107,7 +107,7 @@ export class ZTagView extends React.PureComponent<
     render() {
         return (
             <ScrollView keyboardShouldPersistTaps="always">
-                <View style={{ paddingHorizontal: 15, paddingVertical: 8 }}>
+                <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
                     <TouchableWithoutFeedback onPress={() => this.handleTouchOutside()}>
                         <View flexWrap="wrap" flexDirection="row" marginLeft={-15} paddingLeft={8}>
                             {this.props.title && (
@@ -140,7 +140,7 @@ export class ZTagView extends React.PureComponent<
                                         borderRadius={RadiusStyles.Medium}
                                         backgroundColor={
                                             this.state.focused === v.id
-                                                ? this.props.theme.accentPrimary
+                                                ? this.props.theme.accentPrimaryHover
                                                 : undefined
                                         }
                                         flexDirection="row"
