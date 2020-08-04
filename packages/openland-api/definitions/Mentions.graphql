@@ -1,18 +1,22 @@
 query ChatMentionSearch($cid: ID!, $query: String, $first: Int!, $after: String) {
-    mentions: chatMentionSearch(cid: $cid, query: $query, first: $first, after: $after) {
-        globalItems {
-            ... on Organization {
-                ...OrganizationShort
+    mentions: betaChatMentionSearch(cid: $cid, query: $query, first: $first, after: $after) {
+        items {
+            ... on MentionSearchOrganization {
+                organization {
+                    ...OrganizationShort
+                }
             }
-            ... on User {
-                ...UserForMention
+            ... on MentionSearchUser {
+                user {
+                    ...UserForMention
+                }
+                fromSameChat
             }
-            ... on SharedRoom {
-                ...RoomSharedNano
+            ... on MentionSearchSharedRoom {
+                room {
+                    ...RoomSharedNano
+                }
             }
-        }
-        localItems {
-            ...UserForMention
         }
         cursor
     }

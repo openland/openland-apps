@@ -2141,26 +2141,32 @@ const ChatJoinSelector = obj(
                 ))
         );
 const ChatMentionSearchSelector = obj(
-            field('chatMentionSearch', 'mentions', args(fieldValue("cid", refValue('cid')), fieldValue("query", refValue('query')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
+            field('betaChatMentionSearch', 'mentions', args(fieldValue("cid", refValue('cid')), fieldValue("query", refValue('query')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('globalItems', 'globalItems', args(), notNull(list(notNull(obj(
+                    field('items', 'items', args(), notNull(list(notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            inline('Organization', obj(
+                            inline('MentionSearchOrganization', obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                fragment('Organization', OrganizationShortSelector)
+                                field('organization', 'organization', args(), notNull(obj(
+                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                        fragment('Organization', OrganizationShortSelector)
+                                    )))
                             )),
-                            inline('User', obj(
+                            inline('MentionSearchUser', obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                fragment('User', UserForMentionSelector)
+                                field('user', 'user', args(), notNull(obj(
+                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                        fragment('User', UserForMentionSelector)
+                                    ))),
+                                field('fromSameChat', 'fromSameChat', args(), notNull(scalar('Boolean')))
                             )),
-                            inline('SharedRoom', obj(
+                            inline('MentionSearchSharedRoom', obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                fragment('SharedRoom', RoomSharedNanoSelector)
+                                field('room', 'room', args(), notNull(obj(
+                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                        fragment('SharedRoom', RoomSharedNanoSelector)
+                                    )))
                             ))
-                        ))))),
-                    field('localItems', 'localItems', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            fragment('User', UserForMentionSelector)
                         ))))),
                     field('cursor', 'cursor', args(), scalar('String'))
                 )))
@@ -5051,7 +5057,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ChatMentionSearch: {
         kind: 'query',
         name: 'ChatMentionSearch',
-        body: 'query ChatMentionSearch($cid:ID!,$query:String,$first:Int!,$after:String){mentions:chatMentionSearch(cid:$cid,query:$query,first:$first,after:$after){__typename globalItems{__typename ... on Organization{__typename ...OrganizationShort}... on User{__typename ...UserForMention}... on SharedRoom{__typename ...RoomSharedNano}}localItems{__typename ...UserForMention}cursor}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}fragment UserForMention on User{__typename id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title photo membersCount settings{__typename id mute}}',
+        body: 'query ChatMentionSearch($cid:ID!,$query:String,$first:Int!,$after:String){mentions:betaChatMentionSearch(cid:$cid,query:$query,first:$first,after:$after){__typename items{__typename ... on MentionSearchOrganization{__typename organization{__typename ...OrganizationShort}}... on MentionSearchUser{__typename user{__typename ...UserForMention}fromSameChat}... on MentionSearchSharedRoom{__typename room{__typename ...RoomSharedNano}}}cursor}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}fragment UserForMention on User{__typename id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title photo membersCount settings{__typename id mute}}',
         selector: ChatMentionSearchSelector
     },
     ChatNewGetMessage: {

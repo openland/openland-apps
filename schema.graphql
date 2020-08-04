@@ -1415,6 +1415,26 @@ type MentionNotification {
 
 union MentionPeer = SharedRoom | Organization | User
 
+type MentionSearchConnection {
+  items: [MentionSearchEntry!]!
+  cursor: String
+}
+
+union MentionSearchEntry = MentionSearchUser | MentionSearchSharedRoom | MentionSearchOrganization
+
+type MentionSearchOrganization {
+  organization: Organization!
+}
+
+type MentionSearchSharedRoom {
+  room: SharedRoom!
+}
+
+type MentionSearchUser {
+  user: User!
+  fromSameChat: Boolean!
+}
+
 type Message {
   id: ID!
   date: Date!
@@ -1842,6 +1862,7 @@ type Mutation {
   debugChangeGlobalCounterTypeForAll: Boolean!
   debugReindexOrganizationMembers: Boolean!
   debugDeleteTask(taskType: String!, id: String!): Boolean!
+  debugDeliverCallStateEventsForAll: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2886,6 +2907,7 @@ type Query {
   chatMembersSearch(cid: ID!, query: String, first: Int!, after: String, page: Int): RoomMemberConnection!
   chatMentionSearch(cid: ID!, query: String, first: Int!, after: String): GlobalSearchConnection!
   orgMembersSearch(orgId: ID!, query: String, first: Int!, after: String, page: Int): JoinedOrganizationMembersConnection!
+  betaChatMentionSearch(cid: ID!, query: String, first: Int!, after: String): MentionSearchConnection!
   messages(chatId: ID!, first: Int!, before: ID): [ModernMessage!]!
   gammaMessages(chatId: ID!, first: Int!, before: ID, after: ID, around: ID): GammaMessagesBatch
   modernMessages(chatId: ID!, first: Int!, before: ID, after: ID): ModernMessagesBatch!

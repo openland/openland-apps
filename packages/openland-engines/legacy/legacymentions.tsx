@@ -1,7 +1,7 @@
 import {
     MentionInput,
     FullMessage_GeneralMessage_spans,
-    ChatMentionSearch_mentions_globalItems_SharedRoom,
+    ChatMentionSearch_mentions_items_MentionSearchSharedRoom_room,
 } from 'openland-api/spacex.types';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 
@@ -160,9 +160,9 @@ export const convertMentionsFromMessage = (
             });
         } else if (s.__typename === 'MessageSpanRoomMention') {
             res.push({
-                __typename: 'SharedRoom',
+                // __typename: 'SharedRoom',
                 ...s.room,
-            } as ChatMentionSearch_mentions_globalItems_SharedRoom);
+            } as ChatMentionSearch_mentions_items_MentionSearchSharedRoom_room);
         } else if (s.__typename === 'MessageSpanAllMention') {
             res.push({
                 __typename: 'AllMention',
