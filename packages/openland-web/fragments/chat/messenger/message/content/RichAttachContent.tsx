@@ -85,7 +85,7 @@ const richImageContainer = css`
         border-top-right-radius: 8px;
         border-bottom-left-radius: 0;
         min-width: 100%;
-        max-height: 50%;
+        min-height: 50%;
         
         &::after {
           border-top-right-radius: 8px;
