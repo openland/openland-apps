@@ -12,6 +12,7 @@ import { XScrollView3, XScrollValues } from 'openland-x/XScrollView3';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { InvalidateSync } from '@openland/patterns';
 import { useListSelection } from 'openland-web/utils/useListSelection';
+import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 
 const LOADING_HEIGHT = 200;
 
@@ -114,7 +115,7 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
         <XScrollView3 onScroll={onScroll} flexGrow={1} flexShrink={1} useDefaultScroll={true}>
             {items.map((i, index) => <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} savedMessages={i.id === messenger.user.id} {...props} />)}
             {messages.length > 0 && (
-                <XView height={1} alignSelf="stretch" backgroundColor="#ececec" />
+                <UListHeader text="Messages" />
             )}
             {messages.map((i, index) => {
                 const { message, chat } = i.node;

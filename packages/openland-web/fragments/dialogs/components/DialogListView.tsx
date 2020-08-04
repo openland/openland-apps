@@ -45,9 +45,11 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
     }
     const dataSource = React.useMemo(() => new DataSourceWindow(ds!, 20), [ds]);
     const globalSearch = useGlobalSearch();
-    const isSearching = globalSearch.value.trim().length > 0;
     const router = React.useContext(XViewRouterContext);
     const route = React.useContext(XViewRouteContext);
+
+    const [focused, setFocused] = React.useState(false);
+    const isSearching = focused || globalSearch.value.trim().length > 0;
 
     React.useEffect(
         () => {
@@ -118,6 +120,7 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
                 // TODO: check input focus (implement is useShortcuts via ref?)
                 if (ref.current && globalSearch.value) {
                     ref.current.reset();
+                    setFocused(false);
                     return true;
                 }
                 return false;
@@ -132,6 +135,7 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
         if (ref.current) {
             ref.current.reset();
         }
+        setFocused(false);
         if (item.__typename === 'Organization') {
             router!.navigate(`/${item.shortname || item.id}`);
             return;
@@ -148,15 +152,29 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
 
     const query = globalSearch.value;
 
+    const onInputFocus = React.useCallback(() => {
+        setFocused(true);
+    }, []);
+
+    const onInputCancel = React.useCallback(() => {
+        if (ref.current) {
+            ref.current.reset();
+        }
+        setFocused(false);
+    }, []);
+
     return (
         <div className={containerStyle}>
             <USearchInput
                 value={globalSearch.value}
                 onChange={globalSearch.onChange}
+                onFocus={onInputFocus}
+                onCancel={onInputCancel}
                 ref={ref}
                 marginHorizontal={16}
                 marginBottom={16}
                 placeholder="Groups, people and more"
+                focused={focused}
             />
             <XView flexGrow={1} flexBasis={0} minHeight={0}>
                 {isSearching && !onMessagePick && (
