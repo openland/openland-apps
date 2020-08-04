@@ -548,6 +548,10 @@ const hideScrollStyle = css`
     .emojiPickerIcon {
         right: 17px;
     }
+
+    .ql-editor {
+        padding-right: 49px;
+    }
 `;
 
 export const SendMessageComponent = React.memo((props: SendMessageComponentProps) => {
