@@ -2,10 +2,11 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XViewRouterContext } from 'react-mental';
 import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
+import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { MessageSenderContent } from '../MessageComponent';
 import { DonationContent } from './DonationContent';
 import { fileIcon, fileFormat } from './DocumentContent';
-import { TextBody } from 'openland-web/utils/TextStyles';
+import { TextBody, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { emoji } from 'openland-y-utils/emoji';
@@ -19,6 +20,14 @@ import {
 type MsgAttachFile = FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
 type MsgAttachRich = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
 type MsgAttachPurchase = FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase;
+
+const replyBasicStyle = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    user-select: none;
+`;
 
 const replyMessageGroupClass = css`
     cursor: pointer;
@@ -95,15 +104,32 @@ const attachTextClass = css`
     color: var(--foregroundPrimary);
 `;
 
-interface ReplyMessageProps {
-    message: DataSourceWebMessageItem;
+const senderNameStyle = css`
+    color: var(--foregroundPrimary);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+`;
+
+interface ShortSenderNameProps {
+    name: string;
+    overrideName?: string | null;
 }
 
-const ReplyMessage = React.memo((props: ReplyMessageProps) => {
+const ShortSenderName = React.memo((props: ShortSenderNameProps) => (
+    <div className={cx(TextLabel1, senderNameStyle)}>{emoji(props.overrideName || props.name)}</div>
+));
+
+interface ReplyMessageProps {
+    message: DataSourceMessageItem;
+    isReplyAction?: boolean;
+}
+
+export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
     const router = React.useContext(XViewRouterContext)!;
 
-    const { message } = props;
-    const { id, text, date, sender, attachments, sticker, senderNameEmojify } = message;
+    const { message, isReplyAction = false } = props;
+    const { id, text, date, sender, overrideName, attachments, sticker } = message;
 
     const onReplyClick = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
@@ -127,8 +153,10 @@ const ReplyMessage = React.memo((props: ReplyMessageProps) => {
             ? (attach as MsgAttachPurchase)
             : null;
 
-    const senderContent = (
-        <MessageSenderContent sender={sender} senderNameEmojify={senderNameEmojify} date={date} />
+    const senderContent = isReplyAction ? (
+        <ShortSenderName name={sender.name} overrideName={overrideName} />
+    ) : (
+        <MessageSenderContent sender={sender} date={date} />
     );
 
     const attachFile = (title: string) => (
@@ -144,7 +172,10 @@ const ReplyMessage = React.memo((props: ReplyMessageProps) => {
         const ops = `scale_crop/40x40/`;
         const opsRetina = `scale_crop/80x80/center/ 2x`;
         return (
-            <div className={replyMessageGroupClass} onClick={onReplyClick}>
+            <div
+                className={isReplyAction ? replyBasicStyle : replyMessageGroupClass}
+                onClick={isReplyAction ? undefined : onReplyClick}
+            >
                 <div className={replyAttachPreviewClass}>
                     <ImgWithRetry src={url + ops} srcSet={url + opsRetina} width={40} height={40} />
                 </div>
@@ -162,7 +193,10 @@ const ReplyMessage = React.memo((props: ReplyMessageProps) => {
                 !!documentAttach.fileMetadata.mimeType.match('video')) ||
             fileFormat(name) === 'VIDEO';
         return (
-            <div className={replyMessageGroupClass} onClick={onReplyClick}>
+            <div
+                className={isReplyAction ? replyBasicStyle : replyMessageGroupClass}
+                onClick={isReplyAction ? undefined : onReplyClick}
+            >
                 <div className={replyAttachPreviewClass}>
                     {fileIcon[fileFormat(documentAttach.fileMetadata.name)]}
                     <div className="format-text">{fileFormat(name)}</div>
@@ -179,7 +213,10 @@ const ReplyMessage = React.memo((props: ReplyMessageProps) => {
         const ops = `-/format/auto/-/scale_crop/40x40/`;
         const opsRetina = `-/format/auto/-/scale_crop/80x80/center/ 2x`;
         return (
-            <div className={replyMessageGroupClass} onClick={onReplyClick}>
+            <div
+                className={isReplyAction ? replyBasicStyle : replyMessageGroupClass}
+                onClick={isReplyAction ? undefined : onReplyClick}
+            >
                 {augmentAttach.image && augmentAttach.image.url ? (
                     <div className={cx(replyAttachPreviewClass, replyAttachPreviewLinkClass)}>
                         <ImgWithRetry
@@ -204,7 +241,10 @@ const ReplyMessage = React.memo((props: ReplyMessageProps) => {
 
     if (purchaseAttach) {
         return (
-            <div className={replyMessageGroupClass} onClick={onReplyClick}>
+            <div
+                className={isReplyAction ? replyBasicStyle : replyMessageGroupClass}
+                onClick={isReplyAction ? undefined : onReplyClick}
+            >
                 <div className={replyAttachContentClass}>
                     {senderContent}
                     <DonationContent
@@ -221,7 +261,10 @@ const ReplyMessage = React.memo((props: ReplyMessageProps) => {
         const ops = `scale_crop/40x40/`;
         const opsRetina = `scale_crop/80x80/center/ 2x`;
         return (
-            <div className={replyMessageGroupClass} onClick={onReplyClick}>
+            <div
+                className={isReplyAction ? replyBasicStyle : replyMessageGroupClass}
+                onClick={isReplyAction ? undefined : onReplyClick}
+            >
                 <div className={replyAttachPreviewClass}>
                     <ImgWithRetry src={url + ops} srcSet={url + opsRetina} width={40} height={40} />
                 </div>
@@ -235,7 +278,10 @@ const ReplyMessage = React.memo((props: ReplyMessageProps) => {
 
     if (text) {
         return (
-            <div className={replyMessageGroupClass} onClick={onReplyClick}>
+            <div
+                className={isReplyAction ? replyBasicStyle : replyMessageGroupClass}
+                onClick={isReplyAction ? undefined : onReplyClick}
+            >
                 <div className={replyAttachContentClass}>
                     {senderContent}
                     {attachText(text)}

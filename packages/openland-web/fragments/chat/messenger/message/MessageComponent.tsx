@@ -1,12 +1,11 @@
 import * as React from 'react';
+import { css, cx } from 'linaria';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { MessageReactions } from './reactions/MessageReactions';
 import { MessageContent } from './MessageContent';
 import { MAvatar } from './MAvatar';
-import { css, cx } from 'linaria';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
-import StarIcon from 'openland-icons/s/ic-star-16.svg';
 import { formatTime, formatDateAtTime } from 'openland-y-utils/formatTime';
 import { MessageSender, MessageSender_primaryOrganization } from 'openland-api/spacex.types';
 import { HoverMenu } from './Menu/HoverMenu';
@@ -16,10 +15,12 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { useUserPopper } from 'openland-web/components/EntityPoppers';
 import { defaultHover } from 'openland-web/utils/Styles';
-import IcPending from 'openland-icons/s/ic-pending-16.svg';
-import IcSuccess from 'openland-icons/s/ic-success-16.svg';
 import { isPendingAttach } from 'openland-engines/messenger/ConversationEngine';
 import { buildBaseImageUrl } from 'openland-y-utils/photoRefUtils';
+import { emoji } from 'openland-y-utils/emoji';
+import StarIcon from 'openland-icons/s/ic-star-16.svg';
+import IcPending from 'openland-icons/s/ic-pending-16.svg';
+import IcSuccess from 'openland-icons/s/ic-success-16.svg';
 
 const senderContainer = css`
     display: flex;
@@ -83,22 +84,27 @@ const senderBadgeStyle = css`
     margin-left: 4px;
 `;
 
-export const MessageSenderName = React.memo(
-    (props: { sender: MessageSender; senderNameEmojify?: string | JSX.Element; overrideName?: string | null; }) => {
-        const [show] = useUserPopper({
-            user: props.sender,
-            noCardOnMe: false,
-        });
-        return (
-            <ULink
-                path={`/${props.sender.shortname || props.sender.id}`}
-                className={cx(TextLabel1, senderNameStyle)}
-            >
-                <span onMouseEnter={show}>{props.overrideName || props.senderNameEmojify || props.sender.name}</span>
-            </ULink>
-        );
-    },
-);
+interface MessageSenderNameProps {
+    sender: MessageSender;
+    overrideName?: string | null;
+}
+
+const MessageSenderName = React.memo((props: MessageSenderNameProps) => {
+    const [show] = useUserPopper({
+        user: props.sender,
+        noCardOnMe: false,
+    });
+    return (
+        <ULink
+            path={`/${props.sender.shortname || props.sender.id}`}
+            className={cx(TextLabel1, senderNameStyle)}
+        >
+            <span onMouseEnter={show}>
+                {emoji(props.overrideName || props.sender.name)}
+            </span>
+        </ULink>
+    );
+});
 
 const MessageSenderFeatured = React.memo(
     (props: { senderBadgeNameEmojify: string | JSX.Element }) => {
@@ -111,26 +117,32 @@ const MessageSenderFeatured = React.memo(
     },
 );
 
-const MessageSenderOrg = React.memo((props: { organization: MessageSender_primaryOrganization }) => (
-    <ULink
-        path={`/${props.organization.shortname || props.organization.id}`}
-        className={cx(TextDensed, senderOrgStyle, defaultHover)}
-    >
-        {props.organization.name}
-    </ULink>
-));
+const MessageSenderOrg = React.memo(
+    (props: { organization: MessageSender_primaryOrganization }) => (
+        <ULink
+            path={`/${props.organization.shortname || props.organization.id}`}
+            className={cx(TextDensed, senderOrgStyle, defaultHover)}
+        >
+            {emoji(props.organization.name)}
+        </ULink>
+    ),
+);
 
-const MessageTime = React.memo((props: { time: number, dateFormat: 'time' | 'date-time' }) => {
-    const tooltipText = React.useMemo(() => new Date(props.time).toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        weekday: 'short',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        hour12: true
-    }), [props.time]);
+const MessageTime = React.memo((props: { time: number; dateFormat: 'time' | 'date-time' }) => {
+    const tooltipText = React.useMemo(
+        () =>
+            new Date(props.time).toLocaleString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                weekday: 'short',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: true,
+            }),
+        [props.time],
+    );
 
     const [show] = useCaptionPopper({ text: tooltipText, placement: 'top', scope: 'message-date' });
 
@@ -144,7 +156,6 @@ const MessageTime = React.memo((props: { time: number, dateFormat: 'time' | 'dat
 
 interface MessageSenderContentProps {
     sender: MessageSender;
-    senderNameEmojify?: string | JSX.Element;
     senderBadgeNameEmojify?: string | JSX.Element;
     date?: number;
     dateFormat?: 'time' | 'date-time';
@@ -153,7 +164,10 @@ interface MessageSenderContentProps {
 
 export const MessageSenderContent = React.memo((props: MessageSenderContentProps) => (
     <div className={senderContainer}>
-        <MessageSenderName sender={props.sender} senderNameEmojify={props.senderNameEmojify} overrideName={props.overrideName} />
+        <MessageSenderName
+            sender={props.sender}
+            overrideName={props.overrideName}
+        />
         {props.sender.isBot && <span className={cx(TextDensed, senderDateStyle)}>Bot</span>}
         {props.senderBadgeNameEmojify && (
             <MessageSenderFeatured senderBadgeNameEmojify={props.senderBadgeNameEmojify} />
@@ -414,7 +428,11 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
         return (
             <div className={messageAvatarWrapper} onMouseEnter={show}>
                 <MAvatar
-                    senderPhoto={message.overrideAvatar ? buildBaseImageUrl(message.overrideAvatar) : message.sender.photo}
+                    senderPhoto={
+                        message.overrideAvatar
+                            ? buildBaseImageUrl(message.overrideAvatar)
+                            : message.sender.photo
+                    }
                     senderNameEmojify={message.senderNameEmojify}
                     senderName={message.overrideName || message.sender.name}
                     senderId={message.sender.id}
@@ -426,7 +444,6 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const sender = (
         <MessageSenderContent
             sender={message.sender}
-            senderNameEmojify={message.senderNameEmojify}
             senderBadgeNameEmojify={message.senderBadgeNameEmojify}
             date={message.date}
             overrideName={message.overrideName}
@@ -490,14 +507,9 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                         {(message.commentsCount > 0 ||
                             engine.isChannel ||
                             message.reactionCounters.length > 0) &&
-                        buttons}
+                            buttons}
                     </div>
-                    {layout !== 'mobile' && (
-                        <HoverMenu
-                            message={message}
-                            engine={engine}
-                        />
-                    )}
+                    {layout !== 'mobile' && <HoverMenu message={message} engine={engine} />}
                 </div>
             </div>
         </div>

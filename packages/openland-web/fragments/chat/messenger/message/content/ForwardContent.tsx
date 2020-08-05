@@ -50,7 +50,6 @@ export const ForwardMessagesGroup = React.memo((props: ForwardGroupProps) => {
         <div className={forwardMessageGroupClass}>
             <MessageSenderContent
                 sender={firstMessage.sender}
-                senderNameEmojify={firstMessage.senderNameEmojify}
                 date={firstMessage.date}
             />
             <div>

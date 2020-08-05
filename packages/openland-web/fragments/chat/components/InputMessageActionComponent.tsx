@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MessagesActionsStateEngine } from 'openland-engines/messenger/MessagesActionsState';
 import { plural } from 'openland-y-utils/plural';
 import { TextBody, TextLabel1 } from 'openland-web/utils/TextStyles';
-import { MessageCompactComponent } from '../messenger/message/MessageCompactContent';
+import { ReplyMessage } from '../messenger/message/content/ReplyContent';
 import ReplyIcon from 'openland-icons/s/ic-reply-24.svg';
 import ForwardIcon from 'openland-icons/s/ic-forward-24.svg';
 import CloseIcon from 'openland-icons/s/ic-close-8.svg';
@@ -102,28 +102,27 @@ export const InputMessageActionComponent = (props: { engine: MessagesActionsStat
 
     if (state.action === 'forward' || state.action === 'reply') {
         names = state.messages
-            .reduce(
-                (res, item) => {
-                    if (!res.find(s => item.sender.id === s.id)) {
-                        res.push({ id: item.sender.id, name: item.sender.name });
-                    }
-                    return res;
-                },
-                [] as { id: string; name: string }[],
-            )
-            .map(s => s.name)
+            .reduce((res, item) => {
+                if (!res.find((s) => item.sender.id === s.id)) {
+                    res.push({ id: item.sender.id, name: item.sender.name });
+                }
+                return res;
+            }, [] as { id: string; name: string }[])
+            .map((s) => s.name)
             .join(', ');
     }
 
     let content;
     if (state.action === 'forward' || state.action === 'reply') {
         if (state.messages.length === 1) {
-            content = <MessageCompactComponent message={state.messages[0]} />;
+            content = <ReplyMessage message={state.messages[0]} isReplyAction={true} />;
         } else {
             content = (
                 <>
-                    <span className={TextLabel1}> {names} </span>
-                    <span className={TextBody}>
+                    <span className={TextLabel1} style={{ userSelect: 'none' }}>
+                        {names}
+                    </span>
+                    <span className={TextBody} style={{ userSelect: 'none' }}>
                         {' '}
                         {plural(state.messages.length, ['message', 'messages'])}{' '}
                     </span>
