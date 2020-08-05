@@ -7,12 +7,15 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DialogView } from './DialogView';
 import { emoji } from '../../../../openland-y-utils/emoji';
 import { extractPlaceholder } from '../../../../openland-y-utils/extractPlaceholder';
-import { DialogSearchEmptyView, DialogSearchItemRender, DialogSearchResults } from './DialogSearchResults';
+import { DialogSearchItemRender, DialogSearchResults } from './DialogSearchResults';
 import { XScrollView3, XScrollValues } from 'openland-x/XScrollView3';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { InvalidateSync } from '@openland/patterns';
 import { useListSelection } from 'openland-web/utils/useListSelection';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
+import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
+import { css, cx } from 'linaria';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 
 const LOADING_HEIGHT = 200;
 
@@ -35,6 +38,38 @@ const constructVariables = (query: string, after?: string | null) => ({
     sort: JSON.stringify([{ createdAt: { order: 'desc' } }]),
     first: 20,
     after
+});
+
+const emptyTitle = css`
+    text-align: center;
+    margin-bottom: 4px;
+    color: var(--foregroundPrimary);
+`;
+
+const emptyText = css`
+    text-align: center;
+    margin-bottom: 16px;
+    color: var(--foregroundSecondary);
+`;
+
+const EmptyView = React.memo(() => {
+    return (
+        <XView
+            flexGrow={1}
+            justifyContent="center"
+            padding={32}
+        >
+            <div className={cx(TextTitle3, emptyTitle)}>
+                Nothing found
+            </div>
+            <div className={cx(TextBody, emptyText)}>
+                Didn’t find your friends at Openland? Let’s invite them to stay in touch
+            </div>
+            <XView alignItems="center">
+                <UButton path="/settings/invites" text="Invite friends" />
+            </XView>
+        </XView>
+    );
 });
 
 const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) => {
@@ -108,7 +143,7 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
     }, [handleNeedMore, after, loadingMore]);
 
     if (items.length === 0 && messages.length === 0) {
-        return <DialogSearchEmptyView />;
+        return <EmptyView />;
     }
 
     return (
