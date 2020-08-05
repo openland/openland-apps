@@ -175,7 +175,6 @@ export const CommentView = React.memo((props: CommentViewProps) => {
             <div className={content}>
                 <MessageSenderContent
                     sender={sender}
-                    senderNameEmojify={senderNameEmojify}
                     date={parseInt(date, 10)}
                 />
                 {edit && (
