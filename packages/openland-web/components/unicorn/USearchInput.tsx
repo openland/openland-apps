@@ -4,7 +4,7 @@ import { css, cx } from 'linaria';
 import SearchIcon from 'openland-icons/ic-search-16.svg';
 import ClearIcon from 'openland-icons/ic-close-16.svg';
 import ThinLoaderIcon from 'openland-icons/s/ic-loader-thin-16.svg';
-import { TextBody } from 'openland-web/utils/TextStyles';
+import { TextBody, TextStyles } from 'openland-web/utils/TextStyles';
 import { rotate } from 'openland-x/XLoader';
 
 const field = css`
@@ -88,11 +88,13 @@ interface USearchInputProps extends XViewProps {
     onKeyDown?: React.KeyboardEventHandler;
     onFocus?: React.FocusEventHandler;
     onBlur?: React.FocusEventHandler;
+    onCancel?: () => void;
     autoFocus?: boolean;
     placeholder?: string;
     rounded?: boolean;
     className?: string;
     loading?: boolean;
+    focused?: boolean;
 }
 
 export interface USearchInputRef {
@@ -102,7 +104,7 @@ export interface USearchInputRef {
 }
 
 export const USearchInput = React.forwardRef((props: USearchInputProps, ref: React.RefObject<USearchInputRef>) => {
-    const { value, onChange, autoFocus, onKeyDown, onFocus, onBlur, rounded, loading, className, placeholder = 'Search', ...other } = props;
+    const { value, onChange, autoFocus, onKeyDown, onFocus, onBlur, rounded, loading, className, placeholder = 'Search', focused, onCancel, ...other } = props;
 
     const [val, setValue] = React.useState(typeof value === 'string' ? value : '');
     const inputRef = React.useRef<HTMLInputElement>(null);
@@ -127,35 +129,52 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
     }));
 
     return (
-        <XView position="relative" {...other}>
-            <div className={searchIconWrapper}>
-                {loading ? <ThinLoaderIcon className={rotate} /> : <SearchIcon />}
-            </div>
-            {props.value && props.value.length > 0 && (
-                <div
-                    tabIndex={-1}
-                    className={resetClassName}
-                    onClick={() => {
-                        inputRef.current?.focus();
-                        handleChange('');
-                    }}
-                >
-                    <ClearIcon />
+        <XView flexDirection="row" {...other}>
+            <XView flexGrow={1} position="relative">
+                <div className={searchIconWrapper}>
+                    {loading ? <ThinLoaderIcon className={rotate} /> : <SearchIcon />}
                 </div>
+                {props.value && props.value.length > 0 && (
+                    <div
+                        tabIndex={-1}
+                        className={resetClassName}
+                        onClick={() => {
+                            inputRef.current?.focus();
+                            handleChange('');
+                        }}
+                    >
+                        <ClearIcon />
+                    </div>
+                )}
+                <input
+                    type="search"
+                    className={cx('x', TextBody, field, rounded && fieldRounded)}
+                    value={val || ''}
+                    onChange={e => handleChange(e.target.value)}
+                    onKeyDown={onKeyDown}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                    placeholder={placeholder}
+                    autoFocus={autoFocus}
+                    ref={inputRef}
+                    autoComplete="off"
+                />
+            </XView>
+
+            {focused && (
+                <XView
+                    onClick={onCancel}
+                    marginRight={-16}
+                    paddingHorizontal={16}
+                    color="var(--accentPrimary)"
+                    hoverColor="var(--accentPrimaryHover)"
+                    paddingVertical={8}
+                    cursor="pointer"
+                    {...TextStyles.Body}
+                >
+                    Cancel
+                </XView>
             )}
-            <input
-                type="search"
-                className={cx('x', TextBody, field, rounded && fieldRounded)}
-                value={val || ''}
-                onChange={e => handleChange(e.target.value)}
-                onKeyDown={onKeyDown}
-                onFocus={onFocus}
-                onBlur={onBlur}
-                placeholder={placeholder}
-                autoFocus={autoFocus}
-                ref={inputRef}
-                autoComplete="off"
-            />
         </XView>
     );
 });
