@@ -9,7 +9,6 @@ import {
     DataSourceWebMessageItem,
 } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { Span } from 'openland-y-utils/spans/Span';
-import { emoji } from 'openland-y-utils/emoji';
 import { MessageReactions } from 'openland-web/fragments/chat/messenger/message/reactions/MessageReactions';
 import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
@@ -51,7 +50,6 @@ export const MessageView = React.memo((props: MessageViewProps) => {
     const { sender } = message;
     const [reply, setReply] = React.useState<DataSourceWebMessageItem[]>([]);
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
-    const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
     const router = React.useContext(XViewRouterContext)!;
 
     React.useEffect(() => {
@@ -61,10 +59,6 @@ export const MessageView = React.memo((props: MessageViewProps) => {
     React.useEffect(() => {
         setTextSpans(processSpans(message.message || '', message.spans));
     }, [message.message, message.spans]);
-
-    React.useEffect(() => {
-        setSenderNameEmojify(emoji(sender.name));
-    }, [sender.name]);
 
     return (
         <div className={wrapper}>

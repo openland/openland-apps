@@ -2,7 +2,6 @@ import * as React from 'react';
 import { MessageContent } from '../../fragments/chat/messenger/message/MessageContent';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { Span } from 'openland-y-utils/spans/Span';
-import { emoji } from 'openland-y-utils/emoji';
 import { css } from 'linaria';
 import { CommentTools } from './CommentTools';
 import { CommentInput } from './CommentInput';
@@ -80,9 +79,6 @@ export const CommentView = React.memo((props: CommentViewProps) => {
     const { id, sender, message, spans, fallback, date } = comment;
     const [maxCommentDepth, setMaxCommentDepth] = React.useState(4);
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
-    const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(
-        sender.name,
-    );
     const [edit, setEdit] = React.useState(false);
     const containerRef = React.useRef<HTMLDivElement>(null);
     const router = React.useContext(XViewRouterContext)!;
@@ -102,13 +98,6 @@ export const CommentView = React.memo((props: CommentViewProps) => {
             setTextSpans(processSpans(message || '', spans));
         },
         [message, spans],
-    );
-
-    React.useEffect(
-        () => {
-            setSenderNameEmojify(emoji(sender.name));
-        },
-        [sender.name],
     );
 
     React.useLayoutEffect(
