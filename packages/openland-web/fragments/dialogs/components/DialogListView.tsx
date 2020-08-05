@@ -6,7 +6,6 @@ import { GlobalSearch_items } from 'openland-api/spacex.types';
 import { XListView } from 'openland-web/components/XListView';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DialogView } from './DialogView';
-import { DialogSearchResults } from './DialogSearchResults';
 import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useGlobalSearch } from 'openland-unicorn/components/TabLayout';
@@ -17,7 +16,7 @@ import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { CallFloating } from 'openland-web/modules/conference/CallFloating';
 import { DiscoverFooter } from 'openland-web/fragments/discover/components/DiscoverFooter';
-import { DialogSearchMessages } from './DialogSearchMessages';
+import { DialogSearchMessages, DialogSearchMessagesRef } from './DialogSearchMessages';
 
 const containerStyle = css`
   display: flex;
@@ -47,8 +46,10 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
     const globalSearch = useGlobalSearch();
     const router = React.useContext(XViewRouterContext);
     const route = React.useContext(XViewRouteContext);
+    const listRef = React.useRef<DialogSearchMessagesRef>(null);
 
     const [focused, setFocused] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
     const isSearching = focused || globalSearch.value.trim().length > 0;
 
     React.useEffect(
@@ -152,6 +153,16 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
 
     const query = globalSearch.value;
 
+    React.useEffect(() => {
+        if (listRef.current) {
+            if (query.trim().length > 0) {
+                listRef.current.loadResults(query);
+            } else {
+                listRef.current.resetResults();
+            }
+        }
+    }, [query]);
+
     const onInputFocus = React.useCallback(() => {
         setFocused(true);
     }, []);
@@ -174,20 +185,16 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
                 marginHorizontal={16}
                 marginBottom={16}
                 placeholder="Groups, people and more"
-                focused={focused}
+                showCancel={isSearching}
+                loading={loading}
             />
             <XView flexGrow={1} flexBasis={0} minHeight={0}>
-                {isSearching && !onMessagePick && (
-                    <DialogSearchResults
-                        variables={{ query }}
-                        onPick={onPick}
-                    />
-                )}
-                {isSearching && onMessagePick && (
+                {isSearching && (
                     <DialogSearchMessages
-                        variables={{ query }}
+                        listRef={listRef}
                         onPick={onPick}
                         onMessagePick={onMessagePick}
+                        onLoading={setLoading}
                     />
                 )}
                 {canUseDOM && !isSearching && (

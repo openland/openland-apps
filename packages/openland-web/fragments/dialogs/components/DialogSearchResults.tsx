@@ -40,11 +40,14 @@ export const DialogSearchEmptyView = React.memo(() => (
     </div>
 ));
 
-interface DialogSearchItemRenderProps extends DialogSearchResults {
+interface DialogSearchItemRenderProps {
     item: GlobalSearch_items;
     index: number;
     selectedIndex: number;
     savedMessages?: boolean;
+    onPick: (item: GlobalSearch_items) => void;
+    paddingHorizontal?: number;
+    isForwarding?: boolean;
 }
 
 export const DialogSearchItemRender = React.memo((props: DialogSearchItemRenderProps) => {
