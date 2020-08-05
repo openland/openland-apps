@@ -129,7 +129,7 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
     const router = React.useContext(XViewRouterContext)!;
 
     const { message, isReplyAction = false } = props;
-    const { id, text, date, sender, overrideName, attachments, sticker } = message;
+    const { id, text, fallback, date, sender, overrideName, attachments, sticker } = message;
 
     const onReplyClick = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
@@ -285,6 +285,20 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
                 <div className={replyAttachContentClass}>
                     {senderContent}
                     {attachText(text)}
+                </div>
+            </div>
+        );
+    }
+
+    if (fallback) {
+        return (
+            <div
+                className={isReplyAction ? replyBasicStyle : replyMessageGroupClass}
+                onClick={isReplyAction ? undefined : onReplyClick}
+            >
+                <div className={replyAttachContentClass}>
+                    {senderContent}
+                    {attachText(fallback)}
                 </div>
             </div>
         );
