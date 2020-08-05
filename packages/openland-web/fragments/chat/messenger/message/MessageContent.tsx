@@ -10,6 +10,7 @@ import {
 import { MessageTextComponent } from './content/MessageTextComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { SpanType, Span } from 'openland-y-utils/spans/Span';
+import { ForwardContent } from './content/ForwardContent';
 import { ReplyContent } from './content/ReplyContent';
 import { ImageContent } from './content/ImageContent';
 import { DocumentContent } from './content/DocumentContent';
@@ -18,7 +19,6 @@ import { DonationContent } from './content/DonationContent';
 import { StickerContent } from './content/StickerContent';
 import { css, cx } from 'linaria';
 import { createSimpleSpan } from 'openland-y-utils/spans/processSpans';
-import { XViewRouterContext } from 'react-mental';
 
 type MsgAttachFile = FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
 type MsgAttachRich = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
@@ -34,12 +34,6 @@ const textWrapper = css`
 
     &:first-child {
         margin-top: 0;
-    }
-`;
-
-const replyContentWrapper = css`
-    &:hover {
-        cursor: pointer;
     }
 `;
 
@@ -63,24 +57,14 @@ const replySectionWrapper = css`
     padding: 0;
 `;
 
-const ContentWrapper = React.memo(
-    (props: { className: string; isReply?: boolean; id?: string; children: any }) => {
-        const router = React.useContext(XViewRouterContext)!;
-        const onContentClick = (e: React.MouseEvent<HTMLDivElement>) => {
-            e.stopPropagation();
-            router.navigate(`/message/${props.id}`);
-        };
+interface ContentWrapperProps {
+    className: string;
+    children: any;
+}
 
-        return (
-            <div
-                className={cx(props.className, props.isReply && replyContentWrapper)}
-                onClick={props.isReply ? onContentClick : undefined}
-            >
-                {props.children}
-            </div>
-        );
-    },
-);
+const ContentWrapper = React.memo((props: ContentWrapperProps) => (
+    <div className={props.className}>{props.children}</div>
+));
 
 interface MessageContentProps {
     id?: string;
@@ -98,8 +82,6 @@ interface MessageContentProps {
     senderNameEmojify?: string | JSX.Element;
     date?: number;
     fileProgress?: number;
-    isReply?: boolean;
-    isForward?: boolean;
     isPending?: boolean;
     isComment?: boolean;
 }
@@ -117,12 +99,9 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
         isOut = false,
         attachTop = false,
         fileProgress,
-        isReply = false,
-        isForward = false,
         isPending,
         isComment = false,
     } = props;
-    const isReplyOnly = isReply && !isForward;
 
     const imageAttaches = attachments.filter(
         (a) => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage,
@@ -132,7 +111,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
         (a) => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage,
     ) as MsgAttachFile[];
 
-    const augmenationAttaches = attachments.filter(
+    const augmentationAttaches = attachments.filter(
         (a) => a.__typename === 'MessageRichAttachment',
     ) as MsgAttachRich[];
 
@@ -148,12 +127,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
 
     imageAttaches.map((file) => {
         content.push(
-            <ContentWrapper
-                key={'msg-' + id + '-media-' + file.fileId}
-                className={extraClassName}
-                id={id}
-                isReply={isReplyOnly}
-            >
+            <ContentWrapper key={'msg-' + id + '-media-' + file.fileId} className={extraClassName}>
                 <ImageContent
                     file={file}
                     sender={props.sender}
@@ -170,12 +144,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
 
     purchaseAttaches.forEach((attach) => {
         content.push(
-            <ContentWrapper
-                key="msg-donation"
-                className={donationWrapper}
-                id={id}
-                isReply={isReplyOnly}
-            >
+            <ContentWrapper key="msg-donation" className={donationWrapper}>
                 <DonationContent amount={attach.purchase.amount} state={attach.purchase.state} />
             </ContentWrapper>,
         );
@@ -183,13 +152,8 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
 
     if (hasText) {
         content.push(
-            <ContentWrapper key="msg-text" className={textClassName} id={id} isReply={isReplyOnly}>
-                <MessageTextComponent
-                    spans={textSpans}
-                    edited={!!edited}
-                    shouldCrop={isReplyOnly}
-                    mId={id}
-                />
+            <ContentWrapper key="msg-text" className={textClassName}>
+                <MessageTextComponent spans={textSpans} edited={!!edited} mId={id} />
             </ContentWrapper>,
         );
     }
@@ -199,8 +163,6 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
             <ContentWrapper
                 key={'msg-' + id + '-document-' + file.fileId}
                 className={extraClassName}
-                id={id}
-                isReply={isReplyOnly}
             >
                 <DocumentContent
                     file={file}
@@ -214,49 +176,53 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
         );
     });
 
-    augmenationAttaches.map((attach) => {
+    augmentationAttaches.map((attach) => {
         content.push(
-            <ContentWrapper
-                key={'msg-' + id + '-rich-' + attach.id}
-                className={extraClassName}
-                id={id}
-                isReply={isReplyOnly}
-            >
-                <RichAttachContent attach={attach} canDelete={isOut} messageId={id} isComment={isComment} />
+            <ContentWrapper key={'msg-' + id + '-rich-' + attach.id} className={extraClassName}>
+                <RichAttachContent
+                    attach={attach}
+                    canDelete={isOut}
+                    messageId={id}
+                    isComment={isComment}
+                />
             </ContentWrapper>,
         );
     });
 
     if (sticker) {
         content.push(
-            <ContentWrapper
-                key={'msg-' + id + '-sticker-' + sticker.id}
-                className={extraClassName}
-                id={id}
-                isReply={isReplyOnly}
-            >
+            <ContentWrapper key={'msg-' + id + '-sticker-' + sticker.id} className={extraClassName}>
                 <StickerContent sticker={sticker} />
             </ContentWrapper>,
         );
     }
 
-    if (reply && reply.length) {
-        const hasForward =
+    if (reply && !!reply.length) {
+        const isForwardMessage = !!(
             props.chatId &&
             reply[0].source &&
             reply[0].source.__typename === 'MessageSourceChat' &&
-            reply[0].source.chat.id !== props.chatId;
-
-        const replySection = (
-            <div key={'msg-' + id + '-forward'} className={cx(extraClassName, replySectionWrapper)}>
-                <ReplyContent quotedMessages={reply} isForward={!!hasForward} />
-            </div>
+            reply[0].source.chat.id !== props.chatId
         );
 
-        if (hasForward) {
-            content.push(replySection);
+        if (isForwardMessage) {
+            content.push(
+                <div
+                    key={'msg-' + id + '-forward'}
+                    className={cx(extraClassName, replySectionWrapper)}
+                >
+                    <ForwardContent quotedMessages={reply} />
+                </div>,
+            );
         } else {
-            content.unshift(replySection);
+            content.unshift(
+                <div
+                    key={'msg-' + id + '-forward'}
+                    className={cx(extraClassName, replySectionWrapper)}
+                >
+                    <ReplyContent quotedMessages={reply} />
+                </div>,
+            );
         }
     }
 
@@ -265,7 +231,10 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
 
         content.push(
             <ContentWrapper key={'unsupported-' + id} className={textClassName}>
-                <MessageTextComponent spans={createSimpleSpan(unsupportedText, SpanType.italic)} mId={id} />
+                <MessageTextComponent
+                    spans={createSimpleSpan(unsupportedText, SpanType.italic)}
+                    mId={id}
+                />
             </ContentWrapper>,
         );
     }

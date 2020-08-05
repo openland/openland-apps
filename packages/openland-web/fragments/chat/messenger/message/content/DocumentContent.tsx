@@ -173,7 +173,7 @@ const showPdfModal = (props: ModalProps, url?: string) => {
     });
 };
 
-export const fileContainer = css`
+const fileContainer = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -224,7 +224,7 @@ const infoContent = css`
     flex-shrink: 1;
 `;
 
-export const fileIconContainer = css`
+const fileIconContainer = css`
     position: relative;
     width: 40px;
     height: 40px;
@@ -314,7 +314,7 @@ export const fileIcon = {
     KEY: <IcYellow />,
 };
 
-const fileColor = {
+export const fileColor = {
     FILE: '#248BF2',
     PDF: '#E52243',
     ZIP: '#8518F2',

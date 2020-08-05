@@ -1,13 +1,30 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { MessageContent } from '../MessageContent';
+import { XViewRouterContext } from 'react-mental';
 import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
 import { MessageSenderContent } from '../MessageComponent';
+import { DonationContent } from './DonationContent';
+import { fileIcon, fileFormat } from './DocumentContent';
 import { TextBody } from 'openland-web/utils/TextStyles';
+import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { emoji } from 'openland-y-utils/emoji';
+import IcLink from 'openland-icons/s/ic-link-24.svg';
+import {
+    FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
+    FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase,
+    FullMessage_GeneralMessage_attachments_MessageRichAttachment,
+} from 'openland-api/spacex.types';
+
+type MsgAttachFile = FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
+type MsgAttachRich = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
+type MsgAttachPurchase = FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase;
 
 const replyMessageGroupClass = css`
+    cursor: pointer;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
     padding-left: 14px;
     position: relative;
     margin-bottom: 4px;
@@ -28,87 +45,218 @@ const replyMessageGroupClass = css`
     }
 `;
 
-const replyItemClass = css`
-    margin-bottom: 8px;
+const replyAttachPreviewClass = css`
+    position: relative;
+    margin-right: 12px;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 40px;
+    height: 40px;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 12px;
+    color: #fff;
 
-    &:last-child {
-        margin-bottom: 0;
+    & .format-text {
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: auto;
+        text-align: center;
+        bottom: 5px;
     }
 `;
 
-const forwardCaptionClass = css`
+const replyAttachPreviewLinkClass = css`
+    background-color: var(--backgroundTertiaryTrans);
+`;
+
+const replyAttachContentClass = css`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+`;
+
+const ellipsisText = css`
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+`;
+
+const attachTitleClass = css`
     color: var(--foregroundSecondary);
 `;
 
-export const ReplyMessagesGroup = React.memo(
-    (props: { quotedMessages: DataSourceWebMessageItem[]; isForward?: boolean }) => {
-        let firstMessage = props.quotedMessages[0];
+const attachTextClass = css`
+    color: var(--foregroundPrimary);
+`;
+
+interface ReplyMessageProps {
+    message: DataSourceWebMessageItem;
+}
+
+const ReplyMessage = React.memo((props: ReplyMessageProps) => {
+    const router = React.useContext(XViewRouterContext)!;
+
+    const { message } = props;
+    const { id, text, date, sender, attachments, sticker, senderNameEmojify } = message;
+
+    const onReplyClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+        router.navigate(`/message/${id}`);
+    };
+
+    const attach = attachments && !!attachments.length && attachments[0];
+
+    const imageAttach =
+        attach && attach.__typename === 'MessageAttachmentFile' && attach.fileMetadata.isImage
+            ? (attach as MsgAttachFile)
+            : null;
+    const documentAttach =
+        attach && attach.__typename === 'MessageAttachmentFile' && !attach.fileMetadata.isImage
+            ? (attach as MsgAttachFile)
+            : null;
+    const augmentAttach =
+        attach && attach.__typename === 'MessageRichAttachment' ? (attach as MsgAttachRich) : null;
+    const purchaseAttach =
+        attach && attach.__typename === 'MessageAttachmentPurchase'
+            ? (attach as MsgAttachPurchase)
+            : null;
+
+    const senderContent = (
+        <MessageSenderContent sender={sender} senderNameEmojify={senderNameEmojify} date={date} />
+    );
+
+    const attachFile = (title: string) => (
+        <div className={cx(attachTitleClass, ellipsisText, TextBody)}>{title}</div>
+    );
+
+    const attachText = (title: string) => (
+        <div className={cx(attachTextClass, ellipsisText, TextBody)}>{emoji(title)}</div>
+    );
+
+    if (imageAttach) {
+        const url = `https://ucarecdn.com/${imageAttach.fileId}/-/format/auto/-/`;
+        const ops = `scale_crop/40x40/`;
+        const opsRetina = `scale_crop/80x80/center/ 2x`;
         return (
-            <div className={replyMessageGroupClass}>
-                <MessageSenderContent
-                    sender={firstMessage.sender}
-                    senderNameEmojify={firstMessage.senderNameEmojify}
-                    date={firstMessage.date}
-                />
-                <div>
-                    {props.quotedMessages.map((q) => (
-                        <div className={replyItemClass} key={q.id}>
-                            <MessageContent
-                                id={q.id}
-                                text={q.text}
-                                textSpans={q.textSpans}
-                                edited={q.isEdited}
-                                reply={q.replyWeb}
-                                attachments={q.attachments}
-                                fallback={q.fallback}
-                                isOut={q.isOut}
-                                sticker={q.sticker}
-                                isReply={true}
-                                isForward={props.isForward}
-                            />
-                        </div>
-                    ))}
+            <div className={replyMessageGroupClass} onClick={onReplyClick}>
+                <div className={replyAttachPreviewClass}>
+                    <ImgWithRetry src={url + ops} srcSet={url + opsRetina} width={40} height={40} />
+                </div>
+                <div className={replyAttachContentClass}>
+                    {senderContent}
+                    {attachFile('Photo')}
                 </div>
             </div>
         );
-    },
-);
+    }
 
-const ForwardCaption = React.memo((props: { isForward?: boolean; messagesCount: number }) => {
-    return props.isForward ? (
-        <span className={cx(TextBody, forwardCaptionClass)}>
-            {props.messagesCount} forwarded {props.messagesCount === 1 ? 'message' : 'messages'}
-        </span>
-    ) : null;
+    if (documentAttach) {
+        const isVideo =
+            (documentAttach.fileMetadata.mimeType &&
+                !!documentAttach.fileMetadata.mimeType.match('video')) ||
+            fileFormat(name) === 'VIDEO';
+        return (
+            <div className={replyMessageGroupClass} onClick={onReplyClick}>
+                <div className={replyAttachPreviewClass}>
+                    {fileIcon[fileFormat(documentAttach.fileMetadata.name)]}
+                    <div className="format-text">{fileFormat(name)}</div>
+                </div>
+                <div className={replyAttachContentClass}>
+                    {senderContent}
+                    {attachFile(isVideo ? 'Video' : documentAttach.fileMetadata.name)}
+                </div>
+            </div>
+        );
+    }
+
+    if (augmentAttach) {
+        const ops = `-/format/auto/-/scale_crop/40x40/`;
+        const opsRetina = `-/format/auto/-/scale_crop/80x80/center/ 2x`;
+        return (
+            <div className={replyMessageGroupClass} onClick={onReplyClick}>
+                {augmentAttach.image && augmentAttach.image.url ? (
+                    <div className={cx(replyAttachPreviewClass, replyAttachPreviewLinkClass)}>
+                        <ImgWithRetry
+                            src={augmentAttach.image.url + ops}
+                            srcSet={augmentAttach.image.url + opsRetina}
+                            width={40}
+                            height={40}
+                        />
+                    </div>
+                ) : (
+                    <div className={cx(replyAttachPreviewClass, replyAttachPreviewLinkClass)}>
+                        <UIcon color="var(--foregroundTertiary)" icon={<IcLink />} />
+                    </div>
+                )}
+                <div className={replyAttachContentClass}>
+                    {senderContent}
+                    {attachText(text || 'Link')}
+                </div>
+            </div>
+        );
+    }
+
+    if (purchaseAttach) {
+        return (
+            <div className={replyMessageGroupClass} onClick={onReplyClick}>
+                <div className={replyAttachContentClass}>
+                    {senderContent}
+                    <DonationContent
+                        amount={purchaseAttach.purchase.amount}
+                        state={purchaseAttach.purchase.state}
+                    />
+                </div>
+            </div>
+        );
+    }
+
+    if (sticker) {
+        const url = `https://ucarecdn.com/${sticker.image.uuid}/-/format/auto/-/`;
+        const ops = `scale_crop/40x40/`;
+        const opsRetina = `scale_crop/80x80/center/ 2x`;
+        return (
+            <div className={replyMessageGroupClass} onClick={onReplyClick}>
+                <div className={replyAttachPreviewClass}>
+                    <ImgWithRetry src={url + ops} srcSet={url + opsRetina} width={40} height={40} />
+                </div>
+                <div className={replyAttachContentClass}>
+                    {senderContent}
+                    {attachFile('Sticker')}
+                </div>
+            </div>
+        );
+    }
+
+    if (text) {
+        return (
+            <div className={replyMessageGroupClass} onClick={onReplyClick}>
+                <div className={replyAttachContentClass}>
+                    {senderContent}
+                    {attachText(text)}
+                </div>
+            </div>
+        );
+    }
+
+    return null;
 });
 
-export const ReplyContent = React.memo(
-    (props: { quotedMessages: DataSourceWebMessageItem[]; isForward: boolean }) => {
-        let content = props.quotedMessages
-            .reduce((res, message, i, source) => {
-                // group messages by sender
-                let prev = source[i - 1];
-                let group: DataSourceWebMessageItem[];
-                if (message.sender.id === (prev && prev.sender.id)) {
-                    group = res[res.length - 1];
-                } else {
-                    group = [];
-                    res.push(group);
-                }
-                group.push(message);
-                return res;
-            }, [] as DataSourceWebMessageItem[][])
-            .map((group, i) => {
-                return <ReplyMessagesGroup key={i} {...props} quotedMessages={group} />;
-            });
-        return (
-            <>
-                <ForwardCaption
-                    isForward={props.isForward}
-                    messagesCount={props.quotedMessages.length}
-                />
-                {content}
-            </>
-        );
-    },
-);
+interface ReplyGroupProps {
+    quotedMessages: DataSourceWebMessageItem[];
+}
+
+export const ReplyContent = React.memo((props: ReplyGroupProps) => {
+    return (
+        <>
+            {props.quotedMessages.map((i, j) => (
+                <ReplyMessage key={j} message={i} />
+            ))}
+        </>
+    );
+});

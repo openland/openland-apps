@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { SpannedView } from './SpannedView';
-import { Span, SpanType } from 'openland-y-utils/spans/Span';
+import { Span } from 'openland-y-utils/spans/Span';
 import { TextCaption } from 'openland-web/utils/TextStyles';
 
 export interface MessageTextComponentProps {
     mId?: string;
     spans: Span[];
     edited?: boolean;
-    shouldCrop?: boolean;
 }
 
 const spansMessageWrapper = css`
@@ -32,13 +31,6 @@ const styleSpansMessageContainer = css`
     }
 `;
 
-const cropTextStyle = css`
-    max-width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-`;
-
 const EditLabelStyle = css`
     vertical-align: baseline;
     color: var(--foregroundTertiary);
@@ -47,23 +39,12 @@ const EditLabelStyle = css`
     user-select: none;
 `;
 
-const cropBy = {
-    [SpanType.loud]: 36,
-    [SpanType.emoji]: 46,
-    [SpanType.rotating]: 28,
-    [SpanType.insane]: 28,
-};
-
-export const MessageTextComponent = React.memo<MessageTextComponentProps>(props => {
-    const { shouldCrop, spans, edited } = props;
-    const [firstSpan] = spans;
-    const spanType = firstSpan && firstSpan.type;
-    const maxHeight = `${cropBy[spanType] || 24}px`;
-    const hasMaxHeight = shouldCrop && spanType !== SpanType.code_block;
+export const MessageTextComponent = React.memo((props: MessageTextComponentProps) => {
+    const { spans, edited } = props;
 
     return (
         <div className={spansMessageWrapper}>
-            <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)} style={{maxHeight: hasMaxHeight ? maxHeight : undefined}}>
+            <div className={styleSpansMessageContainer}>
                 <span>
                     <SpannedView spans={spans} mId={props.mId} />
                     {!!edited && (
