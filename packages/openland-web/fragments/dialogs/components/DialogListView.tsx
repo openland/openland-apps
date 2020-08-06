@@ -36,6 +36,7 @@ const searchWrapper = css`
     position: relative;
     overflow: hidden;
     transition: padding 100ms cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: padding;
 
     &.is-active {
         padding-right: 80px;
@@ -54,6 +55,7 @@ const searchButton = css`
     top: 0; right: 0; bottom: 0;
     transform: translateX(20px);
     transition: transform 100ms cubic-bezier(0.4, 0, 0.2, 1), opacity 100ms cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity;
     opacity: 0;
     pointer-events: none;
 `;
