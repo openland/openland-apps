@@ -128,53 +128,67 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
         blur: () => inputRef.current?.blur(),
     }));
 
-    return (
-        <XView flexDirection="row" {...other}>
-            <XView flexGrow={1} position="relative">
-                <div className={searchIconWrapper}>
-                    {loading ? <ThinLoaderIcon className={rotate} /> : <SearchIcon />}
-                </div>
-                {props.value && props.value.length > 0 && (
-                    <div
-                        tabIndex={-1}
-                        className={resetClassName}
-                        onClick={() => {
-                            inputRef.current?.focus();
-                            handleChange('');
-                        }}
-                    >
-                        <ClearIcon />
-                    </div>
-                )}
-                <input
-                    type="search"
-                    className={cx('x', TextBody, field, rounded && fieldRounded)}
-                    value={val || ''}
-                    onChange={e => handleChange(e.target.value)}
-                    onKeyDown={onKeyDown}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
-                    placeholder={placeholder}
-                    autoFocus={autoFocus}
-                    ref={inputRef}
-                    autoComplete="off"
-                />
-            </XView>
-
-            {showCancel && (
-                <XView
-                    onClick={onCancel}
-                    marginRight={-16}
-                    paddingHorizontal={16}
-                    color="var(--accentPrimary)"
-                    hoverColor="var(--accentPrimaryHover)"
-                    paddingVertical={8}
-                    cursor="pointer"
-                    {...TextStyles.Body}
+    const content = (
+        <>
+            <div className={searchIconWrapper}>
+                {loading ? <ThinLoaderIcon className={rotate} /> : <SearchIcon />}
+            </div>
+            {props.value && props.value.length > 0 && (
+                <div
+                    tabIndex={-1}
+                    className={resetClassName}
+                    onClick={() => {
+                        inputRef.current?.focus();
+                        handleChange('');
+                    }}
                 >
-                    Cancel
-                </XView>
+                    <ClearIcon />
+                </div>
             )}
+            <input
+                type="search"
+                className={cx('x', TextBody, field, rounded && fieldRounded)}
+                value={val || ''}
+                onChange={e => handleChange(e.target.value)}
+                onKeyDown={onKeyDown}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                placeholder={placeholder}
+                autoFocus={autoFocus}
+                ref={inputRef}
+                autoComplete="off"
+            />
+        </>
+    );
+
+    if (!!onCancel) {
+        return (
+            <XView flexDirection="row" {...other}>
+                <XView flexGrow={1} position="relative">
+                    {content}
+                </XView>
+
+                {showCancel && (
+                    <XView
+                        onClick={onCancel}
+                        marginRight={-16}
+                        paddingHorizontal={16}
+                        color="var(--accentPrimary)"
+                        hoverColor="var(--accentPrimaryHover)"
+                        paddingVertical={8}
+                        cursor="pointer"
+                        {...TextStyles.Body}
+                    >
+                        Cancel
+                    </XView>
+                )}
+            </XView>
+        );
+    }
+
+    return (
+        <XView position="relative" {...other}>
+            {content}
         </XView>
     );
 });
