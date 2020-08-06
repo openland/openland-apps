@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import { XViewRouterContext, XViewRouteContext, XViewRoute } from 'react-mental';
 import { GlobalSearch_items } from 'openland-api/spacex.types';
@@ -17,6 +17,7 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { CallFloating } from 'openland-web/modules/conference/CallFloating';
 import { DiscoverFooter } from 'openland-web/fragments/discover/components/DiscoverFooter';
 import { DialogSearchMessages, DialogSearchMessagesRef } from './DialogSearchMessages';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 
 const containerStyle = css`
   display: flex;
@@ -26,6 +27,35 @@ const containerStyle = css`
   flex-basis: 0;
   min-height: 0;
   transform: translateZ(0);
+`;
+
+const searchWrapper = css`
+    flex-direction: row;
+    padding: 0 16px;
+    margin: 0 0 16px;
+    position: relative;
+    overflow: hidden;
+    transition: padding 100ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    &.is-active {
+        padding-right: 80px;
+
+        .search-button {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: initial;
+        }
+    }
+`;
+
+const searchButton = css`
+    width: 80px;
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    transform: translateX(20px);
+    transition: transform 100ms cubic-bezier(0.4, 0, 0.2, 1), opacity 100ms cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    pointer-events: none;
 `;
 
 export interface DialogListViewProps {
@@ -176,18 +206,32 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
 
     return (
         <div className={containerStyle}>
-            <USearchInput
-                value={globalSearch.value}
-                onChange={globalSearch.onChange}
-                onFocus={onInputFocus}
-                onCancel={onInputCancel}
-                ref={ref}
-                marginHorizontal={16}
-                marginBottom={16}
-                placeholder="Groups, people and more"
-                showCancel={isSearching}
-                loading={loading}
-            />
+            <div className={cx('x', searchWrapper, isSearching && 'is-active')}>
+                <USearchInput
+                    value={globalSearch.value}
+                    onChange={globalSearch.onChange}
+                    onFocus={onInputFocus}
+                    ref={ref}
+                    placeholder="Groups, people and more"
+                    loading={loading}
+                    flexGrow={1}
+                />
+
+                <div className={cx(searchButton, 'search-button')}>
+                    <XView
+                        onClick={onInputCancel}
+                        color="var(--accentPrimary)"
+                        hoverColor="var(--accentPrimaryHover)"
+                        paddingVertical={8}
+                        cursor="pointer"
+                        paddingHorizontal={16}
+                        {...TextStyles.Body}
+                    >
+                        Cancel
+                    </XView>
+                </div>
+            </div>
+
             <XView flexGrow={1} flexBasis={0} minHeight={0}>
                 {isSearching && (
                     <DialogSearchMessages

@@ -4,7 +4,7 @@ import { css, cx } from 'linaria';
 import SearchIcon from 'openland-icons/ic-search-16.svg';
 import ClearIcon from 'openland-icons/ic-close-16.svg';
 import ThinLoaderIcon from 'openland-icons/s/ic-loader-thin-16.svg';
-import { TextBody, TextStyles } from 'openland-web/utils/TextStyles';
+import { TextBody } from 'openland-web/utils/TextStyles';
 import { rotate } from 'openland-x/XLoader';
 
 const field = css`
@@ -88,13 +88,11 @@ interface USearchInputProps extends XViewProps {
     onKeyDown?: React.KeyboardEventHandler;
     onFocus?: React.FocusEventHandler;
     onBlur?: React.FocusEventHandler;
-    onCancel?: () => void;
     autoFocus?: boolean;
     placeholder?: string;
     rounded?: boolean;
     className?: string;
     loading?: boolean;
-    showCancel?: boolean;
 }
 
 export interface USearchInputRef {
@@ -104,7 +102,7 @@ export interface USearchInputRef {
 }
 
 export const USearchInput = React.forwardRef((props: USearchInputProps, ref: React.RefObject<USearchInputRef>) => {
-    const { value, onChange, autoFocus, onKeyDown, onFocus, onBlur, rounded, loading, className, placeholder = 'Search', showCancel, onCancel, ...other } = props;
+    const { value, onChange, autoFocus, onKeyDown, onFocus, onBlur, rounded, loading, className, placeholder = 'Search', ...other } = props;
 
     const [val, setValue] = React.useState(typeof value === 'string' ? value : '');
     const inputRef = React.useRef<HTMLInputElement>(null);
@@ -128,8 +126,8 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
         blur: () => inputRef.current?.blur(),
     }));
 
-    const content = (
-        <>
+    return (
+        <XView position="relative" {...other}>
             <div className={searchIconWrapper}>
                 {loading ? <ThinLoaderIcon className={rotate} /> : <SearchIcon />}
             </div>
@@ -158,37 +156,6 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
                 ref={inputRef}
                 autoComplete="off"
             />
-        </>
-    );
-
-    if (!!onCancel) {
-        return (
-            <XView flexDirection="row" {...other}>
-                <XView flexGrow={1} position="relative">
-                    {content}
-                </XView>
-
-                {showCancel && (
-                    <XView
-                        onClick={onCancel}
-                        marginRight={-16}
-                        paddingHorizontal={16}
-                        color="var(--accentPrimary)"
-                        hoverColor="var(--accentPrimaryHover)"
-                        paddingVertical={8}
-                        cursor="pointer"
-                        {...TextStyles.Body}
-                    >
-                        Cancel
-                    </XView>
-                )}
-            </XView>
-        );
-    }
-
-    return (
-        <XView position="relative" {...other}>
-            {content}
         </XView>
     );
 });
