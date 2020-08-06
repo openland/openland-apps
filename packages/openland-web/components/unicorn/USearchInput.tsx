@@ -94,7 +94,7 @@ interface USearchInputProps extends XViewProps {
     rounded?: boolean;
     className?: string;
     loading?: boolean;
-    focused?: boolean;
+    showCancel?: boolean;
 }
 
 export interface USearchInputRef {
@@ -104,7 +104,7 @@ export interface USearchInputRef {
 }
 
 export const USearchInput = React.forwardRef((props: USearchInputProps, ref: React.RefObject<USearchInputRef>) => {
-    const { value, onChange, autoFocus, onKeyDown, onFocus, onBlur, rounded, loading, className, placeholder = 'Search', focused, onCancel, ...other } = props;
+    const { value, onChange, autoFocus, onKeyDown, onFocus, onBlur, rounded, loading, className, placeholder = 'Search', showCancel, onCancel, ...other } = props;
 
     const [val, setValue] = React.useState(typeof value === 'string' ? value : '');
     const inputRef = React.useRef<HTMLInputElement>(null);
@@ -161,7 +161,7 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
                 />
             </XView>
 
-            {focused && (
+            {showCancel && (
                 <XView
                     onClick={onCancel}
                     marginRight={-16}
