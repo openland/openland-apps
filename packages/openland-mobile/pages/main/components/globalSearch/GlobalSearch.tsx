@@ -4,7 +4,6 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SRouter } from 'react-native-s/SRouter';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { GlobalSearchItem } from './GlobalSearchItems';
-import { randomEmptyPlaceholderEmoji } from 'openland-mobile/utils/tolerance';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SNativeConfig } from 'react-native-s/SNativeConfig';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
@@ -18,6 +17,9 @@ import { GlobalSearchMessage } from './GlobalSearchMessage';
 import { SDevice } from 'react-native-s/SDevice';
 import { DeviceConfig } from 'react-native-s/navigation/DeviceConfig';
 import { InvalidateSync } from '@openland/patterns';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { ZButton } from 'openland-mobile/components/ZButton';
+import { handleGlobalInvitePress } from '../../Settings';
 
 export interface GlobalSearchProps {
     query: string;
@@ -37,19 +39,35 @@ export const EmptyView = React.memo((props: { theme: ThemeGlobal }) => (
             width: '100%',
             height: '100%',
             flexGrow: 1,
-            alignItems: 'center',
             justifyContent: 'center',
+            padding: 32
         }}
     >
         <Text
             style={{
-                fontSize: 22,
-                textAlignVertical: 'center',
+                ...TextStyles.Title2,
+                textAlign: 'center',
                 color: props.theme.foregroundPrimary,
+                marginBottom: 4
             }}
+            allowFontScaling={false}
         >
-            {'Nothing found' + randomEmptyPlaceholderEmoji()}
+            Nothing found
         </Text>
+        <Text
+            style={{
+                ...TextStyles.Body,
+                textAlign: 'center',
+                color: props.theme.foregroundSecondary,
+                marginBottom: 16
+            }}
+            allowFontScaling={false}
+        >
+            Didn’t find your friends at Openland? Let’s invite them to stay in touch
+        </Text>
+        <View alignItems="center">
+            <ZButton title="Invite friends" onPress={handleGlobalInvitePress} />
+        </View>
     </View>
 ));
 
