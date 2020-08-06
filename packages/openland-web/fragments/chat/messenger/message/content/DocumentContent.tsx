@@ -433,7 +433,7 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
         <a
             className={cx(fileContainer, 'message-document-wrapper', props.className)}
             onClick={onClick}
-            href={!props.onClick ? fileSrc : undefined}
+            href={!props.onClick && !isUpload ? fileSrc : undefined}
         >
             <div className={infoContent}>
                 <div className={fileIconContainer} style={isUpload ? uploadStyles : undefined}>
@@ -443,6 +443,7 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
                             size="small"
                             transparent={true}
                             progress={Math.round(progress! * 100)}
+                            cancelable={!isUpload}
                         />
                     ) : (
                         <div className={cx(iconInfo, 'icon-info')}>
