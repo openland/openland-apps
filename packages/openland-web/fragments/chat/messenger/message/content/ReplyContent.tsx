@@ -84,6 +84,19 @@ const replyAttachPreviewLinkClass = css`
     background-color: var(--backgroundTertiaryTrans);
 `;
 
+const replyAttachImageClass = css`
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 1px solid var(--borderLight);
+        border-radius: 8px;
+    }
+`;
+
 const replyAttachContentClass = css`
     display: flex;
     flex-direction: column;
@@ -176,7 +189,7 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
                 className={isReplyAction ? replyBasicStyle : replyMessageGroupClass}
                 onClick={isReplyAction ? undefined : onReplyClick}
             >
-                <div className={replyAttachPreviewClass}>
+                <div className={cx(replyAttachPreviewClass, replyAttachImageClass)}>
                     <ImgWithRetry src={url + ops} srcSet={url + opsRetina} width={40} height={40} />
                 </div>
                 <div className={replyAttachContentClass}>
@@ -218,7 +231,13 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
                 onClick={isReplyAction ? undefined : onReplyClick}
             >
                 {augmentAttach.image && augmentAttach.image.url ? (
-                    <div className={cx(replyAttachPreviewClass, replyAttachPreviewLinkClass)}>
+                    <div
+                        className={cx(
+                            replyAttachPreviewClass,
+                            replyAttachImageClass,
+                            replyAttachPreviewLinkClass,
+                        )}
+                    >
                         <ImgWithRetry
                             src={augmentAttach.image.url + ops}
                             srcSet={augmentAttach.image.url + opsRetina}
@@ -265,7 +284,7 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
                 className={isReplyAction ? replyBasicStyle : replyMessageGroupClass}
                 onClick={isReplyAction ? undefined : onReplyClick}
             >
-                <div className={replyAttachPreviewClass}>
+                <div className={cx(replyAttachPreviewClass, replyAttachImageClass)}>
                     <ImgWithRetry src={url + ops} srcSet={url + opsRetina} width={40} height={40} />
                 </div>
                 <div className={replyAttachContentClass}>
