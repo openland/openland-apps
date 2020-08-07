@@ -9,6 +9,7 @@ import { SDevice } from 'react-native-s/SDevice';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { hexToRgba } from 'openland-y-utils/hexToRgba';
 import { HighlightAlpha } from 'openland-mobile/styles/AppStyles';
+import { MessagesActionsStateProvider } from 'openland-y-runtime/MessagesActionsState';
 
 export interface RootProps {
     width: number;
@@ -126,5 +127,9 @@ export const Root = React.memo<RootProps>((props) => {
     //     AlertBlanket.alert([error.name, error.message, isFatal] + '\n\n' + JSON.stringify(error.stack));
     // });
 
-    return <RootContainer {...props} theme={theme} />;
+    return (
+        <MessagesActionsStateProvider>
+            <RootContainer {...props} theme={theme} />
+        </MessagesActionsStateProvider>
+    );
 });

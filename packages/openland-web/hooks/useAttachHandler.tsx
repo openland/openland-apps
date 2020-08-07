@@ -2,10 +2,13 @@ import * as React from 'react';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { TypingType } from 'openland-api/spacex.types';
 import { showAttachConfirm } from 'openland-web/fragments/chat/components/AttachConfirm';
+import { useChatMessagesActions } from 'openland-y-runtime/MessagesActionsState';
 
 export const useAttachHandler = (props: { conversationId: string }) => {
     let messenger = React.useContext(MessengerContext);
     let conversation = messenger.getConversation(props.conversationId);
+    let privateUserId = conversation.isPrivate ? conversation.user?.id : undefined;
+    let messagesActions = useChatMessagesActions({ conversationId: props.conversationId, userId: privateUserId });
 
     let refreshFileUploadingTyping = React.useCallback((filename?: string) => {
         const lowercaseFilename = filename && filename.toLowerCase();
@@ -33,7 +36,7 @@ export const useAttachHandler = (props: { conversationId: string }) => {
         });
     }, [messenger]);
 
-    let handleAttach = React.useCallback((files: File[], onAttach?: () => void) => {
+    let handleAttach = (files: File[], onAttach?: () => void) => {
         if (files.length) {
             showAttachConfirm(
                 files,
@@ -41,12 +44,14 @@ export const useAttachHandler = (props: { conversationId: string }) => {
                     if (onAttach) {
                         onAttach();
                     }
-                    return res.map(({ file, localImage }) => conversation!.sendFile(file, localImage));
+                    let messages = messagesActions.prepareToSend();
+                    let keys = res.map(({ file, localImage }) => conversation!.sendFile(file, localImage, messages));
+                    return keys;
                 },
                 refreshFileUploadingTyping,
                 endFileUploadingTyping
             );
         }
-    }, [conversation, refreshFileUploadingTyping, endFileUploadingTyping]);
+    };
     return handleAttach;
 };

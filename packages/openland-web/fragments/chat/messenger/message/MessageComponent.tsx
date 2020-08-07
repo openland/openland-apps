@@ -21,6 +21,7 @@ import { emoji } from 'openland-y-utils/emoji';
 import StarIcon from 'openland-icons/s/ic-star-16.svg';
 import IcPending from 'openland-icons/s/ic-pending-16.svg';
 import IcSuccess from 'openland-icons/s/ic-success-16.svg';
+import { useChatMessagesActions } from 'openland-y-runtime/MessagesActionsState';
 
 const senderContainer = css`
     display: flex;
@@ -358,6 +359,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
     const layout = useLayout();
+    const { toggleSelect } = useChatMessagesActions({ conversationId: engine.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
 
     React.useEffect(() => {
         let timer: any;
@@ -387,20 +389,21 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     attachesClassNamesRef.current = attachesClassNames;
 
     const selectedRef = React.useRef(false);
-
+    const { getState } = useChatMessagesActions({ conversationId: engine.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
+    const actionsState = getState();
+    const isSelected = actionsState.action === 'selected' && actionsState.messages.some(m => m.key === message.key);
     React.useEffect(() => {
-        return engine.messagesActionsStateEngine.listenSelect(message, (selected) => {
-            selectedRef.current = selected;
+        selectedRef.current = isSelected;
 
-            if (containerRef.current) {
-                containerRef.current.className = cx(
-                    messageContainerClass,
-                    attachesClassNamesRef.current,
-                    selected && 'message-selected',
-                );
-            }
-        });
-    }, []);
+        if (containerRef.current) {
+            containerRef.current.className = cx(
+                messageContainerClass,
+                attachesClassNamesRef.current,
+                isSelected && 'message-selected',
+            );
+        }
+    }, [isSelected]);
+
     const onSelect = React.useCallback(() => {
         let selection = window.getSelection();
         if (selection && layout !== 'mobile') {
@@ -409,8 +412,8 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                 return;
             }
         }
-        engine.messagesActionsStateEngine.selectToggle(message);
-    }, [message.id]);
+        toggleSelect(message);
+    }, [message.id, toggleSelect]);
 
     const buttons = (
         <div className={buttonsClass}>

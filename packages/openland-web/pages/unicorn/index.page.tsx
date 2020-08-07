@@ -23,6 +23,7 @@ import ProfileActiveIcon from './navigation/icon_profile_active.svg';
 import { ContactsFragment } from 'openland-web/fragments/contacts/ContactsFragment';
 import { LocalContactsProvider } from 'openland-y-utils/contacts/LocalContacts';
 import { UToastProvider } from 'openland-web/components/unicorn/UToast';
+import { MessagesActionsStateProvider } from 'openland-y-runtime/MessagesActionsState';
 
 const Unicorn = React.memo(() => {
     const isSuperadmin = useRole('super-admin');
@@ -125,9 +126,11 @@ export default React.memo(() => {
             <React.Suspense fallback={<XLoader loading={true} />}>
                 <AuthRouter>
                     <LocalContactsProvider>
-                        <UToastProvider>
-                            <Unicorn />
-                        </UToastProvider>
+                        <MessagesActionsStateProvider>
+                            <UToastProvider>
+                                <Unicorn />
+                            </UToastProvider>
+                        </MessagesActionsStateProvider>
                     </LocalContactsProvider>
                 </AuthRouter>
             </React.Suspense>
