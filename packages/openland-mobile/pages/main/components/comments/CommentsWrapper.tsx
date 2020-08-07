@@ -232,8 +232,8 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
     let suggestions: JSX.Element | null = null;
     let quoted: JSX.Element | null = null;
 
-    if (chat && chat.__typename === 'SharedRoom' && inputFocused && activeWord && activeWord.startsWith('@')) {
-        suggestions = <MentionsSuggestions activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={chat.id} isChannel={chat.isChannel} />;
+    if (chat && inputFocused && activeWord && activeWord.startsWith('@')) {
+        suggestions = <MentionsSuggestions activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={chat.id} isChannel={chat.__typename === 'SharedRoom' && chat.isChannel} isPrivate={chat.__typename === 'PrivateRoom'} />;
     }
 
     if (inputFocused && activeWord && activeWord.startsWith(':')) {
