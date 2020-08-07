@@ -5,7 +5,7 @@ import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile, SharedMediaType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_sender, SharedMedia_sharedMedia_edges_node_message } from 'openland-api/spacex.types';
 import { Page } from 'openland-unicorn/Page';
 import { XScrollValues } from 'openland-x/XScrollView3';
-import { XView } from 'react-mental';
+import { XView, XViewRouter } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 import { TextTitle3, TextStyles } from 'openland-web/utils/TextStyles';
 import { css, cx } from 'linaria';
@@ -23,10 +23,10 @@ import { TabItem, useTabs, Tabs } from 'openland-web/components/unicorn/UTabs';
 import { showChatPicker } from '../showChatPicker';
 import { MediaContent } from './MediaContent';
 import { DocContent } from './DocContent';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { convertPartialMessage } from 'openland-engines/messenger/ConversationEngine';
 import { RichContent } from './RichContent';
-import { useForward } from '../messenger/message/actions/forward';
+import { forward } from '../messenger/message/actions/forward';
 
 interface SharedMediaProps {
     chatId: string;
@@ -107,22 +107,18 @@ export const Footer = (props: { useCorners: boolean, children: any }) => {
     );
 };
 
-export const useSharedItemMenu = (conversationId: string) => {
-    const forward = useForward(conversationId);
-    const messenger = React.useContext(MessengerContext);
-    return (ctx: UPopperController, item: SharedItem) => {
-        const builder = new UPopperMenuBuilder();
-        builder.item({
-            title: 'Forward', icon: <ForwardIcon />, onClick: () => {
-                if (item.message.__typename !== 'GeneralMessage') {
-                    showChatPicker(() => { /* noop */ });
-                } else {
-                    forward([convertPartialMessage(item.message, 'somewhere', messenger)]);
-                }
+export const sharedItemMenu = (messenger: MessengerEngine, router: XViewRouter, ctx: UPopperController, item: SharedItem) => {
+    const builder = new UPopperMenuBuilder();
+    builder.item({
+        title: 'Forward', icon: <ForwardIcon />, onClick: () => {
+            if (item.message.__typename !== 'GeneralMessage') {
+                showChatPicker(() => { /* noop */ });
+            } else {
+                forward([convertPartialMessage(item.message, 'somewhere', messenger)], messenger, router);
             }
-        });
-        return builder.build(ctx);
-    };
+        }
+    });
+    return builder.build(ctx);
 };
 
 const monthsFull = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -210,9 +206,9 @@ const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps, ref: R
             }
         } else {
             if (i.attach.__typename === 'MessageAttachmentFile') {
-                items.push(<DocContent key={'doc_' + key} item={i as SharedItemFile} chatId={props.chatId} />);
+                items.push(<DocContent key={'doc_' + key} item={i as SharedItemFile} />);
             } else if (i.attach.__typename === 'MessageRichAttachment') {
-                items.push(<RichContent key={'rich_' + key} item={i as SharedItemRich} chatId={props.chatId} />);
+                items.push(<RichContent key={'rich_' + key} item={i as SharedItemRich} />);
             } else {
                 items.push(<XView key={'x_' + key} padding={8} flexGrow={1}>Unknown content</XView>);
             }

@@ -8,7 +8,6 @@ import { DownloadManagerInstance } from './DownloadManager';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 import UUID from 'uuid/v4';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
-import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 
 export interface UploadState {
     status: UploadStatus;
@@ -41,7 +40,7 @@ export class UploadManager {
         return this.getWatcher(conversationId).watch(handler);
     }
 
-    registerMessageUpload = async (conversationId: string, name: string, uri: string, quoted: DataSourceMessageItem[] | undefined, fileSize?: number) => {
+    registerMessageUpload = async (conversationId: string, name: string, uri: string, fileSize?: number) => {
         if (!(await checkPermissions('android-storage'))) {
             return;
         }
@@ -72,7 +71,7 @@ export class UploadManager {
                 }
             }),
             watch: (handler) => w.watch(handler)
-        }, undefined, quoted);
+        });
         this._watchers.set(messageId, w);
         this._queue.push({ messageId, name, uri, retryCount: 0 });
 

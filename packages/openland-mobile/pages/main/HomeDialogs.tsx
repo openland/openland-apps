@@ -24,13 +24,13 @@ const DialogsComponent = React.memo((props: PageProps) => {
                 if (props.router.params.share.files) {
                     for (let attach of props.router.params.share.files) {
                         let path = attach.split('/');
-                        await UploadManagerInstance.registerMessageUpload(id, path[path.length - 1], attach, undefined);
+                        await UploadManagerInstance.registerMessageUpload(id, path[path.length - 1], attach);
                     }
                 }
 
                 if (props.router.params.share.strings) {
                     for (let s of props.router.params.share.strings) {
-                        getMessenger().engine.getConversation(id).sendMessage(s, [], undefined);
+                        getMessenger().engine.getConversation(id).sendMessage(s, []);
                     }
                 }
                 getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
@@ -55,7 +55,7 @@ const DialogsComponent = React.memo((props: PageProps) => {
                 <DialogItemViewAsync item={item} onPress={(id, i) => handlePress(id, (i as DialogDataSourceItem).title)} showDiscover={() => false} />
             );
         }
-        ) : getMessenger().getDialogs(setTab);
+    ) : getMessenger().getDialogs(setTab);
 
     const globalSearchValue = props.router.params.searchValue;
 

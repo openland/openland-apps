@@ -108,7 +108,7 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
                     return false;
                 }
             }
-            conversation.sendMessage(text, mentions, undefined);
+            conversation.sendMessage(text, mentions);
             editor.clear();
             props.ctx.hide();
         } else {
@@ -119,7 +119,7 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
     };
     let onStickerSent = (sticker: StickerFragment) => {
         // TODO: add typing?
-        conversation.sendSticker(sticker, undefined);
+        conversation.sendSticker(sticker);
         props.ctx.hide();
     };
     const [activeWord, setActiveWord] = React.useState<string | null>(null);

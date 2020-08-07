@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { useSharedItemMenu, SharedItemRich } from './SharedMediaFragment';
+import { sharedItemMenu, SharedItemRich } from './SharedMediaFragment';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import ManageVerticalIcon from 'openland-icons/ic-more-v.svg';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { XViewRouterContext, XView } from 'react-mental';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import LinkIcon from 'openland-icons/s/ic-link-24.svg';
@@ -104,11 +105,11 @@ const MobilePadding = css`
     padding: 16px 32px;
 `;
 
-export const RichContent = (props: { item: SharedItemRich, chatId: string }) => {
+export const RichContent = (props: { item: SharedItemRich }) => {
+    const messenger = React.useContext(MessengerContext);
     const router = React.useContext(XViewRouterContext)!;
-    const sharedItemMenu = useSharedItemMenu(props.chatId);
     const menuClick = React.useCallback((ctx: UPopperController) => {
-        return sharedItemMenu(ctx, props.item);
+        return sharedItemMenu(messenger, router, ctx, props.item);
     }, []);
     const [menuVisible, menuShow] = usePopper({ placement: 'bottom-start', hideOnClick: true }, menuClick);
 

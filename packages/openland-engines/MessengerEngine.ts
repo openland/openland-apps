@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MessageSender } from './messenger/MessageSender';
-import { ConversationEngine } from './messenger/ConversationEngine';
+import { ConversationEngine, DataSourceMessageItem } from './messenger/ConversationEngine';
 import { DialogSequenceEngine } from './messenger/DialogSequenceEngine';
 import { UserShort, ChatUpdateFragment_ChatMessageReceived, TypingType } from 'openland-api/spacex.types';
 import { NotificationsEngine } from './NotificationsEngine';
@@ -17,6 +17,7 @@ import { createLogger } from 'mental-log';
 import { UserStorageEngine } from './UserStorageEngine';
 import { EngineOptions } from './EnginesOptions';
 import { InMemoryKeyValueStore } from 'openland-y-utils/InMemoryKeyValueStore';
+import { MessagesActionsStateEngine } from './messenger/MessagesActionsState';
 import { WalletEngine } from './wallet/WalletEngine';
 
 const log = createLogger('Engine');
@@ -33,6 +34,7 @@ export class MessengerEngine {
     readonly calls: CallsEngine;
     readonly userStorage: UserStorageEngine;
     readonly options: EngineOptions;
+    readonly forwardBuffer = new Map<string, DataSourceMessageItem[]>();
     readonly activeConversations = new Map<string, ConversationEngine>();
     readonly wallet: WalletEngine;
     private readonly createEntityState: CreateEntityEngine;
@@ -153,6 +155,25 @@ export class MessengerEngine {
             })();
         }
         return this.activeConversations.get(conversationId)!!;
+    }
+
+    convertForward(forward: MessagesActionsStateEngine | DataSourceMessageItem[]) {
+        if (Array.isArray(forward)) {
+            return forward;
+        } else {
+            const messages = forward.getState().messages;
+            forward.clear();
+            return messages;
+        }
+    }
+    forward(from: MessagesActionsStateEngine | DataSourceMessageItem[], toId: string) {
+        let messages: DataSourceMessageItem[] = this.convertForward(from);
+        let target = this.activeUserConversations.get(toId) || this.activeConversations.get(toId);
+        if (!target) {
+            this.forwardBuffer.set(toId, messages);
+        } else {
+            target.messagesActionsStateEngine.forward(messages);
+        }
     }
 
     getTypings(conversationId?: string) {

@@ -7,7 +7,7 @@ import CommentIcon from 'openland-icons/s/ic-message-24.svg';
 import LikeIcon from 'openland-icons/s/ic-like-24.svg';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { useBuildMessageMenu } from './MessageMenu';
+import { buildMessageMenu } from './MessageMenu';
 import { XViewRouterContext } from 'react-mental';
 import { MessageReactionType } from 'openland-api/spacex.types';
 import { ReactionPicker, ReactionPickerInstance } from '../reactions/ReactionPicker';
@@ -69,10 +69,9 @@ export const HoverMenu = React.memo((props: HoverMenuProps) => {
     );
 
     messageRef.current = message;
-    const buildMessageMenu = useBuildMessageMenu(props.engine);
     const [menuVisible, menuShow] = usePopper(
-        { placement: menuPlacement, hideOnClick: true, updatedDeps: buildMessageMenu },
-        ctx => buildMessageMenu(ctx, messageRef.current),
+        { placement: menuPlacement, hideOnClick: true },
+        ctx => buildMessageMenu(ctx, messageRef.current, props.engine, router!),
     );
     const handleCommentClick = React.useCallback(
         e => {
@@ -109,11 +108,11 @@ export const HoverMenu = React.memo((props: HoverMenuProps) => {
         const messageKey = messageKeyRef.current;
         const reactions = reactionsRef.current;
 
-        const donate = async () => {
+        const donate = async() => {
             if (!messageId) {
-                return;
+                return;   
             }
-
+    
             try {
                 toastHandlers.show({
                     type: 'loading',

@@ -7,11 +7,11 @@ import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { trackEvent } from 'openland-mobile/analytics';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { useChatSelectionMode } from 'openland-engines/messenger/MessagesActionsState';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { useChatMessagesActions } from 'openland-y-runtime/MessagesActionsState';
 
 export interface MessagesListProps {
     engine: ConversationEngine;
@@ -96,12 +96,12 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
     }
 
     sendWave = () => {
-        this.props.engine.sendMessage('👋', [], undefined);
+        this.props.engine.sendMessage('👋', []);
         trackEvent('message_wave_sent');
     }
 
     sendMessage = (message: string) => {
-        this.props.engine.sendMessage(message, [], undefined);
+        this.props.engine.sendMessage(message, []);
         trackEvent('message_sent');
     }
 
@@ -167,8 +167,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
 
 export const ConversationView = (props: MessagesListProps) => {
     let theme = React.useContext(ThemeContext);
-    let { getState } = useChatMessagesActions({ conversationId: props.engine.conversationId });
-    let selectionMode = getState().action === 'selected';
+    let selectionMode = useChatSelectionMode(props.engine.messagesActionsStateEngine);
     return (
         <ASSafeAreaContext.Consumer>
             {area => (<ConversationViewComponent {...props} bottomInset={area.bottom} topInset={area.top} theme={theme} selectionMode={selectionMode} />)}

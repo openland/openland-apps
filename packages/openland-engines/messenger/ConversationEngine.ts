@@ -24,6 +24,7 @@ import { DataSource } from 'openland-y-utils/DataSource';
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
 import * as Types from 'openland-api/spacex.types';
 import { createLogger } from 'mental-log';
+import { MessagesActionsStateEngine } from './MessagesActionsState';
 import { SharedMediaEngine, SharedMediaItemType } from 'openland-engines/messenger/SharedMediaEngine';
 import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
 import { Span } from 'openland-y-utils/spans/Span';
@@ -258,6 +259,7 @@ export class ConversationEngine implements MessageSendHandler {
     private loadingForward?: string = undefined;
     private localMessagesMap = new Map<string, string>();
     private sharedMediaEngines: Record<SharedMediaItemType, SharedMediaEngine> | {};
+    readonly messagesActionsStateEngine: MessagesActionsStateEngine;
     readonly onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void;
 
     role?: Types.RoomMemberRole | null;
@@ -281,6 +283,7 @@ export class ConversationEngine implements MessageSendHandler {
         });
         // this.dataSourceLogger = new DataSourceLogger('conv:' + conversationId, this.dataSource);
 
+        this.messagesActionsStateEngine = new MessagesActionsStateEngine(this.engine);
         this.sharedMediaEngines = {};
         this.onNewMessage = onNewMessage;
 
@@ -352,8 +355,16 @@ export class ConversationEngine implements MessageSendHandler {
                 true;
         this.isChannel = initialChat.room && initialChat.room.__typename === 'SharedRoom' ? initialChat.room.isChannel : false;
         this.isPrivate = initialChat.room && initialChat.room.__typename === 'PrivateRoom' ? true : false;
+        let forwardBufferId = this.conversationId;
         if (initialChat.room && initialChat.room.__typename === 'PrivateRoom') {
             this.user = initialChat.room.user;
+            forwardBufferId = this.user.id;
+        }
+
+        let buffered = this.engine.forwardBuffer.get(forwardBufferId);
+        if (buffered) {
+            this.messagesActionsStateEngine.forward(buffered);
+            this.engine.forwardBuffer.delete(forwardBufferId);
         }
 
         this.state = new ConversationState(false, messages, this.groupMessages(messages), this.state.typing, this.state.loadingHistory, !!this.historyFullyLoaded, this.state.loadingForward, !!this.forwardFullyLoaded);
@@ -566,7 +577,7 @@ export class ConversationEngine implements MessageSendHandler {
             let count = Number.parseInt(text.replace('/loic ', ''), 10);
             let interval = setInterval(() => {
                 if (count--) {
-                    this.sendMessage(count + '', [], undefined);
+                    this.sendMessage(count + '', []);
                 } else {
                     clearInterval(interval);
                 }
@@ -574,10 +585,18 @@ export class ConversationEngine implements MessageSendHandler {
         }
     }
 
-    sendMessage = (text: string, mentions: MentionToSend[] | null, quotedMessages: DataSourceMessageItem[] | undefined) => {
+    sendMessage = (text: string, mentions: MentionToSend[] | null) => {
         let message = text.trim();
         let date = (new Date().getTime()).toString();
-        let quoted = quotedMessages || [];
+
+        let messagesActionsState = this.messagesActionsStateEngine.getState();
+        let quoted;
+
+        if (['reply', 'forward'].includes(messagesActionsState.action || '')) {
+            quoted = this.messagesActionsStateEngine.getState().messages;
+            this.messagesActionsStateEngine.clearAll();
+        }
+
         let styledSpans = findSpans(message);
 
         let key = this.engine.sender.sendMessage({
@@ -585,7 +604,7 @@ export class ConversationEngine implements MessageSendHandler {
             message,
             mentions,
             callback: this,
-            quoted: quoted.map(q => q.id!),
+            quoted: (quoted || []).map(q => q.id!),
             spans: styledSpans
         });
 
@@ -603,7 +622,7 @@ export class ConversationEngine implements MessageSendHandler {
                 isImage: false,
                 failed: false,
                 spans,
-                quoted: quoted.map(q => ({ ...q, reply: undefined })),
+                quoted: quoted ? quoted.map(q => ({ ...q, reply: undefined })) : undefined,
                 sticker: null
             };
 
@@ -625,10 +644,16 @@ export class ConversationEngine implements MessageSendHandler {
         this.loic(text);
     }
 
-    sendFile = (file: UploadingFile, localImage: LocalImage | undefined, quotedMessages: DataSourceMessageItem[] | undefined) => {
-        let quoted = quotedMessages || [];
+    sendFile = (file: UploadingFile, localImage?: LocalImage) => {
+        let messagesActionsState = this.messagesActionsStateEngine.getState();
+        let quoted;
 
-        let key = this.engine.sender.sendFile(this.conversationId, file, this, quoted.map(q => q.id!));
+        if (['reply', 'forward'].includes(messagesActionsState.action || '')) {
+            quoted = this.messagesActionsStateEngine.getState().messages;
+            this.messagesActionsStateEngine.clear();
+        }
+
+        let key = this.engine.sender.sendFile(this.conversationId, file, this, (quoted || []).map(q => q.id!));
         (async () => {
             let info = await file.fetchInfo();
             let name = info.name || 'image.jpg';
@@ -663,14 +688,20 @@ export class ConversationEngine implements MessageSendHandler {
         return key;
     }
 
-    sendSticker = (sticker: Types.StickerFragment, quotedMessages: DataSourceMessageItem[] | undefined) => {
+    sendSticker = (sticker: Types.StickerFragment) => {
         let date = (new Date().getTime()).toString();
-        let quoted = quotedMessages || [];
+        let messagesActionsState = this.messagesActionsStateEngine.getState();
+        let quoted;
+
+        if (['reply', 'forward'].includes(messagesActionsState.action || '')) {
+            quoted = this.messagesActionsStateEngine.getState().messages;
+            this.messagesActionsStateEngine.clear();
+        }
 
         let key = this.engine.sender.sendSticker({
             conversationId: this.conversationId,
             sticker: sticker,
-            quoted: quoted.map(q => q.id!),
+            quoted: (quoted || []).map(q => q.id!),
             callback: this
         });
 
@@ -682,7 +713,7 @@ export class ConversationEngine implements MessageSendHandler {
                 message: null,
                 failed: false,
                 isImage: false,
-                quoted: quoted.map(q => ({ ...q, reply: undefined })),
+                quoted: quoted ? quoted.map(q => ({ ...q, reply: undefined })) : undefined,
                 sticker: sticker
             } as PendingMessage;
             this.messages = [...this.messages, { ...pmsg } as PendingMessage];
@@ -906,6 +937,7 @@ export class ConversationEngine implements MessageSendHandler {
             // Remove from datasource
             let id = this.localMessagesMap.get(event.message.id) || event.message.id;
             this.removeMessage(id);
+            this.messagesActionsStateEngine.sync(this.dataSource);
 
         } else if (event.__typename === 'ChatMessageUpdated') {
             // Handle message

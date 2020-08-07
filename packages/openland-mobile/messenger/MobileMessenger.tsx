@@ -31,13 +31,14 @@ import { AsyncServiceMessage } from './components/AsyncServiceMessage';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { showFileModal } from 'openland-mobile/components/file/showFileModal';
 import { SharedMediaItemType, SharedMediaDataSourceItem } from 'openland-engines/messenger/SharedMediaEngine';
+import { AsyncSharedLink } from 'openland-mobile/pages/shared-media/AsyncSharedLink';
+import { AsyncSharedDocument } from 'openland-mobile/pages/shared-media/AsyncSharedDocument';
+import { AsyncSharedMediaRow } from 'openland-mobile/pages/shared-media/AsyncSharedMediaRow';
+import { AsyncSharedDate } from 'openland-mobile/pages/shared-media/AsyncSharedDate';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { showCheckLock } from 'openland-mobile/pages/main/modals/PayConfirm';
 import { showDonationReactionWarning } from './components/showDonationReactionWarning';
 import UUID from 'uuid/v4';
-import { ChatMessagesActions, MessagesAction } from 'openland-y-utils/MessagesActionsState';
-import { AsyncSharedItem } from 'openland-mobile/pages/shared-media/AsyncSharedItem';
-import { useMessagesActionsForward } from 'openland-y-runtime/MessagesActionsState';
 
 const SortedReactions = [
     MessageReactionType.LIKE,
@@ -53,36 +54,30 @@ if (Platform.OS !== 'ios') {
     SortedReactions.push(MessageReactionType.ANGRY);
 }
 
-export const useForward = (selectedFrom: string) => {
+export const forward = (conversationEngine: ConversationEngine, messages: DataSourceMessageItem[]) => {
     const messenger = getMessenger().engine;
-    const conversationEngine = messenger.getConversation(selectedFrom);
-    const { prepareForward, forward } = useMessagesActionsForward({ sourceId: selectedFrom });
-
-    return (messages?: DataSourceMessageItem[]) => {
-        getMessenger().history.navigationManager.push('HomeDialogs', {
-            title: 'Forward to', pressCallback: async (id: string) => {
-                const room = await messenger.client.queryRoomChat({ id });
-                if (room.room && room.room.__typename === 'PrivateRoom' && messenger.user.id === room.room.user.id) {
-                    let forwardIds = prepareForward({ targetId: id, messages }).map(e => e.id!);
-                    await messenger.client.mutateSendMessage({
-                        repeatKey: UUID(),
-                        chatId: room.room.id,
-                        replyMessages: forwardIds,
-                    });
-                    Toast.success({ duration: 1000 }).show();
-                    getMessenger().history.navigationManager.pop();
+    getMessenger().history.navigationManager.push('HomeDialogs', {
+        title: 'Forward to', pressCallback: async (id: string) => {
+            const room = await messenger.client.queryRoomChat({ id });
+            if (room.room && room.room.__typename === 'PrivateRoom' && messenger.user.id === room.room.user.id) {
+                await messenger.client.mutateSendMessage({
+                    repeatKey: UUID(),
+                    chatId: room.room.id,
+                    replyMessages: messenger.convertForward(messages).map(e => e.id!)
+                });
+                Toast.success({ duration: 1000}).show();
+                getMessenger().history.navigationManager.pop();
+            } else {
+                messenger.forward(messages, id);
+                const userId = conversationEngine.user && conversationEngine.user.id;
+                if (conversationEngine.conversationId === id || id === userId) {
+                    getMessenger().history.navigationManager.pushAndReset('Conversation', { id });
                 } else {
-                    forward({ targetId: id, messages });
-                    const userId = conversationEngine.user && conversationEngine.user.id;
-                    if (conversationEngine.conversationId === id || id === userId) {
-                        getMessenger().history.navigationManager.pushAndReset('Conversation', { id });
-                    } else {
-                        getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
-                    }
+                    getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
                 }
             }
-        });
-    };
+        }
+    });
 };
 
 export class MobileMessenger {
@@ -133,7 +128,7 @@ export class MobileMessenger {
                     if (item.isService) {
                         return <AsyncServiceMessage message={item} onUserPress={this.handleUserClick} onGroupPress={this.handleChatClick} onOrganizationPress={this.handleOrganizationClick} onHashtagPress={this.handleHashtagClick} />;
                     } else {
-                        return <AsyncMessageView conversationId={id} message={item} engine={eng} onUserPress={this.handleUserClick} onGroupPress={this.handleChatClick} onOrganizationPress={this.handleOrganizationClick} onHashtagPress={this.handleHashtagClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsClick} onReplyPress={this.handleReplyClick} onReactionsPress={this.handleReactionsClick} />;
+                        return <AsyncMessageView conversationId={id} message={item} engine={eng} onUserPress={this.handleMessageUserClick} onGroupPress={this.handleMessageGroupClick} onOrganizationPress={this.handleMessageOrganizationClick} onHashtagPress={this.handleHashtagClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMessageMediaClick} onMessageLongPress={this.handleMessageLongPress} onMessagePress={this.handleMessagePress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsClick} onReplyPress={this.handleReplyClick} onReactionsPress={this.handleReactionsClick} />;
                     }
                 } else if (item.type === 'date') {
                     return <AsyncDateSeparator year={item.year} month={item.month} date={item.date} />;
@@ -145,39 +140,51 @@ export class MobileMessenger {
         return this.conversations.get(id)!!;
     }
 
-    handleSharedLongPress = (forward: (messages: DataSourceMessageItem[]) => void) =>
-        ({ filePath, message, chatId }: { chatId: string, filePath?: string, message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage, }) => {
-            let builder = new ActionSheetBuilder();
+    handleSharedLongPress = ({ filePath, message, chatId }: { chatId: string, filePath?: string, message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage, }) => {
+        let builder = new ActionSheetBuilder();
 
-            builder.action('Forward', () => {
-                const fullMessage = convertPartialMessage(message, chatId, this.engine);
-                forward([fullMessage]);
-            }, false, require('assets/ic-forward-24.png'));
+        builder.action('Forward', () => {
+            let conversation: ConversationEngine = this.engine.getConversation(chatId);
+            const fullMessage = convertPartialMessage(message, chatId, this.engine);
+            forward(conversation, [fullMessage]);
+        }, false, require('assets/ic-forward-24.png'));
 
-            builder.action('Share', async () => {
-                const attachment = message.attachments[0];
-                if (attachment.__typename === 'MessageRichAttachment') {
-                    Share.share({ message: attachment.titleLink!! });
-                } else if (attachment.__typename === 'MessageAttachmentFile') {
-                    let path;
-                    if (attachment.fileMetadata.isImage) {
-                        path = await DownloadManagerInstance.copyFileWithNewName(filePath!!, attachment.fileMetadata.name);
-                    } else {
-                        const loader = Toast.loader();
-                        loader.show();
-                        await DownloadManagerInstance.init(attachment.fileId, null);
-                        path = await DownloadManagerInstance.getFilePathWithRealName(attachment.fileId, null, attachment.fileMetadata.name || 'file');
-                        loader.hide();
-                    }
-                    ShareFile.open({ url: 'file://' + path });
+        builder.action('Share', async () => {
+            const attachment = message.attachments[0];
+            if (attachment.__typename === 'MessageRichAttachment') {
+                Share.share({ message: attachment.titleLink!! });
+            } else if (attachment.__typename === 'MessageAttachmentFile') {
+                let path;
+                if (attachment.fileMetadata.isImage) {
+                    path = await DownloadManagerInstance.copyFileWithNewName(filePath!!, attachment.fileMetadata.name);
+                } else {
+                    const loader = Toast.loader();
+                    loader.show();
+                    await DownloadManagerInstance.init(attachment.fileId, null);
+                    path = await DownloadManagerInstance.getFilePathWithRealName(attachment.fileId, null, attachment.fileMetadata.name || 'file');
+                    loader.hide();
                 }
-            }, false, require('assets/ic-share-24.png'));
+                ShareFile.open({ url: 'file://' + path });
+            }
+        }, false, require('assets/ic-share-24.png'));
 
-            builder.show(true);
-        }
+        builder.show(true);
+    }
 
     renderSharedMediaItem = (chatId: string, wrapperWidth: number) => (item: SharedMediaDataSourceItem) => {
-        return <AsyncSharedItem chatId={chatId} wrapperWidth={wrapperWidth} item={item} onLongPress={this.handleSharedLongPress} />;
+        if (item.type === SharedMediaItemType.MEDIA) {
+            return <AsyncSharedMediaRow item={item} chatId={chatId} wrapperWidth={wrapperWidth} onLongPress={this.handleSharedLongPress} />;
+        }
+
+        if (item.type === SharedMediaItemType.LINK) {
+            return <AsyncSharedLink item={item} chatId={chatId} onLongPress={this.handleSharedLongPress} />;
+        }
+
+        if (item.type === SharedMediaItemType.DOCUMENT) {
+            return <AsyncSharedDocument item={item} chatId={chatId} onLongPress={this.handleSharedLongPress} />;
+        }
+
+        return <AsyncSharedDate item={item} />;
     }
 
     getSharedMedia = (id: string, type: SharedMediaItemType, wrapperWidth: number) => {
@@ -198,6 +205,15 @@ export class MobileMessenger {
     destroySharedMedia = (id: string) => {
         this.engine.getConversation(id).destroySharedMedia();
         this.sharedMedias.delete(id);
+    }
+
+    handleMessageMediaClick = (message: DataSourceMessageItem) => (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => {
+        const [isSelecting, toogleSelect] = this.useSelectionMode(message);
+        if (isSelecting) {
+            toogleSelect();
+            return;
+        }
+        return this.handleMediaClick(fileMeta, event, radius, senderName, date);
     }
 
     handleMediaClick = (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => {
@@ -228,10 +244,20 @@ export class MobileMessenger {
     }
 
     handleCommentsClick = (message: DataSourceMessageItem) => {
+        const [isSelecting, toogleSelect] = this.useSelectionMode(message);
+        if (isSelecting) {
+            toogleSelect();
+            return;
+        }
         this.history.navigationManager.push('Message', { messageId: message.id });
     }
 
-    handleReplyClick = (quotedMessage: DataSourceMessageItem) => {
+    handleReplyClick = (message: DataSourceMessageItem, quotedMessage: DataSourceMessageItem) => {
+        const [isSelecting, toogleSelect] = this.useSelectionMode(message);
+        if (isSelecting) {
+            toogleSelect();
+            return;
+        }
         this.history.navigationManager.push('Message', { messageId: quotedMessage.id });
     }
 
@@ -252,26 +278,50 @@ export class MobileMessenger {
     handleOrganizationClick = (id: string) => {
         this.history.navigationManager.push('ProfileOrganization', { id });
     }
+    handleMessageUserClick = (message: DataSourceMessageItem) => (id: string) => {
+        const [isSelecting, toogleSelect] = this.useSelectionMode(message);
+        if (isSelecting) {
+            toogleSelect();
+            return;
+        }
+        return this.handleUserClick(id);
+    }
+    handleMessageGroupClick = (message: DataSourceMessageItem) => (id: string) => {
+        const [isSelecting, toogleSelect] = this.useSelectionMode(message);
+        if (isSelecting) {
+            toogleSelect();
+            return;
+        }
+        return this.handleChatClick(id);
+    }
+    handleMessageOrganizationClick = (message: DataSourceMessageItem) => (id: string) => {
+        const [isSelecting, toogleSelect] = this.useSelectionMode(message);
+        if (isSelecting) {
+            toogleSelect();
+            return;
+        }
+        return this.handleOrganizationClick(id);
+    }
     handleConversationClick = (id: string) => {
         this.history.navigationManager.push('Conversation', { id });
     }
 
     handleReactionSetUnset = async (message: DataSourceMessageItem, reaction: MessageReactionType, doubleTap?: boolean) => {
-        const donate = async () => {
+        const donate = async() => {
             let loader = Toast.loader();
             try {
                 loader.show();
                 await this.engine.client.mutateMessageSetDonationReaction({ messageId: message.id! });
                 loader.hide();
-                Toast.success({ text: 'You’ve donated $1', duration: 1000 }).show();
+                Toast.success({text: 'You’ve donated $1', duration: 1000}).show();
             } catch (e) {
                 loader.hide();
                 if (this.engine.wallet.state.get().isLocked) {
-                    showCheckLock({ onSuccess: () => this.history.navigationManager.push('Wallet') });
+                    showCheckLock({onSuccess: () => this.history.navigationManager.push('Wallet')});
                 } else {
-                    Toast.failure({ text: e.message, duration: 1000 }).show();
+                    Toast.failure({text: e.message, duration: 1000}).show();
                 }
-
+                
                 throw e;
             }
         };
@@ -307,22 +357,24 @@ export class MobileMessenger {
         }
     }
 
+    private useSelectionMode = (message: DataSourceMessageItem): [boolean, Function] => {
+        let conversation: ConversationEngine = this.engine.getConversation(message.chatId);
+        const state = conversation.messagesActionsStateEngine.getState();
+        return [state.action === 'select', () => conversation.messagesActionsStateEngine.selectToggle(message)];
+    }
+
+    private handleMessagePress = (message: DataSourceMessageItem) => {
+        const [isSelecting, toogleSelect] = this.useSelectionMode(message);
+        if (isSelecting) {
+            toogleSelect();
+        }
+    }
     handleHashtagClick = (hashtag?: string) => {
         this.history.navigationManager.push('HomeDialogs', { searchValue: hashtag, title: hashtag });
     }
-    private handleMessageLongPress = (
-        message: DataSourceMessageItem,
-        actions: {
-            action: MessagesAction,
-            reply: ChatMessagesActions['reply'],
-            edit: ChatMessagesActions['edit'],
-            toggleSelect: ChatMessagesActions['toggleSelect'],
-            forward: (messages: DataSourceMessageItem[]) => void,
-        }
-    ) => {
+    private handleMessageLongPress = (message: DataSourceMessageItem) => {
         let conversation: ConversationEngine = this.engine.getConversation(message.chatId);
         let builder = new ActionSheetBuilder();
-        let { action, reply, edit, toggleSelect, forward } = actions;
 
         if (message.isSending) {
             if (message.text) {
@@ -335,7 +387,13 @@ export class MobileMessenger {
 
             return;
         }
+        const state = conversation.messagesActionsStateEngine.getState();
         const role = conversation.role;
+        const isSelecting = state.action === 'select';
+
+        if (isSelecting) {
+            return;
+        }
 
         builder.view((ctx: ZModalController) => (
             <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={52} paddingHorizontal={10}>
@@ -345,7 +403,7 @@ export class MobileMessenger {
                     return (
                         <TouchableOpacity
                             key={reaction}
-                            style={{ opacity: isDisabled ? 0.35 : undefined }}
+                            style={{opacity: isDisabled ? 0.35 : undefined}}
                             disabled={isDisabled}
                             onPress={() => {
                                 ctx.hide();
@@ -361,21 +419,21 @@ export class MobileMessenger {
             </View>
         ));
 
-        const hideSelect = action === 'reply' || action === 'forward';
+        const hideSelect = state.action && state.action !== 'select';
         if (!hideSelect) {
             builder.action('Select', () => {
-                toggleSelect(message);
+                conversation.messagesActionsStateEngine.selectToggle(message);
             }, false, require('assets/ic-select-24.png'));
         }
 
         if (conversation.canSendMessage) {
             builder.action('Reply', () => {
-                reply(message);
+                conversation.messagesActionsStateEngine.reply(message);
             }, false, require('assets/ic-reply-24.png'));
         }
 
         builder.action('Forward', () => {
-            forward([message]);
+            forward(conversation, [message]);
         }, false, require('assets/ic-forward-24.png'));
 
         builder.action('Comment', () => {
@@ -404,7 +462,7 @@ export class MobileMessenger {
             let hasPurchase = message.attachments && message.attachments.some(a => a.__typename === 'MessageAttachmentPurchase');
             if (message.sender.id === this.engine.user.id && !hasPurchase) {
                 builder.action('Edit', () => {
-                    edit(message);
+                    conversation.messagesActionsStateEngine.edit(message);
                 }, false, require('assets/ic-edit-24.png'));
             }
         }
@@ -429,6 +487,10 @@ export class MobileMessenger {
     }
 
     private handleMessageDoublePress = (message: DataSourceMessageItem) => {
+        const [isSelecting] = this.useSelectionMode(message);
+        if (isSelecting) {
+            return;
+        }
         ReactNativeHapticFeedback.trigger('impactLight', { ignoreAndroidSystemSettings: false });
 
         this.handleReactionSetUnset(message, MessageReactionType.LIKE, true);

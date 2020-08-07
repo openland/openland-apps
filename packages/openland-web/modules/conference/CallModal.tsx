@@ -212,5 +212,8 @@ export const useVideoCallModal = (props: { chatId: string }) => {
     const calls = messenger.calls;
     let client = useClient();
     const onAttach = useAttachHandler({ conversationId: props.chatId });
-    return () => showModalBox({ fullScreen: true, useTopCloser: false }, ctx => <CallModalConponent chatId={props.chatId} messenger={messenger} calls={calls} client={client} onAttach={onAttach} ctx={ctx} />);
+    return React.useCallback(() =>
+        showModalBox({ fullScreen: true, useTopCloser: false }, ctx => <CallModalConponent chatId={props.chatId} messenger={messenger} calls={calls} client={client} onAttach={onAttach} ctx={ctx} />),
+        [props.chatId, messenger]
+    );
 };

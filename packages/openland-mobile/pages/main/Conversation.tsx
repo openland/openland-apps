@@ -27,6 +27,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { useCallModal } from './Call';
 import { EmojiSuggestions, EmojiSuggestionsRow } from './components/suggestions/EmojiSuggestions';
 import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
+import { MessagesActionsState } from 'openland-engines/messenger/MessagesActionsState';
 import { ForwardReplyView } from 'openland-mobile/messenger/components/ForwardReplyView';
 import { EditView } from 'openland-mobile/messenger/components/EditView';
 import { ChatSelectedActions } from './components/ChatSelectedActions';
@@ -45,8 +46,6 @@ import { showNoiseWarning } from 'openland-mobile/messenger/components/showNoise
 import { plural } from 'openland-y-utils/plural';
 import { SRouterMountedContext } from 'react-native-s/SRouterContext';
 import { SUPER_ADMIN } from '../Init';
-import { ChatMessagesActions } from 'openland-y-utils/MessagesActionsState';
-import { useChatMessagesActions } from 'openland-y-runtime/MessagesActionsState';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -54,7 +53,6 @@ interface ConversationRootProps extends PageProps {
     theme: ThemeGlobal;
     showCallModal: () => void;
     mountedRef: { mounted: string[] };
-    messagesActions: ChatMessagesActions;
 }
 
 interface ConversationRootState {
@@ -65,6 +63,7 @@ interface ConversationRootState {
         start: number,
         end: number
     };
+    messagesActionsState: MessagesActionsState;
     muted: boolean;
 }
 
@@ -88,6 +87,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             },
             mentions: [],
             inputFocused: false,
+            messagesActionsState: { messages: [] },
             muted: !!this.props.chat.settings.mute
         };
 
@@ -95,44 +95,36 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         AsyncStorage.getItem('compose_draft_mentions_v2_' + this.props.chat.id).then(s => this.setState({ mentions: JSON.parse(s) || [] }));
     }
 
-    componentDidMount() {
-        this.handleMessagesActions(this.props.messagesActions);
-    }
+    componentWillMount() {
+        this.engine.messagesActionsStateEngine.listen(state => {
+            this.setState({ messagesActionsState: state });
 
-    componentDidUpdate(prevProps: ConversationRootProps) {
-        if (prevProps.messagesActions !== this.props.messagesActions) {
-            this.handleMessagesActions(this.props.messagesActions);
-        }
-    }
+            if (state.messages && state.messages.length > 0) {
+                if (state.action === 'edit') {
+                    const editMessage = state.messages[0];
 
-    handleMessagesActions = (messagesActions: ChatMessagesActions) => {
-        let messages = messagesActions.getState().messages;
-        let action = messagesActions.getState().action;
-        if (messages.length > 0) {
-            if (action === 'edit') {
-                const editMessage = messages[0];
-
-                this.setState({
-                    text: editMessage.text || '',
-                    mentions: convertMentionsFromMessage(editMessage.text, editMessage.spans)
-                }, () => {
+                    this.setState({
+                        text: editMessage.text || '',
+                        mentions: convertMentionsFromMessage(editMessage.text, editMessage.spans)
+                    }, () => {
+                        setTimeout(() => {
+                            if (this.inputRef.current) {
+                                this.inputRef.current.focus();
+                            }
+                        }, 100);
+                    });
+                } else if (state.action === 'reply' && this.inputRef.current) {
+                    this.inputRef.current.focus();
+                } else if (state.action === 'forward') {
                     setTimeout(() => {
-                        if (this.inputRef.current) {
+                        const isMounted = this.props.mountedRef.mounted.includes(this.props.router.key);
+                        if (this.inputRef.current && isMounted) {
                             this.inputRef.current.focus();
                         }
-                    }, 100);
-                });
-            } else if (action === 'reply' && this.inputRef.current) {
-                this.inputRef.current.focus();
-            } else if (action === 'forward') {
-                setTimeout(() => {
-                    const isMounted = this.props.mountedRef.mounted.includes(this.props.router.key);
-                    if (this.inputRef.current && isMounted) {
-                        this.inputRef.current.focus();
-                    }
-                }, 500);
+                    }, 500);
+                }
             }
-        }
+        });
     }
 
     saveDraft = () => {
@@ -178,14 +170,13 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     handleSubmit = async () => {
-        let { messagesActions } = this.props;
-        let state = messagesActions.getState();
+        let { messagesActionsState } = this.state;
         let tx = this.state.text.trim();
 
         let mentions = prepareLegacyMentionsForSend(tx, this.state.mentions || []);
 
-        if (state.action === 'edit' && state.messages.length > 0) {
-            let messageToEdit = state.messages.map(convertMessageBack)[0];
+        if (messagesActionsState.messages && messagesActionsState.messages.length > 0 && messagesActionsState.action === 'edit') {
+            let messageToEdit = messagesActionsState.messages.map(convertMessageBack)[0];
             const loader = Toast.loader();
             loader.show();
             try {
@@ -215,9 +206,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 }
             }
 
-            this.engine.sendMessage(tx, this.state.mentions, messagesActions.prepareToSend());
+            this.engine.sendMessage(tx, this.state.mentions);
         }
-        messagesActions.clear();
+
+        this.engine.messagesActionsStateEngine.clear();
 
         this.setState({
             text: '',
@@ -232,7 +224,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             ? this.props.chat.user
             : this.props.chat.owner;
         let isChannel = this.props.chat.__typename === 'SharedRoom' && this.props.chat.isChannel;
-        let donationCb = user && user.id === this.props.engine.user.id || isChannel
+        let donationCb = user &&  user.id === this.props.engine.user.id || isChannel
             ? undefined
             : () => {
                 if (user) {
@@ -240,7 +232,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 }
             };
         showAttachMenu((type, name, path, size) => {
-            UploadManagerInstance.registerMessageUpload(this.props.chat.id, name, path, this.props.messagesActions.prepareToSend(), size);
+            UploadManagerInstance.registerMessageUpload(this.props.chat.id, name, path, size);
         }, donationCb);
     }
 
@@ -289,13 +281,13 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     onQuotedClearPress = () => {
-        this.props.messagesActions.clear();
+        this.engine.messagesActionsStateEngine.clear();
 
         this.removeDraft();
     }
 
     onEditedClearPress = () => {
-        this.props.messagesActions.clear();
+        this.engine.messagesActionsStateEngine.clear();
 
         this.setState({
             text: '',
@@ -310,7 +302,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     render() {
-        let messagesActionsState = this.props.messagesActions.getState();
+        let { messagesActionsState } = this.state;
 
         let isSavedMessages = this.props.chat.__typename === 'PrivateRoom' && this.props.engine.user.id === this.props.chat.user.id;
 
@@ -360,12 +352,12 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let quoted = null;
         let canSubmit = this.state.text.trim().length > 0;
 
-        if (['reply', 'forward'].includes(messagesActionsState.action)) {
+        if (messagesActionsState.messages && messagesActionsState.messages.length > 0 && ['reply', 'forward'].includes(messagesActionsState.action || '')) {
             canSubmit = true;
             quoted = <ForwardReplyView onClearPress={this.onQuotedClearPress} messages={messagesActionsState.messages.map(convertMessageBack)} action={messagesActionsState.action === 'forward' ? 'forward' : 'reply'} />;
         }
 
-        if (messagesActionsState.action === 'edit') {
+        if (messagesActionsState.messages && messagesActionsState.messages.length > 0 && messagesActionsState.action === 'edit') {
             quoted = <EditView onClearPress={this.onEditedClearPress} message={messagesActionsState.messages.map(convertMessageBack)[0]} />;
         }
 
@@ -375,7 +367,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         let showPinAuthor = sharedRoom && (sharedRoom!.kind !== SharedRoomKind.PUBLIC);
 
-        let showSelectedMessagesActions = messagesActionsState.action === 'selected';
+        let showSelectedMessagesActions = this.state.messagesActionsState.action === 'select';
         let pinnedMessage = this.props.chat.pinnedMessage;
 
         let inputPlaceholder = null;
@@ -457,7 +449,6 @@ const ConversationComponent = React.memo((props: PageProps) => {
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id }, { fetchPolicy: 'cache-and-network' }).room;
     let mountedRef = React.useContext(SRouterMountedContext);
     let showCallModal = useCallModal({ id: room?.id! });
-    let messagesActions = useChatMessagesActions({ conversationId: room?.id });
 
     if (room === null) {
         return <ChatAccessDenied theme={theme} onPress={() => props.router.back()} />;
@@ -473,16 +464,7 @@ const ConversationComponent = React.memo((props: PageProps) => {
 
     return (
         <View flexDirection="column" height="100%" width="100%">
-            <ConversationRoot
-                key={(sharedRoom || privateRoom)!.id}
-                router={props.router}
-                engine={messenger.engine}
-                chat={(sharedRoom || privateRoom)!}
-                showCallModal={showCallModal}
-                theme={theme}
-                mountedRef={mountedRef}
-                messagesActions={messagesActions}
-            />
+            <ConversationRoot key={(sharedRoom || privateRoom)!.id} router={props.router} engine={messenger.engine} chat={(sharedRoom || privateRoom)!} showCallModal={showCallModal} theme={theme} mountedRef={mountedRef} />
             <ASSafeAreaContext.Consumer>
                 {safe => (
                     <View

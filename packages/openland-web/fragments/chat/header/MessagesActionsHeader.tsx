@@ -2,7 +2,8 @@ import * as React from 'react';
 import { RoomChat_room } from 'openland-api/spacex.types';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { css, cx } from 'linaria';
-import { XView } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
+import { MessagesActionsStateEngine } from 'openland-engines/messenger/MessagesActionsState';
 import { pluralForm } from 'openland-y-utils/plural';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -13,8 +14,7 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { useRole } from 'openland-x-permissions/XWithRole';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { useForward } from '../messenger/message/actions/forward';
-import { useChatMessagesActions } from 'openland-y-runtime/MessagesActionsState';
+import { forward } from '../messenger/message/actions/forward';
 
 const containerClass = css`
     position: absolute;
@@ -95,11 +95,13 @@ const animateUpCenter = css`
     transform: translateY(0);
 `;
 
-const Counter = (props: { messagesCount: number, onClick: () => void }) => {
+const Counter = (props: { engine: MessagesActionsStateEngine }) => {
     let layout = useLayout();
     let countRef = React.useRef(0);
 
-    let count = props.messagesCount || 1;
+    let state = props.engine.useState();
+
+    let count = state.messages.length || 1;
     let old = countRef.current;
     let increment = count > old;
 
@@ -111,7 +113,7 @@ const Counter = (props: { messagesCount: number, onClick: () => void }) => {
             flexDirection="row"
             alignItems="center"
             justifyContent="flex-start"
-            onClick={props.onClick}
+            onClick={props.engine.clear}
             cursor="pointer"
         >
             <span className={TextTitle3}>
@@ -140,29 +142,29 @@ const Counter = (props: { messagesCount: number, onClick: () => void }) => {
 
 const Buttons = (props: {
     conversation: ConversationEngine;
+    engine: MessagesActionsStateEngine;
     messenger: MessengerEngine;
     chat: RoomChat_room;
 }) => {
-    let { getState, clear, reply } = useChatMessagesActions({ conversationId: props.conversation.conversationId, userId: props.conversation.isPrivate ? props.conversation.user?.id : undefined });
     let deleteCallback = React.useCallback(() => {
-        let ids = getState().action === 'selected'
-            ? getState().messages
-                .filter((m) => !!m.id)
-                .map((m) => m.id!)
-            : [];
-        showDeleteMessagesModal(ids, props.messenger.client, clear);
-    }, [getState()]);
-    let forward = useForward(props.chat.id);
+        let ids = props.engine
+            .getState()
+            .messages.filter((m) => !!m.id)
+            .map((m) => m.id!);
+        showDeleteMessagesModal(ids, props.messenger.client, props.engine.clear);
+    }, []);
+    const router = React.useContext(XViewRouterContext);
     let forwardCallback = React.useCallback(() => {
-        forward();
+        forward(props.engine, props.messenger, router!);
     }, []);
     let replyCallback = React.useCallback(() => {
-        reply();
+        props.engine.reply();
     }, []);
+    let state = props.engine.useState();
     let canReply = props.conversation.canSendMessage;
     let canDelete =
         useRole('super-admin') ||
-        !getState().messages.filter((m) => m.sender.id !== props.messenger.user.id).length ||
+        !state.messages.filter((m) => m.sender.id !== props.messenger.user.id).length ||
         (props.chat.__typename === 'SharedRoom' && props.chat.role === 'OWNER') ||
         (props.chat.__typename === 'SharedRoom' && props.chat.role === 'ADMIN');
     return (
@@ -179,29 +181,22 @@ const Buttons = (props: {
 };
 
 export const MessagesActionsHeader = (props: { chat: RoomChat_room }) => {
-    let { getState, clear } = useChatMessagesActions({ conversationId: props.chat.id, userId: props.chat.__typename === 'PrivateRoom' ? props.chat.user.id : undefined });
     let containerRef = React.useRef<HTMLDivElement>(null);
     let messenger = React.useContext(MessengerContext);
     let conversation = messenger.getConversation(props.chat.id);
-    useShortcuts({
-        keys: ['Escape'], callback: () => {
-            if (getState().action === 'none') {
-                return false;
-            } else {
-                clear();
-                return true;
-            }
-        }
-    });
+    let engine = conversation.messagesActionsStateEngine;
+    useShortcuts({ keys: ['Escape'], callback: () => engine.clear() });
 
     React.useEffect(() => {
-        if (containerRef.current) {
-            containerRef.current.className = cx(
-                containerClass,
-                getState().action === 'selected' && getState().messages.length && containerVisibleClass,
-            );
-        }
-    }, [getState()]);
+        engine.listen((state) => {
+            if (containerRef.current) {
+                containerRef.current.className = cx(
+                    containerClass,
+                    state.messages.length && state.action === 'select' && containerVisibleClass,
+                );
+            }
+        });
+    }, []);
 
     return (
         <div ref={containerRef} className={containerClass}>
@@ -211,8 +206,9 @@ export const MessagesActionsHeader = (props: { chat: RoomChat_room }) => {
                 alignItems="center"
                 flexDirection="row"
             >
-                <Counter messagesCount={getState().action === 'selected' ? getState().messages.length : 0} onClick={clear} />
+                <Counter engine={engine} />
                 <Buttons
+                    engine={engine}
                     conversation={conversation}
                     messenger={messenger}
                     chat={props.chat}

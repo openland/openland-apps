@@ -7,14 +7,13 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { useForward } from 'openland-mobile/messenger/MobileMessenger';
+import { forward } from 'openland-mobile/messenger/MobileMessenger';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 import { SHeaderView } from 'react-native-s/SHeaderView';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { plural } from 'openland-y-utils/plural';
-import { useChatMessagesActions } from 'openland-y-runtime/MessagesActionsState';
 
 export const ChatSelectedActionsHeader = (props: { messagesCount: number; cancel: () => void }) => {
     const messagesText =
@@ -57,12 +56,9 @@ interface ChatSelectedActionsProps {
 
 export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
     const theme = React.useContext(ThemeContext);
-    const { getState, clear } = useChatMessagesActions({ conversationId: props.chat.id });
     const del = React.useCallback(() => {
-        if (getState().action !== 'selected') {
-            return;
-        }
-        const messagesCount = getState().messages.length;
+        const messagesCount = props.conversation.messagesActionsStateEngine.getState().messages
+            .length;
         const messagesText = plural(messagesCount, ['message', 'messages']);
         Alert.builder()
             .title(`Delete ${messagesText}?`)
@@ -70,20 +66,31 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
             .button('Cancel', 'cancel')
             .action('Delete', 'destructive', async () => {
                 await getMessenger().engine.client.mutateRoomDeleteMessages({
-                    mids: getState().messages.map((m) => m.id!),
+                    mids: props.conversation.messagesActionsStateEngine
+                        .getState()
+                        .messages.map((m) => m.id!),
                 });
-                clear();
+                props.conversation.messagesActionsStateEngine.clear();
             })
             .show();
-    }, [getState()]);
-    const forward = useForward(props.chat.id);
+    }, []);
+    const fwd = React.useCallback(() => {
+        forward(
+            props.conversation,
+            props.conversation.messagesActionsStateEngine.getState().messages,
+        );
+    }, []);
+    const cancel = React.useCallback(() => {
+        props.conversation.messagesActionsStateEngine.clear();
+    }, []);
     let height = 52;
 
     let canDelete = true;
-    const hasSelectedMessages = getState().action === 'selected';
+    const hasSelectedMessages =
+        props.conversation.messagesActionsStateEngine.getState().messages.length > 0;
 
     if (!SUPER_ADMIN) {
-        getState().messages.forEach((m) => {
+        props.conversation.messagesActionsStateEngine.getState().messages.map((m) => {
             if (m.sender.id !== getMessenger().engine.user.id) {
                 canDelete = false;
             }
@@ -118,7 +125,7 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
                 </TouchableOpacity>
             </View>
             <View flexGrow={1}>
-                <TouchableOpacity onPress={() => forward()} disabled={isForwardDisabled}>
+                <TouchableOpacity onPress={fwd} disabled={isForwardDisabled}>
                     <View
                         style={{
                             height: height,
@@ -143,8 +150,10 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
                 <HeaderConfigRegistrator config={{ hideIcon: true }} />
                 <SHeaderView>
                     <ChatSelectedActionsHeader
-                        messagesCount={getState().action === 'selected' ? getState().messages.length : 0}
-                        cancel={clear}
+                        messagesCount={
+                            props.conversation.messagesActionsStateEngine.getState().messages.length
+                        }
+                        cancel={cancel}
                     />
                 </SHeaderView>
                 <ZKeyboardAwareBar>{res}</ZKeyboardAwareBar>
@@ -157,8 +166,10 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
             <HeaderConfigRegistrator config={{ hideIcon: true }} />
             <SHeaderView>
                 <ChatSelectedActionsHeader
-                    messagesCount={getState().action === 'selected' ? getState().messages.length : 0}
-                    cancel={clear}
+                    messagesCount={
+                        props.conversation.messagesActionsStateEngine.getState().messages.length
+                    }
+                    cancel={cancel}
                 />
             </SHeaderView>
             <View marginBottom={SDevice.safeArea.bottom} backgroundColor={theme.backgroundPrimary}>
