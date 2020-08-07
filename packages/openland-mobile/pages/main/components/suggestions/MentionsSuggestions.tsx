@@ -36,6 +36,8 @@ export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) 
             onMentionPress(activeWord, mention.organization);
         } else if (mention.__typename === 'MentionSearchSharedRoom') {
             onMentionPress(activeWord, mention.room);
+        } else if (mention.__typename === 'AllMention') {
+            onMentionPress(activeWord, mention);
         }
     }, [activeWord, onMentionPress]);
 
