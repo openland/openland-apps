@@ -158,7 +158,7 @@ const Buttons = (props: {
     }, []);
     let replyCallback = React.useCallback(() => {
         reply();
-    }, []);
+    }, [getState()]);
     let canReply = props.conversation.canSendMessage;
     let canDelete =
         useRole('super-admin') ||
@@ -193,15 +193,16 @@ export const MessagesActionsHeader = (props: { chat: RoomChat_room }) => {
             }
         }
     });
+    const selectingCount = getState().action === 'selected' && getState().messages.length;
 
     React.useEffect(() => {
         if (containerRef.current) {
             containerRef.current.className = cx(
                 containerClass,
-                getState().action === 'selected' && getState().messages.length && containerVisibleClass,
+                selectingCount && containerVisibleClass,
             );
         }
-    }, [getState()]);
+    }, [selectingCount]);
 
     return (
         <div ref={containerRef} className={containerClass}>
