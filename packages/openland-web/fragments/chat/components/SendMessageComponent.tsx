@@ -433,6 +433,8 @@ export const AutoCompleteComponent = React.memo(
                         props.onSelected(mention.organization);
                     } else if (mention.__typename === 'MentionSearchSharedRoom') {
                         props.onSelected(mention.room);
+                    } else if (mention.__typename === 'AllMention') {
+                        props.onSelected(mention);
                     }
                 }
             }, [props.membersCount]);
