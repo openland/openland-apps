@@ -208,7 +208,7 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
 
     return (
         <div className={containerStyle}>
-            <div className={cx('x', searchWrapper, isSearching && 'is-active')}>
+            <div className={cx(searchWrapper, isSearching && 'is-active')}>
                 <USearchInput
                     value={globalSearch.value}
                     onChange={globalSearch.onChange}

@@ -89,6 +89,7 @@ const DialogSearchMessagesInner = React.forwardRef(
         const initialItems = client.useGlobalSearch({ query: '' }, { fetchPolicy: 'cache-and-network' }).items;
         const queryRef = React.useRef('');
 
+        const [isRecent, setIsRecent] = React.useState(true);
         const [loadingMore, setLoadingMore] = React.useState(false);
         const [after, setAfter] = React.useState<string | null>(null);
         const [items, setItems] = React.useState<GlobalSearch_items[]>(initialItems);
@@ -104,6 +105,7 @@ const DialogSearchMessagesInner = React.forwardRef(
             if (queryRef.current !== query) {
                 return;
             }
+            setIsRecent(false);
             setItems(loadedItems);
             setAfter(getCursor(loadedMessages));
             setMessages(loadedMessages.edges);
@@ -113,9 +115,12 @@ const DialogSearchMessagesInner = React.forwardRef(
         React.useImperativeHandle(ref, () => ({
             loadResults: loadResults,
             resetResults: () => {
+                queryRef.current = '';
+
                 setItems(initialItems);
                 setAfter(null);
                 setMessages([]);
+                setIsRecent(true);
 
                 props.onLoading(false);
             },
@@ -174,6 +179,9 @@ const DialogSearchMessagesInner = React.forwardRef(
 
         return (
             <XScrollView3 onScroll={onScroll} flexGrow={1} flexShrink={1} useDefaultScroll={true}>
+                {isRecent && items.length > 0 && (
+                    <UListHeader text="Recent chats" marginTop={0} />
+                )}
                 {items.map((i, index) => <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} savedMessages={i.id === messenger.user.id} {...props} />)}
                 {messages.length > 0 && (
                     <UListHeader text="Messages" />

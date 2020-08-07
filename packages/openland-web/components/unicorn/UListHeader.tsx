@@ -11,15 +11,16 @@ interface UListHeaderProps {
         path?: string;
         onClick?: (e: any) => void;
     };
+    marginTop?: number;
     rightElement?: JSX.Element;
 }
 
 export const UListHeader = (props: UListHeaderProps) => {
-    const { text, counter, action, padded, rightElement } = props;
+    const { text, counter, action, padded, rightElement, marginTop = 16 } = props;
 
     return (
         <XView
-            marginTop={16}
+            marginTop={marginTop}
             height={40}
             paddingHorizontal={padded !== false ? 16 : undefined}
             flexDirection="row"
