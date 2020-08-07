@@ -179,10 +179,17 @@ const DialogSearchMessagesInner = React.forwardRef(
 
         return (
             <XScrollView3 onScroll={onScroll} flexGrow={1} flexShrink={1} useDefaultScroll={true}>
-                {isRecent && items.length > 0 && (
-                    <UListHeader text="Recent chats" marginTop={0} />
-                )}
-                {items.map((i, index) => <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} savedMessages={i.id === messenger.user.id} {...props} />)}
+                {items.map((i, index) => {
+                    if (isRecent && i.id === messenger.user.id && index === 0) {
+                        return (
+                            <>
+                                <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} savedMessages={i.id === messenger.user.id} {...props} />
+                                {items.length > 1 && <UListHeader text="Recent chats" />}
+                            </>
+                        );
+                    }
+                    return <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} savedMessages={i.id === messenger.user.id} {...props} />;
+                })}
                 {messages.length > 0 && (
                     <UListHeader text="Messages" />
                 )}
