@@ -1,31 +1,37 @@
-import { XViewRouter } from 'react-mental';
-import { MessagesActionsStateEngine } from 'openland-engines/messenger/MessagesActionsState';
+import * as React from 'react';
+import { XViewRouterContext } from 'react-mental';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { MessengerEngine } from 'openland-engines/MessengerEngine';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 import UUID from 'uuid/v4';
 import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
+import { useMessagesActionsForward } from 'openland-y-runtime/MessagesActionsState';
 
-const doForward = async (from: MessagesActionsStateEngine | DataSourceMessageItem[], engine: MessengerEngine, router: XViewRouter, toId: string, setShowLoader: (val: boolean) => void, hide: () => void) => {
-    if (engine.user.id === toId) {
-        setShowLoader(true);
-        const room = await engine.client.queryRoomChat({ id: toId });
-        if (room.room) {
-            await engine.client.mutateSendMessage({ 
-                repeatKey: UUID(),
-                chatId: room.room.id,
-                replyMessages: engine.convertForward(from).map(e => e.id!)
-            });
-        }
-        setShowLoader(false);
-    } else {
-        engine.forward(from, toId);
-        router.navigate('/mail/' + toId);
-    }
-    hide();
-};
+export const useForward = (selectedFrom: string) => {
+    const engine = React.useContext(MessengerContext);
+    const router = React.useContext(XViewRouterContext)!;
 
-export const forward = (from: MessagesActionsStateEngine | DataSourceMessageItem[], engine: MessengerEngine, router: XViewRouter) =>
-    showChatPicker((toId: string, setShowLoader: (val: boolean) => void, hide: () => void) => {
-        doForward(from, engine, router, toId, setShowLoader, hide);
+    const { prepareForward, forward } = useMessagesActionsForward({ sourceId: selectedFrom });
+
+    return (messages?: DataSourceMessageItem[]) => showChatPicker((toId: string, setShowLoader: (val: boolean) => void, hide: () => void) => {
+        (async () => {
+            if (engine.user.id === toId) {
+                setShowLoader(true);
+                const room = await engine.client.queryRoomChat({ id: toId });
+                if (room.room) {
+                    let forwardIds = prepareForward({ targetId: toId, messages }).map(e => e.id!);
+                    await engine.client.mutateSendMessage({
+                        repeatKey: UUID(),
+                        chatId: room.room.id,
+                        replyMessages: forwardIds,
+                    });
+                }
+                setShowLoader(false);
+            } else {
+                forward({ targetId: toId, messages });
+                router.navigate('/mail/' + toId);
+            }
+            hide();
+        })();
         return true;
     });
+};

@@ -6,21 +6,24 @@ import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { AsyncMessageContentView } from './AsyncMessageContentView';
 import { AsyncMessageReactionsView } from './AsyncMessageReactionsView';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
-import { useMessageSelected } from 'openland-engines/messenger/MessagesActionsState';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { UnsupportedContent } from './content/UnsupportedContent';
 import { buildBaseImageUrl } from 'openland-y-utils/photoRefUtils';
+import { ChatMessagesActions, MessagesAction } from 'openland-y-utils/MessagesActionsState';
+import { useForward } from '../MobileMessenger';
+import { useChatMessagesActions } from 'openland-y-runtime/MessagesActionsState';
 
-const SelectCheckbox = React.memo((props: { engine: ConversationEngine, message: DataSourceMessageItem, theme: ThemeGlobal }) => {
-    const [selected, toggleSelect] = useMessageSelected(props.engine.messagesActionsStateEngine, props.message);
+const SelectCheckbox = React.memo((props: { selected: boolean, theme: ThemeGlobal, onPress: () => void }) => {
+    const { selected, onPress, theme } = props;
+
     return (
         <ASFlex marginLeft={-200} renderModes={rm({ 'selection': { marginLeft: 8 } })} overlay={true} alignItems="center">
-            <ASFlex onPress={toggleSelect} width={24} height={24} borderRadius={12} backgroundColor={selected ? props.theme.accentPrimary : props.theme.foregroundQuaternary} >
+            <ASFlex onPress={onPress} width={24} height={24} borderRadius={12} backgroundColor={selected ? theme.accentPrimary : theme.foregroundQuaternary} >
                 <ASFlex overlay={true} alignItems="center" justifyContent="center">
-                    <ASFlex width={22} height={22} borderRadius={11} alignItems="center" justifyContent="center" backgroundColor={selected ? props.theme.accentPrimary : props.theme.backgroundPrimary}>
-                        {selected && <ASImage source={require('assets/ic-checkmark.png')} tintColor={props.theme.foregroundInverted} width={14} height={14} />}
+                    <ASFlex width={22} height={22} borderRadius={11} alignItems="center" justifyContent="center" backgroundColor={selected ? theme.accentPrimary : theme.backgroundPrimary}>
+                        {selected && <ASImage source={require('assets/ic-checkmark.png')} tintColor={theme.foregroundInverted} width={14} height={14} />}
                     </ASFlex>
                 </ASFlex>
             </ASFlex>
@@ -32,17 +35,16 @@ export interface AsyncMessageViewProps {
     conversationId: string;
     message: DataSourceMessageItem;
     engine: ConversationEngine;
-    onMessagePress: (message: DataSourceMessageItem) => void;
     onMessageDoublePress: (message: DataSourceMessageItem) => void;
-    onMessageLongPress: (message: DataSourceMessageItem) => void;
-    onUserPress: (message: DataSourceMessageItem) => (id: string) => void;
-    onGroupPress: (message: DataSourceMessageItem) => (id: string) => void;
-    onOrganizationPress: (message: DataSourceMessageItem) => (id: string) => void;
+    onMessageLongPress: (message: DataSourceMessageItem, actions: { action?: MessagesAction, reply: ChatMessagesActions['reply'], edit: ChatMessagesActions['edit'], toggleSelect: ChatMessagesActions['toggleSelect'], forward: (messages: DataSourceMessageItem[]) => void }) => void;
+    onUserPress: (id: string) => void;
+    onGroupPress: (id: string) => void;
+    onOrganizationPress: (id: string) => void;
     onHashtagPress: (d?: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
-    onMediaPress: (message: DataSourceMessageItem) => (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
+    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
     onCommentsPress: (message: DataSourceMessageItem) => void;
-    onReplyPress: (message: DataSourceMessageItem, quotedMessage: DataSourceMessageItem) => void;
+    onReplyPress: (quotedMessage: DataSourceMessageItem) => void;
     onReactionsPress: (message: DataSourceMessageItem) => void;
 }
 
@@ -69,7 +71,7 @@ const AsyncMessageViewAvatar = (props: { message: DataSourceMessageItem, handleU
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const theme = useThemeGlobal(false);
-    const { conversationId, message, engine, onMessageDoublePress, onMessagePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress, onHashtagPress } = props;
+    const { conversationId, message, engine, onMessageDoublePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress, onHashtagPress } = props;
     const {
         isOut,
         attachTop,
@@ -78,8 +80,11 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
         reactionCounters,
         isSending
     } = message;
+    const { getState, reply, edit, toggleSelect } = useChatMessagesActions({ conversationId: props.conversationId });
+    const isSelecting = getState().action === 'selected';
 
     const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
+    const forward = useForward(conversationId);
 
     React.useEffect(() => {
         let timer: any;
@@ -105,7 +110,10 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
     let lastTap: number;
     const handlePress = () => {
-        onMessagePress(message);
+        if (isSelecting) {
+            toggleSelect(message);
+            return;
+        }
 
         if (!isSending) {
             const now = Date.now();
@@ -118,13 +126,51 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
             }
         }
     };
-    const handleLongPress = React.useCallback(() => onMessageLongPress(message), [message]);
+    const handleLongPress = () => {
+        if (isSelecting) {
+            return;
+        }
+        onMessageLongPress(message, { action: getState().action, reply, edit, toggleSelect, forward });
+    };
     const handleCommentPress = React.useCallback(() => onCommentsPress(message), [message]);
-    const handleMediaPress = onMediaPress(message);
-    const handleUserPress = onUserPress(message);
-    const handleOrganizationPress = onOrganizationPress(message);
-    const handleGroupPress = onGroupPress(message);
-    const handleReplyPress = React.useCallback((quoted: DataSourceMessageItem) => onReplyPress(message, quoted), [message]);
+    const handleMediaPress = React.useCallback((fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => {
+        if (isSelecting) {
+            toggleSelect(message);
+            return;
+        }
+        onMediaPress(fileMeta, event, radius, senderName, date);
+    }, [isSelecting, message]);
+    const handleUserPress = React.useCallback((id: string) => {
+        if (isSelecting) {
+            toggleSelect(message);
+            return;
+        }
+        onUserPress(id);
+    }, [isSelecting, message]);
+    const handleOrganizationPress = React.useCallback((id: string) => {
+        if (isSelecting) {
+            toggleSelect(message);
+            return;
+        }
+        onOrganizationPress(id);
+    }, [isSelecting, message]);
+    const handleGroupPress = React.useCallback((id: string) => {
+        if (isSelecting) {
+            toggleSelect(message);
+            return;
+        }
+        onGroupPress(id);
+    }, [isSelecting, message]);
+    const handleReplyPress = React.useCallback((quoted: DataSourceMessageItem) => {
+        if (isSelecting) {
+            toggleSelect(message);
+            return;
+        }
+        onReplyPress(quoted);
+    }, [isSelecting, message]);
+    const handleSelectPress = React.useCallback(() => {
+        toggleSelect(message);
+    }, [message, toggleSelect]);
 
     let res;
 
@@ -183,7 +229,11 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
             <ASFlex key="margin-bottom" height={marginBottom} />
 
-            <SelectCheckbox engine={engine} message={message} theme={theme} />
+            <SelectCheckbox
+                selected={isSelecting && getState().messages.some(x => x.key === message.key)}
+                onPress={handleSelectPress}
+                theme={theme}
+            />
         </ASFlex>
     );
 });

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { MessagesActionsStateEngine } from 'openland-engines/messenger/MessagesActionsState';
 import { plural } from 'openland-y-utils/plural';
 import { TextBody, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { ReplyMessage } from '../messenger/message/content/ReplyContent';
@@ -10,6 +9,7 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { css, cx } from 'linaria';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { defaultHover } from 'openland-web/utils/Styles';
+import { useChatMessagesActions } from 'openland-y-runtime/MessagesActionsState';
 
 const messageActonContainerClass = css`
     display: flex;
@@ -85,37 +85,40 @@ const messageActionCloseWrapEdit = css`
     }
 `;
 
-export const InputMessageActionComponent = (props: { engine: MessagesActionsStateEngine }) => {
+export const InputMessageActionComponent = (props: { chatId: string, userId?: string }) => {
+    const { getState, clear } = useChatMessagesActions({ conversationId: props.chatId, userId: props.userId });
     useShortcuts({
         keys: ['Escape'],
         callback: () => {
-            if (props.engine.getState().action) {
-                props.engine.clear();
+            if (getState().action !== 'none') {
+                clear();
                 return true;
             } else {
                 return false;
             }
         },
     });
-    let state = props.engine.useState();
     let names = '';
 
-    if (state.action === 'forward' || state.action === 'reply') {
-        names = state.messages
-            .reduce((res, item) => {
-                if (!res.find((s) => item.sender.id === s.id)) {
-                    res.push({ id: item.sender.id, name: item.sender.name });
-                }
-                return res;
-            }, [] as { id: string; name: string }[])
-            .map((s) => s.name)
+    if (getState().action === 'forward' || getState().action === 'reply') {
+        names = getState().messages
+            .reduce(
+                (res, item) => {
+                    if (!res.find(s => item.sender.id === s.id)) {
+                        res.push({ id: item.sender.id, name: item.sender.name });
+                    }
+                    return res;
+                },
+                [] as { id: string; name: string }[],
+            )
+            .map(s => s.name)
             .join(', ');
     }
 
     let content;
-    if (state.action === 'forward' || state.action === 'reply') {
-        if (state.messages.length === 1) {
-            content = <ReplyMessage message={state.messages[0]} isReplyAction={true} />;
+    if (getState().action === 'forward' || getState().action === 'reply') {
+        if (getState().messages.length === 1) {
+            content = <ReplyMessage message={getState().messages[0]} isReplyAction={true} />;
         } else {
             content = (
                 <>
@@ -124,12 +127,12 @@ export const InputMessageActionComponent = (props: { engine: MessagesActionsStat
                     </span>
                     <span className={TextBody} style={{ userSelect: 'none' }}>
                         {' '}
-                        {plural(state.messages.length, ['message', 'messages'])}{' '}
+                        {plural(getState().messages.length, ['message', 'messages'])}{' '}
                     </span>
                 </>
             );
         }
-    } else if (state.action === 'edit' && state.messages.length === 1) {
+    } else if (getState().action === 'edit' && getState().messages.length === 1) {
         content = <span className={TextLabel1}>Edit message</span>;
     } else {
         return null;
@@ -137,11 +140,11 @@ export const InputMessageActionComponent = (props: { engine: MessagesActionsStat
 
     let ActionIcon;
 
-    if (state.action === 'forward') {
+    if (getState().action === 'forward') {
         ActionIcon = ForwardIcon;
     }
 
-    if (state.action === 'reply') {
+    if (getState().action === 'reply') {
         ActionIcon = ReplyIcon;
     }
 
@@ -162,9 +165,9 @@ export const InputMessageActionComponent = (props: { engine: MessagesActionsStat
             </div>
             <div
                 className={
-                    state.action === 'edit' ? messageActionCloseWrapEdit : messageActionCloseWrap
+                    getState().action === 'edit' ? messageActionCloseWrapEdit : messageActionCloseWrap
                 }
-                onClick={props.engine.clear}
+                onClick={clear}
             >
                 <UIcon
                     className={defaultHover}

@@ -43,7 +43,7 @@ const subtitle = css`
 export const PrivatePlaceholder = React.memo((props: ChatEmptyComponentPrivateProps) => {
     const userName = props.conversation.user!.firstName;
     const canSendMessage = props.conversation.canSendMessage;
-    const sendMessage = (text: string) => props.conversation.sendMessage(text, null);
+    const sendMessage = (text: string) => props.conversation.sendMessage(text, null, undefined);
     const layout = useLayout();
     const messenger = React.useContext(MessengerContext);
     const isSavedMessages = messenger.user.id === props.conversation.user!.id;
