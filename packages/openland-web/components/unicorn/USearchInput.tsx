@@ -154,7 +154,7 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
                 placeholder={placeholder}
                 autoFocus={autoFocus}
                 ref={inputRef}
-                autoComplete="off"
+                autoComplete="openland-search" // chrome does not *always* follow standards and *sometimes* ignores autocomplete="off", hence we must use arbitrary values
             />
         </XView>
     );
