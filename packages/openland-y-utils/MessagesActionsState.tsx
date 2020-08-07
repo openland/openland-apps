@@ -152,7 +152,7 @@ export type ChatMessagesActions = {
 };
 
 export const makeUseChatMessagesActions = (usePlatformContext: () => Context) =>
-    ({ conversationId, userId }: { conversationId: string | undefined, userId?: string | undefined }): ChatMessagesActions => {
+    ({ conversationId, userId }: { conversationId: string | undefined, userId: string | undefined }): ChatMessagesActions => {
         const { state, dispatch } = usePlatformContext();
 
         const stateRef = React.useRef(state);

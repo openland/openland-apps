@@ -6,7 +6,7 @@ export type MessagesActionsStateProviderType = ComponentType<{ children: any }>;
 
 export type useChatMessagesActionsType = ({ conversationId, userId }: {
     conversationId: string | undefined;
-    userId?: string | undefined;
+    userId: string | undefined;
 }) => ChatMessagesActions;
 
 export type useMessagesActionsForwardType = ({ sourceId }: {

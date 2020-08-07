@@ -57,7 +57,7 @@ interface ChatSelectedActionsProps {
 
 export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
     const theme = React.useContext(ThemeContext);
-    const { getState, clear } = useChatMessagesActions({ conversationId: props.chat.id });
+    const { getState, clear } = useChatMessagesActions({ conversationId: props.chat.id, userId: props.chat.__typename === 'PrivateRoom' ? props.chat.user?.id : undefined });
     const del = React.useCallback(() => {
         if (getState().action !== 'selected') {
             return;

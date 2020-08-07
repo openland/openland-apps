@@ -457,7 +457,7 @@ const ConversationComponent = React.memo((props: PageProps) => {
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id }, { fetchPolicy: 'cache-and-network' }).room;
     let mountedRef = React.useContext(SRouterMountedContext);
     let showCallModal = useCallModal({ id: room?.id! });
-    let messagesActions = useChatMessagesActions({ conversationId: room?.id });
+    let messagesActions = useChatMessagesActions({ conversationId: room?.id, userId: room?.__typename === 'PrivateRoom' ? room.user.id : undefined });
 
     if (room === null) {
         return <ChatAccessDenied theme={theme} onPress={() => props.router.back()} />;

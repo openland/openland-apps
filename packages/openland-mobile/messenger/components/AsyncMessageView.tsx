@@ -80,7 +80,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
         reactionCounters,
         isSending
     } = message;
-    const { getState, reply, edit, toggleSelect } = useChatMessagesActions({ conversationId: props.conversationId });
+    const { getState, reply, edit, toggleSelect } = useChatMessagesActions({ conversationId: props.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
     const isSelecting = getState().action === 'selected';
 
     const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
