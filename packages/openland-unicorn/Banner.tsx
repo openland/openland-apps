@@ -15,7 +15,7 @@ import IcWin from 'openland-icons/s/ic-win-16.svg';
 import IcMac from 'openland-icons/s/ic-mac-16.svg';
 import IcLinux from 'openland-icons/s/ic-linux-16.svg';
 import { getConfig } from 'openland-web/config';
-import { delay } from 'openland-y-utils/timer';
+import { delayBreakable } from 'openland-y-utils/timer';
 
 const bannerContainetClass = css`
     display: flex;
@@ -266,8 +266,6 @@ const UpdateBanner = () => {
     );
 };
 
-const queryVersion = async () => await (await fetch('/_internal/version')).text();
-
 let useUpdateBanner = () => {
     let [show, setShow] = React.useState(false);
     let onClose = React.useCallback(() => {
@@ -276,19 +274,42 @@ let useUpdateBanner = () => {
     }, []);
     React.useEffect(() => {
         let lastStableVersion = getConfig().release || '';
+        let run = true;
+        let breaker: (() => void) | null = null;
 
-        let interval: any = setInterval(async () => {
-            const newVersion = await queryVersion();
-            if (newVersion !== lastStableVersion) {
-                await delay(60000);
-                if (await queryVersion() === newVersion) {
-                    lastStableVersion = newVersion;
-                    setShow(true);
+        const queryVersion = async () => await (await fetch('/_internal/version', { cache: 'no-store' })).text();
+
+        const worker = async () => {
+            while (run) {
+                let delay = delayBreakable(15000);
+                breaker = delay.resolver;
+                await delay.promise;
+                breaker = null;
+                if (!run) {
+                    break;
+                }
+                const newVersion = await queryVersion();
+                if (newVersion !== lastStableVersion) {
+                    delay = delayBreakable(60000);
+                    breaker = delay.resolver;
+                    await delay.promise;
+                    breaker = null;
+                    if (await queryVersion() === newVersion && run) {
+                        lastStableVersion = newVersion;
+                        setShow(true);
+                    }
                 }
             }
-        }, 15000);
+        };
 
-        return () => clearInterval(interval);
+        worker();
+
+        return () => {
+            run = false;
+            if (breaker) {
+                breaker();
+            }
+        };
     }, []);
 
     return { show, onClose, BannerComponent: UpdateBanner, electronEnabled: true };
