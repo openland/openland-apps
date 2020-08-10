@@ -123,6 +123,9 @@ export const UToastProvider = React.memo((props: { children: any }) => {
         show: (newConfig: UToastConfig) => {
             setVisible(true);
             setConfig(newConfig);
+            let timeoutId: any;
+            timeoutId = setTimeout(() => setVisible(false), 2000);
+            return () => clearTimeout(timeoutId);
         },
         hide: () => setVisible(false),
     }).current;
