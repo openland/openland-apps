@@ -173,7 +173,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         (addedMembers: RoomMembersPaginated_members[]) => {
             setMembers(current => [...current, ...addedMembers]);
 
-            addedMembers.forEach(m => onlines.onUserAppears(m.user.id));
+            onlines.onUsersAppear(addedMembers.map(m => m.user.id));
         },
         [members],
     );
@@ -193,7 +193,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     );
 
     React.useEffect(() => {
-        return onlines.onSingleChangeChange((user: string, online: boolean) => {
+        return onlines.onSingleChange((user: string, online: boolean) => {
             setMembers(current => current.map(m => m.user.id === user && online !== m.user.online ? { ...m, user: { ...m.user, online, lastSeen: Date.now().toString() } } : m));
         });
     }, [members]);

@@ -103,7 +103,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     const [loading, setLoading] = React.useState(false);
 
     React.useEffect(() => {
-        members.map((u) => u.user.id).map(getMessenger().engine.getOnlines().onUserAppears);
+        getMessenger().engine.getOnlines().onUsersAppear(members.map((u) => u.user.id));
     }, [members]);
 
     // callbacks

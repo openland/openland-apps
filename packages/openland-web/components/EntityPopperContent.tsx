@@ -141,7 +141,7 @@ export const UserPopperContent = React.memo(
             }, [loading, isContact]);
 
             React.useEffect(() => {
-                messenger.getOnlines().onUserAppears(user.id!);
+                messenger.getOnlines().onUsersAppear([user.id!]);
             }, []);
             return (
                 <div className={userContainer}>

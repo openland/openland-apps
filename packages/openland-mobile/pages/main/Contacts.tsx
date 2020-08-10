@@ -236,7 +236,7 @@ const ContactsPage = React.memo((props: PageProps) => {
     }, []);
 
     React.useEffect(() => {
-        return onlines.onSingleChangeChange((user: string, online: boolean) => {
+        return onlines.onSingleChange((user: string, online: boolean) => {
             setItems((current) =>
                 current.map((item) =>
                     item.id === user && online !== item.online

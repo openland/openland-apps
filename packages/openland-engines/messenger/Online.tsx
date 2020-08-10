@@ -29,19 +29,18 @@ export class OnlineWatcher {
         this.sub = s;
     }
 
-    onPrivateChatAppears = (uid: string) => {
-        if (!this.privateChats.includes(uid)) {
-            this.privateChats.unshift(uid);
+    onPrivateChatsAppear = (uids: string[]) => {
+        const newChats = uids.filter(uid => !this.privateChats.includes(uid));
+        if (newChats.length > 0) {
+            this.privateChats = [...newChats, ...this.privateChats];
             this.subscribe();
         }
     }
 
-    onUserAppears = (uid: string) => {
-        if (!this.users.includes(uid)) {
-            this.users.unshift(uid);
-            if (this.users.length > 50) {
-                this.users.pop();
-            }
+    onUsersAppear = (uids: string[]) => {
+        const newUsers = uids.filter(uid => !this.users.includes(uid));
+        if (newUsers.length > 0) {
+            this.users = [...newUsers, ...this.users];
             this.subscribe();
         }
     }
@@ -57,7 +56,7 @@ export class OnlineWatcher {
         };
     }
 
-    onSingleChangeChange(cb: (user: string, online: boolean) => void) {
+    onSingleChange(cb: (user: string, online: boolean) => void) {
         this.singleChangeListeners.push(cb);
 
         return () => {

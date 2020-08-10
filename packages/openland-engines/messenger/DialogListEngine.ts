@@ -142,26 +142,29 @@ export class DialogListEngine {
 
         this.dataSource.watch({
             onDataSourceInited: (items) => {
+                let newChats = [];
                 for (let i of items) {
                     if (i.kind === 'PRIVATE') {
                         this.userConversationMap.set(i.flexibleId, i.key);
-                        this.engine.getOnlines().onPrivateChatAppears(i.flexibleId);
+                        newChats.push(i.flexibleId);
                     }
                 }
+                this.engine.getOnlines().onPrivateChatsAppear(newChats);
             },
             onDataSourceLoadedMore: (items) => {
+                let newChats = [];
                 for (let i of items) {
                     if (i.kind === 'PRIVATE') {
                         this.userConversationMap.set(i.flexibleId, i.key);
-                        this.engine.getOnlines().onPrivateChatAppears(i.flexibleId);
+                        newChats.push(i.flexibleId);
                     }
                 }
+                this.engine.getOnlines().onPrivateChatsAppear(newChats);
             },
             onDataSourceItemAdded: (item) => {
                 if (item.kind === 'PRIVATE') {
                     this.userConversationMap.set(item.flexibleId, item.key);
-                    this.engine.getOnlines().onPrivateChatAppears(item.flexibleId);
-
+                    this.engine.getOnlines().onPrivateChatsAppear([item.flexibleId]);
                 }
             },
             onDataSourceLoadedMoreForward: (items) => {
@@ -189,7 +192,7 @@ export class DialogListEngine {
                 //
             }
         });
-        engine.getOnlines().onSingleChangeChange((user, online) => {
+        engine.getOnlines().onSingleChange((user, online) => {
             let conversationId = this.userConversationMap.get(user);
             if (!conversationId) {
                 return;

@@ -32,7 +32,7 @@ export const GroupUsersList = React.forwardRef(
                 props.setMembers(initialMembers);
                 props.setLoading(false);
 
-                initialMembers.forEach(m => onlines.onUserAppears(m.user.id));
+                onlines.onUsersAppear(initialMembers.map(m => m.user.id));
             }
         }, [initialMembers]);
 
@@ -55,7 +55,7 @@ export const GroupUsersList = React.forwardRef(
                 ]);
                 props.setLoading(false);
 
-                loaded.forEach(m => onlines.onUserAppears(m.user.id));
+                onlines.onUsersAppear(loaded.map(m => m.user.id));
             }
         }, [props.roomId, props.members, props.loading]);
 
