@@ -281,7 +281,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                         )}
                         {isContact && user.id !== myID && !user.isBot && (
                             <ZListItem
-                                appearance="danger"
+                                leftIconColor={theme.accentNegative}
                                 leftIcon={require('assets/ic-invite-off-glyph-24.png')}
                                 text="Remove from contacts"
                                 onPress={handleRemoveMemberFromContacts}

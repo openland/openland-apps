@@ -18,6 +18,7 @@ const messageActonContainerClass = css`
     align-items: center;
     flex-shrink: 0;
     margin-bottom: 12px;
+    margin-top: -4px;
 `;
 
 const messageActonInnerContainerClass = css`
@@ -44,6 +45,16 @@ const messageActionIconWrap = css`
     flex-shrink: 0;
 `;
 
+const messageActionCloseWrapper = css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+`;
+
 const messageActionCloseWrap = css`
     display: flex;
     flex-direction: row;
@@ -51,12 +62,8 @@ const messageActionCloseWrap = css`
     justify-content: center;
     width: 24px;
     height: 24px;
-    flex-shrink: 0;
     border-radius: 24px;
-    cursor: pointer;
     background-color: #f2f3f5;
-    margin-left: 16px;
-    margin-right: 6px;
 
     & svg * {
         fill: #676d7a;
@@ -71,8 +78,6 @@ const messageActionCloseWrapEdit = css`
     justify-content: center;
     width: 24px;
     height: 24px;
-    flex-shrink: 0;
-    cursor: pointer;
     margin: 0 6px;
 
     /* optical compensation */
@@ -85,8 +90,11 @@ const messageActionCloseWrapEdit = css`
     }
 `;
 
-export const InputMessageActionComponent = (props: { chatId: string, userId?: string }) => {
-    const { getState, clear } = useChatMessagesActions({ conversationId: props.chatId, userId: props.userId });
+export const InputMessageActionComponent = (props: { chatId: string; userId?: string }) => {
+    const { getState, clear } = useChatMessagesActions({
+        conversationId: props.chatId,
+        userId: props.userId,
+    });
     useShortcuts({
         keys: ['Escape'],
         callback: () => {
@@ -101,17 +109,14 @@ export const InputMessageActionComponent = (props: { chatId: string, userId?: st
     let names = '';
 
     if (getState().action === 'forward' || getState().action === 'reply') {
-        names = getState().messages
-            .reduce(
-                (res, item) => {
-                    if (!res.find(s => item.sender.id === s.id)) {
-                        res.push({ id: item.sender.id, name: item.sender.name });
-                    }
-                    return res;
-                },
-                [] as { id: string; name: string }[],
-            )
-            .map(s => s.name)
+        names = getState()
+            .messages.reduce((res, item) => {
+                if (!res.find((s) => item.sender.id === s.id)) {
+                    res.push({ id: item.sender.id, name: item.sender.name });
+                }
+                return res;
+            }, [] as { id: string; name: string }[])
+            .map((s) => s.name)
             .join(', ');
     }
 
@@ -164,16 +169,21 @@ export const InputMessageActionComponent = (props: { chatId: string, userId?: st
                 {content}
             </div>
             <div
-                className={
-                    getState().action === 'edit' ? messageActionCloseWrapEdit : messageActionCloseWrap
-                }
+                className={cx(
+                    getState().action === 'edit' ? null : messageActionCloseWrapper,
+                    defaultHover,
+                )}
                 onClick={clear}
             >
-                <UIcon
-                    className={defaultHover}
-                    icon={<CloseIcon />}
-                    color={'var(--foregroundTertiary)'}
-                />
+                <div
+                    className={
+                        getState().action === 'edit'
+                            ? messageActionCloseWrapEdit
+                            : messageActionCloseWrap
+                    }
+                >
+                    <UIcon icon={<CloseIcon />} color={'var(--foregroundTertiary)'} />
+                </div>
             </div>
         </div>
     );
