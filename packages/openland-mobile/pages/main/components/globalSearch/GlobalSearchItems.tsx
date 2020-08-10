@@ -97,14 +97,15 @@ const GlobalSearchItemOrganization = React.memo((props: ItemOrganizationProps) =
 
 interface ItemUserProps extends ItemProps {
     item: GlobalSearch_items_User;
+    renderSavedMessages: boolean;
 }
 
 export const GlobalSearchItemUser = React.memo((props: ItemUserProps) => {
     const theme = useThemeGlobal();
     const messenger = getMessenger();
-    const { item, onPress } = props;
+    const { item, onPress, renderSavedMessages } = props;
     const handlePress = React.useCallback(() => onPress(item.id, item.name), [item]);
-    const isSavedMessages = item.id === messenger.engine.user.id;
+    const isSavedMessages = renderSavedMessages && (item.id === messenger.engine.user.id);
 
     return (
         <ItemBase
@@ -128,10 +129,11 @@ export const GlobalSearchItemUser = React.memo((props: ItemUserProps) => {
 
 interface GlobalSearchItemProps extends GlobalSearchProps {
     item: GlobalSearch_items;
+    renderSavedMessages: boolean;
 }
 
 export const GlobalSearchItem = React.memo((props: GlobalSearchItemProps) => {
-    const { item, router, onOrganizationPress, onUserPress, onGroupPress } = props;
+    const { item, router, onOrganizationPress, onUserPress, onGroupPress, renderSavedMessages } = props;
 
     return (
         <ASView style={{ height: 56 }}>
@@ -154,6 +156,7 @@ export const GlobalSearchItem = React.memo((props: GlobalSearchItemProps) => {
                             ? onUserPress
                             : () => router.push('Conversation', { id: item.id })
                     }
+                    renderSavedMessages={renderSavedMessages}
                 />
             )}
             {item.__typename === 'SharedRoom' && (
