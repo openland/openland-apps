@@ -90,6 +90,7 @@ const DialogSearchMessagesInner = React.forwardRef(
         const queryRef = React.useRef('');
 
         const [isRecent, setIsRecent] = React.useState(true);
+        const [isHashtag, setIsHashtag] = React.useState(false);
         const [loadingMore, setLoadingMore] = React.useState(false);
         const [after, setAfter] = React.useState<string | null>(null);
         const [items, setItems] = React.useState<GlobalSearch_items[]>(initialItems);
@@ -105,6 +106,7 @@ const DialogSearchMessagesInner = React.forwardRef(
             if (queryRef.current !== query) {
                 return;
             }
+            setIsHashtag(query.startsWith('#'));
             setIsRecent(false);
             setItems(loadedItems);
             setAfter(getCursor(loadedMessages));
@@ -121,6 +123,7 @@ const DialogSearchMessagesInner = React.forwardRef(
                 setAfter(null);
                 setMessages([]);
                 setIsRecent(true);
+                setIsHashtag(false);
 
                 props.onLoading(false);
             },
@@ -188,7 +191,7 @@ const DialogSearchMessagesInner = React.forwardRef(
                             </>
                         );
                     }
-                    return <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} savedMessages={i.id === messenger.user.id} {...props} />;
+                    return <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} savedMessages={!isHashtag && (i.id === messenger.user.id)} {...props} />;
                 })}
                 {messages.length > 0 && (
                     <UListHeader text="Messages" />

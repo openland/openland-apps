@@ -74,12 +74,13 @@ export const EmptyView = React.memo((props: { theme: ThemeGlobal }) => (
 const GlobalSearchInner = (props: GlobalSearchProps) => {
     const theme = React.useContext(ThemeContext);
     const items = getClient().useGlobalSearch({ query: props.query, kinds: props.kinds }).items;
+    const isHashtag = props.query.startsWith('#');
 
     return (
         <SScrollView keyboardDismissMode="on-drag" backgroundColor={theme.backgroundPrimary}>
             {items.length === 0 && <EmptyView theme={theme} />}
             {items.map((item, index) => (
-                <GlobalSearchItem key={`search-item-${index}-${item.id}`} item={item} {...props} />
+                <GlobalSearchItem key={`search-item-${index}-${item.id}`} item={item} renderSavedMessages={!isHashtag} {...props} />
             ))}
         </SScrollView>
     );
@@ -144,10 +145,11 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
         return <EmptyView theme={theme} />;
     }
 
+    const isHashtag = props.query.startsWith('#');
     const content = (
         <>
             {items.map((item, index) => (
-                <GlobalSearchItem key={`search-item-${index}-${item.id}`} item={item} {...props} />
+                <GlobalSearchItem key={`search-item-${index}-${item.id}`} item={item} renderSavedMessages={!isHashtag} {...props} />
             ))}
             {messages.length > 0 && <ZListHeader text="Messages" marginTop={items.length === 0 ? 0 : undefined} />}
         </>
