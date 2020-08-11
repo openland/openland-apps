@@ -1,12 +1,14 @@
 import * as React from 'react';
+import UUID from 'uuid/v4';
 import { XViewRouterContext } from 'react-mental';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import UUID from 'uuid/v4';
 import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
 import { useMessagesActionsForward } from 'openland-y-runtime/MessagesActionsState';
+import { useToast } from 'openland-web/components/unicorn/UToast';
 
 export const useForward = (selectedFrom: string) => {
+    const toastHandlers = useToast();
     const engine = React.useContext(MessengerContext);
     const router = React.useContext(XViewRouterContext)!;
 
@@ -26,6 +28,10 @@ export const useForward = (selectedFrom: string) => {
                     });
                 }
                 setShowLoader(false);
+                toastHandlers.show({
+                    type: 'success',
+                    text: 'Success'
+                });
             } else {
                 forward({ targetId: toId, messages });
                 router.navigate('/mail/' + toId);

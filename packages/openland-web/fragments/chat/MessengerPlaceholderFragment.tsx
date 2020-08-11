@@ -101,7 +101,7 @@ export const MessengerPlaceholderFragment = React.memo(() => {
                 <h2 className={TextTitle1}>Pick a chat on the left</h2>
             </XView>
             <XView marginTop={8} color="var(--foregroundSecondary)">
-                <p className={TextBody}>Or get done something else</p>
+                <p className={TextBody}>Or take a quick action below</p>
             </XView>
             <XView marginTop={32} justifyContent="center" flexWrap="nowrap" flexDirection="row">
                 <Button icon={<Plus />} text="Create group" onClick={createGroup} />

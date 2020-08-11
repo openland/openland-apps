@@ -90,21 +90,33 @@ interface ReactionsListProps {
 const ReactionsList = React.memo((props: ReactionsListProps) => {
     const client = useClient();
     const router = React.useContext(XViewRouterContext)!;
+    const [loading, setLoading] = React.useState(true);
     const { hide, mId, isComment } = props;
     const message = isComment
-        ? client.useCommentFullReactions({ id: mId }, { fetchPolicy: 'network-only' }).commentEntry
-        : client.useMessageFullReactions({ id: mId }, { fetchPolicy: 'network-only' }).message;
+        ? client.useCommentFullReactions({ id: mId }).commentEntry
+        : client.useMessageFullReactions({ id: mId }).message;
 
     // this huck because updating reactions dont updated list
     React.useEffect(() => {
         (async () => {
             if (isComment) {
                 await client.refetchCommentFullReactions({ id: mId });
+                setLoading(false);
             } else {
                 await client.refetchMessageFullReactions({ id: mId });
+                setLoading(false);
             }
         })();
     }, []);
+
+    // show loader instead of a jumping list
+    if (loading) {
+        return (
+            <XView flexGrow={1} flexShrink={0} height={50}>
+                <XLoader loading={true} />
+            </XView>
+        );
+    }
 
     if (!message) {
         return null;
@@ -191,14 +203,6 @@ const ReactionsList = React.memo((props: ReactionsListProps) => {
 
 export const showReactionsList = (mId: string, isComment?: boolean) => {
     showModalBox({ title: 'Reactions', width: 400 }, (ctx) => (
-        <React.Suspense
-            fallback={
-                <XView flexGrow={1} flexShrink={0} height={50}>
-                    <XLoader loading={true} />
-                </XView>
-            }
-        >
-            <ReactionsList mId={mId} isComment={isComment} hide={ctx.hide} />
-        </React.Suspense>
+        <ReactionsList mId={mId} isComment={isComment} hide={ctx.hide} />
     ));
 };

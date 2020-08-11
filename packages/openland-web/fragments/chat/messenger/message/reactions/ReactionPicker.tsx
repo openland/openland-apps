@@ -152,7 +152,7 @@ export const ReactionPicker = React.memo(React.forwardRef((props: ReactionPicker
                         key={'reaction-' + reaction}
                         onPick={props.onPick}
                         reaction={reaction}
-                        toRemove={remove}
+                        toRemove={!remove}
                         disabled={disabled}
                     />
                 );

@@ -9,6 +9,8 @@ import { isPad } from 'openland-mobile/pages/Root';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
+import { GQLClientContext } from 'openland-api/useClient';
 
 interface SheetModalProps {
     ctx: ZModalController;
@@ -222,9 +224,11 @@ const ThemedSheetModal = React.memo((props: SheetModalProps) => {
 export function showSheetModal(render: (ctx: ZModalController) => React.ReactElement<{}>, title?: string) {
     showModal((ctx) => {
         return (
-            <ASSafeAreaContext.Consumer>
-                {safe => <ThemedSheetModal modal={render} safe={safe} ctx={ctx} title={title} />}
-            </ASSafeAreaContext.Consumer>
+            <GQLClientContext.Provider value={getClient()}>
+                <ASSafeAreaContext.Consumer>
+                    {safe => <ThemedSheetModal modal={render} safe={safe} ctx={ctx} title={title} />}
+                </ASSafeAreaContext.Consumer>
+            </GQLClientContext.Provider>
         );
     });
 }

@@ -37,15 +37,10 @@ const reactionsItems = css`
 `;
 
 const reactionsItem = css`
-    cursor: pointer;
     width: 16px;
     height: 16px;
     margin-right: 4px;
     flex-shrink: 0;
-
-    &:hover img {
-        transform: translateY(-2px);
-    }
 
     img {
         transition: transform 0.1s ease-in;
@@ -55,16 +50,27 @@ const reactionsItem = css`
     }
 `;
 
+const reactionsSetUnsetItem = css`
+    cursor: pointer;
+    &:hover img {
+        transform: translateY(-2px);
+    }
+`;
+
 interface ReactionItemProps {
     value: MessageReactionCounter;
     onClick: (reaction: MessageReactionType) => void;
+    canChange: boolean;
 }
 
 const ReactionItem = React.memo((props: ReactionItemProps) => {
-    const { value, onClick } = props;
+    const { value, onClick, canChange } = props;
 
     return (
-        <div className={reactionsItem} onClick={() => onClick(value.reaction)}>
+        <div
+            className={cx(canChange && reactionsSetUnsetItem, reactionsItem)}
+            onClick={canChange ? () => onClick(value.reaction) : undefined}
+        >
             <img src={reactionImage(value.reaction)} />
         </div>
     );
@@ -116,7 +122,8 @@ export const MessageReactions = React.memo<MessageReactionsProps>((props) => {
     }
 
     const count = reactionCounters.reduce((sum, r) => sum + r.count, 0);
-    const likedByMe = !!reactionCounters.find(r => r.setByMe);
+    const likedByMe = !!reactionCounters.find((r) => r.setByMe);
+    const otherLikes = !!reactionCounters.find((r) => r.setByMe && r.count !== 1);
 
     return (
         <div
@@ -127,20 +134,28 @@ export const MessageReactions = React.memo<MessageReactionsProps>((props) => {
             }}
         >
             <div className={reactionsItems}>
-                {reactionCounters.map((r, i) => (
-                    <ReactionItem
-                        key={'reaction-' + r.reaction + '-' + i}
-                        value={r}
-                        onClick={handleReactionClick}
-                    />
-                ))}
+                {reactionCounters.map((r, i) => {
+                    const canChange = r.reaction !== MessageReactionType.DONATE;
+                    return (
+                        <ReactionItem
+                            key={'reaction-' + r.reaction + '-' + i}
+                            value={r}
+                            onClick={handleReactionClick}
+                            canChange={canChange}
+                        />
+                    );
+                })}
             </div>
 
             <div
                 className={cx(TextDensed, reactionsText)}
                 onClick={() => showReactionsList(props.message.id || '')}
             >
-                {likedByMe && count === 1 ? 'You' : likedByMe ? `You + ${count - 1}` : count}
+                {likedByMe && !otherLikes
+                    ? 'You'
+                    : likedByMe && otherLikes
+                    ? `You + ${count - 1}`
+                    : count}
             </div>
         </div>
     );

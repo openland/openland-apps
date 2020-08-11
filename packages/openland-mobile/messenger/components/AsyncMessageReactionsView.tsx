@@ -36,7 +36,8 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
     } = message;
 
     const count = reactionCounters.reduce((sum, r) => sum + r.count, 0);
-    const likedByMe = !!reactionCounters.find(r => r.setByMe);
+    const likedByMe = !!reactionCounters.find((r) => r.setByMe);
+    const otherLikes = !!reactionCounters.find((r) => r.setByMe && r.count !== 1);
 
     return (
         <ASFlex alignItems="stretch" flexDirection="row" maxHeight={33}>
@@ -59,7 +60,7 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
 
                             {!!count && (
                                 <ASText key={'users'} fontWeight={FontStyles.Weight.Medium} marginLeft={4} fontSize={13} color={theme.foregroundTertiary}>
-                                    {likedByMe && count === 1 ? 'You' : likedByMe ? `You + ${count - 1}` : count}
+                                    {likedByMe && !otherLikes ? 'You' : likedByMe && otherLikes ? `You + ${count - 1}` : count}
                                 </ASText>
                             )}
                         </ASFlex>

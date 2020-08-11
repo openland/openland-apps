@@ -75,6 +75,7 @@ const ContactsSearchInner = (props: ContactsSearchProps) => {
                         key={`search-item-${item.id}`}
                         item={item}
                         onPress={() => router.push('ProfileUser', { id: item.id })}
+                        renderSavedMessages={false}
                     />
                 </ASView>
             )}

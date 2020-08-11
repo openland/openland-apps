@@ -80,7 +80,7 @@ const replyAttachPreviewClass = css`
     }
 `;
 
-const replyAttachPreviewLinkClass = css`
+const replyAttachPreviewBackgroundClass = css`
     background-color: var(--backgroundTertiaryTrans);
 `;
 
@@ -189,7 +189,13 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
                 className={isReplyAction ? replyBasicStyle : replyMessageGroupClass}
                 onClick={isReplyAction ? undefined : onReplyClick}
             >
-                <div className={cx(replyAttachPreviewClass, replyAttachImageClass)}>
+                <div
+                    className={cx(
+                        replyAttachPreviewClass,
+                        replyAttachPreviewBackgroundClass,
+                        replyAttachImageClass,
+                    )}
+                >
                     <ImgWithRetry src={url + ops} srcSet={url + opsRetina} width={40} height={40} />
                 </div>
                 <div className={replyAttachContentClass}>
@@ -235,7 +241,7 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
                         className={cx(
                             replyAttachPreviewClass,
                             replyAttachImageClass,
-                            replyAttachPreviewLinkClass,
+                            replyAttachPreviewBackgroundClass,
                         )}
                     >
                         <ImgWithRetry
@@ -246,7 +252,7 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
                         />
                     </div>
                 ) : (
-                    <div className={cx(replyAttachPreviewClass, replyAttachPreviewLinkClass)}>
+                    <div className={cx(replyAttachPreviewClass, replyAttachPreviewBackgroundClass)}>
                         <UIcon color="var(--foregroundTertiary)" icon={<IcLink />} />
                     </div>
                 )}

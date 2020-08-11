@@ -14,12 +14,13 @@ const getExtension = (name: string) => {
 
 interface ASDocumentExtProps {
     name: string;
+    isInverted?: boolean;
     size?: 'medium' | 'large';
 }
 
 export const ASDocumentExt = (props: ASDocumentExtProps) => {
     const theme = React.useContext(ThemeContext);
-    const { name, size = 'medium' } = props;
+    const { name, size = 'medium', isInverted = false } = props;
 
     const ext = getExtension(name);
     const boxSize = size === 'large' ? 72 : 40;
@@ -27,7 +28,7 @@ export const ASDocumentExt = (props: ASDocumentExtProps) => {
     const cornerFirstImage = size === 'large' ? require('assets/ic-file-preview-corner-1-18.png') : require('assets/ic-file-preview-corner-1-10.png');
     const cornerSecondImage = size === 'large' ? require('assets/ic-file-preview-corner-2-18.png') : require('assets/ic-file-preview-corner-2-10.png');
     const containerImage = size === 'large' ? require('assets/ic-document-preview-72.png') : require('assets/ic-document-preview-40.png');
-    const tintColor = theme.type === 'Light' ? (colorByExtension(ext, theme) || theme.accentPrimary) : theme.tintInverted;
+    const tintColor = theme.type === 'Light' && !isInverted ? (colorByExtension(ext, theme) || theme.accentPrimary) : theme.tintInverted;
 
     return (
         <ASFlex
