@@ -24,21 +24,44 @@ interface ReactionsListProps {
 
 const ReactionLabel: { [key in MessageReactionType]: string } = {
     ANGRY: 'Angry',
-    CRYING: 'Crying',
-    JOY: 'Joy',
-    LIKE: 'Like',
-    SCREAM: 'Scream',
-    THUMB_UP: 'Thumb Up',
+    CRYING: 'Sad',
+    JOY: 'Haha',
+    LIKE: 'Love',
+    SCREAM: 'Wow',
+    THUMB_UP: 'Thumbs Up',
     DONATE: 'Donate',
 };
 
 const ReactionsList = (props: ReactionsListProps) => {
     const theme = React.useContext(ThemeContext);
     const client = useClient();
+    const [loading, setLoading] = React.useState(true);
     const { ctx, mId, isComment } = props;
     const message = isComment
-        ? client.useCommentFullReactions({ id: mId }, { fetchPolicy: 'cache-and-network' }).commentEntry
-        : client.useMessageFullReactions({ id: mId }, { fetchPolicy: 'cache-and-network' }).message;
+        ? client.useCommentFullReactions({ id: mId }).commentEntry
+        : client.useMessageFullReactions({ id: mId }).message;
+
+    // this huck because updating reactions dont updated list
+    React.useEffect(() => {
+        (async () => {
+            if (isComment) {
+                await client.refetchCommentFullReactions({ id: mId });
+                setLoading(false);
+            } else {
+                await client.refetchMessageFullReactions({ id: mId });
+                setLoading(false);
+            }
+        })();
+    }, []);
+
+    // show loader instead of a jumping list
+    if (loading) {
+        return (
+            <View height={40}>
+                <ZLoader />
+            </View>
+        );
+    }
 
     if (!message) {
         return null;
@@ -125,17 +148,9 @@ export const showReactionsList = (mId: string, isComment?: boolean) => {
     let builder = new ActionSheetBuilder();
 
     builder.view((ctx: ZModalController) => (
-        <React.Suspense
-            fallback={
-                <View height={40}>
-                    <ZLoader />
-                </View>
-            }
-        >
-            <QueryCacheProvider>
-                <ReactionsList ctx={ctx} mId={mId} isComment={isComment} />
-            </QueryCacheProvider>
-        </React.Suspense>
+        <QueryCacheProvider>
+            <ReactionsList ctx={ctx} mId={mId} isComment={isComment} />
+        </QueryCacheProvider>
     ));
     builder.cancelable(false);
     builder.show();
