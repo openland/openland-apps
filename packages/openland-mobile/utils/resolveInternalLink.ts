@@ -10,9 +10,17 @@ import { ResolvedInvite_invite_RoomInvite, AccountInviteInfo_invite } from 'open
 import { publicPaths } from 'openland-y-utils/publicPaths';
 import Toast from 'openland-mobile/components/Toast';
 import { AppLoader } from 'openland-y-runtime/AppLoader';
+import { isInternalLink } from 'openland-y-utils/isInternalLink';
 
 export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?: boolean) => {
     return async () => {
+        if (!isInternalLink(srcLink)) {
+            if (fallback) {
+                await fallback();
+            }
+            return;
+        }
+
         const loader = Toast.loader();
         let link = srcLink;
         if (link.includes('?')) {
@@ -48,7 +56,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
             'settings/licenses': { route: 'SettingsLicenses' },
         };
 
-        let pagePattern = /(http(s)?\:\/\/)?(.*)?.openland.com\/(.*)/g;
+        let pagePattern = /(http(s)?\:\/\/)?(.*\.)?openland\.com\/(.*)/g;
         let matchPage = pagePattern.exec(link);
         if (matchPage && matchPage[4]) {
             const page = pages[matchPage[4]];
