@@ -3,15 +3,16 @@ import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEn
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
-import { FontStyles, TextStylesAsync } from 'openland-mobile/styles/AppStyles';
+import { TextStylesAsync } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
 import { AsyncReplyMessageMediaView } from '../AsyncReplyMessageMediaView';
 import { AsyncReplyMessageDocumentView } from '../AsyncReplyMessageDocumentView';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment, FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase } from 'openland-api/spacex.types';
-import { RenderSpans, TextWrapper } from './AsyncRenderSpans';
+import { RenderSpans } from './AsyncRenderSpans';
 import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from '../AsyncBubbleView';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { StickerContent } from './StickerContent';
+import { AsyncReplyMessageRichAttach } from '../AsyncReplyMessageRichAttach';
 
 const getAttachFile = (message: DataSourceMessageItem) => {
     return message.attachments && message.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
@@ -72,6 +73,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
         }
 
         const bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
+        const bubbleForegroundSecondary = message.isOut ? theme.outgoingForegroundSecondary : theme.incomingForegroundSecondary;
         const bubbleForegroundTertiary = message.isOut ? theme.outgoingForegroundTertiary : theme.incomingForegroundTertiary;
         const forwardColor = message.isOut ? theme.tintInverted : theme.foregroundTertiary;
 
@@ -97,29 +99,105 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
                         if (repliedMessage) {
                             const attachFile = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+                            const attachRich = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
                             const sticker = m.sticker && m.sticker.__typename === 'ImageSticker' ? m.sticker : undefined;
                             const attachPurchase = getAttachPurchase(repliedMessage);
+                            let miniContent = null;
+                            let miniContentSubtitle = null;
+                            let miniContentColor = bubbleForegroundSecondary;
+
+                            if (sticker) {
+                                miniContent = <StickerContent sticker={sticker} message={m} padded={needPaddedText} />;
+                                miniContentSubtitle = repliedMessage.fallback;
+                            } else if (attachFile && attachFile.fileMetadata.isImage) {
+                                miniContent = (
+                                    <AsyncReplyMessageMediaView
+                                        attach={attachFile}
+                                        onPress={this.props.onMediaPress}
+                                        message={repliedMessage}
+                                        theme={theme}
+                                    />
+                                );
+                                miniContentSubtitle = repliedMessage.fallback;
+                            } else if (attachFile && !attachFile.fileMetadata.isImage) {
+                                miniContent = (
+                                    <AsyncReplyMessageDocumentView
+                                        attach={attachFile}
+                                        message={repliedMessage}
+                                    />
+                                );
+                                miniContentSubtitle = attachFile.fileMetadata.name;
+                            } else if (attachRich) {
+                                miniContent = (
+                                    <AsyncReplyMessageRichAttach
+                                        attach={attachRich}
+                                        onPress={this.props.onMediaPress}
+                                        message={repliedMessage}
+                                        theme={theme}
+                                    />
+                                );
+                                miniContentSubtitle = repliedMessage.text;
+                                miniContentColor = bubbleForegroundPrimary;
+                            } else if (attachPurchase) {
+                                miniContentSubtitle = attachPurchase.fallback;
+                            }
 
                             return (
-                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={bubbleForegroundTertiary} onPress={handlePress}>
-                                    <ASText
-                                        key={'reply-author-' + m.id}
-                                        marginTop={-2}
-                                        height={15}
-                                        lineHeight={15}
-                                        marginLeft={10}
-                                        color={bubbleForegroundPrimary}
-                                        letterSpacing={0}
-                                        fontSize={13}
-                                        onPress={() => this.props.onUserPress(repliedMessage!.sender.id)}
-                                        fontWeight={FontStyles.Weight.Medium}
-                                        marginBottom={2}
+                                <ASFlex
+                                    key={'reply-' + m.id}
+                                    flexDirection="column"
+                                    alignItems="stretch"
+                                    marginTop={6}
+                                    marginBottom={3}
+                                    backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }}
+                                    backgroundPatchTintColor={bubbleForegroundTertiary}
+                                    onPress={handlePress}
+                                >
+                                    <ASFlex
+                                        key={'mini-context-' + m.id}
+                                        flexDirection="row"
+                                        alignItems="stretch"
+                                        marginLeft={9}
+                                        flexShrink={1}
                                     >
-                                        {repliedMessage.sender.name || ''}
-                                    </ASText>
+                                        {miniContent && (
+                                            <ASFlex marginRight={8}>
+                                                {miniContent}
+                                            </ASFlex>
+                                        )}
+                                        <ASFlex
+                                            flexGrow={1}
+                                            flexShrink={1}
+                                            flexDirection="column"
+                                            key={'reply-author-' + m.id}
+                                            marginTop={-3}
+                                            maxWidth={(message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 92}
+                                        >
+                                            <ASText
+                                                {...TextStylesAsync.Label2}
+                                                height={20}
+                                                color={bubbleForegroundPrimary}
+                                                numberOfLines={1}
+                                                onPress={() => this.props.onUserPress(repliedMessage!.sender.id)}
+                                            >
+                                                {repliedMessage.sender.name || ''}
+                                            </ASText>
+                                            {miniContentSubtitle && (
+                                                <ASText
+                                                    {...TextStylesAsync.Subhead}
+                                                    height={20}
+                                                    color={miniContentColor}
+                                                    marginTop={2}
+                                                    numberOfLines={1}
+                                                >
+                                                    {miniContentSubtitle}
+                                                </ASText>
+                                            )}
+                                        </ASFlex>
+                                    </ASFlex>
 
-                                    {repliedMessage.textSpans.length > 0 && (
-                                        <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10} marginRight={paddedMargin ? 65 : undefined} onPress={handlePress}>
+                                    {!miniContent && repliedMessage.textSpans.length > 0 && (
+                                        <ASFlex key={'reply-spans-' + m.id} marginTop={2} flexDirection="column" alignItems="stretch" marginLeft={9} marginRight={paddedMargin ? 65 : undefined} onPress={handlePress}>
                                             <RenderSpans
                                                 spans={repliedMessage.textSpans}
                                                 message={message}
@@ -138,43 +216,6 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                                 onHashtagPress={this.props.onHashtagPress}
                                             />
                                         </ASFlex>
-                                    )}
-
-                                    {sticker && (
-                                        <ASFlex key={'reply-sticker-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10}>
-                                            <StickerContent sticker={sticker} message={m} padded={needPaddedText} />
-                                        </ASFlex>
-                                    )}
-
-                                    {attachFile && attachFile.fileMetadata.isImage ? (
-                                        <AsyncReplyMessageMediaView
-                                            attach={attachFile}
-                                            onPress={this.props.onMediaPress}
-                                            message={repliedMessage}
-                                        />
-                                    ) : null}
-                                    {attachFile && !attachFile.fileMetadata.isImage ? (
-                                        <AsyncReplyMessageDocumentView
-                                            maxWidth={message.isOut ? bubbleMaxWidth - 100 : bubbleMaxWidthIncoming - 80}
-                                            theme={theme}
-                                            attach={attachFile}
-                                            onPress={this.props.onDocumentPress}
-                                            parent={message}
-                                            message={repliedMessage}
-                                        />
-                                    ) : null}
-                                    {attachPurchase && (
-                                        <TextWrapper
-                                            key={'reply-donation-' + m.id}
-                                            marginLeft={10} 
-                                            fontSize={17}
-                                            lineHeight={22}
-                                            letterSpacing={-0.41}
-                                            onPress={handlePress}
-                                            color={bubbleForegroundPrimary}
-                                        >
-                                            {attachPurchase.fallback}
-                                        </TextWrapper>
                                     )}
                                 </ASFlex>
                             );

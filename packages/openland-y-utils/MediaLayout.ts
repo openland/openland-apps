@@ -25,6 +25,12 @@ export function layoutMedia(
         h = Math.round(height * (w / width));
     }
 
+    // if image height is less than minHeight, upscale image height
+    if (h <= minHeight) {
+        h = minHeight;
+        w = Math.round(width * (h / height));
+    }
+
     // if image width is greater than maxWidth, downscale image width
     if (w >= maxWidth) {
         w = maxWidth;
