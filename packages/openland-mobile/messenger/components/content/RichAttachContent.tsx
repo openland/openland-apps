@@ -24,7 +24,7 @@ interface UrlAugmentationContentProps {
     compensateBubble?: boolean;
     maxWidth?: number;
     onUserPress: (id: string) => void;
-    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number) => void;
+    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onLongPress: (e: ASPressEvent) => void;
     padded?: boolean;
@@ -102,7 +102,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         let largeImageSize = socialImageSize || imageSize;
 
         if (this.state && this.state.largeDownloadState && this.state.largeDownloadState.path && largeImageSize) {
-            this.props.onMediaPress(largeImageSize, { ...event, path: this.state.largeDownloadState.path }, 0);
+            this.props.onMediaPress(largeImageSize, { ...event, path: this.state.largeDownloadState.path }, 0, this.props.message.sender.name, this.props.message.date);
         }
     }
 
@@ -112,7 +112,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
             let h = this.props.attach.image.metadata.imageHeight;
             let isInternal = !!(this.props.attach.titleLink && isInternalLink(this.props.attach.titleLink));
 
-            this.props.onMediaPress({ imageHeight: h, imageWidth: w }, { ...event, path: this.state.compactDownloadState.path }, isInternal ? 20 : 10);
+            this.props.onMediaPress({ imageHeight: h, imageWidth: w }, { ...event, path: this.state.compactDownloadState.path }, isInternal ? 20 : 10, this.props.message.sender.name, this.props.message.date);
         }
     }
 

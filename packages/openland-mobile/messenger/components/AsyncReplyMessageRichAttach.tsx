@@ -37,7 +37,7 @@ export class AsyncReplyMessageRichAttach extends React.PureComponent<AsyncReplyM
     }
 
     componentWillMount() {
-        let optimalSize = layoutMedia(this.props.attach.image?.metadata?.imageWidth || 0, this.props.attach.image?.metadata?.imageHeight || 0, 1024, 1024);
+        let optimalSize = layoutMedia(this.props.attach.image?.metadata?.imageWidth || 0, this.props.attach.image?.metadata?.imageHeight || 0, 40, 40);
         if (this.props.attach.image?.url) {
             this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.attach.image?.url, (this.props.attach!!.image?.metadata?.mimeType !== 'gif') ? optimalSize : null, (state) => {
                 this.setState({ downloadState: state });
