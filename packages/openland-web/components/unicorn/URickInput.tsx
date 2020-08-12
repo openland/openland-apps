@@ -8,6 +8,7 @@ import { emojiConvertToName } from 'openland-y-utils/emojiExtract';
 import { fileListToArray } from 'openland-web/fragments/chat/components/DropZone';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { getQuill } from 'openland-web/components/quill/getQuill';
+import copy from 'copy-to-clipboard';
 
 const quillInputStyle = css`
     background-color: var(--backgroundTertiaryTrans);
@@ -107,7 +108,6 @@ function extractActiveWord(quill: QuillType.Quill) {
 
 export const URickInput = React.memo(
     React.forwardRef((props: URickInputProps, ref: React.Ref<URickInputInstance>) => {
-
         const lib = React.useMemo(() => getQuill(), []);
         const Quill = lib.Quill;
         const QuillDelta = lib.QuillDelta;
@@ -139,6 +139,29 @@ export const URickInput = React.memo(
                     } else if (typeof c.insert === 'object') {
                         if (c.insert.mention) {
                             res.push(c.insert.mention);
+                        }
+                        if (c.insert.emoji) {
+                            res.push(c.insert.emoji.value);
+                        }
+                    }
+                }
+            }
+            return res;
+        }
+
+        function convertQuillContentToString(content: QuillType.Delta) {
+            let res: string[] = [];
+            for (let c of content.ops!) {
+                if (c.insert) {
+                    if (typeof c.insert === 'string') {
+                        res.push(c.insert);
+                    } else if (typeof c.insert === 'object') {
+                        if (c.insert.mention) {
+                            if (c.insert.mention.name) {
+                                res.push(c.insert.mention.name);
+                            } else if (c.insert.mention.title) {
+                                res.push(c.insert.mention.title);
+                            }
                         }
                         if (c.insert.emoji) {
                             res.push(c.insert.emoji.value);
@@ -225,14 +248,13 @@ export const URickInput = React.memo(
             () => {
                 if (containerRef.current && containerRef.current.firstChild && props.onFilesPaste) {
                     let q = containerRef.current.firstChild;
-                    let listener = (ev: ClipboardEvent) => {
+                    const pasteListener = (ev: ClipboardEvent) => {
                         if (props.onFilesPaste && ev.clipboardData && ev.clipboardData.files) {
                             props.onFilesPaste(fileListToArray(ev.clipboardData.files));
                         }
                     };
-                    q.addEventListener('paste', listener);
-
-                    return () => q.removeEventListener('paste', listener);
+                    q.addEventListener('paste', pasteListener);
+                    return () => q.removeEventListener('paste', pasteListener);
                 }
                 return () => false;
             },
@@ -337,6 +359,25 @@ export const URickInput = React.memo(
             });
 
             editor.current = q;
+
+            if (containerRef.current && containerRef.current.firstChild) {
+                let container = containerRef.current.firstChild;
+                let timer: any;
+                const copyListener = (ev: ClipboardEvent) => {
+                    const selection = q.getSelection();
+                    timer = setTimeout(() => {
+                        const content = q.getContents(selection?.index, selection?.length);
+                        const convert = convertQuillContentToString(content).join('');
+                        copy(convert);
+                    }, 1);
+                };
+                container.addEventListener('copy', copyListener);
+                return () => {
+                    clearTimeout(timer);
+                    container.removeEventListener('copy', copyListener);
+                };
+            }
+            return () => false;
         }, []);
 
         const onEmojiPicked = React.useCallback((src: string) => {
