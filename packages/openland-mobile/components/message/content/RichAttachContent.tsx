@@ -106,7 +106,15 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                 {!imgCompact && this.props.attach.image && imgLayout && (
                     <View justifyContent="center" borderRadius={8} marginTop={-10} marginHorizontal={-13} marginBottom={6} backgroundColor="rgba(0, 0, 0, 0.03)">
                         <View width={imgLayout.width} height={imgLayout.height} alignSelf="center">
-                            <PreviewWrapper path={imagePath} metadata={this.props.attach.image!.metadata!} radius={8}>
+                            <PreviewWrapper
+                                path={imagePath}
+                                width={this.props.attach.image.metadata?.imageWidth}
+                                height={this.props.attach.image.metadata?.imageHeight}
+                                isGif={this.props.attach.image.metadata?.mimeType === 'gif'}
+                                senderName={this.props.message.sender.name}
+                                date={this.props.message.date}
+                                radius={8}
+                            >
                                 <FastImage
                                     source={imageSource}
                                     style={{
@@ -155,7 +163,15 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                 <View flexDirection="row" marginTop={5} zIndex={2}>
                     {imgCompact && imgLayout && imageSource && this.props.attach.image && (
                         <View marginRight={9}>
-                            <PreviewWrapper path={imagePath} metadata={this.props.attach.image.metadata!} radius={10}>
+                            <PreviewWrapper
+                                path={imagePath}
+                                width={this.props.attach.image.metadata?.imageWidth}
+                                height={this.props.attach.image.metadata?.imageHeight}
+                                isGif={this.props.attach.image.metadata?.mimeType === 'gif'}
+                                senderName={this.props.message.sender.name}
+                                date={this.props.message.date}
+                                radius={10}
+                            >
                                 <FastImage
                                     source={imageSource}
                                     style={{

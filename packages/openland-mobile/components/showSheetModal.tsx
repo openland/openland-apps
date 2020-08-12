@@ -11,6 +11,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { GQLClientContext } from 'openland-api/useClient';
+import { ZLoader } from './ZLoader';
 
 interface SheetModalProps {
     ctx: ZModalController;
@@ -184,7 +185,9 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
                                         </Text>
                                     </View>
                                 )}
-                                {this.contents}
+                                <React.Suspense fallback={<ZLoader />}>
+                                    {this.contents}
+                                </React.Suspense>
                             </ScrollView>
                         </View>
                     )}
@@ -206,7 +209,9 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
                                         </Text>
                                     </View>
                                 )}
-                                {this.contents}
+                                <React.Suspense fallback={<ZLoader />}>
+                                    {this.contents}
+                                </React.Suspense>
                             </ScrollView>
                         </View>
                     )}

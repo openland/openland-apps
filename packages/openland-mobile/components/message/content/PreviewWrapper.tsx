@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
 import { showPictureModal } from 'openland-mobile/components/modal/ZPictureModal';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata, FullMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata } from 'openland-api/spacex.types';
 import { formatDateTime } from 'openland-y-utils/formatTime';
 
 interface PreviewWrapperProps {
     path?: string;
     radius: number;
     children: any;
-    metadata: FullMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata | FullMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata;
+    width: number | undefined | null;
+    height: number | undefined | null;
+    isGif?: boolean;
     senderName?: string;
     date?: string;
 }
@@ -30,9 +31,9 @@ export class PreviewWrapper extends React.PureComponent<PreviewWrapperProps> {
                 title: this.props.senderName,
                 subtitle: this.props.date ? formatDateTime(parseInt(this.props.date, 10)) : undefined,
                 url: this.props.path!,
-                width: this.props.metadata.imageWidth || 1024,
-                height: this.props.metadata.imageHeight || 1024,
-                isGif: false,
+                width: this.props.width || 1024,
+                height: this.props.height || 1024,
+                isGif: this.props.isGif || false,
                 animate: { x: pageX, y: pageY, width, height, borderRadius: this.props.radius },
                 onBegin: () => {
                     view!!.setNativeProps({ 'opacity': 0 });
