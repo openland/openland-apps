@@ -73,6 +73,7 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                 },
             });
             await getClient().refetchAccount();
+            await getClient().refetchUser({ userId: user.id });
 
             props.router.back();
         });
