@@ -19,6 +19,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { emoji } from 'openland-y-utils/emoji';
 import { useClient } from 'openland-api/useClient';
+import { UToast } from 'openland-web/components/unicorn/UToast';
 import IcDownload from 'openland-icons/s/ic-download-24.svg';
 import IcForward from 'openland-icons/s/ic-forward-24.svg';
 import IcClose from 'openland-icons/s/ic-close-24.svg';
@@ -205,6 +206,12 @@ const nextCursorContent = css`
     right: 0;
 `;
 
+const forwardToastClassName = css`
+    position: absolute;
+    z-index: 1;
+    top: 65px;
+`;
+
 interface ModalControllerProps {
     cId: string;
     cursor: string;
@@ -293,6 +300,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const imgRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
 
+    const [forwardToast, setForwardToast] = React.useState(false);
     const [viewerState, setViewerState] = React.useState<ImageViewerCb | null>(null);
     const [loaded, setLoaded] = React.useState(false);
     const [cursor, setCursor] = React.useState(props.mId);
@@ -341,8 +349,9 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const forwardCallback = React.useCallback(() => {
         showChatPicker((id: string) => {
             messenger.sender.shareFile(id, viewerState ? viewerState.current.fileId : props.fileId);
+            setForwardToast(true);
         });
-    }, []);
+    }, [viewerState]);
 
     const sender = viewerState
         ? viewerState.current.senderName
@@ -357,7 +366,8 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
         'https://ucarecdn.com/' +
         (viewerState ? viewerState.current.fileId : props.fileId) +
         '/-/format/jpg/-/inline/no/Openland-' +
-        moment(date).format('YYYY-MM-DD-HH-mm-ss') + '.jpg';
+        moment(date).format('YYYY-MM-DD-HH-mm-ss') +
+        '.jpg';
 
     const url = `https://ucarecdn.com/${
         viewerState ? viewerState.current.fileId : props.fileId
@@ -399,6 +409,13 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
 
     return (
         <div className={modalImgContainer} onMouseMove={mouseMove} onClick={props.hide}>
+            <UToast
+                isVisible={forwardToast}
+                type="success"
+                text="Success"
+                className={forwardToastClassName}
+                closeCb={() => setForwardToast(false)}
+            />
             <div
                 className={cx(modalToolbarContainer, fadeout && fadeoutStyle)}
                 onClick={(e) => e.preventDefault()}
@@ -669,7 +686,7 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
         }
     }, []);
 
-    const isUpload = !!props.progress && (props.progress >= 0 && props.progress < 1);
+    const isUpload = !!props.progress && props.progress >= 0 && props.progress < 1;
 
     let uploadProgress = 90;
     if (isUpload) {

@@ -31,7 +31,8 @@ const iconClass = css`
     height: 16px;
     margin-right: 8px;
 
-    svg, path {
+    svg,
+    path {
         fill: var(--foregroundContrast);
     }
 `;
@@ -47,11 +48,12 @@ export interface UToastProps {
     text?: string;
     backgroundColor?: string;
     autoclose?: boolean;
+    closeCb?: () => void;
     className?: string;
 }
 
 export const UToast = React.memo((props: UToastProps) => {
-    const { isVisible, className, text, backgroundColor, type = 'text', autoclose = true } = props;
+    const { isVisible, className, text, backgroundColor, closeCb, type = 'text', autoclose = true } = props;
     const [isRealVisible, setVisible] = React.useState(isVisible);
 
     React.useEffect(() => {
@@ -59,13 +61,21 @@ export const UToast = React.memo((props: UToastProps) => {
             setVisible(true);
         } else {
             setVisible(false);
+            if (closeCb) {
+                closeCb();
+            }
         }
     }, [isVisible]);
 
     React.useEffect(() => {
         let timeoutId: any;
         if (autoclose && isRealVisible) {
-            timeoutId = setTimeout(() => setVisible(false), 2000);
+            timeoutId = setTimeout(() => {
+                setVisible(false);
+                if (closeCb) {
+                    closeCb();
+                }
+            }, 2000);
         }
         return () => {
             if (timeoutId) {
@@ -75,7 +85,9 @@ export const UToast = React.memo((props: UToastProps) => {
     }, [isRealVisible]);
 
     const iconByType = {
-        loading: () => <XLoader contrast={true} transparentBackground={true} loading={true} size="small" />,
+        loading: () => (
+            <XLoader contrast={true} transparentBackground={true} loading={true} size="small" />
+        ),
         success: () => <DoneIcon />,
         failure: () => <WarningIcon />,
     };
@@ -83,21 +95,21 @@ export const UToast = React.memo((props: UToastProps) => {
     const Icon = iconByType[type];
 
     return !!text ? (
-        <div className={cx(toastWrapper, className, isRealVisible && toastVisible)} style={{ backgroundColor }}>
+        <div
+            className={cx(toastWrapper, className, isRealVisible && toastVisible)}
+            style={{ backgroundColor }}
+        >
             {!!Icon && (
                 <div className={iconClass}>
                     <Icon />
                 </div>
             )}
-            <h5 className={cx(TextLabel1, textClass)}>
-                {text}
-            </h5>
+            <h5 className={cx(TextLabel1, textClass)}>{text}</h5>
         </div>
     ) : null;
 });
 
 export interface UToastConfig {
-    hash?: string | number;
     type?: 'text' | 'loading' | 'success' | 'failure';
     text?: string;
     backgroundColor?: string;
@@ -114,23 +126,37 @@ export type UToastContextProps = UToastHandlers & {
     config: UToastConfig;
 };
 
-export const UToastContext = React.createContext<UToastContextProps>({ show: () => {/* noop */ }, hide: () => {/* noop */ }, visible: false, config: {} });
+export const UToastContext = React.createContext<UToastContextProps>({
+    show: () => null,
+    hide: () => null,
+    visible: false,
+    config: {},
+});
 
 export const UToastProvider = React.memo((props: { children: any }) => {
     const [visible, setVisible] = React.useState(false);
-    const [config, setConfig] = React.useState({});
+    const [config, setConfig] = React.useState<UToastConfig>({});
     const handlers = React.useRef({
         show: (newConfig: UToastConfig) => {
+            let timeoutId: any;
             setVisible(true);
             setConfig(newConfig);
-            let timeoutId: any;
+            if (newConfig.autoclose === false) {
+                return;
+            }
             timeoutId = setTimeout(() => setVisible(false), 2000);
             return () => clearTimeout(timeoutId);
         },
         hide: () => setVisible(false),
     }).current;
 
-    return <UToastContext.Provider value={{ show: handlers.show, hide: handlers.hide, visible, config }}>{props.children}</UToastContext.Provider>;
+    return (
+        <UToastContext.Provider
+            value={{ show: handlers.show, hide: handlers.hide, visible, config }}
+        >
+            {props.children}
+        </UToastContext.Provider>
+    );
 });
 
 export const useToast = () => {
