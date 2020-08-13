@@ -66,6 +66,7 @@ export function getQuill() {
             static create(data: any) {
                 const node = super.create() as HTMLImageElement;
                 node.className = emojiStyle;
+                node.alt = data.value;
                 node.src = emojiLink(data.name);
                 node.dataset.value = data.value;
                 node.dataset.name = data.name;

@@ -8,7 +8,6 @@ import { emojiConvertToName } from 'openland-y-utils/emojiExtract';
 import { fileListToArray } from 'openland-web/fragments/chat/components/DropZone';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { getQuill } from 'openland-web/components/quill/getQuill';
-import copy from 'copy-to-clipboard';
 
 const quillInputStyle = css`
     background-color: var(--backgroundTertiaryTrans);
@@ -139,29 +138,6 @@ export const URickInput = React.memo(
                     } else if (typeof c.insert === 'object') {
                         if (c.insert.mention) {
                             res.push(c.insert.mention);
-                        }
-                        if (c.insert.emoji) {
-                            res.push(c.insert.emoji.value);
-                        }
-                    }
-                }
-            }
-            return res;
-        }
-
-        function convertQuillContentToString(content: QuillType.Delta) {
-            let res: string[] = [];
-            for (let c of content.ops!) {
-                if (c.insert) {
-                    if (typeof c.insert === 'string') {
-                        res.push(c.insert);
-                    } else if (typeof c.insert === 'object') {
-                        if (c.insert.mention) {
-                            if (c.insert.mention.name) {
-                                res.push(c.insert.mention.name);
-                            } else if (c.insert.mention.title) {
-                                res.push(c.insert.mention.title);
-                            }
                         }
                         if (c.insert.emoji) {
                             res.push(c.insert.emoji.value);
@@ -359,25 +335,6 @@ export const URickInput = React.memo(
             });
 
             editor.current = q;
-
-            if (containerRef.current && containerRef.current.firstChild) {
-                let container = containerRef.current.firstChild;
-                let timer: any;
-                const copyListener = (ev: ClipboardEvent) => {
-                    const selection = q.getSelection();
-                    timer = setTimeout(() => {
-                        const content = q.getContents(selection?.index, selection?.length);
-                        const convert = convertQuillContentToString(content).join('');
-                        copy(convert);
-                    }, 1);
-                };
-                container.addEventListener('copy', copyListener);
-                return () => {
-                    clearTimeout(timer);
-                    container.removeEventListener('copy', copyListener);
-                };
-            }
-            return () => false;
         }, []);
 
         const onEmojiPicked = React.useCallback((src: string) => {
