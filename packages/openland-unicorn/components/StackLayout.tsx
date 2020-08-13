@@ -278,7 +278,7 @@ const ToastWrapper = React.memo(() => {
     return (
         <div className={toastWrapperClass}>
             <UToast
-                key={`${config.type}-${config.text || ''}-${config.hash || ''}`}
+                key={`${config.type}-${config.text || ''}`}
                 isVisible={visible}
                 {...config}
             />
