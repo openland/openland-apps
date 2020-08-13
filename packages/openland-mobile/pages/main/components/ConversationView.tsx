@@ -11,7 +11,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { useChatMessagesActions } from 'openland-y-runtime/MessagesActionsState';
+import { useChatMessagesSelectionMode } from 'openland-y-utils/MessagesActionsState';
 
 export interface MessagesListProps {
     engine: ConversationEngine;
@@ -167,8 +167,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
 
 export const ConversationView = (props: MessagesListProps) => {
     let theme = React.useContext(ThemeContext);
-    let { getState } = useChatMessagesActions({ conversationId: props.engine.conversationId, userId: props.engine.isPrivate ? props.engine.user?.id : undefined });
-    let selectionMode = getState().action === 'selected';
+    let selectionMode = useChatMessagesSelectionMode({ conversationId: props.engine.conversationId, userId: props.engine.isPrivate ? props.engine.user?.id : undefined });
     return (
         <ASSafeAreaContext.Consumer>
             {area => (<ConversationViewComponent {...props} bottomInset={area.bottom} topInset={area.top} theme={theme} selectionMode={selectionMode} />)}

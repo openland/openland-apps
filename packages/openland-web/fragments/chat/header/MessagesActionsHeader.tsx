@@ -14,7 +14,7 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { useRole } from 'openland-x-permissions/XWithRole';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { useForward } from '../messenger/message/actions/forward';
-import { useChatMessagesActions } from 'openland-y-runtime/MessagesActionsState';
+import { useChatMessagesActionsState, useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 
 const containerClass = css`
     position: absolute;
@@ -143,26 +143,27 @@ const Buttons = (props: {
     messenger: MessengerEngine;
     chat: RoomChat_room;
 }) => {
-    let { getState, clear, reply } = useChatMessagesActions({ conversationId: props.conversation.conversationId, userId: props.conversation.isPrivate ? props.conversation.user?.id : undefined });
+    let state = useChatMessagesActionsState({ conversationId: props.conversation.conversationId, userId: props.conversation.isPrivate ? props.conversation.user?.id : undefined });
+    let { clear, reply } = useChatMessagesActionsMethods({ conversationId: props.conversation.conversationId, userId: props.conversation.isPrivate ? props.conversation.user?.id : undefined });
     let deleteCallback = React.useCallback(() => {
-        let ids = getState().action === 'selected'
-            ? getState().messages
+        let ids = state.action === 'selected'
+            ? state.messages
                 .filter((m) => !!m.id)
                 .map((m) => m.id!)
             : [];
         showDeleteMessagesModal(ids, props.messenger.client, clear);
-    }, [getState()]);
+    }, [state]);
     let forward = useForward(props.chat.id);
     let forwardCallback = React.useCallback(() => {
         forward();
     }, []);
     let replyCallback = React.useCallback(() => {
         reply();
-    }, [getState()]);
+    }, [state]);
     let canReply = props.conversation.canSendMessage;
     let canDelete =
         useRole('super-admin') ||
-        !getState().messages.filter((m) => m.sender.id !== props.messenger.user.id).length ||
+        !state.messages.filter((m) => m.sender.id !== props.messenger.user.id).length ||
         (props.chat.__typename === 'SharedRoom' && props.chat.role === 'OWNER') ||
         (props.chat.__typename === 'SharedRoom' && props.chat.role === 'ADMIN');
     return (
@@ -179,13 +180,14 @@ const Buttons = (props: {
 };
 
 export const MessagesActionsHeader = (props: { chat: RoomChat_room }) => {
-    let { getState, clear } = useChatMessagesActions({ conversationId: props.chat.id, userId: props.chat.__typename === 'PrivateRoom' ? props.chat.user.id : undefined });
+    let state = useChatMessagesActionsState({ conversationId: props.chat.id, userId: props.chat.__typename === 'PrivateRoom' ? props.chat.user.id : undefined });
+    let { clear } = useChatMessagesActionsMethods({ conversationId: props.chat.id, userId: props.chat.__typename === 'PrivateRoom' ? props.chat.user.id : undefined });
     let containerRef = React.useRef<HTMLDivElement>(null);
     let messenger = React.useContext(MessengerContext);
     let conversation = messenger.getConversation(props.chat.id);
     useShortcuts({
         keys: ['Escape'], callback: () => {
-            if (getState().action === 'none') {
+            if (state.action === 'none') {
                 return false;
             } else {
                 clear();
@@ -193,7 +195,7 @@ export const MessagesActionsHeader = (props: { chat: RoomChat_room }) => {
             }
         }
     });
-    const selectingCount = getState().action === 'selected' && getState().messages.length;
+    const selectingCount = state.action === 'selected' && state.messages.length;
 
     React.useEffect(() => {
         if (containerRef.current) {
@@ -212,7 +214,7 @@ export const MessagesActionsHeader = (props: { chat: RoomChat_room }) => {
                 alignItems="center"
                 flexDirection="row"
             >
-                <Counter messagesCount={getState().action === 'selected' ? getState().messages.length : 0} onClick={clear} />
+                <Counter messagesCount={state.action === 'selected' ? state.messages.length : 0} onClick={clear} />
                 <Buttons
                     conversation={conversation}
                     messenger={messenger}

@@ -9,7 +9,7 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { css, cx } from 'linaria';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { defaultHover } from 'openland-web/utils/Styles';
-import { useChatMessagesActions } from 'openland-y-runtime/MessagesActionsState';
+import { useChatMessagesActionsState, useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 
 const messageActonContainerClass = css`
     display: flex;
@@ -91,14 +91,18 @@ const messageActionCloseWrapEdit = css`
 `;
 
 export const InputMessageActionComponent = (props: { chatId: string; userId?: string }) => {
-    const { getState, clear } = useChatMessagesActions({
+    const state = useChatMessagesActionsState({
+        conversationId: props.chatId,
+        userId: props.userId,
+    });
+    const { clear } = useChatMessagesActionsMethods({
         conversationId: props.chatId,
         userId: props.userId,
     });
     useShortcuts({
         keys: ['Escape'],
         callback: () => {
-            if (getState().action !== 'none') {
+            if (state.action !== 'none') {
                 clear();
                 return true;
             } else {
@@ -108,8 +112,8 @@ export const InputMessageActionComponent = (props: { chatId: string; userId?: st
     });
     let names = '';
 
-    if (getState().action === 'forward' || getState().action === 'reply') {
-        names = getState()
+    if (state.action === 'forward' || state.action === 'reply') {
+        names = state
             .messages.reduce((res, item) => {
                 if (!res.find((s) => item.sender.id === s.id)) {
                     res.push({ id: item.sender.id, name: item.sender.name });
@@ -121,9 +125,9 @@ export const InputMessageActionComponent = (props: { chatId: string; userId?: st
     }
 
     let content;
-    if (getState().action === 'forward' || getState().action === 'reply') {
-        if (getState().messages.length === 1) {
-            content = <ReplyMessage message={getState().messages[0]} isReplyAction={true} />;
+    if (state.action === 'forward' || state.action === 'reply') {
+        if (state.messages.length === 1) {
+            content = <ReplyMessage message={state.messages[0]} isReplyAction={true} />;
         } else {
             content = (
                 <>
@@ -132,12 +136,12 @@ export const InputMessageActionComponent = (props: { chatId: string; userId?: st
                     </span>
                     <span className={TextBody} style={{ userSelect: 'none' }}>
                         {' '}
-                        {plural(getState().messages.length, ['message', 'messages'])}{' '}
+                        {plural(state.messages.length, ['message', 'messages'])}{' '}
                     </span>
                 </>
             );
         }
-    } else if (getState().action === 'edit' && getState().messages.length === 1) {
+    } else if (state.action === 'edit' && state.messages.length === 1) {
         content = <span className={TextLabel1}>Edit message</span>;
     } else {
         return null;
@@ -145,11 +149,11 @@ export const InputMessageActionComponent = (props: { chatId: string; userId?: st
 
     let ActionIcon;
 
-    if (getState().action === 'forward') {
+    if (state.action === 'forward') {
         ActionIcon = ForwardIcon;
     }
 
-    if (getState().action === 'reply') {
+    if (state.action === 'reply') {
         ActionIcon = ReplyIcon;
     }
 
@@ -170,14 +174,14 @@ export const InputMessageActionComponent = (props: { chatId: string; userId?: st
             </div>
             <div
                 className={cx(
-                    getState().action === 'edit' ? null : messageActionCloseWrapper,
+                    state.action === 'edit' ? null : messageActionCloseWrapper,
                     defaultHover,
                 )}
                 onClick={clear}
             >
                 <div
                     className={
-                        getState().action === 'edit'
+                        state.action === 'edit'
                             ? messageActionCloseWrapEdit
                             : messageActionCloseWrap
                     }

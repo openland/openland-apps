@@ -21,7 +21,7 @@ import { emoji } from 'openland-y-utils/emoji';
 import StarIcon from 'openland-icons/s/ic-star-16.svg';
 import IcPending from 'openland-icons/s/ic-pending-16.svg';
 import IcSuccess from 'openland-icons/s/ic-success-16.svg';
-import { useChatMessagesActions } from 'openland-y-runtime/MessagesActionsState';
+import { useChatMessagesSelected } from 'openland-y-utils/MessagesActionsState';
 
 const senderContainer = css`
     display: flex;
@@ -359,7 +359,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
     const layout = useLayout();
-    const { toggleSelect } = useChatMessagesActions({ conversationId: engine.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
+    const [isSelected, toggleSelect] = useChatMessagesSelected({ messageKey: message.key, conversationId: engine.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
 
     React.useEffect(() => {
         let timer: any;
@@ -389,9 +389,6 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     attachesClassNamesRef.current = attachesClassNames;
 
     const selectedRef = React.useRef(false);
-    const { getState } = useChatMessagesActions({ conversationId: engine.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
-    const actionsState = getState();
-    const isSelected = actionsState.action === 'selected' && actionsState.messages.some(m => m.key === message.key);
     React.useEffect(() => {
         selectedRef.current = isSelected;
 
@@ -413,7 +410,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             }
         }
         toggleSelect(message);
-    }, [message.id, toggleSelect]);
+    }, [message, toggleSelect]);
 
     const buttons = (
         <div className={buttonsClass}>

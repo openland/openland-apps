@@ -155,6 +155,10 @@ export class MessengerEngine {
         return this.activeConversations.get(conversationId)!!;
     }
 
+    getActiveConversation(id: string) {
+        return this.activeConversations.get(id) || this.activeUserConversations.get(id);
+    }
+
     getTypings(conversationId?: string) {
         if (conversationId) {
             if (!this.activeTypings.has(conversationId)) {

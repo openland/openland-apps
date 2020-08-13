@@ -41,8 +41,7 @@ import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
 import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 import { extractTextAndMentions, convertToInputValue } from 'openland-web/utils/convertTextAndMentions';
 import { convertServerSpan } from 'openland-y-utils/spans/utils';
-import { ChatMessagesActions, ConversationActionsState } from 'openland-y-utils/MessagesActionsState';
-import { useChatMessagesActions } from 'openland-y-runtime/MessagesActionsState';
+import { useChatMessagesActionsState, useChatMessagesActionsMethods, ConversationActionsState, ChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
@@ -57,7 +56,8 @@ interface MessagesComponentProps {
     | null;
     room: RoomChat_room;
     onAttach: (files: File[]) => void;
-    messagesActions: ChatMessagesActions;
+    messagesActionsState: ConversationActionsState;
+    messagesActionsMethods: ChatMessagesActionsMethods;
 }
 
 interface MessagesComponentState {
@@ -135,7 +135,6 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     messagesList = React.createRef<MessageListComponent>();
     rickRef = React.createRef<URickInputInstance>();
     private conversation: ConversationEngine | null;
-    private prevMessagesActionsState: ConversationActionsState | null = null;
     messageText: string = '';
     unmounter: (() => void) | null = null;
     unmounter2: (() => void) | null = null;
@@ -224,21 +223,17 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         if (!this.conversation) {
             throw Error('conversation should be defined here');
         }
-        let state = this.props.messagesActions.getState();
+        let state = this.props.messagesActionsState;
         if (state) {
             this.handleMessagesActions(state);
         }
     }
 
     componentDidUpdate(prevProps: MessagesComponentProps) {
-        let state = this.props.messagesActions.getState();
-        if (state.action === 'none') {
-            return;
-        }
-        if (this.prevMessagesActionsState?.action !== state.action) {
+        let state = this.props.messagesActionsState;
+        if (prevProps.messagesActionsState.action !== state.action) {
             this.handleMessagesActions(state);
         }
-        this.prevMessagesActionsState = state;
     }
 
     handleMessagesActions = (state: ConversationActionsState) => {
@@ -252,7 +247,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         } else if (state.action === 'forward' || state.action === 'reply') {
             // await delay(10);
             this.rickRef.current?.focus();
-        } else if (!state.action) {
+        } else if (state.action === 'none') {
             if (this.initialContent) {
                 this.rickRef.current?.setContent(this.initialContent);
             } else {
@@ -349,15 +344,15 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         let myMessage = myMessages[0] as DataSourceMessageItem | undefined;
         let hasPurchase = myMessage && myMessage.attachments && myMessage.attachments.some(a => a.__typename === 'MessageAttachmentPurchase');
         if (myMessage && !hasPurchase) {
-            this.props.messagesActions.edit(myMessage);
+            this.props.messagesActionsMethods.edit(myMessage);
             return true;
         }
         return false;
     }
 
     onTextSend = async (data: URickTextValue) => {
-        const { messagesActions } = this.props;
-        const actionState = messagesActions.getState();
+        const { messagesActionsState, messagesActionsMethods } = this.props;
+        const actionState = messagesActionsState;
         const actionMessage = actionState.messages[0];
 
         const { text, mentions } = extractTextAndMentions(data);
@@ -370,7 +365,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             actionMessage.id!
         ) {
             if (text.length > 0) {
-                messagesActions.clear();
+                messagesActionsMethods.clear();
                 await this.conversation!.engine.client.mutateEditMessage({
                     messageId: actionMessage.id!,
                     message: text,
@@ -399,7 +394,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 }
 
                 localStorage.removeItem('drafts-' + this.props.conversationId);
-                this.conversation!.sendMessage(text, mentions, messagesActions.prepareToSend());
+                this.conversation!.sendMessage(text, mentions, messagesActionsMethods.prepareToSend());
             }
         }
 
@@ -407,13 +402,12 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     }
 
     onStickerSent = (sticker: StickerFragment) => {
-        const { messagesActions } = this.props;
-        this.conversation!.sendSticker(sticker, messagesActions.prepareToSend());
+        this.conversation!.sendSticker(sticker, this.props.messagesActionsMethods.prepareToSend());
         this.finishStickerPicking();
     }
 
     onContentChange = (text: URickTextValue) => {
-        let actionState = this.props.messagesActions.getState();
+        let actionState = this.props.messagesActionsState;
         if (actionState.action !== 'edit') {
             this.initialContent = text;
             localStorage.setItem('drafts-' + this.props.conversationId, JSON.stringify(text));
@@ -529,7 +523,8 @@ export const MessengerRootComponent = React.memo((props: MessengerRootComponentP
     let messenger = React.useContext(MessengerContext);
     const onAttach = useAttachHandler({ conversationId: props.conversationId });
     const userId = props.room.__typename === 'PrivateRoom' ? props.room.user.id : undefined;
-    const messagesActions = useChatMessagesActions({ conversationId: props.conversationId, userId });
+    const messagesActionsState = useChatMessagesActionsState({ conversationId: props.conversationId, userId });
+    const messagesActionsMethods = useChatMessagesActionsMethods({ conversationId: props.conversationId, userId });
 
     return (
         <MessagesComponent
@@ -542,7 +537,8 @@ export const MessengerRootComponent = React.memo((props: MessengerRootComponentP
             pinMessage={props.pinMessage}
             room={props.room}
             onAttach={onAttach}
-            messagesActions={messagesActions}
+            messagesActionsState={messagesActionsState}
+            messagesActionsMethods={messagesActionsMethods}
         />
     );
 });

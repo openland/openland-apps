@@ -14,7 +14,7 @@ import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigR
 import { SHeaderView } from 'react-native-s/SHeaderView';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { plural } from 'openland-y-utils/plural';
-import { useChatMessagesActions } from 'openland-y-runtime/MessagesActionsState';
+import { useChatMessagesActionsState, useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 
 export const ChatSelectedActionsHeader = (props: { messagesCount: number; cancel: () => void }) => {
     const messagesText =
@@ -57,12 +57,14 @@ interface ChatSelectedActionsProps {
 
 export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
     const theme = React.useContext(ThemeContext);
-    const { getState, clear } = useChatMessagesActions({ conversationId: props.chat.id, userId: props.chat.__typename === 'PrivateRoom' ? props.chat.user?.id : undefined });
+    const state = useChatMessagesActionsState({ conversationId: props.chat.id, userId: props.chat.__typename === 'PrivateRoom' ? props.chat.user?.id : undefined });
+
+    const { clear } = useChatMessagesActionsMethods({ conversationId: props.chat.id, userId: props.chat.__typename === 'PrivateRoom' ? props.chat.user?.id : undefined });
     const del = React.useCallback(() => {
-        if (getState().action !== 'selected') {
+        if (state.action !== 'selected') {
             return;
         }
-        const messagesCount = getState().messages.length;
+        const messagesCount = state.messages.length;
         const messagesText = plural(messagesCount, ['message', 'messages']);
         Alert.builder()
             .title(`Delete ${messagesText}?`)
@@ -70,20 +72,20 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
             .button('Cancel', 'cancel')
             .action('Delete', 'destructive', async () => {
                 await getMessenger().engine.client.mutateRoomDeleteMessages({
-                    mids: getState().messages.map((m) => m.id!),
+                    mids: state.messages.map((m) => m.id!),
                 });
                 clear();
             })
             .show();
-    }, [getState()]);
+    }, [state]);
     const forward = useForward(props.chat.id);
     let height = 52;
 
     let canDelete = true;
-    const hasSelectedMessages = getState().action === 'selected';
+    const hasSelectedMessages = state.action === 'selected';
 
     if (!SUPER_ADMIN) {
-        getState().messages.forEach((m) => {
+        state.messages.forEach((m) => {
             if (m.sender.id !== getMessenger().engine.user.id) {
                 canDelete = false;
             }
@@ -143,7 +145,7 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
                 <HeaderConfigRegistrator config={{ hideIcon: true }} />
                 <SHeaderView>
                     <ChatSelectedActionsHeader
-                        messagesCount={getState().action === 'selected' ? getState().messages.length : 0}
+                        messagesCount={state.action === 'selected' ? state.messages.length : 0}
                         cancel={clear}
                     />
                 </SHeaderView>
@@ -157,7 +159,7 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
             <HeaderConfigRegistrator config={{ hideIcon: true }} />
             <SHeaderView>
                 <ChatSelectedActionsHeader
-                    messagesCount={getState().action === 'selected' ? getState().messages.length : 0}
+                    messagesCount={state.action === 'selected' ? state.messages.length : 0}
                     cancel={clear}
                 />
             </SHeaderView>
