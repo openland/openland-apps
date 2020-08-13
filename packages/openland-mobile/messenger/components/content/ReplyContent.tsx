@@ -127,7 +127,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                     />
                                 );
                                 miniContentSubtitle = attachFile.fileMetadata.name;
-                            } else if (attachRich) {
+                            } else if (attachRich && !isForward) {
                                 miniContent = (
                                     <AsyncReplyMessageRichAttach
                                         attach={attachRich}

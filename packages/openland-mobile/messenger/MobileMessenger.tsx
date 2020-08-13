@@ -37,7 +37,7 @@ import { showDonationReactionWarning } from './components/showDonationReactionWa
 import UUID from 'uuid/v4';
 import { ChatMessagesActions, MessagesAction } from 'openland-y-utils/MessagesActionsState';
 import { AsyncSharedItem } from 'openland-mobile/pages/shared-media/AsyncSharedItem';
-import { useMessagesActionsForward } from 'openland-y-runtime/MessagesActionsState';
+import { useMessagesActionsForward } from 'openland-y-utils/MessagesActionsState';
 
 const SortedReactions = [
     MessageReactionType.LIKE,

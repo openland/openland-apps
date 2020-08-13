@@ -45,8 +45,8 @@ import { showNoiseWarning } from 'openland-mobile/messenger/components/showNoise
 import { plural } from 'openland-y-utils/plural';
 import { SRouterMountedContext } from 'react-native-s/SRouterContext';
 import { SUPER_ADMIN } from '../Init';
-import { ChatMessagesActions } from 'openland-y-utils/MessagesActionsState';
-import { useChatMessagesActions } from 'openland-y-runtime/MessagesActionsState';
+import { ChatMessagesActionsMethods, ConversationActionsState } from 'openland-y-utils/MessagesActionsState';
+import { useChatMessagesActionsState, useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -54,7 +54,8 @@ interface ConversationRootProps extends PageProps {
     theme: ThemeGlobal;
     showCallModal: () => void;
     mountedRef: { mounted: string[] };
-    messagesActions: ChatMessagesActions;
+    messagesActionsState: ConversationActionsState;
+    messagesActionsMethods: ChatMessagesActionsMethods;
 }
 
 interface ConversationRootState {
@@ -96,18 +97,18 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     componentDidMount() {
-        this.handleMessagesActions(this.props.messagesActions);
+        this.handleMessagesActions(this.props.messagesActionsState);
     }
 
     componentDidUpdate(prevProps: ConversationRootProps) {
-        if (prevProps.messagesActions !== this.props.messagesActions) {
-            this.handleMessagesActions(this.props.messagesActions);
+        if (prevProps.messagesActionsState !== this.props.messagesActionsState) {
+            this.handleMessagesActions(this.props.messagesActionsState);
         }
     }
 
-    handleMessagesActions = (messagesActions: ChatMessagesActions) => {
-        let messages = messagesActions.getState().messages;
-        let action = messagesActions.getState().action;
+    handleMessagesActions = (state: ConversationActionsState) => {
+        let messages = state.messages;
+        let action = state.action;
         if (messages.length > 0) {
             if (action === 'edit') {
                 const editMessage = messages[0];
@@ -178,8 +179,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     handleSubmit = async () => {
-        let { messagesActions } = this.props;
-        let state = messagesActions.getState();
+        let { messagesActionsState: state, messagesActionsMethods } = this.props;
         let tx = this.state.text.trim();
 
         let mentions = prepareLegacyMentionsForSend(tx, this.state.mentions || []);
@@ -215,9 +215,9 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 }
             }
 
-            this.engine.sendMessage(tx, this.state.mentions, messagesActions.prepareToSend());
+            this.engine.sendMessage(tx, this.state.mentions, messagesActionsMethods.prepareToSend());
         }
-        messagesActions.clear();
+        messagesActionsMethods.clear();
 
         this.setState({
             text: '',
@@ -240,7 +240,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 }
             };
         showAttachMenu((type, name, path, size) => {
-            UploadManagerInstance.registerMessageUpload(this.props.chat.id, name, path, this.props.messagesActions.prepareToSend(), size);
+            UploadManagerInstance.registerMessageUpload(this.props.chat.id, name, path, this.props.messagesActionsMethods.prepareToSend(), size);
         }, donationCb);
     }
 
@@ -289,13 +289,13 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     onQuotedClearPress = () => {
-        this.props.messagesActions.clear();
+        this.props.messagesActionsMethods.clear();
 
         this.removeDraft();
     }
 
     onEditedClearPress = () => {
-        this.props.messagesActions.clear();
+        this.props.messagesActionsMethods.clear();
 
         this.setState({
             text: '',
@@ -310,7 +310,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     render() {
-        let messagesActionsState = this.props.messagesActions.getState();
+        let { messagesActionsState } = this.props;
 
         let isSavedMessages = this.props.chat.__typename === 'PrivateRoom' && this.props.engine.user.id === this.props.chat.user.id;
 
@@ -457,7 +457,8 @@ const ConversationComponent = React.memo((props: PageProps) => {
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id }, { fetchPolicy: 'cache-and-network' }).room;
     let mountedRef = React.useContext(SRouterMountedContext);
     let showCallModal = useCallModal({ id: room?.id! });
-    let messagesActions = useChatMessagesActions({ conversationId: room?.id, userId: room?.__typename === 'PrivateRoom' ? room.user.id : undefined });
+    let messagesActionsState = useChatMessagesActionsState({ conversationId: room?.id, userId: room?.__typename === 'PrivateRoom' ? room.user.id : undefined });
+    let messagesActionsMethods = useChatMessagesActionsMethods({ conversationId: room?.id, userId: room?.__typename === 'PrivateRoom' ? room.user.id : undefined });
 
     if (room === null) {
         return <ChatAccessDenied theme={theme} onPress={() => props.router.back()} />;
@@ -481,7 +482,8 @@ const ConversationComponent = React.memo((props: PageProps) => {
                 showCallModal={showCallModal}
                 theme={theme}
                 mountedRef={mountedRef}
-                messagesActions={messagesActions}
+                messagesActionsState={messagesActionsState}
+                messagesActionsMethods={messagesActionsMethods}
             />
             <ASSafeAreaContext.Consumer>
                 {safe => (

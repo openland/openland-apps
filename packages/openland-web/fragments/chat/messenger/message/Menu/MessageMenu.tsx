@@ -11,11 +11,11 @@ import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { showDeleteMessageModal } from 'openland-web/fragments/chat/components/MessengerRootComponent';
 import { useForward } from '../actions/forward';
-import { useChatMessagesActions } from 'openland-y-runtime/MessagesActionsState';
+import { useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 
 export const useBuildMessageMenu = (engine: ConversationEngine) => {
     const forward = useForward(engine.isPrivate && engine.user ? engine.user.id : engine.conversationId);
-    const { toggleSelect, reply, edit } = useChatMessagesActions({ conversationId: engine.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
+    const { toggleSelect, reply, edit } = useChatMessagesActionsMethods({ conversationId: engine.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
     return (ctx: UPopperController, message: DataSourceWebMessageItem) => {
         let menu = new UPopperMenuBuilder();
         const role = engine.role;

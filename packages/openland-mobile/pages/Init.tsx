@@ -51,6 +51,7 @@ import { createClientNative } from 'openland-api/createClientNative';
 import { ModalProvider } from 'react-native-fast-modal';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { LocalContactsProvider } from 'openland-y-utils/contacts/LocalContacts';
+import { MessagesActionsStateProvider } from 'openland-y-runtime/MessagesActionsState';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(
@@ -351,11 +352,13 @@ export class Init extends React.Component<
                     <PushManager client={getClient()} />
                     {this.state.dimensions && (
                         <LocalContactsProvider>
-                            <Root
-                                routing={getMessenger().history}
-                                width={this.state.dimensions.width}
-                                height={this.state.dimensions.height}
-                            />
+                            <MessagesActionsStateProvider>
+                                <Root
+                                    routing={getMessenger().history}
+                                    width={this.state.dimensions.width}
+                                    height={this.state.dimensions.height}
+                                />
+                            </MessagesActionsStateProvider>
                         </LocalContactsProvider>
                     )}
                 </GQLClientContext.Provider>

@@ -13,7 +13,7 @@ import { UnsupportedContent } from './content/UnsupportedContent';
 import { buildBaseImageUrl } from 'openland-y-utils/photoRefUtils';
 import { ChatMessagesActions, MessagesAction } from 'openland-y-utils/MessagesActionsState';
 import { useForward } from '../MobileMessenger';
-import { useChatMessagesActions } from 'openland-y-runtime/MessagesActionsState';
+import { useChatMessagesActionsMethods, useChatMessagesSelected, useChatMessagesSelectionMode } from 'openland-y-utils/MessagesActionsState';
 
 const SelectCheckbox = React.memo((props: { selected: boolean, theme: ThemeGlobal, onPress: () => void }) => {
     const { selected, onPress, theme } = props;
@@ -80,8 +80,9 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
         reactionCounters,
         isSending
     } = message;
-    const { getState, reply, edit, toggleSelect } = useChatMessagesActions({ conversationId: props.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
-    const isSelecting = getState().action === 'selected';
+    const { getState, reply, edit } = useChatMessagesActionsMethods({ conversationId: props.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
+    const [selected, toggleSelect] = useChatMessagesSelected({ conversationId: props.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined, messageKey: message.key });
+    const isSelecting = useChatMessagesSelectionMode({ conversationId: props.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
 
     const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
     const forward = useForward(conversationId);
@@ -230,7 +231,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
             <ASFlex key="margin-bottom" height={marginBottom} />
 
             <SelectCheckbox
-                selected={isSelecting && getState().messages.some(x => x.key === message.key)}
+                selected={selected}
                 onPress={handleSelectPress}
                 theme={theme}
             />
