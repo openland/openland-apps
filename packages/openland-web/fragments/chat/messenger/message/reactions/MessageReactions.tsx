@@ -17,7 +17,7 @@ const reactionsWrapper = css`
     background-color: var(--backgroundTertiary);
     height: 28px;
     border-radius: 14px;
-    padding: 5px 12px;
+    padding: 5px 0 5px 12px;
     margin-right: 8px;
 `;
 
@@ -27,6 +27,7 @@ const reactionsText = css`
     overflow: hidden;
     text-overflow: ellipsis;
     cursor: pointer;
+    padding-right: 12px;
 `;
 
 const reactionsItems = css`
