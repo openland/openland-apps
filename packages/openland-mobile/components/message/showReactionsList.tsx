@@ -1,7 +1,11 @@
 import * as React from 'react';
 import {
+    CommentFullReactions,
+    MessageFullReactions,
     MessageReactionType,
     MessageUsersReactions,
+    CommentFullReactions_commentEntry,
+    MessageFullReactions_message,
     MessageUsersReactions_user,
 } from 'openland-api/spacex.types';
 import { QueryCacheProvider } from '@openland/spacex';
@@ -32,39 +36,44 @@ const ReactionLabel: { [key in MessageReactionType]: string } = {
     DONATE: 'Donate',
 };
 
+type DataType = CommentFullReactions | MessageFullReactions | null;
+type MessageType = CommentFullReactions_commentEntry | MessageFullReactions_message | null;
+
 const ReactionsList = (props: ReactionsListProps) => {
+    const { ctx, mId, isComment } = props;
     const theme = React.useContext(ThemeContext);
     const client = useClient();
     const [loading, setLoading] = React.useState(true);
-    const { ctx, mId, isComment } = props;
-    const message = isComment
-        ? client.useCommentFullReactions({ id: mId }).commentEntry
-        : client.useMessageFullReactions({ id: mId }).message;
+    const [message, setMessage] = React.useState<MessageType>(null);
 
-    // this huck because updating reactions dont updated list
-    React.useEffect(() => {
-        (async () => {
-            if (isComment) {
-                await client.refetchCommentFullReactions({ id: mId });
-                setLoading(false);
-            } else {
-                await client.refetchMessageFullReactions({ id: mId });
-                setLoading(false);
+    const data: DataType = isComment
+        ? client.useCommentFullReactions(
+              { id: mId },
+              { fetchPolicy: 'network-only', suspense: false },
+          )
+        : client.useMessageFullReactions(
+              { id: mId },
+              { fetchPolicy: 'network-only', suspense: false },
+          );
+
+    React.useLayoutEffect(() => {
+        if (data) {
+            if (isComment && (data as CommentFullReactions).commentEntry) {
+                setMessage((data as CommentFullReactions).commentEntry);
             }
-        })();
-    }, []);
+            if (!isComment && (data as MessageFullReactions).message) {
+                setMessage((data as MessageFullReactions).message);
+            }
+            setLoading(false);
+        }
+    }, [data]);
 
-    // show loader instead of a jumping list
-    if (loading) {
+    if (!message || loading) {
         return (
             <View height={40}>
                 <ZLoader />
             </View>
         );
-    }
-
-    if (!message) {
-        return null;
     }
 
     const generalMessage = message.__typename === 'GeneralMessage' && message;
@@ -74,10 +83,10 @@ const ReactionsList = (props: ReactionsListProps) => {
     let reactions: MessageUsersReactions[] = generalMessage
         ? generalMessage.reactions
         : stickerMessage
-            ? stickerMessage.reactions
-            : commentMessage
-                ? commentMessage.comment.reactions
-                : [];
+        ? stickerMessage.reactions
+        : commentMessage
+        ? commentMessage.comment.reactions
+        : [];
 
     let reactionList: { [key: string]: MessageUsersReactions_user[] } = {};
 

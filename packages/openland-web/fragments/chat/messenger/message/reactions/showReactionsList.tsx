@@ -2,10 +2,15 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { useClient } from 'openland-api/useClient';
 import { XView, XViewRouterContext } from 'react-mental';
+import { QueryCacheProvider } from '@openland/spacex';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import {
-    MessageUsersReactions,
+    CommentFullReactions,
+    MessageFullReactions,
     MessageReactionType,
+    MessageUsersReactions,
+    CommentFullReactions_commentEntry,
+    MessageFullReactions_message,
     MessageUsersReactions_user,
 } from 'openland-api/spacex.types';
 import { emoji } from 'openland-y-utils/emoji';
@@ -87,39 +92,44 @@ interface ReactionsListProps {
     isComment?: boolean;
 }
 
+type DataType = CommentFullReactions | MessageFullReactions | null;
+type MessageType = CommentFullReactions_commentEntry | MessageFullReactions_message | null;
+
 const ReactionsList = React.memo((props: ReactionsListProps) => {
+    const { hide, mId, isComment } = props;
     const client = useClient();
     const router = React.useContext(XViewRouterContext)!;
     const [loading, setLoading] = React.useState(true);
-    const { hide, mId, isComment } = props;
-    const message = isComment
-        ? client.useCommentFullReactions({ id: mId }).commentEntry
-        : client.useMessageFullReactions({ id: mId }).message;
+    const [message, setMessage] = React.useState<MessageType>(null);
 
-    // this huck because updating reactions dont updated list
-    React.useEffect(() => {
-        (async () => {
-            if (isComment) {
-                await client.refetchCommentFullReactions({ id: mId });
-                setLoading(false);
-            } else {
-                await client.refetchMessageFullReactions({ id: mId });
-                setLoading(false);
+    const data: DataType = isComment
+        ? client.useCommentFullReactions(
+              { id: mId },
+              { fetchPolicy: 'network-only', suspense: false },
+          )
+        : client.useMessageFullReactions(
+              { id: mId },
+              { fetchPolicy: 'network-only', suspense: false },
+          );
+
+    React.useLayoutEffect(() => {
+        if (data) {
+            if (isComment && (data as CommentFullReactions).commentEntry) {
+                setMessage((data as CommentFullReactions).commentEntry);
             }
-        })();
-    }, []);
+            if (!isComment && (data as MessageFullReactions).message) {
+                setMessage((data as MessageFullReactions).message);
+            }
+            setLoading(false);
+        }
+    }, [data]);
 
-    // show loader instead of a jumping list
-    if (loading) {
+    if (!message || loading) {
         return (
             <XView flexGrow={1} flexShrink={0} height={50}>
                 <XLoader loading={true} />
             </XView>
         );
-    }
-
-    if (!message) {
-        return null;
     }
 
     const onUserPress = (id: string) => {
@@ -203,6 +213,8 @@ const ReactionsList = React.memo((props: ReactionsListProps) => {
 
 export const showReactionsList = (mId: string, isComment?: boolean) => {
     showModalBox({ title: 'Reactions', width: 400 }, (ctx) => (
-        <ReactionsList mId={mId} isComment={isComment} hide={ctx.hide} />
+        <QueryCacheProvider>
+            <ReactionsList mId={mId} isComment={isComment} hide={ctx.hide} />
+        </QueryCacheProvider>
     ));
 };
