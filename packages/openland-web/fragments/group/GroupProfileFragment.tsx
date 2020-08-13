@@ -26,6 +26,7 @@ import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { GroupUsersList, GroupUsersListRef } from './components/GroupUsersList';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { NotFound } from 'openland-unicorn/NotFound';
 
 const membersSearchStyle = css`
     width: 160px;
@@ -90,7 +91,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     const profilesRef = React.useRef<GroupUsersListRef>(null);
 
     if (!group || group.__typename === 'PrivateRoom') {
-        return null;
+        return <NotFound />;
     }
 
     const sharedRoom = group.__typename === 'SharedRoom' && group;
