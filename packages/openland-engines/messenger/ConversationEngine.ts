@@ -176,7 +176,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId
 
 export function convertMessageBack(src: DataSourceMessageItem): Types.FullMessage {
     let res = {
-        __typename: src.isService ? 'ServiceMessage' : 'GeneralMessage' as any,
+        __typename: src.isService ? 'ServiceMessage' as 'ServiceMessage' : !!src.sticker ? 'StickerMessage' : 'GeneralMessage' as any,
         id: src.id!,
         date: src.date,
         message: src.text || null,

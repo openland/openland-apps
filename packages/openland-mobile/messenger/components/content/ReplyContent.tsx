@@ -107,7 +107,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                             let miniContentColor = bubbleForegroundSecondary;
 
                             if (sticker) {
-                                miniContent = <StickerContent sticker={sticker} message={m} padded={needPaddedText} />;
+                                miniContent = <StickerContent sticker={sticker} message={m} padded={needPaddedText} width={40} height={40} />;
                                 miniContentSubtitle = repliedMessage.fallback;
                             } else if (attachFile && attachFile.fileMetadata.isImage) {
                                 miniContent = (
