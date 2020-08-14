@@ -37,7 +37,7 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
 
     const count = reactionCounters.reduce((sum, r) => sum + r.count, 0);
     const likedByMe = !!reactionCounters.find((r) => r.setByMe);
-    const otherLikes = !!reactionCounters.find((r) => r.setByMe && r.count !== 1);
+    const otherLikes = !!reactionCounters.find((r) => (r.setByMe && r.count !== 1) || (!r.setByMe));
 
     return (
         <ASFlex alignItems="stretch" flexDirection="row" maxHeight={33}>
