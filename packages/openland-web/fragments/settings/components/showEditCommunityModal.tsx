@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
@@ -11,11 +12,16 @@ import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn
 import { UInputField } from 'openland-web/components/unicorn/UInput';
 import { UTextAreaField } from 'openland-web/components/unicorn/UTextArea';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { UCheckboxFiled } from 'openland-web/components/unicorn/UCheckbox';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { USelectField } from 'openland-web/components/unicorn/USelect';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import { trackEvent } from 'openland-x-analytics';
 import { useShortnameField } from 'openland-y-utils/form/useShortnameField';
+
+const settingsHeaderClassName = css`
+    margin-top: 28px;
+`;
 
 enum CommunityType {
     COMMUNITY_PUBLIC = 'COMMUNITY_PUBLIC',
@@ -52,6 +58,7 @@ const EditCommunityEntity = (props: {
     const facebookField = useField('input.facebook', data.facebook || '', form);
     const linkedinField = useField('input.linkedin', data.linkedin || '', form);
     const instagramField = useField('input.instagram', data.instagram || '', form);
+    const membersCanInviteField = useField('input.membersCanInvite', data.membersCanInvite, form);
     const typeField = useField<CommunityType>(
         'input.type',
         data.private ? CommunityType.COMMUNITY_PRIVATE : CommunityType.COMMUNITY_PUBLIC,
@@ -78,6 +85,7 @@ const EditCommunityEntity = (props: {
                     instagram: instagramField.value,
                     photoRef: sanitizeImageRef(avatarField.value),
                     alphaIsPrivate: typeField.value === CommunityType.COMMUNITY_PRIVATE,
+                    betaMembersCanInvite: membersCanInviteField.value,
                 },
                 organizationId: organizationId,
             };
@@ -170,6 +178,13 @@ const EditCommunityEntity = (props: {
                                 </XView>
                             </XView>
                         )}
+                        <div className={cx(TextTitle3, settingsHeaderClassName)}>Settings</div>
+                        <UCheckboxFiled
+                            field={membersCanInviteField}
+                            asSwitcher={true}
+                            label="Members can use invite links"
+                            disableHorizontalPadding={true}
+                        />
                     </XView>
                 </XScrollView3>
             </XView>

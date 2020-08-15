@@ -23,6 +23,7 @@ fragment OrganizationProfileFragment on OrganizationProfile {
     featured: alphaFeatured
     published: alphaPublished
     editorial: alphaEditorial
+    membersCanInvite: betaMembersCanInvite
 }
 fragment OrganizationFragment on Organization {
     id
@@ -45,6 +46,7 @@ fragment OrganizationFragment on Organization {
     featured: alphaFeatured
     isCommunity: alphaIsCommunity
     roomsCount: betaPublicRoomsCount
+    membersCanInvite: betaMembersCanInvite
 }
 query MyOrganizations {
     myOrganizations {

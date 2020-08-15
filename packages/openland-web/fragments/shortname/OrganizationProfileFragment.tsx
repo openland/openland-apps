@@ -202,6 +202,8 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
     // compensate "add people" button and empty view when searching
     const heightCompensation = hasSearched ? (members.length === 0 ? -32 : 56) : 0;
 
+    const shouldShowAddButton = organization.isMine && (organization.isAdmin || organization.membersCanInvite);
+
     return (
         <UFlatList
             track={`${organization.isCommunity ? 'community' : 'org'}_profile`}
@@ -287,7 +289,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                     />
                 )}
             />
-            {organization.isMine && !hasSearched && (
+            {shouldShowAddButton && !hasSearched && (
                 <UAddItem
                     title="Add people"
                     onClick={() => {

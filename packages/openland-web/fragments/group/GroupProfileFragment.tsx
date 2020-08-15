@@ -27,6 +27,7 @@ import { TextStyles } from 'openland-web/utils/TextStyles';
 import { GroupUsersList, GroupUsersListRef } from './components/GroupUsersList';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { NotFound } from 'openland-unicorn/NotFound';
+import { shouldShowInviteButton } from 'openland-y-utils/shouldShowInviteButton';
 
 const membersSearchStyle = css`
     width: 160px;
@@ -92,16 +93,6 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
 
     if (!group || group.__typename === 'PrivateRoom') {
         return <NotFound />;
-    }
-
-    const sharedRoom = group.__typename === 'SharedRoom' && group;
-    let showInviteButton = sharedRoom;
-    const onlyLinkInvite = sharedRoom && !(!sharedRoom.isPremium || sharedRoom.role === 'OWNER');
-
-    if (sharedRoom && sharedRoom.organization && sharedRoom.organization.private && sharedRoom.role === 'MEMBER') {
-        if (onlyLinkInvite) {
-            showInviteButton = false;
-        }
     }
 
     const featuredMembers = client.useRoomFeaturedMembers(
@@ -307,7 +298,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                         />
                     )}
                 />
-                {showInviteButton && !hasSearched && (
+                {shouldShowInviteButton(group) && !hasSearched && (
                     <UAddItem
                         title="Add people"
                         titleStyle={TextStyles.Label1}
