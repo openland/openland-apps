@@ -14,7 +14,7 @@ import { isInternalLink } from 'openland-y-utils/isInternalLink';
 
 export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?: boolean) => {
     return async () => {
-        if (!isInternalLink(srcLink)) {
+        if (!srcLink.startsWith('openland://deep/') && !isInternalLink(srcLink)) {
             if (fallback) {
                 await fallback();
             }
