@@ -112,9 +112,6 @@ export const URickInput = React.memo(
         const QuillDelta = lib.QuillDelta;
 
         function convertInputValue(content: URickTextValue) {
-            if (typeof content === 'string') {
-                return new QuillDelta([{ insert: content }]);
-            }
             return new QuillDelta(
                 content.map(c => {
                     if (typeof c === 'string') {
@@ -127,6 +124,20 @@ export const URickInput = React.memo(
                     }
                 }),
             );
+        }
+
+        function convertInitialContent(content: URickTextValue) {
+            let res = content.map(c => {
+                if (typeof c === 'string') {
+                    // TODO: extract emoji
+                    return { insert: c };
+                } else if (c.__typename === 'User' || c.__typename === 'Organization' || c.__typename === 'SharedRoom' || c.__typename === 'AllMention') {
+                    return { insert: { mention: c } };
+                } else {
+                    return { insert: '' };
+                }
+            });
+            return new QuillDelta(res);
         }
 
         function convertQuillContent(content: QuillType.Delta) {
@@ -243,11 +254,16 @@ export const URickInput = React.memo(
                 scrollingContainer: '.scroll-container',
                 placeholder: props.placeholder,
             });
-            if (props.initialContent) {
-                q.setContents(convertInputValue(props.initialContent));
+            const hasInitialContent = props.initialContent && (props.initialContent.length >= 1 && props.initialContent[0] !== '\n');
+            if (hasInitialContent) {
+                q.setContents(convertInitialContent(props.initialContent!));
+            }
+            // fix safari cursor position bug
+            if (!hasInitialContent) {
+                q.setContents(new QuillDelta([{ insert: ' ' }]));
             }
             if (props.autofocus) {
-                if (props.initialContent) {
+                if (hasInitialContent) {
                     q.setSelection({ index: q.getText().length - 1, length: 0 });
                 } else {
                     q.focus();
