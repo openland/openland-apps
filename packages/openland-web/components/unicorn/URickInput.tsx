@@ -18,6 +18,7 @@ const quillInputStyle = css`
     }
 
     .ql-editor {
+        transform: translate3d(0, 0, 0);
         padding: 8px 16px;
         padding-right: 32px;
         font-size: 15px;
