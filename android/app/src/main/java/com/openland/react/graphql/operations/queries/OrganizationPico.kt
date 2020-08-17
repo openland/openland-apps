@@ -13,6 +13,6 @@ internal val OrganizationPicoSelector = obj(
 val OrganizationPico = object: OperationDefinition {
     override val name = "OrganizationPico"
     override val kind = OperationKind.QUERY
-    override val body = "query OrganizationPico(\$id:ID!){organization(id:\$id){__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount}"
+    override val body = "query OrganizationPico(\$id:ID!){organization(id:\$id){__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite}"
     override val selector = OrganizationPicoSelector
 }

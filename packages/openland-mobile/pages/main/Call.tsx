@@ -197,7 +197,7 @@ let Content = React.memo((props: { id: string, speaker: boolean, setSpeaker: (fn
     }, []);
 
     React.useLayoutEffect(() => {
-        InCallManager.setForceSpeakerphoneOn(speaker);
+        InCallManager.setForceSpeakerphoneOn(speaker ? true : null); // false disables bluetooth, null sets default behaviour where bluetooth is used when available
     }, [speaker]);
 
     React.useEffect(() => {

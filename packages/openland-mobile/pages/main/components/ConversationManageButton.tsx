@@ -9,6 +9,7 @@ import { RoomTiny_room, RoomMemberRole, RoomTiny_room_SharedRoom } from 'openlan
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
 import Toast from 'openland-mobile/components/Toast';
+import { shouldShowInviteButton } from 'openland-y-utils/shouldShowInviteButton';
 
 interface ConversationManageButtonProps {
     muted: boolean;
@@ -128,16 +129,8 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
     const onPress = React.useCallback(() => {
         const builder = new ActionSheetBuilder();
         const sharedRoom = room.__typename === 'SharedRoom' && room;
-        let showInviteButton = sharedRoom;
-        const onlyLinkInvite = sharedRoom && !(!sharedRoom.isPremium || sharedRoom.role === 'OWNER');
 
-        if (sharedRoom && sharedRoom.organization && sharedRoom.organization.private && sharedRoom.role === 'MEMBER') {
-            if (onlyLinkInvite) {
-                showInviteButton = false;
-            }
-        }
-
-        if (showInviteButton) {
+        if (shouldShowInviteButton(room)) {
             builder.action('Add people', onInvitePress, false, require('assets/ic-invite-24.png'));
         }
 

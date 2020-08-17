@@ -22,10 +22,12 @@ interface StickerContentProps {
     sticker: MyStickers_stickers_packs_stickers;
     message: DataSourceMessageItem;
     padded: boolean;
+    width?: number;
+    height?: number;
 }
 
 export const StickerContent = React.memo<StickerContentProps>((props) => {
-    const { sticker, padded, message } = props;
+    const { sticker, padded, message, width = STICKER_SIZE, height = STICKER_SIZE } = props;
     const [downloadState, setDownloadState] = React.useState<DownloadState | undefined>(undefined);
 
     React.useEffect(() => {
@@ -36,8 +38,8 @@ export const StickerContent = React.memo<StickerContentProps>((props) => {
         <ASFlex flexDirection="column">
             <ASImage
                 source={{ uri: (downloadState && downloadState.path) ? ('file://' + downloadState.path) : undefined }}
-                width={STICKER_SIZE}
-                height={STICKER_SIZE}
+                width={width}
+                height={height}
             />
             {padded && paddedText(message.isOut)}
         </ASFlex>

@@ -13,7 +13,7 @@ declare module 'rn-fetch-blob' {
 declare module 'react-native-incall-manager' {
     const InCallManager: {
         start: (args?: { media?: 'audio' | 'video' | 'cheburek' }) => void;
-        setForceSpeakerphoneOn: (on: boolean) => void;
+        setForceSpeakerphoneOn: (flag: boolean | null) => void;
         stop: (options?: { busytone?: '_DTMF_' | '_BUNDLE_' | '_DEFAULT_' }) => void;
     }
 

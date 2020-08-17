@@ -37,6 +37,7 @@ import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { useVideoCallModal } from 'openland-web/modules/conference/CallModal';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { useToast } from 'openland-web/components/unicorn/UToast';
+import { shouldShowInviteButton } from 'openland-y-utils/shouldShowInviteButton';
 
 const secondary = css`
     color: var(--foregroundSecondary);
@@ -124,7 +125,6 @@ const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessage
     const chat = client.useRoomChat({ id: props.id }, { fetchPolicy: 'cache-first' }).room!;
     const messenger = React.useContext(MessengerContext);
     const [muted, setMuted] = React.useState(chat.settings.mute);
-    const sharedRoom = chat.__typename === 'SharedRoom' && chat;
     const calls = messenger.calls;
     const currentSession = calls.useCurrentSession();
     const showVideoCallModal = useVideoCallModal({ chatId: chat.id });
@@ -132,14 +132,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessage
     const { isContact } = useLocalContact(chatUser ? chatUser.id : '', chatUser ? chatUser.inContacts : false);
     const toastHandlers = useToast();
 
-    let showInviteButton = layout === 'mobile' && sharedRoom;
-    const onlyLinkInvite = sharedRoom && !(!sharedRoom.isPremium || sharedRoom.role === 'OWNER');
-
-    if (sharedRoom && sharedRoom.organization && sharedRoom.organization.private && sharedRoom.role === 'MEMBER') {
-        if (onlyLinkInvite) {
-            showInviteButton = false;
-        }
-    }
+    const showInviteButton = layout === 'mobile' && shouldShowInviteButton(chat);
 
     let res = new UPopperMenuBuilder();
     if (showInviteButton) {
@@ -241,7 +234,6 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     const layout = useLayout();
     const messenger = React.useContext(MessengerContext);
     const isSavedMessages = chat.__typename === 'PrivateRoom' && messenger.user.id === chat.user.id;
-    const sharedRoom = chat.__typename === 'SharedRoom' && chat;
     const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
     const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
     const path =
@@ -253,14 +245,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
         layout === 'desktop' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true);
     const titleEmojify = isSavedMessages ? 'Saved messages' : React.useMemo(() => emoji(title), [title]);
 
-    let showInviteButton = layout === 'desktop' && sharedRoom;
-    const onlyLinkInvite = sharedRoom && !(!sharedRoom.isPremium || sharedRoom.role === 'OWNER');
-
-    if (sharedRoom && sharedRoom.organization && sharedRoom.organization.private && sharedRoom.role === 'MEMBER') {
-        if (onlyLinkInvite) {
-            showInviteButton = false;
-        }
-    }
+    const showInviteButton = layout === 'desktop' && shouldShowInviteButton(chat);
 
     return (
         <XView

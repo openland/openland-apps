@@ -9,6 +9,7 @@ import { SDevice } from 'react-native-s/SDevice';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { hexToRgba } from 'openland-y-utils/hexToRgba';
 import { HighlightAlpha } from 'openland-mobile/styles/AppStyles';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 export interface RootProps {
     width: number;
@@ -37,14 +38,16 @@ class RootContainer extends React.PureComponent<RootProps & { theme: ThemeGlobal
 
     componentWillReceiveProps(nextProps: RootProps & { theme: ThemeGlobal }) {
         if (this.isIPad && nextProps.width <= 375 * 2 && this.props.width > 375 * 2) {
+            getMessenger().setSideRouter(null);
             this.setState({ masterKey: undefined, masterRouting: undefined });
         }
     }
 
     private handlePush = (route: string, params?: any) => {
         if (this.isIPad && this.props.width > 375 * 2) {
-            let man = new NavigationManager(this.props.routing.navigationManager.routes, route, params);
-            this.setState({ masterRouting: new SRouting(man), masterKey: randomKey() });
+            let man = new SRouting(new NavigationManager(this.props.routing.navigationManager.routes, route, params));
+            getMessenger().setSideRouter(man);
+            this.setState({ masterRouting: man, masterKey: randomKey() });
             return true;
         } else {
             return false;

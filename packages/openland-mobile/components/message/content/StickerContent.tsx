@@ -8,10 +8,12 @@ import { STICKER_SIZE, layoutSticker } from 'openland-mobile/messenger/component
 
 interface StickerContentProps {
     sticker: MyStickers_stickers_packs_stickers;
+    width?: number;
+    height?: number;
 }
 
 export const StickerContent = React.memo<StickerContentProps>((props) => {
-    const { sticker } = props;
+    const { sticker, width = STICKER_SIZE, height = STICKER_SIZE } = props;
     const [downloadState, setDownloadState] = React.useState<DownloadState | undefined>(undefined);
 
     React.useEffect(() => {
@@ -19,10 +21,10 @@ export const StickerContent = React.memo<StickerContentProps>((props) => {
     }, [sticker]);
 
     return (
-        <View width={STICKER_SIZE} height={STICKER_SIZE}>
+        <View width={width} height={height}>
             {downloadState && !!downloadState.path && downloadState.path.length > 0 && (
                 <FastImage
-                    style={{ width: STICKER_SIZE, height: STICKER_SIZE, }}
+                    style={{ width: width, height: height, }}
                     source={{ uri: (Platform.OS === 'android' ? 'file://' : '') + downloadState.path, priority: 'normal', ...{ disableAnimations: true } as any }}
                 />
             )}

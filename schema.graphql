@@ -1863,6 +1863,10 @@ type Mutation {
   debugReindexOrganizationMembers: Boolean!
   debugDeleteTask(taskType: String!, id: String!): Boolean!
   debugDeliverCallStateEventsForAll: Boolean!
+  debugMigrateMuteSettings: Boolean!
+  debugMigrateUserChatsList: Boolean!
+  debugFreeUnusedShortnames: Boolean!
+  debugFreeShortname(shortname: String!): Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2014,9 +2018,6 @@ type Mutation {
   queueWeeklyRoomScreenViewsLeaderboard: Boolean!
   typingSend(conversationId: ID!, type: TypingType!): String!
   typingCancel(conversationId: ID!): String!
-
-  """Deprecated"""
-  alphaSetTyping(conversationId: ID!, type: String): String!
   reportContent(contentId: ID!, type: String!, message: String): Boolean
   deleteMyAccount: Boolean!
   superBadgeCreateToRoom(roomId: ID!, userId: ID!, name: String!): UserBadge!
@@ -2095,6 +2096,7 @@ type Mutation {
   betaRoomsInviteUser(userId: ID!, roomIds: [ID!]!): [Room!]!
   betaRoomAlterFeatured(roomId: ID!, featured: Boolean!): RoomSuper!
   betaRoomAlterListed(roomId: ID!, listed: Boolean!): RoomSuper!
+  betaRoomSetupAutosubscribe(roomId: ID!, childRoomIds: [ID!]!): RoomSuper!
   updateWelcomeMessage(roomId: ID!, welcomeMessageIsOn: Boolean!, welcomeMessageSender: ID, welcomeMessageText: String): Boolean!
   alphaSetUserShortName(id: ID, shortname: String!): String
   alphaSetOrgShortName(id: ID!, shortname: String!): String
@@ -2278,6 +2280,7 @@ type Organization {
   alphaFeatured: Boolean!
   alphaIsCommunity: Boolean!
   alphaIsPrivate: Boolean!
+  betaMembersCanInvite: Boolean!
   betaPublicRooms: [SharedRoom!]!
   betaPublicRoomsCount: Int!
   status: String!
@@ -2350,6 +2353,7 @@ type OrganizationProfile {
   alphaFeatured: Boolean!
   alphaIsCommunity: Boolean!
   alphaIsPrivate: Boolean!
+  betaMembersCanInvite: Boolean!
   shortname: String
 }
 
@@ -2781,6 +2785,7 @@ type Query {
   debugEntitiesCleanerProgress(name: String!): Int!
   debugUserSearch(query: String!): String!
   debugMentionSearch(query: String!, first: Int!): String!
+  debugMentionSearchGetUserData(cid: ID!): String!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!
@@ -2910,7 +2915,7 @@ type Query {
   betaChatMentionSearch(cid: ID!, query: String, first: Int!, after: String): MentionSearchConnection!
   messages(chatId: ID!, first: Int!, before: ID): [ModernMessage!]!
   gammaMessages(chatId: ID!, first: Int!, before: ID, after: ID, around: ID): GammaMessagesBatch
-  modernMessages(chatId: ID!, first: Int!, before: ID, after: ID): ModernMessagesBatch!
+  modernMessages(chatId: ID!, first: Int!, before: Int, after: Int): ModernMessagesBatch!
   message(messageId: ID!): ModernMessage
   lastReadedMessage(chatId: ID!): ModernMessage
   chatSharedMedia(chatId: ID!, mediaTypes: [SharedMediaType!]!, first: Int!, after: ID, before: ID, around: ID): SharedMediaConnection!
@@ -3048,6 +3053,7 @@ type RoomSuper {
   id: ID!
   featured: Boolean!
   listed: Boolean!
+  autosubscribeRooms: [Room!]!
 }
 
 input RoomUpdateInput {
@@ -3343,11 +3349,6 @@ type Subscription {
   shouldShareLocationUpdates: Boolean!
   notificationCenterUpdates(fromState: String): NotificationCenterUpdateContainer
   typings: TypingEvent!
-  conversationTypings(conversationId: ID!): TypingEvent!
-
-  """Deprecated"""
-  alphaSubscribeTypings: TypingEvent!
-  alphaSubscribeChatTypings(conversationId: ID!): TypingEvent!
 }
 
 type SuperAccount {
@@ -3500,6 +3501,7 @@ input UpdateOrganizationProfileInput {
   alphaEditorial: Boolean
   alphaFeatured: Boolean
   alphaIsPrivate: Boolean
+  betaMembersCanInvite: Boolean
 }
 
 """Deprecated"""

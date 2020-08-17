@@ -66,6 +66,7 @@ const ULinkFallback = React.memo((props: ULinkProps) => (
         onClick={(e) => {
             e.stopPropagation();
         }}
+        rel="noopener noreferrer" // prevents window.opener shenanigans (XSS and tabnabbing)
     >
         {props.children}
     </a>
@@ -73,7 +74,6 @@ const ULinkFallback = React.memo((props: ULinkProps) => (
 
 export const ULink = React.memo((props: ULinkProps) => {
     const { children, href, path, color, className, onClick } = props;
-    const fallback = <ULinkFallback {...props}>{children}</ULinkFallback>;
 
     if (onClick) {
         return (
@@ -112,7 +112,7 @@ export const ULink = React.memo((props: ULinkProps) => {
             );
         }
 
-        return fallback;
+        return <ULinkFallback {...props}>{children}</ULinkFallback>;
     }
 
     return null;

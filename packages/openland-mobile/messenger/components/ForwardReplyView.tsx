@@ -9,6 +9,7 @@ import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { ZDocumentExt } from 'openland-mobile/components/file/ZDocumentExt';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { PreviewWrapper } from 'openland-mobile/components/message/content/PreviewWrapper';
+import { StickerContent } from 'openland-mobile/components/message/content/StickerContent';
 
 interface ForwardReplyViewProps {
     messages: FullMessage[];
@@ -44,8 +45,12 @@ export const ForwardReplyView = (props: ForwardReplyViewProps) => {
         title = message.sender.name;
         text = formatMessage(messages[0]);
 
+        let sticker = message.__typename === 'StickerMessage' ? message.sticker : undefined;
         let attach = message.__typename === 'GeneralMessage' ? message.attachments[0] : undefined;
-        if (attach?.__typename === 'MessageAttachmentFile') {
+        if (sticker) {
+            leftElement = <StickerContent sticker={sticker} width={40} height={40} />;
+            textColor = theme.foregroundSecondary;
+        } else if (attach?.__typename === 'MessageAttachmentFile') {
             textColor = theme.foregroundSecondary;
             if (attach.fileMetadata.isImage) {
                 image = {

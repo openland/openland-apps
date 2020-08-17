@@ -10,4 +10,5 @@ fragment OrganizationMedium on Organization {
     isAdmin: betaIsAdmin
     isCommunity: alphaIsCommunity
     private: alphaIsPrivate
+    membersCanInvite: betaMembersCanInvite
 }

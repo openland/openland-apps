@@ -462,6 +462,8 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
         }
     }, [organization, members, loading]);
 
+    const shouldShowAddButton = organization.isMine && (organization.isAdmin || organization.membersCanInvite);
+
     const content = (
         <>
             <ZTrack
@@ -535,7 +537,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
             </ZListGroup>
 
             <ZListHeader text="Members" counter={organization.membersCount} />
-            {organization.isMine && (
+            {shouldShowAddButton && (
                 <ZListItem
                     leftIcon={require('assets/ic-add-glyph-24.png')}
                     text="Add people"

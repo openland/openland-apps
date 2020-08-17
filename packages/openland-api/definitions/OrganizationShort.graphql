@@ -7,4 +7,6 @@ fragment OrganizationShort on Organization {
     isCommunity: alphaIsCommunity
     private: alphaIsPrivate
     membersCount
+    isAdmin: betaIsAdmin
+    membersCanInvite: betaMembersCanInvite
 }

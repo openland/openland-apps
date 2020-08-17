@@ -22,12 +22,15 @@ const textClassName = css`
     color: var(--foregroundPrimary);
     flex-grow: 1;
     border-radius: 8px;
-    padding-left: 16px;
-    padding-right: 18px;
     height: 48px;
     &:hover {
         background-color: var(--backgroundPrimaryHover);
     }
+`;
+
+const textWithHorizontalPaddingClassName = css`
+    padding-left: 16px;
+    padding-right: 18px;
 `;
 
 const textTallClassName = css`
@@ -124,6 +127,7 @@ interface UCheckboxItemProps {
     withCorners?: boolean;
     boldTitle?: boolean;
     leftElement?: JSX.Element;
+    disableHorizontalPadding?: boolean;
 }
 
 export const UCheckbox = (props: UCheckboxItemProps) => {
@@ -147,7 +151,7 @@ export const UCheckbox = (props: UCheckboxItemProps) => {
                 className={inputClassName}
             />
             <label htmlFor={id} className={labelClassName}>
-                <div className={cx(textClassName, props.tall && textTallClassName, props.withCorners && textWithCornersClassName)}>
+                <div className={cx(textClassName, props.tall && textTallClassName, props.withCorners && textWithCornersClassName, !props.disableHorizontalPadding && textWithHorizontalPaddingClassName)}>
                     <XView flexDirection="row" alignItems="center">
                         {props.leftElement || null}
                         <span className={cx(props.boldTitle ? TextLabel1 : TextBody)}>{props.label}</span>

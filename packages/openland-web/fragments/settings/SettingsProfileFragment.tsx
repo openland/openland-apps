@@ -111,6 +111,7 @@ export const SettingsProfileFragment = React.memo(() => {
 
             await client.refetchAccount();
             await client.refetchMyOrganizations();
+            await client.refetchUser({ userId: user.id });
         });
     };
 
