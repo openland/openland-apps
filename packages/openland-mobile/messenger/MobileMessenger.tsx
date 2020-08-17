@@ -233,7 +233,7 @@ export class MobileMessenger {
     }
 
     handleCommentsClick = (message: DataSourceMessageItem) => {
-        this.history.navigationManager.push('Message', { messageId: message.id });
+        this.getRouter().navigationManager.push('Message', { messageId: message.id });
     }
 
     handleReplyClick = (quotedMessage: DataSourceMessageItem) => {
@@ -325,7 +325,6 @@ export class MobileMessenger {
             forward: (messages: DataSourceMessageItem[]) => void,
         }
     ) => {
-        let history = this.sideRouter || this.history;
         let conversation: ConversationEngine = this.engine.getConversation(message.chatId);
         let builder = new ActionSheetBuilder();
         let { action, reply, edit, toggleSelect, forward } = actions;
@@ -385,7 +384,7 @@ export class MobileMessenger {
         }, false, require('assets/ic-forward-24.png'));
 
         builder.action('Comment', () => {
-            history.navigationManager.push('Message', { messageId: message.id });
+            this.getRouter().navigationManager.push('Message', { messageId: message.id });
         }, false, require('assets/ic-message-24.png'));
 
         if (message.text) {
@@ -432,6 +431,10 @@ export class MobileMessenger {
         }
 
         builder.show(true);
+    }
+
+    private getRouter = () => {
+        return this.sideRouter || this.history;
     }
 
     private handleMessageDoublePress = (message: DataSourceMessageItem) => {

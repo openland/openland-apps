@@ -37,7 +37,7 @@ export interface HeaderConfig {
     searchActive?: boolean;
     searchChanged?: (text: string) => void;
     searchPress?: () => void;
-    searchClosed?: () => void;
+    searchClosed?: (fromUserCancel?: boolean) => void;
     searchClosingCompleted?: () => void;
 }
 
@@ -57,7 +57,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let searchActive: boolean | undefined;
     let searchChanged: ((text: string) => void) | undefined;
     let searchPress: (() => void) | undefined;
-    let searchClosed: (() => void) | undefined;
+    let searchClosed: ((fromUserCancel?: boolean) => void) | undefined;
     let searchClosingCompleted: (() => void) | undefined;
     let searchUnderlay: SAnimatedShadowView | undefined;
     let searchContainer: SAnimatedShadowView | undefined;
