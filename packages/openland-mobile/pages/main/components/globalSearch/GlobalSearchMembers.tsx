@@ -2,7 +2,6 @@ import * as React from 'react';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { SDeferred } from 'react-native-s/SDeferred';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { SDevice } from 'react-native-s/SDevice';
 import { DeviceConfig } from 'react-native-s/navigation/DeviceConfig';
@@ -43,7 +42,6 @@ export interface RoomMembersSearchProps {
     query: string;
     onPress: (member: RoomMemberType) => void;
     onLongPress: RoomLongPressHanlder;
-    onRefetch: () => void;
     roomId: string;
 }
 
@@ -60,11 +58,9 @@ const RoomMembersSearch = (props: RoomMembersSearchProps) => {
 
     const onRoleChange = (memberId: string, role: RoomMemberRole) => {
         setItems(prev => prev.map(member => member.user.id === memberId ? ({ ...member, role }) : member));
-        props.onRefetch();
     };
     const onKick = (memberId: string) => {
         setItems(prev => prev.filter(member => member.user.id !== memberId));
-        props.onRefetch();
     };
 
     const handleLoadMore = async () => {
@@ -143,7 +139,6 @@ export interface OrgMembersSearchProps {
     query: string;
     onPress: (member: OrgMemberType) => void;
     onLongPress: OrgLongPressHanlder;
-    onRefetch: () => void;
     orgId: string;
 }
 
@@ -160,11 +155,9 @@ const OrgMembersSearch = (props: OrgMembersSearchProps) => {
 
     const onRoleChange = (memberId: string, role: OrganizationMemberRole) => {
         setItems(prev => prev.map(member => member.user.id === memberId ? ({ ...member, role }) : member));
-        props.onRefetch();
     };
     const onKick = (memberId: string) => {
         setItems(prev => prev.filter(member => member.user.id !== memberId));
-        props.onRefetch();
     };
 
     const handleLoadMore = async () => {
@@ -238,32 +231,20 @@ const OrgMembersSearch = (props: OrgMembersSearchProps) => {
     );
 };
 
-export const GlobalSearchMembers = React.memo((props: PageProps & { query: string, onRefetch: () => void }) => {
-    const theme = React.useContext(ThemeContext);
-
-    return (
-        <React.Suspense fallback={<Loader theme={theme} />}>
-            <SDeferred>
-                {
-                    props.router.params.roomId ? (
-                        <RoomMembersSearch
-                            query={props.query}
-                            roomId={props.router.params.roomId as string}
-                            onPress={props.router.params.onPress as (member: RoomMemberType) => void}
-                            onLongPress={props.router.params.onLongPress as RoomLongPressHanlder}
-                            onRefetch={props.onRefetch}
-                        />
-                    ) : props.router.params.orgId ? (
-                        <OrgMembersSearch
-                            query={props.query}
-                            orgId={props.router.params.orgId as string}
-                            onPress={props.router.params.onPress as (member: OrgMemberType) => void}
-                            onLongPress={props.router.params.onLongPress as (member: OrgMemberType) => void}
-                            onRefetch={props.onRefetch}
-                        />
-                    ) : null
-                }
-            </SDeferred>
-        </React.Suspense>
-    );
+export const GlobalSearchMembers = React.memo((props: PageProps & { query: string }) => {
+    return props.router.params.roomId ? (
+        <RoomMembersSearch
+            query={props.query}
+            roomId={props.router.params.roomId as string}
+            onPress={props.router.params.onPress as (member: RoomMemberType) => void}
+            onLongPress={props.router.params.onLongPress as RoomLongPressHanlder}
+        />
+    ) : props.router.params.orgId ? (
+        <OrgMembersSearch
+            query={props.query}
+            orgId={props.router.params.orgId as string}
+            onPress={props.router.params.onPress as (member: OrgMemberType) => void}
+            onLongPress={props.router.params.onLongPress as (member: OrgMemberType) => void}
+        />
+    ) : null;
 });

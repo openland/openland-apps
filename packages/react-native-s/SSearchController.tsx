@@ -16,6 +16,8 @@ export interface SSearchControlerProps {
     backgroundColor?: string;
     searchRender: (params: { query: string }) => JSX.Element;
     children?: any;
+    openOnMount?: boolean;
+    onSearchClose?: () => void;
 }
 
 export class SSearchControlerComponent extends React.PureComponent<SSearchControlerProps & { theme: ThemeGlobal }, { search: boolean, searchMounted: boolean, query: string }> {
@@ -28,8 +30,8 @@ export class SSearchControlerComponent extends React.PureComponent<SSearchContro
         super(props);
         this.searchContext = new SearchContext(this.handleSearchChanged);
         this.state = {
-            search: false,
-            searchMounted: false,
+            search: !!props.openOnMount,
+            searchMounted: !!props.openOnMount,
             query: ''
         };
     }
@@ -39,7 +41,11 @@ export class SSearchControlerComponent extends React.PureComponent<SSearchContro
     }
 
     handleSearchStop = () => {
-        this.setState({ search: false, searchMounted: false });
+        if (this.props.onSearchClose) {
+            this.props.onSearchClose();
+        } else {
+            this.setState({ search: false, searchMounted: false });
+        }
     }
 
     handleSearchStopCompleted = () => {
