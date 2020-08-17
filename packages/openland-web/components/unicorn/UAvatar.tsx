@@ -90,7 +90,7 @@ export const AvatarSavedMessages = (props: { squared?: boolean, bookmarkSize: nu
             alignItems="center"
             justifyContent="center"
             borderRadius={props.squared ? 0 : 100}
-            backgroundImage="linear-gradient(135deg, #36D9CB 0%, #3695D9 100%)"
+            backgroundImage="linear-gradient(135deg, #FFC619 0%, #FF7919 100%)"
             overflow="hidden"
         >
             <UIcon icon={<BookmarkIcon />} color="var(--foregroundContrast)" size={props.bookmarkSize} />
