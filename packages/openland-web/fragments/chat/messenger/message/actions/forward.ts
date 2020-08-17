@@ -30,7 +30,7 @@ export const useForward = (selectedFrom: string) => {
                 setShowLoader(false);
                 toastHandlers.show({
                     type: 'success',
-                    text: 'Success'
+                    text: 'Added to saved messages'
                 });
             } else {
                 forward({ targetId: toId, messages });
