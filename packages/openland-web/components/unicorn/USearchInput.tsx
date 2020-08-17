@@ -88,6 +88,7 @@ interface USearchInputProps extends XViewProps {
     onKeyDown?: React.KeyboardEventHandler;
     onFocus?: React.FocusEventHandler;
     onBlur?: React.FocusEventHandler;
+    onCancel?: () => void;
     autoFocus?: boolean;
     placeholder?: string;
     rounded?: boolean;
@@ -102,9 +103,10 @@ export interface USearchInputRef {
 }
 
 export const USearchInput = React.forwardRef((props: USearchInputProps, ref: React.RefObject<USearchInputRef>) => {
-    const { value, onChange, autoFocus, onKeyDown, onFocus, onBlur, rounded, loading, className, placeholder = 'Search', ...other } = props;
+    const { value, onChange, autoFocus, onKeyDown, onFocus, onBlur, rounded, loading, className, placeholder = 'Search', onCancel, ...other } = props;
 
     const [val, setValue] = React.useState(typeof value === 'string' ? value : '');
+    const [focused, setFocused] = React.useState(!!autoFocus);
     const inputRef = React.useRef<HTMLInputElement>(null);
 
     React.useLayoutEffect(() => {
@@ -120,25 +122,50 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
         }
     };
 
+    const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+        setFocused(true);
+        if (onFocus) {
+            onFocus(event);
+        }
+    };
+
+    const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+        if (!onCancel) {
+            setFocused(false);
+        }
+        if (onBlur) {
+            onBlur(event);
+        }
+    };
+
+    const handleClear = () => {
+        if (props.value && props.value.length > 0) {
+            inputRef.current?.focus();
+            handleChange('');
+        } else if (!!onCancel) {
+            onCancel();
+            setFocused(false);
+        }
+    };
+
     React.useImperativeHandle<any, { reset: () => void }>(ref, () => ({
         reset: () => handleChange(''),
         focus: () => inputRef.current?.focus(),
         blur: () => inputRef.current?.blur(),
     }));
 
+    const showClear = (props.value && props.value.length > 0) || (!!onCancel && focused);
+
     return (
         <XView position="relative" {...other}>
             <div className={searchIconWrapper}>
                 {loading ? <ThinLoaderIcon className={rotate} /> : <SearchIcon />}
             </div>
-            {props.value && props.value.length > 0 && (
+            {showClear && (
                 <div
                     tabIndex={-1}
                     className={resetClassName}
-                    onClick={() => {
-                        inputRef.current?.focus();
-                        handleChange('');
-                    }}
+                    onClick={handleClear}
                 >
                     <ClearIcon />
                 </div>
@@ -149,8 +176,8 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
                 value={val || ''}
                 onChange={e => handleChange(e.target.value)}
                 onKeyDown={onKeyDown}
-                onFocus={onFocus}
-                onBlur={onBlur}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
                 placeholder={placeholder}
                 autoFocus={autoFocus}
                 ref={inputRef}
