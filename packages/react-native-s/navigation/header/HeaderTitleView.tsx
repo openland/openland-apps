@@ -46,6 +46,11 @@ const styles = StyleSheet.create({
 
 export class HeaderTitleView extends React.PureComponent<{ manager: NavigationManager, page: HeaderPage, current: boolean, style: SNavigationViewStyle }, { searchText: string }> {
 
+    constructor(props: { manager: NavigationManager, page: HeaderPage, current: boolean, style: SNavigationViewStyle }) {
+        super(props);
+        this.state = { searchText: '' };
+    }
+
     handleExternalChange = () => {
         this.setState({ searchText: this.props.page.config.searchContext!.value });
     }
