@@ -326,6 +326,12 @@ export class MobileMessenger {
 
         builder.title(item.title, 'left');
 
+        if (item.messageId && item.unread > 0) {
+            builder.action('Mark as Read', () => {
+                this.engine.client.mutateRoomRead({ id: item.key, mid: item.messageId! });
+            }, false, require('assets/ic-done-24.png'));
+        }
+
         if (item.kind !== 'PRIVATE' || (item.kind === 'PRIVATE' && item.flexibleId !== this.engine.user.id)) {
             const notificationsTitle = `${muted ? 'Unmute' : 'Mute'} notifications`;
             const notificationsIcon = muted
