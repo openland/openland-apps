@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-unread-off",
+            "src": "ic-unread-off-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-read-glyph",
             "src": "ic-read-glyph-24.svg",
             "sizes": [

@@ -27,7 +27,7 @@ interface DialogItemViewAsyncProps {
     showDiscover: (key: string) => boolean;
     compact?: boolean;
     onPress: (id: string, item: DialogDataSourceItem) => void;
-    onLongPress?: (id: string, item: DialogDataSourceItem) => void;
+    onLongPress?: (id: string, item: DialogDataSourceItem, theme: ThemeGlobal) => void;
     onDiscoverPress?: () => void;
 }
 
@@ -46,7 +46,7 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
 
     const handleLongPress = () => {
         if (props.onLongPress) {
-            props.onLongPress(item.key, item);
+            props.onLongPress(item.key, item, theme);
         }
     };
 
@@ -123,38 +123,38 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
             </ASFlex>
             {shouldShowDiscover && <ASFlex height={16} />}
             {shouldShowDiscover && (
-                    <ASFlex 
-                        backgroundGradient={{start: theme.gradient0to100End, end: theme.gradient0to100Start}}
-                        backgroundGradientOrientation="top_bottom"
+                <ASFlex
+                    backgroundGradient={{ start: theme.gradient0to100End, end: theme.gradient0to100Start }}
+                    backgroundGradientOrientation="top_bottom"
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <ASFlex
+                        marginTop={32}
+                        marginBottom={32}
+                        marginLeft={32}
+                        marginRight={32}
                         justifyContent="center"
                         alignItems="center"
+                        flexDirection="column"
                     >
-                        <ASFlex 
-                            marginTop={32} 
-                            marginBottom={32} 
-                            marginLeft={32} 
-                            marginRight={32} 
-                            justifyContent="center"
-                            alignItems="center"
-                            flexDirection="column"
-                        >
-                            <ASImage source={require('assets/ic-discover-large-36.png')} width={36} height={36} tintColor={props.theme.foregroundSecondary} />
-                            <ASText marginTop={8} marginBottom={4} {...TextStylesAsync.Title2} color={props.theme.foregroundPrimary}>Find more chats</ASText>
-                            <ASText marginBottom={16} {...TextStylesAsync.Body} color={props.theme.foregroundSecondary}>Get recommendations for your interests</ASText>
-                            <ASFlex height={36} alignItems="center" justifyContent="center" borderRadius={18} backgroundColor={theme.backgroundTertiaryTrans} highlightColor={theme.backgroundTertiaryActive} onPress={props.onDiscoverPress}>
-                                <ASText
-                                    marginLeft={16}
-                                    marginRight={16}
-                                    marginBottom={3}
-                                    {...TextStylesAsync.Label1} 
-                                    color={theme.foregroundSecondary}
-                                >
-                                    Discover chats
-                                </ASText>
-                            </ASFlex>
+                        <ASImage source={require('assets/ic-discover-large-36.png')} width={36} height={36} tintColor={props.theme.foregroundSecondary} />
+                        <ASText marginTop={8} marginBottom={4} {...TextStylesAsync.Title2} color={props.theme.foregroundPrimary}>Find more chats</ASText>
+                        <ASText marginBottom={16} {...TextStylesAsync.Body} color={props.theme.foregroundSecondary}>Get recommendations for your interests</ASText>
+                        <ASFlex height={36} alignItems="center" justifyContent="center" borderRadius={18} backgroundColor={theme.backgroundTertiaryTrans} highlightColor={theme.backgroundTertiaryActive} onPress={props.onDiscoverPress}>
+                            <ASText
+                                marginLeft={16}
+                                marginRight={16}
+                                marginBottom={3}
+                                {...TextStylesAsync.Label1}
+                                color={theme.foregroundSecondary}
+                            >
+                                Discover chats
+                            </ASText>
                         </ASFlex>
                     </ASFlex>
-                )}
+                </ASFlex>
+            )}
         </ASFlex>
     );
 });
