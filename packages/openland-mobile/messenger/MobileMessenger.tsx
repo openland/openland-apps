@@ -21,7 +21,7 @@ import { reactionsImagesMap } from './components/AsyncMessageReactionsView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
 import { formatDateTime } from 'openland-y-utils/formatTime';
-import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
+import { SUPER_ADMIN, NON_PRODUCTION } from 'openland-mobile/pages/Init';
 import { NotificationCenterItemAsync } from 'openland-mobile/notificationCenter/NotificationCenterItemAsync';
 import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';
 import { trackEvent } from 'openland-mobile/analytics';
@@ -119,7 +119,7 @@ export class MobileMessenger {
             };
             this.dialogs = new ASDataView(
                 this.engine.dialogList.dataSource,
-                item => <DialogItemViewAsync item={item} onPress={this.handleChatClick} onDiscoverPress={onDiscoverPress} showDiscover={showDiscover} />
+                item => <DialogItemViewAsync item={item} onPress={this.handleChatClick} onLongPress={this.handleDialogLongPress} onDiscoverPress={onDiscoverPress} showDiscover={showDiscover} />
             );
         }
         this.prevDialogsCb = setTab;
@@ -315,6 +315,31 @@ export class MobileMessenger {
     handleHashtagClick = (hashtag?: string) => {
         this.history.navigationManager.push('HomeDialogs', { searchValue: hashtag, title: hashtag });
     }
+
+    private handleDialogLongPress = (id: string, item: DialogDataSourceItem) => {
+        if (!NON_PRODUCTION) {
+            return;
+        }
+
+        const builder = new ActionSheetBuilder();
+        const muted = item.isMuted;
+
+        builder.title(item.title, 'left');
+
+        if (item.kind !== 'PRIVATE' || (item.kind === 'PRIVATE' && item.flexibleId !== this.engine.user.id)) {
+            const notificationsTitle = `${muted ? 'Unmute' : 'Mute'} notifications`;
+            const notificationsIcon = muted
+                ? require('assets/ic-notifications-24.png')
+                : require('assets/ic-notifications-off-24.png');
+            builder.action(notificationsTitle, () => {
+                this.engine.client.mutateRoomSettingsUpdate({ roomId: item.key, settings: { mute: !muted } });
+                this.engine.client.refetchRoomTiny({ id: item.key });
+            }, false, notificationsIcon);
+        }
+
+        builder.show(true);
+    }
+
     private handleMessageLongPress = (
         message: DataSourceMessageItem,
         actions: {

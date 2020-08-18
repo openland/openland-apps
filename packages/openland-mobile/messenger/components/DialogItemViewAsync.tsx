@@ -9,7 +9,6 @@ import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngin
 import { UserAvatar } from './UserAvatar';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
-import { DataSourceItem } from 'openland-y-utils/DataSource';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { avatarSizes } from 'openland-mobile/components/ZAvatar';
 import { PremiumBadgeAsync } from 'openland-mobile/components/PremiumBadge';
@@ -27,7 +26,8 @@ interface DialogItemViewAsyncProps {
     item: DialogDataSourceItem;
     showDiscover: (key: string) => boolean;
     compact?: boolean;
-    onPress: (id: string, item: DataSourceItem) => void;
+    onPress: (id: string, item: DialogDataSourceItem) => void;
+    onLongPress?: (id: string, item: DialogDataSourceItem) => void;
     onDiscoverPress?: () => void;
 }
 
@@ -44,6 +44,12 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
 
     const isSavedMessages = item.flexibleId === getMessenger().engine.user.id;
 
+    const handleLongPress = () => {
+        if (props.onLongPress) {
+            props.onLongPress(item.key, item);
+        }
+    };
+
     return (
         <ASFlex flexDirection={shouldShowDiscover ? 'column' : 'row'} flexGrow={1} alignItems="stretch">
             <ASFlex
@@ -52,6 +58,7 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                 flexDirection="row"
                 highlightColor={theme.backgroundPrimaryActive}
                 onPress={() => props.onPress(item.key, item)}
+                onLongPress={handleLongPress}
                 alignItems={props.compact ? 'center' : undefined}
             >
                 <ASFlex marginLeft={paddingHorizontal} width={size} height={height} alignItems="center" justifyContent="center">
