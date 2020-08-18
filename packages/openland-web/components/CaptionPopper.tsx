@@ -41,6 +41,7 @@ interface CaptionPopperConfig {
     marginLeft?: number;
     marginTop?: number;
     marginBottom?: number;
+    showTimeout?: number;
 }
 
 export const useCaptionPopper = (opts: CaptionPopperConfig) => {
@@ -59,6 +60,7 @@ export const useCaptionPopper = (opts: CaptionPopperConfig) => {
             marginTop: opts.marginTop,
             marginBottom: opts.marginBottom,
             updatedDeps: text,
+            showTimeout: opts.showTimeout
         },
         ctx => (
             <div

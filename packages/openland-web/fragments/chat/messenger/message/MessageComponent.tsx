@@ -145,7 +145,7 @@ const MessageTime = React.memo((props: { time: number; dateFormat: 'time' | 'dat
         [props.time],
     );
 
-    const [show] = useCaptionPopper({ text: tooltipText, placement: 'top', scope: 'message-date' });
+    const [show] = useCaptionPopper({ text: tooltipText, placement: 'top', scope: 'message-date', showTimeout: 400 });
 
     return (
         <div className={cx(TextCaption, senderDateStyle)} onMouseEnter={show}>
