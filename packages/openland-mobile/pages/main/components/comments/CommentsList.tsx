@@ -7,10 +7,12 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { CommentEntryFragment, CommentEntryFragment_comment } from 'openland-api/spacex.types';
+import { CommentEntryFragment, CommentEntryFragment_comment, RoomMemberRole } from 'openland-api/spacex.types';
+import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 
 interface CommentsListProps {
     comments: CommentEntryFragment[];
+    role: RoomMemberRole | undefined;
     highlightedId?: string;
     scrollRef?: React.RefObject<ScrollView>;
 
@@ -19,7 +21,7 @@ interface CommentsListProps {
 }
 
 export const CommentsList = (props: CommentsListProps) => {
-    const { comments, highlightedId, onReplyPress, onEditPress, scrollRef } = props;
+    const { comments, role, highlightedId, onReplyPress, onEditPress, scrollRef } = props;
     const theme = React.useContext(ThemeContext);
 
     const handleLongPress = React.useCallback((comment: CommentEntryFragment_comment) => {
@@ -39,8 +41,9 @@ export const CommentsList = (props: CommentsListProps) => {
                     Clipboard.setString(comment.message!!);
                 }, false, require('assets/ic-copy-24.png'));
             }
+            const canDelete = comment.sender.id === engine.user.id || role === RoomMemberRole.ADMIN || role === RoomMemberRole.OWNER || SUPER_ADMIN;
 
-            if (comment.sender.id === engine.user.id) {
+            if (canDelete) {
                 builder.action('Delete', async () => {
                     try {
                         Alert.builder()
