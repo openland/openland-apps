@@ -202,8 +202,6 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                             hasBottomContent={hasBottomContent}
                             maskColor={theme.backgroundPrimary}
                             borderColor={theme.border}
-                            onPress={Platform.OS === 'ios' ? this.handlePress : undefined}
-                            onLongPress={Platform.OS === 'ios' ? onLongPress : undefined}
                             useBorder={useBorder}
                         />
                     </ASFlex>
