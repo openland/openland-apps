@@ -56,6 +56,7 @@ export class AsyncBubbleMediaView extends React.PureComponent<AsyncBubbleMediaVi
                     flexGrow={1}
                     alignItems="stretch"
                     onPress={!useBorder ? onPress : undefined}
+                    onLongPress={!useBorder ? onLongPress : undefined}
                 >
                     {useBorder && (
                         <AsyncBubbleBorderView
@@ -103,6 +104,7 @@ export class AsyncBubbleMediaView extends React.PureComponent<AsyncBubbleMediaVi
                 flexGrow={1}
                 alignItems="stretch"
                 onPress={!useBorder ? onPress : undefined}
+                onLongPress={!useBorder ? onLongPress : undefined}
             >
                 {useBorder && (
                     <AsyncBubbleBorderView

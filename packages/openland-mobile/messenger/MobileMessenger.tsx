@@ -38,6 +38,9 @@ import UUID from 'uuid/v4';
 import { ChatMessagesActions, MessagesAction } from 'openland-y-utils/MessagesActionsState';
 import { AsyncSharedItem } from 'openland-mobile/pages/shared-media/AsyncSharedItem';
 import { useMessagesActionsForward } from 'openland-y-utils/MessagesActionsState';
+import LinearGradient from 'react-native-linear-gradient';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
 
 const SortedReactions = [
     MessageReactionType.LIKE,
@@ -119,7 +122,7 @@ export class MobileMessenger {
             };
             this.dialogs = new ASDataView(
                 this.engine.dialogList.dataSource,
-                item => <DialogItemViewAsync item={item} onPress={this.handleChatClick} onDiscoverPress={onDiscoverPress} showDiscover={showDiscover} />
+                item => <DialogItemViewAsync item={item} onPress={this.handleChatClick} onLongPress={this.handleDialogLongPress} onDiscoverPress={onDiscoverPress} showDiscover={showDiscover} />
             );
         }
         this.prevDialogsCb = setTab;
@@ -315,6 +318,46 @@ export class MobileMessenger {
     handleHashtagClick = (hashtag?: string) => {
         this.history.navigationManager.push('HomeDialogs', { searchValue: hashtag, title: hashtag });
     }
+
+    private handleDialogLongPress = (id: string, item: DialogDataSourceItem, theme: ThemeGlobal) => {
+        if (item.flexibleId === this.engine.user.id) {
+            return;
+        }
+
+        const builder = new ActionSheetBuilder();
+        const muted = item.isMuted;
+
+        builder.view((ctx: ZModalController) => (
+            <LinearGradient
+                colors={[theme.gradient0to100Start, theme.gradient0to100End]}
+                marginBottom={8}
+                paddingBottom={8}
+            >
+                <ZListItem
+                    text={item.title}
+                    leftAvatar={{ photo: item.photo, id: item.key, title: item.title }}
+                />
+            </LinearGradient>
+        ));
+
+        if (item.messageId && item.unread > 0) {
+            builder.action('Mark as read', () => {
+                this.engine.client.mutateRoomRead({ id: item.key, mid: item.messageId! });
+            }, false, require('assets/ic-unread-off-24.png'));
+        }
+
+        const notificationsTitle = `${muted ? 'Unmute' : 'Mute'} notifications`;
+        const notificationsIcon = muted
+            ? require('assets/ic-notifications-24.png')
+            : require('assets/ic-notifications-off-24.png');
+        builder.action(notificationsTitle, () => {
+            this.engine.client.mutateRoomSettingsUpdate({ roomId: item.key, settings: { mute: !muted } });
+            this.engine.client.refetchRoomTiny({ id: item.key });
+        }, false, notificationsIcon);
+
+        builder.show(true);
+    }
+
     private handleMessageLongPress = (
         message: DataSourceMessageItem,
         actions: {
