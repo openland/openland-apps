@@ -32,7 +32,7 @@ export const useBuildMessageMenu = (engine: ConversationEngine) => {
                 forward([message]);
             }
         });
-        if (engine.canPin && message.id && engine.pinId && engine.pinId !== message.id) {
+        if (engine.canPin && message.id && ((engine.pinId && engine.pinId !== message.id) || !engine.pinId)) {
             menu.item({ title: 'Pin', icon: <PinIcon />, action: () => engine.engine.client.mutatePinMessage({ messageId: message.id!, chatId: engine.conversationId }) });
         }
         let hasPurchase = message.attachments && message.attachments.some(a => a.__typename === 'MessageAttachmentPurchase');
