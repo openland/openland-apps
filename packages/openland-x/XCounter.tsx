@@ -34,8 +34,8 @@ const counterBigStyle = css`
     line-height: 10px;
     height: 22px;
     min-width: 22px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 6px;
+    padding-right: 6px;
     border-radius: 20px;
 `;
 

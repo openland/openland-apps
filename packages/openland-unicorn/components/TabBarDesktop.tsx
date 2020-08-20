@@ -39,8 +39,8 @@ export const counterStyle = css`
     text-align: center;
     font-weight: 600;
     border-radius: 20px;
-    padding-left: 2px;
-    padding-right: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
 `;
 
 const counterDozenStyle = css`
