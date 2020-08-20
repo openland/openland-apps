@@ -34,12 +34,13 @@ export const shiftReplyMeta = (message: DataSourceMessageItem, isForward: boolea
     }
     let attachFile = getAttachFile(lastReply);
     let isImage = attachFile && attachFile.fileMetadata.isImage;
+    let isMessageImage = !!getAttachFile(message)?.fileMetadata.isImage;
     let isSticker = !!lastReply.sticker;
     let isRichAttach = !!getAttachRich(lastReply);
     let isPurchaseAttach = getAttachPurchase(lastReply);
 
     return isForward && (isImage || isSticker)
-        || !isForward && !message.text && (isRichAttach || isSticker)
+        || !isForward && !message.text && (isRichAttach && !isMessageImage || isSticker)
         || (isPurchaseAttach && isForward);
 };
 

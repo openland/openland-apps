@@ -263,6 +263,7 @@ export class ConversationEngine implements MessageSendHandler {
     role?: Types.RoomMemberRole | null;
     canEdit?: boolean;
     canPin?: boolean;
+    pinId: string | null;
     canSendMessage?: boolean;
     isChannel?: boolean;
     isPrivate?: boolean;
@@ -272,7 +273,7 @@ export class ConversationEngine implements MessageSendHandler {
     constructor(engine: MessengerEngine, conversationId: string, onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void) {
         this.engine = engine;
         this.conversationId = conversationId;
-
+        this.pinId = null;
         this.state = new ConversationState(true, [], [], undefined, false, false, false, false);
         this.dataSource = new DataSource(() => {
             this.load('backward');
@@ -340,9 +341,8 @@ export class ConversationEngine implements MessageSendHandler {
         }
         let messages = [...(initialChat).messages];
         messages.reverse();
-
         this.messages = messages;
-
+        this.pinId = (initialChat.room && initialChat.room.pinnedMessage) ? initialChat.room.pinnedMessage.id : null;
         this.role = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.role || null;
         this.badge = initialChat.room && initialChat.room.myBadge || undefined;
         this.canEdit = ((initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.canEdit) || AppConfig.isSuperAdmin()) || false;
@@ -928,6 +928,8 @@ export class ConversationEngine implements MessageSendHandler {
             for (let l of this.listeners) {
                 l.onChatLostAccess();
             }
+        } else if (event.__typename === 'ChatUpdated') {
+            this.pinId = (event.chat && event.chat.pinnedMessage) ? event.chat.pinnedMessage.id : null;
         } else {
             log.warn('Received unknown message');
         }

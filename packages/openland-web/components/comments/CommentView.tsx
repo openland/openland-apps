@@ -10,7 +10,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useRole } from 'openland-x-permissions/XWithRole';
-import { CommentEntryFragment_comment, StickerFragment } from 'openland-api/spacex.types';
+import { CommentEntryFragment_comment, StickerFragment, RoomMemberRole } from 'openland-api/spacex.types';
 import { CommentEditInput } from './CommentEditInput';
 import { useClient } from 'openland-api/useClient';
 import { findSpans } from 'openland-y-utils/findSpans';
@@ -48,6 +48,7 @@ interface CommentViewProps {
     highlighted: boolean;
     groupId?: string;
     generation?: number;
+    role: RoomMemberRole | undefined;
     onReplyClick: (id: string) => void;
     onDeleteClick: (id: string) => void;
     onReactionClick: (comment: CommentEntryFragment_comment) => void;
@@ -75,6 +76,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
         onSentAttach,
         onStickerSent,
         generation,
+        role,
     } = props;
     const { id, sender, message, spans, fallback, date } = comment;
     const [maxCommentDepth, setMaxCommentDepth] = React.useState(4);
@@ -130,7 +132,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
     }, []);
 
     const canEdit = sender.id === messenger.user.id && message && message.length;
-    const canDelete = sender.id === messenger.user.id || useRole('super-admin');
+    const canDelete = sender.id === messenger.user.id || role === RoomMemberRole.ADMIN || role === RoomMemberRole.OWNER || useRole('super-admin');
     const attachments = comment.__typename === 'GeneralMessage' ? comment.attachments : undefined;
     const reactionCounters =
         comment.__typename === 'GeneralMessage' || comment.__typename === 'StickerMessage'

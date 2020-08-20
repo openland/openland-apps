@@ -149,7 +149,10 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
     };
 
     React.useImperativeHandle<any, { reset: () => void }>(ref, () => ({
-        reset: () => handleChange(''),
+        reset: () => {
+            handleChange('');
+            setFocused(false);
+        },
         focus: () => inputRef.current?.focus(),
         blur: () => inputRef.current?.blur(),
     }));

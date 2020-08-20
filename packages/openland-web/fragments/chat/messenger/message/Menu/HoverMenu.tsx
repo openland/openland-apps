@@ -71,7 +71,7 @@ export const HoverMenu = React.memo((props: HoverMenuProps) => {
     messageRef.current = message;
     const buildMessageMenu = useBuildMessageMenu(props.engine);
     const [menuVisible, menuShow] = usePopper(
-        { placement: menuPlacement, hideOnClick: true, updatedDeps: buildMessageMenu },
+        { placement: menuPlacement, hideOnClick: true },
         ctx => buildMessageMenu(ctx, messageRef.current),
     );
     const handleCommentClick = React.useCallback(

@@ -8,6 +8,19 @@ query Comments($peerId: ID!) {
             state
         }
         count
+        peerRoot {
+            ...on CommentPeerRootMessage {
+                chat {
+                    ...on SharedRoom {
+                        id
+                        role
+                    }
+                    ...on PrivateRoom {
+                        id
+                    }
+                }
+            }
+        }
         comments {
             ...CommentEntryFragment
         }

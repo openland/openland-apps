@@ -18,6 +18,7 @@ const quillInputStyle = css`
     }
 
     .ql-editor {
+        transform: translate3d(0, 0, 0);
         padding: 8px 16px;
         padding-right: 32px;
         font-size: 15px;
@@ -124,20 +125,6 @@ export const URickInput = React.memo(
                     }
                 }),
             );
-        }
-
-        function convertInitialContent(content: URickTextValue) {
-            let res = content.map(c => {
-                if (typeof c === 'string') {
-                    // TODO: extract emoji
-                    return { insert: c };
-                } else if (c.__typename === 'User' || c.__typename === 'Organization' || c.__typename === 'SharedRoom' || c.__typename === 'AllMention') {
-                    return { insert: { mention: c } };
-                } else {
-                    return { insert: '' };
-                }
-            });
-            return new QuillDelta(res);
         }
 
         function convertQuillContent(content: QuillType.Delta) {
@@ -249,6 +236,7 @@ export const URickInput = React.memo(
         );
 
         React.useLayoutEffect(() => {
+            let timer: any;
             let q = new Quill(containerRef.current!, {
                 formats: ['mention', 'emoji'],
                 scrollingContainer: '.scroll-container',
@@ -256,17 +244,17 @@ export const URickInput = React.memo(
             });
             const hasInitialContent = props.initialContent && (props.initialContent.length >= 1 && props.initialContent[0] !== '\n');
             if (hasInitialContent) {
-                q.setContents(convertInitialContent(props.initialContent!));
-            }
-            // fix safari cursor position bug
-            if (!hasInitialContent) {
-                q.setContents(new QuillDelta([{ insert: ' ' }]));
+                q.setContents(convertInputValue(props.initialContent!));
             }
             if (props.autofocus) {
                 if (hasInitialContent) {
-                    q.setSelection({ index: q.getText().length - 1, length: 0 });
+                    timer = setTimeout(() => {
+                        q.setSelection({ index: q.getText().length - 1, length: 0 });
+                    }, 1);
                 } else {
-                    q.focus();
+                    timer = setTimeout(() => {
+                        q.focus();
+                    }, 1);
                 }
             }
 
@@ -351,6 +339,8 @@ export const URickInput = React.memo(
             });
 
             editor.current = q;
+
+            return () => clearTimeout(timer);
         }, []);
 
         const onEmojiPicked = React.useCallback((src: string) => {

@@ -300,7 +300,10 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const imgRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
 
-    const [forwardToast, setForwardToast] = React.useState(false);
+    const [forwardToast, setForwardToast] = React.useState<{ title: string; show: boolean }>({
+        title: 'Forwarded',
+        show: false,
+    });
     const [viewerState, setViewerState] = React.useState<ImageViewerCb | null>(null);
     const [loaded, setLoaded] = React.useState(false);
     const [cursor, setCursor] = React.useState(props.mId);
@@ -349,7 +352,11 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const forwardCallback = React.useCallback(() => {
         showChatPicker((id: string) => {
             messenger.sender.shareFile(id, viewerState ? viewerState.current.fileId : props.fileId);
-            setForwardToast(true);
+            if (messenger.user.id === id) {
+                setForwardToast({ title: 'Added to saved messages', show: true });
+            } else {
+                setForwardToast({ title: 'Forwarded', show: true });
+            }
         });
     }, [viewerState]);
 
@@ -410,11 +417,11 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     return (
         <div className={modalImgContainer} onMouseMove={mouseMove} onClick={props.hide}>
             <UToast
-                isVisible={forwardToast}
+                isVisible={forwardToast.show}
                 type="success"
-                text="Success"
+                text={forwardToast.title}
                 className={forwardToastClassName}
-                closeCb={() => setForwardToast(false)}
+                closeCb={() => setForwardToast({ title: 'Forwarded', show: false })}
             />
             <div
                 className={cx(modalToolbarContainer, fadeout && fadeoutStyle)}

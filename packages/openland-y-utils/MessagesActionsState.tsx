@@ -210,7 +210,6 @@ class MessagesActionsState {
         }
         let conv = this.engine?.getActiveConversation(chatId);
         let ds = conv?.dataSource;
-        let userId = conv?.user?.id;
         if (!ds) {
             return;
         }
@@ -226,9 +225,7 @@ class MessagesActionsState {
                 let itemStateEntry = Object.entries(state).find(([key, value]) => value.messages.some(message => message.key === item.key));
                 if (itemStateEntry) {
                     const [id, itemState] = itemStateEntry;
-                    console.log('@@ removed before', itemState.messages);
                     let messages = itemState.messages.filter(x => item.key !== x.key);
-                    console.log('@@ removed after', chatId, userId, messages);
                     if (messages.length > 0) {
                         this.dispatch({ type: 'update_messages', conversationId: id, messages });
                     } else {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useClient } from 'openland-api/useClient';
 import { CommentView } from './CommentView';
-import { StickerFragment, CommentWatch, CommentEntryFragment, MessageReactionType, CommentEntryFragment_comment } from 'openland-api/spacex.types';
+import { StickerFragment, CommentWatch, CommentEntryFragment, MessageReactionType, CommentEntryFragment_comment, RoomMemberRole } from 'openland-api/spacex.types';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
@@ -28,7 +28,7 @@ interface CommentsListProps {
     onStickerSent: (sticker: StickerFragment) => void;
 }
 
-const CommentsListInner = React.memo((props: CommentsListProps & { comments: CommentEntryFragment[] }) => {
+const CommentsListInner = React.memo((props: CommentsListProps & { comments: CommentEntryFragment[], role: RoomMemberRole | undefined }) => {
     const client = useClient();
     const { groupId, comments, highlightId, onSent, onSentAttach, onReply, onStickerSent } = props;
     const commnetsUpdatedCounter = React.useRef(0);
@@ -87,6 +87,7 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Com
                     entryId={item.id}
                     comment={item.comment}
                     deleted={item.deleted}
+                    role={props.role}
                     depth={getDepthOfComment(item, commentsMap)}
                     onReplyClick={onReply}
                     onDeleteClick={handleDeleteClick}
@@ -134,8 +135,11 @@ export const CommentsList = React.memo((props: CommentsListProps) => {
             }
         });
     }, [peerId]);
+    const role = data.peerRoot.__typename === 'CommentPeerRootMessage' && data.peerRoot.chat.__typename === 'SharedRoom'
+        ? data.peerRoot.chat.role
+        : undefined;
 
     return (
-        <CommentsListInner {...props} comments={data.comments} />
+        <CommentsListInner {...props} comments={data.comments} role={role} />
     );
 });

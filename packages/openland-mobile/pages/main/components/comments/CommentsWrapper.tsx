@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform, ScrollView, Keyboard, TextInput } from 'react-native';
 import { MessageInputBar } from '../MessageInputBar';
-import { CommentEntryFragment_comment, FileAttachmentInput, Message_message_GeneralMessage_source_MessageSourceChat_chat, CommentEntryFragment, CommentWatch, CommentUpdateFragment } from 'openland-api/spacex.types';
+import { CommentEntryFragment_comment, FileAttachmentInput, Message_message_GeneralMessage_source_MessageSourceChat_chat, CommentEntryFragment, CommentWatch, CommentUpdateFragment, RoomMemberRole } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { EmojiSuggestions, EmojiSuggestionsRow } from '../suggestions/EmojiSuggestions';
@@ -33,7 +33,7 @@ interface CommentsWrapperProps {
     highlightId?: string;
 }
 
-const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentEntryFragment[] }) => {
+const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentEntryFragment[], role: RoomMemberRole | undefined }) => {
     const inputRef = React.createRef<TextInput>();
     const scrollRef = React.createRef<ScrollView>();
     const area = React.useContext(ASSafeAreaContext);
@@ -257,6 +257,7 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
             {peerView}
 
             <CommentsList
+                role={props.role}
                 comments={comments}
                 onReplyPress={handleReplyPress}
                 onEditPress={handleEditPress}
@@ -305,9 +306,12 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
     const client = useClient();
     const { peerId } = props;
 
-    const initialComments = client.useComments({ peerId }, { fetchPolicy: 'network-only' }).comments.comments;
+    const { comments: initialComments, peerRoot } = client.useComments({ peerId }, { fetchPolicy: 'network-only' }).comments;
     const commentsMap: React.MutableRefObject<Map<string, CommentEntryFragment>> = React.useRef(new Map(initialComments.map(c => [c.id, c])));
     const [comments, setComments] = React.useState(initialComments);
+    const role = peerRoot.__typename === 'CommentPeerRootMessage' && peerRoot.chat.__typename === 'SharedRoom'
+        ? peerRoot.chat.role
+        : undefined;
 
     const deleteCommentIfNeeded = (comment: CommentEntryFragment) => {
         if (comment.deleted && comment.childComments.length === 0) {
@@ -368,5 +372,5 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
         });
     }, [peerId]);
 
-    return <CommentsWrapperInner {...props} comments={comments} />;
+    return <CommentsWrapperInner {...props} comments={comments} role={role} />;
 });

@@ -66,7 +66,7 @@ const size28 = css`
 `;
 
 const size32 = css`
-    font-size: 13px;
+    font-size: 14px;
     line-height: 18px;
     height: 32px;
     padding-left: 16px;

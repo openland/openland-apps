@@ -40,9 +40,11 @@ export class SSearchControlerComponent extends React.PureComponent<SSearchContro
         this.setState({ search: true, searchMounted: true, query: '' });
     }
 
-    handleSearchStop = () => {
+    handleSearchStop = (fromUserCancel: boolean = false) => {
         if (this.props.onSearchClose) {
-            this.props.onSearchClose();
+            if (fromUserCancel) {
+                this.props.onSearchClose();
+            }
         } else {
             this.setState({ search: false, searchMounted: false });
         }
