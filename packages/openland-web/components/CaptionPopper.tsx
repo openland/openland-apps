@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
-import { TextCaption } from '../utils/TextStyles';
+import { TextSubhead } from '../utils/TextStyles';
 import { UPopperController } from './unicorn/UPopper';
 
 const captionWrapper = css`
@@ -73,7 +73,7 @@ export const useCaptionPopper = (opts: CaptionPopperConfig) => {
                     width: width,
                 }}
             >
-                <div className={cx(captionContent, TextCaption)}>
+                <div className={cx(captionContent, TextSubhead)}>
                     {getText ? getText(ctx) : text}
                 </div>
             </div>
