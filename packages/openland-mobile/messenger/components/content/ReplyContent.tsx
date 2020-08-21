@@ -110,7 +110,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                             if (sticker) {
                                 miniContent = <StickerContent sticker={sticker} message={m} padded={needPaddedText} width={40} height={40} />;
                                 miniContentSubtitle = repliedMessage.fallback;
-                            } else if (attachFile && attachFile.fileMetadata.isImage) {
+                            } else if (attachFile && attachFile.fileMetadata.isImage && !isForward) {
                                 miniContent = (
                                     <AsyncReplyMessageMediaView
                                         attach={attachFile}
@@ -190,13 +190,22 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                                     color={miniContentColor}
                                                     marginTop={2}
                                                     numberOfLines={1}
+                                                    flexGrow={1}
                                                 >
                                                     {miniContentSubtitle}
                                                 </ASText>
                                             )}
                                         </ASFlex>
                                     </ASFlex>
-
+                                    {attachFile && attachFile.fileMetadata.isImage && isForward && (
+                                        <AsyncReplyMessageMediaView
+                                            attach={attachFile}
+                                            onPress={this.props.onMediaPress}
+                                            message={repliedMessage}
+                                            theme={theme}
+                                            isForward={true}
+                                        />
+                                    )}
                                     {!miniContent && repliedMessage.textSpans.length > 0 && (
                                         <ASFlex key={'reply-spans-' + m.id} marginTop={2} flexDirection="column" alignItems="stretch" marginLeft={9} marginRight={paddedMargin ? 65 : undefined} onPress={handlePress}>
                                             <RenderSpans

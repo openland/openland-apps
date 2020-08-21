@@ -16,6 +16,7 @@ export interface AsyncMessageMediaViewProps {
     message: DataSourceMessageItem;
     onPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
+    isForward?: boolean;
 }
 
 export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessageMediaViewProps, { downloadState?: DownloadState }> {
@@ -50,34 +51,37 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
     }
 
     render() {
-        const { theme, attach, message } = this.props;
-        let layout = { width: 40, height: 40 };
-        const resolved = Image.resolveAssetSource(require('assets/bg-shared-link-border.png'));
-        const capInsets = { top: 12, right: 12, bottom: 12, left: 12 };
+        const { theme, attach, message, isForward } = this.props;
+        let layout = isForward ? layoutMedia(this.props.attach!!.fileMetadata.imageWidth || 0, this.props.attach!!.fileMetadata.imageHeight || 0, 160, 160) : { width: 40, height: 40 };
         let sourceUri = (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined;
         let bgColor = message.isOut ? theme.outgoingForegroundTertiary : theme.incomingForegroundTertiary;
+        let sizes = { width: layout.width, height: layout.height };
+        const resolved = Image.resolveAssetSource(require('assets/bg-shared-link-border.png'));
+        const capInsets = { top: 12, right: 12, bottom: 12, left: 12 };
+        const bgPatch = !isForward ? {
+            backgroundPatch: {
+                source: resolved.uri,
+                scale: resolved.scale,
+                ...capInsets
+            },
+            backgroundPatchTintColor: theme.borderLight,
+        } : {};
         return (
             <ASFlex
                 borderRadius={8}
-                width={layout.width}
-                height={layout.height}
                 alignItems="center"
-                justifyContent="center"
-                backgroundPatch={{
-                    source: resolved.uri,
-                    scale: resolved.scale,
-                    ...capInsets
-                }}
-                backgroundPatchTintColor={theme.borderLight}
+                marginTop={isForward ? 5 : undefined}
+                marginLeft={isForward ? 9 : undefined}
+                {...sizes}
+                {...bgPatch}
             >
                 <ASImage
                     onPress={(e) => this.handlePress(e, 8)}
                     source={{ uri: sourceUri }}
                     borderRadius={8}
                     backgroundColor={bgColor}
-                    width={layout.width}
-                    height={layout.height}
                     isGif={attach!!.fileMetadata.imageFormat === 'GIF'}
+                    {...sizes}
                 />
             </ASFlex>
         );
