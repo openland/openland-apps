@@ -446,16 +446,22 @@ export class MobileMessenger {
             }, false, require('assets/ic-copy-24.png'));
         }
 
-        if (conversation.canPin) {
-            builder.action('Pin', async () => {
+        if (conversation.canPin && message.id) {
+            const toUnpin = conversation.pinId && conversation.pinId === message.id;
+
+            builder.action(toUnpin ? 'Unpin' : 'Pin', async () => {
                 const loader = Toast.loader();
                 loader.show();
                 try {
-                    await this.engine.client.mutatePinMessage({ chatId: message.chatId, messageId: message.id! });
+                    if (toUnpin) {
+                        await this.engine.client.mutateUnpinMessage({ chatId: message.chatId });
+                    } else {
+                        await this.engine.client.mutatePinMessage({ chatId: message.chatId, messageId: message.id! });
+                    }
                 } finally {
                     loader.hide();
                 }
-            }, false, require('assets/ic-pin-24.png'));
+            }, false, toUnpin ? require('assets/ic-pin-off-24.png') : require('assets/ic-pin-24.png'));
         }
 
         if (message.text) {
