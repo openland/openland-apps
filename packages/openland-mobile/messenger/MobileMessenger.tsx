@@ -41,6 +41,7 @@ import { useMessagesActionsForward } from 'openland-y-utils/MessagesActionsState
 import LinearGradient from 'react-native-linear-gradient';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
+import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 
 const SortedReactions = [
     MessageReactionType.LIKE,
@@ -97,7 +98,7 @@ export class MobileMessenger {
     private prevDialogsCb: (index: number) => void = () => {/* noop */ };
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>>();
     private readonly sharedMedias = new Map<string, Map<string, ASDataView<SharedMediaDataSourceItem>>>();
-    private sideRouter: SRouting | null = null;
+    private customHistory: SRouting | null = null;
 
     constructor(engine: MessengerEngine, history: SRouting) {
         this.engine = engine;
@@ -107,6 +108,15 @@ export class MobileMessenger {
             engine.notificationCenter.dataSource,
             item => <NotificationCenterItemAsync item={item} />
         );
+    }
+
+    // return right-side router on tablets if exists, otherwise default router
+    private get routerSuitable(): NavigationManager {
+        return this.customHistory?.navigationManager || this.history.navigationManager;
+    }
+
+    setRouterSuitable = (r: SRouting | null) => {
+        this.customHistory = r;
     }
 
     getDialogs = (setTab: (index: number) => void) => {
@@ -122,7 +132,7 @@ export class MobileMessenger {
             };
             this.dialogs = new ASDataView(
                 this.engine.dialogList.dataSource,
-                item => <DialogItemViewAsync item={item} onPress={this.handleChatClick} onLongPress={this.handleDialogLongPress} onDiscoverPress={onDiscoverPress} showDiscover={showDiscover} />
+                item => <DialogItemViewAsync item={item} onPress={this.handleDialogPress} onLongPress={this.handleDialogLongPress} onDiscoverPress={onDiscoverPress} showDiscover={showDiscover} />
             );
         }
         this.prevDialogsCb = setTab;
@@ -135,9 +145,9 @@ export class MobileMessenger {
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
                     if (item.isService) {
-                        return <AsyncServiceMessage message={item} onUserPress={this.handleUserClick} onGroupPress={this.handleChatClick} onOrganizationPress={this.handleOrganizationClick} onHashtagPress={this.handleHashtagClick} />;
+                        return <AsyncServiceMessage message={item} onUserPress={this.handleUserPress} onGroupPress={this.handleGroupPress} onOrganizationPress={this.handleOrganizationPress} onHashtagPress={this.handleHashtagPress} />;
                     } else {
-                        return <AsyncMessageView conversationId={id} message={item} engine={eng} onUserPress={this.handleUserClick} onGroupPress={this.handleChatClick} onOrganizationPress={this.handleOrganizationClick} onHashtagPress={this.handleHashtagClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsClick} onReplyPress={this.handleReplyClick} onReactionsPress={this.handleReactionsClick} />;
+                        return <AsyncMessageView conversationId={id} message={item} engine={eng} onUserPress={this.handleUserPress} onGroupPress={this.handleGroupPress} onOrganizationPress={this.handleOrganizationPress} onHashtagPress={this.handleHashtagPress} onDocumentPress={this.handleDocumentPress} onMediaPress={this.handleMediaPress} onMessageLongPress={this.handleMessageLongPress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsPress} onReplyPress={this.handleReplyPress} onReactionsPress={this.handleReactionsPress} />;
                     }
                 } else if (item.type === 'date') {
                     return <AsyncDateSeparator year={item.year} month={item.month} date={item.date} />;
@@ -147,10 +157,6 @@ export class MobileMessenger {
             }));
         }
         return this.conversations.get(id)!!;
-    }
-
-    setSideRouter = (r: SRouting | null) => {
-        this.sideRouter = r;
     }
 
     handleSharedLongPress = (forward: (messages: DataSourceMessageItem[]) => void) =>
@@ -208,7 +214,7 @@ export class MobileMessenger {
         this.sharedMedias.delete(id);
     }
 
-    handleMediaClick = (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => {
+    handleMediaPress = (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => {
         showPictureModal({
             title: senderName,
             subtitle: date ? formatDateTime(date) : undefined,
@@ -235,15 +241,15 @@ export class MobileMessenger {
         });
     }
 
-    handleCommentsClick = (message: DataSourceMessageItem) => {
-        this.getRouter().navigationManager.push('Message', { messageId: message.id });
+    handleCommentsPress = (messageId: string) => {
+        this.routerSuitable.push('Message', { messageId });
     }
 
-    handleReplyClick = (quotedMessage: DataSourceMessageItem) => {
-        this.history.navigationManager.push('Message', { messageId: quotedMessage.id });
+    handleReplyPress = (quotedMessage: DataSourceMessageItem) => {
+        this.routerSuitable.push('Message', { messageId: quotedMessage.id });
     }
 
-    handleDocumentClick = (document: DataSourceMessageItem) => {
+    handleDocumentPress = (document: DataSourceMessageItem) => {
         let attach = document.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
         // { config: { uuid, name, size }
         // this.history.navigationManager.push('FilePreview', { config: { uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size } });
@@ -251,17 +257,24 @@ export class MobileMessenger {
         showFileModal({ uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size });
     }
 
-    handleChatClick = (id: string) => {
+    handleDialogPress = (id: string) => {
         this.history.navigationManager.push('Conversation', { id });
     }
-    handleUserClick = (id: string) => {
-        this.history.navigationManager.push('ProfileUser', { id });
+
+    handleGroupPress = (id: string) => {
+        this.routerSuitable.push('Conversation', { id });
     }
-    handleOrganizationClick = (id: string) => {
-        this.history.navigationManager.push('ProfileOrganization', { id });
+
+    handleUserPress = (id: string) => {
+        this.routerSuitable.push('ProfileUser', { id });
     }
-    handleConversationClick = (id: string) => {
-        this.history.navigationManager.push('Conversation', { id });
+
+    handleOrganizationPress = (id: string) => {
+        this.routerSuitable.push('ProfileOrganization', { id });
+    }
+
+    handleHashtagPress = (hashtag?: string) => {
+        this.routerSuitable.push('HomeDialogs', { searchValue: hashtag, title: hashtag });
     }
 
     handleReactionSetUnset = async (message: DataSourceMessageItem, reaction: MessageReactionType, doubleTap?: boolean) => {
@@ -315,11 +328,8 @@ export class MobileMessenger {
         }
     }
 
-    handleHashtagClick = (hashtag?: string) => {
-        this.history.navigationManager.push('HomeDialogs', { searchValue: hashtag, title: hashtag });
-    }
-
     private handleDialogLongPress = (id: string, item: DialogDataSourceItem, theme: ThemeGlobal) => {
+        // do not show menu for Saved messages
         if (item.flexibleId === this.engine.user.id) {
             return;
         }
@@ -427,7 +437,7 @@ export class MobileMessenger {
         }, false, require('assets/ic-forward-24.png'));
 
         builder.action('Comment', () => {
-            this.getRouter().navigationManager.push('Message', { messageId: message.id });
+            this.routerSuitable.push('Message', { messageId: message.id });
         }, false, require('assets/ic-message-24.png'));
 
         if (message.text) {
@@ -436,16 +446,22 @@ export class MobileMessenger {
             }, false, require('assets/ic-copy-24.png'));
         }
 
-        if (conversation.canPin) {
-            builder.action('Pin', async () => {
+        if (conversation.canPin && message.id) {
+            const toUnpin = conversation.pinId && conversation.pinId === message.id;
+
+            builder.action(toUnpin ? 'Unpin' : 'Pin', async () => {
                 const loader = Toast.loader();
                 loader.show();
                 try {
-                    await this.engine.client.mutatePinMessage({ chatId: message.chatId, messageId: message.id! });
+                    if (toUnpin) {
+                        await this.engine.client.mutateUnpinMessage({ chatId: message.chatId });
+                    } else {
+                        await this.engine.client.mutatePinMessage({ chatId: message.chatId, messageId: message.id! });
+                    }
                 } finally {
                     loader.hide();
                 }
-            }, false, require('assets/ic-pin-24.png'));
+            }, false, toUnpin ? require('assets/ic-pin-off-24.png') : require('assets/ic-pin-24.png'));
         }
 
         if (message.text) {
@@ -476,17 +492,13 @@ export class MobileMessenger {
         builder.show(true);
     }
 
-    private getRouter = () => {
-        return this.sideRouter || this.history;
-    }
-
     private handleMessageDoublePress = (message: DataSourceMessageItem) => {
         ReactNativeHapticFeedback.trigger('impactLight', { ignoreAndroidSystemSettings: false });
 
         this.handleReactionSetUnset(message, MessageReactionType.LIKE, true);
     }
 
-    private handleReactionsClick = (message: DataSourceMessageItem) => {
+    private handleReactionsPress = (message: DataSourceMessageItem) => {
         if (message.reactionCounters.length > 0 && message.id) {
             showReactionsList(message.id);
         }

@@ -118,9 +118,11 @@ class AsyncDataView(val context: ReactContext, val key: String) {
     }
 
     fun handleScrollToTopFunc() {
-        val s = AsyncDataViewState(this.state.items, this.state.competed, this.state.competedForward, this.state.items[0].key, true);
-        this.state = s
-        notifyWatchers(s)
+        if (!this.state.items.isEmpty()) {
+            val s = AsyncDataViewState(this.state.items, this.state.competed, this.state.competedForward, this.state.items[0].key, true);
+            this.state = s
+            notifyWatchers(s)
+        }
     }
 
     fun handleLoadMore() {

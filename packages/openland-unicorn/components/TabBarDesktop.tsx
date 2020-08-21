@@ -39,8 +39,8 @@ export const counterStyle = css`
     text-align: center;
     font-weight: 600;
     border-radius: 20px;
-    padding-left: 2px;
-    padding-right: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
 `;
 
 const counterDozenStyle = css`
@@ -124,7 +124,7 @@ export const TabBarDesktop = React.memo((props: TabBarDesktopProps) => {
                 onClick={() => {
                     // set the active tab to /mail
 
-                    const i = isSuperAdmin ? 2 : 1;
+                    const i = isSuperAdmin ? 3 : 2;
 
                     if (props.router.stacks[i]) {
                         props.router.stacks[i].reset();

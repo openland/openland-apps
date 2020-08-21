@@ -18,6 +18,8 @@ import { GlobalSearchEntryKind } from 'openland-api/spacex.types';
 import { SetTabContext } from './Home';
 
 const DialogsComponent = React.memo((props: PageProps) => {
+    const messenger = getMessenger();
+
     const handlePress = React.useCallback((id: string, title: string) => {
         if (props.router.params.share) {
             Alert.builder().title(`Share with ${title}?`).button('Cancel', 'cancel').button('Share', 'default', async () => {
@@ -30,32 +32,32 @@ const DialogsComponent = React.memo((props: PageProps) => {
 
                 if (props.router.params.share.strings) {
                     for (let s of props.router.params.share.strings) {
-                        getMessenger().engine.getConversation(id).sendMessage(s, [], undefined);
+                        messenger.engine.getConversation(id).sendMessage(s, [], undefined);
                     }
                 }
-                getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
+                messenger.history.navigationManager.pushAndRemove('Conversation', { id });
 
             }).show();
         } else if (props.router.params.pressCallback) {
             props.router.params.pressCallback(id, title);
         } else {
-            getMessenger().history.navigationManager.push('Conversation', { id });
+            messenger.history.navigationManager.push('Conversation', { id });
         }
     }, [props.router.params.share, props.router.params.pressCallback]);
 
     const handleMessagePress = React.useCallback((id: string) => {
-        getMessenger().history.navigationManager.push('Message', { messageId: id });
+        messenger.handleCommentsPress(id);
     }, []);
 
     const setTab = React.useContext(SetTabContext);
 
     const dialogs = (props.router.params.share || props.router.params.pressCallback)
-        ? new ASDataView(getMessenger().engine.dialogList.dataSource, (item) => {
+        ? new ASDataView(messenger.engine.dialogList.dataSource, (item) => {
             return (
                 <DialogItemViewAsync item={item} onPress={(id, i) => handlePress(id, (i as DialogDataSourceItem).title)} showDiscover={() => false} />
             );
         }
-        ) : getMessenger().getDialogs(setTab);
+        ) : messenger.getDialogs(setTab);
 
     const globalSearchValue = props.router.params.searchValue;
 
