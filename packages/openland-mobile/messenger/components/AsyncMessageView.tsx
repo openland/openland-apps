@@ -43,7 +43,7 @@ export interface AsyncMessageViewProps {
     onHashtagPress: (d?: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
-    onCommentsPress: (message: DataSourceMessageItem) => void;
+    onCommentsPress: (messageId: string) => void;
     onReplyPress: (quotedMessage: DataSourceMessageItem) => void;
     onReactionsPress: (message: DataSourceMessageItem) => void;
 }
@@ -133,7 +133,11 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
         }
         onMessageLongPress(message, { action: getState().action, reply, edit, toggleSelect, forward });
     };
-    const handleCommentPress = React.useCallback(() => onCommentsPress(message), [message]);
+    const handleCommentPress = React.useCallback(() => {
+        if (message.id) {
+            onCommentsPress(message.id);
+        }
+    }, [message]);
     const handleMediaPress = React.useCallback((fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => {
         if (isSelecting) {
             toggleSelect(message);

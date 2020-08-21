@@ -40,7 +40,7 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
     }, []);
 
     const handleHashtagPress = React.useCallback((d?: string) => {
-        getMessenger().handleHashtagClick(d);
+        getMessenger().handleHashtagPress(d);
     }, []);
 
     const handleDocumentPress = React.useCallback((document: FullMessage_GeneralMessage_attachments_MessageAttachmentFile) => {

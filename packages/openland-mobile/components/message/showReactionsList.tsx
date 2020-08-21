@@ -48,13 +48,13 @@ const ReactionsList = (props: ReactionsListProps) => {
 
     const data: DataType = isComment
         ? client.useCommentFullReactions(
-              { id: mId },
-              { fetchPolicy: 'network-only', suspense: false },
-          )
+            { id: mId },
+            { fetchPolicy: 'network-only', suspense: false },
+        )
         : client.useMessageFullReactions(
-              { id: mId },
-              { fetchPolicy: 'network-only', suspense: false },
-          );
+            { id: mId },
+            { fetchPolicy: 'network-only', suspense: false },
+        );
 
     React.useLayoutEffect(() => {
         if (data) {
@@ -83,10 +83,10 @@ const ReactionsList = (props: ReactionsListProps) => {
     let reactions: MessageUsersReactions[] = generalMessage
         ? generalMessage.reactions
         : stickerMessage
-        ? stickerMessage.reactions
-        : commentMessage
-        ? commentMessage.comment.reactions
-        : [];
+            ? stickerMessage.reactions
+            : commentMessage
+                ? commentMessage.comment.reactions
+                : [];
 
     let reactionList: { [key: string]: MessageUsersReactions_user[] } = {};
 
@@ -142,7 +142,7 @@ const ReactionsList = (props: ReactionsListProps) => {
                                 user={u}
                                 onPress={(id) => {
                                     ctx.hide();
-                                    getMessenger().handleUserClick(id);
+                                    getMessenger().handleUserPress(id);
                                 }}
                             />
                         ))}

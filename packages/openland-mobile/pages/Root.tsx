@@ -38,7 +38,7 @@ class RootContainer extends React.PureComponent<RootProps & { theme: ThemeGlobal
 
     componentWillReceiveProps(nextProps: RootProps & { theme: ThemeGlobal }) {
         if (this.isIPad && nextProps.width <= 375 * 2 && this.props.width > 375 * 2) {
-            getMessenger().setSideRouter(null);
+            getMessenger().setRouterSuitable(null);
             this.setState({ masterKey: undefined, masterRouting: undefined });
         }
     }
@@ -46,7 +46,7 @@ class RootContainer extends React.PureComponent<RootProps & { theme: ThemeGlobal
     private handlePush = (route: string, params?: any) => {
         if (this.isIPad && this.props.width > 375 * 2) {
             let man = new SRouting(new NavigationManager(this.props.routing.navigationManager.routes, route, params));
-            getMessenger().setSideRouter(man);
+            getMessenger().setRouterSuitable(man);
             this.setState({ masterRouting: man, masterKey: randomKey() });
             return true;
         } else {

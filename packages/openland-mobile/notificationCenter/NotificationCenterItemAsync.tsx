@@ -39,13 +39,13 @@ const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterI
     const { topContent, bottomContent } = extractContent({
         theme,
         message: item,
-        onUserPress: messenger.handleUserClick,
-        onGroupPress: messenger.handleChatClick,
-        onOrganizationPress: messenger.handleOrganizationClick,
-        onHashtagPress: messenger.handleHashtagClick,
-        onMediaPress: messenger.handleMediaClick,
+        onUserPress: messenger.handleUserPress,
+        onGroupPress: messenger.handleGroupPress,
+        onOrganizationPress: messenger.handleOrganizationPress,
+        onHashtagPress: messenger.handleHashtagPress,
+        onMediaPress: messenger.handleMediaPress,
         onLongPress: handleLongPress,
-        onDocumentPress: messenger.handleDocumentClick
+        onDocumentPress: messenger.handleDocumentPress
     }, maxWidth);
 
     const lineBackgroundPatch = Image.resolveAssetSource(require('assets/chat-link-line-my.png'));
@@ -64,7 +64,7 @@ const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterI
             flexDirection="column"
         >
             <ASFlex marginBottom={9}>
-                <ASFlex onPress={() => messenger.handleUserClick(item.sender.id)} alignItems="center">
+                <ASFlex onPress={() => messenger.handleUserPress(item.sender.id)} alignItems="center">
                     <AsyncAvatar
                         size="xx-small"
                         src={item.sender.photo}
@@ -86,7 +86,7 @@ const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterI
                 {sharedRoom && (
                     <>
                         <ASImage source={require('assets/ic-reply-comments-18.png')} marginTop={1} marginLeft={7} width={18} height={18} tintColor={theme.foregroundPrimary} />
-                        <ASFlex onPress={() => messenger.handleConversationClick(sharedRoom.id)} marginLeft={7}>
+                        <ASFlex onPress={() => messenger.handleGroupPress(sharedRoom.id)} marginLeft={7}>
                             <AsyncAvatar
                                 size="xx-small"
                                 src={sharedRoom.photo}
