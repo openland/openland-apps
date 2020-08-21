@@ -4,11 +4,11 @@ import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { MessageView } from './components/MessageView';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { CommentsWrapper } from 'openland-web/components/comments/CommentsWrapper';
+import { MessageHeader } from './components/MessageHeader';
+import { FullMessage } from 'openland-api/spacex.types';
 
-const MessageFragmentInner = React.memo((props: { messageId: string; commentId?: string }) => {
-    const { messageId, commentId } = props;
-    const client = useClient();
-    const message = client.useMessage({ messageId }, { fetchPolicy: 'cache-and-network' }).message;
+const MessageFragmentInner = React.memo((props: { messageId: string; commentId?: string, message: FullMessage | null }) => {
+    const { message, commentId } = props;
 
     if (!message || message.__typename === 'ServiceMessage') {
         return null;
@@ -16,7 +16,7 @@ const MessageFragmentInner = React.memo((props: { messageId: string; commentId?:
 
     return (
         <CommentsWrapper
-            peerId={messageId}
+            peerId={message.id}
             commentId={commentId}
             peerView={<MessageView message={message} />}
             groupId={
@@ -33,11 +33,13 @@ const MessageFragmentInner = React.memo((props: { messageId: string; commentId?:
 export const MessageFragment = React.memo(() => {
     const unicorn = useUnicorn();
     const { messageId, commentId } = unicorn.query;
+    const client = useClient();
+    const message = client.useMessage({ messageId }, { fetchPolicy: 'cache-and-network' }).message;
 
     return (
         <>
-            <UHeader title="Message" appearance="wide" />
-            <MessageFragmentInner messageId={messageId} commentId={commentId} />
+            <UHeader titleView={<MessageHeader message={message} />} appearance="wide" />
+            <MessageFragmentInner message={message} messageId={messageId} commentId={commentId} />
         </>
     );
 });

@@ -12,8 +12,11 @@ import { Span } from 'openland-y-utils/spans/Span';
 import { MessageReactions } from 'openland-web/fragments/chat/messenger/message/reactions/MessageReactions';
 import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { XViewRouterContext } from 'react-mental';
+import { ULink } from 'openland-web/components/unicorn/ULink';
+import { defaultHover } from 'openland-web/utils/Styles';
+import { TextBody, TextLabel1 } from 'openland-web/utils/TextStyles';
 
 const avatarWrapper = css`
     flex-shrink: 0;
@@ -38,6 +41,19 @@ const buttonsClass = css`
     margin-top: 8px;
     display: flex;
     flex-direction: row;
+`;
+
+const messageSourceClass = css`
+    color: var(--foregroundSecondary);
+    margin-top: 4px;
+`;
+
+const messageSourceEntityClass = css`
+    color: var(--foregroundSecondary);
+    &:hover {
+        color: var(--foregroundSecondary);
+        text-decoration: none;
+    }
 `;
 
 interface MessageViewProps {
@@ -91,6 +107,11 @@ export const MessageView = React.memo((props: MessageViewProps) => {
                     sticker={message.__typename === 'StickerMessage' ? message.sticker : undefined}
                     isOut={sender.id === messenger.user.id}
                 />
+                {message.source && message.source.__typename === 'MessageSourceChat' && message.source.chat.__typename === 'SharedRoom' && (
+                    <div className={cx(TextBody, messageSourceClass)}>
+                        Message from <ULink path={`/mail/${message.source.chat.id}`} className={cx(TextLabel1, messageSourceEntityClass, defaultHover)}>{message.source.chat.title}</ULink>
+                    </div>
+                )}
                 <div className={buttonsClass}>
                     <MessageReactions
                         message={{

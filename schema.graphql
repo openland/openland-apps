@@ -1181,11 +1181,6 @@ type IpLocation {
   location: GeoLocation
 }
 
-type IsAppInstalledResponse {
-  installed: Boolean!
-  installedAt: Date
-}
-
 type JoinedOrganizationMember {
   user: User!
   role: OrganizationMemberRole!
@@ -1894,11 +1889,6 @@ type Mutation {
   alphaOrganizationCreatePublicInvite(expirationDays: Int, organizationId: ID): Invite!
   alphaOrganizationRemoveMember(memberId: ID!, organizationId: ID!): String!
   alphaOrganizationDeletePublicInvite(organizationId: ID): String!
-  presenceReportOnline(timeout: Int!, platform: String, active: Boolean): String!
-  presenceReportOffline(platform: Platform): String!
-  alphaReportActive(timeout: Int!, platform: Platform): String!
-  alphaSetDesktopInstalled(at: Date!): Boolean!
-  alphaSetMobileInstalled(at: Date!): Boolean!
   profileCreate(input: ProfileInput!, inviteKey: String): Profile!
   profileUpdate(input: ProfileInput!, uid: ID, inviteKey: String): Profile!
 
@@ -1993,6 +1983,8 @@ type Mutation {
   deleteNotification(notificationId: ID!): Boolean!
   notificationCenterMarkSeqRead(toSeq: Int!): Boolean!
   debugCreateNotification(uid: ID!, text: String!): Boolean!
+  presenceReportOnline(timeout: Int!, platform: String, active: Boolean): String!
+  presenceReportOffline: String!
   updateOrganizationProfile(input: UpdateOrganizationProfileInput!, id: ID): OrganizationProfile!
   deleteOrganization(id: ID!): Boolean!
   createOrganization(input: CreateOrganizationInput!): Organization!
@@ -2242,15 +2234,10 @@ enum OauthScope {
 }
 
 type OnlineEvent {
-  userId: ID!
-  timeout: Int!
-  online: Boolean!
-  active: Boolean!
-  lastSeen: String!
+  user: User!
 
   """Deprecated"""
-  type: String!
-  user: User!
+  timeout: Int!
 }
 
 type Organization {
@@ -2453,12 +2440,6 @@ input PhonebookRecordInput {
 type PhotoChangeServiceMetadata {
   photo: String
   photoRef: ImageRef
-}
-
-enum Platform {
-  WEB
-  IOS
-  ANDROID
 }
 
 type PlatformNotificationSettings {
@@ -2798,8 +2779,6 @@ type Query {
   alphaOrganizationPublicInvite(organizationId: ID): Invite
   permissionGroups: [PermissionGroup!]!
   waitingPermissionRequests: [PermissionRequest!]!
-  isDesktopInstalled: IsAppInstalledResponse!
-  isMobileInstalled: IsAppInstalledResponse!
   myProfile: Profile
   superAccounts: [SuperAccount!]!
   superAccount(id: ID!, viaOrgId: Boolean): SuperAccount!
@@ -3333,9 +3312,6 @@ type Subscription {
   alphaConferenceMediaWatch(id: ID!, peerId: ID!): ConferenceMedia!
   permissionsUpdates: PermissionRequest!
   waitingPermissionRequestsUpdates: PermissionRequest!
-  alphaSubscribeChatOnline(conversations: [ID!]!): OnlineEvent!
-  alphaSubscribeOnline(users: [ID!]!): OnlineEvent!
-  chatOnlinesCount(chatId: ID!): ChatOnlineEvent!
   chatLocationUpdates(id: ID!): UserLocation!
   userEventBus(topic: String!): UserEventBusMessage!
   globalEventBus(topic: String!): UserEventBusMessage!
@@ -3348,6 +3324,8 @@ type Subscription {
   homeFeedUpdates(fromState: String): FeedUpdateContainer!
   shouldShareLocationUpdates: Boolean!
   notificationCenterUpdates(fromState: String): NotificationCenterUpdateContainer
+  alphaSubscribeOnline(users: [ID!]!): OnlineEvent!
+  chatOnlinesCount(chatId: ID!): ChatOnlineEvent!
   typings: TypingEvent!
 }
 

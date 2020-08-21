@@ -167,6 +167,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                 <MessageSenderContent
                     sender={sender}
                     date={parseInt(date, 10)}
+                    dateFormat='date-time'
                 />
                 {edit && (
                     <CommentEditInput

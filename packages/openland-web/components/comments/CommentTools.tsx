@@ -1,32 +1,32 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { UIconLabeled } from 'openland-web/components/unicorn/UIconLabeled';
 import { css, cx } from 'linaria';
-import LikeIcon from 'openland-icons/s/ic-like-16.svg';
-import LikeFilledIcon from 'openland-icons/s/ic-like-filled-16.svg';
-import ReplyIcon from 'openland-icons/s/ic-reply-16.svg';
-import DeleteIcon from 'openland-icons/s/ic-delete-16.svg';
-import EditIcon from 'openland-icons/s/ic-edit-16.svg';
+import EditIcon from 'openland-icons/s/ic-edit-24.svg';
+import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
+import MoreIcon from 'openland-icons/s/ic-more-h-24.svg';
 import { MessageReactionCounter } from 'openland-api/spacex.types';
 import { plural } from 'openland-y-utils/plural';
 import { defaultHover } from 'openland-web/utils/Styles';
-import { TextLabel2 } from 'openland-web/utils/TextStyles';
+import { TextLabel1 } from 'openland-web/utils/TextStyles';
 import { showReactionsList } from 'openland-web/fragments/chat/messenger/message/reactions/showReactionsList';
+import { usePopper } from '../unicorn/usePopper';
+import { UPopperMenuBuilder } from '../unicorn/UPopperMenuBuilder';
+import { UIconButton } from '../unicorn/UIconButton';
 
 const wrapperClass = css`
     display: flex;
     flex-direction: row;
-    margin: 5px 0 0 -8px;
+    align-items: center;
+    margin-left: -8px;
 `;
 
-const likesStubClass = css`
-    display: flex;
-    flex-grow: 1;
-    align-items: center;
-    justify-content: center;
-    height: 28px;
+const buttonClass = css`
+    color: var(--foregroundTertiary);
     padding: 0 8px;
-    color: var(--foregroundSecondary);
+`;
+
+const likedClass = css`
+    color: var(--accentNegative);
 `;
 
 interface CommentToolsProps {
@@ -41,22 +41,36 @@ interface CommentToolsProps {
 export const CommentTools = React.memo((props: CommentToolsProps) => {
     const { reactionCounters, entryId, onReactionClick, onReplyClick, onDeleteClick, onEditClick } = props;
     const likedByMe = (reactionCounters.length > 0 && reactionCounters[0].setByMe);
+    const hasMenu = !!onEditClick || !!onDeleteClick;
+    const [menuVisible, menuShow] = hasMenu ? usePopper(
+        { placement: 'bottom-start', hideOnClick: true },
+        ctx => {
+            let menu = new UPopperMenuBuilder();
+            if (!!onEditClick) {
+                menu.item({ title: 'Edit', icon: <EditIcon />, onClick: onEditClick });
+            }
+            if (!!onDeleteClick) {
+                menu.item({ title: 'Delete', icon: <DeleteIcon />, onClick: onDeleteClick });
+            }
+            return menu.build(ctx);
+        }
+    ) : [false, () => { /* no op */ }];
     return (
         <div className={wrapperClass}>
-            <UIconLabeled
-                icon={likedByMe ? <LikeFilledIcon /> : <LikeIcon />}
-                label={likedByMe ? 'Liked' : 'Like'}
-                style={likedByMe ? 'danger' : 'default'}
-                onClick={onReactionClick}
-            />
+            <XView onClick={onReplyClick}>
+                <div className={cx(buttonClass, defaultHover, TextLabel1)}>Reply</div>
+            </XView>
+            <XView onClick={onReactionClick}>
+                <div className={cx(buttonClass, defaultHover, TextLabel1, likedByMe && likedClass)}>{likedByMe ? 'Liked' : 'Like'}</div>
+            </XView>
             {reactionCounters.length > 0 && (
                 <XView onClick={() => showReactionsList(entryId, true)}>
-                    <div className={cx(likesStubClass, defaultHover, TextLabel2)}>{plural(reactionCounters[0].count, ['like', 'likes'])}</div>
+                    <div className={cx(buttonClass, defaultHover, TextLabel1)}>{plural(reactionCounters[0].count, ['like', 'likes'])}</div>
                 </XView>
             )}
-            <UIconLabeled icon={<ReplyIcon />} label="Reply" onClick={onReplyClick} />
-            {!!onEditClick && <UIconLabeled icon={<EditIcon />} label="Edit" onClick={onEditClick} />}
-            {!!onDeleteClick && <UIconLabeled icon={<DeleteIcon />} label="Delete" onClick={onDeleteClick} />}
+            {hasMenu && (
+                <UIconButton icon={<MoreIcon />} active={menuVisible} onClick={menuShow} size='small' />
+            )}
         </div>
     );
 });
