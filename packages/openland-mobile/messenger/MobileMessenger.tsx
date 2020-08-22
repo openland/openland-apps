@@ -247,6 +247,16 @@ export class MobileMessenger {
         this.history.navigationManager.push('Conversation', { id });
     }
 
+    handleMessageSourcePress = (chatId: string) => {
+        const state = this.routerSuitable.getState().history;
+
+        if (state.length <= 1 || (state[state.length - 2].route !== 'Conversation' && state[state.length - 2].params?.id !== chatId)) {
+            this.routerSuitable.push('Conversation', { id: chatId });
+        } else {
+            this.routerSuitable.pop();
+        }
+    }
+
     handleGroupPress = (id: string) => {
         this.routerSuitable.push('Conversation', { id });
     }

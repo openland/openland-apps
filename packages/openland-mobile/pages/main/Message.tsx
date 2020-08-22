@@ -52,7 +52,7 @@ const MessageComponent = React.memo((props: PageProps) => {
             <ZMessageView message={message} />
 
             {source && source.__typename === 'MessageSourceChat' && source.chat.__typename === 'SharedRoom' && (
-                <TouchableOpacity onPress={() => messenger.handleGroupPress(source.chat.id)} activeOpacity={HighlightAlpha}>
+                <TouchableOpacity onPress={() => messenger.handleMessageSourcePress(source.chat.id)} activeOpacity={HighlightAlpha}>
                     <View paddingTop={8}>
                         <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }} allowFontScaling={false}>
                             Message from{' '}
