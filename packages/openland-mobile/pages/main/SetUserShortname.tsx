@@ -13,6 +13,7 @@ import { SUPER_ADMIN } from '../Init';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
+import Toast from 'openland-mobile/components/Toast';
 
 export const ErrorText = (props: { text: string }) => (
     <Text
@@ -91,7 +92,7 @@ const SetUserShortnameContent = React.memo((props: PageProps) => {
                     await getClient().refetchAccount();
 
                     props.router.back();
-                
+
                 } catch (e) {
                     setError(formatError(e));
                 }
@@ -125,12 +126,18 @@ const SetUserShortnameContent = React.memo((props: PageProps) => {
                             footerUsernameText,
                         onPress: (link: string) => {
                             if (user.shortname) {
-                                ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-copy-24.png')).show();
+                                ActionSheet.builder().action('Copy', () => {
+                                    Clipboard.setString(link);
+                                    Toast.showCopied();
+                                }, false, require('assets/ic-copy-24.png')).show();
                             }
                         },
                         onLongPress: (link: string) => {
                             if (user.shortname) {
-                                ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-copy-24.png')).show();
+                                ActionSheet.builder().action('Copy', () => {
+                                    Clipboard.setString(link);
+                                    Toast.showCopied();
+                                }, false, require('assets/ic-copy-24.png')).show();
                             }
                         }
                     }}

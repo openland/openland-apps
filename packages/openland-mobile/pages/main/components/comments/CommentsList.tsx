@@ -9,6 +9,7 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { CommentEntryFragment, CommentEntryFragment_comment, RoomMemberRole } from 'openland-api/spacex.types';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
+import Toast from 'openland-mobile/components/Toast';
 
 interface CommentsListProps {
     comments: CommentEntryFragment[];
@@ -39,6 +40,7 @@ export const CommentsList = (props: CommentsListProps) => {
 
                 builder.action('Copy', () => {
                     Clipboard.setString(comment.message!!);
+                    Toast.showCopied();
                 }, false, require('assets/ic-copy-24.png'));
             }
             const canDelete = comment.sender.id === engine.user.id || role === RoomMemberRole.ADMIN || role === RoomMemberRole.OWNER || SUPER_ADMIN;
