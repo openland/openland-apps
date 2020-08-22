@@ -169,7 +169,7 @@ const UserMultiplePickerComponent = React.memo((props: PageProps) => {
             <SHeaderButton
                 key={'bk-' + users.length}
                 title={buttonTitle}
-                disabled={users.length === 0}
+                disabled={users.length === 0 && !isEmpty}
                 onPress={
                     isEmpty
                         ? () => props.router.params.action.actionEmpty()
