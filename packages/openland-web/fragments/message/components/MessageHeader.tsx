@@ -38,7 +38,14 @@ const useBuildMessageMenu = (engine: ConversationEngine) => {
             menu.item({
                 title: 'Reply', icon: <ReplyIcon />, onClick: () => {
                     reply(message);
-                    router.pop();
+                    if (message.source && message.source.__typename === 'MessageSourceChat') {
+                        const mailPath = `/mail/${message.source.chat.id}`;
+                        if (router.pages.length <= 1 || router.pages[router.pages.length - 2].path !== mailPath) {
+                            router.push(mailPath);
+                        } else {
+                            router.pop();
+                        }
+                    }
                 }
             });
         }
@@ -78,7 +85,7 @@ export const MessageHeader = (props: { message: FullMessage | null }) => {
 
     const buildMessageMenu = conversation && useBuildMessageMenu(conversation);
     const [menuVisible, menuShow] = buildMessageMenu && dsMessage ? usePopper(
-        { placement: 'bottom-end', hideOnClick: true },
+        { placement: 'bottom-end', hideOnClick: true, scope: 'message-header' },
         ctx => buildMessageMenu(ctx, dsMessage),
     ) : [false, () => { /* no op */ }];
 
@@ -171,7 +178,7 @@ export const MessageHeader = (props: { message: FullMessage | null }) => {
     );
 
     const [reactionsVisible, reactionsShow] = usePopper(
-        { placement: 'top', hideOnLeave: true, borderRadius: 20, scope: 'reaction-picker' },
+        { placement: 'top', hideOnLeave: true, borderRadius: 20, scope: 'message-header' },
         () => (
             <ReactionPicker
                 ref={pickerRef}
