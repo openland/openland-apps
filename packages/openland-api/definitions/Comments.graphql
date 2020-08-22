@@ -21,6 +21,9 @@ query Comments($peerId: ID!) {
                 }
             }
         }
+        subscription {
+            type
+        }
         comments {
             ...CommentEntryFragment
         }

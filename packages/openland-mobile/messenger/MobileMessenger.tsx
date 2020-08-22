@@ -15,7 +15,7 @@ import { SRouting } from 'react-native-s/SRouting';
 import Toast from 'openland-mobile/components/Toast';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, MessageReactionType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage, Message_message } from 'openland-api/spacex.types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, MessageReactionType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage, Message_message, CommentSubscriptionType } from 'openland-api/spacex.types';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
@@ -334,7 +334,10 @@ export class MobileMessenger {
 
     handleMessagePageMenuPress = (
         message: Message_message,
+        isSubscribed: boolean,
         actions: {
+            reply: ChatMessagesActions['reply'],
+            edit: ChatMessagesActions['edit'],
             forward: (messages: DataSourceMessageItem[]) => void,
         }
     ) => {
@@ -358,6 +361,29 @@ export class MobileMessenger {
                 }}
             />
         ));
+
+        builder.action(isSubscribed ? 'Unfollow thread' : 'Follow thread', async () => {
+            const loader = Toast.loader();
+            loader.show();
+            try {
+                if (isSubscribed) {
+                    await this.engine.client.mutateUnSubscribeFromComments({ peerId: message.id });
+                } else {
+                    await this.engine.client.mutateSubscribeToComments({ peerId: message.id, type: CommentSubscriptionType.ALL });
+                }
+                Toast.showDone();
+            } catch (e) {
+                console.warn(e);
+            } finally {
+                loader.hide();
+            }
+        }, false, isSubscribed ? require('assets/ic-follow-off-24.png') : require('assets/ic-follow-24.png'));
+
+        // if (conversation.canSendMessage) {
+        //     builder.action('Reply', () => {
+        //                 reply(convertedMessage);
+        //     }, false, require('assets/ic-reply-24.png'));
+        // }
 
         builder.action('Forward', () => {
             forward([convertedMessage]);
@@ -388,6 +414,15 @@ export class MobileMessenger {
                 }
             }, false, toUnpin ? require('assets/ic-pin-off-24.png') : require('assets/ic-pin-24.png'));
         }
+
+        // if (convertedMessage.text) {
+        //     let hasPurchase = convertedMessage.attachments && convertedMessage.attachments.some(a => a.__typename === 'MessageAttachmentPurchase');
+        //     if (convertedMessage.sender.id === this.engine.user.id && !hasPurchase) {
+        //         builder.action('Edit', () => {
+        //                     edit(convertedMessage);
+        //         }, false, require('assets/ic-edit-24.png'));
+        //     }
+        // }
 
         if (message.sender.id === this.engine.user.id || SUPER_ADMIN || role === 'ADMIN' || role === 'OWNER') {
             builder.action('Delete', () => {

@@ -685,6 +685,12 @@ query Message($messageId: ID!) {
     message(messageId: $messageId) {
         ...FullMessage
     }
+    comments(peerId: $messageId) {
+        id
+        subscription {
+            type
+        }
+    }
 }
 query MessagesSearch($query: String!, $sort: String, $first: Int!, $after: String) {
     messagesSearch(query: $query, sort: $sort, first: $first, after: $after) {
