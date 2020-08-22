@@ -90,32 +90,39 @@ export const reactionLabel: {[reaction in MessageReactionType]: string} = {
     DONATE: 'Donate',
 };
 
+type OnPickF = (reaction: MessageReactionType, remove: boolean) => void;
+
 interface ReactionPickerItemProps {
     reaction: MessageReactionType;
     toRemove: boolean;
     disabled: boolean;
-    onPick: (reaction: MessageReactionType) => void;
+    onPick: OnPickF;
 }
 
 const ReactionPickerItem = React.memo<ReactionPickerItemProps>(props => {
     const { onPick, reaction, toRemove, disabled } = props;
     const [animate, setAnimate] = React.useState(false);
+    const [removeClass, setRemoveClass] = React.useState(false);
     const [show] = useCaptionPopper({text: reactionLabel[reaction], scope: 'reactions'});
     const handleClick = () => {
         if (animate) {
             return;
         }
 
+        if (toRemove) {
+            setRemoveClass(true);
+        }
         setAnimate(true);
-        onPick(reaction);
+        onPick(reaction, toRemove);
 
         setTimeout(() => {
             setAnimate(false);
+            setRemoveClass(false);
         }, 300);
     };
 
     return (
-        <div className={cx(reactionClass, animate && 'animated', toRemove && 'to-remove', disabled && reactionDisabledClass)} onClick={handleClick} onMouseEnter={show}>
+        <div className={cx(reactionClass, animate && 'animated', removeClass && 'to-remove', disabled && reactionDisabledClass)} onClick={handleClick} onMouseEnter={show}>
             <img src={reactionImage(reaction)} className="reaction-main" />
             <img src={reactionImage(reaction)} className="reaction-duplicate" />
         </div>
@@ -128,7 +135,7 @@ export interface ReactionPickerInstance {
 
 interface ReactionPickerProps {
     reactionCounters: MessageReactionCounter[];
-    onPick: (reaction: MessageReactionType) => void;
+    onPick: OnPickF;
 }
 
 // Sorry universe
@@ -152,7 +159,7 @@ export const ReactionPicker = React.memo(React.forwardRef((props: ReactionPicker
                         key={'reaction-' + reaction}
                         onPick={props.onPick}
                         reaction={reaction}
-                        toRemove={!remove}
+                        toRemove={remove}
                         disabled={disabled}
                     />
                 );

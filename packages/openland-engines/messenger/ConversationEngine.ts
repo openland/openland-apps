@@ -904,8 +904,8 @@ export class ConversationEngine implements MessageSendHandler {
             this.onMessagesUpdated();
 
             // Remove from datasource
-            let id = this.localMessagesMap.get(event.message.id) || event.message.id;
-            this.removeMessage(id);
+            let key = this.getMessageKeyById(event.message.id);
+            this.removeMessage(key);
 
         } else if (event.__typename === 'ChatMessageUpdated') {
             // Handle message
@@ -919,7 +919,7 @@ export class ConversationEngine implements MessageSendHandler {
 
             // Update in datasource
             let conv = convertMessage(event.message, this.conversationId, this.engine);
-            conv.key = this.localMessagesMap.get(event.message.id) || event.message.id;
+            conv.key = this.getMessageKeyById(event.message.id);
             let old = this.dataSource.getItem(conv.key);
             conv.attachTop = old ? (old as DataSourceMessageItem).attachTop : conv.attachTop;
             conv.attachBottom = old ? (old as DataSourceMessageItem).attachBottom : conv.attachBottom;
@@ -1044,7 +1044,6 @@ export class ConversationEngine implements MessageSendHandler {
                     conv.attachTop = false;
                 }
             }
-
             this.dataSource.addItem(conv, 0);
         }
         if (scrollTo) {
@@ -1204,4 +1203,6 @@ export class ConversationEngine implements MessageSendHandler {
         };
         this.dataSource.updateItem(newMessage);
     }
+
+    getMessageKeyById = (id: string) => this.localMessagesMap.get(id) || id;
 }

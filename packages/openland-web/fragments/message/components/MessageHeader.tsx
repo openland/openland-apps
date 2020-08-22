@@ -84,22 +84,13 @@ export const MessageHeader = (props: { message: FullMessage | null }) => {
 
     const pickerRef = React.useRef<ReactionPickerInstance>(null);
 
-    React.useEffect(
-        () => {
-            if (pickerRef && pickerRef.current) {
-                pickerRef.current.update(message.reactionCounters);
-            }
-        },
-        [pickerRef, message.reactionCounters],
-    );
-
-    const handleReactionClick = async (reaction: MessageReactionType) => {
-        if (!dsMessage || !conversation) {
+    const handleReactionClick = async (reaction: MessageReactionType, remove?: boolean) => {
+        if (!conversation) {
             return;
         }
 
         const messageId = message.id;
-        const messageKey = dsMessage.key;
+        const messageKey = conversation.getMessageKeyById(message.id);
         const reactions = message.reactionCounters;
 
         const donate = async () => {
@@ -146,8 +137,7 @@ export const MessageHeader = (props: { message: FullMessage | null }) => {
         };
 
         if (messageId) {
-            const remove = !!reactions.find(r => r.reaction === reaction && r.setByMe);
-            if (remove) {
+            if (remove === undefined ? !!reactions.find(r => r.reaction === reaction && r.setByMe) : remove) {
                 if (reaction !== MessageReactionType.DONATE) {
                     unsetEmoji();
                     await client.mutateMessageUnsetReaction({ messageId, reaction });
@@ -170,6 +160,15 @@ export const MessageHeader = (props: { message: FullMessage | null }) => {
             }
         }
     };
+
+    React.useEffect(
+        () => {
+            if (pickerRef && pickerRef.current) {
+                pickerRef.current.update(message.reactionCounters);
+            }
+        },
+        [pickerRef, message.reactionCounters],
+    );
 
     const [reactionsVisible, reactionsShow] = usePopper(
         { placement: 'top', hideOnLeave: true, borderRadius: 20, scope: 'reaction-picker' },

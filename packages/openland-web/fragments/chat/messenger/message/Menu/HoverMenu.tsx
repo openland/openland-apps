@@ -91,23 +91,20 @@ export const HoverMenu = React.memo((props: HoverMenuProps) => {
     messageIdRef.current = message.id;
     const messageKeyRef = React.useRef(message.key);
     messageKeyRef.current = message.key;
-    // const reactionsRef = React.useRef(message.reactions);
-    const reactionsRef = React.useRef(message.reactionCounters);
-    reactionsRef.current = message.reactionCounters;
 
     React.useEffect(
         () => {
             if (pickerRef && pickerRef.current) {
-                pickerRef.current.update(reactionsRef.current);
+                pickerRef.current.update(message.reactionCounters);
             }
         },
-        [pickerRef, reactionsRef.current],
+        [pickerRef, message.reactionCounters],
     );
 
-    const handleReactionClick = async (reaction: MessageReactionType) => {
+    const handleReactionClick = async (reaction: MessageReactionType, remove?: boolean) => {
         const messageId = messageIdRef.current;
         const messageKey = messageKeyRef.current;
-        const reactions = reactionsRef.current;
+        const reactions = message.reactionCounters;
 
         const donate = async () => {
             if (!messageId) {
@@ -153,8 +150,7 @@ export const HoverMenu = React.memo((props: HoverMenuProps) => {
         };
 
         if (messageId) {
-            const remove = !!reactions.find(r => r.reaction === reaction && r.setByMe);
-            if (remove) {
+            if (remove === undefined ? !!reactions.find(r => r.reaction === reaction && r.setByMe) : remove) {
                 if (reaction !== MessageReactionType.DONATE) {
                     unsetEmoji();
                     await client.mutateMessageUnsetReaction({ messageId, reaction });
@@ -183,7 +179,7 @@ export const HoverMenu = React.memo((props: HoverMenuProps) => {
         () => (
             <ReactionPicker
                 ref={pickerRef}
-                reactionCounters={reactionsRef.current}
+                reactionCounters={message.reactionCounters}
                 onPick={handleReactionClick}
             />
         ),
