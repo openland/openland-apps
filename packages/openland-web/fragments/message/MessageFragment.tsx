@@ -34,11 +34,12 @@ export const MessageFragment = React.memo(() => {
     const unicorn = useUnicorn();
     const { messageId, commentId } = unicorn.query;
     const client = useClient();
-    const message = client.useMessage({ messageId }, { fetchPolicy: 'cache-and-network' }).message;
+    const messageData = client.useMessage({ messageId }, { fetchPolicy: 'cache-and-network' });
+    const message = messageData.message;
 
     return (
         <>
-            <UHeader titleView={<MessageHeader message={message} />} appearance="wide" />
+            <UHeader titleView={<MessageHeader message={message} isSubscribed={!!messageData.comments.subscription} />} appearance="wide" />
             <MessageFragmentInner message={message} messageId={messageId} commentId={commentId} />
         </>
     );

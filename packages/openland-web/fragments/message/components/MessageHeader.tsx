@@ -4,7 +4,7 @@ import { TextStyles } from 'openland-web/utils/TextStyles';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import MoreIcon from 'openland-icons/s/ic-more-v-24.svg';
 import LikeIcon from 'openland-icons/s/ic-like-24.svg';
-import { FullMessage, MessageReactionType } from 'openland-api/spacex.types';
+import { FullMessage, MessageReactionType, CommentSubscriptionType } from 'openland-api/spacex.types';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { convertMessage } from 'openland-engines/messenger/ConversationEngine';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
@@ -15,6 +15,8 @@ import ReplyIcon from 'openland-icons/s/ic-reply-24.svg';
 import ForwardIcon from 'openland-icons/s/ic-forward-24.svg';
 import PinIcon from 'openland-icons/s/ic-pin-24.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
+import FollowIcon from 'openland-icons/s/ic-follow-24.svg';
+import UnfollowIcon from 'openland-icons/s/ic-follow-off-24.svg';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { showDeleteMessageModal } from 'openland-web/fragments/chat/components/MessengerRootComponent';
 import { useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
@@ -32,9 +34,24 @@ const useBuildMessageMenu = (engine: ConversationEngine) => {
     const forward = useForward(engine.isPrivate && engine.user ? engine.user.id : engine.conversationId);
     const { reply } = useChatMessagesActionsMethods({ conversationId: engine.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
     const toastHandlers = useToast();
-    return (ctx: UPopperController, message: DataSourceWebMessageItem) => {
+    return (ctx: UPopperController, message: DataSourceWebMessageItem, isSubscribed: boolean) => {
         let menu = new UPopperMenuBuilder();
         const role = engine.role;
+        if (message.id) {
+            menu.item({
+                title: isSubscribed ? 'Unfollow thread' : 'Follow thread', icon: isSubscribed ? <UnfollowIcon /> : <FollowIcon />, onClick: async () => {
+                    if (isSubscribed) {
+                        await engine.engine.client.mutateUnSubscribeFromComments({ peerId: message.id! });
+                    } else {
+                        await engine.engine.client.mutateSubscribeToComments({ peerId: message.id!, type: CommentSubscriptionType.ALL });
+                    }
+                    toastHandlers.show({
+                        type: 'success',
+                        text: isSubscribed ? 'Unsubscribed' : 'Subscribed'
+                    });
+                }
+            });
+        }
         if (engine.canSendMessage) {
             menu.item({
                 title: 'Reply', icon: <ReplyIcon />, onClick: () => {
@@ -78,7 +95,7 @@ const useBuildMessageMenu = (engine: ConversationEngine) => {
     };
 };
 
-export const MessageHeader = (props: { message: FullMessage | null }) => {
+export const MessageHeader = (props: { message: FullMessage | null, isSubscribed: boolean }) => {
     const { message } = props;
 
     if (!message || message.__typename === 'ServiceMessage') {
@@ -97,8 +114,8 @@ export const MessageHeader = (props: { message: FullMessage | null }) => {
 
     const buildMessageMenu = conversation && useBuildMessageMenu(conversation);
     const [menuVisible, menuShow] = buildMessageMenu && dsMessage ? usePopper(
-        { placement: 'bottom-end', hideOnClick: true, scope: 'message-header' },
-        ctx => buildMessageMenu(ctx, dsMessage),
+        { placement: 'bottom-end', hideOnClick: true, scope: 'message-header', updatedDeps: props.isSubscribed },
+        ctx => buildMessageMenu(ctx, dsMessage, props.isSubscribed),
     ) : [false, () => { /* no op */ }];
 
     const pickerRef = React.useRef<ReactionPickerInstance>(null);
