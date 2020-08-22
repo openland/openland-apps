@@ -55,12 +55,17 @@ const useBuildMessageMenu = (engine: ConversationEngine) => {
                 forward([message]);
             }
         });
-        if (engine.canPin && message.id && ((engine.pinId && engine.pinId !== message.id) || !engine.pinId)) {
-            menu.item({ title: 'Pin', icon: <PinIcon />, action: async () => {
-                await engine.engine.client.mutatePinMessage({ messageId: message.id!, chatId: engine.conversationId });
+        if (engine.canPin && message.id) {
+            const toPin = !engine.pinId || engine.pinId !== message.id;
+            menu.item({ title: toPin ? 'Pin' : 'Unpin', icon: <PinIcon />, action: async () => {
+                if (toPin) {
+                    await engine.engine.client.mutatePinMessage({ messageId: message.id!, chatId: engine.conversationId });
+                } else {
+                    await engine.engine.client.mutateUnpinMessage({ chatId: engine.conversationId });
+                }
                 toastHandlers.show({
                     type: 'success',
-                    text: 'Message pinned'
+                    text: toPin ? 'Message pinned' : 'Message unpinned'
                 });
             } });
         }
