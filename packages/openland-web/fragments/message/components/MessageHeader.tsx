@@ -31,6 +31,7 @@ const useBuildMessageMenu = (engine: ConversationEngine) => {
     const router = useStackRouter();
     const forward = useForward(engine.isPrivate && engine.user ? engine.user.id : engine.conversationId);
     const { reply } = useChatMessagesActionsMethods({ conversationId: engine.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
+    const toastHandlers = useToast();
     return (ctx: UPopperController, message: DataSourceWebMessageItem) => {
         let menu = new UPopperMenuBuilder();
         const role = engine.role;
@@ -55,7 +56,13 @@ const useBuildMessageMenu = (engine: ConversationEngine) => {
             }
         });
         if (engine.canPin && message.id && ((engine.pinId && engine.pinId !== message.id) || !engine.pinId)) {
-            menu.item({ title: 'Pin', icon: <PinIcon />, action: () => engine.engine.client.mutatePinMessage({ messageId: message.id!, chatId: engine.conversationId }) });
+            menu.item({ title: 'Pin', icon: <PinIcon />, action: async () => {
+                await engine.engine.client.mutatePinMessage({ messageId: message.id!, chatId: engine.conversationId });
+                toastHandlers.show({
+                    type: 'success',
+                    text: 'Message pinned'
+                });
+            } });
         }
         if (message.sender.id === engine.engine.user.id || role === 'ADMIN' || role === 'OWNER') {
             menu.item({
