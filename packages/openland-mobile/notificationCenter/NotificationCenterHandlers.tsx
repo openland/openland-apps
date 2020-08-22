@@ -30,6 +30,7 @@ class NotificationCenterHandlersClass {
                     } else {
                         await client.mutateSubscribeToComments({ peerId: item.peerRootId!, type: CommentSubscriptionType.ALL });
                     }
+                    Toast.showSuccess(item.isSubscribedMessageComments ? 'Unfollowed' : 'Followed');
                 } catch (e) {
                     console.warn(e);
                 } finally {
