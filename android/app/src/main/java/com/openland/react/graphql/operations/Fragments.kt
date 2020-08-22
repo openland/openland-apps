@@ -373,7 +373,11 @@ internal val FullMessageSelector = obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
                                 inline("PrivateRoom", obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("id", "id", notNull(scalar("ID")))
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("user", "user", notNull(obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("id", "id", notNull(scalar("ID")))
+                                        )))
                                 )),
                                 inline("SharedRoom", obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),

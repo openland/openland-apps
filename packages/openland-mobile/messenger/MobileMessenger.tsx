@@ -3,21 +3,20 @@ import ShareFile from 'react-native-share';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ASDataView } from 'react-native-async-view/ASDataView';
-import { DataSourceMessageItem, DataSourceDateItem, ConversationEngine, DataSourceNewDividerItem, convertPartialMessage } from 'openland-engines/messenger/ConversationEngine';
+import { DataSourceMessageItem, DataSourceDateItem, ConversationEngine, DataSourceNewDividerItem, convertPartialMessage, convertMessage } from 'openland-engines/messenger/ConversationEngine';
 import { AsyncDateSeparator } from './components/AsyncDateSeparator';
 import { showPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
-import { Clipboard, Platform, View, TouchableOpacity, Image, Share } from 'react-native';
+import { Clipboard, Platform, Share } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
 import Toast from 'openland-mobile/components/Toast';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, MessageReactionType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage } from 'openland-api/spacex.types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, MessageReactionType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage, Message_message } from 'openland-api/spacex.types';
 import { ZModalController } from 'openland-mobile/components/ZModal';
-import { reactionsImagesMap } from './components/AsyncMessageReactionsView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
 import { formatDateTime } from 'openland-y-utils/formatTime';
@@ -42,20 +41,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
-
-const SortedReactions = [
-    MessageReactionType.LIKE,
-    MessageReactionType.THUMB_UP,
-    MessageReactionType.JOY,
-    MessageReactionType.SCREAM,
-    MessageReactionType.CRYING,
-];
-
-if (Platform.OS !== 'ios') {
-    SortedReactions.push(MessageReactionType.DONATE);
-} else {
-    SortedReactions.push(MessageReactionType.ANGRY);
-}
+import { ReactionsPicker } from './components/ReactionsPicker';
 
 export const useForward = (selectedFrom: string) => {
     const messenger = getMessenger().engine;
@@ -328,6 +314,92 @@ export class MobileMessenger {
         }
     }
 
+    handleDeleteMessage = (messageId: string, onDelete?: () => void) => {
+        try {
+            Alert.builder()
+                .title('Delete message?')
+                .message('The message will be deleted for everyone. This cannot be undone')
+                .button('Cancel', 'cancel')
+                .action('Delete', 'destructive', async () => {
+                    await this.engine.client.mutateRoomDeleteMessage({ messageId });
+
+                    if (onDelete) {
+                        onDelete();
+                    }
+                }).show();
+        } catch (e) {
+            Alert.alert(e.message);
+        }
+    }
+
+    handleMessagePageMenuPress = (
+        message: Message_message,
+        actions: {
+            forward: (messages: DataSourceMessageItem[]) => void,
+        }
+    ) => {
+        if (!message.source || message.source.__typename !== 'MessageSourceChat') {
+            return;
+        }
+
+        const convertedMessage = convertMessage(message, message.source.chat.id, this.engine);
+        const conversation: ConversationEngine = this.engine.getConversation(convertedMessage.chatId);
+        const builder = new ActionSheetBuilder();
+        const { forward } = actions;
+
+        const role = conversation.role;
+
+        builder.view((ctx: ZModalController) => (
+            <ReactionsPicker
+                reactionCounters={convertedMessage.reactionCounters}
+                onPress={(reaction) => {
+                    ctx.hide();
+                    this.handleReactionSetUnset(convertedMessage, reaction);
+                }}
+            />
+        ));
+
+        builder.action('Forward', () => {
+            forward([convertedMessage]);
+        }, false, require('assets/ic-forward-24.png'));
+
+        if (convertedMessage.text) {
+            builder.action('Copy', () => {
+                Clipboard.setString(convertedMessage.text!!);
+                Toast.showCopied();
+            }, false, require('assets/ic-copy-24.png'));
+        }
+
+        if (conversation.canPin && convertedMessage.id) {
+            const toUnpin = conversation.pinId && conversation.pinId === convertedMessage.id;
+
+            builder.action(toUnpin ? 'Unpin' : 'Pin', async () => {
+                const loader = Toast.loader();
+                loader.show();
+                try {
+                    if (toUnpin) {
+                        await this.engine.client.mutateUnpinMessage({ chatId: convertedMessage.chatId });
+                    } else {
+                        await this.engine.client.mutatePinMessage({ chatId: convertedMessage.chatId, messageId: convertedMessage.id! });
+                    }
+                    Toast.showDone();
+                } finally {
+                    loader.hide();
+                }
+            }, false, toUnpin ? require('assets/ic-pin-off-24.png') : require('assets/ic-pin-24.png'));
+        }
+
+        if (message.sender.id === this.engine.user.id || SUPER_ADMIN || role === 'ADMIN' || role === 'OWNER') {
+            builder.action('Delete', () => {
+                this.handleDeleteMessage(message.id, () => {
+                    this.routerSuitable.pop();
+                });
+            }, false, require('assets/ic-delete-24.png'));
+        }
+
+        builder.show(true);
+    }
+
     private handleDialogLongPress = (id: string, item: DialogDataSourceItem, theme: ThemeGlobal) => {
         // do not show menu for Saved messages
         if (item.flexibleId === this.engine.user.id) {
@@ -386,6 +458,7 @@ export class MobileMessenger {
             if (message.text) {
                 builder.action('Copy', () => {
                     Clipboard.setString(message.text!!);
+                    Toast.showCopied();
                 }, false, require('assets/ic-copy-24.png'));
 
                 builder.show(true);
@@ -396,27 +469,13 @@ export class MobileMessenger {
         const role = conversation.role;
 
         builder.view((ctx: ZModalController) => (
-            <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={52} paddingHorizontal={10}>
-                {SortedReactions.map(reaction => {
-                    const remove = !!message.reactionCounters.find(r => r.reaction === reaction && r.setByMe);
-                    const isDisabled = reaction === MessageReactionType.DONATE && remove;
-                    return (
-                        <TouchableOpacity
-                            key={reaction}
-                            style={{ opacity: isDisabled ? 0.35 : undefined }}
-                            disabled={isDisabled}
-                            onPress={() => {
-                                ctx.hide();
-                                this.handleReactionSetUnset(message, reaction);
-                            }}
-                        >
-                            <View style={{ width: 52, height: 52, alignItems: 'center', justifyContent: 'center' }}>
-                                <Image source={reactionsImagesMap[reaction]} style={{ width: 36, height: 36 }} />
-                            </View>
-                        </TouchableOpacity>
-                    );
-                })}
-            </View>
+            <ReactionsPicker
+                reactionCounters={message.reactionCounters}
+                onPress={(reaction) => {
+                    ctx.hide();
+                    this.handleReactionSetUnset(message, reaction);
+                }}
+            />
         ));
 
         const hideSelect = action === 'reply' || action === 'forward';
@@ -443,6 +502,7 @@ export class MobileMessenger {
         if (message.text) {
             builder.action('Copy', () => {
                 Clipboard.setString(message.text!!);
+                Toast.showCopied();
             }, false, require('assets/ic-copy-24.png'));
         }
 
@@ -473,19 +533,9 @@ export class MobileMessenger {
             }
         }
 
-        if (message.sender.id === this.engine.user.id || SUPER_ADMIN || role === 'ADMIN' || role === 'OWNER') {
-            builder.action('Delete', async () => {
-                try {
-                    Alert.builder()
-                        .title('Delete message?')
-                        .message('The message will be deleted for everyone. This cannot be undone')
-                        .button('Cancel', 'cancel')
-                        .action('Delete', 'destructive', async () => {
-                            await this.engine.client.mutateRoomDeleteMessage({ messageId: message.id! });
-                        }).show();
-                } catch (e) {
-                    Alert.alert(e.message);
-                }
+        if (message.id && message.sender.id === this.engine.user.id || SUPER_ADMIN || role === 'ADMIN' || role === 'OWNER') {
+            builder.action('Delete', () => {
+                this.handleDeleteMessage(message.id!);
             }, false, require('assets/ic-delete-24.png'));
         }
 
