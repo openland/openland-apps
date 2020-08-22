@@ -16,8 +16,9 @@ import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { HighlightAlpha, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 
-const MessageMenu = React.memo((props: { message: Message_message }) => {
+const MessageMenu = React.memo((props: { message: Message_message, isSubscribed: boolean }) => {
     const messenger = getMessenger();
     const { source } = props.message;
 
@@ -25,9 +26,10 @@ const MessageMenu = React.memo((props: { message: Message_message }) => {
         return null;
     }
 
+    const { reply, edit } = useChatMessagesActionsMethods({ conversationId: source.chat.id, userId: source.chat.__typename === 'PrivateRoom' ? source.chat.user.id : undefined });
     const forward = useForward(source.chat.id);
 
-    return <ZManageButton onPress={() => messenger.handleMessagePageMenuPress(props.message, { forward })} />;
+    return <ZManageButton onPress={() => messenger.handleMessagePageMenuPress(props.message, props.isSubscribed, { forward, reply, edit })} />;
 
 });
 
@@ -37,7 +39,8 @@ const MessageComponent = React.memo((props: PageProps) => {
     const { router } = props;
     const { messageId, highlightId } = router.params;
     const client = getClient();
-    const message = client.useMessage({ messageId }, { fetchPolicy: 'cache-and-network' }).message;
+    const messageData = client.useMessage({ messageId }, { fetchPolicy: 'cache-and-network' });
+    const message = messageData.message;
 
     if (!message) {
         return null;
@@ -82,7 +85,7 @@ const MessageComponent = React.memo((props: PageProps) => {
                 />
             </SHeaderView>
 
-            <MessageMenu message={message} />
+            <MessageMenu message={message} isSubscribed={!!messageData.comments.subscription} />
 
             <CommentsWrapper
                 peerView={peerView}
