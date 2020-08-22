@@ -371,7 +371,7 @@ export class MobileMessenger {
                 } else {
                     await this.engine.client.mutateSubscribeToComments({ peerId: message.id, type: CommentSubscriptionType.ALL });
                 }
-                Toast.showDone();
+                Toast.showSuccess(isSubscribed ? 'Unfollowed' : 'Followed');
             } catch (e) {
                 console.warn(e);
             } finally {
@@ -408,7 +408,7 @@ export class MobileMessenger {
                     } else {
                         await this.engine.client.mutatePinMessage({ chatId: convertedMessage.chatId, messageId: convertedMessage.id! });
                     }
-                    Toast.showDone();
+                    Toast.showSuccess(toUnpin ? 'Unpinned' : 'Pinned');
                 } finally {
                     loader.hide();
                 }
