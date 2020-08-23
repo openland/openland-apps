@@ -36,7 +36,7 @@ interface InviteModalProps {
     isOrganization: boolean;
     isCommunity?: boolean;
     isPremium: boolean;
-    isOwner: boolean;
+    canAddPeople: boolean;
     hideOwnerLink: boolean;
     hide?: () => void;
 }
@@ -52,6 +52,7 @@ const SectionTitle = (props: { title: string }) => (
 );
 
 const AddMemberModalInner = (props: InviteModalProps) => {
+    const { canAddPeople } = props;
     const [searchQuery, setSearchQuery] = React.useState('');
     const [selectedUsers, setSelectedUsers] = React.useState<null | Map<string, string>>(null);
     const [options, setOptions] = React.useState<{ label: string; value: string }[]>([]);
@@ -97,8 +98,6 @@ const AddMemberModalInner = (props: InviteModalProps) => {
         setSelectedUsers(selected);
         setOptions(newOpts);
     };
-
-    const canAddPeople = !props.isPremium || props.isOwner;
 
     return (
         <>
@@ -285,15 +284,15 @@ export const AddMembersModal = React.memo(
 
         let data = null;
         let isPremium = false;
-        let isOwner = false;
         let hideOwnerLink = false;
+        let canAddPeople = true;
 
         if (isGroup) {
             data = client.useRoomMembersShort({ roomId: id });
             const chat = client.useRoomChat({ id: id }).room!;
             const sharedRoom = chat.__typename === 'SharedRoom' && chat;
             isPremium = sharedRoom && sharedRoom.isPremium;
-            isOwner = sharedRoom && sharedRoom.role === 'OWNER';
+            canAddPeople = sharedRoom && (!isPremium || sharedRoom.role !== 'MEMBER');
 
             if (sharedRoom && sharedRoom.organization && sharedRoom.organization.private && sharedRoom.role === 'MEMBER') {
                 hideOwnerLink = true;
@@ -319,7 +318,7 @@ export const AddMembersModal = React.memo(
                 isOrganization={isOrganization}
                 isCommunity={isCommunity}
                 isPremium={isPremium}
-                isOwner={isOwner}
+                canAddPeople={canAddPeople}
             />
         );
     },
