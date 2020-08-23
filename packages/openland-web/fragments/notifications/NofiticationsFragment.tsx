@@ -77,7 +77,8 @@ class CommentsNotificationsInner extends React.PureComponent<
     }
 
     private handleScroll = (e: XScrollValues) => {
-        if (e.scrollTop < 300) {
+        let scrollAvailable = e.scrollHeight - (e.clientHeight + e.scrollTop);
+        if (scrollAvailable < 200) {
             this.dataSource.needMore();
         }
     }
