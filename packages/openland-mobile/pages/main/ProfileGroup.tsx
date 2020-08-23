@@ -443,7 +443,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             </ZListGroup>
 
             <ZListHeader text="Members" counter={room.membersCount} />
-            {(!room.isPremium || room.role === 'OWNER') && !memberInviteDisabled && (
+            {(!room.isPremium || room.role !== 'MEMBER') && !memberInviteDisabled && (
                 <ZListItem
                     text="Add people"
                     leftIcon={require('assets/ic-add-glyph-24.png')}
