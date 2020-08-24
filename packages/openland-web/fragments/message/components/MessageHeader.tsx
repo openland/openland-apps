@@ -239,7 +239,7 @@ export const MessageHeader = (props: { message: FullMessage | null, isSubscribed
                 >
                     <UIconButton
                         icon={<LikeIcon />}
-                        color="var(--foregroundTertiary)"
+                        color="var(--foregroundSecondary)"
                         size="large"
                         active={reactionsVisible}
                         onMouseEnter={reactionsShow}
@@ -250,7 +250,7 @@ export const MessageHeader = (props: { message: FullMessage | null, isSubscribed
                     />
                     <UIconButton
                         icon={<MoreIcon />}
-                        color="var(--foregroundTertiary)"
+                        color="var(--foregroundSecondary)"
                         size="large"
                         onClick={menuShow}
                         active={menuVisible}
