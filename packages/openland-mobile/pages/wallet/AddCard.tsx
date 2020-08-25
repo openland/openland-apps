@@ -28,7 +28,11 @@ const AddCardComponent = React.memo<PageProps>((props) => {
                 let res = await ref.current!.confirmSetupIntent(intent.clientSecret);
                 if (res.status !== 'success') {
                     if (res.message) {
-                        AlertBlanket.alert(res.message);
+                        if (res.message.startsWith('Missing required param')) {
+                            AlertBlanket.alert('Invalid card number');
+                        } else {
+                            AlertBlanket.alert(res.message);
+                        }
                     }
                     return;
                 }
