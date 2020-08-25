@@ -17,16 +17,17 @@ import IcLinux from 'openland-icons/s/ic-linux-16.svg';
 import { getConfig } from 'openland-web/config';
 import { delayBreakable } from 'openland-y-utils/timer';
 
-const bannerContainetClass = css`
-    display: flex;
-    height: 56px;
-    background-color: #1885f2;
-    justify-content: center;
+const bannerContainerClass = css`
+    right: 16px;
+    top: 0;
+    padding: 16px 0 0 0;
+    z-index: 10;
+    position: absolute;
 `;
 
-const iconContainetClass = css`
+const iconContainerClass = css`
     position: absolute;
-    top: 0;
+    top: 8px;
     right: 0;
     width: 56px;
     height: 56px;
@@ -36,12 +37,16 @@ const iconContainetClass = css`
 `;
 
 const bannerTextClass = css`
-    color: #fff;
-    margin-right: 12px;
+    color: #171a1f;
+    line-height: 24px;
+    font-size: 17px;
+    margin-bottom: 16px;
 `;
 
 const bannerButton = css`
-    margin-right: 12px;
+    & + & {
+        margin-left: 8px
+    }
 `;
 
 const buttonsContainer = css`
@@ -50,55 +55,43 @@ const buttonsContainer = css`
 `;
 
 const bannerContentWrapper = css`
-    align-self: stretch;
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    align-items: center;
-    max-width: 592px;
+    width: 400px;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.08), 0px 0px 48px rgba(0, 0, 0, 0.04);
+    border-radius: 12px;
+    background-color: #fff;
+    padding: 24px;
+    position: relative;
 `;
 
 const bannerMobileApps = css`
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    align-items: center;
-    justify-content: center;
 `;
 
 const bannerNotification = css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
 `;
 
 const bannerUpdate = css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
 `;
 
 const BannerContainer = (props: { onClosePress?: () => void; banner?: any }) => {
     return (
-        <div className={bannerContainetClass}>
-            <div className={bannerContentWrapper}>{props.banner}</div>
-            <div onClick={props.onClosePress} className={cx(iconContainetClass, defaultHover)}>
-                <UIcon color="#fff" icon={<IcClose />} />
+        <div className={bannerContainerClass}>
+            <div className={bannerContentWrapper}>
+                <div onClick={props.onClosePress} className={cx(iconContainerClass, defaultHover)}>
+                    <UIcon color="#C8C9CC" icon={<IcClose />} />
+                </div>
+                {props.banner}
             </div>
         </div>
     );
 };
 
 const bannerButtonContainer = css`
-    background-color: #009afb;
+    background-color: #F2F3F5;
     cursor: pointer;
     display: flex;
     align-items: center;
     height: 32px;
-    color: #fff;
+    color: #71747A;
     border-radius: 100px;
     padding: 8px 16px;
     & > div {
@@ -106,8 +99,8 @@ const bannerButtonContainer = css`
     }
     &:hover {
         text-decoration: none;
-        color: #fff;
-        background-color: var(--accentPrimaryHover);
+        color: #71747A;
+        background-color: #E8EAED;
     }
 `;
 
@@ -123,7 +116,7 @@ const BannerButton = (props: {
             className={bannerButtonContainer}
             onClick={props.onClick}
         >
-            {props.icon && <UIcon icon={props.icon} color="#DDEFFE" />}
+            {props.icon && <UIcon icon={props.icon} color="#71747A" />}
             <span className={TextLabel2}>{props.text}</span>
         </a>
     );
@@ -157,7 +150,7 @@ const MobileAppsBanner = () => {
 
     return (
         <div className={bannerMobileApps}>
-            <span className={cx(TextLabel1, bannerTextClass)}>Install Openland apps</span>
+            <div className={cx(TextLabel1, bannerTextClass)}>Install Openland apps</div>
             <div className={buttonsContainer}>
                 {os &&
                     ['Mac', 'Windows', 'Linux'].includes(os) && (
@@ -178,12 +171,14 @@ const MobileAppsBanner = () => {
                         icon={<IcIos />}
                     />
                 </div>
-                <BannerButton
-                    text="Android"
-                    href="https://oplnd.com/android"
-                    onClick={() => onAppClick('Android')}
-                    icon={<IcAndroid />}
-                />
+                <div className={bannerButton}>
+                    <BannerButton
+                        text="Android"
+                        href="https://oplnd.com/android"
+                        onClick={() => onAppClick('Android')}
+                        icon={<IcAndroid />}
+                    />
+                </div>
             </div>
         </div>
     );
@@ -220,7 +215,9 @@ const NotificationsBanner = () => {
     return (
         <div className={bannerNotification}>
             <div className={cx(TextLabel1, bannerTextClass)}>Get Openland notifications</div>
-            <BannerButton text="Turn on" onClick={onPress} />
+            <div className={buttonsContainer}>
+                <BannerButton text="Turn on" onClick={onPress} />
+            </div>
         </div>
     );
 };
@@ -261,7 +258,9 @@ const UpdateBanner = () => {
     return (
         <div className={bannerUpdate}>
             <div className={cx(TextLabel1, bannerTextClass)}>A new version of Openland is available</div>
-            <BannerButton text={isElectron ? 'Update' : 'Refresh'} onClick={onPress} />
+            <div className={buttonsContainer}>
+                <BannerButton text={isElectron ? 'Update' : 'Refresh'} onClick={onPress} />
+            </div>
         </div>
     );
 };
