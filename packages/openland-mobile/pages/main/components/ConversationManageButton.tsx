@@ -42,7 +42,7 @@ const useSharedHandlers = (room: RoomTiny_room_SharedRoom, router: SRouter) => {
                                 })),
                                 roomId: room.id,
                             });
-                            client.refetchRoomTiny({ id: room.id });
+                            await client.refetchRoomTiny({ id: room.id });
                         } catch (e) {
                             Alert.alert(e.message);
                         }
@@ -93,8 +93,10 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         if (isUser) {
             const loader = Toast.loader();
             loader.show();
-            await client.mutateAddToContacts({ userId: isUser.id });
-            await client.refetchRoomTiny({ id: room.id });
+            await Promise.all([
+                client.mutateAddToContacts({ userId: isUser.id }),
+                client.refetchRoomTiny({ id: room.id })
+            ]);
             loader.hide();
             Toast.success({ duration: 1000 }).show();
         }
@@ -104,18 +106,21 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         if (isUser) {
             const loader = Toast.loader();
             loader.show();
-            await client.mutateRemoveFromContacts({ userId: isUser.id });
-            await client.refetchRoomTiny({ id: room.id });
+            await Promise.all([
+                client.mutateRemoveFromContacts({ userId: isUser.id }),
+                client.refetchRoomTiny({ id: room.id })
+            ]);
             loader.hide();
             Toast.success({ duration: 1000 }).show();
         }
     }, []);
 
-    const onNotificationsPress = React.useCallback(() => {
+    const onNotificationsPress = React.useCallback(async () => {
         onMutedChange();
-
-        client.mutateRoomSettingsUpdate({ roomId: room.id, settings: { mute: !muted } });
-        client.refetchRoomTiny({ id: room.id });
+        await Promise.all([
+            client.mutateRoomSettingsUpdate({ roomId: room.id, settings: { mute: !muted } }),
+            client.refetchRoomTiny({ id: room.id })
+        ]);
     }, [muted, room.id]);
     const onSharedPress = React.useCallback(() => {
         router.push('SharedMedia', { chatId: room.id });

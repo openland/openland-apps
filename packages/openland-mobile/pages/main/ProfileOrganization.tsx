@@ -17,7 +17,6 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import {
     OrganizationMemberRole,
     Organization_organization,
-    OrganizationMembers_organization_members,
     OrganizationMembers_organization_members_user,
 } from 'openland-api/spacex.types';
 import { GroupView } from './components/GroupView';
@@ -31,70 +30,79 @@ import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { OrgMemberType } from './modals/MembersSearch';
+import { SDeferred } from 'react-native-s/SDeferred';
+import {
+    EntityMembersManager,
+    EntityMembersManagerRef,
+    OrgMember,
+} from 'openland-y-utils/members/EntityMembersManager';
 
-const PrivateProfile = React.memo((props: PageProps & { organization: Organization_organization }) => {
-    const { organization } = props;
-    const theme = React.useContext(ThemeContext);
-    const area = React.useContext(ASSafeAreaContext);
-    const typeString = organization.isCommunity ? 'Community' : 'Organization';
+const PrivateProfile = React.memo(
+    (props: PageProps & { organization: Organization_organization }) => {
+        const { organization } = props;
+        const theme = React.useContext(ThemeContext);
+        const area = React.useContext(ASSafeAreaContext);
+        const typeString = organization.isCommunity ? 'Community' : 'Organization';
 
-    return (
-        <View
-            flexGrow={1}
-            paddingTop={area.top}
-            paddingBottom={area.bottom + 16}
-            paddingHorizontal={32}
-            alignItems="center"
-            flexDirection="column"
-        >
-            <View flexGrow={1} justifyContent="center" alignItems="center">
-                <ZAvatar
-                    size="xx-large"
-                    photo={organization.photo}
-                    id={organization.id}
-                    title={organization.name}
-                />
-                <Text
-                    style={{
-                        color: theme.foregroundPrimary,
-                        marginTop: 16,
-                        textAlign: 'center',
-                        ...TextStyles.Title2,
-                    }}
-                    allowFontScaling={false}
-                >
-                    {organization.name}
-                </Text>
-                <Text
-                    style={{
-                        color: theme.foregroundTertiary,
-                        marginTop: 4,
-                        textAlign: 'center',
-                        ...TextStyles.Subhead,
-                    }}
-                    allowFontScaling={false}
-                >
-                    {typeString}
-                </Text>
+        return (
+            <View
+                flexGrow={1}
+                paddingTop={area.top}
+                paddingBottom={area.bottom + 16}
+                paddingHorizontal={32}
+                alignItems="center"
+                flexDirection="column"
+            >
+                <View flexGrow={1} justifyContent="center" alignItems="center">
+                    <ZAvatar
+                        size="xx-large"
+                        photo={organization.photo}
+                        id={organization.id}
+                        title={organization.name}
+                    />
+                    <Text
+                        style={{
+                            color: theme.foregroundPrimary,
+                            marginTop: 16,
+                            textAlign: 'center',
+                            ...TextStyles.Title2,
+                        }}
+                        allowFontScaling={false}
+                    >
+                        {organization.name}
+                    </Text>
+                    <Text
+                        style={{
+                            color: theme.foregroundTertiary,
+                            marginTop: 4,
+                            textAlign: 'center',
+                            ...TextStyles.Subhead,
+                        }}
+                        allowFontScaling={false}
+                    >
+                        {typeString}
+                    </Text>
+                </View>
+                <View flexShrink={1} flexDirection="row" alignItems="flex-end">
+                    <Text
+                        style={{
+                            color: theme.foregroundTertiary,
+                            textAlign: 'center',
+                            ...TextStyles.Caption,
+                        }}
+                        allowFontScaling={false}
+                    >
+                        You must be invited to view this community. Its creator made it private
+                    </Text>
+                </View>
             </View>
-            <View flexShrink={1} flexDirection="row" alignItems="flex-end">
-                <Text
-                    style={{
-                        color: theme.foregroundTertiary,
-                        textAlign: 'center',
-                        ...TextStyles.Caption,
-                    }}
-                    allowFontScaling={false}
-                >
-                    You must be invited to view this community. Its creator made it private
-                </Text>
-            </View>
-        </View>
-    );
-});
+        );
+    },
+);
 
 const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     const client = getClient();
+    const onlines = getMessenger().engine.getOnlines();
     const settings = client.useAccountSettings();
     const organization = client.useOrganization(
         { organizationId: props.router.params.id },
@@ -105,10 +113,8 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
         return <PrivateProfile {...props} organization={organization} />;
     }
 
-    const initialMembers = client.useOrganizationMembers(
-        { organizationId: props.router.params.id, first: 10 },
-        { fetchPolicy: 'network-only' },
-    ).organization.members;
+    const profilesRef = React.useRef<EntityMembersManagerRef>(null);
+
     const publicRooms = client.useOrganizationPublicRooms(
         {
             organizationId: props.router.params.id,
@@ -122,20 +128,20 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     const canMakePrimary =
         organization.isMine &&
         organization.id !==
-        (settings.me &&
-            settings.me.primaryOrganization &&
-            settings.me.primaryOrganization.id) &&
+            (settings.me &&
+                settings.me.primaryOrganization &&
+                settings.me.primaryOrganization.id) &&
         !organization.isCommunity;
     const canEdit = organization.isOwner || organization.isAdmin;
     const canLeave = organization.isMine;
     const showManageBtn = canMakePrimary || canEdit || canLeave;
     const typeString = organization.isCommunity ? 'community' : 'organization';
 
-    const [members, setMembers] = React.useState(initialMembers);
+    const [members, setMembers] = React.useState<OrgMember[]>([]);
     const [loading, setLoading] = React.useState(false);
 
     const handleAddMembers = React.useCallback(
-        (addedMembers: OrganizationMembers_organization_members[]) => {
+        (addedMembers: OrgMember[]) => {
             setMembers((current) => [...current, ...addedMembers]);
         },
         [members],
@@ -313,11 +319,11 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
 
     const handleMemberLongPress = React.useCallback(
         (
-            member: OrganizationMembers_organization_members,
+            member: OrgMember,
             callbacks?: {
-                onRoleChange: (memberId: string, role: OrganizationMemberRole) => void,
-                onKick: (memberId: string) => void,
-            }
+                onRoleChange: (memberId: string, role: OrganizationMemberRole) => void;
+                onKick: (memberId: string) => void;
+            },
         ) => {
             const { user } = member;
 
@@ -440,29 +446,13 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     );
 
     const handleLoadMore = React.useCallback(async () => {
-        if (members.length < organization.membersCount && !loading) {
-            setLoading(true);
-
-            const loaded = (
-                await client.queryOrganizationMembers(
-                    {
-                        organizationId: organization.id,
-                        first: 10,
-                        after: members[members.length - 1].user.id,
-                    },
-                    { fetchPolicy: 'network-only' },
-                )
-            ).organization.members;
-
-            setMembers((current) => [
-                ...current,
-                ...loaded.filter((m) => !current.find((m2) => m2.user.id === m.user.id)),
-            ]);
-            setLoading(false);
+        if (profilesRef.current) {
+            await profilesRef.current.handleLoadMore();
         }
-    }, [organization, members, loading]);
+    }, [members, loading]);
 
-    const shouldShowAddButton = organization.isMine && (organization.isAdmin || organization.membersCanInvite);
+    const shouldShowAddButton =
+        organization.isMine && (organization.isAdmin || organization.membersCanInvite);
 
     const content = (
         <>
@@ -509,13 +499,13 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 actionRight={
                     organization.roomsCount > 3
                         ? {
-                            title: 'See all',
-                            onPress: () =>
-                                props.router.push('ProfileOrganizationGroups', {
-                                    organizationId: organization.id,
-                                    title: organization.name,
-                                }),
-                        }
+                              title: 'See all',
+                              onPress: () =>
+                                  props.router.push('ProfileOrganizationGroups', {
+                                      organizationId: organization.id,
+                                      title: organization.name,
+                                  }),
+                          }
                         : undefined
                 }
             >
@@ -547,14 +537,17 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
             <ZListItem
                 text="Search members"
                 leftIcon={require('assets/ic-search-glyph-24.png')}
-                onPress={() => Modals.showOrgMembersSearch({
-                    router: props.router,
-                    orgId: organization.id,
-                    membersCount: organization.membersCount,
-                    initialMembers: members,
-                    onPress: (member: OrgMemberType) => props.router.push('ProfileUser', { id: member.user.id }),
-                    onLongPress: handleMemberLongPress,
-                })}
+                onPress={() =>
+                    Modals.showOrgMembersSearch({
+                        router: props.router,
+                        orgId: organization.id,
+                        membersCount: organization.membersCount,
+                        initialMembers: members,
+                        onPress: (member: OrgMemberType) =>
+                            props.router.push('ProfileUser', { id: member.user.id }),
+                        onLongPress: handleMemberLongPress,
+                    })
+                }
             />
         </>
     );
@@ -582,6 +575,21 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 onEndReached={() => handleLoadMore()}
                 refreshing={loading}
             />
+            <React.Suspense fallback={null}>
+                <SDeferred>
+                    <EntityMembersManager
+                        isGroup={false}
+                        loading={loading}
+                        members={members}
+                        membersCount={organization.membersCount}
+                        entityId={organization.id}
+                        setLoading={setLoading}
+                        setMembers={setMembers}
+                        ref={profilesRef}
+                        onlineWatcher={onlines}
+                    />
+                </SDeferred>
+            </React.Suspense>
         </>
     );
 });

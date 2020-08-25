@@ -288,7 +288,7 @@ export const AddMembersModal = React.memo(
         let canAddPeople = true;
 
         if (isGroup) {
-            data = client.useRoomMembersShort({ roomId: id });
+            data = client.useRoomMembersShort({ roomId: id }, { fetchPolicy: 'network-only' });
             const chat = client.useRoomChat({ id: id }).room!;
             const sharedRoom = chat.__typename === 'SharedRoom' && chat;
             isPremium = sharedRoom && sharedRoom.isPremium;
@@ -299,7 +299,7 @@ export const AddMembersModal = React.memo(
             }
 
         } else if (isOrganization) {
-            data = client.useOrganizationMembersShort({ organizationId: id });
+            data = client.useOrganizationMembersShort({ organizationId: id }, { fetchPolicy: 'network-only' });
         }
 
         return (

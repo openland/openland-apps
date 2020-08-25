@@ -15,158 +15,140 @@ import { UListText } from 'openland-web/components/unicorn/UListText';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import MoreHIcon from 'openland-icons/s/ic-more-h-24.svg';
 import { CreateGroupButton } from './components/CreateGroupButton';
-import { OrganizationMembers_organization_members, OrganizationMemberRole, UserShort } from 'openland-api/spacex.types';
+import {
+    OrganizationMembers_organization_members,
+    OrganizationMemberRole,
+} from 'openland-api/spacex.types';
 import { PrivateCommunityView } from '../settings/components/PrivateCommunityView';
-import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
-import { css, cx } from 'linaria';
 import { debounce } from 'openland-y-utils/timer';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
-import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
-
-const membersSearchStyle = css`
-    width: 160px;
-    will-change: width;
-    transition: width 0.15s ease;
-
-    &:focus-within {
-        width: 240px;
-    }
-`;
-
-const membersSearchFilledStyle = css`
-    width: 240px;
-`;
-
-const MembersSearchInput = (props: {
-    query: string,
-    loading: boolean,
-    onChange: (v: string) => void,
-}) => {
-    const { query, loading, onChange } = props;
-    const searchInputRef = React.useRef<USearchInputRef>(null);
-    const [searchFocused, setSearchFocused] = React.useState(false);
-    useShortcuts({
-        keys: ['Escape'],
-        callback: () => {
-            if (searchFocused) {
-                onChange('');
-                searchInputRef.current?.blur();
-                return true;
-            }
-            return false;
-        },
-    });
-
-    return (
-        <div className={cx(membersSearchStyle, query.length > 0 && membersSearchFilledStyle)}>
-            <USearchInput
-                ref={searchInputRef}
-                placeholder="Search"
-                rounded={true}
-                value={query}
-                loading={loading}
-                onChange={onChange}
-                onFocus={() => setSearchFocused(true)}
-                onBlur={() => setSearchFocused(false)}
-            />
-        </div>
-    );
-};
-
-export type OrganizationMember = {
-    role: OrganizationMemberRole,
-    user: UserShort,
-};
+import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { MembersSearchInput } from 'openland-web/components/MembersSearchInput';
+import {
+    EntityMembersManager,
+    EntityMembersManagerRef,
+    OrgMember,
+} from 'openland-y-utils/members/EntityMembersManager';
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
-    const organization = client.useOrganization({ organizationId: props.id }, { fetchPolicy: 'cache-and-network' }).organization;
+    const onlines = React.useContext(MessengerContext).getOnlines();
+
+    const organization = client.useOrganization(
+        { organizationId: props.id },
+        { fetchPolicy: 'cache-and-network' },
+    ).organization;
+
+    const profilesRef = React.useRef<EntityMembersManagerRef>(null);
+
     if (!organization.isMine && organization.private) {
         return <PrivateCommunityView organization={organization} />;
     }
 
-    const initialMembers = client.useOrganizationMembers({ organizationId: props.id, first: 15 }, { fetchPolicy: 'cache-and-network' }).organization.members;
-    const { id, name, photo, about, shortname, website, twitter, facebook, membersCount, isCommunity,
-        linkedin, instagram, isMine, roomsCount } = organization;
+    const {
+        id,
+        name,
+        photo,
+        about,
+        shortname,
+        website,
+        twitter,
+        facebook,
+        membersCount,
+        isCommunity,
+        linkedin,
+        instagram,
+        isMine,
+        roomsCount,
+    } = organization;
 
-    const [members, setMembers] = React.useState<OrganizationMember[]>(initialMembers);
-    const [loading, setLoading] = React.useState(false);
-    const [membersQuery, setMembersQuery] = React.useState('');
-    const [membersFetching, setMembersFetching] = React.useState({ loading: 0, hasNextPage: true, cursor: '' });
     const membersQueryRef = React.useRef('');
     const [hasSearched, setHasSearched] = React.useState(false);
+    const [initialMembers, setInitialMembers] = React.useState<OrgMember[]>([]);
+    const [members, setMembers] = React.useState<OrgMember[]>([]);
+    const [loading, setLoading] = React.useState(true);
+    const [membersQuery, setMembersQuery] = React.useState('');
+    const [membersFetching, setMembersFetching] = React.useState({
+        loading: 0,
+        hasNextPage: true,
+        cursor: '',
+    });
 
     const loadSearchMembers = async (reseted?: boolean) => {
         let query = membersQueryRef.current;
-        setMembersFetching(prev => ({ ...prev, loading: prev.loading + 1 }));
-        const { edges, pageInfo } = (await client.queryOrganizationMembersSearch({
-            orgId: id,
-            query,
-            first: 10,
-            after: reseted ? undefined : membersFetching.cursor
-        },
-            { fetchPolicy: 'network-only' }
-        )).orgMembersSearch;
+        setMembersFetching((prev) => ({ ...prev, loading: prev.loading + 1 }));
+        const { edges, pageInfo } = (
+            await client.queryOrganizationMembersSearch(
+                {
+                    orgId: id,
+                    query,
+                    first: 10,
+                    after: reseted ? undefined : membersFetching.cursor,
+                },
+                { fetchPolicy: 'network-only' },
+            )
+        ).orgMembersSearch;
         // avoid race condition
         if (membersQueryRef.current.length === 0) {
             return;
         }
-        setMembers(prev => reseted ? edges.map(x => x.node) : prev.concat(edges.map(x => x.node)));
-        setMembersFetching(prev => ({
+        setMembers((prev) =>
+            reseted ? edges.map((x) => x.node) : prev.concat(edges.map((x) => x.node)),
+        );
+        setMembersFetching((prev) => ({
             loading: Math.max(prev.loading - 1, 0),
             hasNextPage: pageInfo.hasNextPage,
-            cursor: edges.length === 0 ? '' : edges[edges.length - 1].cursor
+            cursor: edges.length === 0 ? '' : edges[edges.length - 1].cursor,
         }));
         setHasSearched(true);
     };
 
-    let handleSearchChange = React.useCallback(debounce(async (val: string) => {
-        setMembersQuery(val);
+    let handleSearchChange = React.useCallback(
+        debounce(async (val: string) => {
+            setMembersQuery(val);
 
-        membersQueryRef.current = val;
-        if (val.length > 0) {
-            loadSearchMembers(true);
-        } else {
-            setMembers(initialMembers);
-            setMembersFetching({
-                loading: 0,
-                hasNextPage: true,
-                cursor: '',
-            });
-            setHasSearched(false);
-            // refetch in case someone is removed
-            let initial = (await client.queryOrganizationMembers(
-                { organizationId: props.id, first: 15 },
-                { fetchPolicy: 'network-only' },
-            )).organization.members;
-            setMembers(initial);
-        }
-    }, 100), [initialMembers]);
+            membersQueryRef.current = val;
+            if (val.length > 0) {
+                await loadSearchMembers(true);
+            } else {
+                setMembers(initialMembers);
+                setMembersFetching({
+                    loading: 0,
+                    hasNextPage: true,
+                    cursor: '',
+                });
+                setHasSearched(false);
+                // refetch in case someone is removed
+                let initial = (
+                    await client.queryOrganizationMembers(
+                        { organizationId: props.id, first: 15 },
+                        { fetchPolicy: 'network-only' },
+                    )
+                ).organization.members;
+                setMembers(initial);
+            }
+        }, 100),
+        [initialMembers],
+    );
 
     const handleLoadMore = React.useCallback(async () => {
         if (membersQueryRef.current.length > 0) {
             if (!membersFetching.loading && membersFetching.hasNextPage) {
-                loadSearchMembers();
+                await loadSearchMembers();
             }
             return;
         }
 
-        if (members.length < membersCount && !loading) {
-            setLoading(true);
-
-            const loaded = (await client.queryOrganizationMembers({
-                organizationId: organization.id,
-                first: 10,
-                after: members[members.length - 1].user.id,
-            }, { fetchPolicy: 'network-only' })).organization.members;
-
-            setMembers(current => [...current, ...loaded.filter(m => !current.find(m2 => m2.user.id === m.user.id))]);
-            setLoading(false);
+        if (profilesRef.current) {
+            await profilesRef.current.handleLoadMore();
         }
-    }, [membersCount, members, loading, membersFetching]);
+    }, [membersCount, members, loading, membersQuery, membersFetching]);
 
-    const initialGroups = client.useOrganizationPublicRooms({ organizationId: props.id, first: 10 }, { fetchPolicy: 'cache-and-network' }).organizationPublicRooms;
+    const initialGroups = client.useOrganizationPublicRooms(
+        { organizationId: props.id, first: 10 },
+        { fetchPolicy: 'cache-and-network' },
+    ).organizationPublicRooms;
     const [displayGroups, setDisplayGroups] = React.useState(initialGroups.items);
     const [groupsAfter, setGroupsAfter] = React.useState(initialGroups.cursor);
     const [groupsLoading, setGroupsLoading] = React.useState(false);
@@ -178,31 +160,48 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
         }
         setGroupsLoading(true);
         const first = groupsOpenedCount === 2 ? roomsCount - 20 : 10;
-        const loaded = await client.queryOrganizationPublicRooms({ organizationId: props.id, first, after: groupsAfter });
+        const loaded = await client.queryOrganizationPublicRooms({
+            organizationId: props.id,
+            first,
+            after: groupsAfter,
+        });
         const { items, cursor } = loaded.organizationPublicRooms;
         setGroupsAfter(cursor);
-        setDisplayGroups(prev => prev.concat(items));
-        setGroupsOpenedCount(prev => prev + 1);
+        setDisplayGroups((prev) => prev.concat(items));
+        setGroupsOpenedCount((prev) => prev + 1);
         setGroupsLoading(false);
     }, [props.id, groupsAfter, groupsLoading, displayGroups, roomsCount]);
 
-    const handleAddMembers = React.useCallback((addedMembers: OrganizationMembers_organization_members[]) => {
-        setMembers(current => [...current, ...addedMembers]);
-    }, [members]);
+    const handleAddMembers = React.useCallback(
+        (addedMembers: OrganizationMembers_organization_members[]) => {
+            setMembers((current) => [...current, ...addedMembers]);
+            onlines.onUsersAppear(addedMembers.map((m) => m.user.id));
+        },
+        [members],
+    );
 
-    const handleRemoveMember = React.useCallback((memberId: string) => {
-        setMembers(current => current.filter(m => m.user.id !== memberId));
-    }, [members]);
+    const handleRemoveMember = React.useCallback(
+        (memberId: string) => {
+            setMembers((current) => current.filter((m) => m.user.id !== memberId));
+        },
+        [members],
+    );
 
-    const handleChangeMemberRole = React.useCallback((memberId: string, newRole: OrganizationMemberRole) => {
-        setMembers(current => current.map(m => m.user.id === memberId ? { ...m, role: newRole } : m));
-    }, [members]);
+    const handleChangeMemberRole = React.useCallback(
+        (memberId: string, newRole: OrganizationMemberRole) => {
+            setMembers((current) =>
+                current.map((m) => (m.user.id === memberId ? { ...m, role: newRole } : m)),
+            );
+        },
+        [members],
+    );
 
     const isSearching = membersQuery.length > 0;
     // compensate "add people" button and empty view when searching
     const heightCompensation = hasSearched ? (members.length === 0 ? -32 : 56) : 0;
 
-    const shouldShowAddButton = organization.isMine && (organization.isAdmin || organization.membersCanInvite);
+    const shouldShowAddButton =
+        organization.isMine && (organization.isAdmin || organization.membersCanInvite);
 
     return (
         <UFlatList
@@ -212,7 +211,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
             loading={loading || (isSearching && membersFetching.loading > 0 && members.length > 15)}
             title={name}
             listMinHeight={Math.min(56 * membersCount + heightCompensation, 700)}
-            renderItem={member => (
+            renderItem={(member) => (
                 <UUserView
                     key={'member-' + member.user.id + '-' + member.role}
                     user={member.user}
@@ -243,10 +242,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                         label="Shortname"
                         value={
                             <div>
-                                <a
-                                    href={'https://openland.com/' + shortname}
-                                    target="_blank"
-                                >
+                                <a href={'https://openland.com/' + shortname} target="_blank">
                                     @{shortname}
                                 </a>
                             </div>
@@ -261,11 +257,8 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
             </UListGroup>
             <UListGroup header="Groups" counter={roomsCount}>
                 {isMine && <CreateGroupButton id={id} />}
-                {displayGroups.map(group => (
-                    <UGroupView
-                        key={'room-' + group.id}
-                        group={group}
-                    />
+                {displayGroups.map((group) => (
+                    <UGroupView key={'room-' + group.id} group={group} />
                 ))}
                 {displayGroups.length !== roomsCount && (
                     <UListItem
@@ -280,14 +273,14 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
             </UListGroup>
             <UListHeader
                 text="Members"
-                counter={hasSearched ? undefined : (membersCount || 0)}
-                rightElement={(
+                counter={hasSearched ? undefined : membersCount || 0}
+                rightElement={
                     <MembersSearchInput
                         query={membersQuery}
                         loading={membersFetching.loading > 0}
                         onChange={handleSearchChange}
                     />
-                )}
+                }
             />
             {shouldShowAddButton && !hasSearched && (
                 <UAddItem
@@ -298,16 +291,36 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                             isCommunity,
                             isGroup: false,
                             isOrganization: true,
-                            onOrganizationMembersAdd: handleAddMembers
+                            onOrganizationMembersAdd: handleAddMembers,
                         });
                     }}
                 />
             )}
             {members.length === 0 && isSearching && (
-                <XView paddingTop={32} paddingBottom={32} alignItems="center" {...TextStyles.Body} color="var(--foregroundSecondary)">
+                <XView
+                    paddingTop={32}
+                    paddingBottom={32}
+                    alignItems="center"
+                    {...TextStyles.Body}
+                    color="var(--foregroundSecondary)"
+                >
                     Nobody found
                 </XView>
             )}
+            <React.Suspense fallback={null}>
+                <EntityMembersManager
+                    isGroup={false}
+                    loading={loading}
+                    members={members}
+                    membersCount={membersCount}
+                    entityId={id}
+                    setLoading={setLoading}
+                    setMembers={setMembers}
+                    setInitialMembers={setInitialMembers}
+                    onlineWatcher={onlines}
+                    ref={profilesRef}
+                />
+            </React.Suspense>
         </UFlatList>
     );
 });
