@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import IcClose from '../openland-icons/s/ic-close-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import { TextLabel1, TextLabel2 } from 'openland-web/utils/TextStyles';
+import { TextLabel2, TextTitle3 } from 'openland-web/utils/TextStyles';
 import { defaultHover } from 'openland-web/utils/Styles';
 import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 import { useLayout } from './components/utils/LayoutContext';
@@ -37,9 +37,7 @@ const iconContainerClass = css`
 `;
 
 const bannerTextClass = css`
-    color: #171a1f;
-    line-height: 24px;
-    font-size: 17px;
+    color: var(--foregroundPrimary);
     margin-bottom: 16px;
 `;
 
@@ -58,18 +56,9 @@ const bannerContentWrapper = css`
     width: 400px;
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.08), 0px 0px 48px rgba(0, 0, 0, 0.04);
     border-radius: 12px;
-    background-color: #fff;
+    background-color: var(--backgroundPrimary);
     padding: 24px;
     position: relative;
-`;
-
-const bannerMobileApps = css`
-`;
-
-const bannerNotification = css`
-`;
-
-const bannerUpdate = css`
 `;
 
 const BannerContainer = (props: { onClosePress?: () => void; banner?: any }) => {
@@ -77,7 +66,7 @@ const BannerContainer = (props: { onClosePress?: () => void; banner?: any }) => 
         <div className={bannerContainerClass}>
             <div className={bannerContentWrapper}>
                 <div onClick={props.onClosePress} className={cx(iconContainerClass, defaultHover)}>
-                    <UIcon color="#C8C9CC" icon={<IcClose />} />
+                    <UIcon color="var(--foregroundQuaternary)" icon={<IcClose />} />
                 </div>
                 {props.banner}
             </div>
@@ -86,12 +75,12 @@ const BannerContainer = (props: { onClosePress?: () => void; banner?: any }) => 
 };
 
 const bannerButtonContainer = css`
-    background-color: #F2F3F5;
+    background-color: var(--backgroundTertiaryTrans);
     cursor: pointer;
     display: flex;
     align-items: center;
     height: 32px;
-    color: #71747A;
+    color: var(--foregroundSecondary);
     border-radius: 100px;
     padding: 8px 16px;
     & > div {
@@ -99,8 +88,8 @@ const bannerButtonContainer = css`
     }
     &:hover {
         text-decoration: none;
-        color: #71747A;
-        background-color: #E8EAED;
+        color: var(--foregroundSecondary);
+        background-color: var(--backgroundTertiaryHoverTrans);
     }
 `;
 
@@ -116,7 +105,7 @@ const BannerButton = (props: {
             className={bannerButtonContainer}
             onClick={props.onClick}
         >
-            {props.icon && <UIcon icon={props.icon} color="#71747A" />}
+            {props.icon && <UIcon icon={props.icon} color="var(--foregroundSecondary)" />}
             <span className={TextLabel2}>{props.text}</span>
         </a>
     );
@@ -149,8 +138,8 @@ const MobileAppsBanner = () => {
     }, []);
 
     return (
-        <div className={bannerMobileApps}>
-            <div className={cx(TextLabel1, bannerTextClass)}>Install Openland apps</div>
+        <div>
+            <div className={cx(TextTitle3, bannerTextClass)}>Install Openland apps</div>
             <div className={buttonsContainer}>
                 {os &&
                     ['Mac', 'Windows', 'Linux'].includes(os) && (
@@ -213,8 +202,8 @@ const NotificationsBanner = () => {
     }, []);
 
     return (
-        <div className={bannerNotification}>
-            <div className={cx(TextLabel1, bannerTextClass)}>Get Openland notifications</div>
+        <div>
+            <div className={cx(TextTitle3, bannerTextClass)}>Get Openland notifications</div>
             <div className={buttonsContainer}>
                 <BannerButton text="Turn on" onClick={onPress} />
             </div>
@@ -256,8 +245,8 @@ const UpdateBanner = () => {
     }, []);
 
     return (
-        <div className={bannerUpdate}>
-            <div className={cx(TextLabel1, bannerTextClass)}>A new version of Openland is available</div>
+        <div>
+            <div className={cx(TextTitle3, bannerTextClass)}>A new version of Openland is available</div>
             <div className={buttonsContainer}>
                 <BannerButton text={isElectron ? 'Update' : 'Refresh'} onClick={onPress} />
             </div>
