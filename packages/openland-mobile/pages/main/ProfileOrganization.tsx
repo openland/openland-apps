@@ -325,7 +325,10 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 onKick: (memberId: string) => void;
             },
         ) => {
-            const { user } = member;
+            const { isOwner, isAdmin } = organization;
+            const { user, role } = member;
+
+            const adminPermissions = (isOwner || isAdmin) && role !== OrganizationMemberRole.OWNER;
 
             let builder = new ActionSheetBuilder();
 
@@ -338,7 +341,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 );
             }
 
-            if (user.id !== myUserID && organization.isOwner) {
+            if (user.id !== myUserID && adminPermissions) {
                 builder.action(
                     member.role === 'MEMBER' ? 'Make admin' : 'Dismiss as admin',
                     () => {
@@ -412,7 +415,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 );
             }
 
-            if (canEdit && user.id !== myUserID) {
+            if (user.id !== myUserID && adminPermissions) {
                 builder.action(
                     `Remove from ${typeString}`,
                     () => {

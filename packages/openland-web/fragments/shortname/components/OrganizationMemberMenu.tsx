@@ -32,9 +32,11 @@ const getMenuContent = (opts: MenuContentOpts) => {
     const { id, name, isOwner, isAdmin, isCommunity } = organization;
     const { user, role } = memberRef.current;
 
+    const adminPermissions = (isOwner || isAdmin) && role !== OrganizationMemberRole.OWNER;
+
     const typeString = isCommunity ? 'community' : 'organization';
 
-    if (user.id !== engine.user.id && isOwner) {
+    if (user.id !== engine.user.id && adminPermissions) {
         res.push({
             title: role === 'MEMBER' ? 'Make admin' : 'Revoke admin status',
             icon: <CrownIcon />,
@@ -88,7 +90,7 @@ const getMenuContent = (opts: MenuContentOpts) => {
         });
     }
 
-    if (user.id !== engine.user.id && (isOwner || isAdmin) && role !== OrganizationMemberRole.OWNER) {
+    if (user.id !== engine.user.id && adminPermissions) {
         res.push({
             title: `Remove from ${typeString}`,
             icon: <LeaveIcon />,
