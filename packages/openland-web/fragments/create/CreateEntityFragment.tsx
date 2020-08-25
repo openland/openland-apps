@@ -23,6 +23,8 @@ import BackIcon from 'openland-icons/s/ic-back-24.svg';
 import CloseIcon from 'openland-icons/s/ic-close-24.svg';
 import { XModalController } from 'openland-x/showModal';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { useTabRouter } from 'openland-unicorn/components/TabLayout';
+import { useRole } from 'openland-x-permissions/XWithRole';
 
 const rootContainer = css`
     display: flex;
@@ -484,7 +486,8 @@ interface CreateEntityGroupProps {
 const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) => {
     const [people, setPeople] = React.useState<Map<string, string> | null>(null);
 
-    const router = React.useContext(XViewRouterContext)!;
+    const isSuperAdmin = useRole('super-admin');
+    const router = useTabRouter();
     const client = useClient();
     const form = useForm();
 
@@ -558,11 +561,21 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
         ).room;
 
         if (props.inOrgId) {
-            await client.refetchOrganization({ organizationId: props.inOrgId });
+            await Promise.all([
+                client.refetchOrganization({ organizationId: props.inOrgId }),
+                client.refetchOrganizationPublicRooms({ organizationId: props.inOrgId, first: 10 }),
+            ]);
+            props.ctx.hide();
+            router.router.stacks[isSuperAdmin ? 4 : 3].reset('/settings/communities');
+            router.setTab(isSuperAdmin ? 3 : 2);
+            setTimeout(() => {
+                router.router.navigate('/mail/' + group.id);
+            }, 20);
+            return;
         }
 
         props.ctx.hide();
-        router.navigate('/mail/' + group.id);
+        router.router.navigate('/mail/' + group.id);
     };
 
     return (

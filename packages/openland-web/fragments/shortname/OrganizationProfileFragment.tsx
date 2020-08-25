@@ -147,7 +147,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
 
     const initialGroups = client.useOrganizationPublicRooms(
         { organizationId: props.id, first: 10 },
-        { fetchPolicy: 'cache-and-network' },
+        { fetchPolicy: 'network-only' },
     ).organizationPublicRooms;
     const [displayGroups, setDisplayGroups] = React.useState(initialGroups.items);
     const [groupsAfter, setGroupsAfter] = React.useState(initialGroups.cursor);
@@ -164,7 +164,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
             organizationId: props.id,
             first,
             after: groupsAfter,
-        });
+        }, { fetchPolicy: 'network-only' });
         const { items, cursor } = loaded.organizationPublicRooms;
         setGroupsAfter(cursor);
         setDisplayGroups((prev) => prev.concat(items));
