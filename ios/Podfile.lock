@@ -77,7 +77,6 @@ PODS:
   - PINRemoteImage/PINCache (3.0.0-beta.13):
     - PINCache (= 3.0.1-beta.6)
     - PINRemoteImage/Core
-  - QBImagePickerController (3.4.0)
   - RCTRequired (0.61.2)
   - RCTRestart (0.0.8):
     - React
@@ -342,18 +341,21 @@ PODS:
   - RNGoogleSignin (3.0.3):
     - GoogleSignIn (~> 5.0.0)
     - React
-  - RNImageCropPicker (0.26.2):
-    - QBImagePickerController
+  - RNImageCropPicker (0.33.2):
     - React-Core
     - React-RCTImage
-    - RSKImageCropper
+    - RNImageCropPicker/QBImagePickerController (= 0.33.2)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.33.2):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNLocalize (1.4.0):
     - React
   - RNRate (1.0.1):
     - React
   - RNShare (2.0.0):
     - React
-  - RSKImageCropper (2.2.3)
   - SDWebImage (5.7.3):
     - SDWebImage/Core (= 5.7.3)
   - SDWebImage/Core (5.7.3)
@@ -370,6 +372,7 @@ PODS:
     - PINRemoteImage/iOS (= 3.0.0-beta.13)
     - PINRemoteImage/PINCache
     - Texture/Core
+  - TOCropViewController (2.5.4)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -386,7 +389,6 @@ DEPENDENCIES:
   - GoogleSignIn (~> 5.0.0)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - ObjectiveRocks (~> 0.9)
-  - QBImagePickerController (from `../node_modules/react-native-image-crop-picker/ios/QBImagePicker/QBImagePickerController.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTRestart (from `../node_modules/react-native-restart/ios`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -461,12 +463,12 @@ SPEC REPOS:
     - PINOperation
     - PINRemoteImage
     - ReachabilitySwift
-    - RSKImageCropper
     - SDWebImage
     - SDWebImageWebPCoder
     - Starscream
     - Stripe
     - SwiftyJSON
+    - TOCropViewController
 
 EXTERNAL SOURCES:
   BVLinearGradient:
@@ -483,8 +485,6 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
-  QBImagePickerController:
-    :path: "../node_modules/react-native-image-crop-picker/ios/QBImagePicker/QBImagePickerController.podspec"
   RCTRequired:
     :path: "../node_modules/react-native/Libraries/RCTRequired"
   RCTRestart:
@@ -613,7 +613,6 @@ SPEC CHECKSUMS:
   PINCache: d195fdba255283f7e9900a55e3cced377f431f9b
   PINOperation: 24b774353ca248fcf87d67b2d61eef42087c125a
   PINRemoteImage: d6d51c5d2adda55f1ce30c96e850b6c4ebd2856a
-  QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   RCTRequired: c639d59ed389cfb1f1203f65c2ea946d8ec586e2
   RCTRestart: 550203a210a1df35f587856a79d35f5813c6909d
   RCTTypeSafety: dc23fb655d6c77667c78e327bf661bc11e3b8aec
@@ -659,19 +658,19 @@ SPEC CHECKSUMS:
   RNFastImage: 9b0c22643872bb7494c8d87bbbb66cc4c0d9e7a2
   RNGestureHandler: 02905abe54e1f6e59c081a10b4bd689721e17aa6
   RNGoogleSignin: a10b849c165088c737d4465de6c2062f24d06002
-  RNImageCropPicker: 9d1a7eea4f8368fc479cbd2bf26459bd3c74d9aa
+  RNImageCropPicker: 82f4caef16a37c07cbb0171be95aa5584f99bd9d
   RNLocalize: b6df30cc25ae736d37874f9bce13351db2f56796
   RNRate: 29be49c24b314c4e8ec09d848c3965f61cb0be47
   RNShare: 8b171d4b43c1d886917fdd303bf7a4b87167b05c
-  RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a
   SDWebImage: 97351f6582ceca541ea294ba66a1fcb342a331c2
   SDWebImageWebPCoder: 947093edd1349d820c40afbd9f42acb6cdecd987
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   Stripe: d481c2dab9a892fd923f097f854661217f70dc7f
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
+  TOCropViewController: 2a1ae1242600b1f2d996fd91a5268b2309a33b5c
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: 32bea7ea4ed90f72125ec8c8b99f96de0e1870f3
+PODFILE CHECKSUM: 7ce88e05b5bc07d0a6bc20616240b075b5c6f167
 
 COCOAPODS: 1.9.1
