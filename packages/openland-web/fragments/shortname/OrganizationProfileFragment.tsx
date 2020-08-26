@@ -31,6 +31,58 @@ import {
     OrgMember,
 } from 'openland-y-utils/members/EntityMembersManager';
 
+const OrganizationGroups = React.memo((props: { id: string; roomsCount: number }) => {
+    const client = useClient();
+    const { id, roomsCount } = props;
+    const initialGroups = client.useOrganizationPublicRooms(
+        { organizationId: id, first: 10 },
+        { fetchPolicy: 'network-only' },
+    ).organizationPublicRooms;
+    const [displayGroups, setDisplayGroups] = React.useState(initialGroups.items);
+    const [groupsAfter, setGroupsAfter] = React.useState(initialGroups.cursor);
+    const [groupsLoading, setGroupsLoading] = React.useState(false);
+    const [groupsOpenedCount, setGroupsOpenedCount] = React.useState(0);
+
+    const handleLoadMoreGroups = React.useCallback(async () => {
+        if (groupsLoading || !groupsAfter) {
+            return;
+        }
+        setGroupsLoading(true);
+        const first = groupsOpenedCount === 2 ? roomsCount - 20 : 10;
+        const loaded = await client.queryOrganizationPublicRooms(
+            {
+                organizationId: id,
+                first,
+                after: groupsAfter,
+            },
+            { fetchPolicy: 'network-only' },
+        );
+        const { items, cursor } = loaded.organizationPublicRooms;
+        setGroupsAfter(cursor);
+        setDisplayGroups((prev) => prev.concat(items));
+        setGroupsOpenedCount((prev) => prev + 1);
+        setGroupsLoading(false);
+    }, [groupsAfter, groupsLoading, displayGroups]);
+
+    return (
+        <>
+            {displayGroups.map((group) => (
+                <UGroupView key={'room-' + group.id} group={group} />
+            ))}
+            {displayGroups.length !== roomsCount && (
+                <UListItem
+                    title={groupsOpenedCount < 2 ? 'Show more' : 'Show all'}
+                    icon={<MoreHIcon />}
+                    iconColor="var(--foregroundSecondary)"
+                    iconBackground="var(--backgroundTertiary)"
+                    useRadius={true}
+                    onClick={handleLoadMoreGroups}
+                />
+            )}
+        </>
+    );
+});
+
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
     const onlines = React.useContext(MessengerContext).getOnlines();
@@ -145,33 +197,6 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
         }
     }, [membersCount, members, loading, membersQuery, membersFetching]);
 
-    const initialGroups = client.useOrganizationPublicRooms(
-        { organizationId: props.id, first: 10 },
-        { fetchPolicy: 'network-only' },
-    ).organizationPublicRooms;
-    const [displayGroups, setDisplayGroups] = React.useState(initialGroups.items);
-    const [groupsAfter, setGroupsAfter] = React.useState(initialGroups.cursor);
-    const [groupsLoading, setGroupsLoading] = React.useState(false);
-    const [groupsOpenedCount, setGroupsOpenedCount] = React.useState(0);
-
-    const handleLoadMoreGroups = React.useCallback(async () => {
-        if (groupsLoading || !groupsAfter) {
-            return;
-        }
-        setGroupsLoading(true);
-        const first = groupsOpenedCount === 2 ? roomsCount - 20 : 10;
-        const loaded = await client.queryOrganizationPublicRooms({
-            organizationId: props.id,
-            first,
-            after: groupsAfter,
-        }, { fetchPolicy: 'network-only' });
-        const { items, cursor } = loaded.organizationPublicRooms;
-        setGroupsAfter(cursor);
-        setDisplayGroups((prev) => prev.concat(items));
-        setGroupsOpenedCount((prev) => prev + 1);
-        setGroupsLoading(false);
-    }, [props.id, groupsAfter, groupsLoading, displayGroups, roomsCount]);
-
     const handleAddMembers = React.useCallback(
         (addedMembers: OrganizationMembers_organization_members[]) => {
             setMembers((current) => [...current, ...addedMembers]);
@@ -255,59 +280,47 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 {!!facebook && <UListField label="Facebook" value={facebook} />}
                 {!!linkedin && <UListField label="LinkedIn" value={linkedin} />}
             </UListGroup>
-            <UListGroup header="Groups" counter={roomsCount}>
-                {isMine && <CreateGroupButton id={id} />}
-                {displayGroups.map((group) => (
-                    <UGroupView key={'room-' + group.id} group={group} />
-                ))}
-                {displayGroups.length !== roomsCount && (
-                    <UListItem
-                        title={groupsOpenedCount < 2 ? 'Show more' : 'Show all'}
-                        icon={<MoreHIcon />}
-                        iconColor="var(--foregroundSecondary)"
-                        iconBackground="var(--backgroundTertiary)"
-                        useRadius={true}
-                        onClick={handleLoadMoreGroups}
+            <React.Suspense fallback={null}>
+                <UListGroup header="Groups" counter={roomsCount}>
+                    {isMine && <CreateGroupButton id={id} />}
+                    <OrganizationGroups id={id} roomsCount={roomsCount} />
+                </UListGroup>
+                <UListHeader
+                    text="Members"
+                    counter={hasSearched ? undefined : membersCount || 0}
+                    rightElement={
+                        <MembersSearchInput
+                            query={membersQuery}
+                            loading={membersFetching.loading > 0}
+                            onChange={handleSearchChange}
+                        />
+                    }
+                />
+                {shouldShowAddButton && !hasSearched && (
+                    <UAddItem
+                        title="Add people"
+                        onClick={() => {
+                            showAddMembersModal({
+                                id,
+                                isCommunity,
+                                isGroup: false,
+                                isOrganization: true,
+                                onOrganizationMembersAdd: handleAddMembers,
+                            });
+                        }}
                     />
                 )}
-            </UListGroup>
-            <UListHeader
-                text="Members"
-                counter={hasSearched ? undefined : membersCount || 0}
-                rightElement={
-                    <MembersSearchInput
-                        query={membersQuery}
-                        loading={membersFetching.loading > 0}
-                        onChange={handleSearchChange}
-                    />
-                }
-            />
-            {shouldShowAddButton && !hasSearched && (
-                <UAddItem
-                    title="Add people"
-                    onClick={() => {
-                        showAddMembersModal({
-                            id,
-                            isCommunity,
-                            isGroup: false,
-                            isOrganization: true,
-                            onOrganizationMembersAdd: handleAddMembers,
-                        });
-                    }}
-                />
-            )}
-            {members.length === 0 && isSearching && (
-                <XView
-                    paddingTop={32}
-                    paddingBottom={32}
-                    alignItems="center"
-                    {...TextStyles.Body}
-                    color="var(--foregroundSecondary)"
-                >
-                    Nobody found
-                </XView>
-            )}
-            <React.Suspense fallback={null}>
+                {members.length === 0 && isSearching && (
+                    <XView
+                        paddingTop={32}
+                        paddingBottom={32}
+                        alignItems="center"
+                        {...TextStyles.Body}
+                        color="var(--foregroundSecondary)"
+                    >
+                        Nobody found
+                    </XView>
+                )}
                 <EntityMembersManager
                     isGroup={false}
                     loading={loading}

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Organization_organization } from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
-import { showLeaveConfirmation } from 'openland-web/fragments/org/showLeaveConfirmation';
 import { showEditCommunityModal } from 'openland-web/fragments/settings/components/showEditCommunityModal';
 import { useRole } from 'openland-x-permissions/XWithRole';
 import copy from 'copy-to-clipboard';
@@ -16,6 +15,34 @@ import AlertBlanket from 'openland-x/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
 import { useStackRouter, StackRouter } from 'openland-unicorn/components/StackRouter';
 import { useToast, UToastHandlers } from 'openland-web/components/unicorn/UToast';
+import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
+import { MessengerEngine } from 'openland-engines/MessengerEngine';
+
+export const showLeaveConfirmation = (organization: Organization_organization, messenger: MessengerEngine, onLeave: (id: string) => void) => {
+    const { id, name, isCommunity } = organization;
+    const client = messenger.client;
+    const user = messenger.user;
+    const typeString = isCommunity ? 'community' : 'organization';
+
+    const builder = new AlertBlanketBuilder;
+
+    builder.title(`Leave ${typeString}`);
+    builder.message(`Are you sure you want to leave? You will lose access to all internal chats at ${name}. You can only join ${name} by invitation in the future.`);
+    builder.action(`Leave`, async () => {
+        await client.mutateOrganizationMemberRemove({
+            userId: user.id,
+            organizationId: id,
+        });
+
+        onLeave(user.id);
+
+        await client.refetchMyOrganizations();
+        await client.refetchMyCommunities();
+        await client.refetchAccount();
+    }, 'danger');
+
+    builder.show();
+};
 
 interface OrganizationMenuProps {
     organization: Organization_organization;
