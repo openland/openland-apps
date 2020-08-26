@@ -92,25 +92,35 @@ const DialogSearchMessagesInner = React.forwardRef(
         const [isRecent, setIsRecent] = React.useState(true);
         const [isHashtag, setIsHashtag] = React.useState(false);
         const [loadingMore, setLoadingMore] = React.useState(false);
+        const [loadingMessages, setLoadingMessages] = React.useState(false);
         const [after, setAfter] = React.useState<string | null>(null);
         const [items, setItems] = React.useState<GlobalSearch_items[]>(initialItems);
         const [messages, setMessages] = React.useState<MessagesSearch_messagesSearch_edges[]>([]);
 
         const loadResults = React.useCallback(async (query: string) => {
             props.onLoading(true);
+            setLoadingMessages(true);
             queryRef.current = query;
 
             const loadedItems = (await client.queryGlobalSearch({ query }, { fetchPolicy: 'network-only' })).items;
-            const loadedMessages = (await client.queryMessagesSearch(constructVariables(query), { fetchPolicy: 'network-only' })).messagesSearch;
             // avoid race condition
             if (queryRef.current !== query) {
                 return;
             }
+
             setIsHashtag(query.startsWith('#'));
             setIsRecent(false);
             setItems(loadedItems);
+
+            const loadedMessages = (await client.queryMessagesSearch(constructVariables(query), { fetchPolicy: 'network-only' })).messagesSearch;
+            if (queryRef.current !== query) {
+                return;
+            }
+
+            setLoadingMessages(false);
             setAfter(getCursor(loadedMessages));
             setMessages(loadedMessages.edges);
+
             props.onLoading(false);
         }, []);
 
@@ -176,7 +186,7 @@ const DialogSearchMessagesInner = React.forwardRef(
             }
         }, [handleNeedMore, after, loadingMore]);
 
-        if (items.length === 0 && messages.length === 0) {
+        if (items.length === 0 && !loadingMessages && messages.length === 0) {
             return <EmptyView />;
         }
 
@@ -193,49 +203,56 @@ const DialogSearchMessagesInner = React.forwardRef(
                     }
                     return <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} savedMessages={!isHashtag && (i.id === messenger.user.id)} {...props} />;
                 })}
-                {messages.length > 0 && (
-                    <UListHeader text="Messages" />
-                )}
-                {messages.map((i, index) => {
-                    const { message, chat } = i.node;
-                    const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
-                    const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
-                    const selected = router ? (router as any).routeQuery?.messageId === message.id : false;
+                {loadingMessages ?
+                    <XView height={56} alignItems="center" justifyContent="center">
+                        <XLoader loading={true} />
+                    </XView> :
+                    <>
+                        {messages.length > 0 && (
+                            <UListHeader text="Messages" />
+                        )}
+                        {messages.map((i, index) => {
+                            const { message, chat } = i.node;
+                            const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
+                            const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
+                            const selected = router ? (router as any).routeQuery?.messageId === message.id : false;
 
-                    return (
-                        <DialogView
-                            key={message.id}
-                            item={{
-                                titleEmojify: emoji(title),
-                                titlePlaceholderEmojify: emoji(extractPlaceholder(title)),
-                                senderEmojify: message.sender && emoji(message.sender.name),
-                                messageEmojify: (message.message && emoji(message.message)) || undefined,
-                                message: message.message || undefined,
-                                title,
-                                key: chat.id,
-                                flexibleId: chat.id,
-                                kind: chat.__typename === 'PrivateRoom' ? 'PRIVATE' : 'GROUP',
-                                unread: 0,
-                                fallback: message.fallback,
-                                fallbackEmojify: emoji(message.fallback),
-                                date: message.date,
-                                photo: photo || undefined,
-                                isService: false,
-                                isOut: message.sender.id === messenger.user.id,
-                                isMuted: !!chat.settings.mute,
-                                sender: message.sender.name,
-                                membership: chat.__typename === 'SharedRoom' ? chat.membership : 'NONE'
-                            }}
-                            hovered={index === (selectedIndex - items.length)}
-                            selected={selected}
-                            onPress={() => props.onMessagePick(message.id)}
-                            savedMessages={chat.__typename === 'PrivateRoom' && chat.user.id === messenger.user.id}
-                        />
-                    );
-                })}
-                <XView height={56} alignItems="center" justifyContent="center">
-                    {loadingMore && <XLoader loading={true} />}
-                </XView>
+                            return (
+                                <DialogView
+                                    key={message.id}
+                                    item={{
+                                        titleEmojify: emoji(title),
+                                        titlePlaceholderEmojify: emoji(extractPlaceholder(title)),
+                                        senderEmojify: message.sender && emoji(message.sender.name),
+                                        messageEmojify: (message.message && emoji(message.message)) || undefined,
+                                        message: message.message || undefined,
+                                        title,
+                                        key: chat.id,
+                                        flexibleId: chat.id,
+                                        kind: chat.__typename === 'PrivateRoom' ? 'PRIVATE' : 'GROUP',
+                                        unread: 0,
+                                        fallback: message.fallback,
+                                        fallbackEmojify: emoji(message.fallback),
+                                        date: message.date,
+                                        photo: photo || undefined,
+                                        isService: false,
+                                        isOut: message.sender.id === messenger.user.id,
+                                        isMuted: !!chat.settings.mute,
+                                        sender: message.sender.name,
+                                        membership: chat.__typename === 'SharedRoom' ? chat.membership : 'NONE'
+                                    }}
+                                    hovered={index === (selectedIndex - items.length)}
+                                    selected={selected}
+                                    onPress={() => props.onMessagePick(message.id)}
+                                    savedMessages={chat.__typename === 'PrivateRoom' && chat.user.id === messenger.user.id}
+                                />
+                            );
+                        })}
+                        <XView height={56} alignItems="center" justifyContent="center">
+                            {loadingMore && <XLoader loading={true} />}
+                        </XView>
+                    </>
+                }
             </XScrollView3>
         );
     });
