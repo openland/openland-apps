@@ -7,7 +7,11 @@ import { GlobalSearchItem } from './GlobalSearchItems';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SNativeConfig } from 'react-native-s/SNativeConfig';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { GlobalSearchEntryKind, MessagesSearch_messagesSearch } from 'openland-api/spacex.types';
+import {
+    GlobalSearchEntryKind,
+    MessagesSearch_messagesSearch,
+    MessagesSearch_messagesSearch_edges,
+} from 'openland-api/spacex.types';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { SFlatList } from 'react-native-s/SFlatList';
@@ -109,21 +113,28 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
     const area = React.useContext(ASSafeAreaContext);
 
     const [messagesInvalidator] = React.useState<InvalidateSync>(new InvalidateSync(async () => {
-        await client.refetchMessagesSearch(constructVariables(props.query), { fetchPolicy: 'network-only' });
         await client.refetchGlobalSearch({ query: props.query }, { fetchPolicy: 'network-only' });
     }));
 
     const items = client.useGlobalSearch({ query: props.query, kinds: props.kinds }).items;
-    const initialData = client.useMessagesSearch(constructVariables(props.query), { fetchPolicy: 'cache-and-network' }).messagesSearch;
-
-    const initialCursor = getCursor(initialData);
 
     const [loadingMore, setLoadingMore] = React.useState(false);
-    const [after, setAfter] = React.useState<string | null>(initialCursor);
-    const [messages, setMessages] = React.useState(initialData.edges);
+    const [after, setAfter] = React.useState<string | null>(null);
+    const [messages, setMessages] = React.useState<MessagesSearch_messagesSearch_edges[]>([]);
+    const [loadingMessages, setLoadingMessages] = React.useState(true);
+
+    const loadMessages = React.useCallback(async (query: string) => {
+        setLoadingMessages(true);
+        const {messagesSearch} = await client.queryMessagesSearch(constructVariables(query), { fetchPolicy: 'network-only' });
+
+        setAfter(getCursor(messagesSearch));
+        setMessages(messagesSearch.edges);
+        setLoadingMessages(false);
+    }, []);
 
     React.useEffect(() => {
         messagesInvalidator.invalidate();
+        loadMessages(props.query);
     }, [props.query]);
 
     const handleNeedMore = React.useCallback(async () => {
@@ -141,23 +152,32 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
         setLoadingMore(false);
     }, [after, loadingMore]);
 
-    if ((items.length === 0) && (messages.length === 0)) {
+    if ((items.length === 0) && !loadingMessages && (messages.length === 0)) {
         return <EmptyView theme={theme} />;
     }
 
     const isHashtag = props.query.startsWith('#');
-    const content = (
+    const content = () => (
         <>
             {items.map((item, index) => (
                 <GlobalSearchItem key={`search-item-${index}-${item.id}`} item={item} renderSavedMessages={!isHashtag} {...props} />
             ))}
-            {messages.length > 0 && <ZListHeader text="Messages" marginTop={items.length === 0 ? 0 : undefined} />}
+            {
+                loadingMessages ?
+                    <View height={56} alignItems="center" justifyContent="center">
+                        <LoaderSpinner />
+                    </View> :
+                    <>
+                        {messages.length > 0 && <ZListHeader text="Messages" marginTop={items.length === 0 ? 0 : undefined} />}
+                    </>
+            }
+
         </>
     );
 
     return (
         <SFlatList
-            data={messages}
+            data={loadingMessages ? [] : messages}
             renderItem={({ item }) => <GlobalSearchMessage item={item.node} key={item.node.message.id} onPress={() => props.onMessagePress(item.node.message.id)} />}
             keyboardShouldPersistTaps="always"
             keyboardDismissMode="on-drag"
