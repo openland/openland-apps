@@ -5,7 +5,7 @@ import { ZListGroup } from '../../components/ZListGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { Modals } from './modals/Modals';
 import { PageProps } from '../../components/PageProps';
-import { RoomMemberRole, UserShort, RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
+import { RoomMemberRole, UserShort, RoomChat_room_SharedRoom, SharedRoomKind } from 'openland-api/spacex.types';
 import { getMessenger } from '../../utils/messenger';
 import { UserView } from './components/UserView';
 import { useClient } from 'openland-api/useClient';
@@ -327,11 +327,13 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                         client.mutateRoomSettingsUpdate({ roomId: group.id, settings: { mute: !muted } });
                     }}
                 />
-                <ZHeroAction
-                    icon={require('assets/ic-share-24.png')}
-                    title="Share"
-                    onPress={handleSharePress}
-                />
+                {group.kind === SharedRoomKind.PUBLIC && (
+                    <ZHeroAction
+                        icon={require('assets/ic-share-24.png')}
+                        title="Share"
+                        onPress={handleSharePress}
+                    />
+                )}
                 <ZHeroAction
                     icon={require('assets/ic-more-h-24.png')}
                     title="More"
