@@ -67,6 +67,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryComments(variables: Types.CommentsVariables, params?: QueryParameters): Promise<Types.Comments> {
         return this.query('Comments', variables, params);
     }
+    queryCommonChatsWithUser(variables: Types.CommonChatsWithUserVariables, params?: QueryParameters): Promise<Types.CommonChatsWithUser> {
+        return this.query('CommonChatsWithUser', variables, params);
+    }
     queryConference(variables: Types.ConferenceVariables, params?: QueryParameters): Promise<Types.Conference> {
         return this.query('Conference', variables, params);
     }
@@ -415,6 +418,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchComments(variables: Types.CommentsVariables, params?: QueryParameters): Promise<Types.Comments> {
         return this.refetch('Comments', variables, params);
     }
+    refetchCommonChatsWithUser(variables: Types.CommonChatsWithUserVariables, params?: QueryParameters): Promise<Types.CommonChatsWithUser> {
+        return this.refetch('CommonChatsWithUser', variables, params);
+    }
     refetchConference(variables: Types.ConferenceVariables, params?: QueryParameters): Promise<Types.Conference> {
         return this.refetch('Conference', variables, params);
     }
@@ -762,6 +768,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateComments(variables: Types.CommentsVariables, updater: (data: Types.Comments) => Types.Comments | null): Promise<boolean> {
         return this.updateQuery(updater, 'Comments', variables);
+    }
+    updateCommonChatsWithUser(variables: Types.CommonChatsWithUserVariables, updater: (data: Types.CommonChatsWithUser) => Types.CommonChatsWithUser | null): Promise<boolean> {
+        return this.updateQuery(updater, 'CommonChatsWithUser', variables);
     }
     updateConference(variables: Types.ConferenceVariables, updater: (data: Types.Conference) => Types.Conference | null): Promise<boolean> {
         return this.updateQuery(updater, 'Conference', variables);
@@ -1148,6 +1157,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useComments(variables: Types.CommentsVariables, params?: SpaceQueryWatchParameters): Types.Comments;
     useComments(variables: Types.CommentsVariables, params?: SpaceQueryWatchParameters): Types.Comments | null {
         return this.useQuery('Comments', variables, params);
+    }
+    useCommonChatsWithUser(variables: Types.CommonChatsWithUserVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.CommonChatsWithUser | null;
+    useCommonChatsWithUser(variables: Types.CommonChatsWithUserVariables, params?: SpaceQueryWatchParameters): Types.CommonChatsWithUser;
+    useCommonChatsWithUser(variables: Types.CommonChatsWithUserVariables, params?: SpaceQueryWatchParameters): Types.CommonChatsWithUser | null {
+        return this.useQuery('CommonChatsWithUser', variables, params);
     }
     useConference(variables: Types.ConferenceVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.Conference | null;
     useConference(variables: Types.ConferenceVariables, params?: SpaceQueryWatchParameters): Types.Conference;

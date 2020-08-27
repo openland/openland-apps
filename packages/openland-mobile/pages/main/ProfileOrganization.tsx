@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { ZListHero } from '../../components/ZListHero';
 import { ZListGroup } from '../../components/ZListGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
@@ -36,6 +35,8 @@ import {
     EntityMembersManagerRef,
     OrgMember,
 } from 'openland-y-utils/members/EntityMembersManager';
+import { ZHero } from 'openland-mobile/components/ZHero';
+import { plural } from 'openland-y-utils/plural';
 
 const PrivateProfile = React.memo(
     (props: PageProps & { organization: Organization_organization }) => {
@@ -128,9 +129,9 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     const canMakePrimary =
         organization.isMine &&
         organization.id !==
-            (settings.me &&
-                settings.me.primaryOrganization &&
-                settings.me.primaryOrganization.id) &&
+        (settings.me &&
+            settings.me.primaryOrganization &&
+            settings.me.primaryOrganization.id) &&
         !organization.isCommunity;
     const canEdit = organization.isOwner || organization.isAdmin;
     const canLeave = organization.isMine;
@@ -464,51 +465,88 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                     organization.isCommunity ? 'navigate_community_profile' : 'navigate_org_profile'
                 }
             />
-            <ZListHero
+
+            <ZHero
                 photo={organization.photo}
                 id={organization.id}
                 title={organization.name}
-                subtitle={organization.isCommunity ? 'Community' : 'Organization'}
+                subtitle={(organization.isCommunity ? 'Community' : 'Organization') + '  ·  ' + plural(organization.membersCount, ['member', 'members'])}
             />
 
-            <ZListGroup header="About" headerMarginTop={0}>
-                {organization.about && (
+            <ZListGroup header="About" useSpacer={true}>
+                {!!organization.about && (
                     <ZListItem multiline={true} text={organization.about} copy={true} />
                 )}
-                {organization.about && <View height={10} />}
-                {organization.shortname && (
-                    <ZListItem title="Shortname" text={'@' + organization.shortname} copy={true} />
+                {!!organization.about && <View height={8} />}
+                {!!organization.shortname && (
+                    <ZListItem
+                        text={organization.shortname}
+                        leftIcon={require('assets/ic-at-24.png')}
+                        small={true}
+                        copy={true}
+                    />
                 )}
-                {organization.website && (
-                    <ZListItem title="Website" text={organization.website} copy={true} />
+                {!!organization.website && (
+                    <ZListItem
+                        text={organization.website}
+                        leftIcon={require('assets/ic-link-24.png')}
+                        linkify={true}
+                        small={true}
+                        copy={true}
+                    />
                 )}
-                {organization.instagram && (
-                    <ZListItem title="Instagram" text={organization.instagram} copy={true} />
+                {!!organization.instagram && (
+                    <ZListItem
+                        text={organization.instagram}
+                        leftIcon={require('assets/ic-instagram-24.png')}
+                        linkify={true}
+                        small={true}
+                        copy={true}
+                    />
                 )}
-                {organization.twitter && (
-                    <ZListItem title="Twitter" text={organization.twitter} copy={true} />
+                {!!organization.twitter && (
+                    <ZListItem
+                        text={organization.twitter}
+                        leftIcon={require('assets/ic-twitter-24.png')}
+                        linkify={true}
+                        small={true}
+                        copy={true}
+                    />
                 )}
-                {organization.facebook && (
-                    <ZListItem title="Facebook" text={organization.facebook} copy={true} />
+                {!!organization.facebook && (
+                    <ZListItem
+                        text={organization.facebook}
+                        leftIcon={require('assets/ic-facebook-24.png')}
+                        linkify={true}
+                        small={true}
+                        copy={true}
+                    />
                 )}
-                {organization.linkedin && (
-                    <ZListItem title="LinkedIn" text={organization.linkedin} copy={true} />
+                {!!organization.linkedin && (
+                    <ZListItem
+                        text={organization.linkedin}
+                        leftIcon={require('assets/ic-linkedin-24.png')}
+                        linkify={true}
+                        small={true}
+                        copy={true}
+                    />
                 )}
             </ZListGroup>
 
             <ZListGroup
-                header="Groups and channels"
+                header="Groups"
                 counter={organization.roomsCount}
+                useSpacer={true}
                 actionRight={
                     organization.roomsCount > 3
                         ? {
-                              title: 'See all',
-                              onPress: () =>
-                                  props.router.push('ProfileOrganizationGroups', {
-                                      organizationId: organization.id,
-                                      title: organization.name,
-                                  }),
-                          }
+                            title: 'See all',
+                            onPress: () =>
+                                props.router.push('ProfileOrganizationGroups', {
+                                    organizationId: organization.id,
+                                    title: organization.name,
+                                }),
+                        }
                         : undefined
                 }
             >
@@ -529,7 +567,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 ))}
             </ZListGroup>
 
-            <ZListHeader text="Members" counter={organization.membersCount} />
+            <ZListHeader text="Members" counter={organization.membersCount} useSpacer={true} />
             {shouldShowAddButton && (
                 <ZListItem
                     leftIcon={require('assets/ic-add-glyph-24.png')}

@@ -1,6 +1,48 @@
 {
     "icons": [
         {
+            "name": "ic-instagram",
+            "src": "ic-instagram-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-geo",
+            "src": "ic-geo-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-group",
+            "src": "ic-group-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-user-add",
+            "src": "ic-user-add-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-user-remove",
+            "src": "ic-user-remove-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-bookmark",
+            "src": "ic-bookmark-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-unread-off",
             "src": "ic-unread-off-24.svg",
             "sizes": [
@@ -1312,6 +1354,13 @@
         {
             "name": "ic-call",
             "src": "ic-call-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-more-h",
+            "src": "ic-more-h-24.svg",
             "sizes": [
                 24
             ]

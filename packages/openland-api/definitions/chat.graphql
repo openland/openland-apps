@@ -816,3 +816,17 @@ query RoomMetaPreview($shortname: String!, $id: ID!) {
 
     roomSocialImage(roomId: $id)
 }
+
+query CommonChatsWithUser($uid: ID!, $first: Int!, $after: ID) {
+    commonChatsWithUser(uid: $uid, first: $first, after: $after) {
+        items {
+            id
+            title
+            description
+            photo
+            membersCount
+        }
+        cursor
+        count
+    }
+}

@@ -271,6 +271,12 @@ type CommentUpdatesState {
   state: String
 }
 
+type CommonChatsWithUserResponse {
+  items: [SharedRoom!]!
+  cursor: String
+  count: Int!
+}
+
 union ComposeSearchResult = User | Organization
 
 type Conference {
@@ -1862,6 +1868,7 @@ type Mutation {
   debugMigrateUserChatsList: Boolean!
   debugFreeUnusedShortnames: Boolean!
   debugFreeShortname(shortname: String!): Boolean!
+  debugRemoveKickedUsersFromOrgChats: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2765,7 +2772,7 @@ type Query {
   debugEntitiesCounter(name: String!): Int!
   debugEntitiesCleanerProgress(name: String!): Int!
   debugUserSearch(query: String!): String!
-  debugMentionSearch(query: String!, first: Int!): String!
+  debugMentionSearch(query: String!, first: Int!, index: String!): String!
   debugMentionSearchGetUserData(cid: ID!): String!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
@@ -2900,6 +2907,7 @@ type Query {
   chatSharedMedia(chatId: ID!, mediaTypes: [SharedMediaType!]!, first: Int!, after: ID, before: ID, around: ID): SharedMediaConnection!
   chatSharedMediaCounters(chatId: ID!): SharedMediaCounters!
   haveAccessToChat(chatId: ID!): Boolean!
+  commonChatsWithUser(uid: ID!, first: Int!, after: ID): CommonChatsWithUserResponse!
   room(id: ID!): Room
   rooms(ids: [ID!]!): [Room!]!
   roomSuper(id: ID!): RoomSuper

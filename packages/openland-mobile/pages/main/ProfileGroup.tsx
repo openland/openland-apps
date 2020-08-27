@@ -1,17 +1,11 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { Platform, Text, View } from 'react-native';
+import { Platform, View, Share } from 'react-native';
 import { ZListGroup } from '../../components/ZListGroup';
-import { ZListHero } from '../../components/ZListHero';
 import { ZListItem } from '../../components/ZListItem';
 import { Modals } from './modals/Modals';
 import { PageProps } from '../../components/PageProps';
-import { SHeader } from 'react-native-s/SHeader';
-import {
-    RoomMemberRole,
-    UserShort,
-    RoomChat_room_SharedRoom,
-} from 'openland-api/spacex.types';
+import { RoomMemberRole, UserShort, RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
 import { getMessenger } from '../../utils/messenger';
 import { UserView } from './components/UserView';
 import { useClient } from 'openland-api/useClient';
@@ -19,21 +13,19 @@ import ActionSheet, { ActionSheetBuilder } from 'openland-mobile/components/Acti
 import Toast from 'openland-mobile/components/Toast';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { SDeferred } from 'react-native-s/SDeferred';
-import { NotificationSettings } from './components/NotificationSetting';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SFlatList, RenderLoader } from 'react-native-s/SFlatList';
-import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';
 import { trackEvent } from 'openland-mobile/analytics';
 import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { SUPER_ADMIN } from '../Init';
 import { RoomMemberType } from './modals/MembersSearch';
-import {
-    EntityMembersManager,
-    EntityMembersManagerRef,
-    GroupMember,
-} from 'openland-y-utils/members/EntityMembersManager';
+import { EntityMembersManager, EntityMembersManagerRef, GroupMember } from 'openland-y-utils/members/EntityMembersManager';
+import { ZHero } from 'openland-mobile/components/ZHero';
+import { ZHeroAction } from 'openland-mobile/components/ZHeroAction';
+import { plural } from 'openland-y-utils/plural';
+import { SHeader } from 'react-native-s/SHeader';
 
 const ProfileGroupComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
@@ -42,11 +34,12 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
 
     const profilesRef = React.useRef<EntityMembersManagerRef>(null);
 
-    const room = client.useRoomChat({ id: roomId }, { fetchPolicy: 'cache-and-network' }).room as RoomChat_room_SharedRoom;
+    const group = client.useRoomChat({ id: roomId }, { fetchPolicy: 'cache-and-network' }).room as RoomChat_room_SharedRoom;
     const onlines = getMessenger().engine.getOnlines();
-    const typeString = room.isChannel ? 'channel' : 'group';
+    const typeString = group.isChannel ? 'channel' : 'group';
     const [members, setMembers] = React.useState<GroupMember[]>([]);
     const [loading, setLoading] = React.useState(false);
+    const [muted, setMuted] = React.useState(group.settings.mute);
 
     // callbacks
     const handleAddMembers = React.useCallback(
@@ -81,7 +74,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
         Alert.builder()
             .title(`Leave ${typeString}?`)
             .message(
-                room.isPremium
+                group.isPremium
                     ? 'Leaving the group only removes it from your chat list. To cancel the associated subscription, visit Subscriptions section in your Account tab and cancel it from there.'
                     : 'You may not be able to join it again',
             )
@@ -224,8 +217,8 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
         [roomId],
     );
 
-    const memberInviteDisabled = room.organization && !room.organization.isAdmin && !room.organization.membersCanInvite;
-    const hideOwnerLink = room.organization && room.organization.private && room.role === 'MEMBER';
+    const memberInviteDisabled = group.organization && !group.organization.isAdmin && !group.organization.membersCanInvite;
+    const hideOwnerLink = group.organization && group.organization.private && group.role === 'MEMBER';
 
     const handleAddMember = React.useCallback(() => {
         trackEvent('invite_view', { invite_type: 'group' });
@@ -243,7 +236,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                                     userId: u.id,
                                     role: RoomMemberRole.MEMBER,
                                 })),
-                                roomId: room.id,
+                                roomId: group.id,
                             })
                         ).alphaRoomInvite;
 
@@ -255,26 +248,26 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                     props.router.back();
                 },
             },
-            room.isPremium ? 'Add people for free' : 'Add people',
+            group.isPremium ? 'Add people for free' : 'Add people',
             members.map((m) => m.user.id),
             [getMessenger().engine.user.id],
-            hideOwnerLink ? undefined : { path: 'ProfileGroupLink', pathParams: { room } },
+            hideOwnerLink ? undefined : { path: 'ProfileGroupLink', pathParams: { room: group } },
         );
     }, [members]);
 
     const onSharedPress = React.useCallback(() => {
-        props.router.push('SharedMedia', { chatId: room.id });
-    }, [room.id]);
+        props.router.push('SharedMedia', { chatId: group.id });
+    }, [group.id]);
 
     const handleManageClick = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
 
         builder.action('Shared media', onSharedPress, false, require('assets/ic-attach-24.png'));
 
-        if (room.canEdit) {
+        if (group.canEdit) {
             builder.action(
-                room.isChannel ? 'Edit channel' : 'Edit group',
-                () => props.router.push('EditGroup', { id: room.id }),
+                group.isChannel ? 'Edit channel' : 'Edit group',
+                () => props.router.push('EditGroup', { id: group.id }),
                 false,
                 require('assets/ic-edit-24.png'),
             );
@@ -288,7 +281,11 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
         );
 
         builder.show();
-    }, [room]);
+    }, [group]);
+
+    const handleSharePress = React.useCallback(() => {
+        Share.share({ url: `https://openland.com/${group.shortname || group.id}` });
+    }, [group.shortname, group.id]);
 
     const handleLoadMore = React.useCallback(async () => {
         if (profilesRef.current) {
@@ -296,35 +293,16 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
         }
     }, [members, loading]);
 
-    let subtitle = (
-        <>
-            <Text allowFontScaling={false}>
-                {(room.membersCount || 0) > 1
-                    ? room.membersCount + ' members'
-                    : (room.membersCount || 0) + ' member'}
-            </Text>
-            {/* {onlineCount > 0 && (<Text style={{ color: theme.accentPrimary }}>{'   '}{onlineCount} online</Text>)} */}
-            {room.isPremium && room.premiumSettings && (
-                <Text allowFontScaling={false}>
-                    ,{' '}
-                    {formatMoneyInterval(room.premiumSettings.price, room.premiumSettings.interval)}
-                </Text>
-            )}
-        </>
-    );
-
-    const hasAbout = !!room.description && !!room.organization;
-    const highlightGroup = room.kind === 'GROUP' && !room.isPremium;
-
-    // let donateTo = room.owner && room.owner.firstName;
-    // let isYou = !!(room.owner && room.owner.isYou);
-    let hasDonate = false; // donateTo && !isYou;
+    const highlightGroup = group.kind === 'GROUP' && !group.isPremium;
     const content = (
         <>
-            <ZListHero
+            <ZHero
+                photo={group.photo}
+                id={group.id}
+                title={group.title}
                 titleIcon={highlightGroup ? require('assets/ic-lock-16.png') : undefined}
                 titleIconElement={
-                    room.isPremium ? (
+                    group.isPremium ? (
                         <View
                             marginRight={8}
                             marginTop={Platform.OS === 'ios' ? 2 : 4}
@@ -335,49 +313,68 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                     ) : undefined
                 }
                 titleColor={highlightGroup ? theme.accentPositive : undefined}
-                title={room.title}
-                subtitle={subtitle}
-                photo={room.photo}
-                id={room.id}
-                action={{
-                    title: room.isChannel ? 'View channel' : 'Send message',
-                    onPress: handleSend,
+                subtitle={plural(group.membersCount, ['member', 'members'])}
+                actionPrimary={{
+                    title: group.isChannel ? 'View channel' : 'View chat',
+                    onPress: handleSend
                 }}
-            />
+            >
+                <ZHeroAction
+                    icon={muted ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-off-24.png')}
+                    title={muted ? 'Unmute' : 'Mute'}
+                    onPress={() => {
+                        setMuted(!muted);
+                        client.mutateRoomSettingsUpdate({ roomId: group.id, settings: { mute: !muted } });
+                    }}
+                />
+                <ZHeroAction
+                    icon={require('assets/ic-share-24.png')}
+                    title="Share"
+                    onPress={handleSharePress}
+                />
+                <ZHeroAction
+                    icon={require('assets/ic-more-h-24.png')}
+                    title="More"
+                    onPress={handleManageClick}
+                />
+            </ZHero>
 
-            <ZListGroup header="About" headerMarginTop={0}>
-                {!!room.description && <ZListItem text={room.description} multiline={true} />}
-                {!!room.organization && (
+            <ZListGroup header="About" useSpacer={true}>
+                {!!group.description && <ZListItem multiline={true} text={group.description} copy={true} />}
+                {!!group.description && <View height={8} />}
+                {!!group.shortname && (
                     <ZListItem
-                        text={room.organization.name}
-                        leftAvatar={{
-                            photo: room.organization.photo,
-                            id: room.organization.id,
-                            title: room.organization.name,
-                        }}
-                        path="ProfileOrganization"
-                        pathParams={{ id: room.organization.id }}
+                        text={group.shortname}
+                        leftIcon={require('assets/ic-at-24.png')}
+                        small={true}
                     />
                 )}
-                {!!room.shortname && (
-                    <ZListItem title="Shortname" text={'@' + room.shortname} copy={true} />
+                {group.isPremium && !!group.premiumSettings && (
+                    <ZListItem
+                        text={formatMoneyInterval(group.premiumSettings.price, group.premiumSettings.interval)}
+                        leftIcon={require('assets/ic-tag-24.png')}
+                        small={true}
+                    />
                 )}
             </ZListGroup>
 
-            {/* {donateTo && Platform.OS !== 'ios' && (
-                <ProfileDonationGroup
-                    headerMarginTop={!hasAbout ? 0 : undefined}
-                    name={donateTo}
-                    chatId={room.id}
-                    shouldHide={isYou}
-                />
-            )} */}
+            {!!group.organization && (
+                <ZListGroup header="Community" useSpacer={true}>
+                    <ZListItem
+                        text={group.organization.name}
+                        subTitle={group.organization.about}
+                        leftAvatar={{
+                            photo: group.organization.photo,
+                            id: group.organization.id,
+                            title: group.organization.name,
+                        }}
+                        path="ProfileOrganization"
+                        pathParams={{ id: group.organization.id }}
+                    />
+                </ZListGroup>
+            )}
 
-            <ZListGroup
-                header="Settings"
-                headerMarginTop={(!hasDonate || Platform.OS === 'ios') && !hasAbout ? 0 : undefined}
-            >
-                <NotificationSettings id={room.id} mute={!!room.settings.mute} />
+            <ZListGroup useSpacer={true}>
                 <ZListItem
                     leftIcon={require('assets/ic-attach-glyph-24.png')}
                     text="Media, files, links"
@@ -385,8 +382,8 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 />
             </ZListGroup>
 
-            <ZListHeader text="Members" counter={room.membersCount} />
-            {(!room.isPremium || room.role !== 'MEMBER') && !memberInviteDisabled && (
+            <ZListHeader text="Members" counter={group.membersCount} useSpacer={true} />
+            {(!group.isPremium || group.role !== 'MEMBER') && !memberInviteDisabled && (
                 <ZListItem
                     text="Add people"
                     leftIcon={require('assets/ic-add-glyph-24.png')}
@@ -397,7 +394,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 <ZListItem
                     leftIcon={require('assets/ic-link-glyph-24.png')}
                     text={`Invite with link`}
-                    onPress={() => props.router.push('ProfileGroupLink', { room })}
+                    onPress={() => props.router.push('ProfileGroupLink', { room: group })}
                 />
             )}
             <ZListItem
@@ -405,8 +402,8 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 leftIcon={require('assets/ic-search-glyph-24.png')}
                 onPress={() => Modals.showRoomMembersSearch({
                     router: props.router,
-                    roomId: room.id,
-                    membersCount: room.membersCount,
+                    roomId: group.id,
+                    membersCount: group.membersCount,
                     initialMembers: members,
                     onPress: (member: RoomMemberType) => props.router.push('ProfileUser', { id: member.user.id }),
                     onLongPress: (member: RoomMemberType, callbacks: {
@@ -415,19 +412,19 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                     }) => handleMemberLongPress(
                         member,
                         member.canKick,
-                        room.role === 'OWNER' || room.role === 'ADMIN' || SUPER_ADMIN,
+                        group.role === 'OWNER' || group.role === 'ADMIN' || SUPER_ADMIN,
                         callbacks
                     ),
                 })
                 }
             />
 
-            {room.featuredMembersCount > 0 && (
+            {group.featuredMembersCount > 0 && (
                 <ZListItem
                     leftIcon={require('assets/ic-star-glyph-24.png')}
                     text="Featured members"
-                    onPress={() => props.router.push('ProfileGroupFeatured', { id: room.id })}
-                    description={room.featuredMembersCount + ''}
+                    onPress={() => props.router.push('ProfileGroupFeatured', { id: group.id })}
+                    description={group.featuredMembersCount + ''}
                 />
             )}
         </>
@@ -435,8 +432,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title={Platform.OS === 'android' ? 'Info' : room.title} />
-            <ZManageButton onPress={handleManageClick} />
+            <SHeader title={Platform.OS === 'android' ? 'Info' : group.title} />
 
             <SFlatList
                 data={members}
@@ -449,7 +445,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                             handleMemberLongPress(
                                 item,
                                 item.canKick,
-                                room.role === 'OWNER' || room.role === 'ADMIN' || SUPER_ADMIN,
+                                group.role === 'OWNER' || group.role === 'ADMIN' || SUPER_ADMIN,
                             )
                         }
                         onPress={() => props.router.push('ProfileUser', { id: item.user.id })}
@@ -457,7 +453,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 )}
                 keyExtractor={(item, index) => index + '-' + item.user.id}
                 ListHeaderComponent={content}
-                ListFooterComponent={members.length === room.membersCount ? undefined : <RenderLoader />}
+                ListFooterComponent={members.length === group.membersCount ? undefined : <RenderLoader />}
                 onEndReached={handleLoadMore}
                 refreshing={loading}
             />
@@ -467,8 +463,8 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                         isGroup={true}
                         loading={loading}
                         members={members}
-                        membersCount={room.membersCount}
-                        entityId={room.id}
+                        membersCount={group.membersCount}
+                        entityId={group.id}
                         setLoading={setLoading}
                         setMembers={setMembers}
                         ref={profilesRef}

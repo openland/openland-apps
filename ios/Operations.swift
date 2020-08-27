@@ -2257,6 +2257,21 @@ private let CommentsSelector = obj(
                         )))))
                 )))
         )
+private let CommonChatsWithUserSelector = obj(
+            field("commonChatsWithUser", "commonChatsWithUser", arguments(fieldValue("uid", refValue("uid")), fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("title", "title", notNull(scalar("String"))),
+                            field("description", "description", scalar("String")),
+                            field("photo", "photo", notNull(scalar("String"))),
+                            field("membersCount", "membersCount", notNull(scalar("Int")))
+                        ))))),
+                    field("cursor", "cursor", scalar("String")),
+                    field("count", "count", notNull(scalar("Int")))
+                )))
+        )
 private let ConferenceSelector = obj(
             field("conference", "conference", arguments(fieldValue("id", refValue("id"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5133,6 +5148,12 @@ class Operations {
         "query Comments($peerId:ID!){comments(peerId:$peerId){__typename id state{__typename state}count peerRoot{__typename ... on CommentPeerRootMessage{__typename chat{__typename ... on SharedRoom{__typename id role}... on PrivateRoom{__typename id}}}}subscription{__typename type}comments{__typename ...CommentEntryFragment}}}fragment CommentEntryFragment on CommentEntry{__typename id deleted comment:betaComment{__typename ...FullMessage}parentComment{__typename id comment:betaComment{__typename id message}}childComments{__typename id}}fragment FullMessage on ModernMessage{__typename id date sender{__typename ...MessageSender}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id user{__typename id}}... on SharedRoom{__typename id title isChannel membersCount}}}}spans{__typename ...MessageSpan}... on GeneralMessage{__typename id edited commentsCount attachments{__typename ...MessageAttachments}quotedMessages{__typename ...QuotedMessage}reactionCounters{__typename ...MessageReactionCounter}overrideAvatar{__typename uuid crop{__typename x y w h}}overrideName}... on StickerMessage{__typename id commentsCount quotedMessages{__typename ...QuotedMessage}sticker{__typename ...StickerFragment}reactionCounters{__typename ...MessageReactionCounter}overrideAvatar{__typename uuid crop{__typename x y w h}}overrideName}... on ServiceMessage{__typename id serviceMetadata{__typename ...ServiceMessageMetadata}}}fragment MessageSender on User{__typename id name photo isBot shortname inContacts primaryOrganization{__typename id name shortname}}fragment UserBadge on UserBadge{__typename id name verified}fragment MessageSpan on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename id name}}... on MessageSpanMultiUserMention{__typename offset length}... on MessageSpanOrganizationMention{__typename organization{__typename id name}}... on MessageSpanRoomMention{__typename room{__typename ... on PrivateRoom{__typename id user{__typename id name}}... on SharedRoom{__typename id title isPremium}}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment MessageAttachments on ModernMessageAttachment{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}socialImage{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id title style url}}fallback}... on MessageAttachmentPurchase{__typename id purchase{__typename id state amount}fallback}}fragment QuotedMessage on ModernMessage{__typename id date message sender{__typename ...MessageSender}senderBadge{__typename ...UserBadge}fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}spans{__typename ...MessageSpan}... on GeneralMessage{__typename id edited commentsCount attachments{__typename ...MessageAttachments}}... on StickerMessage{__typename id sticker{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}fragment MessageReactionCounter on ReactionCounter{__typename reaction count setByMe}fragment ServiceMessageMetadata on ServiceMetadata{__typename ... on InviteServiceMetadata{__typename users{__typename id}invitedBy{__typename id}}... on KickServiceMetadata{__typename user{__typename id}kickedBy{__typename id}}... on TitleChangeServiceMetadata{__typename title}... on PhotoChangeServiceMetadata{__typename photo}... on PostRespondServiceMetadata{__typename respondType}}",
         CommentsSelector
     )
+    let CommonChatsWithUser = OperationDefinition(
+        "CommonChatsWithUser",
+        .query, 
+        "query CommonChatsWithUser($uid:ID!,$first:Int!,$after:ID){commonChatsWithUser(uid:$uid,first:$first,after:$after){__typename items{__typename id title description photo membersCount}cursor count}}",
+        CommonChatsWithUserSelector
+    )
     let Conference = OperationDefinition(
         "Conference",
         .query, 
@@ -6588,6 +6609,7 @@ class Operations {
         if name == "ChatNewReadLastRead" { return ChatNewReadLastRead }
         if name == "CommentFullReactions" { return CommentFullReactions }
         if name == "Comments" { return Comments }
+        if name == "CommonChatsWithUser" { return CommonChatsWithUser }
         if name == "Conference" { return Conference }
         if name == "ConferenceMedia" { return ConferenceMedia }
         if name == "DebugGqlTrace" { return DebugGqlTrace }

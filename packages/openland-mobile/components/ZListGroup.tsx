@@ -2,8 +2,10 @@ import * as React from 'react';
 import { View, Platform } from 'react-native';
 import { ZText } from './ZText';
 import { ZListHeader } from './ZListHeader';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export interface ZListGroupProps {
+    useSpacer?: boolean;
     header?: string | null;
     headerMarginTop?: number;
     counter?: number | null;
@@ -21,7 +23,8 @@ export interface ZListGroupProps {
 }
 
 export const ZListGroup = React.memo<ZListGroupProps>((props) => {
-    const { header, headerMarginTop, counter, footer, actionRight, alignItems, children } = props;
+    const { header, headerMarginTop, counter, footer, actionRight, alignItems, useSpacer, children } = props;
+    const theme = React.useContext(ThemeContext);
     const components: any[] = [];
 
     React.Children.forEach(children, (c) => {
@@ -35,9 +38,10 @@ export const ZListGroup = React.memo<ZListGroupProps>((props) => {
     }
 
     return (
-        <View>
+        <View paddingBottom={useSpacer ? 8 : undefined}>
+            {useSpacer && <View backgroundColor={theme.backgroundTertiary} height={16} marginBottom={4} />}
             {header !== null && header !== undefined &&
-                <ZListHeader text={header} counter={counter} marginTop={headerMarginTop} action={actionRight} />
+                <ZListHeader text={header} counter={counter} marginTop={useSpacer ? 0 : headerMarginTop} action={actionRight} />
             }
             {header === null && <View height={16} />}
             <View alignItems={alignItems}>

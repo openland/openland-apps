@@ -10,7 +10,7 @@ import { LoaderSpinner } from './LoaderSpinner';
 import { SAnimatedView, SAnimated, SAnimatedShadowView } from 'react-native-fast-animations';
 import UUID from 'uuid/v4';
 
-type ZButtonStyle = 'primary' | 'secondary' | 'danger' | 'pay';
+export type ZButtonStyle = 'primary' | 'secondary' | 'danger' | 'pay';
 type ZButtonSize = 'default' | 'large';
 
 const stylesDefault = StyleSheet.create({

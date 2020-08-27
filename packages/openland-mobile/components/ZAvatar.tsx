@@ -8,7 +8,7 @@ import { ZStyles } from './ZStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { PlaceholderOrange } from 'openland-y-utils/themes/placeholders';
 
-export type ZAvatarSize = 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
+export type ZAvatarSize = 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'xxx-large';
 
 const styles = StyleSheet.create({
     placeholderText: {
@@ -29,14 +29,15 @@ export interface ZAvatarProps {
 }
 
 export const avatarSizes: { [key in ZAvatarSize]: { size: number, placeholder: number, dotSize: number, dotPosition: number, dotBorderWidth: number, iconSize: number } } = {
-    // legacy
-    'xx-small': { size: 16, placeholder: 8, dotSize: 6, dotPosition: 0, dotBorderWidth: 1, iconSize: 8 },
     'x-small': { size: 24, placeholder: 12, dotSize: 6, dotPosition: 0, dotBorderWidth: 1, iconSize: 8 },
     'small': { size: 32, placeholder: 14, dotSize: 10, dotPosition: 0, dotBorderWidth: 2, iconSize: 16 },
     'medium': { size: 40, placeholder: 17, dotSize: 12, dotPosition: 0, dotBorderWidth: 2, iconSize: 20 },
     'large': { size: 56, placeholder: 24, dotSize: 12, dotPosition: 2, dotBorderWidth: 2, iconSize: 24 },
     'x-large': { size: 72, placeholder: 34, dotSize: 14, dotPosition: 4, dotBorderWidth: 2, iconSize: 32 },
     'xx-large': { size: 96, placeholder: 40, dotSize: 16, dotPosition: 6, dotBorderWidth: 2, iconSize: 40 },
+    'xxx-large': { size: 128, placeholder: 64, dotSize: 16, dotPosition: 10, dotBorderWidth: 2, iconSize: 64 },
+    // legacy
+    'xx-small': { size: 16, placeholder: 8, dotSize: 6, dotPosition: 0, dotBorderWidth: 1, iconSize: 8 },
 };
 
 export const getPlaceholderColors = (id: string) => {

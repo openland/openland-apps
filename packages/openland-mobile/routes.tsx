@@ -74,6 +74,7 @@ import { Collections } from './pages/main/Collections';
 import { Donation } from './pages/wallet/Donation';
 import { SettingsCommunities } from './pages/main/SettingsCommunities';
 import { MembersSearch } from './pages/main/modals/MembersSearch';
+import { UserMutualGroups } from './pages/main/UserMutualGroups';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -158,6 +159,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('Apps/Tasks', Tasks)
 
   .addRoute('SharedMedia', SharedMedia)
+  .addRoute('UserMutualGroups', UserMutualGroups)
 
   .addRoute('Wallet', Wallet)
   .addRoute('Subscriptions', Subscriptions)

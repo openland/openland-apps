@@ -26,6 +26,7 @@ object Operations {
         if (name == "ChatNewReadLastRead") return ChatNewReadLastRead
         if (name == "CommentFullReactions") return CommentFullReactions
         if (name == "Comments") return Comments
+        if (name == "CommonChatsWithUser") return CommonChatsWithUser
         if (name == "Conference") return Conference
         if (name == "ConferenceMedia") return ConferenceMedia
         if (name == "DebugGqlTrace") return DebugGqlTrace

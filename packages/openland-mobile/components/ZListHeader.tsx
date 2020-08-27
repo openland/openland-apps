@@ -7,6 +7,7 @@ interface ZListHeaderProps {
     text: string;
     counter?: string | number | null;
     marginTop?: number;
+    useSpacer?: boolean;
     action?: {
         title: string,
         onPress: () => void
@@ -15,13 +16,15 @@ interface ZListHeaderProps {
 
 export const ZListHeader = React.memo<ZListHeaderProps>((props) => {
     const theme = React.useContext(ThemeContext);
-    const { text, marginTop, counter, action } = props;
+    const { text, marginTop, counter, useSpacer, action } = props;
 
     return (
         <View>
+            {useSpacer && <View backgroundColor={theme.backgroundTertiary} height={16} marginBottom={4} />}
+
             <View
                 style={{
-                    marginTop: (marginTop !== undefined) ? marginTop : 16,
+                    marginTop: useSpacer ? 0 : ((marginTop !== undefined) ? marginTop : 16),
                     flexDirection: 'row',
                     height: 48,
                     alignItems: 'center',
