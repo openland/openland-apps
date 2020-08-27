@@ -20,6 +20,7 @@ import { ZHero } from 'openland-mobile/components/ZHero';
 import { ZHeroAction } from 'openland-mobile/components/ZHeroAction';
 import { plural } from 'openland-y-utils/plural';
 import { SHeader } from 'react-native-s/SHeader';
+import { UserPhotoUploader } from './components/UserPhotoUploader';
 
 const ProfileUserComponent = React.memo((props: PageProps) => {
     const client = getClient();
@@ -131,13 +132,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                             onPress={handleContactPress}
                         />
                     )}
-                    {profileType === 'my' && (
-                        <ZHeroAction
-                            icon={require('assets/ic-camera-24.png')}
-                            title="Upload"
-                            onPress={() => { /*  */ }}
-                        />
-                    )}
+                    {profileType === 'my' && <UserPhotoUploader />}
                     {profileType === 'my' && (
                         <ZHeroAction
                             icon={require('assets/ic-bookmark-24.png')}
