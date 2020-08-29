@@ -683,7 +683,36 @@ mutation UpdateWelcomeMessage(
 }
 query Message($messageId: ID!) {
     message(messageId: $messageId) {
-        ...FullMessage
+        ...FullMessageWithoutSource
+
+        source {
+            ... on MessageSourceChat {
+                chat {
+                    ... on PrivateRoom {
+                        id
+                        user {
+                            id
+                            isBot
+                        }
+                        pinnedMessage {
+                            id
+                        }
+                    }
+                    ... on SharedRoom {
+                        id
+                        title
+                        isChannel
+                        membersCount
+                        canSendMessage
+                        canEdit
+                        pinnedMessage {
+                            id
+                        }
+                        role
+                    }
+                }
+            }
+        }
     }
     comments(peerId: $messageId) {
         id

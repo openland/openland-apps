@@ -935,6 +935,93 @@ const DiscoverChatsCollectionShortSelector = obj(
                 )))
         );
 
+const FullMessageWithoutSourceSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('date', 'date', args(), notNull(scalar('Date'))),
+            field('sender', 'sender', args(), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('User', MessageSenderSelector)
+                ))),
+            field('senderBadge', 'senderBadge', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('UserBadge', UserBadgeSelector)
+                )),
+            field('message', 'message', args(), scalar('String')),
+            field('fallback', 'fallback', args(), notNull(scalar('String'))),
+            field('spans', 'spans', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('MessageSpan', MessageSpanSelector)
+                ))))),
+            inline('GeneralMessage', obj(
+                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                field('id', 'id', args(), notNull(scalar('ID'))),
+                field('edited', 'edited', args(), notNull(scalar('Boolean'))),
+                field('commentsCount', 'commentsCount', args(), notNull(scalar('Int'))),
+                field('attachments', 'attachments', args(), notNull(list(notNull(obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        fragment('ModernMessageAttachment', MessageAttachmentsSelector)
+                    ))))),
+                field('quotedMessages', 'quotedMessages', args(), notNull(list(notNull(obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        fragment('ModernMessage', QuotedMessageSelector)
+                    ))))),
+                field('reactionCounters', 'reactionCounters', args(), notNull(list(notNull(obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        fragment('ReactionCounter', MessageReactionCounterSelector)
+                    ))))),
+                field('overrideAvatar', 'overrideAvatar', args(), obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('uuid', 'uuid', args(), notNull(scalar('String'))),
+                        field('crop', 'crop', args(), obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('x', 'x', args(), notNull(scalar('Int'))),
+                                field('y', 'y', args(), notNull(scalar('Int'))),
+                                field('w', 'w', args(), notNull(scalar('Int'))),
+                                field('h', 'h', args(), notNull(scalar('Int')))
+                            ))
+                    )),
+                field('overrideName', 'overrideName', args(), scalar('String'))
+            )),
+            inline('StickerMessage', obj(
+                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                field('id', 'id', args(), notNull(scalar('ID'))),
+                field('commentsCount', 'commentsCount', args(), notNull(scalar('Int'))),
+                field('quotedMessages', 'quotedMessages', args(), notNull(list(notNull(obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        fragment('ModernMessage', QuotedMessageSelector)
+                    ))))),
+                field('sticker', 'sticker', args(), notNull(obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        fragment('Sticker', StickerFragmentSelector)
+                    ))),
+                field('reactionCounters', 'reactionCounters', args(), notNull(list(notNull(obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        fragment('ReactionCounter', MessageReactionCounterSelector)
+                    ))))),
+                field('overrideAvatar', 'overrideAvatar', args(), obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('uuid', 'uuid', args(), notNull(scalar('String'))),
+                        field('crop', 'crop', args(), obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('x', 'x', args(), notNull(scalar('Int'))),
+                                field('y', 'y', args(), notNull(scalar('Int'))),
+                                field('w', 'w', args(), notNull(scalar('Int'))),
+                                field('h', 'h', args(), notNull(scalar('Int')))
+                            ))
+                    )),
+                field('overrideName', 'overrideName', args(), scalar('String'))
+            )),
+            inline('ServiceMessage', obj(
+                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                field('id', 'id', args(), notNull(scalar('ID'))),
+                field('serviceMetadata', 'serviceMetadata', args(), obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        fragment('ServiceMetadata', ServiceMessageMetadataSelector)
+                    ))
+            ))
+        );
+
 const MediaStreamFullSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -2703,7 +2790,43 @@ const IpLocationSelector = obj(
 const MessageSelector = obj(
             field('message', 'message', args(fieldValue("messageId", refValue('messageId'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('ModernMessage', FullMessageSelector)
+                    field('source', 'source', args(), obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            inline('MessageSourceChat', obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('chat', 'chat', args(), notNull(obj(
+                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                        inline('PrivateRoom', obj(
+                                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                            field('id', 'id', args(), notNull(scalar('ID'))),
+                                            field('user', 'user', args(), notNull(obj(
+                                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                    field('id', 'id', args(), notNull(scalar('ID'))),
+                                                    field('isBot', 'isBot', args(), notNull(scalar('Boolean')))
+                                                ))),
+                                            field('pinnedMessage', 'pinnedMessage', args(), obj(
+                                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                    field('id', 'id', args(), notNull(scalar('ID')))
+                                                ))
+                                        )),
+                                        inline('SharedRoom', obj(
+                                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                            field('id', 'id', args(), notNull(scalar('ID'))),
+                                            field('title', 'title', args(), notNull(scalar('String'))),
+                                            field('isChannel', 'isChannel', args(), notNull(scalar('Boolean'))),
+                                            field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
+                                            field('canSendMessage', 'canSendMessage', args(), notNull(scalar('Boolean'))),
+                                            field('canEdit', 'canEdit', args(), notNull(scalar('Boolean'))),
+                                            field('pinnedMessage', 'pinnedMessage', args(), obj(
+                                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                    field('id', 'id', args(), notNull(scalar('ID')))
+                                                )),
+                                            field('role', 'role', args(), notNull(scalar('String')))
+                                        ))
+                                    )))
+                            ))
+                        )),
+                    fragment('ModernMessage', FullMessageWithoutSourceSelector)
                 )),
             field('comments', 'comments', args(fieldValue("peerId", refValue('messageId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5316,7 +5439,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     Message: {
         kind: 'query',
         name: 'Message',
-        body: 'query Message($messageId:ID!){message(messageId:$messageId){__typename ...FullMessage}comments(peerId:$messageId){__typename id subscription{__typename type}}}fragment FullMessage on ModernMessage{__typename id date sender{__typename ...MessageSender}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id user{__typename id}}... on SharedRoom{__typename id title isChannel membersCount}}}}spans{__typename ...MessageSpan}... on GeneralMessage{__typename id edited commentsCount attachments{__typename ...MessageAttachments}quotedMessages{__typename ...QuotedMessage}reactionCounters{__typename ...MessageReactionCounter}overrideAvatar{__typename uuid crop{__typename x y w h}}overrideName}... on StickerMessage{__typename id commentsCount quotedMessages{__typename ...QuotedMessage}sticker{__typename ...StickerFragment}reactionCounters{__typename ...MessageReactionCounter}overrideAvatar{__typename uuid crop{__typename x y w h}}overrideName}... on ServiceMessage{__typename id serviceMetadata{__typename ...ServiceMessageMetadata}}}fragment MessageSender on User{__typename id name photo isBot shortname inContacts primaryOrganization{__typename id name shortname}}fragment UserBadge on UserBadge{__typename id name verified}fragment MessageSpan on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename id name}}... on MessageSpanMultiUserMention{__typename offset length}... on MessageSpanOrganizationMention{__typename organization{__typename id name}}... on MessageSpanRoomMention{__typename room{__typename ... on PrivateRoom{__typename id user{__typename id name}}... on SharedRoom{__typename id title isPremium}}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment MessageAttachments on ModernMessageAttachment{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}socialImage{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id title style url}}fallback}... on MessageAttachmentPurchase{__typename id purchase{__typename id state amount}fallback}}fragment QuotedMessage on ModernMessage{__typename id date message sender{__typename ...MessageSender}senderBadge{__typename ...UserBadge}fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}spans{__typename ...MessageSpan}... on GeneralMessage{__typename id edited commentsCount attachments{__typename ...MessageAttachments}}... on StickerMessage{__typename id sticker{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}fragment MessageReactionCounter on ReactionCounter{__typename reaction count setByMe}fragment ServiceMessageMetadata on ServiceMetadata{__typename ... on InviteServiceMetadata{__typename users{__typename id}invitedBy{__typename id}}... on KickServiceMetadata{__typename user{__typename id}kickedBy{__typename id}}... on TitleChangeServiceMetadata{__typename title}... on PhotoChangeServiceMetadata{__typename photo}... on PostRespondServiceMetadata{__typename respondType}}',
+        body: 'query Message($messageId:ID!){message(messageId:$messageId){__typename ...FullMessageWithoutSource source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id user{__typename id isBot}pinnedMessage{__typename id}}... on SharedRoom{__typename id title isChannel membersCount canSendMessage canEdit pinnedMessage{__typename id}role}}}}}comments(peerId:$messageId){__typename id subscription{__typename type}}}fragment FullMessageWithoutSource on ModernMessage{__typename id date sender{__typename ...MessageSender}senderBadge{__typename ...UserBadge}message fallback spans{__typename ...MessageSpan}... on GeneralMessage{__typename id edited commentsCount attachments{__typename ...MessageAttachments}quotedMessages{__typename ...QuotedMessage}reactionCounters{__typename ...MessageReactionCounter}overrideAvatar{__typename uuid crop{__typename x y w h}}overrideName}... on StickerMessage{__typename id commentsCount quotedMessages{__typename ...QuotedMessage}sticker{__typename ...StickerFragment}reactionCounters{__typename ...MessageReactionCounter}overrideAvatar{__typename uuid crop{__typename x y w h}}overrideName}... on ServiceMessage{__typename id serviceMetadata{__typename ...ServiceMessageMetadata}}}fragment MessageSender on User{__typename id name photo isBot shortname inContacts primaryOrganization{__typename id name shortname}}fragment UserBadge on UserBadge{__typename id name verified}fragment MessageSpan on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename id name}}... on MessageSpanMultiUserMention{__typename offset length}... on MessageSpanOrganizationMention{__typename organization{__typename id name}}... on MessageSpanRoomMention{__typename room{__typename ... on PrivateRoom{__typename id user{__typename id name}}... on SharedRoom{__typename id title isPremium}}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment MessageAttachments on ModernMessageAttachment{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}socialImage{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id title style url}}fallback}... on MessageAttachmentPurchase{__typename id purchase{__typename id state amount}fallback}}fragment QuotedMessage on ModernMessage{__typename id date message sender{__typename ...MessageSender}senderBadge{__typename ...UserBadge}fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}spans{__typename ...MessageSpan}... on GeneralMessage{__typename id edited commentsCount attachments{__typename ...MessageAttachments}}... on StickerMessage{__typename id sticker{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}fragment MessageReactionCounter on ReactionCounter{__typename reaction count setByMe}fragment ServiceMessageMetadata on ServiceMetadata{__typename ... on InviteServiceMetadata{__typename users{__typename id}invitedBy{__typename id}}... on KickServiceMetadata{__typename user{__typename id}kickedBy{__typename id}}... on TitleChangeServiceMetadata{__typename title}... on PhotoChangeServiceMetadata{__typename photo}... on PostRespondServiceMetadata{__typename respondType}}',
         selector: MessageSelector
     },
     MessageFullReactions: {

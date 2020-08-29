@@ -10,13 +10,11 @@ import { SHeaderView } from 'react-native-s/SHeaderView';
 import { EntityHeader } from './components/EntityHeader';
 import { formatDateAtTime } from 'openland-y-utils/formatTime';
 import { Message_message } from 'openland-api/spacex.types';
-import { useForward } from 'openland-mobile/messenger/MobileMessenger';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { HighlightAlpha, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 
 const MessageMenu = React.memo((props: { message: Message_message, isSubscribed: boolean }) => {
     const messenger = getMessenger();
@@ -26,11 +24,7 @@ const MessageMenu = React.memo((props: { message: Message_message, isSubscribed:
         return null;
     }
 
-    const { reply, edit } = useChatMessagesActionsMethods({ conversationId: source.chat.id, userId: source.chat.__typename === 'PrivateRoom' ? source.chat.user.id : undefined });
-    const forward = useForward(source.chat.id);
-
-    return <ZManageButton onPress={() => messenger.handleMessagePageMenuPress(props.message, props.isSubscribed, { forward, reply, edit })} />;
-
+    return <ZManageButton onPress={() => messenger.handleMessagePageMenuPress(props.message, props.isSubscribed)} />;
 });
 
 const MessageComponent = React.memo((props: PageProps) => {

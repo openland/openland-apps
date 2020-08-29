@@ -934,6 +934,93 @@ internal val DiscoverChatsCollectionShortSelector = obj(
                 )))
         )
 
+internal val FullMessageWithoutSourceSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("date", "date", notNull(scalar("Date"))),
+            field("sender", "sender", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("User", MessageSenderSelector)
+                ))),
+            field("senderBadge", "senderBadge", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("UserBadge", UserBadgeSelector)
+                )),
+            field("message", "message", scalar("String")),
+            field("fallback", "fallback", notNull(scalar("String"))),
+            field("spans", "spans", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("MessageSpan", MessageSpanSelector)
+                ))))),
+            inline("GeneralMessage", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("edited", "edited", notNull(scalar("Boolean"))),
+                field("commentsCount", "commentsCount", notNull(scalar("Int"))),
+                field("attachments", "attachments", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("ModernMessageAttachment", MessageAttachmentsSelector)
+                    ))))),
+                field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("ModernMessage", QuotedMessageSelector)
+                    ))))),
+                field("reactionCounters", "reactionCounters", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("ReactionCounter", MessageReactionCounterSelector)
+                    ))))),
+                field("overrideAvatar", "overrideAvatar", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("uuid", "uuid", notNull(scalar("String"))),
+                        field("crop", "crop", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("x", "x", notNull(scalar("Int"))),
+                                field("y", "y", notNull(scalar("Int"))),
+                                field("w", "w", notNull(scalar("Int"))),
+                                field("h", "h", notNull(scalar("Int")))
+                            ))
+                    )),
+                field("overrideName", "overrideName", scalar("String"))
+            )),
+            inline("StickerMessage", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("commentsCount", "commentsCount", notNull(scalar("Int"))),
+                field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("ModernMessage", QuotedMessageSelector)
+                    ))))),
+                field("sticker", "sticker", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("Sticker", StickerFragmentSelector)
+                    ))),
+                field("reactionCounters", "reactionCounters", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("ReactionCounter", MessageReactionCounterSelector)
+                    ))))),
+                field("overrideAvatar", "overrideAvatar", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("uuid", "uuid", notNull(scalar("String"))),
+                        field("crop", "crop", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("x", "x", notNull(scalar("Int"))),
+                                field("y", "y", notNull(scalar("Int"))),
+                                field("w", "w", notNull(scalar("Int"))),
+                                field("h", "h", notNull(scalar("Int")))
+                            ))
+                    )),
+                field("overrideName", "overrideName", scalar("String"))
+            )),
+            inline("ServiceMessage", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("serviceMetadata", "serviceMetadata", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("ServiceMetadata", ServiceMessageMetadataSelector)
+                    ))
+            ))
+        )
+
 internal val MediaStreamFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),

@@ -357,3 +357,74 @@ fragment FullMessage on ModernMessage {
         }
     }
 }
+
+fragment FullMessageWithoutSource on ModernMessage {
+    id
+    date
+    sender {
+        ...MessageSender
+    }
+    senderBadge {
+        ...UserBadge
+    }
+    message
+    fallback
+    spans {
+        ...MessageSpan
+    }
+    ... on GeneralMessage {
+        id
+        edited
+        commentsCount
+        attachments {
+            ...MessageAttachments
+        }
+        quotedMessages {
+            ...QuotedMessage
+        }
+        reactionCounters {
+            ...MessageReactionCounter
+        }
+        overrideAvatar {
+            uuid
+            crop {
+                x
+                y
+                w
+                h
+            }
+        }
+        overrideName
+    }
+
+    ... on StickerMessage {
+        id
+        commentsCount
+        quotedMessages {
+            ...QuotedMessage
+        }
+        sticker {
+            ...StickerFragment
+        }
+        reactionCounters {
+            ...MessageReactionCounter
+        }
+        overrideAvatar {
+            uuid
+            crop {
+                x
+                y
+                w
+                h
+            }
+        }
+        overrideName
+    }
+
+    ... on ServiceMessage {
+        id
+        serviceMetadata {
+            ...ServiceMessageMetadata
+        }
+    }
+}
