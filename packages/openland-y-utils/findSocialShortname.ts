@@ -16,7 +16,7 @@ const _findName: (opts: { source: string | null, domain: string, url: string, re
         return null;
     }
 
-    let link = source;
+    let link = source.trim();
 
     if (!link.includes(domain)) {
         link = link.replace('@', '');
@@ -49,7 +49,7 @@ export const findSocialShortname: FindSocialShortnameInterface = {
             return null;
         }
 
-        let link = v;
+        let link = v.trim();
 
         if (link.startsWith('//')) {
             link = link.slice(2, link.length);
