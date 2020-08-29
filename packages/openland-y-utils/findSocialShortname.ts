@@ -11,6 +11,38 @@ interface FindSocialShortnameInterface {
     linkedin: (v: string | null) => FindSocialShortnameResult | null;
 }
 
+const _findName: (opts: { source: string | null, domain: string, url: string, regexp: RegExp }) => FindSocialShortnameResult | null = ({ source, domain, url, regexp }) => {
+    if (typeof source !== 'string') {
+        return null;
+    }
+
+    let link = source;
+
+    if (!link.includes(domain)) {
+        link = link.replace('@', '');
+
+        return {
+            name: link,
+            url: `${url}/${link}/`
+        };
+    }
+
+    if (link.startsWith('//')) {
+        link = link.slice(2, link.length);
+    }
+
+    const matches = link.match(regexp);
+
+    if (matches && matches.length === 2) {
+        return {
+            name: matches[1],
+            url: `${url}/${matches[1]}/`
+        };
+    }
+
+    return null;
+};
+
 export const findSocialShortname: FindSocialShortnameInterface = {
     site: (v: string | null) => {
         if (typeof v !== 'string') {
@@ -32,133 +64,41 @@ export const findSocialShortname: FindSocialShortnameInterface = {
         return { name: link, url: `https://${link}/` };
     },
 
-    instagram: (v: string | null) => {
-        if (typeof v !== 'string') {
-            return null;
-        }
-
-        let link = v;
-
-        if (!link.includes('instagram.com')) {
-            link = link.replace('@', '');
-
-            return {
-                name: link,
-                url: `https://instagram.com/${link}/`
-            };
-        }
-
-        if (link.startsWith('//')) {
-            link = link.slice(2, link.length);
-        }
-
-        const matches = link.match(/^(?:https?:\/\/)?(?:www\.)?instagram\.com\/(?:#!\/)?@?([a-z0-9_]+)(?:\/\w+)*$/i);
-
-        if (matches && matches.length === 2) {
-            return {
-                name: matches[1],
-                url: `https://instagram.com/${matches[1]}/`
-            };
-        }
-
-        return null;
+    instagram: (source: string | null) => {
+        return _findName({
+            source,
+            domain: 'instagram.com',
+            url: 'https://instagram.com',
+            regexp: new RegExp(/^(?:https?:\/\/)?(?:www\.)?instagram\.com\/(?:#!\/)?@?([a-z0-9_]+)(?:\/\w+)*$/i)
+        });
     },
 
-    twitter: (v: string | null) => {
-        if (typeof v !== 'string') {
-            return null;
-        }
-
-        let link = v;
-
-        if (!link.includes('twitter.com')) {
-            link = link.replace('@', '');
-
-            return {
-                name: link,
-                url: `https://twitter.com/${link}/`
-            };
-        }
-
-        if (link.startsWith('//')) {
-            link = link.slice(2, link.length);
-        }
-
-        const matches = link.match(/^(?:https?:\/\/)?(?:www\.)?twitter\.com\/(?:#!\/)?@?([a-z0-9_]+)(?:\/\w+)*$/i);
-
-        if (matches && matches.length === 2) {
-            return {
-                name: matches[1],
-                url: `https://twitter.com/${matches[1]}/`
-            };
-        }
-
-        return null;
+    twitter: (source: string | null) => {
+        return _findName({
+            source,
+            domain: 'twitter.com',
+            url: 'https://twitter.com',
+            regexp: new RegExp(/^(?:https?:\/\/)?(?:www\.)?twitter\.com\/(?:#!\/)?@?([a-z0-9_]+)(?:\/\w+)*$/i)
+        });
     },
 
-    facebook: (v: string | null) => {
-        if (typeof v !== 'string') {
-            return null;
-        }
-
-        let link = v.replace('fb.com', 'facebook.com');
-
-        if (!link.includes('facebook.com')) {
-            link = link.replace('@', '');
-
-            return {
-                name: link,
-                url: `https://facebook.com/${link}/`
-            };
-        }
-
-        if (link.startsWith('//')) {
-            link = link.slice(2, link.length);
-        }
-
-        const matches = link.match(/^(?:https?:\/\/)?(?:(?:www\.)|(?:[a-z]{2}-[a-z]{2}\.))?facebook\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(?:\/)?(\d*[^0-9/?]+\d*)\/?$/i);
-
-        if (matches && matches.length === 2) {
-            return {
-                name: matches[1],
-                url: `https://facebook.com/${matches[1]}/`
-            };
-        }
-
-        return null;
+    facebook: (source: string | null) => {
+        return _findName({
+            source: !!source && source.replace('fb.com', 'facebook.com') || source,
+            domain: 'facebook.com',
+            url: 'https://facebook.com',
+            regexp: new RegExp(/^(?:https?:\/\/)?(?:(?:www\.)|(?:[a-z]{2}-[a-z]{2}\.))?facebook\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*?(?:\/)?(\d*[^0-9/?]+\d*)\/?$/i)
+        });
     },
 
-    linkedin: (v: string | null) => {
-        if (typeof v !== 'string') {
-            return null;
-        }
+    linkedin: (source: string | null) => {
+        const entity = !!source && source.includes('/company') ? 'company' : 'in';
 
-        let link = v;
-
-        if (!link.includes('linkedin.com')) {
-            link = link.replace('@', '');
-
-            return {
-                name: link,
-                url: `https://linkedin.com/in/${link}/`
-            };
-        }
-
-        if (link.startsWith('//')) {
-            link = link.slice(2, link.length);
-        }
-
-        const matches = link.match(/^(?:https?:\/\/)?(?:(?:www|\w\w)\.)?linkedin.com\/(?:(?:company\/|in\/)([\w\-]+))/i);
-
-        if (matches && matches.length === 2) {
-            const entity = link.includes('/company') ? 'company' : 'in';
-
-            return {
-                name: matches[1],
-                url: `https://linkedin.com/${entity}/${matches[1]}/`
-            };
-        }
-
-        return null;
+        return _findName({
+            source,
+            domain: 'linkedin.com',
+            url: 'https://linkedin.com/' + entity,
+            regexp: new RegExp(/^(?:https?:\/\/)?(?:(?:www|\w\w)\.)?linkedin.com\/(?:(?:company\/|in\/)([\w\-]+))/i)
+        });
     }
 };
