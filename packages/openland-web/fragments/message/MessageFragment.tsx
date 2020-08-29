@@ -5,9 +5,9 @@ import { MessageView } from './components/MessageView';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { CommentsWrapper } from 'openland-web/components/comments/CommentsWrapper';
 import { MessageHeader } from './components/MessageHeader';
-import { FullMessage } from 'openland-api/spacex.types';
+import { Message_message } from 'openland-api/spacex.types';
 
-const MessageFragmentInner = React.memo((props: { messageId: string; commentId?: string, message: FullMessage | null }) => {
+const MessageFragmentInner = React.memo((props: { messageId: string; commentId?: string, message: Message_message | null }) => {
     const { message, commentId } = props;
 
     if (!message || message.__typename === 'ServiceMessage') {
@@ -21,8 +21,8 @@ const MessageFragmentInner = React.memo((props: { messageId: string; commentId?:
             peerView={<MessageView message={message} />}
             groupId={
                 message.source &&
-                message.source.__typename === 'MessageSourceChat' &&
-                message.source.chat.__typename === 'SharedRoom'
+                    message.source.__typename === 'MessageSourceChat' &&
+                    message.source.chat.__typename === 'SharedRoom'
                     ? message.source.chat.id
                     : undefined
             }

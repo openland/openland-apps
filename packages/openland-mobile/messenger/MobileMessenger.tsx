@@ -34,7 +34,7 @@ import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { showCheckLock } from 'openland-mobile/pages/main/modals/PayConfirm';
 import { showDonationReactionWarning } from './components/showDonationReactionWarning';
 import UUID from 'uuid/v4';
-import { ChatMessagesActions, MessagesAction } from 'openland-y-utils/MessagesActionsState';
+import { ChatMessagesActions, MessagesAction, useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 import { AsyncSharedItem } from 'openland-mobile/pages/shared-media/AsyncSharedItem';
 import { useMessagesActionsForward } from 'openland-y-utils/MessagesActionsState';
 import LinearGradient from 'react-native-linear-gradient';
@@ -247,14 +247,23 @@ export class MobileMessenger {
         this.history.navigationManager.push('Conversation', { id });
     }
 
-    handleMessageSourcePress = (chatId: string) => {
+    handleMessageSourcePress = (chatId: string, beforePush?: () => void) => {
         const state = this.routerSuitable.getState().history;
 
-        if (state.length <= 1 || (state[state.length - 2].route !== 'Conversation' && state[state.length - 2].params?.id !== chatId)) {
-            this.routerSuitable.push('Conversation', { id: chatId });
-        } else {
-            this.routerSuitable.pop();
+        if (state.length > 1) {
+            const prev = state[state.length - 2];
+
+            if (prev.route === 'Conversation' && (prev.params?.id === chatId || prev.params?.flexibleId === chatId)) {
+                this.routerSuitable.pop();
+
+                return;
+            }
         }
+
+        // Sorry universe. Without it crash with exception ("penland.RNASyncListNode: Invalid number of items in section 1") sometimes
+        this.resetConversation(chatId);
+
+        this.routerSuitable.push('Conversation', { id: chatId });
     }
 
     handleGroupPress = (id: string) => {
@@ -345,22 +354,22 @@ export class MobileMessenger {
     handleMessagePageMenuPress = (
         message: Message_message,
         isSubscribed: boolean,
-        actions: {
-            reply: ChatMessagesActions['reply'],
-            edit: ChatMessagesActions['edit'],
-            forward: (messages: DataSourceMessageItem[]) => void,
-        }
     ) => {
         if (!message.source || message.source.__typename !== 'MessageSourceChat') {
             return;
         }
 
-        const convertedMessage = convertMessage(message, message.source.chat.id, this.engine);
-        const conversation: ConversationEngine = this.engine.getConversation(convertedMessage.chatId);
-        const builder = new ActionSheetBuilder();
-        const { forward } = actions;
+        const chat = message.source.chat;
+        const convertedMessage = convertMessage(message, chat.id, this.engine);
 
-        const role = conversation.role;
+        const canEdit = ((chat.__typename === 'SharedRoom' && chat.canEdit) || SUPER_ADMIN) || false;
+        const canPin = canEdit || (chat.__typename === 'PrivateRoom') || false;
+        const canSendMessage = (chat.__typename === 'SharedRoom') ? chat.canSendMessage : (chat.__typename === 'PrivateRoom') ? !chat.user.isBot : true;
+        const role = (chat.__typename === 'SharedRoom' && chat.role) || null;
+
+        const builder = new ActionSheetBuilder();
+        const { reply, edit, clear } = useChatMessagesActionsMethods({ conversationId: chat.id, userId: chat.__typename === 'PrivateRoom' ? chat.user.id : undefined });
+        const forward = useForward(chat.id);
 
         builder.view((ctx: ZModalController) => (
             <ReactionsPicker
@@ -389,11 +398,13 @@ export class MobileMessenger {
             }
         }, false, isSubscribed ? require('assets/ic-follow-off-24.png') : require('assets/ic-follow-24.png'));
 
-        // if (conversation.canSendMessage) {
-        //     builder.action('Reply', () => {
-        //                 reply(convertedMessage);
-        //     }, false, require('assets/ic-reply-24.png'));
-        // }
+        if (canSendMessage) {
+            builder.action('Reply', () => {
+                reply(convertedMessage);
+
+                this.handleMessageSourcePress(chat.id, () => this.resetConversation(chat.id));
+            }, false, require('assets/ic-reply-24.png'));
+        }
 
         builder.action('Forward', () => {
             forward([convertedMessage]);
@@ -406,17 +417,17 @@ export class MobileMessenger {
             }, false, require('assets/ic-copy-24.png'));
         }
 
-        if (conversation.canPin && convertedMessage.id) {
-            const toUnpin = conversation.pinId && conversation.pinId === convertedMessage.id;
+        if (canPin && convertedMessage.id) {
+            const toUnpin = chat.pinnedMessage && chat.pinnedMessage.id === convertedMessage.id;
 
             builder.action(toUnpin ? 'Unpin' : 'Pin', async () => {
                 const loader = Toast.loader();
                 loader.show();
                 try {
                     if (toUnpin) {
-                        await this.engine.client.mutateUnpinMessage({ chatId: convertedMessage.chatId });
+                        await this.engine.client.mutateUnpinMessage({ chatId: chat.id });
                     } else {
-                        await this.engine.client.mutatePinMessage({ chatId: convertedMessage.chatId, messageId: convertedMessage.id! });
+                        await this.engine.client.mutatePinMessage({ chatId: chat.id, messageId: message.id });
                     }
                     Toast.showSuccess(toUnpin ? 'Unpinned' : 'Pinned');
                 } finally {
@@ -425,19 +436,24 @@ export class MobileMessenger {
             }, false, toUnpin ? require('assets/ic-pin-off-24.png') : require('assets/ic-pin-24.png'));
         }
 
-        // if (convertedMessage.text) {
-        //     let hasPurchase = convertedMessage.attachments && convertedMessage.attachments.some(a => a.__typename === 'MessageAttachmentPurchase');
-        //     if (convertedMessage.sender.id === this.engine.user.id && !hasPurchase) {
-        //         builder.action('Edit', () => {
-        //                     edit(convertedMessage);
-        //         }, false, require('assets/ic-edit-24.png'));
-        //     }
-        // }
+        if (convertedMessage.text) {
+            let hasPurchase = convertedMessage.attachments && convertedMessage.attachments.some(a => a.__typename === 'MessageAttachmentPurchase');
+            if (convertedMessage.sender.id === this.engine.user.id && !hasPurchase) {
+                builder.action('Edit', () => {
+                    clear();
+                    edit(convertedMessage);
+
+                    this.handleMessageSourcePress(chat.id, () => this.resetConversation(chat.id));
+                }, false, require('assets/ic-edit-24.png'));
+            }
+        }
 
         if (message.sender.id === this.engine.user.id || SUPER_ADMIN || role === 'ADMIN' || role === 'OWNER') {
             builder.action('Delete', () => {
                 this.handleDeleteMessage(message.id, () => {
-                    this.routerSuitable.pop();
+                    if (convertedMessage.commentsCount <= 0) {
+                        this.routerSuitable.pop();
+                    }
                 });
             }, false, require('assets/ic-delete-24.png'));
         }
@@ -596,6 +612,13 @@ export class MobileMessenger {
     private handleReactionsPress = (message: DataSourceMessageItem) => {
         if (message.reactionCounters.length > 0 && message.id) {
             showReactionsList(message.id);
+        }
+    }
+
+    private resetConversation(id: string) {
+        if (this.conversations.has(id)) {
+            this.engine.removeConversation(id);
+            this.conversations.delete(id);
         }
     }
 }

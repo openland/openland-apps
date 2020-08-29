@@ -46,7 +46,7 @@ export interface CommentViewProps {
     theme: ThemeGlobal;
     scrollRef?: React.RefObject<ScrollView>;
 
-    onReplyPress: (comment: CommentEntryFragment_comment) => void;
+    onReplyPress?: (comment: CommentEntryFragment_comment) => void;
     onLongPress: (comment: CommentEntryFragment_comment) => void;
 }
 
@@ -150,7 +150,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                         />
                     )}
 
-                    <ZLabelButton label="Reply" onPress={() => props.onReplyPress(comment)} />
+                    {!!props.onReplyPress && <ZLabelButton label="Reply" onPress={() => props.onReplyPress!(comment)} />}
                     <ZLabelButton label={likedByMe ? 'Liked' : 'Like'} style={likedByMe ? 'danger' : 'default'} onPress={() => handleReactionPress(true)} />
 
                     {likesCount > 0 && <ZLabelButton label={plural(likesCount, ['like', 'likes'])} onPress={handleReactionListPress} />}

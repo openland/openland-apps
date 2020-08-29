@@ -10,13 +10,19 @@ import { SHeaderView } from 'react-native-s/SHeaderView';
 import { EntityHeader } from './components/EntityHeader';
 import { formatDateAtTime } from 'openland-y-utils/formatTime';
 import { Message_message } from 'openland-api/spacex.types';
-import { useForward } from 'openland-mobile/messenger/MobileMessenger';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { HighlightAlpha, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
+
+// remove after adding isDeleted flag in API
+const isMessageDeleted = (message: Message_message) => {
+    if (message.sender.name === 'Deleted' && message.sender.isBot && message.message === 'This message has been deleted') {
+        return true;
+    }
+    return false;
+};
 
 const MessageMenu = React.memo((props: { message: Message_message, isSubscribed: boolean }) => {
     const messenger = getMessenger();
@@ -26,11 +32,7 @@ const MessageMenu = React.memo((props: { message: Message_message, isSubscribed:
         return null;
     }
 
-    const { reply, edit } = useChatMessagesActionsMethods({ conversationId: source.chat.id, userId: source.chat.__typename === 'PrivateRoom' ? source.chat.user.id : undefined });
-    const forward = useForward(source.chat.id);
-
-    return <ZManageButton onPress={() => messenger.handleMessagePageMenuPress(props.message, props.isSubscribed, { forward, reply, edit })} />;
-
+    return <ZManageButton onPress={() => messenger.handleMessagePageMenuPress(props.message, props.isSubscribed)} />;
 });
 
 const MessageComponent = React.memo((props: PageProps) => {
@@ -46,6 +48,7 @@ const MessageComponent = React.memo((props: PageProps) => {
         return null;
     }
 
+    const isDeleted = isMessageDeleted(message);
     const { date, sender, source } = message;
     const peerView = (
         <View paddingHorizontal={16} paddingTop={8} paddingBottom={16}>
@@ -85,13 +88,14 @@ const MessageComponent = React.memo((props: PageProps) => {
                 />
             </SHeaderView>
 
-            <MessageMenu message={message} isSubscribed={!!messageData.comments.subscription} />
+            {!isDeleted && <MessageMenu message={message} isSubscribed={!!messageData.comments.subscription} />}
 
             <CommentsWrapper
                 peerView={peerView}
                 peerId={messageId}
                 chat={source && source.__typename === 'MessageSourceChat' ? source.chat : undefined}
                 highlightId={highlightId}
+                isDeleted={isDeleted}
             />
         </>
     );

@@ -31,6 +31,7 @@ interface CommentsWrapperProps {
     peerId: string;
     chat?: Message_message_GeneralMessage_source_MessageSourceChat_chat;
     highlightId?: string;
+    isDeleted: boolean;
 }
 
 const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentEntryFragment[], role: RoomMemberRole | undefined }) => {
@@ -38,7 +39,7 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
     const scrollRef = React.createRef<ScrollView>();
     const area = React.useContext(ASSafeAreaContext);
 
-    const { peerView, peerId, comments, chat, highlightId } = props;
+    const { peerView, peerId, comments, chat, highlightId, isDeleted } = props;
 
     // state
     const [replied, setReplied] = React.useState<CommentEntryFragment_comment | undefined>(undefined);
@@ -259,7 +260,7 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
             <CommentsList
                 role={props.role}
                 comments={comments}
-                onReplyPress={handleReplyPress}
+                onReplyPress={!isDeleted ? handleReplyPress : undefined}
                 onEditPress={handleEditPress}
                 highlightedId={replied ? replied.id : undefined}
                 scrollRef={scrollRef}
@@ -282,21 +283,23 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
             )}
 
             <View paddingBottom={Platform.OS === 'android' ? area.keyboardHeight : undefined}>
-                <MessageInputBar
-                    onAttachPress={handleAttach}
-                    onSubmitPress={() => handleSubmit()}
-                    onChangeText={handleInputTextChange}
-                    onSelectionChange={handleInputSelectionChange}
-                    onFocus={handleInputFocus}
-                    onBlur={handleInputBlur}
-                    text={inputText}
-                    placeholder="Comment"
-                    suggestions={suggestions}
-                    topView={quoted}
-                    showLoader={sending}
-                    ref={inputRef}
-                    canSubmit={inputText.trim().length > 0}
-                />
+                {(!isDeleted || edited) && (
+                    <MessageInputBar
+                        onAttachPress={handleAttach}
+                        onSubmitPress={() => handleSubmit()}
+                        onChangeText={handleInputTextChange}
+                        onSelectionChange={handleInputSelectionChange}
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
+                        text={inputText}
+                        placeholder="Comment"
+                        suggestions={suggestions}
+                        topView={quoted}
+                        showLoader={sending}
+                        ref={inputRef}
+                        canSubmit={inputText.trim().length > 0}
+                    />
+                )}
             </View>
         </>
     );
