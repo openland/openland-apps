@@ -21,6 +21,7 @@ import { ZHeroAction } from 'openland-mobile/components/ZHeroAction';
 import { plural } from 'openland-y-utils/plural';
 import { SHeader } from 'react-native-s/SHeader';
 import { UserPhotoUploader } from './components/UserPhotoUploader';
+import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 
 const ProfileUserComponent = React.memo((props: PageProps) => {
     const client = getClient();
@@ -91,6 +92,11 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
             await Linking.openURL(link);
         }
     }, []);
+
+    const instagram = React.useMemo(() => findSocialShortname.instagram(user.instagram), [user.instagram]);
+    const twitter = React.useMemo(() => findSocialShortname.twitter(user.twitter), [user.twitter]);
+    const facebook = React.useMemo(() => findSocialShortname.facebook(user.facebook), [user.facebook]);
+    const linkedin = React.useMemo(() => findSocialShortname.linkedin(user.linkedin), [user.linkedin]);
 
     return (
         <>
@@ -201,40 +207,44 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                             copy={true}
                         />
                     )}
-                    {!!user.instagram && (
+                    {!!instagram && (
                         <ZListItem
-                            text={user.instagram}
+                            text={instagram.name}
+                            textToCopy={instagram.url}
                             leftIcon={require('assets/ic-instagram-24.png')}
-                            linkify={true}
                             small={true}
                             copy={true}
+                            onPress={() => handleLinkPress(instagram.url)}
                         />
                     )}
-                    {!!user.twitter && (
+                    {!!twitter && (
                         <ZListItem
-                            text={user.twitter}
+                            text={twitter.name}
+                            textToCopy={twitter.url}
                             leftIcon={require('assets/ic-twitter-24.png')}
-                            linkify={true}
                             small={true}
                             copy={true}
+                            onPress={() => handleLinkPress(twitter.url)}
                         />
                     )}
-                    {!!user.facebook && (
+                    {!!facebook && (
                         <ZListItem
-                            text={user.facebook}
+                            text={facebook.name}
+                            textToCopy={facebook.url}
                             leftIcon={require('assets/ic-facebook-24.png')}
-                            linkify={true}
                             small={true}
                             copy={true}
+                            onPress={() => handleLinkPress(facebook.url)}
                         />
                     )}
-                    {!!user.linkedin && (
+                    {!!linkedin && (
                         <ZListItem
-                            text={user.linkedin}
+                            text={linkedin.name}
+                            textToCopy={linkedin.url}
                             leftIcon={require('assets/ic-linkedin-24.png')}
-                            linkify={true}
                             small={true}
                             copy={true}
+                            onPress={() => handleLinkPress(linkedin.url)}
                         />
                     )}
                 </ZListGroup>

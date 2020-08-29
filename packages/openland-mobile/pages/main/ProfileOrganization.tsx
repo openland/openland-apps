@@ -11,7 +11,7 @@ import { Modals } from './modals/Modals';
 import { formatError } from 'openland-y-forms/errorHandling';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
-import { View, Platform, Text } from 'react-native';
+import { View, Platform, Text, Linking } from 'react-native';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import {
     OrganizationMemberRole,
@@ -37,6 +37,7 @@ import {
 } from 'openland-y-utils/members/EntityMembersManager';
 import { ZHero } from 'openland-mobile/components/ZHero';
 import { plural } from 'openland-y-utils/plural';
+import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 
 const PrivateProfile = React.memo(
     (props: PageProps & { organization: Organization_organization }) => {
@@ -458,6 +459,17 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     const shouldShowAddButton =
         organization.isMine && (organization.isAdmin || organization.membersCanInvite);
 
+    const handleLinkPress = React.useCallback(async (link: string) => {
+        if (await Linking.canOpenURL(link)) {
+            await Linking.openURL(link);
+        }
+    }, []);
+
+    const instagram = React.useMemo(() => findSocialShortname.instagram(organization.instagram), [organization.instagram]);
+    const twitter = React.useMemo(() => findSocialShortname.twitter(organization.twitter), [organization.twitter]);
+    const facebook = React.useMemo(() => findSocialShortname.facebook(organization.facebook), [organization.facebook]);
+    const linkedin = React.useMemo(() => findSocialShortname.linkedin(organization.linkedin), [organization.linkedin]);
+
     const content = (
         <>
             <ZTrack
@@ -495,40 +507,44 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                         copy={true}
                     />
                 )}
-                {!!organization.instagram && (
+                {!!instagram && (
                     <ZListItem
-                        text={organization.instagram}
+                        text={instagram.name}
+                        textToCopy={instagram.url}
                         leftIcon={require('assets/ic-instagram-24.png')}
-                        linkify={true}
                         small={true}
                         copy={true}
+                        onPress={() => handleLinkPress(instagram.url)}
                     />
                 )}
-                {!!organization.twitter && (
+                {!!twitter && (
                     <ZListItem
-                        text={organization.twitter}
+                        text={twitter.name}
+                        textToCopy={twitter.url}
                         leftIcon={require('assets/ic-twitter-24.png')}
-                        linkify={true}
                         small={true}
                         copy={true}
+                        onPress={() => handleLinkPress(twitter.url)}
                     />
                 )}
-                {!!organization.facebook && (
+                {!!facebook && (
                     <ZListItem
-                        text={organization.facebook}
+                        text={facebook.name}
+                        textToCopy={facebook.url}
                         leftIcon={require('assets/ic-facebook-24.png')}
-                        linkify={true}
                         small={true}
                         copy={true}
+                        onPress={() => handleLinkPress(facebook.url)}
                     />
                 )}
-                {!!organization.linkedin && (
+                {!!linkedin && (
                     <ZListItem
-                        text={organization.linkedin}
+                        text={linkedin.name}
+                        textToCopy={linkedin.url}
                         leftIcon={require('assets/ic-linkedin-24.png')}
-                        linkify={true}
                         small={true}
                         copy={true}
+                        onPress={() => handleLinkPress(linkedin.url)}
                     />
                 )}
             </ZListGroup>
