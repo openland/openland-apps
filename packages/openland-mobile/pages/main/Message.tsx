@@ -16,6 +16,14 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { HighlightAlpha, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
+// remove after adding isDeleted flag in API
+const isMessageDeleted = (message: Message_message) => {
+    if (message.sender.name === 'Deleted' && message.sender.isBot && message.message === 'This message has been deleted') {
+        return true;
+    }
+    return false;
+};
+
 const MessageMenu = React.memo((props: { message: Message_message, isSubscribed: boolean }) => {
     const messenger = getMessenger();
     const { source } = props.message;
@@ -40,6 +48,7 @@ const MessageComponent = React.memo((props: PageProps) => {
         return null;
     }
 
+    const isDeleted = isMessageDeleted(message);
     const { date, sender, source } = message;
     const peerView = (
         <View paddingHorizontal={16} paddingTop={8} paddingBottom={16}>
@@ -79,13 +88,14 @@ const MessageComponent = React.memo((props: PageProps) => {
                 />
             </SHeaderView>
 
-            <MessageMenu message={message} isSubscribed={!!messageData.comments.subscription} />
+            {!isDeleted && <MessageMenu message={message} isSubscribed={!!messageData.comments.subscription} />}
 
             <CommentsWrapper
                 peerView={peerView}
                 peerId={messageId}
                 chat={source && source.__typename === 'MessageSourceChat' ? source.chat : undefined}
                 highlightId={highlightId}
+                isDeleted={isDeleted}
             />
         </>
     );

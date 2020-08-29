@@ -451,7 +451,9 @@ export class MobileMessenger {
         if (message.sender.id === this.engine.user.id || SUPER_ADMIN || role === 'ADMIN' || role === 'OWNER') {
             builder.action('Delete', () => {
                 this.handleDeleteMessage(message.id, () => {
-                    this.routerSuitable.pop();
+                    if (convertedMessage.commentsCount <= 0) {
+                        this.routerSuitable.pop();
+                    }
                 });
             }, false, require('assets/ic-delete-24.png'));
         }

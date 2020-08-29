@@ -17,7 +17,7 @@ interface CommentsListProps {
     highlightedId?: string;
     scrollRef?: React.RefObject<ScrollView>;
 
-    onReplyPress: (comment: CommentEntryFragment_comment) => void;
+    onReplyPress?: (comment: CommentEntryFragment_comment) => void;
     onEditPress: (comment: CommentEntryFragment_comment) => void;
 }
 

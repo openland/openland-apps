@@ -23,25 +23,14 @@ export interface ZMessageViewProps {
 
 export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
     const theme = React.useContext(ThemeContext);
-    const router = getMessenger().history.navigationManager;
+    const messenger = getMessenger();
 
     const { message, wrapped } = props;
 
-    const handleUserPress = React.useCallback((id: string) => {
-        router.push('ProfileUser', { id });
-    }, []);
-
-    const handleGroupPress = React.useCallback((id: string) => {
-        router.push('Conversation', { id });
-    }, []);
-
-    const handleOrganizationPress = React.useCallback((id: string) => {
-        router.push('ProfileOrganization', { id });
-    }, []);
-
-    const handleHashtagPress = React.useCallback((d?: string) => {
-        getMessenger().handleHashtagPress(d);
-    }, []);
+    const handleUserPress = React.useCallback((id: string) => messenger.handleUserPress(id), []);
+    const handleGroupPress = React.useCallback((id: string) => messenger.handleGroupPress(id), []);
+    const handleOrganizationPress = React.useCallback((id: string) => messenger.handleOrganizationPress(id), []);
+    const handleHashtagPress = React.useCallback((tag?: string) => messenger.handleHashtagPress(tag), []);
 
     const handleDocumentPress = React.useCallback((document: FullMessage_GeneralMessage_attachments_MessageAttachmentFile) => {
         showFileModal({ uuid: document.fileId, name: document.fileMetadata.name, size: document.fileMetadata.size });
