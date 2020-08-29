@@ -93,6 +93,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
         }
     }, []);
 
+    const website = React.useMemo(() => findSocialShortname.site(user.website), [user.website]);
     const instagram = React.useMemo(() => findSocialShortname.instagram(user.instagram), [user.instagram]);
     const twitter = React.useMemo(() => findSocialShortname.twitter(user.twitter), [user.twitter]);
     const facebook = React.useMemo(() => findSocialShortname.facebook(user.facebook), [user.facebook]);
@@ -198,13 +199,14 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                             onPress={() => handleLinkPress(`mailto:${user.email}`)}
                         />
                     )}
-                    {!!user.website && (
+                    {!!website && (
                         <ZListItem
-                            text={user.website}
+                            text={website.name}
+                            textToCopy={website.url}
                             leftIcon={require('assets/ic-link-24.png')}
-                            linkify={true}
                             small={true}
                             copy={true}
+                            onPress={() => handleLinkPress(website.url)}
                         />
                     )}
                     {!!instagram && (

@@ -4,6 +4,7 @@ interface FindSocialShortnameResult {
 }
 
 interface FindSocialShortnameInterface {
+    site: (v: string | null) => FindSocialShortnameResult | null;
     instagram: (v: string | null) => FindSocialShortnameResult | null;
     twitter: (v: string | null) => FindSocialShortnameResult | null;
     facebook: (v: string | null) => FindSocialShortnameResult | null;
@@ -11,6 +12,26 @@ interface FindSocialShortnameInterface {
 }
 
 export const findSocialShortname: FindSocialShortnameInterface = {
+    site: (v: string | null) => {
+        if (typeof v !== 'string') {
+            return null;
+        }
+
+        let link = v;
+
+        if (link.startsWith('//')) {
+            link = link.slice(2, link.length);
+        }
+
+        link = link.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '');
+
+        if (link.endsWith('/')) {
+            link = link.slice(0, link.length - 1);
+        }
+
+        return { name: link, url: `https://${link}/` };
+    },
+
     instagram: (v: string | null) => {
         if (typeof v !== 'string') {
             return null;

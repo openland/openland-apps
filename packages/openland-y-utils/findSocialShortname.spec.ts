@@ -1,6 +1,19 @@
 import { findSocialShortname as f } from './findSocialShortname';
 
 describe('Social Shortnames Parser', () => {
+    it('should parse sites', () => {
+        expect(f.site('https://openland.com')).toEqual({ name: 'openland.com', url: 'https://openland.com/' });
+        expect(f.site('https://openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com/' });
+        expect(f.site('http://openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com/' });
+        expect(f.site('//openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com/' });
+        expect(f.site('https://www.openland.com')).toEqual({ name: 'openland.com', url: 'https://openland.com/' });
+        expect(f.site('https://www.openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com/' });
+        expect(f.site('http://www.openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com/' });
+        expect(f.site('//www.openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com/' });
+        expect(f.site('openland.com/about')).toEqual({ name: 'openland.com/about', url: 'https://openland.com/about/' });
+        expect(f.site('www.openland.com/about/')).toEqual({ name: 'openland.com/about', url: 'https://openland.com/about/' });
+    });
+
     it('should parse instagram', () => {
         expect(f.instagram('@openlandhq')).toEqual({ name: 'openlandhq', url: 'https://instagram.com/openlandhq/' });
         expect(f.instagram('openlandhq')).toEqual({ name: 'openlandhq', url: 'https://instagram.com/openlandhq/' });

@@ -465,6 +465,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
         }
     }, []);
 
+    const website = React.useMemo(() => findSocialShortname.site(organization.website), [organization.website]);
     const instagram = React.useMemo(() => findSocialShortname.instagram(organization.instagram), [organization.instagram]);
     const twitter = React.useMemo(() => findSocialShortname.twitter(organization.twitter), [organization.twitter]);
     const facebook = React.useMemo(() => findSocialShortname.facebook(organization.facebook), [organization.facebook]);
@@ -498,13 +499,14 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                         copy={true}
                     />
                 )}
-                {!!organization.website && (
+                {!!website && (
                     <ZListItem
-                        text={organization.website}
+                        text={website.name}
+                        textToCopy={website.url}
                         leftIcon={require('assets/ic-link-24.png')}
-                        linkify={true}
                         small={true}
                         copy={true}
+                        onPress={() => handleLinkPress(website.url)}
                     />
                 )}
                 {!!instagram && (
