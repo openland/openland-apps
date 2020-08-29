@@ -15,6 +15,12 @@ export const useTabs = (config: (string | [string, (number | null)?])[], initial
     return [items, selected, setSelected];
 };
 
+interface TabsProps {
+    tabs: TabItem[];
+    showTabLine?: boolean;
+    setSelected: (tabKey: String) => void;
+}
+
 const TabClass = css`
     display: flex;
     flex-direction: row;
@@ -52,12 +58,12 @@ const TabLineClass = css`
     transition: width 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99), transform 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
 
 `;
-export const Tabs = React.memo((props: { tabs: TabItem[], setSelected: (tabKey: String) => void } & XViewProps) => {
-    let { tabs, setSelected, ...style } = props;
+export const Tabs = React.memo((props: TabsProps & XViewProps) => {
+    let { tabs, setSelected, showTabLine, ...style } = props;
     const refs = React.useMemo<React.RefObject<HTMLDivElement>[]>(() => props.tabs.map(_ => React.createRef()), [props.tabs.length]);
     const lineRef = React.useRef<HTMLDivElement>(null);
     React.useEffect(() => {
-        if (lineRef.current) {
+        if (showTabLine && lineRef.current) {
             let index = props.tabs.findIndex(t => t.selected);
             let currentTabRef = refs[index];
             if (index === -1) {
@@ -73,7 +79,7 @@ export const Tabs = React.memo((props: { tabs: TabItem[], setSelected: (tabKey: 
     }, [props.selected, props.tabs]);
     return (
         <XView flexDirection="row" height={56} {...style}>
-            <div ref={lineRef} className={TabLineClass} />
+            {showTabLine && <div ref={lineRef} className={TabLineClass} />}
             {tabs.map((t, i) => <Tab key={t.title} innerRef={refs[i]} {...t} setSelected={setSelected} />)}
         </XView>
     );

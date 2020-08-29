@@ -12,6 +12,7 @@ fragment UserFull on User {
     isBot
     online
     lastSeen
+    joinDate
     linkedin
     instagram
     twitter
