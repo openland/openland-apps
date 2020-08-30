@@ -22,6 +22,7 @@ import { plural } from 'openland-y-utils/plural';
 import { SHeader } from 'react-native-s/SHeader';
 import { UserPhotoUploader } from './components/UserPhotoUploader';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
+import { useLastSeenShort } from 'openland-y-utils/LastSeen';
 
 const ProfileUserComponent = React.memo((props: PageProps) => {
     const client = getClient();
@@ -99,6 +100,8 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
     const facebook = React.useMemo(() => findSocialShortname.facebook(user.facebook), [user.facebook]);
     const linkedin = React.useMemo(() => findSocialShortname.linkedin(user.linkedin), [user.linkedin]);
 
+    const [lastseen] = useLastSeenShort(user);
+
     return (
         <>
             <SHeader title={Platform.OS === 'android' ? 'Info' : user.name} />
@@ -109,6 +112,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                     id={user.id}
                     online={user.online}
                     title={user.name}
+                    badge={lastseen}
                     subtitle={profileType === 'bot' ? 'Bot' : user.primaryOrganization?.name}
                     actionPrimary={{
                         title: profileType === 'my' ? 'Edit profile' : (profileType === 'bot' ? 'Open messages' : 'Send message'),
@@ -263,6 +267,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                     >
                         {mutualGroups.items.map((item) => (
                             <ZListItem
+                                key={`group-${item.id}`}
                                 leftAvatar={{ photo: item.photo, id: item.id, title: item.title }}
                                 text={item.title}
                                 subTitle={plural(item.membersCount, ['member', 'members'])}

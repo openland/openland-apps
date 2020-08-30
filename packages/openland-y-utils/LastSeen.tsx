@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { formatLastSeen } from 'openland-y-utils/formatTime';
+import { formatLastSeen, formatLastSeenShort } from 'openland-y-utils/formatTime';
 
 export interface User {
     id: string;
@@ -9,11 +9,11 @@ export interface User {
 }
 
 class LastSeenManagerImpl {
-    private subscriptions: { currentValue: string, lastSeen: string, cb: (str: string) => void }[] = [];
+    private subscriptions: { currentValue: string, lastSeen: string, cb: (value: string) => void, format: (l: string) => string }[] = [];
     private loop: any;
 
-    subscribe(lastSeen: string, cb: (str: string) => void) {
-        this.subscriptions.push({lastSeen, cb, currentValue: formatLastSeen(lastSeen)});
+    subscribe(lastSeen: string, cb: (value: string) => void, format: (l: string) => string) {
+        this.subscriptions.push({ lastSeen, cb, currentValue: format(lastSeen), format });
         this.tryStart();
         return () => {
             let index = this.subscriptions.findIndex(s => s.cb === cb);
@@ -36,9 +36,9 @@ class LastSeenManagerImpl {
             }
 
             for (let sub of this.subscriptions) {
-                let formatted = formatLastSeen(sub.lastSeen);
+                let formatted = sub.format(sub.lastSeen);
                 if (sub.currentValue !== formatted) {
-                    sub.cb(formatLastSeen(sub.lastSeen));
+                    sub.cb(formatted);
                     sub.currentValue = formatted;
                 }
             }
@@ -68,7 +68,7 @@ export const useLastSeen = (user: User | null) => {
             }
             if (!isOnline && user && user.lastSeen) {
                 setLastSeen(formatLastSeen(user.lastSeen));
-                unsub = LastSeenManager.subscribe(user!.lastSeen, newLastSeen => setLastSeen(newLastSeen));
+                unsub = LastSeenManager.subscribe(user!.lastSeen, newLastSeen => setLastSeen(newLastSeen), formatLastSeen);
             }
         }
         return () => {
@@ -79,4 +79,37 @@ export const useLastSeen = (user: User | null) => {
     }, [accentColor]);
 
     return [lastSeen, accentColor];
+};
+
+export const useLastSeenShort = (user: User | null) => {
+    const isBot = user && user.isBot;
+    const isOnline = user && user.online;
+    const accentColor = isBot || isOnline;
+
+    const [lastSeen, setLastSeen] = React.useState<string | null>(null);
+
+    React.useEffect(() => {
+        let unsub: (() => void) | null = null;
+        if (isBot && lastSeen !== 'bot') {
+            return setLastSeen(null);
+        } else if (!isBot) {
+            if (isOnline && lastSeen !== 'online') {
+                return setLastSeen(null);
+            }
+            if (!lastSeen && user && user.lastSeen && user.lastSeen !== 'online') {
+                setLastSeen(formatLastSeenShort(user.lastSeen));
+            }
+            if (!isOnline && user && user.lastSeen) {
+                setLastSeen(formatLastSeenShort(user.lastSeen));
+                unsub = LastSeenManager.subscribe(user!.lastSeen, newLastSeen => setLastSeen(newLastSeen), formatLastSeenShort);
+            }
+        }
+        return () => {
+            if (unsub) {
+                unsub();
+            }
+        };
+    }, [accentColor]);
+
+    return [lastSeen];
 };
