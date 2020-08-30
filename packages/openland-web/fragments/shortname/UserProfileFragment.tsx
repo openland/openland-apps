@@ -17,6 +17,7 @@ import { beautifyUrl, getSocialId } from 'openland-web/utils/getSocials';
 import { UNotificationsSwitchNew } from 'openland-web/components/unicorn/templates/UNotificationsSwitchNew';
 import { XDate } from 'openland-x/XDate';
 import { XScrollValues } from 'openland-x/XScrollView3';
+import { plural } from 'openland-y-utils/plural';
 
 import AtIcon from 'openland-icons/s/ic-at-24.svg';
 import MailIcon from 'openland-icons/s/ic-mail-24.svg';
@@ -80,12 +81,9 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
     const joinedTitle = <>Joined <XDate value={joinDate} /></>;
 
     return (
-        <Page appearance="wide" padded={true} track="user_profile" onScroll={onScroll}>
+        <Page appearance={compactView ? "normal" : "wide" } padded={true} track="user_profile" onScroll={onScroll}>
             <UHeader documentTitle={name}/>
-            <XView
-                flexDirection={compactView ? "column" : "row"}
-                alignItems={compactView ? "center" : "flex-start"}
-            >
+            <XView flexDirection={compactView ? "column" : "row"}>
                 <XView width={272} marginRight={16}>
                     <UListHeroNew
                         title={name}
@@ -127,7 +125,7 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
                                     title: item.title,
                                 }}
                                 title={item.title}
-                                description={`${item.membersCount} members`}
+                                description={plural(item.membersCount, ['member', 'members'])}
                                 path={'/mail/' + item.id}
                                 useRadius={true}
                             />
