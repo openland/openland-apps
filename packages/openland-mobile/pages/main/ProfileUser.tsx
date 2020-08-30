@@ -23,6 +23,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { UserPhotoUploader } from './components/UserPhotoUploader';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 import { useLastSeenShort } from 'openland-y-utils/LastSeen';
+import { ProfileDeleted } from './components/ProfileDeleted';
 
 const ProfileUserComponent = React.memo((props: PageProps) => {
     const client = getClient();
@@ -101,6 +102,10 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
     const linkedin = React.useMemo(() => findSocialShortname.linkedin(user.linkedin), [user.linkedin]);
 
     const [lastseen] = useLastSeenShort(user);
+
+    if (user.isDeleted) {
+        return <ProfileDeleted photo={user.photo} id={user.id} title={user.name} />;
+    }
 
     return (
         <>
