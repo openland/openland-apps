@@ -606,12 +606,14 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 if (text.length > 0) {
                     if (props.onTextSentAsync) {
                         setLoading(true);
+                        ed.disable();
                         // clear input only if onTextSentAsync return true
                         if (await props.onTextSentAsync(text)) {
                             ed.clear();
                         }
-                        ed.focus();
                         setLoading(false);
+                        ed.enable();
+                        ed.focus();
                     } else if (props.onTextSent) {
                         // clear input only if onTextSent return true
                         if (props.onTextSent(text)) {
