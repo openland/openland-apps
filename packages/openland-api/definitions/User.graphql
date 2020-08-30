@@ -92,16 +92,3 @@ mutation BetaNextDiscoverReset {
 query MySuccessfulInvitesCount {
     mySuccessfulInvitesCount
 }
-
-query CommonChatsWithUser($uid: ID!, $first: Int!) {
-    commonChatsWithUser(uid: $uid, first: $first) {
-        items {
-            id
-            title
-            photo
-            membersCount
-        }
-        count
-        cursor
-    }
-}

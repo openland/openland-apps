@@ -28,6 +28,7 @@ fragment OrganizationProfileFragment on OrganizationProfile {
 fragment OrganizationFragment on Organization {
     id
     isMine
+    isDeleted
     superAccountId
     name
     photo

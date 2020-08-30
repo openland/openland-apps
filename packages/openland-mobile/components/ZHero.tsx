@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet, ViewStyle, TextStyle, Text, Image } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZButtonStyle, ZButton } from './ZButton';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { XPAvatarWithPreview } from './XPAvatarWithPreview';
 
 const styles = StyleSheet.create({
@@ -14,6 +14,18 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         alignItems: 'center'
     } as ViewStyle,
+    badgeBox: {
+        position: 'absolute',
+        bottom: 2, right: 2,
+        borderWidth: 2,
+        borderStyle: 'solid',
+        borderRadius: RadiusStyles.Large,
+        paddingVertical: 3,
+        paddingHorizontal: 8,
+    } as ViewStyle,
+    badge: {
+        ...TextStyles.Label3,
+    } as TextStyle,
     titleBox: {
         flexDirection: 'row',
         justifyContent: 'center'
@@ -48,18 +60,20 @@ interface ZHeroProps {
     titleIconElement?: JSX.Element;
     titleColor?: string;
     subtitle?: string | null;
+    subtitleColor?: string;
     actionPrimary?: {
         title: string;
         style?: ZButtonStyle;
         path?: string;
         onPress?: () => void;
     };
+    badge?: string | null;
     children?: any;
 }
 
 export const ZHero = React.memo<ZHeroProps>((props) => {
     const theme = React.useContext(ThemeContext);
-    const { photo, id, online, title, titleIcon, titleIconElement, titleColor, subtitle, actionPrimary, children } = props;
+    const { photo, id, online, title, titleIcon, titleIconElement, titleColor, subtitle, subtitleColor, actionPrimary, badge, children } = props;
     const actions: any[] = [];
 
     React.Children.forEach(children, (c) => {
@@ -71,7 +85,16 @@ export const ZHero = React.memo<ZHeroProps>((props) => {
     return (
         <View style={styles.box}>
             <View style={styles.avatar}>
-                <XPAvatarWithPreview size="xxx-large" photo={photo} id={id} title={title} online={online} />
+                <View position="relative">
+                    <XPAvatarWithPreview size="xxx-large" photo={photo} id={id} title={title} online={online} />
+                    {!!badge && badge.length > 0 && (
+                        <View style={[styles.badgeBox, { backgroundColor: theme.backgroundTertiary, borderColor: theme.backgroundPrimary }]}>
+                            <Text style={[styles.badge, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
+                                {badge}
+                            </Text>
+                        </View>
+                    )}
+                </View>
             </View>
 
             <View style={styles.titleBox}>
@@ -84,7 +107,7 @@ export const ZHero = React.memo<ZHeroProps>((props) => {
 
             {!!subtitle && (
                 <View style={styles.subtitleBox}>
-                    <Text style={[{ color: theme.foregroundSecondary }, styles.subtitle]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
+                    <Text style={[{ color: subtitleColor || theme.foregroundSecondary }, styles.subtitle]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
                         {subtitle}
                     </Text>
                 </View>

@@ -38,6 +38,7 @@ import {
 import { ZHero } from 'openland-mobile/components/ZHero';
 import { plural } from 'openland-y-utils/plural';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
+import { ProfileDeleted } from './components/ProfileDeleted';
 
 const PrivateProfile = React.memo(
     (props: PageProps & { organization: Organization_organization }) => {
@@ -470,6 +471,10 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     const twitter = React.useMemo(() => findSocialShortname.twitter(organization.twitter), [organization.twitter]);
     const facebook = React.useMemo(() => findSocialShortname.facebook(organization.facebook), [organization.facebook]);
     const linkedin = React.useMemo(() => findSocialShortname.linkedin(organization.linkedin), [organization.linkedin]);
+
+    if (organization.isDeleted) {
+        return <ProfileDeleted photo={organization.photo} id={organization.id} title={organization.name} />;
+    }
 
     const content = (
         <>
