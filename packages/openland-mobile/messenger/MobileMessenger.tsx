@@ -43,7 +43,7 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { ReactionsPicker } from './components/ReactionsPicker';
 
-export const useForward = (selectedFrom: string) => {
+export const useForward = (selectedFrom: string, disableSource?: boolean) => {
     const messenger = getMessenger().engine;
     const conversationEngine = messenger.getConversation(selectedFrom);
     const { prepareForward, forward } = useMessagesActionsForward({ sourceId: selectedFrom });
@@ -62,6 +62,14 @@ export const useForward = (selectedFrom: string) => {
                     Toast.success({ duration: 1000 }).show();
                     getMessenger().history.navigationManager.pop();
                 } else {
+                    if (disableSource && room.room && room.room.id === selectedFrom) {
+                        Toast.failure({
+                            text: 'Replies are disabled for this chat',
+                            duration: 1000
+                        }).show();
+                        getMessenger().history.navigationManager.pop();
+                        return;
+                    }
                     forward({ targetId: id, messages });
                     const userId = conversationEngine.user && conversationEngine.user.id;
                     if (conversationEngine.conversationId === id || id === userId) {
@@ -133,7 +141,7 @@ export class MobileMessenger {
                     if (item.isService) {
                         return <AsyncServiceMessage message={item} onUserPress={this.handleUserPress} onGroupPress={this.handleGroupPress} onOrganizationPress={this.handleOrganizationPress} onHashtagPress={this.handleHashtagPress} />;
                     } else {
-                        return <AsyncMessageView conversationId={id} message={item} engine={eng} onUserPress={this.handleUserPress} onGroupPress={this.handleGroupPress} onOrganizationPress={this.handleOrganizationPress} onHashtagPress={this.handleHashtagPress} onDocumentPress={this.handleDocumentPress} onMediaPress={this.handleMediaPress} onMessageLongPress={this.handleMessageLongPress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsPress} onReplyPress={this.handleReplyPress} onReactionsPress={this.handleReactionsPress} />;
+                        return <AsyncMessageView canReply={eng.canReply} conversationId={id} message={item} engine={eng} onUserPress={this.handleUserPress} onGroupPress={this.handleGroupPress} onOrganizationPress={this.handleOrganizationPress} onHashtagPress={this.handleHashtagPress} onDocumentPress={this.handleDocumentPress} onMediaPress={this.handleMediaPress} onMessageLongPress={this.handleMessageLongPress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsPress} onReplyPress={this.handleReplyPress} onReactionsPress={this.handleReactionsPress} />;
                     }
                 } else if (item.type === 'date') {
                     return <AsyncDateSeparator year={item.year} month={item.month} date={item.date} />;
@@ -546,7 +554,7 @@ export class MobileMessenger {
             }, false, require('assets/ic-select-24.png'));
         }
 
-        if (conversation.canSendMessage) {
+        if (conversation.canSendMessage && conversation.canReply) {
             builder.action('Reply', () => {
                 reply(message);
             }, false, require('assets/ic-reply-24.png'));
