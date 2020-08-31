@@ -554,7 +554,8 @@ internal val RoomShortSelector = obj(
                         field("id", "id", notNull(scalar("ID"))),
                         field("firstName", "firstName", notNull(scalar("String"))),
                         field("isYou", "isYou", notNull(scalar("Boolean")))
-                    ))
+                    )),
+                field("repliesEnabled", "repliesEnabled", notNull(scalar("Boolean")))
             ))
         )
 

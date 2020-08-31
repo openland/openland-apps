@@ -10921,6 +10921,22 @@
             "deprecationReason": null
           },
           {
+            "name": "repliesEnabled",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "owner",
             "description": "",
             "args": [],
@@ -43558,6 +43574,16 @@
             "type": {
               "kind": "ENUM",
               "name": "SharedRoomKind",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "repliesEnabled",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
               "ofType": null
             },
             "defaultValue": null

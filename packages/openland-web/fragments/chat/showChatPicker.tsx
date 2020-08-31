@@ -14,6 +14,7 @@ type OnSelectFunc = (selecedChatId: string, setShowLoader: (val: boolean) => voi
 const ChatPickerComponent = (props: {
     onSelect: OnSelectFunc;
     ctx: XModalController;
+    hideChats?: string[];
 }) => {
     let layout = useLayout();
     let [showLoader, setShowLoader] = React.useState(false);
@@ -57,6 +58,7 @@ const ChatPickerComponent = (props: {
                             onPick={onDialogClick}
                             paddingHorizontal={24}
                             isForwarding={true}
+                            hideChats={props.hideChats}
                         />
                     </XScrollView3>
                 </XView>
@@ -65,8 +67,8 @@ const ChatPickerComponent = (props: {
     );
 };
 
-export const showChatPicker = (onSelect: OnSelectFunc) => {
+export const showChatPicker = (onSelect: OnSelectFunc, hideChats?: string[]) => {
     showModalBox({ fullScreen: 'on-mobile', title: 'Forward to' }, ctx => (
-        <ChatPickerComponent onSelect={onSelect} ctx={ctx} />
+        <ChatPickerComponent onSelect={onSelect} ctx={ctx} hideChats={hideChats} />
     ));
 };

@@ -25,7 +25,7 @@ import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInputField } from 'openland-web/components/unicorn/UInput';
-import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
+import { UCheckbox, UCheckboxFiled } from 'openland-web/components/unicorn/UCheckbox';
 import { USelectField } from 'openland-web/components/unicorn/USelect';
 import { UTextAreaField } from 'openland-web/components/unicorn/UTextArea';
 import { useShortnameField } from 'openland-y-utils/form/useShortnameField';
@@ -39,6 +39,7 @@ import IcWallet from 'openland-icons/s/ic-wallet-24.svg';
 import IcGallery from 'openland-icons/s/ic-gallery-24.svg';
 import IcMessage from 'openland-icons/s/ic-message-24.svg';
 import IcLock from 'openland-icons/s/ic-lock-16.svg';
+import IcReply from 'openland-icons/s/ic-reply-24.svg';
 
 const modalSubtitle = css`
     color: var(--foregroundPrimary);
@@ -432,6 +433,73 @@ const showWelcomeMessageModal = (
     );
 };
 
+interface EnableRepliesModalBodyProps {
+    roomId: string;
+    initialValue: boolean;
+    hide: () => void;
+}
+
+const EnableRepliesModalBody = React.memo((props: EnableRepliesModalBodyProps) => {
+    const { roomId, initialValue, hide } = props;
+
+    const client = useClient();
+    const form = useForm();
+
+    const enableRepliesField = useField('enableReplies', initialValue, form);
+
+    const onSave = async () => {
+        await form.doAction(async () => {
+            await client.mutateRoomUpdate({
+                roomId,
+                input: {
+                    repliesEnabled: enableRepliesField.value
+                }
+            });
+            await client.refetchRoomChat({ id: roomId });
+            hide();
+        });
+    };
+
+    return (
+        <>
+            <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
+                <XModalContent>
+                    <UCheckboxFiled label="Enable replies" field={enableRepliesField} asSwitcher={true} />
+                </XModalContent>
+            </XScrollView3>
+            <XModalFooter>
+                <UButton text="Cancel" style="tertiary" size="large" onClick={() => props.hide()} />
+                <UButton
+                    text="Save"
+                    style="primary"
+                    size="large"
+                    onClick={onSave}
+                    loading={form.loading}
+                />
+            </XModalFooter>
+        </>
+    );
+});
+
+const showEnableRepliesModal = (
+    roomId: string,
+    initialValue: boolean
+) => {
+    showModalBox(
+        {
+            width: 400,
+            title: 'Disable replies',
+        },
+        (ctx) => (
+            <EnableRepliesModalBody
+                roomId={roomId}
+                initialValue={initialValue}
+                hide={ctx.hide}
+            />
+        )
+    );
+};
+
 const secretContainer = css`
     margin-bottom: 16px;
     display: flex;
@@ -475,6 +543,7 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
         premiumSettings,
         socialImage,
         welcomeMessage,
+        repliesEnabled,
     } = room;
     const client = useClient();
     const form = useForm();
@@ -571,6 +640,13 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                                 textRight={welcomeMessage.isOn ? 'On' : 'Off'}
                             />
                         )}
+                        <UListItem
+                            title="Enable replies"
+                            icon={<IcReply />}
+                            paddingHorizontal={24}
+                            onClick={() => showEnableRepliesModal(room.id, repliesEnabled)}
+                            textRight={repliesEnabled ? 'On' : 'Off'}
+                        />
                     </XView>
                 </XModalContent>
             </XScrollView3>

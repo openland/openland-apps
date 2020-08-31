@@ -14,13 +14,13 @@ import { useForward } from '../actions/forward';
 import { useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 
 export const useBuildMessageMenu = (engine: ConversationEngine) => {
-    const forward = useForward(engine.isPrivate && engine.user ? engine.user.id : engine.conversationId);
+    const forward = useForward(engine.isPrivate && engine.user ? engine.user.id : engine.conversationId, !engine.canReply);
     const { toggleSelect, reply, edit } = useChatMessagesActionsMethods({ conversationId: engine.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
     return (ctx: UPopperController, message: DataSourceWebMessageItem) => {
         let menu = new UPopperMenuBuilder();
         const role = engine.role;
         menu.item({ title: 'Select', icon: <SelectIcon />, onClick: () => toggleSelect(message) });
-        if (engine.canSendMessage) {
+        if (engine.canSendMessage && engine.canReply) {
             menu.item({
                 title: 'Reply', icon: <ReplyIcon />, onClick: () => {
                     reply(message);

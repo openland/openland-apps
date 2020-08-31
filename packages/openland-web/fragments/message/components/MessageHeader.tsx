@@ -31,7 +31,7 @@ import { useStackRouter } from 'openland-unicorn/components/StackRouter';
 
 const useBuildMessageMenu = (engine: ConversationEngine) => {
     const router = useStackRouter();
-    const forward = useForward(engine.isPrivate && engine.user ? engine.user.id : engine.conversationId);
+    const forward = useForward(engine.isPrivate && engine.user ? engine.user.id : engine.conversationId, !engine.canReply);
     const { reply } = useChatMessagesActionsMethods({ conversationId: engine.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
     const toastHandlers = useToast();
     return (ctx: UPopperController, message: DataSourceWebMessageItem, isSubscribed: boolean) => {
@@ -52,7 +52,7 @@ const useBuildMessageMenu = (engine: ConversationEngine) => {
                 }
             });
         }
-        if (engine.canSendMessage) {
+        if (engine.canSendMessage && engine.canReply) {
             menu.item({
                 title: 'Reply', icon: <ReplyIcon />, onClick: () => {
                     reply(message);
