@@ -3053,6 +3053,7 @@ input RoomUpdateInput {
   description: String
   socialImageRef: ImageRefInput
   kind: SharedRoomKind
+  repliesEnabled: Boolean
 }
 
 type RoomUserNotificaionSettings {
@@ -3200,6 +3201,7 @@ type SharedRoom {
   premiumPassIsActive: Boolean!
   premiumSubscription: WalletSubscription
   premiumSettings: PremiumChatSettings
+  repliesEnabled: Boolean!
   owner: User
   linkedFeedChannels: [FeedChannel!]!
   shortname: String

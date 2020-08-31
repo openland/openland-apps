@@ -17,13 +17,14 @@ internal val RoomUpdateSelector = obj(
                         field("title", "title", notNull(scalar("String"))),
                         field("photo", "photo", notNull(scalar("String"))),
                         field("description", "description", scalar("String")),
-                        field("socialImage", "socialImage", scalar("String"))
+                        field("socialImage", "socialImage", scalar("String")),
+                        field("repliesEnabled", "repliesEnabled", notNull(scalar("Boolean")))
                     ))
                 )))
         )
 val RoomUpdate = object: OperationDefinition {
     override val name = "RoomUpdate"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation RoomUpdate(\$roomId:ID!,\$input:RoomUpdateInput!){betaRoomUpdate(roomId:\$roomId,input:\$input){__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id title photo description socialImage}}}"
+    override val body = "mutation RoomUpdate(\$roomId:ID!,\$input:RoomUpdateInput!){betaRoomUpdate(roomId:\$roomId,input:\$input){__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id title photo description socialImage repliesEnabled}}}"
     override val selector = RoomUpdateSelector
 }

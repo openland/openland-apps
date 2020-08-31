@@ -31,6 +31,7 @@ export interface DialogSearchResults {
     onPick: (item: GlobalSearch_items) => void;
     paddingHorizontal?: number;
     isForwarding?: boolean;
+    hideChats?: string[];
 }
 
 export const DialogSearchEmptyView = React.memo(() => (
@@ -109,9 +110,11 @@ const DialogSearchInner = React.memo((props: DialogSearchResults) => {
         return <DialogSearchEmptyView />;
     }
 
+    const hideChats = props.hideChats || [];
+
     return (
         <XView flexGrow={1} flexDirection="column">
-            {items.map((i, index) => <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} savedMessages={i.id === messenger.user.id} {...props} />)}
+            {items.filter(e => e.__typename !== 'SharedRoom' || !hideChats.includes(e.id)).map((i, index) => <DialogSearchItemRender key={'item-' + i.id} item={i} index={index} selectedIndex={selectedIndex} savedMessages={i.id === messenger.user.id} {...props} />)}
         </XView>
     );
 });

@@ -46,5 +46,6 @@ fragment RoomShort on Room {
             firstName
             isYou
         }
+        repliesEnabled
     }
 }
