@@ -348,7 +348,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.badge = initialChat.room && initialChat.room.myBadge || undefined;
         this.canEdit = ((initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.canEdit) || AppConfig.isSuperAdmin()) || false;
         this.canPin = this.canEdit || (initialChat.room && initialChat.room.__typename === 'PrivateRoom') || false;
-        this.canReply = initialChat.room && (initialChat.room.__typename === 'PrivateRoom' || initialChat.room.repliesEnabled) || undefined;
+        this.canReply = initialChat.room && (initialChat.room.__typename === 'PrivateRoom' || initialChat.room.repliesEnabled) || false;
         this.canSendMessage = (initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.kind !== 'INTERNAL') ? initialChat.room.canSendMessage :
             (initialChat.room && initialChat.room.__typename === 'PrivateRoom') ? !initialChat.room.user.isBot :
                 true;

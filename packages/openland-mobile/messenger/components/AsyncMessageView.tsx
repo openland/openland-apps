@@ -33,6 +33,7 @@ const SelectCheckbox = React.memo((props: { selected: boolean, theme: ThemeGloba
 
 export interface AsyncMessageViewProps {
     conversationId: string;
+    canReply?: boolean;
     message: DataSourceMessageItem;
     engine: ConversationEngine;
     onMessageDoublePress: (message: DataSourceMessageItem) => void;
@@ -71,7 +72,7 @@ const AsyncMessageViewAvatar = (props: { message: DataSourceMessageItem, handleU
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const theme = useThemeGlobal(false);
-    const { conversationId, message, engine, onMessageDoublePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress, onHashtagPress } = props;
+    const { conversationId, canReply, message, engine, onMessageDoublePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress, onHashtagPress } = props;
     const {
         isOut,
         attachTop,
@@ -85,7 +86,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const isSelecting = useChatMessagesSelectionMode({ conversationId: props.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
 
     const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
-    const forward = useForward(conversationId);
+    const forward = useForward(conversationId, !canReply);
 
     React.useEffect(() => {
         let timer: any;
