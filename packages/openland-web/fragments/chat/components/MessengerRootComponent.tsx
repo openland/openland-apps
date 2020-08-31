@@ -438,6 +438,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         const isYou = user ? user.isYou : undefined;
         const canDonate = this.props.conversationId && !isChannel && !isYou;
         const chatTitle = this.props.room.__typename === 'SharedRoom' ? this.props.room.title : undefined;
+        const isEditing = this.props.messagesActionsState.action === 'edit';
 
         return (
             <div className={messengerContainer}>
@@ -483,6 +484,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                         onPressUp={this.onInputPressUp}
                                         rickRef={this.rickRef}
                                         groupId={this.props.conversationId}
+                                        isEditing={isEditing}
                                         chatTitle={chatTitle}
                                         membersCount={membersCount}
                                         onTextSentAsync={this.onTextSend}

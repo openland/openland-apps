@@ -30,6 +30,8 @@ export const CommentEditInput = React.memo((props: CommentEditInputProps) => {
                 hideDonation={true}
                 placeholder="Write a comment..."
                 initialText={value}
+                isEditing={true}
+                autoFocus={true}
             />
         </div>
     );

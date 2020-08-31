@@ -9,6 +9,7 @@ import {
 import AllIcon from 'openland-icons/s/ic-channel-16.svg';
 import AtIcon from 'openland-icons/s/ic-at-24.svg';
 import SendIcon from 'openland-icons/s/ic-send-24.svg';
+import DoneIcon from 'openland-icons/s/ic-done-24.svg';
 import { UNavigableListRef } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { useClient } from 'openland-api/useClient';
 import { StickerFragment, ChatMentionSearch_mentions_items } from 'openland-api/spacex.types';
@@ -528,6 +529,7 @@ interface SendMessageComponentProps {
     onAttach?: (files: File[]) => void;
     autoFocus?: boolean;
     ownerName?: string;
+    isEditing?: boolean;
     hideDonation: boolean;
 }
 
@@ -748,7 +750,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             </XView>
             {!loading && (
                 <div className={actionButtonContainer}>
-                    <UIconButton icon={<SendIcon />} onClick={onPressEnter} />
+                    <UIconButton icon={props.isEditing ? <DoneIcon /> : <SendIcon />} onClick={onPressEnter} />
                 </div>
             )}
             {loading && (
