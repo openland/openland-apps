@@ -27,9 +27,11 @@ export const ProfileSharedMediaFragment = React.memo(({ chatId, bottomReached }:
     const paginatedFiles = React.useRef<Paginated>(null);
     const paginatedLinks = React.useRef<Paginated>(null);
     const paginated = (selected === 'Media' ? paginatedMedia : selected === 'Files' ? paginatedFiles : paginatedLinks).current;
-    if (bottomReached && paginated) {
-        paginated.loadMore();
-    }
+    React.useEffect(() => {
+        if (bottomReached && paginated) {
+            paginated.loadMore();
+        }
+    }, [bottomReached]);
 
     return (
         <XView marginLeft={7}>
