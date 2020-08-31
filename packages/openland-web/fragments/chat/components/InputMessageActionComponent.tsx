@@ -30,7 +30,7 @@ const messageActonInnerContainerClass = css`
 `;
 
 const messageActionInnerContainerEdit = css`
-    flex-grow: 1;
+    flex-grow: 0;
     margin-left: 55px;
 `;
 
@@ -78,7 +78,7 @@ const messageActionCloseWrapEdit = css`
     justify-content: center;
     width: 24px;
     height: 24px;
-    margin: 0 6px;
+    margin: 0 4px;
 
     /* optical compensation */
     position: relative;
