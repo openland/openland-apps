@@ -133,7 +133,11 @@ const SharedMediaContainerClass = css`
     justify-content: flex-start;
     flex-wrap: wrap;
     flex-direction: row;
-    margin: 0 15px;
+    margin: 0 7px;
+`;
+
+const SharedMediaProfileContainerClass = css`
+    margin: 0;
 `;
 const SharedMediaContainerMobileClass = css`
     margin: 0 -1px;
@@ -221,8 +225,16 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
     }
     const initialLoading = loading && items.length === 0;
     const isEmpty = !loading && items.length === 0;
+
+    const sharedMediaClassName = cx(
+        SharedMediaContainerClass,
+        layout === 'mobile' && SharedMediaContainerMobileClass,
+        props.profileView && SharedMediaProfileContainerClass,
+        !props.active && SharedMediaContainerHiddenClass,
+    );
+
     return (
-        <div className={cx(SharedMediaContainerClass, layout === 'mobile' && SharedMediaContainerMobileClass, !props.active && SharedMediaContainerHiddenClass)}>
+        <div className={sharedMediaClassName}>
             {items}
             {initialLoading && <XView flexGrow={1} height="calc(100vh - 56px)"><XLoader loading={true} /></XView>}
             {isEmpty && <Placeholder mediaTypes={props.mediaTypes} />}

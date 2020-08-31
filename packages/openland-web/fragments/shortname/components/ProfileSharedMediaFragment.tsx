@@ -32,7 +32,7 @@ export const ProfileSharedMediaFragment = React.memo(({ chatId, bottomReached }:
     }
 
     return (
-        <>
+        <XView marginLeft={7}>
             <XView flexDirection="row" height={56} flexGrow={1}>
                 <Tabs tabs={items} setSelected={setSelected} justifyContent="flex-end" />
             </XView>
@@ -40,6 +40,6 @@ export const ProfileSharedMediaFragment = React.memo(({ chatId, bottomReached }:
             {/* keep video in files until backend start sending video previews */}
             <SharedMedia active={selected === 'Files'} mediaTypes={[SharedMediaType.DOCUMENT, SharedMediaType.VIDEO]} ref={paginatedFiles} chatId={chatId} profileView={true} />
             <SharedMedia active={selected === 'Links'} mediaTypes={[SharedMediaType.LINK]} ref={paginatedLinks} chatId={chatId} profileView={true} />
-        </>
+        </XView>
     );
 });
