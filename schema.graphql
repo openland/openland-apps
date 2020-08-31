@@ -1869,6 +1869,9 @@ type Mutation {
   debugFreeUnusedShortnames: Boolean!
   debugFreeShortname(shortname: String!): Boolean!
   debugRemoveKickedUsersFromOrgChats: Boolean!
+  debugMigrateToNewCounters: Boolean!
+  debugMigrateToNewLastRead: Boolean!
+  debugFixReadSeqs: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2654,6 +2657,7 @@ type Profile {
   facebook: String
   authEmail: String
   badge: ProfileBadge
+  birthDay: Date
 
   """Deprecated"""
   alphaLinkedin: String
@@ -2696,6 +2700,7 @@ input ProfileInput {
   twitter: String
   facebook: String
   primaryOrganization: ID
+  birthDay: Date
 }
 
 type ProfilePrefill {
@@ -2774,6 +2779,7 @@ type Query {
   debugUserSearch(query: String!): String!
   debugMentionSearch(query: String!, first: Int!, index: String!): String!
   debugMentionSearchGetUserData(cid: ID!): String!
+  debugGetCounters: String!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!
@@ -3572,6 +3578,8 @@ type User {
   facebook: String
   audienceSize: Int!
   badge: ProfileBadge
+  joinDate: Date!
+  birthDay: Date
 
   """TODO: Refactor"""
   channelsJoined: [ChannelConversation!]!

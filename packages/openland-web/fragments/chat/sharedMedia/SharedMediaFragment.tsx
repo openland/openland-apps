@@ -32,7 +32,6 @@ interface SharedMediaProps {
     chatId: string;
     mediaTypes: SharedMediaType[];
     active: boolean;
-    profileView?: boolean;
 }
 interface Paginated {
     loadMore: () => void;
@@ -156,7 +155,7 @@ export const Placeholder = (props: { mediaTypes: SharedMediaType[]; }) => {
     );
 };
 
-export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps, ref: React.RefObject<Paginated>) => {
+const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps, ref: React.RefObject<Paginated>) => {
     const client = useClient();
     const [loading, setLoading] = React.useState(false);
     const [data, setData] = React.useState<SharedItem[]>([]);
@@ -200,14 +199,14 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
     let key: number = 0;
     for (let i of data) {
         key++;
-        if (!props.profileView && lastDate !== i.date) {
+        if (lastDate !== i.date) {
             lastDate = i.date;
             items.push(<DateDivider key={'date_' + key} date={i.date} useCorners={props.mediaTypes.includes(SharedMediaType.IMAGE)} />);
         }
         // wtf check index on backend, it apperars that non-image can appear in SharedMediaType.IMAGE
         if (props.mediaTypes.includes(SharedMediaType.IMAGE)) {
             if (i.attach.__typename === 'MessageAttachmentFile' && i.attach.fileMetadata.isImage) {
-                items.push(<MediaContent key={'media_' + key} item={i as SharedItemFile} chatId={props.chatId} profileView={props.profileView} />);
+                items.push(<MediaContent key={'media_' + key} item={i as SharedItemFile} chatId={props.chatId} />);
             }
         } else {
             if (i.attach.__typename === 'MessageAttachmentFile') {
@@ -284,7 +283,7 @@ export const SharedMediaFragment = () => {
                     <XView flexDirection="row" height={56} flexGrow={1}>
                         <XView paddingVertical={12} {...TextStyles.Title1}>Shared</XView>
                         <XView flexGrow={1} />
-                        {counters && layout === 'desktop' && <Tabs tabs={items} setSelected={setSelected} justifyContent="flex-end" showTabLine={true} />}
+                        {counters && layout === 'desktop' && <Tabs tabs={items} setSelected={setSelected} justifyContent="flex-end" />}
                         {layout === 'mobile' && <TabsMenuMobileButton selected={selected} menu={ctx => <TabsMenuMobile selectTab={setSelected} items={items.map(i => ({ ...i, icon: MenuIcons[i.title] }))} ctx={ctx} />} />}
                     </XView>
                 )}
