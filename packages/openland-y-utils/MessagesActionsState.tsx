@@ -43,9 +43,8 @@ export const reducer = (state: State, action: Action) => {
                 messages: state[action.sourceId].messages
             };
             return {
-                ...omit([action.sourceId], state),
+                ...omit(action.userId ? [action.sourceId, action.userId] : [action.sourceId], state),
                 [action.conversationId]: value,
-                ...action.userId && { [action.userId]: value },
             };
         } if (action.messages) {
             let value = {
@@ -55,7 +54,6 @@ export const reducer = (state: State, action: Action) => {
             return {
                 ...state,
                 [action.conversationId]: value,
-                ...action.userId && { [action.userId]: value },
             };
         }
     }
@@ -370,15 +368,15 @@ export const useChatMessagesSelectionMode = ({ conversationId, userId }: { conve
     return selected;
 };
 
-export const useMessagesActionsForward = ({ sourceId }: { sourceId: string }) => {
+export const useMessagesActionsForward = ({ sourceId, userId }: { sourceId: string, userId: string | undefined }) => {
     const prepareForward = ({ targetId, messages }: { targetId: string, messages?: DataSourceMessageItem[] }) => {
-        const payload = messages ? { messages, conversationId: targetId } : { sourceId, conversationId: targetId };
+        const payload = messages ? { messages, conversationId: targetId } : { sourceId, userId, conversationId: targetId };
         const newState = reducer(MessagesActionsStateController.getState(), { type: 'forward', ...payload });
         MessagesActionsStateController.dispatch({ type: 'clear_all' });
         return newState[targetId].messages || [];
     };
     const forward = ({ targetId, messages }: { targetId: string, messages?: DataSourceMessageItem[] }) => {
-        const payload = messages ? { messages, conversationId: targetId } : { sourceId, conversationId: targetId };
+        const payload = messages ? { messages, conversationId: targetId } : { sourceId, userId, conversationId: targetId };
         MessagesActionsStateController.dispatch({ type: 'forward', ...payload });
     };
     return { forward, prepareForward };

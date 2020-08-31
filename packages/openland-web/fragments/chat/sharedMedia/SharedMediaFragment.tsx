@@ -109,7 +109,7 @@ export const Footer = (props: { useCorners: boolean, children: any }) => {
 };
 
 export const useSharedItemMenu = (conversationId: string) => {
-    const forward = useForward(conversationId);
+    const forward = useForward(conversationId, undefined);
     const messenger = React.useContext(MessengerContext);
     return (ctx: UPopperController, item: SharedItem) => {
         const builder = new UPopperMenuBuilder();
@@ -296,7 +296,7 @@ export const SharedMediaFragment = () => {
                     <XView flexDirection="row" height={56} flexGrow={1}>
                         <XView paddingVertical={12} {...TextStyles.Title1}>Shared</XView>
                         <XView flexGrow={1} />
-                        {counters && layout === 'desktop' && <Tabs tabs={items} setSelected={setSelected} justifyContent="flex-end" showTabLine={true}/>}
+                        {counters && layout === 'desktop' && <Tabs tabs={items} setSelected={setSelected} justifyContent="flex-end" showTabLine={true} />}
                         {layout === 'mobile' && <TabsMenuMobileButton selected={selected} menu={ctx => <TabsMenuMobile selectTab={setSelected} items={items.map(i => ({ ...i, icon: MenuIcons[i.title] }))} ctx={ctx} />} />}
                     </XView>
                 )}
