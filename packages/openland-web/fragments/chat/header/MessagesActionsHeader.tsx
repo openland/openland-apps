@@ -153,7 +153,7 @@ const Buttons = (props: {
             : [];
         showDeleteMessagesModal(ids, props.messenger.client, clear);
     }, [state]);
-    let forward = useForward(props.chat.id);
+    let forward = useForward(props.chat.id, props.chat.__typename === 'PrivateRoom' ? props.chat.user.id : undefined);
     let forwardCallback = React.useCallback(() => {
         forward();
     }, []);

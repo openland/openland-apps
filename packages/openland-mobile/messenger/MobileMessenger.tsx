@@ -43,10 +43,10 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { ReactionsPicker } from './components/ReactionsPicker';
 
-export const useForward = (selectedFrom: string, disableSource?: boolean) => {
+export const useForward = (sourceId: string, sourceUserId: string | undefined, disableSource?: boolean) => {
     const messenger = getMessenger().engine;
-    const conversationEngine = messenger.getConversation(selectedFrom);
-    const { prepareForward, forward } = useMessagesActionsForward({ sourceId: selectedFrom });
+    const conversationEngine = messenger.getConversation(sourceId);
+    const { prepareForward, forward } = useMessagesActionsForward({ sourceId, userId: sourceUserId });
 
     return (messages?: DataSourceMessageItem[]) => {
         getMessenger().history.navigationManager.push('HomeDialogs', {
@@ -62,7 +62,7 @@ export const useForward = (selectedFrom: string, disableSource?: boolean) => {
                     Toast.success({ duration: 1000 }).show();
                     getMessenger().history.navigationManager.pop();
                 } else {
-                    if (disableSource && room.room && room.room.id === selectedFrom) {
+                    if (disableSource && room.room && room.room.id === sourceId) {
                         Toast.failure({
                             text: 'Replies are disabled for this chat',
                             duration: 1000
@@ -184,20 +184,22 @@ export class MobileMessenger {
             builder.show(true);
         }
 
-    renderSharedMediaItem = (chatId: string, wrapperWidth: number) => (item: SharedMediaDataSourceItem) => {
-        return <AsyncSharedItem chatId={chatId} wrapperWidth={wrapperWidth} item={item} onLongPress={this.handleSharedLongPress} />;
+    renderSharedMediaItem = (chatId: string, userId: string | undefined, wrapperWidth: number) => (item: SharedMediaDataSourceItem) => {
+        return <AsyncSharedItem chatId={chatId} userId={userId} wrapperWidth={wrapperWidth} item={item} onLongPress={this.handleSharedLongPress} />;
     }
 
     getSharedMedia = (id: string, type: SharedMediaItemType, wrapperWidth: number) => {
         const key = `${type}-${wrapperWidth}`;
-        const engine = this.engine.getConversation(id).getSharedMedia(type);
+        const convEngine = this.engine.getConversation(id);
+        const engine = convEngine.getSharedMedia(type);
+        const userId = convEngine.isPrivate ? convEngine.user?.id : undefined;
         if (!this.sharedMedias.has(id)) {
             this.sharedMedias.set(
                 id,
-                new Map([[key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, wrapperWidth))]])
+                new Map([[key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, userId, wrapperWidth))]])
             );
         } else if (!this.sharedMedias.get(id)!!.has(key)) {
-            this.sharedMedias.get(id)!!.set(key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, wrapperWidth)));
+            this.sharedMedias.get(id)!!.set(key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, userId, wrapperWidth)));
         }
 
         return this.sharedMedias.get(id)!!.get(key)!!;
@@ -377,7 +379,7 @@ export class MobileMessenger {
 
         const builder = new ActionSheetBuilder();
         const { reply, edit, clear } = useChatMessagesActionsMethods({ conversationId: chat.id, userId: chat.__typename === 'PrivateRoom' ? chat.user.id : undefined });
-        const forward = useForward(chat.id);
+        const forward = useForward(chat.id, chat.__typename === 'PrivateRoom' ? chat.user.id : undefined);
 
         builder.view((ctx: ZModalController) => (
             <ReactionsPicker

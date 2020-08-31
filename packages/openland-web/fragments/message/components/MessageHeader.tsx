@@ -31,7 +31,7 @@ import { useStackRouter } from 'openland-unicorn/components/StackRouter';
 
 const useBuildMessageMenu = (engine: ConversationEngine) => {
     const router = useStackRouter();
-    const forward = useForward(engine.isPrivate && engine.user ? engine.user.id : engine.conversationId, !engine.canReply);
+    const forward = useForward(engine.conversationId, engine.isPrivate && engine.user ? engine.user.id : undefined, !engine.canReply);
     const { reply } = useChatMessagesActionsMethods({ conversationId: engine.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
     const toastHandlers = useToast();
     return (ctx: UPopperController, message: DataSourceWebMessageItem, isSubscribed: boolean) => {
@@ -74,17 +74,19 @@ const useBuildMessageMenu = (engine: ConversationEngine) => {
         });
         if (engine.canPin && message.id) {
             const toPin = !engine.pinId || engine.pinId !== message.id;
-            menu.item({ title: toPin ? 'Pin' : 'Unpin', icon: <PinIcon />, action: async () => {
-                if (toPin) {
-                    await engine.engine.client.mutatePinMessage({ messageId: message.id!, chatId: engine.conversationId });
-                } else {
-                    await engine.engine.client.mutateUnpinMessage({ chatId: engine.conversationId });
+            menu.item({
+                title: toPin ? 'Pin' : 'Unpin', icon: <PinIcon />, action: async () => {
+                    if (toPin) {
+                        await engine.engine.client.mutatePinMessage({ messageId: message.id!, chatId: engine.conversationId });
+                    } else {
+                        await engine.engine.client.mutateUnpinMessage({ chatId: engine.conversationId });
+                    }
+                    toastHandlers.show({
+                        type: 'success',
+                        text: toPin ? 'Message pinned' : 'Message unpinned'
+                    });
                 }
-                toastHandlers.show({
-                    type: 'success',
-                    text: toPin ? 'Message pinned' : 'Message unpinned'
-                });
-            } });
+            });
         }
         if (message.sender.id === engine.engine.user.id || role === 'ADMIN' || role === 'OWNER') {
             menu.item({

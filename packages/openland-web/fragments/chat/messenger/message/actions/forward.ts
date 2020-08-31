@@ -7,12 +7,12 @@ import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
 import { useMessagesActionsForward } from 'openland-y-utils/MessagesActionsState';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 
-export const useForward = (selectedFrom: string, hideSource?: boolean) => {
+export const useForward = (selectedFrom: string, sourceUserId: string | undefined, hideSource?: boolean) => {
     const toastHandlers = useToast();
     const engine = React.useContext(MessengerContext);
     const router = React.useContext(XViewRouterContext)!;
 
-    const { prepareForward, forward } = useMessagesActionsForward({ sourceId: selectedFrom });
+    const { prepareForward, forward } = useMessagesActionsForward({ sourceId: selectedFrom, userId: sourceUserId });
 
     return (messages?: DataSourceMessageItem[]) => showChatPicker((toId: string, setShowLoader: (val: boolean) => void, hide: () => void) => {
         (async () => {

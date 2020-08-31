@@ -78,7 +78,7 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
             })
             .show();
     }, [state]);
-    const forward = useForward(props.chat.id);
+    const forward = useForward(props.chat.id, props.chat.__typename === 'PrivateRoom' ? props.chat.user.id : undefined);
     let height = 52;
 
     let canDelete = true;
