@@ -3,7 +3,7 @@ import { User_user, User_conversation_SharedRoom, User_conversation_PrivateRoom 
 import copy from 'copy-to-clipboard';
 import EditIcon from 'openland-icons/s/ic-edit-24.svg';
 import CopyIcon from 'openland-icons/s/ic-link-24.svg';
-import SpamIcon from 'openland-icons/s/ic-flag-24.svg';
+import SpamIcon from 'openland-icons/s/ic-flag.svg';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
