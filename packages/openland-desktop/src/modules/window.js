@@ -53,12 +53,6 @@ module.exports = {
         win.webContents.on('new-window', handleLinkOpen);
 
         win.webContents.session.setPreloads([path.join(__dirname, 'getUserMedia.js')])
-        win.webContents.session.setPermissionCheckHandler(async (webContents, permission, details) => {
-            return true
-        })
-        win.webContents.session.setPermissionRequestHandler(async (webContents, permission, callback, details) => {
-            callback(true)
-        })
 
         // Load app URL
         win.loadURL(devMode ? 'http://localhost:3000' : 'https://openland.com');

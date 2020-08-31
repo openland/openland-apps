@@ -289,23 +289,25 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                         priceField={priceField}
                         intervalField={intervalField}
                     />
-                    <ZSelect
-                        label="Visibility"
-                        modalTitle="Visibility"
-                        field={kindField}
-                        options={[
-                            {
-                                label: 'Public',
-                                subtitle: 'Visible in group search',
-                                value: SharedRoomKind.PUBLIC,
-                            },
-                            {
-                                label: 'Secret',
-                                subtitle: 'Only people with invite link can see it',
-                                value: SharedRoomKind.GROUP,
-                            },
-                        ]}
-                    />
+                    {!orgIdFromRouter && (
+                        <ZSelect
+                            label="Visibility"
+                            modalTitle="Visibility"
+                            field={kindField}
+                            options={[
+                                {
+                                    label: 'Public',
+                                    subtitle: 'Visible in group search',
+                                    value: SharedRoomKind.PUBLIC,
+                                },
+                                {
+                                    label: 'Secret',
+                                    subtitle: 'Only people with invite link can see it',
+                                    value: SharedRoomKind.GROUP,
+                                },
+                            ]}
+                        />
+                    )}
                 </ZListGroup>
             </KeyboardAvoidingScrollView>
         </>
