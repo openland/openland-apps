@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css, cx } from 'linaria';
+import { css } from 'linaria';
 import { emoji } from 'openland-y-utils/emoji';
 import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage } from 'openland-api/spacex.types';
 import { showImageModal } from 'openland-web/fragments/chat/messenger/message/content/ImageContent';
@@ -36,13 +36,6 @@ const MediaItemClass = css`
         opacity: 1;
     }
 `;
-
-const MediaItemClassProfileView = css`
-    width: 20%;
-    border-radius: 8px;
-    margin: 8px;
-`;
-
 const MediaItemContentClass = css`
     position: absolute;
     top: 1px;
@@ -76,7 +69,7 @@ const ImgPreviewContainerClass = css`
     transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
     will-change: opacity;
 `;
-export const MediaContent = React.memo((props: { item: SharedItemFile; chatId: string, profileView?: boolean }) => {
+export const MediaContent = React.memo((props: { item: SharedItemFile; chatId: string }) => {
     const imgRef = React.useRef<HTMLImageElement>(null);
     const placeholderRef = React.useRef<HTMLDivElement>(null);
     const onClick = React.useCallback(() => {
@@ -99,14 +92,8 @@ export const MediaContent = React.memo((props: { item: SharedItemFile; chatId: s
             placeholderRef.current.style.visibility = 'hidden';
         }
     }, []);
-
-    const mediaItemClassNames = cx(
-        MediaItemClass,
-        props.profileView && MediaItemClassProfileView,
-    );
-
     return (
-        <div className={mediaItemClassNames} onClick={onClick}>
+        <div className={MediaItemClass} onClick={onClick}>
             <div className={ImgPreviewContainerClass} ref={placeholderRef}>
                 <ImgWithRetry
                     className={ImgPreviewClass}

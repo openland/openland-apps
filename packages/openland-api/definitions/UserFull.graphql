@@ -13,7 +13,6 @@ fragment UserFull on User {
     isDeleted
     online
     lastSeen
-    joinDate
     linkedin
     instagram
     twitter
