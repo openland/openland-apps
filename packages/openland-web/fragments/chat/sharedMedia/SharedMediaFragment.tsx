@@ -32,6 +32,7 @@ interface SharedMediaProps {
     chatId: string;
     mediaTypes: SharedMediaType[];
     active: boolean;
+    profileView?: boolean;
 }
 interface Paginated {
     loadMore: () => void;
@@ -132,7 +133,11 @@ const SharedMediaContainerClass = css`
     justify-content: flex-start;
     flex-wrap: wrap;
     flex-direction: row;
-    margin: 0 15px;
+    margin: 0 7px;
+`;
+
+const SharedMediaProfileContainerClass = css`
+    margin: 0;
 `;
 const SharedMediaContainerMobileClass = css`
     margin: 0 -1px;
@@ -155,7 +160,7 @@ export const Placeholder = (props: { mediaTypes: SharedMediaType[]; }) => {
     );
 };
 
-const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps, ref: React.RefObject<Paginated>) => {
+export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps, ref: React.RefObject<Paginated>) => {
     const client = useClient();
     const [loading, setLoading] = React.useState(false);
     const [data, setData] = React.useState<SharedItem[]>([]);
@@ -199,14 +204,14 @@ const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps, ref: R
     let key: number = 0;
     for (let i of data) {
         key++;
-        if (lastDate !== i.date) {
+        if (!props.profileView && lastDate !== i.date) {
             lastDate = i.date;
             items.push(<DateDivider key={'date_' + key} date={i.date} useCorners={props.mediaTypes.includes(SharedMediaType.IMAGE)} />);
         }
         // wtf check index on backend, it apperars that non-image can appear in SharedMediaType.IMAGE
         if (props.mediaTypes.includes(SharedMediaType.IMAGE)) {
             if (i.attach.__typename === 'MessageAttachmentFile' && i.attach.fileMetadata.isImage) {
-                items.push(<MediaContent key={'media_' + key} item={i as SharedItemFile} chatId={props.chatId} />);
+                items.push(<MediaContent key={'media_' + key} item={i as SharedItemFile} chatId={props.chatId} profileView={props.profileView} />);
             }
         } else {
             if (i.attach.__typename === 'MessageAttachmentFile') {
@@ -220,8 +225,16 @@ const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps, ref: R
     }
     const initialLoading = loading && items.length === 0;
     const isEmpty = !loading && items.length === 0;
+
+    const sharedMediaClassName = cx(
+        SharedMediaContainerClass,
+        layout === 'mobile' && SharedMediaContainerMobileClass,
+        props.profileView && SharedMediaProfileContainerClass,
+        !props.active && SharedMediaContainerHiddenClass,
+    );
+
     return (
-        <div className={cx(SharedMediaContainerClass, layout === 'mobile' && SharedMediaContainerMobileClass, !props.active && SharedMediaContainerHiddenClass)}>
+        <div className={sharedMediaClassName}>
             {items}
             {initialLoading && <XView flexGrow={1} height="calc(100vh - 56px)"><XLoader loading={true} /></XView>}
             {isEmpty && <Placeholder mediaTypes={props.mediaTypes} />}
@@ -283,7 +296,7 @@ export const SharedMediaFragment = () => {
                     <XView flexDirection="row" height={56} flexGrow={1}>
                         <XView paddingVertical={12} {...TextStyles.Title1}>Shared</XView>
                         <XView flexGrow={1} />
-                        {counters && layout === 'desktop' && <Tabs tabs={items} setSelected={setSelected} justifyContent="flex-end" />}
+                        {counters && layout === 'desktop' && <Tabs tabs={items} setSelected={setSelected} justifyContent="flex-end" showTabLine={true} />}
                         {layout === 'mobile' && <TabsMenuMobileButton selected={selected} menu={ctx => <TabsMenuMobile selectTab={setSelected} items={items.map(i => ({ ...i, icon: MenuIcons[i.title] }))} ctx={ctx} />} />}
                     </XView>
                 )}

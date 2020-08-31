@@ -2657,7 +2657,6 @@ type Profile {
   facebook: String
   authEmail: String
   badge: ProfileBadge
-  birthDay: Date
 
   """Deprecated"""
   alphaLinkedin: String
@@ -2700,7 +2699,6 @@ input ProfileInput {
   twitter: String
   facebook: String
   primaryOrganization: ID
-  birthDay: Date
 }
 
 type ProfilePrefill {
@@ -3579,7 +3577,6 @@ type User {
   audienceSize: Int!
   badge: ProfileBadge
   joinDate: Date!
-  birthDay: Date
 
   """TODO: Refactor"""
   channelsJoined: [ChannelConversation!]!

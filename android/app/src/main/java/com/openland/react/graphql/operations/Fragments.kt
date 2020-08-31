@@ -1576,6 +1576,7 @@ internal val UserFullSelector = obj(
             field("isDeleted", "isDeleted", notNull(scalar("Boolean"))),
             field("online", "online", notNull(scalar("Boolean"))),
             field("lastSeen", "lastSeen", scalar("String")),
+            field("joinDate", "joinDate", notNull(scalar("Date"))),
             field("linkedin", "linkedin", scalar("String")),
             field("instagram", "instagram", scalar("String")),
             field("twitter", "twitter", scalar("String")),
