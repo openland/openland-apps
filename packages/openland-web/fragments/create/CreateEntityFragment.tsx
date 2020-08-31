@@ -594,27 +594,29 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
                 priceField={priceField}
                 intervalField={intervalField}
             />
-            <div className={otherInputContainer}>
-                <USelectField
-                    label="Visibility"
-                    field={secretField}
-                    searchable={false}
-                    options={[
-                        {
-                            value: false,
-                            labelShort: 'Public',
-                            label: 'Public',
-                            subtitle: 'Visible in group search',
-                        },
-                        {
-                            value: true,
-                            labelShort: 'Secret',
-                            label: 'Secret',
-                            subtitle: 'Only people with invite link can see it',
-                        },
-                    ]}
-                />
-            </div>
+            {!props.inOrgId && (
+                <div className={otherInputContainer}>
+                    <USelectField
+                        label="Visibility"
+                        field={secretField}
+                        searchable={false}
+                        options={[
+                            {
+                                value: false,
+                                labelShort: 'Public',
+                                label: 'Public',
+                                subtitle: 'Visible in group search',
+                            },
+                            {
+                                value: true,
+                                labelShort: 'Secret',
+                                label: 'Secret',
+                                subtitle: 'Only people with invite link can see it',
+                            },
+                        ]}
+                    />
+                </div>
+            )}
         </CreatingContainer>
     );
 });
