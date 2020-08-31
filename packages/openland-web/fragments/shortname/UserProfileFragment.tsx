@@ -9,25 +9,25 @@ import { useClient } from 'openland-api/useClient';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UPresence } from 'openland-web/components/unicorn/UPresence';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UListHeroNew } from 'openland-web/components/unicorn/UListHeroNew';
-import { beautifyUrl, getSocialId } from 'openland-web/utils/getSocials';
 import { UNotificationsSwitchNew } from 'openland-web/components/unicorn/templates/UNotificationsSwitchNew';
-import { XDate } from 'openland-x/XDate';
-import { XScrollValues } from 'openland-x/XScrollView3';
+import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 import { plural } from 'openland-y-utils/plural';
+import { XScrollValues } from 'openland-x/XScrollView3';
+import { XDate } from 'openland-x/XDate';
 
 import AtIcon from 'openland-icons/s/ic-at-24.svg';
 import MailIcon from 'openland-icons/s/ic-mail-24.svg';
 import LocationIcon from 'openland-icons/s/ic-location-24.svg';
-import TwitterIcon from 'openland-icons/s/ic-twitter-24.svg';
-import FacebookIcon from 'openland-icons/s/ic-facebook-24.svg';
-import LinkedInIcon from 'openland-icons/s/ic-linkedin-24.svg';
 import LinkIcon from 'openland-icons/s/ic-link-24.svg';
-import PhoneIcon from 'openland-icons/s/ic-phone-24.svg';
-import FlagIcon from 'openland-icons/s/ic-flag-24.svg';
+import FlagIcon from 'openland-icons/s/ic-flag.svg';
+import InstagramIcon from 'openland-icons/s/ic-instagram-transparent.svg';
+import FacebookIcon from 'openland-icons/s/ic-facebook-transparent.svg';
+import TwitterIcon from 'openland-icons/s/ic-twitter-transparent.svg';
+import LinkedInIcon from 'openland-icons/s/ic-linkedin-transparent.svg';
+import PhoneIcon from 'openland-icons/s/ic-phone.svg';
 
 import { UserMenuNew } from './components/UserMenuNew';
 import { ShowMoreText } from './components/ShowMoreText';
@@ -51,7 +51,7 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
     const { commonChatsWithUser } = client.useCommonChatsWithUser({ uid: uId, first: 20 }, { fetchPolicy: 'cache-and-network' });
     const {
         id, isBot, name, photo, about, shortname, location, phone, email, linkedin, joinDate,
-        website, twitter, facebook,
+        website, twitter, facebook, instagram
     } = user;
     const { items, count } = commonChatsWithUser;
 
@@ -77,6 +77,12 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
             setBottomReached(flag);
         }
     }, []);
+
+    const parsedSite = findSocialShortname.site(website);
+    const parsedTwitter = findSocialShortname.twitter(twitter);
+    const parsedFacebook = findSocialShortname.facebook(facebook);
+    const parsedInstagram = findSocialShortname.instagram(instagram);
+    const parsedLinkedIn = findSocialShortname.linkedin(linkedin);
 
     const joinedTitle = <>Joined <XDate value={joinDate} /></>;
 
@@ -108,10 +114,11 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
                                 {!!email && <UListItem title={email} icon={<MailIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={`mailto:${email}`}/>}
                                 {!!location && <UListItem title={location} icon={<LocationIcon />} useRadius={true} wrapperClassName={listItemWrapper} />}
                                 {!!phone && <UListItem title={phone} icon={<PhoneIcon />} useRadius={true} wrapperClassName={listItemWrapper} />}
-                                {!!website && <UListItem title={beautifyUrl(website)} icon={<LinkIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={website}/>}
-                                {!!twitter && <UListItem title={getSocialId(twitter)} icon={<TwitterIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={twitter}/>}
-                                {!!facebook && <UListItem title={getSocialId(facebook)} icon={<FacebookIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={facebook}/>}
-                                {!!linkedin && <UListItem title={getSocialId(linkedin)} icon={<LinkedInIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={linkedin}/>}
+                                {!!parsedSite && <UListItem title={parsedSite.name} icon={<LinkIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={parsedSite.url}/>}
+                                {!!parsedTwitter && <UListItem title={parsedTwitter.name} icon={<TwitterIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={parsedTwitter.url}/>}
+                                {!!parsedFacebook && <UListItem title={parsedFacebook.name} icon={<FacebookIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={parsedFacebook.url}/>}
+                                {!!parsedInstagram && <UListItem title={parsedInstagram.name} icon={<InstagramIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={parsedInstagram.url}/>}
+                                {!!parsedLinkedIn && <UListItem title={parsedLinkedIn.name} icon={<LinkedInIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={parsedLinkedIn.url}/>}
                                 {!!joinDate && <UListItem title={joinedTitle} icon={<FlagIcon />} useRadius={true}/>}
                         </XView>
                     </UListGroup>
