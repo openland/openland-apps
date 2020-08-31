@@ -1,0 +1,24 @@
+<mjml>
+    <mj-head>
+        <mj-include path="./includes/attributes.mjml" />
+        <mj-breakpoint width="680px" />
+        <mj-title>You’ve bought access to a paid group</mj-title>
+        <mj-preview>You've bought access to {{groupName}}</mj-preview>
+    </mj-head>
+    <mj-body>
+        <mj-include path="./includes/header.mjml" />
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container">
+                <mj-text mj-class="title">
+                    You've bought access to {{groupName}}
+                </mj-text>
+                <mj-text mj-class="text">
+                    {{welcomeMessage}}
+                </mj-text>
+
+                <mj-button mj-class="button" href="{{link}}">View</mj-button>
+            </mj-column>
+        </mj-section>
+        <mj-include path="./includes/install-app.mjml" />
+    </mj-body>
+</mjml>
