@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextInput } from 'react-native';
+import { View, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextInput, Linking } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine, convertMessageBack } from 'openland-engines/messenger/ConversationEngine';
 import { MessageInputBar } from './components/MessageInputBar';
@@ -68,6 +68,8 @@ interface ConversationRootState {
     };
     muted: boolean;
 }
+
+let customCallLink = '';
 
 class ConversationRoot extends React.Component<ConversationRootProps, ConversationRootState> {
     engine: ConversationEngine;
@@ -309,6 +311,14 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         this.setState(prevState => ({ muted: !prevState.muted }));
     }
 
+    onCallPress = async () => {
+        if (customCallLink && await Linking.canOpenURL(customCallLink)) {
+            await Linking.openURL(customCallLink);
+        } else {
+            this.props.showCallModal();
+        }
+    }
+
     render() {
         let { messagesActionsState } = this.props;
 
@@ -397,7 +407,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 {!isSavedMessages && !isBot && !showSelectedMessagesActions && (
                     <SHeaderButton
                         title="Call"
-                        icon={require('assets/ic-call-24.png')}
+                        icon={customCallLink ? require('assets/ic-video-24.png') : require('assets/ic-call-24.png')}
                         onPress={this.props.showCallModal}
                     />
                 )}

@@ -8,6 +8,29 @@
             ]
         },
         {
+            "name": "ic-call-glyph",
+            "src": "ic-call-glyph-24.svg",
+            "sizes": [
+                24,
+                48
+            ]
+        },
+        {
+            "name": "ic-megaphone",
+            "src": "ic-megaphone-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-megaphone-glyph",
+            "src": "ic-megaphone-glyph-24.svg",
+            "sizes": [
+                24,
+                48
+            ]
+        },
+        {
             "name": "ic-geo",
             "src": "ic-geo-24.svg",
             "sizes": [
@@ -986,7 +1009,8 @@
             "name": "ic-lock",
             "src": "ic-lock-24.svg",
             "sizes": [
-                24
+                24,
+                48
             ]
         },
         {

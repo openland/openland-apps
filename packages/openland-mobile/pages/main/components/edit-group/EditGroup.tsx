@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Image, Text } from 'react-native';
-import { PageProps } from '../../components/PageProps';
-import { withApp } from '../../components/withApp';
+import { PageProps } from '../../../../components/PageProps';
+import { withApp } from '../../../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
@@ -17,7 +17,7 @@ import { SRouterContext } from 'react-native-s/SRouterContext';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { SUPER_ADMIN } from '../Init';
+import { SUPER_ADMIN } from '../../../Init';
 
 const SecretLabel = React.memo(() => {
     const theme = React.useContext(ThemeContext);
@@ -72,8 +72,8 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                         description: descriptionField.value,
                         ...(photoField.value &&
                             photoField.value.uuid !== currentPhoto && {
-                                photoRef: photoField.value,
-                            }),
+                            photoRef: photoField.value,
+                        }),
                     },
                 };
 
@@ -121,9 +121,9 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                             description={
                                 group.premiumSettings
                                     ? formatMoneyInterval(
-                                          group.premiumSettings.price,
-                                          group.premiumSettings.interval,
-                                      )
+                                        group.premiumSettings.price,
+                                        group.premiumSettings.interval,
+                                    )
                                     : 'Free'
                             }
                         />
@@ -144,6 +144,29 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                             onPress={() => router.push('EditGroupWelcomeMessage', { id: group.id })}
                         />
                     )}
+                    {/* <ZListItem
+                        leftIcon={require('assets/ic-megaphone-24.png')}
+                        text="Service messages"
+                        small={true}
+                        description={true ? 'On' : 'Off'}
+                        onPress={() => router.push('EditGroupServiceMessages', { id: group.id })}
+                    />
+                    <ZListItem
+                        leftIcon={require('assets/ic-call-24.png')}
+                        text="Group calls"
+                        small={true}
+                        description={true ? 'Standart' : false ? 'Custom' : 'Off'}
+                        onPress={() => router.push('EditGroupCalls', { id: group.id })}
+                    />
+                    {SUPER_ADMIN && (
+                        <ZListItem
+                            leftIcon={require('assets/ic-lock-24.png')}
+                            text="Superadmin settings"
+                            small={true}
+                            description={'Custom'}
+                            onPress={() => router.push('EditGroupSuperadmin', { id: group.id })}
+                        />
+                    )} */}
                 </ZListGroup>
             </KeyboardAvoidingScrollView>
         </>
