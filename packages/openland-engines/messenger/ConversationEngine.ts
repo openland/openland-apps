@@ -49,6 +49,7 @@ export interface DataSourceMessageItem {
     type: 'message';
     key: string;
     id?: string;
+    seq: null | number;
     date: number;
     isOut: boolean;
     sender: MessageSender;
@@ -122,6 +123,7 @@ export function convertPartialMessage(src: RecursivePartial<FullMessage> & { id:
     const genericGeneralMessage: FullMessage = {
         __typename: "GeneralMessage",
         id: 'will_be_overriten',
+        seq: null,
         sender: {} as any,
         attachments: [],
         date: null,
@@ -149,6 +151,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId
         chatId,
         type: 'message',
         id: src.id,
+        seq: src.seq,
         key: src.repeatKey || src.id,
         date: parseInt(src.date, 10),
         isOut: src.sender.id === engine.user.id,
@@ -178,6 +181,7 @@ export function convertMessageBack(src: DataSourceMessageItem): Types.FullMessag
     let res = {
         __typename: src.isService ? 'ServiceMessage' as 'ServiceMessage' : !!src.sticker ? 'StickerMessage' : 'GeneralMessage' as any,
         id: src.id!,
+        seq: src.seq,
         date: src.date,
         message: src.text || null,
         fallback: src.fallback || 'unknown message type',
@@ -249,7 +253,7 @@ export class ConversationEngine implements MessageSendHandler {
     private watcher: GraphqlActiveSubscription<Types.ChatWatch> | null = null;
     private updateQueue = createFifoQueue<Types.ChatWatch_event_ChatUpdateBatch_updates>();
     private isOpen = false;
-    private messages: (FullMessage | PendingMessage)[] = [];
+    private messages: ModelMessage[] = [];
     private state: ConversationState;
     private lastTopMessageRead: string | null = null;
     lastReadedDividerMessageId?: string;
@@ -883,7 +887,7 @@ export class ConversationEngine implements MessageSendHandler {
                         attachments: (msgs[existing] as any).attachments,
                         date: msgs[existing].date
                     };
-                    this.messages = msgs;
+                    this.messages = msgs.sort((a: FullMessage, b: FullMessage) => (a && b && a.seq && b.seq) ? a.seq - b.seq : 1);
                     this.localMessagesMap.set(event.message.id, event.repeatKey);
                     event.message.local = true;
                 } else {
@@ -914,7 +918,7 @@ export class ConversationEngine implements MessageSendHandler {
             log.log('Received edit message');
 
             // Write message to store
-            this.messages = this.messages.map((m: any) => m.id !== event.message.id ? m : event.message);
+            this.messages = this.messages.map((m: ModelMessage) => ((m as FullMessage).id !== event.message.id) ? m : event.message);
 
             this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
             this.onMessagesUpdated();
@@ -965,6 +969,7 @@ export class ConversationEngine implements MessageSendHandler {
             let p = src as PendingMessage;
             let reply = p.quoted ? (p.quoted.sort((a, b) => a.date - b.date)) : undefined;
             conv = {
+                seq: (prev && prev.type === 'message' && prev.seq) ? prev.seq + 1 : null,
                 type: 'message',
                 chatId: this.conversationId,
                 key: src.key,

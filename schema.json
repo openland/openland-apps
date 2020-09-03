@@ -7442,6 +7442,18 @@
             "deprecationReason": null
           },
           {
+            "name": "birthDay",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Date",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "channelsJoined",
             "description": "TODO: Refactor",
             "args": [],
@@ -10937,6 +10949,38 @@
             "deprecationReason": null
           },
           {
+            "name": "serviceMessageSettings",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "RoomServiceMessageSettings",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "callSettings",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "RoomCallSettings",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "owner",
             "description": "",
             "args": [],
@@ -12945,6 +12989,117 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "RoomServiceMessageSettings",
+        "description": "",
+        "fields": [
+          {
+            "name": "joinsMessageEnabled",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "leavesMessageEnabled",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "RoomCallSettings",
+        "description": "",
+        "fields": [
+          {
+            "name": "mode",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "RoomCallsMode",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "callLink",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "RoomCallsMode",
+        "description": "",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "STANDARD",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "LINK",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "DISABLED",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -18911,6 +19066,18 @@
             "type": {
               "kind": "OBJECT",
               "name": "ProfileBadge",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "birthDay",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Date",
               "ofType": null
             },
             "isDeprecated": false,
@@ -40668,6 +40835,16 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "birthDay",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Date",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -43585,6 +43762,90 @@
               "kind": "SCALAR",
               "name": "Boolean",
               "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "serviceMessageSettings",
+            "description": "",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "RoomServiceMessageSettingsInput",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "callSettings",
+            "description": "",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "RoomCallSettingsInput",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "RoomServiceMessageSettingsInput",
+        "description": "",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "joinsMessageEnabled",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "leavesMessageEnabled",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "RoomCallSettingsInput",
+        "description": "",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "mode",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "RoomCallsMode",
+                "ofType": null
+              }
             },
             "defaultValue": null
           }

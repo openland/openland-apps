@@ -2657,6 +2657,7 @@ type Profile {
   facebook: String
   authEmail: String
   badge: ProfileBadge
+  birthDay: Date
 
   """Deprecated"""
   alphaLinkedin: String
@@ -2699,6 +2700,7 @@ input ProfileInput {
   twitter: String
   facebook: String
   primaryOrganization: ID
+  birthDay: Date
 }
 
 type ProfilePrefill {
@@ -2956,6 +2958,21 @@ union ResolveInviteEntry = InviteInfo | AppInvite | RoomInvite
 
 union Room = PrivateRoom | SharedRoom
 
+type RoomCallSettings {
+  mode: RoomCallsMode!
+  callLink: String
+}
+
+input RoomCallSettingsInput {
+  mode: RoomCallsMode!
+}
+
+enum RoomCallsMode {
+  STANDARD
+  LINK
+  DISABLED
+}
+
 type RoomConnection {
   edges: [RoomConnectionEdge!]!
   pageInfo: PageInfo!
@@ -3040,6 +3057,16 @@ type RoomPowerup {
   userSettings: PowerupUserSettings!
 }
 
+type RoomServiceMessageSettings {
+  joinsMessageEnabled: Boolean!
+  leavesMessageEnabled: Boolean!
+}
+
+input RoomServiceMessageSettingsInput {
+  joinsMessageEnabled: Boolean!
+  leavesMessageEnabled: Boolean!
+}
+
 type RoomSuper {
   id: ID!
   featured: Boolean!
@@ -3054,6 +3081,8 @@ input RoomUpdateInput {
   socialImageRef: ImageRefInput
   kind: SharedRoomKind
   repliesEnabled: Boolean
+  serviceMessageSettings: RoomServiceMessageSettingsInput
+  callSettings: RoomCallSettingsInput
 }
 
 type RoomUserNotificaionSettings {
@@ -3202,6 +3231,8 @@ type SharedRoom {
   premiumSubscription: WalletSubscription
   premiumSettings: PremiumChatSettings
   repliesEnabled: Boolean!
+  serviceMessageSettings: RoomServiceMessageSettings!
+  callSettings: RoomCallSettings!
   owner: User
   linkedFeedChannels: [FeedChannel!]!
   shortname: String
@@ -3577,6 +3608,7 @@ type User {
   audienceSize: Int!
   badge: ProfileBadge
   joinDate: Date!
+  birthDay: Date
 
   """TODO: Refactor"""
   channelsJoined: [ChannelConversation!]!

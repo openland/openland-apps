@@ -49,6 +49,7 @@ const notificationUnsupported = (id: string): NotificationsDataSourceItem => {
         ...convertMessage({
             __typename: 'GeneralMessage',
             id: id,
+            seq: null,
             date: date,
             sender: {
                 __typename: 'User' as 'User',
