@@ -6,6 +6,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZReach } from './ZReach';
 import { ZListItemBase } from './ZListItemBase';
+import { ZIconButton } from './ZIconButton';
 
 const styles = StyleSheet.create({
     wrapper: {
@@ -28,7 +29,6 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         flexShrink: 1,
         paddingLeft: 16,
-        width: Dimensions.get('screen').width - 72 - 16 - 16
     } as ViewStyle,
     header: {
         flexGrow: 1,
@@ -49,6 +49,11 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
         marginTop: 16
+    } as ViewStyle,
+    actionRight: {
+        position: 'absolute',
+        top: 8, right: -34,
+        paddingVertical: 12,
     } as ViewStyle
 });
 
@@ -73,14 +78,26 @@ export interface ZListHeroProps {
     path?: string;
     pathParams?: any;
     verticalMargin?: 'both' | 'bottom';
+    actionRight?: {
+        icon: NodeRequire;
+        path?: string;
+        pathParams?: any;
+        onPress?: () => void;
+    };
 }
 
 export const ZListHero = React.memo<ZListHeroProps>((props) => {
     const theme = React.useContext(ThemeContext);
-    const { photo, id, title, titleIcon, titleIconElement, titleColor, subtitle, subtitleColor, action, score, path, pathParams, verticalMargin = 'both' } = props;
+    const { photo, id, title, titleIcon, titleIconElement, titleColor, subtitle, subtitleColor, action, score, path, pathParams, verticalMargin = 'both', actionRight } = props;
     const colorTitle = titleColor ? titleColor : theme.foregroundPrimary;
     const colorSubtitle = subtitleColor ? subtitleColor : theme.foregroundTertiary;
     const wrapperStyles = verticalMargin === 'both' ? styles.wrapper : styles.wrapperBottomed;
+
+    let bodyWidth = Dimensions.get('screen').width - 72 - 16 - 16;
+
+    if (!!actionRight) {
+        bodyWidth -= 48;
+    }
 
     const content = (
         <View style={styles.container}>
@@ -94,7 +111,7 @@ export const ZListHero = React.memo<ZListHeroProps>((props) => {
                     </View>
                 )}
             </View>
-            <View style={styles.body}>
+            <View style={[styles.body, { width: bodyWidth }]}>
                 <View style={styles.header} justifyContent={!action ? 'center' : undefined}>
                     <View flexDirection="row">
                         {titleIcon && <Image source={titleIcon} style={{ width: 20, height: 20, marginRight: 4, alignSelf: 'center', tintColor: colorTitle }} />}
@@ -110,6 +127,11 @@ export const ZListHero = React.memo<ZListHeroProps>((props) => {
                     )}
                 </View>
             </View>
+            {!!actionRight && (
+                <View style={styles.actionRight}>
+                    <ZIconButton src={actionRight.icon} onPress={actionRight.onPress} path={actionRight.path} pathParams={actionRight.pathParams} highlight={true} />
+                </View>
+            )}
         </View>
     );
 
