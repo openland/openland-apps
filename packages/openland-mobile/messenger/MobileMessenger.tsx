@@ -20,7 +20,7 @@ import { ZModalController } from 'openland-mobile/components/ZModal';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
 import { formatDateTime } from 'openland-y-utils/formatTime';
-import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
+import { SUPER_ADMIN, NON_PRODUCTION } from 'openland-mobile/pages/Init';
 import { NotificationCenterItemAsync } from 'openland-mobile/notificationCenter/NotificationCenterItemAsync';
 import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';
 import { trackEvent } from 'openland-mobile/analytics';
@@ -419,6 +419,37 @@ export class MobileMessenger {
         builder.action('Forward', () => {
             forward([convertedMessage]);
         }, false, require('assets/ic-forward-24.png'));
+
+        if (NON_PRODUCTION) {
+            builder.action('Save', async () => {
+                const loader = Toast.loader();
+                loader.show();
+
+                const { prepareForward } = useMessagesActionsForward({ sourceId: chat.id, userId: chat.__typename === 'PrivateRoom' ? chat.user.id : undefined });
+                const savedMessages = (await this.engine.client.queryRoomPico({ id: this.engine.user.id })).room;
+
+                if (savedMessages) {
+                    this.engine.sender.sendMessage({
+                        conversationId: savedMessages.id,
+                        message: '',
+                        mentions: [],
+                        callback: {
+                            onProgress: () => { /*  */ },
+                            onCompleted: () => { /*  */ },
+                            onFailed: () => { /*  */ },
+                        },
+                        quoted: prepareForward({ targetId: savedMessages.id, messages: [convertedMessage] }).map(e => e.id!),
+                        spans: []
+                    });
+
+                    Toast.showSuccess('Saved');
+                } else {
+                    Toast.failure({ duration: 1000 }).show();
+                }
+
+                loader.hide();
+            }, false, require('assets/ic-bookmark-24.png'));
+        }
 
         if (convertedMessage.text) {
             builder.action('Copy', () => {
