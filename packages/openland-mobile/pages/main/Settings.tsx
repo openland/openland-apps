@@ -71,11 +71,6 @@ let SettingsContent = ((props: PageProps) => {
                 path="ProfileUser"
                 pathParams={{ id: resp.me.id }}
                 verticalMargin="bottom"
-                actionRight={NON_PRODUCTION ? {
-                    icon: require('assets/ic-bookmark-24.png'),
-                    path: 'Conversation',
-                    pathParams: { flexibleId: resp.me.id }
-                } : undefined}
             />
             <ZListItem
                 leftIconColor={theme.tintPurple}
