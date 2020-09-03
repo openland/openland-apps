@@ -24,8 +24,8 @@ class XPAvatarWithPreviewComponent extends React.PureComponent<ZAvatarProps> {
             showPictureModal({
                 title: this.props.title || undefined,
                 url,
-                width: 256,
-                height: 256,
+                width: 1024,
+                height: 1024,
                 isGif: false,
                 animate: { x: pageX, y: pageY, width, height, borderRadius: avatarSizes[this.props.size].size / 2 },
                 onBegin: () => {
