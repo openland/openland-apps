@@ -25,7 +25,7 @@ export function formatAbsoluteDate(date: number, withYear?: boolean) {
     if (withYear) {
         const now = new Date();
 
-        return month + ' ' + day + (now.getFullYear() !== dt.getFullYear() ? (', ' + dt.getFullYear()) : '');;
+        return month + ' ' + day + (now.getFullYear() !== dt.getFullYear() ? (', ' + dt.getFullYear()) : '');
     }
 
     return month + ' ' + day;
