@@ -23007,6 +23007,34 @@
             "deprecationReason": null
           },
           {
+            "name": "applyLink",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "applyLinkEnabled",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "betaMembersCanInvite",
             "description": "",
             "args": [],
@@ -41278,6 +41306,26 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "applyLink",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "applyLinkEnabled",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -42881,6 +42929,26 @@
             "defaultValue": null
           },
           {
+            "name": "applyLink",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "applyLinkEnabled",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "betaMembersCanInvite",
             "description": "",
             "type": {
@@ -43846,6 +43914,16 @@
                 "name": "RoomCallsMode",
                 "ofType": null
               }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "callLink",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "defaultValue": null
           }

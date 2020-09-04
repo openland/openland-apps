@@ -707,6 +707,7 @@ query Message($messageId: ID!) {
                         membersCount
                         canSendMessage
                         canEdit
+                        repliesEnabled
                         pinnedMessage {
                             id
                         }

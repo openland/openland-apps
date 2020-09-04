@@ -499,6 +499,8 @@ input CreateOrganizationInput {
   about: String
   isCommunity: Boolean
   isPrivate: Boolean
+  applyLink: String
+  applyLinkEnabled: Boolean
 }
 
 """Deprecated"""
@@ -2350,6 +2352,8 @@ type OrganizationProfile {
   alphaFeatured: Boolean!
   alphaIsCommunity: Boolean!
   alphaIsPrivate: Boolean!
+  applyLink: String
+  applyLinkEnabled: Boolean!
   betaMembersCanInvite: Boolean!
   shortname: String
 }
@@ -2965,6 +2969,7 @@ type RoomCallSettings {
 
 input RoomCallSettingsInput {
   mode: RoomCallsMode!
+  callLink: String
 }
 
 enum RoomCallsMode {
@@ -3524,6 +3529,8 @@ input UpdateOrganizationProfileInput {
   alphaEditorial: Boolean
   alphaFeatured: Boolean
   alphaIsPrivate: Boolean
+  applyLink: String
+  applyLinkEnabled: Boolean
   betaMembersCanInvite: Boolean
 }
 
