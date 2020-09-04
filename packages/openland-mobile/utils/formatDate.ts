@@ -17,10 +17,16 @@ export function formatDate(date: number) {
     return month + ' ' + day;
 }
 
-export function formatAbsoluteDate(date: number) {
-    let dt = new Date(date);
-    let month = months[dt.getMonth()];
-    let day = dt.getDate();
+export function formatAbsoluteDate(date: number, withYear?: boolean) {
+    const dt = new Date(date);
+    const month = months[dt.getMonth()];
+    const day = dt.getDate();
+
+    if (withYear) {
+        const now = new Date();
+
+        return month + ' ' + day + (now.getFullYear() !== dt.getFullYear() ? (', ' + dt.getFullYear()) : '');;
+    }
 
     return month + ' ' + day;
 }

@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-flag",
+            "src": "ic-flag-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-instagram",
             "src": "ic-instagram-24.svg",
             "sizes": [

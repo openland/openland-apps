@@ -24,6 +24,7 @@ import { UserPhotoUploader } from './components/UserPhotoUploader';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 import { useLastSeenShort } from 'openland-y-utils/LastSeen';
 import { ProfileDeleted } from './components/ProfileDeleted';
+import { formatAbsoluteDate } from 'openland-mobile/utils/formatDate';
 
 const ProfileUserComponent = React.memo((props: PageProps) => {
     const client = getClient();
@@ -186,6 +187,14 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                         <ZListItem
                             text={user.location}
                             leftIcon={require('assets/ic-geo-24.png')}
+                            small={true}
+                            copy={true}
+                        />
+                    )}
+                    {!!user.joinDate && (
+                        <ZListItem
+                            text={`Joined ${formatAbsoluteDate(parseInt(user.joinDate, 10), true)}`}
+                            leftIcon={require('assets/ic-flag-24.png')}
                             small={true}
                             copy={true}
                         />
