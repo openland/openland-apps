@@ -114,8 +114,12 @@ export function formatRelativeTimeShort(date: string | number) {
     }
 }
 
-export function formatLastSeenShort(date: string | number) {
-    const src = new Date(typeof date === 'string' ? parseInt(date, 10) : date);
+export function formatLastSeenShort(lastSeen: string) {
+    if (lastSeen === 'never_online') {
+        return '';
+    }
+
+    const src = new Date(parseInt(lastSeen, 10));
     const now = new Date();
 
     const delta = now.getTime() - src.getTime();
