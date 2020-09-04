@@ -46,6 +46,10 @@ fragment RoomShort on Room {
             firstName
             isYou
         }
+        callSettings {
+            mode
+            callLink
+        }
         repliesEnabled
     }
 }

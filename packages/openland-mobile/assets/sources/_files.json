@@ -978,6 +978,14 @@
             ]
         },
         {
+            "name": "ic-play",
+            "src": "ic-play-24.svg",
+            "sizes": [
+                24
+            ]
+            
+        },
+        {
             "name": "ic-info",
             "src": "ic-info-24.svg",
             "sizes": [

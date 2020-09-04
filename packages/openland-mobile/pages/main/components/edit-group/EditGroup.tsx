@@ -12,7 +12,7 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
-import { SharedRoomKind } from 'openland-api/spacex.types';
+import { SharedRoomKind, RoomCallsMode } from 'openland-api/spacex.types';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -39,6 +39,12 @@ const SecretLabel = React.memo(() => {
     );
 });
 
+const callSettingsLabels: { [mode in RoomCallsMode]: string } = {
+    [RoomCallsMode.STANDARD]: 'Standard',
+    [RoomCallsMode.LINK]: 'Custom',
+    [RoomCallsMode.DISABLED]: 'Off',
+};
+
 const EditGroupComponent = React.memo((props: PageProps) => {
     const router = React.useContext(SRouterContext)!;
     const client = getClient();
@@ -61,6 +67,13 @@ const EditGroupComponent = React.memo((props: PageProps) => {
     const currentPhoto = group.photo.startsWith('ph://') ? undefined : group.photo;
     const defaultPhotoValue = group.photo.startsWith('ph://') ? null : { uuid: group.photo };
     const photoField = useField('photoRef', defaultPhotoValue, form);
+    const serviceMessageLabel = group.serviceMessageSettings.joinsMessageEnabled && group.serviceMessageSettings.leavesMessageEnabled
+        ? 'On' : group.serviceMessageSettings.joinsMessageEnabled || group.serviceMessageSettings.leavesMessageEnabled
+            ? 'Custom' : 'Off';
+    const callSettingsLabel = callSettingsLabels[group.callSettings.mode];
+    // const superadminLabel = group.kind === SharedRoomKind.PUBLIC && superGroup?.featured
+    //     ? 'On' : group.kind === SharedRoomKind.GROUP || superGroup?.featured
+    //         ? 'Custom' : 'Off';
 
     const handleSave = () =>
         form.doAction(async () => {
@@ -144,26 +157,26 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                             onPress={() => router.push('EditGroupWelcomeMessage', { id: group.id })}
                         />
                     )}
-                    {/* <ZListItem
+                    <ZListItem
                         leftIcon={require('assets/ic-megaphone-24.png')}
                         text="Service messages"
                         small={true}
-                        description={true ? 'On' : 'Off'}
+                        description={serviceMessageLabel}
                         onPress={() => router.push('EditGroupServiceMessages', { id: group.id })}
                     />
                     <ZListItem
                         leftIcon={require('assets/ic-call-24.png')}
                         text="Group calls"
                         small={true}
-                        description={true ? 'Standart' : false ? 'Custom' : 'Off'}
+                        description={callSettingsLabel}
                         onPress={() => router.push('EditGroupCalls', { id: group.id })}
                     />
-                    {SUPER_ADMIN && (
+                    {/* {SUPER_ADMIN && (
                         <ZListItem
                             leftIcon={require('assets/ic-lock-24.png')}
                             text="Superadmin settings"
                             small={true}
-                            description={'Custom'}
+                            description={superadminLabel}
                             onPress={() => router.push('EditGroupSuperadmin', { id: group.id })}
                         />
                     )} */}

@@ -6,6 +6,7 @@ import { SearchContext } from './SearchContext';
 
 export interface HeaderButtonDescription {
     id: string;
+    priority?: number;
     render: (style: SNavigationViewStyle) => React.ReactElement<{}>;
 }
 
@@ -119,6 +120,17 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
         }
         if (c.buttons) {
             buttons.push(...c.buttons);
+            buttons.sort((a, b) => {
+                if (a.priority && b.priority) {
+                    return b.priority - a.priority;
+                } else if (a.priority && !b.priority) {
+                    return -1;
+                } else if (b.priority && !a.priority) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
         }
         if (c.searchUnderlay) {
             searchUnderlay = c.searchUnderlay;

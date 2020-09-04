@@ -137,6 +137,14 @@ query RoomChat($id: ID!) {
                 firstName
                 isYou
             }
+            serviceMessageSettings {
+                joinsMessageEnabled
+                leavesMessageEnabled
+            }
+            callSettings {
+                mode
+                callLink
+            }
             repliesEnabled
         }
     }
@@ -159,6 +167,14 @@ query RoomTiny($id: ID!) {
         ...RoomShort
     }
 }
+
+query RoomSuper($id: ID!) {
+    roomSuper(id: $id) {
+        id
+        featured
+    }
+}
+
 mutation PinMessage($chatId: ID!, $messageId: ID!) {
     pinMessage: gammaPinMessage(chatId: $chatId, messageId: $messageId) {
         ...RoomShort
@@ -446,6 +462,14 @@ mutation RoomSettingsUpdate($settings: RoomUserNotificaionSettingsInput!, $roomI
         mute
     }
 }
+
+mutation RoomAlterFeatured($id: ID!, $featured: Boolean!) {
+    betaRoomAlterFeatured(roomId: $id, featured: $featured) {
+        id
+        featured
+    }
+}
+
 mutation RoomJoin($roomId: ID!) {
     join: betaRoomJoin(roomId: $roomId) {
         ... on PrivateRoom {

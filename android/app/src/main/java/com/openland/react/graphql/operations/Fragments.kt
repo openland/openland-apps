@@ -556,6 +556,11 @@ internal val RoomShortSelector = obj(
                         field("firstName", "firstName", notNull(scalar("String"))),
                         field("isYou", "isYou", notNull(scalar("Boolean")))
                     )),
+                field("callSettings", "callSettings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("mode", "mode", notNull(scalar("String"))),
+                        field("callLink", "callLink", scalar("String"))
+                    ))),
                 field("repliesEnabled", "repliesEnabled", notNull(scalar("Boolean")))
             ))
         )
