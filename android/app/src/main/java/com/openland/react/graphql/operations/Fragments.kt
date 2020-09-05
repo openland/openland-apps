@@ -1571,6 +1571,7 @@ internal val UserFullSelector = obj(
             field("email", "email", scalar("String")),
             field("website", "website", scalar("String")),
             field("about", "about", scalar("String")),
+            field("birthDay", "birthDay", scalar("Date")),
             field("location", "location", scalar("String")),
             field("isBot", "isBot", notNull(scalar("Boolean"))),
             field("isDeleted", "isDeleted", notNull(scalar("Boolean"))),

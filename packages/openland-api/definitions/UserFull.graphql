@@ -8,6 +8,7 @@ fragment UserFull on User {
     email
     website
     about
+    birthDay
     location
     isBot
     isDeleted

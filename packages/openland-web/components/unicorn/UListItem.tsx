@@ -98,7 +98,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
     const height = large ? 80 : !!avatar || !!leftElement || !!iconBackground ? 56 : 48;
     const titleFont = !!description || savedMessages ? TextStyles.Label1 : TextStyles.Body;
     const subtitleFont = TextStyles.Caption;
-    const descriptionFont = large ? TextStyles.Densed : TextStyles.Caption;
+    const descriptionFont = large ? TextStyles.Densed : TextStyles.Subhead;
     const textRightFont = TextStyles.Body;
 
     const containerRef = React.useRef<HTMLDivElement>(null);

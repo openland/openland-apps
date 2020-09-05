@@ -1,0 +1,238 @@
+import React from 'react';
+import { XView } from 'react-mental';
+
+import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
+import {
+    EntityMembersManager,
+    EntityMembersManagerRef,
+    GroupMember,
+} from 'openland-y-utils/members/EntityMembersManager';
+import { debounce } from 'openland-y-utils/timer';
+import { MembersSearchInput } from 'openland-web/components/MembersSearchInput';
+import { shouldShowInviteButton } from 'openland-y-utils/shouldShowInviteButton';
+import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
+import { TextStyles } from 'openland-web/utils/TextStyles';
+import { showAddMembersModal } from 'openland-web/fragments/chat/showAddMembersModal';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { useClient } from 'openland-api/useClient';
+import { RoomChat_room_SharedRoom, RoomMemberRole } from 'openland-api/spacex.types';
+import { ProfileScrollContext } from 'openland-web/components/ProfileLayout';
+import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
+import { XLoader } from 'openland-x/XLoader';
+
+import SearchIcon from 'openland-icons/s/ic-search-24.svg';
+
+import { GroupMemberMenu } from './GroupMemberMenu';
+
+interface GroupMembersProps {
+    group: RoomChat_room_SharedRoom;
+}
+
+export const GroupMembers = ({ group }: GroupMembersProps) => {
+    const onlines = React.useContext(MessengerContext).getOnlines();
+    const bottomReached = React.useContext(ProfileScrollContext);
+    const client = useClient();
+
+    const profilesRef = React.useRef<EntityMembersManagerRef>(null);
+    const membersQueryRef = React.useRef('');
+    const [hasSearched, setHasSearched] = React.useState(false);
+    const [searchVisible, setSearchVisible] = React.useState(false);
+    const [initialMembers, setInitialMembers] = React.useState<GroupMember[]>([]);
+    const [members, setMembers] = React.useState<GroupMember[]>([]);
+    const [loading, setLoading] = React.useState(true);
+    const [membersQuery, setMembersQuery] = React.useState('');
+    const [membersFetching, setMembersFetching] = React.useState({
+        loading: 0,
+        hasNextPage: true,
+        cursor: '',
+    });
+    
+    const { id, membersCount, isChannel } = group;
+
+    React.useEffect(() => {
+        if (bottomReached) {
+            handleLoadMore();
+        }
+    }, [bottomReached]);
+
+    React.useEffect(() => {
+        return onlines.onSingleChange((user: string, online: boolean) => {
+            setMembers((current) =>
+                current.map((m) =>
+                    m.user.id === user && online !== m.user.online
+                        ? { ...m, user: { ...m.user, online, lastSeen: Date.now().toString() } }
+                        : m,
+                ),
+            );
+        });
+    }, [members]);
+
+    const handleSearchClick = React.useCallback(() => {
+        setSearchVisible(value => !value);
+    }, [setSearchVisible]);
+
+    const handleSearchChange = React.useCallback(
+        debounce(async (val: string) => {
+            setMembersQuery(val);
+
+            membersQueryRef.current = val;
+            if (val.length > 0) {
+                await loadSearchMembers(true);
+            } else {
+                setMembers(initialMembers);
+                setMembersFetching({
+                    loading: 0,
+                    hasNextPage: true,
+                    cursor: '',
+                });
+                setHasSearched(false);
+                // refetch in case someone is removed
+                let initial = (
+                    await client.queryRoomMembersPaginated(
+                        { roomId: id, first: 15 },
+                        { fetchPolicy: 'network-only' },
+                    )
+                ).members;
+                setMembers(initial);
+            }
+        }, 100),
+        [initialMembers],
+    );
+
+    const loadSearchMembers = async (reseted?: boolean) => {
+        let query = membersQueryRef.current;
+        setMembersFetching((prev) => ({ ...prev, loading: prev.loading + 1 }));
+        const { edges, pageInfo } = (
+            await client.queryRoomMembersSearch(
+                {
+                    cid: id,
+                    query,
+                    first: 10,
+                    after: reseted ? undefined : membersFetching.cursor,
+                },
+                { fetchPolicy: 'network-only' },
+            )
+        ).chatMembersSearch;
+        // avoid race condition
+        if (membersQueryRef.current.length === 0) {
+            return;
+        }
+        setMembers((prev) =>
+            reseted ? edges.map(x => x.node) : prev.concat(edges.map(x => x.node)),
+        );
+        setMembersFetching((prev) => ({
+            loading: Math.max(prev.loading - 1, 0),
+            hasNextPage: pageInfo.hasNextPage,
+            cursor: edges.length === 0 ? '' : edges[edges.length - 1].cursor,
+        }));
+        setHasSearched(true);
+    };
+
+    const handleLoadMore = React.useCallback(async () => {
+        if (membersQueryRef.current.length > 0) {
+            if (!membersFetching.loading && membersFetching.hasNextPage) {
+                await loadSearchMembers();
+            }
+            return;
+        }
+
+        if (profilesRef.current) {
+            await profilesRef.current.handleLoadMore();
+        }
+    }, [membersCount, members, loading, membersQuery, membersFetching]);
+
+    const handleAddMembers = React.useCallback(
+        (addedMembers: GroupMember[]) => {
+            setMembers((current) => [...current, ...addedMembers]);
+            onlines.onUsersAppear(addedMembers.map((m) => m.user.id));
+        },
+        [members],
+    );
+
+    const handleRemoveMember = React.useCallback(
+        (memberId: string) => {
+            setMembers((current) => current.filter((m) => m.user.id !== memberId));
+        },
+        [members],
+    );
+
+    const updateUserRole = React.useCallback(
+        (uid: string, role: RoomMemberRole) => {
+            setMembers((current) => current.map((m) => (m.user.id === uid ? { ...m, role } : m)));
+        },
+        [members],
+    );
+
+    const isSearching = membersQuery.length > 0;
+    const loadingOrSearching = loading || (isSearching && membersFetching.loading > 0 && members.length > 15);
+
+    return (
+        <XView marginLeft={-8}>
+            <UIconButton icon={<SearchIcon />} onClick={handleSearchClick} position="absolute" right={0} top={-48}/>
+            <MembersSearchInput
+                visible={searchVisible}
+                query={membersQuery}
+                loading={membersFetching.loading > 0}
+                onChange={handleSearchChange}
+            />
+            {shouldShowInviteButton(group) && !hasSearched && (
+                <UAddItem
+                    title="Add people"
+                    titleStyle={TextStyles.Label1}
+                    onClick={() => {
+                        showAddMembersModal({
+                            id,
+                            isChannel,
+                            isGroup: true,
+                            isOrganization: false,
+                            onGroupMembersAdd: handleAddMembers,
+                        });
+                    }}
+                />
+            )}
+            {members.length === 0 && isSearching && (
+                <XView
+                    paddingTop={32}
+                    paddingBottom={32}
+                    alignItems="center"
+                    {...TextStyles.Body}
+                    color="var(--foregroundSecondary)"
+                >
+                    Nobody found
+                </XView>
+            )}
+            <React.Suspense fallback={null}>
+                <EntityMembersManager
+                    isGroup={true}
+                    loading={loading}
+                    members={members}
+                    membersCount={membersCount}
+                    entityId={id}
+                    setLoading={setLoading}
+                    setMembers={setMembers}
+                    setInitialMembers={setInitialMembers}
+                    onlineWatcher={onlines}
+                    ref={profilesRef}
+                />
+            </React.Suspense>
+            {members.map((member) => (
+                <UUserView
+                    key={'member-' + member.user.id + '-' + member.role}
+                    user={member.user}
+                    role={member.role}
+                    rightElement={
+                        <GroupMemberMenu
+                            group={group}
+                            member={member}
+                            onRemove={handleRemoveMember}
+                            updateUserRole={updateUserRole}
+                        />
+                    }
+                />
+            ))}
+            <XView height={56} alignItems="center" justifyContent="center">
+                {loadingOrSearching && <XLoader loading={true} />}
+            </XView>
+        </XView>
+    );
+};

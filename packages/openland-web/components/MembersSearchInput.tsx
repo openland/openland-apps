@@ -4,25 +4,29 @@ import { css, cx } from 'linaria';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const membersSearchStyle = css`
-    width: 160px;
+    height: 0px;
     will-change: width;
-    transition: width 0.15s ease;
+    margin-bottom: 0px;
+    overflow: hidden;
+    transition: height 0.15s ease;
 
     &:focus-within {
-        width: 240px;
+        height: 40px;
     }
 `;
 
 const membersSearchFilledStyle = css`
-    width: 240px;
+    height: 40px;
+    margin-bottom: 16px;
 `;
 
 export const MembersSearchInput = (props: {
     query: string;
     loading: boolean;
+    visible: boolean;
     onChange: (v: string) => void;
 }) => {
-    const { query, loading, onChange } = props;
+    const { query, loading, visible, onChange } = props;
     const searchInputRef = React.useRef<USearchInputRef>(null);
     const [searchFocused, setSearchFocused] = React.useState(false);
     useShortcuts({
@@ -38,11 +42,12 @@ export const MembersSearchInput = (props: {
     });
 
     return (
-        <div className={cx(membersSearchStyle, query.length > 0 && membersSearchFilledStyle)}>
+        <div className={cx(membersSearchStyle, visible && membersSearchFilledStyle)}>
             <USearchInput
+                width={484}
+                marginLeft={16}
                 ref={searchInputRef}
                 placeholder="Search"
-                rounded={true}
                 value={query}
                 loading={loading}
                 onChange={onChange}
