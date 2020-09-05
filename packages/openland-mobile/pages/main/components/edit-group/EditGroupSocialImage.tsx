@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { View, Image, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { PageProps } from '../../components/PageProps';
-import { withApp } from '../../components/withApp';
+import { PageProps } from 'openland-mobile/components/PageProps';
+import { withApp } from 'openland-mobile/components/withApp';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';

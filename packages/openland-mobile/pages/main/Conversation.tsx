@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextInput } from 'react-native';
+import { View, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextInput, Linking } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine, convertMessageBack } from 'openland-engines/messenger/ConversationEngine';
 import { MessageInputBar } from './components/MessageInputBar';
@@ -12,7 +12,7 @@ import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/C
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType } from 'openland-api/spacex.types';
+import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType, RoomCallsMode } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
@@ -309,6 +309,17 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         this.setState(prevState => ({ muted: !prevState.muted }));
     }
 
+    onCustomCallPress = async () => {
+        let customCallLink = this.props.chat?.__typename === 'SharedRoom' && this.props.chat?.callSettings.callLink;
+        if (customCallLink) {
+            try {
+                await Linking.openURL(customCallLink);
+            } catch (e) {
+                /**/
+            }
+        }
+    }
+
     render() {
         let { messagesActionsState } = this.props;
 
@@ -394,11 +405,20 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                         {header}
                     </SHeaderView>
                 )}
-                {!isSavedMessages && !isBot && !showSelectedMessagesActions && (
+                {!isSavedMessages && !isBot && !showSelectedMessagesActions && sharedRoom?.callSettings.mode === RoomCallsMode.STANDARD && (
                     <SHeaderButton
                         title="Call"
+                        priority={1}
                         icon={require('assets/ic-call-24.png')}
                         onPress={this.props.showCallModal}
+                    />
+                )}
+                {!isSavedMessages && !isBot && !showSelectedMessagesActions && sharedRoom?.callSettings.mode === RoomCallsMode.LINK && (
+                    <SHeaderButton
+                        title="Call"
+                        priority={1}
+                        icon={require('assets/ic-video-24.png')}
+                        onPress={this.onCustomCallPress}
                     />
                 )}
                 {!showSelectedMessagesActions && (

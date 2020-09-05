@@ -2,8 +2,8 @@ import * as React from 'react';
 import { View, Image, Text } from 'react-native';
 import { WalletSubscriptionInterval } from 'openland-api/spacex.types';
 import LinearGradient from 'react-native-linear-gradient';
-import { PageProps } from '../../components/PageProps';
-import { withApp } from '../../components/withApp';
+import { PageProps } from 'openland-mobile/components/PageProps';
+import { withApp } from 'openland-mobile/components/withApp';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
@@ -12,7 +12,7 @@ import { useForm } from 'openland-form/useForm';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { GroupPriceSettings, DistributionType } from '../compose/CreateGroupAttrs';
+import { GroupPriceSettings, DistributionType } from '../../../compose/CreateGroupAttrs';
 
 const EditGroupPriceComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);

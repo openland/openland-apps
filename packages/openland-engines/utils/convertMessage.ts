@@ -24,6 +24,7 @@ export const convertMessage = (
         chatId: '',
         type: 'message',
         id: src.id,
+        seq: src.seq,
         key: src.repeatKey || src.id,
         date: parseInt(src.date, 10),
         isOut: true,

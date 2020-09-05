@@ -1,10 +1,47 @@
 {
     "icons": [
         {
+            "name": "ic-birthday",
+            "src": "ic-birthday-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-flag",
+            "src": "ic-flag-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-instagram",
             "src": "ic-instagram-24.svg",
             "sizes": [
                 24
+            ]
+        },
+        {
+            "name": "ic-call-glyph",
+            "src": "ic-call-glyph-24.svg",
+            "sizes": [
+                24,
+                48
+            ]
+        },
+        {
+            "name": "ic-megaphone",
+            "src": "ic-megaphone-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-megaphone-glyph",
+            "src": "ic-megaphone-glyph-24.svg",
+            "sizes": [
+                24,
+                48
             ]
         },
         {
@@ -941,6 +978,14 @@
             ]
         },
         {
+            "name": "ic-play",
+            "src": "ic-play-24.svg",
+            "sizes": [
+                24
+            ]
+            
+        },
+        {
             "name": "ic-info",
             "src": "ic-info-24.svg",
             "sizes": [
@@ -986,7 +1031,8 @@
             "name": "ic-lock",
             "src": "ic-lock-24.svg",
             "sizes": [
-                24
+                24,
+                48
             ]
         },
         {

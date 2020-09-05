@@ -136,7 +136,17 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                             )}
                             {v.config.searchActive && (
                                 <>
-                                    <TextInput style={{ flexGrow: 1, fontSize: 18, width: Dimensions.get('window').width - 56 - 56, color: this.props.style.textColor }} value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} placeholder={v.config.searchPlaceholder ? v.config.searchPlaceholder : 'Groups, people, and more'} selectionColor={this.props.style.selectionColor} placeholderTextColor={this.props.style.searchColor} />
+                                    <TextInput
+                                        style={{ flexGrow: 1, fontSize: 18, width: Dimensions.get('window').width - 56 - 56, color: this.props.style.textColor }}
+                                        value={this.state.searchText}
+                                        onChangeText={this.handleTextChange}
+                                        autoFocus={true}
+                                        placeholder={v.config.searchPlaceholder ? v.config.searchPlaceholder : 'Groups, people, and more'}
+                                        selectionColor={this.props.style.selectionColor}
+                                        placeholderTextColor={this.props.style.searchColor}
+                                        returnKeyType="search"
+                                        autoCorrect={false}
+                                    />
                                     {this.state.searchText.length > 0 && (
                                         <TouchableOpacity onPress={() => this.handleTextChange('')}>
                                             <View style={{ height: 44, width: 56, justifyContent: 'center', alignItems: 'center' }}>

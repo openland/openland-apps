@@ -58,17 +58,13 @@ export const BackSkipLogo = ({ onBack, onSkip, mobileTransparent = false }: Back
                     onClick={onBack}
                     icon={<IcBack />}
                 />
-            ) : (
-                <div />
-            )}
+            ) : null}
 
             {onSkip && !modalBox ? (
                 <XView position="absolute" top={isMobile ? 4 : 12} right={isMobile ? 4 : 12}>
                     <Skip onClick={onSkip} />
                 </XView>
-            ) : (
-                <div />
-            )}
+            ) : null}
         </div>
     );
 };

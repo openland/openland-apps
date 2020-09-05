@@ -41,10 +41,10 @@ import { SettingsAbout } from './pages/main/SettingsAbout';
 import { SettingsLicenses } from './pages/main/SettingsLicenses';
 import { HomeDialogs } from './pages/main/HomeDialogs';
 import { SetShortname } from './pages/main/SetShortname';
-import { EditGroup } from './pages/main/EditGroup';
-import { EditGroupSocialImage } from './pages/main/EditGroupSocialImage';
-import { EditGroupWelcomeMessage } from './pages/main/EditGroupWelcomeMessage';
-import { EditGroupPrice } from './pages/main/EditGroupPrice';
+import { EditGroup } from './pages/main/components/edit-group/EditGroup';
+import { EditGroupSocialImage } from './pages/main/components/edit-group/EditGroupSocialImage';
+import { EditGroupWelcomeMessage } from './pages/main/components/edit-group/EditGroupWelcomeMessage';
+import { EditGroupPrice } from './pages/main/components/edit-group/EditGroupPrice';
 import { GroupInvite } from './pages/main/GroupInvite';
 import { UserPicker } from './pages/main/modals/UserPicker';
 import { CountryPicker } from './pages/main/modals/CountryPicker';
@@ -75,6 +75,9 @@ import { Donation } from './pages/wallet/Donation';
 import { SettingsCommunities } from './pages/main/SettingsCommunities';
 import { MembersSearch } from './pages/main/modals/MembersSearch';
 import { UserMutualGroups } from './pages/main/UserMutualGroups';
+import { EditGroupServiceMessages } from './pages/main/components/edit-group/EditGroupServiceMessages';
+import { EditGroupCalls } from './pages/main/components/edit-group/EditGroupCalls';
+import { EditGroupSuperadmin } from './pages/main/components/edit-group/EditGroupSuperadmin';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -87,6 +90,9 @@ export const Routes = new SRoutesBuilder()
   .addRoute('EditGroupSocialImage', EditGroupSocialImage)
   .addRoute('EditGroupWelcomeMessage', EditGroupWelcomeMessage)
   .addRoute('EditGroupPrice', EditGroupPrice)
+  .addRoute('EditGroupServiceMessages', EditGroupServiceMessages)
+  .addRoute('EditGroupCalls', EditGroupCalls)
+  .addRoute('EditGroupSuperadmin', EditGroupSuperadmin)
   .addRoute('SettingsProfile', SettingsProfile)
   .addRoute('SettingsPrivacy', SettingsPrivacy)
   .addRoute('ChangeLoginMethod', ChangeLoginMethod)

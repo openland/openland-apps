@@ -104,6 +104,7 @@ object Operations {
         if (name == "RoomPico") return RoomPico
         if (name == "RoomSearch") return RoomSearch
         if (name == "RoomSocialImage") return RoomSocialImage
+        if (name == "RoomSuper") return RoomSuper
         if (name == "RoomTiny") return RoomTiny
         if (name == "Settings") return Settings
         if (name == "SharedMedia") return SharedMedia
@@ -200,6 +201,7 @@ object Operations {
         if (name == "ReportContent") return ReportContent
         if (name == "ReportOnline") return ReportOnline
         if (name == "RoomAddMembers") return RoomAddMembers
+        if (name == "RoomAlterFeatured") return RoomAlterFeatured
         if (name == "RoomChangeRole") return RoomChangeRole
         if (name == "RoomCreate") return RoomCreate
         if (name == "RoomDelete") return RoomDelete

@@ -354,6 +354,7 @@ internal val ServiceMessageMetadataSelector = obj(
 internal val FullMessageSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
+            field("seq", "seq", scalar("Int")),
             field("date", "date", notNull(scalar("Date"))),
             field("sender", "sender", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -555,6 +556,11 @@ internal val RoomShortSelector = obj(
                         field("firstName", "firstName", notNull(scalar("String"))),
                         field("isYou", "isYou", notNull(scalar("Boolean")))
                     )),
+                field("callSettings", "callSettings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("mode", "mode", notNull(scalar("String"))),
+                        field("callLink", "callLink", scalar("String"))
+                    ))),
                 field("repliesEnabled", "repliesEnabled", notNull(scalar("Boolean")))
             ))
         )
@@ -938,6 +944,7 @@ internal val DiscoverChatsCollectionShortSelector = obj(
 internal val FullMessageWithoutSourceSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
+            field("seq", "seq", scalar("Int")),
             field("date", "date", notNull(scalar("Date"))),
             field("sender", "sender", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),

@@ -7,6 +7,7 @@ import { SNavigationViewStyle } from './SNavigationView';
 interface SHeaderButtonProps {
     title?: string;
     icon?: any;
+    priority?: number;
     onPress?: () => void;
     style?: SNavigationViewStyle;
     disabled?: boolean;
@@ -40,6 +41,6 @@ export class SHeaderButton extends React.PureComponent<SHeaderButtonProps> {
     render() {
         const { style } = this.props;
 
-        return style ? this.renderButton(style) : <HeaderConfigRegistrator config={{ buttons: [{ id: this.buttonId, render: this.renderButton }] }} />;
+        return style ? this.renderButton(style) : <HeaderConfigRegistrator config={{ buttons: [{ id: this.buttonId, priority: this.props.priority, render: this.renderButton }] }} />;
     }
 }
