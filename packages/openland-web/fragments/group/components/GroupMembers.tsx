@@ -17,10 +17,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
 import { RoomChat_room_SharedRoom, RoomMemberRole } from 'openland-api/spacex.types';
 import { ProfileScrollContext } from 'openland-web/components/ProfileLayout';
-import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { XLoader } from 'openland-x/XLoader';
-
-import SearchIcon from 'openland-icons/s/ic-search-24.svg';
 
 import { GroupMemberMenu } from './GroupMemberMenu';
 

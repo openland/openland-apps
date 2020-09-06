@@ -56,7 +56,6 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
         instagram,
         isMine,
         roomsCount,
-        superAccountId,
         membersCount
     } = organization;
 
