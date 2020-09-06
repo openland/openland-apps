@@ -17,7 +17,7 @@ class AppNotiticationsStub implements AppNotificationsApi {
         // Do nothing
     }
 
-    displayNotification(content: { path: string, title: string, body: string, image?: string, id?: string, replace?: boolean }) {
+    displayNotification(content: { path: string, title: string, body: string, image?: string, id?: string, replace?: boolean, silent?: boolean, soundOnly?: boolean }) {
         // Do nothing
     }
 }
