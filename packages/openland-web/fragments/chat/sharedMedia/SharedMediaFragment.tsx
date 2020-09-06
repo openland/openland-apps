@@ -215,9 +215,9 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
             }
         } else {
             if (i.attach.__typename === 'MessageAttachmentFile') {
-                items.push(<DocContent key={'doc_' + key} item={i as SharedItemFile} chatId={props.chatId} />);
+                items.push(<DocContent key={'doc_' + key} item={i as SharedItemFile} chatId={props.chatId} profileView={props.profileView}/>);
             } else if (i.attach.__typename === 'MessageRichAttachment') {
-                items.push(<RichContent key={'rich_' + key} item={i as SharedItemRich} chatId={props.chatId} />);
+                items.push(<RichContent key={'rich_' + key} item={i as SharedItemRich} chatId={props.chatId} profileView={props.profileView}/>);
             } else {
                 items.push(<XView key={'x_' + key} padding={8} flexGrow={1}>Unknown content</XView>);
             }
@@ -237,7 +237,7 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
         <div className={sharedMediaClassName}>
             {items}
             {initialLoading && <XView flexGrow={1} height="calc(100vh - 56px)"><XLoader loading={true} /></XView>}
-            {isEmpty && <Placeholder mediaTypes={props.mediaTypes} />}
+            {isEmpty && !props.profileView && <Placeholder mediaTypes={props.mediaTypes} />}
             {!initialLoading && !isEmpty && <Footer useCorners={props.mediaTypes.includes(SharedMediaType.IMAGE)}>
                 {loading && <XLoader loading={true} />}
             </Footer>}

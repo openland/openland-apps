@@ -82,7 +82,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 description={isCommunity ? 'Community' : 'Organization'}
                 avatar={{ photo, id, title: name }}
             >
-                <UButton text="Message Admin" path={'/mail/' + superAccountId} shape="square"/>
+                <UButton text="Message Admin" />
             </UListHeroNew>
             <OrganizationActions organization={organization} onLeave={handleRemoveMember} />
         </>
@@ -107,7 +107,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                     <OrganizationGroups id={id} roomsCount={roomsCount} />
                 </UListGroup>
             </React.Suspense>
-            <UListHeader text="Members" counter={membersCount}/>
+            <UListHeader text="Members" counter={membersCount} paddingVertical={16} height={56} />
             <OrganizationMembers members={members} setMembers={setMembers} organization={organization} onRemoveMember={handleRemoveMember} />
         </>
     );

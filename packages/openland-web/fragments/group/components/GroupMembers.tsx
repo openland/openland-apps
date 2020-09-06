@@ -36,7 +36,6 @@ export const GroupMembers = ({ group }: GroupMembersProps) => {
     const profilesRef = React.useRef<EntityMembersManagerRef>(null);
     const membersQueryRef = React.useRef('');
     const [hasSearched, setHasSearched] = React.useState(false);
-    const [searchVisible, setSearchVisible] = React.useState(false);
     const [initialMembers, setInitialMembers] = React.useState<GroupMember[]>([]);
     const [members, setMembers] = React.useState<GroupMember[]>([]);
     const [loading, setLoading] = React.useState(true);
@@ -48,56 +47,6 @@ export const GroupMembers = ({ group }: GroupMembersProps) => {
     });
     
     const { id, membersCount, isChannel } = group;
-
-    React.useEffect(() => {
-        if (bottomReached) {
-            handleLoadMore();
-        }
-    }, [bottomReached]);
-
-    React.useEffect(() => {
-        return onlines.onSingleChange((user: string, online: boolean) => {
-            setMembers((current) =>
-                current.map((m) =>
-                    m.user.id === user && online !== m.user.online
-                        ? { ...m, user: { ...m.user, online, lastSeen: Date.now().toString() } }
-                        : m,
-                ),
-            );
-        });
-    }, [members]);
-
-    const handleSearchClick = React.useCallback(() => {
-        setSearchVisible(value => !value);
-    }, [setSearchVisible]);
-
-    const handleSearchChange = React.useCallback(
-        debounce(async (val: string) => {
-            setMembersQuery(val);
-
-            membersQueryRef.current = val;
-            if (val.length > 0) {
-                await loadSearchMembers(true);
-            } else {
-                setMembers(initialMembers);
-                setMembersFetching({
-                    loading: 0,
-                    hasNextPage: true,
-                    cursor: '',
-                });
-                setHasSearched(false);
-                // refetch in case someone is removed
-                let initial = (
-                    await client.queryRoomMembersPaginated(
-                        { roomId: id, first: 15 },
-                        { fetchPolicy: 'network-only' },
-                    )
-                ).members;
-                setMembers(initial);
-            }
-        }, 100),
-        [initialMembers],
-    );
 
     const loadSearchMembers = async (reseted?: boolean) => {
         let query = membersQueryRef.current;
@@ -141,6 +90,52 @@ export const GroupMembers = ({ group }: GroupMembersProps) => {
         }
     }, [membersCount, members, loading, membersQuery, membersFetching]);
 
+    React.useEffect(() => {
+        if (bottomReached) {
+            handleLoadMore();
+        }
+    }, [bottomReached]);
+
+    React.useEffect(() => {
+        return onlines.onSingleChange((user: string, online: boolean) => {
+            setMembers((current) =>
+                current.map((m) =>
+                    m.user.id === user && online !== m.user.online
+                        ? { ...m, user: { ...m.user, online, lastSeen: Date.now().toString() } }
+                        : m,
+                ),
+            );
+        });
+    }, [members]);
+
+    const handleSearchChange = React.useCallback(
+        debounce(async (val: string) => {
+            setMembersQuery(val);
+
+            membersQueryRef.current = val;
+            if (val.length > 0) {
+                await loadSearchMembers(true);
+            } else {
+                setMembers(initialMembers);
+                setMembersFetching({
+                    loading: 0,
+                    hasNextPage: true,
+                    cursor: '',
+                });
+                setHasSearched(false);
+                // refetch in case someone is removed
+                let initial = (
+                    await client.queryRoomMembersPaginated(
+                        { roomId: id, first: 15 },
+                        { fetchPolicy: 'network-only' },
+                    )
+                ).members;
+                setMembers(initial);
+            }
+        }, 100),
+        [initialMembers],
+    );
+
     const handleAddMembers = React.useCallback(
         (addedMembers: GroupMember[]) => {
             setMembers((current) => [...current, ...addedMembers]);
@@ -168,9 +163,7 @@ export const GroupMembers = ({ group }: GroupMembersProps) => {
 
     return (
         <XView marginLeft={-8}>
-            <UIconButton icon={<SearchIcon />} onClick={handleSearchClick} position="absolute" right={0} top={-48}/>
             <MembersSearchInput
-                visible={searchVisible}
                 query={membersQuery}
                 loading={membersFetching.loading > 0}
                 onChange={handleSearchChange}

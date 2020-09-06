@@ -14,8 +14,6 @@ import { useClient } from 'openland-api/useClient';
 import { ProfileScrollContext } from 'openland-web/components/ProfileLayout';
 import { Organization_organization, OrganizationMemberRole, OrganizationMembers_organization_members } from 'openland-api/spacex.types';
 import { EntityMembersManager, EntityMembersManagerRef, OrgMember } from 'openland-y-utils/members/EntityMembersManager';
-import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
-import SearchIcon from 'openland-icons/s/ic-search-24.svg';
 
 interface OrganizationMembersProps {
     members: OrgMember[];
@@ -27,7 +25,6 @@ interface OrganizationMembersProps {
 export const OrganizationMembers = ({ members, setMembers, organization, onRemoveMember }: OrganizationMembersProps) => {
     const client = useClient();
     const [hasSearched, setHasSearched] = React.useState(false);
-    const [searchVisible, setSearchVisible] = React.useState(false);
     const [initialMembers, setInitialMembers] = React.useState<OrgMember[]>([]);
     const [loading, setLoading] = React.useState(true);
     const [membersQuery, setMembersQuery] = React.useState('');
@@ -41,12 +38,6 @@ export const OrganizationMembers = ({ members, setMembers, organization, onRemov
     const bottomReached = React.useContext(ProfileScrollContext);
     const membersQueryRef = React.useRef('');
     const profilesRef = React.useRef<EntityMembersManagerRef>(null);
-
-    React.useEffect(() => {
-        if (bottomReached) {
-            handleLoadMore();
-        }
-    }, [bottomReached]);
 
     const { id, membersCount, isCommunity } = organization;
 
@@ -79,6 +70,25 @@ export const OrganizationMembers = ({ members, setMembers, organization, onRemov
         setHasSearched(true);
     };
 
+    const handleLoadMore = React.useCallback(async () => {
+        if (membersQueryRef.current.length > 0) {
+            if (!membersFetching.loading && membersFetching.hasNextPage) {
+                await loadSearchMembers();
+            }
+            return;
+        }
+
+        if (profilesRef.current) {
+            await profilesRef.current.handleLoadMore();
+        }
+    }, [membersCount, members, loading, membersQuery, membersFetching]);
+
+    React.useEffect(() => {
+        if (bottomReached) {
+            handleLoadMore();
+        }
+    }, [bottomReached]);
+
     let handleSearchChange = React.useCallback(
         debounce(async (val: string) => {
             setMembersQuery(val);
@@ -107,23 +117,6 @@ export const OrganizationMembers = ({ members, setMembers, organization, onRemov
         [initialMembers],
     );
 
-    const handleLoadMore = React.useCallback(async () => {
-        if (membersQueryRef.current.length > 0) {
-            if (!membersFetching.loading && membersFetching.hasNextPage) {
-                await loadSearchMembers();
-            }
-            return;
-        }
-
-        if (profilesRef.current) {
-            await profilesRef.current.handleLoadMore();
-        }
-    }, [membersCount, members, loading, membersQuery, membersFetching]);
-
-    const handleSearchClick = React.useCallback(() => {
-        setSearchVisible(value => !value);
-    }, [setSearchVisible]);
-
     const handleAddMembers = React.useCallback(
         (addedMembers: OrganizationMembers_organization_members[]) => {
             setMembers((current) => [...current, ...addedMembers]);
@@ -149,9 +142,7 @@ export const OrganizationMembers = ({ members, setMembers, organization, onRemov
     return (
             <XView>
                 <React.Suspense fallback={null}>
-                    <UIconButton icon={<SearchIcon />} onClick={handleSearchClick} position="absolute" right={0} top={-40}/>
                     <MembersSearchInput
-                        visible={searchVisible}
                         query={membersQuery}
                         loading={membersFetching.loading > 0}
                         onChange={handleSearchChange}
