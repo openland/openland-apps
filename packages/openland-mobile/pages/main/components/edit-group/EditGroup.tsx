@@ -19,7 +19,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SUPER_ADMIN } from '../../../Init';
 
-const SecretLabel = React.memo(() => {
+const SecretLabel = React.memo((props: { isChannel: boolean }) => {
     const theme = React.useContext(ThemeContext);
     return (
         <View flexDirection="row" alignItems="center" marginLeft={16} marginBottom={16}>
@@ -33,7 +33,7 @@ const SecretLabel = React.memo(() => {
                 allowFontScaling={false}
                 style={{ ...TextStyles.Label2, color: theme.foregroundTertiary }}
             >
-                It’s a secret group
+                It’s a secret {props.isChannel ? 'channel' : 'group'}
             </Text>
         </View>
     );
@@ -111,7 +111,7 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                 <ZListGroup header="Info" headerMarginTop={0}>
                     <ZInput placeholder="Name" field={titleField} />
                     <ZInput field={descriptionField} placeholder="Description" multiline={true} />
-                    {!isShared && <SecretLabel />}
+                    {!isShared && <SecretLabel isChannel={group.isChannel} />}
                 </ZListGroup>
                 <ZListGroup header="Settings" headerMarginTop={0}>
                     {isShared && (
@@ -157,13 +157,15 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                             onPress={() => router.push('EditGroupWelcomeMessage', { id: group.id })}
                         />
                     )}
-                    <ZListItem
-                        leftIcon={require('assets/ic-megaphone-24.png')}
-                        text="Service messages"
-                        small={true}
-                        description={serviceMessageLabel}
-                        onPress={() => router.push('EditGroupServiceMessages', { id: group.id })}
-                    />
+                    {!group.isChannel && (
+                        <ZListItem
+                            leftIcon={require('assets/ic-megaphone-24.png')}
+                            text="Service messages"
+                            small={true}
+                            description={serviceMessageLabel}
+                            onPress={() => router.push('EditGroupServiceMessages', { id: group.id })}
+                        />
+                    )}
                     <ZListItem
                         leftIcon={require('assets/ic-call-24.png')}
                         text="Group calls"
