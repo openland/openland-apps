@@ -31,6 +31,10 @@ const _findName: (opts: { source: string | null, domain: string, url: string, re
         link = link.slice(2, link.length);
     }
 
+    if (link.endsWith('/')) {
+        link = link.slice(0, link.length - 1);
+    }
+
     const matches = link.match(regexp);
 
     if (matches && matches.length === 2) {

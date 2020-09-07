@@ -32,6 +32,7 @@ describe('Social Shortnames Parser', () => {
         expect(f.twitter('https://www.twitter.com/OpenlandHQ')).toEqual({ name: 'OpenlandHQ', url: 'https://twitter.com/OpenlandHQ/' });
         expect(f.twitter('twitter.com/OpenlandHQ')).toEqual({ name: 'OpenlandHQ', url: 'https://twitter.com/OpenlandHQ/' });
         expect(f.twitter('https://twitter.com/OpenlandHQ')).toEqual({ name: 'OpenlandHQ', url: 'https://twitter.com/OpenlandHQ/' });
+        expect(f.twitter('https://twitter.com/OpenlandHQ/')).toEqual({ name: 'OpenlandHQ', url: 'https://twitter.com/OpenlandHQ/' });
         expect(f.twitter('http://twitter.com/OpenlandHQ')).toEqual({ name: 'OpenlandHQ', url: 'https://twitter.com/OpenlandHQ/' });
         expect(f.twitter('//twitter.com/OpenlandHQ')).toEqual({ name: 'OpenlandHQ', url: 'https://twitter.com/OpenlandHQ/' });
         expect(f.twitter('//twitter.com/@OpenlandHQ')).toEqual({ name: 'OpenlandHQ', url: 'https://twitter.com/OpenlandHQ/' });
