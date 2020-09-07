@@ -53,7 +53,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
 
     let price = '';
     if (isPremium && premiumSettings) {
-       price = formatMoneyInterval(premiumSettings.price, premiumSettings.interval);
+        price = formatMoneyInterval(premiumSettings.price, premiumSettings.interval);
     }
 
     const leftColumn = (
@@ -64,7 +64,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                 description={descriptionHero}
                 avatar={{ photo, id, title }}
             >
-                <UButton text="View group" path={'/mail/' + id} shape="square"/>
+                <UButton text="View group" path={'/mail/' + id} shape="square" />
             </UListHeroNew>
             <UNotificationsSwitchNew id={id} mute={!!settings.mute} marginLeft={16} />
             <GroupActions group={group} />
@@ -72,21 +72,23 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     );
 
     const rightColumn = (
-      <>
-          <UListGroup header="About">
-              {!!description && <ShowMoreText text={description} />}
-              <XView flexDirection="row" flexWrap="wrap" marginTop={8}>
-                  {!!shortname && <UListItem title={shortname} icon={<AtIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={`https://openland.com/${shortname}`}/>}
-                  {!!price && <UListItem title={price} icon={<PriceIcon />} useRadius={true} wrapperClassName={listItemWrapper} interactive={false}/>}
-              </XView>
-          </UListGroup>
-          {organization && (
-              <UListGroup header={organization.isCommunity ? 'Community' : 'Organization'}>
-                  <UOrganizationView organization={organization} />
-              </UListGroup>
-          )}
-          <ProfileTabsFragment chatId={roomId} group={group} />
-      </>
+        <>
+            {(shortname || price || description) && (
+                <UListGroup header="About">
+                    {!!description && <ShowMoreText text={description} />}
+                    <XView flexDirection="row" flexWrap="wrap" marginTop={8}>
+                        {!!shortname && <UListItem title={shortname} icon={<AtIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={`https://openland.com/${shortname}`} />}
+                        {!!price && <UListItem title={price} icon={<PriceIcon />} useRadius={true} wrapperClassName={listItemWrapper} interactive={false} />}
+                    </XView>
+                </UListGroup>
+            )}
+            {organization && (
+                <UListGroup header={organization.isCommunity ? 'Community' : 'Organization'}>
+                    <UOrganizationView organization={organization} />
+                </UListGroup>
+            )}
+            <ProfileTabsFragment chatId={roomId} group={group} />
+        </>
     );
 
     return <ProfileLayout leftColumn={leftColumn} rightColumn={rightColumn} title={title} track="group_profile" />;
