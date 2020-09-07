@@ -47,6 +47,7 @@ import { SRouterMountedContext } from 'react-native-s/SRouterContext';
 import { SUPER_ADMIN } from '../Init';
 import { ChatMessagesActionsMethods, ConversationActionsState } from 'openland-y-utils/MessagesActionsState';
 import { useChatMessagesActionsState, useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
+import { matchLinks } from 'openland-y-utils/TextProcessor';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -311,9 +312,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     onCustomCallPress = async () => {
         let customCallLink = this.props.chat?.__typename === 'SharedRoom' && this.props.chat?.callSettings.callLink;
-        if (customCallLink) {
+        let matchedLink = customCallLink && matchLinks(customCallLink)?.[0].url;
+        if (matchedLink) {
             try {
-                await Linking.openURL(customCallLink);
+                await Linking.openURL(matchedLink);
             } catch (e) {
                 /**/
             }

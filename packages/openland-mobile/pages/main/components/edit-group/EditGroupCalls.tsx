@@ -16,9 +16,7 @@ import { withApp } from 'openland-mobile/components/withApp';
 import { CheckListBoxWraper } from '../../modals/UserMultiplePicker';
 import Toast from 'openland-mobile/components/Toast';
 import { RoomCallsMode } from 'openland-api/spacex.types';
-import UrlPattern from 'url-pattern';
-
-let linkPattern = new UrlPattern('http(s)\\://(:subdomain.):domain.:tld(/*)');
+import { matchLinks } from 'openland-y-utils/TextProcessor';
 
 const EditGroupCallsComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
@@ -35,17 +33,18 @@ const EditGroupCallsComponent = React.memo((props: PageProps) => {
         {
             text: 'Enter a valid link',
             checkIsValid: (str) => {
-                return !!linkPattern.match(str);
+                let match = matchLinks(str);
+                return !!match;
             }
         }
     ]);
 
     const handleSave = () => {
+        let callLink = customLinkField.value.trim();
         if (customLinkField.input.invalid) {
             return;
         }
         form.doAction(async () => {
-            let callLink = customLinkField.value.trim();
             try {
                 let variables = {
                     roomId,
