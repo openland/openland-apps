@@ -147,7 +147,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
             builder.action(notificationsTitle, onNotificationsPress, false, notificationsIcon);
         }
 
-        builder.action('Shared media', onSharedPress, false, require('assets/ic-attach-24.png'));
+        builder.action('Media, files, links', onSharedPress, false, require('assets/ic-attach-24.png'));
 
         if (sharedRoom) {
             if ((room as RoomTiny_room_SharedRoom).canEdit) {

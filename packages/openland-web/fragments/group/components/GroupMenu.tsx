@@ -28,7 +28,7 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
     const builder = new UPopperMenuBuilder();
 
     builder.item({
-        title: 'Shared media',
+        title: 'Media, files, links',
         icon: <AttachIcon />,
         onClick: () => tabRouter.router.navigate(`/mail/${props.group.id}/shared`),
     });

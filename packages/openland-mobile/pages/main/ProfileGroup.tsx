@@ -262,7 +262,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     const handleManageClick = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
 
-        builder.action('Shared media', onSharedPress, false, require('assets/ic-attach-24.png'));
+        builder.action('Media, files, links', onSharedPress, false, require('assets/ic-attach-24.png'));
 
         if (group.canEdit) {
             builder.action(
