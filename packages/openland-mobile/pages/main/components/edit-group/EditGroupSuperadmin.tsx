@@ -51,7 +51,7 @@ const EditGroupSuperadminComponent = React.memo((props: PageProps) => {
                     });
                 }
                 if (featuredChanged) {
-                    await client.mutateRoomAlterFeatured({ id: roomId, featured: isFeatured });
+                    await client.mutateRoomAlterFeatured({ id: superGroup.id, featured: isFeatured });
                 }
                 await client.refetchRoomChat({ id: props.router.params.id });
                 Toast.success({ duration: 1000 }).show();

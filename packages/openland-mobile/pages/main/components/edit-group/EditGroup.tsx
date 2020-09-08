@@ -18,6 +18,7 @@ import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SUPER_ADMIN } from '../../../Init';
+import { SRouter } from 'react-native-s/SRouter';
 
 const SecretLabel = React.memo((props: { isChannel: boolean }) => {
     const theme = React.useContext(ThemeContext);
@@ -38,6 +39,23 @@ const SecretLabel = React.memo((props: { isChannel: boolean }) => {
         </View>
     );
 });
+
+const SuperadminListItem = (props: { router: SRouter, id: string, kind: SharedRoomKind }) => {
+    const client = getClient();
+    const superGroup = client.useRoomSuper({ id: props.id }).roomSuper;
+    const superadminLabel = props.kind === SharedRoomKind.PUBLIC && superGroup?.featured
+        ? 'On' : props.kind === SharedRoomKind.GROUP || superGroup?.featured
+            ? 'Custom' : 'Off';
+    return (
+        <ZListItem
+            leftIcon={require('assets/ic-lock-24.png')}
+            text="Superadmin settings"
+            small={true}
+            description={superadminLabel}
+            onPress={() => props.router.push('EditGroupSuperadmin', { id: props.id })}
+        />
+    );
+};
 
 const callSettingsLabels: { [mode in RoomCallsMode]: string } = {
     [RoomCallsMode.STANDARD]: 'Standard',
@@ -71,9 +89,6 @@ const EditGroupComponent = React.memo((props: PageProps) => {
         ? 'On' : group.serviceMessageSettings.joinsMessageEnabled || group.serviceMessageSettings.leavesMessageEnabled
             ? 'Custom' : 'Off';
     const callSettingsLabel = callSettingsLabels[group.callSettings.mode];
-    // const superadminLabel = group.kind === SharedRoomKind.PUBLIC && superGroup?.featured
-    //     ? 'On' : group.kind === SharedRoomKind.GROUP || superGroup?.featured
-    //         ? 'Custom' : 'Off';
 
     const handleSave = () =>
         form.doAction(async () => {
@@ -173,15 +188,11 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                         description={callSettingsLabel}
                         onPress={() => router.push('EditGroupCalls', { id: group.id })}
                     />
-                    {/* {SUPER_ADMIN && (
-                        <ZListItem
-                            leftIcon={require('assets/ic-lock-24.png')}
-                            text="Superadmin settings"
-                            small={true}
-                            description={superadminLabel}
-                            onPress={() => router.push('EditGroupSuperadmin', { id: group.id })}
-                        />
-                    )} */}
+                    {SUPER_ADMIN && (
+                        <React.Suspense fallback={null}>
+                            <SuperadminListItem id={group.id} kind={group.kind} router={router} />
+                        </React.Suspense>
+                    )}
                 </ZListGroup>
             </KeyboardAvoidingScrollView>
         </>
