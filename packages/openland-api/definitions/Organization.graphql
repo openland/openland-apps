@@ -44,6 +44,11 @@ fragment OrganizationFragment on Organization {
     linkedin
     instagram
     membersCount
+    applyLink
+    applyLinkEnabled
+    owner {
+        id
+    }
     private: alphaIsPrivate
     isOwner: betaIsOwner
     isAdmin: betaIsAdmin

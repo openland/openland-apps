@@ -1876,6 +1876,7 @@ type Mutation {
   debugMigrateToNewLastRead: Boolean!
   debugFixReadSeqs: Boolean!
   debugExportUsers: Boolean!
+  debugMigrateUserStatus: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2272,6 +2273,8 @@ type Organization {
   betaIsAdmin: Boolean!
   betaIsPrimary: Boolean!
   owner: User!
+  applyLinkEnabled: Boolean!
+  applyLink: String
 
   """# Refactor?"""
   superAccountId: ID!
@@ -2666,6 +2669,7 @@ type Profile {
   authEmail: String
   badge: ProfileBadge
   birthDay: Date
+  status: String
 
   """Deprecated"""
   alphaLinkedin: String
@@ -2709,6 +2713,7 @@ input ProfileInput {
   facebook: String
   primaryOrganization: ID
   birthDay: Date
+  status: String
 }
 
 type ProfilePrefill {
@@ -3623,6 +3628,7 @@ type User {
   badge: ProfileBadge
   joinDate: Date!
   birthDay: Date
+  status: String
 
   """TODO: Refactor"""
   channelsJoined: [ChannelConversation!]!

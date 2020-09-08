@@ -1288,6 +1288,12 @@ internal val OrganizationFragmentSelector = obj(
             field("linkedin", "linkedin", scalar("String")),
             field("instagram", "instagram", scalar("String")),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("applyLink", "applyLink", scalar("String")),
+            field("applyLinkEnabled", "applyLinkEnabled", notNull(scalar("Boolean"))),
+            field("owner", "owner", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
+                ))),
             field("alphaIsPrivate", "private", notNull(scalar("Boolean"))),
             field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
             field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
