@@ -18,6 +18,9 @@ fragment OrganizationProfileFragment on OrganizationProfile {
     linkedin
     instagram
     shortname
+    applyLink
+    applyLinkEnabled
+    autosubscribeRooms
     isCommunity: alphaIsCommunity
     private: alphaIsPrivate
     featured: alphaFeatured

@@ -1330,6 +1330,9 @@ private let OrganizationProfileFragmentSelector = obj(
             field("linkedin", "linkedin", scalar("String")),
             field("instagram", "instagram", scalar("String")),
             field("shortname", "shortname", scalar("String")),
+            field("applyLink", "applyLink", scalar("String")),
+            field("applyLinkEnabled", "applyLinkEnabled", notNull(scalar("Boolean"))),
+            field("autosubscribeRooms", "autosubscribeRooms", notNull(list(notNull(scalar("ID"))))),
             field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
             field("alphaIsPrivate", "private", notNull(scalar("Boolean"))),
             field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
@@ -5625,7 +5628,7 @@ class Operations {
     let OrganizationProfile = OperationDefinition(
         "OrganizationProfile",
         .query, 
-        "query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename ...OrganizationProfileFragment}}fragment OrganizationProfileFragment on OrganizationProfile{__typename id name photoRef{__typename uuid crop{__typename x y w h}}website websiteTitle about twitter facebook linkedin instagram shortname isCommunity:alphaIsCommunity private:alphaIsPrivate featured:alphaFeatured published:alphaPublished editorial:alphaEditorial membersCanInvite:betaMembersCanInvite}",
+        "query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename ...OrganizationProfileFragment}}fragment OrganizationProfileFragment on OrganizationProfile{__typename id name photoRef{__typename uuid crop{__typename x y w h}}website websiteTitle about twitter facebook linkedin instagram shortname applyLink applyLinkEnabled autosubscribeRooms isCommunity:alphaIsCommunity private:alphaIsPrivate featured:alphaFeatured published:alphaPublished editorial:alphaEditorial membersCanInvite:betaMembersCanInvite}",
         OrganizationProfileSelector
     )
     let OrganizationPublicInvite = OperationDefinition(

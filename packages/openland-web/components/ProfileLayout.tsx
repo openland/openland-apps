@@ -53,7 +53,7 @@ export const ProfileLayout = ({ title, track, leftColumn, rightColumn }: Profile
                             {leftColumn}
                         </XView>
                     </XView>
-                    <XView maxWidth={504}>
+                    <XView maxWidth={compactView ? undefined : 504}>
                         {rightColumn}
                     </XView>
                 </XView>
