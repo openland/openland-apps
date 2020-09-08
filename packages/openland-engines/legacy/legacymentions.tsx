@@ -36,11 +36,11 @@ export const prepareLegacyMentions = (
     for (let mention of intermediateMentions) {
         let mentionText;
         if (mention.__typename === 'User') {
-            mentionText = '@' + mention.name;
+            mentionText = '@' + mention.name.trim();
         } else if (mention.__typename === 'Organization') {
-            mentionText = '@' + mention.name;
+            mentionText = '@' + mention.name.trim();
         } else if (mention.__typename === 'SharedRoom') {
-            mentionText = '@' + mention.title;
+            mentionText = '@' + mention.title.trim();
         } else {
             mentionText = '@All';
         }
