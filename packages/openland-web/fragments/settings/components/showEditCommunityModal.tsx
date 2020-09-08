@@ -135,7 +135,7 @@ const DefaultGroupsModalBody = React.memo((props: DefaultGroupsModalBodyProps) =
         await client.mutateUpdateOrganization({
             organizationId: props.id,
             input: {
-                autosubscribeRooms: !!selectedGroups.size ? Array.from(selectedGroups) : null,
+                autosubscribeRooms: !!selectedGroups.size ? Array.from(selectedGroups) : [],
             },
         });
         await Promise.all([
