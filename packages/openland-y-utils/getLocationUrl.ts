@@ -99,3 +99,13 @@ export function getLocationUrl(location: string) {
 
     return `https://google.com/maps/place/${encodeURI(location)}`;
 }
+
+export function normalizeLocation(location: string) {
+    for (let i = 0; i < diacriticsDictionary.length; i++) {
+        location = location.replace(diacriticsDictionary[i].diacritic, diacriticsDictionary[i].placeholder);
+    }
+
+    location = location.trim().replace(/[^-a-zA-ZА-Яа-я0-9\s]/g, '');
+
+    return encodeURI(location);
+}

@@ -25,6 +25,7 @@ import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 import { useLastSeenShort } from 'openland-y-utils/LastSeen';
 import { ProfileDeleted } from './components/ProfileDeleted';
 import { formatAbsoluteDate, formatBirthDay } from 'openland-mobile/utils/formatDate';
+import { openMapsApp } from 'openland-mobile/utils/openMapsApp';
 
 const ProfileUserComponent = React.memo((props: PageProps) => {
     const client = getClient();
@@ -189,6 +190,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                             leftIcon={require('assets/ic-geo-24.png')}
                             small={true}
                             copy={true}
+                            onPress={() => openMapsApp(user.location)}
                         />
                     )}
                     {!!user.birthDay && (

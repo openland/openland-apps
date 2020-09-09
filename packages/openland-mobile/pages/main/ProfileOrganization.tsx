@@ -11,7 +11,7 @@ import { Modals } from './modals/Modals';
 import { formatError } from 'openland-y-forms/errorHandling';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
-import { View, Platform, Linking } from 'react-native';
+import { View, Platform, Linking, Share } from 'react-native';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { OrganizationMemberRole, OrganizationMembers_organization_members_user } from 'openland-api/spacex.types';
 import { GroupView } from './components/GroupView';
@@ -387,6 +387,10 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
         }
     }, [members, loading]);
 
+    const handleSharePress = React.useCallback(() => {
+        Share.share({ url: `https://openland.com/${organization.shortname || organization.id}` });
+    }, [organization.shortname, organization.id]);
+
     const shouldShowAddButton =
         organization.isMine && (organization.isAdmin || organization.membersCanInvite);
 
@@ -435,7 +439,8 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                         text={organization.shortname}
                         leftIcon={require('assets/ic-at-24.png')}
                         small={true}
-                        copy={true}
+                        onPress={handleSharePress}
+                        onLongPress={handleSharePress}
                     />
                 )}
                 {!!website && (
