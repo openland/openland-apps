@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Linking, Platform } from 'react-native';
 import { normalizeLocation } from 'openland-y-utils/getLocationUrl';
 
