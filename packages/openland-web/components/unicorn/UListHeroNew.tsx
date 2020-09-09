@@ -37,14 +37,13 @@ export const UListHeroNew = (props: UListHeroProps) => {
     const { title, titleIcon, description, descriptionColor, avatar, children } = props;
     const titleEmojify = React.useMemo(() => emoji(title), [title]);
     const { compactView } = React.useContext(ProfileLayoutContext);
-    const isMobile = useLayout() === 'mobile';
 
     return (
         <XView paddingHorizontal={16} flexDirection={compactView ? "row" : "column"}>
             {!!avatar && (
                     <UAvatar
                         {...avatar}
-                        size={isMobile ? 'large' : 'xx-large'}
+                        size="xx-large"
                         marginTop={16}
                         marginRight={16}
                         onClick={
