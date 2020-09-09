@@ -42,7 +42,7 @@ export const SubscriptionView = React.memo((props: SubscriptionConverted) => {
                 title={props.title}
                 photo={props.photo}
             />}
-            <XView marginLeft={16} flexDirection="column">
+            <XView marginLeft={16} flexDirection="column" color="var(--foregroundPrimary)">
                 <span className={TextLabel1}>
                     {props.title}
                 </span>

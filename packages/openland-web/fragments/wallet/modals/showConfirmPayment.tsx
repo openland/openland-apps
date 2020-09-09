@@ -119,7 +119,7 @@ const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController, id: 
                 />
                 {error && (<XView marginTop={8} marginHorizontal={16} color="var(--accentNegative)" {...TextStyles.Caption}>{error}</XView>)}
             </XView>
-            <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} backgroundColor="var(--backgroundTertiary)" justifyContent="flex-end" flexDirection="row">
+            <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} backgroundColor="var(--backgroundTertiaryTrans)" justifyContent="flex-end" flexDirection="row">
                 <UButton text="Cancel" onClick={() => props.ctx.hide()} style="tertiary" size="large" />
                 <UButton text="Continue" style="pay" onClick={onSubmit} size="large" loading={loading} />
             </XView>

@@ -50,7 +50,7 @@ const shortcutRow = css`
 const shortcutTagStyle = css`
     display: inline-block;
     color: var(--foregroundSecondary);
-    background-color: var(--backgroundTertiary);
+    background-color: var(--backgroundTertiaryTrans);
     border-radius: 8px;
     margin-right: 8px;
     padding: 2px 8px;

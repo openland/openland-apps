@@ -113,19 +113,19 @@ const secondaryStyle = css`
 
 const secondaryHoverStyle = css`
     &:hover {
-        background-color: #ebedf0;
+        background-color: var(--backgroundTertiaryHoverTrans);
     }
 `;
 
 const secondaryActiveStyle = css`
     &:active {
-        background-color: #e6e7eb;
+        background-color: var(--backgroundTertiaryActiveTrans);
     }
 `;
 
 const secondaryFocusStyle = css`
     &:focus {
-        background-color: #e6e7eb;
+        background-color: var(--backgroundTertiaryActiveTrans);
     }
 `;
 

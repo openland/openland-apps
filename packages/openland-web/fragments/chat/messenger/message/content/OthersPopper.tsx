@@ -37,7 +37,7 @@ export const OthersPopper = React.memo((props: OthersPopperProps) => {
             {usersRef.current.map((user, index) => (
                 <XView
                     key={`user-${user.name}-${index}`}
-                    hoverBackgroundColor="var(--backgroundPrimaryHover)"
+                    hoverBackgroundColor="var(--backgroundTertiaryHoverTrans)"
                     cursor="pointer"
                     path={`/${user.shortname || user.id}`}
                     onClick={() => ctx.hide()}

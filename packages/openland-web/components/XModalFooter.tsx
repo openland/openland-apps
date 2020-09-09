@@ -5,7 +5,7 @@ export const XModalFooter = React.memo<{ children?: any } & XViewProps>(props =>
     return (
         <XView
             height={72}
-            backgroundColor="var(--backgroundTertiary)"
+            backgroundColor="var(--backgroundTertiaryTrans)"
             flexDirection="row"
             justifyContent="flex-end"
             alignItems="center"

@@ -138,7 +138,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                     alignItems="center"
                     justifyContent="center"
                 >
-                    <UIcon icon={icon} color={iconColor || 'var(--foregroundContrast)'} />
+                    <UIcon icon={icon} color={iconColor || 'var(--foregroundInverted)'} />
                 </XView>
             )}
             {!!avatar && !icon && (
@@ -238,8 +238,8 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 paddingHorizontal={paddingHorizontal}
                 alignItems="center"
                 flexDirection="row"
-                backgroundColor={hovered && !selected ? 'var(--backgroundPrimaryHover)' : undefined}
-                hoverBackgroundColor={props.disableHover ? undefined : 'var(--backgroundPrimaryHover)'}
+                backgroundColor={hovered && !selected ? 'var(--backgroundTertiaryHoverTrans)' : undefined}
+                hoverBackgroundColor={props.disableHover ? undefined : 'var(--backgroundTertiaryHoverTrans)'}
                 hoverTextDecoration="none"
                 selectedBackgroundColor="var(--accentMuted)"
                 selectedHoverBackgroundColor="var(--accentMutedHover) !important"

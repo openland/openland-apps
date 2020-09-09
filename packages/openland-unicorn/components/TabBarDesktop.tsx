@@ -16,17 +16,17 @@ const selectorStyle = css`
     left: 0px;
     height: 48px;
     width: 3px;
-    background-color: #1885f2;
+    background-color: var(--backgroundTertiary);
     border-radius: 0px 100px 100px 0px;
     transition: transform 150ms cubic-bezier(0, 0, 0.2, 1);
     will-change: transform;
 `;
 
 export const counterStyle = css`
-    background-color: #F23051;
+    background-color: var(--accentNegative);
     position: absolute;
     top: 8px;
-    border: 2px solid #f2f3f5;
+    border: 2px solid var(--backgroundTertiary);
     right: 15px;
     height: 20px;
     min-width: 20px;

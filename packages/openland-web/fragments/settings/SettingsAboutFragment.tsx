@@ -14,8 +14,8 @@ import { VERSION } from 'openland-web/version';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 
 const hero = css`
-    background-color: #F2F3F5;
-    background-image: linear-gradient(180deg, rgba(242, 243, 245, 0.56) 0%, #F2F3F5 100%);
+    background-color: var(--backgroundTertiary);
+    background-image: linear-gradient(180deg, var(--backgroundTertiaryTrans) 0%, var(--backgroundTertiary) 100%);
     border-radius: 8px;
     padding: 16px;
 `;
@@ -31,15 +31,14 @@ const menuItem = css`
     display: flex;
     align-items: center;
     border-radius: 8px;
-
+    color: var(--foregroundPrimary);
     cursor: pointer;
-    color: inherit;
 
     &:hover,
     &:focus {
         background-color: var(--backgroundTertiary);
         text-decoration: none;
-        color: inherit;
+        color: var(--foregroundPrimary);
     }
 
     & path {
@@ -86,7 +85,7 @@ export const SettingsAboutFragment = React.memo(() => {
                 <div className={hero}>
                     <XView flexDirection="row">
                         <Logo className={logo} />
-                        <XView marginLeft={16} flexDirection="column" justifyContent="center">
+                        <XView marginLeft={16} flexDirection="column" justifyContent="center" color="var(--foregroundPrimary)">
                             <h2 className={TextTitle3}>Openland</h2>
                             <XView marginTop={4} color="var(--foregroundSecondary)">
                                 <p className={TextBody}>

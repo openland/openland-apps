@@ -96,6 +96,8 @@ body {
 }
 
 body.interactive {
+    --transparent: rgba(0, 0, 0, 0);
+
     --foregroundPrimary: #FFFFFF;
     --foregroundSecondary: #898B8F;
     --foregroundTertiary: #5E6166;

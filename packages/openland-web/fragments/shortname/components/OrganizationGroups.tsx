@@ -49,7 +49,7 @@ export const OrganizationGroups = React.memo((props: { id: string; roomsCount: n
                     title={groupsOpenedCount < 2 ? 'Show more' : 'Show all'}
                     icon={<MoreHIcon />}
                     iconColor="var(--foregroundSecondary)"
-                    iconBackground="var(--backgroundTertiary)"
+                    iconBackground="var(--backgroundTertiaryTrans)"
                     useRadius={true}
                     onClick={handleLoadMoreGroups}
                 />

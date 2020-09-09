@@ -42,7 +42,7 @@ const contentContainer = css`
         z-index: 1;
     }
     & .avatar-container:hover {
-        background-color: var(--backgroundTertiaryHover);
+        background-color: var(--backgroundTertiaryHoverTrans);
     }
 `;
 
@@ -105,7 +105,7 @@ const avatarContainer = css`
     align-items: stretch;
     justify-content: center;
     flex-direction: column;
-    background-color: var(--backgroundTertiary);
+    background-color: var(--backgroundTertiaryTrans);
 `;
 
 const hasImageAvatarContainer = css`
@@ -249,7 +249,7 @@ const AvatarRender = (props: AvatarRenderProps) => {
             </div>
             {hasImage && props.hideImageIndicator !== true && (
                 <div className={hasImageIndicator}>
-                    <UIcon icon={<IcPhotoIndicator />} color="#fff" />
+                    <UIcon icon={<IcPhotoIndicator />} color="var(--foregroundInverted)" />
                 </div>
             )}
             {hasImage && props.clearable && (
@@ -331,11 +331,11 @@ export const fromValue = (value2?: StoredFileT | null): UploadedFile | null => {
         let size = value2.size;
         let crop = value2.crop
             ? {
-                  left: Math.round(value2.crop.x),
-                  top: Math.round(value2.crop.y),
-                  width: Math.round(value2.crop.w),
-                  height: Math.round(value2.crop.h),
-              }
+                left: Math.round(value2.crop.x),
+                top: Math.round(value2.crop.y),
+                width: Math.round(value2.crop.w),
+                height: Math.round(value2.crop.h),
+            }
             : null;
 
         return {

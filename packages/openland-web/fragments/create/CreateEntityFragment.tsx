@@ -40,7 +40,7 @@ const rootHeader = css`
     align-items: center;
     height: 72px;
     padding: 10px;
-    background-color: var(--backgroundPrimary);
+    background-color: var(--backgroundSecondary);
     z-index: 2;
 `;
 
@@ -70,7 +70,7 @@ const gradient = css`
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+    background: linear-gradient(180deg, var(--transparent) 0%, var(--backgroundSecondary) 100%);
     pointer-events: none;
 `;
 
@@ -437,7 +437,7 @@ export const GroupPriceSettings = React.memo((props: GroupPriceSettingsProps) =>
                         className={cx(
                             otherInputContainer,
                             distributionField.value === DistributionType.SUBSCRIPTION &&
-                                multiInputsContainer,
+                            multiInputsContainer,
                         )}
                     >
                         <UInputField

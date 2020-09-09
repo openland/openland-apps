@@ -16,11 +16,12 @@ const boxStyle = css`
     position: absolute;
     display: flex;
     flex-direction: column;
-    background-color: var(--backgroundPrimary);
+    background-color: var(--backgroundSecondary);
     border-radius: 8px;
-    box-shadow: 0 3px 14px 4px #82777747;
+    box-shadow: 0 3px 14px 4px var(--overlayLight);
     max-height: 95%;
     max-width: calc(100vw - 20px);
+    color: var(--foregroundPrimary);
 `;
 
 const boxOverflow = css`
@@ -62,7 +63,7 @@ const overlayStyle = css`
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: var(--overlayLight);
 `;
 
 const darkOverlayStyle = css`
@@ -88,7 +89,7 @@ const titleStyle = css`
 
 const Loader = (
     <XView height="100px" alignItems="center" justifyContent="center">
-        <XLoader loading={true} />
+        <XLoader loading={true} transparentBackground={true} />
     </XView>
 );
 
@@ -257,7 +258,7 @@ const ModalBoxComponent = React.memo<{
                                 width={36}
                                 height={36}
                                 borderRadius={50}
-                                hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+                                hoverBackgroundColor="var(--backgroundTertiaryTrans)"
                             >
                                 <UIcon icon={<IcClose />} />
                             </XView>

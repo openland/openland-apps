@@ -484,7 +484,7 @@ const entityItemContainer = css`
     padding: 10px 16px;
     height: 64px;
     border-radius: 8px;
-    background: linear-gradient(180deg, rgba(242, 243, 245, 0.56) 0%, #f2f3f5 100%);
+    background: linear-gradient(180deg, var(--backgroundTertiaryTrans) 0%, var(--backgroundTertiary) 100%);
 `;
 
 const ellipsesText = css`
