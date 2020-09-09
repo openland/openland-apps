@@ -3,7 +3,6 @@ import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { UAvatar } from './UAvatar';
 import { TextStyles } from 'openland-web/utils/TextStyles';
-import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { showAvatarModal } from '../showAvatarModal';
 import { emoji } from 'openland-y-utils/emoji';
 import { ProfileLayoutContext } from 'openland-web/components/ProfileLayout';
