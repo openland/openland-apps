@@ -16,7 +16,7 @@ import { showAddMembersModal } from 'openland-web/fragments/chat/showAddMembersM
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
 import { RoomChat_room_SharedRoom, RoomMemberRole } from 'openland-api/spacex.types';
-import { ProfileScrollContext } from 'openland-web/components/ProfileLayout';
+import { ProfileLayoutContext } from 'openland-web/components/ProfileLayout';
 import { XLoader } from 'openland-x/XLoader';
 
 import { GroupMemberMenu } from './GroupMemberMenu';
@@ -27,7 +27,7 @@ interface GroupMembersProps {
 
 export const GroupMembers = ({ group }: GroupMembersProps) => {
     const onlines = React.useContext(MessengerContext).getOnlines();
-    const bottomReached = React.useContext(ProfileScrollContext);
+    const { bottomReached } = React.useContext(ProfileLayoutContext);
     const client = useClient();
 
     const profilesRef = React.useRef<EntityMembersManagerRef>(null);

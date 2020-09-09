@@ -75,7 +75,7 @@ const ImgContianerClass = css`
 `;
 
 const ImgClass = css`
-    object-fit: contain;
+    object-fit: cover;
 `;
 
 const TextInner = css`

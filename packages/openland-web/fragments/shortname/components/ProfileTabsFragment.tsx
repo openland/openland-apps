@@ -5,7 +5,7 @@ import { useClient } from 'openland-api/useClient';
 import { RoomChat_room_SharedRoom, SharedMediaType } from 'openland-api/spacex.types';
 import { useTabs, Tabs } from 'openland-web/components/unicorn/UTabs';
 import { SharedMedia } from 'openland-web/fragments/chat/sharedMedia/SharedMediaFragment';
-import { ProfileScrollContext } from 'openland-web/components/ProfileLayout';
+import { ProfileLayoutContext } from 'openland-web/components/ProfileLayout';
 import { GroupMembers } from 'openland-web/fragments/group/components/GroupMembers';
 
 interface Paginated {
@@ -19,7 +19,7 @@ interface ProfileSharedMediaProps {
 
 export const ProfileTabsFragment = React.memo(({ chatId, group }: ProfileSharedMediaProps) => {
     const client = useClient();
-    const bottomReached = React.useContext(ProfileScrollContext);
+    const { bottomReached } = React.useContext(ProfileLayoutContext);
     const counters = client.useSharedMediaCounters({ chatId }, { suspense: false });
 
     const tabs: [string, (number | null)][] = [

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import copy from 'copy-to-clipboard';
+import { XView } from 'react-mental';
 
 import { Organization_organization } from 'openland-api/spacex.types';
 import { showEditCommunityModal } from 'openland-web/fragments/settings/components/showEditCommunityModal';
@@ -12,11 +13,14 @@ import { useToast } from 'openland-web/components/unicorn/UToast';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
+import { ProfileLayoutContext } from 'openland-web/components/ProfileLayout';
 
 import EditIcon from 'openland-icons/s/ic-edit-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
-import CopyIcon from 'openland-icons/s/ic-copy-24.svg';
+import CopyIcon from 'openland-icons/s/ic-link-24.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
+
+import { OrganizationMenu } from './OrganizationMenu';
 
 interface OrganizationMenuProps {
     organization: Organization_organization;
@@ -49,13 +53,18 @@ export const showLeaveConfirmation = (organization: Organization_organization, m
     builder.show();
 };
 
-export const OrganizationActions = React.memo((props: OrganizationMenuProps) => {
+export const OrganizationActions = React.memo(({ organization, onLeave }: OrganizationMenuProps) => {
+    const { compactView } = React.useContext(ProfileLayoutContext);
+
+    if (compactView) {
+        return <OrganizationMenu organization={organization} onLeave={onLeave} />;
+    }
+
     const router = useStackRouter();
     const toastHandlers = useToast();
 
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
-    const { organization, onLeave } = props;
     const { id, name, isCommunity, isOwner, isAdmin, isMine, shortname } = organization;
 
     const typeString = isCommunity ? 'community' : 'organization';
@@ -91,7 +100,7 @@ export const OrganizationActions = React.memo((props: OrganizationMenuProps) => 
     }, [name]);
 
     return (
-        <>
+        <XView marginTop={16} marginHorizontal={-16}>
             <UListItem title="Copy link" useRadius={true} icon={<CopyIcon />} onClick={onCopyLinkClick}/>
 
             {(isOwner || isAdmin) && (
@@ -107,6 +116,6 @@ export const OrganizationActions = React.memo((props: OrganizationMenuProps) => 
             {(isOwner || isAdmin) && (
                 <UListItem title={`Delete ${typeString}`} useRadius={true} icon={<DeleteIcon />}  onClick={onDeleteClick}/>
             )}
-        </>
+        </XView>
     );
 });

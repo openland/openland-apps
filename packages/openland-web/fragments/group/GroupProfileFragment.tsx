@@ -14,7 +14,6 @@ import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { NotFound } from 'openland-unicorn/NotFound';
 import { UListHeroNew } from 'openland-web/components/unicorn/UListHeroNew';
 import { ProfileLayout } from 'openland-web/components/ProfileLayout';
-import { UNotificationsSwitchNew } from 'openland-web/components/unicorn/templates/UNotificationsSwitchNew';
 import { ShowMoreText } from 'openland-web/fragments/shortname/components/ShowMoreText';
 import { ProfileTabsFragment } from 'openland-web/fragments/shortname/components/ProfileTabsFragment';
 
@@ -43,7 +42,6 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         title,
         description,
         organization,
-        settings,
         isPremium,
         shortname,
         premiumSettings,
@@ -57,18 +55,15 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     }
 
     const leftColumn = (
-        <>
             <UListHeroNew
                 title={title}
                 titleIcon={isPremium ? <PremiumBadge /> : undefined}
                 description={descriptionHero}
                 avatar={{ photo, id, title }}
             >
-                <UButton text="View group" path={'/mail/' + id} shape="square" />
+                <UButton text="View group" path={`/mail/${id}`} size="large" shape="square" marginRight={16}/>
+                <GroupActions group={group} />
             </UListHeroNew>
-            <UNotificationsSwitchNew id={id} mute={!!settings.mute} marginLeft={16} />
-            <GroupActions group={group} />
-        </>
     );
 
     const rightColumn = (

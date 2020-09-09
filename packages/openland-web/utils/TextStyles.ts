@@ -16,7 +16,7 @@ type TextStylesVariants = 'Title1' | 'Title2' | 'Title3' | 'Label1' | 'Label2' |
 
 export const TextStyles: { [key in TextStylesVariants]: XViewProps } = {
     Title1: { fontSize: 24, lineHeight: '32px', fontWeight: '700' },
-    Title2: { fontSize: 17, lineHeight: '24px', fontWeight: '700' },
+    Title2: { fontSize: 20, lineHeight: '28px', fontWeight: '700' },
     Title3: { fontSize: 17, lineHeight: '24px', fontWeight: '700' },
     Label1: { fontSize: 15, lineHeight: '24px', fontWeight: '600' },
     Label2: { fontSize: 13, lineHeight: '18px', fontWeight: '600' },

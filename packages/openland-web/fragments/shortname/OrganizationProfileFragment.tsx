@@ -56,7 +56,8 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
         instagram,
         isMine,
         roomsCount,
-        membersCount
+        membersCount,
+        owner,
     } = organization;
 
     const [members, setMembers] = React.useState<OrgMember[]>([]);
@@ -81,9 +82,9 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 description={isCommunity ? 'Community' : 'Organization'}
                 avatar={{ photo, id, title: name }}
             >
-                <UButton text="Message Admin" />
+                <UButton text="Message Admin" size="large" path={'/mail/' + owner.id} marginRight={16}/>
+                <OrganizationActions organization={organization} onLeave={handleRemoveMember} />
             </UListHeroNew>
-            <OrganizationActions organization={organization} onLeave={handleRemoveMember} />
         </>
     );
 

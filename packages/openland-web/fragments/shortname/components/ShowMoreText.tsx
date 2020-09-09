@@ -8,6 +8,12 @@ interface ShowMoreProps {
 
 const showMoreLink = css`
     color: var(--accentPrimary);
+    font-weight: 600;
+    
+    &:hover {
+        opacity: 0.64;
+        cursor: pointer;
+    }
 `;
 
 export const ShowMoreText = React.memo<ShowMoreProps>(({ text }) => {

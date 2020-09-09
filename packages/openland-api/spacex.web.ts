@@ -1289,6 +1289,10 @@ const OrganizationFragmentSelector = obj(
             field('linkedin', 'linkedin', args(), scalar('String')),
             field('instagram', 'instagram', args(), scalar('String')),
             field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
+            field('owner', 'owner', args(), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID')))
+                ))),
             field('alphaIsPrivate', 'private', args(), notNull(scalar('Boolean'))),
             field('betaIsOwner', 'isOwner', args(), notNull(scalar('Boolean'))),
             field('betaIsAdmin', 'isAdmin', args(), notNull(scalar('Boolean'))),
@@ -5598,7 +5602,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     Organization: {
         kind: 'query',
         name: 'Organization',
-        body: 'query Organization($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationFragment}}fragment OrganizationFragment on Organization{__typename id isMine isDeleted superAccountId name photo shortname website websiteTitle about twitter facebook linkedin instagram membersCount private:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity roomsCount:betaPublicRoomsCount membersCanInvite:betaMembersCanInvite}',
+        body: 'query Organization($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationFragment}}fragment OrganizationFragment on Organization{__typename id isMine isDeleted superAccountId name photo shortname website websiteTitle about twitter facebook linkedin instagram membersCount owner{__typename id}private:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity roomsCount:betaPublicRoomsCount membersCanInvite:betaMembersCanInvite}',
         selector: OrganizationSelector
     },
     OrganizationMembers: {
@@ -5616,7 +5620,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     OrganizationMembersShort: {
         kind: 'query',
         name: 'OrganizationMembersShort',
-        body: 'query OrganizationMembersShort($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationFragment members:alphaOrganizationMembers{__typename user{__typename id}}}}fragment OrganizationFragment on Organization{__typename id isMine isDeleted superAccountId name photo shortname website websiteTitle about twitter facebook linkedin instagram membersCount private:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity roomsCount:betaPublicRoomsCount membersCanInvite:betaMembersCanInvite}',
+        body: 'query OrganizationMembersShort($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationFragment members:alphaOrganizationMembers{__typename user{__typename id}}}}fragment OrganizationFragment on Organization{__typename id isMine isDeleted superAccountId name photo shortname website websiteTitle about twitter facebook linkedin instagram membersCount owner{__typename id}private:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity roomsCount:betaPublicRoomsCount membersCanInvite:betaMembersCanInvite}',
         selector: OrganizationMembersShortSelector
     },
     OrganizationPico: {

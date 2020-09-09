@@ -11,7 +11,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { debounce } from 'openland-y-utils/timer';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
-import { ProfileScrollContext } from 'openland-web/components/ProfileLayout';
+import { ProfileLayoutContext } from 'openland-web/components/ProfileLayout';
 import { Organization_organization, OrganizationMemberRole, OrganizationMembers_organization_members } from 'openland-api/spacex.types';
 import { EntityMembersManager, EntityMembersManagerRef, OrgMember } from 'openland-y-utils/members/EntityMembersManager';
 
@@ -35,7 +35,7 @@ export const OrganizationMembers = ({ members, setMembers, organization, onRemov
         cursor: '',
     });
 
-    const bottomReached = React.useContext(ProfileScrollContext);
+    const { bottomReached } = React.useContext(ProfileLayoutContext);
     const membersQueryRef = React.useRef('');
     const profilesRef = React.useRef<EntityMembersManagerRef>(null);
 

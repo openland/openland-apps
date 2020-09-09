@@ -15,11 +15,12 @@ interface ProfileLayoutProps {
 const COMPACT_VIEW_WIDTH = 1280;
 const LOAD_MORE_THRESHOLD = 200;
 
-export const ProfileScrollContext = React.createContext(false);
+export const ProfileLayoutContext = React.createContext({ bottomReached: false, compactView: false });
 
 export const ProfileLayout = ({ title, track, leftColumn, rightColumn }: ProfileLayoutProps) => {
     const [compactView, setCompactView] = React.useState(window.innerWidth <= COMPACT_VIEW_WIDTH);
     const [bottomReached, setBottomReached] = React.useState(false);
+
     React.useEffect(() => {
         let prev = window.innerWidth <= COMPACT_VIEW_WIDTH;
         const handleResize = () => {
@@ -44,20 +45,26 @@ export const ProfileLayout = ({ title, track, leftColumn, rightColumn }: Profile
     }, [bottomReached]);
 
     return (
-        <Page appearance={compactView ? "normal" : "wide" } padded={true} track={track} onScroll={onScroll}>
+        <Page appearance={compactView ? 'normal' : 'wide' } padded={true} track={track} onScroll={onScroll}>
             <UHeader documentTitle={title}/>
-            <ProfileScrollContext.Provider value={bottomReached}>
-                <XView flexDirection={compactView ? "column" : "row"}>
-                    <XView width={272} marginRight={16}>
-                        <XView position={compactView ? null : "fixed"} width={272}>
-                            {leftColumn}
+            <ProfileLayoutContext.Provider value={{ bottomReached, compactView }}>
+                <XView alignItems="center" marginLeft={24}>
+                    <XView flexDirection={compactView ? 'column' : 'row'}>
+                        <XView width={compactView ? 488 : 272} marginRight={16}>
+                            <XView
+                                position={compactView ? null : 'fixed'}
+                                flexDirection={compactView ? 'row' : 'column'}
+                                width={272}
+                            >
+                                {leftColumn}
+                            </XView>
+                        </XView>
+                        <XView maxWidth={504}>
+                            {rightColumn}
                         </XView>
                     </XView>
-                    <XView maxWidth={504}>
-                        {rightColumn}
-                    </XView>
                 </XView>
-            </ProfileScrollContext.Provider>
+            </ProfileLayoutContext.Provider>
         </Page>
     );
 };
