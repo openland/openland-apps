@@ -58,6 +58,7 @@ export interface ZButtonProps {
     onActionSuccess?: () => void;
     onActionError?: (e: Error) => void;
     path?: string;
+    pathParams?: any;
     size?: ZButtonSize;
     style?: ZButtonStyle;
     enabled?: boolean;
@@ -77,7 +78,7 @@ const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) 
             props.onPress();
         }
         if (props.path) {
-            props.router.push(props.path);
+            props.router.push(props.path, props.pathParams);
         }
 
         if (props.action) {
@@ -103,7 +104,7 @@ const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) 
                 props.actionFinally();
             }
         }
-    }, [props.onPress, props.path, props.action, props.onActionSuccess, props.onActionError, props.actionFinally]);
+    }, [props.onPress, props.path, props.pathParams, props.action, props.onActionSuccess, props.onActionError, props.actionFinally]);
 
     const size: ZButtonSize = props.size || 'default';
     const style: ZButtonStyle = props.style || 'primary';
