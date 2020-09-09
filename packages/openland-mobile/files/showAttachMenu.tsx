@@ -32,7 +32,7 @@ export const showAttachMenu = (fileCallback?: (type: 'document' | 'photo' | 'vid
         builder.action('Record video', async () => {
             if (await checkPermissions('camera')) {
                 Picker.openCamera({
-                    mediaType: Platform.select({ ios: 'any', android: 'photo' }),
+                    mediaType: 'video',
                 }).then(response => {
                     if (fileCallback) {
                         fileCallback('video', 'video.mp4', response.path, response.size);
