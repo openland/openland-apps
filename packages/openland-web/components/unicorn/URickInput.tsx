@@ -31,6 +31,7 @@ const quillStyle = css`
     border-radius: 8px;
     -webkit-overflow-scrolling: touch;
     position: relative;
+    color: var(--foregroundPrimary);
 
     .ql-container {
         border-radius: 8px;

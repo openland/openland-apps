@@ -58,10 +58,12 @@ const shortcutTagStyle = css`
 
 const shortcutDescriptionStyle = css`
     margin-left: 4px;
+    color: var(--foregroundPrimary);
 `;
 
 const shortcutTitle = css`
     margin-bottom: 16px;
+    color: var(--foregroundPrimary);
 `;
 
 const Shortcut = ({ shortcuts, description }: { shortcuts: string[]; description?: string }) => (

@@ -29,6 +29,12 @@ export const AppContainer = (props: { children: any }) => {
         ]);
     }
 
+    React.useEffect(() => {
+        if (localStorage.getItem('interactive_app_theme') === 'true') {
+            document.body.classList.add('interactive');
+        }
+    }, []);
+
     if (!data) {
         return <UnicornSplash />;
     }

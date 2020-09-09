@@ -84,7 +84,7 @@ const size40 = css`
 `;
 
 const primaryStyle = css`
-    color: #fff;
+    color: var(--foregroundInverted);
     background-color: var(--accentPrimary);
 `;
 

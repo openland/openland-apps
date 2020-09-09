@@ -45,6 +45,7 @@ const sectionTitleStyle = css`
     height: 48px;
     padding: 12px 0;
     flex-shrink: 0;
+    color: var(--foregroundPrimary);
 `;
 
 const SectionTitle = (props: { title: string }) => (

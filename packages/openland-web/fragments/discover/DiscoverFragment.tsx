@@ -47,7 +47,7 @@ export const DiscoverFragment = React.memo(() => {
     }, []);
 
     return (
-        <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
+        <XView width="100%" height="100%" flexDirection="column" alignItems="stretch" backgroundColor="var(--backgroundPrimary)">
             <USideHeader title="Discover" />
             <USearchInput
                 value={query}

@@ -16,7 +16,7 @@ const boxStyle = css`
     position: absolute;
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background-color: var(--backgroundPrimary);
     border-radius: 8px;
     box-shadow: 0 3px 14px 4px #82777747;
     max-height: 95%;
@@ -270,6 +270,7 @@ const ModalBoxComponent = React.memo<{
                                 paddingRight={14}
                                 flexDirection="row"
                                 alignItems="center"
+                                color="var(--foregroundPrimary)"
                                 {...TextStyles.Title1}
                             >
                                 <div className={cx(props.config.titleTruncation && titleStyle)}>

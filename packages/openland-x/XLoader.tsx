@@ -52,7 +52,7 @@ const minHeightLarge = css`
 `;
 
 const backgroundColor = css`
-    background-color: #fff;
+    background-color: var(--backgroundPrimary);
 `;
 
 interface LoaderRenderProps {

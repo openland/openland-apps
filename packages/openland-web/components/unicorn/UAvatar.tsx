@@ -268,7 +268,7 @@ export const UAvatar = React.memo((props: UAvatarProps) => {
     const boxSize = AvatarSizes[size].size;
 
     const dotBorder = selected ? 'var(--accentMuted)' : 'var(--backgroundPrimary)';
-    const dotBackground = selected ? 'var(--foregroundContrast)' : 'var(--accentPrimary)';
+    const dotBackground = selected ? 'var(--foregroundInverted)' : 'var(--accentPrimary)';
 
     return (
         <XView height={boxSize} width={boxSize} cursor={props.onClick || props.path ? 'pointer' : undefined} {...other}>

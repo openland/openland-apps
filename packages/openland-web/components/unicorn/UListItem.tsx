@@ -154,7 +154,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                     <SelectableText
                         {...titleFont}
                         color="var(--foregroundPrimary)"
-                        selectedColor="var(--foregroundContrast)"
+                        selectedColor="var(--foregroundInverted)"
                     >
                         {titleStyle ? <XView {...titleStyle}>{titleEmojify}</XView> : titleEmojify}
                     </SelectableText>
@@ -163,7 +163,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                         <SelectableText
                             {...subtitleFont}
                             color="var(--foregroundSecondary)"
-                            selectedColor="var(--foregroundContrast)"
+                            selectedColor="var(--foregroundInverted)"
                             marginLeft={8}
                         >
                             {subtitleEmojify}
@@ -175,7 +175,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                     <SelectableText
                         {...descriptionFont}
                         color={descriptionColor ? descriptionColor : 'var(--foregroundSecondary)'}
-                        selectedColor="var(--foregroundContrast)"
+                        selectedColor="var(--foregroundInverted)"
                         textOverflow="ellipsis"
                         height={descriptionFont.lineHeight}
                         white-space="nowrap"
@@ -190,7 +190,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 <SelectableText
                     {...textRightFont}
                     color="var(--tintGrey)"
-                    selectedColor="var(--foregroundContrast)"
+                    selectedColor="var(--foregroundInverted)"
                 >
                     {textRight}
                 </SelectableText>
@@ -243,7 +243,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 hoverTextDecoration="none"
                 selectedBackgroundColor="var(--accentMuted)"
                 selectedHoverBackgroundColor="var(--accentMutedHover) !important"
-                selectedColor="var(--foregroundContrast)"
+                selectedColor="var(--foregroundInverted)"
                 cursor="pointer"
                 borderRadius={useRadius ? 8 : 0}
                 onClick={onClick}

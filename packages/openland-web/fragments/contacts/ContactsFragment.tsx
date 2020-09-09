@@ -257,7 +257,7 @@ export const ContactsFragment = React.memo(() => {
     ) : noContactsContent;
 
     return (
-        <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
+        <XView width="100%" height="100%" flexDirection="column" alignItems="stretch" backgroundColor="var(--backgroundPrimary)">
             {content}
         </XView>
     );

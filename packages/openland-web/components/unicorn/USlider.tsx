@@ -200,6 +200,7 @@ const USliderRaw = React.memo((props: USliderProps) => {
                             flexDirection="row"
                             alignItems="center"
                             cursor={props.path ? 'pointer' : undefined}
+                            color="var(--foregroundPrimary)"
                         >
                             <h2 className={TextTitle3}>{props.title}</h2>
                             {props.path && (

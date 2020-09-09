@@ -18,7 +18,7 @@ const typingWrapper = css`
     width: 100%;
     flex-direction: column;
     flex-shrink: 0;
-    background-color: #fff;
+    background-color: var(--backgroundPrimary);
     position: absolute;
     bottom: 0;
     left: 0;

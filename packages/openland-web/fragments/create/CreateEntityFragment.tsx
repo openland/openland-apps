@@ -40,7 +40,7 @@ const rootHeader = css`
     align-items: center;
     height: 72px;
     padding: 10px;
-    background-color: var(--foregroundContrast);
+    background-color: var(--backgroundPrimary);
     z-index: 2;
 `;
 
