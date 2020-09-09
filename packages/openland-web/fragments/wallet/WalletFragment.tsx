@@ -52,7 +52,7 @@ export const WalletFragment = React.memo(() => {
             <div className={cx('x', balanceWrapper)}>
                 <XView flexDirection="column">
                     <XView
-                        {...TextStyles.Title2}
+                        {...TextStyles.Title3}
                         color={'var(--foregroundPrimary)'}
                     >
                         <Money amount={balance} />
