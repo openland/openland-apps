@@ -17,7 +17,6 @@ import { SettingsOrganizations } from './pages/main/beta/SettingsOrganizations';
 import { SRoutesBuilder } from 'react-native-s/SRoutes';
 import { NewOrganization } from './pages/main/NewOrganization';
 import { EditOrganization } from './pages/main/EditOrganization';
-import { EditCommunity } from './pages/main/EditCommunity';
 import { SignupUser } from './pages/auth/SignupUser';
 import { Waitlist } from './pages/auth/Waitlist';
 import { Compose } from './pages/main/Compose';
@@ -78,6 +77,10 @@ import { UserMutualGroups } from './pages/main/UserMutualGroups';
 import { EditGroupServiceMessages } from './pages/main/components/edit-group/EditGroupServiceMessages';
 import { EditGroupCalls } from './pages/main/components/edit-group/EditGroupCalls';
 import { EditGroupSuperadmin } from './pages/main/components/edit-group/EditGroupSuperadmin';
+import { EditCommunity } from './pages/main/components/edit-community/EditCommunity';
+import { EditCommunitySocialImage } from './pages/main/components/edit-community/EditCommunitySocialImage';
+import { EditCommunityDefaultGroups } from './pages/main/components/edit-community/EditCommunityDefaultGroups';
+import { EditCommunityApplyLink } from './pages/main/components/edit-community/EditCommunityApplyLink';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -106,6 +109,9 @@ export const Routes = new SRoutesBuilder()
   .addRoute('SettingsCommunities', SettingsCommunities)
   .addRoute('NewOrganization', NewOrganization)
   .addRoute('EditCommunity', EditCommunity)
+  .addRoute('EditCommunitySocialImage', EditCommunitySocialImage)
+  .addRoute('EditCommunityDefaultGroups', EditCommunityDefaultGroups)
+  .addRoute('EditCommunityApplyLink', EditCommunityApplyLink)
   .addRoute('EditOrganization', EditOrganization)
   .addRoute('Compose', Compose)
   .addRoute('CreateGroupAttrs', CreateGroupAttrs)

@@ -533,7 +533,8 @@
             "name": "ic-group-glyph",
             "src": "ic-group-glyph-24.svg",
             "sizes": [
-                24
+                24,
+                48
             ]
         },
         {
@@ -547,7 +548,8 @@
             "name": "ic-link-glyph",
             "src": "ic-link-glyph-24.svg",
             "sizes": [
-                24
+                24,
+                48
             ]
         },
         {
@@ -983,7 +985,6 @@
             "sizes": [
                 24
             ]
-            
         },
         {
             "name": "ic-info",

@@ -419,10 +419,10 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 id={organization.id}
                 title={organization.name}
                 subtitle={(organization.isCommunity ? 'Community' : 'Organization') + '  ·  ' + plural(organization.membersCount, ['member', 'members'])}
-                actionPrimary={{
+                actionPrimary={organization.owner.id !== myUserID ? {
                     title: 'Message admin',
                     onPress: () => props.router.pushAndReset('Conversation', { flexibleId: organization.owner.id })
-                }}
+                } : undefined}
             />
 
             <ZListGroup header="About" useSpacer={true}>
