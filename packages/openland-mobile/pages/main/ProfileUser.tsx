@@ -24,7 +24,7 @@ import { UserPhotoUploader } from './components/UserPhotoUploader';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 import { useLastSeenShort } from 'openland-y-utils/LastSeen';
 import { ProfileDeleted } from './components/ProfileDeleted';
-import { formatAbsoluteDate } from 'openland-mobile/utils/formatDate';
+import { formatAbsoluteDate, formatBirthDay } from 'openland-mobile/utils/formatDate';
 
 const ProfileUserComponent = React.memo((props: PageProps) => {
     const client = getClient();
@@ -119,7 +119,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                     online={user.online}
                     title={user.name}
                     badge={lastseen}
-                    subtitle={profileType === 'bot' ? 'Bot' : user.primaryOrganization?.name}
+                    subtitle={profileType === 'bot' ? 'Bot' : user.status}
                     actionPrimary={{
                         title: profileType === 'my' ? 'Edit profile' : (profileType === 'bot' ? 'Open messages' : 'Send message'),
                         style: profileType === 'my' ? 'secondary' : 'primary',
@@ -189,6 +189,13 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                             leftIcon={require('assets/ic-geo-24.png')}
                             small={true}
                             copy={true}
+                        />
+                    )}
+                    {!!user.birthDay && (
+                        <ZListItem
+                            text={formatBirthDay(user.birthDay)}
+                            leftIcon={require('assets/ic-birthday-24.png')}
+                            small={true}
                         />
                     )}
                     {!!user.joinDate && (

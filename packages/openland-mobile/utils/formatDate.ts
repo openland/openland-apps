@@ -64,3 +64,11 @@ export function formatDateShort(date: number) {
 
     return month + ' ' + day;
 }
+
+export function formatBirthDay(date: number) {
+    const bd = new Date(date * 1000);
+    const now = new Date();
+    const age = (now.getTime() - bd.getTime()) / (365 * 24 * 60 * 60 * 1000);
+
+    return `${bd.getDate()} ${months[bd.getMonth()]} ${bd.getFullYear()}, ${Math.floor(age)} y. o.`;
+}

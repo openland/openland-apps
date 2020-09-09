@@ -5,6 +5,8 @@ fragment UserFull on User {
     lastName
     photo
     phone
+    status
+    birthDay
     email
     website
     about

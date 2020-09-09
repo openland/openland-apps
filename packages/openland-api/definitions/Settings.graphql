@@ -16,6 +16,8 @@ query Profile {
                 h
             }
         }
+        status
+        birthDay
         email
         phone
         website
@@ -52,6 +54,8 @@ mutation ProfileUpdate($input: ProfileInput!, $uid: ID, $inviteKey: String) {
                 h
             }
         }
+        status
+        birthDay
         email
         phone
         website
@@ -84,6 +88,7 @@ mutation ProfileCreate($input: ProfileInput!, $inviteKey: String) {
                 h
             }
         }
+        status
         email
         phone
         website
