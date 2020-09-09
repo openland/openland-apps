@@ -82,7 +82,7 @@ export const showAttachMenu = (fileCallback?: (type: 'document' | 'photo' | 'vid
                     compressImageQuality: 1,
                     compressVideoPreset: 'MediumQuality',
                     cropping: false,
-                    mediaType: Platform.select({ ios: 'any', android: 'photo', default: 'photo' })
+                    mediaType: 'video'
                 }).then(pickerResponse => {
                     pickerResponse.forEach(response => {
                         if (fileCallback) {
