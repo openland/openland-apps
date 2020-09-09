@@ -482,7 +482,12 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     const router = React.useContext(XViewRouterContext);
 
     const path = window.location.pathname.split('/');
-    const key = unicorn ? unicorn.id : path[path.length - 1];
+    let key = unicorn ? unicorn.id : path[path.length - 1];
+
+    // Sorry universe. Ugly fix for PLN-546
+    if (key.endsWith('.')) {
+        key = key.slice(0, key.length - 1);
+    }
 
     let invite = client.useResolvedInvite({ key });
     let room: SharedRoomPreview | undefined;

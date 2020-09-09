@@ -331,7 +331,7 @@ const VirtualMenuList = (props: MenuListComponentProps<OptionType> & { children?
                 </div>
             )
             }
-        </FixedSizeList >
+        </FixedSizeList>
     );
 };
 

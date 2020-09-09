@@ -65,7 +65,7 @@ export const findSocialShortname: FindSocialShortnameInterface = {
             link = link.slice(0, link.length - 1);
         }
 
-        return { name: link, url: `https://${link}/` };
+        return { name: link, url: `https://${link}` };
     },
 
     instagram: (source: string | null) => {

@@ -32,6 +32,7 @@ export interface ZListItemProps {
     checkmark?: boolean | null;
     checkmarkStyle?: ViewStyle;
     checkmarkField?: { key: string, value: string };
+    checkmarkType?: 'radio' | 'checkbox';
     onToggle?: (value: boolean) => void;
     path?: string;
     pathParams?: any;
@@ -209,7 +210,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                                 disabled={this.props.toggleDisabled !== null ? this.props.toggleDisabled : undefined}
                             />
                         )}
-                        {showCheckmark && (
+                        {showCheckmark && this.props.checkmarkType !== 'checkbox' && (
                             <View
                                 style={[{
                                     width: 22,
@@ -219,6 +220,28 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                                     borderColor: checkmarkEnabled ? theme.accentPrimary : theme.foregroundQuaternary,
                                 }, this.props.checkmarkStyle && this.props.checkmarkStyle]}
                             />
+                        )}
+                        {showCheckmark && this.props.checkmarkType === 'checkbox' && (
+                            <View
+                                style={[{
+                                    width: 22,
+                                    height: 22,
+                                    borderRadius: 11,
+                                    borderWidth: checkmarkEnabled ? 0 : 2,
+                                    borderColor: theme.foregroundQuaternary,
+                                    backgroundColor: checkmarkEnabled ? theme.accentPrimary : undefined,
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }, this.props.checkmarkStyle && this.props.checkmarkStyle]}
+                            >
+                                {checkmarkEnabled && (
+                                    <Image
+                                        marginRight={1}
+                                        source={require('assets/ic-checkmark-11.png')}
+                                        style={{ tintColor: theme.foregroundInverted }}
+                                    />
+                                )}
+                            </View>
                         )}
                     </View>
                     {this.props.subTitle && <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }} allowFontScaling={false} numberOfLines={1} ellipsizeMode={'tail'}>{this.props.subTitle}</Text>}

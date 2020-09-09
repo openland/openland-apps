@@ -1288,6 +1288,8 @@ internal val OrganizationFragmentSelector = obj(
             field("linkedin", "linkedin", scalar("String")),
             field("instagram", "instagram", scalar("String")),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("applyLink", "applyLink", scalar("String")),
+            field("applyLinkEnabled", "applyLinkEnabled", notNull(scalar("Boolean"))),
             field("owner", "owner", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID")))
@@ -1340,6 +1342,9 @@ internal val OrganizationProfileFragmentSelector = obj(
             field("linkedin", "linkedin", scalar("String")),
             field("instagram", "instagram", scalar("String")),
             field("shortname", "shortname", scalar("String")),
+            field("applyLink", "applyLink", scalar("String")),
+            field("applyLinkEnabled", "applyLinkEnabled", notNull(scalar("Boolean"))),
+            field("autosubscribeRooms", "autosubscribeRooms", notNull(list(notNull(scalar("ID"))))),
             field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
             field("alphaIsPrivate", "private", notNull(scalar("Boolean"))),
             field("alphaFeatured", "featured", notNull(scalar("Boolean"))),

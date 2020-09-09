@@ -10,11 +10,7 @@ class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updat
 
     handleLayout = (event: LayoutChangeEvent) => {
         if (this.props.context) {
-            if (Platform.OS === 'ios') {
-                this.props.context.updateSize(event.nativeEvent.layout.height - SDevice.safeArea.bottom);
-            } else {
-                this.props.context.updateSize(event.nativeEvent.layout.height - SDevice.safeArea.bottom);
-            }
+            this.props.context.updateSize(event.nativeEvent.layout.height - SDevice.safeArea.bottom);
         }
     }
 
@@ -30,13 +26,12 @@ class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updat
                 <View position="absolute" left={0} bottom={0} right={0}>
                     <ASKeyboardTracker>
                         <View
+                            onLayout={this.handleLayout}
                             style={{
                                 flexDirection: 'column',
                                 alignItems: 'stretch',
                             }}
-                            onLayout={this.handleLayout}
                         >
-                            {/* <View height={0.5} backgroundColor="#b7bdc6" opacity={0.3} /> */}
                             <ZBlurredView intensity="normal" alignItems="stretch" flexDirection="column" paddingBottom={SDevice.safeArea.bottom}>
                                 {this.props.children}
                             </ZBlurredView>

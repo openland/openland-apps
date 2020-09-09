@@ -462,7 +462,16 @@ const EnableRepliesModalBody = React.memo((props: EnableRepliesModalBodyProps) =
         <>
             <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
                 <XModalContent>
-                    <UCheckboxFiled label="Enable replies" field={enableRepliesField} asSwitcher={true} />
+                    <XView marginHorizontal={-24}>
+                        <UCheckboxFiled
+                            label="Replies"
+                            field={enableRepliesField}
+                            asSwitcher={true}
+                            disableHorizontalPadding={true}
+                            paddingHorizontal={24}
+                            withCorners={true}
+                        />
+                    </XView>
                 </XModalContent>
             </XScrollView3>
             <XModalFooter>
@@ -641,7 +650,7 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                             />
                         )}
                         <UListItem
-                            title="Enable replies"
+                            title="Replies"
                             icon={<IcReply />}
                             paddingHorizontal={24}
                             onClick={() => showEnableRepliesModal(room.id, repliesEnabled)}

@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { XView } from 'react-mental';
+import { XView, XViewProps } from 'react-mental';
 import { TextBody, TextLabel1 } from 'openland-web/utils/TextStyles';
-import CheckIcon from 'openland-icons/ic-checkbox.svg';
 import { FormField } from 'openland-form/useField';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import CheckIcon from 'openland-icons/ic-checkbox.svg';
 
 const inputClassName = css`
     display: none;
@@ -17,7 +18,6 @@ const labelClassName = css`
 const textClassName = css`
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     align-items: center;
     color: var(--foregroundPrimary);
     flex-grow: 1;
@@ -116,7 +116,7 @@ export const SwitcherComponent = ({ checked }: { checked?: boolean }) => (
     </div>
 );
 
-interface UCheckboxItemProps {
+interface UCheckboxItemProps extends XViewProps {
     label: string;
     value?: string;
     checked?: boolean;
@@ -128,18 +128,34 @@ interface UCheckboxItemProps {
     boldTitle?: boolean;
     leftElement?: JSX.Element;
     disableHorizontalPadding?: boolean;
+    icon?: JSX.Element;
+    iconColor?: string;
 }
 
 export const UCheckbox = (props: UCheckboxItemProps) => {
+    const {
+        label,
+        value,
+        checked,
+        onChange,
+        asSwitcher,
+        squared,
+        tall,
+        icon,
+        iconColor,
+        withCorners,
+        boldTitle,
+        leftElement,
+        disableHorizontalPadding,
+        ...other
+    } = props;
     const handleChange = () => {
-        if (props.onChange) {
-            props.onChange(!props.checked);
+        if (onChange) {
+            onChange(!checked);
         }
     };
 
-    const id = `toggle_${Math.random()
-        .toString()
-        .replace(/0\./, '')}`;
+    const id = `toggle_${Math.random().toString().replace(/0\./, '')}`;
 
     return (
         <XView flexDirection="row" alignItems="center">
@@ -147,19 +163,50 @@ export const UCheckbox = (props: UCheckboxItemProps) => {
                 onChange={handleChange}
                 id={id}
                 type="checkbox"
-                checked={props.checked}
+                checked={checked}
                 className={inputClassName}
             />
             <label htmlFor={id} className={labelClassName}>
-                <div className={cx(textClassName, props.tall && textTallClassName, props.withCorners && textWithCornersClassName, !props.disableHorizontalPadding && textWithHorizontalPaddingClassName)}>
-                    <XView flexDirection="row" alignItems="center">
-                        {props.leftElement || null}
-                        <span className={cx(props.boldTitle ? TextLabel1 : TextBody)}>{props.label}</span>
-                    </XView>
-                    {!props.asSwitcher && (
-                        <CheckComponent checked={props.checked} squared={props.squared} />
+                <div
+                    className={cx(
+                        textClassName,
+                        tall && textTallClassName,
+                        withCorners && textWithCornersClassName,
+                        !disableHorizontalPadding && textWithHorizontalPaddingClassName,
                     )}
-                    {props.asSwitcher && <SwitcherComponent checked={props.checked} />}
+                >
+                    <XView
+                        {...other}
+                        flexDirection="row"
+                        alignItems="center"
+                        flexGrow={1}
+                        flexBasis={1}
+                    >
+                        {!!icon && (
+                            <XView marginRight={16}>
+                                <UIcon
+                                    icon={icon}
+                                    color={iconColor || 'var(--foregroundSecondary)'}
+                                />
+                            </XView>
+                        )}
+                        <XView
+                            flexDirection="row"
+                            alignItems="center"
+                            justifyContent="space-between"
+                            flexGrow={1}
+                            flexBasis={1}
+                        >
+                            <XView flexDirection="row" alignItems="center">
+                                {leftElement || null}
+                                <span className={cx(boldTitle ? TextLabel1 : TextBody)}>
+                                    {label}
+                                </span>
+                            </XView>
+                            {!asSwitcher && <CheckComponent checked={checked} squared={squared} />}
+                            {asSwitcher && <SwitcherComponent checked={checked} />}
+                        </XView>
+                    </XView>
                 </div>
             </label>
         </XView>

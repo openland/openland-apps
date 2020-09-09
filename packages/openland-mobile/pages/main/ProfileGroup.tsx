@@ -361,7 +361,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             </ZListGroup>
 
             {!!group.organization && (
-                <ZListGroup header="Community" useSpacer={true}>
+                <ZListGroup header={group.organization.isCommunity ? 'Community' : 'Organization'} useSpacer={true}>
                     <ZListItem
                         text={group.organization.name}
                         subTitle={group.organization.about}

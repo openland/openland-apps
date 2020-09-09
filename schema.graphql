@@ -1877,6 +1877,7 @@ type Mutation {
   debugFixReadSeqs: Boolean!
   debugExportUsers: Boolean!
   debugMigrateUserStatus: Boolean!
+  debugFixFastCounters: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
