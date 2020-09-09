@@ -21,6 +21,7 @@ internal val ProfileCreateSelector = obj(
                                     field("h", "h", notNull(scalar("Int")))
                                 ))
                         )),
+                    field("status", "status", scalar("String")),
                     field("email", "email", scalar("String")),
                     field("phone", "phone", scalar("String")),
                     field("website", "website", scalar("String")),
@@ -31,6 +32,6 @@ internal val ProfileCreateSelector = obj(
 val ProfileCreate = object: OperationDefinition {
     override val name = "ProfileCreate"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation ProfileCreate(\$input:ProfileInput!,\$inviteKey:String){profileCreate(input:\$input,inviteKey:\$inviteKey){__typename id firstName lastName photoRef{__typename uuid crop{__typename x y w h}}email phone website about location}}"
+    override val body = "mutation ProfileCreate(\$input:ProfileInput!,\$inviteKey:String){profileCreate(input:\$input,inviteKey:\$inviteKey){__typename id firstName lastName photoRef{__typename uuid crop{__typename x y w h}}status email phone website about location}}"
     override val selector = ProfileCreateSelector
 }

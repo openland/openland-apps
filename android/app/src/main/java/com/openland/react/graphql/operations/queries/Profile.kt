@@ -26,6 +26,8 @@ internal val ProfileSelector = obj(
                                     field("h", "h", notNull(scalar("Int")))
                                 ))
                         )),
+                    field("status", "status", scalar("String")),
+                    field("birthDay", "birthDay", scalar("Date")),
                     field("email", "email", scalar("String")),
                     field("phone", "phone", scalar("String")),
                     field("website", "website", scalar("String")),
@@ -53,6 +55,6 @@ internal val ProfileSelector = obj(
 val Profile = object: OperationDefinition {
     override val name = "Profile"
     override val kind = OperationKind.QUERY
-    override val body = "query Profile{user:me{__typename id shortname}profile:myProfile{__typename id firstName lastName photoRef{__typename uuid crop{__typename x y w h}}email phone website about location role:alphaRole linkedin instagram facebook twitter primaryOrganization{__typename id name membersCount}joinedAt:alphaJoinedAt invitedBy:alphaInvitedBy{__typename id name}}}"
+    override val body = "query Profile{user:me{__typename id shortname}profile:myProfile{__typename id firstName lastName photoRef{__typename uuid crop{__typename x y w h}}status birthDay email phone website about location role:alphaRole linkedin instagram facebook twitter primaryOrganization{__typename id name membersCount}joinedAt:alphaJoinedAt invitedBy:alphaInvitedBy{__typename id name}}}"
     override val selector = ProfileSelector
 }

@@ -1584,6 +1584,8 @@ internal val UserFullSelector = obj(
             field("lastName", "lastName", scalar("String")),
             field("photo", "photo", scalar("String")),
             field("phone", "phone", scalar("String")),
+            field("status", "status", scalar("String")),
+            field("birthDay", "birthDay", scalar("Date")),
             field("email", "email", scalar("String")),
             field("website", "website", scalar("String")),
             field("about", "about", scalar("String")),
