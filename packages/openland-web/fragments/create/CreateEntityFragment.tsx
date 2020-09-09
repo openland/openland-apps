@@ -225,7 +225,7 @@ const ExplorePeopleFragment = React.memo((props: ExplorePeopleFragmentProps) => 
             <React.Suspense
                 fallback={
                     <XView flexGrow={1} flexShrink={0}>
-                        <XLoader loading={true} />
+                        <XLoader loading={true} transparentBackground={true} />
                     </XView>
                 }
             >

@@ -168,7 +168,7 @@ const MentionedUser = React.memo(
                 updatedDeps: userId,
             },
             (ctx) => (
-                <React.Suspense fallback={<XLoader loading={true} />}>
+                <React.Suspense fallback={<XLoader loading={true} transparentBackground={true} />}>
                     <MentionedUserPopperContent
                         userId={userId}
                         myId={engine.user.id}
@@ -265,7 +265,7 @@ const MentionedOtherUsers = React.memo((props: { mId?: string; children: any }) 
             showTimeout: 400,
         },
         (ctx) => (
-            <React.Suspense fallback={<XLoader loading={true} />}>
+            <React.Suspense fallback={<XLoader loading={true} transparentBackground={true} />}>
                 <MentionedOtherUsersPopperContent mId={mId} hide={ctx.hide} />
             </React.Suspense>
         ),
@@ -344,7 +344,7 @@ const MentionedGroup = React.memo(
                 updatedDeps: groupId,
             },
             (ctx) => (
-                <React.Suspense fallback={<XLoader loading={true} />}>
+                <React.Suspense fallback={<XLoader loading={true} transparentBackground={true} />}>
                     <MentionedGroupPopperContent hide={ctx.hide} groupId={groupId} />
                 </React.Suspense>
             ),
@@ -414,7 +414,7 @@ const MentionedOrganization = React.memo(
                 updatedDeps: organizationId,
             },
             (ctx) => (
-                <React.Suspense fallback={<XLoader loading={true} />}>
+                <React.Suspense fallback={<XLoader loading={true} transparentBackground={true} />}>
                     <MentionedOrgPopperContent hide={ctx.hide} organizationId={organizationId} />
                 </React.Suspense>
             ),

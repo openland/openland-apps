@@ -64,7 +64,7 @@ const ShortnameModalBody = React.memo((props: ShortnameModalBodyProps) => {
                 <div className={cx(modalSubtitle, TextBody)}>
                     {`Choose a shortname so other people can find and mention your ${
                         props.isCommunity ? 'community' : 'organization'
-                    }`}
+                        }`}
                 </div>
                 <UInputField
                     autofocus={true}
@@ -201,7 +201,7 @@ const DefaultGroupsModalBody = React.memo((props: DefaultGroupsModalBodyProps) =
                         ))}
                         {groupsLoading && (
                             <XView height={40}>
-                                <XLoader loading={true}/>
+                                <XLoader loading={true} transparentBackground={true} />
                             </XView>
                         )}
                     </XView>

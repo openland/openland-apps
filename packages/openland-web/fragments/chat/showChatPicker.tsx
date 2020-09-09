@@ -38,31 +38,31 @@ const ChatPickerComponent = (props: {
             }}
         >
             {showLoader ? (
-                <XLoader loading={true} />
+                <XLoader loading={true} transparentBackground={true} />
             ) : (
-                <XView flexGrow={1} flexBasis={0} minHeight={0} flexShrink={1}>
-                    <USearchInput
-                        value={query}
-                        onChange={setQuery}
-                        autoFocus={true}
-                        marginHorizontal={23}
-                        marginBottom={12}
-                        marginTop={8}
-                    />
-                    <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
-                        <DialogSearchResults
-                            variables={{
-                                query: query,
-                                kinds: [GlobalSearchEntryKind.SHAREDROOM, GlobalSearchEntryKind.USER],
-                            }}
-                            onPick={onDialogClick}
-                            paddingHorizontal={24}
-                            isForwarding={true}
-                            hideChats={props.hideChats}
+                    <XView flexGrow={1} flexBasis={0} minHeight={0} flexShrink={1}>
+                        <USearchInput
+                            value={query}
+                            onChange={setQuery}
+                            autoFocus={true}
+                            marginHorizontal={23}
+                            marginBottom={12}
+                            marginTop={8}
                         />
-                    </XScrollView3>
-                </XView>
-            )}
+                        <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
+                            <DialogSearchResults
+                                variables={{
+                                    query: query,
+                                    kinds: [GlobalSearchEntryKind.SHAREDROOM, GlobalSearchEntryKind.USER],
+                                }}
+                                onPick={onDialogClick}
+                                paddingHorizontal={24}
+                                isForwarding={true}
+                                hideChats={props.hideChats}
+                            />
+                        </XScrollView3>
+                    </XView>
+                )}
         </div>
     );
 };
