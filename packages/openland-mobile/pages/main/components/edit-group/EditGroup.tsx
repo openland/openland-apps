@@ -18,7 +18,6 @@ import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SUPER_ADMIN } from '../../../Init';
-import { SRouter } from 'react-native-s/SRouter';
 
 const SecretLabel = React.memo((props: { isChannel: boolean }) => {
     const theme = React.useContext(ThemeContext);
