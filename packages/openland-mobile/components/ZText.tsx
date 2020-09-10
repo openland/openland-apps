@@ -48,7 +48,7 @@ export const ZText = (props: ZTextProps) => {
                     <Text
                         key={'link-' + i}
                         style={[props.style, props.linkify && { color: theme.accentPrimary, textDecorationLine }]}
-                        onLongPress={() => props.onLongPress ? props.onLongPress(v.link!) : openContextMenu(v.link!)}
+                        onLongPress={props.linkify !== false ? () => props.onLongPress ? props.onLongPress(v.link!) : openContextMenu(v.link!) : undefined}
                         onPress={props.onPress ? () => { props.onPress!(v.link!); } : props.linkify !== false ? resolveInternalLink(v.link!, linkifyPressFallback(v.link!)) : undefined}
                         allowFontScaling={false}
                     >
