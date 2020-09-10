@@ -4,6 +4,7 @@ import { XView } from 'react-mental';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 import { XScrollValues } from 'openland-x/XScrollView3';
+import { useWithWidth } from '../hooks/useWithWidth';
 
 interface ProfileLayoutProps {
     leftColumn: any;
@@ -21,20 +22,14 @@ export const ProfileLayout = ({ title, track, leftColumn, rightColumn }: Profile
     const [compactView, setCompactView] = React.useState(window.innerWidth <= COMPACT_VIEW_WIDTH);
     const [bottomReached, setBottomReached] = React.useState(false);
 
+    const [width] = useWithWidth();
+
     React.useEffect(() => {
-        let prev = window.innerWidth <= COMPACT_VIEW_WIDTH;
-        const handleResize = () => {
-            let isCompact = window.innerWidth <= COMPACT_VIEW_WIDTH;
-            if (prev !== isCompact) {
-                prev = isCompact;
-                setCompactView(isCompact);
-            }
-        };
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
+        let isCompact = width! <= COMPACT_VIEW_WIDTH;
+        if (compactView !== isCompact) {
+            setCompactView(isCompact);
+        }
+    }, [width]);
 
     const onScroll = React.useCallback((values: XScrollValues) => {
         const result = values.scrollHeight - (values.clientHeight + values.scrollTop) < LOAD_MORE_THRESHOLD;
