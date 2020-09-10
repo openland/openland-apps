@@ -67,20 +67,20 @@ const GroupCallsModalBody = React.memo((props: GroupSettingsModalBodyProps<Group
                         {...callProviderField.input}
                     />
                     {callProviderField.value === RoomCallsMode.LINK &&
-                    <XView flexGrow={1} flexShrink={1} marginTop={16}>
-                        <UInput
-                            label={'Call link'}
-                            {...customCallLinkField.input}
-                        />
-                        <div className={cx(callLinkInputHint, TextLabel2)}>
-                            {'A link to external call room, e.g. on Zoom, Google Meet, or any other service'}
-                        </div>
-                    </XView>
+                        <XView flexGrow={1} flexShrink={1} marginTop={16}>
+                            <UInput
+                                label={'Call link'}
+                                {...customCallLinkField.input}
+                            />
+                            <div className={cx(callLinkInputHint, TextLabel2)}>
+                                {'A link to external call room, e.g. on Zoom, Google Meet, or any other service'}
+                            </div>
+                        </XView>
                     }
                 </XModalContent>
             </XScrollView3>
             <XModalFooter>
-                <UButton text="Cancel" style="tertiary" size="large" onClick={() => props.hide()}/>
+                <UButton text="Cancel" style="tertiary" size="large" onClick={() => props.hide()} />
                 <UButton
                     text="Save"
                     style="primary"
@@ -115,7 +115,7 @@ export const showGroupCallsModal = (
 export function getCallSettingsShortLabel(o: GroupCallsValue): string {
     switch (o.mode) {
         case RoomCallsMode.LINK:
-            return 'Link';
+            return 'Custom';
         case RoomCallsMode.DISABLED:
             return 'None';
         case RoomCallsMode.STANDARD:

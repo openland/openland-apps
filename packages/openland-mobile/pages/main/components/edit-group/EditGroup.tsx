@@ -40,23 +40,6 @@ const SecretLabel = React.memo((props: { isChannel: boolean }) => {
     );
 });
 
-const SuperadminListItem = (props: { router: SRouter, id: string, kind: SharedRoomKind }) => {
-    const client = getClient();
-    const superGroup = client.useRoomSuper({ id: props.id }).roomSuper;
-    const superadminLabel = props.kind === SharedRoomKind.PUBLIC && superGroup?.featured
-        ? 'On' : props.kind === SharedRoomKind.GROUP || superGroup?.featured
-            ? 'Custom' : 'Off';
-    return (
-        <ZListItem
-            leftIcon={require('assets/ic-lock-24.png')}
-            text="Superadmin settings"
-            small={true}
-            description={superadminLabel}
-            onPress={() => props.router.push('EditGroupSuperadmin', { id: props.id })}
-        />
-    );
-};
-
 const callSettingsLabels: { [mode in RoomCallsMode]: string } = {
     [RoomCallsMode.STANDARD]: 'Standard',
     [RoomCallsMode.LINK]: 'Custom',
@@ -189,9 +172,13 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                         onPress={() => router.push('EditGroupCalls', { id: group.id })}
                     />
                     {SUPER_ADMIN && (
-                        <React.Suspense fallback={null}>
-                            <SuperadminListItem id={group.id} kind={group.kind} router={router} />
-                        </React.Suspense>
+                        <ZListItem
+                            leftIcon={require('assets/ic-lock-24.png')}
+                            text="Superadmin settings"
+                            small={true}
+                            description="Custom"
+                            onPress={() => props.router.push('EditGroupSuperadmin', { id: group.id })}
+                        />
                     )}
                 </ZListGroup>
             </KeyboardAvoidingScrollView>
