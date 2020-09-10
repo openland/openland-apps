@@ -26,6 +26,7 @@ import { useLastSeenShort } from 'openland-y-utils/LastSeen';
 import { ProfileDeleted } from './components/ProfileDeleted';
 import { formatAbsoluteDate, formatBirthDay } from 'openland-mobile/utils/formatDate';
 import { openMapsApp } from 'openland-mobile/utils/openMapsApp';
+import { openCalendar } from 'openland-mobile/utils/openCalendar';
 
 const ProfileUserComponent = React.memo((props: PageProps) => {
     const client = getClient();
@@ -198,6 +199,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                             text={formatBirthDay(user.birthDay)}
                             leftIcon={require('assets/ic-birthday-24.png')}
                             small={true}
+                            onPress={openCalendar(parseInt(user.birthDay, 10) * 1000)}
                         />
                     )}
                     {!!user.joinDate && (
