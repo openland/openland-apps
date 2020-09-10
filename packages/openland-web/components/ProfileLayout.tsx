@@ -50,7 +50,7 @@ export const ProfileLayout = ({ title, track, leftColumn, rightColumn }: Profile
             <ProfileLayoutContext.Provider value={{ bottomReached, compactView }}>
                 <XView alignItems="center" marginLeft={24}>
                     <XView flexDirection={compactView ? 'column' : 'row'}>
-                        <XView width={compactView ? 488 : 272} marginRight={16}>
+                        <XView width={272} marginRight={16}>
                             <XView
                                 position={compactView ? null : 'fixed'}
                                 flexDirection={compactView ? 'row' : 'column'}

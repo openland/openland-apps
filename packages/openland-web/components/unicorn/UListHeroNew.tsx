@@ -3,6 +3,7 @@ import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { UAvatar } from './UAvatar';
 import { TextStyles } from 'openland-web/utils/TextStyles';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { showAvatarModal } from '../showAvatarModal';
 import { emoji } from 'openland-y-utils/emoji';
 import { ProfileLayoutContext } from 'openland-web/components/ProfileLayout';
@@ -36,13 +37,14 @@ export const UListHeroNew = (props: UListHeroProps) => {
     const { title, titleIcon, description, descriptionColor, avatar, children } = props;
     const titleEmojify = React.useMemo(() => emoji(title), [title]);
     const { compactView } = React.useContext(ProfileLayoutContext);
+    const isMobile = useLayout() === 'mobile';
 
     return (
         <XView paddingHorizontal={16} flexDirection={compactView ? "row" : "column"}>
             {!!avatar && (
                     <UAvatar
                         {...avatar}
-                        size="xx-large"
+                        size={isMobile ? 'large' : 'xx-large'}
                         marginTop={16}
                         marginRight={16}
                         onClick={
