@@ -656,7 +656,7 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                             onClick={() => showEnableRepliesModal(room.id, repliesEnabled)}
                             textRight={repliesEnabled ? 'On' : 'Off'}
                         />
-                        <UListItem
+                        {!room.isChannel && <UListItem
                             title="Service messages"
                             icon={<IcChannel />}
                             paddingHorizontal={24}
@@ -665,7 +665,7 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                                 leavesMessageEnabled: serviceMessageSettings.leavesMessageEnabled
                             })}
                             textRight={getServiceMessagesSettingsShortLabel(serviceMessageSettings)}
-                        />
+                        />}
                         <UListItem
                             title="Group calls"
                             icon={<IcCall />}
