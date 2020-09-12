@@ -26,6 +26,10 @@ const callLinkInputHint = css`
     font-weight: normal;
 `;
 
+function isUrlValid(str: string): boolean {
+    return (/^(https?:\/\/)?[^\s$.?#].[^\s]*$/).test(str);
+}
+
 const GroupCallsModalBody = React.memo((props: GroupSettingsModalBodyProps<GroupCallsValue>) => {
     const { roomId, initialValue, hide } = props;
 
@@ -33,16 +37,21 @@ const GroupCallsModalBody = React.memo((props: GroupSettingsModalBodyProps<Group
     const form = useForm();
 
     const callProviderField = useField('callProvider', initialValue.mode, form);
-    const customCallLinkField = useField('customCallLink', initialValue.callLink || '', form);
+    const customCallLinkField = useField('customCallLink', initialValue.callLink || '', form, [
+        {checkIsValid: v => (callProviderField.input.value !== RoomCallsMode.LINK || !!v), text: 'Call link is empty!'},
+        {checkIsValid: v => (callProviderField.input.value !== RoomCallsMode.LINK || isUrlValid(v)), text: 'Link is invalid'},
+    ]);
 
     const onSave = async () => {
         await form.doAction(async () => {
             await client.mutateRoomUpdate({
                 roomId,
                 input: {
-                    callSettings: {
+                    callSettings: callProviderField.input.value === RoomCallsMode.LINK ? {
                         mode: callProviderField.value,
                         callLink: customCallLinkField.value
+                    } : {
+                        mode: callProviderField.value,
                     },
                 }
             });

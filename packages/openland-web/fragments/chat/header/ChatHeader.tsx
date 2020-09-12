@@ -97,6 +97,13 @@ const ChatOnlinesTitle = (props: { id: string }) => {
     );
 };
 
+function normalizeUrl(url: any): string {
+    if (!url || typeof url !== 'string') {
+        return '';
+    }
+    return (/^https?:\/\//).test(url) ? url : 'http://' + url;
+}
+
 const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
     const calls = props.messenger.calls;
     const callSettings = props.chat.__typename === 'SharedRoom' ? props.chat.callSettings : undefined;
@@ -113,7 +120,7 @@ const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
                     <UIconButton
                         icon={<CameraIcon />}
                         as={'a'}
-                        href={callSettings.callLink}
+                        href={normalizeUrl(callSettings.callLink)}
                         target={'_blank'}
                         size="large"
                     /> :
