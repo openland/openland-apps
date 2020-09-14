@@ -121,7 +121,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                     online={user.online}
                     title={user.name}
                     badge={lastseen}
-                    subtitle={profileType === 'bot' ? 'Bot' : user.status}
+                    subtitle={profileType === 'bot' ? 'Bot' : user.primaryOrganization?.name}
                     actionPrimary={{
                         title: profileType === 'my' ? 'Edit profile' : (profileType === 'bot' ? 'Open messages' : 'Send message'),
                         style: profileType === 'my' ? 'secondary' : 'primary',
