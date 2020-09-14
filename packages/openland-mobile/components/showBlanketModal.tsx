@@ -7,6 +7,7 @@ import {
     BackHandler,
     Platform,
     ViewStyle,
+    ViewProps,
 } from 'react-native';
 import { SAnimated } from 'react-native-fast-animations';
 import { randomKey } from 'react-native-s/utils/randomKey';
@@ -248,14 +249,15 @@ export function showBlanketModal(
         onCancel?: () => void;
         ignoreSafeArea?: boolean;
         hideKeyboardOnOpen?: boolean;
+        viewProps?: ViewProps;
     },
 ) {
-    const { hideKeyboardOnOpen, ...other } = props || {};
+    const { hideKeyboardOnOpen, viewProps, ...other } = props || {};
     showModal(modal => {
         return (
             <ASSafeAreaContext.Consumer>
                 {safe => <ThemedBlanketModal ctx={modal} modal={render} safe={safe} {...other} />}
             </ASSafeAreaContext.Consumer>
         );
-    }, hideKeyboardOnOpen);
+    }, hideKeyboardOnOpen, viewProps);
 }

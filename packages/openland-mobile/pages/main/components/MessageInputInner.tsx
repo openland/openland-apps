@@ -21,14 +21,20 @@ export interface MessageInputBarProps {
     suggestions?: any;
     topView?: any;
     showLoader?: boolean;
+
+    stickerKeyboardShown?: boolean;
+    onStickerKeyboardButtonPress?: () => void;
+    stickerKeyboardHeight?: number;
 }
 
 const iconAttach = require('assets/ic-attach-24.png');
 const icon = require('assets/ic-send-24.png');
 const iconFilled = require('assets/ic-send-filled-24.png');
+const iconKeyboard = require('assets/ic-keyboard-24.png');
+const iconSticker = require('assets/ic-sticker-24.png');
 
 export const MessageInputInner = React.forwardRef((props: MessageInputBarProps & { theme: ThemeGlobal }, ref: React.RefObject<TextInput>) => {
-    const { theme } = props;
+    const { theme, stickerKeyboardShown, onStickerKeyboardButtonPress } = props;
     const inputProps = {
         flexGrow: 1,
         flexBasis: 0,
@@ -39,14 +45,14 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
         onFocus: props.onFocus,
         onBlur: props.onBlur,
         value: props.text,
-        editable: props.enabled !== false,
+        editable: !stickerKeyboardShown && props.enabled !== false,
         multiline: true,
         allowFontScaling: false,
         keyboardAppearance: theme.keyboardAppearance,
     };
 
     return (
-        <View style={{ flexDirection: 'row', alignItems: 'flex-end', backgroundColor: Platform.OS === 'android' ? theme.backgroundPrimary : undefined }}>
+        <View style={{ flexDirection: 'row', alignItems: 'flex-end', backgroundColor: Platform.OS === 'android' ? theme.backgroundPrimary : undefined, position: 'relative' }}>
             {props.attachesEnabled !== false && (
                 <View width={56} height={52} alignItems="center" justifyContent="center">
                     <TouchableOpacity onPress={props.onAttachPress}>
@@ -104,6 +110,15 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
                     }}
                     {...inputProps}
                 />
+            )}
+            {props.text.length === 0 && onStickerKeyboardButtonPress && (
+                <View style={{ position: 'absolute', right: 56 }} width={40} height={52} alignItems="center" justifyContent="center">
+                    <TouchableOpacity onPress={onStickerKeyboardButtonPress} activeOpacity={HighlightAlpha}>
+                        <View width={40} height={44} alignItems="center" justifyContent="center">
+                            <Image source={stickerKeyboardShown ? iconKeyboard : iconSticker} style={{ width: 24, height: 24, tintColor: theme.foregroundSecondary }} />
+                        </View>
+                    </TouchableOpacity>
+                </View>
             )}
             {!props.showLoader && (
                 <View width={56} height={52} alignItems="center" justifyContent="center">

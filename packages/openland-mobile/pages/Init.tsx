@@ -128,9 +128,9 @@ const AppContainer = React.memo<{
 }>((props) => {
     return (
         <SafeAreaProvider>
-            <ModalProvider />
             <View style={{ width: '100%', height: '100%' }} onLayout={props.onLayout}>
                 {props.children}
+                <ModalProvider />
                 <ZModalProvider />
                 <AppPlaceholder loading={props.loading} />
             </View>

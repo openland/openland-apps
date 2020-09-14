@@ -98,7 +98,6 @@ export const ProfileOrganizationPrivate = React.memo((props: ProfileOrganization
                     <>
                         <ZButton
                             title="Message admin"
-                            style="secondary"
                             path="Conversation"
                             pathParams={{ flexibleId: owner.id }}
                             size="large"
