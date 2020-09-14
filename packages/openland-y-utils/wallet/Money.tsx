@@ -16,17 +16,18 @@ export const formatMoney = (amount: number, showPositiveSign?: boolean) => {
     return sign + '$' + (d.toString() + ((cs === '00') ? '' : ('.' + cs)));
 };
 
-export const formatMoneyInterval = (amount: number, interval: WalletSubscriptionInterval | null): string => {
+export const formatMoneyInterval = (amount: number, interval: WalletSubscriptionInterval | null, fullText?: boolean): string => {
     let res = formatMoney(amount);
     if (interval) {
+        const weekText = fullText ? ' per week' : ' / wk';
+        const monthText = fullText ? ' per month' : ' / mo';
         if (interval === WalletSubscriptionInterval.WEEK) {
-            res += ' / wk';
+            res += weekText;
         } else if (interval === WalletSubscriptionInterval.MONTH) {
-            res += ' / mo';
+            res += monthText;
         }
     }
 
     return res;
 };
-
 export const Money = React.memo((props: { amount: number, showSign?: boolean }) => <>{formatMoney(props.amount, props.showSign)}</>);

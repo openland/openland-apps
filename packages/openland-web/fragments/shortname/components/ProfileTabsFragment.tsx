@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 
 import { useClient } from 'openland-api/useClient';
-import { RoomChat_room_SharedRoom, SharedMediaType } from 'openland-api/spacex.types';
+import { RoomChat_room_SharedRoom, SharedMediaCounters_counters, SharedMediaType } from 'openland-api/spacex.types';
 import { useTabs, Tabs } from 'openland-web/components/unicorn/UTabs';
 import { SharedMedia } from 'openland-web/fragments/chat/sharedMedia/SharedMediaFragment';
 import { ProfileLayoutContext } from 'openland-web/components/ProfileLayout';
@@ -16,6 +16,16 @@ interface ProfileSharedMediaProps {
     chatId: string;
     group?: RoomChat_room_SharedRoom;
 }
+
+const getNotEmptyTab = (counters: SharedMediaCounters_counters) => {
+    if (counters.images > 0) {
+        return 'Media';
+    } else if (counters.documents + counters.videos) {
+        return 'Files';
+    } else {
+        return 'Links';
+    }
+};
 
 export const ProfileTabsFragment = React.memo(({ chatId, group }: ProfileSharedMediaProps) => {
     const client = useClient();
@@ -37,6 +47,12 @@ export const ProfileTabsFragment = React.memo(({ chatId, group }: ProfileSharedM
     const paginatedFiles = React.useRef<Paginated>(null);
     const paginatedLinks = React.useRef<Paginated>(null);
     const paginated = (selected === 'Media' ? paginatedMedia : selected === 'Files' ? paginatedFiles : paginatedLinks).current;
+
+    React.useEffect(() => {
+        if (!group && counters) {
+            setSelected(getNotEmptyTab(counters.counters));
+        }
+    }, [counters]);
     React.useEffect(() => {
         if (bottomReached && paginated) {
             paginated.loadMore();
