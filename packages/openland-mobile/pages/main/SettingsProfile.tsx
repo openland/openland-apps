@@ -43,7 +43,6 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
     const form = useForm();
     const firstNameField = useField('firstName', profile.firstName || '', form);
     const lastNameField = useField('lastName', profile.lastName || '', form);
-    const statusField = useField('status', profile.status || '', form);
     const photoField = useField('photoRef', profile.photoRef, form);
     const aboutField = useField('about', profile.about || '', form);
     const phoneField = useField('phone', (phone && formatPhone(phone)) || '', form);
@@ -61,7 +60,6 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                 input: {
                     firstName: firstNameField.value,
                     lastName: lastNameField.value,
-                    status: statusField.value,
                     photoRef: sanitizeImageRef(photoField.value),
                     about: aboutField.value,
                     phone: phoneField.value,
@@ -91,7 +89,17 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                 <ZListGroup header="Info" headerMarginTop={0}>
                     <ZInput placeholder="First name" field={firstNameField} />
                     <ZInput placeholder="Last name" field={lastNameField} />
-                    <ZInput placeholder="Status" field={statusField} maxLength={40} />
+
+                    <ZPickField
+                        label="Primary organization"
+                        value={
+                            profile.primaryOrganization
+                                ? profile.primaryOrganization.name
+                                : undefined
+                        }
+                        path="SelectPrimaryOrganization"
+                    />
+
                     <ZInput placeholder="About" field={aboutField} multiline={true} />
                     <ZInput placeholder="Location" field={locationField} />
                 </ZListGroup>

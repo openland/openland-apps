@@ -207,10 +207,6 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
     }
 
     if (documentAttach) {
-        const isVideo =
-            (documentAttach.fileMetadata.mimeType &&
-                !!documentAttach.fileMetadata.mimeType.match('video')) ||
-            fileFormat(documentAttach.fileMetadata.name) === 'VIDEO';
         return (
             <div
                 className={isReplyAction ? replyBasicStyle : replyMessageGroupClass}
@@ -222,7 +218,7 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
                 </div>
                 <div className={replyAttachContentClass}>
                     {senderContent}
-                    {attachFile(isVideo ? 'Video' : documentAttach.fileMetadata.name)}
+                    {attachFile(documentAttach.fileMetadata.name)}
                 </div>
             </div>
         );

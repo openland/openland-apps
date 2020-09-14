@@ -462,9 +462,12 @@ const EnableRepliesModalBody = React.memo((props: EnableRepliesModalBodyProps) =
         <>
             <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
                 <XModalContent>
+                    <div className={cx(modalSubtitle, TextBody)}>
+                        Choose whether to allow replies in group
+                    </div>
                     <XView marginHorizontal={-24}>
                         <UCheckboxFiled
-                            label="Replies"
+                            label="Allow replies"
                             field={enableRepliesField}
                             asSwitcher={true}
                             disableHorizontalPadding={true}
@@ -495,7 +498,7 @@ const showEnableRepliesModal = (
     showModalBox(
         {
             width: 400,
-            title: 'Disable replies',
+            title: 'Replies',
         },
         (ctx) => (
             <EnableRepliesModalBody

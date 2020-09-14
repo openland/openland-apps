@@ -289,70 +289,70 @@ const loaderStyle: { [key in UButtonStyle]: { contrast: boolean } } = {
     },
 };
 
-export const UButton = React.memo(React.forwardRef((props: UButtonProps, ref: React.RefObject<HTMLDivElement>) => {
-    const {
-        text,
-        shape,
-        size = 'medium',
-        style = 'primary',
-        loading,
-        disable,
-        action,
-        onClick,
-        className,
-        tabIndex,
-        ...other
-    } = props;
+export const UButton = React.memo(
+    React.forwardRef((props: UButtonProps, ref: React.RefObject<HTMLDivElement>) => {
+        const {
+            text,
+            shape,
+            size = 'medium',
+            style = 'primary',
+            loading,
+            disable,
+            action,
+            onClick,
+            className,
+            tabIndex,
+            ...other
+        } = props;
 
-    const [loadingState, setLoadingState] = React.useState(loading);
+        const [loadingState, setLoadingState] = React.useState(loading);
 
-    const actionCallback = React.useCallback(
-        async () => {
+        const actionCallback = React.useCallback(async () => {
             if (!action) {
                 return;
             }
             setLoadingState(true);
             await action();
             setLoadingState(false);
-        },
-        [action],
-    );
+        }, [action]);
 
-    React.useEffect(
-        () => {
+        React.useEffect(() => {
             setLoadingState(loading);
-        },
-        [loading],
-    );
+        }, [loading]);
 
-    return (
-        <XView {...other} onClick={!disable ? (action ? actionCallback : onClick) : undefined}>
-            <div
-                tabIndex={tabIndex !== undefined ? tabIndex : -1}
-                className={cx(
-                    buttonWrapperStyle,
-                    shape && shapeResolver[shape],
-                    (loadingState || disable) && disableStyle,
-                    sizeResolver[size],
-                    styleResolver[style],
-                    !(loadingState || disable) && styleResolverHover[style],
-                    !(loadingState || disable) && styleResolverActive[style],
-                    !(loadingState || disable) && styleResolverFocus[style],
-                    className,
-                )}
-                ref={ref}
+        return (
+            <XView
+                hoverTextDecoration="none"
+                {...other}
+                onClick={!disable ? (action ? actionCallback : onClick) : undefined}
             >
-                {props.left}
-                <span className={cx(textStyle, loadingState && loadingStyle)}>{text}</span>
-                {loadingState && (
-                    <XLoader
-                        loading={true}
-                        transparentBackground={true}
-                        size="medium"
-                        {...loaderStyle[style]}
-                    />
-                )}
-            </div>
-        </XView>
-    );
-}));
+                <div
+                    tabIndex={tabIndex !== undefined ? tabIndex : -1}
+                    className={cx(
+                        buttonWrapperStyle,
+                        shape && shapeResolver[shape],
+                        (loadingState || disable) && disableStyle,
+                        sizeResolver[size],
+                        styleResolver[style],
+                        !(loadingState || disable) && styleResolverHover[style],
+                        !(loadingState || disable) && styleResolverActive[style],
+                        !(loadingState || disable) && styleResolverFocus[style],
+                        className,
+                    )}
+                    ref={ref}
+                >
+                    {props.left}
+                    <span className={cx(textStyle, loadingState && loadingStyle)}>{text}</span>
+                    {loadingState && (
+                        <XLoader
+                            loading={true}
+                            transparentBackground={true}
+                            size="medium"
+                            {...loaderStyle[style]}
+                        />
+                    )}
+                </div>
+            </XView>
+        );
+    }),
+);

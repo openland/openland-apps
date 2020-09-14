@@ -65,8 +65,8 @@ export function formatDateShort(date: number) {
     return month + ' ' + day;
 }
 
-export function formatBirthDay(date: number) {
-    const bd = new Date(date * 1000);
+export function formatBirthDay(date: number | string) {
+    const bd = new Date(typeof date === 'string' ? parseInt(date, 10) : date);
     const now = new Date();
     const age = (now.getTime() - bd.getTime()) / (365 * 24 * 60 * 60 * 1000);
 

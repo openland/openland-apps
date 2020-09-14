@@ -1878,6 +1878,8 @@ type Mutation {
   debugExportUsers: Boolean!
   debugMigrateUserStatus: Boolean!
   debugFixFastCounters: Boolean!
+  debugMigrateToExperimentalCounters: Boolean!
+  debugFixCompactMessages: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2794,6 +2796,7 @@ type Query {
   debugMentionSearch(query: String!, first: Int!, index: String!): String!
   debugMentionSearchGetUserData(cid: ID!): String!
   debugGetCounters: String!
+  debugExperimentalCounter(cid: ID!): String!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!

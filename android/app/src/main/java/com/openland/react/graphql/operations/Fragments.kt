@@ -1556,6 +1556,7 @@ internal val StickerPackFragmentSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             field("title", "title", notNull(scalar("String"))),
+            field("added", "added", notNull(scalar("Boolean"))),
             field("stickers", "stickers", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Sticker", StickerFragmentSelector)
@@ -1584,7 +1585,6 @@ internal val UserFullSelector = obj(
             field("lastName", "lastName", scalar("String")),
             field("photo", "photo", scalar("String")),
             field("phone", "phone", scalar("String")),
-            field("status", "status", scalar("String")),
             field("birthDay", "birthDay", scalar("Date")),
             field("email", "email", scalar("String")),
             field("website", "website", scalar("String")),

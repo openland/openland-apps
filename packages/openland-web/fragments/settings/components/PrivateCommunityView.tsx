@@ -60,7 +60,7 @@ export const PrivateCommunityView = React.memo((props: PrivateCommunityViewProps
                 />
                 <div className={cx(titleStyle, TextTitle1)}>{name}</div>
                 <div className={cx(aboutStyle, TextBody)}>{about}</div>
-                {applyLinkEnabled && (
+                {applyLinkEnabled && applyLink && (
                     <UButton
                         width={240}
                         marginTop={24}
@@ -77,7 +77,6 @@ export const PrivateCommunityView = React.memo((props: PrivateCommunityViewProps
                             width={240}
                             marginTop={24}
                             text="Message admin"
-                            style="secondary"
                             size="large"
                             path={`/mail/${owner.id}`}
                         />
