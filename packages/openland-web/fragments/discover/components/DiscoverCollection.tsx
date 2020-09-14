@@ -44,7 +44,7 @@ const collectionPhoto = css`
 
 export const DiscoverCollection = React.memo((props: DiscoverCollectionsShort_discoverCollections_items) => {
     return (
-        <XView path={`/discover/collections/${props.id}`} cursor="pointer">
+        <XView path={`/discover/collections/${props.id}`} cursor="pointer" color="var(--foregroundPrimary)">
             <div className={collectionPhoto}>
                 <XCloudImage photoRef={props.image} resize="fill" width={176} height={100} />
             </div>

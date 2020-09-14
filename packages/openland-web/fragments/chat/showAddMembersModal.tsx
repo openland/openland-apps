@@ -45,6 +45,7 @@ const sectionTitleStyle = css`
     height: 48px;
     padding: 12px 0;
     flex-shrink: 0;
+    color: var(--foregroundPrimary);
 `;
 
 const SectionTitle = (props: { title: string }) => (
@@ -62,8 +63,8 @@ const AddMemberModalInner = (props: InviteModalProps) => {
             ? 'channel'
             : 'group'
         : props.isCommunity
-        ? 'community'
-        : 'organization';
+            ? 'community'
+            : 'organization';
 
     const onChange = (data: { label: string; value: string }[] | null) => {
         const newSelected = new Map();
@@ -158,7 +159,7 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                             <React.Suspense
                                 fallback={
                                     <XView flexGrow={1} flexShrink={0}>
-                                        <XLoader loading={true} />
+                                        <XLoader loading={true} transparentBackground={true} />
                                     </XView>
                                 }
                             >
@@ -186,29 +187,29 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                         onClick={
                             !!options.length
                                 ? async () => {
-                                      if (props.isGroup) {
-                                          await (props.addMembers as any)({
-                                              variables: {
-                                                  roomId: props.id,
-                                                  invites: options.map(i => ({
-                                                      userId: i.value,
-                                                      role: RoomMemberRole.MEMBER,
-                                                  })),
-                                              },
-                                          });
-                                      } else if (props.isOrganization) {
-                                          await (props.addMembers as any)({
-                                              variables: {
-                                                  organizationId: props.id,
-                                                  userIds: options.map(i => i.value),
-                                              },
-                                          });
-                                      }
-                                      setSelectedUsers(null);
-                                      if (props.hide) {
-                                          props.hide();
-                                      }
-                                  }
+                                    if (props.isGroup) {
+                                        await (props.addMembers as any)({
+                                            variables: {
+                                                roomId: props.id,
+                                                invites: options.map(i => ({
+                                                    userId: i.value,
+                                                    role: RoomMemberRole.MEMBER,
+                                                })),
+                                            },
+                                        });
+                                    } else if (props.isOrganization) {
+                                        await (props.addMembers as any)({
+                                            variables: {
+                                                organizationId: props.id,
+                                                userIds: options.map(i => i.value),
+                                            },
+                                        });
+                                    }
+                                    setSelectedUsers(null);
+                                    if (props.hide) {
+                                        props.hide();
+                                    }
+                                }
                                 : undefined
                         }
                     />

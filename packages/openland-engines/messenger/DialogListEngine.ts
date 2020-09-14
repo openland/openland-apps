@@ -405,10 +405,15 @@ export class DialogListEngine {
                 id: conversationId,
             });
 
+            // Sorry universe. Temp fix for events received after leaving the chat
+            if (!info.room) {
+                return;
+            }
+
             let sharedRoom =
-                info.room!.__typename === 'SharedRoom' ? (info.room as RoomPico_room_SharedRoom) : null;
+                info.room.__typename === 'SharedRoom' ? (info.room as RoomPico_room_SharedRoom) : null;
             let privateRoom =
-                info.room!.__typename === 'PrivateRoom'
+                info.room.__typename === 'PrivateRoom'
                     ? (info.room as RoomNano_PrivateRoom)
                     : null;
             let room = (sharedRoom || privateRoom)!;

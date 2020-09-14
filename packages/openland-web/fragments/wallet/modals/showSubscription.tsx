@@ -66,7 +66,7 @@ export const showSubscription = (props: SubscriptionConverted, client: OpenlandC
                         photo={props.photo}
                         size='xx-large'
                     />}
-                    <XView marginTop={16}>
+                    <XView marginTop={16} color="var(--foregroundPrimary)">
                         <h2 className={TextTitle2}>
                             {props.title}
                         </h2>

@@ -11,7 +11,7 @@ export const IndexFragment = React.memo(() => {
     const client = useClient();
     let hubs = client.useChannels({ suspense: false });
     return (
-        <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
+        <XView width="100%" height="100%" flexDirection="column" alignItems="stretch" backgroundColor="var(--backgroundPrimary)">
             <USideHeader title="Channels" />
             <USearchInput
                 marginHorizontal={16}
@@ -36,7 +36,7 @@ export const IndexFragment = React.memo(() => {
                                 />
                             ))
                         )}
-                        <XView marginTop={16} height={1} backgroundColor="rgba(0,0,0,.15)" />
+                        <XView marginTop={16} height={1} backgroundColor="var(--border)" />
                         <UListItem
                             title="Drafts"
                             path={'/channels/drafts'}

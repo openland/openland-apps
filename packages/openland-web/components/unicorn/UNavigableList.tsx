@@ -56,22 +56,22 @@ function listStateReducer(state: ListState, action: ListStateAction): ListState 
 
 const itemStyle = css`
     display: flex;
-    background-color: #fff;
+    background-color: var(--backgroundSecondary);
     cursor: pointer;
     //&:hover {
-    //    background-color: #f0f2f5;
+    //    background-color: var(--backgroundTertiaryTrans);
     //}
     &:active {
-        background-color: #ebedf0;
+        background-color: var(--backgroundTertiaryHoverTrans);
     }
 `;
 
 const focusedStyle = css`
-    background-color: #f0f2f5;
+    background-color: var(--backgroundTertiaryHoverTrans);
 `;
 
 const nonSelectableStyle = css`
-    background-color: var(--backgroundPrimary)!important;
+    background-color: var(--backgroundSecondary)!important;
     cursor: initial;
 `;
 

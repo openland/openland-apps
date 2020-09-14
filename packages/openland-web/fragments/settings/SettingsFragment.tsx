@@ -49,7 +49,7 @@ const UserProfileCard = React.memo(() => {
                 hoverBackgroundColor="var(--backgroundPrimaryHover)"
                 selectedBackgroundColor="var(--accentMuted)"
                 selectedHoverBackgroundColor="var(--accentMutedHover)"
-                selectedColor="var(--foregroundContrast)"
+                selectedColor="var(--foregroundInverted)"
                 flexDirection="row"
                 paddingHorizontal={16}
                 paddingVertical={12}
@@ -72,7 +72,7 @@ const UserProfileCard = React.memo(() => {
                         <SelectableText
                             {...TextStyles.Body}
                             color="var(--foregroundSecondary)"
-                            selectedColor="var(--foregroundContrast)"
+                            selectedColor="var(--foregroundInverted)"
                         >
                             {data.email}
                         </SelectableText>
@@ -103,7 +103,7 @@ export const SettingsFragment = React.memo(() => {
     return (
         <>
             <AccountCounter />
-            <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
+            <XView width="100%" height="100%" flexDirection="column" alignItems="stretch" backgroundColor="var(--backgroundPrimary)">
                 <USideHeader title="Settings" />
                 <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} flexDirection="column">
                     <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>

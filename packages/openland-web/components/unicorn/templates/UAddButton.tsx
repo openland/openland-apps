@@ -11,7 +11,7 @@ interface UAddItemProps {
 
 export const UAddItem = React.memo((props: UAddItemProps & UListItemProps) => {
     const { title, onClick, active, style = 'primary', ...other } = props;
-    const iconColor = style === 'primary' ? 'var(--foregroundContrast)' : 'var(--foregroundSecondary)';
+    const iconColor = style === 'primary' ? 'var(--foregroundInverted)' : 'var(--foregroundSecondary)';
     const backgroundColor = style === 'primary' ? 'var(--accentPrimary)' : 'var(--backgroundTertiaryTrans)';
 
     return (

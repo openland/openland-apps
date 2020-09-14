@@ -73,7 +73,7 @@ const Button = React.memo((props: ButtonProps) => (
                 <div className={cx(iconBackround, 'stackLayoutPlaceholderIconBackground')} />
                 <div className={cx(icon, 'stackLayoutPlaceholderIcon')}>{props.icon}</div>
             </XView>
-            <XView marginTop={16}>
+            <XView marginTop={16} color="var(--foregroundPrimary)">
                 <span className={TextLabel1}>{props.text}</span>
             </XView>
         </XView>
@@ -97,7 +97,7 @@ export const MessengerPlaceholderFragment = React.memo(() => {
                 srcSet="//cdn.openland.com/shared/art/art-create@2x.png 2x, //cdn.openland.com/shared/art/art-create@3x.png 3x"
                 alt=""
             />
-            <XView marginTop={16}>
+            <XView marginTop={16} color="var(--foregroundPrimary)">
                 <h2 className={TextTitle1}>Pick a chat on the left</h2>
             </XView>
             <XView marginTop={8} color="var(--foregroundSecondary)">

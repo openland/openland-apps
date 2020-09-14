@@ -29,19 +29,19 @@ const dialogContainer = css`
 
 const dialogContainerWithHover = css`
     &:hover {
-        background-color: #f0f2f5;
+        background-color: var(--backgroundPrimaryHover);
     }
     
     &:hover .online-dot {
-        border-color: #f0f2f5;
+        border-color: var(--backgroundPrimaryHover);
     }
 `;
 
 const dialogHoveredContainer = css`
-    background-color: #f0f2f5;
+    background-color: var(--backgroundPrimaryHover);
     
     .online-dot {
-        border-color: #f0f2f5;
+        border-color: var(--backgroundPrimaryHover);
     }
 `;
 
@@ -91,7 +91,7 @@ const dialogTitleContent = css`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: #1c2229;
+    color: var(--foregroundPrimary);
 `;
 
 const dialogTitle = css`
@@ -113,7 +113,7 @@ const dialogDateContent = css`
     margin-left: 5px;
     white-space: nowrap;
     align-self: center;
-    color: #a9aeb8;
+    color: var(--foregroundTertiary);
 `;
 
 const dialogMessageContent = css`
@@ -124,11 +124,11 @@ const dialogMessageContent = css`
     height: 40px;
     min-width: 0;
     overflow: hidden;
-    color: #78808f;
+    color: var(--foregroundSecondary);
 `;
 
 const dialogActiveColor = css`
-    color: #fff;
+    color: var(--foregroundInverted);
 `;
 
 const dialogUnreadContainer = css`
@@ -158,6 +158,10 @@ const mentionContainer = css`
     /* override UIcon's white fill */
     & svg path {
         fill: none;
+    }
+    & svg path,
+    & svg circle {
+        stroke: var(--foregroundInverted);
     }
 `;
 
@@ -290,7 +294,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                         {active => (
                             <UIcon
                                 icon={<IcReply className={replyIconStyle} />}
-                                color={active ? '#fff' : '#78808f'}
+                                color={active ? 'var(--foregroundInverted)' : 'var(--foregroundSecondary)'}
                             />
                         )}
                     </XViewSelectedContext.Consumer>
@@ -355,7 +359,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                             <div className={cx(dialogIconContainer, lockContainer)}>
                                                 <UIcon
                                                     icon={<IcLock />}
-                                                    color={active ? '#fff' : '#36b36a'}
+                                                    color={active ? 'var(--foregroundInverted)' : 'var(--accentPositive)'}
                                                 />
                                             </div>
                                         )}

@@ -18,6 +18,7 @@ export const useTabs = (config: (string | [string, (number | null)?])[], initial
 interface TabsProps {
     tabs: TabItem[];
     showTabLine?: boolean;
+    hideEmpty?: boolean;
     setSelected: (tabKey: String) => void;
 }
 
@@ -77,10 +78,11 @@ export const Tabs = React.memo((props: TabsProps & XViewProps) => {
             }
         }
     }, [props.selected, props.tabs]);
+
     return (
         <XView flexDirection="row" height={56} {...style}>
             {showTabLine && <div ref={lineRef} className={TabLineClass} />}
-            {tabs.map((t, i) => <Tab key={t.title} innerRef={refs[i]} {...t} setSelected={setSelected} />)}
+            {tabs.map((t, i) => t.counter || !props.hideEmpty ? <Tab key={t.title} innerRef={refs[i]} {...t} setSelected={setSelected} /> : null)}
         </XView>
     );
 });

@@ -25,7 +25,7 @@ const balanceWrapper = css`
     margin: 16px 16px 0;
     height: 80px;
     border-radius: 8px;
-    background: linear-gradient(180deg, rgba(242, 243, 245, 0.56) 0%, #F2F3F5 100%);
+    background: linear-gradient(180deg, var(--backgroundTertiaryTrans) 0%, var(--backgroundTertiary) 100%);
 `;
 
 export const WalletFragment = React.memo(() => {
@@ -52,7 +52,7 @@ export const WalletFragment = React.memo(() => {
             <div className={cx('x', balanceWrapper)}>
                 <XView flexDirection="column">
                     <XView
-                        {...TextStyles.Title2}
+                        {...TextStyles.Title3}
                         color={'var(--foregroundPrimary)'}
                     >
                         <Money amount={balance} />

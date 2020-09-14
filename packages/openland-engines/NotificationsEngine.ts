@@ -36,16 +36,10 @@ export class NotificationsEngine {
 
     handleIncomingNotification = async (comment: NotificationsDataSourceItem) => {
         let settings = (await this.engine.client.querySettings())!.settings;
-
-        if ((AppConfig.getPlatform() === 'mobile' && settings.mobile.comments.sound) || (AppConfig.getPlatform() === 'desktop' && settings.desktop.comments.sound)) {
-            AppNotifications.playIncomingSound();
-        }
-
-        if (AppConfig.getPlatform() === 'mobile' && !settings.mobile.comments.showNotification) {
-            return;
-        } else if (AppConfig.getPlatform() === 'desktop' && !settings.desktop.comments.showNotification) {
-            return;
-        }
+        const silent = (AppConfig.getPlatform() === 'mobile' && !settings.mobile.comments.sound) ||
+            (AppConfig.getPlatform() === 'desktop' && !settings.desktop.comments.sound);
+        const soundOnly = (AppConfig.getPlatform() === 'mobile' && !settings.mobile.comments.showNotification) ||
+            (AppConfig.getPlatform() === 'desktop' && !settings.desktop.comments.showNotification);
 
         const { key, sender, peerRootId, text, fallback, room } = comment;
         const path = '/message/' + peerRootId + (!!comment.id ? ('/comment/' + comment.id) : '');
@@ -57,7 +51,9 @@ export class NotificationsEngine {
                 path,
                 image: sender.photo || undefined,
                 id: doSimpleHash(key).toString(),
-                replace: false
+                replace: false,
+                silent,
+                soundOnly
             });
         } else {
             AppNotifications.displayNotification({
@@ -66,7 +62,9 @@ export class NotificationsEngine {
                 path,
                 image: sender.photo || undefined,
                 id: doSimpleHash(key).toString(),
-                replace: false
+                replace: false,
+                silent,
+                soundOnly
             });
         }
     }
@@ -81,16 +79,10 @@ export class NotificationsEngine {
         let conversationId = privateRoom ? privateRoom.user.id : sharedRoom!.id;
         let message = msg.message || msg.fallback;
 
-        if ((AppConfig.getPlatform() === 'mobile' && !event.silent.mobile) ||
-            (AppConfig.getPlatform() === 'desktop' && !event.silent.desktop)) {
-            AppNotifications.playIncomingSound();
-        }
-
-        if (AppConfig.getPlatform() === 'mobile' && !event.showNotification.mobile) {
-            return;
-        } else if (AppConfig.getPlatform() === 'desktop' && !event.showNotification.desktop) {
-            return;
-        }
+        const silent = (AppConfig.getPlatform() === 'mobile' && event.silent.mobile) ||
+            (AppConfig.getPlatform() === 'desktop' && event.silent.desktop);
+        const soundOnly = (AppConfig.getPlatform() === 'mobile' && !event.showNotification.mobile) ||
+            (AppConfig.getPlatform() === 'desktop' && !event.showNotification.desktop);
 
         if (sharedRoom) {
             AppNotifications.displayNotification({
@@ -99,6 +91,8 @@ export class NotificationsEngine {
                 path: '/mail/' + cid,
                 image: msg.sender.photo || '',
                 id: doSimpleHash(cid).toString(),
+                silent,
+                soundOnly
             });
         } else if (privateRoom) {
             AppNotifications.displayNotification({
@@ -107,6 +101,8 @@ export class NotificationsEngine {
                 path: '/mail/' + conversationId,
                 image: msg.sender.photo || '',
                 id: doSimpleHash(cid).toString(),
+                silent,
+                soundOnly
             });
         }
     }

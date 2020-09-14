@@ -172,8 +172,8 @@ export const UserPopperContent = React.memo(
                                 lineHeight={1.41}
                                 fontWeight="600"
                                 flexDirection="row"
-                                color="rgba(0, 0, 0, 0.9)"
-                                hoverColor="#1790ff"
+                                color="var(--foregroundPrimary)"
+                                hoverColor="var(--accentPrimary)"
                                 cursor="pointer"
                                 alignSelf="flex-start"
                                 onClick={(e: React.MouseEvent) => {

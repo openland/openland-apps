@@ -122,7 +122,7 @@ export const ContactProfileFragment = React.memo((props: { id?: string }) => {
                             active={true}
                             icon={<NotificationsIcon />}
                             rippleColor="var(--accentPrimary)"
-                            color="var(--foregroundContrast)"
+                            color="var(--foregroundInverted)"
                             marginRight={16}
                         />
                     )}

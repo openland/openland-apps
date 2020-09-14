@@ -78,6 +78,15 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
             })
             .show();
     }, [state]);
+    const save = React.useCallback(async () => {
+        if (state.action !== 'selected') {
+            return;
+        }
+
+        await getMessenger().handleSaveMessages(state.messages.map((m) => m.id!));
+
+        clear();
+    }, [state]);
     const forward = useForward(props.chat.id, props.chat.__typename === 'PrivateRoom' ? props.chat.user.id : undefined);
     let height = 52;
 
@@ -119,6 +128,24 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
                     </View>
                 </TouchableOpacity>
             </View>
+            {!props.conversation.isSavedMessage && (
+                <View flexGrow={1}>
+                    <TouchableOpacity onPress={save} disabled={isForwardDisabled}>
+                        <View
+                            style={{
+                                height: height,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <Image
+                                source={require('assets/ic-bookmark-24.png')}
+                                style={{ tintColor: theme.foregroundSecondary }}
+                            />
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            )}
             <View flexGrow={1}>
                 <TouchableOpacity onPress={() => forward()} disabled={isForwardDisabled}>
                     <View

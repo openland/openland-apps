@@ -18,6 +18,9 @@ fragment OrganizationProfileFragment on OrganizationProfile {
     linkedin
     instagram
     shortname
+    applyLink
+    applyLinkEnabled
+    autosubscribeRooms
     isCommunity: alphaIsCommunity
     private: alphaIsPrivate
     featured: alphaFeatured
@@ -41,6 +44,11 @@ fragment OrganizationFragment on Organization {
     linkedin
     instagram
     membersCount
+    applyLink
+    applyLinkEnabled
+    owner {
+        id
+    }
     private: alphaIsPrivate
     isOwner: betaIsOwner
     isAdmin: betaIsAdmin

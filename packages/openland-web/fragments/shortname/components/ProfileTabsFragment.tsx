@@ -2,9 +2,11 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 
 import { useClient } from 'openland-api/useClient';
-import { SharedMediaType } from 'openland-api/spacex.types';
+import { RoomChat_room_SharedRoom, SharedMediaType } from 'openland-api/spacex.types';
 import { useTabs, Tabs } from 'openland-web/components/unicorn/UTabs';
 import { SharedMedia } from 'openland-web/fragments/chat/sharedMedia/SharedMediaFragment';
+import { ProfileLayoutContext } from 'openland-web/components/ProfileLayout';
+import { GroupMembers } from 'openland-web/fragments/group/components/GroupMembers';
 
 interface Paginated {
     loadMore: () => void;
@@ -12,17 +14,25 @@ interface Paginated {
 
 interface ProfileSharedMediaProps {
     chatId: string;
-    bottomReached: boolean;
+    group?: RoomChat_room_SharedRoom;
 }
 
-export const ProfileSharedMediaFragment = React.memo(({ chatId, bottomReached }: ProfileSharedMediaProps) => {
+export const ProfileTabsFragment = React.memo(({ chatId, group }: ProfileSharedMediaProps) => {
     const client = useClient();
+    const { bottomReached } = React.useContext(ProfileLayoutContext);
     const counters = client.useSharedMediaCounters({ chatId }, { suspense: false });
-    const [items, selected, setSelected] = useTabs([
+
+    const tabs: [string, (number | null)][] = [
         ['Media', counters && (counters.counters.images)],
         ['Files', counters && counters.counters.documents + counters.counters.videos],
         ['Links', counters && counters.counters.links]
-    ]);
+    ];
+
+    if (group) {
+        tabs.unshift(['Members', group.membersCount]);
+    }
+
+    const [items, selected, setSelected] = useTabs(tabs);
     const paginatedMedia = React.useRef<Paginated>(null);
     const paginatedFiles = React.useRef<Paginated>(null);
     const paginatedLinks = React.useRef<Paginated>(null);
@@ -36,8 +46,9 @@ export const ProfileSharedMediaFragment = React.memo(({ chatId, bottomReached }:
     return (
         <XView marginLeft={7}>
             <XView flexDirection="row" height={56} flexGrow={1}>
-                <Tabs tabs={items} setSelected={setSelected} justifyContent="flex-end" />
+                <Tabs tabs={items} setSelected={setSelected} justifyContent="flex-end" hideEmpty={true} />
             </XView>
+            {selected === 'Members' && group && <GroupMembers group={group} />}
             <SharedMedia active={selected === 'Media'} mediaTypes={[SharedMediaType.IMAGE]} ref={paginatedMedia} chatId={chatId} profileView={true} />
             {/* keep video in files until backend start sending video previews */}
             <SharedMedia active={selected === 'Files'} mediaTypes={[SharedMediaType.DOCUMENT, SharedMediaType.VIDEO]} ref={paginatedFiles} chatId={chatId} profileView={true} />

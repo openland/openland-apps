@@ -16,27 +16,34 @@ class NotificationCenterHandlersClass {
         }
     }
 
-    handleLongPress = (id: string, item: NotificationsDataSourceItem) => {
+    toggleSubscription = async (peerRootId: string, isSubscribed: boolean | undefined) => {
         const client = getClient();
+        const loader = Toast.loader();
+        loader.show();
+        try {
+            if (isSubscribed) {
+                await client.mutateUnSubscribeFromComments({ peerId: peerRootId });
+            } else {
+                await client.mutateSubscribeToComments({ peerId: peerRootId, type: CommentSubscriptionType.ALL });
+            }
+            Toast.showSuccess(isSubscribed ? 'Unfollowed' : 'Followed');
+        } catch (e) {
+            console.warn(e);
+        } finally {
+            loader.hide();
+        }
+    }
+
+    handleLongPress = (id: string, item: NotificationsDataSourceItem) => {
         const builder = new ActionSheetBuilder();
 
         if (item.notificationType !== 'unsupported' && item.peerRootId) {
-            builder.action(item.isSubscribedMessageComments ? 'Unfollow thread' : 'Follow thread', async () => {
-                const loader = Toast.loader();
-                loader.show();
-                try {
-                    if (item.isSubscribedMessageComments) {
-                        await client.mutateUnSubscribeFromComments({ peerId: item.peerRootId! });
-                    } else {
-                        await client.mutateSubscribeToComments({ peerId: item.peerRootId!, type: CommentSubscriptionType.ALL });
-                    }
-                    Toast.showSuccess(item.isSubscribedMessageComments ? 'Unfollowed' : 'Followed');
-                } catch (e) {
-                    console.warn(e);
-                } finally {
-                    loader.hide();
-                }
-            }, false, item.isSubscribedMessageComments ? require('assets/ic-follow-off-24.png') : require('assets/ic-follow-24.png'));
+            builder.action(
+                item.isSubscribedMessageComments ? 'Unfollow thread' : 'Follow thread',
+                () => this.toggleSubscription(item.peerRootId!, item.isSubscribedMessageComments),
+                false,
+                item.isSubscribedMessageComments ? require('assets/ic-follow-off-24.png') : require('assets/ic-follow-24.png')
+            );
         }
 
         builder.action('Clear', async () => {

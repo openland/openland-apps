@@ -274,6 +274,7 @@ export class ConversationEngine implements MessageSendHandler {
     isPrivate?: boolean;
     user?: Types.ChatInit_room_PrivateRoom_user;
     badge?: UserBadge;
+    isSavedMessage?: boolean;
 
     constructor(engine: MessengerEngine, conversationId: string, onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void) {
         this.engine = engine;
@@ -360,6 +361,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.isPrivate = initialChat.room && initialChat.room.__typename === 'PrivateRoom' ? true : false;
         if (initialChat.room && initialChat.room.__typename === 'PrivateRoom') {
             this.user = initialChat.room.user;
+            this.isSavedMessage = initialChat.room.user.id === this.engine.user.id;
         }
 
         this.state = new ConversationState(false, messages, this.groupMessages(messages), this.state.typing, this.state.loadingHistory, !!this.historyFullyLoaded, this.state.loadingForward, !!this.forwardFullyLoaded);

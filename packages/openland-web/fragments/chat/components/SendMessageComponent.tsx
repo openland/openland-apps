@@ -122,7 +122,7 @@ const mentionsContainer = css`
     position: absolute;
     bottom: calc(100% + 16px);
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
-    background-color: white;
+    background-color: var(--backgroundSecondary);
     border-radius: 8px;
     opacity: 0;
     transform: translateY(10px);
@@ -593,6 +593,8 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
         [props.onStickerSent],
     );
 
+    const lockRef = React.useRef(false);
+
     const onPressEnter = React.useCallback(
         async () => {
             let s = suggestRef.current;
@@ -602,19 +604,19 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 }
             }
             let ed = ref.current;
-            if (ed) {
+            if (ed && !lockRef.current) {
+                lockRef.current = true;
+
                 let text = ed.getText();
 
                 if (text.length > 0) {
                     if (props.onTextSentAsync) {
                         setLoading(true);
-                        ed.disable();
                         // clear input only if onTextSentAsync return true
                         if (await props.onTextSentAsync(text)) {
                             ed.clear();
                         }
                         setLoading(false);
-                        ed.enable();
                         ed.focus();
                     } else if (props.onTextSent) {
                         // clear input only if onTextSent return true
@@ -624,6 +626,8 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                         ed.focus();
                     }
                 }
+
+                lockRef.current = false;
             }
             return true;
         },

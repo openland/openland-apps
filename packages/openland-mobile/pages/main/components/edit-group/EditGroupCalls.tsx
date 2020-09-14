@@ -14,31 +14,59 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
 import { CheckListBoxWraper } from '../../modals/UserMultiplePicker';
+import Toast from 'openland-mobile/components/Toast';
+import { RoomCallsMode } from 'openland-api/spacex.types';
+import { matchLinks } from 'openland-y-utils/TextProcessor';
 
 const EditGroupCallsComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const roomId = props.router.params.id;
     const client = getClient();
-    const group = client.useRoomChat({ id: roomId }, { fetchPolicy: 'cache-and-network' }).room;
+    const group = client.useRoomChat({ id: roomId }).room;
 
-    if (!group) {
+    if (!group || group.__typename === 'PrivateRoom') {
         return null;
     }
-    const [value, setValue] = React.useState<'standart' | 'custom' | 'none'>('standart');
+    const [mode, setMode] = React.useState<RoomCallsMode>(group.callSettings.mode);
     const form = useForm();
-    const customLinkField = useField('custom-link', '', form);
+    const customLinkField = useField('custom-link', group.callSettings.callLink || '', form, [
+        {
+            text: 'Enter a valid link',
+            checkIsValid: (str) => {
+                let match = matchLinks(str);
+                return !!match;
+            }
+        }
+    ]);
 
-    const handleSave = () =>
+    const handleSave = () => {
+        let callLink = customLinkField.value.trim();
+        if (customLinkField.input.invalid) {
+            return;
+        }
         form.doAction(async () => {
             try {
-
-                await client.refetchRoomChat({ id: props.router.params.id });
+                let variables = {
+                    roomId,
+                    input: {
+                        callSettings: {
+                            mode,
+                            ...callLink !== '' && { callLink }
+                        }
+                    }
+                };
+                await client.mutateRoomUpdate(variables);
+                await Promise.all([
+                    client.refetchRoomChat({ id: roomId }),
+                    client.refetchRoomTiny({ id: roomId }),
+                ]);
+                Toast.success({ duration: 1000 }).show();
                 props.router.back();
             } catch (e) {
-                console.warn('error', e);
-                // TODO: failure toast
+                Toast.failure({ text: 'Something went wrong', duration: 1000 });
             }
         });
+    };
 
     return (
         <>
@@ -94,26 +122,26 @@ const EditGroupCallsComponent = React.memo((props: PageProps) => {
                     </View>
                 </LinearGradient>
                 <ZListGroup header={null}>
-                    <CheckListBoxWraper isRadio={true} checked={value === 'standart'}>
+                    <CheckListBoxWraper isRadio={true} checked={mode === RoomCallsMode.STANDARD}>
                         <ZListItem
-                            text="Standart Openland calls"
-                            onPress={() => setValue('standart')}
+                            text="Standard Openland calls"
+                            onPress={() => setMode(RoomCallsMode.STANDARD)}
                         />
                     </CheckListBoxWraper>
-                    <CheckListBoxWraper isRadio={true} checked={value === 'custom'}>
+                    <CheckListBoxWraper isRadio={true} checked={mode === RoomCallsMode.LINK}>
                         <ZListItem
                             text="Custom call link"
-                            onPress={() => setValue('custom')}
+                            onPress={() => setMode(RoomCallsMode.LINK)}
                         />
                     </CheckListBoxWraper>
-                    <CheckListBoxWraper isRadio={true} checked={value === 'none'}>
+                    <CheckListBoxWraper isRadio={true} checked={mode === RoomCallsMode.DISABLED}>
                         <ZListItem
                             text="No calls"
-                            onPress={() => setValue('none')}
+                            onPress={() => setMode(RoomCallsMode.DISABLED)}
                         />
                     </CheckListBoxWraper>
                 </ZListGroup>
-                {value === 'custom' && (
+                {mode === RoomCallsMode.LINK && (
                     <View paddingHorizontal={16}>
                         <ZInput placeholder="Call link" field={customLinkField} noWrapper={true} autoFocus={true} />
                         <Text style={{ ...TextStyles.Caption, color: theme.foregroundTertiary, marginTop: 8, paddingHorizontal: 16 }}>

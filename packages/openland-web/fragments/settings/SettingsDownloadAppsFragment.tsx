@@ -52,7 +52,7 @@ const AppCategory = (props: AppCategoryProps) => (
         marginRight={props.marginRight}
         height={300}
     >
-        <XView fontWeight="600" color="#000" fontSize={17}>
+        <XView fontWeight="600" color="var(--foregroundPrimary)" fontSize={17}>
             {props.title}
         </XView>
         <XView
@@ -231,7 +231,7 @@ export const DownloadAppsComponent = (props: NativaAppsModalProps) => {
                 <XView
                     fontSize={22}
                     fontWeight="600"
-                    color="#000"
+                    color="var(--foregroundPrimary)"
                     width="100%"
                     flexDirection="row"
                     alignItems="center"
@@ -242,7 +242,7 @@ export const DownloadAppsComponent = (props: NativaAppsModalProps) => {
                 </XView>
                 <XView
                     fontSize={15}
-                    color="#000"
+                    color="var(--foregroundPrimary)"
                     width="100%"
                     flexDirection="row"
                     alignItems="center"
@@ -325,7 +325,7 @@ export const DownloadAppsComponent = (props: NativaAppsModalProps) => {
 
 export const DownloadAppsFragment = React.memo(() => (
     <Page track="account_apps">
-        <UHeader documentTitle="Download apps"/>
+        <UHeader documentTitle="Download apps" />
         <DownloadAppsComponent onSettingPage={true} />
     </Page>
 ));

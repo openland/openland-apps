@@ -73,7 +73,7 @@ export const DialogsFragment = React.memo(() => {
     return (
         <>
             <DialogsCounter />
-            <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
+            <XView width="100%" height="100%" flexDirection="column" alignItems="stretch" backgroundColor="var(--backgroundPrimary)">
                 <USideHeader title="Chats">
                     <NotificationsButton />
                     <div onClick={() => showCreatingGroupFragment({ entityType: 'group' })}>

@@ -79,7 +79,7 @@ const modalInfoContainer = css`
 `;
 
 const modalSecondaryText = css`
-    color: var(--backgroundPrimary);
+    color: var(--foregroundContrast);
     margin-right: 12px;
 `;
 
@@ -363,10 +363,10 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const sender = viewerState
         ? viewerState.current.senderName
         : props.senderNameEmojify
-        ? props.senderNameEmojify
-        : props.sender
-        ? emoji(props.sender.name)
-        : '';
+            ? props.senderNameEmojify
+            : props.sender
+                ? emoji(props.sender.name)
+                : '';
 
     const date = viewerState ? viewerState.current.date : props.date;
     const downloadLink =
@@ -378,7 +378,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
 
     const url = `https://ucarecdn.com/${
         viewerState ? viewerState.current.fileId : props.fileId
-    }/-/format/auto/-/`;
+        }/-/format/auto/-/`;
 
     const layoutModal = layoutMedia(
         viewerState ? viewerState.current.imageWidth : props.imageWidth,
@@ -455,7 +455,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                         href={downloadLink}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <UIcon icon={<IcDownload />} color="var(--backgroundPrimary)" />
+                        <UIcon icon={<IcDownload />} color="var(--foregroundContrast)" />
                     </a>
                     <div
                         className={modalButtonStyle}
@@ -464,10 +464,10 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                             forwardCallback();
                         }}
                     >
-                        <UIcon icon={<IcForward />} color="var(--backgroundPrimary)" />
+                        <UIcon icon={<IcForward />} color="var(--foregroundContrast)" />
                     </div>
                     <div className={modalButtonStyle} onClick={props.hide}>
-                        <UIcon icon={<IcClose />} color="var(--backgroundPrimary)" />
+                        <UIcon icon={<IcClose />} color="var(--foregroundContrast)" />
                     </div>
                 </div>
             </div>
@@ -517,7 +517,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                         onPrevClick();
                     }}
                 >
-                    <UIcon icon={<IcLeft />} color={'var(--backgroundPrimary)'} />
+                    <UIcon icon={<IcLeft />} color={'var(--foregroundContrast)'} />
                 </div>
             )}
             {viewerState && viewerState.hasNextPage && (
@@ -528,7 +528,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                         onNextClick();
                     }}
                 >
-                    <UIcon icon={<IcRight />} color={'var(--backgroundPrimary)'} />
+                    <UIcon icon={<IcRight />} color={'var(--foregroundContrast)'} />
                 </div>
             )}
         </div>

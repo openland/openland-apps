@@ -88,7 +88,7 @@ export const ListingCompact = React.memo((props: ListingCompactProps) => {
             <XView marginTop={16} paddingHorizontal={16} alignItems="flex-start">
                 {props.title && (
                     <div className={titleContainer}>
-                        <XView flexDirection="row" alignItems="center" onClick={onClick}>
+                        <XView flexDirection="row" alignItems="center" onClick={onClick} color="var(--foregroundPrimary)">
                             <h2 className={TextTitle3}>{props.title}</h2>
                             <span className={iconContainer}>
                                 <ArrowRight />

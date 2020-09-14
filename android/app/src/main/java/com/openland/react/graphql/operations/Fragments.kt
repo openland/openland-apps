@@ -556,6 +556,11 @@ internal val RoomShortSelector = obj(
                         field("firstName", "firstName", notNull(scalar("String"))),
                         field("isYou", "isYou", notNull(scalar("Boolean")))
                     )),
+                field("callSettings", "callSettings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("mode", "mode", notNull(scalar("String"))),
+                        field("callLink", "callLink", scalar("String"))
+                    ))),
                 field("repliesEnabled", "repliesEnabled", notNull(scalar("Boolean")))
             ))
         )
@@ -1283,6 +1288,12 @@ internal val OrganizationFragmentSelector = obj(
             field("linkedin", "linkedin", scalar("String")),
             field("instagram", "instagram", scalar("String")),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("applyLink", "applyLink", scalar("String")),
+            field("applyLinkEnabled", "applyLinkEnabled", notNull(scalar("Boolean"))),
+            field("owner", "owner", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
+                ))),
             field("alphaIsPrivate", "private", notNull(scalar("Boolean"))),
             field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
             field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
@@ -1331,6 +1342,9 @@ internal val OrganizationProfileFragmentSelector = obj(
             field("linkedin", "linkedin", scalar("String")),
             field("instagram", "instagram", scalar("String")),
             field("shortname", "shortname", scalar("String")),
+            field("applyLink", "applyLink", scalar("String")),
+            field("applyLinkEnabled", "applyLinkEnabled", notNull(scalar("Boolean"))),
+            field("autosubscribeRooms", "autosubscribeRooms", notNull(list(notNull(scalar("ID"))))),
             field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
             field("alphaIsPrivate", "private", notNull(scalar("Boolean"))),
             field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
@@ -1571,9 +1585,11 @@ internal val UserFullSelector = obj(
             field("lastName", "lastName", scalar("String")),
             field("photo", "photo", scalar("String")),
             field("phone", "phone", scalar("String")),
+            field("birthDay", "birthDay", scalar("Date")),
             field("email", "email", scalar("String")),
             field("website", "website", scalar("String")),
             field("about", "about", scalar("String")),
+            field("birthDay", "birthDay", scalar("Date")),
             field("location", "location", scalar("String")),
             field("isBot", "isBot", notNull(scalar("Boolean"))),
             field("isDeleted", "isDeleted", notNull(scalar("Boolean"))),

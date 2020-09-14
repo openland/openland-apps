@@ -13,6 +13,7 @@ const field = css`
     background-color: var(--backgroundTertiaryTrans);
     border-radius: 8px;
     padding: 8px 40px 8px 36px;
+    color: var(--foregroundPrimary);
 
     &:hover {
         background-color: var(--backgroundTertiaryHoverTrans);

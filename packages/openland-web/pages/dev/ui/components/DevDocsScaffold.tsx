@@ -20,7 +20,7 @@ export function DevDocsScaffold(props: {
             {props.title !== undefined && <XDocumentHead title={props.title} />}
             <XDialogProviderComponent />
 
-            <XView flexGrow={1} flexDirection="row">
+            <XView flexGrow={1} flexDirection="row" color="var(--foregroundPrimary)">
                 {props.hideSidebar !== true && (
                     <XView width="300px" backgroundColor="var(--backgroundTertiary)">
                         <UListGroup header="UI">
@@ -40,7 +40,7 @@ export function DevDocsScaffold(props: {
                         </UListGroup>
                     </XView>
                 )}
-                <XView flexGrow={1}>
+                <XView flexGrow={1} backgroundColor="var(--backgroundPrimary)">
                     <Page track={'DevDocsScaffold'} scroll="enable">
                         {props.title !== undefined && <UListHeader text={props.title} />}
                         <XView paddingHorizontal={16} flexGrow={1}>

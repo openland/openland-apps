@@ -53,7 +53,7 @@ const buttonAddPrimaryStyle = css`
         background-color: var(--accentPrimaryActive);
     }
     & path {
-        fill: var(--foregroundContrast);
+        fill: var(--foregroundInverted);
     }
 `;
 

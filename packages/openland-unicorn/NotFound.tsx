@@ -11,14 +11,14 @@ export const NotFound = React.memo(() => (
             src="/static/X/illustration-error.png"
             srcSet="/static/X/illustration-error@2x.png 2x"
         />
-        <XView marginBottom={8}>
+        <XView marginBottom={8} color="var(--foregroundPrimary)">
             <span className={TextTitle1}>
                 Content is unavailable
             </span>
         </XView>
         <XView color="var(--foregroundSecondary)">
             <p className={TextBody}>
-                This content doesn’t exist or you don’t have an access            
+                This content doesn’t exist or you don’t have an access
             </p>
         </XView>
     </XView>

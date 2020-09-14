@@ -4,7 +4,7 @@ import { TabRouter } from './TabRouter';
 import { css } from 'linaria';
 
 const counterStyle = css`
-    background-color: #E62E3D;
+    background-color: #F23051;
     border: 2px solid #fff;
     position: absolute;
     top: 8px;
@@ -16,12 +16,13 @@ const counterStyle = css`
     display: flex;
     color: white;
     font-size: 10px;
-    line-height: 16px;
+    line-height: 12px;
     text-align: center;
-    font-weight: 600;
+    font-weight: 700;
     border-radius: 20px;
     padding-left: 4px;
     padding-right: 4px;
+    letter-spacing: 0.25px;
 `;
 
 export const TabBarMobile = React.memo((props: {

@@ -56,7 +56,7 @@ const bannerContentWrapper = css`
     width: 400px;
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.08), 0px 0px 48px rgba(0, 0, 0, 0.04);
     border-radius: 12px;
-    background-color: var(--backgroundPrimary);
+    background-color: var(--backgroundSecondary);
     padding: 24px;
     position: relative;
 `;

@@ -40,6 +40,7 @@ const content = css`
 
 const replyWrapper = css`
     border-left: 2px solid var(--foregroundQuaternary);
+    color: var(--foregroundPrimary);
     margin: 4px 0;
     padding-left: 12px;
     white-space: nowrap;

@@ -301,6 +301,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryRoomSocialImage(variables: Types.RoomSocialImageVariables, params?: QueryParameters): Promise<Types.RoomSocialImage> {
         return this.query('RoomSocialImage', variables, params);
     }
+    queryRoomSuper(variables: Types.RoomSuperVariables, params?: QueryParameters): Promise<Types.RoomSuper> {
+        return this.query('RoomSuper', variables, params);
+    }
     queryRoomTiny(variables: Types.RoomTinyVariables, params?: QueryParameters): Promise<Types.RoomTiny> {
         return this.query('RoomTiny', variables, params);
     }
@@ -652,6 +655,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchRoomSocialImage(variables: Types.RoomSocialImageVariables, params?: QueryParameters): Promise<Types.RoomSocialImage> {
         return this.refetch('RoomSocialImage', variables, params);
     }
+    refetchRoomSuper(variables: Types.RoomSuperVariables, params?: QueryParameters): Promise<Types.RoomSuper> {
+        return this.refetch('RoomSuper', variables, params);
+    }
     refetchRoomTiny(variables: Types.RoomTinyVariables, params?: QueryParameters): Promise<Types.RoomTiny> {
         return this.refetch('RoomTiny', variables, params);
     }
@@ -1002,6 +1008,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateRoomSocialImage(variables: Types.RoomSocialImageVariables, updater: (data: Types.RoomSocialImage) => Types.RoomSocialImage | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomSocialImage', variables);
+    }
+    updateRoomSuper(variables: Types.RoomSuperVariables, updater: (data: Types.RoomSuper) => Types.RoomSuper | null): Promise<boolean> {
+        return this.updateQuery(updater, 'RoomSuper', variables);
     }
     updateRoomTiny(variables: Types.RoomTinyVariables, updater: (data: Types.RoomTiny) => Types.RoomTiny | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomTiny', variables);
@@ -1548,6 +1557,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useRoomSocialImage(variables: Types.RoomSocialImageVariables, params?: SpaceQueryWatchParameters): Types.RoomSocialImage | null {
         return this.useQuery('RoomSocialImage', variables, params);
     }
+    useRoomSuper(variables: Types.RoomSuperVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomSuper | null;
+    useRoomSuper(variables: Types.RoomSuperVariables, params?: SpaceQueryWatchParameters): Types.RoomSuper;
+    useRoomSuper(variables: Types.RoomSuperVariables, params?: SpaceQueryWatchParameters): Types.RoomSuper | null {
+        return this.useQuery('RoomSuper', variables, params);
+    }
     useRoomTiny(variables: Types.RoomTinyVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomTiny | null;
     useRoomTiny(variables: Types.RoomTinyVariables, params?: SpaceQueryWatchParameters): Types.RoomTiny;
     useRoomTiny(variables: Types.RoomTinyVariables, params?: SpaceQueryWatchParameters): Types.RoomTiny | null {
@@ -1875,6 +1889,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateRoomAddMembers(variables: Types.RoomAddMembersVariables, params?: MutationParameters): Promise<Types.RoomAddMembers> {
         return this.mutate('RoomAddMembers', variables, params);
+    }
+    mutateRoomAlterFeatured(variables: Types.RoomAlterFeaturedVariables, params?: MutationParameters): Promise<Types.RoomAlterFeatured> {
+        return this.mutate('RoomAlterFeatured', variables, params);
     }
     mutateRoomChangeRole(variables: Types.RoomChangeRoleVariables, params?: MutationParameters): Promise<Types.RoomChangeRole> {
         return this.mutate('RoomChangeRole', variables, params);

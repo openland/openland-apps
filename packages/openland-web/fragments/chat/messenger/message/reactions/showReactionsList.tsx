@@ -73,18 +73,18 @@ export const ReactionItemUser = (props: {
     user: MessageUsersReactions_user;
     onClick: () => void;
 }) => (
-    <div className={userContainer} onClick={props.onClick}>
-        <UAvatar
-            id={props.user.id}
-            title={props.user.name}
-            photo={props.user.photo}
-            size="x-small"
-        />
-        <div className={userDataWrap}>
-            <div className={cx(userName, TextLabel1)}>{emoji(props.user.name)}</div>
+        <div className={userContainer} onClick={props.onClick}>
+            <UAvatar
+                id={props.user.id}
+                title={props.user.name}
+                photo={props.user.photo}
+                size="x-small"
+            />
+            <div className={userDataWrap}>
+                <div className={cx(userName, TextLabel1)}>{emoji(props.user.name)}</div>
+            </div>
         </div>
-    </div>
-);
+    );
 
 interface ReactionsListProps {
     hide: () => void;
@@ -104,13 +104,13 @@ const ReactionsList = React.memo((props: ReactionsListProps) => {
 
     const data: DataType = isComment
         ? client.useCommentFullReactions(
-              { id: mId },
-              { fetchPolicy: 'network-only', suspense: false },
-          )
+            { id: mId },
+            { fetchPolicy: 'network-only', suspense: false },
+        )
         : client.useMessageFullReactions(
-              { id: mId },
-              { fetchPolicy: 'network-only', suspense: false },
-          );
+            { id: mId },
+            { fetchPolicy: 'network-only', suspense: false },
+        );
 
     React.useLayoutEffect(() => {
         if (data) {
@@ -127,7 +127,7 @@ const ReactionsList = React.memo((props: ReactionsListProps) => {
     if (!message || loading) {
         return (
             <XView flexGrow={1} flexShrink={0} height={50}>
-                <XLoader loading={true} />
+                <XLoader loading={true} transparentBackground={true} />
             </XView>
         );
     }
@@ -144,10 +144,10 @@ const ReactionsList = React.memo((props: ReactionsListProps) => {
     let reactions: MessageUsersReactions[] = generalMessage
         ? generalMessage.reactions
         : stickerMessage
-        ? stickerMessage.reactions
-        : commentMessage
-        ? commentMessage.comment.reactions
-        : [];
+            ? stickerMessage.reactions
+            : commentMessage
+                ? commentMessage.comment.reactions
+                : [];
 
     let reactionList: { [key: string]: MessageUsersReactions_user[] } = {};
 

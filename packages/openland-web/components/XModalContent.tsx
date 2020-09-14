@@ -8,6 +8,7 @@ export const XModalContent = React.memo<XViewProps>(props => {
             flexDirection="column"
             paddingHorizontal={24}
             paddingBottom={24}
+            color="var(--foregroundPrimary)"
             {...props}
             {...TextStyles.Body}
         />

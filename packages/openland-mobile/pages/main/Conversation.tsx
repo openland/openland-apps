@@ -11,7 +11,7 @@ import { ChatHeader } from './components/ChatHeader';
 import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/ChatHeaderAvatar';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
-import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType, StickerFragment } from 'openland-api/spacex.types';
+import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType, StickerFragment, RoomCallsMode } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
@@ -46,6 +46,7 @@ import { SRouterMountedContext } from 'react-native-s/SRouterContext';
 import { SUPER_ADMIN } from '../Init';
 import { ChatMessagesActionsMethods, ConversationActionsState } from 'openland-y-utils/MessagesActionsState';
 import { useChatMessagesActionsState, useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
+import { matchLinks } from 'openland-y-utils/TextProcessor';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -69,8 +70,6 @@ interface ConversationRootState {
     stickerKeyboardShown: boolean;
     keyboardHeight: number;
 }
-
-let customCallLink = '';
 
 class ConversationRoot extends React.Component<ConversationRootProps, ConversationRootState> {
     engine: ConversationEngine;
@@ -334,11 +333,15 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         this.setState(prevState => ({ muted: !prevState.muted }));
     }
 
-    onCallPress = async () => {
-        if (customCallLink && await Linking.canOpenURL(customCallLink)) {
-            await Linking.openURL(customCallLink);
-        } else {
-            this.props.showCallModal();
+    onCustomCallPress = async () => {
+        let customCallLink = this.props.chat?.__typename === 'SharedRoom' && this.props.chat?.callSettings.callLink;
+        let matchedLink = customCallLink && matchLinks(customCallLink)?.[0].url;
+        if (matchedLink) {
+            try {
+                await Linking.openURL(matchedLink);
+            } catch (e) {
+                /**/
+            }
         }
     }
 
@@ -418,8 +421,9 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         if (!showSelectedMessagesActions && privateRoom && privateRoom.user.isBot) {
             inputPlaceholder = <ChatInputPlaceholder text="View profile" onPress={() => this.props.router.push("ProfileUser", { id: privateRoom!.user.id })} />;
         }
-        let reloadButton = <ReloadFromBottomButton conversation={this.engine} />;
-        let isBot = privateRoom && privateRoom.user.isBot;
+        const reloadButton = <ReloadFromBottomButton conversation={this.engine} />;
+        const isBot = privateRoom && privateRoom.user.isBot;
+        const callMode = sharedRoom ? sharedRoom.callSettings.mode : RoomCallsMode.STANDARD;
         return (
             <>
                 {!showSelectedMessagesActions && (
@@ -427,11 +431,20 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                         {header}
                     </SHeaderView>
                 )}
-                {!isSavedMessages && !isBot && !showSelectedMessagesActions && (
+                {!isSavedMessages && !isBot && !showSelectedMessagesActions && callMode === RoomCallsMode.STANDARD && (
                     <SHeaderButton
                         title="Call"
-                        icon={customCallLink ? require('assets/ic-video-24.png') : require('assets/ic-call-24.png')}
+                        priority={1}
+                        icon={require('assets/ic-call-24.png')}
                         onPress={this.props.showCallModal}
+                    />
+                )}
+                {!isSavedMessages && !isBot && !showSelectedMessagesActions && callMode === RoomCallsMode.LINK && (
+                    <SHeaderButton
+                        title="Call"
+                        priority={1}
+                        icon={require('assets/ic-video-24.png')}
+                        onPress={this.onCustomCallPress}
                     />
                 )}
                 {!showSelectedMessagesActions && (

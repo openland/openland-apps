@@ -28,6 +28,8 @@ let linkifyInstance = linkify()
     .tlds(tlds)
     .tlds('onion', true);
 
+export const matchLinks = (str: string) => linkifyInstance.match(str);
+
 export function useNonBreakingSpaces(text?: string): string | undefined {
     if (typeof text === 'string') {
         return text.replace(/ /g, '\u00a0');

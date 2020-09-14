@@ -6,6 +6,7 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { trackError } from 'openland-x-analytics';
 import { Howl } from 'howler';
 import { XViewRouter } from 'react-mental';
+import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 class AppNotiticationsWeb implements AppNotificationsApi {
     state: AppNotifcationsState;
@@ -179,8 +180,15 @@ class AppNotiticationsWeb implements AppNotificationsApi {
         this.sound!.play();
     }
 
-    displayNotification(content: { path: string; title: string; body: string; image?: string, replace?: boolean }) {
+    displayNotification(content: { path: string; title: string; body: string; image?: string, replace?: boolean, silent?: boolean, soundOnly?: boolean }) {
+        if (!content.silent && AppConfig.getPlatform() !== 'desktop') {
+            this.playIncomingSound();
+        }
+        if (content.soundOnly) {
+            return;
+        }
         try {
+
             this.blinkDocumentFavicon();
             if (this.state === 'granted') {
                 let notification = new Notification(content.title, {

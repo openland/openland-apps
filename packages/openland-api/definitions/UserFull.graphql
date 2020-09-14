@@ -5,9 +5,11 @@ fragment UserFull on User {
     lastName
     photo
     phone
+    birthDay
     email
     website
     about
+    birthDay
     location
     isBot
     isDeleted

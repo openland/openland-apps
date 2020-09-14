@@ -13,6 +13,7 @@ import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuB
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
+import CameraIcon from 'openland-icons/s/ic-camera-video-24.svg';
 import InviteIcon from 'openland-icons/s/ic-invite-24.svg';
 import SettingsIcon from 'openland-icons/s/ic-edit-24.svg';
 import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
@@ -38,6 +39,7 @@ import { useVideoCallModal } from 'openland-web/modules/conference/CallModal';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { shouldShowInviteButton } from 'openland-y-utils/shouldShowInviteButton';
+import { RoomCallsMode } from 'openland-api/spacex.types';
 
 const secondary = css`
     color: var(--foregroundSecondary);
@@ -95,8 +97,16 @@ const ChatOnlinesTitle = (props: { id: string }) => {
     );
 };
 
+function normalizeUrl(url: any): string {
+    if (!url || typeof url !== 'string') {
+        return '';
+    }
+    return (/^https?:\/\//).test(url) ? url : 'http://' + url;
+}
+
 const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
     const calls = props.messenger.calls;
+    const callSettings = props.chat.__typename === 'SharedRoom' ? props.chat.callSettings : undefined;
     const currentSession = calls.useCurrentSession();
     const showVideoCallModal = useVideoCallModal({ chatId: props.chat.id });
 
@@ -106,14 +116,22 @@ const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
                 currentSession && currentSession.conversationId === props.chat.id && disabledBtn,
             )}
         >
-            <UIconButton
-                icon={<PhoneIcon />}
-                onClick={() => {
-                    calls.joinCall(props.chat.id);
-                    showVideoCallModal();
-                }}
-                size="large"
-            />
+            {   callSettings && callSettings.mode === RoomCallsMode.LINK ?
+                    <UIconButton
+                        icon={<CameraIcon />}
+                        as={'a'}
+                        href={normalizeUrl(callSettings.callLink)}
+                        target={'_blank'}
+                        size="large"
+                    /> :
+                    <UIconButton
+                        icon={<PhoneIcon />}
+                        onClick={() => {
+                            calls.joinCall(props.chat.id);
+                            showVideoCallModal();
+                        }}
+                        size="large"
+                    />}
         </div>
     );
 };

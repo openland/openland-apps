@@ -1,6 +1,20 @@
 {
     "icons": [
         {
+            "name": "ic-birthday",
+            "src": "ic-birthday-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-flag",
+            "src": "ic-flag-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-instagram",
             "src": "ic-instagram-24.svg",
             "sizes": [
@@ -519,7 +533,8 @@
             "name": "ic-group-glyph",
             "src": "ic-group-glyph-24.svg",
             "sizes": [
-                24
+                24,
+                48
             ]
         },
         {
@@ -533,7 +548,8 @@
             "name": "ic-link-glyph",
             "src": "ic-link-glyph-24.svg",
             "sizes": [
-                24
+                24,
+                48
             ]
         },
         {
@@ -959,6 +975,13 @@
         {
             "name": "ic-gallery",
             "src": "ic-gallery-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-play",
+            "src": "ic-play-24.svg",
             "sizes": [
                 24
             ]

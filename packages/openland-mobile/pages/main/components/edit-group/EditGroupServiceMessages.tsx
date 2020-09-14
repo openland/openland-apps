@@ -11,31 +11,41 @@ import { useForm } from 'openland-form/useForm';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import Toast from 'openland-mobile/components/Toast';
 
 const EditGroupServiceMessagesComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const roomId = props.router.params.id;
     const client = getClient();
-    const group = client.useRoomChat({ id: roomId }, { fetchPolicy: 'cache-and-network' }).room;
+    const group = client.useRoomChat({ id: roomId }).room;
 
-    if (!group) {
+    if (!group || group.__typename === 'PrivateRoom') {
         return null;
     }
-    const isPrivate = group.__typename === 'PrivateRoom';
-    const [joinsEnabled, setJoinsEnabled] = React.useState(isPrivate);
-    const [leavesEnabled, setLeavesEnabled] = React.useState(isPrivate);
+
+    const [joinsEnabled, setJoinsEnabled] = React.useState(group.serviceMessageSettings.joinsMessageEnabled);
+    const [leavesEnabled, setLeavesEnabled] = React.useState(group.serviceMessageSettings.leavesMessageEnabled);
 
     const form = useForm();
 
     const handleSave = () =>
         form.doAction(async () => {
             try {
-
-                await client.refetchRoomChat({ id: props.router.params.id });
+                let variables = {
+                    roomId,
+                    input: {
+                        serviceMessageSettings: {
+                            joinsMessageEnabled: joinsEnabled,
+                            leavesMessageEnabled: leavesEnabled,
+                        }
+                    }
+                };
+                await client.mutateRoomUpdate(variables);
+                await client.refetchRoomChat({ id: roomId });
+                Toast.success({ duration: 1000 }).show();
                 props.router.back();
             } catch (e) {
-                console.warn('error', e);
-                // TODO: failure toast
+                Toast.failure({ text: 'Something went wrong', duration: 1000 });
             }
         });
 

@@ -262,8 +262,6 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     const handleManageClick = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
 
-        builder.action('Shared media', onSharedPress, false, require('assets/ic-attach-24.png'));
-
         if (group.canEdit) {
             builder.action(
                 group.isChannel ? 'Edit channel' : 'Edit group',
@@ -349,6 +347,8 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                         text={group.shortname}
                         leftIcon={require('assets/ic-at-24.png')}
                         small={true}
+                        onPress={handleSharePress}
+                        onLongPress={handleSharePress}
                     />
                 )}
                 {group.isPremium && !!group.premiumSettings && (
@@ -361,7 +361,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             </ZListGroup>
 
             {!!group.organization && (
-                <ZListGroup header="Community" useSpacer={true}>
+                <ZListGroup header={group.organization.isCommunity ? 'Community' : 'Organization'} useSpacer={true}>
                     <ZListItem
                         text={group.organization.name}
                         subTitle={group.organization.about}

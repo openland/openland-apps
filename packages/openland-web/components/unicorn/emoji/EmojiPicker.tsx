@@ -148,7 +148,7 @@ const titleContainerStyle = css`
     font-weight: 600;
     top: 0;
     z-index: 2;
-    background-color: #fff;
+    background-color: var(--backgroundPrimary);
     padding-left: 16px;
     @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
         background-color: rgba(255, 255, 255, 0.72);

@@ -31,6 +31,7 @@ const quillStyle = css`
     border-radius: 8px;
     -webkit-overflow-scrolling: touch;
     position: relative;
+    color: var(--foregroundPrimary);
 
     .ql-container {
         border-radius: 8px;
@@ -67,8 +68,6 @@ export interface URickInputInstance {
         src: MentionToSend | { name: string; value: string },
     ): void;
     setContent: (inputValue: URickTextValue) => void;
-    disable: () => void;
-    enable: () => void;
 }
 
 export interface URickInputProps {
@@ -218,18 +217,6 @@ export const URickInput = React.memo(
                     ed.setContents(convertInputValue(inputValue));
                 }
             },
-            disable: () => {
-                let ed = editor.current;
-                if (ed) {
-                    ed.disable();
-                }
-            },
-            enable: () => {
-                let ed = editor.current;
-                if (ed) {
-                    ed.enable();
-                }
-            }
         }));
 
         React.useEffect(

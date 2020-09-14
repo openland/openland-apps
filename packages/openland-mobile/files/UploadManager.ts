@@ -41,10 +41,11 @@ export class UploadManager {
         return this.getWatcher(conversationId).watch(handler);
     }
 
-    registerMessageUpload = async (conversationId: string, name: string, uri: string, quoted: DataSourceMessageItem[] | undefined, fileSize?: number) => {
+    registerMessageUpload = async (conversationId: string, name: string, path: string, quoted: DataSourceMessageItem[] | undefined, fileSize?: number) => {
         if (!(await checkPermissions('android-storage'))) {
             return;
         }
+        const uri = 'file://' + path;
 
         let fallback = fileSize === undefined ? await RNFetchBlob.fs.stat(uri.replace('file://', '')) : undefined;
 
@@ -79,10 +80,13 @@ export class UploadManager {
         this.checkQueue();
     }
 
-    registerUpload = async (name: string, uri: string, callbacks: Callbacks, fileSize?: number) => {
+    registerUpload = async (name: string, path: string, callbacks: Callbacks, fileSize?: number) => {
         if (!(await checkPermissions('android-storage'))) {
             return;
         }
+
+        const uri = 'file://' + path;
+
         let fallback = fileSize === undefined ? await RNFetchBlob.fs.stat(uri.replace('file://', '')) : undefined;
         if ((fileSize || (fallback && fallback.size) || 0) > MAX_FILE_SIZE) {
             AlertBlanket.alert("Files bigger than 100mb are not supported yet.");
