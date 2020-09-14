@@ -77,7 +77,6 @@ export const PrivateCommunityView = React.memo((props: PrivateCommunityViewProps
                             width={240}
                             marginTop={24}
                             text="Message admin"
-                            style="secondary"
                             size="large"
                             path={`/mail/${owner.id}`}
                         />
