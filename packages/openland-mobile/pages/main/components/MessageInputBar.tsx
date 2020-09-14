@@ -5,8 +5,10 @@ import { SDevice } from 'react-native-s/SDevice';
 import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { MessageInputBarProps, MessageInputInner } from './MessageInputInner';
+import { StickerFragment } from 'openland-api/spacex.types';
+import { StickerPicker } from './stickers/StickerPicker';
 
-export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & { reloadButton?: any }, ref: React.RefObject<TextInput>) => {
+export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & { reloadButton?: any, onStickerSent?: (sticker: StickerFragment) => void }, ref: React.RefObject<TextInput>) => {
     let theme = React.useContext(ThemeContext);
 
     return (
@@ -25,8 +27,12 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & {
                     </View>
                 )}
 
-                <MessageInputInner {...props} theme={theme} ref={ref} />
+                <MessageInputInner {...props} theme={theme} ref={ref} stickerKeyboardShown={props.onStickerSent && props.stickerKeyboardShown} />
             </View>
+
+            {props.stickerKeyboardShown && props.onStickerSent && (
+                <StickerPicker theme={theme} onStickerSent={props.onStickerSent} height={props.stickerKeyboardHeight} />
+            )}
         </ZKeyboardAwareBar>
     );
 });

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform, Keyboard, NativeSyntheticEvent, DeviceEventEmitter } from 'react-native';
+import { View, Platform, Keyboard, NativeSyntheticEvent, DeviceEventEmitter, ViewProps } from 'react-native';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SDevice } from 'react-native-s/SDevice';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
@@ -11,19 +11,19 @@ export interface ZModalController {
 export type ZModal = (modal: ZModalController) => React.ReactElement<{}>;
 
 interface ZModalProviderInt {
-    showModal(modal: ZModal, hideKeyboardOnOpen?: boolean): void;
+    showModal(modal: ZModal, hideKeyboardOnOpen?: boolean, viewProps?: ViewProps): void;
     hideModals(): void;
 }
 
 export let ModalProvider: ZModalProviderInt | undefined;
 
-export function showModal(modal: ZModal, hideKeyboardOnOpen: boolean = true) {
+export function showModal(modal: ZModal, hideKeyboardOnOpen: boolean = true, viewProps: ViewProps = {}) {
     if (ModalProvider) {
-        ModalProvider.showModal(modal, hideKeyboardOnOpen);
+        ModalProvider.showModal(modal, hideKeyboardOnOpen, viewProps);
     }
 }
 
-export class ZModalProvider extends React.Component<{ children?: any }, { modals: { element: React.ReactElement<{}>, key: string }[], keyboardHeight: number, acessoryHeight: number }> implements ZModalProviderInt {
+export class ZModalProvider extends React.Component<{ children?: any }, { modals: { element: React.ReactElement<{}>, key: string, viewProps: ViewProps }[], keyboardHeight: number, acessoryHeight: number }> implements ZModalProviderInt {
 
     constructor(props: { children?: any }) {
         super(props);
@@ -62,7 +62,7 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
         this.setState({ acessoryHeight: height });
     }
 
-    showModal(modal: ZModal, hideKeyboardOnOpen: boolean = true) {
+    showModal(modal: ZModal, hideKeyboardOnOpen: boolean = true, viewProps: ViewProps = {}) {
         setTimeout(() => {
             if (hideKeyboardOnOpen) {
                 Keyboard.dismiss();
@@ -74,7 +74,7 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
                 }
             };
             let element = modal(cont);
-            this.setState((state) => ({ modals: [...state.modals, { key, element }] }));
+            this.setState((state) => ({ modals: [...state.modals, { key, element, viewProps }] }));
         }, 1);
     }
 
@@ -86,7 +86,7 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
         return (
             <>
                 {this.state.modals.map((v) => (
-                    <View key={v.key} position="absolute" top={0} left={0} right={0} bottom={0}>
+                    <View key={v.key} position="absolute" top={0} left={0} right={0} bottom={0} zIndex={15} {...v.viewProps}>
                         <ASSafeAreaProvider bottom={SDevice.safeArea.bottom + this.state.keyboardHeight} top={SDevice.safeArea.top}>
                             {v.element}
                         </ASSafeAreaProvider>

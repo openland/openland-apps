@@ -78,6 +78,7 @@ import { UserMutualGroups } from './pages/main/UserMutualGroups';
 import { EditGroupServiceMessages } from './pages/main/components/edit-group/EditGroupServiceMessages';
 import { EditGroupCalls } from './pages/main/components/edit-group/EditGroupCalls';
 import { EditGroupSuperadmin } from './pages/main/components/edit-group/EditGroupSuperadmin';
+import { StickersCatalog } from './pages/main/StickersCatalog';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -121,6 +122,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('GroupInvite', GroupInvite)
   .addRoute('Message', Message)
   .addRoute('NotificationCenter', NotificationCenter)
+  .addRoute('StickersCatalog', StickersCatalog)
 
   .addRoute('SetUserShortname', SetUserShortname)
   .addRoute('SetShortname', SetShortname)

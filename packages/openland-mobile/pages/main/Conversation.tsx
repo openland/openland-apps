@@ -11,8 +11,7 @@ import { ChatHeader } from './components/ChatHeader';
 import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/ChatHeaderAvatar';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
-import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType } from 'openland-api/spacex.types';
+import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType, StickerFragment } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
@@ -67,6 +66,8 @@ interface ConversationRootState {
         end: number
     };
     muted: boolean;
+    stickerKeyboardShown: boolean;
+    keyboardHeight: number;
 }
 
 let customCallLink = '';
@@ -75,6 +76,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
     inputRef = React.createRef<TextInput>();
+    waitingForKeyboard = false;
+    stickerKeyboardHeight = 0;
 
     private setTyping = throttle(() => {
         getMessenger().engine.client.mutateSetTyping({ conversationId: this.props.chat.id, type: TypingType.TEXT });
@@ -91,7 +94,9 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             },
             mentions: [],
             inputFocused: false,
-            muted: !!this.props.chat.settings.mute
+            muted: !!this.props.chat.settings.mute,
+            stickerKeyboardShown: false,
+            keyboardHeight: 0
         };
 
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
@@ -290,6 +295,24 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         this.props.router.push('Message', { messageId: mid });
     }
 
+    handleStickerKeyboardButtonPress = () => {
+        if (this.state.stickerKeyboardShown) {
+            this.setState({ stickerKeyboardShown: false });
+        } else {
+            if (this.inputRef.current && this.inputRef.current.isFocused()) {
+                this.inputRef.current.blur();
+            }
+            if (this.state.keyboardHeight > 0) {
+                this.setState({ stickerKeyboardShown: true });
+            } else {
+                if (this.inputRef.current) {
+                    this.waitingForKeyboard = true;
+                    this.inputRef.current.focus();
+                }
+            }
+        }
+    }
+
     onQuotedClearPress = () => {
         this.props.messagesActionsMethods.clear();
 
@@ -420,41 +443,55 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     />
                 )}
                 <SDeferred>
-                    <KeyboardSafeAreaView>
-                        <View style={{ height: '100%', flexDirection: 'column' }}>
-                            <ConversationView inverted={true} engine={this.engine} />
-                            {pinnedMessage && (
-                                <PinnedMessage
-                                    message={pinnedMessage}
-                                    onPress={this.handlePinnedMessagePress}
-                                    theme={this.props.theme}
-                                    showAuthor={showPinAuthor}
-                                    canUnpin={this.props.chat.__typename === 'PrivateRoom' || this.props.chat.canUnpinMessage || SUPER_ADMIN}
-                                    chatId={this.props.chat.id}
-                                />
-                            )}
-                            {showInputBar && !showSelectedMessagesActions && (
-                                <MessageInputBar
-                                    reloadButton={reloadButton}
-                                    ref={this.inputRef}
-                                    onAttachPress={this.handleAttach}
-                                    onSubmitPress={this.handleSubmit}
-                                    onChangeText={this.handleTextChange}
-                                    onSelectionChange={this.handleSelectionChange}
-                                    onFocus={this.handleFocus}
-                                    onBlur={this.handleBlur}
-                                    text={this.state.text}
-                                    suggestions={suggestions}
-                                    topView={quoted}
-                                    placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message'}
-                                    canSubmit={canSubmit}
-                                />
-                            )}
-                            {!showInputBar && reloadButton}
-                            {!showInputBar && inputPlaceholder}
-                            {showSelectedMessagesActions && <ChatSelectedActions conversation={this.engine} chat={this.props.chat} />}
-                        </View>
-                    </KeyboardSafeAreaView>
+                    <View style={{ height: '100%', flexDirection: 'column', paddingBottom: this.state.keyboardHeight }}>
+                        <ConversationView inverted={true} engine={this.engine} />
+                        {pinnedMessage && (
+                            <PinnedMessage
+                                message={pinnedMessage}
+                                onPress={this.handlePinnedMessagePress}
+                                theme={this.props.theme}
+                                showAuthor={showPinAuthor}
+                                canUnpin={this.props.chat.__typename === 'PrivateRoom' || this.props.chat.canUnpinMessage || SUPER_ADMIN}
+                                chatId={this.props.chat.id}
+                            />
+                        )}
+                        {showInputBar && !showSelectedMessagesActions && (
+                            <MessageInputBar
+                                reloadButton={reloadButton}
+                                ref={this.inputRef}
+                                onAttachPress={this.handleAttach}
+                                onSubmitPress={this.handleSubmit}
+                                onChangeText={this.handleTextChange}
+                                onSelectionChange={this.handleSelectionChange}
+                                onFocus={this.handleFocus}
+                                onBlur={this.handleBlur}
+                                text={this.state.text}
+                                suggestions={suggestions}
+                                topView={quoted}
+                                placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message'}
+                                canSubmit={canSubmit}
+                                onStickerSent={(sticker: StickerFragment) => this.engine.sendSticker(sticker, undefined)}
+                                onStickerKeyboardButtonPress={this.handleStickerKeyboardButtonPress}
+                                stickerKeyboardShown={this.state.stickerKeyboardShown}
+                                stickerKeyboardHeight={this.stickerKeyboardHeight}
+                            />
+                        )}
+                        {!showInputBar && reloadButton}
+                        {!showInputBar && inputPlaceholder}
+                        {showSelectedMessagesActions && <ChatSelectedActions conversation={this.engine} chat={this.props.chat} />}
+                    </View>
+                    <ASSafeAreaContext.Consumer>
+                        {context => {
+                            if (this.waitingForKeyboard && context.keyboardHeight > 0) {
+                                this.stickerKeyboardHeight = context.keyboardHeight;
+                                this.waitingForKeyboard = false;
+                                this.setState({ keyboardHeight: 0, stickerKeyboardShown: true });
+                            } else if (this.state.keyboardHeight !== context.keyboardHeight) {
+                                this.setState({ keyboardHeight: context.keyboardHeight });
+                            }
+                            return null;
+                        }}
+                    </ASSafeAreaContext.Consumer>
                 </SDeferred>
             </>
         );

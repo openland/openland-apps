@@ -14,6 +14,7 @@ import { buildBaseImageUrl } from 'openland-y-utils/photoRefUtils';
 import { ChatMessagesActions, MessagesAction } from 'openland-y-utils/MessagesActionsState';
 import { useForward } from '../MobileMessenger';
 import { useChatMessagesActionsMethods, useChatMessagesSelected, useChatMessagesSelectionMode } from 'openland-y-utils/MessagesActionsState';
+import { showStickerPackModal } from 'openland-mobile/pages/main/components/stickers/showStickerPackModal';
 
 const SelectCheckbox = React.memo((props: { selected: boolean, theme: ThemeGlobal, onPress: () => void }) => {
     const { selected, onPress, theme } = props;
@@ -114,6 +115,11 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const handlePress = () => {
         if (isSelecting) {
             toggleSelect(message);
+            return;
+        }
+
+        if (message.sticker) {
+            showStickerPackModal(message.sticker.pack.id);
             return;
         }
 

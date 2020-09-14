@@ -18,6 +18,7 @@ export interface BottomSheetConfig {
     buttonTitle?: string;
     containerStyle?: ViewStyle;
     showAnimation?: ModalConfiguration['showAnimation'];
+    disableMargins?: boolean;
 }
 
 export function showBottomSheet(config: BottomSheetConfig) {
@@ -55,7 +56,12 @@ export function showBottomSheet(config: BottomSheetConfig) {
             </ThemeContext.Provider >
         );
     }, {
-        containerStyle: { backgroundColor: theme.backgroundSecondary, padding: 0, marginHorizontal: 8, marginBottom: Platform.OS === 'android' ? 8 : undefined, ...config.containerStyle },
+        containerStyle: {
+            backgroundColor: theme.backgroundSecondary,
+            padding: 0,
+            ...(config.disableMargins ? {} : {marginHorizontal: 8, marginBottom: Platform.OS === 'android' ? 8 : undefined}),
+            ...config.containerStyle
+        },
         showAnimation: (contentHeight, views) => {
             if (config.showAnimation) {
                 config.showAnimation(contentHeight, views);

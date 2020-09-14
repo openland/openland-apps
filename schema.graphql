@@ -499,6 +499,9 @@ input CreateOrganizationInput {
   about: String
   isCommunity: Boolean
   isPrivate: Boolean
+  applyLink: String
+  applyLinkEnabled: Boolean
+  autosubscribeRooms: [ID!]
 }
 
 """Deprecated"""
@@ -1872,6 +1875,11 @@ type Mutation {
   debugMigrateToNewCounters: Boolean!
   debugMigrateToNewLastRead: Boolean!
   debugFixReadSeqs: Boolean!
+  debugExportUsers: Boolean!
+  debugMigrateUserStatus: Boolean!
+  debugFixFastCounters: Boolean!
+  debugMigrateToExperimentalCounters: Boolean!
+  debugFixCompactMessages: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2267,6 +2275,9 @@ type Organization {
   betaIsOwner: Boolean!
   betaIsAdmin: Boolean!
   betaIsPrimary: Boolean!
+  owner: User!
+  applyLinkEnabled: Boolean!
+  applyLink: String
 
   """# Refactor?"""
   superAccountId: ID!
@@ -2350,7 +2361,10 @@ type OrganizationProfile {
   alphaFeatured: Boolean!
   alphaIsCommunity: Boolean!
   alphaIsPrivate: Boolean!
+  applyLink: String
+  applyLinkEnabled: Boolean!
   betaMembersCanInvite: Boolean!
+  autosubscribeRooms: [ID!]!
   shortname: String
 }
 
@@ -2658,6 +2672,7 @@ type Profile {
   authEmail: String
   badge: ProfileBadge
   birthDay: Date
+  status: String
 
   """Deprecated"""
   alphaLinkedin: String
@@ -2701,6 +2716,7 @@ input ProfileInput {
   facebook: String
   primaryOrganization: ID
   birthDay: Date
+  status: String
 }
 
 type ProfilePrefill {
@@ -2780,6 +2796,7 @@ type Query {
   debugMentionSearch(query: String!, first: Int!, index: String!): String!
   debugMentionSearchGetUserData(cid: ID!): String!
   debugGetCounters: String!
+  debugExperimentalCounter(cid: ID!): String!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!
@@ -2965,6 +2982,7 @@ type RoomCallSettings {
 
 input RoomCallSettingsInput {
   mode: RoomCallsMode!
+  callLink: String
 }
 
 enum RoomCallsMode {
@@ -3233,6 +3251,7 @@ type SharedRoom {
   repliesEnabled: Boolean!
   serviceMessageSettings: RoomServiceMessageSettings!
   callSettings: RoomCallSettings!
+  featured: Boolean!
   owner: User
   linkedFeedChannels: [FeedChannel!]!
   shortname: String
@@ -3335,6 +3354,7 @@ type StickerPack {
   stickers: [Sticker!]!
   author: User!
   usesCount: Int!
+  added: Boolean!
   published: Boolean!
 }
 
@@ -3524,6 +3544,9 @@ input UpdateOrganizationProfileInput {
   alphaEditorial: Boolean
   alphaFeatured: Boolean
   alphaIsPrivate: Boolean
+  applyLink: String
+  applyLinkEnabled: Boolean
+  autosubscribeRooms: [ID!]
   betaMembersCanInvite: Boolean
 }
 
@@ -3609,6 +3632,7 @@ type User {
   badge: ProfileBadge
   joinDate: Date!
   birthDay: Date
+  status: String
 
   """TODO: Refactor"""
   channelsJoined: [ChannelConversation!]!

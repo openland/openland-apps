@@ -13,6 +13,7 @@ fragment StickerFragment on Sticker {
 fragment StickerPackFragment on StickerPack {
     id
     title
+    added
     stickers {
         ...StickerFragment
     }
@@ -34,6 +35,7 @@ query StickerPackCatalog {
         id
         title
         published
+        added
         stickers {
             ...StickerFragment
         }
