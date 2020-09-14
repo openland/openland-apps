@@ -4,8 +4,8 @@ import { TabRouter } from './TabRouter';
 import { css } from 'linaria';
 
 const counterStyle = css`
-    background-color: #F23051;
-    border: 2px solid #fff;
+    background-color: var(--accentNegative);
+    border: 2px solid var(--backgroundPrimary);
     position: absolute;
     top: 8px;
     left: 50%;
@@ -44,7 +44,7 @@ export const TabBarMobile = React.memo((props: {
                     minWidth={0}
                     alignItems="center"
                     justifyContent="center"
-                    hoverBackgroundColor="var(--backgroundPrimaryHover)"
+                    hoverBackgroundColor="var(--backgroundTertiaryHover)"
                     cursor="pointer"
                     onClick={() => props.setSelected(i)}
                 >

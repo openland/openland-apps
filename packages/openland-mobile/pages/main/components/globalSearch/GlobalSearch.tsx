@@ -116,14 +116,18 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
         await client.refetchGlobalSearch({ query: props.query }, { fetchPolicy: 'network-only' });
     }));
 
-    const items = client.useGlobalSearch({ query: props.query, kinds: props.kinds }).items;
+    const initialItems = client.useGlobalSearch({ query: props.query, kinds: props.kinds }).items;
 
+    const [items, setItems] = React.useState(initialItems);
     const [loadingMore, setLoadingMore] = React.useState(false);
     const [after, setAfter] = React.useState<string | null>(null);
     const [messages, setMessages] = React.useState<MessagesSearch_messagesSearch_edges[]>([]);
     const [loadingMessages, setLoadingMessages] = React.useState(true);
 
     const loadMessages = React.useCallback(async (query: string) => {
+        if (!query) {
+            return;
+        }
         setLoadingMessages(true);
         const {messagesSearch} = await client.queryMessagesSearch(constructVariables(query), { fetchPolicy: 'network-only' });
 
@@ -132,9 +136,17 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
         setLoadingMessages(false);
     }, []);
 
+    React.useLayoutEffect(() => {
+        if (items !== initialItems) {
+            setItems(initialItems);
+        }
+    }, [items, initialItems]);
+
     React.useEffect(() => {
+        (async () => {
+            await loadMessages(props.query);
+        })();
         messagesInvalidator.invalidate();
-        loadMessages(props.query);
     }, [props.query]);
 
     const handleNeedMore = React.useCallback(async () => {
@@ -171,7 +183,6 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
                         {messages.length > 0 && <ZListHeader text="Messages" marginTop={items.length === 0 ? 0 : undefined} />}
                     </>
             }
-
         </>
     );
 
@@ -185,8 +196,9 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
             legacyImplementation={true}
             onEndReachedThreshold={1}
             backgroundColor={theme.backgroundPrimary}
-            ListHeaderComponent={content}
+            ListHeaderComponent={content()}
             onEndReached={handleNeedMore}
+            keyExtractor={(item, index) => index.toString()}
             refreshing={loadingMore}
             scrollIndicatorInsets={{ top: area.top - DeviceConfig.statusBarHeight, bottom: area.bottom - SDevice.safeArea.bottom }}
             ListFooterComponent={loadingMore ? (
