@@ -44,7 +44,7 @@ export const ProfileLayout = ({ title, track, leftColumn, rightColumn }: Profile
             <UHeader documentTitle={title}/>
             <ProfileLayoutContext.Provider value={{ bottomReached, compactView }}>
                 <XView alignItems="center" marginLeft={24}>
-                    <XView flexDirection={compactView ? 'column' : 'row'}>
+                    <XView flexDirection={compactView ? 'column' : 'row'} width="100%">
                         <XView width={272} marginRight={16}>
                             <XView
                                 position={compactView ? null : 'fixed'}

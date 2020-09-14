@@ -12,6 +12,7 @@ const MediaItemClass = css`
     display: flex;
     width: 25%;
     position: relative;
+    transform: translateZ(0);
     overflow: hidden;
     cursor: pointer;
     @media (max-width: 750px) {
