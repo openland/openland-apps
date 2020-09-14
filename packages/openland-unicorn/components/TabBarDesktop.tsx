@@ -16,7 +16,7 @@ const selectorStyle = css`
     left: 0px;
     height: 48px;
     width: 3px;
-    background-color: var(--backgroundTertiary);
+    background-color: var(--accentPrimary);
     border-radius: 0px 100px 100px 0px;
     transition: transform 150ms cubic-bezier(0, 0, 0.2, 1);
     will-change: transform;
