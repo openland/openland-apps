@@ -199,7 +199,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                             text={formatBirthDay(user.birthDay)}
                             leftIcon={require('assets/ic-birthday-24.png')}
                             small={true}
-                            onPress={openCalendar(parseInt(user.birthDay, 10) * 1000)}
+                            onPress={openCalendar(user.birthDay)}
                         />
                     )}
                     {!!user.joinDate && (
