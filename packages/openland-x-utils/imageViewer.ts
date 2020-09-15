@@ -22,7 +22,7 @@ export interface ImageViewerCb {
     hasNextPage: boolean;
     prevCursor: string | null;
     nextCursor: string | null;
-    current: currentT;
+    current: currentT[];
 }
 
 export function useImageViewer(data: dataT, currentId: string, inverted?: boolean): ImageViewerCb {
@@ -36,14 +36,16 @@ export function useImageViewer(data: dataT, currentId: string, inverted?: boolea
     const getMsg = (i: number) => data.edges[i].node.message as messageT;
 
     const setCurrent = (i: number) => {
-        current = {
-            fileId: (getMsg(i).attachments[0] as fileT).fileId,
-            imageWidth: (getMsg(i).attachments[0] as fileT).fileMetadata.imageWidth || 0,
-            imageHeight: (getMsg(i).attachments[0] as fileT).fileMetadata.imageHeight || 0,
-            filePreview: (getMsg(i).attachments[0] as fileT).filePreview || '',
-            date: parseInt(getMsg(i).date, 10),
-            senderName: getMsg(i).sender.name,
-        };
+        current = getMsg(i).attachments.map(attach => (
+            {
+                fileId: (attach as fileT).fileId,
+                imageWidth: (attach as fileT).fileMetadata.imageWidth || 0,
+                imageHeight: (attach as fileT).fileMetadata.imageHeight || 0,
+                filePreview: (attach as fileT).filePreview || '',
+                date: parseInt(getMsg(i).date, 10),
+                senderName: getMsg(i).sender.name,
+            }
+        ));
     };
     setCurrent(0);
 
@@ -88,6 +90,6 @@ export function useImageViewer(data: dataT, currentId: string, inverted?: boolea
         hasNextPage: hasNext,
         prevCursor: prevCursor,
         nextCursor: nextCursor,
-        current: (current as any) as currentT,
+        current: (current as any) as currentT[],
     };
 }
