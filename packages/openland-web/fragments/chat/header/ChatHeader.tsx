@@ -13,7 +13,7 @@ import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuB
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
-import CameraIcon from 'openland-icons/s/ic-camera-video-24.svg';
+import ExternalCallIcon from 'openland-icons/s/ic-call-external-24.svg';
 import InviteIcon from 'openland-icons/s/ic-invite-24.svg';
 import SettingsIcon from 'openland-icons/s/ic-edit-24.svg';
 import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
@@ -118,7 +118,7 @@ const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
         >
             {   callSettings && callSettings.mode === RoomCallsMode.LINK ?
                     <UIconButton
-                        icon={<CameraIcon />}
+                        icon={<ExternalCallIcon />}
                         as={'a'}
                         href={normalizeUrl(callSettings.callLink)}
                         target={'_blank'}
