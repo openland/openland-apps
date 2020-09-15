@@ -160,7 +160,7 @@ const Buttons = (props: {
     let replyCallback = React.useCallback(() => {
         reply();
     }, [state]);
-    let canReply = props.conversation.canSendMessage;
+    let canReply = props.conversation.canReply && props.conversation.canSendMessage;
     let canDelete =
         useRole('super-admin') ||
         !state.messages.filter((m) => m.sender.id !== props.messenger.user.id).length ||
