@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { View, Image, Text } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { View } from 'react-native';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -12,9 +11,9 @@ import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
 import { Modals } from '../../modals/Modals';
+import { EditPageHeader } from '../EditPageHeader';
 
 const EditGroupWelcomeMessageComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
@@ -66,55 +65,12 @@ const EditGroupWelcomeMessageComponent = React.memo((props: PageProps) => {
         <>
             <SHeaderButton title="Save" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
-                <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]}>
-                    <View
-                        alignItems="center"
-                        justifyContent="center"
-                        paddingTop={16}
-                        paddingBottom={32}
-                    >
-                        <View
-                            width={80}
-                            height={80}
-                            alignItems="center"
-                            justifyContent="center"
-                            borderRadius={80}
-                            backgroundColor={theme.tintCyan}
-                        >
-                            <Image
-                                source={require('assets/ic-message-glyph-48.png')}
-                                style={{
-                                    width: 48,
-                                    height: 48,
-                                    tintColor: theme.foregroundContrast,
-                                }}
-                            />
-                        </View>
-                        <Text
-                            style={{
-                                ...TextStyles.Title2,
-                                color: theme.foregroundPrimary,
-                                textAlign: 'center',
-                                marginTop: 16,
-                            }}
-                            allowFontScaling={false}
-                        >
-                            Welcome message
-                        </Text>
-                        <Text
-                            style={{
-                                ...TextStyles.Body,
-                                color: theme.foregroundTertiary,
-                                textAlign: 'center',
-                                maxWidth: 300,
-                                marginTop: 4,
-                            }}
-                            allowFontScaling={false}
-                        >
-                            Send automatic tet-a-tet message to every new member of the group
-                        </Text>
-                    </View>
-                </LinearGradient>
+                <EditPageHeader
+                    icon={require('assets/ic-message-glyph-48.png')}
+                    tint={theme.tintCyan}
+                    title="Welcome message"
+                    description="Send automatic tet-a-tet message to every new member of the group"
+                />
                 <ZListGroup header={null}>
                     <ZListItem
                         text="Allow welcome message"

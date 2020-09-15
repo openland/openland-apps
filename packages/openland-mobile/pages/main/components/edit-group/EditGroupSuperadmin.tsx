@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { View, Image, Text } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -10,10 +8,10 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { useForm } from 'openland-form/useForm';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { CheckListBoxWraper } from '../../modals/UserMultiplePicker';
 import Toast from 'openland-mobile/components/Toast';
 import { SharedRoomKind } from 'openland-api/spacex.types';
+import { EditPageHeader } from '../EditPageHeader';
 
 const EditGroupSuperadminComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
@@ -66,55 +64,12 @@ const EditGroupSuperadminComponent = React.memo((props: PageProps) => {
         <>
             <SHeaderButton title="Save" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
-                <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]}>
-                    <View
-                        alignItems="center"
-                        justifyContent="center"
-                        paddingTop={16}
-                        paddingBottom={32}
-                    >
-                        <View
-                            width={80}
-                            height={80}
-                            alignItems="center"
-                            justifyContent="center"
-                            borderRadius={80}
-                            backgroundColor={theme.tintGrey}
-                        >
-                            <Image
-                                source={require('assets/ic-lock-48.png')}
-                                style={{
-                                    width: 48,
-                                    height: 48,
-                                    tintColor: theme.foregroundContrast,
-                                }}
-                            />
-                        </View>
-                        <Text
-                            style={{
-                                ...TextStyles.Title2,
-                                color: theme.foregroundPrimary,
-                                textAlign: 'center',
-                                marginTop: 16,
-                            }}
-                            allowFontScaling={false}
-                        >
-                            Superadmin settings
-                        </Text>
-                        <Text
-                            style={{
-                                ...TextStyles.Body,
-                                color: theme.foregroundTertiary,
-                                textAlign: 'center',
-                                maxWidth: 300,
-                                marginTop: 4,
-                            }}
-                            allowFontScaling={false}
-                        >
-                            For Openland team only
-                        </Text>
-                    </View>
-                </LinearGradient>
+                <EditPageHeader
+                    icon={require('assets/ic-lock-48.png')}
+                    tint={theme.tintGrey}
+                    title="Superadmin settings"
+                    description="For Openland team only"
+                />
                 <ZListGroup header="Visibility">
                     <CheckListBoxWraper isRadio={true} checked={isPublic}>
                         <ZListItem

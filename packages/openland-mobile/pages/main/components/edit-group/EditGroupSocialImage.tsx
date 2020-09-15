@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { View, Image, Text } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -10,9 +8,9 @@ import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZSocialPickerRender } from 'openland-mobile/components/ZSocialPickerRender';
+import { EditPageHeader } from '../EditPageHeader';
 
 const EditGroupSocialImageComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
@@ -66,55 +64,12 @@ const EditGroupSocialImageComponent = React.memo((props: PageProps) => {
         <>
             <SHeaderButton title="Save" onPress={handleSave} />
             <SScrollView>
-                <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]}>
-                    <View
-                        alignItems="center"
-                        justifyContent="center"
-                        paddingTop={16}
-                        paddingBottom={32}
-                    >
-                        <View
-                            width={80}
-                            height={80}
-                            alignItems="center"
-                            justifyContent="center"
-                            borderRadius={80}
-                            backgroundColor={theme.tintGreen}
-                        >
-                            <Image
-                                source={require('assets/ic-gallery-glyph-48.png')}
-                                style={{
-                                    width: 48,
-                                    height: 48,
-                                    tintColor: theme.foregroundContrast,
-                                }}
-                            />
-                        </View>
-                        <Text
-                            style={{
-                                ...TextStyles.Title2,
-                                color: theme.foregroundPrimary,
-                                textAlign: 'center',
-                                marginTop: 16,
-                            }}
-                            allowFontScaling={false}
-                        >
-                            Social sharing image
-                        </Text>
-                        <Text
-                            style={{
-                                ...TextStyles.Body,
-                                color: theme.foregroundTertiary,
-                                textAlign: 'center',
-                                maxWidth: 300,
-                                marginTop: 4,
-                            }}
-                            allowFontScaling={false}
-                        >
-                            Choose an image for sharing invite to the group on social networks
-                        </Text>
-                    </View>
-                </LinearGradient>
+                <EditPageHeader
+                    icon={require('assets/ic-gallery-glyph-48.png')}
+                    tint={theme.tintGreen}
+                    title="Social sharing image"
+                    description="Choose an image for sharing invite to the group on social networks"
+                />
                 <ZListGroup header={null} alignItems="center">
                     <ZAvatarPicker
                         field={socialImageField}
