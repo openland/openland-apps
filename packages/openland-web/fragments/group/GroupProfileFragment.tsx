@@ -51,7 +51,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
 
     let price = '';
     if (isPremium && premiumSettings) {
-        price = formatMoneyInterval(premiumSettings.price, premiumSettings.interval);
+        price = formatMoneyInterval(premiumSettings.price, premiumSettings.interval, true);
     }
 
     const leftColumn = (

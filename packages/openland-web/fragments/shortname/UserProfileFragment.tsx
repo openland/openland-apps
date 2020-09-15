@@ -31,6 +31,7 @@ import PhoneIcon from 'openland-icons/s/ic-phone.svg';
 import { UserActions } from './components/UserActions';
 import { ShowMoreText } from './components/ShowMoreText';
 import { ProfileTabsFragment } from './components/ProfileTabsFragment';
+import { UserGroups } from './components/UserGroups';
 
 const listItemWrapper = css`
     width: 250px;
@@ -42,12 +43,10 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
     const uId = props?.id || userContext.id;
     const client = useClient();
     const { user, conversation } = client.useUser({ userId: uId }, { fetchPolicy: 'cache-and-network' });
-    const { commonChatsWithUser } = client.useCommonChatsWithUser({ uid: uId, first: 20 }, { fetchPolicy: 'cache-and-network' });
     const {
         id, isBot, name, photo, about, shortname, location, phone, email, linkedin, joinDate,
         website, twitter, facebook, instagram, birthDay
     } = user;
-    const { items, count } = commonChatsWithUser;
 
     const parsedSite = findSocialShortname.site(website);
     const parsedTwitter = findSocialShortname.twitter(twitter);
@@ -90,22 +89,7 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
                 </XView>
             </UListGroup>
             {!isMe && (
-                <UListGroup header="Mutual groups" counter={count}>
-                    {items.map((item) => (
-                        <UListItem
-                            key={'featured-chat-' + item.id}
-                            avatar={{
-                                photo: item.photo,
-                                id: item.id,
-                                title: item.title,
-                            }}
-                            title={item.title}
-                            description={plural(item.membersCount, ['member', 'members'])}
-                            path={'/mail/' + item.id}
-                            useRadius={true}
-                        />
-                    ))}
-                </UListGroup>
+                <UserGroups id={id}/>
             )}
             {conversation?.__typename === 'PrivateRoom' && <ProfileTabsFragment chatId={conversation.id} />}
         </>
