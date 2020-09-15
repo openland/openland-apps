@@ -310,6 +310,12 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const [fadeout, setFadeout] = React.useState(false);
     const [cursorData, setCursorData] = React.useState({ x: 0, y: 0 });
 
+    const [currentViewerStateIndex, setCurrentViewerStateIndex] = React.useState(0);
+    const [currentViewerState, setCurrentViewerState] = React.useState(viewerState?.current[currentViewerStateIndex]);
+    React.useEffect(() => {
+        setCurrentViewerState(viewerState?.current[currentViewerStateIndex]);
+    }, [viewerState, currentViewerStateIndex]);
+
     useShortcuts([
         {
             keys: ['Escape'],
@@ -334,24 +340,38 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
             loaderRef.current.style.opacity = '1';
             loaderRef.current.style.display = 'flex';
         }
-    }, [viewerState]);
+    }, [viewerState, loaded]);
 
+    const hasPrevAttach = currentViewerStateIndex > 0;
+    const hasNextAttach = viewerState && currentViewerStateIndex < viewerState.current.length - 1;
     const onPrevClick = () => {
+        if (viewerState && hasPrevAttach) {
+            setCurrentViewerStateIndex(x => x - 1);
+            setLoaded(false);
+            return;
+        }
         if (viewerState && viewerState.prevCursor) {
             setCursor(viewerState.prevCursor);
             setLoaded(false);
+            setCurrentViewerStateIndex(0);
         }
     };
     const onNextClick = () => {
+        if (viewerState && hasNextAttach) {
+            setCurrentViewerStateIndex(x => x + 1);
+            setLoaded(false);
+            return;
+        }
         if (viewerState && viewerState.nextCursor) {
             setCursor(viewerState.nextCursor);
             setLoaded(false);
+            setCurrentViewerStateIndex(0);
         }
     };
 
     const forwardCallback = React.useCallback(() => {
         showChatPicker((id: string) => {
-            messenger.sender.shareFile(id, viewerState ? viewerState.current.fileId : props.fileId);
+            messenger.sender.shareFile(id, currentViewerState?.fileId || props.fileId);
             if (messenger.user.id === id) {
                 setForwardToast({ title: 'Added to saved messages', show: true });
             } else {
@@ -360,29 +380,29 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
         });
     }, [viewerState]);
 
-    const sender = viewerState
-        ? viewerState.current.senderName
+    const sender = currentViewerState
+        ? currentViewerState.senderName
         : props.senderNameEmojify
             ? props.senderNameEmojify
             : props.sender
                 ? emoji(props.sender.name)
                 : '';
 
-    const date = viewerState ? viewerState.current.date : props.date;
+    const date = currentViewerState?.date || props.date;
     const downloadLink =
         'https://ucarecdn.com/' +
-        (viewerState ? viewerState.current.fileId : props.fileId) +
+        (currentViewerState?.fileId || props.fileId) +
         '/-/format/jpg/-/inline/no/Openland-' +
         moment(date).format('YYYY-MM-DD-HH-mm-ss') +
         '.jpg';
 
     const url = `https://ucarecdn.com/${
-        viewerState ? viewerState.current.fileId : props.fileId
+        currentViewerState?.fileId || props.fileId
         }/-/format/auto/-/`;
 
     const layoutModal = layoutMedia(
-        viewerState ? viewerState.current.imageWidth : props.imageWidth,
-        viewerState ? viewerState.current.imageHeight : props.imageHeight,
+        currentViewerState?.imageWidth || props.imageWidth,
+        currentViewerState?.imageHeight || props.imageHeight,
         window.innerWidth,
         window.innerHeight,
         32,
@@ -396,7 +416,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const width = layoutModal.width;
     const height = layoutModal.height;
 
-    const preview = viewerState ? viewerState.current.filePreview : props.preview;
+    const preview = currentViewerState?.filePreview || props.preview;
 
     const mouseMove = React.useCallback(
         (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -509,7 +529,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     style={{ objectFit: 'contain', cursor: 'default' }}
                 />
             </div>
-            {viewerState && viewerState.hasPrevPage && (
+            {(viewerState && viewerState.hasPrevPage || hasPrevAttach) && (
                 <div
                     className={cx(cursorContainer, prevCursorContent, fadeout && fadeoutStyle)}
                     onClick={(e) => {
@@ -520,7 +540,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     <UIcon icon={<IcLeft />} color={'var(--foregroundContrast)'} />
                 </div>
             )}
-            {viewerState && viewerState.hasNextPage && (
+            {(viewerState && viewerState.hasNextPage || hasNextAttach) && (
                 <div
                     className={cx(cursorContainer, nextCursorContent, fadeout && fadeoutStyle)}
                     onClick={(e) => {

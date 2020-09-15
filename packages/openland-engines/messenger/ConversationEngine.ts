@@ -59,14 +59,13 @@ export interface DataSourceMessageItem {
     reply?: DataSourceMessageItem[];
     source?: DataSourceMessageSourceT | null;
     reactionCounters: MessageReactionCounter[];
-    attachments?: (MessageAttachments & { uri?: string, filePreview?: string | null })[];
+    attachments?: (MessageAttachments & { uri?: string, key?: string, filePreview?: string | null, progress?: number })[];
     spans?: MessageSpan[];
     isSending: boolean;
     attachTop: boolean;
     attachBottom: boolean;
     serviceMetaData?: ServiceMessageMetadata;
     isService?: boolean;
-    progress?: number;
     commentsCount: number;
     fallback: string;
     textSpans: Span[];
@@ -631,6 +630,7 @@ export class ConversationEngine implements MessageSendHandler {
         }
 
         this.loic(text);
+        return key;
     }
 
     sendFile = (file: UploadingFile, localImage: LocalImage | undefined, quotedMessages: DataSourceMessageItem[] | undefined) => {
@@ -644,16 +644,19 @@ export class ConversationEngine implements MessageSendHandler {
             let pmsg = {
                 date,
                 key,
-                file: name,
-                uri: info.uri,
-                fileSize: info.fileSize,
-                progress: 0,
+                filesMeta: [{
+                    key,
+                    file: name,
+                    progress: 0,
+                    fileSize: info.fileSize,
+                    uri: info.uri,
+                    imageSize: info.imageSize,
+                    isImage: !!info.isImage,
+                    filePreview: localImage && localImage.src || '',
+                }],
                 message: null,
                 failed: false,
-                isImage: !!info.isImage,
-                imageSize: info.imageSize || localImage && { width: localImage.width, height: localImage.height },
                 quoted,
-                filePreview: localImage && localImage.src || '',
             } as PendingMessage;
             this.messages = [...this.messages, { ...pmsg } as PendingMessage];
             this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
@@ -666,6 +669,75 @@ export class ConversationEngine implements MessageSendHandler {
             // Notify
             for (let l of this.listeners) {
                 l.onMessageSend(file, localImage);
+            }
+        })();
+        return key;
+    }
+
+    sendFiles = ({
+        files,
+        text = '',
+        mentions = [],
+        quotedMessages,
+    }: {
+        files: { file: UploadingFile, localImage?: LocalImage | undefined }[],
+        text: string | undefined,
+        mentions: MentionToSend[] | undefined,
+        quotedMessages: DataSourceMessageItem[] | undefined
+    }) => {
+        let quoted = quotedMessages || [];
+        let message = text.trim();
+        let styledSpans = findSpans(message);
+
+        let { key, filesKeys } = this.engine.sender.sendFiles({
+            conversationId: this.conversationId,
+            files: files.map(x => x.file),
+            callback: this,
+            quoted: quoted.map(q => q.id!),
+            message,
+            mentions,
+            spans: styledSpans
+        });
+        (async () => {
+            let filesInfo = await Promise.all(files.map(x => x.file.fetchInfo()));
+            let filesMeta: PendingMessage['filesMeta'] = filesInfo.map((info, i) => {
+                return {
+                    key: filesKeys[i],
+                    file: info.name || 'image.jpg',
+                    progress: 0,
+                    fileSize: info.fileSize,
+                    uri: info.uri,
+                    imageSize: info.imageSize,
+                    isImage: !!info.isImage,
+                    filePreview: files[i].localImage?.src || '',
+                };
+            });
+
+            let date = (new Date().getTime()).toString();
+            let spans = [...prepareLegacyMentions(message, mentions || []), ...prepareLegacySpans(styledSpans)];
+            let pmsg = {
+                date,
+                key,
+                file: name,
+                progress: 0,
+                message,
+                failed: false,
+                sticker: null,
+                spans,
+                filesMeta,
+                quoted,
+            } as PendingMessage;
+            this.messages = [...this.messages, { ...pmsg } as PendingMessage];
+            this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
+
+            this.onMessagesUpdated();
+
+            // Data Source
+            this.appendMessage(pmsg);
+
+            // Notify
+            for (let l of this.listeners) {
+                l.onMessageSend(files[0].file, files[0].localImage);
             }
         })();
         return key;
@@ -686,10 +758,8 @@ export class ConversationEngine implements MessageSendHandler {
             let pmsg = {
                 date,
                 key,
-                file: null,
                 message: null,
                 failed: false,
-                isImage: false,
                 quoted: quoted.map(q => ({ ...q, reply: undefined })),
                 sticker: sticker
             } as PendingMessage;
@@ -739,14 +809,21 @@ export class ConversationEngine implements MessageSendHandler {
         // Dothing: wait for sequence to take care
     }
 
-    onProgress = (key: string, progress: number) => {
-        let ex = this.messages.find((v) => isPendingMessage(v) && v.key === key);
+    onFileProgress = (key: string, messageKey: string, progress: number) => {
+        let ex = this.messages.find((v) => isPendingMessage(v) && v.key === messageKey);
         if (ex) {
             this.messages = this.messages.map((v) => {
-                if (isPendingMessage(v) && v.key === key) {
+                if (isPendingMessage(v) && v.key === messageKey) {
                     return {
                         ...v,
-                        progress: progress
+                        filesMeta: (v.filesMeta || []).reduce((acc, x) => {
+                            if (x.key === key) {
+                                acc!.push({ ...x, progress });
+                            } else {
+                                acc!.push(x);
+                            }
+                            return acc;
+                        }, [] as PendingMessage["filesMeta"])
                     } as PendingMessage;
                 } else {
                     return v;
@@ -756,9 +833,19 @@ export class ConversationEngine implements MessageSendHandler {
             this.onMessagesUpdated();
         }
 
-        let old = this.dataSource.getItem(key);
+        let old = this.dataSource.getItem(messageKey);
         if (old && old.type === 'message') {
-            let updated = { ...old, progress };
+            let updated = {
+                ...old,
+                attachments: (old.attachments || []).reduce((acc, x) => {
+                    if (x.__typename === 'MessageAttachmentFile' && x.key === key) {
+                        acc!.push({ ...x, progress });
+                    } else {
+                        acc!.push(x);
+                    }
+                    return acc;
+                }, [] as DataSourceMessageItem["attachments"])
+            };
             this.dataSource.updateItem(updated);
         }
     }
@@ -984,24 +1071,25 @@ export class ConversationEngine implements MessageSendHandler {
                 attachBottom: false,
                 spans: src.spans,
                 commentsCount: 0,
-                attachments: p.uri ? [{
+                attachments: p.filesMeta ? p.filesMeta.map(fileInfo => ({
                     __typename: "MessageAttachmentFile",
                     id: PENDING_MESSAGE_ATTACH_ID,
-                    uri: p.uri,
+                    key: fileInfo.key,
+                    uri: fileInfo.uri,
                     fileId: '',
                     fallback: 'Document',
-                    filePreview: p.filePreview || '',
+                    filePreview: fileInfo.filePreview || '',
                     fileMetadata: {
                         __typename: 'FileMetadata',
                         mimeType: '',
                         imageFormat: '',
-                        name: p.file || 'image.png',
-                        size: p.fileSize || 0,
-                        isImage: !!p.isImage,
-                        imageWidth: p.imageSize && p.imageSize.width || 0,
-                        imageHeight: p.imageSize && p.imageSize.height || 0,
+                        name: fileInfo.file || 'image.png',
+                        size: fileInfo.fileSize || 0,
+                        isImage: !!fileInfo.isImage,
+                        imageWidth: fileInfo.imageSize && fileInfo.imageSize.width || 0,
+                        imageHeight: fileInfo.imageSize && fileInfo.imageSize.height || 0,
                     }
-                }] : undefined,
+                })) : undefined,
                 reply,
                 source: undefined,
                 attachTop: prev && prev.type === 'message' ? prev.sender.id === this.engine.user.id && !prev.serviceMetaData && !prev.isService : false,

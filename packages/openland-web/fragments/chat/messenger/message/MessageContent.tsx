@@ -19,8 +19,9 @@ import { DonationContent } from './content/DonationContent';
 import { StickerContent } from './content/StickerContent';
 import { css, cx } from 'linaria';
 import { createSimpleSpan } from 'openland-y-utils/spans/processSpans';
+import { ImagePileContent } from './content/ImagePileContent';
 
-type MsgAttachFile = FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
+type MsgAttachFile = FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { progress?: number };
 type MsgAttachRich = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
 type MsgAttachPurchase = FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase;
 
@@ -57,6 +58,21 @@ const replySectionWrapper = css`
     padding: 0;
 `;
 
+const imageColumn = css`
+    height: 360px;
+    flex: 1;
+    flex-direction: column;
+
+    &:not(:last-child) {
+        margin-right: 8px;
+    }
+`;
+
+const imagesWrapper = css`
+    flex-direction: row;
+    max-width: 680px;
+`;
+
 interface ContentWrapperProps {
     className: string;
     children: any;
@@ -72,7 +88,7 @@ interface MessageContentProps {
     textSpans?: Span[];
     edited?: boolean;
     reply?: DataSourceWebMessageItem[];
-    attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string })[];
+    attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string, progress?: number })[];
     sticker?: MyStickers_stickers_packs_stickers;
     fallback?: string;
     isOut?: boolean;
@@ -81,7 +97,6 @@ interface MessageContentProps {
     sender?: MessageSender;
     senderNameEmojify?: string | JSX.Element;
     date?: number;
-    fileProgress?: number;
     isPending?: boolean;
     isComment?: boolean;
 }
@@ -98,7 +113,6 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
         fallback,
         isOut = false,
         attachTop = false,
-        fileProgress,
         isPending,
         isComment = false,
     } = props;
@@ -124,11 +138,14 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
 
     const extraClassName = cx('x', extraWrapper, attachTop && extraInCompactWrapper);
     const textClassName = cx('x', textWrapper);
+    const imagesWrapperClassName = cx(extraClassName, imagesWrapper);
 
-    imageAttaches.map((file) => {
-        content.push(
-            <ContentWrapper key={'msg-' + id + '-media-' + file.fileId} className={extraClassName}>
+    if (imageAttaches.length > 0) {
+        let imagesContent;
+        if (imageAttaches.length === 1) {
+            imagesContent = imageAttaches.map(file => (
                 <ImageContent
+                    key={'msg-' + id + '-media-' + file.fileId}
                     file={file}
                     sender={props.sender}
                     senderNameEmojify={props.senderNameEmojify}
@@ -136,11 +153,60 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
                     chatId={props.chatId}
                     mId={id}
                     isPending={isPending}
-                    progress={fileProgress}
+                    progress={file.progress}
                 />
-            </ContentWrapper>,
+            ));
+        } else {
+            imagesContent = imageAttaches
+                .reduce((acc, file, i) => {
+                    let column = acc.reduce((y, x) => x.length === 1 ? x : y, null);
+                    if (acc.length < 2) {
+                        acc.push([(
+                            <ImagePileContent
+                                key={'msg-' + id + '-media-' + file.fileId}
+                                file={file}
+                                sender={props.sender}
+                                senderNameEmojify={props.senderNameEmojify}
+                                date={props.date}
+                                chatId={props.chatId}
+                                mId={id}
+                                isPending={isPending}
+                                progress={file.progress}
+                                isHalf={imageAttaches.length === 3 && i === 1 || imageAttaches.length === 4}
+                            />
+                        )]);
+                    } else if (column) {
+                        column.push(
+                            (
+                                <ImagePileContent
+                                    key={'msg-' + id + '-media-' + file.fileId}
+                                    file={file}
+                                    sender={props.sender}
+                                    senderNameEmojify={props.senderNameEmojify}
+                                    date={props.date}
+                                    chatId={props.chatId}
+                                    mId={id}
+                                    isPending={isPending}
+                                    progress={file.progress}
+                                    isHalf={true}
+                                />
+                            )
+                        );
+                    }
+                    return acc;
+                }, [] as JSX.Element[][])
+                .map((column) => (
+                    <div className={imageColumn}>
+                        {column}
+                    </div>
+                ));
+        }
+        content.push(
+            <ContentWrapper className={imagesWrapperClassName}>
+                {imagesContent}
+            </ContentWrapper>
         );
-    });
+    }
 
     purchaseAttaches.forEach((attach) => {
         content.push(
@@ -169,7 +235,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
                     sender={props.sender}
                     senderNameEmojify={props.senderNameEmojify}
                     date={props.date}
-                    progress={fileProgress}
+                    progress={file.progress}
                     inlineVideo={true}
                 />
             </ContentWrapper>,

@@ -3,7 +3,7 @@ import { css } from 'linaria';
 import IconUpload from 'openland-icons/s/ic-drop-72.svg';
 import { TextTitle1 } from 'openland-web/utils/TextStyles';
 
-export const fileListToArray = (files?: FileList) => {
+export const fileListToArray = (files?: FileList | null) => {
     let res = [];
     if (files && files.length) {
         for (let i = 0; i < files.length; i++) {
