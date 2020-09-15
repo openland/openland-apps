@@ -64,7 +64,8 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
             description={<UPresence user={user}/>}
             avatar={{ photo, id, title: name }}
         >
-            {engine.user.id !== id && <UButton text={buttonText} path={`/mail/${id}`} size="large" shape="square" marginRight={16}/>}
+            {!isMe && <UButton text={buttonText} path={`/mail/${id}`} size="large" shape="square" marginRight={16}/>}
+            {isMe && <UButton text="Edit profile" path="/settings/profile" size="large" shape="square" marginRight={16} style="secondary"/>}
            <UserActions chat={conversation} user={user} />
         </UListHeroNew>
     );

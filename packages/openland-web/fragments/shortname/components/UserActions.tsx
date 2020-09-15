@@ -14,7 +14,6 @@ import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UNotificationsSwitchNew } from 'openland-web/components/unicorn/templates/UNotificationsSwitchNew';
 
-import EditIcon from 'openland-icons/s/ic-edit-24.svg';
 import CopyIcon from 'openland-icons/s/ic-link-24.svg';
 import SpamIcon from 'openland-icons/s/ic-flag.svg';
 import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
@@ -91,10 +90,6 @@ export const UserActions = React.memo(({ user, chat }: UserMenuProps) => {
 
             {userNotInContacts && (
                 <UListItem title="Add to contacts" useRadius={true} icon={<AddContactIcon />} onClick={onAddContactClick}/>
-            )}
-
-            {isMe && (
-                <UListItem title="Edit profile" path="/settings/profile" useRadius={true} icon={<EditIcon />} />
             )}
 
             {isMe && <UListItem title="Saved messages" useRadius={true} path={`/mail/${id}`} icon={<BookmarkIcon />}/>}

@@ -19,13 +19,16 @@ const showMoreLink = css`
     }
 `;
 
-const getNewLinesNumber = (text: string) => text.split(/\r\n|\r|\n/).length;
+const MAX_CHARACTERS = 400;
+const MAX_LINE_BREAKS = 10;
+
+const getLineBreaksNumber = (text: string) => text.split(/\r\n|\r|\n/).length;
 
 const getShortText = (text: string) => {
-    if (text.length > 400) {
-        return `${text.substr(0, 400)}... `;
+    if (text.length > MAX_CHARACTERS) {
+        return `${text.substr(0, MAX_CHARACTERS)}... `;
     } else {
-        const shortTextLength = text.split(/\r\n|\r|\n/).slice(0, 10).join('\n').length;
+        const shortTextLength = text.split(/\r\n|\r|\n/).slice(0, MAX_LINE_BREAKS).join('\n').length;
         return `${text.substr(0, shortTextLength)}... `;
     }
 };
@@ -33,7 +36,7 @@ const getShortText = (text: string) => {
 export const ShowMoreText = React.memo<ShowMoreProps>(({ text }) => {
     const [fullLength, setFullLength] = React.useState(false);
 
-    const isSmallText = text.length < 400 && getNewLinesNumber(text) < 10;
+    const isSmallText = text.length < MAX_CHARACTERS && getLineBreaksNumber(text) < MAX_LINE_BREAKS;
 
     if (fullLength || isSmallText) {
         return <UListText value={text}/>;

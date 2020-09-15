@@ -14,7 +14,6 @@ import { useClient } from 'openland-api/useClient';
 import { UNotificationsSwitchNew } from 'openland-web/components/unicorn/templates/UNotificationsSwitchNew';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 
-import EditIcon from 'openland-icons/s/ic-edit-24.svg';
 import CopyIcon from 'openland-icons/s/ic-link-24.svg';
 import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
 import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
@@ -71,12 +70,6 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
 
     if (engine.user.id === id) {
         builder.item({
-            title: 'Edit profile',
-            icon: <EditIcon />,
-            path: '/settings/profile',
-        });
-
-        builder.item({
             title: 'Saved messages',
             icon: <BookmarkIcon />,
             path: `/mail/${id}`,
@@ -96,10 +89,12 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
         },
     });
 
-    builder.item({
-        title: 'Report spam',
-        icon: <SpamIcon />
-    });
+    if (id !== engine.user.id) {
+        builder.item({
+            title: 'Report spam',
+            icon: <SpamIcon />
+        });
+    }
 
     if (useRole('super-admin')) {
         builder.item({
