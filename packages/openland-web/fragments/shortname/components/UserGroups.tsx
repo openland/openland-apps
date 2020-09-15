@@ -38,8 +38,9 @@ export const UserGroups = React.memo((props: { id: string }) => {
         setGroupsLoading(false);
     }, [groupsAfter, groupsLoading, displayGroups]);
 
-    return (
-            <UListGroup header="Mutual groups" counter={count}>
+    if (displayGroups.length) {
+        return (
+            <UListGroup header="Mutual groups" counter={count} marginBottom={16}>
                 {displayGroups.map((group) => (
                     <UGroupView key={'room-' + group.id} group={group} />
                 ))}
@@ -50,9 +51,13 @@ export const UserGroups = React.memo((props: { id: string }) => {
                         iconColor="var(--foregroundSecondary)"
                         iconBackground="var(--backgroundTertiaryTrans)"
                         useRadius={true}
+                        label={true}
                         onClick={handleLoadMoreGroups}
                     />
                 )}
             </UListGroup>
-    );
+        );
+    }
+
+    return null;
 });

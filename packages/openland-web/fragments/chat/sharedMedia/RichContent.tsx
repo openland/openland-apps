@@ -52,6 +52,7 @@ const ContainerClass = css`
 
 const ContainerProfileClass = css`
     margin: 0 -8px;
+    width: 100%;
 `;
 
 const ImgContianerClass = css`

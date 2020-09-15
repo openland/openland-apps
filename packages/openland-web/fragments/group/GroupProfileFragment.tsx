@@ -78,7 +78,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                 </UListGroup>
             )}
             {organization && (
-                <UListGroup header={organization.isCommunity ? 'Community' : 'Organization'}>
+                <UListGroup header={organization.isCommunity ? 'Community' : 'Organization'} marginBottom={16}>
                     <UOrganizationView organization={organization} />
                 </UListGroup>
             )}

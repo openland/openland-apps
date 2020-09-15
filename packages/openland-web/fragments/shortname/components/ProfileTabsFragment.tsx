@@ -60,7 +60,7 @@ export const ProfileTabsFragment = React.memo(({ chatId, group }: ProfileSharedM
     }, [bottomReached]);
 
     return (
-        <XView marginLeft={7}>
+        <XView marginLeft={7} width="100%">
             <XView flexDirection="row" height={56} flexGrow={1}>
                 <Tabs tabs={items} setSelected={setSelected} justifyContent="flex-end" hideEmpty={true} />
             </XView>

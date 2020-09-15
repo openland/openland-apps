@@ -48,6 +48,7 @@ const DocumentContentContainerClass = css`
 
 const DocumentContentContainerProfileClass = css`
     margin: 0 -7px;
+    width: 100%;
 `;
 
 const MobilePadding = css`

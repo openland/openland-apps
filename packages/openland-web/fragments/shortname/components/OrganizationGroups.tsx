@@ -51,6 +51,7 @@ export const OrganizationGroups = React.memo((props: { id: string; roomsCount: n
                     iconColor="var(--foregroundSecondary)"
                     iconBackground="var(--backgroundTertiaryTrans)"
                     useRadius={true}
+                    label={true}
                     onClick={handleLoadMoreGroups}
                 />
             )}
