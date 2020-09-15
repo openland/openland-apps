@@ -11,7 +11,7 @@ import { ChatHeader } from './components/ChatHeader';
 import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/ChatHeaderAvatar';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
-import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType, StickerFragment, RoomCallsMode } from 'openland-api/spacex.types';
+import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType, RoomCallsMode } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
@@ -483,10 +483,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 topView={quoted}
                                 placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message'}
                                 canSubmit={canSubmit}
-                                onStickerSent={(sticker: StickerFragment) => this.engine.sendSticker(sticker, undefined)}
-                                onStickerKeyboardButtonPress={this.handleStickerKeyboardButtonPress}
-                                stickerKeyboardShown={this.state.stickerKeyboardShown}
-                                stickerKeyboardHeight={this.stickerKeyboardHeight}
                             />
                         )}
                         {!showInputBar && reloadButton}
