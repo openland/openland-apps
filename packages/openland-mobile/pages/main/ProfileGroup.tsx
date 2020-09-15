@@ -26,6 +26,7 @@ import { ZHero } from 'openland-mobile/components/ZHero';
 import { ZHeroAction } from 'openland-mobile/components/ZHeroAction';
 import { plural } from 'openland-y-utils/plural';
 import { SHeader } from 'react-native-s/SHeader';
+import { ChatJoin } from './components/ChatJoin';
 
 const ProfileGroupComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
@@ -40,6 +41,10 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     const [members, setMembers] = React.useState<GroupMember[]>([]);
     const [loading, setLoading] = React.useState(false);
     const [muted, setMuted] = React.useState(group.settings.mute);
+
+    if (group.membership !== SharedRoomMembershipStatus.MEMBER) {
+        return <ChatJoin room={group} theme={theme} router={props.router} />;
+    }
 
     // callbacks
     const handleAddMembers = React.useCallback(
@@ -292,7 +297,6 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     }, [members, loading]);
 
     const highlightGroup = group.kind === 'GROUP' && !group.isPremium;
-    const isMember = group.membership === SharedRoomMembershipStatus.MEMBER;
     const content = (
         <>
             <ZHero
@@ -318,16 +322,14 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                     onPress: handleSend
                 }}
             >
-                {isMember && (
-                    <ZHeroAction
-                        icon={muted ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-off-24.png')}
-                        title={muted ? 'Unmute' : 'Mute'}
-                        onPress={() => {
-                            setMuted(!muted);
-                            client.mutateRoomSettingsUpdate({ roomId: group.id, settings: { mute: !muted } });
-                        }}
-                    />
-                )}
+                <ZHeroAction
+                    icon={muted ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-off-24.png')}
+                    title={muted ? 'Unmute' : 'Mute'}
+                    onPress={() => {
+                        setMuted(!muted);
+                        client.mutateRoomSettingsUpdate({ roomId: group.id, settings: { mute: !muted } });
+                    }}
+                />
                 {group.kind === SharedRoomKind.PUBLIC && (
                     <ZHeroAction
                         icon={require('assets/ic-share-24.png')}
@@ -335,13 +337,11 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                         onPress={handleSharePress}
                     />
                 )}
-                {isMember && (
-                    <ZHeroAction
-                        icon={require('assets/ic-more-h-24.png')}
-                        title="More"
-                        onPress={handleManageClick}
-                    />
-                )}
+                <ZHeroAction
+                    icon={require('assets/ic-more-h-24.png')}
+                    title="More"
+                    onPress={handleManageClick}
+                />
             </ZHero>
 
             <ZListGroup header="About" useSpacer={true}>
@@ -381,25 +381,23 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 </ZListGroup>
             )}
 
-            {isMember && (
-                <ZListGroup useSpacer={true}>
-                    <ZListItem
-                        leftIcon={require('assets/ic-attach-glyph-24.png')}
-                        text="Media, files, links"
-                        onPress={onSharedPress}
-                    />
-                </ZListGroup>
-            )}
+            <ZListGroup useSpacer={true}>
+                <ZListItem
+                    leftIcon={require('assets/ic-attach-glyph-24.png')}
+                    text="Media, files, links"
+                    onPress={onSharedPress}
+                />
+            </ZListGroup>
 
             <ZListHeader text="Members" counter={group.membersCount} useSpacer={true} />
-            {isMember && (!group.isPremium || group.role !== 'MEMBER') && !memberInviteDisabled && (
+            {(!group.isPremium || group.role !== 'MEMBER') && !memberInviteDisabled && (
                 <ZListItem
                     text="Add people"
                     leftIcon={require('assets/ic-add-glyph-24.png')}
                     onPress={handleAddMember}
                 />
             )}
-            {isMember && !hideOwnerLink && !memberInviteDisabled && (
+            {!hideOwnerLink && !memberInviteDisabled && (
                 <ZListItem
                     leftIcon={require('assets/ic-link-glyph-24.png')}
                     text={`Invite with link`}
