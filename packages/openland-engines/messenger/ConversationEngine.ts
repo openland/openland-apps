@@ -114,6 +114,10 @@ const getOverrides = (src: FullMessage | undefined) => {
     return src ? (src.__typename === 'GeneralMessage' || src.__typename === 'StickerMessage' ? { overrideAvatar: src.overrideAvatar, overrideName: src.overrideName } : {}) : {};
 };
 
+const getCanReply = (room: Types.ChatInit_room | Types.ChatInitFromUnread_room | null) => {
+    return room && (room.__typename === 'PrivateRoom' || room.repliesEnabled) || false;
+};
+
 type RecursivePartial<T> = {
     [P in keyof T]?: RecursivePartial<T[P]>;
 };
@@ -352,7 +356,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.badge = initialChat.room && initialChat.room.myBadge || undefined;
         this.canEdit = ((initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.canEdit) || AppConfig.isSuperAdmin()) || false;
         this.canPin = this.canEdit || (initialChat.room && initialChat.room.__typename === 'PrivateRoom') || false;
-        this.canReply = initialChat.room && (initialChat.room.__typename === 'PrivateRoom' || initialChat.room.repliesEnabled) || false;
+        this.canReply = getCanReply(initialChat.room);
         this.canSendMessage = (initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.kind !== 'INTERNAL') ? initialChat.room.canSendMessage :
             (initialChat.room && initialChat.room.__typename === 'PrivateRoom') ? !initialChat.room.user.isBot :
                 true;
@@ -1025,6 +1029,7 @@ export class ConversationEngine implements MessageSendHandler {
             }
         } else if (event.__typename === 'ChatUpdated') {
             this.pinId = (event.chat && event.chat.pinnedMessage) ? event.chat.pinnedMessage.id : null;
+            this.canReply = getCanReply(event.chat.room);
         } else {
             log.warn('Received unknown message');
         }
