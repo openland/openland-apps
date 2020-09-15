@@ -11,7 +11,7 @@ import { ChatHeader } from './components/ChatHeader';
 import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/ChatHeaderAvatar';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
-import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType, RoomCallsMode } from 'openland-api/spacex.types';
+import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType, StickerFragment, RoomCallsMode } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
@@ -301,7 +301,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             if (this.inputRef.current && this.inputRef.current.isFocused()) {
                 this.inputRef.current.blur();
             }
-            if (this.state.keyboardHeight > 0) {
+            if (this.state.keyboardHeight > 0 && Platform.OS !== 'ios') {
                 this.setState({ stickerKeyboardShown: true });
             } else {
                 if (this.inputRef.current) {
@@ -483,6 +483,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 topView={quoted}
                                 placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message'}
                                 canSubmit={canSubmit}
+                                onStickerSent={(sticker: StickerFragment) => this.engine.sendSticker(sticker, undefined)}
+                                onStickerKeyboardButtonPress={this.handleStickerKeyboardButtonPress}
+                                stickerKeyboardShown={this.state.stickerKeyboardShown}
+                                stickerKeyboardHeight={this.stickerKeyboardHeight}
                             />
                         )}
                         {!showInputBar && reloadButton}
@@ -491,8 +495,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     </View>
                     <ASSafeAreaContext.Consumer>
                         {context => {
-                            if (this.waitingForKeyboard && context.keyboardHeight > 0) {
-                                this.stickerKeyboardHeight = context.keyboardHeight;
+                            if (this.waitingForKeyboard && context.openKeyboardHeight > 100) {
+                                this.stickerKeyboardHeight = context.openKeyboardHeight;
                                 this.waitingForKeyboard = false;
                                 this.setState({ keyboardHeight: 0, stickerKeyboardShown: true });
                             } else if (this.state.keyboardHeight !== context.keyboardHeight) {

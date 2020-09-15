@@ -61,6 +61,7 @@ export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keybo
                     >
                         <ASSafeAreaProvider
                             bottom={this.state.keyboardHeight}
+                            openKeyboardHeight={this.state.keyboardHeight}
                         >
                             <ASKeyboardAcessoryViewContext.Provider value={this}>
                                 {this.props.children}
@@ -72,7 +73,11 @@ export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keybo
         }
         return (
             <View style={{ width: '100%', height: '100%' }}>
-                <ASSafeAreaProvider bottom={this.state.keyboardHeight} keyboardHeight={this.state.keyboardHeight}>
+                <ASSafeAreaProvider
+                    bottom={this.state.keyboardHeight}
+                    keyboardHeight={this.state.keyboardHeight}
+                    openKeyboardHeight={this.state.keyboardHeight}
+                >
                     {this.props.children}
                 </ASSafeAreaProvider>
             </View>

@@ -161,7 +161,7 @@ export const StickerPicker = React.memo((props: StickerPickerProps) => {
     }, [onStickerSent, recentStickers]);
 
     return (
-        <View style={{ height: height && height > 0 ? height : 220, backgroundColor: theme.backgroundTertiary, justifyContent: 'center' }} onLayout={handleLayoutChange}>
+        <View style={{ height: height && height > 0 ? height : 220, backgroundColor: theme.backgroundTertiary, justifyContent: 'center', alignItems: 'center' }} onLayout={handleLayoutChange}>
             {stickersPerRow > 0 && stickerSize > 0 && (
                 <>
                     <FlatList
