@@ -12,7 +12,6 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UListHeroNew } from 'openland-web/components/unicorn/UListHeroNew';
 import { ProfileLayout } from 'openland-web/components/ProfileLayout';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
-import { plural } from 'openland-y-utils/plural';
 import { XDate } from 'openland-x/XDate';
 import { getLocationUrl } from 'openland-y-utils/getLocationUrl';
 
@@ -88,9 +87,7 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
                     {!!birthDay && <UListItem title={<XDate value={birthDay} />} icon={<BirthDayIcon />} useRadius={true} wrapperClassName={listItemWrapper} interactive={false}/>}
                 </XView>
             </UListGroup>
-            {!isMe && (
-                <UserGroups id={id}/>
-            )}
+            {!isMe && <UserGroups id={id}/>}
             {conversation?.__typename === 'PrivateRoom' && <ProfileTabsFragment chatId={conversation.id} />}
         </>
     );
