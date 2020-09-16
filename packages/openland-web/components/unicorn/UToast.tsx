@@ -47,13 +47,14 @@ export interface UToastProps {
     type?: 'text' | 'loading' | 'success' | 'failure';
     text?: string;
     backgroundColor?: string;
+    textColor?: string;
     autoclose?: boolean;
     closeCb?: () => void;
     className?: string;
 }
 
 export const UToast = React.memo((props: UToastProps) => {
-    const { isVisible, className, text, backgroundColor, closeCb, type = 'text', autoclose = true } = props;
+    const { isVisible, className, text, backgroundColor, textColor, closeCb, type = 'text', autoclose = true } = props;
     const [isRealVisible, setVisible] = React.useState(isVisible);
 
     React.useEffect(() => {
@@ -104,7 +105,7 @@ export const UToast = React.memo((props: UToastProps) => {
                     <Icon />
                 </div>
             )}
-            <h5 className={cx(TextLabel1, textClass)}>{text}</h5>
+            <h5 className={cx(TextLabel1, textClass)} style={{ color: textColor }}>{text}</h5>
         </div>
     ) : null;
 });
@@ -114,6 +115,7 @@ export interface UToastConfig {
     type?: 'text' | 'loading' | 'success' | 'failure';
     text?: string;
     backgroundColor?: string;
+    textColor?: string;
     autoclose?: boolean;
 }
 

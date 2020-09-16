@@ -257,6 +257,7 @@ const useConnectionStatus = (props: UToastHandlers) => {
         if (visible) {
             props.show({
                 backgroundColor: 'var(--tintOrange)',
+                textColor: 'var(--foregroundContrast)',
                 text: 'Connecting',
                 autoclose: false,
                 type: 'loading',
