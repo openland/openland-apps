@@ -59,7 +59,7 @@ const item = css`
     &:hover {
         box-shadow: 0px 4px 35px rgba(0, 0, 0, 0.07);
         background-color: #ffffff;
-        color: var(--backgroundPrimary) !important;
+        color: var(--foregroundPrimary) !important;
     }
 `;
 
