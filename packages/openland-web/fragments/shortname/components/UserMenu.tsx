@@ -89,7 +89,7 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
         },
     });
 
-    if (id !== engine.user.id) {
+    if (id !== engine.user.id && useRole('super-admin')) {
         builder.item({
             title: 'Report spam',
             icon: <SpamIcon />

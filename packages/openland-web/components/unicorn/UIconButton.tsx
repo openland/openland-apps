@@ -37,6 +37,16 @@ const roundStyle = css`
 
 const squareStyle = css`
     border-radius: 8px !important;
+    &::before {
+        content: '';
+        transition: all 0.1s ease;
+        transform: scale3d(0, 0, 0);
+        width: var(--ripple-size);
+        height: var(--ripple-size);
+        border-radius: 8px !important;
+        position: absolute;
+        z-index: 1;
+    }
 `;
 
 const wrapperRipple = css`
@@ -173,6 +183,7 @@ export const UIconButton = React.memo((props: UIconButtonProps) => {
                             wrapper,
                             wrapperRipple,
                             active && wrapperActive,
+                            shape && shapeResolver[shape],
                             defaultRippleColor && wrapperRippleTransform,
                         )}
                         style={
