@@ -20,14 +20,14 @@ export const ThemeProvider = React.memo((props: {children: any}) => {
         const listener = (e: MediaQueryListEvent) => {
             setTheme(e.matches ? 'dark' : 'light');
         };
-        match.addEventListener('change', listener);
+        match.addListener(listener);
         if (localStorage.getItem('interactive_app_theme') === 'LIGHT') {
             setTheme('light');
         }
         if (localStorage.getItem('interactive_app_theme') === 'DARK') {
             setTheme('dark');
         }
-        return () => match.removeEventListener('change', listener);
+        return () => match.removeListener(listener);
     });
 
     return (
