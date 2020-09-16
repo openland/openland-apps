@@ -27,7 +27,7 @@ const box = css`
 
 const wrapper = css`
     padding: 48px 0 50px;
-    background: #F2F3F5;
+    background: var(--backgroundPrimaryHover);
     border-radius: 44px;
 
     @media (min-width: 768px) and (max-width: 1199px) {

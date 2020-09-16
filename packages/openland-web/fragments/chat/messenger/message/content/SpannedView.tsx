@@ -106,27 +106,27 @@ const insaneTextClassName = css`
 `;
 
 const mentionServiceClassName = css`
-    color: #676d7a !important;
+    color: var(--foregroundSecondary) !important;
     font-weight: 600;
 
     &:hover {
-        color: #676d7a !important;
+        color: var(--foregroundSecondary) !important;
         text-decoration: none;
     }
 `;
 
 const mentionClassName = css`
-    color: #1885f2;
+    color: var(--accentMuted);
     font-weight: 600;
 
     &:hover {
-        color: #1885f2;
+        color: var(--accentMuted);
         text-decoration: none;
     }
 `;
 
 const mentionBgClassName = css`
-    background-color: #d6edff;
+    background-color: var(--accentPrimaryTrans);
     padding: 2px 4px;
     border-radius: 4px;
 `;

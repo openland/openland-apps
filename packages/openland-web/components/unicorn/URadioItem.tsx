@@ -7,13 +7,12 @@ const radioDotStyle = css`
     height: 20px;
     flex-shrink: 0;
     border-radius: 20px;
-    border: 2px solid #c4c7cc;
-    background-color: #fff;
+    border: 2px solid var(--foregroundQuaternary);
     transition: all 0.15s ease;
 `;
 
 const radioDotCheckedStyle = css`
-    border: 6px solid #1885f2;
+    border: 6px solid var(--accentMuted);
 `;
 
 const inputClassName = css`

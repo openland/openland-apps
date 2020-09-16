@@ -10,7 +10,11 @@
     text-rendering: auto;
 }
 
-body {
+html {
+    background-color: var(--backgroundPrimary);
+
+    /* start interactive colors */
+
     --transparent: rgba(255, 255, 255, 0);
 
     --foregroundPrimary: #171A1F;
@@ -44,6 +48,20 @@ body {
     --accentMutedHover: #4595E5;
     --accentMutedActive: #4595E5;
 
+    --accentPay: #171A1F;
+    --accentPayHover: #212329;
+    --accentPayActive: #33373D;
+
+    --border: rgba(0, 0, 0, 0.08);
+    --borderLight: rgba(0, 0, 0, 0.04);
+
+    --backgroundBlurPrimary: rgba(255, 255, 255, 0.72);
+    --backgroundBlurSecondary: rgba(255, 255, 255, 0.92);
+
+    /* end interactive colors */
+
+    --accentPrimaryTrans: rgba(24, 133, 242, 0.24);
+
     --accentPositive: #40B855;
     --accentPositiveHover: #52CC66;
     --accentPositiveActive: #32A645;
@@ -51,13 +69,6 @@ body {
     --accentNegative: #F23051;
     --accentNegativeHover: #FF4060;
     --accentNegativeActive: #D92140;
-
-    --accentPay: #171A1F;
-    --accentPayHover: #212329;
-    --accentPayActive: #33373D;
-
-    --border: rgba(0, 0, 0, 0.08);
-    --borderLight: rgba(0, 0, 0, 0.04);
 
     --overlayTotal: #000000;
     --overlayHeavy: rgba(0, 0, 0, 0.84);
@@ -95,7 +106,99 @@ body {
     --tintInverted: rgba(255, 255, 255, 0.32);
 }
 
-body.interactive {
+@media (prefers-color-scheme: dark) {
+    html {
+        --transparent: rgba(0, 0, 0, 0);
+
+        --foregroundPrimary: #FFFFFF;
+        --foregroundSecondary: #898B8F;
+        --foregroundTertiary: #5E6166;
+        --foregroundQuaternary: #484B52;
+        --foregroundContrast: #FFFFFF;
+        --foregroundInverted: #111214;
+
+        --backgroundPrimary: #111214;
+        --backgroundPrimaryHover: #242629;
+        --backgroundPrimaryActive: #242629;
+
+        --backgroundSecondary: #242629;
+        --backgroundSecondaryHover: rgba(76, 80, 87, 0.24);
+        --backgroundSecondaryActive: rgba(76, 80, 87, 0.24);
+
+        --backgroundTertiary: #242629;
+        --backgroundTertiaryHover: rgba(76, 80, 87, 0.24);
+        --backgroundTertiaryActive: rgba(76, 80, 87, 0.24);
+
+        --backgroundTertiaryTrans: rgba(96, 101, 107, 0.24);
+        --backgroundTertiaryHoverTrans: rgba(76, 80, 87, 0.24);
+        --backgroundTertiaryActiveTrans: rgba(53, 53, 56, 0.24);
+
+        --accentPrimary: #FFFFFF;
+        --accentPrimaryHover: #FFFFFF;
+        --accentPrimaryActive: #FFFFFF;
+
+        --accentMuted: #248BF2;
+        --accentMutedHover: #248BF2;
+        --accentMutedActive: #248BF2;
+
+        --accentPay: #898B8F;
+        --accentPayHover: #898B8F;
+        --accentPayActive: #898B8F;
+
+        --border: rgba(255, 255, 255, 0.08);
+        --borderLight: rgba(255, 255, 255, 0.04);
+
+        --backgroundBlurPrimary: rgba(35, 39, 41, 0.72);
+        --backgroundBlurSecondary: rgba(35, 39, 41, 0.92);
+    }
+}
+
+html.light {
+    --transparent: rgba(255, 255, 255, 0);
+
+    --foregroundPrimary: #171A1F;
+    --foregroundSecondary: #71747A;
+    --foregroundTertiary: #9D9FA3;
+    --foregroundQuaternary: #C8C9CC;
+    --foregroundContrast: #FFFFFF;
+    --foregroundInverted: #FFFFFF;
+
+    --backgroundPrimary: #FFFFFF;
+    --backgroundPrimaryHover: #F2F3F5;
+    --backgroundPrimaryActive: #F2F3F5;
+
+    --backgroundSecondary: #FFFFFF;
+    --backgroundSecondaryHover: #F2F3F5;
+    --backgroundSecondaryActive: #F2F3F5;
+
+    --backgroundTertiary: #F2F3F5;
+    --backgroundTertiaryHover: #EDEEF0;
+    --backgroundTertiaryActive: #E6E7EB;
+
+    --backgroundTertiaryTrans: rgba(201, 204, 209, 0.24);
+    --backgroundTertiaryHoverTrans: rgba(169, 174, 184, 0.24);
+    --backgroundTertiaryActiveTrans: rgba(148, 155, 168, 0.24);
+
+    --accentPrimary: #248BF2;
+    --accentPrimaryHover: #3399FF;
+    --accentPrimaryActive: #1677D9;
+
+    --accentMuted: #4595E5;
+    --accentMutedHover: #4595E5;
+    --accentMutedActive: #4595E5;
+
+    --accentPay: #171A1F;
+    --accentPayHover: #212329;
+    --accentPayActive: #33373D;
+
+    --border: rgba(0, 0, 0, 0.08);
+    --borderLight: rgba(0, 0, 0, 0.04);
+
+    --backgroundBlurPrimary: rgba(255, 255, 255, 0.72);
+    --backgroundBlurSecondary: rgba(255, 255, 255, 0.92);
+}
+
+html.dark {
     --transparent: rgba(0, 0, 0, 0);
 
     --foregroundPrimary: #FFFFFF;
@@ -110,12 +213,12 @@ body.interactive {
     --backgroundPrimaryActive: #242629;
 
     --backgroundSecondary: #242629;
-    --backgroundSecondaryHover: #242629;
-    --backgroundSecondaryActive: #242629;
+    --backgroundSecondaryHover: rgba(76, 80, 87, 0.24);
+    --backgroundSecondaryActive: rgba(76, 80, 87, 0.24);
 
     --backgroundTertiary: #242629;
-    --backgroundTertiaryHover: #242629;
-    --backgroundTertiaryActive: #242629;
+    --backgroundTertiaryHover: rgba(76, 80, 87, 0.24);
+    --backgroundTertiaryActive: rgba(76, 80, 87, 0.24);
 
     --backgroundTertiaryTrans: rgba(96, 101, 107, 0.24);
     --backgroundTertiaryHoverTrans: rgba(76, 80, 87, 0.24);
@@ -125,17 +228,9 @@ body.interactive {
     --accentPrimaryHover: #FFFFFF;
     --accentPrimaryActive: #FFFFFF;
 
-    --accentMuted: #FFFFFF;
-    --accentMutedHover: #FFFFFF;
-    --accentMutedActive: #FFFFFF;
-
-    --accentPositive: #40B855;
-    --accentPositiveHover: #52CC66;
-    --accentPositiveActive: #32A645;
-
-    --accentNegative: #F23051;
-    --accentNegativeHover: #FF4060;
-    --accentNegativeActive: #D92140;
+    --accentMuted: #248BF2;
+    --accentMutedHover: #248BF2;
+    --accentMutedActive: #248BF2;
 
     --accentPay: #898B8F;
     --accentPayHover: #898B8F;
@@ -144,8 +239,6 @@ body.interactive {
     --border: rgba(255, 255, 255, 0.08);
     --borderLight: rgba(255, 255, 255, 0.04);
 
-    --overlayTotal: #000000;
-    --overlayHeavy: rgba(0, 0, 0, 0.84);
-    --overlayMedium: rgba(0, 0, 0, 0.48);
-    --overlayLight: rgba(0, 0, 0, 0.24);
+    --backgroundBlurPrimary: rgba(35, 39, 41, 0.72);
+    --backgroundBlurSecondary: rgba(35, 39, 41, 0.92);
 }

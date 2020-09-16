@@ -10,6 +10,7 @@ import { UToast, UToastProps } from 'openland-web/components/unicorn/UToast';
 
 export const textClassName = css`
     text-align: center;
+    color: var(--foregroundPrimary);
 
     @media (min-width: 400px) {
         align-self: center;

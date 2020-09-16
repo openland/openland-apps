@@ -11,7 +11,7 @@ const toastWrapper = css`
     align-items: center;
     justify-content: flex-start;
     border-radius: 8px;
-    background-color: var(--overlayHeavy);
+    background-color: var(--foregroundPrimary);
     padding: 7px 16px 9px;
     opacity: 0;
     transform: scale(0.84) translateY(-8px);
@@ -33,12 +33,12 @@ const iconClass = css`
 
     svg,
     path {
-        fill: var(--foregroundContrast);
+        fill: var(--foregroundInverted);
     }
 `;
 
 const textClass = css`
-    color: var(--foregroundContrast);
+    color: var(--foregroundInverted);
     text-align: center;
 `;
 

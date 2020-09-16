@@ -71,6 +71,14 @@ const messageActionCloseWrap = css`
     }
 `;
 
+const contentTitleClass = css`
+    color: var(--foregroundPrimary);
+`;
+
+const contentSubtitleClass = css`
+    color: var(--foregroundSecondary);
+`;
+
 const messageActionCloseWrapEdit = css`
     display: flex;
     flex-direction: row;
@@ -131,10 +139,10 @@ export const InputMessageActionComponent = (props: { chatId: string; userId?: st
         } else {
             content = (
                 <>
-                    <span className={TextLabel1} style={{ userSelect: 'none' }}>
+                    <span className={cx(contentTitleClass, TextLabel1)} style={{ userSelect: 'none' }}>
                         {names}
                     </span>
-                    <span className={TextBody} style={{ userSelect: 'none' }}>
+                    <span className={cx(contentSubtitleClass, TextBody)} style={{ userSelect: 'none' }}>
                         {' '}
                         {plural(state.messages.length, ['message', 'messages'])}{' '}
                     </span>
@@ -142,7 +150,7 @@ export const InputMessageActionComponent = (props: { chatId: string; userId?: st
             );
         }
     } else if (state.action === 'edit' && state.messages.length === 1) {
-        content = <span className={TextLabel1}>Edit message</span>;
+        content = <span className={cx(contentTitleClass, TextLabel1)}>Edit message</span>;
     } else {
         return null;
     }

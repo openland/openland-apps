@@ -25,7 +25,7 @@ const greyStyle = css`
 `;
 
 const activeStyle = css`
-    background-color: var(--backgroundPrimary);
+    background-color: var(--foregroundContrast);
     color: var(--accentMuted);
 `;
 

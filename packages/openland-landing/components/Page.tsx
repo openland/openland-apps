@@ -14,7 +14,7 @@ export const Page = React.memo((props: PageProps) => (
         flexDirection="column"
         width="100%"
         minHeight="100vh"
-        backgroundColor="#ffffff"
+        backgroundColor="var(--backgroundPrimary)"
         color="var(--foregroundPrimary)"
     >
         <Header transparent={props.transparentHeader} />

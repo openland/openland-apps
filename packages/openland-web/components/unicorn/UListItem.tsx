@@ -12,7 +12,7 @@ const SelectableSVG = React.memo((props: { icon: JSX.Element }) => {
     return (
         <UIcon
             icon={props.icon}
-            color={selected ? 'var(--foregroundInverted)' : 'var(--foregroundSecondary)'}
+            color={selected ? 'var(--foregroundContrast)' : 'var(--foregroundSecondary)'}
         />
     );
 });
@@ -156,7 +156,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                     <SelectableText
                         {...titleFont}
                         color="var(--foregroundPrimary)"
-                        selectedColor="var(--foregroundInverted)"
+                        selectedColor="var(--foregroundContrast)"
                     >
                         {titleStyle ? <XView {...titleStyle}>{titleEmojify}</XView> : titleEmojify}
                     </SelectableText>
@@ -165,7 +165,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                         <SelectableText
                             {...subtitleFont}
                             color="var(--foregroundSecondary)"
-                            selectedColor="var(--foregroundInverted)"
+                            selectedColor="var(--foregroundContrast)"
                             marginLeft={8}
                         >
                             {subtitleEmojify}
@@ -177,7 +177,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                     <SelectableText
                         {...descriptionFont}
                         color={descriptionColor ? descriptionColor : 'var(--foregroundSecondary)'}
-                        selectedColor="var(--foregroundInverted)"
+                        selectedColor="var(--foregroundContrast)"
                         textOverflow="ellipsis"
                         height={descriptionFont.lineHeight}
                         white-space="nowrap"
@@ -192,7 +192,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 <SelectableText
                     {...textRightFont}
                     color="var(--tintGrey)"
-                    selectedColor="var(--foregroundInverted)"
+                    selectedColor="var(--foregroundContrast)"
                 >
                     {textRight}
                 </SelectableText>
@@ -241,11 +241,11 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 alignItems="center"
                 flexDirection="row"
                 backgroundColor={hovered && !selected ? 'var(--backgroundPrimaryHover)' : undefined}
-                hoverBackgroundColor={props.disableHover ? undefined : 'var(--backgroundPrimaryHover)'}
+                hoverBackgroundColor={props.disableHover ? undefined : 'var(--backgroundSecondaryHover)'}
                 hoverTextDecoration="none"
                 selectedBackgroundColor="var(--accentMuted)"
                 selectedHoverBackgroundColor="var(--accentMutedHover) !important"
-                selectedColor="var(--foregroundInverted)"
+                selectedColor="var(--foregroundContrast)"
                 cursor="pointer"
                 borderRadius={useRadius ? 8 : 0}
                 onClick={onClick}

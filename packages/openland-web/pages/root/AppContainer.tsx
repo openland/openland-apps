@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { ThemeProvider } from 'openland-x-utils/useTheme';
 import { UserInfoProvider } from 'openland-web/components/UserInfo';
 import { MessengerProvider } from 'openland-web/fragments/chat/messenger/MessengerProvider';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
@@ -30,8 +31,11 @@ export const AppContainer = (props: { children: any }) => {
     }
 
     React.useEffect(() => {
-        if (localStorage.getItem('interactive_app_theme') === 'true') {
-            document.body.classList.add('interactive');
+        if (localStorage.getItem('interactive_app_theme') === 'LIGHT') {
+            document.documentElement.classList.add('light');
+        }
+        if (localStorage.getItem('interactive_app_theme') === 'DARK') {
+            document.documentElement.classList.add('dark');
         }
     }, []);
 
@@ -52,7 +56,9 @@ export const AppContainer = (props: { children: any }) => {
                 roles={data.myPermissions.roles}
             >
                 <MessengerProvider user={hasMessenger ? data.me!! : undefined}>
-                    {props.children}
+                    <ThemeProvider>
+                        {props.children}
+                    </ThemeProvider>
                 </MessengerProvider>
             </UserInfoProvider>
         </>

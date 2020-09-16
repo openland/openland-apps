@@ -20,7 +20,7 @@ const dropZoneClass = css`
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.92);
+    background-color: var(--backgroundBlurPrimary);
     color: var(--foregroundTertiary);
     display: none;
     flex-direction: column;
@@ -117,7 +117,7 @@ export const DropZone = (props: DropZoneProps) => {
             containerRef.current.style.color = 'var(--foregroundPrimary)';
         }
         if (iconContainerRef.current) {
-            iconContainerRef.current.style.backgroundColor = 'var(--accentPrimary)';
+            iconContainerRef.current.style.backgroundColor = 'var(--accentMuted)';
         }
         if (iconContainerAnimRef.current) {
             iconContainerAnimRef.current.style.transform = 'scale(1.4)';

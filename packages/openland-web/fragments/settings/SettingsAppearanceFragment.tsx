@@ -8,6 +8,7 @@ import { FormWrapper } from './components/FormWrapper';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 import { useRole } from 'openland-x-permissions/XWithRole';
+import { useTheme } from 'openland-x-utils/useTheme';
 
 enum AppearanceOptions {
     DEFAULT = 'DEFAULT',
@@ -15,16 +16,23 @@ enum AppearanceOptions {
 }
 
 enum ThemeOptions {
-    DEFAULT = 'DEFAULT',
+    LIGHT = 'LIGHT',
     DARK = 'DARK',
+    AUTO = 'AUTO',
 }
 
 export const SettingsAppearanceFragment = React.memo(() => {
+    const theme = useTheme();
     const superAdmin = useRole('super-admin');
     const form = useForm();
+
+    const lsGetItem = (k: string) => {
+        return localStorage.getItem(k);
+    };
+
     const secretGroupDisplay = useField(
         'input.secretGroupDisplay',
-        localStorage.getItem('highlight_secret_chat') === 'true'
+        lsGetItem('highlight_secret_chat') === 'true'
             ? AppearanceOptions.HIGHLIGHTED
             : AppearanceOptions.DEFAULT,
         form,
@@ -32,10 +40,12 @@ export const SettingsAppearanceFragment = React.memo(() => {
 
     const themeField = useField(
         'input.theme',
-        localStorage.getItem('interactive_app_theme') === 'true'
+        lsGetItem('interactive_app_theme') === 'DARK'
             ? ThemeOptions.DARK
-            : ThemeOptions.DEFAULT,
-        form
+            : lsGetItem('interactive_app_theme') === 'LIGHT'
+            ? ThemeOptions.LIGHT
+            : ThemeOptions.AUTO,
+        form,
     );
 
     React.useEffect(() => {
@@ -43,15 +53,20 @@ export const SettingsAppearanceFragment = React.memo(() => {
             'highlight_secret_chat',
             secretGroupDisplay.value === AppearanceOptions.HIGHLIGHTED ? 'true' : 'false',
         );
-        localStorage.setItem(
-            'interactive_app_theme',
-            themeField.value === ThemeOptions.DARK ? 'true' : 'false',
-        );
-        if (localStorage.getItem('interactive_app_theme') === 'true') {
-            document.body.classList.add('interactive');
+        localStorage.setItem('interactive_app_theme', themeField.value);
+        if (lsGetItem('interactive_app_theme') === 'LIGHT') {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+            theme.setTheme('light');
         }
-        if (localStorage.getItem('interactive_app_theme') === 'false') {
-            document.body.classList.remove('interactive');
+        if (lsGetItem('interactive_app_theme') === 'DARK') {
+            document.documentElement.classList.remove('light');
+            document.documentElement.classList.add('dark');
+            theme.setTheme('dark');
+        }
+        if (lsGetItem('interactive_app_theme') === 'AUTO') {
+            document.documentElement.classList.remove('light', 'dark');
+            theme.setTheme(null);
         }
     });
 
@@ -83,12 +98,16 @@ export const SettingsAppearanceFragment = React.memo(() => {
                                 {...themeField.input}
                                 selectOptions={[
                                     {
-                                        value: ThemeOptions.DEFAULT,
-                                        label: `Light`,
+                                        value: ThemeOptions.LIGHT,
+                                        label: 'Light',
                                     },
                                     {
                                         value: ThemeOptions.DARK,
-                                        label: `Dark`,
+                                        label: 'Dark',
+                                    },
+                                    {
+                                        value: ThemeOptions.AUTO,
+                                        label: 'Auto',
                                     },
                                 ]}
                             />

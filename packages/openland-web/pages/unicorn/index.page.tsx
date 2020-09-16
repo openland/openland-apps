@@ -8,7 +8,7 @@ import { DialogsFragment } from 'openland-web/fragments/dialogs/DialogsFragment'
 import { DiscoverFragment } from 'openland-web/fragments/discover/DiscoverFragment';
 import { XLoader } from 'openland-x/XLoader';
 import DiscoverIcon from './navigation/icon_discover.svg';
-import DiscoverActiveIcon from './navigation/icon_discover_active.svg';
+import DiscoverActiveIcon from './navigation/ic_discover_active.svg';
 import ChannelsIcon from './navigation/ic-flashlight-24.svg';
 import ChannelsActiveIcon from './navigation/ic-flashlight-filled-24.svg';
 import ChatIcon from './navigation/icon_chat.svg';

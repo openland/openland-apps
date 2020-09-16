@@ -7,6 +7,7 @@ import { ULink } from 'openland-web/components/unicorn/ULink';
 import { TypingsUser } from 'openland-engines/messenger/Typings';
 import Lottie from 'react-lottie';
 import { XView } from 'react-mental';
+import { useTheme } from 'openland-x-utils/useTheme';
 
 import { getJSON } from 'openland-y-utils/lottie/getJSON';
 import { TypingType } from 'openland-api/spacex.types';
@@ -59,6 +60,7 @@ const UserLink = (props: TypingsUser) => {
 };
 
 export const TypingsView = React.memo((props: TypingsViewProps) => {
+    const theme = useTheme();
     let messeger = React.useContext(MessengerContext);
     const [typingArr, setTypingArr] = React.useState<TypingsUser[]>([]);
     const [typingType, setTypingType] = React.useState<string>('');
@@ -111,6 +113,8 @@ export const TypingsView = React.memo((props: TypingsViewProps) => {
         [props.conversationId],
     );
 
+    const lottieColor = theme.theme === 'dark' ? '#898B8F' : '#71747A';
+
     const animation = (
         <XView width={20} marginRight={8} marginTop={1} alignItems="center">
             <Lottie
@@ -119,7 +123,7 @@ export const TypingsView = React.memo((props: TypingsViewProps) => {
                 height={20}
                 width={20}
                 options={{
-                    animationData: getJSON(typingAnimation, '#878A91'),
+                    animationData: getJSON(typingAnimation, lottieColor),
                     loop: true
                 }}
             />

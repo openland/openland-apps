@@ -24,6 +24,10 @@ const boxStyle = css`
     color: var(--foregroundPrimary);
 `;
 
+const fullScreenBoxStyle = css`
+    background-color: var(--backgroundPrimary);
+`;
+
 const boxOverflow = css`
     overflow: hidden;
 `;
@@ -238,6 +242,7 @@ const ModalBoxComponent = React.memo<{
                     ref={boxRef}
                     className={cx(
                         boxStyle,
+                        isFullscreen && fullScreenBoxStyle,
                         props.config.darkOverlay && darkOverlayStyle,
                         props.config.transparentBox && transparentBoxStyle,
                         !props.config.overflowVisible && boxOverflow,

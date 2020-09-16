@@ -49,7 +49,7 @@ const UserProfileCard = React.memo(() => {
                 hoverBackgroundColor="var(--backgroundPrimaryHover)"
                 selectedBackgroundColor="var(--accentMuted)"
                 selectedHoverBackgroundColor="var(--accentMutedHover)"
-                selectedColor="var(--foregroundInverted)"
+                selectedColor="var(--foregroundContrast)"
                 flexDirection="row"
                 paddingHorizontal={16}
                 paddingVertical={12}
@@ -72,7 +72,7 @@ const UserProfileCard = React.memo(() => {
                         <SelectableText
                             {...TextStyles.Body}
                             color="var(--foregroundSecondary)"
-                            selectedColor="var(--foregroundInverted)"
+                            selectedColor="var(--foregroundContrast)"
                         >
                             {data.email}
                         </SelectableText>
@@ -159,10 +159,10 @@ export const SettingsFragment = React.memo(() => {
                                                 borderRadius={11}
                                                 alignItems="center"
                                                 justifyContent="center"
-                                                color="var(--foregroundInverted)"
+                                                color="var(--foregroundContrast)"
                                                 backgroundColor="var(--accentNegative)"
                                                 selectedColor="var(--accentMuted)"
-                                                selectedBackgroundColor="var(--foregroundInverted)"
+                                                selectedBackgroundColor="var(--foregroundContrast)"
                                                 {...TextStyles.Label2}
                                             >
                                                 {walletState.failingPaymentsCount}

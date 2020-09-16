@@ -24,7 +24,7 @@ const textClassName = css`
     border-radius: 8px;
     height: 48px;
     &:hover {
-        background-color: var(--backgroundPrimaryHover);
+        background-color: var(--backgroundTertiaryHoverTrans);
     }
 `;
 
@@ -49,8 +49,7 @@ const checkDotStyle = css`
     height: 20px;
     flex-shrink: 0;
     border-radius: 20px;
-    border: 2px solid #c4c7cc;
-    background-color: #fff;
+    border: 2px solid var(--foregroundQuaternary);
     transition: all 0.15s ease;
 
     & * {
@@ -67,7 +66,7 @@ const checkSquareStyle = css`
 `;
 
 const checkDotCheckedStyle = css`
-    background-color: #1885f2;
+    background-color: var(--accentMuted);
     border: 0px solid transparent;
     & svg {
         transform: scale(1);
@@ -80,7 +79,7 @@ const switcherWrapStyle = css`
     position: relative;
     border-radius: 100px;
     transition: all 0.15s ease;
-    background-color: #c4c7cc;
+    border: 2px solid var(--foregroundQuaternary);
 `;
 
 const switcherDotStyle = css`
@@ -90,16 +89,17 @@ const switcherDotStyle = css`
     position: absolute;
     transition: all 0.15s ease;
     background-color: #fff;
-    left: 2px;
-    top: 2px;
+    left: 0px;
+    top: 0px;
 `;
 
 const switcherWrapCheckedStyle = css`
-    background-color: #1885f2;
+    background-color: var(--accentMuted);
+    border: 2px solid transparent;
 `;
 
 const switcherDotCheckedStyle = css`
-    left: 18px;
+    left: 16px;
 `;
 
 export const CheckComponent = ({ checked, squared }: { checked?: boolean; squared?: boolean }) => (

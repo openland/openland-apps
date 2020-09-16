@@ -141,7 +141,7 @@ const optionStyle = cx(TextBody, css`
 `);
 
 const optionStyleActive = css`
-    background-color: var(--backgroundTertiary);
+    background-color: var(--backgroundTertiaryHoverTrans);
 `;
 
 const optionLabelStyle = css`

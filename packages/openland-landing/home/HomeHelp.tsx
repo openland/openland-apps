@@ -45,10 +45,10 @@ const item = css`
     width: 359px;
     border-radius: 32px;
     overflow: hidden;
-    background-color: #F7F8F9;
+    background-color: var(--backgroundPrimaryHover);
     display: block;
     transition: 150ms all ease;
-    color: var(--foregroundPrimary)!important;
+    color: var(--foregroundPrimary) !important;
     text-decoration: none!important;
 
     @media (min-width: 768px) and (max-width: 1199px) {
@@ -59,6 +59,7 @@ const item = css`
     &:hover {
         box-shadow: 0px 4px 35px rgba(0, 0, 0, 0.07);
         background-color: #ffffff;
+        color: var(--backgroundPrimary) !important;
     }
 `;
 

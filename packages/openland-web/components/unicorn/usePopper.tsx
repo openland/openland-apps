@@ -38,14 +38,14 @@ const arrowStyle = css`
     display: block;
     width: 10px;
     height: 10px;
-    background-color: #fff;
+    background-color: var(--foregroundPrimary);
     transform: rotate(45deg);
     border-radius: 2px;
     z-index: -1;
 `;
 
 const arrowDarkStyle = css`
-    background-color: #000;
+    background-color: var(--foregroundPrimary);
 `;
 
 const Arrow = (props: { darkStyle?: boolean }) => (

@@ -151,7 +151,7 @@ const titleContainerStyle = css`
     background-color: var(--backgroundPrimary);
     padding-left: 16px;
     @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
-        background-color: rgba(255, 255, 255, 0.72);
+        background-color: var(--backgroundBlurPrimary);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
     }
@@ -192,7 +192,7 @@ const EmojiComponent = React.memo(
                     onEmojiSent(props.name);
                     props.onEmojiPicked(props.value);
                 }}
-                hoverBackgroundColor="#F2F3F5"
+                hoverBackgroundColor="var(--backgroundSecondaryHover)"
                 paddingTop={6 /* Emoji are aligned by baseline and we need to compensate this */}
                 borderRadius={8}
                 cursor="pointer"

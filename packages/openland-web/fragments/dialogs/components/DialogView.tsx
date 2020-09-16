@@ -104,7 +104,7 @@ const mutedIcon = css`
 `;
 
 const highlightSecretChatColor = css`
-    color: #36b36a;
+    color: var(--accentPositive);
 `;
 
 const dialogDateContent = css`
@@ -128,7 +128,7 @@ const dialogMessageContent = css`
 `;
 
 const dialogActiveColor = css`
-    color: var(--foregroundInverted);
+    color: var(--foregroundContrast);
 `;
 
 const dialogUnreadContainer = css`
@@ -161,7 +161,7 @@ const mentionContainer = css`
     }
     & svg path,
     & svg circle {
-        stroke: var(--foregroundInverted);
+        stroke: var(--backgroundPrimary);
     }
 `;
 
@@ -177,20 +177,20 @@ const callBadgeContainer = css`
 `;
 
 const mentionContainerActive = css`
-    background-color: var(--backgroundPrimary);
+    background-color: var(--foregroundContrast);
 
     & svg path,
     & svg circle {
-        stroke: var(--accentPrimary);
+        stroke: var(--accentMuted);
     }
 `;
 
 const callBadgeContainerActive = css`
-    background-color: var(--backgroundPrimary);
+    background-color: var(--foregroundContrast);
 
     & svg path,
     & svg circle {
-        fill: var(--accentPrimary);
+        fill: var(--accentMuted);
     }
 `;
 
@@ -294,7 +294,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                         {active => (
                             <UIcon
                                 icon={<IcReply className={replyIconStyle} />}
-                                color={active ? 'var(--foregroundInverted)' : 'var(--foregroundSecondary)'}
+                                color={active ? 'var(--foregroundContrast)' : 'var(--foregroundSecondary)'}
                             />
                         )}
                     </XViewSelectedContext.Consumer>
@@ -359,7 +359,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                             <div className={cx(dialogIconContainer, lockContainer)}>
                                                 <UIcon
                                                     icon={<IcLock />}
-                                                    color={active ? 'var(--foregroundInverted)' : 'var(--accentPositive)'}
+                                                    color={active ? 'var(--foregroundContrast)' : 'var(--accentPositive)'}
                                                 />
                                             </div>
                                         )}
@@ -370,7 +370,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                                 <UIcon
                                                     size={16}
                                                     icon={<IcMuted />}
-                                                    color={active ? 'var(--foregroundInverted)' : 'var(--foregroundQuaternary)'}
+                                                    color={active ? 'var(--foregroundContrast)' : 'var(--foregroundQuaternary)'}
                                                 />
                                             </div>
                                         )}

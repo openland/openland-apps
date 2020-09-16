@@ -10,7 +10,7 @@ import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabConte
 import { trackEvent } from 'openland-x-analytics';
 import { showCreatingGroupFragment } from 'openland-web/fragments/create/CreateEntityFragment';
 import NotificationIcon from 'openland-icons/s/ic-notifications-24.svg';
-import PlusIcon from 'openland-icons/ic-add.svg';
+import AddIcon from 'openland-icons/s/ic-add-24.svg';
 
 const dotClass = css`
     position: absolute;
@@ -77,7 +77,7 @@ export const DialogsFragment = React.memo(() => {
                 <USideHeader title="Chats">
                     <NotificationsButton />
                     <div onClick={() => showCreatingGroupFragment({ entityType: 'group' })}>
-                        <UIconButton icon={<PlusIcon />} size="large" />
+                        <UIconButton icon={<AddIcon />} size="large" />
                     </div>
                 </USideHeader>
                 <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>
