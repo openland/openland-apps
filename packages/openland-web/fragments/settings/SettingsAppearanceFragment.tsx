@@ -7,7 +7,6 @@ import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
-import { useRole } from 'openland-x-permissions/XWithRole';
 import { useTheme } from 'openland-x-utils/useTheme';
 
 enum AppearanceOptions {
@@ -23,7 +22,6 @@ enum ThemeOptions {
 
 export const SettingsAppearanceFragment = React.memo(() => {
     const theme = useTheme();
-    const superAdmin = useRole('super-admin');
     const form = useForm();
 
     const lsGetItem = (k: string) => {
@@ -91,29 +89,27 @@ export const SettingsAppearanceFragment = React.memo(() => {
                         />
                     </XView>
                 </FormSection>
-                {superAdmin && (
-                    <FormSection title="Theme">
-                        <XView marginHorizontal={-16}>
-                            <RadioButtonsSelect
-                                {...themeField.input}
-                                selectOptions={[
-                                    {
-                                        value: ThemeOptions.LIGHT,
-                                        label: 'Light',
-                                    },
-                                    {
-                                        value: ThemeOptions.DARK,
-                                        label: 'Dark',
-                                    },
-                                    {
-                                        value: ThemeOptions.AUTO,
-                                        label: 'Auto',
-                                    },
-                                ]}
-                            />
-                        </XView>
-                    </FormSection>
-                )}
+                <FormSection title="Theme">
+                    <XView marginHorizontal={-16}>
+                        <RadioButtonsSelect
+                            {...themeField.input}
+                            selectOptions={[
+                                {
+                                    value: ThemeOptions.LIGHT,
+                                    label: 'Light',
+                                },
+                                {
+                                    value: ThemeOptions.DARK,
+                                    label: 'Dark',
+                                },
+                                {
+                                    value: ThemeOptions.AUTO,
+                                    label: 'Auto',
+                                },
+                            ]}
+                        />
+                    </XView>
+                </FormSection>
             </FormWrapper>
         </Page>
     );
