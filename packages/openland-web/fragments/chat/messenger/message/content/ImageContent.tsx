@@ -111,7 +111,7 @@ const imgContainer = css`
     min-width: 72px;
     max-width: 100%;
     border-radius: 8px;
-    background-color: #f0f2f5;
+    background-color: var(--backgroundTertiary);
     z-index: 0;
     cursor: pointer;
     overflow: hidden;
