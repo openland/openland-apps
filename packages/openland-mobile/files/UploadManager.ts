@@ -45,9 +45,7 @@ export class UploadManager {
         if (!(await checkPermissions('android-storage'))) {
             return;
         }
-        const uri = 'file://' + path;
-
-        let fallback = fileSize === undefined ? await RNFetchBlob.fs.stat(uri.replace('file://', '')) : undefined;
+        let fallback = fileSize === undefined ? await RNFetchBlob.fs.stat(path.replace('file://', '')) : undefined;
 
         if ((fileSize || (fallback && fallback.size) || 0) > MAX_FILE_SIZE) {
             AlertBlanket.alert("Files bigger than 100mb are not supported yet.");
@@ -60,18 +58,18 @@ export class UploadManager {
             files: [{
                 file: {
                     fetchInfo: () => new Promise(async (resolver, onError) => {
-                        let uriLower = uri.toLowerCase();
+                        let uriLower = path.toLowerCase();
                         let isImage = uriLower.endsWith('.png') || uriLower.endsWith('.jpg') || uriLower.endsWith('.jpeg');
                         let imageSize: { width: number, height: number } | undefined = undefined;
                         if (isImage) {
                             imageSize = await new Promise<{ width: number, height: number }>((res) => {
-                                Image.getSize(uri, (width, height) => res({ width, height }), e => onError(e));
+                                Image.getSize(path, (width, height) => res({ width, height }), e => onError(e));
                             });
                         }
                         if (fallback) {
-                            resolver({ name, uri, fileSize: fallback.size, isImage, imageSize });
+                            resolver({ name, uri: path, fileSize: fallback.size, isImage, imageSize });
                         } else {
-                            resolver({ name, uri, fileSize, isImage, imageSize });
+                            resolver({ name, uri: path, fileSize, isImage, imageSize });
                         }
                     }),
                     watch: (handler: (state: UploadState) => void) => w.watch(handler)
@@ -82,7 +80,7 @@ export class UploadManager {
             mentions: undefined,
         });
         this._watchers.set(messageId, w);
-        this._queue.push({ messageId, name, uri, retryCount: 0 });
+        this._queue.push({ messageId, name, uri: path, retryCount: 0 });
 
         this.checkQueue();
     }
