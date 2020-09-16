@@ -94,7 +94,9 @@ export const UserActions = React.memo(({ user, chat }: UserMenuProps) => {
 
             {isMe && <UListItem title="Saved messages" useRadius={true} path={`/mail/${id}`} icon={<BookmarkIcon />}/>}
             <UListItem title="Copy link" useRadius={true} icon={<CopyIcon />} onClick={onCopyLinkClick}/>
-            {!isMe && <UListItem title="Report spam" useRadius={true} icon={<SpamIcon />}/>}
+            <XWithRole role="super-admin">
+                {!isMe && <UListItem title="Report spam" useRadius={true} icon={<SpamIcon />}/>}
+            </XWithRole>
             <XWithRole role="super-admin">
                 <UListItem title="Delete user" useRadius={true} onClick={onDeleteUserClick} icon={<DeleteIcon />}/>
             </XWithRole>
