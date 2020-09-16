@@ -333,6 +333,7 @@ export default class OpenlandDocument extends Document {
                     />
                     <link rel="manifest" href="/static/img/favicon/manifest.json?v=2" />
                     <meta name="msapplication-TileColor" content="#ffffff" />
+                    <meta name="supported-color-schemes" content="light dark" />
                     <meta
                         name="msapplication-TileImage"
                         content="/static/img/favicon/ms-icon-144x144.png?v=2"
