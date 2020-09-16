@@ -15,13 +15,14 @@ const counterContainer = css`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: var(--backgroundPrimary);
+    color: var(--foregroundInverted);
     background-color: var(--accentPrimary);
     font-weight: 600;
 `;
 
 const greyStyle = css`
     background-color: var(--foregroundQuaternary);
+    color: var(--foregroundContrast);
 `;
 
 const activeStyle = css`
