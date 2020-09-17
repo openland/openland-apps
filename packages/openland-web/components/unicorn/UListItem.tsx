@@ -140,7 +140,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                     alignItems="center"
                     justifyContent="center"
                 >
-                    <UIcon icon={icon} color={iconColor || 'var(--foregroundInverted)'} />
+                    <UIcon icon={icon} color={iconColor || 'var(--foregroundContrast)'} />
                 </XView>
             )}
             {!!avatar && !icon && (
