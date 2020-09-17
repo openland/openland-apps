@@ -40,14 +40,6 @@ html {
     --backgroundTertiaryHoverTrans: rgba(169, 174, 184, 0.24);
     --backgroundTertiaryActiveTrans: rgba(148, 155, 168, 0.24);
 
-    --accentPrimary: #248BF2;
-    --accentPrimaryHover: #3399FF;
-    --accentPrimaryActive: #1677D9;
-
-    --accentMuted: #4595E5;
-    --accentMutedHover: #4595E5;
-    --accentMutedActive: #4595E5;
-
     --accentPay: #171A1F;
     --accentPayHover: #212329;
     --accentPayActive: #33373D;
@@ -61,6 +53,14 @@ html {
     /* end interactive colors */
 
     --accentPrimaryTrans: rgba(24, 133, 242, 0.24);
+
+    --accentPrimary: #248BF2;
+    --accentPrimaryHover: #3399FF;
+    --accentPrimaryActive: #1677D9;
+
+    --accentMuted: #4595E5;
+    --accentMutedHover: #4595E5;
+    --accentMutedActive: #4595E5;
 
     --accentPositive: #40B855;
     --accentPositiveHover: #52CC66;
@@ -133,14 +133,6 @@ html {
         --backgroundTertiaryHoverTrans: rgba(76, 80, 87, 0.24);
         --backgroundTertiaryActiveTrans: rgba(53, 53, 56, 0.24);
 
-        --accentPrimary: #FFFFFF;
-        --accentPrimaryHover: #FFFFFF;
-        --accentPrimaryActive: #FFFFFF;
-
-        --accentMuted: #248BF2;
-        --accentMutedHover: #248BF2;
-        --accentMutedActive: #248BF2;
-
         --accentPay: #898B8F;
         --accentPayHover: #898B8F;
         --accentPayActive: #898B8F;
@@ -179,14 +171,6 @@ html.light {
     --backgroundTertiaryHoverTrans: rgba(169, 174, 184, 0.24);
     --backgroundTertiaryActiveTrans: rgba(148, 155, 168, 0.24);
 
-    --accentPrimary: #248BF2;
-    --accentPrimaryHover: #3399FF;
-    --accentPrimaryActive: #1677D9;
-
-    --accentMuted: #4595E5;
-    --accentMutedHover: #4595E5;
-    --accentMutedActive: #4595E5;
-
     --accentPay: #171A1F;
     --accentPayHover: #212329;
     --accentPayActive: #33373D;
@@ -223,14 +207,6 @@ html.dark {
     --backgroundTertiaryTrans: rgba(96, 101, 107, 0.24);
     --backgroundTertiaryHoverTrans: rgba(76, 80, 87, 0.24);
     --backgroundTertiaryActiveTrans: rgba(53, 53, 56, 0.24);
-
-    --accentPrimary: #FFFFFF;
-    --accentPrimaryHover: #FFFFFF;
-    --accentPrimaryActive: #FFFFFF;
-
-    --accentMuted: #248BF2;
-    --accentMutedHover: #248BF2;
-    --accentMutedActive: #248BF2;
 
     --accentPay: #898B8F;
     --accentPayHover: #898B8F;

@@ -15,7 +15,7 @@ const counterContainer = css`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: var(--foregroundInverted);
+    color: var(--foregroundContrast);
     background-color: var(--accentPrimary);
     font-weight: 600;
 `;

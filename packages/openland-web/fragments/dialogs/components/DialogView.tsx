@@ -161,7 +161,7 @@ const mentionContainer = css`
     }
     & svg path,
     & svg circle {
-        stroke: var(--backgroundPrimary);
+        stroke: var(--foregroundContrast);
     }
 `;
 

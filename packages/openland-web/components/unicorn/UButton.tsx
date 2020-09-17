@@ -84,7 +84,7 @@ const size40 = css`
 `;
 
 const primaryStyle = css`
-    color: var(--foregroundInverted);
+    color: var(--foregroundContrast);
     background-color: var(--accentPrimary);
 `;
 
@@ -199,7 +199,7 @@ const successFocusStyle = css`
 `;
 
 const payStyle = css`
-    color: var(--foregroundInverted);
+    color: var(--foregroundContrast);
     background-color: var(--accentPay);
 `;
 
