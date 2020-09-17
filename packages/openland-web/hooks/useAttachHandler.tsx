@@ -40,14 +40,23 @@ export const useAttachHandler = (props: { conversationId: string }) => {
         if (files.length) {
             showAttachConfirm(
                 files,
-                res => {
+                (uploadingFiles, text, mentions, hasImages) => {
                     if (onAttach) {
                         onAttach();
                     }
-                    let messages = messagesActionsMethods.prepareToSend();
-                    let keys = res.map(({ file, localImage }) => conversation!.sendFile(file, localImage, messages));
+                    let quotedMessages = messagesActionsMethods.prepareToSend();
+                    let keys;
+                    if (hasImages) {
+                        keys = conversation!.sendFiles({ files: uploadingFiles, mentions, text, quotedMessages });
+                    } else {
+                        keys = uploadingFiles.map(({ file, localImage }) => conversation!.sendFile(file, localImage, undefined));
+                        if (text) {
+                            keys.push(conversation!.sendMessage(text, mentions || null, quotedMessages));
+                        }
+                    }
                     return keys;
                 },
+                conversation?.conversationId,
                 refreshFileUploadingTyping,
                 endFileUploadingTyping
             );

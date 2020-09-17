@@ -95,32 +95,39 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
 
     const handleCommentSentAttach = React.useCallback((files: File[], topLevel: boolean = false) => {
         if (files.length > 0) {
-            showAttachConfirm(files, (res) => new Promise(resolve => {
-                const uploadedFiles: string[] = [];
+            showAttachConfirm(
+                files,
+                (res, text, mentions) => new Promise(resolve => {
+                    const uploadedFiles: string[] = [];
 
-                res.map(({file}) => {
-                    file.watch((state) => {
-                        if (state.uuid && !uploadedFiles.includes(state.uuid)) {
-                            uploadedFiles.push(state.uuid);
-                        }
-
-                        if (uploadedFiles.length === res.length) {
-                            resolve();
-
-                            client.mutateAddComment({
-                                peerId,
-                                repeatKey: UUID(),
-                                fileAttachments: uploadedFiles.map(f => ({ fileId: f })),
-                                replyComment: topLevel ? undefined : highlightId
-                            });
-
-                            if (!topLevel) {
-                                setHighlightId(undefined);
+                    res.map(({ file }) => {
+                        file.watch((state) => {
+                            if (state.uuid && !uploadedFiles.includes(state.uuid)) {
+                                uploadedFiles.push(state.uuid);
                             }
-                        }
+
+                            if (uploadedFiles.length === res.length) {
+                                resolve();
+
+                                client.mutateAddComment({
+                                    peerId,
+                                    repeatKey: UUID(),
+                                    fileAttachments: uploadedFiles.map(f => ({ fileId: f })),
+                                    replyComment: topLevel ? undefined : highlightId,
+                                    message: text,
+                                    spans: text ? findSpans(text) : null,
+                                    mentions: text && mentions ? prepareLegacyMentionsForSend(text, mentions) : null
+                                });
+
+                                if (!topLevel) {
+                                    setHighlightId(undefined);
+                                }
+                            }
+                        });
                     });
-                });
-            }));
+                }),
+                groupId
+            );
         }
     }, [peerId, highlightId]);
 

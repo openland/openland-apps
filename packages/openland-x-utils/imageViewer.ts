@@ -22,6 +22,8 @@ export interface ImageViewerCb {
     hasNextPage: boolean;
     prevCursor: string | null;
     nextCursor: string | null;
+    prev?: currentT[];
+    next?: currentT[];
     current: currentT[];
 }
 
@@ -30,22 +32,24 @@ export function useImageViewer(data: dataT, currentId: string, inverted?: boolea
     let hasNext = false;
     let prevCursor = null;
     let nextCursor = null;
+    let prev;
+    let next;
 
     let current;
 
     const getMsg = (i: number) => data.edges[i].node.message as messageT;
-
+    const messageToData = (m: messageT) => m.attachments.map(attach => (
+        {
+            fileId: (attach as fileT).fileId,
+            imageWidth: (attach as fileT).fileMetadata.imageWidth || 0,
+            imageHeight: (attach as fileT).fileMetadata.imageHeight || 0,
+            filePreview: (attach as fileT).filePreview || '',
+            date: parseInt(m.date, 10),
+            senderName: m.sender.name,
+        }
+    ));
     const setCurrent = (i: number) => {
-        current = getMsg(i).attachments.map(attach => (
-            {
-                fileId: (attach as fileT).fileId,
-                imageWidth: (attach as fileT).fileMetadata.imageWidth || 0,
-                imageHeight: (attach as fileT).fileMetadata.imageHeight || 0,
-                filePreview: (attach as fileT).filePreview || '',
-                date: parseInt(getMsg(i).date, 10),
-                senderName: getMsg(i).sender.name,
-            }
-        ));
+        current = messageToData(getMsg(i));
     };
     setCurrent(0);
 
@@ -53,22 +57,29 @@ export function useImageViewer(data: dataT, currentId: string, inverted?: boolea
         hasPrev = true;
         hasNext = true;
         setCurrent(1);
-        prevCursor = getMsg(2).id;
-        nextCursor = getMsg(0).id;
+
+        prev = getMsg(2);
+        prevCursor = prev.id;
+        next = getMsg(0);
+        nextCursor = next.id;
         if (inverted) {
-            prevCursor = getMsg(0).id;
-            nextCursor = getMsg(2).id;
+            prev = getMsg(0);
+            prevCursor = prev.id;
+            next = getMsg(2);
+            nextCursor = next.id;
         }
     }
 
     if (data.edges.length === 2 && !inverted) {
         if (getMsg(1).id === currentId) {
             setCurrent(1);
-            nextCursor = getMsg(0).id;
+            next = getMsg(0);
+            nextCursor = next.id;
             hasNext = true;
         }
         if (getMsg(0).id === currentId) {
-            prevCursor = getMsg(1).id;
+            prev = getMsg(1);
+            prevCursor = prev.id;
             hasPrev = true;
         }
     }
@@ -76,11 +87,13 @@ export function useImageViewer(data: dataT, currentId: string, inverted?: boolea
     if (data.edges.length === 2 && inverted) {
         if (getMsg(1).id === currentId) {
             setCurrent(1);
-            prevCursor = getMsg(0).id;
+            prev = getMsg(0);
+            prevCursor = prev.id;
             hasPrev = true;
         }
         if (getMsg(0).id === currentId) {
-            nextCursor = getMsg(1).id;
+            next = getMsg(1);
+            nextCursor = next.id;
             hasNext = true;
         }
     }
@@ -88,8 +101,10 @@ export function useImageViewer(data: dataT, currentId: string, inverted?: boolea
     return {
         hasPrevPage: hasPrev,
         hasNextPage: hasNext,
-        prevCursor: prevCursor,
-        nextCursor: nextCursor,
+        prevCursor,
+        nextCursor,
+        prev: prev ? messageToData(prev) : undefined,
+        next: next ? messageToData(next) : undefined,
         current: (current as any) as currentT[],
     };
 }

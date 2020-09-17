@@ -20,8 +20,21 @@ export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, 
             controller.hide();
         });
     };
+    const confirmLastAction = () => {
+        if (builder._actions.length) {
+            doConfirm(builder._actions[builder._actions.length - 1].action);
+        }
+    };
 
-    useShortcuts({ keys: ['Enter'], callback: () => doConfirm((builder._actions.length) ? builder._actions[builder._actions.length - 1].action : undefined) });
+    useShortcuts({
+        keys: ['Enter'], callback: () => {
+            if (builder._confirmOnEnter !== false) {
+                confirmLastAction();
+                return true;
+            }
+            return false;
+        }
+    });
 
     return (
         <>
@@ -32,7 +45,7 @@ export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, 
                         {builder._message}
                     </XModalContent>
                 )}
-                {builder._body && builder._body(controller)}
+                {builder._body && builder._body(controller, confirmLastAction)}
                 <XModalFooter>
                     {builder._cancelAction && !builder._actions.find(a => a.name.toLowerCase() === 'cancel') && (
                         <UButton

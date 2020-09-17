@@ -163,7 +163,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
                     if (acc.length < 2) {
                         acc.push([(
                             <ImagePileContent
-                                key={'msg-' + id + '-media-' + file.fileId}
+                                key={'msg-' + id + '-media-' + (file.fileId || file.id) + i}
                                 file={file}
                                 sender={props.sender}
                                 senderNameEmojify={props.senderNameEmojify}
@@ -179,7 +179,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
                         column.push(
                             (
                                 <ImagePileContent
-                                    key={'msg-' + id + '-media-' + file.fileId}
+                                    key={'msg-' + id + '-media-' + (file.fileId || file.id) + i}
                                     file={file}
                                     sender={props.sender}
                                     senderNameEmojify={props.senderNameEmojify}
@@ -195,8 +195,8 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
                     }
                     return acc;
                 }, [] as JSX.Element[][])
-                .map((column) => (
-                    <div className={imageColumn}>
+                .map((column, i) => (
+                    <div className={imageColumn} key={column.length + i}>
                         {column}
                     </div>
                 ));

@@ -16,6 +16,8 @@ export function layoutMedia(
     minWidth: number = MIN_W,
     minHeight: number = MIN_H,
 ) {
+    width = width || 1;
+    height = height || 1;
     let w = width;
     let h = height;
 
@@ -43,7 +45,6 @@ export function layoutMedia(
         h = maxHeight;
         w = Math.round(width * (h / height));
     }
-
     return { width: w, height: h };
 }
 

@@ -20,7 +20,6 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UNavigableReactWindow } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 import { TextLabel1, TextDensed, TextBody, TextStyles } from 'openland-web/utils/TextStyles';
-import { fileListToArray } from './DropZone';
 import { AttachConfirmButton } from './AttachConfirm';
 import { useDonationModal } from './showDonation';
 import { XLoader } from 'openland-x/XLoader';
@@ -508,6 +507,67 @@ export const AutoCompleteComponent = React.memo(
     ),
 );
 
+export const useInputAutocompleteHanlders = ({ inputRef, suggestRef }: {
+    inputRef: React.RefObject<URickInputInstance>;
+    suggestRef: React.RefObject<AutoCompleteComponentRef>;
+}) => {
+    const prefixes = ['@', ':', ...Object.keys(emojiWordMap)];
+    const [activeWord, setActiveWord] = React.useState<string | null>(null);
+    const onWordChange = React.useCallback((word: string) => {
+        setActiveWord(word);
+    }, []);
+    const onUserPicked = React.useCallback((mention: MentionToSend) => {
+        inputRef.current!.commitSuggestion('mention', mention);
+    }, []);
+    const onEmojiPicked = React.useCallback((emoji: { name: string; value: string }) => {
+        inputRef.current!.commitSuggestion('emoji', emoji);
+    }, []);
+
+    let onPressUp = React.useCallback(() => {
+        let s = suggestRef.current;
+        if (s && s.isActive()) {
+            s.onPressUp();
+            return true;
+        }
+        return false;
+    }, []);
+    let onPressDown = React.useCallback(() => {
+        let s = suggestRef.current;
+        if (s) {
+            return s.onPressDown();
+        }
+        return false;
+    }, []);
+    let onPressTab = React.useCallback(() => {
+        let s = suggestRef.current;
+        if (s) {
+            return s.onPressEnter();
+        }
+        return false;
+    }, []);
+    let onPressEnter = () => {
+        let s = suggestRef.current;
+        if (s) {
+            if (s.onPressEnter()) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    return {
+        prefixes,
+        activeWord,
+        onWordChange,
+        onUserPicked,
+        onEmojiPicked,
+        onPressUp,
+        onPressDown,
+        onPressTab,
+        onPressEnter,
+    };
+};
+
 interface SendMessageComponentProps {
     groupId?: string;
     isChannel?: boolean;
@@ -576,10 +636,20 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     const isLinux = os === 'Linux';
 
     const ref = props.rickRef || React.useRef<URickInputInstance>(null);
-    const fileInputRef = React.useRef<HTMLInputElement>(null);
-    const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
-    const [loading, setLoading] = React.useState<boolean>(false);
     const showDonation = useDonationModal({ name: props.ownerName, chatId: props.groupId, chatTitle: props.chatTitle });
+    const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
+    const {
+        prefixes,
+        activeWord,
+        onWordChange,
+        onUserPicked,
+        onEmojiPicked,
+        onPressUp,
+        onPressDown,
+        onPressTab,
+        onPressEnter,
+    } = useInputAutocompleteHanlders({ inputRef: ref, suggestRef });
+    const [loading, setLoading] = React.useState<boolean>(false);
     const onStickerSent = React.useCallback(
         async (sticker: StickerFragment) => {
             if (props.onStickerSentAsync) {
@@ -595,13 +665,11 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
 
     const lockRef = React.useRef(false);
 
-    const onPressEnter = React.useCallback(
+    const handlePressEnter = React.useCallback(
         async () => {
-            let s = suggestRef.current;
-            if (s) {
-                if (s.onPressEnter()) {
-                    return true;
-                }
+            let handled = onPressEnter();
+            if (handled) {
+                return true;
             }
             let ed = ref.current;
             if (ed && !lockRef.current) {
@@ -634,10 +702,9 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
         [props.onTextSent, props.onTextSentAsync],
     );
 
-    const onPressUp = React.useCallback(() => {
-        let s = suggestRef.current;
-        if (s && s.isActive()) {
-            s.onPressUp();
+    const handlePressUp = React.useCallback(() => {
+        let handled = onPressUp();
+        if (handled) {
             return true;
         } else if (props.onPressUp) {
             return props.onPressUp();
@@ -645,51 +712,9 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
         return false;
     }, []);
 
-    const onPressDown = React.useCallback(() => {
-        let s = suggestRef.current;
-        if (s) {
-            return s.onPressDown();
-        }
-        return false;
-    }, []);
-
-    const onPressTab = React.useCallback(() => {
-        let s = suggestRef.current;
-        if (s) {
-            return s.onPressEnter();
-        }
-        return false;
-    }, []);
-
-    const onAttachPress = React.useCallback(() => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click();
-        }
-    }, []);
-
-    const onDonationPress = React.useCallback(() => {
+    const onDonateClick = React.useCallback(() => {
         showDonation();
     }, [showDonation]);
-
-    const onFileInputChange = React.useCallback(e => {
-        if (props.onAttach) {
-            props.onAttach(fileListToArray(e.target.files));
-        }
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
-    }, []);
-
-    const [activeWord, setActiveWord] = React.useState<string | null>(null);
-    const onAutocompleteWordChange = React.useCallback((word: string) => {
-        setActiveWord(word);
-    }, []);
-    const onUserPicked = React.useCallback((mention: MentionToSend) => {
-        ref.current!.commitSuggestion('mention', mention);
-    }, []);
-    const onEmojiPicked = React.useCallback((emoji: { name: string; value: string }) => {
-        ref.current!.commitSuggestion('emoji', emoji);
-    }, []);
 
     return (
         <div className={sendMessageContainer}>
@@ -706,18 +731,11 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     containerClassName={sendMessageMentions}
                 />
             </Deferred>
-            <input
-                ref={fileInputRef}
-                type="file"
-                multiple={true}
-                style={{ display: 'none' }}
-                onChange={onFileInputChange}
-            />
             {!!props.onAttach && (
                 <AttachConfirmButton
                     hideDonation={props.hideDonation}
-                    onAttachClick={onAttachPress}
-                    onDonationClick={onDonationPress}
+                    onAttach={props.onAttach}
+                    onDonate={onDonateClick}
                 />
             )}
             <XView
@@ -733,10 +751,10 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 <URickInput
                     ref={ref}
                     initialContent={props.initialText}
-                    autocompletePrefixes={['@', ':', ...Object.keys(emojiWordMap)]}
-                    onAutocompleteWordChange={onAutocompleteWordChange}
-                    onPressEnter={onPressEnter}
-                    onPressUp={onPressUp}
+                    autocompletePrefixes={prefixes}
+                    onAutocompleteWordChange={onWordChange}
+                    onPressEnter={handlePressEnter}
+                    onPressUp={handlePressUp}
                     onPressDown={onPressDown}
                     onPressTab={onPressTab}
                     onTextChange={props.onTextChange}

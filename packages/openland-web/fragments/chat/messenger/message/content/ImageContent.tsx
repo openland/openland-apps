@@ -282,6 +282,14 @@ const ModalController = React.memo((props: ModalControllerProps) => {
     return null;
 });
 
+type ViewerState = {
+    loaded: boolean,
+    cursor: string | undefined,
+    index: number | undefined,
+} & ImageViewerCb;
+
+type ViewerAction = { type: 'back' } | { type: 'forward' } | { type: 'image-loaded' } | { type: 'state-changed', newState: Partial<ViewerState> };
+
 interface ModalProps {
     fileId: string;
     imageWidth: number;
@@ -294,6 +302,61 @@ interface ModalProps {
     mId?: string;
 }
 
+const reducer = (state: ViewerState, action: ViewerAction) => {
+    if (action.type === 'image-loaded') {
+        return {
+            ...state,
+            loaded: true,
+        };
+    }
+    if (action.type === 'back') {
+        const hasPrevAttach = state.index! > 0;
+        if (hasPrevAttach) {
+            return {
+                ...state,
+                loaded: false,
+                index: state.index !== undefined ? state.index - 1 : state.index,
+            };
+        }
+        if (state.prevCursor) {
+            return {
+                ...state,
+                loaded: false,
+                cursor: state.prevCursor,
+                current: state.prev || state.current,
+                index: state.prev?.length ? state.prev.length - 1 : 0,
+            };
+        }
+    }
+    if (action.type === 'forward') {
+        const hasNextAttach = state.index !== undefined ? state.index < state.current.length - 1 : false;
+        if (hasNextAttach) {
+            return {
+                ...state,
+                loaded: false,
+                index: state.index !== undefined ? state.index + 1 : state.index,
+            };
+        }
+
+        if (state.nextCursor) {
+            return {
+                ...state,
+                cursor: state.nextCursor,
+                loaded: false,
+                current: state.next || state.current,
+                index: 0,
+            };
+        }
+    }
+    if (action.type === 'state-changed') {
+        return {
+            ...state,
+            ...action.newState,
+        };
+    }
+    return state;
+};
+
 const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const isMobile = useIsMobile();
     const messenger = React.useContext(MessengerContext);
@@ -304,17 +367,43 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
         title: 'Forwarded',
         show: false,
     });
-    const [viewerState, setViewerState] = React.useState<ImageViewerCb | null>(null);
-    const [loaded, setLoaded] = React.useState(false);
-    const [cursor, setCursor] = React.useState(props.mId);
     const [fadeout, setFadeout] = React.useState(false);
     const [cursorData, setCursorData] = React.useState({ x: 0, y: 0 });
 
-    const [currentViewerStateIndex, setCurrentViewerStateIndex] = React.useState(0);
-    const [currentViewerState, setCurrentViewerState] = React.useState(viewerState?.current[currentViewerStateIndex]);
+    const [state, dispatch] = React.useReducer<React.Reducer<ViewerState, ViewerAction>>(reducer, {
+        loaded: false,
+        cursor: props.mId,
+        current: [],
+        prev: undefined,
+        prevCursor: null,
+        nextCursor: null,
+        next: undefined,
+        index: undefined,
+        hasNextPage: false,
+        hasPrevPage: false,
+    });
+    const { current, index, loaded, cursor } = state;
+
+    const currentItem = current.length && index !== undefined
+        ? current[index]
+        : ({
+            fileId: props.fileId,
+            imageWidth: props.imageWidth,
+            imageHeight: props.imageHeight,
+            filePreview: props.preview!,
+            date: props.date!,
+            senderName: (props.senderNameEmojify
+                ? props.senderNameEmojify
+                : props.sender
+                    ? emoji(props.sender.name)
+                    : '') as string
+        });
+
     React.useEffect(() => {
-        setCurrentViewerState(viewerState?.current[currentViewerStateIndex]);
-    }, [viewerState, currentViewerStateIndex]);
+        if (index === undefined && current.length > 0) {
+            dispatch({ type: 'state-changed', newState: { index: current.findIndex(x => x.fileId === props.fileId) } });
+        }
+    }, [current]);
 
     useShortcuts([
         {
@@ -329,9 +418,9 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
             imgRef.current.style.visibility = 'visible';
             loaderRef.current.style.opacity = '0';
             loaderRef.current.style.display = 'none';
-            setLoaded(true);
+            dispatch({ type: 'image-loaded' });
         }
-    }, [viewerState]);
+    }, []);
 
     React.useLayoutEffect(() => {
         if (imgRef.current && loaderRef.current && !loaded) {
@@ -340,69 +429,43 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
             loaderRef.current.style.opacity = '1';
             loaderRef.current.style.display = 'flex';
         }
-    }, [viewerState, loaded]);
+    }, [state, loaded]);
 
-    const hasPrevAttach = currentViewerStateIndex > 0;
-    const hasNextAttach = viewerState && currentViewerStateIndex < viewerState.current.length - 1;
+    const hasPrevAttach = index! > 0;
+    const hasNextAttach = index! < current.length - 1;
     const onPrevClick = () => {
-        if (viewerState && hasPrevAttach) {
-            setCurrentViewerStateIndex(x => x - 1);
-            setLoaded(false);
-            return;
-        }
-        if (viewerState && viewerState.prevCursor) {
-            setCursor(viewerState.prevCursor);
-            setLoaded(false);
-            setCurrentViewerStateIndex(0);
-        }
+        dispatch({ type: 'back' });
     };
     const onNextClick = () => {
-        if (viewerState && hasNextAttach) {
-            setCurrentViewerStateIndex(x => x + 1);
-            setLoaded(false);
-            return;
-        }
-        if (viewerState && viewerState.nextCursor) {
-            setCursor(viewerState.nextCursor);
-            setLoaded(false);
-            setCurrentViewerStateIndex(0);
-        }
+        dispatch({ type: 'forward' });
     };
 
     const forwardCallback = React.useCallback(() => {
         showChatPicker((id: string) => {
-            messenger.sender.shareFile(id, currentViewerState?.fileId || props.fileId);
+            messenger.sender.shareFile(id, currentItem.fileId);
             if (messenger.user.id === id) {
                 setForwardToast({ title: 'Added to saved messages', show: true });
             } else {
                 setForwardToast({ title: 'Forwarded', show: true });
             }
         });
-    }, [viewerState]);
+    }, [state]);
 
-    const sender = currentViewerState
-        ? currentViewerState.senderName
-        : props.senderNameEmojify
-            ? props.senderNameEmojify
-            : props.sender
-                ? emoji(props.sender.name)
-                : '';
+    const sender = currentItem.senderName;
 
-    const date = currentViewerState?.date || props.date;
+    const date = currentItem.date;
     const downloadLink =
         'https://ucarecdn.com/' +
-        (currentViewerState?.fileId || props.fileId) +
+        currentItem.fileId +
         '/-/format/jpg/-/inline/no/Openland-' +
         moment(date).format('YYYY-MM-DD-HH-mm-ss') +
         '.jpg';
 
-    const url = `https://ucarecdn.com/${
-        currentViewerState?.fileId || props.fileId
-        }/-/format/auto/-/`;
+    const url = `https://ucarecdn.com/${currentItem.fileId}/-/format/auto/-/`;
 
     const layoutModal = layoutMedia(
-        currentViewerState?.imageWidth || props.imageWidth,
-        currentViewerState?.imageHeight || props.imageHeight,
+        currentItem.imageWidth,
+        currentItem.imageHeight,
         window.innerWidth,
         window.innerHeight,
         32,
@@ -416,7 +479,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const width = layoutModal.width;
     const height = layoutModal.height;
 
-    const preview = currentViewerState?.filePreview || props.preview;
+    const preview = currentItem.filePreview;
 
     const mouseMove = React.useCallback(
         (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -452,7 +515,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                         <ModalController
                             cId={props.chatId}
                             cursor={cursor || ''}
-                            setViewerState={setViewerState}
+                            setViewerState={data => dispatch({ type: 'state-changed', newState: data })}
                             hide={props.hide}
                             onPrevClick={onPrevClick}
                             onNextClick={onNextClick}
@@ -529,7 +592,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     style={{ objectFit: 'contain', cursor: 'default' }}
                 />
             </div>
-            {(viewerState && viewerState.hasPrevPage || hasPrevAttach) && (
+            {(state.hasPrevPage || hasPrevAttach) && (
                 <div
                     className={cx(cursorContainer, prevCursorContent, fadeout && fadeoutStyle)}
                     onClick={(e) => {
@@ -540,7 +603,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     <UIcon icon={<IcLeft />} color={'var(--foregroundContrast)'} />
                 </div>
             )}
-            {(viewerState && viewerState.hasNextPage || hasNextAttach) && (
+            {(state.hasNextPage || hasNextAttach) && (
                 <div
                     className={cx(cursorContainer, nextCursorContent, fadeout && fadeoutStyle)}
                     onClick={(e) => {
