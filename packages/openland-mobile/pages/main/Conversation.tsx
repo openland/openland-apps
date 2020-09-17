@@ -443,7 +443,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     <SHeaderButton
                         title="Call"
                         priority={1}
-                        icon={require('assets/ic-video-24.png')}
+                        icon={require('assets/ic-call-external-24.png')}
                         onPress={this.onCustomCallPress}
                     />
                 )}

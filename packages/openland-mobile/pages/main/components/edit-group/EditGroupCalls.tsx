@@ -99,7 +99,7 @@ const EditGroupCallsComponent = React.memo((props: PageProps) => {
                     </CheckListBoxWraper>
                 </ZListGroup>
                 {mode === RoomCallsMode.LINK && (
-                    <View paddingHorizontal={16}>
+                    <View marginTop={16} paddingHorizontal={16}>
                         <ZInput placeholder="Call link" field={customLinkField} noWrapper={true} autoFocus={true} />
                         <Text style={{ ...TextStyles.Caption, color: theme.foregroundTertiary, marginTop: 8, paddingHorizontal: 16 }}>
                             A link to external call room, e.g. on Zoom, Google Meet, or any other service

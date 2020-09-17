@@ -8,6 +8,13 @@
             ]
         },
         {
+            "name": "ic-call-external",
+            "src": "ic-call-external-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-flag",
             "src": "ic-flag-24.svg",
             "sizes": [
