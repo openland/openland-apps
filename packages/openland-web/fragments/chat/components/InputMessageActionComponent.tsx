@@ -63,11 +63,11 @@ const messageActionCloseWrap = css`
     width: 24px;
     height: 24px;
     border-radius: 24px;
-    background-color: #f2f3f5;
+    background-color: var(--backgroundTertiary);
 
     & svg * {
-        fill: #676d7a;
-        stroke: #676d7a;
+        fill: var(--foregroundSecondary);
+        stroke: var(--foregroundSecondary);
     }
 `;
 
@@ -169,7 +169,7 @@ export const InputMessageActionComponent = (props: { chatId: string; userId?: st
         <div className={messageActonContainerClass}>
             {!!ActionIcon && (
                 <div className={messageActionIconWrap}>
-                    <UIcon icon={<ActionIcon />} color={'#676d7a'} />
+                    <UIcon icon={<ActionIcon />} color="var(--foregroundSecondary)" />
                 </div>
             )}
             <div
@@ -194,7 +194,7 @@ export const InputMessageActionComponent = (props: { chatId: string; userId?: st
                             : messageActionCloseWrap
                     }
                 >
-                    <UIcon icon={<CloseIcon />} color={'var(--foregroundTertiary)'} />
+                    <UIcon icon={<CloseIcon />} color="var(--foregroundSecondary)" />
                 </div>
             </div>
         </div>

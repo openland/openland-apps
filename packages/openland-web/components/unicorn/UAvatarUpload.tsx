@@ -237,7 +237,7 @@ const AvatarRender = (props: AvatarRenderProps) => {
                         className={avatarImage}
                     />
                 )}
-                {!hasImage && <UIcon icon={<IcPhoto />} color="#C8C9CC" className="ic-camera" />}
+                {!hasImage && <UIcon icon={<IcPhoto />} color="var(--foregroundQuaternary)" className="ic-camera" />}
                 {(props.isLoading || isLoading) && (
                     <XLoader
                         transparentBackground={true}
@@ -261,7 +261,7 @@ const AvatarRender = (props: AvatarRenderProps) => {
                     }}
                 >
                     <div className={clearContainerIcon}>
-                        <UIcon icon={<IcClear />} size={24} color="#fff" />
+                        <UIcon icon={<IcClear />} size={24} color="var(--foregroundContrast)" />
                     </div>
                 </div>
             )}
