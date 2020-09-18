@@ -85,7 +85,7 @@ const hasImageIndicator = css`
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #fff;
+    border: 2px solid var(--backgroundPrimary);
     border-radius: 100%;
     background-color: var(--accentPrimary);
     position: absolute;
@@ -249,7 +249,7 @@ const AvatarRender = (props: AvatarRenderProps) => {
             </div>
             {hasImage && props.hideImageIndicator !== true && (
                 <div className={hasImageIndicator}>
-                    <UIcon icon={<IcPhotoIndicator />} color="var(--foregroundInverted)" />
+                    <UIcon icon={<IcPhotoIndicator />} color="var(--foregroundContrast)" />
                 </div>
             )}
             {hasImage && props.clearable && (

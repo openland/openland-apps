@@ -17,8 +17,12 @@ export const ThemeProvider = React.memo((props: {children: any}) => {
 
     const changeMeta = (t: 'dark' | 'light') => {
         let metaThemeColor = document.querySelector('meta[name=theme-color]');
-        if (metaThemeColor) {
+        let metaSupportedColorSchemes = document.querySelector('meta[name=supported-color-schemes]');
+        let metaColorScheme = document.querySelector('meta[name=color-scheme]');
+        if (metaThemeColor && metaSupportedColorSchemes && metaColorScheme) {
             metaThemeColor.setAttribute('content', t === 'dark' ? '#111214' : '#fff');
+            metaSupportedColorSchemes.setAttribute('content', t === 'dark' ? 'dark' : 'light');
+            metaColorScheme.setAttribute('content', t === 'dark' ? 'dark' : 'light');
         }
     };
 

@@ -9,11 +9,11 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XLoader } from 'openland-x/XLoader';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { Wrapper } from './components/wrapper';
-import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { Title, Subtitle, AuthActionButton, FormLayout } from '../auth/components/authComponents';
-import { TextStyles } from 'openland-web/utils/TextStyles';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { CheckComponent } from 'openland-web/components/unicorn/UCheckbox';
+import { UListItem } from 'openland-web/components/unicorn/UListItem';
+import { plural } from 'openland-y-utils/plural';
 
 const shadowWrapper = css`
     width: 100%;
@@ -33,7 +33,7 @@ const shadowClassName = css`
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
+    background-image: linear-gradient(to bottom, var(--transparent), var(--backgroundPrimary));
 `;
 
 const ChatsItem = ({
@@ -45,31 +45,23 @@ const ChatsItem = ({
     isSelected: boolean;
     onSelect: (a: string) => void;
 }) => {
+    const description = room.membersCount
+        ? plural(room.membersCount, ['member', 'members'])
+        : undefined;
     return (
-        <XView
-            cursor="pointer"
-            flexShrink={0}
-            flexDirection="row"
-            alignItems="center"
-            paddingLeft={16}
-            paddingRight={18}
-            paddingVertical={8}
-            borderRadius={8}
-            backgroundColor={'#fff'}
-            hoverBackgroundColor="#F5F5F6"
+        <UListItem
+            useRadius={true}
+            key={room.id}
+            title={room.title}
+            description={description}
+            avatar={{ photo: room.photo, title: room.title, id: room.id }}
             onClick={() => onSelect(room.id)}
-        >
-            <UAvatar photo={room.photo} title={room.title} id={room.id} />
-            <XView flexDirection="column" flexGrow={1} flexShrink={1} marginLeft={16}>
-                <XView {...TextStyles.Label1} overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" color="var(--foregroundPrimary)">
-                    {room.title}
+            rightElement={
+                <XView marginRight={8}>
+                    <CheckComponent squared={true} checked={isSelected} />
                 </XView>
-                <XView {...TextStyles.Densed} color="var(--foregroundSecondary)">
-                    {`${room.membersCount} members`}
-                </XView>
-            </XView>
-            <CheckComponent checked={isSelected} squared={true} />
-        </XView>
+            }
+        />
     );
 };
 
@@ -87,12 +79,9 @@ const ChatsItemList = ({
     const allRoomsIds = rooms.map(({ id }) => id);
     const [selectedIds, setSelectedIds] = React.useState<string[]>(allRoomsIds);
 
-    React.useLayoutEffect(
-        () => {
-            setSelectedIds(rooms.map(({ id }) => id));
-        },
-        [rooms],
-    );
+    React.useLayoutEffect(() => {
+        setSelectedIds(rooms.map(({ id }) => id));
+    }, [rooms]);
     const [joinLoader, setJoinLoader] = React.useState(false);
     let router = React.useContext(XRouterContext)!;
 
@@ -107,7 +96,12 @@ const ChatsItemList = ({
         }
     };
 
-    useShortcuts({ keys: ['Enter'], callback: () => { join(); } });
+    useShortcuts({
+        keys: ['Enter'],
+        callback: () => {
+            join();
+        },
+    });
 
     const selectedLength = selectedIds.length;
 
@@ -132,11 +126,11 @@ const ChatsItemList = ({
                             key={key}
                             room={room}
                             isSelected={selectedIds.indexOf(room.id) !== -1}
-                            onSelect={id => {
+                            onSelect={(id) => {
                                 if (selectedIds.indexOf(id) === -1) {
                                     setSelectedIds([...selectedIds, id]);
                                 } else {
-                                    setSelectedIds(selectedIds.filter(item => item !== id));
+                                    setSelectedIds(selectedIds.filter((item) => item !== id));
                                 }
                             }}
                         />
@@ -156,13 +150,13 @@ const ChatsItemList = ({
                     <div className={shadowClassName} />
                 </div>
             ) : (
-                    <AuthActionButton
-                        text={joinButtonText}
-                        loading={joinLoader}
-                        onClick={join}
-                        disable={!selectedLength}
-                    />
-                )}
+                <AuthActionButton
+                    text={joinButtonText}
+                    loading={joinLoader}
+                    onClick={join}
+                    disable={!selectedLength}
+                />
+            )}
         </XView>
     );
 };
@@ -215,11 +209,19 @@ export const ChatsForYou = ({
         <Wrapper fullHeight={fullHeight} ref={wrapperRef}>
             <XDocumentHead title="Choose role" />
             <BackSkipLogo onBack={onBack} onSkip={onSkip} />
-            <FormLayout paddingTop={isScrollable ? 72 : undefined} paddingBottom={isScrollable ? 130 : undefined}>
+            <FormLayout
+                paddingTop={isScrollable ? 72 : undefined}
+                paddingBottom={isScrollable ? 130 : undefined}
+            >
                 <Title text="Chats for you" />
                 <Subtitle text="Recommendations based on your answers" />
 
-                <ChatsItemList isScrollable={isScrollable} onJoinChats={onJoinChats} rooms={rooms} isMobile={!!isMobile} />
+                <ChatsItemList
+                    isScrollable={isScrollable}
+                    onJoinChats={onJoinChats}
+                    rooms={rooms}
+                    isMobile={!!isMobile}
+                />
             </FormLayout>
         </Wrapper>
     );
