@@ -65,7 +65,7 @@ const EditGroupSuperadminComponent = React.memo((props: PageProps) => {
             <SHeaderButton title="Save" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <EditPageHeader
-                    icon={require('assets/ic-lock-48.png')}
+                    icon={require('assets/ic-lock-glyph-48.png')}
                     tint={theme.tintGrey}
                     title="Superadmin settings"
                     description="For Openland team only"

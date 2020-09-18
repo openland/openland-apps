@@ -1044,6 +1044,14 @@
             ]
         },
         {
+            "name": "ic-lock-glyph",
+            "src": "ic-lock-glyph-24.svg",
+            "sizes": [
+                24,
+                48
+            ]
+        },
+        {
             "name": "ic-copy",
             "src": "ic-copy-24.svg",
             "sizes": [
