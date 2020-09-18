@@ -37,6 +37,48 @@ export const AppContainer = (props: { children: any }) => {
         if (localStorage.getItem('interactive_app_theme') === 'DARK') {
             document.documentElement.classList.add('dark');
         }
+        const removeAllAccentClasses = () => {
+            document.documentElement.classList.remove(
+                'red',
+                'orange',
+                'green',
+                'cyan',
+                'purple',
+                'pink',
+                'grey',
+            );
+        };
+        if (localStorage.getItem('interactive_app_accent') === 'RED') {
+            removeAllAccentClasses();
+            document.documentElement.classList.add('red');
+        }
+        if (localStorage.getItem('interactive_app_accent') === 'ORANGE') {
+            removeAllAccentClasses();
+            document.documentElement.classList.add('orange');
+        }
+        if (localStorage.getItem('interactive_app_accent') === 'GREEN') {
+            removeAllAccentClasses();
+            document.documentElement.classList.add('green');
+        }
+        if (localStorage.getItem('interactive_app_accent') === 'CYAN') {
+            removeAllAccentClasses();
+            document.documentElement.classList.add('cyan');
+        }
+        if (localStorage.getItem('interactive_app_accent') === 'PURPLE') {
+            removeAllAccentClasses();
+            document.documentElement.classList.add('purple');
+        }
+        if (localStorage.getItem('interactive_app_accent') === 'PINK') {
+            removeAllAccentClasses();
+            document.documentElement.classList.add('pink');
+        }
+        if (localStorage.getItem('interactive_app_accent') === 'GREY') {
+            removeAllAccentClasses();
+            document.documentElement.classList.add('grey');
+        }
+        if (localStorage.getItem('interactive_app_accent') === 'BLUE') {
+            removeAllAccentClasses();
+        }
     }, []);
 
     if (!data) {

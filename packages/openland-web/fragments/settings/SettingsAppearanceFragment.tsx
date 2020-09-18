@@ -20,6 +20,17 @@ enum ThemeOptions {
     AUTO = 'AUTO',
 }
 
+enum AccentOptions {
+    BLUE = 'BLUE',
+    RED = 'RED',
+    ORANGE = 'ORANGE',
+    GREEN = 'GREEN',
+    CYAN = 'CYAN',
+    PURPLE = 'PURPLE',
+    PINK = 'PINK',
+    GREY = 'GREY',
+}
+
 export const SettingsAppearanceFragment = React.memo(() => {
     const theme = useTheme();
     const form = useForm();
@@ -46,12 +57,27 @@ export const SettingsAppearanceFragment = React.memo(() => {
         form,
     );
 
-    React.useEffect(() => {
-        localStorage.setItem(
-            'highlight_secret_chat',
-            secretGroupDisplay.value === AppearanceOptions.HIGHLIGHTED ? 'true' : 'false',
-        );
-        localStorage.setItem('interactive_app_theme', themeField.value);
+    const accentField = useField(
+        'input.accent',
+        lsGetItem('interactive_app_accent') === 'RED'
+            ? AccentOptions.RED
+            : lsGetItem('interactive_app_accent') === 'ORANGE'
+            ? AccentOptions.ORANGE
+            : lsGetItem('interactive_app_accent') === 'GREEN'
+            ? AccentOptions.GREEN
+            : lsGetItem('interactive_app_accent') === 'CYAN'
+            ? AccentOptions.CYAN
+            : lsGetItem('interactive_app_accent') === 'PURPLE'
+            ? AccentOptions.PURPLE
+            : lsGetItem('interactive_app_accent') === 'PINK'
+            ? AccentOptions.PINK
+            : lsGetItem('interactive_app_accent') === 'GREY'
+            ? AccentOptions.GREY
+            : AccentOptions.BLUE,
+        form,
+    );
+
+    const themeChecker = () => {
         if (lsGetItem('interactive_app_theme') === 'LIGHT') {
             document.documentElement.classList.remove('dark');
             document.documentElement.classList.add('light');
@@ -66,6 +92,62 @@ export const SettingsAppearanceFragment = React.memo(() => {
             document.documentElement.classList.remove('light', 'dark');
             theme.setTheme(null);
         }
+    };
+
+    const accentChecker = () => {
+        const removeAllAccentClasses = () => {
+            document.documentElement.classList.remove(
+                'red',
+                'orange',
+                'green',
+                'cyan',
+                'purple',
+                'pink',
+                'grey',
+            );
+        };
+        if (lsGetItem('interactive_app_accent') === 'RED') {
+            removeAllAccentClasses();
+            document.documentElement.classList.add('red');
+        }
+        if (lsGetItem('interactive_app_accent') === 'ORANGE') {
+            removeAllAccentClasses();
+            document.documentElement.classList.add('orange');
+        }
+        if (lsGetItem('interactive_app_accent') === 'GREEN') {
+            removeAllAccentClasses();
+            document.documentElement.classList.add('green');
+        }
+        if (lsGetItem('interactive_app_accent') === 'CYAN') {
+            removeAllAccentClasses();
+            document.documentElement.classList.add('cyan');
+        }
+        if (lsGetItem('interactive_app_accent') === 'PURPLE') {
+            removeAllAccentClasses();
+            document.documentElement.classList.add('purple');
+        }
+        if (lsGetItem('interactive_app_accent') === 'PINK') {
+            removeAllAccentClasses();
+            document.documentElement.classList.add('pink');
+        }
+        if (lsGetItem('interactive_app_accent') === 'GREY') {
+            removeAllAccentClasses();
+            document.documentElement.classList.add('grey');
+        }
+        if (lsGetItem('interactive_app_accent') === 'BLUE') {
+            removeAllAccentClasses();
+        }
+    };
+
+    React.useEffect(() => {
+        localStorage.setItem(
+            'highlight_secret_chat',
+            secretGroupDisplay.value === AppearanceOptions.HIGHLIGHTED ? 'true' : 'false',
+        );
+        localStorage.setItem('interactive_app_theme', themeField.value);
+        localStorage.setItem('interactive_app_accent', accentField.value);
+        themeChecker();
+        accentChecker();
     });
 
     return (
@@ -105,6 +187,47 @@ export const SettingsAppearanceFragment = React.memo(() => {
                                 {
                                     value: ThemeOptions.AUTO,
                                     label: 'Auto',
+                                },
+                            ]}
+                        />
+                    </XView>
+                </FormSection>
+                <FormSection title="Accent">
+                    <XView marginHorizontal={-16}>
+                        <RadioButtonsSelect
+                            {...accentField.input}
+                            selectOptions={[
+                                {
+                                    value: AccentOptions.BLUE,
+                                    label: 'Default',
+                                },
+                                {
+                                    value: AccentOptions.RED,
+                                    label: 'Red',
+                                },
+                                {
+                                    value: AccentOptions.ORANGE,
+                                    label: 'Orange',
+                                },
+                                {
+                                    value: AccentOptions.GREEN,
+                                    label: 'Green',
+                                },
+                                {
+                                    value: AccentOptions.CYAN,
+                                    label: 'Cyan',
+                                },
+                                {
+                                    value: AccentOptions.PURPLE,
+                                    label: 'Purple',
+                                },
+                                {
+                                    value: AccentOptions.PINK,
+                                    label: 'Pink',
+                                },
+                                {
+                                    value: AccentOptions.GREY,
+                                    label: 'Grey',
                                 },
                             ]}
                         />

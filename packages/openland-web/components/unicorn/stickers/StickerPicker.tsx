@@ -103,7 +103,7 @@ const titleContainerStyle = css`
     font-weight: 600;
     top: 0px;
     z-index: 2;
-    background-color: #fff;
+    background-color: var(--backgroundPrimary);
     padding-left: 16px;
     padding-right: 4px;
     user-select: none;
@@ -246,7 +246,7 @@ const addCatalogButton = css`
         background-color: var(--accentPrimaryActive);
     }
     & path {
-        fill: var(--foregroundInverted);
+        fill: var(--foregroundContrast);
     }
 `;
 

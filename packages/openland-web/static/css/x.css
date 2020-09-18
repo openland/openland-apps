@@ -220,3 +220,73 @@ html.dark {
     --backgroundBlurPrimary: rgba(35, 39, 41, 0.72);
     --backgroundBlurSecondary: rgba(35, 39, 41, 0.92);
 }
+
+html.red:not(.landing) {
+    --accentPrimary: #F23051;
+    --accentPrimaryHover: #FF4060;
+    --accentPrimaryActive: #D92140;
+
+    --accentMuted: #F23051;
+    --accentMutedHover: #F23051;
+    --accentMutedActive: #F23051;
+}
+
+html.orange:not(.landing) {
+    --accentPrimary: #FF9F1A;
+    --accentPrimaryHover: #FFBB33;
+    --accentPrimaryActive: #F27F0C;
+
+    --accentMuted: #FF9F1A;
+    --accentMutedHover: #FF9F1A;
+    --accentMutedActive: #FF9F1A;
+}
+
+html.green:not(.landing) {
+    --accentPrimary: #40B855;
+    --accentPrimaryHover: #52CC66;
+    --accentPrimaryActive: #32A645;
+
+    --accentMuted: #40B855;
+    --accentMutedHover: #40B855;
+    --accentMutedActive: #40B855;
+}
+
+html.cyan:not(.landing) {
+    --accentPrimary: #36BED9;
+    --accentPrimaryHover: #45CBE5;
+    --accentPrimaryActive: #26A1BF;
+
+    --accentMuted: #36BED9;
+    --accentMutedHover: #36BED9;
+    --accentMutedActive: #36BED9;
+}
+
+html.purple:not(.landing) {
+    --accentPrimary: #7A24F2;
+    --accentPrimaryHover: #8833FF;
+    --accentPrimaryActive: #6114CC;
+
+    --accentMuted: #7A24F2;
+    --accentMutedHover: #7A24F2;
+    --accentMutedActive: #7A24F2;
+}
+
+html.pink:not(.landing) {
+    --accentPrimary: #E539AC;
+    --accentPrimaryHover: #F249BA;
+    --accentPrimaryActive: #CC1F93;
+
+    --accentMuted: #E539AC;
+    --accentMutedHover: #E539AC;
+    --accentMutedActive: #E539AC;
+}
+
+html.grey:not(.landing) {
+    --accentPrimary: #71747A;
+    --accentPrimaryHover: #81848A;
+    --accentPrimaryActive: #5C5F66;
+
+    --accentMuted: #71747A;
+    --accentMutedHover: #71747A;
+    --accentMutedActive: #71747A;
+}
