@@ -102,9 +102,9 @@ export const UserPopperContent = React.memo(
                     justifyContent="center"
                     alignItems="center"
                     height={30}
-                    color={'white'}
+                    color="var(--foregroundInverted)"
                     borderRadius={15}
-                    backgroundColor={'#000'}
+                    backgroundColor="var(--foregroundPrimary)"
                 >
                     It&apos;s you
                 </XView>
