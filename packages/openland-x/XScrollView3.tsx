@@ -71,6 +71,7 @@ const NativeScrollStyle = css`
     flex-shrink: 1;
     display: flex;
     flex-direction: column;
+    background-color: var(--backgroundPrimary);
 `;
 
 export const NativeWindowsScrollStyle = css`
@@ -100,7 +101,7 @@ const NativeBackend = React.memo<{
     onScroll: (values: XScrollValues) => void;
     innerRef: any;
     children?: any;
-}>(props => {
+}>((props) => {
     const isWindows = React.useMemo(() => detectOS() === 'Windows', []);
 
     React.useEffect(() => {
@@ -122,7 +123,10 @@ const NativeBackend = React.memo<{
     }, []);
 
     return (
-        <div className={cx(NativeScrollStyle, isWindows && NativeWindowsScrollStyle)} ref={props.innerRef}>
+        <div
+            className={cx(NativeScrollStyle, isWindows && NativeWindowsScrollStyle, 'scroll-view')}
+            ref={props.innerRef}
+        >
             {props.children}
         </div>
     );

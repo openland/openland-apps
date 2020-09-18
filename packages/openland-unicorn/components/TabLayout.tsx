@@ -36,7 +36,7 @@ const containerDesktop = css`
     min-width: 500px;
     height: 100%;
     flex-direction: column;
-    background-color: #f0f2f5;
+    background-color: var(--backgroundPrimary);
     z-index: 2;
 `;
 
@@ -143,7 +143,7 @@ const StackContent = React.memo((props: {
                     height="100%"
                     position="relative"
                     alignItems="flex-start"
-                    backgroundColor="#fff"
+                    backgroundColor="var(--backgroundPrimary)"
                 >
                     <TabContainer
                         index={index}
@@ -208,7 +208,7 @@ const StackContent = React.memo((props: {
                             height="100%"
                             position="relative"
                             alignItems="flex-start"
-                            backgroundColor="#fff"
+                            backgroundColor="var(--backgroundPrimary)"
                         >
                             <TabContainer
                                 index={index}

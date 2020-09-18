@@ -14,18 +14,30 @@ const ThemeContext = React.createContext<ThemeContext>({
 
 export const ThemeProvider = React.memo((props: {children: any}) => {
     const [theme, setTheme] = React.useState<null | 'dark' | 'light'>(null);
+
+    const changeMeta = (t: 'dark' | 'light') => {
+        let metaThemeColor = document.querySelector('meta[name=theme-color]');
+        if (metaThemeColor) {
+            metaThemeColor.setAttribute('content', t === 'dark' ? '#111214' : '#fff');
+        }
+    };
+
     React.useEffect(() => {
         let match = window.matchMedia('(prefers-color-scheme: dark)');
         setTheme(match.matches ? 'dark' : 'light');
+        changeMeta(match.matches ? 'dark' : 'light');
         const listener = (e: MediaQueryListEvent) => {
             setTheme(e.matches ? 'dark' : 'light');
+            changeMeta(e.matches ? 'dark' : 'light');
         };
         match.addListener(listener);
         if (localStorage.getItem('interactive_app_theme') === 'LIGHT') {
             setTheme('light');
+            changeMeta('light');
         }
         if (localStorage.getItem('interactive_app_theme') === 'DARK') {
             setTheme('dark');
+            changeMeta('dark');
         }
         return () => match.removeListener(listener);
     });

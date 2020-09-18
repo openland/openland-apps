@@ -10,9 +10,11 @@
     text-rendering: auto;
 }
 
-html {
+html, body {
     background-color: var(--backgroundPrimary);
+}
 
+html {
     /* start interactive colors */
 
     --transparent: rgba(255, 255, 255, 0);

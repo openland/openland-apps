@@ -252,12 +252,20 @@ export default class OpenlandDocument extends Document {
                         content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no"
                     />
                     <meta name="format-detection" content="telephone=no" />
-                    <meta name="theme-color" content="#1790ff" />
+                    <meta name="theme-color" content="#FFFFFF" />
                     <meta name="application-name" content="Openland" />
                     <meta name="apple-mobile-web-app-title" content="Openland" />
+                    <meta name="supported-color-schemes" content="light dark" />
+                    <meta name="color-scheme" content="light dark" />
+                    <link rel="stylesheet" href="/static/css/x.css?v=20" />
                     {process.env.APP_ENVIRONMENT !== 'next' && (
                         <meta name="apple-itunes-app" content="app-id=1435537685" />
                     )}
+                    <MetaTags
+                        {...((this.props as any).metaTagsInfo
+                            ? (this.props as any).metaTagsInfo
+                            : {})}
+                    />
 
                     {/* ORDER IS IMPORTANT! */}
                     <link
@@ -332,18 +340,6 @@ export default class OpenlandDocument extends Document {
                         href="/static/img/favicon/favicon-16x16.png?v=2"
                     />
                     <link rel="manifest" href="/static/img/favicon/manifest.json?v=2" />
-                    <meta name="msapplication-TileColor" content="#ffffff" />
-                    <meta name="supported-color-schemes" content="light dark" />
-                    <meta
-                        name="msapplication-TileImage"
-                        content="/static/img/favicon/ms-icon-144x144.png?v=2"
-                    />
-
-                    <MetaTags
-                        {...((this.props as any).metaTagsInfo
-                            ? (this.props as any).metaTagsInfo
-                            : {})}
-                    />
 
                     <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css" />
 
@@ -358,7 +354,6 @@ export default class OpenlandDocument extends Document {
                         href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&display=swap&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese"
                         rel="stylesheet"
                     />
-                    <link rel="stylesheet" href="/static/css/x.css?v=19" />
 
                     <style dangerouslySetInnerHTML={{ __html: (this.props as any).glamCss }} />
 

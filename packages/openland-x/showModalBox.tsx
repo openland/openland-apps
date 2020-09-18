@@ -22,6 +22,10 @@ const boxStyle = css`
     max-height: 95%;
     max-width: calc(100vw - 20px);
     color: var(--foregroundPrimary);
+
+    & .scroll-view {
+        background-color: var(--backgroundSecondary);
+    }
 `;
 
 const fullScreenBoxStyle = css`
@@ -101,7 +105,7 @@ const ModalBoxComponent = React.memo<{
     ctx: XModalController;
     modal: XModal;
     config: XModalBoxConfig;
-}>(props => {
+}>((props) => {
     const { hideOnEsc = true } = props.config;
 
     const [state, setState] = React.useState<'showing' | 'visible' | 'hiding'>('showing');
@@ -164,7 +168,7 @@ const ModalBoxComponent = React.memo<{
         let windowWidth = 0;
         let contentHeight = 0;
         let contentWidth = 0;
-        let observer = new ResizeObserver(src => {
+        let observer = new ResizeObserver((src) => {
             for (let s of src) {
                 if (s.target === containerRef.current) {
                     windowHeight = s.contentRect.height;
@@ -202,22 +206,22 @@ const ModalBoxComponent = React.memo<{
 
     const boxInlineStyle = isFullscreen
         ? {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            maxWidth: 'initial',
-            maxHeight: 'initial',
-            borderRadius: 0,
-            transition: 'none',
-        }
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              maxWidth: 'initial',
+              maxHeight: 'initial',
+              borderRadius: 0,
+              transition: 'none',
+          }
         : {
-            top,
-            left,
-            width: props.config.flowing ? 'auto' : props.config.width ? props.config.width : 440,
-        };
+              top,
+              left,
+              width: props.config.flowing ? 'auto' : props.config.width ? props.config.width : 440,
+          };
 
     return (
         <XModalBoxContext.Provider
@@ -319,7 +323,7 @@ export interface XModalBoxConfig {
 
 export function showModalBox(config: XModalBoxConfig, modal: XModal) {
     const { hideOnEsc = true } = config;
-    showModal(ctx => {
+    showModal((ctx) => {
         if (hideOnEsc) {
             ctx.setOnEscPressed(ctx.hide);
         }
