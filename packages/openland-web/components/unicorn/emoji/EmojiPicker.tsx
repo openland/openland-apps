@@ -111,7 +111,7 @@ const categorySelector = css`
     top: 0px;
     height: 2px;
     width: 40px;
-    background: #1885f2;
+    background: var(--accentMuted);
     border-radius: 0px 0px 100px 100px;
     transition: transform 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
 `;
@@ -365,10 +365,10 @@ const CategoryButton = React.memo(
         return (
             <div className={categoryButton} onClick={() => props.onClick(props.offset, props.index)}>
                 <div className={props.focused ? categoryIconActive : categoryIconInactive}>
-                    <UIcon color="#1885F2" icon={props.iconActive} size={20} />
+                    <UIcon color="var(--accentMuted)" icon={props.iconActive} size={20} />
                 </div>
                 <div className={props.focused ? categoryIconInactive : categoryIconActive}>
-                    <UIcon color="#676D7A" icon={props.iconInactive} size={20} />
+                    <UIcon color="var(--foregroundSecondary)" icon={props.iconInactive} size={20} />
                 </div>
             </div>
         );
