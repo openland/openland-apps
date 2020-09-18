@@ -397,7 +397,9 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let canSubmit = this.state.text.trim().length > 0;
 
         if (['reply', 'forward'].includes(messagesActionsState.action)) {
-            canSubmit = true;
+            if (messagesActionsState.action === 'forward') {
+                canSubmit = true;
+            }
             quoted = <ForwardReplyView onClearPress={this.onQuotedClearPress} messages={messagesActionsState.messages.map(convertMessageBack)} action={messagesActionsState.action === 'forward' ? 'forward' : 'reply'} />;
         }
 

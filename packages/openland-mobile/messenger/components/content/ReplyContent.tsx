@@ -13,6 +13,7 @@ import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from 
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { StickerContent } from './StickerContent';
 import { AsyncReplyMessageRichAttach } from '../AsyncReplyMessageRichAttach';
+import { paddedText } from '../AsyncMessageContentView';
 
 const getAttachFile = (message: DataSourceMessageItem) => {
     return message.attachments && message.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
@@ -88,7 +89,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                 {message.reply && (
                     message.reply.map((m, i) => {
                         const hasAttachments = m.attachments && m.attachments.length > 0;
-                        const needPaddedText = !m.isService && !!m.text && !hasAttachments && (i + 1 === message.reply!.length);
+                        const needPaddedText = !m.isService && !!m.text && !message.text && !hasAttachments && (i + 1 === message.reply!.length);
                         const repliedMessage = !m.isService ? m : undefined;
                         const paddedMargin = needPaddedText && !isForward && !message.text;
 
@@ -207,13 +208,19 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         />
                                     )}
                                     {!miniContent && repliedMessage.textSpans.length > 0 && (
-                                        <ASFlex key={'reply-spans-' + m.id} marginTop={2} flexDirection="column" alignItems="stretch" marginLeft={9} marginRight={paddedMargin ? 65 : undefined} onPress={handlePress}>
+                                        <ASFlex
+                                            key={'reply-spans-' + m.id}
+                                            marginTop={2}
+                                            flexDirection="row"
+                                            marginLeft={9}
+                                            onPress={handlePress}
+                                        >
                                             <RenderSpans
                                                 spans={repliedMessage.textSpans}
                                                 message={message}
                                                 padded={compensateBubble && isForward ? needPaddedText : false}
                                                 theme={theme}
-                                                maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - (paddedMargin ? 95 : 70)}
+                                                maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - (paddedMargin ? 45 : 10)}
                                                 width={width}
                                                 insetLeft={8}
                                                 insetRight={paddedMargin ? 0 : contentInsetsHorizontal}
@@ -225,6 +232,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                                 onOrganizationPress={this.props.onOrganizationPress}
                                                 onHashtagPress={this.props.onHashtagPress}
                                             />
+                                            {paddedMargin ? <ASText flexGrow={1} flexShrink={0}>{paddedText(message.isEdited)}</ASText> : null}
                                         </ASFlex>
                                     )}
                                 </ASFlex>
