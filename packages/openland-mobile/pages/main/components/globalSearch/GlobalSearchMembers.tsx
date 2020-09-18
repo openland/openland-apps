@@ -6,7 +6,7 @@ import { SFlatList } from 'react-native-s/SFlatList';
 import { SDevice } from 'react-native-s/SDevice';
 import { DeviceConfig } from 'react-native-s/navigation/DeviceConfig';
 import { Loader } from './GlobalSearch';
-import { View, Text } from 'react-native';
+import { View, Text, Keyboard } from 'react-native';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { UserView } from '../UserView';
@@ -14,7 +14,27 @@ import { RoomMemberType, OrgMemberType, RoomLongPressHanlder, OrgLongPressHanlde
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { RoomMemberRole, OrganizationMemberRole } from 'openland-api/spacex.types';
 
-const EmptyView = React.memo((props: { theme: ThemeGlobal }) => {
+const useSearchKeyboardHeight = () => {
+    const area = React.useContext(ASSafeAreaContext);
+    const [keyboardHeight, setKeyboardHeight] = React.useState(0);
+    React.useEffect(() => {
+        const handleShow = (e: any) => {
+            setKeyboardHeight(e?.endCoordinates?.height);
+        };
+        const handleHide = () => {
+            setKeyboardHeight(0);
+        };
+        Keyboard.addListener('keyboardWillShow', handleShow);
+        Keyboard.addListener('keyboardWillHide', handleHide);
+        return () => {
+            Keyboard.removeListener('keyboardWillShow', handleShow);
+            Keyboard.removeListener('keyboardWillHide', handleHide);
+        };
+    }, []);
+    return keyboardHeight - (area.top - DeviceConfig.statusBarHeight) + (area.bottom - SDevice.safeArea.bottom);
+};
+
+const EmptyView = React.memo((props: { theme: ThemeGlobal, keyboardHeight: number; }) => {
     return (
         <View
             style={{
@@ -24,6 +44,7 @@ const EmptyView = React.memo((props: { theme: ThemeGlobal }) => {
                 flexGrow: 1,
                 alignItems: 'center',
                 justifyContent: 'center',
+                paddingBottom: props.keyboardHeight,
             }}
         >
             <Text
@@ -55,6 +76,7 @@ const RoomMembersSearch = (props: RoomMembersSearchProps) => {
     const [after, setAfter] = React.useState<string | undefined>();
     const [hasNextPage, setHasNextPage] = React.useState(true);
     const [items, setItems] = React.useState<RoomMemberType[]>([]);
+    const keyboardHeight = useSearchKeyboardHeight();
 
     const onRoleChange = (memberId: string, role: RoomMemberRole) => {
         setItems(prev => prev.map(member => member.user.id === memberId ? ({ ...member, role }) : member));
@@ -102,7 +124,7 @@ const RoomMembersSearch = (props: RoomMembersSearchProps) => {
     }
 
     if (!items.length) {
-        return <EmptyView theme={theme} />;
+        return <EmptyView theme={theme} keyboardHeight={keyboardHeight} />;
     }
 
     return (
@@ -152,6 +174,7 @@ const OrgMembersSearch = (props: OrgMembersSearchProps) => {
     const [after, setAfter] = React.useState<string | undefined>();
     const [hasNextPage, setHasNextPage] = React.useState(true);
     const [items, setItems] = React.useState<OrgMemberType[]>([]);
+    const keyboardHeight = useSearchKeyboardHeight();
 
     const onRoleChange = (memberId: string, role: OrganizationMemberRole) => {
         setItems(prev => prev.map(member => member.user.id === memberId ? ({ ...member, role }) : member));
@@ -199,7 +222,7 @@ const OrgMembersSearch = (props: OrgMembersSearchProps) => {
     }
 
     if (!items.length) {
-        return <EmptyView theme={theme} />;
+        return <EmptyView theme={theme} keyboardHeight={keyboardHeight} />;
     }
 
     return (
