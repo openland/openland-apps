@@ -17,11 +17,11 @@ import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { useToast } from './unicorn/UToast';
 
 const userStatus = css`
-    color: #676d7a;
+    color: var(--foregroundSecondary);
 `;
 
 const userOnlineStatus = css`
-    color: #1790ff;
+    color: var(--accentPrimary);
 `;
 
 const Status = (({ variables }) => {
