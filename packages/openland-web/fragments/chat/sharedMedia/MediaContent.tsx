@@ -97,7 +97,6 @@ export const MediaContent = React.memo((props: { item: SharedItemFile; chatId: s
         if (imgRef.current && placeholderRef.current) {
             imgRef.current.style.opacity = '1';
             placeholderRef.current.style.opacity = '0';
-            placeholderRef.current.style.visibility = 'hidden';
         }
     }, []);
 
