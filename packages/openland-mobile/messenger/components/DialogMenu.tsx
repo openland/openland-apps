@@ -42,22 +42,24 @@ const DialogMenuPrivate = React.memo((props: DialogMenuProps) => {
         messenger.history.navigationManager.push('SharedMedia', { chatId: item.key });
     }, false, require('assets/ic-attach-24.png'));
 
-    builder.action(
-        isContact ? 'Remove from contacts' : 'Add to contacts',
-        async () => {
-            const loader = Toast.loader();
-            loader.show();
-            if (isContact) {
-                client.mutateRemoveFromContacts({ userId: user.id });
-            } else {
-                client.mutateAddToContacts({ userId: user.id });
-            }
-            loader.hide();
-            Toast.success({ duration: 1000 }).show();
-        },
-        false,
-        isContact ? require('assets/ic-invite-off-24.png') : require('assets/ic-invite-24.png'),
-    );
+    if (!isSavedMessages) {
+        builder.action(
+            isContact ? 'Remove from contacts' : 'Add to contacts',
+            async () => {
+                const loader = Toast.loader();
+                loader.show();
+                if (isContact) {
+                    client.mutateRemoveFromContacts({ userId: user.id });
+                } else {
+                    client.mutateAddToContacts({ userId: user.id });
+                }
+                loader.hide();
+                Toast.success({ duration: 1000 }).show();
+            },
+            false,
+            isContact ? require('assets/ic-invite-off-24.png') : require('assets/ic-invite-24.png'),
+        );
+    }
 
     return builder.renderItems(ctx);
 });
