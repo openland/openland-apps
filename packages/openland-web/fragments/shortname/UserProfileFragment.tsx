@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
+import copy from 'copy-to-clipboard';
 
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { useClient } from 'openland-api/useClient';
@@ -14,6 +15,7 @@ import { ProfileLayout } from 'openland-web/components/ProfileLayout';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 import { XDate } from 'openland-x/XDate';
 import { getLocationUrl } from 'openland-y-utils/getLocationUrl';
+import { useToast } from 'openland-web/components/unicorn/UToast';
 
 import AtIcon from 'openland-icons/s/ic-at-24.svg';
 import MailIcon from 'openland-icons/s/ic-mail-24.svg';
@@ -41,11 +43,21 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
     const engine = React.useContext(MessengerContext);
     const uId = props?.id || userContext.id;
     const client = useClient();
+    const toastHandlers = useToast();
     const { user, conversation } = client.useUser({ userId: uId }, { fetchPolicy: 'cache-and-network' });
     const {
         id, isBot, name, photo, about, shortname, location, phone, email, linkedin, joinDate,
         website, twitter, facebook, instagram, birthDay
     } = user;
+
+    const onCopyLinkClick = React.useCallback(() => {
+        copy(`https://openland.com/${shortname || id}`, { format: 'text/plain' });
+
+        toastHandlers.show({
+            type: 'success',
+            text: 'Link copied',
+        });
+    }, [shortname, id]);
 
     const parsedSite = findSocialShortname.site(website);
     const parsedTwitter = findSocialShortname.twitter(twitter);
@@ -75,7 +87,7 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
             <UListGroup header="About">
                 {!!about && <ShowMoreText text={about} />}
                 <XView flexDirection="row" flexWrap="wrap" marginTop={8}>
-                    {!!shortname && <UListItem title={shortname} icon={<AtIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={`https://openland.com/${shortname}`}/>}
+                    {!!shortname && <UListItem title={shortname} icon={<AtIcon />} useRadius={true} wrapperClassName={listItemWrapper} onClick={onCopyLinkClick}/>}
                     {!!email && <UListItem title={email} icon={<MailIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={`mailto:${email}`}/>}
                     {!!location && <UListItem title={location} icon={<LocationIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={getLocationUrl(location)}/>}
                     {!!phone && <UListItem title={phone} icon={<PhoneIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={`tel:${phone}`} />}
