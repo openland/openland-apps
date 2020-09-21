@@ -13,7 +13,7 @@ import { StickerContent } from 'openland-mobile/components/message/content/Stick
 
 interface ForwardReplyViewProps {
     messages: FullMessage[];
-
+    isClosing?: boolean;
     action?: 'forward' | 'reply';
     onClearPress: () => void;
 }
@@ -124,6 +124,7 @@ export const ForwardReplyView = (props: ForwardReplyViewProps) => {
 
     return (
         <InputTopView
+            isClosing={props.isClosing}
             title={title}
             text={text}
             textColor={textColor}
