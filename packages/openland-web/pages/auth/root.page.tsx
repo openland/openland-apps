@@ -170,10 +170,8 @@ export const AuthHeaderConfig = React.memo((props: BackSkipLogoProps) => {
         authHeaderConfigContex.setOnBack(props.onBack);
         authHeaderConfigContex.setOnSkip(props.onSkip);
         authHeaderConfigContex.setMobileTransparent(props.mobileTransparent);
-
-        console.warn('setting header', props.onBack, props.onSkip, props.mobileTransparent);
     }, []);
-    return <></>;
+    return null;
 });
 
 interface AuthHeaderInstance {
@@ -221,13 +219,11 @@ const AuthHeader = React.memo(
         );
 
         return (
-            <XView position="absolute" width="100%">
-                <BackSkipLogo
-                    onBack={onBackPressed}
-                    onSkip={onSkip.callback ? onSkipPressed : undefined}
-                    mobileTransparent={mobileTransparent}
-                />
-            </XView>
+            <BackSkipLogo
+                onBack={onBackPressed}
+                onSkip={onSkip.callback ? onSkipPressed : undefined}
+                mobileTransparent={mobileTransparent}
+            />
         );
     }),
 );
@@ -437,7 +433,6 @@ const Root = (props: { countryCode?: string }) => {
 
     return (
         <div className={outerContainer}>
-            {showBack && <AuthHeader ref={headerRef} />}
             <AuthHeaderConfigContex.Provider
                 value={{
                     setOnBack,
@@ -458,6 +453,11 @@ const Root = (props: { countryCode?: string }) => {
                     <div className={pageContainer}>{render}</div>
                 )}
             </AuthHeaderConfigContex.Provider>
+            {showBack && (
+                <XView width="100%">
+                    <AuthHeader ref={headerRef} />
+                </XView>
+            )}
         </div>
     );
 };
