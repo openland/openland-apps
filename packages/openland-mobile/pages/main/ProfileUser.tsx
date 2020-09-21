@@ -207,7 +207,6 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                             text={`Joined ${formatAbsoluteDate(parseInt(user.joinDate, 10), true)}`}
                             leftIcon={require('assets/ic-flag-24.png')}
                             small={true}
-                            copy={true}
                         />
                     )}
                     {!!phone && (
