@@ -203,7 +203,7 @@ export const StickerPicker = React.memo((props: StickerPickerProps) => {
                                 }
                             }
                         }}
-                        directionalLockEnabled={true}
+                        bounces={false}
                     />
                     <FlatList
                         ref={stickerPackButtonListRef}
