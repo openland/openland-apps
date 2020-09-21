@@ -454,7 +454,7 @@ const Root = (props: { countryCode?: string }) => {
                 )}
             </AuthHeaderConfigContex.Provider>
             {showBack && (
-                <XView width="100%">
+                <XView width="100%" height={0}>
                     <AuthHeader ref={headerRef} />
                 </XView>
             )}

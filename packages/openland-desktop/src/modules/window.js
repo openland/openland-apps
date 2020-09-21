@@ -55,7 +55,7 @@ module.exports = {
         win.webContents.session.setPreloads([path.join(__dirname, 'getUserMedia.js')])
 
         // Load app URL
-        win.loadURL(devMode ? 'http://localhost:3000/signin' : 'https://openland.com/signin');
+        win.loadURL(devMode ? 'http://localhost:3000/mail' : 'https://openland.com/mail');
 
         return win;
     }

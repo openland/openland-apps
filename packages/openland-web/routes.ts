@@ -112,27 +112,10 @@ routes.add('/resolveInvite/:inviteKey', '/init/resolveInvite');
 routes.add('/resolveInvite/:inviteKey/', '/init/resolveInvite');
 routes.add('/acceptChannelInvite/:invite', '/init/acceptChannelInvite');
 routes.add('/acceptChannelInvite/:invite/', '/init/acceptChannelInvite');
-routes.add('/inviteFriends', '/main/mail/inviteFriends');
-routes.add('/inviteFriends/', '/main/mail/inviteFriends');
-// Mail?
-routes.add('/mail/joinChannel/:inviteKey', '/main/mail/root');
-routes.add('/mail/joinChannel/:inviteKey/', '/main/mail/root');
-routes.add('/mail/join/:inviteKey', '/main/mail/root');
-routes.add('/mail/join/:inviteKey/', '/main/mail/root');
-routes.add('/mail/invite/:inviteKey', '/main/mail/root');
-routes.add('/mail/invite/:inviteKey/', '/main/mail/root');
 
 //
 // Mail
 //
-
-// Old Modals
-routes.add('/mail/create', '/main/mail/createGroup');
-routes.add('/mail/create/', '/main/mail/createGroup');
-routes.add('/mail/createCommunity', '/main/mail/createCommunity');
-routes.add('/mail/createCommunity/', '/main/mail/createCommunity');
-routes.add('/mail/createOrganization', '/main/mail/createOrganization');
-routes.add('/mail/createOrganization/', '/main/mail/createOrganization');
 
 routes.add('/mail', '/unicorn/index');
 routes.add('/mail/', '/unicorn/index');

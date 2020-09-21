@@ -15,7 +15,6 @@ interface AuthResult {
 }
 
 export const completeAuth = (token: string) => {
-    Cookie.remove('statecraft-key');
     Cookie.remove('x-openland-org', { path: '/' });
     Cookie.set('x-openland-token', token, {
         path: '/',
@@ -63,7 +62,6 @@ export default class AuthenticationHandler extends React.Component<{}, { error: 
                 ok: boolean;
                 token: string;
             };
-            Cookie.remove('statecraft-key');
             Cookie.remove('x-openland-org', { path: '/' });
             Cookie.set('x-openland-token', body.token, {
                 path: '/',
