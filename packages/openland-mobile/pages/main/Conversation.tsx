@@ -69,6 +69,7 @@ interface ConversationRootState {
     muted: boolean;
     stickerKeyboardShown: boolean;
     keyboardHeight: number;
+    closingQuoted: boolean;
 }
 
 class ConversationRoot extends React.Component<ConversationRootProps, ConversationRootState> {
@@ -95,7 +96,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             inputFocused: false,
             muted: !!this.props.chat.settings.mute,
             stickerKeyboardShown: false,
-            keyboardHeight: 0
+            keyboardHeight: 0,
+            closingQuoted: false,
         };
 
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
@@ -312,15 +314,21 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         }
     }
 
-    onQuotedClearPress = () => {
-        this.props.messagesActionsMethods.clear();
+    clearActionsBar = () => {
+        this.setState({ closingQuoted: true });
+        setTimeout(() => {
+            this.props.messagesActionsMethods.clear();
+            this.setState({ closingQuoted: false });
+        }, 2000);
+    }
 
+    onQuotedClearPress = () => {
+        this.clearActionsBar();
         this.removeDraft();
     }
 
     onEditedClearPress = () => {
-        this.props.messagesActionsMethods.clear();
-
+        this.clearActionsBar();
         this.setState({
             text: '',
             mentions: []
@@ -400,11 +408,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             if (messagesActionsState.action === 'forward') {
                 canSubmit = true;
             }
-            quoted = <ForwardReplyView onClearPress={this.onQuotedClearPress} messages={messagesActionsState.messages.map(convertMessageBack)} action={messagesActionsState.action === 'forward' ? 'forward' : 'reply'} />;
+            quoted = <ForwardReplyView isClosing={this.state.closingQuoted} onClearPress={this.onQuotedClearPress} messages={messagesActionsState.messages.map(convertMessageBack)} action={messagesActionsState.action === 'forward' ? 'forward' : 'reply'} />;
         }
 
         if (messagesActionsState.action === 'edit') {
-            quoted = <EditView onClearPress={this.onEditedClearPress} message={messagesActionsState.messages.map(convertMessageBack)[0]} />;
+            quoted = <EditView isClosing={this.state.closingQuoted} onClearPress={this.onEditedClearPress} message={messagesActionsState.messages.map(convertMessageBack)[0]} />;
         }
 
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
