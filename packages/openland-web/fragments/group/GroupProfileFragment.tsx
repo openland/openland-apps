@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { css } from "linaria";
+import copy from 'copy-to-clipboard';
 
 import { useClient } from 'openland-api/useClient';
 import { plural } from 'openland-y-utils/plural';
@@ -16,8 +17,9 @@ import { UListHeroNew } from 'openland-web/components/unicorn/UListHeroNew';
 import { ProfileLayout } from 'openland-web/components/ProfileLayout';
 import { ShowMoreText } from 'openland-web/fragments/shortname/components/ShowMoreText';
 import { ProfileTabsFragment } from 'openland-web/fragments/shortname/components/ProfileTabsFragment';
-
+import { useToast } from 'openland-web/components/unicorn/UToast';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
+
 import AtIcon from 'openland-icons/s/ic-at-24.svg';
 import PriceIcon from 'openland-icons/s/ic-tag-price-24.svg';
 
@@ -28,6 +30,7 @@ const listItemWrapper = css`
 export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     const client = useClient();
     const unicorn = useUnicorn();
+    const toastHandlers = useToast();
     const roomId = props.id || unicorn.id;
     const group = client.useRoomChat({ id: roomId }, { fetchPolicy: 'cache-and-network' }).room;
 
@@ -46,6 +49,15 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         shortname,
         premiumSettings,
     } = group;
+
+    const onCopyLinkClick = React.useCallback(() => {
+        copy(`https://openland.com/${shortname || id}`, { format: 'text/plain' });
+
+        toastHandlers.show({
+            type: 'success',
+            text: 'Link copied',
+        });
+    }, [shortname, id]);
 
     const descriptionHero = plural(membersCount || 0, ['member', 'members']);
 
@@ -72,7 +84,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                 <UListGroup header="About">
                     {!!description && <ShowMoreText text={description} />}
                     <XView flexDirection="row" flexWrap="wrap" marginTop={8}>
-                        {!!shortname && <UListItem title={shortname} icon={<AtIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={`https://openland.com/${shortname}`} />}
+                        {!!shortname && <UListItem title={shortname} icon={<AtIcon />} useRadius={true} wrapperClassName={listItemWrapper} onClick={onCopyLinkClick}/>}
                         {!!price && <UListItem title={price} icon={<PriceIcon />} useRadius={true} wrapperClassName={listItemWrapper} interactive={false} />}
                     </XView>
                 </UListGroup>

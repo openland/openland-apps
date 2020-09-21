@@ -52,7 +52,7 @@ const MediaItemContentClass = css`
     display: block;
     width: calc(100% - 2px);
     opacity: 0;
-    transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 450ms cubic-bezier(0.4, 0, 0.2, 1);
     will-change: opacity;
 `;
 
@@ -74,7 +74,7 @@ const ImgPreviewContainerClass = css`
 
     overflow: hidden;
 
-    transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 450ms cubic-bezier(0.4, 0, 0.2, 1);
     will-change: opacity;
 `;
 export const MediaContent = React.memo((props: { item: SharedItemFile; chatId: string, profileView?: boolean }) => {
@@ -97,7 +97,6 @@ export const MediaContent = React.memo((props: { item: SharedItemFile; chatId: s
         if (imgRef.current && placeholderRef.current) {
             imgRef.current.style.opacity = '1';
             placeholderRef.current.style.opacity = '0';
-            placeholderRef.current.style.visibility = 'hidden';
         }
     }, []);
 

@@ -16,7 +16,7 @@ import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessa
 import { OthersUsersWrapper } from './content/OthersUsersWrapper';
 import { openCalendar } from 'openland-mobile/utils/openCalendar';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
-import { Span } from 'openland-y-utils/spans/Span';
+import { Span, SpanType } from 'openland-y-utils/spans/Span';
 import { EmojiOnlyContent } from './content/EmojiOnlyContent';
 import { StickerContent } from './content/StickerContent';
 import { StickerBox } from './content/StickerBox';
@@ -41,7 +41,16 @@ interface AsyncMessageTextViewProps {
     onReplyPress?: (message: DataSourceMessageItem) => void;
 }
 
-export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageItem, theme: ThemeGlobal, onUserPress: (id: string) => void, onGroupPress: (id: string) => void, onOrganizationPress: (id: string) => void, onHashtagPress: (d?: string) => void) => {
+export let renderPreprocessedText = (
+    spans: Span[],
+    message: DataSourceMessageItem,
+    theme: ThemeGlobal,
+    onUserPress: (id: string) => void,
+    onGroupPress: (id: string) => void,
+    onOrganizationPress: (id: string) => void,
+    onHashtagPress: (d?: string) => void,
+    ignoreMarkdown?: boolean,
+) => {
     const SpanView = (props: { span: Span, children?: any }) => {
         const { span, children } = props;
 
@@ -54,6 +63,11 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         if (!!message.isService) {
             linkColor = undefined;
             linkTextDecoration = 'none';
+        }
+
+        const markdownTypes = ['bold', 'loud', 'code_block', 'code_inline', 'insane', 'irony', 'italic', 'loud', 'rotating'] as SpanType[];
+        if (ignoreMarkdown && markdownTypes.includes(span.type)) {
+            return <ASText key={span.type + ' ignored'}>{children}</ASText>;
         }
 
         if (span.type === 'link') {
