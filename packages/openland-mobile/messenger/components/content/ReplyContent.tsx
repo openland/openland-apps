@@ -226,6 +226,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                                 insetRight={paddedMargin ? 0 : contentInsetsHorizontal}
                                                 insetVertical={4}
                                                 numberOfLines={isForward ? undefined : 1}
+                                                ignoreMarkdown={true}
 
                                                 onUserPress={this.props.onUserPress}
                                                 onGroupPress={this.props.onGroupPress}
@@ -252,6 +253,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                                 insetLeft={8}
                                                 insetRight={contentInsetsHorizontal}
                                                 insetVertical={4}
+                                                ignoreMarkdown={true}
 
                                                 onUserPress={this.props.onUserPress}
                                                 onGroupPress={this.props.onGroupPress}
