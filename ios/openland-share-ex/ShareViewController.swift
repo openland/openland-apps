@@ -112,6 +112,16 @@ class ShareViewController: UIViewController {
             group.leave()
           }
           
+          group.enter()
+          itemProvider.loadItem(forTypeIdentifier: kUTTypePlainText as String, options: nil) { data, error in
+            if error == nil {
+              strings.append(data as! String)
+            } else {
+              NSLog("\(error)")
+            }
+            group.leave()
+          }
+          
         }
       }
       
