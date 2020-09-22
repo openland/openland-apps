@@ -30,7 +30,6 @@
         "react-loadable": "^5.5.0",
         "geolib": "^2.0.24",
         "glamor": "^2.20.40",
-        "google-maps": "^3.2.1",
         "http-proxy-middleware": "^0.17.4",
         "humanize": "^0.0.9",
         "ifvisible.js": "^1.0.6",

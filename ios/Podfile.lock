@@ -1,9 +1,4 @@
 PODS:
-  - AppAuth (1.3.0):
-    - AppAuth/Core (= 1.3.0)
-    - AppAuth/ExternalUserAgent (= 1.3.0)
-  - AppAuth/Core (1.3.0)
-  - AppAuth/ExternalUserAgent (1.3.0)
   - AppCenter (1.14.0):
     - AppCenter/Analytics (= 1.14.0)
     - AppCenter/Crashes (= 1.14.0)
@@ -36,18 +31,6 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - GoogleSignIn (5.0.2):
-    - AppAuth (~> 1.2)
-    - GTMAppAuth (~> 1.0)
-    - GTMSessionFetcher/Core (~> 1.1)
-  - GTMAppAuth (1.0.0):
-    - AppAuth/Core (~> 1.0)
-    - GTMSessionFetcher (~> 1.1)
-  - GTMSessionFetcher (1.4.0):
-    - GTMSessionFetcher/Full (= 1.4.0)
-  - GTMSessionFetcher/Core (1.4.0)
-  - GTMSessionFetcher/Full (1.4.0):
-    - GTMSessionFetcher/Core (= 1.4.0)
   - libwebp (1.1.0):
     - libwebp/demux (= 1.1.0)
     - libwebp/mux (= 1.1.0)
@@ -62,20 +45,20 @@ PODS:
     - lottie-ios (~> 3.1.3)
     - React
   - ObjectiveRocks (0.11.0)
-  - PINCache (3.0.1-beta.6):
-    - PINCache/Arc-exception-safe (= 3.0.1-beta.6)
-    - PINCache/Core (= 3.0.1-beta.6)
-  - PINCache/Arc-exception-safe (3.0.1-beta.6):
+  - PINCache (3.0.1-beta.8):
+    - PINCache/Arc-exception-safe (= 3.0.1-beta.8)
+    - PINCache/Core (= 3.0.1-beta.8)
+  - PINCache/Arc-exception-safe (3.0.1-beta.8):
     - PINCache/Core
-  - PINCache/Core (3.0.1-beta.6):
-    - PINOperation (~> 1.1.0)
+  - PINCache/Core (3.0.1-beta.8):
+    - PINOperation (~> 1.1.1)
   - PINOperation (1.1.2)
-  - PINRemoteImage/Core (3.0.0-beta.13):
+  - PINRemoteImage/Core (3.0.0):
     - PINOperation
-  - PINRemoteImage/iOS (3.0.0-beta.13):
+  - PINRemoteImage/iOS (3.0.0):
     - PINRemoteImage/Core
-  - PINRemoteImage/PINCache (3.0.0-beta.13):
-    - PINCache (= 3.0.1-beta.6)
+  - PINRemoteImage/PINCache (3.0.0):
+    - PINCache (= 3.0.1-beta.8)
     - PINRemoteImage/Core
   - RCTRequired (0.61.2)
   - RCTRestart (0.0.8):
@@ -338,9 +321,6 @@ PODS:
     - SDWebImageWebPCoder (~> 0.2.3)
   - RNGestureHandler (1.5.3):
     - React
-  - RNGoogleSignin (3.0.3):
-    - GoogleSignIn (~> 5.0.0)
-    - React
   - RNImageCropPicker (0.33.2):
     - React-Core
     - React-RCTImage
@@ -356,21 +336,34 @@ PODS:
     - React
   - RNShare (2.0.0):
     - React
-  - SDWebImage (5.7.3):
-    - SDWebImage/Core (= 5.7.3)
-  - SDWebImage/Core (5.7.3)
+  - SDWebImage (5.8.1):
+    - SDWebImage/Core (= 5.8.1)
+  - SDWebImage/Core (5.8.1)
   - SDWebImageWebPCoder (0.2.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.0)
   - Starscream (3.0.6)
-  - Stripe (19.2.0)
+  - Stripe (19.3.0)
   - SwiftyJSON (4.3.0)
-  - Texture (2.7):
-    - Texture/PINRemoteImage (= 2.7)
-  - Texture/Core (2.7)
-  - Texture/PINRemoteImage (2.7):
-    - PINRemoteImage/iOS (= 3.0.0-beta.13)
+  - Texture (3.0.0):
+    - Texture/AssetsLibrary (= 3.0.0)
+    - Texture/Core (= 3.0.0)
+    - Texture/MapKit (= 3.0.0)
+    - Texture/Photos (= 3.0.0)
+    - Texture/PINRemoteImage (= 3.0.0)
+    - Texture/Video (= 3.0.0)
+  - Texture/AssetsLibrary (3.0.0):
+    - Texture/Core
+  - Texture/Core (3.0.0)
+  - Texture/MapKit (3.0.0):
+    - Texture/Core
+  - Texture/Photos (3.0.0):
+    - Texture/Core
+  - Texture/PINRemoteImage (3.0.0):
+    - PINRemoteImage/iOS (~> 3.0.0)
     - PINRemoteImage/PINCache
+    - Texture/Core
+  - Texture/Video (3.0.0):
     - Texture/Core
   - TOCropViewController (2.5.4)
   - Yoga (1.14.0)
@@ -386,7 +379,6 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - GoogleSignIn (~> 5.0.0)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - ObjectiveRocks (~> 0.9)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -436,7 +428,6 @@ DEPENDENCIES:
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - "RNGoogleSignin (from `../node_modules/@react-native-community/google-signin`)"
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNRate (from `../node_modules/react-native-rate/ios`)
@@ -444,18 +435,14 @@ DEPENDENCIES:
   - Starscream (~> 3.0.2)
   - Stripe
   - SwiftyJSON (~> 4.0)
-  - Texture (from `https://github.com/openland/Texture.git`, branch `2.7-fontfix`)
+  - Texture (from `https://github.com/TextureGroup/Texture.git`, branch `master`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   trunk:
-    - AppAuth
     - AppCenter
     - AppCenterReactNativeShared
     - boost-for-react-native
-    - GoogleSignIn
-    - GTMAppAuth
-    - GTMSessionFetcher
     - libwebp
     - lottie-ios
     - ObjectiveRocks
@@ -571,8 +558,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fast-image"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
-  RNGoogleSignin:
-    :path: "../node_modules/@react-native-community/google-signin"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
   RNLocalize:
@@ -582,18 +567,17 @@ EXTERNAL SOURCES:
   RNShare:
     :path: "../node_modules/react-native-share"
   Texture:
-    :branch: 2.7-fontfix
-    :git: https://github.com/openland/Texture.git
+    :branch: master
+    :git: https://github.com/TextureGroup/Texture.git
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
   Texture:
-    :commit: 14b89d863b977f9083ab45adcc37d53c874abd15
-    :git: https://github.com/openland/Texture.git
+    :commit: 2758ff18d9442f6e24d7ecd4d6aea52c0488f0ec
+    :git: https://github.com/TextureGroup/Texture.git
 
 SPEC CHECKSUMS:
-  AppAuth: 73574f3013a1e65b9601a3ddc8b3158cce68c09d
   AppCenter: 02c5efe08d3bbab5421ae41d5f7aa7238906b817
   AppCenterReactNativeShared: 00f470c3c17b47718db8733cbe811ccdcfd86282
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
@@ -603,16 +587,13 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 5a764c60abdc3336a213e5310c40b74741f32839
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
-  GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
-  GTMAppAuth: 4deac854479704f348309e7b66189e604cf5e01e
-  GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: 2a1a82bb326ae51331a5520de0cf706733c6db69
   ObjectiveRocks: 464f1d38a77847be0acc3dda268bec52486ec02d
-  PINCache: d195fdba255283f7e9900a55e3cced377f431f9b
+  PINCache: 534fd41d358d828dfdf227a0d327f3673a65e20b
   PINOperation: 24b774353ca248fcf87d67b2d61eef42087c125a
-  PINRemoteImage: d6d51c5d2adda55f1ce30c96e850b6c4ebd2856a
+  PINRemoteImage: e2b89e19fb6e77ffc099f9d9f3b3fe1745e3f9f9
   RCTRequired: c639d59ed389cfb1f1203f65c2ea946d8ec586e2
   RCTRestart: 550203a210a1df35f587856a79d35f5813c6909d
   RCTTypeSafety: dc23fb655d6c77667c78e327bf661bc11e3b8aec
@@ -657,20 +638,19 @@ SPEC CHECKSUMS:
   RNDeviceInfo: e7c5fcde13d40e161d8a27f6c5dc69c638936002
   RNFastImage: 9b0c22643872bb7494c8d87bbbb66cc4c0d9e7a2
   RNGestureHandler: 02905abe54e1f6e59c081a10b4bd689721e17aa6
-  RNGoogleSignin: a10b849c165088c737d4465de6c2062f24d06002
   RNImageCropPicker: 82f4caef16a37c07cbb0171be95aa5584f99bd9d
   RNLocalize: b6df30cc25ae736d37874f9bce13351db2f56796
   RNRate: 29be49c24b314c4e8ec09d848c3965f61cb0be47
   RNShare: 8b171d4b43c1d886917fdd303bf7a4b87167b05c
-  SDWebImage: 97351f6582ceca541ea294ba66a1fcb342a331c2
+  SDWebImage: e3eae2eda88578db0685a0c88597fdadd9433f05
   SDWebImageWebPCoder: 947093edd1349d820c40afbd9f42acb6cdecd987
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
-  Stripe: d481c2dab9a892fd923f097f854661217f70dc7f
+  Stripe: dd5bfdd5f1daed4f9ddbfb47e9449ec302f9f708
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
-  Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
+  Texture: 2f109e937850d94d1d07232041c9c7313ccddb81
   TOCropViewController: 2a1ae1242600b1f2d996fd91a5268b2309a33b5c
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: 7ce88e05b5bc07d0a6bc20616240b075b5c6f167
+PODFILE CHECKSUM: fe8f4e1811f5467d1d2042ab9d913d9a6f08ded4
 
 COCOAPODS: 1.9.3
