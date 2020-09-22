@@ -1,17 +1,3 @@
-diff --git a/node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m b/node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m
-index 01aa75f..572572c 100644
---- a/node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m
-+++ b/node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m
-@@ -266,6 +266,9 @@ - (void)displayDidRefresh:(CADisplayLink *)displayLink
- 
- - (void)displayLayer:(CALayer *)layer
- {
-+  if (!_currentFrame) {
-+    _currentFrame = self.image;
-+  }
-   if (_currentFrame) {
-     layer.contentsScale = self.animatedImageScale;
-     layer.contents = (__bridge id)_currentFrame.CGImage;
 diff --git a/node_modules/react-native/React/Modules/RCTTiming.m b/node_modules/react-native/React/Modules/RCTTiming.m
 index bfc31c6..8a09022 100644
 --- a/node_modules/react-native/React/Modules/RCTTiming.m
