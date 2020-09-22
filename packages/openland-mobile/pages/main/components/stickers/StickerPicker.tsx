@@ -8,7 +8,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { SRouterContext } from 'react-native-s/SRouterContext';
-import { useStickerLayout } from './stickerLayout';
+import { StickerLayout, useStickerLayout } from './stickerLayout';
 
 type SendStickerF = (sticker: StickerFragment) => void;
 
@@ -105,16 +105,15 @@ const StickerPackButton = React.memo((props: StickerPackButtonProps) => {
     );
 });
 
-interface StickerPickerProps {
+interface StickerPickerComponentProps {
     onStickerSent: SendStickerF;
     theme: ThemeGlobal;
-    height?: number;
 }
 
-export const StickerPicker = React.memo((props: StickerPickerProps) => {
-    const { onStickerSent, theme, height } = props;
+const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & { stickerLayout: StickerLayout }) => {
+    const { onStickerSent, theme, stickerLayout } = props;
 
-    const [{ stickerSize, stickersPerRow }, handleWidthChange] = useStickerLayout();
+    const { stickerSize, stickersPerRow } = stickerLayout;
 
     const [recentStickers, setRecentStickers] = React.useState<StickerFragment[]>([]);
 
@@ -131,9 +130,10 @@ export const StickerPicker = React.memo((props: StickerPickerProps) => {
         ...clientStickers
     ] : clientStickers;
 
-    const handleLayoutChange = React.useCallback(async (e: LayoutChangeEvent) => {
-        handleWidthChange(e.nativeEvent.layout.width);
-        setRecentStickers(JSON.parse(await AsyncStorage.getItem('recentStickers') || '[]'));
+    React.useEffect(() => {
+        (async () => {
+            setRecentStickers(JSON.parse(await AsyncStorage.getItem('recentStickers') || '[]'));
+        })();
     }, []);
 
     const handleDeletePackPressed = React.useCallback((pack: MyStickers_stickers_packs | 'recent') => {
@@ -161,87 +161,98 @@ export const StickerPicker = React.memo((props: StickerPickerProps) => {
     }, [onStickerSent, recentStickers]);
 
     return (
-        <View style={{ height: height && height > 0 ? height : 220, backgroundColor: theme.backgroundTertiary, justifyContent: 'center', alignItems: 'center' }} onLayout={handleLayoutChange}>
-            {stickersPerRow > 0 && stickerSize > 0 && (
-                <>
-                    <FlatList
-                        ref={stickerPackListRef}
-                        contentContainerStyle={{ paddingBottom: 8, paddingHorizontal: 8 }}
-                        data={stickers}
-                        renderItem={({ item }) => (
-                            <StickerPack
-                                deleteStickerPack={handleDeletePackPressed}
-                                sendSticker={handleStickerPressed}
-                                pack={item}
-                                key={`sticker-pack-${item.id}`}
-                                theme={theme}
-                                stickerSize={stickerSize}
-                                stickersPerRow={stickersPerRow}
-                                isRecent={!!item.isRecent}
-                            />
-                        )}
-                        scrollEventThrottle={1}
-                        onScroll={e => {
-                            if (e) {
-                                const effectiveCenter = e.nativeEvent.contentOffset.y + 150;
-                                if (Math.abs(lastCheckedOffsetRef.current - effectiveCenter) < 100) {
-                                    return;
+        <>
+            <FlatList
+                ref={stickerPackListRef}
+                contentContainerStyle={{ paddingBottom: 8, paddingHorizontal: 8 }}
+                data={stickers}
+                renderItem={({ item }) => (
+                    <StickerPack
+                        deleteStickerPack={handleDeletePackPressed}
+                        sendSticker={handleStickerPressed}
+                        pack={item}
+                        key={`sticker-pack-${item.id}`}
+                        theme={theme}
+                        stickerSize={stickerSize}
+                        stickersPerRow={stickersPerRow}
+                        isRecent={!!item.isRecent}
+                    />
+                )}
+                scrollEventThrottle={1}
+                onScroll={e => {
+                    if (e) {
+                        const effectiveCenter = e.nativeEvent.contentOffset.y + 150;
+                        if (Math.abs(lastCheckedOffsetRef.current - effectiveCenter) < 100) {
+                            return;
+                        }
+                        let offset = 0;
+                        for (let i = 0; i < stickers.length; ++i) {
+                            const pack = stickers[i];
+                            const packHeight = 48 + Math.ceil(pack.stickers.length / stickersPerRow) * (16 + stickerSize);
+                            if (effectiveCenter < packHeight + offset) {
+                                if (stickerPackButtonListRef.current) {
+                                    stickerPackButtonListRef.current.scrollToIndex({ index: i, viewPosition: 0.5 });
                                 }
-                                let offset = 0;
-                                for (let i = 0; i < stickers.length; ++i) {
-                                    const pack = stickers[i];
-                                    const packHeight = 48 + Math.ceil(pack.stickers.length / stickersPerRow) * (16 + stickerSize);
-                                    if (effectiveCenter < packHeight + offset) {
-                                        if (stickerPackButtonListRef.current) {
-                                            stickerPackButtonListRef.current.scrollToIndex({ index: i, viewPosition: 0.5 });
-                                        }
-                                        lastCheckedOffsetRef.current = effectiveCenter;
-                                        break;
-                                    } else {
-                                        offset += packHeight;
-                                    }
-                                }
+                                lastCheckedOffsetRef.current = effectiveCenter;
+                                break;
+                            } else {
+                                offset += packHeight;
+                            }
+                        }
+                    }
+                }}
+                bounces={false}
+            />
+            <FlatList
+                ref={stickerPackButtonListRef}
+                horizontal={true}
+                style={{ height: 52, backgroundColor: theme.backgroundPrimary }}
+                contentContainerStyle={{ alignItems: 'center' }}
+                data={stickers}
+                renderItem={({ item, index }) => (
+                    <StickerPackButton
+                        onPress={() => {
+                            if (stickerPackListRef.current) {
+                                stickerPackListRef.current.scrollToIndex({ index });
                             }
                         }}
-                        bounces={false}
+                        cover={item.isRecent ? undefined : item.stickers[0]}
+                        source={item.isRecent ? require('assets/ic-recent-24.png') : undefined}
+                        key={`sticker-pack-button-${item.id}`}
+                        theme={theme}
                     />
-                    <FlatList
-                        ref={stickerPackButtonListRef}
-                        horizontal={true}
-                        style={{ height: 52, backgroundColor: theme.backgroundPrimary }}
-                        contentContainerStyle={{ alignItems: 'center' }}
-                        data={stickers}
-                        renderItem={({ item, index }) => (
-                            <StickerPackButton
-                                onPress={() => {
-                                    if (stickerPackListRef.current) {
-                                        stickerPackListRef.current.scrollToIndex({ index });
-                                    }
-                                }}
-                                cover={item.isRecent ? undefined : item.stickers[0]}
-                                source={item.isRecent ? require('assets/ic-recent-24.png') : undefined}
-                                key={`sticker-pack-button-${item.id}`}
-                                theme={theme}
-                            />
-                        )}
-                        ListHeaderComponent={
-                            <StickerPackButton
-                                onPress={() => {
-                                    if (router) {
-                                        router.push('StickersCatalog');
-                                    }
-                                }}
-                                source={require('assets/ic-new-24.png')}
-                                key={`sticker-pack-button-catalog`}
-                                theme={theme}
-                            />
-                        }
+                )}
+                ListHeaderComponent={
+                    <StickerPackButton
+                        onPress={() => {
+                            if (router) {
+                                router.push('StickersCatalog');
+                            }
+                        }}
+                        source={require('assets/ic-new-24.png')}
+                        key={`sticker-pack-button-catalog`}
+                        theme={theme}
                     />
-                </>
-            )}
-            {(stickersPerRow === 0 || stickerSize === 0) && (
-                <LoaderSpinner />
-            )}
+                }
+            />
+        </>
+    );
+});
+
+export const StickerPicker = React.memo((props: StickerPickerComponentProps & { height?: number }) => {
+    const { height, theme } = props;
+
+    const [stickerLayout, handleWidthChange] = useStickerLayout();
+
+    const handleLayoutChange = React.useCallback((e: LayoutChangeEvent) => handleWidthChange(e.nativeEvent.layout.width), []);
+
+    return (
+        <View style={{ height: height && height > 0 ? height : 220, backgroundColor: theme.backgroundTertiary, justifyContent: 'center', alignItems: 'center' }} onLayout={handleLayoutChange}>
+            <React.Suspense fallback={<LoaderSpinner />}>
+                {stickerLayout.stickerSize > 0 && stickerLayout.stickersPerRow > 0 && (
+                    <StickerPickerComponent {...props} stickerLayout={stickerLayout} />
+                )}
+            </React.Suspense>
         </View>
     );
 });
