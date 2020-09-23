@@ -54,31 +54,26 @@ export class UploadManager {
 
         const w = new Watcher<UploadState>();
         w.setState({ progress: 0, status: UploadStatus.UPLOADING });
-        let messageId = getMessenger().engine.getConversation(conversationId).sendFiles({
-            files: [{
-                file: {
-                    fetchInfo: () => new Promise(async (resolver, onError) => {
-                        let uriLower = path.toLowerCase();
-                        let isImage = uriLower.endsWith('.png') || uriLower.endsWith('.jpg') || uriLower.endsWith('.jpeg');
-                        let imageSize: { width: number, height: number } | undefined = undefined;
-                        if (isImage) {
-                            imageSize = await new Promise<{ width: number, height: number }>((res) => {
-                                Image.getSize(path, (width, height) => res({ width, height }), e => onError(e));
-                            });
-                        }
-                        if (fallback) {
-                            resolver({ name, uri: path, fileSize: fallback.size, isImage, imageSize });
-                        } else {
-                            resolver({ name, uri: path, fileSize, isImage, imageSize });
-                        }
-                    }),
-                    watch: (handler: (state: UploadState) => void) => w.watch(handler)
+        let messageId = getMessenger().engine.getConversation(conversationId).sendFile({
+            fetchInfo: () => new Promise(async (resolver, onError) => {
+                let uriLower = path.toLowerCase();
+                let isImage = uriLower.endsWith('.png') || uriLower.endsWith('.jpg') || uriLower.endsWith('.jpeg');
+                let imageSize: { width: number, height: number } | undefined = undefined;
+                if (isImage) {
+                    imageSize = await new Promise<{ width: number, height: number }>((res) => {
+                        Image.getSize(path, (width, height) => res({ width, height }), e => onError(e));
+                    });
                 }
-            }],
-            quotedMessages: quoted,
-            text: undefined,
-            mentions: undefined,
-        });
+                if (fallback) {
+                    resolver({ name, uri: path, fileSize: fallback.size, isImage, imageSize });
+                } else {
+                    resolver({ name, uri: path, fileSize, isImage, imageSize });
+                }
+            }),
+            watch: (handler: (state: UploadState) => void) => w.watch(handler)
+        },
+            undefined,
+            quoted);
         this._watchers.set(messageId, w);
         this._queue.push({ messageId, name, uri: path, retryCount: 0 });
 
