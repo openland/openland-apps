@@ -49,7 +49,7 @@ interface MessageModalProps {
     isChannel?: boolean;
     isPrivate?: boolean;
     membersCount?: number;
-    onAttach: (files: File[], cb?: () => void) => void;
+    onAttach: (files: File[], isImage: boolean, cb?: () => void) => void;
 }
 
 const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
@@ -68,7 +68,7 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
         onWalletLockedContinue: props.ctx.hide,
     });
     let handleAttach = (files: File[]) => {
-        props.onAttach(files, () => props.ctx.hide());
+        props.onAttach(files, files.every(f => f.type.includes('image')), () => props.ctx.hide());
     };
     let { inputElements, onAttachClick } = useAttachButtonHandlers({
         onAttach: handleAttach

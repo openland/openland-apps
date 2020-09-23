@@ -586,7 +586,7 @@ interface SendMessageComponentProps {
     initialText?: URickTextValue;
     rickRef?: React.RefObject<URickInputInstance>;
     onPressUp?: () => boolean;
-    onAttach?: (files: File[]) => void;
+    onAttach?: (files: File[], isImage: boolean) => void;
     autoFocus?: boolean;
     ownerName?: string;
     isEditing?: boolean;
@@ -715,6 +715,11 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     const onDonateClick = React.useCallback(() => {
         showDonation();
     }, [showDonation]);
+    const handleFilePaste = React.useCallback((files: File[]) => {
+        if (props.onAttach) {
+            props.onAttach(files, files.every(x => x.type.includes('image')));
+        }
+    }, []);
 
     return (
         <div className={sendMessageContainer}>
@@ -764,7 +769,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     }
                     autofocus={props.autoFocus}
                     placeholder={props.placeholder || 'Write a message...'}
-                    onFilesPaste={props.onAttach}
+                    onFilesPaste={handleFilePaste}
                     className={(isWindows || isLinux) ? hideScrollStyle : undefined}
                     onEmojiPickerShow={props.onEmojiPickerShow}
                     onEmojiPickerHide={props.onEmojiPickerHide}

@@ -93,41 +93,43 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
         }
     }, [peerId, highlightId]);
 
-    const handleCommentSentAttach = React.useCallback((files: File[], topLevel: boolean = false) => {
+    const handleCommentSentAttach = React.useCallback((files: File[], isImage: boolean, topLevel: boolean = false) => {
         if (files.length > 0) {
             showAttachConfirm(
-                files,
-                (res, text, mentions) => new Promise(resolve => {
-                    const uploadedFiles: string[] = [];
+                {
+                    files,
+                    isImage,
+                    onSubmit: (res, text, mentions) => new Promise(resolve => {
+                        const uploadedFiles: string[] = [];
 
-                    res.map(({ file }) => {
-                        file.watch((state) => {
-                            if (state.uuid && !uploadedFiles.includes(state.uuid)) {
-                                uploadedFiles.push(state.uuid);
-                            }
-
-                            if (uploadedFiles.length === res.length) {
-                                resolve();
-
-                                client.mutateAddComment({
-                                    peerId,
-                                    repeatKey: UUID(),
-                                    fileAttachments: uploadedFiles.map(f => ({ fileId: f })),
-                                    replyComment: topLevel ? undefined : highlightId,
-                                    message: text,
-                                    spans: text ? findSpans(text) : null,
-                                    mentions: text && mentions ? prepareLegacyMentionsForSend(text, mentions) : null
-                                });
-
-                                if (!topLevel) {
-                                    setHighlightId(undefined);
+                        res.map(({ file }) => {
+                            file.watch((state) => {
+                                if (state.uuid && !uploadedFiles.includes(state.uuid)) {
+                                    uploadedFiles.push(state.uuid);
                                 }
-                            }
+
+                                if (uploadedFiles.length === res.length) {
+                                    resolve();
+
+                                    client.mutateAddComment({
+                                        peerId,
+                                        repeatKey: UUID(),
+                                        fileAttachments: uploadedFiles.map(f => ({ fileId: f })),
+                                        replyComment: topLevel ? undefined : highlightId,
+                                        message: text,
+                                        spans: text ? findSpans(text) : null,
+                                        mentions: text && mentions ? prepareLegacyMentionsForSend(text, mentions) : null
+                                    });
+
+                                    if (!topLevel) {
+                                        setHighlightId(undefined);
+                                    }
+                                }
+                            });
                         });
-                    });
-                }),
-                groupId
-            );
+                    }),
+                    chatId: groupId
+                });
         }
     }, [peerId, highlightId]);
 
@@ -150,13 +152,13 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
             </XScrollView3>
             <CommentInput
                 onSent={data => handleCommentSent(data, true)}
-                onSentAttach={files => handleCommentSentAttach(files, true)}
+                onSentAttach={(files, isImage) => handleCommentSentAttach(files, isImage, true)}
                 onStickerSent={sticker => handleStickerSent(sticker, true)}
                 groupId={groupId}
                 forceAutofocus={!highlightId}
             />
             <DropZone
-                onDrop={handleCommentSentAttach}
+                onDrop={files => handleCommentSentAttach(files, files.every(f => f.type.includes('image')))}
                 text={highlightId ? 'Drop here to send to the branch' : undefined}
             />
         </div>

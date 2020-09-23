@@ -127,7 +127,7 @@ const toastStyle = css`
     transform: translate(-50%, -50%);
 `;
 
-export const useAttachButtonHandlers = (props: { onAttach: (files: File[]) => void }) => {
+export const useAttachButtonHandlers = (props: { onAttach: (files: File[], isImage: boolean) => void }) => {
     const imageInputRef = React.useRef<HTMLInputElement>(null);
     const documentInputRef = React.useRef<HTMLInputElement>(null);
     const onAttachClick = React.useCallback((type: 'image' | 'document') => {
@@ -140,7 +140,7 @@ export const useAttachButtonHandlers = (props: { onAttach: (files: File[]) => vo
 
     const onInputChange = (isImage: boolean) => (e: React.ChangeEvent<HTMLInputElement>) => {
         if (props.onAttach) {
-            props.onAttach(fileListToArray(e.target.files).filter(f => isImage ? f.type.includes('image') : !f.type.includes('image')));
+            props.onAttach(fileListToArray(e.target.files).filter(f => isImage ? f.type.includes('image') : true), isImage);
         }
         if (imageInputRef.current) {
             imageInputRef.current.value = '';
@@ -217,6 +217,7 @@ let Img = React.memo((props: {
 
 const Body = (props: {
     chatId?: string;
+    isImage?: boolean;
     files: File[];
     addFile: (f: File) => string | File;
     removeFile: (f: File) => void;
@@ -227,7 +228,7 @@ const Body = (props: {
     confirm: () => void;
     errorText?: string;
 }) => {
-    let { files, addFile, removeFile, onImageLoad, onTextChange, onFileTypeChange } = props;
+    let { files, addFile, removeFile, isImage, onImageLoad, onTextChange, onFileTypeChange } = props;
     let [bodyFiles, setFiles] = React.useState(files);
     let client = useClient();
     let [room, setRoom] = React.useState<RoomPico_room_PrivateRoom | RoomPico_room_SharedRoom | null>(null);
@@ -254,7 +255,7 @@ const Body = (props: {
         [bodyFiles],
     );
     let { documents, imageColumns } = bodyFiles.reduce((acc, f, i, { length }) => {
-        let isImage = f.type.includes('image');
+        // let isImage = f.type.includes('image');
 
         if (isImage) {
             let column = acc.imageColumns.reduce((y, x) => x.length === 1 ? x : y, null);
@@ -400,13 +401,21 @@ const Body = (props: {
     );
 };
 
-export const showAttachConfirm = (
+export const showAttachConfirm = ({
+    files,
+    chatId,
+    isImage,
+    onSubmit: callback,
+    onFileUploadingProgress,
+    onFileUploadingEnd,
+}: {
     files: File[],
-    callback: (files: { file: UploadCareUploading, localImage?: LocalImage }[], text: string | undefined, mentions: MentionToSend[] | undefined, hasImages: boolean) => void,
+    onSubmit: (files: { file: UploadCareUploading, localImage?: LocalImage }[], text: string | undefined, mentions: MentionToSend[] | undefined, hasImages: boolean) => void,
     chatId?: string,
+    isImage?: boolean,
     onFileUploadingProgress?: (filename?: string) => void,
     onFileUploadingEnd?: () => void,
-) => {
+}) => {
     let tooBig = false;
     let filesRes = files.filter(f => {
         let b = f.size > MAX_FILE_SIZE;
@@ -466,12 +475,13 @@ export const showAttachConfirm = (
                     ctx={ctx}
                     confirm={confirm}
                     errorText={errorText}
+                    isImage={isImage}
                 />
             ))
             .action('Send', async () => {
                 let uploadedFiles = uploading.map((u, i) => ({ file: u, localImage: loadedImages[i] })).filter(({ file }) => filesRes.includes(file.getSourceFile()));
                 let { text, mentions } = messageInfo.inputValue ? extractTextAndMentions(messageInfo.inputValue) : { text: undefined, mentions: undefined };
-                await callback(uploadedFiles, text, mentions, messageInfo.hasImages);
+                await callback(uploadedFiles, text, mentions, isImage === undefined ? messageInfo.hasImages : isImage);
 
                 const { name } = await uploading[0].fetchInfo();
 
@@ -524,7 +534,7 @@ const AttachMenu = (props: { ctx: UPopperController, hideDonation: boolean, onAt
 
 interface AttachConfirmButtonProps {
     hideDonation: boolean;
-    onAttach: (files: File[]) => void;
+    onAttach: (files: File[], isImage: boolean) => void;
     onDonate: () => void;
 }
 

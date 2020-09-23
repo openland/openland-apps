@@ -36,11 +36,12 @@ export const useAttachHandler = (props: { conversationId: string }) => {
         });
     }, [messenger]);
 
-    let handleAttach = (files: File[], onAttach?: () => void) => {
+    let handleAttach = (files: File[], isImage: boolean, onAttach?: () => void) => {
         if (files.length) {
-            showAttachConfirm(
+            showAttachConfirm({
                 files,
-                (uploadingFiles, text, mentions, hasImages) => {
+                isImage,
+                onSubmit: (uploadingFiles, text, mentions, hasImages) => {
                     if (onAttach) {
                         onAttach();
                     }
@@ -56,10 +57,10 @@ export const useAttachHandler = (props: { conversationId: string }) => {
                     }
                     return keys;
                 },
-                conversation?.conversationId,
-                refreshFileUploadingTyping,
-                endFileUploadingTyping
-            );
+                chatId: conversation?.conversationId,
+                onFileUploadingProgress: refreshFileUploadingTyping,
+                onFileUploadingEnd: endFileUploadingTyping,
+            });
         }
     };
     return handleAttach;

@@ -55,7 +55,7 @@ interface MessagesComponentProps {
     | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
     | null;
     room: RoomChat_room;
-    onAttach: (files: File[]) => void;
+    onAttach: (files: File[], isImage?: boolean) => void;
     messagesActionsState: ConversationActionsState;
     messagesActionsMethods: ChatMessagesActionsMethods;
 }
