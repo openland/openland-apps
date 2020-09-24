@@ -705,13 +705,15 @@ export class ConversationEngine implements MessageSendHandler {
         (async () => {
             let filesInfo = await Promise.all(files.map(x => x.file.fetchInfo()));
             let filesMeta: PendingMessage['filesMeta'] = filesInfo.map((info, i) => {
+                let width = files[i].localImage?.width;
+                let height = files[i].localImage?.height;
                 return {
                     key: filesKeys[i],
                     file: info.name || 'image.jpg',
                     progress: 0,
                     fileSize: info.fileSize,
                     uri: info.uri,
-                    imageSize: info.imageSize,
+                    imageSize: info.imageSize || ((width && height) ? { width, height } : undefined),
                     isImage: !!info.isImage,
                     filePreview: files[i].localImage?.src || '',
                 };
