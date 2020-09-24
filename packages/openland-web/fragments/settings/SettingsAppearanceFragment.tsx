@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
@@ -8,6 +9,8 @@ import { FormWrapper } from './components/FormWrapper';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 import { useTheme } from 'openland-x-utils/useTheme';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import IcDone from 'openland-icons/s/ic-done-24.svg';
 
 enum AppearanceOptions {
     DEFAULT = 'DEFAULT',
@@ -30,6 +33,66 @@ enum AccentOptions {
     PINK = 'PINK',
     GREY = 'GREY',
 }
+
+const appearanceContainer = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+const accentColorItem = css`
+    flex: 1;
+    margin: 1%;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: var(--bgItem);
+    &::before {
+        content: '';
+        display: inline-block;
+        padding-top: 100%;
+    }
+`;
+
+interface AccentColorOptions<T> {
+    value: T;
+    label: string;
+}
+
+interface AccentColorSelectProps {
+    value: any;
+    onChange: (data: any) => void;
+    selectOptions: AccentColorOptions<AccentOptions>[];
+}
+
+const AccentColorSelect = React.memo((props: AccentColorSelectProps) => {
+    return (
+        <div className={appearanceContainer}>
+            {props.selectOptions.map((i) => {
+                const bg = `var(--tint${i.value.charAt(0) + i.value.slice(1).toLowerCase()})`;
+                const selected = i.value === props.value;
+                return (
+                    <div
+                        className={accentColorItem}
+                        key={i.value}
+                        onClick={() => props.onChange(i.value)}
+                        style={
+                            {
+                                '--bgItem': bg,
+                            } as React.CSSProperties
+                        }
+                    >
+                        {selected && <UIcon icon={<IcDone />} color="#fff" />}
+                    </div>
+                );
+            })}
+        </div>
+    );
+});
 
 export const SettingsAppearanceFragment = React.memo(() => {
     const theme = useTheme();
@@ -192,46 +255,44 @@ export const SettingsAppearanceFragment = React.memo(() => {
                         />
                     </XView>
                 </FormSection>
-                <FormSection title="Accent">
-                    <XView marginHorizontal={-16}>
-                        <RadioButtonsSelect
-                            {...accentField.input}
-                            selectOptions={[
-                                {
-                                    value: AccentOptions.BLUE,
-                                    label: 'Default',
-                                },
-                                {
-                                    value: AccentOptions.RED,
-                                    label: 'Red',
-                                },
-                                {
-                                    value: AccentOptions.ORANGE,
-                                    label: 'Orange',
-                                },
-                                {
-                                    value: AccentOptions.GREEN,
-                                    label: 'Green',
-                                },
-                                {
-                                    value: AccentOptions.CYAN,
-                                    label: 'Cyan',
-                                },
-                                {
-                                    value: AccentOptions.PURPLE,
-                                    label: 'Purple',
-                                },
-                                {
-                                    value: AccentOptions.PINK,
-                                    label: 'Pink',
-                                },
-                                {
-                                    value: AccentOptions.GREY,
-                                    label: 'Grey',
-                                },
-                            ]}
-                        />
-                    </XView>
+                <FormSection title="Accent color">
+                    <AccentColorSelect
+                        {...accentField.input}
+                        selectOptions={[
+                            {
+                                value: AccentOptions.BLUE,
+                                label: 'Default',
+                            },
+                            {
+                                value: AccentOptions.RED,
+                                label: 'Red',
+                            },
+                            {
+                                value: AccentOptions.ORANGE,
+                                label: 'Orange',
+                            },
+                            {
+                                value: AccentOptions.GREEN,
+                                label: 'Green',
+                            },
+                            {
+                                value: AccentOptions.CYAN,
+                                label: 'Cyan',
+                            },
+                            {
+                                value: AccentOptions.PURPLE,
+                                label: 'Purple',
+                            },
+                            {
+                                value: AccentOptions.PINK,
+                                label: 'Pink',
+                            },
+                            {
+                                value: AccentOptions.GREY,
+                                label: 'Grey',
+                            },
+                        ]}
+                    />
                 </FormSection>
             </FormWrapper>
         </Page>
