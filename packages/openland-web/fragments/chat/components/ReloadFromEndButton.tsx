@@ -59,7 +59,6 @@ const reloadButtonClass = css`
     &:active {
         background-color: var(--backgroundSecondaryActive);
     }
-    display: flex;
     justify-content: center;
     align-items: center;
 `;
