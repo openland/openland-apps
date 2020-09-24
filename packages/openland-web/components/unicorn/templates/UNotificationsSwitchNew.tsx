@@ -21,7 +21,7 @@ export const UNotificationsSwitchNew = React.memo<UNotificationsSwitchProps>((pr
 
     return (
         <UListItem
-            useRadius={false}
+            useRadius={true}
             title={nofications ? 'Mute notifications' : 'Unmute notifications'}
             icon={nofications ? <NotificationsOffIcon /> : <NotificationsIcon />}
             onClick={() => handleNotifications(!nofications)}
