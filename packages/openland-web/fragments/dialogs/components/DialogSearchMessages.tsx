@@ -22,6 +22,7 @@ interface DialogSearchMessagesProps {
     onMessagePick: (messageId: string) => void;
     onLoading: React.Dispatch<React.SetStateAction<boolean>>;
     onPick: (item: GlobalSearch_items) => void;
+    onEscapePress: () => boolean;
     paddingHorizontal?: number;
     isForwarding?: boolean;
 }
@@ -162,6 +163,10 @@ const DialogSearchMessagesInner = React.forwardRef(
                     }
                 },
             },
+            {
+                keys: ['Escape'],
+                callback: props.onEscapePress,
+            }
         ]);
 
         const handleNeedMore = React.useCallback(async () => {

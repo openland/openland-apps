@@ -114,21 +114,19 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
         }
     };
 
+    const handleEscape = () => {
+        if (ref.current && globalSearch.value) {
+            globalSearch.onChange('');
+            return true;
+        } else if (ref.current && focused) {
+            ref.current.reset();
+            setFocused(false);
+            return true;
+        }
+        return false;
+    };
+
     useShortcuts([
-        {
-            keys: ['Escape'],
-            callback: () => {
-                // TODO: check input focus (implement is useShortcuts via ref?)
-                if (ref.current && globalSearch.value) {
-                    ref.current.reset();
-                    setFocused(false);
-                    return true;
-                }
-                return false;
-            },
-        },
-        // { keys: ['Meta', 'ArrowUp'], callback: handleOptionUp },
-        // { keys: ['Meta', 'ArrowDown'], callback: handleOptionDown },
         { keys: ['Control', 's'], callback: handleCtrlS },
     ]);
 
@@ -195,6 +193,7 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
                         onPick={onPick}
                         onMessagePick={onMessagePick}
                         onLoading={setLoading}
+                        onEscapePress={handleEscape}
                     />
                 )}
                 {canUseDOM && !isSearching && (
