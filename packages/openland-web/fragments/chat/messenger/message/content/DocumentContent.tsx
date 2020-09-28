@@ -155,13 +155,13 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void; url?: s
                 {isElectron ? (
                     <XLoader loading={true} transparentBackground={true} contrast={true} />
                 ) : (
-                    <embed
-                        src={`https://ucarecdn.com/${props.fileId}/-/inline/yes/${props.fileName}`}
-                        width="100%"
-                        height="100%"
-                        type="application/pdf"
-                    />
-                )}
+                        <embed
+                            src={`https://ucarecdn.com/${props.fileId}/-/inline/yes/${props.fileName}`}
+                            width="100%"
+                            height="100%"
+                            type="application/pdf"
+                        />
+                    )}
             </div>
         </div>
     );
@@ -303,6 +303,8 @@ const VideoContent = React.memo(
 
 export const fileIcon = {
     FILE: <IcBlue />,
+    PNG: <IcBlue />,
+    JPEG: <IcBlue />,
     PDF: <IcRed />,
     ZIP: <IcViolet />,
     VIDEO: <IcViolet />,
@@ -325,6 +327,8 @@ export const fileColor = {
     NUMB: '#3EB265',
     PPTX: '#FFAE0D',
     KEY: '#FFAE0D',
+    PNG: '#248BF2',
+    JPEG: '#248BF2',
 };
 
 export const fileFormat = (name: string) => {
@@ -355,6 +359,12 @@ export const fileFormat = (name: string) => {
     }
     if (name.endsWith('.key')) {
         format = 'KEY';
+    }
+    if (name.endsWith('.png')) {
+        format = 'PNG';
+    }
+    if (name.endsWith('.jpg') || name.endsWith('.jpeg')) {
+        format = 'JPEG';
     }
     return format;
 };
@@ -420,8 +430,8 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
     const fileSender = props.senderNameEmojify
         ? props.senderNameEmojify
         : props.sender && props.sender.name
-        ? props.sender.name
-        : '';
+            ? props.sender.name
+            : '';
 
     const isUpload = !!progress && (progress >= 0 && progress < 1);
     const uploadStyles = {
@@ -446,16 +456,16 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
                             cancelable={!isUpload}
                         />
                     ) : (
-                        <div className={cx(iconInfo, 'icon-info')}>
-                            <UIcon
-                                icon={applyShowPdfModal ? <IcSearch /> : <IcDownload />}
-                                color="#fff"
-                                size={16}
-                                className="download-icon"
-                            />
-                            <div className="format-text">{fileFormat(name)}</div>
-                        </div>
-                    )}
+                            <div className={cx(iconInfo, 'icon-info')}>
+                                <UIcon
+                                    icon={applyShowPdfModal ? <IcSearch /> : <IcDownload />}
+                                    color="#fff"
+                                    size={16}
+                                    className="download-icon"
+                                />
+                                <div className="format-text">{fileFormat(name)}</div>
+                            </div>
+                        )}
                 </div>
                 <div className={metadataContainer}>
                     <div className={cx(title + ' title', TextLabel1)}>{name}</div>
