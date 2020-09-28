@@ -496,6 +496,7 @@ input CreateOrganizationInput {
   website: String
   personal: Boolean!
   photoRef: ImageRefInput
+  socialImageRef: ImageRefInput
   about: String
   isCommunity: Boolean
   isPrivate: Boolean
@@ -1865,6 +1866,7 @@ type Mutation {
   debugDeleteAllContacts: Boolean!
   debugChangeGlobalCounterTypeForAll: Boolean!
   debugReindexOrganizationMembers: Boolean!
+  debugReindexRoomParticipants: Boolean!
   debugDeleteTask(taskType: String!, id: String!): Boolean!
   debugDeliverCallStateEventsForAll: Boolean!
   debugMigrateMuteSettings: Boolean!
@@ -1877,9 +1879,9 @@ type Mutation {
   debugFixReadSeqs: Boolean!
   debugExportUsers: Boolean!
   debugMigrateUserStatus: Boolean!
-  debugFixFastCounters: Boolean!
   debugMigrateToExperimentalCounters: Boolean!
   debugFixCompactMessages: Boolean!
+  debugMigrateToNewerCounters: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2278,6 +2280,7 @@ type Organization {
   owner: User!
   applyLinkEnabled: Boolean!
   applyLink: String
+  socialImage: String
 
   """# Refactor?"""
   superAccountId: ID!
@@ -2356,6 +2359,7 @@ type OrganizationProfile {
   instagram: String
   contacts: [OrganizationContact!]!
   location: String
+  socialImage: String
   alphaPublished: Boolean!
   alphaEditorial: Boolean!
   alphaFeatured: Boolean!
@@ -2917,7 +2921,7 @@ type Query {
   alphaGlobalSearch(query: String!, kinds: [GlobalSearchEntryKind!]): [GlobalSearchEntry!]!
   featuredGroups: [SharedRoom!]
   featuredCommunities: [Organization!]
-  messagesSearch(query: String!, sort: String, first: Int!, after: String): MessageConnection!
+  messagesSearch(query: String!, sort: String, first: Int!, after: String, cid: ID): MessageConnection!
   chatMembersSearch(cid: ID!, query: String, first: Int!, after: String, page: Int): RoomMemberConnection!
   chatMentionSearch(cid: ID!, query: String, first: Int!, after: String): GlobalSearchConnection!
   orgMembersSearch(orgId: ID!, query: String, first: Int!, after: String, page: Int): JoinedOrganizationMembersConnection!
@@ -3540,6 +3544,7 @@ input UpdateOrganizationProfileInput {
   instagram: String
   location: String
   contacts: [ContactPersonInput!]
+  socialImageRef: ImageRefInput
   alphaPublished: Boolean
   alphaEditorial: Boolean
   alphaFeatured: Boolean
