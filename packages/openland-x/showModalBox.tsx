@@ -30,6 +30,9 @@ const boxStyle = css`
 
 const fullScreenBoxStyle = css`
     background-color: var(--backgroundPrimary);
+    & .scroll-view {
+        background-color: var(--backgroundPrimary);
+    }
 `;
 
 const boxOverflow = css`
