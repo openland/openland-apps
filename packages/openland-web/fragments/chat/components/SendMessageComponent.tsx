@@ -120,7 +120,7 @@ const EmojiSuggestionComponent = (props: { name: string; value: string; display:
 const mentionsContainer = css`
     position: absolute;
     bottom: calc(100% + 16px);
-    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--boxShadowPopper);
     background-color: var(--backgroundSecondary);
     border-radius: 8px;
     opacity: 0;

@@ -78,7 +78,7 @@ const clearContainerStyle = css`
     }
 
     & svg {
-        box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
+        box-shadow: var(--boxShadowPopper);
         border-radius: 100px;
     }
 `;
@@ -118,6 +118,10 @@ const mentionsStyle = css`
     && {
         bottom: 100%;
     }
+`;
+
+const inputStyle = css`
+    max-height: 250px;
 `;
 
 const toastStyle = css`
@@ -385,6 +389,7 @@ const Body = (props: {
                 </Deferred>
                 <URickInput
                     ref={inputRef}
+                    className={inputStyle}
                     placeholder="Add a note"
                     autofocus={true}
                     autocompletePrefixes={prefixes}
@@ -408,6 +413,7 @@ export const showAttachConfirm = ({
     onSubmit: callback,
     onFileUploadingProgress,
     onFileUploadingEnd,
+    onCancel,
 }: {
     files: File[],
     onSubmit: (files: { file: UploadCareUploading, localImage?: LocalImage }[], text: string | undefined, mentions: MentionToSend[] | undefined, hasImages: boolean) => void,
@@ -415,6 +421,7 @@ export const showAttachConfirm = ({
     isImage?: boolean,
     onFileUploadingProgress?: (filename?: string) => void,
     onFileUploadingEnd?: () => void,
+    onCancel?: () => void,
 }) => {
     let tooBig = false;
     let filesRes = files.filter(f => {
@@ -425,7 +432,7 @@ export const showAttachConfirm = ({
     let errorText = tooBig
         ? 'Files bigger than 100mb are not supported yet'
         : files.length > 4
-            ? 'Max 4 attaches'
+            ? 'Maximum 4 attachments'
             : undefined;
 
     let uploading = filesRes.map(f => new UploadCareUploading(f));
@@ -435,7 +442,7 @@ export const showAttachConfirm = ({
             return 'Files bigger than 100mb are not supported yet';
         }
         if (filesRes.length === 4) {
-            return 'Max 4 attaches';
+            return 'Maximum 4 attachments';
         }
 
         uploading.push(new UploadCareUploading(file));
@@ -457,9 +464,10 @@ export const showAttachConfirm = ({
     let setHasImages = (hasImages: boolean) => {
         messageInfo.hasImages = hasImages;
     };
+    let isUploading = false;
 
     if (filesRes.length > 0) {
-        AlertBlanket.builder()
+        let builder = AlertBlanket.builder()
             .width(528)
             .hideOnEscape(false)
             .confirmOnEnter(false)
@@ -479,6 +487,10 @@ export const showAttachConfirm = ({
                 />
             ))
             .action('Send', async () => {
+                if (isUploading) {
+                    return;
+                }
+                isUploading = true;
                 let uploadedFiles = uploading.map((u, i) => ({ file: u, localImage: loadedImages[i] })).filter(({ file }) => filesRes.includes(file.getSourceFile()));
                 let { text, mentions } = messageInfo.inputValue ? extractTextAndMentions(messageInfo.inputValue) : { text: undefined, mentions: undefined };
                 await callback(uploadedFiles, text, mentions, isImage === undefined ? messageInfo.hasImages : isImage);
@@ -499,8 +511,11 @@ export const showAttachConfirm = ({
                     }
                 });
 
-            })
-            .show();
+            });
+        if (onCancel) {
+            builder.onCancel(onCancel);
+        }
+        builder.show();
     }
 };
 

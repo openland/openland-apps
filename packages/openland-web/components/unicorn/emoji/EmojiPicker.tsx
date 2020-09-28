@@ -629,7 +629,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                 </>
             )}
             {stickers && (
-                <React.Suspense fallback={<XLoader loading={true} className={loaderStyle} />}>
+                <React.Suspense fallback={<XLoader loading={true} className={loaderStyle} transparentBackground={true} />}>
                     <StickerComponent onStickerSent={props.onStickerSent} />
                 </React.Suspense>
             )}
