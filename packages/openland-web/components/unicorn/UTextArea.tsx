@@ -17,26 +17,11 @@ const textareaContainer = css`
         top: 8px;
     }
 
-    & > .textarea-padding {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 30px;
-        pointer-events: none;
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
-        background-color: var(--paddingBg);
-    }
-
     & > textarea {
         background-color: var(--backgroundTertiaryTrans);
     }
     &:hover > textarea {
         background-color: var(--backgroundTertiaryHoverTrans);
-    }
-    &:hover > .textarea-padding {
-        background-color: var(--paddingBgHover);
     }
 `;
 
