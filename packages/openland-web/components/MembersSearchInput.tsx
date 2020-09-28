@@ -7,7 +7,7 @@ import { UIconButton } from './unicorn/UIconButton';
 
 const membersSearchStyle = css`
     height: 0px;
-    will-change: width;
+    will-change: height;
     margin-bottom: 0px;
     overflow: hidden;
     transition: height 0.15s ease;
@@ -31,6 +31,7 @@ export const MembersSearchInput = (props: {
     const searchInputRef = React.useRef<USearchInputRef>(null);
     const [searchFocused, setSearchFocused] = React.useState(false);
     const [searchVisible, setSearchVisible] = React.useState(false);
+
     useShortcuts({
         keys: ['Escape'],
         callback: () => {
