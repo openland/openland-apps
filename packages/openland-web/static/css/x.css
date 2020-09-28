@@ -52,7 +52,10 @@ html {
     --backgroundBlurPrimary: rgba(255, 255, 255, 0.72);
     --backgroundBlurSecondary: rgba(255, 255, 255, 0.92);
 
+    --boxShadowPopper: 0px 8px 24px rgba(0, 0, 0, 0.08), 0px 0px 48px rgba(0, 0, 0, 0.04);
+
     /* end interactive colors */
+    --boxShadowModal: 0px 8px 48px rgba(0, 0, 0, 0.16), 0px 0px 96px rgba(0, 0, 0, 0.08);
 
     --accentPrimaryTrans: rgba(24, 133, 242, 0.24);
 
@@ -144,6 +147,8 @@ html {
 
         --backgroundBlurPrimary: rgba(35, 39, 41, 0.72);
         --backgroundBlurSecondary: rgba(35, 39, 41, 0.92);
+
+        --boxShadowPopper: 0px 8px 24px rgba(0, 0, 0, 0.4), 0px 0px 48px rgba(0, 0, 0, 0.3);
     }
 }
 
@@ -182,6 +187,8 @@ html.light {
 
     --backgroundBlurPrimary: rgba(255, 255, 255, 0.72);
     --backgroundBlurSecondary: rgba(255, 255, 255, 0.92);
+
+    --boxShadowPopper: 0px 8px 24px rgba(0, 0, 0, 0.08), 0px 0px 48px rgba(0, 0, 0, 0.04);
 }
 
 html.dark {
@@ -219,6 +226,8 @@ html.dark {
 
     --backgroundBlurPrimary: rgba(35, 39, 41, 0.72);
     --backgroundBlurSecondary: rgba(35, 39, 41, 0.92);
+
+    --boxShadowPopper: 0px 8px 24px rgba(0, 0, 0, 0.4), 0px 0px 48px rgba(0, 0, 0, 0.3);
 }
 
 html.red:not(.landing) {

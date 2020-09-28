@@ -17,7 +17,7 @@ const toastWrapper = css`
     transform: scale(0.84) translateY(-8px);
     transition: transform 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
         opacity 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
-    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--boxShadowPopper);
 `;
 
 const toastVisible = css`

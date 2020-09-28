@@ -34,7 +34,7 @@ const controlItem = css`
     color: var(--foregroundContrast);
     background-color: var(--spaceBackgroundSecondary);
     padding: 8px 16px;
-    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--boxShadowPopper);
     user-select: none;
     cursor: pointer;
 

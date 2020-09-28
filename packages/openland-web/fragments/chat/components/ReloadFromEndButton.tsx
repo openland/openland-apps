@@ -44,7 +44,7 @@ const reloadButtonClass = css`
     right: 16px;
     position: absolute;
 
-    box-shadow: 0px 8px 24px rgba(23, 26, 31, 0.08), 0px 2px 8px rgba(23, 26, 31, 0.02);
+    box-shadow: var(--boxShadowPopper);
     width: 40px;
     height: 40px;
     border-radius: 40px;

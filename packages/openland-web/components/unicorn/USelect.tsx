@@ -115,7 +115,7 @@ const customStyles = (config: CustomStylesConfig) =>
         }),
         menu: (styles) => ({
             ...styles,
-            boxShadow: '0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08)',
+            boxShadow: 'var(--boxShadowPopper)',
             borderRadius: 8,
             display: config.hideSelector ? 'none' : undefined,
             backgroundColor: 'var(--backgroundSecondary)'
