@@ -60,6 +60,7 @@ const iconContainerAnim = css`
 interface DropZoneProps {
     onDrop: (files: File[]) => void;
     text?: string;
+    isHidden?: boolean;
 }
 
 export const DropZone = (props: DropZoneProps) => {
@@ -141,6 +142,10 @@ export const DropZone = (props: DropZoneProps) => {
     const onDrop = React.useCallback((ev: React.DragEvent) => {
         props.onDrop(fileListToArray(ev.dataTransfer.files));
     }, [props.onDrop]);
+
+    if (props.isHidden) {
+        return null;
+    }
 
     return (
         <div ref={containerRef} className={dropZoneClass} onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}>

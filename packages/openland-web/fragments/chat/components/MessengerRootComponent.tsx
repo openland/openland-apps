@@ -58,6 +58,7 @@ interface MessagesComponentProps {
     onAttach: (files: File[], isImage?: boolean) => void;
     messagesActionsState: ConversationActionsState;
     messagesActionsMethods: ChatMessagesActionsMethods;
+    isAttachModalOpen: boolean;
 }
 
 interface MessagesComponentState {
@@ -502,7 +503,12 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                 </div>
                             </div>
                         )}
-                        {showInput && <DropZone onDrop={this.props.onAttach} />}
+                        {showInput && (
+                            <DropZone
+                                isHidden={this.props.isAttachModalOpen}
+                                onDrop={files => this.props.onAttach(files, files.every(f => f.type.includes('image')))}
+                            />
+                        )}
                     </>
                 )}
             </div>
@@ -523,7 +529,8 @@ interface MessengerRootComponentProps {
 
 export const MessengerRootComponent = React.memo((props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
-    const onAttach = useAttachHandler({ conversationId: props.conversationId });
+    let [isAttachModalOpen, setAttachModalOpen] = React.useState(false);
+    const onAttach = useAttachHandler({ conversationId: props.conversationId, onOpen: () => setAttachModalOpen(true), onClose: () => setAttachModalOpen(false) });
     const userId = props.room.__typename === 'PrivateRoom' ? props.room.user.id : undefined;
     const messagesActionsState = useChatMessagesActionsState({ conversationId: props.conversationId, userId });
     const messagesActionsMethods = useChatMessagesActionsMethods({ conversationId: props.conversationId, userId });
@@ -541,6 +548,7 @@ export const MessengerRootComponent = React.memo((props: MessengerRootComponentP
             onAttach={onAttach}
             messagesActionsState={messagesActionsState}
             messagesActionsMethods={messagesActionsMethods}
+            isAttachModalOpen={isAttachModalOpen}
         />
     );
 });
