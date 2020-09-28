@@ -2,7 +2,8 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView, XViewProps } from 'react-mental';
 import { FormField } from 'openland-form/useField';
-import { useCombinedRefs } from "openland-x-utils/combineRef";
+import { useCombinedRefs } from 'openland-x-utils/combineRef';
+import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 
 const textareaContainer = css`
     display: flex;
@@ -15,12 +16,33 @@ const textareaContainer = css`
         color: var(--accentPrimary);
         top: 8px;
     }
+
+    & > .textarea-padding {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 30px;
+        pointer-events: none;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        background-color: var(--paddingBg);
+    }
+
+    & > textarea {
+        background-color: var(--backgroundTertiaryTrans);
+    }
+    &:hover > textarea {
+        background-color: var(--backgroundTertiaryHoverTrans);
+    }
+    &:hover > .textarea-padding {
+        background-color: var(--paddingBgHover);
+    }
 `;
 
 const textAreaStyle = css`
     width: 100%;
-    height: 100%;
-    max-height: 300px;
+    height: 56px;
     padding-left: 16px;
     padding-right: 16px;
     padding-top: 25px;
@@ -29,19 +51,10 @@ const textAreaStyle = css`
     color: var(--foregroundPrimary);
     line-height: 24px;
     border-radius: 8px;
-    background-color: var(--backgroundTertiaryTrans);
-
-    &:hover {
-        background-color: var(--backgroundTertiaryHoverTrans);
-    }
-
+    resize: none;
     &::placeholder {
-        color: #9d9fa3;
+        color: var(--foregroundTertiary);
     }
-`;
-
-const textAreaStyleAutoResize = css`
-    height: 56px;
 `;
 
 const placeholderStyle = css`
@@ -80,23 +93,11 @@ export interface UTextAreaProps extends XViewProps {
 
 export const UTextArea = React.forwardRef(
     (props: UTextAreaProps, ref: React.RefObject<HTMLTextAreaElement>) => {
-        const {
-            placeholder,
-            value,
-            disabled,
-            invalid,
-            autofocus,
-            onChange,
-            resize = false,
-            autoResize,
-            ...other
-        } = props;
-
+        const { placeholder, value, disabled, invalid, autofocus, onChange, ...other } = props;
+        const [width] = useWithWidth();
         const inputRef = React.useRef<HTMLTextAreaElement>(null);
         const combinedRef = useCombinedRefs(ref, inputRef);
         const [val, setValue] = React.useState(value || '');
-
-        const resizing = resize ? 'vertical' : 'none';
 
         const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
             setValue(e.target.value);
@@ -106,24 +107,24 @@ export const UTextArea = React.forwardRef(
         };
 
         React.useLayoutEffect(() => {
-            if (autoResize && combinedRef && combinedRef.current) {
+            if (combinedRef && combinedRef.current) {
                 const rect = combinedRef.current;
                 rect.style.cssText = 'auto';
                 rect.style.cssText = 'height:' + (rect.scrollHeight - 6) + 'px';
                 rect.style.resize = 'none';
+                rect.style.overflow = 'hidden';
             }
-        }, [value, ref]);
+        }, [value, ref, width]);
 
         return (
             <XView {...other} position="relative">
                 <div className={textareaContainer}>
                     <textarea
-                        className={cx(textAreaStyle, autoResize && textAreaStyleAutoResize)}
+                        className={textAreaStyle}
                         value={val}
                         autoFocus={autofocus}
                         onChange={handleChange}
                         disabled={disabled}
-                        style={{ resize: resizing }}
                         ref={combinedRef}
                     />
                     {placeholder && (

@@ -439,7 +439,6 @@ const EditCommunityModalBody = React.memo((props: EditCommunityModalBodyProps) =
                         field={aboutField}
                         placeholder="Description"
                         marginVertical={16}
-                        autoResize={true}
                     />
                     <div className={cx(formTitle, TextTitle3)}>Contacts</div>
                     <UInputField field={websiteField} label="Website" marginBottom={16} />

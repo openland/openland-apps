@@ -709,7 +709,6 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
                 <UTextAreaField
                     field={descriptionField}
                     placeholder="Short description"
-                    autoResize={true}
                 />
             </div>
         </CreatingContainer>

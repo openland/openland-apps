@@ -392,7 +392,6 @@ const WelcomeMessageModalBody = React.memo((props: WelcomeMessageModalBodyProps)
                                 field={messageField}
                                 placeholder="Message"
                                 marginTop={16}
-                                autoResize={true}
                             />
                         </XView>
                     )}
@@ -606,7 +605,6 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                         placeholder="Description"
                         marginTop={16}
                         marginBottom={16}
-                        autoResize={true}
                     />
                     {!isShared && <SecretLabel />}
                     <div className={cx(formTitle, TextTitle3)}>Settings</div>

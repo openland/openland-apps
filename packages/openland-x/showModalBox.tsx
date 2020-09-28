@@ -230,6 +230,7 @@ const ModalBoxComponent = React.memo<{
         <XModalBoxContext.Provider
             value={{
                 close: tryHide,
+                fullScreen: isFullscreen
             }}
         >
             <div
