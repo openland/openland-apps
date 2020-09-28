@@ -23,7 +23,11 @@ const themeItem = css`
 
 const themePreview = css`
     padding: calc(100 / 176 * 100%) 0 0;
-    background: url(/static/img/theme-bg.png) no-repeat;
+    background-image: url('//cdn.openland.com/shared/settings/theme-bg.png');
+    background-repeat: no-repeat;
+    @media (-webkit-min-device-pixel-ratio: 2) {
+        background-image: url('//cdn.openland.com/shared/settings/theme-bg@2x.png');
+    }
     background-size: 100% 100%;
     margin: 0 0 16px;
     border-radius: 8px;
@@ -32,32 +36,34 @@ const themePreview = css`
 
     svg {
         position: absolute;
-        bottom: 0; right: 0;
+        bottom: 0;
+        right: 0;
         box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.24);
         border-radius: 4px 0 0 0;
-        width: 68%; height: 84%;
+        width: 68%;
+        height: 84%;
     }
 
     &.is-auto {
-        --foregroundQuaternary: #C8C9CC;
-        --backgroundPrimary: #FFFFFF;
-        --backgroundTertiary: #F2F3F5;
+        --foregroundQuaternary: #c8c9cc;
+        --backgroundPrimary: #ffffff;
+        --backgroundTertiary: #f2f3f5;
 
         @media (prefers-color-scheme: dark) {
-            --foregroundQuaternary: #484B52;
+            --foregroundQuaternary: #484b52;
             --backgroundPrimary: #111214;
             --backgroundTertiary: #242629;
         }
     }
 
     &.is-light {
-        --foregroundQuaternary: #C8C9CC;
-        --backgroundPrimary: #FFFFFF;
-        --backgroundTertiary: #F2F3F5;
+        --foregroundQuaternary: #c8c9cc;
+        --backgroundPrimary: #ffffff;
+        --backgroundTertiary: #f2f3f5;
     }
 
     &.is-dark {
-        --foregroundQuaternary: #484B52;
+        --foregroundQuaternary: #484b52;
         --backgroundPrimary: #111214;
         --backgroundTertiary: #242629;
     }
@@ -76,10 +82,10 @@ const themeTitle = css`
 interface ThemeSelectProps {
     value: ThemeOptions;
     onChange: (data: ThemeOptions) => void;
-    selectOptions: ({
+    selectOptions: {
         value: ThemeOptions;
         label: string;
-    })[];
+    }[];
 }
 
 export const ThemeSelect = React.memo((props: ThemeSelectProps) => {
@@ -99,9 +105,7 @@ export const ThemeSelect = React.memo((props: ThemeSelectProps) => {
                         <div className={themeRadio}>
                             <URadioDot checked={selected} />
 
-                            <div className={cx(themeTitle, TextBody)}>
-                                {i.label}
-                            </div>
+                            <div className={cx(themeTitle, TextBody)}>{i.label}</div>
                         </div>
                     </div>
                 );
