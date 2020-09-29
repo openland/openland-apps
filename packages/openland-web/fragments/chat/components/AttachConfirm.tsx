@@ -158,7 +158,7 @@ export const useAttachButtonHandlers = (props: { onAttach: (files: File[], isIma
             <input
                 ref={imageInputRef}
                 type="file"
-                accept="image/gif, image/jpeg, image/jpg, image/png"
+                accept="image/gif, image/jpeg, image/jpg, image/png, image/webp"
                 multiple={true}
                 style={{ display: 'none' }}
                 onChange={onInputChange(true)}

@@ -1,7 +1,7 @@
 import { UploadingFile, FileMetadata, UploadStatus } from 'openland-engines/messenger/types';
 import UploadCare from 'uploadcare-widget';
 
-export const isFileImage = (file: File) => ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'].some(t => file.type.includes(t));
+export const isFileImage = (file: File) => ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'].some(t => file.type.includes(t));
 
 export class UploadCareUploading implements UploadingFile {
     private file: UploadCare.File;

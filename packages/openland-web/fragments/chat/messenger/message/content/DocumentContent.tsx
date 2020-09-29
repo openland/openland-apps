@@ -307,6 +307,7 @@ export const fileIcon = {
     JPG: <IcBlue />,
     GIF: <IcBlue />,
     SVG: <IcBlue />,
+    WEBP: <IcBlue />,
     PDF: <IcRed />,
     ZIP: <IcViolet />,
     VIDEO: <IcViolet />,
@@ -333,6 +334,7 @@ export const fileColor = {
     JPG: '#248BF2',
     GIF: '#248BF2',
     SVG: '#248BF2',
+    WEBP: '#248BF2',
 };
 
 export const fileFormat = (name: string) => {
@@ -375,6 +377,9 @@ export const fileFormat = (name: string) => {
     }
     if (name.endsWith('.svg')) {
         format = 'SVG';
+    }
+    if (name.endsWith('.webp')) {
+        format = 'WEBP';
     }
     return format;
 };
