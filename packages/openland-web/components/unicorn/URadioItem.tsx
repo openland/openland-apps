@@ -1,6 +1,26 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
+import { TextBody } from 'openland-web/utils/TextStyles';
+
+const labelClass = css`
+    display: flex;
+    cursor: pointer;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-grow: 1;
+    height: 48px;
+    padding-left: 16px;
+    padding-right: 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    color: var(--foregroundPrimary);
+    line-height: 24px;
+    &:hover {
+        background-color: var(--backgroundTertiaryHoverTrans);
+    }
+`;
 
 const radioDotStyle = css`
     width: 20px;
@@ -45,9 +65,7 @@ export const URadioItem = (props: URadioItemProps) => {
         }
     };
 
-    const id = `toggle_${Math.random()
-        .toString()
-        .replace(/0\./, '')}`;
+    const id = `toggle_${Math.random().toString().replace(/0\./, '')}`;
 
     return (
         <XView flexDirection="row" alignItems="center">
@@ -60,24 +78,10 @@ export const URadioItem = (props: URadioItemProps) => {
                 className={inputClassName}
             />
             <label htmlFor={id} className={labelClassName}>
-                <XView
-                    cursor="pointer"
-                    flexDirection="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    flexGrow={1}
-                    height={48}
-                    paddingLeft={16}
-                    paddingRight={18}
-                    borderRadius={8}
-                    fontSize={15}
-                    color="var(--foregroundPrimary)"
-                    lineHeight="24px"
-                    hoverBackgroundColor="var(--backgroundPrimaryHover)"
-                >
+                <div className={cx(labelClass, TextBody)}>
                     <span>{props.label}</span>
                     <URadioDot checked={props.checked} />
-                </XView>
+                </div>
             </label>
         </XView>
     );
