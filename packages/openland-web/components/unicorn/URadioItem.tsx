@@ -28,11 +28,11 @@ const radioDotStyle = css`
     flex-shrink: 0;
     border-radius: 20px;
     border: 2px solid var(--foregroundQuaternary);
-    transition: all 0.15s ease;
 `;
 
 const radioDotCheckedStyle = css`
     border: 6px solid var(--accentMuted);
+    background-color: var(--foregroundContrast);
 `;
 
 const inputClassName = css`
