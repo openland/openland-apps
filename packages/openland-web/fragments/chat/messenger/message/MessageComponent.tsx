@@ -158,7 +158,7 @@ const MessageTime = React.memo(
             text: tooltipText,
             placement: 'top',
             scope: 'message-date',
-            showTimeout: 400,
+            showTimeout: 500,
         });
 
         return (
@@ -167,8 +167,8 @@ const MessageTime = React.memo(
                 className={cx(
                     TextCaption,
                     senderDateStyle,
-                    props.dateFormat === 'time' && senderDateCursor,
-                    props.dateFormat === 'time' && defaultHover,
+                    (props.dateFormat === 'time' && props.mId) && senderDateCursor,
+                    (props.dateFormat === 'time' && props.mId) && defaultHover,
                 )}
                 onClick={
                     props.dateFormat === 'time'

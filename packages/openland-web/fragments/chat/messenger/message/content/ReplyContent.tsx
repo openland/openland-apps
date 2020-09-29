@@ -169,7 +169,7 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
     const senderContent = isReplyAction ? (
         <ShortSenderName name={sender.name} overrideName={overrideName} />
     ) : (
-        <MessageSenderContent sender={sender} date={date} />
+        <MessageSenderContent sender={sender} date={date} mId={message.id} />
     );
 
     const attachFile = (title: string) => (

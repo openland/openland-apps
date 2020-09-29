@@ -777,7 +777,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             </XView>
             {!loading && (
                 <div className={actionButtonContainer}>
-                    <UIconButton icon={props.isEditing ? <DoneIcon /> : <SendIcon />} onClick={onPressEnter} />
+                    <UIconButton icon={props.isEditing ? <DoneIcon /> : <SendIcon />} onClick={handlePressEnter} />
                 </div>
             )}
             {loading && (
