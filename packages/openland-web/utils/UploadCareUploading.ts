@@ -1,6 +1,8 @@
 import { UploadingFile, FileMetadata, UploadStatus } from 'openland-engines/messenger/types';
 import UploadCare from 'uploadcare-widget';
 
+export const isFileImage = (file: File) => ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'].some(t => file.type.includes(t));
+
 export class UploadCareUploading implements UploadingFile {
     private file: UploadCare.File;
     private sourceFile: File;
@@ -29,7 +31,7 @@ export class UploadCareUploading implements UploadingFile {
                 }
                 isFirst = false;
                 let name = v.incompleteFileInfo.name || 'image.jpg';
-                let isImage = v.incompleteFileInfo.isImage || file.type.includes('image');
+                let isImage = v.incompleteFileInfo.isImage || isFileImage(file);
                 resolved = true;
                 resolver({ name, uri: this.origUrl, fileSize: parseInt(v.incompleteFileInfo.size || '0', 10), isImage });
             });
@@ -38,7 +40,7 @@ export class UploadCareUploading implements UploadingFile {
                     return;
                 }
                 let name = v.name || 'image.jpg';
-                let isImage = v.isImage || file.type.includes('image');
+                let isImage = v.isImage || isFileImage(file);
                 resolved = true;
                 resolver({ name, uri: this.origUrl, fileSize: parseInt(v.size || '0', 10), isImage });
             });

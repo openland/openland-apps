@@ -5,7 +5,7 @@ import AlertBlanket from 'openland-x/AlertBlanket';
 import { css, cx } from 'linaria';
 import { XModalController } from 'openland-x/showModal';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
-import { UploadCareUploading } from 'openland-web/utils/UploadCareUploading';
+import { UploadCareUploading, isFileImage } from 'openland-web/utils/UploadCareUploading';
 import { LocalImage } from 'openland-engines/messenger/types';
 import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
@@ -144,7 +144,7 @@ export const useAttachButtonHandlers = (props: { onAttach: (files: File[], isIma
 
     const onInputChange = (isImage: boolean) => (e: React.ChangeEvent<HTMLInputElement>) => {
         if (props.onAttach) {
-            props.onAttach(fileListToArray(e.target.files).filter(f => isImage ? f.type.includes('image') : true), isImage);
+            props.onAttach(fileListToArray(e.target.files).filter(f => isImage ? isFileImage(f) : true), isImage);
         }
         if (imageInputRef.current) {
             imageInputRef.current.value = '';
@@ -158,7 +158,7 @@ export const useAttachButtonHandlers = (props: { onAttach: (files: File[], isIma
             <input
                 ref={imageInputRef}
                 type="file"
-                accept="image/*"
+                accept="image/gif, image/jpeg, image/jpg, image/png"
                 multiple={true}
                 style={{ display: 'none' }}
                 onChange={onInputChange(true)}
@@ -259,8 +259,6 @@ const Body = (props: {
         [bodyFiles],
     );
     let { documents, imageColumns } = bodyFiles.reduce((acc, f, i, { length }) => {
-        // let isImage = f.type.includes('image');
-
         if (isImage) {
             let column = acc.imageColumns.reduce((y, x) => x.length === 1 ? x : y, null);
             let el = <Img key={f.name + f.size + f.lastModified} file={f} onClick={onClick} index={i} imagesCount={bodyFiles.length} onLoad={onImageLoad} />;
@@ -335,7 +333,7 @@ const Body = (props: {
     }, {
         keys: ['Enter'],
         callback: () => {
-            if (suggestRef.current?.isActive()) {
+            if (activeWord && suggestRef.current?.isActive() && (activeWord.startsWith('@') || activeWord.startsWith(':'))) {
                 return false;
             }
             props.confirm();

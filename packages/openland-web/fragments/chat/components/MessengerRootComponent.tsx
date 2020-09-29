@@ -42,6 +42,7 @@ import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 import { extractTextAndMentions, convertToInputValue } from 'openland-web/utils/convertTextAndMentions';
 import { convertServerSpan } from 'openland-y-utils/spans/utils';
 import { useChatMessagesActionsState, useChatMessagesActionsMethods, ConversationActionsState, ChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
+import { isFileImage } from 'openland-web/utils/UploadCareUploading';
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
@@ -506,7 +507,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                         {showInput && (
                             <DropZone
                                 isHidden={this.props.isAttachModalOpen}
-                                onDrop={files => this.props.onAttach(files, files.every(f => f.type.includes('image')))}
+                                onDrop={files => this.props.onAttach(files, files.every(f => isFileImage(f)))}
                             />
                         )}
                     </>

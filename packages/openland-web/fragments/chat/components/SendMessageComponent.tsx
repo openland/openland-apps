@@ -29,6 +29,7 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { Deferred } from 'openland-unicorn/components/Deferred';
 import { detectOS } from 'openland-x-utils/detectOS';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
+import { isFileImage } from 'openland-web/utils/UploadCareUploading';
 
 interface MentionItemComponentProps {
     id: string;
@@ -717,7 +718,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     }, [showDonation]);
     const handleFilePaste = React.useCallback((files: File[]) => {
         if (props.onAttach) {
-            props.onAttach(files, files.every(x => x.type.includes('image')));
+            props.onAttach(files, files.every(x => isFileImage(x)));
         }
     }, []);
 
