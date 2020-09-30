@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Platform, Linking } from 'react-native';
-import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
+import { DataSourceMessageItem, PendingAttachProps } from 'openland-engines/messenger/ConversationEngine';
 import { ASText } from 'react-native-async-view/ASText';
 import { AsyncBubbleView, bubbleMaxWidth, bubbleMaxWidthIncoming } from './AsyncBubbleView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
@@ -121,7 +121,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
 
     // todo: handle multiple attaches
     const attaches = (message.attachments || []);
-    const fileAttach = attaches.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+    const fileAttach = attaches.filter(a => a.__typename === 'MessageAttachmentFile')[0] as (FullMessage_GeneralMessage_attachments_MessageAttachmentFile & PendingAttachProps) | undefined;
     const augmenationAttach = attaches.filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
     const purchaseAttach = attaches.filter(a => a.__typename === 'MessageAttachmentPurchase')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase | undefined;
     const hasImage = !!(fileAttach && fileAttach.fileMetadata.isImage);

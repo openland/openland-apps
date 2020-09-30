@@ -24,10 +24,12 @@ const DialogsComponent = React.memo((props: PageProps) => {
         if (props.router.params.share) {
             Alert.builder().title(`Share with ${title}?`).button('Cancel', 'cancel').button('Share', 'default', async () => {
                 if (props.router.params.share.files) {
+                    let filesMeta: { name: string, path: string }[] = [];
                     for (let attach of props.router.params.share.files) {
                         let path = attach.split('/');
-                        await UploadManagerInstance.registerMessageUpload(id, path[path.length - 1], attach, undefined);
+                        filesMeta.push({ name: path[path.length - 1], path: attach });
                     }
+                    await UploadManagerInstance.registerMessageUploads(id, filesMeta, undefined);
                 }
 
                 if (props.router.params.share.strings) {

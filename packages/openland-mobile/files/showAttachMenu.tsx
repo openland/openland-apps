@@ -7,7 +7,7 @@ import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handl
 import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 
-export const showAttachMenu = (fileCallback?: (type: 'document' | 'photo' | 'video', name: string, path: string, size: number) => void, donationCb?: () => void) => {
+export const showAttachMenu = (fileCallback?: (filesMeta: ({ type: 'document' | 'photo' | 'video', name: string, path: string, size: number })[]) => void, donationCb?: () => void) => {
     let builder = new ActionSheetBuilder();
 
     builder.action(Platform.select({ ios: 'Take photo or video', android: 'Take photo' }), async () => {
@@ -18,7 +18,7 @@ export const showAttachMenu = (fileCallback?: (type: 'document' | 'photo' | 'vid
                 let isPhoto = checkFileIsPhoto(response.path);
 
                 if (fileCallback) {
-                    fileCallback(isPhoto ? 'photo' : 'video', isPhoto ? 'image.jpg' : 'video.mp4', response.path, response.size);
+                    fileCallback([{ type: isPhoto ? 'photo' : 'video', name: isPhoto ? 'image.jpg' : 'video.mp4', path: response.path, size: response.size }]);
                 }
             }).catch(e => {
                 if (e.code === 'E_PERMISSION_MISSING') {
@@ -35,7 +35,7 @@ export const showAttachMenu = (fileCallback?: (type: 'document' | 'photo' | 'vid
                     mediaType: 'video',
                 }).then(response => {
                     if (fileCallback) {
-                        fileCallback('video', 'video.mp4', response.path, response.size);
+                        fileCallback([{ type: 'video', name: 'video.mp4', path: response.path, size: response.size }]);
                     }
                 }).catch(e => {
                     if (e.code === 'E_PERMISSION_MISSING') {
@@ -57,13 +57,13 @@ export const showAttachMenu = (fileCallback?: (type: 'document' | 'photo' | 'vid
                 cropping: false,
                 mediaType: Platform.select({ ios: 'any', android: 'photo', default: 'photo' })
             }).then(pickerResponse => {
-                pickerResponse.forEach(response => {
+                let filesMeta = pickerResponse.map(response => {
                     const isPhoto = checkFileIsPhoto(response.path);
-
-                    if (fileCallback) {
-                        fileCallback(isPhoto ? 'photo' : 'video', isPhoto ? 'image.jpg' : 'video.mp4', response.path, response.size);
-                    }
+                    return { type: isPhoto ? 'photo' : 'video' as 'document' | 'photo' | 'video', name: isPhoto ? 'image.jpg' : 'video.mp4', path: response.path, size: response.size };
                 });
+                if (fileCallback) {
+                    fileCallback(filesMeta);
+                }
             }).catch(e => {
                 if (e.code === 'E_PERMISSION_MISSING') {
                     handlePermissionDismiss('gallery');
@@ -84,11 +84,13 @@ export const showAttachMenu = (fileCallback?: (type: 'document' | 'photo' | 'vid
                     cropping: false,
                     mediaType: 'video'
                 }).then(pickerResponse => {
-                    pickerResponse.forEach(response => {
-                        if (fileCallback) {
-                            fileCallback('video', 'video.mp4', response.path, response.size);
-                        }
+                    let filesMeta = pickerResponse.map(response => {
+                        const isPhoto = checkFileIsPhoto(response.path);
+                        return { type: isPhoto ? 'photo' : 'video' as 'document' | 'photo' | 'video', name: isPhoto ? 'image.jpg' : 'video.mp4', path: response.path, size: response.size };
                     });
+                    if (fileCallback) {
+                        fileCallback(filesMeta);
+                    }
                 }).catch(e => {
                     if (e.code === 'E_PERMISSION_MISSING') {
                         handlePermissionDismiss('gallery');
@@ -106,7 +108,7 @@ export const showAttachMenu = (fileCallback?: (type: 'document' | 'photo' | 'vid
                 }
 
                 if (fileCallback) {
-                    fileCallback('document', response.fileName, response.uri, response.fileSize);
+                    fileCallback([{ type: 'document', name: response.fileName, path: response.uri, size: response.fileSize }]);
                 }
             }
         );
