@@ -3,11 +3,9 @@ import { View } from 'react-native';
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { MessageInputInner, MessageInputBarProps } from './MessageInputInner';
-import { StickerPicker } from './stickers/StickerPicker';
-import { StickerFragment } from 'openland-api/spacex.types';
 
-export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & { reloadButton: any, onStickerSent?: (sticker: StickerFragment) => void }, ref: any) => {
-    const { reloadButton, onStickerSent, suggestions, topView, stickerKeyboardShown, stickerKeyboardHeight } = props;
+export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & { reloadButton: any }, ref: any) => {
+    const { reloadButton, suggestions, topView, stickerKeyboardShown } = props;
 
     let theme = React.useContext(ThemeContext);
 
@@ -32,12 +30,8 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & {
                         {...props}
                         theme={theme}
                         ref={ref}
-                        stickerKeyboardShown={onStickerSent && stickerKeyboardShown}
+                        stickerKeyboardShown={stickerKeyboardShown}
                     />
-
-                    {stickerKeyboardShown && onStickerSent && (
-                        <StickerPicker theme={theme} onStickerSent={onStickerSent} height={stickerKeyboardHeight} />
-                    )}
                 </View>
             </View>
         </>
