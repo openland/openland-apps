@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
+import { XViewRouterContext } from 'react-mental';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { MessageReactions } from './reactions/MessageReactions';
 import { MessageContent } from './MessageContent';
@@ -52,6 +53,10 @@ const dateStyle = css`
         right: 16px;
         white-space: nowrap;
 
+        &:hover {
+            opacity: 0.64;
+        }
+
         @media (max-width: 1280px) {
             right: 8px;
         }
@@ -62,6 +67,10 @@ const senderDateStyle = css`
     flex-shrink: 0;
     margin-left: 8px;
     color: var(--foregroundSecondary);
+`;
+
+const senderDateCursor = css`
+    cursor: pointer;
 `;
 
 const senderOrgStyle = css`
@@ -100,9 +109,7 @@ const MessageSenderName = React.memo((props: MessageSenderNameProps) => {
             path={`/${props.sender.shortname || props.sender.id}`}
             className={cx(TextLabel1, senderNameStyle)}
         >
-            <span onMouseEnter={show}>
-                {emoji(props.overrideName || props.sender.name)}
-            </span>
+            <span onMouseEnter={show}>{emoji(props.overrideName || props.sender.name)}</span>
         </ULink>
     );
 });
@@ -129,33 +136,60 @@ const MessageSenderOrg = React.memo(
     ),
 );
 
-const MessageTime = React.memo((props: { time: number; dateFormat: 'time' | 'date-time' }) => {
-    const tooltipText = React.useMemo(
-        () =>
-            new Date(props.time).toLocaleString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                weekday: 'short',
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric',
-                hour12: true,
-            }),
-        [props.time],
-    );
+const MessageTime = React.memo(
+    (props: { mId?: string; time: number; dateFormat: 'time' | 'date-time' }) => {
+        const router = React.useContext(XViewRouterContext);
+        const tooltipText = React.useMemo(
+            () =>
+                new Date(props.time).toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    weekday: 'short',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
+                    hour12: true,
+                }),
+            [props.time],
+        );
 
-    const [show] = useCaptionPopper({ text: tooltipText, placement: 'top', scope: 'message-date', showTimeout: 400 });
+        const [show] = useCaptionPopper({
+            text: tooltipText,
+            placement: 'top',
+            scope: 'message-date',
+            showTimeout: 500,
+        });
 
-    return (
-        <div className={cx(TextCaption, senderDateStyle)} onMouseEnter={show}>
-            {props.dateFormat === 'time' && formatTime(props.time)}
-            {props.dateFormat === 'date-time' && formatDateAtTime(props.time, 'short')}
-        </div>
-    );
-});
+        return (
+            <div
+                onMouseEnter={show}
+                className={cx(
+                    TextCaption,
+                    senderDateStyle,
+                    (props.dateFormat === 'time' && props.mId) && senderDateCursor,
+                    (props.dateFormat === 'time' && props.mId) && defaultHover,
+                )}
+                onClick={
+                    props.dateFormat === 'time'
+                        ? (e) => {
+                              e.stopPropagation();
+                              if (router && props.mId) {
+                                  router.navigate(`/message/${props.mId}`);
+                              }
+                          }
+                        : undefined
+                }
+            >
+                {props.dateFormat === 'time' && formatTime(props.time)}
+                {props.dateFormat === 'date-time' && formatDateAtTime(props.time, 'short')}
+            </div>
+        );
+    },
+);
 
 interface MessageSenderContentProps {
+    mId?: string;
     sender: MessageSender;
     senderBadgeNameEmojify?: string | JSX.Element;
     date?: number;
@@ -165,10 +199,7 @@ interface MessageSenderContentProps {
 
 export const MessageSenderContent = React.memo((props: MessageSenderContentProps) => (
     <div className={senderContainer}>
-        <MessageSenderName
-            sender={props.sender}
-            overrideName={props.overrideName}
-        />
+        <MessageSenderName sender={props.sender} overrideName={props.overrideName} />
         {props.sender.isBot && <span className={cx(TextDensed, senderDateStyle)}>Bot</span>}
         {props.senderBadgeNameEmojify && (
             <MessageSenderFeatured senderBadgeNameEmojify={props.senderBadgeNameEmojify} />
@@ -176,9 +207,33 @@ export const MessageSenderContent = React.memo((props: MessageSenderContentProps
         {props.sender.primaryOrganization && (
             <MessageSenderOrg organization={props.sender.primaryOrganization} />
         )}
-        {props.date && <MessageTime time={props.date} dateFormat={props.dateFormat || 'time'} />}
+        {props.date && (
+            <MessageTime
+                mId={props.mId}
+                time={props.date}
+                dateFormat={props.dateFormat || 'time'}
+            />
+        )}
     </div>
 ));
+
+const MessageTimeShort = React.memo((props: { mId?: string; date: number }) => {
+    const router = React.useContext(XViewRouterContext);
+
+    return (
+        <div
+            className={cx(dateStyle, defaultHover, 'message-date')}
+            onClick={(e) => {
+                e.stopPropagation();
+                if (router && props.mId) {
+                    router.navigate(`/message/${props.mId}`);
+                }
+            }}
+        >
+            <span className={TextCaption}>{formatTime(props.date)}</span>
+        </div>
+    );
+});
 
 ////
 // Message container
@@ -359,7 +414,11 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
     const layout = useLayout();
-    const [isSelected, toggleSelect] = useChatMessagesSelected({ messageKey: message.key, conversationId: engine.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
+    const [isSelected, toggleSelect] = useChatMessagesSelected({
+        messageKey: message.key,
+        conversationId: engine.conversationId,
+        userId: engine.isPrivate ? engine.user?.id : undefined,
+    });
 
     React.useEffect(() => {
         let timer: any;
@@ -447,6 +506,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             senderBadgeNameEmojify={message.senderBadgeNameEmojify}
             date={message.date}
             overrideName={message.overrideName}
+            mId={message.id}
         />
     );
 
@@ -483,11 +543,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             <div className={messageContentClass}>
                 <div className={messageInnerContainerClass}>
                     {!message.attachTop && <Avatar />}
-                    {message.attachTop && (
-                        <div className={cx(dateStyle, 'message-date')}>
-                            <span className={TextCaption}>{formatTime(message.date)}</span>
-                        </div>
-                    )}
+                    {message.attachTop && <MessageTimeShort mId={message.id} date={message.date} />}
                     <div
                         className={cx(
                             messageContentAreaClass,

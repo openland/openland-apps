@@ -1420,11 +1420,6 @@ internal val PlatformNotificationSettingsFullSelector = obj(
                     field("showNotification", "showNotification", notNull(scalar("Boolean"))),
                     field("sound", "sound", notNull(scalar("Boolean")))
                 ))),
-            field("organizationChat", "organizationChat", notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("showNotification", "showNotification", notNull(scalar("Boolean"))),
-                    field("sound", "sound", notNull(scalar("Boolean")))
-                ))),
             field("communityChat", "communityChat", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("showNotification", "showNotification", notNull(scalar("Boolean"))),

@@ -22,6 +22,7 @@ import { plural } from 'openland-y-utils/plural';
 import { useShake } from 'openland-web/pages/auth/components/authComponents';
 import { extractTextAndMentions } from 'openland-web/utils/convertTextAndMentions';
 import { useAttachButtonHandlers } from 'openland-web/fragments/chat/components/AttachConfirm';
+import { isFileImage } from 'openland-web/utils/UploadCareUploading';
 
 const inputStyle = css`
     min-height: 88px;
@@ -68,7 +69,7 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
         onWalletLockedContinue: props.ctx.hide,
     });
     let handleAttach = (files: File[]) => {
-        props.onAttach(files, files.every(f => f.type.includes('image')), () => props.ctx.hide());
+        props.onAttach(files, files.every(f => isFileImage(f)), () => props.ctx.hide());
     };
     let { inputElements, onAttachClick } = useAttachButtonHandlers({
         onAttach: handleAttach

@@ -4,7 +4,7 @@ import { TypingType } from 'openland-api/spacex.types';
 import { showAttachConfirm } from 'openland-web/fragments/chat/components/AttachConfirm';
 import { useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 
-export const useAttachHandler = (props: { conversationId: string }) => {
+export const useAttachHandler = (props: { conversationId: string, onOpen?: () => void, onClose?: () => void }) => {
     let messenger = React.useContext(MessengerContext);
     let conversation = messenger.getConversation(props.conversationId);
     let privateUserId = conversation.isPrivate ? conversation.user?.id : undefined;
@@ -38,6 +38,9 @@ export const useAttachHandler = (props: { conversationId: string }) => {
 
     let handleAttach = (files: File[], isImage: boolean, onAttach?: () => void) => {
         if (files.length) {
+            if (props.onOpen) {
+                props.onOpen();
+            }
             showAttachConfirm({
                 files,
                 isImage,
@@ -45,10 +48,13 @@ export const useAttachHandler = (props: { conversationId: string }) => {
                     if (onAttach) {
                         onAttach();
                     }
+                    if (props.onClose) {
+                        props.onClose();
+                    }
                     let quotedMessages = messagesActionsMethods.prepareToSend();
                     let keys;
                     if (hasImages) {
-                        keys = conversation!.sendFiles({ files: uploadingFiles, mentions, text, quotedMessages });
+                        keys = conversation!.sendFiles({ files: uploadingFiles, mentions, text, quotedMessages }).filesKeys;
                     } else {
                         keys = uploadingFiles.map(({ file, localImage }) => conversation!.sendFile(file, localImage, undefined));
                         if (text) {
@@ -60,6 +66,7 @@ export const useAttachHandler = (props: { conversationId: string }) => {
                 chatId: conversation?.conversationId,
                 onFileUploadingProgress: refreshFileUploadingTyping,
                 onFileUploadingEnd: endFileUploadingTyping,
+                onCancel: props.onClose
             });
         }
     };

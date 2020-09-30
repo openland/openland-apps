@@ -143,12 +143,11 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
     }, [inputText, inputSelection, mentions]);
 
     const handleAttach = React.useCallback(() => {
-        showAttachMenu((type, name, path, size) => {
+        showAttachMenu((filesMeta) => {
             setSending(true);
 
-            UploadManagerInstance.registerUpload(
-                name,
-                path,
+            UploadManagerInstance.registerUploads(
+                filesMeta,
                 {
                     onProgress: (progress: number) => {
                         // temp ignore
@@ -162,7 +161,6 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
                         Alert.alert('Error while uploading file');
                     }
                 },
-                size
             );
         });
     }, [inputText, mentions, replied, edited]);

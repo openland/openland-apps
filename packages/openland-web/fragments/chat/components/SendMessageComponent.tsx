@@ -29,6 +29,7 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { Deferred } from 'openland-unicorn/components/Deferred';
 import { detectOS } from 'openland-x-utils/detectOS';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
+import { isFileImage } from 'openland-web/utils/UploadCareUploading';
 
 interface MentionItemComponentProps {
     id: string;
@@ -120,7 +121,7 @@ const EmojiSuggestionComponent = (props: { name: string; value: string; display:
 const mentionsContainer = css`
     position: absolute;
     bottom: calc(100% + 16px);
-    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--boxShadowPopper);
     background-color: var(--backgroundSecondary);
     border-radius: 8px;
     opacity: 0;
@@ -717,7 +718,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     }, [showDonation]);
     const handleFilePaste = React.useCallback((files: File[]) => {
         if (props.onAttach) {
-            props.onAttach(files, files.every(x => x.type.includes('image')));
+            props.onAttach(files, files.every(x => isFileImage(x)));
         }
     }, []);
 
@@ -777,7 +778,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             </XView>
             {!loading && (
                 <div className={actionButtonContainer}>
-                    <UIconButton icon={props.isEditing ? <DoneIcon /> : <SendIcon />} onClick={onPressEnter} />
+                    <UIconButton icon={props.isEditing ? <DoneIcon /> : <SendIcon />} onClick={handlePressEnter} />
                 </div>
             )}
             {loading && (

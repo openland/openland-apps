@@ -3,6 +3,7 @@ import { css, cx } from 'linaria';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { TextSubhead } from '../utils/TextStyles';
 import { UPopperController } from './unicorn/UPopper';
+import { useTheme } from 'openland-x-utils/useTheme';
 
 const captionWrapper = css`
     display: flex;
@@ -27,8 +28,11 @@ const captionContent = css`
     max-width: 280px;
     padding: 6px 12px;
     background-color: var(--foregroundPrimary);
-    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
     border-radius: 8px;
+`;
+
+const boxShadowClass = css`
+    box-shadow: var(--boxShadowPopper);
 `;
 
 interface CaptionPopperConfig {
@@ -46,6 +50,7 @@ interface CaptionPopperConfig {
 
 export const useCaptionPopper = (opts: CaptionPopperConfig) => {
     const { text, getText, placement = 'top', scope, width } = opts;
+    const theme = useTheme();
     const [, show] = usePopper(
         {
             placement,
@@ -59,10 +64,10 @@ export const useCaptionPopper = (opts: CaptionPopperConfig) => {
             marginLeft: opts.marginLeft,
             marginTop: opts.marginTop,
             marginBottom: opts.marginBottom,
-            updatedDeps: text,
-            showTimeout: opts.showTimeout
+            updatedDeps: [text, theme.theme],
+            showTimeout: opts.showTimeout,
         },
-        ctx => (
+        (ctx) => (
             <div
                 className={cx(
                     captionWrapper,
@@ -73,7 +78,13 @@ export const useCaptionPopper = (opts: CaptionPopperConfig) => {
                     width: width,
                 }}
             >
-                <div className={cx(captionContent, TextSubhead)}>
+                <div
+                    className={cx(
+                        captionContent,
+                        TextSubhead,
+                        theme.theme !== 'dark' && boxShadowClass,
+                    )}
+                >
                     {getText ? getText(ctx) : text}
                 </div>
             </div>

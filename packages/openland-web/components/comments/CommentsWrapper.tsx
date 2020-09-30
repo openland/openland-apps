@@ -13,6 +13,7 @@ import { showAttachConfirm } from 'openland-web/fragments/chat/components/Attach
 import { DropZone } from 'openland-web/fragments/chat/components/DropZone';
 import { showNoiseWarning } from 'openland-web/fragments/chat/components/NoiseWarning';
 import { extractTextAndMentions } from 'openland-web/utils/convertTextAndMentions';
+import { isFileImage } from 'openland-web/utils/UploadCareUploading';
 
 const wrapperClass = css`
     display: flex;
@@ -41,6 +42,7 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
     const { peerId, peerView, groupId, commentId } = props;
     const client = useClient();
     const [highlightId, setHighlightId] = React.useState<string | undefined>(commentId);
+    const [attachOpen, setAttachOpen] = React.useState(false);
 
     const handleReplyClick = React.useCallback((id: string) => {
         setHighlightId(current => id === current ? undefined : id);
@@ -95,6 +97,7 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
 
     const handleCommentSentAttach = React.useCallback((files: File[], isImage: boolean, topLevel: boolean = false) => {
         if (files.length > 0) {
+            setAttachOpen(true);
             showAttachConfirm(
                 {
                     files,
@@ -128,6 +131,7 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                             });
                         });
                     }),
+                    onCancel: () => setAttachOpen(false),
                     chatId: groupId
                 });
         }
@@ -158,7 +162,8 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                 forceAutofocus={!highlightId}
             />
             <DropZone
-                onDrop={files => handleCommentSentAttach(files, files.every(f => f.type.includes('image')))}
+                isHidden={attachOpen}
+                onDrop={files => handleCommentSentAttach(files, files.every(f => isFileImage(f)))}
                 text={highlightId ? 'Drop here to send to the branch' : undefined}
             />
         </div>

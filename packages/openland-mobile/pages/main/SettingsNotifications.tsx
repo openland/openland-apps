@@ -26,10 +26,6 @@ const sendMutate = async (state: SettingsState) => {
                 showNotification: state.secretChatShowNotification,
                 sound: state.secretChatSound
             },
-            organizationChat: {
-                showNotification: state.organizationChatShowNotification,
-                sound: state.organizationChatSound
-            },
             communityChat: {
                 showNotification: state.communityChatShowNotification,
                 sound: state.communityChatSound
@@ -62,8 +58,6 @@ interface SettingsState {
     directSound: boolean;
     secretChatShowNotification: boolean;
     secretChatSound: boolean;
-    organizationChatShowNotification: boolean;
-    organizationChatSound: boolean;
     communityChatShowNotification: boolean;
     communityChatSound: boolean;
     commentsShowNotification: boolean;
@@ -81,8 +75,6 @@ const SettingsNotificationsContent = React.memo(() => {
         directSound: settingsData.mobile.direct.sound,
         secretChatShowNotification: settingsData.mobile.secretChat.showNotification,
         secretChatSound: settingsData.mobile.secretChat.sound,
-        organizationChatShowNotification: settingsData.mobile.organizationChat.showNotification,
-        organizationChatSound: settingsData.mobile.organizationChat.sound,
         communityChatShowNotification: settingsData.mobile.communityChat.showNotification,
         communityChatSound: settingsData.mobile.communityChat.sound,
         commentsShowNotification: settingsData.mobile.comments.showNotification,
@@ -134,19 +126,6 @@ const SettingsNotificationsContent = React.memo(() => {
                     text="Sound"
                     onToggle={value => handleSave('secretChatSound', value)}
                     toggle={settings.secretChatSound}
-                />
-            </ZListGroup>
-
-            <ZListGroup header="Organization groups messages">
-                <ZListItem
-                    text="Show notifications"
-                    onToggle={value => handleSave('organizationChatShowNotification', value)}
-                    toggle={settings.organizationChatShowNotification}
-                />
-                <ZListItem
-                    text="Sound"
-                    onToggle={value => handleSave('organizationChatSound', value)}
-                    toggle={settings.organizationChatSound}
                 />
             </ZListGroup>
 

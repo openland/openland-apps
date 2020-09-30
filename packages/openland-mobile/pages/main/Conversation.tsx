@@ -256,8 +256,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     this.props.router.push('Donation', { chatId: this.props.chat.id, name: user.firstName });
                 }
             };
-        showAttachMenu((type, name, path, size) => {
-            UploadManagerInstance.registerMessageUpload(this.props.chat.id, name, path, this.props.messagesActionsMethods.prepareToSend(), size);
+        showAttachMenu((filesMeta) => {
+            UploadManagerInstance.registerMessageUploads(this.props.chat.id, filesMeta, this.props.messagesActionsMethods.prepareToSend());
         }, donationCb);
     }
 

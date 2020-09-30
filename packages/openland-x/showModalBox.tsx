@@ -18,7 +18,7 @@ const boxStyle = css`
     flex-direction: column;
     background-color: var(--backgroundSecondary);
     border-radius: 8px;
-    box-shadow: 0 3px 14px 4px var(--overlayLight);
+    box-shadow: var(--boxShadowModal);
     max-height: 95%;
     max-width: calc(100vw - 20px);
     color: var(--foregroundPrimary);
@@ -30,6 +30,9 @@ const boxStyle = css`
 
 const fullScreenBoxStyle = css`
     background-color: var(--backgroundPrimary);
+    & .scroll-view {
+        background-color: var(--backgroundPrimary);
+    }
 `;
 
 const boxOverflow = css`
@@ -227,6 +230,7 @@ const ModalBoxComponent = React.memo<{
         <XModalBoxContext.Provider
             value={{
                 close: tryHide,
+                fullScreen: isFullscreen
             }}
         >
             <div

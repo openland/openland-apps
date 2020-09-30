@@ -19,7 +19,7 @@ const noResultContainer = css`
 const imageStyle = css`
     width: 178px;
     height: 155px;
-    background-image: url(/static/X/messenger/channels-search-empty.svg);
+    background-image: url('/static/X/messenger/channels-search-empty.svg');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -121,7 +121,7 @@ const DialogSearchInner = React.memo((props: DialogSearchResults) => {
 
 export const DialogSearchResults = (props: DialogSearchResults) => {
     return (
-        <React.Suspense fallback={<XLoader loading={true} />}>
+        <React.Suspense fallback={<XLoader loading={true} transparentBackground={true} />}>
             <DialogSearchInner {...props} />
         </React.Suspense>
     );

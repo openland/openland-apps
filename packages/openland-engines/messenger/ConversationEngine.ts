@@ -44,6 +44,8 @@ const timeGroup = 1000 * 60 * 60;
 
 type DataSourceMessageSourceT = FullMessage_GeneralMessage_source | FullMessage_StickerMessage_source;
 
+export type PendingAttachProps = { uri?: string, key?: string, filePreview?: string | null, progress?: number };
+
 export interface DataSourceMessageItem {
     chatId: string;
     type: 'message';
@@ -59,7 +61,7 @@ export interface DataSourceMessageItem {
     reply?: DataSourceMessageItem[];
     source?: DataSourceMessageSourceT | null;
     reactionCounters: MessageReactionCounter[];
-    attachments?: (MessageAttachments & { uri?: string, key?: string, filePreview?: string | null, progress?: number })[];
+    attachments?: (MessageAttachments & PendingAttachProps)[];
     spans?: MessageSpan[];
     isSending: boolean;
     attachTop: boolean;
@@ -724,7 +726,6 @@ export class ConversationEngine implements MessageSendHandler {
             let pmsg = {
                 date,
                 key,
-                file: name,
                 progress: 0,
                 message,
                 failed: false,
@@ -746,7 +747,7 @@ export class ConversationEngine implements MessageSendHandler {
                 l.onMessageSend(files[0].file, files[0].localImage);
             }
         })();
-        return key;
+        return { key, filesKeys };
     }
 
     sendSticker = (sticker: Types.StickerFragment, quotedMessages: DataSourceMessageItem[] | undefined) => {

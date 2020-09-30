@@ -4,7 +4,7 @@ import { css, cx } from 'linaria';
 
 const XLinkStyle = css`
     cursor: pointer;
-    color: rgb(23, 144, 255);
+    color: var(--accentPrimary);
 
     &:hover {
         text-decoration: none;

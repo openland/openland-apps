@@ -70,7 +70,7 @@ const gradient = css`
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(180deg, var(--transparent) 0%, var(--backgroundSecondary) 100%);
+    background: linear-gradient(180deg, var(--transparent) 0%, var(--backgroundPrimary) 100%);
     pointer-events: none;
 `;
 
@@ -709,7 +709,6 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
                 <UTextAreaField
                     field={descriptionField}
                     placeholder="Short description"
-                    autoResize={true}
                 />
             </div>
         </CreatingContainer>
