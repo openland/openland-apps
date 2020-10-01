@@ -116,11 +116,12 @@ const mentionServiceClassName = css`
 `;
 
 const mentionClassName = css`
-    color: var(--accentMuted);
+    cursor: pointer;
+    color: var(--accentPrimary);
     font-weight: 600;
 
     &:hover {
-        color: var(--accentMuted);
+        color: var(--accentPrimary);
         text-decoration: none;
     }
 `;
@@ -150,11 +151,12 @@ const MentionedUserPopperContent = React.memo(
 const MentionedUser = React.memo(
     (props: { userId: string; children: any; isService?: boolean }) => {
         const engine = React.useContext(MessengerContext);
+        const router = React.useContext(XViewRouterContext)!;
         const { userId, children, isService } = props;
 
         const useWrapper = userId !== engine.user.id;
 
-        const [, show] = usePopper(
+        const [, show, instantHide] = usePopper(
             {
                 placement: 'top',
                 hideOnLeave: true,
@@ -178,9 +180,14 @@ const MentionedUser = React.memo(
             ),
         );
         return (
-            <span onMouseEnter={show}>
-                <ULink
-                    path={`/${userId}`}
+            <span>
+                <span
+                    onMouseEnter={show}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        instantHide();
+                        router.navigate(`/${userId}`);
+                    }}
                     className={cx(
                         mentionClassName,
                         userId === engine.user.id && !isService && mentionBgClassName,
@@ -189,7 +196,7 @@ const MentionedUser = React.memo(
                     )}
                 >
                     {children}
-                </ULink>
+                </span>
             </span>
         );
     },
@@ -241,8 +248,8 @@ const MentionedOtherUsersPopperContent = React.memo(
                                             user.isBot
                                                 ? 'Bot'
                                                 : user.primaryOrganization
-                                                    ? user.primaryOrganization.name
-                                                    : undefined
+                                                ? user.primaryOrganization.name
+                                                : undefined
                                         }
                                     />
                                 </XView>
@@ -332,8 +339,8 @@ const MentionedGroupPopperContent = React.memo((props: { groupId: string; hide: 
 const MentionedGroup = React.memo(
     (props: { groupId: string; children: any; isService?: boolean }) => {
         const { groupId, children, isService } = props;
-
-        const [, show] = usePopper(
+        const router = React.useContext(XViewRouterContext)!;
+        const [, show, instantHide] = usePopper(
             {
                 placement: 'top',
                 hideOnLeave: true,
@@ -350,18 +357,19 @@ const MentionedGroup = React.memo(
             ),
         );
 
-        const router = React.useContext(XViewRouterContext)!;
-
         return (
-            <span onMouseEnter={show}>
-                <ULink
-                    onClick={() =>
+            <span>
+                <span
+                    onMouseEnter={show}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        instantHide();
                         openEntity({
                             isGroup: true,
                             entity: groupId,
                             router,
-                        })
-                    }
+                        });
+                    }}
                     className={cx(
                         mentionClassName,
                         isService && mentionServiceClassName,
@@ -369,7 +377,7 @@ const MentionedGroup = React.memo(
                     )}
                 >
                     {children}
-                </ULink>
+                </span>
             </span>
         );
     },
@@ -402,8 +410,8 @@ const MentionedOrgPopperContent = React.memo(
 const MentionedOrganization = React.memo(
     (props: { organizationId: string; children: any; isService?: boolean }) => {
         const { organizationId, children, isService } = props;
-
-        const [, show] = usePopper(
+        const router = React.useContext(XViewRouterContext)!;
+        const [, show, instantHide] = usePopper(
             {
                 placement: 'top',
                 hideOnLeave: true,
@@ -419,17 +427,19 @@ const MentionedOrganization = React.memo(
                 </React.Suspense>
             ),
         );
-        const router = React.useContext(XViewRouterContext)!;
         return (
-            <span onMouseEnter={show}>
-                <ULink
-                    onClick={() =>
+            <span>
+                <span
+                    onMouseEnter={show}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        instantHide();
                         openEntity({
                             isGroup: false,
                             entity: organizationId,
                             router,
-                        })
-                    }
+                        });
+                    }}
                     className={cx(
                         mentionClassName,
                         isService && mentionServiceClassName,
@@ -437,7 +447,7 @@ const MentionedOrganization = React.memo(
                     )}
                 >
                     {children}
-                </ULink>
+                </span>
             </span>
         );
     },

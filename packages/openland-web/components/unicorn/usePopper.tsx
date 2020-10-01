@@ -226,7 +226,7 @@ interface PopperConfig {
 export const usePopper = (
     config: PopperConfig,
     popper: (ctx: UPopperController) => React.ReactElement<{}>,
-): [boolean, (element: HTMLElement | React.MouseEvent<unknown>) => void] => {
+): [boolean, (element: HTMLElement | React.MouseEvent<unknown>) => void, () => void] => {
     const [isVisible, setVisible] = React.useState(false);
     const ctxRef = React.useRef<UPopperController | undefined>(undefined);
     const popperBodyRef = React.useRef<PopperBodyRef>(null);
@@ -251,6 +251,12 @@ export const usePopper = (
         },
         [config.placement],
     );
+
+    const instantHide = React.useCallback(() => {
+        if (popperBodyRef.current) {
+            popperBodyRef.current.instantHide();
+        }
+    }, [isVisible]);
 
     const show = React.useMemo(
         () => {
@@ -346,5 +352,5 @@ export const usePopper = (
             }
         };
     }, []);
-    return [isVisible, show];
+    return [isVisible, show, instantHide];
 };

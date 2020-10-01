@@ -48,10 +48,12 @@ interface CaptionPopperConfig {
     showTimeout?: number;
 }
 
-export const useCaptionPopper = (opts: CaptionPopperConfig) => {
+export const useCaptionPopper = (
+    opts: CaptionPopperConfig,
+): [(element: HTMLElement | React.MouseEvent<unknown>) => void, () => void] => {
     const { text, getText, placement = 'top', scope, width } = opts;
     const theme = useTheme();
-    const [, show] = usePopper(
+    const [, show, instantHide] = usePopper(
         {
             placement,
             hideOnLeave: true,
@@ -91,5 +93,5 @@ export const useCaptionPopper = (opts: CaptionPopperConfig) => {
         ),
     );
 
-    return [show];
+    return [show, instantHide];
 };
