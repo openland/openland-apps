@@ -333,6 +333,7 @@ export class DialogListEngine {
                 ...existing,
                 title: update.peer.__typename === 'PrivateRoom' ? update.peer.user.name : update.peer.title,
                 photo: update.peer.__typename === 'PrivateRoom' ? update.peer.user.photo || undefined : update.peer.photo,
+                kind: update.peer.__typename === 'SharedRoom' ? update.peer.kind : existing.kind
             });
         }
     }

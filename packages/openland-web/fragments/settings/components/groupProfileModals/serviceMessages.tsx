@@ -1,6 +1,7 @@
-import { cx } from 'linaria';
-import { showModalBox } from 'openland-x/showModalBox';
 import * as React from 'react';
+import { cx } from 'linaria';
+import { XView } from 'react-mental';
+import { showModalBox } from 'openland-x/showModalBox';
 import { useClient } from 'openland-api/useClient';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
@@ -17,71 +18,91 @@ interface ServiceMessagesValue {
     leavesMessageEnabled: boolean;
 }
 
-const ServiceMessagesModalBody = React.memo((props: GroupSettingsModalBodyProps<ServiceMessagesValue>) => {
-    const { roomId, initialValue, hide } = props;
+const ServiceMessagesModalBody = React.memo(
+    (props: GroupSettingsModalBodyProps<ServiceMessagesValue>) => {
+        const { roomId, initialValue, hide } = props;
 
-    const client = useClient();
-    const form = useForm();
+        const client = useClient();
+        const form = useForm();
 
-    const newMemberJoinsField = useField('newMemberJoins', initialValue.joinsMessageEnabled, form);
-    const memberLeavesField = useField('memberLeaves', initialValue.leavesMessageEnabled, form);
+        const newMemberJoinsField = useField(
+            'newMemberJoins',
+            initialValue.joinsMessageEnabled,
+            form,
+        );
+        const memberLeavesField = useField('memberLeaves', initialValue.leavesMessageEnabled, form);
 
-    const onSave = async () => {
-        await form.doAction(async () => {
-            await client.mutateRoomUpdate({
-                roomId,
-                input: {
-                    serviceMessageSettings: {
-                        joinsMessageEnabled: newMemberJoinsField.value,
-                        leavesMessageEnabled: memberLeavesField.value
-                    }
-                }
+        const onSave = async () => {
+            await form.doAction(async () => {
+                await client.mutateRoomUpdate({
+                    roomId,
+                    input: {
+                        serviceMessageSettings: {
+                            joinsMessageEnabled: newMemberJoinsField.value,
+                            leavesMessageEnabled: memberLeavesField.value,
+                        },
+                    },
+                });
+                await client.refetchRoomChat({ id: roomId });
+                hide();
             });
-            await client.refetchRoomChat({ id: roomId });
-            hide();
-        });
-    };
+        };
 
-    return (
-        <>
-            <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
-                <XModalContent>
-                    <div className={cx(modalSubtitle, TextBody)}>
-                        {`Choose what messages to get`}
-                    </div>
-                    <UCheckboxFiled label="New member joins" field={newMemberJoinsField} asSwitcher={true} />
-                    <UCheckboxFiled label="Member leaves" field={memberLeavesField} asSwitcher={true} />
-                </XModalContent>
-            </XScrollView3>
-            <XModalFooter>
-                <UButton text="Cancel" style="tertiary" size="large" onClick={() => props.hide()}/>
-                <UButton
-                    text="Save"
-                    style="primary"
-                    size="large"
-                    onClick={onSave}
-                    loading={form.loading}
-                />
-            </XModalFooter>
-        </>
-    );
-});
+        return (
+            <>
+                <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
+                    <XModalContent>
+                        <div className={cx(modalSubtitle, TextBody)}>
+                            {`Choose what messages to get`}
+                        </div>
+                        <XView marginHorizontal={-24}>
+                            <UCheckboxFiled
+                                label="New member joins"
+                                field={newMemberJoinsField}
+                                asSwitcher={true}
+                                disableHorizontalPadding={true}
+                                paddingHorizontal={24}
+                                withCorners={true}
+                            />
+                            <UCheckboxFiled
+                                label="Member leaves"
+                                field={memberLeavesField}
+                                asSwitcher={true}
+                                disableHorizontalPadding={true}
+                                paddingHorizontal={24}
+                                withCorners={true}
+                            />
+                        </XView>
+                    </XModalContent>
+                </XScrollView3>
+                <XModalFooter>
+                    <UButton
+                        text="Cancel"
+                        style="tertiary"
+                        size="large"
+                        onClick={() => props.hide()}
+                    />
+                    <UButton
+                        text="Save"
+                        style="primary"
+                        size="large"
+                        onClick={onSave}
+                        loading={form.loading}
+                    />
+                </XModalFooter>
+            </>
+        );
+    },
+);
 
-export const showServiceMessagesModal = (
-    roomId: string,
-    initialValue: ServiceMessagesValue,
-) => {
+export const showServiceMessagesModal = (roomId: string, initialValue: ServiceMessagesValue) => {
     showModalBox(
         {
             width: 400,
             title: 'Service messages',
         },
         (ctx) => (
-            <ServiceMessagesModalBody
-                roomId={roomId}
-                initialValue={initialValue}
-                hide={ctx.hide}
-            />
+            <ServiceMessagesModalBody roomId={roomId} initialValue={initialValue} hide={ctx.hide} />
         ),
     );
 };

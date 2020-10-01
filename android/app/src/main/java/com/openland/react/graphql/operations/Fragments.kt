@@ -838,7 +838,9 @@ internal val DialogUpdateFragmentSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("id", "id", notNull(scalar("ID"))),
                             field("title", "title", notNull(scalar("String"))),
-                            field("photo", "photo", notNull(scalar("String")))
+                            field("photo", "photo", notNull(scalar("String"))),
+                            field("kind", "kind", notNull(scalar("String"))),
+                            field("featured", "featured", notNull(scalar("Boolean")))
                         ))
                     )))
             )),

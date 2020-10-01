@@ -13,6 +13,9 @@ const inputClassName = css`
 const labelClassName = css`
     flex-grow: 1;
     cursor: pointer;
+    &:hover {
+        background-color: var(--backgroundTertiaryHoverTrans);
+    }
 `;
 
 const textClassName = css`
@@ -23,9 +26,6 @@ const textClassName = css`
     flex-grow: 1;
     border-radius: 8px;
     height: 48px;
-    &:hover {
-        background-color: var(--backgroundTertiaryHoverTrans);
-    }
 `;
 
 const textWithHorizontalPaddingClassName = css`

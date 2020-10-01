@@ -175,6 +175,7 @@ export const SettingsNotificationsFragment = React.memo(() => {
                                     label: 'Show name only',
                                 },
                             ]}
+                            withCorners={true}
                         />
                     </XView>
                 </FormSection>

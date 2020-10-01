@@ -139,6 +139,8 @@ fragment DialogUpdateFragment on DialogUpdate {
                 id
                 title
                 photo
+                kind
+                featured
             }
         }
     }

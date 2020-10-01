@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { XView } from 'react-mental';
+import { XView, XViewProps } from 'react-mental';
 import { TextBody } from 'openland-web/utils/TextStyles';
 
 const labelClass = css`
@@ -8,11 +8,8 @@ const labelClass = css`
     cursor: pointer;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
     flex-grow: 1;
     height: 48px;
-    padding-left: 16px;
-    padding-right: 18px;
     border-radius: 8px;
     font-size: 15px;
     color: var(--foregroundPrimary);
@@ -35,6 +32,15 @@ const radioDotCheckedStyle = css`
     background-color: var(--foregroundContrast);
 `;
 
+const textWithHorizontalPaddingClassName = css`
+    padding-left: 16px;
+    padding-right: 18px;
+`;
+
+const textWithCornersClassName = css`
+    border-radius: 0;
+`;
+
 const inputClassName = css`
     display: none;
 `;
@@ -44,12 +50,14 @@ const labelClassName = css`
     cursor: pointer;
 `;
 
-interface URadioItemProps {
+interface URadioItemProps extends XViewProps {
     label: string;
     value?: string;
     checked?: boolean;
     onChange?: (checked?: string) => void;
     useAnyOption?: boolean;
+    withCorners?: boolean;
+    disableHorizontalPadding?: boolean;
 }
 
 export const URadioDot = (props: { checked?: boolean }) => {
@@ -57,11 +65,19 @@ export const URadioDot = (props: { checked?: boolean }) => {
 };
 
 export const URadioItem = (props: URadioItemProps) => {
+    const {
+        label,
+        value,
+        checked,
+        onChange,
+        useAnyOption,
+        withCorners,
+        disableHorizontalPadding,
+        ...other
+    } = props;
     const handleChange = () => {
-        if (props.onChange) {
-            props.onChange(
-                props.checked ? undefined : props.value !== undefined ? props.value : props.label,
-            );
+        if (onChange) {
+            onChange(checked ? undefined : value !== undefined ? value : label);
         }
     };
 
@@ -70,17 +86,40 @@ export const URadioItem = (props: URadioItemProps) => {
     return (
         <XView flexDirection="row" alignItems="center">
             <input
-                onClick={props.useAnyOption === false ? handleChange : undefined}
-                onChange={props.useAnyOption === false ? undefined : handleChange}
+                onClick={useAnyOption === false ? handleChange : undefined}
+                onChange={useAnyOption === false ? undefined : handleChange}
                 id={id}
                 type="radio"
-                checked={props.checked}
+                checked={checked}
                 className={inputClassName}
             />
             <label htmlFor={id} className={labelClassName}>
-                <div className={cx(labelClass, TextBody)}>
-                    <span>{props.label}</span>
-                    <URadioDot checked={props.checked} />
+                <div
+                    className={cx(
+                        labelClass,
+                        TextBody,
+                        withCorners && textWithCornersClassName,
+                        !disableHorizontalPadding && textWithHorizontalPaddingClassName,
+                    )}
+                >
+                    <XView
+                        {...other}
+                        flexDirection="row"
+                        alignItems="center"
+                        flexGrow={1}
+                        flexBasis={1}
+                    >
+                        <XView
+                            flexDirection="row"
+                            alignItems="center"
+                            justifyContent="space-between"
+                            flexGrow={1}
+                            flexBasis={1}
+                        >
+                            <span>{label}</span>
+                            <URadioDot checked={checked} />
+                        </XView>
+                    </XView>
                 </div>
             </label>
         </XView>
