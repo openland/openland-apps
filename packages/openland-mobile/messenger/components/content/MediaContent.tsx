@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
+import { DataSourceMessageItem, PendingAttachProps } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
 import { Platform, Dimensions } from 'react-native';
@@ -17,7 +17,7 @@ import { AsyncBubbleMediaView } from '../AsyncBubbleMediaView';
 
 interface MediaContentProps {
     message: DataSourceMessageItem;
-    attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
+    attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & PendingAttachProps;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
@@ -92,8 +92,8 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
             });
         }
 
-        if (fileAttach && fileAttach.uri) {
-            this.downloadManagerWatch = UploadManagerInstance.watch(this.props.message.key, s => {
+        if (fileAttach && fileAttach.uri && fileAttach.key) {
+            this.downloadManagerWatch = UploadManagerInstance.watch(fileAttach.key, s => {
                 if (this.mounted) {
                     this.setState({ downloadState: { progress: s.progress } });
                 }

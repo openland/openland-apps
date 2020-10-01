@@ -25,7 +25,6 @@ export interface MessageInputBarProps {
 
     stickerKeyboardShown?: boolean;
     onStickerKeyboardButtonPress?: () => void;
-    stickerKeyboardHeight?: number;
 }
 
 const iconAttach = require('assets/ic-attach-24.png');
@@ -46,7 +45,7 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
         onFocus: props.onFocus,
         onBlur: props.onBlur,
         value: props.text,
-        editable: !stickerKeyboardShown && props.enabled !== false,
+        editable: props.enabled !== false,
         multiline: true,
         allowFontScaling: false,
         keyboardAppearance: theme.keyboardAppearance,
