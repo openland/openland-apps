@@ -684,7 +684,7 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                             textRight={getCallSettingsShortLabel(callSettings)}
                         />
                         <XWithRole role="super-admin">
-                            <RoomEditModalSuperAdminTile kind={kind} roomId={room.id} />
+                            <RoomEditModalSuperAdminTile kind={kind} roomId={room.id} isChannel={room.isChannel} />
                         </XWithRole>
                     </XView>
                 </XModalContent>

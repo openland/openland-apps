@@ -23,7 +23,12 @@ interface SuperAdminSettingsValue {
 }
 
 const SuperAdminSettingsModalBody = React.memo(
-    (props: GroupSettingsModalBodyProps<SuperAdminSettingsValue> & { roomSuperId: string }) => {
+    (
+        props: GroupSettingsModalBodyProps<SuperAdminSettingsValue> & {
+            roomSuperId: string;
+            isChannel: boolean;
+        },
+    ) => {
         const { roomId, initialValue, hide } = props;
 
         const client = useClient();
@@ -71,7 +76,7 @@ const SuperAdminSettingsModalBody = React.memo(
                                 />
                             </XView>
                         </FormSection>
-                        <FormSection title="Featured group">
+                        <FormSection title={`Featured ${props.isChannel ? 'channel' : 'group'}`}>
                             <XView marginHorizontal={-24}>
                                 <RadioButtonsSelect
                                     selectOptions={[
@@ -111,9 +116,11 @@ export const showSuperAdminSettingsModal = (
     {
         roomId,
         roomSuperId,
+        isChannel,
     }: {
         roomId: string;
         roomSuperId: string;
+        isChannel: boolean;
     },
     initialValue: SuperAdminSettingsValue,
 ) => {
@@ -127,6 +134,7 @@ export const showSuperAdminSettingsModal = (
                 roomId={roomId}
                 roomSuperId={roomSuperId}
                 initialValue={initialValue}
+                isChannel={isChannel}
                 hide={ctx.hide}
             />
         ),
@@ -136,10 +144,11 @@ export const showSuperAdminSettingsModal = (
 interface RoomEditModalSuperAdminTileProps {
     roomId: string;
     kind: SharedRoomKind;
+    isChannel: boolean;
 }
 
 export const RoomEditModalSuperAdminTile = React.memo(
-    ({ roomId, kind }: RoomEditModalSuperAdminTileProps) => {
+    ({ roomId, kind, isChannel }: RoomEditModalSuperAdminTileProps) => {
         const client = useClient();
         const { roomSuper } = client.useRoomSuper({ id: roomId });
 
@@ -154,7 +163,7 @@ export const RoomEditModalSuperAdminTile = React.memo(
                 paddingHorizontal={24}
                 onClick={() =>
                     showSuperAdminSettingsModal(
-                        { roomId, roomSuperId: roomSuper.id },
+                        { roomId, roomSuperId: roomSuper.id, isChannel },
                         {
                             visibility: kind,
                             featured: roomSuper.featured,
@@ -166,5 +175,3 @@ export const RoomEditModalSuperAdminTile = React.memo(
         );
     },
 );
-
-RoomEditModalSuperAdminTile.displayName = 'RoomEditModalSuperAdminTile';
