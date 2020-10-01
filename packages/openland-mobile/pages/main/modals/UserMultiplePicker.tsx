@@ -46,7 +46,7 @@ export const CheckListBoxWraper = React.memo(
                             alignSelf="center"
                             alignItems="center"
                             justifyContent="center"
-                            right={16}
+                            right={17}
                             backgroundColor={
                                 props.checked ? theme.accentPrimary : theme.backgroundPrimary
                             }
