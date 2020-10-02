@@ -525,7 +525,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     if (this.inputRef.current) {
                                         this.inputRef.current.blur();
                                     }
-                                }, 0));
+                                }, 3));
                             } else if (this.state.keyboardHeight !== context.keyboardHeight) {
                                 this.setState({ keyboardHeight: context.keyboardHeight });
                             }
