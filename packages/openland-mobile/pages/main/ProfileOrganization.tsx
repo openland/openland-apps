@@ -36,8 +36,10 @@ import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 import { ProfileDeleted } from './components/ProfileDeleted';
 import { ProfileOrganizationPrivate } from './components/ProfileOrganizationPrivate';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const ProfileOrganizationComponent = React.memo((props: PageProps) => {
+    const theme = React.useContext(ThemeContext);
     const client = getClient();
     const onlines = getMessenger().engine.getOnlines();
     const settings = client.useAccountSettings();
@@ -65,9 +67,9 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     const canMakePrimary =
         organization.isMine &&
         organization.id !==
-            (settings.me &&
-                settings.me.primaryOrganization &&
-                settings.me.primaryOrganization.id) &&
+        (settings.me &&
+            settings.me.primaryOrganization &&
+            settings.me.primaryOrganization.id) &&
         !organization.isCommunity;
     const canEdit = organization.isOwner || organization.isAdmin;
     const canLeave = organization.isMine;
@@ -451,6 +453,8 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 photo={organization.photo}
                 id={organization.id}
                 title={organization.name}
+                titleIconRight={organization.featured ? require('assets/ic-featured-16.png') : undefined}
+                titleIconRightColor={theme.accentNegative}
                 subtitle={
                     (organization.isCommunity ? 'Community' : 'Organization') +
                     '  ·  ' +
@@ -459,12 +463,12 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 actionPrimary={
                     organization.owner.id !== myUserID
                         ? {
-                              title: 'Message admin',
-                              onPress: () =>
-                                  props.router.pushAndReset('Conversation', {
-                                      flexibleId: organization.owner.id,
-                                  }),
-                          }
+                            title: 'Message admin',
+                            onPress: () =>
+                                props.router.pushAndReset('Conversation', {
+                                    flexibleId: organization.owner.id,
+                                }),
+                        }
                         : undefined
                 }
             />
@@ -542,13 +546,13 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 actionRight={
                     organization.roomsCount > 3
                         ? {
-                              title: 'See all',
-                              onPress: () =>
-                                  props.router.push('ProfileOrganizationGroups', {
-                                      organizationId: organization.id,
-                                      title: organization.name,
-                                  }),
-                          }
+                            title: 'See all',
+                            onPress: () =>
+                                props.router.push('ProfileOrganizationGroups', {
+                                    organizationId: organization.id,
+                                    title: organization.name,
+                                }),
+                        }
                         : undefined
                 }
             >

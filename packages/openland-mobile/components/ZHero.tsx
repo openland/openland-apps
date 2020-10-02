@@ -58,6 +58,8 @@ interface ZHeroProps {
     title: string;
     titleIcon?: NodeRequire;
     titleIconElement?: JSX.Element;
+    titleIconRight?: NodeRequire;
+    titleIconRightColor?: string;
     titleColor?: string;
     subtitle?: string | null;
     subtitleColor?: string;
@@ -73,7 +75,7 @@ interface ZHeroProps {
 
 export const ZHero = React.memo<ZHeroProps>((props) => {
     const theme = React.useContext(ThemeContext);
-    const { photo, id, online, title, titleIcon, titleIconElement, titleColor, subtitle, subtitleColor, actionPrimary, badge, children } = props;
+    const { photo, id, online, title, titleIcon, titleIconElement, titleIconRight, titleIconRightColor, titleColor, subtitle, subtitleColor, actionPrimary, badge, children } = props;
     const actions: any[] = [];
 
     React.Children.forEach(children, (c) => {
@@ -103,6 +105,7 @@ export const ZHero = React.memo<ZHeroProps>((props) => {
                 <Text style={[{ color: titleColor || theme.foregroundPrimary }, styles.title]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
                     {title}
                 </Text>
+                {titleIconRight && <Image source={titleIconRight} style={{ width: 16, height: 16, marginLeft: 4, marginTop: 2, alignSelf: 'center', tintColor: titleIconRightColor || theme.foregroundPrimary }} />}
             </View>
 
             {!!subtitle && (

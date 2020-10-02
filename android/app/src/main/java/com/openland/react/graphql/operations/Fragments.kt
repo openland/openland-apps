@@ -528,6 +528,7 @@ internal val RoomShortSelector = obj(
                 field("title", "title", notNull(scalar("String"))),
                 field("photo", "photo", notNull(scalar("String"))),
                 field("membership", "membership", notNull(scalar("String"))),
+                field("featured", "featured", notNull(scalar("Boolean"))),
                 field("role", "role", notNull(scalar("String"))),
                 field("canEdit", "canEdit", notNull(scalar("Boolean"))),
                 field("canSendMessage", "canSendMessage", notNull(scalar("Boolean"))),
