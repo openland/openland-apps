@@ -30,12 +30,13 @@ const SuperAdminSettingsModalBody = React.memo(
         },
     ) => {
         const { roomId, initialValue, hide } = props;
+        const initialFeatured = initialValue.featured ? 'true' : 'false';
 
         const client = useClient();
         const form = useForm();
 
-        const visibilityField = useField('visibility', initialValue.visibility, form);
-        const featuredField = useField('featured', initialValue.featured, form);
+        const visibilityField = useField('visibility.input', initialValue.visibility, form);
+        const featuredField = useField('featured.input', initialFeatured, form);
 
         const onSave = async () => {
             await form.doAction(async () => {
@@ -47,7 +48,7 @@ const SuperAdminSettingsModalBody = React.memo(
                 });
                 await client.mutateRoomAlterFeatured({
                     id: props.roomSuperId,
-                    featured: featuredField.input.value,
+                    featured: featuredField.input.value === 'true',
                 });
                 await client.refetchRoomSuper({ id: roomId });
                 await client.refetchRoomChat({ id: roomId });
@@ -80,8 +81,8 @@ const SuperAdminSettingsModalBody = React.memo(
                             <XView marginHorizontal={-24}>
                                 <RadioButtonsSelect
                                     selectOptions={[
-                                        { label: 'Yes', value: true },
-                                        { label: 'No', value: false },
+                                        { label: 'Yes', value: 'true' },
+                                        { label: 'No', value: 'false' },
                                     ]}
                                     {...featuredField.input}
                                     disableHorizontalPadding={true}
