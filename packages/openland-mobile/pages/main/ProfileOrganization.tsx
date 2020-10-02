@@ -13,7 +13,10 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
 import { View, Platform, Linking, Share } from 'react-native';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { OrganizationMemberRole, OrganizationMembers_organization_members_user } from 'openland-api/spacex.types';
+import {
+    OrganizationMemberRole,
+    OrganizationMembers_organization_members_user,
+} from 'openland-api/spacex.types';
 import { GroupView } from './components/GroupView';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
@@ -32,6 +35,7 @@ import { plural } from 'openland-y-utils/plural';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 import { ProfileDeleted } from './components/ProfileDeleted';
 import { ProfileOrganizationPrivate } from './components/ProfileOrganizationPrivate';
+import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 
 const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     const client = getClient();
@@ -61,9 +65,9 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     const canMakePrimary =
         organization.isMine &&
         organization.id !==
-        (settings.me &&
-            settings.me.primaryOrganization &&
-            settings.me.primaryOrganization.id) &&
+            (settings.me &&
+                settings.me.primaryOrganization &&
+                settings.me.primaryOrganization.id) &&
         !organization.isCommunity;
     const canEdit = organization.isOwner || organization.isAdmin;
     const canLeave = organization.isMine;
@@ -161,6 +165,15 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                         organization.isCommunity ? 'EditCommunity' : 'EditOrganization',
                         { id: props.router.params.id },
                     ),
+                false,
+                require('assets/ic-edit-24.png'),
+            );
+        }
+
+        if (SUPER_ADMIN) {
+            builder.action(
+                'Super edit',
+                () => props.router.push('EditCommunitySuperAdmin', { id: props.router.params.id }),
                 false,
                 require('assets/ic-edit-24.png'),
             );
@@ -400,14 +413,30 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
         }
     }, []);
 
-    const website = React.useMemo(() => findSocialShortname.site(organization.website), [organization.website]);
-    const instagram = React.useMemo(() => findSocialShortname.instagram(organization.instagram), [organization.instagram]);
-    const twitter = React.useMemo(() => findSocialShortname.twitter(organization.twitter), [organization.twitter]);
-    const facebook = React.useMemo(() => findSocialShortname.facebook(organization.facebook), [organization.facebook]);
-    const linkedin = React.useMemo(() => findSocialShortname.linkedin(organization.linkedin), [organization.linkedin]);
+    const website = React.useMemo(() => findSocialShortname.site(organization.website), [
+        organization.website,
+    ]);
+    const instagram = React.useMemo(() => findSocialShortname.instagram(organization.instagram), [
+        organization.instagram,
+    ]);
+    const twitter = React.useMemo(() => findSocialShortname.twitter(organization.twitter), [
+        organization.twitter,
+    ]);
+    const facebook = React.useMemo(() => findSocialShortname.facebook(organization.facebook), [
+        organization.facebook,
+    ]);
+    const linkedin = React.useMemo(() => findSocialShortname.linkedin(organization.linkedin), [
+        organization.linkedin,
+    ]);
 
     if (organization.isDeleted) {
-        return <ProfileDeleted photo={organization.photo} id={organization.id} title={organization.name} />;
+        return (
+            <ProfileDeleted
+                photo={organization.photo}
+                id={organization.id}
+                title={organization.name}
+            />
+        );
     }
 
     const content = (
@@ -422,11 +451,22 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 photo={organization.photo}
                 id={organization.id}
                 title={organization.name}
-                subtitle={(organization.isCommunity ? 'Community' : 'Organization') + '  ·  ' + plural(organization.membersCount, ['member', 'members'])}
-                actionPrimary={organization.owner.id !== myUserID ? {
-                    title: 'Message admin',
-                    onPress: () => props.router.pushAndReset('Conversation', { flexibleId: organization.owner.id })
-                } : undefined}
+                subtitle={
+                    (organization.isCommunity ? 'Community' : 'Organization') +
+                    '  ·  ' +
+                    plural(organization.membersCount, ['member', 'members'])
+                }
+                actionPrimary={
+                    organization.owner.id !== myUserID
+                        ? {
+                              title: 'Message admin',
+                              onPress: () =>
+                                  props.router.pushAndReset('Conversation', {
+                                      flexibleId: organization.owner.id,
+                                  }),
+                          }
+                        : undefined
+                }
             />
 
             <ZListGroup header="About" useSpacer={true}>
@@ -502,13 +542,13 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 actionRight={
                     organization.roomsCount > 3
                         ? {
-                            title: 'See all',
-                            onPress: () =>
-                                props.router.push('ProfileOrganizationGroups', {
-                                    organizationId: organization.id,
-                                    title: organization.name,
-                                }),
-                        }
+                              title: 'See all',
+                              onPress: () =>
+                                  props.router.push('ProfileOrganizationGroups', {
+                                      organizationId: organization.id,
+                                      title: organization.name,
+                                  }),
+                          }
                         : undefined
                 }
             >

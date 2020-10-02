@@ -40,7 +40,7 @@ import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { shouldShowInviteButton } from 'openland-y-utils/shouldShowInviteButton';
 import { RoomCallsMode } from 'openland-api/spacex.types';
-import IcFeatured from '../../../../openland-icons/s/ic-featured-16.svg';
+import IcFeatured from 'openland-icons/s/ic-featured-16.svg';
 
 const secondary = css`
     color: var(--foregroundSecondary);

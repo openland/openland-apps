@@ -82,6 +82,7 @@ import { EditCommunity } from './pages/main/components/edit-community/EditCommun
 import { EditCommunitySocialImage } from './pages/main/components/edit-community/EditCommunitySocialImage';
 import { EditCommunityDefaultGroups } from './pages/main/components/edit-community/EditCommunityDefaultGroups';
 import { EditCommunityApplyLink } from './pages/main/components/edit-community/EditCommunityApplyLink';
+import { EditCommunitySuperAdmin } from './pages/main/components/edit-community/EditCommunitySuperAdmin';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -113,6 +114,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('EditCommunitySocialImage', EditCommunitySocialImage)
   .addRoute('EditCommunityDefaultGroups', EditCommunityDefaultGroups)
   .addRoute('EditCommunityApplyLink', EditCommunityApplyLink)
+  .addRoute('EditCommunitySuperAdmin', EditCommunitySuperAdmin)
   .addRoute('EditOrganization', EditOrganization)
   .addRoute('Compose', Compose)
   .addRoute('CreateGroupAttrs', CreateGroupAttrs)
