@@ -71,6 +71,7 @@ interface ConversationRootState {
     muted: boolean;
     stickerKeyboardShown: boolean;
     keyboardHeight: number;
+    keyboardOpened: boolean;
     closingQuoted: boolean;
 }
 
@@ -100,6 +101,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             muted: !!this.props.chat.settings.mute,
             stickerKeyboardShown: false,
             keyboardHeight: 0,
+            keyboardOpened: false,
             closingQuoted: false,
         };
 
@@ -307,7 +309,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     handleStickerKeyboardButtonPress = () => {
         if (this.state.stickerKeyboardShown) {
-            this.setState({ stickerKeyboardShown: false });
+            this.setState({ stickerKeyboardShown: false }, () => {
+                if (this.inputRef.current) {
+                    this.inputRef.current.focus();
+                }
+            });
         } else if (this.inputRef.current) {
             if (this.inputRef.current.isFocused()) {
                 this.inputRef.current.blur();
@@ -498,8 +504,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     topView={quoted}
                                     placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message'}
                                     canSubmit={canSubmit}
-                                    onStickerKeyboardButtonPress={this.handleStickerKeyboardButtonPress}
-                                    stickerKeyboardShown={false}
+                                    onStickerKeyboardButtonPress={this.state.keyboardOpened || this.state.stickerKeyboardShown ? this.handleStickerKeyboardButtonPress : undefined}
+                                    stickerKeyboardShown={this.state.stickerKeyboardShown}
                                 />
                             )}
                             {!showInputBar && reloadButton}
@@ -518,16 +524,16 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     </View>
                     <ASSafeAreaContext.Consumer>
                         {context => {
-                            if (this.waitingForKeyboard && context.openKeyboardHeight > 100) {
+                            if (this.waitingForKeyboard && context.openKeyboardHeight > 0) {
                                 this.stickerKeyboardHeight = context.openKeyboardHeight;
                                 this.waitingForKeyboard = false;
-                                this.setState({ keyboardHeight: 0, stickerKeyboardShown: true }, () => setTimeout(() => {
+                                this.setState({ keyboardHeight: 0, stickerKeyboardShown: true }, () => {
                                     if (this.inputRef.current) {
                                         this.inputRef.current.blur();
                                     }
-                                }, 3));
-                            } else if (this.state.keyboardHeight !== context.keyboardHeight) {
-                                this.setState({ keyboardHeight: context.keyboardHeight });
+                                });
+                            } else if (this.state.keyboardHeight !== context.keyboardHeight || (context.openKeyboardHeight > 0) !== this.state.keyboardOpened) {
+                                this.setState({ keyboardHeight: context.keyboardHeight, keyboardOpened: context.openKeyboardHeight > 0 });
                             }
                             return null;
                         }}
