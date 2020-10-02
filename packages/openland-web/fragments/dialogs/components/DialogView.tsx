@@ -106,6 +106,7 @@ const mutedIcon = css`
 
 const featuredIcon = css`
     margin-left: 4px;
+    margin-top: 0;
 `;
 
 const highlightSecretChatColor = css`
