@@ -748,7 +748,8 @@ internal val DialogFragmentSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("ModernMessage", DialogMessageSelector)
                 )),
-            field("membership", "membership", notNull(scalar("String")))
+            field("membership", "membership", notNull(scalar("String"))),
+            field("featured", "featured", notNull(scalar("Boolean")))
         )
 
 internal val DialogUpdateFragmentSelector = obj(
@@ -1080,6 +1081,7 @@ internal val RoomSharedNanoSelector = obj(
             field("title", "title", notNull(scalar("String"))),
             field("photo", "photo", notNull(scalar("String"))),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("featured", "featured", notNull(scalar("Boolean"))),
             field("settings", "settings", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),

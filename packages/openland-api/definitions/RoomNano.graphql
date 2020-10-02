@@ -6,6 +6,7 @@ fragment RoomSharedNano on SharedRoom {
     title
     photo
     membersCount
+    featured
     settings {
         id
         mute

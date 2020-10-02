@@ -605,6 +605,7 @@ type Dialog {
   isPremium: Boolean!
   title: String!
   photo: String!
+  featured: Boolean!
   unreadCount: Int!
   topMessage: Message
   betaTopMessage: RoomMessage

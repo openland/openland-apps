@@ -7,6 +7,7 @@ import IcReply from 'openland-icons/s/ic-reply-16.svg';
 import IcMention from 'openland-icons/s/ic-mention-12.svg';
 import IcCall from 'openland-icons/s/ic-call-12.svg';
 import IcMuted from 'openland-icons/s/ic-muted-16.svg';
+import IcFeatured from 'openland-icons/s/ic-featured-16.svg';
 import { XCounter } from 'openland-x/XCounter';
 import { DialogListWebItem } from './DialogListWebDataSource';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
@@ -100,6 +101,10 @@ const dialogTitle = css`
 `;
 
 const mutedIcon = css`
+    margin-left: 4px;
+`;
+
+const featuredIcon = css`
     margin-left: 4px;
 `;
 
@@ -237,8 +242,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     ) : dialog.sender ? (
         <>{dialog.senderEmojify}: </>
     ) : (
-                    ''
-                );
+                        ''
+                    );
     let message: JSX.Element | null = null;
 
     let typingAnimation: string;
@@ -365,6 +370,15 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                         )}
 
                                         <span className={dialogTitle}>{isSavedMessages ? 'Saved messages' : dialog.titleEmojify}</span>
+                                        {dialog.featured && (
+                                            <div className={cx(dialogIconContainer, featuredIcon)}>
+                                                <UIcon
+                                                    size={16}
+                                                    icon={<IcFeatured />}
+                                                    color={active ? 'var(--foregroundContrast)' : 'var(--accentNegative)'}
+                                                />
+                                            </div>
+                                        )}
                                         {dialog.isMuted && (
                                             <div className={cx(dialogIconContainer, mutedIcon)}>
                                                 <UIcon

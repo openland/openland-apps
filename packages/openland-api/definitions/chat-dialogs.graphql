@@ -31,6 +31,7 @@ fragment DialogFragment on Dialog {
         ...DialogMessage
     }
     membership
+    featured
 }
 
 fragment DialogMessage on ModernMessage {
