@@ -25,6 +25,7 @@ const textStyle = css`
 interface UListHeroProps {
     title: string;
     titleIcon?: JSX.Element;
+    titleRightIcon?: JSX.Element;
     score?: number;
     description?: string | JSX.Element;
     descriptionColor?: string;
@@ -34,7 +35,15 @@ interface UListHeroProps {
 
 // Temporarily, while groups, organizations and contacts are WIP
 export const UListHeroNew = (props: UListHeroProps) => {
-    const { title, titleIcon, description, descriptionColor, avatar, children } = props;
+    const {
+        title,
+        titleIcon,
+        titleRightIcon,
+        description,
+        descriptionColor,
+        avatar,
+        children,
+    } = props;
     const titleEmojify = React.useMemo(() => emoji(title), [title]);
     const { compactView } = React.useContext(ProfileLayoutContext);
     const [width] = useWithWidth();
@@ -42,19 +51,19 @@ export const UListHeroNew = (props: UListHeroProps) => {
     const isSmallMobile = width! < 400;
 
     return (
-        <XView paddingHorizontal={16} flexDirection={compactView ? "row" : "column"}>
+        <XView paddingHorizontal={16} flexDirection={compactView ? 'row' : 'column'} flexShrink={1}>
             {!!avatar && (
-                    <UAvatar
-                        {...avatar}
-                        size={isSmallMobile ? 'large' : 'xx-large'}
-                        marginTop={16}
-                        marginRight={16}
-                        onClick={
-                            avatar.photo && !avatar.photo.startsWith('ph://')
-                                ? () => showAvatarModal(avatar.photo!)
-                                : undefined
-                        }
-                    />
+                <UAvatar
+                    {...avatar}
+                    size={isSmallMobile ? 'large' : 'xx-large'}
+                    marginTop={16}
+                    marginRight={16}
+                    onClick={
+                        avatar.photo && !avatar.photo.startsWith('ph://')
+                            ? () => showAvatarModal(avatar.photo!)
+                            : undefined
+                    }
+                />
             )}
 
             <XView
@@ -64,9 +73,15 @@ export const UListHeroNew = (props: UListHeroProps) => {
                 flexDirection="column"
                 justifyContent="center"
             >
-                <XView {...(compactView ? TextStyles.Title3 : TextStyles.Title2)} color="var(--foregroundPrimary)" flexDirection="row" alignItems="center">
+                <XView
+                    {...(compactView ? TextStyles.Title3 : TextStyles.Title2)}
+                    color="var(--foregroundPrimary)"
+                    flexDirection="row"
+                    alignItems="center"
+                >
                     {titleIcon}
                     <span className={titleStyle}>{titleEmojify}</span>
+                    {titleRightIcon}
                 </XView>
 
                 {!!description && (
@@ -78,7 +93,7 @@ export const UListHeroNew = (props: UListHeroProps) => {
                         <span className={textStyle}>{description}</span>
                     </XView>
                 )}
-                <XView flexDirection={compactView ? "row" : "column"} marginTop={16}>
+                <XView flexDirection={compactView ? 'row' : 'column'} marginTop={16}>
                     {children}
                 </XView>
             </XView>

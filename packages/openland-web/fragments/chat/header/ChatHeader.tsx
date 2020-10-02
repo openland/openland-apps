@@ -40,13 +40,26 @@ import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { shouldShowInviteButton } from 'openland-y-utils/shouldShowInviteButton';
 import { RoomCallsMode } from 'openland-api/spacex.types';
+import IcFeatured from '../../../../openland-icons/s/ic-featured-16.svg';
 
 const secondary = css`
     color: var(--foregroundSecondary);
     padding-left: 4px;
 `;
+
 const secondaryAccent = css`
     color: var(--accentPrimary);
+`;
+
+const featuredIcon = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
 `;
 
 const titleStyle = css`
@@ -101,12 +114,13 @@ function normalizeUrl(url: any): string {
     if (!url || typeof url !== 'string') {
         return '';
     }
-    return (/^https?:\/\//).test(url) ? url : 'http://' + url;
+    return /^https?:\/\//.test(url) ? url : 'http://' + url;
 }
 
 const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
     const calls = props.messenger.calls;
-    const callSettings = props.chat.__typename === 'SharedRoom' ? props.chat.callSettings : undefined;
+    const callSettings =
+        props.chat.__typename === 'SharedRoom' ? props.chat.callSettings : undefined;
     const currentSession = calls.useCurrentSession();
     const showVideoCallModal = useVideoCallModal({ chatId: props.chat.id });
 
@@ -116,27 +130,29 @@ const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
                 currentSession && currentSession.conversationId === props.chat.id && disabledBtn,
             )}
         >
-            {   callSettings && callSettings.mode === RoomCallsMode.LINK ?
-                    <UIconButton
-                        icon={<ExternalCallIcon />}
-                        as={'a'}
-                        href={normalizeUrl(callSettings.callLink)}
-                        target={'_blank'}
-                        size="large"
-                    /> :
-                    <UIconButton
-                        icon={<PhoneIcon />}
-                        onClick={() => {
-                            calls.joinCall(props.chat.id);
-                            showVideoCallModal();
-                        }}
-                        size="large"
-                    />}
+            {callSettings && callSettings.mode === RoomCallsMode.LINK ? (
+                <UIconButton
+                    icon={<ExternalCallIcon />}
+                    as={'a'}
+                    href={normalizeUrl(callSettings.callLink)}
+                    target={'_blank'}
+                    size="large"
+                />
+            ) : (
+                <UIconButton
+                    icon={<PhoneIcon />}
+                    onClick={() => {
+                        calls.joinCall(props.chat.id);
+                        showVideoCallModal();
+                    }}
+                    size="large"
+                />
+            )}
         </div>
     );
 };
 
-const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessages: boolean }) => {
+const MenuComponent = (props: { ctx: UPopperController; id: string; savedMessages: boolean }) => {
     const layout = useLayout();
     const client = useClient();
     const tabRouter = useTabRouter();
@@ -147,7 +163,10 @@ const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessage
     const currentSession = calls.useCurrentSession();
     const showVideoCallModal = useVideoCallModal({ chatId: chat.id });
     const chatUser = chat.__typename === 'PrivateRoom' && chat.user;
-    const { isContact } = useLocalContact(chatUser ? chatUser.id : '', chatUser ? chatUser.inContacts : false);
+    const { isContact } = useLocalContact(
+        chatUser ? chatUser.id : '',
+        chatUser ? chatUser.inContacts : false,
+    );
     const toastHandlers = useToast();
 
     const showInviteButton = layout === 'mobile' && shouldShowInviteButton(chat);
@@ -162,7 +181,11 @@ const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessage
         });
     }
 
-    if (!props.savedMessages && layout === 'mobile' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true)) {
+    if (
+        !props.savedMessages &&
+        layout === 'mobile' &&
+        (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true)
+    ) {
         res.item({
             title: 'Call',
             icon: <PhoneIcon />,
@@ -194,11 +217,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessage
         closeDelay: 400,
     });
 
-    if (
-        chat.__typename === 'PrivateRoom' &&
-        chat.user.id !== messenger.user.id
-    ) {
-
+    if (chat.__typename === 'PrivateRoom' && chat.user.id !== messenger.user.id) {
         res.item({
             title: isContact ? 'Remove from contacts' : 'Add to contacts',
             icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,
@@ -254,14 +273,16 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     const isSavedMessages = chat.__typename === 'PrivateRoom' && messenger.user.id === chat.user.id;
     const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
     const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
-    const path =
-        isSavedMessages ? `/mail/${chat.id}/shared` :
-            chat.__typename === 'PrivateRoom'
-                ? `/${chat.user.shortname || chat.user.id}`
-                : `/group/${chat.id}`;
+    const path = isSavedMessages
+        ? `/mail/${chat.id}/shared`
+        : chat.__typename === 'PrivateRoom'
+        ? `/${chat.user.shortname || chat.user.id}`
+        : `/group/${chat.id}`;
     const showCallButton =
         layout === 'desktop' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true);
-    const titleEmojify = isSavedMessages ? 'Saved messages' : React.useMemo(() => emoji(title), [title]);
+    const titleEmojify = isSavedMessages
+        ? 'Saved messages'
+        : React.useMemo(() => emoji(title), [title]);
 
     const showInviteButton = layout === 'desktop' && shouldShowInviteButton(chat);
 
@@ -323,13 +344,19 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                             {chat.__typename === 'SharedRoom' && chat.isPremium && <PremiumBadge />}
                             <span className={titleStyle}>
                                 {titleEmojify}
-                                {!isSavedMessages && chat.__typename === 'PrivateRoom' &&
+                                {!isSavedMessages &&
+                                    chat.__typename === 'PrivateRoom' &&
                                     chat.user.primaryOrganization && (
                                         <span className={cx(secondary, TextDensed)}>
                                             {chat.user.primaryOrganization.name}
                                         </span>
                                     )}
                             </span>
+                            {chat.__typename === 'SharedRoom' && chat.featured && (
+                                <div className={featuredIcon}>
+                                    <UIcon icon={<IcFeatured />} color="var(--accentNegative)" />
+                                </div>
+                            )}
                             {chat.settings.mute && (
                                 <UIcon
                                     className={mutedIcon}
@@ -375,7 +402,9 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         size="large"
                     />
                 )}
-                {!isSavedMessages && showCallButton && <CallButton chat={chat} messenger={messenger} />}
+                {!isSavedMessages && showCallButton && (
+                    <CallButton chat={chat} messenger={messenger} />
+                )}
 
                 <UMoreButton
                     menu={(ctx) => (

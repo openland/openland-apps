@@ -93,6 +93,7 @@ query RoomChat($id: ID!) {
             shortname
             featuredMembersCount
             socialImage
+            featured
             welcomeMessage {
                 isOn
                 sender {
