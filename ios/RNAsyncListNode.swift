@@ -88,7 +88,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.viewLoaded = true
     
     
-    self.keyboardCtx = (self.parent.resolveKeyboardContextKey()?.keyboardContextKey) ?? "default"
+    self.keyboardCtx = self.parent.ignoreKeyboard ? nil : (self.parent.resolveKeyboardContextKey()?.keyboardContextKey) ?? "default"
     self.keyboardSubscription = RNAsyncKeyboardManager.sharedInstance.watch(delegate: self, ctx: self.keyboardCtx)
     
     

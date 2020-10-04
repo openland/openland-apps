@@ -24,7 +24,7 @@ class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updat
         if (Platform.OS === 'ios') {
             return (
                 <View position="absolute" left={0} bottom={0} right={0}>
-                    <ASKeyboardTracker>
+                    <ASKeyboardTracker disableTransform={false}>
                         <View
                             onLayout={this.handleLayout}
                             style={{

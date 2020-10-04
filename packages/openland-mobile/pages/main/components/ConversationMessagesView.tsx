@@ -31,6 +31,7 @@ export const ConversationMessagesView = React.memo<ConversationMessagesViewProps
                 headerPadding={Platform.select({ ios: 0, android: androidMessageInputListOverlap }) + 6}
                 overflowColor={theme.backgroundPrimary}
                 applyModes={props.selectionMode ? ['selection'] : undefined}
+                ignoreKeyboard={true}
             />
         </View>
     );

@@ -5,12 +5,15 @@ import { SDevice } from 'react-native-s/SDevice';
 import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { MessageInputBarProps, MessageInputInner } from './MessageInputInner';
+import { ASKeyboardTracker } from 'react-native-async-view/ASKeyboardTracker';
 
-export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & { reloadButton?: any }, ref: React.RefObject<TextInput>) => {
+export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & { reloadButton?: any, useTracker?: boolean }, ref: React.RefObject<TextInput>) => {
     let theme = React.useContext(ThemeContext);
 
+    const Wrapper = props.useTracker ? ASKeyboardTracker : ZKeyboardAwareBar;
+
     return (
-        <ZKeyboardAwareBar>
+        <Wrapper disableTransform={!!props.useTracker}>
             {props.reloadButton}
             {props.suggestions && (
                 <ZBlurredView intensity="normal" style={{ position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: SDevice.safeArea.bottom }}>
@@ -27,6 +30,6 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & {
 
                 <MessageInputInner {...props} theme={theme} ref={ref} stickerKeyboardShown={props.stickerKeyboardShown} />
             </View>
-        </ZKeyboardAwareBar>
+        </Wrapper>
     );
 });

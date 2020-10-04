@@ -80,8 +80,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     listRef = React.createRef<FlatList<any>>();
     inputRef = React.createRef<TextInput>();
     waitingForKeyboard = false;
+    waitingForKeyboardNative = false;
     shouldHideStickerKeyboard = true;
     stickerKeyboardHeight = 0;
+    openKeyboardHeight = 0;
 
     private setTyping = throttle(() => {
         getMessenger().engine.client.mutateSetTyping({ conversationId: this.props.chat.id, type: TypingType.TEXT });
@@ -181,9 +183,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     handleFocus = () => {
         if (this.shouldHideStickerKeyboard) {
+            this.waitingForKeyboardNative = true;
             this.setState({
                 inputFocused: true,
-                stickerKeyboardShown: false
+                stickerKeyboardShown: false,
+                keyboardHeight: this.stickerKeyboardHeight
             });
         } else {
             this.shouldHideStickerKeyboard = true;
@@ -309,18 +313,28 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     handleStickerKeyboardButtonPress = () => {
         if (this.state.stickerKeyboardShown) {
-            this.setState({ stickerKeyboardShown: false }, () => {
-                if (this.inputRef.current) {
+            this.waitingForKeyboardNative = true;
+            this.setState({ stickerKeyboardShown: false, keyboardHeight: this.stickerKeyboardHeight }, () => {
+                if (this.inputRef.current && !this.inputRef.current.isFocused()) {
                     this.inputRef.current.focus();
                 }
             });
-        } else if (this.inputRef.current) {
-            if (this.inputRef.current.isFocused()) {
-                this.inputRef.current.blur();
+        } else {
+            if (this.openKeyboardHeight > 0) {
+                this.stickerKeyboardHeight = this.openKeyboardHeight;
+                this.setState({ keyboardHeight: 0, stickerKeyboardShown: true }, () => {
+                    if (this.inputRef.current && this.inputRef.current.isFocused()) {
+                        this.inputRef.current.blur();
+                    }
+                });
+            } else if (this.inputRef.current) {
+                if (this.inputRef.current.isFocused()) {
+                    this.inputRef.current.blur();
+                }
+                this.waitingForKeyboard = true;
+                this.shouldHideStickerKeyboard = false;
+                this.inputRef.current.focus();
             }
-            this.waitingForKeyboard = true;
-            this.shouldHideStickerKeyboard = false;
-            this.inputRef.current.focus();
         }
     }
 
@@ -476,8 +490,18 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     />
                 )}
                 <SDeferred>
-                    <View style={{ height: '100%', flexDirection: 'column' }}>
-                        <View style={{ flex: 1, flexGrow: 1, flexBasis: 1, flexShrink: 0, flexDirection: 'column', paddingBottom: this.state.stickerKeyboardShown ? 0 : this.state.keyboardHeight }}>
+                    <View style={{ height: '100%', flexDirection: 'column', position: 'relative' }}>
+                        <View
+                            style={{
+                                flex: 1,
+                                flexGrow: 1,
+                                flexBasis: 1,
+                                flexShrink: 0,
+                                flexDirection: 'column',
+                                paddingBottom: (this.state.stickerKeyboardShown ? this.stickerKeyboardHeight : this.state.keyboardHeight )
+                                             + (Platform.OS === 'ios' ? SDevice.safeArea.bottom : 0)
+                            }}
+                        >
                             <ConversationView inverted={true} engine={this.engine} />
                             {pinnedMessage && (
                                 <PinnedMessage
@@ -506,6 +530,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     canSubmit={canSubmit}
                                     onStickerKeyboardButtonPress={this.state.keyboardOpened || this.state.stickerKeyboardShown ? this.handleStickerKeyboardButtonPress : undefined}
                                     stickerKeyboardShown={this.state.stickerKeyboardShown}
+                                    useTracker={true}
                                 />
                             )}
                             {!showInputBar && reloadButton}
@@ -513,7 +538,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                             {showSelectedMessagesActions && <ChatSelectedActions conversation={this.engine} chat={this.props.chat} />}
                         </View>
                         {this.state.stickerKeyboardShown && (
-                            <View style={{ marginTop: -SDevice.safeArea.bottom, paddingBottom: SDevice.safeArea.bottom }}>
+                            <View style={{ bottom: SDevice.safeArea.bottom, position: 'absolute', zIndex: 4, left: 0, right: 0 }}>
                                 <StickerPicker
                                     onStickerSent={(sticker: StickerFragment) => this.engine.sendSticker(sticker, undefined)}
                                     theme={this.props.theme}
@@ -524,16 +549,27 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     </View>
                     <ASSafeAreaContext.Consumer>
                         {context => {
-                            if (this.waitingForKeyboard && context.openKeyboardHeight > 0) {
-                                this.stickerKeyboardHeight = context.openKeyboardHeight;
+                            const keyboardOpened = context.openKeyboardHeight > 0;
+                            if (keyboardOpened) {
+                                this.openKeyboardHeight = context.openKeyboardHeight;
+                            }
+                            if (this.waitingForKeyboard && keyboardOpened) {
+                                this.stickerKeyboardHeight = this.openKeyboardHeight;
                                 this.waitingForKeyboard = false;
                                 this.setState({ keyboardHeight: 0, stickerKeyboardShown: true }, () => {
-                                    if (this.inputRef.current) {
+                                    if (this.inputRef.current && this.inputRef.current.isFocused()) {
                                         this.inputRef.current.blur();
                                     }
                                 });
-                            } else if (this.state.keyboardHeight !== context.keyboardHeight || (context.openKeyboardHeight > 0) !== this.state.keyboardOpened) {
-                                this.setState({ keyboardHeight: context.keyboardHeight, keyboardOpened: context.openKeyboardHeight > 0 });
+                            } else if (this.state.keyboardHeight !== context.openKeyboardHeight || keyboardOpened !== this.state.keyboardOpened) {
+                                if (!this.waitingForKeyboardNative) {
+                                    this.setState({ keyboardHeight: context.openKeyboardHeight, keyboardOpened });
+                                } else if (keyboardOpened) {
+                                    this.waitingForKeyboardNative = false;
+                                    this.setState({ keyboardHeight: context.openKeyboardHeight, keyboardOpened });
+                                }
+                            } else if (this.waitingForKeyboardNative && keyboardOpened) {
+                                this.waitingForKeyboardNative = false;
                             }
                             return null;
                         }}

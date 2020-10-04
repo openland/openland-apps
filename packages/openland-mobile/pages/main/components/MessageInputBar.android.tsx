@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { MessageInputInner, MessageInputBarProps } from './MessageInputInner';
 
-export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & { reloadButton: any }, ref: any) => {
+export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & { reloadButton?: any, useTracker?: boolean }, ref: React.RefObject<TextInput>) => {
     const { reloadButton, suggestions, topView, stickerKeyboardShown } = props;
 
     let theme = React.useContext(ThemeContext);

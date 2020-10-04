@@ -20,6 +20,7 @@ export interface ASListViewProps {
     overscrollCompensation?: boolean;
     onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void;
     applyModes?: string[];
+    ignoreKeyboard?: boolean;
 }
 export const ASListView = React.memo((props: ASListViewProps) => {
     const theme = React.useContext(ThemeContext);
@@ -38,6 +39,7 @@ export const ASListView = React.memo((props: ASListViewProps) => {
                 overflowColor={props.overflowColor ? processColor(props.overflowColor) : undefined}
                 loaderColor={processColor(props.loaderColor ? props.loaderColor : theme.foregroundSecondary)}
                 applyModes={props.applyModes || []}
+                ignoreKeyboard={props.ignoreKeyboard || false}
             />
         </SDeferred>
     );
