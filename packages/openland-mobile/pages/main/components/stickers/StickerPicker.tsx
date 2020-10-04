@@ -201,7 +201,6 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
                         }
                     }
                 }}
-                bounces={false}
             />
             <FlatList
                 ref={stickerPackButtonListRef}
