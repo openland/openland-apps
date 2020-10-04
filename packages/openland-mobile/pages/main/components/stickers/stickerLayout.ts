@@ -16,7 +16,7 @@ const getStickerLayout = (w: number): StickerLayout => {
         stickersPerRow = 6;
     }
 
-    return { stickersPerRow, stickerSize: Math.round((w - (stickersPerRow + 1) * 16) / stickersPerRow) };
+    return { stickersPerRow, stickerSize: Math.floor((w - (stickersPerRow + 1) * 16) / stickersPerRow) };
 };
 
 export const useStickerLayout = (): [StickerLayout, (w: number) => void] => {
