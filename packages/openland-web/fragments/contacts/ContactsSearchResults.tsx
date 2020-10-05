@@ -21,7 +21,7 @@ const noResultContainer = css`
 const imageStyle = css`
     width: 178px;
     height: 155px;
-    background-image: url(/static/X/messenger/channels-search-empty.svg);
+    background-image: url("/static/X/messenger/channels-search-empty.svg");
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -52,7 +52,7 @@ const messageBtnWrapperSelected = css`
 export const ContactsSearchEmptyView = React.memo(() => (
     <div className={noResultContainer}>
         <div className={imageStyle} />
-        <XView color="rgba(0, 0, 0, 0.5)">No results</XView>
+        <XView color="var(--foregroundSecondary)">No results</XView>
     </div>
 ));
 

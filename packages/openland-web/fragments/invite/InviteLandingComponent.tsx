@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as Cookie from 'js-cookie';
 import { css, cx } from 'linaria';
 import {
     ResolvedInvite_invite_InviteInfo_organization,
@@ -8,7 +9,6 @@ import {
 } from 'openland-api/spacex.types';
 import { XViewRouterContext } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
-import { switchOrganization } from 'openland-web/utils/switchOrganization';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { UButton } from 'openland-web/components/unicorn/UButton';
@@ -20,12 +20,18 @@ import { showPayConfirm } from '../wallet/modals/showPayConfirm';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
 import { UText } from 'openland-web/components/unicorn/UText';
+import { useTabRouter } from 'openland-unicorn/components/TabLayout';
+import { formatError } from 'openland-y-forms/errorHandling';
 import {
     AuthSidebarComponent,
     AuthMobileHeader,
 } from 'openland-web/pages/root/AuthSidebarComponent';
-import * as Cookie from 'js-cookie';
-import { useTabRouter } from 'openland-unicorn/components/TabLayout';
+import { useToast } from 'openland-web/components/unicorn/UToast';
+
+function switchOrganization(id: string, redirect?: string) {
+    Cookie.set('x-openland-org', id, { path: '/' });
+    window.location.href = redirect || '/';
+}
 
 const container = css`
     display: flex;
@@ -113,12 +119,7 @@ const buttonContainer = css`
 `;
 
 interface InviteLandingComponentLayoutProps {
-    invitedByUser?: {
-        id: string;
-        name: string;
-        photo?: string | null;
-    } | null;
-    whereToInvite: 'Channel' | 'Group' | 'Organization' | 'Community';
+    whereToInvite: 'channel' | 'group' | 'organization' | 'community';
     photo: string | null;
     title: string;
     entityTitle: string;
@@ -133,7 +134,6 @@ interface InviteLandingComponentLayoutProps {
 const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLayoutProps) => {
     const isMobile = useIsMobile();
     const {
-        invitedByUser,
         whereToInvite,
         photo,
         title,
@@ -147,16 +147,12 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
 
     const avatars = room
         ? room.previewMembers
-              .map(x => x)
-              .filter(x => !!x)
+              .map((x) => x)
+              .filter((x) => !!x)
               .slice(0, 5)
         : [];
 
     const showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
-
-    const joinTitle = !!invitedByUser
-        ? `${invitedByUser.name} invites you to join “${title}”`
-        : title;
 
     return (
         <div className={container}>
@@ -164,26 +160,10 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
             <div className={rootClassName}>
                 {props.noLogin && isMobile && <AuthMobileHeader />}
                 <div className={mainContainer}>
-                    {invitedByUser ? (
-                        <div className={avatarsContainer}>
-                            <div className={bigAvatarWrapper}>
-                                <UAvatar
-                                    photo={invitedByUser.photo}
-                                    title={invitedByUser.name}
-                                    id={invitedByUser.id}
-                                    size="x-large"
-                                />
-                            </div>
-                            <div className={bigAvatarWrapper}>
-                                <UAvatar photo={photo} title={entityTitle} id={id} size="x-large" />
-                            </div>
-                        </div>
-                    ) : (
-                        <div className={avatarsContainer}>
-                            <UAvatar photo={photo} title={entityTitle} id={id} size="xx-large" />
-                        </div>
-                    )}
-                    <div className={cx(TextTitle1, titleStyle)}>{joinTitle}</div>
+                    <div className={avatarsContainer}>
+                        <UAvatar photo={photo} title={entityTitle} id={id} size="xx-large" />
+                    </div>
+                    <div className={cx(TextTitle1, titleStyle)}>{title}</div>
                     {!!description && (
                         <div className={cx(TextBody, descriptionStyle)}>
                             <UText text={description} />
@@ -192,7 +172,7 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
                     {showMembers && room && (
                         <div className={membersContainer}>
                             <div className={membersAvatarsContainer}>
-                                {avatars.map(i => (
+                                {avatars.map((i) => (
                                     <div
                                         key={i.id}
                                         className={cx(bigAvatarWrapper, smallAvatarWrapper)}
@@ -213,7 +193,7 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
                     )}
                     {!showMembers && !description && (
                         <div className={cx(TextBody, descriptionStyle)}>
-                            New {whereToInvite.toLocaleLowerCase()}
+                            New {whereToInvite}
                         </div>
                     )}
 
@@ -315,9 +295,11 @@ const BuyPaidChatPassButton = (props: {
                 try {
                     let passIsActive = false;
                     if (props.premiumSettings.interval) {
-                        passIsActive = (await client.mutateBuyPremiumChatSubscription({
-                            chatId: props.id,
-                        })).betaBuyPremiumChatSubscription.premiumPassIsActive;
+                        passIsActive = (
+                            await client.mutateBuyPremiumChatSubscription({
+                                chatId: props.id,
+                            })
+                        ).betaBuyPremiumChatSubscription.premiumPassIsActive;
                     } else {
                         passIsActive = (await client.mutateBuyPremiumChatPass({ chatId: props.id }))
                             .betaBuyPremiumChatPass.premiumPassIsActive;
@@ -360,11 +342,7 @@ const BuyPaidChatPassButton = (props: {
     );
 };
 
-const resolveRoomButton = (
-    room: SharedRoomPreview,
-    buttonText: string,
-    key?: string,
-) => {
+const resolveRoomButton = (room: SharedRoomPreview, buttonText: string, key?: string) => {
     const [loading, setLoading] = React.useState(false);
     if (room && room.isPremium && room.premiumSettings && !room.premiumPassIsActive) {
         if (
@@ -425,13 +403,7 @@ const resolveRoomButton = (
             />
         );
     } else if (room && key) {
-        return (
-            <JoinLinkButton
-                invite={key}
-                onAccept={setLoading}
-                text={buttonText}
-            />
-        );
+        return <JoinLinkButton invite={key} onAccept={setLoading} text={buttonText} />;
     } else if (room && room.membership === 'REQUESTED') {
         return (
             <UButton
@@ -452,12 +424,12 @@ export const SharedRoomPlaceholder = ({ room }: { room: SharedRoomPreview }) => 
         room &&
         room.isPremium &&
         !room.premiumPassIsActive &&
-        (room.premiumSubscription &&
-            room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED);
+        room.premiumSubscription &&
+        room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED;
     return (
         <InviteLandingComponentLayout
             button={resolveRoomButton(room, buttonText)}
-            whereToInvite="Group"
+            whereToInvite="group"
             photo={room.photo}
             title={premiumSuspended ? `Your access to “${room.title}” is suspended` : room.title}
             entityTitle={room.title}
@@ -479,7 +451,8 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     const loggedIn = userInfo && userInfo.isLoggedIn;
     const client = useClient();
     const unicorn = useUnicorn();
-    const router = React.useContext(XViewRouterContext);
+    const router = React.useContext(XViewRouterContext)!;
+    const toast = useToast();
 
     const path = window.location.pathname.split('/');
     let key = unicorn ? unicorn.id : path[path.length - 1];
@@ -493,16 +466,12 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     let room: SharedRoomPreview | undefined;
     let organization: ResolvedInvite_invite_InviteInfo_organization | undefined;
 
-    // let invitedByUser;
-
     if (invite.invite && invite.invite.__typename === 'InviteInfo' && invite.invite.organization) {
         organization = invite.invite.organization;
-        // invitedByUser = invite.invite.creator;
     }
 
     if (invite.invite && invite.invite.__typename === 'RoomInvite') {
         room = invite.invite.room;
-        // invitedByUser = invite.invite.invitedByUser;
     }
 
     if (invite.shortnameItem && invite.shortnameItem.__typename === 'SharedRoom') {
@@ -511,7 +480,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     }
 
     if (invite.invite && invite.invite.__typename === 'AppInvite') {
-        router!.navigate('/');
+        router.navigate('/');
         return null;
     }
 
@@ -520,13 +489,13 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
 
     const whereToInvite = room
         ? room.isChannel
-            ? 'Channel'
-            : 'Group'
+            ? 'channel'
+            : 'group'
         : organization && organization.isCommunity
-        ? 'Community'
-        : 'Organization';
+        ? 'community'
+        : 'organization';
 
-    const buttonText = 'Join ' + whereToInvite.toLocaleLowerCase();
+    const buttonText = 'Join ' + whereToInvite;
 
     if (!loggedIn) {
         button = (
@@ -550,12 +519,31 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     } else if (organization) {
         button = (
             <UButton
-                text={buttonText}
+                text={organization.isMine ? 'Open ' + whereToInvite : buttonText}
                 action={async () => {
+                    if (organization!.isMine && loggedIn) {
+                        router.navigate(`/${organization!.id}`);
+                        return;
+                    }
                     trackEvent('invite_button_clicked');
-                    await client.mutateAccountInviteJoin({
-                        inviteKey: key,
-                    });
+                    try {
+                        await client.mutateAccountInviteJoin({
+                            inviteKey: key,
+                        });
+                    } catch (e) {
+                        const error = formatError(e);
+                        if (!!toast) {
+                            toast.show({
+                                type: 'failure',
+                                text: error
+                            });
+                        }
+                        return;
+                    }
+                    if (loggedIn) {
+                        router.navigate(`/${organization!.id}`);
+                        return;
+                    }
                     switchOrganization(organization!.id);
                 }}
                 style="primary"
@@ -570,16 +558,16 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
         room &&
         room.isPremium &&
         !room.premiumPassIsActive &&
-        (room.premiumSubscription &&
-            room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED);
+        room.premiumSubscription &&
+        room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED;
 
     return (
         <>
             <XTrack
                 event={loggedIn ? 'invite_screen_view' : 'invite_landing_view'}
                 params={{
-                    invite_type: whereToInvite.toLowerCase(),
-                    entity_id: room?.id || organization?.id
+                    invite_type: whereToInvite,
+                    entity_id: room?.id || organization?.id,
                 }}
             />
             {premiumSuspended ? (
@@ -600,7 +588,6 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 />
             ) : (
                 <InviteLandingComponentLayout
-                    // invitedByUser={invitedByUser}
                     button={button}
                     whereToInvite={whereToInvite}
                     photo={room ? room.photo : organization!.photo}

@@ -159,7 +159,6 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
         } else {
             imagesContent = imageAttaches
                 .reduce((acc, file, i) => {
-                    let column = acc.reduce((y, x) => x.length === 1 ? x : y, null);
                     if (acc.length < 2) {
                         acc.push([(
                             <ImagePileContent
@@ -175,23 +174,28 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
                                 isHalf={imageAttaches.length === 3 && i === 1 || imageAttaches.length === 4}
                             />
                         )]);
-                    } else if (column) {
-                        column.push(
-                            (
-                                <ImagePileContent
-                                    key={'msg-' + id + '-media-' + (file.fileId || file.id) + i}
-                                    file={file}
-                                    sender={props.sender}
-                                    senderNameEmojify={props.senderNameEmojify}
-                                    date={props.date}
-                                    chatId={props.chatId}
-                                    mId={id}
-                                    isPending={isPending}
-                                    progress={file.progress}
-                                    isHalf={true}
-                                />
-                            )
+                    } else {
+                        let el = (
+                            <ImagePileContent
+                                key={'msg-' + id + '-media-' + (file.fileId || file.id) + i}
+                                file={file}
+                                sender={props.sender}
+                                senderNameEmojify={props.senderNameEmojify}
+                                date={props.date}
+                                chatId={props.chatId}
+                                mId={id}
+                                isPending={isPending}
+                                progress={file.progress}
+                                isHalf={true}
+                            />
                         );
+                        if (i === 2) {
+                            acc[1].push(el);
+                        } else if (i === 3) {
+                            let prevLast = acc[1].pop();
+                            acc[0].push(prevLast!);
+                            acc[1].push(el);
+                        }
                     }
                     return acc;
                 }, [] as JSX.Element[][])
