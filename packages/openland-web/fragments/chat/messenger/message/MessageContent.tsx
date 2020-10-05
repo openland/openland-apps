@@ -159,7 +159,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
         } else {
             imagesContent = imageAttaches
                 .reduce((acc, file, i) => {
-                    let column = acc.reduceRight((y, x) => x.length === 1 ? x : y, null);
+                    let column = acc.reduce((y, x) => x.length === 1 ? x : y, null);
                     if (acc.length < 2) {
                         acc.push([(
                             <ImagePileContent
