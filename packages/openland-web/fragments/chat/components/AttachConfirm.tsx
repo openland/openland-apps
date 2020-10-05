@@ -260,7 +260,7 @@ const Body = (props: {
     );
     let { documents, imageColumns } = bodyFiles.reduce((acc, f, i, { length }) => {
         if (isImage) {
-            let el = <Img key={f.name + f.size + f.lastModified} file={f} onClick={onClick} index={i} imagesCount={bodyFiles.length} onLoad={onImageLoad} onUnmount={onImageRemove} />;
+            let el = <Img key={f.name + f.size + f.lastModified} file={f} onClick={onClick} index={i} imagesCount={bodyFiles.length} onLoad={onImageLoad} />;
             if (acc.imageColumns.length < 2) {
                 acc.imageColumns.push([el]);
             } else if (i === 2) {
