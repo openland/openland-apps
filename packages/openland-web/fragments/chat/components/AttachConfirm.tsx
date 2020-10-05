@@ -260,12 +260,15 @@ const Body = (props: {
     );
     let { documents, imageColumns } = bodyFiles.reduce((acc, f, i, { length }) => {
         if (isImage) {
-            let column = acc.imageColumns.reduce((y, x) => x.length === 1 ? x : y, null);
-            let el = <Img key={f.name + f.size + f.lastModified} file={f} onClick={onClick} index={i} imagesCount={bodyFiles.length} onLoad={onImageLoad} />;
+            let el = <Img key={f.name + f.size + f.lastModified} file={f} onClick={onClick} index={i} imagesCount={bodyFiles.length} onLoad={onImageLoad} onUnmount={onImageRemove} />;
             if (acc.imageColumns.length < 2) {
                 acc.imageColumns.push([el]);
-            } else if (column) {
-                column.push(el);
+            } else if (i === 2) {
+                acc.imageColumns[1].push(el);
+            } else if (i === 3) {
+                let prevLast = acc.imageColumns[1].pop();
+                acc.imageColumns[0].push(prevLast!);
+                acc.imageColumns[1].push(el);
             }
         } else {
             acc.documents.push(
