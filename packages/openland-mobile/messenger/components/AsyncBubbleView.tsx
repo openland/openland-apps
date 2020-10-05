@@ -2,8 +2,11 @@ import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { Image, Platform, Dimensions } from 'react-native';
 
-export const bubbleMaxWidth = Math.min(Dimensions.get('window').width - 74 - 12, 360);
-export const bubbleMaxWidthIncoming = Math.min(Dimensions.get('window').width - 56 - 36, 360);
+const bubbleMaxWidthTemp = Math.min(Dimensions.get('window').width - 74 - 12, 360);
+const bubbleMaxWidthIncomingTemp = Math.min(Dimensions.get('window').width - 56 - 36, 360);
+
+export const bubbleMaxWidth = bubbleMaxWidthTemp % 2 === 0 ? bubbleMaxWidthTemp : bubbleMaxWidthTemp - 1;
+export const bubbleMaxWidthIncoming = bubbleMaxWidthIncomingTemp % 2 === 0 ? bubbleMaxWidthIncomingTemp : bubbleMaxWidthIncomingTemp - 1;
 
 export const contentInsetsHorizontal = 12;
 export const contentInsetsTop = Platform.OS === 'ios' ? 6 : 7;
