@@ -567,6 +567,7 @@ query ResolvedInvite($key: String!) {
                 name
                 membersCount
                 about
+                isMine
                 isCommunity: alphaIsCommunity
             }
         }

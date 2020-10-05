@@ -30,7 +30,7 @@ const iconClass = css`
     width: 16px;
     height: 16px;
     margin-right: 8px;
-
+    flex-shrink: 0;
     svg,
     path {
         fill: var(--foregroundInverted);
