@@ -243,8 +243,8 @@ export class AsyncBubbleBorderView extends React.PureComponent<AsyncBubbleBorder
         let border: NodeRequire | undefined = BubbleBorderImage[bubbleRes];
 
         if (pilePosition) {
-            if (BubbleBorderImage[bubbleRes]) {
-                border = BubbleBorderImage[bubbleRes][pilePosition];
+            if (BubbleBorderImagePile[bubbleRes]) {
+                border = BubbleBorderImagePile[bubbleRes][pilePosition];
             } else {
                 border = require('assets/bubbles/incoming_border_center.png');
             }
