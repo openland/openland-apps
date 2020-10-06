@@ -176,15 +176,19 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
             || layout.width === maxSize && layout.height !== maxSize
         );
         let content = fileAttachements
-            .reduce((acc, file) => {
-                let column = acc.reduce((y, x) => x.length === 1 ? x : y, null);
+            .reduce((acc, file, i) => {
                 let state = this.state.downloadStates[file.fileId];
                 let path = state && state.path;
+                let el = { file, uri: path ? ('file://' + path) : file.uri };
 
                 if (acc.length < 2) {
-                    acc.push([{ file, uri: path ? ('file://' + path) : file.uri }]);
-                } else if (column) {
-                    column.push({ file, uri: path ? ('file://' + path) : file.uri });
+                    acc.push([el]);
+                } else if (i === 2) {
+                    acc[1].push(el);
+                } else if (i === 3) {
+                    let prevLast = acc[1].pop();
+                    acc[0].push(prevLast!);
+                    acc[1].push(el);
                 }
                 return acc;
             }, [] as { file: AttachType, uri: string | undefined }[][])
@@ -211,7 +215,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                                 || hasTopContent && hasBottomContent;
                             return (
                                 <ASFlex
-                                    key={file.fileId}
+                                    key={file.fileId + uri + file.key}
                                     maxWidth={width}
                                     width={width}
                                     height={height}
