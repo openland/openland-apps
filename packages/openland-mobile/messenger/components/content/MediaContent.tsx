@@ -14,6 +14,7 @@ import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { AsyncBubbleMediaView, getPilePosition } from '../AsyncBubbleMediaView';
+import { MAX_FILES_PER_MESSAGE } from 'openland-engines/messenger/MessageSender';
 
 type AttachType = FullMessage_GeneralMessage_attachments_MessageAttachmentFile & PendingAttachProps;
 
@@ -155,7 +156,7 @@ export class MediaContent extends React.PureComponent<
     }
 
     getFileAttachments() {
-        return (this.props.message.attachments?.filter(x => x.__typename === 'MessageAttachmentFile') || []).slice(0, 4) as AttachType[];
+        return (this.props.message.attachments?.filter(x => x.__typename === 'MessageAttachmentFile') || []).slice(0, MAX_FILES_PER_MESSAGE) as AttachType[];
     }
 
     render() {

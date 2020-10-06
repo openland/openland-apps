@@ -20,6 +20,7 @@ import { StickerContent } from './content/StickerContent';
 import { css, cx } from 'linaria';
 import { createSimpleSpan } from 'openland-y-utils/spans/processSpans';
 import { ImagePileContent } from './content/ImagePileContent';
+import { MAX_FILES_PER_MESSAGE } from 'openland-engines/messenger/MessageSender';
 
 type MsgAttachFile = FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { progress?: number };
 type MsgAttachRich = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
@@ -120,7 +121,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
 
     const imageAttaches = attachments.filter(
         (a) => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage,
-    ).slice(0, 4) as MsgAttachFile[];
+    ).slice(0, MAX_FILES_PER_MESSAGE) as MsgAttachFile[];
 
     const documentsAttaches = attachments.filter(
         (a) => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage,

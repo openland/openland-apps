@@ -26,7 +26,7 @@ import { AutoCompleteComponent, AutoCompleteComponentRef, useInputAutocompleteHa
 import { URickInput, URickInputInstance, URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { extractTextAndMentions } from 'openland-web/utils/convertTextAndMentions';
-import { MentionToSend } from 'openland-engines/messenger/MessageSender';
+import { MAX_FILES_PER_MESSAGE, MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { UToast } from 'openland-web/components/unicorn/UToast';
 import { useClient } from 'openland-api/useClient';
 import { RoomPico_room_PrivateRoom, RoomPico_room_SharedRoom } from 'openland-api/spacex.types';
@@ -429,7 +429,7 @@ export const showAttachConfirm = ({
         let b = f.size > MAX_FILE_SIZE;
         tooBig = tooBig || b;
         return !b;
-    }).slice(0, 4);
+    }).slice(0, MAX_FILES_PER_MESSAGE);
     let errorText = tooBig
         ? 'Files bigger than 100mb are not supported yet'
         : files.length > 4
