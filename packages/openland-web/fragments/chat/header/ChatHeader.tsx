@@ -38,7 +38,7 @@ import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { useVideoCallModal } from 'openland-web/modules/conference/CallModal';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { useToast } from 'openland-web/components/unicorn/UToast';
-import { shouldShowInviteButton } from 'openland-y-utils/shouldShowInviteButton';
+import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 import { RoomCallsMode } from 'openland-api/spacex.types';
 
 const secondary = css`
@@ -150,7 +150,8 @@ const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessage
     const { isContact } = useLocalContact(chatUser ? chatUser.id : '', chatUser ? chatUser.inContacts : false);
     const toastHandlers = useToast();
 
-    const showInviteButton = layout === 'mobile' && shouldShowInviteButton(chat);
+    const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(chat);
+    const showInviteButton = layout === 'mobile' && (canAddDirectly || canGetInviteLink);
 
     let res = new UPopperMenuBuilder();
     if (showInviteButton) {
@@ -263,7 +264,8 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
         layout === 'desktop' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true);
     const titleEmojify = isSavedMessages ? 'Saved messages' : React.useMemo(() => emoji(title), [title]);
 
-    const showInviteButton = layout === 'desktop' && shouldShowInviteButton(chat);
+    const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(chat);
+    const showInviteButton = layout === 'desktop' && (canAddDirectly || canGetInviteLink);
 
     return (
         <XView
