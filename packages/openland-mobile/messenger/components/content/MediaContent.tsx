@@ -48,13 +48,20 @@ export let layoutImage = (fileMetadata?: { imageWidth: number | null, imageHeigh
 
 const IMAGE_MIN_SIZE = 120;
 
-export class MediaContent extends React.PureComponent<MediaContentProps, { downloadState?: DownloadState, downloadStates: Record<string, DownloadState> }> {
+export class MediaContent extends React.PureComponent<
+    MediaContentProps,
+    {
+        downloadStates: Record<string, DownloadState>,
+        uploadStates: Record<string, DownloadState>
+    }
+    > {
     mounted = false;
     serverDownloadManager = false;
     constructor(props: MediaContentProps) {
         super(props);
         this.state = {
             downloadStates: {},
+            uploadStates: {}
         };
     }
 
@@ -108,8 +115,8 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 return UploadManagerInstance.watch(attach!.key!, s => {
                     if (this.mounted) {
                         this.setState(prev => ({
-                            downloadStates: {
-                                ...prev.downloadStates, [attach!!.fileId!]: {
+                            uploadStates: {
+                                ...prev.uploadStates, [attach!!.key!]: {
                                     progress: s.progress
                                 }
                             }
@@ -177,7 +184,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
         );
         let content = fileAttachements
             .reduce((acc, file, i) => {
-                let state = this.state.downloadStates[file.fileId];
+                let state = this.state.uploadStates[file.key!] || this.state.downloadStates[file.fileId];
                 let path = state && state.path;
                 let el = { file, uri: path ? ('file://' + path) : file.uri };
 
@@ -209,10 +216,11 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                                 ? layout.height
                                 : viewHeight / column.length - (column.length === 2 ? 1 : 0);
                             let position = getPilePosition(fileAttachements.length, rowIndex, columnIndex);
-                            let state = this.state.downloadStates[file.fileId];
+                            let state = this.state.uploadStates[file.key!] || this.state.downloadStates[file.fileId];
                             let hasNoRadius = hasTopContent && position && ['tl', 'tr'].includes(position)
                                 || hasBottomContent && position && ['bl', 'br'].includes(position)
                                 || hasTopContent && hasBottomContent;
+
                             return (
                                 <ASFlex
                                     key={file.fileId + uri + file.key}
