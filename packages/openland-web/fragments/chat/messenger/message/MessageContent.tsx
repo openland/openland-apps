@@ -28,6 +28,7 @@ type MsgAttachPurchase = FullMessage_GeneralMessage_attachments_MessageAttachmen
 const wrapper = css`
     flex-grow: 1;
     flex-shrink: 1;
+    overflow: hidden;
 `;
 
 const textWrapper = css`
@@ -119,7 +120,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
 
     const imageAttaches = attachments.filter(
         (a) => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage,
-    ) as MsgAttachFile[];
+    ).slice(0, 4) as MsgAttachFile[];
 
     const documentsAttaches = attachments.filter(
         (a) => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage,

@@ -697,7 +697,7 @@ export class ConversationEngine implements MessageSendHandler {
 
         let { key, filesKeys } = this.engine.sender.sendFiles({
             conversationId: this.conversationId,
-            files: files.map(x => x.file),
+            files: files.slice(0, 4).map(x => x.file),
             callback: this,
             quoted: quoted.map(q => q.id!),
             message,

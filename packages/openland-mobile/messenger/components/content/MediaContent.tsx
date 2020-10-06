@@ -155,7 +155,7 @@ export class MediaContent extends React.PureComponent<
     }
 
     getFileAttachments() {
-        return (this.props.message.attachments?.filter(x => x.__typename === 'MessageAttachmentFile') || []) as AttachType[];
+        return (this.props.message.attachments?.filter(x => x.__typename === 'MessageAttachmentFile') || []).slice(0, 4) as AttachType[];
     }
 
     render() {
