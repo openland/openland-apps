@@ -172,7 +172,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         topContent.push(<DocumentContent key="msg-document" theme={theme} compensateBubble={compensateBubble} attach={fileAttach!} message={message} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onLongPress={onLongPress} />);
     }
     if (hasReply) {
-        let replyContent = <ReplyContent key="msg-reply" isForward={hasForward} compensateBubble={compensateBubble} width={textSize} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onHashtagPress={onHashtagPress} onMediaPress={onMediaPress} onPress={onReplyPress} />;
+        let replyContent = <ReplyContent key="msg-reply" isForward={hasForward} compensateBubble={compensateBubble} width={textSize} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onHashtagPress={onHashtagPress} onMediaPress={onMediaPress} onPress={onReplyPress} onLongPress={onLongPress} />;
         if (hasForward) {
             topContent.push(replyContent);
         } else {

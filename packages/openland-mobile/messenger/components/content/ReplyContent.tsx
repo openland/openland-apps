@@ -56,13 +56,14 @@ interface ReplyContentProps {
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onPress?: (message: DataSourceMessageItem) => void;
+    onLongPress: (e: ASPressEvent) => void;
     theme: ThemeGlobal;
     isForward?: boolean;
 }
 export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
     render() {
-        let { message, maxWidth, width, compensateBubble, theme, isForward, onPress } = this.props;
+        let { message, maxWidth, width, compensateBubble, theme, isForward, onPress, onLongPress } = this.props;
 
         let lineBackgroundPatch: any;
         let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
@@ -153,6 +154,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                     backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }}
                                     backgroundPatchTintColor={bubbleForegroundTertiary}
                                     onPress={handlePress}
+                                    onLongPress={onLongPress}
                                 >
                                     <ASFlex
                                         key={'mini-context-' + m.id}
@@ -214,6 +216,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                             marginLeft={9}
                                             marginRight={paddedMargin ? 65 : undefined}
                                             onPress={handlePress}
+                                            onLongPress={onLongPress}
                                         >
                                             <RenderSpans
                                                 spans={repliedMessage.textSpans}
