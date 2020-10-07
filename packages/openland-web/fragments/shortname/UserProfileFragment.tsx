@@ -66,19 +66,19 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
     const parsedLinkedIn = findSocialShortname.linkedin(linkedin);
 
     const isMe = engine.user.id === user.id;
-    const buttonText = isBot ? 'View messages' : 'Send message';
+    const buttonText = isBot ? 'View messages' : 'Message';
 
     const joinedTitle = <>Joined <XDate value={joinDate} /></>;
 
     const leftColumn = (
         <UListHeroNew
             title={name}
-            description={<UPresence user={user}/>}
+            description={<UPresence user={user} />}
             avatar={{ photo, id, title: name }}
         >
-            {!isMe && <UButton text={buttonText} path={`/mail/${id}`} size="large" shape="square" marginRight={16}/>}
-            {isMe && <UButton text="Edit profile" path="/settings/profile" size="large" shape="square" marginRight={16} style="secondary"/>}
-           <UserActions chat={conversation} user={user} />
+            {!isMe && <UButton text={buttonText} path={`/mail/${id}`} size="large" shape="square" marginRight={16} />}
+            {isMe && <UButton text="Edit profile" path="/settings/profile" size="large" shape="square" marginRight={16} style="secondary" />}
+            <UserActions chat={conversation} user={user} />
         </UListHeroNew>
     );
 
