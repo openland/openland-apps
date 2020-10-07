@@ -49,6 +49,14 @@ export const SettingsAppearanceFragment = React.memo(() => {
         form,
     );
 
+    const featuredGroupDisplay = useField(
+        'input.featuredGroupDisplay',
+        lsGetItem('highlight_featured_chat') === 'true'
+            ? AppearanceOptions.HIGHLIGHTED
+            : AppearanceOptions.DEFAULT,
+        form,
+    );
+
     const themeField = useField(
         'input.theme',
         lsGetItem('interactive_app_theme') === 'DARK'
@@ -146,6 +154,10 @@ export const SettingsAppearanceFragment = React.memo(() => {
             'highlight_secret_chat',
             secretGroupDisplay.value === AppearanceOptions.HIGHLIGHTED ? 'true' : 'false',
         );
+        localStorage.setItem(
+            'highlight_featured_chat',
+            featuredGroupDisplay.value === AppearanceOptions.HIGHLIGHTED ? 'true' : 'false',
+        );
         localStorage.setItem('interactive_app_theme', themeField.value);
         localStorage.setItem('interactive_app_accent', accentField.value);
         themeChecker();
@@ -220,6 +232,23 @@ export const SettingsAppearanceFragment = React.memo(() => {
                     <XView marginHorizontal={-16}>
                         <RadioButtonsSelect
                             {...secretGroupDisplay.input}
+                            selectOptions={[
+                                {
+                                    value: AppearanceOptions.DEFAULT,
+                                    label: `Default`,
+                                },
+                                {
+                                    value: AppearanceOptions.HIGHLIGHTED,
+                                    label: `Highlighted`,
+                                },
+                            ]}
+                        />
+                    </XView>
+                </FormSection>
+                <FormSection title="Featured groups">
+                    <XView marginHorizontal={-16}>
+                        <RadioButtonsSelect
+                            {...featuredGroupDisplay.input}
                             selectOptions={[
                                 {
                                     value: AppearanceOptions.DEFAULT,

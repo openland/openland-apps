@@ -326,8 +326,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
         [props.hovered],
     );
 
-    const highlightSecretChat =
-        localStorage.getItem('highlight_secret_chat') === 'true' && dialog.kind === 'GROUP' && !isPremium;
+    const highlightSecretChat = dialog.kind === 'GROUP' && !isPremium && localStorage.getItem('highlight_secret_chat') === 'true';
+    const highlightFeaturedChat = dialog.featured && localStorage.getItem('highlight_featured_chat') === 'true';
 
     return (
         <div className="x" ref={containerRef} onMouseOver={props.onMouseOver} onMouseMove={props.onMouseMove}>
@@ -371,7 +371,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                         )}
 
                                         <span className={dialogTitle}>{isSavedMessages ? 'Saved messages' : dialog.titleEmojify}</span>
-                                        {dialog.featured && (
+                                        {highlightFeaturedChat && (
                                             <div className={cx(dialogIconContainer, featuredIcon)}>
                                                 <UIcon
                                                     size={16}

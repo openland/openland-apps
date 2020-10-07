@@ -139,15 +139,15 @@ const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
                     size="large"
                 />
             ) : (
-                <UIconButton
-                    icon={<PhoneIcon />}
-                    onClick={() => {
-                        calls.joinCall(props.chat.id);
-                        showVideoCallModal();
-                    }}
-                    size="large"
-                />
-            )}
+                    <UIconButton
+                        icon={<PhoneIcon />}
+                        onClick={() => {
+                            calls.joinCall(props.chat.id);
+                            showVideoCallModal();
+                        }}
+                        size="large"
+                    />
+                )}
         </div>
     );
 };
@@ -277,8 +277,8 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     const path = isSavedMessages
         ? `/mail/${chat.id}/shared`
         : chat.__typename === 'PrivateRoom'
-        ? `/${chat.user.shortname || chat.user.id}`
-        : `/group/${chat.id}`;
+            ? `/${chat.user.shortname || chat.user.id}`
+            : `/group/${chat.id}`;
     const showCallButton =
         layout === 'desktop' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true);
     const titleEmojify = isSavedMessages
@@ -287,6 +287,8 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
 
     const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(chat);
     const showInviteButton = layout === 'desktop' && (canAddDirectly || canGetInviteLink);
+
+    const highlightFeaturedChat = chat.__typename === 'SharedRoom' && chat.featured && localStorage.getItem('highlight_featured_chat') === 'true';
 
     return (
         <XView
@@ -354,7 +356,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                                         </span>
                                     )}
                             </span>
-                            {chat.__typename === 'SharedRoom' && chat.featured && (
+                            {highlightFeaturedChat && (
                                 <div className={featuredIcon}>
                                     <UIcon icon={<IcFeatured />} color="var(--accentNegative)" />
                                 </div>
