@@ -26,11 +26,10 @@ RCT_EXPORT_VIEW_PROPERTY(animated, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(overscrollCompensation, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(onScroll, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(applyModes, NSArray)
-RCT_EXPORT_VIEW_PROPERTY(ignoreKeyboard, BOOL)
 @end
 
 @interface RCT_EXTERN_MODULE(RNAsyncKeyboardViewManager, RCTViewManager)
-RCT_EXPORT_VIEW_PROPERTY(disableTransform, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(overrideTransform, CGFloat)
 @end
 
 @interface RCT_EXTERN_MODULE(RNAsyncKeyboardContextViewManager, RCTViewManager)

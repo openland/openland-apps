@@ -1,40 +1,32 @@
 import * as React from 'react';
 import { View, TextInput } from 'react-native';
 import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar';
+import { SDevice } from 'react-native-s/SDevice';
+import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { MessageInputBarProps, MessageInputInner } from './MessageInputInner';
-import { ASKeyboardTracker } from 'react-native-async-view/ASKeyboardTracker';
 
-export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & { reloadButton?: any, useTracker?: boolean }, ref: React.RefObject<TextInput>) => {
+export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & { reloadButton?: any, overrideTransform?: number }, ref: React.RefObject<TextInput>) => {
     let theme = React.useContext(ThemeContext);
 
-    const Wrapper = props.useTracker ? ASKeyboardTracker : ZKeyboardAwareBar;
-
     return (
-        <>
+        <ZKeyboardAwareBar overrideTransform={props.overrideTransform}>
             {props.reloadButton}
-            <Wrapper disableTransform={!!props.useTracker}>
-                <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-                    {props.suggestions && (
-                        <View style={{ backgroundColor: theme.backgroundPrimary, position: 'absolute', bottom: '100%', left: 0, right: 0 }}>
-                            {props.suggestions}
-                        </View>
-                    )}
+            {props.suggestions && (
+                <ZBlurredView intensity="normal" style={{ position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: SDevice.safeArea.bottom }}>
+                    {props.suggestions}
+                </ZBlurredView>
+            )}
 
-                    {props.topView && (
-                        <View backgroundColor={theme.backgroundPrimary}>
-                            {props.topView}
-                        </View>
-                    )}
+            <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+                {!!props.topView && (
+                    <View marginBottom={-8}>
+                        {props.topView}
+                    </View>
+                )}
 
-                    <MessageInputInner
-                        {...props}
-                        theme={theme}
-                        ref={ref}
-                        stickerKeyboardShown={props.stickerKeyboardShown}
-                    />
-                </View>
-            </Wrapper>
-        </>
+                <MessageInputInner {...props} theme={theme} ref={ref} stickerKeyboardShown={props.stickerKeyboardShown} />
+            </View>
+        </ZKeyboardAwareBar>
     );
 });

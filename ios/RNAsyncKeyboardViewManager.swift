@@ -62,7 +62,7 @@ class RNAsyncKeyboardView: RCTView {
   var keyboardHeight: CGFloat = 0.0
   var keyboardHeightWithAccessory: CGFloat = 0.0
   var keyboardContext: RNAsyncKeyboardContextView?
-  var disableTransform: Bool = false
+  var overrideTransform: CGFloat = -1
   
   init() {
     super.init(frame: CGRect.zero)
@@ -79,8 +79,13 @@ class RNAsyncKeyboardView: RCTView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  @objc public func setDisableTransform(_ disableTransform: Bool) {
-    self.disableTransform = disableTransform
+  @objc public func setOverrideTransform(_ overrideTransform: CGFloat) {
+    self.overrideTransform = overrideTransform
+    if self.overrideTransform >= 0 {
+      self.transform = CGAffineTransform(translationX: 0, y: -self.overrideTransform)
+    } else {
+      self.transform = CGAffineTransform(translationX: 0, y: -self.keyboardHeight)
+    }
   }
   
   //
@@ -99,7 +104,7 @@ class RNAsyncKeyboardView: RCTView {
     if w == nil || kbview == nil {
       if self.keyboardHeight != 0 {
         self.keyboardHeight = 0
-        if !self.disableTransform {
+        if self.overrideTransform < 0 {
           self.transform = CGAffineTransform(translationX: 0, y: 0)
         }
       }
@@ -126,7 +131,7 @@ class RNAsyncKeyboardView: RCTView {
     
       if self.keyboardHeight != height {
         self.keyboardHeight = height
-        if !self.disableTransform {
+        if self.overrideTransform < 0 {
           self.transform = CGAffineTransform(translationX: 0, y: -height)
         }
       }

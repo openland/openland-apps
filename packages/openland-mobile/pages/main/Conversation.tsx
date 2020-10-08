@@ -498,8 +498,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 flexBasis: 1,
                                 flexShrink: 0,
                                 flexDirection: 'column',
-                                paddingBottom: (this.state.stickerKeyboardShown ? this.stickerKeyboardHeight : this.state.keyboardHeight )
-                                             + (Platform.OS === 'ios' ? SDevice.safeArea.bottom : 0)
+                                paddingBottom: this.state.stickerKeyboardShown ? this.stickerKeyboardHeight : (Platform.OS === 'android' ? this.state.keyboardHeight : 0)
                             }}
                         >
                             <ConversationView inverted={true} engine={this.engine} />
@@ -530,7 +529,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     canSubmit={canSubmit}
                                     onStickerKeyboardButtonPress={this.state.keyboardOpened || this.state.stickerKeyboardShown ? this.handleStickerKeyboardButtonPress : undefined}
                                     stickerKeyboardShown={this.state.stickerKeyboardShown}
-                                    useTracker={true}
+                                    overrideTransform={this.state.stickerKeyboardShown ? (this.stickerKeyboardHeight + 0) : -1}
                                 />
                             )}
                             {!showInputBar && reloadButton}
