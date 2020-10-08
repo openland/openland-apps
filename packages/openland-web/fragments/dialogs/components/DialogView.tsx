@@ -107,10 +107,11 @@ const mutedIcon = css`
 const featuredIcon = css`
     margin-left: 4px;
     margin-top: 0;
+    display: var(--featured-icon-display);
 `;
 
 const highlightSecretChatColor = css`
-    color: var(--accentPositive);
+    color: var(--secret-chat-title-color);
 `;
 
 const dialogDateContent = css`
@@ -211,7 +212,8 @@ const replyIconStyle = css`
 
 const lockContainer = css`
    margin-right: 3px;
-   opacity: 0.72; 
+   opacity: 0.72;
+   display: var(--secret-chat-icon-display);
 `;
 
 interface DialogViewProps {
@@ -326,8 +328,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
         [props.hovered],
     );
 
-    const highlightSecretChat = dialog.kind === 'GROUP' && !isPremium && localStorage.getItem('highlight_secret_chat') === 'true';
-    const highlightFeaturedChat = dialog.featured && localStorage.getItem('highlight_featured_chat') === 'true';
+    const highlightSecretChat = dialog.kind === 'GROUP' && !isPremium;
+    const highlightFeaturedChat = dialog.featured;
 
     return (
         <div className="x" ref={containerRef} onMouseOver={props.onMouseOver} onMouseMove={props.onMouseMove}>

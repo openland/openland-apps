@@ -29,7 +29,7 @@ const listItemWrapper = css`
 `;
 
 const featuredIcon = css`
-    display: flex;
+    display: var(--featured-icon-display);
     flex-direction: row;
     align-items: center;
     justify-content: center;

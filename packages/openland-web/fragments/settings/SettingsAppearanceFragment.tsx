@@ -2,7 +2,6 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { RadioButtonsSelect } from './components/RadioButtonsSelect';
 import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
 import { UHeader } from 'openland-unicorn/UHeader';
@@ -10,6 +9,7 @@ import { Page } from 'openland-unicorn/Page';
 import { useTheme } from 'openland-x-utils/useTheme';
 import { ThemeSelect } from './components/ThemeSelect';
 import { AccentSelect } from './components/AccentSelect';
+import { UCheckboxFiled } from 'openland-web/components/unicorn/UCheckbox';
 
 export enum AppearanceOptions {
     DEFAULT = 'DEFAULT',
@@ -43,17 +43,13 @@ export const SettingsAppearanceFragment = React.memo(() => {
 
     const secretGroupDisplay = useField(
         'input.secretGroupDisplay',
-        lsGetItem('highlight_secret_chat') === 'true'
-            ? AppearanceOptions.HIGHLIGHTED
-            : AppearanceOptions.DEFAULT,
+        lsGetItem('highlight_featured_chat') === 'true',
         form,
     );
-
+    const featuredGroupDisplayStored = lsGetItem('highlight_featured_chat');
     const featuredGroupDisplay = useField(
         'input.featuredGroupDisplay',
-        lsGetItem('highlight_featured_chat') === 'true'
-            ? AppearanceOptions.HIGHLIGHTED
-            : AppearanceOptions.DEFAULT,
+        featuredGroupDisplayStored === null || featuredGroupDisplayStored === 'true',
         form,
     );
 
@@ -149,19 +145,33 @@ export const SettingsAppearanceFragment = React.memo(() => {
         }
     };
 
+    const otherChecker = () => {
+        if (lsGetItem('highlight_secret_chat') === 'true') {
+            document.documentElement.classList.add('highlight-secret-chat');
+        } else {
+            document.documentElement.classList.remove('highlight-secret-chat');
+        }
+        if (lsGetItem('highlight_featured_chat') === 'true') {
+            document.documentElement.classList.remove('hide-featured-icon');
+        } else {
+            document.documentElement.classList.add('hide-featured-icon');
+        }
+    };
+
     React.useEffect(() => {
         localStorage.setItem(
             'highlight_secret_chat',
-            secretGroupDisplay.value === AppearanceOptions.HIGHLIGHTED ? 'true' : 'false',
+            secretGroupDisplay.value ? 'true' : 'false',
         );
         localStorage.setItem(
             'highlight_featured_chat',
-            featuredGroupDisplay.value === AppearanceOptions.HIGHLIGHTED ? 'true' : 'false',
+            featuredGroupDisplay.value ? 'true' : 'false',
         );
         localStorage.setItem('interactive_app_theme', themeField.value);
         localStorage.setItem('interactive_app_accent', accentField.value);
         themeChecker();
         accentChecker();
+        otherChecker();
     });
 
     return (
@@ -228,37 +238,17 @@ export const SettingsAppearanceFragment = React.memo(() => {
                         ]}
                     />
                 </FormSection>
-                <FormSection title="Secret groups">
+                <FormSection title="Other">
                     <XView marginHorizontal={-16}>
-                        <RadioButtonsSelect
-                            {...secretGroupDisplay.input}
-                            selectOptions={[
-                                {
-                                    value: AppearanceOptions.DEFAULT,
-                                    label: `Default`,
-                                },
-                                {
-                                    value: AppearanceOptions.HIGHLIGHTED,
-                                    label: `Highlighted`,
-                                },
-                            ]}
+                        <UCheckboxFiled
+                            label="Highlight secret groups"
+                            field={secretGroupDisplay}
+                            asSwitcher={true}
                         />
-                    </XView>
-                </FormSection>
-                <FormSection title="Featured groups">
-                    <XView marginHorizontal={-16}>
-                        <RadioButtonsSelect
-                            {...featuredGroupDisplay.input}
-                            selectOptions={[
-                                {
-                                    value: AppearanceOptions.DEFAULT,
-                                    label: `Default`,
-                                },
-                                {
-                                    value: AppearanceOptions.HIGHLIGHTED,
-                                    label: `Highlighted`,
-                                },
-                            ]}
+                        <UCheckboxFiled
+                            label="Show group featured icon"
+                            field={featuredGroupDisplay}
+                            asSwitcher={true}
                         />
                     </XView>
                 </FormSection>

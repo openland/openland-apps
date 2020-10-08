@@ -109,6 +109,10 @@ html {
     --tintGreyHover: #81848A;
     --tintGreyActive: #5C5F66;
     --tintInverted: rgba(255, 255, 255, 0.32);
+
+    --featured-icon-display: flex;
+    --secret-chat-title-color: var(--foregroundPrimary);
+    --secret-chat-icon-display: none;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -298,4 +302,13 @@ html.grey:not(.landing) {
     --accentMuted: #71747A;
     --accentMutedHover: #71747A;
     --accentMutedActive: #71747A;
+}
+
+html.hide-featured-icon:not(.landing) {
+    --featured-icon-display: none;
+}
+
+html.highlight-secret-chat:not(.landing) {
+    --secret-chat-title-color: var(--accentPositive);
+    --secret-chat-icon-display: flex;
 }

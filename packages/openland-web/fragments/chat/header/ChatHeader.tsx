@@ -52,7 +52,7 @@ const secondaryAccent = css`
 `;
 
 const featuredIcon = css`
-    display: flex;
+    display: var(--featured-icon-display);
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -288,7 +288,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(chat);
     const showInviteButton = layout === 'desktop' && (canAddDirectly || canGetInviteLink);
 
-    const highlightFeaturedChat = chat.__typename === 'SharedRoom' && chat.featured && localStorage.getItem('highlight_featured_chat') === 'true';
+    const highlightFeaturedChat = chat.__typename === 'SharedRoom' && chat.featured;
 
     return (
         <XView

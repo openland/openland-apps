@@ -79,6 +79,16 @@ export const AppContainer = (props: { children: any }) => {
         if (localStorage.getItem('interactive_app_accent') === 'BLUE') {
             removeAllAccentClasses();
         }
+        if (localStorage.getItem('highlight_featured_chat') === 'true') {
+            document.documentElement.classList.add('hide-featured-icon');
+        } else {
+            document.documentElement.classList.remove('hide-featured-icon');
+        }
+        if (localStorage.getItem('highlight_secret_chat') === 'true') {
+            document.documentElement.classList.add('highlight-secret-chat');
+        } else {
+            document.documentElement.classList.remove('highlight-secret-chat');
+        }
     }, []);
 
     if (!data) {
