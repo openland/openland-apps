@@ -66,7 +66,7 @@ const BannerContainer = (props: { onClosePress?: () => void; banner?: any }) => 
         <div className={bannerContainerClass}>
             <div className={bannerContentWrapper}>
                 <div className={bannerCloseClass}>
-                    <UIconButton size="xsmall" icon={<IcClose />} color="var(--foregroundTertiary)" />
+                    <UIconButton size="xsmall" icon={<IcClose />} color="var(--foregroundTertiary)" onClick={props.onClosePress} />
                 </div>
                 {props.banner}
             </div>
