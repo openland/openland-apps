@@ -28,6 +28,7 @@ export type ThemeVariants = ThemeGlobalType | 'System';
 export type ThemeGlobalKind = {
     theme: ThemeVariants;
     accent?: AccentGlobalType;
+    displayFeaturedIcon?: boolean;
 };
 
 export type ThemeGlobal = {
@@ -124,6 +125,9 @@ export type ThemeGlobal = {
     blurType: 'dark' | 'light' | 'none';
     keyboardAppearance: 'dark' | 'light';
     statusBar: 'dark-content' | 'light-content';
+
+    // appearance settings
+    displayFeaturedIcon: boolean;
 };
 
 export type AccentGlobal = {

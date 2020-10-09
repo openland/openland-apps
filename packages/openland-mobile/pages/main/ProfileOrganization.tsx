@@ -453,7 +453,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 photo={organization.photo}
                 id={organization.id}
                 title={organization.name}
-                titleIconRight={organization.featured ? require('assets/ic-featured-16.png') : undefined}
+                titleIconRight={organization.featured && theme.displayFeaturedIcon ? require('assets/ic-featured-16.png') : undefined}
                 titleIconRightColor={theme.accentNegative}
                 subtitle={
                     (organization.isCommunity ? 'Community' : 'Organization') +

@@ -10,6 +10,7 @@ class ThemePersisterImpl {
         prepared = true;
         const storageThemeType = await AsyncStorage.getItem('app.theme.3') as ThemeVariants;
         const storageAccentType = await AsyncStorage.getItem('app.accent.3') as AccentGlobalType;
+        const storageDisplayFeaturedIcon = await AsyncStorage.getItem('app.displayFeaturedIcon.3') as 'show' | 'hide' | null;
 
         let resolvedThemeType: ThemeVariants = 'System';
         let resolvedAccentType: AccentGlobalType = 'Default';
@@ -23,10 +24,17 @@ class ThemePersisterImpl {
             resolvedAccentType = storageAccentType;
         }
 
-        ThemeController.appearance = { theme: resolvedThemeType, accent: resolvedAccentType };
+        ThemeController.appearance = {
+            theme: resolvedThemeType,
+            accent: resolvedAccentType,
+            displayFeaturedIcon: storageDisplayFeaturedIcon !== null ? storageDisplayFeaturedIcon === 'show' : undefined,
+        };
         ThemeController.watch((appearance) => {
             AsyncStorage.setItem('app.theme.3', appearance.theme);
             AsyncStorage.setItem('app.accent.3', appearance.accent || 'Default');
+            if (typeof appearance.displayFeaturedIcon !== 'undefined') {
+                AsyncStorage.setItem('app.displayFeaturedIcon.3', appearance.displayFeaturedIcon ? 'show' : 'hide');
+            }
         });
     }
 }

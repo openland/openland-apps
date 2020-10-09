@@ -92,4 +92,6 @@ export const ThemeDark: ThemeGlobal = {
     blurType: 'none',
     keyboardAppearance: 'dark',
     statusBar: 'light-content',
+
+    displayFeaturedIcon: true,
 };
