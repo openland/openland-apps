@@ -11,7 +11,7 @@ export const ZVideoComponent = React.memo((props: { uuid: string, name: string, 
     React.useEffect(() => {
         if (completed && path.length <= 0) {
             (async () => {
-                const filePathWithExtension = await DownloadManagerInstance.getFilePathWithRealName(uuid, null, name);
+                const filePathWithExtension = await DownloadManagerInstance.getFilePathWithRealName(uuid, null, encodeURIComponent(name));
 
                 if (filePathWithExtension) {
                     setPath(filePathWithExtension);
@@ -23,7 +23,7 @@ export const ZVideoComponent = React.memo((props: { uuid: string, name: string, 
     return (
         <View flexGrow={1}>
             {path.length > 0 && completed && (
-                <Video source={{ uri: path }} style={{ flexGrow: 1 }} controls={true} />
+                <Video source={{ uri: path }} style={{ flexGrow: 1 }} controls={true} playWhenInactive={true} />
             )}
             {(path.length <= 0 || !completed) && (
                 <View flexGrow={1} alignItems="center" justifyContent="center">
