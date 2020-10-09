@@ -235,7 +235,7 @@ const MentionedOtherUsersPopperContent = React.memo(
                             {findSpans.users.map((user, i) => (
                                 <XView
                                     key={`user-${user.name}-${i}`}
-                                    hoverBackgroundColor="var(--backgroundPrimaryHover)"
+                                    hoverBackgroundColor="var(--backgroundTertiaryTrans)"
                                     cursor="pointer"
                                     path={`/${user.shortname || user.id}`}
                                     onClick={() => props.hide()}
