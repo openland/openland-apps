@@ -27,9 +27,6 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
         });
     }, []);
     const [displayFeaturedIcon, setDisplayFeaturedIcon] = React.useState(theme.displayFeaturedIcon);
-    React.useEffect(() => {
-        setDisplayFeaturedIcon(theme.displayFeaturedIcon);
-    }, [theme.displayFeaturedIcon]);
 
     return (
         <>
@@ -63,10 +60,15 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                 <ZListGroup header="Other">
                     <ZListItem
                         text="Show group featured icon"
-                        onToggle={(value) => handleChange({ theme: currentTheme, displayFeaturedIcon: value })}
+                        onToggle={(value) => {
+                            setDisplayFeaturedIcon(x => !x);
+                            handleChange({ theme: currentTheme, displayFeaturedIcon: value });
+                        }}
                         toggle={displayFeaturedIcon}
                     />
                 </ZListGroup>
+
+                <View height={16} />
             </SScrollView>
         </>
     );
