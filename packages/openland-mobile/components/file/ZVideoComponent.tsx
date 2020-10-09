@@ -5,13 +5,13 @@ import Video from 'react-native-video';
 import { LoaderSpinner } from '../LoaderSpinner';
 
 export const ZVideoComponent = React.memo((props: { uuid: string, name: string, completed: boolean }) => {
-    const { uuid, name, completed } = props;
+    const { uuid, completed } = props;
     const [path, setPath] = React.useState('');
 
     React.useEffect(() => {
         if (completed && path.length <= 0) {
             (async () => {
-                const filePathWithExtension = await DownloadManagerInstance.getFilePathWithRealName(uuid, null, encodeURIComponent(name));
+                const filePathWithExtension = await DownloadManagerInstance.getFilePathWithRealName(uuid, null, `${uuid}.mp4`);
 
                 if (filePathWithExtension) {
                     setPath(filePathWithExtension);
