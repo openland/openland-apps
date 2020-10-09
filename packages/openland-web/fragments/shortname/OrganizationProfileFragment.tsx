@@ -8,7 +8,7 @@ import { PrivateCommunityView } from 'openland-web/fragments/settings/components
 import { OrgMember } from 'openland-y-utils/members/EntityMembersManager';
 import { ProfileLayout } from 'openland-web/components/ProfileLayout';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { UListHeroNew } from 'openland-web/components/unicorn/UListHeroNew';
+import { UListHero } from 'openland-web/components/unicorn/UListHero';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
@@ -90,7 +90,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
 
     const leftColumn = (
         <>
-            <UListHeroNew
+            <UListHero
                 title={name}
                 description={isCommunity ? 'Community' : 'Organization'}
                 avatar={{ photo, id, title: name }}
@@ -109,7 +109,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                     marginRight={16}
                 />
                 <OrganizationActions organization={organization} onLeave={handleRemoveMember} />
-            </UListHeroNew>
+            </UListHero>
         </>
     );
 

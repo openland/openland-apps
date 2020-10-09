@@ -13,7 +13,7 @@ import { GroupActions } from './components/GroupActions';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { NotFound } from 'openland-unicorn/NotFound';
-import { UListHeroNew } from 'openland-web/components/unicorn/UListHeroNew';
+import { UListHero } from 'openland-web/components/unicorn/UListHero';
 import { ProfileLayout } from 'openland-web/components/ProfileLayout';
 import { ShowMoreText } from 'openland-web/fragments/shortname/components/ShowMoreText';
 import { ProfileTabsFragment } from 'openland-web/fragments/shortname/components/ProfileTabsFragment';
@@ -80,7 +80,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     }
 
     const leftColumn = (
-        <UListHeroNew
+        <UListHero
             title={title}
             titleIcon={isPremium ? <PremiumBadge /> : undefined}
             titleRightIcon={
@@ -101,7 +101,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                 marginRight={16}
             />
             <GroupActions group={group} />
-        </UListHeroNew>
+        </UListHero>
     );
 
     const rightColumn = (
