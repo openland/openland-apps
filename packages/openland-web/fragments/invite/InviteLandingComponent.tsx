@@ -21,7 +21,6 @@ import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
 import { UText } from 'openland-web/components/unicorn/UText';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
-import { formatError } from 'openland-y-forms/errorHandling';
 import {
     AuthSidebarComponent,
     AuthMobileHeader,
@@ -531,11 +530,10 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                             inviteKey: key,
                         });
                     } catch (e) {
-                        const error = formatError(e);
                         if (!!toast) {
                             toast.show({
                                 type: 'failure',
-                                text: error
+                                text: 'You don’t have an access'
                             });
                         }
                         return;
