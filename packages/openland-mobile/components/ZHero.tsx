@@ -28,10 +28,17 @@ const styles = StyleSheet.create({
     } as TextStyle,
     titleBox: {
         flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'flex-start'
+    } as ViewStyle,
+    titleIconBox: {
+        justifyContent: 'center',
+        height: 26
     } as ViewStyle,
     title: {
         ...TextStyles.Title2,
+        flexShrink: 1,
+        textAlign: 'center'
     } as TextStyle,
     subtitleBox: {
         marginTop: 4,
@@ -100,12 +107,16 @@ export const ZHero = React.memo<ZHeroProps>((props) => {
             </View>
 
             <View style={styles.titleBox}>
-                {titleIcon && <Image source={titleIcon} style={{ width: 20, height: 20, marginRight: 4, alignSelf: 'center', tintColor: titleColor || theme.foregroundPrimary }} />}
-                {titleIconElement}
-                <Text style={[{ color: titleColor || theme.foregroundPrimary }, styles.title]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
+                <View style={styles.titleIconBox}>
+                    {titleIcon && <Image source={titleIcon} style={{ width: 20, height: 20, marginRight: 4, alignSelf: 'center', tintColor: titleColor || theme.foregroundPrimary }} />}
+                    {titleIconElement}
+                </View>
+                <Text style={[{ color: titleColor || theme.foregroundPrimary }, styles.title]} numberOfLines={2} ellipsizeMode="tail" allowFontScaling={false}>
                     {title}
                 </Text>
-                {titleIconRight && <Image source={titleIconRight} style={{ width: 16, height: 16, marginLeft: 4, marginTop: 2, alignSelf: 'center', tintColor: titleIconRightColor || theme.foregroundPrimary }} />}
+                <View style={styles.titleIconBox}>
+                    {titleIconRight && <Image source={titleIconRight} style={{ width: 16, height: 16, marginLeft: 4, marginTop: 2, alignSelf: 'center', tintColor: titleIconRightColor || theme.foregroundPrimary }} />}
+                </View>
             </View>
 
             {!!subtitle && (
