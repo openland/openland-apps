@@ -15,6 +15,7 @@ import {
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
     StickerFragment,
     TypingType,
+    MessageAttachments_MessageAttachmentFile,
 } from 'openland-api/spacex.types';
 import { trackEvent } from 'openland-x-analytics';
 import { throttle } from 'openland-y-utils/timer';
@@ -43,6 +44,7 @@ import { extractTextAndMentions, convertToInputValue } from 'openland-web/utils/
 import { convertServerSpan } from 'openland-y-utils/spans/utils';
 import { useChatMessagesActionsState, useChatMessagesActionsMethods, ConversationActionsState, ChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 import { isFileImage } from 'openland-web/utils/UploadCareUploading';
+import { XAxis } from 'recharts';
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
@@ -368,11 +370,13 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         ) {
             if (text.length > 0) {
                 messagesActionsMethods.clear();
+                let fileAttachments = (actionMessage.attachments?.filter(x => x.__typename === 'MessageAttachmentFile') || []) as MessageAttachments_MessageAttachmentFile[];
                 await this.conversation!.engine.client.mutateEditMessage({
                     messageId: actionMessage.id!,
                     message: text,
                     mentions: mentionsPrepared,
                     spans: findSpans(text),
+                    fileAttachments: fileAttachments.map(x => ({ fileId: x.fileId })),
                 });
             }
         } else {
