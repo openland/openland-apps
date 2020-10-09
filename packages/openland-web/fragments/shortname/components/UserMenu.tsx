@@ -11,7 +11,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useRole } from 'openland-x-permissions/XWithRole';
 import BlockUserModal from 'openland-web/fragments/admin/BlockUserModalFragment';
 import { useClient } from 'openland-api/useClient';
-import { UNotificationsSwitchNew } from 'openland-web/components/unicorn/templates/UNotificationsSwitchNew';
+import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/UNotificationsSwitch';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 
 import CopyIcon from 'openland-icons/s/ic-link-24.svg';
@@ -38,7 +38,7 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
 
     if (engine.user.id !== id && chat?.__typename === 'PrivateRoom') {
         builder.element(() =>
-            <UNotificationsSwitchNew
+            <UNotificationsSwitch
                 id={chat.id}
                 mute={!!chat.settings.mute}
             />

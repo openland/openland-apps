@@ -10,7 +10,7 @@ import { useClient } from 'openland-api/useClient';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { useToast } from 'openland-web/components/unicorn/UToast';
-import { UNotificationsSwitchNew } from 'openland-web/components/unicorn/templates/UNotificationsSwitchNew';
+import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/UNotificationsSwitch';
 import { ProfileLayoutContext } from 'openland-web/components/ProfileLayout';
 
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
@@ -28,7 +28,7 @@ export const GroupActions = React.memo(({ group }: GroupActions) => {
     const { compactView } = React.useContext(ProfileLayoutContext);
 
     if (compactView) {
-        return  <GroupMenu group={group} />;
+        return <GroupMenu group={group} />;
     }
 
     const tabRouter = useTabRouter();
@@ -71,14 +71,14 @@ export const GroupActions = React.memo(({ group }: GroupActions) => {
 
     return (
         <XView marginTop={16} marginHorizontal={-16}>
-            <UNotificationsSwitchNew id={id} mute={!!settings.mute} marginLeft={16} />
-            <UListItem title="Copy link" useRadius={true} icon={<CopyIcon />} onClick={onCopyLinkClick}/>
+            <UNotificationsSwitch id={id} mute={!!settings.mute} marginLeft={16} />
+            <UListItem title="Copy link" useRadius={true} icon={<CopyIcon />} onClick={onCopyLinkClick} />
 
-            {canEdit && <UListItem title={editTitle} useRadius={true} icon={<SettingsIcon/>} onClick={onEditClick}/>}
-            <UListItem title={`Leave ${typeString}`} useRadius={true} icon={<LeaveIcon/>} onClick={onLeaveClick}/>
+            {canEdit && <UListItem title={editTitle} useRadius={true} icon={<SettingsIcon />} onClick={onEditClick} />}
+            <UListItem title={`Leave ${typeString}`} useRadius={true} icon={<LeaveIcon />} onClick={onLeaveClick} />
 
             <XWithRole role="super-admin">
-                <UListItem title={`Delete ${typeString}`} useRadius={true} icon={<DeleteIcon />} onClick={onDeleteClick}/>
+                <UListItem title={`Delete ${typeString}`} useRadius={true} icon={<DeleteIcon />} onClick={onDeleteClick} />
             </XWithRole>
         </XView>
     );

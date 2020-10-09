@@ -10,7 +10,7 @@ import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuB
 import { useClient } from 'openland-api/useClient';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { useRole } from 'openland-x-permissions/XWithRole';
-import { UNotificationsSwitchNew } from 'openland-web/components/unicorn/templates/UNotificationsSwitchNew';
+import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/UNotificationsSwitch';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
@@ -31,7 +31,7 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
     const typeString = isChannel ? 'channel' : 'group';
     const builder = new UPopperMenuBuilder();
 
-    builder.element(() => <UNotificationsSwitchNew id={id} mute={!!settings.mute} marginLeft={16} />);
+    builder.element(() => <UNotificationsSwitch id={id} mute={!!settings.mute} marginLeft={16} />);
 
     builder.item({
         title: 'Copy link',

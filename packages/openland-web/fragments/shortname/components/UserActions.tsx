@@ -12,7 +12,7 @@ import { useClient } from 'openland-api/useClient';
 import { ProfileLayoutContext } from 'openland-web/components/ProfileLayout';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { UNotificationsSwitchNew } from 'openland-web/components/unicorn/templates/UNotificationsSwitchNew';
+import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/UNotificationsSwitch';
 
 import CopyIcon from 'openland-icons/s/ic-link-24.svg';
 import SpamIcon from 'openland-icons/s/ic-flag.svg';
@@ -32,7 +32,7 @@ export const UserActions = React.memo(({ user, chat }: UserMenuProps) => {
     const { compactView } = React.useContext(ProfileLayoutContext);
 
     if (compactView) {
-        return  <UserMenu chat={chat} user={user} />;
+        return <UserMenu chat={chat} user={user} />;
     }
 
     const toastHandlers = useToast();
@@ -78,27 +78,27 @@ export const UserActions = React.memo(({ user, chat }: UserMenuProps) => {
     return (
         <XView marginTop={16} marginHorizontal={-16}>
             {engine.user.id !== id && chat && chat.__typename === 'PrivateRoom' && (
-                <UNotificationsSwitchNew
+                <UNotificationsSwitch
                     id={chat.id}
                     mute={!!chat.settings.mute}
                 />
             )}
 
             {userInContacts && (
-                <UListItem title="Remove from contacts" useRadius={true} icon={<RemoveContactIcon />} onClick={onRemoveFromContactsClick}/>
+                <UListItem title="Remove from contacts" useRadius={true} icon={<RemoveContactIcon />} onClick={onRemoveFromContactsClick} />
             )}
 
             {userNotInContacts && (
-                <UListItem title="Add to contacts" useRadius={true} icon={<AddContactIcon />} onClick={onAddContactClick}/>
+                <UListItem title="Add to contacts" useRadius={true} icon={<AddContactIcon />} onClick={onAddContactClick} />
             )}
 
-            {isMe && <UListItem title="Saved messages" useRadius={true} path={`/mail/${id}`} icon={<BookmarkIcon />}/>}
-            <UListItem title="Copy link" useRadius={true} icon={<CopyIcon />} onClick={onCopyLinkClick}/>
+            {isMe && <UListItem title="Saved messages" useRadius={true} path={`/mail/${id}`} icon={<BookmarkIcon />} />}
+            <UListItem title="Copy link" useRadius={true} icon={<CopyIcon />} onClick={onCopyLinkClick} />
             <XWithRole role="super-admin">
-                {!isMe && <UListItem title="Report spam" useRadius={true} icon={<SpamIcon />}/>}
+                {!isMe && <UListItem title="Report spam" useRadius={true} icon={<SpamIcon />} />}
             </XWithRole>
             <XWithRole role="super-admin">
-                <UListItem title="Delete user" useRadius={true} onClick={onDeleteUserClick} icon={<DeleteIcon />}/>
+                <UListItem title="Delete user" useRadius={true} onClick={onDeleteUserClick} icon={<DeleteIcon />} />
             </XWithRole>
         </XView>
     );
