@@ -71,6 +71,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
         membersCount,
         owner,
         featured,
+        isOwner,
     } = organization;
 
     const [members, setMembers] = React.useState<OrgMember[]>([]);
@@ -102,12 +103,14 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                     ) : undefined
                 }
             >
-                <UButton
-                    text="Message Admin"
-                    size="large"
-                    path={'/mail/' + owner.id}
-                    marginRight={16}
-                />
+                {!isOwner && (
+                    <UButton
+                        text="Message Admin"
+                        size="large"
+                        path={'/mail/' + owner.id}
+                        marginRight={16}
+                    />
+                )}
                 <OrganizationActions organization={organization} onLeave={handleRemoveMember} />
             </UListHero>
         </>
