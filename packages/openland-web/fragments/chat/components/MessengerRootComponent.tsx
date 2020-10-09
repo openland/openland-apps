@@ -44,7 +44,6 @@ import { extractTextAndMentions, convertToInputValue } from 'openland-web/utils/
 import { convertServerSpan } from 'openland-y-utils/spans/utils';
 import { useChatMessagesActionsState, useChatMessagesActionsMethods, ConversationActionsState, ChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 import { isFileImage } from 'openland-web/utils/UploadCareUploading';
-import { XAxis } from 'recharts';
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
