@@ -100,10 +100,11 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                         };
 
                         if (repliedMessage) {
-                            const attachFile = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+                            const attachFiles = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageAttachmentFile') as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] | undefined;
                             const attachRich = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
                             const sticker = m.sticker && m.sticker.__typename === 'ImageSticker' ? m.sticker : undefined;
                             const attachPurchase = getAttachPurchase(repliedMessage);
+                            const imageFiles = attachFiles?.filter(x => x.fileMetadata.isImage);
                             let miniContent = null;
                             let miniContentSubtitle = null;
                             let miniContentColor = bubbleForegroundSecondary;
@@ -111,24 +112,24 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                             if (sticker) {
                                 miniContent = <StickerContent sticker={sticker} message={m} padded={needPaddedText} width={40} height={40} />;
                                 miniContentSubtitle = repliedMessage.fallback;
-                            } else if (attachFile && attachFile.fileMetadata.isImage && !isForward) {
+                            } else if (imageFiles && imageFiles?.length > 0 && !isForward) {
                                 miniContent = (
                                     <AsyncReplyMessageMediaView
-                                        attach={attachFile}
+                                        attachments={imageFiles}
                                         onPress={this.props.onMediaPress}
                                         message={repliedMessage}
                                         theme={theme}
                                     />
                                 );
                                 miniContentSubtitle = repliedMessage.fallback;
-                            } else if (attachFile && !attachFile.fileMetadata.isImage) {
+                            } else if (attachFiles && attachFiles.some(x => !x.fileMetadata.isImage)) {
                                 miniContent = (
                                     <AsyncReplyMessageDocumentView
-                                        attach={attachFile}
+                                        attach={attachFiles[0]}
                                         message={repliedMessage}
                                     />
                                 );
-                                miniContentSubtitle = attachFile.fileMetadata.name;
+                                miniContentSubtitle = attachFiles[0].fileMetadata.name;
                             } else if (attachRich && !isForward) {
                                 miniContent = (
                                     <AsyncReplyMessageRichAttach
@@ -199,9 +200,9 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                             )}
                                         </ASFlex>
                                     </ASFlex>
-                                    {attachFile && attachFile.fileMetadata.isImage && isForward && (
+                                    {imageFiles && imageFiles?.length > 0 && isForward && (
                                         <AsyncReplyMessageMediaView
-                                            attach={attachFile}
+                                            attachments={imageFiles}
                                             onPress={this.props.onMediaPress}
                                             message={repliedMessage}
                                             theme={theme}

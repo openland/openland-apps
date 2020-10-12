@@ -15,32 +15,41 @@ export interface AsyncMessageMediaViewProps {
     theme: ThemeGlobal;
     message: DataSourceMessageItem;
     onPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
-    attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
+    attachments: (FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string })[];
     isForward?: boolean;
 }
 
-export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessageMediaViewProps, { downloadState?: DownloadState }> {
+export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessageMediaViewProps, { downloadStates: DownloadState }> {
 
     private downloadManagerWatch?: WatchSubscription;
 
     constructor(props: AsyncMessageMediaViewProps) {
         super(props);
-        this.state = {};
+        this.state = {
+            downloadStates: {},
+        };
     }
 
-    private handlePress = (event: ASPressEvent, radius?: number) => {
+    private handlePress = (event: ASPressEvent, fileId: string, radius?: number) => {
+        let attach = this.props.attachments.find(x => x.fileId === fileId);
+        if (!attach) {
+            return;
+        }
+        let state = this.state.downloadStates[attach.fileId];
         // Ignore clicks for not-downloaded files
-        if (this.state.downloadState && this.state.downloadState.path && this.props.attach.fileMetadata.imageHeight && this.props.attach.fileMetadata.imageWidth) {
-            let w = this.props.attach.fileMetadata.imageWidth;
-            let h = this.props.attach.fileMetadata.imageHeight;
-            this.props.onPress({ imageHeight: h, imageWidth: w }, { path: this.state.downloadState.path, ...event }, radius, this.props.message.sender.name, this.props.message.date);
+        if (state && state.path && attach.fileMetadata.imageHeight && attach.fileMetadata.imageWidth) {
+            let w = attach.fileMetadata.imageWidth;
+            let h = attach.fileMetadata.imageHeight;
+            this.props.onPress({ imageHeight: h, imageWidth: w }, { path: state.path, ...event }, radius, this.props.message.sender.name, this.props.message.date);
         }
     }
 
     componentWillMount() {
-        let optimalSize = layoutMedia(this.props.attach!!.fileMetadata.imageWidth || 0, this.props.attach!!.fileMetadata.imageHeight || 0, 1024, 1024);
-        this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.attach!!.fileId!, (this.props.attach!!.fileMetadata.mimeType !== 'gif') ? optimalSize : null, (state) => {
-            this.setState({ downloadState: state });
+        this.props.attachments.forEach(attach => {
+            let optimalSize = layoutMedia(attach.fileMetadata.imageWidth || 0, attach.fileMetadata.imageHeight || 0, 1024, 1024);
+            this.downloadManagerWatch = DownloadManagerInstance.watch(attach.fileId!, (attach.fileMetadata.mimeType !== 'gif') ? optimalSize : null, (state) => {
+                this.setState(prev => ({ downloadStates: { ...prev.downloadStates, [attach.fileId]: state } }));
+            });
         });
     }
 
@@ -51,11 +60,8 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
     }
 
     render() {
-        const { theme, attach, message, isForward } = this.props;
-        let layout = isForward ? layoutMedia(this.props.attach!!.fileMetadata.imageWidth || 0, this.props.attach!!.fileMetadata.imageHeight || 0, 160, 160) : { width: 40, height: 40 };
-        let sourceUri = (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined;
+        const { theme, message, isForward } = this.props;
         let bgColor = message.isOut ? theme.outgoingForegroundTertiary : theme.incomingForegroundTertiary;
-        let sizes = { width: layout.width, height: layout.height };
         const resolved = Image.resolveAssetSource(require('assets/bg-shared-link-border.png'));
         const capInsets = { top: 12, right: 12, bottom: 12, left: 12 };
         const bgPatch = !isForward ? {
@@ -66,23 +72,38 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
             },
             backgroundPatchTintColor: theme.borderLight,
         } : {};
+        let attachments = isForward ? this.props.attachments : this.props.attachments.slice(0, 1);
         return (
             <ASFlex
-                borderRadius={8}
-                alignItems="center"
-                marginTop={isForward ? 5 : undefined}
                 marginLeft={isForward ? 9 : undefined}
-                {...sizes}
-                {...bgPatch}
+                flexDirection="column"
             >
-                <ASImage
-                    onPress={(e) => this.handlePress(e, 8)}
-                    source={{ uri: sourceUri }}
-                    borderRadius={8}
-                    backgroundColor={bgColor}
-                    isGif={attach!!.fileMetadata.imageFormat === 'GIF'}
-                    {...sizes}
-                />
+                {attachments.map((attach, i) => {
+                    let layout = isForward ? layoutMedia(attach!!.fileMetadata.imageWidth || 0, attach!!.fileMetadata.imageHeight || 0, 160, 160) : { width: 40, height: 40 };
+                    let state = this.state.downloadStates[attach.fileId];
+                    let sourceUri = state && state.path ? ('file://' + state.path) : undefined;
+                    let sizes = { width: layout.width, height: layout.height };
+
+                    return (
+                        <ASFlex
+                            key={i}
+                            borderRadius={8}
+                            alignItems="center"
+                            marginTop={isForward ? 5 : undefined}
+                            {...sizes}
+                            {...bgPatch}
+                        >
+                            <ASImage
+                                onPress={(e) => this.handlePress(e, attach.fileId, 8)}
+                                source={{ uri: sourceUri }}
+                                borderRadius={8}
+                                backgroundColor={bgColor}
+                                isGif={attach!!.fileMetadata.imageFormat === 'GIF'}
+                                {...sizes}
+                            />
+                        </ASFlex>
+                    );
+                })}
             </ASFlex>
         );
     }
