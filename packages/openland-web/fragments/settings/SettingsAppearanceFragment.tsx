@@ -52,6 +52,12 @@ export const SettingsAppearanceFragment = React.memo(() => {
         featuredGroupDisplayStored === null || featuredGroupDisplayStored === 'true',
         form,
     );
+    const largeEmojiStored = lsGetItem('settings_large_emoji');
+    const largeEmojiField = useField(
+        'input.largeEmojiField',
+        largeEmojiStored === null || largeEmojiStored === 'true',
+        form,
+    );
 
     const themeField = useField(
         'input.theme',
@@ -156,6 +162,11 @@ export const SettingsAppearanceFragment = React.memo(() => {
         } else {
             document.documentElement.classList.add('hide-featured-icon');
         }
+        if (lsGetItem('settings_large_emoji') === 'true') {
+            document.documentElement.classList.remove('regular-emoji-size');
+        } else {
+            document.documentElement.classList.add('regular-emoji-size');
+        }
     };
 
     React.useEffect(() => {
@@ -166,6 +177,10 @@ export const SettingsAppearanceFragment = React.memo(() => {
         localStorage.setItem(
             'highlight_featured_chat',
             featuredGroupDisplay.value ? 'true' : 'false',
+        );
+        localStorage.setItem(
+            'settings_large_emoji',
+            largeEmojiField.value ? 'true' : 'false',
         );
         localStorage.setItem('interactive_app_theme', themeField.value);
         localStorage.setItem('interactive_app_accent', accentField.value);
@@ -243,6 +258,11 @@ export const SettingsAppearanceFragment = React.memo(() => {
                         <UCheckboxFiled
                             label="Highlight secret groups"
                             field={secretGroupDisplay}
+                            asSwitcher={true}
+                        />
+                        <UCheckboxFiled
+                            label="Show large emoji"
+                            field={largeEmojiField}
                             asSwitcher={true}
                         />
                         <UCheckboxFiled

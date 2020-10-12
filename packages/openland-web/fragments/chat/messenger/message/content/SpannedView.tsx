@@ -79,8 +79,8 @@ const loudTextClassName = css`
 `;
 
 const onlyEmojiClassName = css`
-    font-size: 38px;
-    line-height: 38px;
+    font-size: var(--emoji-size);
+    line-height: var(--emoji-size);
 `;
 
 const rotatingTextClassName = css`
@@ -248,8 +248,8 @@ const MentionedOtherUsersPopperContent = React.memo(
                                             user.isBot
                                                 ? 'Bot'
                                                 : user.primaryOrganization
-                                                ? user.primaryOrganization.name
-                                                : undefined
+                                                    ? user.primaryOrganization.name
+                                                    : undefined
                                         }
                                     />
                                 </XView>
