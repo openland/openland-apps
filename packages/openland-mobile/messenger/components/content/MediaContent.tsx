@@ -20,7 +20,6 @@ type AttachType = FullMessage_GeneralMessage_attachments_MessageAttachmentFile &
 
 interface MediaContentProps {
     message: DataSourceMessageItem;
-    attach: AttachType;
     maxSize: number;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
@@ -47,7 +46,7 @@ export let layoutImage = (fileMetadata?: { imageWidth: number | null, imageHeigh
     return undefined;
 };
 
-const IMAGE_MIN_SIZE = 120;
+export const IMAGE_MIN_SIZE = 120;
 
 export class MediaContent extends React.PureComponent<
     MediaContentProps,
@@ -141,10 +140,11 @@ export class MediaContent extends React.PureComponent<
         this.bindDownloadManager();
     }
 
-    componentDidUpdate() {
-        let fileAttach = this.props.attach;
+    componentDidUpdate(prevProps: MediaContentProps) {
+        let attachments = this.props.message.attachments;
+        let prevAttachments = prevProps.message.attachments;
 
-        if (fileAttach && fileAttach.fileId && !this.serverDownloadManager) {
+        if (attachments !== prevAttachments && !this.serverDownloadManager) {
             this.unbindDownloadManager();
             this.bindDownloadManager();
         }

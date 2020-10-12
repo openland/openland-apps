@@ -66,14 +66,8 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
         content.push(<ReplyContent key={'msg-' + message.id + '-reply'} quotedMessages={replies} onUserPress={handleUserPress} onGroupPress={handleGroupPress} onOrganizationPress={handleOrganizationPress} onHashtagPress={handleHashtagPress} onDocumentPress={handleDocumentPress} theme={theme} />);
     }
 
-    if (message.__typename === 'GeneralMessage') {
-        mediaAttaches.map((file, index) => {
-            let imageLayout = layoutImage(file.fileMetadata, maxWidth);
-
-            if (imageLayout) {
-                content.push(<MediaContent key={'msg-' + message.id + '-media-' + index} imageLayout={imageLayout} message={message} attach={file} theme={theme} />);
-            }
-        });
+    if (message.__typename === 'GeneralMessage' && mediaAttaches.length > 0) {
+        content.push(<MediaContent key={'msg-' + message.id + '-media'} maxWidth={maxWidth} message={message} theme={theme} />);
     }
 
     if (message.__typename === 'GeneralMessage') {

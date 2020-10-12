@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Platform } from 'react-native';
+import { View, Text } from 'react-native';
 import { DownloadState } from '../../../files/DownloadManagerInterface';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
@@ -8,41 +8,57 @@ import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessa
 import FastImage from 'react-native-fast-image';
 import { PreviewWrapper } from './PreviewWrapper';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { MAX_FILES_PER_MESSAGE } from 'openland-engines/messenger/MessageSender';
+import { PendingAttachProps } from 'openland-engines/messenger/ConversationEngine';
+import { layoutImage, IMAGE_MIN_SIZE } from 'openland-mobile/messenger/components/content/MediaContent';
+
+type AttachType = FullMessage_GeneralMessage_attachments_MessageAttachmentFile & PendingAttachProps;
 
 interface MediaContentProps {
     message: FullMessage_GeneralMessage;
-    attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
-    imageLayout: { width: number, height: number };
     theme: ThemeGlobal;
+    maxWidth: number;
 }
 
-export class MediaContent extends React.PureComponent<MediaContentProps, { downloadState?: DownloadState }> {
+export class MediaContent extends React.PureComponent<MediaContentProps, { downloadStates: DownloadState }> {
     mounted = false;
     serverDownloadManager = false;
     constructor(props: MediaContentProps) {
         super(props);
-        this.state = {};
+        this.state = {
+            downloadStates: {},
+        };
     }
 
-    private downloadManagerWatch?: WatchSubscription;
+    private downloadManagerWatches?: WatchSubscription[];
 
     bindDownloadManager = () => {
-        let fileAttach = this.props.attach;
-        if (fileAttach && fileAttach.fileId && fileAttach!!.fileMetadata.imageWidth!! && fileAttach!!.fileMetadata.imageHeight!!) {
-            this.serverDownloadManager = true;
-            let optimalSize = layoutMedia(fileAttach!!.fileMetadata.imageWidth!!, fileAttach!!.fileMetadata.imageHeight!!, 1024, 1024);
-            this.downloadManagerWatch = DownloadManagerInstance.watch(fileAttach!!.fileId!, (fileAttach!!.fileMetadata.imageFormat !== 'GIF') ? optimalSize : null, (state) => {
-                if (this.mounted) {
-                    this.setState({ downloadState: state });
-                }
-            });
-        }
+        let fileAttachements = this.getFileAttachments();
+
+        let watches = fileAttachements.map(attach => {
+            const isDownloading = attach && attach.fileId && attach!!.fileMetadata.imageWidth!! && attach!!.fileMetadata.imageHeight!!;
+            if (isDownloading) {
+                this.serverDownloadManager = true;
+                let optimalSize = layoutMedia(attach!!.fileMetadata.imageWidth!!, attach!!.fileMetadata.imageHeight!!, 1024, 1024);
+                return DownloadManagerInstance.watch(attach!!.fileId!, (attach!!.fileMetadata.imageFormat !== 'GIF') ? optimalSize : null, (state) => {
+                    if (this.mounted) {
+                        this.setState(prev => ({ downloadStates: { ...prev.downloadStates, [attach!!.fileId!]: state } }));
+                    }
+                });
+            }
+            return null;
+        }).filter(Boolean) as WatchSubscription[];
+        this.downloadManagerWatches = watches;
     }
 
     unbindDownloadManager = () => {
-        if (this.downloadManagerWatch) {
-            this.downloadManagerWatch();
+        if (this.downloadManagerWatches) {
+            this.downloadManagerWatches.forEach(f => f());
         }
+    }
+
+    getFileAttachments(): AttachType[] {
+        return (this.props.message.attachments?.filter(x => x.__typename === 'MessageAttachmentFile') || []).slice(0, MAX_FILES_PER_MESSAGE) as AttachType[];
     }
 
     componentDidMount() {
@@ -50,10 +66,11 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
         this.bindDownloadManager();
     }
 
-    componentDidUpdate() {
-        let fileAttach = this.props.attach;
+    componentDidUpdate(prevProps: MediaContentProps) {
+        let { attachments } = this.props.message;
+        let prevAttachments = prevProps.message.attachments;
 
-        if (fileAttach && fileAttach.fileId && !this.serverDownloadManager) {
+        if (attachments !== prevAttachments && !this.serverDownloadManager) {
             this.unbindDownloadManager();
             this.bindDownloadManager();
         }
@@ -65,48 +82,97 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     }
 
     render() {
-        const { imageLayout, theme, message } = this.props;
+        const { theme, message, maxWidth } = this.props;
+        const maxHeight = maxWidth / 1.6;
+        const attachments = this.getFileAttachments();
+        const layout = layoutImage(attachments[0].fileMetadata, maxWidth);
+        let wrapperWidth = attachments.length === 1 ? Math.max(layout?.width || maxWidth, IMAGE_MIN_SIZE) : maxWidth;
+        let wrapperHeight = attachments.length === 1 ? Math.max(layout?.height || maxHeight, IMAGE_MIN_SIZE) : maxHeight;
+        let content = this.getFileAttachments()
+            .reduce((acc, file, i) => {
+                let state = this.state.downloadStates[file.fileId];
+                let path = state && state.path;
+                let el = { file, uri: path ? ('file://' + path) : file.uri };
 
-        let imagePath = (this.state.downloadState && this.state.downloadState.path) ? ((Platform.OS === 'android' ? 'file://' : '') + this.state.downloadState.path) : undefined;
+                if (acc.length < 2) {
+                    acc.push([el]);
+                } else if (i === 2) {
+                    acc[1].push(el);
+                } else if (i === 3) {
+                    let prevLast = acc[1].pop();
+                    acc[0].push(prevLast!);
+                    acc[1].push(el);
+                }
+                return acc;
+            }, [] as { file: AttachType, uri: string | undefined }[][])
+            .map((column, columnIndex, row) => {
+                return (
+                    <View
+                        flexDirection="column"
+                        key={columnIndex}
+                        marginLeft={columnIndex === 1 ? 2 : 0}
+                    >
+                        {column.map(({ file, uri }, rowIndex) => {
+                            let width = attachments.length === 1
+                                ? layout?.width || maxWidth
+                                : (maxWidth / row.length - (row.length === 2 ? 1 : 0));
+                            let height = attachments.length === 1
+                                ? layout?.height || maxWidth
+                                : (maxHeight / column.length - (column.length === 2 ? 1 : 0));
+                            let state = this.state.downloadStates[file.fileId];
+
+                            return (
+                                <View key={file.id || file.fileId || file.key} width={width} height={height} marginTop={rowIndex === 1 ? 2 : 0}>
+                                    <PreviewWrapper
+                                        path={uri}
+                                        width={file.fileMetadata.imageWidth}
+                                        height={file.fileMetadata.imageHeight}
+                                        radius={18}
+                                        senderName={message.sender.name}
+                                        date={message.date}
+                                    >
+                                        <FastImage
+                                            style={{ width: width, height: height }}
+                                            source={{ uri: uri, priority: 'normal', ...{ disableAnimations: true } as any }}
+                                        />
+                                    </PreviewWrapper>
+
+                                    {state && state.progress !== undefined && state.progress < 1 && !state.path && (
+                                        <View
+                                            justifyContent="center"
+                                            alignItems="center"
+                                            backgroundColor="#0008"
+                                            borderRadius={8}
+                                            position="absolute"
+                                            top={0}
+                                            left={0}
+                                            right={0}
+                                            bottom={0}
+                                        >
+                                            <Text style={{ color: '#fff', opacity: 0.8, marginLeft: 20, marginTop: 20, marginRight: 20, marginBottom: 20, textAlign: 'center' }} allowFontScaling={false}>{'Loading ' + Math.round(state.progress * 100)}</Text>
+                                        </View>
+                                    )}
+                                </View>
+                            );
+                        })}
+                    </View>
+                );
+            });
 
         return (
             <View
                 backgroundColor={theme.incomingBackgroundPrimary}
-                borderRadius={8}
+                borderRadius={18}
+                overflow="hidden"
                 marginVertical={5}
                 alignSelf="flex-start"
+                flexDirection="row"
+                height={wrapperHeight}
+                width={wrapperWidth}
+                alignItems="center"
+                justifyContent="center"
             >
-                <View width={imageLayout.width} height={imageLayout.height} alignSelf="center">
-                    <PreviewWrapper
-                        path={imagePath}
-                        width={this.props.attach.fileMetadata.imageWidth}
-                        height={this.props.attach.fileMetadata.imageHeight}
-                        radius={8}
-                        senderName={message.sender.name}
-                        date={message.date}
-                    >
-                        <FastImage
-                            style={{ borderRadius: 8, width: imageLayout.width, height: imageLayout.height }}
-                            source={{ uri: imagePath, priority: 'normal', ...{ disableAnimations: true } as any }}
-                        />
-                    </PreviewWrapper>
-
-                    {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && (
-                        <View
-                            justifyContent="center"
-                            alignItems="center"
-                            backgroundColor="#0008"
-                            borderRadius={8}
-                            position="absolute"
-                            top={0}
-                            left={0}
-                            right={0}
-                            bottom={0}
-                        >
-                            <Text style={{ color: '#fff', opacity: 0.8, marginLeft: 20, marginTop: 20, marginRight: 20, marginBottom: 20, textAlign: 'center' }} allowFontScaling={false}>{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</Text>
-                        </View>
-                    )}
-                </View>
+                {content}
             </View>
         );
     }
