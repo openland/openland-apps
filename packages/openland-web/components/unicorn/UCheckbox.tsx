@@ -81,6 +81,7 @@ const switcherWrapStyle = css`
     border-radius: 100px;
     transition: all 0.15s ease;
     border: 2px solid var(--foregroundQuaternary);
+    background-color: var(--foregroundQuaternary);
 `;
 
 const switcherDotStyle = css`
@@ -89,7 +90,7 @@ const switcherDotStyle = css`
     border-radius: 20px;
     position: absolute;
     transition: all 0.15s ease;
-    background-color: #fff;
+    background-color: var(--foregroundContrast);
     left: 0px;
     top: 0px;
 `;
