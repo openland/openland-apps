@@ -29,6 +29,7 @@ export type ThemeGlobalKind = {
     theme: ThemeVariants;
     accent?: AccentGlobalType;
     displayFeaturedIcon?: boolean;
+    largeEmoji?: boolean;
 };
 
 export type ThemeGlobal = {
@@ -128,6 +129,7 @@ export type ThemeGlobal = {
 
     // appearance settings
     displayFeaturedIcon: boolean;
+    largeEmoji: boolean;
 };
 
 export type AccentGlobal = {

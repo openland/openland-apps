@@ -1,7 +1,7 @@
 import { ThemeGlobalKind, getThemeByType } from 'openland-y-utils/themes/ThemeGlobal';
 
 class ThemeControllerImpl {
-    private _appearance: ThemeGlobalKind = { theme: 'System', accent: 'Default', displayFeaturedIcon: true };
+    private _appearance: ThemeGlobalKind = { theme: 'System', accent: 'Default', displayFeaturedIcon: true, largeEmoji: true };
     private _watchers: ((theme: ThemeGlobalKind) => void)[] = [];
 
     get appearance(): ThemeGlobalKind {
@@ -20,6 +20,7 @@ class ThemeControllerImpl {
             ...appearance,
             accent,
             displayFeaturedIcon: typeof appearance.displayFeaturedIcon !== 'undefined' ? appearance.displayFeaturedIcon : this._appearance.displayFeaturedIcon,
+            largeEmoji: typeof appearance.largeEmoji !== 'undefined' ? appearance.largeEmoji : this._appearance.largeEmoji,
         };
 
         for (let w of this._watchers) {

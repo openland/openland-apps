@@ -27,6 +27,7 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
         });
     }, []);
     const [displayFeaturedIcon, setDisplayFeaturedIcon] = React.useState(theme.displayFeaturedIcon);
+    const [largeEmoji, setLargeEmoji] = React.useState(theme.largeEmoji);
 
     return (
         <>
@@ -58,6 +59,14 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                 </ZListGroup>
 
                 <ZListGroup header="Other">
+                    <ZListItem
+                        text="Show large emoji"
+                        onToggle={(value) => {
+                            setLargeEmoji(x => !x);
+                            handleChange({ theme: currentTheme, largeEmoji: value });
+                        }}
+                        toggle={largeEmoji}
+                    />
                     <ZListItem
                         text="Show group featured icon"
                         onToggle={(value) => {

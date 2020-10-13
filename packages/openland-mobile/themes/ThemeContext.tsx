@@ -39,6 +39,9 @@ export function resolveTheme(appearance: ThemeGlobalKind): ThemeGlobal {
         displayFeaturedIcon: typeof appearance.displayFeaturedIcon !== 'undefined'
             ? appearance.displayFeaturedIcon
             : resolvedThemeObject.displayFeaturedIcon,
+        largeEmoji: typeof appearance.largeEmoji !== 'undefined'
+            ? appearance.largeEmoji
+            : resolvedThemeObject.largeEmoji,
     };
 
     return {

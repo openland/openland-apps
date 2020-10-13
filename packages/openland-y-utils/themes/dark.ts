@@ -94,4 +94,5 @@ export const ThemeDark: ThemeGlobal = {
     statusBar: 'light-content',
 
     displayFeaturedIcon: true,
+    largeEmoji: true,
 };

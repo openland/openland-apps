@@ -132,7 +132,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     const hasPurchase = !!purchaseAttach;
     const sticker = message.sticker && message.sticker.__typename === 'ImageSticker' ? message.sticker : undefined;
 
-    const isEmojiOnly = message.textSpans.length === 1 && message.textSpans[0].type === 'emoji' && (message.attachments || []).length === 0 && (message.reply || []).length === 0;
+    const isEmojiOnly = theme.largeEmoji && message.textSpans.length === 1 && message.textSpans[0].type === 'emoji' && (message.attachments || []).length === 0 && (message.reply || []).length === 0;
     const isStickerOnly = sticker && (message.attachments || []).length === 0 && (message.reply || []).length === 0;
 
     let imageLayout;
