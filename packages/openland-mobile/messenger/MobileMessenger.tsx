@@ -243,8 +243,8 @@ export class MobileMessenger {
         this.routerSuitable.push('Message', { messageId: quotedMessage.id });
     }
 
-    handleDocumentPress = (document: DataSourceMessageItem) => {
-        let attach = document.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
+    handleDocumentPress = (message: DataSourceMessageItem) => {
+        let attach = message.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
         // { config: { uuid, name, size }
         // this.history.navigationManager.push('FilePreview', { config: { uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size } });
 

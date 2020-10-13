@@ -54,16 +54,17 @@ interface ReplyContentProps {
     onOrganizationPress: (id: string) => void;
     onHashtagPress: (d?: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
-    onDocumentPress: (document: DataSourceMessageItem) => void;
+    onDocumentPress: (message: DataSourceMessageItem) => void;
     onPress?: (message: DataSourceMessageItem) => void;
     onLongPress: (e: ASPressEvent) => void;
+    onContentPress?: () => void;
     theme: ThemeGlobal;
     isForward?: boolean;
 }
 export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
     render() {
-        let { message, maxWidth, width, compensateBubble, theme, isForward, onPress, onLongPress } = this.props;
+        let { message, maxWidth, width, compensateBubble, theme, isForward, onPress, onContentPress, onLongPress } = this.props;
 
         let lineBackgroundPatch: any;
         let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
@@ -79,10 +80,19 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
         const bubbleForegroundTertiary = message.isOut ? theme.outgoingForegroundTertiary : theme.incomingForegroundTertiary;
         const forwardColor = message.isOut ? theme.tintInverted : theme.foregroundTertiary;
 
+        const handleForwardTextPress = () => {
+            if (!isForward && onPress && message.reply) {
+                onPress(message.reply[0]);
+            }
+            if (onContentPress) {
+                onContentPress();
+            }
+        };
+
         return (
             <>
                 {message.reply && isForward && (
-                    <ASText {...TextStylesAsync.Densed} color={forwardColor}>
+                    <ASText {...TextStylesAsync.Densed} color={forwardColor} onPress={handleForwardTextPress}>
                         {message.reply.length} forwarded {message.reply.length === 1 ? 'message' : 'messages'}
                     </ASText>
                 )}
@@ -96,6 +106,9 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                         const handlePress = () => {
                             if (!isForward && onPress) {
                                 onPress(m);
+                            }
+                            if (onContentPress) {
+                                onContentPress();
                             }
                         };
 
@@ -127,6 +140,8 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                     <AsyncReplyMessageDocumentView
                                         attach={attachFiles[0]}
                                         message={repliedMessage}
+                                        onPress={() => this.props.onDocumentPress(repliedMessage)}
+                                        onLongPress={onLongPress}
                                     />
                                 );
                                 miniContentSubtitle = attachFiles[0].fileMetadata.name;
@@ -163,6 +178,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         alignItems="stretch"
                                         marginLeft={9}
                                         flexShrink={1}
+                                        onLongPress={onLongPress}
                                     >
                                         {miniContent && (
                                             <ASFlex marginRight={8}>
@@ -194,6 +210,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                                     marginTop={2}
                                                     numberOfLines={1}
                                                     flexGrow={1}
+                                                    onPress={handlePress}
                                                 >
                                                     {miniContentSubtitle}
                                                 </ASText>

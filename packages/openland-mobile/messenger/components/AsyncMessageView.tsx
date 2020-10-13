@@ -112,6 +112,18 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     messageRef.current = message;
 
     let lastTap: number;
+    const handleDoublePress = () => {
+        if (!isSending) {
+            const now = Date.now();
+            const DOUBLE_PRESS_DELAY = 300;
+
+            if (lastTap && (now - lastTap) < DOUBLE_PRESS_DELAY) {
+                onMessageDoublePress(message);
+            } else {
+                lastTap = now;
+            }
+        }
+    };
     const handlePress = () => {
         if (isSelecting) {
             toggleSelect(message);
@@ -123,16 +135,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
             return;
         }
 
-        if (!isSending) {
-            const now = Date.now();
-            const DOUBLE_PRESS_DELAY = 300;
-
-            if (lastTap && (now - lastTap) < DOUBLE_PRESS_DELAY) {
-                onMessageDoublePress(message);
-            } else {
-                lastTap = now;
-            }
-        }
+        handleDoublePress();
     };
     const handleLongPress = () => {
         if (isSelecting) {
@@ -187,7 +190,23 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     let res;
 
     if (message.text || message.reply || (message.attachments && message.attachments.length) || message.sticker) {
-        res = <AsyncMessageContentView conversationId={conversationId} theme={theme} key={'message-content'} message={message} onMediaPress={handleMediaPress} onLongPress={handleLongPress} onDocumentPress={onDocumentPress} onUserPress={handleUserPress} onGroupPress={handleGroupPress} onOrganizationPress={handleOrganizationPress} onHashtagPress={onHashtagPress} onReplyPress={handleReplyPress} />;
+        res = (
+            <AsyncMessageContentView
+                conversationId={conversationId}
+                theme={theme}
+                key={'message-content'}
+                message={message}
+                onMediaPress={handleMediaPress}
+                onLongPress={handleLongPress}
+                onDocumentPress={onDocumentPress}
+                onUserPress={handleUserPress}
+                onGroupPress={handleGroupPress}
+                onOrganizationPress={handleOrganizationPress}
+                onHashtagPress={onHashtagPress}
+                onReplyPress={handleReplyPress}
+                onPress={handleDoublePress}
+            />
+        );
     }
 
     if (!res) {

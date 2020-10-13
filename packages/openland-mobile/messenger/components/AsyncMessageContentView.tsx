@@ -39,6 +39,7 @@ interface AsyncMessageTextViewProps {
     onLongPress: (e: ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onReplyPress?: (message: DataSourceMessageItem) => void;
+    onPress?: () => void;
 }
 
 export let renderPreprocessedText = (
@@ -117,7 +118,7 @@ export let renderPreprocessedText = (
 };
 
 export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number, compensateBubble?: boolean) => {
-    const { conversationId, theme, message, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress, onMediaPress, onDocumentPress, onLongPress, onReplyPress } = props;
+    const { conversationId, theme, message, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress, onMediaPress, onDocumentPress, onLongPress, onReplyPress, onPress } = props;
 
     // todo: handle multiple attaches
     const attaches = (message.attachments || []);
@@ -172,7 +173,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         topContent.push(<DocumentContent key="msg-document" theme={theme} compensateBubble={compensateBubble} attach={fileAttach!} message={message} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onLongPress={onLongPress} />);
     }
     if (hasReply) {
-        let replyContent = <ReplyContent key="msg-reply" isForward={hasForward} compensateBubble={compensateBubble} width={textSize} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onHashtagPress={onHashtagPress} onMediaPress={onMediaPress} onPress={onReplyPress} onLongPress={onLongPress} />;
+        let replyContent = <ReplyContent key="msg-reply" isForward={hasForward} compensateBubble={compensateBubble} width={textSize} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onHashtagPress={onHashtagPress} onMediaPress={onMediaPress} onContentPress={onPress} onPress={onReplyPress} onLongPress={onLongPress} />;
         if (hasForward) {
             topContent.push(replyContent);
         } else {
