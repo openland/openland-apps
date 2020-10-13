@@ -130,6 +130,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                                         radius={18}
                                         senderName={message.sender.name}
                                         date={message.date}
+                                        crossFade={attachments.length > 1}
                                     >
                                         <FastImage
                                             style={{ width: width, height: height }}
