@@ -41,10 +41,10 @@ import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { ReactionsPicker } from './components/ReactionsPicker';
 import { NotificationCenterHandlers } from 'openland-mobile/notificationCenter/NotificationCenterHandlers';
 
-export const useForward = (sourceId: string, sourceUserId: string | undefined, disableSource?: boolean) => {
+export const useForward = (sourceId: string, disableSource?: boolean) => {
     const messenger = getMessenger().engine;
     const conversationEngine = messenger.getConversation(sourceId);
-    const { prepareForward, forward } = useMessagesActionsForward({ sourceId, userId: sourceUserId });
+    const { prepareForward, forward } = useMessagesActionsForward(sourceId);
 
     return (messages?: DataSourceMessageItem[]) => {
         getMessenger().history.navigationManager.push('HomeDialogs', {
@@ -182,22 +182,21 @@ export class MobileMessenger {
             builder.show(true);
         }
 
-    renderSharedMediaItem = (chatId: string, userId: string | undefined, wrapperWidth: number) => (item: SharedMediaDataSourceItem) => {
-        return <AsyncSharedItem chatId={chatId} userId={userId} wrapperWidth={wrapperWidth} item={item} onLongPress={this.handleSharedLongPress} />;
+    renderSharedMediaItem = (chatId: string, wrapperWidth: number) => (item: SharedMediaDataSourceItem) => {
+        return <AsyncSharedItem chatId={chatId} wrapperWidth={wrapperWidth} item={item} onLongPress={this.handleSharedLongPress} />;
     }
 
     getSharedMedia = (id: string, type: SharedMediaItemType, wrapperWidth: number) => {
         const key = `${type}-${wrapperWidth}`;
         const convEngine = this.engine.getConversation(id);
         const engine = convEngine.getSharedMedia(type);
-        const userId = convEngine.isPrivate ? convEngine.user?.id : undefined;
         if (!this.sharedMedias.has(id)) {
             this.sharedMedias.set(
                 id,
-                new Map([[key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, userId, wrapperWidth))]])
+                new Map([[key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, wrapperWidth))]])
             );
         } else if (!this.sharedMedias.get(id)!!.has(key)) {
-            this.sharedMedias.get(id)!!.set(key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, userId, wrapperWidth)));
+            this.sharedMedias.get(id)!!.set(key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, wrapperWidth)));
         }
 
         return this.sharedMedias.get(id)!!.get(key)!!;
@@ -399,8 +398,8 @@ export class MobileMessenger {
         const isSavedMessages = chat.__typename === 'PrivateRoom' ? chat.user.id === this.engine.user.id : false;
 
         const builder = new ActionSheetBuilder();
-        const { reply, edit, clear } = useChatMessagesActionsMethods({ conversationId: chat.id, userId: chat.__typename === 'PrivateRoom' ? chat.user.id : undefined });
-        const forward = useForward(chat.id, chat.__typename === 'PrivateRoom' ? chat.user.id : undefined);
+        const { reply, edit, clear } = useChatMessagesActionsMethods(chat.id);
+        const forward = useForward(chat.id);
 
         builder.view((ctx: ZModalController) => (
             <ReactionsPicker

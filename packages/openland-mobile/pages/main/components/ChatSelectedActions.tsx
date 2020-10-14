@@ -57,9 +57,9 @@ interface ChatSelectedActionsProps {
 
 export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
     const theme = React.useContext(ThemeContext);
-    const state = useChatMessagesActionsState({ conversationId: props.chat.id, userId: props.chat.__typename === 'PrivateRoom' ? props.chat.user?.id : undefined });
+    const state = useChatMessagesActionsState(props.chat.id);
 
-    const { clear } = useChatMessagesActionsMethods({ conversationId: props.chat.id, userId: props.chat.__typename === 'PrivateRoom' ? props.chat.user?.id : undefined });
+    const { clear } = useChatMessagesActionsMethods(props.chat.id);
     const del = React.useCallback(() => {
         if (state.action !== 'selected') {
             return;
@@ -87,7 +87,7 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
 
         clear();
     }, [state]);
-    const forward = useForward(props.chat.id, props.chat.__typename === 'PrivateRoom' ? props.chat.user.id : undefined);
+    const forward = useForward(props.chat.id);
     let height = 52;
 
     let canDelete = true;

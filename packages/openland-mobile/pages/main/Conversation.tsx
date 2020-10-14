@@ -44,7 +44,7 @@ import { showNoiseWarning } from 'openland-mobile/messenger/components/showNoise
 import { plural } from 'openland-y-utils/plural';
 import { SRouterMountedContext } from 'react-native-s/SRouterContext';
 import { SUPER_ADMIN } from '../Init';
-import { ChatMessagesActionsMethods, ConversationActionsState } from 'openland-y-utils/MessagesActionsState';
+import { ChatMessagesActionsMethods, ConversationActionsState, setMessagesActionsUserChat } from 'openland-y-utils/MessagesActionsState';
 import { useChatMessagesActionsState, useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 import { matchLinks } from 'openland-y-utils/TextProcessor';
 import { StickerPicker } from './components/stickers/StickerPicker';
@@ -585,8 +585,15 @@ const ConversationComponent = React.memo((props: PageProps) => {
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id }, { fetchPolicy: 'cache-and-network' }).room;
     let mountedRef = React.useContext(SRouterMountedContext);
     let showCallModal = useCallModal({ id: room?.id! });
-    let messagesActionsState = useChatMessagesActionsState({ conversationId: room?.id, userId: room?.__typename === 'PrivateRoom' ? room.user.id : undefined });
-    let messagesActionsMethods = useChatMessagesActionsMethods({ conversationId: room?.id, userId: room?.__typename === 'PrivateRoom' ? room.user.id : undefined });
+    let userId = room?.__typename === 'PrivateRoom' ? room.user.id : undefined;
+    let messagesActionsState = useChatMessagesActionsState(room?.id);
+    let messagesActionsMethods = useChatMessagesActionsMethods(room?.id);
+
+    React.useEffect(() => {
+        if (userId && room?.id) {
+            setMessagesActionsUserChat(room.id, userId);
+        }
+    }, [userId, room?.id]);
 
     if (room === null) {
         return <ChatAccessDenied theme={theme} onPress={() => props.router.back()} />;

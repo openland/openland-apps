@@ -42,7 +42,7 @@ import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
 import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 import { extractTextAndMentions, convertToInputValue } from 'openland-web/utils/convertTextAndMentions';
 import { convertServerSpan } from 'openland-y-utils/spans/utils';
-import { useChatMessagesActionsState, useChatMessagesActionsMethods, ConversationActionsState, ChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
+import { useChatMessagesActionsState, useChatMessagesActionsMethods, ConversationActionsState, ChatMessagesActionsMethods, setMessagesActionsUserChat } from 'openland-y-utils/MessagesActionsState';
 import { isFileImage } from 'openland-web/utils/UploadCareUploading';
 
 interface MessagesComponentProps {
@@ -536,8 +536,14 @@ export const MessengerRootComponent = React.memo((props: MessengerRootComponentP
     let [isAttachModalOpen, setAttachModalOpen] = React.useState(false);
     const onAttach = useAttachHandler({ conversationId: props.conversationId, onOpen: () => setAttachModalOpen(true), onClose: () => setAttachModalOpen(false) });
     const userId = props.room.__typename === 'PrivateRoom' ? props.room.user.id : undefined;
-    const messagesActionsState = useChatMessagesActionsState({ conversationId: props.conversationId, userId });
-    const messagesActionsMethods = useChatMessagesActionsMethods({ conversationId: props.conversationId, userId });
+    const messagesActionsState = useChatMessagesActionsState(props.conversationId);
+    const messagesActionsMethods = useChatMessagesActionsMethods(props.conversationId);
+
+    React.useEffect(() => {
+        if (userId && props.conversationId) {
+            setMessagesActionsUserChat(props.conversationId, userId);
+        }
+    }, [userId, props.conversationId]);
 
     return (
         <MessagesComponent

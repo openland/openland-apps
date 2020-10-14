@@ -99,14 +99,8 @@ const messageActionCloseWrapEdit = css`
 `;
 
 export const InputMessageActionComponent = (props: { chatId: string; userId?: string }) => {
-    const state = useChatMessagesActionsState({
-        conversationId: props.chatId,
-        userId: props.userId,
-    });
-    const { clear } = useChatMessagesActionsMethods({
-        conversationId: props.chatId,
-        userId: props.userId,
-    });
+    const state = useChatMessagesActionsState(props.chatId);
+    const { clear } = useChatMessagesActionsMethods(props.chatId);
     useShortcuts({
         keys: ['Escape'],
         callback: () => {

@@ -82,12 +82,12 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
         reactionCounters,
         isSending
     } = message;
-    const { getState, reply, edit } = useChatMessagesActionsMethods({ conversationId: props.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
-    const [selected, toggleSelect] = useChatMessagesSelected({ conversationId: props.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined, messageKey: message.key });
-    const isSelecting = useChatMessagesSelectionMode({ conversationId: props.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
+    const { getState, reply, edit } = useChatMessagesActionsMethods(props.conversationId);
+    const [selected, toggleSelect] = useChatMessagesSelected({ conversationId: props.conversationId, messageKey: message.key });
+    const isSelecting = useChatMessagesSelectionMode(props.conversationId);
 
     const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
-    const forward = useForward(conversationId, engine.isPrivate ? engine.user?.id : undefined, !canReply);
+    const forward = useForward(conversationId, !canReply);
 
     React.useEffect(() => {
         let timer: any;

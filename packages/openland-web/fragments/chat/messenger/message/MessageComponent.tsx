@@ -184,12 +184,12 @@ const MessageTime = React.memo(
                 onClick={
                     props.dateFormat === 'time'
                         ? (e) => {
-                              e.stopPropagation();
-                              instantHide();
-                              if (router && props.mId) {
-                                  router.navigate(`/message/${props.mId}`);
-                              }
-                          }
+                            e.stopPropagation();
+                            instantHide();
+                            if (router && props.mId) {
+                                router.navigate(`/message/${props.mId}`);
+                            }
+                        }
                         : undefined
                 }
             >
@@ -429,7 +429,6 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const [isSelected, toggleSelect] = useChatMessagesSelected({
         messageKey: message.key,
         conversationId: engine.conversationId,
-        userId: engine.isPrivate ? engine.user?.id : undefined,
     });
 
     React.useEffect(() => {
