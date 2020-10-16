@@ -1,5 +1,5 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { backoff, debounce } from 'openland-y-utils/timer';
+import { backoff } from 'openland-y-utils/timer';
 import {
     FullMessage,
     FullMessage_GeneralMessage,
@@ -32,14 +32,14 @@ const getOverrides = (src: FullMessage | undefined) => {
     return src ? (src.__typename === 'GeneralMessage' || src.__typename === 'StickerMessage' ? { overrideAvatar: src.overrideAvatar, overrideName: src.overrideName } : {}) : {};
 };
 
-const constructVariables = (query: string, chatId: string, cursor?: string | null) => ({
+const constructVariables = (query: string, chatId: string, after?: string | null) => ({
     query: JSON.stringify({
         $and: [{ text: query }, { isService: false }],
     }),
     sort: JSON.stringify([{ createdAt: { order: 'desc' } }]),
     cid: chatId,
     first: 20,
-    cursor,
+    after,
 });
 
 const getCursor = (data: MessagesSearchFull_messagesSearch) => {
@@ -124,8 +124,6 @@ export const createDateDataSourceItem = (date: Date): DataSourceDateItem => {
     };
 };
 
-const SEARCH_INPUT_DELAY = 500;
-
 export class ChatSearchEngine {
     readonly engine: MessengerEngine;
     readonly conversationId: string;
@@ -157,10 +155,8 @@ export class ChatSearchEngine {
         return this.state;
     }
 
-    loadQuery = debounce(async (query: string) => {
-        if (query.length < 3) {
-            return;
-        }
+    loadQuery = async (query: string) => {
+        this.query = query;
         this.loading = true;
         this.state = new ChatSearchState(this.loading, this.historyFullyLoaded);
         this.onStateUpdated();
@@ -172,13 +168,13 @@ export class ChatSearchEngine {
                     { fetchPolicy: 'network-only' },
                 )).messagesSearch;
                 this.historyFullyLoaded = !loaded.pageInfo.hasNextPage;
+                this.cursor = getCursor(loaded);
                 return loaded;
             } catch (e) {
                 log.warn(e);
                 throw e;
             }
         });
-
         const sourceFragments = messagesSearch.edges.reverse().map((edge) => edge.node.message) as FullMessage_GeneralMessage[];
         const dsItems: (DataSourceMessageItem | DataSourceDateItem)[] = [];
         let prevDate: string | undefined;
@@ -199,14 +195,13 @@ export class ChatSearchEngine {
         }
 
         this.dataSource.initialize(dsItems, !!this.historyFullyLoaded, true);
-        this.cursor = getCursor(messagesSearch);
         this.loading = false;
         this.state = new ChatSearchState(this.loading, this.historyFullyLoaded);
 
         if (this.stateHandler) {
             this.stateHandler(this.state);
         }
-    }, SEARCH_INPUT_DELAY);
+    }
 
     loadHistory = async () => {
         if (this.historyFullyLoaded || this.loading || !this.cursor) {
@@ -223,6 +218,7 @@ export class ChatSearchEngine {
                     { fetchPolicy: 'network-only' },
                 )).messagesSearch;
                 this.historyFullyLoaded = !loaded.pageInfo.hasNextPage;
+                this.cursor = getCursor(loaded);
                 return loaded;
             } catch (e) {
                 log.warn(e);

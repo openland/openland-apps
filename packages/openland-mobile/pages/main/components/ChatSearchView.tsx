@@ -10,6 +10,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { androidMessageInputListOverlap } from './ConversationView';
 import { ChatSearchEngine } from 'openland-engines/messenger/ChatSearchEngine';
+import { debounce } from 'openland-y-utils/timer';
 
 interface ChatMessagesSearchProps {
     query: string;
@@ -58,13 +59,13 @@ export const ChatSearchView = React.memo((props: ChatMessagesSearchProps) => {
 
     engine.subscribe(setState);
 
-    React.useEffect(() => {
-        if (props.query) {
+    React.useEffect(debounce(() => {
+        if (props.query.length > 2) {
             (async () => {
                 await loadQuery(props.query);
             })();
         }
-    }, [props.query]);
+    }, 500), [props.query]);
 
     if (!state.loading && dataSource.getSize() === 0) {
         return (
