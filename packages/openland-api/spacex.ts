@@ -163,6 +163,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryMessagesSearch(variables: Types.MessagesSearchVariables, params?: QueryParameters): Promise<Types.MessagesSearch> {
         return this.query('MessagesSearch', variables, params);
     }
+    queryMessagesSearchFull(variables: Types.MessagesSearchFullVariables, params?: QueryParameters): Promise<Types.MessagesSearchFull> {
+        return this.query('MessagesSearchFull', variables, params);
+    }
     queryMyApps(params?: QueryParameters): Promise<Types.MyApps> {
         return this.query('MyApps', undefined, params);
     }
@@ -517,6 +520,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchMessagesSearch(variables: Types.MessagesSearchVariables, params?: QueryParameters): Promise<Types.MessagesSearch> {
         return this.refetch('MessagesSearch', variables, params);
     }
+    refetchMessagesSearchFull(variables: Types.MessagesSearchFullVariables, params?: QueryParameters): Promise<Types.MessagesSearchFull> {
+        return this.refetch('MessagesSearchFull', variables, params);
+    }
     refetchMyApps(params?: QueryParameters): Promise<Types.MyApps> {
         return this.refetch('MyApps', undefined, params);
     }
@@ -870,6 +876,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateMessagesSearch(variables: Types.MessagesSearchVariables, updater: (data: Types.MessagesSearch) => Types.MessagesSearch | null): Promise<boolean> {
         return this.updateQuery(updater, 'MessagesSearch', variables);
+    }
+    updateMessagesSearchFull(variables: Types.MessagesSearchFullVariables, updater: (data: Types.MessagesSearchFull) => Types.MessagesSearchFull | null): Promise<boolean> {
+        return this.updateQuery(updater, 'MessagesSearchFull', variables);
     }
     updateMyApps(updater: (data: Types.MyApps) => Types.MyApps | null): Promise<boolean> {
         return this.updateQuery(updater, 'MyApps', undefined);
@@ -1326,6 +1335,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useMessagesSearch(variables: Types.MessagesSearchVariables, params?: SpaceQueryWatchParameters): Types.MessagesSearch;
     useMessagesSearch(variables: Types.MessagesSearchVariables, params?: SpaceQueryWatchParameters): Types.MessagesSearch | null {
         return this.useQuery('MessagesSearch', variables, params);
+    }
+    useMessagesSearchFull(variables: Types.MessagesSearchFullVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.MessagesSearchFull | null;
+    useMessagesSearchFull(variables: Types.MessagesSearchFullVariables, params?: SpaceQueryWatchParameters): Types.MessagesSearchFull;
+    useMessagesSearchFull(variables: Types.MessagesSearchFullVariables, params?: SpaceQueryWatchParameters): Types.MessagesSearchFull | null {
+        return this.useQuery('MessagesSearchFull', variables, params);
     }
     useMyApps(params: SpaceQueryWatchParameters & { suspense: false }): Types.MyApps | null;
     useMyApps(params?: SpaceQueryWatchParameters): Types.MyApps;

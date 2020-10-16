@@ -126,6 +126,10 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         router.push('SharedMedia', { chatId: room.id });
     }, [room.id]);
 
+    const onSearchPress = React.useCallback(() => {
+        router.push('ChatSearch', { chatId: room.id });
+    }, [room.id]);
+
     const { onInvitePress, onLeavePress } = useSharedHandlers(
         room as RoomTiny_room_SharedRoom,
         router,
@@ -148,6 +152,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         }
 
         builder.action('Media, files, links', onSharedPress, false, require('assets/ic-attach-24.png'));
+        builder.action('Search messages', onSearchPress, false, require('assets/ic-search-24.png'));
 
         if (sharedRoom) {
             if ((room as RoomTiny_room_SharedRoom).canEdit) {

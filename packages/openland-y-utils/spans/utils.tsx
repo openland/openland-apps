@@ -61,6 +61,8 @@ export const convertServerSpan = (text: string, s: ServerSpan): Span => {
         span = { offset, length, type: SpanType.rotating };
     } else if (s.__typename === 'MessageSpanHashTag') {
         span = { offset, length, type: SpanType.hashtag };
+    } else if (s.__typename === 'MessageSpanSearchHighlight') {
+        span = { offset, length, type: SpanType.search_highlight };
     } else {
         span = {
             offset,

@@ -217,7 +217,7 @@ export function isSameDate(a: string, b: string) {
     return isSameIntDate(a1, b1);
 }
 
-const createDateDataSourceItem = (date: Date): DataSourceDateItem => {
+export const createDateDataSourceItem = (date: Date): DataSourceDateItem => {
     return {
         type: 'date',
         key: 'date-' + date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate(),

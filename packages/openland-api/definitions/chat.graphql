@@ -748,8 +748,8 @@ query Message($messageId: ID!) {
         }
     }
 }
-query MessagesSearch($query: String!, $sort: String, $first: Int!, $after: String) {
-    messagesSearch(query: $query, sort: $sort, first: $first, after: $after) {
+query MessagesSearch($query: String!, $sort: String, $first: Int!, $after: String, $cid: ID) {
+    messagesSearch(query: $query, sort: $sort, first: $first, after: $after, cid: $cid) {
         edges {
             node {
                 chat {
@@ -826,6 +826,55 @@ query MessagesSearch($query: String!, $sort: String, $first: Int!, $after: Strin
         }
     }
 }
+query MessagesSearchFull($query: String!, $sort: String, $first: Int!, $after: String, $cid: ID) {
+    messagesSearch(query: $query, sort: $sort, first: $first, after: $after, cid: $cid) {
+        edges {
+            node {
+                chat {
+                    ... on PrivateRoom {
+                        id
+                        user {
+                            id
+                            name
+                            photo
+                        }
+                        settings {
+                            id
+                            mute
+                        }
+                    }
+                    ... on SharedRoom {
+                        id
+                        kind
+                        title
+                        membership
+                        isChannel
+                        role
+                        canEdit
+                        photo
+                        settings {
+                            id
+                            mute
+                        }
+                    }
+                }
+                message {
+                    ...FullMessage
+                }
+            }
+            cursor
+        }
+        pageInfo {
+            hasNextPage
+            hasPreviousPage
+            itemsCount
+            currentPage
+            pagesCount
+            openEnded
+        }
+    }
+}
+
 query ChatJoin($id: ID!) {
     room(id: $id) {
         ... on SharedRoom {

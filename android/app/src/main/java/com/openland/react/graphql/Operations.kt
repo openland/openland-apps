@@ -58,6 +58,7 @@ object Operations {
         if (name == "MessageMultiSpan") return MessageMultiSpan
         if (name == "MessagesBatch") return MessagesBatch
         if (name == "MessagesSearch") return MessagesSearch
+        if (name == "MessagesSearchFull") return MessagesSearchFull
         if (name == "MyApps") return MyApps
         if (name == "MyCards") return MyCards
         if (name == "MyCommunities") return MyCommunities

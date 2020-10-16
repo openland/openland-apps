@@ -82,6 +82,7 @@ import { EditCommunity } from './pages/main/components/edit-community/EditCommun
 import { EditCommunitySocialImage } from './pages/main/components/edit-community/EditCommunitySocialImage';
 import { EditCommunityDefaultGroups } from './pages/main/components/edit-community/EditCommunityDefaultGroups';
 import { EditCommunityApplyLink } from './pages/main/components/edit-community/EditCommunityApplyLink';
+import { ChatSearch } from './pages/main/ChatSearch';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -173,6 +174,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('Apps/Tasks', Tasks)
 
   .addRoute('SharedMedia', SharedMedia)
+  .addRoute('ChatSearch', ChatSearch)
   .addRoute('UserMutualGroups', UserMutualGroups)
 
   .addRoute('Wallet', Wallet)

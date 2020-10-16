@@ -37,8 +37,9 @@ export interface AsyncMessageViewProps {
     canReply?: boolean;
     message: DataSourceMessageItem;
     engine: ConversationEngine;
+    onMessagePress?: (message: DataSourceMessageItem) => void;
     onMessageDoublePress: (message: DataSourceMessageItem) => void;
-    onMessageLongPress: (message: DataSourceMessageItem, actions: { action?: MessagesAction, reply: ChatMessagesActions['reply'], edit: ChatMessagesActions['edit'], toggleSelect: ChatMessagesActions['toggleSelect'], forward: (messages: DataSourceMessageItem[]) => void }) => void;
+    onMessageLongPress?: (message: DataSourceMessageItem, actions: { action?: MessagesAction, reply: ChatMessagesActions['reply'], edit: ChatMessagesActions['edit'], toggleSelect: ChatMessagesActions['toggleSelect'], forward: (messages: DataSourceMessageItem[]) => void }) => void;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
     onOrganizationPress: (id: string) => void;
@@ -73,7 +74,7 @@ const AsyncMessageViewAvatar = (props: { message: DataSourceMessageItem, handleU
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const theme = useThemeGlobal(false);
-    const { conversationId, canReply, message, engine, onMessageDoublePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress, onHashtagPress } = props;
+    const { conversationId, canReply, message, engine, onMessagePress, onMessageDoublePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress, onHashtagPress } = props;
     const {
         isOut,
         attachTop,
@@ -123,6 +124,10 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
             return;
         }
 
+        if (onMessagePress) {
+            onMessagePress(message);
+        }
+
         if (!isSending) {
             const now = Date.now();
             const DOUBLE_PRESS_DELAY = 300;
@@ -138,7 +143,10 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
         if (isSelecting) {
             return;
         }
-        onMessageLongPress(message, { action: getState().action, reply, edit, toggleSelect, forward });
+
+        if (onMessageLongPress) {
+            onMessageLongPress(message, { action: getState().action, reply, edit, toggleSelect, forward });
+        }
     };
     const handleCommentPress = React.useCallback(() => {
         if (message.id) {

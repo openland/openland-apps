@@ -40,6 +40,7 @@ import { useMessagesActionsForward } from 'openland-y-utils/MessagesActionsState
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { ReactionsPicker } from './components/ReactionsPicker';
 import { NotificationCenterHandlers } from 'openland-mobile/notificationCenter/NotificationCenterHandlers';
+import { DataSource } from 'openland-y-utils/DataSource';
 
 export const useForward = (sourceId: string, sourceUserId: string | undefined, disableSource?: boolean) => {
     const messenger = getMessenger().engine;
@@ -149,6 +150,24 @@ export class MobileMessenger {
             }));
         }
         return this.conversations.get(id)!!;
+    }
+
+    getSearchView(dataSource:  DataSource<DataSourceMessageItem | DataSourceDateItem>, chatId: string) {
+        let eng = this.engine.getConversation(chatId);
+
+        return new ASDataView(dataSource, (item) => {
+            if (item.type === 'message') {
+                if (item.isService) {
+                    return <AsyncServiceMessage message={item} onUserPress={this.handleUserPress} onGroupPress={this.handleGroupPress} onOrganizationPress={this.handleOrganizationPress} onHashtagPress={this.handleHashtagPress} />;
+                } else {
+                    return <AsyncMessageView conversationId={chatId} message={item} engine={eng} onUserPress={this.handleUserPress} onGroupPress={this.handleGroupPress} onOrganizationPress={this.handleOrganizationPress} onHashtagPress={this.handleHashtagPress} onDocumentPress={this.handleDocumentPress} onMediaPress={this.handleMediaPress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsPress} onReplyPress={this.handleReplyPress} onReactionsPress={this.handleReactionsPress} onMessagePress={this.handleMessagePress}/>;
+                }
+            } else if (item.type === 'date') {
+                return <AsyncDateSeparator year={item.year} month={item.month} date={item.date} />;
+            } else {
+                return <AsyncNewMessageDivider />;
+            }
+        });
     }
 
     handleSharedLongPress = (forward: (messages: DataSourceMessageItem[]) => void) =>
@@ -482,6 +501,10 @@ export class MobileMessenger {
         }
 
         builder.show(true);
+    }
+
+    private handleMessagePress = (message: DataSourceMessageItem) => {
+        this.routerSuitable.push('Message', { messageId: message.id });
     }
 
     private handleMessageLongPress = (

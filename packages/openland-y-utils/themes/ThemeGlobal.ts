@@ -68,6 +68,7 @@ export type ThemeGlobal = {
     accentPrimary: string;
     accentPrimaryHover: string;
     accentPrimaryActive: string;
+    accentPrimaryTrans: string;
 
     accentMuted: string;
     accentMutedHover: string;

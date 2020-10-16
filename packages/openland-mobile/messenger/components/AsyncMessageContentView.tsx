@@ -74,6 +74,8 @@ export let renderPreprocessedText = (
             return <ASText key={'link'} color={linkColor} onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))} textDecorationLine={linkTextDecoration}>{children}</ASText>;
         } else if (span.type === 'hashtag') {
             return <ASText key={'hashtag'} color={linkColor} onPress={() => onHashtagPress(span.textRaw)} textDecorationLine={linkTextDecoration}>{children}</ASText>;
+        } else if (span.type === 'search_highlight') {
+            return <ASText key={'search_highlight'} backgroundColor={message.isOut ? theme.outgoingBackgroundSecondary : theme.accentPrimaryTrans}>{children}</ASText>;
         } else if (span.type === 'mention_user') {
             return <ASText key={'mention-user'} fontWeight={message.isService ? FontStyles.Weight.Bold : undefined} color={linkColor} textDecorationLine={linkTextDecoration} onPress={() => onUserPress(span.user.id)}>{children}</ASText>;
         } else if (span.type === 'mention_all') {
