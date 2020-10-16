@@ -10,6 +10,7 @@ import { useTheme } from 'openland-x-utils/useTheme';
 import { ThemeSelect } from './components/ThemeSelect';
 import { AccentSelect } from './components/AccentSelect';
 import { UCheckboxFiled } from 'openland-web/components/unicorn/UCheckbox';
+import { highlightSecretOption, showFeaturedIconOption, largeEmojiOption } from 'openland-web/modules/appearance/stored-options';
 
 export enum AppearanceOptions {
     DEFAULT = 'DEFAULT',
@@ -43,19 +44,17 @@ export const SettingsAppearanceFragment = React.memo(() => {
 
     const secretGroupDisplay = useField(
         'input.secretGroupDisplay',
-        lsGetItem('highlight_featured_chat') === 'true',
+        highlightSecretOption.isEnabled(),
         form,
     );
-    const featuredGroupDisplayStored = lsGetItem('highlight_featured_chat');
     const featuredGroupDisplay = useField(
         'input.featuredGroupDisplay',
-        featuredGroupDisplayStored === null || featuredGroupDisplayStored === 'true',
+        showFeaturedIconOption.isEnabled(),
         form,
     );
-    const largeEmojiStored = lsGetItem('settings_large_emoji');
     const largeEmojiField = useField(
         'input.largeEmojiField',
-        largeEmojiStored === null || largeEmojiStored === 'true',
+        largeEmojiOption.isEnabled(),
         form,
     );
 
@@ -152,17 +151,17 @@ export const SettingsAppearanceFragment = React.memo(() => {
     };
 
     const otherChecker = () => {
-        if (lsGetItem('highlight_secret_chat') === 'true') {
-            document.documentElement.classList.add('highlight-secret-chat');
-        } else {
-            document.documentElement.classList.remove('highlight-secret-chat');
-        }
-        if (lsGetItem('highlight_featured_chat') === 'true') {
+        if (showFeaturedIconOption.isEnabled()) {
             document.documentElement.classList.remove('hide-featured-icon');
         } else {
             document.documentElement.classList.add('hide-featured-icon');
         }
-        if (lsGetItem('settings_large_emoji') === 'true') {
+        if (highlightSecretOption.isEnabled()) {
+            document.documentElement.classList.add('highlight-secret-chat');
+        } else {
+            document.documentElement.classList.remove('highlight-secret-chat');
+        }
+        if (largeEmojiOption.isEnabled()) {
             document.documentElement.classList.remove('regular-emoji-size');
         } else {
             document.documentElement.classList.add('regular-emoji-size');
@@ -170,18 +169,10 @@ export const SettingsAppearanceFragment = React.memo(() => {
     };
 
     React.useEffect(() => {
-        localStorage.setItem(
-            'highlight_secret_chat',
-            secretGroupDisplay.value ? 'true' : 'false',
-        );
-        localStorage.setItem(
-            'highlight_featured_chat',
-            featuredGroupDisplay.value ? 'true' : 'false',
-        );
-        localStorage.setItem(
-            'settings_large_emoji',
-            largeEmojiField.value ? 'true' : 'false',
-        );
+        highlightSecretOption.setValue(secretGroupDisplay.value);
+        showFeaturedIconOption.setValue(featuredGroupDisplay.value);
+        largeEmojiOption.setValue(largeEmojiField.value);
+
         localStorage.setItem('interactive_app_theme', themeField.value);
         localStorage.setItem('interactive_app_accent', accentField.value);
         themeChecker();
