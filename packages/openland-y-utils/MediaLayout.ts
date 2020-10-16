@@ -1,5 +1,5 @@
-const MAX_W = 400;
-const MAX_H = 400;
+export const MAX_W = 400;
+export const MAX_H = 400;
 const MIN_W = 100;
 const MIN_H = 100;
 

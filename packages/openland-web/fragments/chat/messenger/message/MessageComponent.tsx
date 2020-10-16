@@ -38,6 +38,11 @@ const senderNameStyle = css`
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    cursor: pointer;
+
+    &:hover {
+        color: var(--accentPrimary);
+    }
 `;
 
 const dateStyle = css`
@@ -100,17 +105,23 @@ interface MessageSenderNameProps {
 }
 
 const MessageSenderName = React.memo((props: MessageSenderNameProps) => {
-    const [show] = useUserPopper({
+    const router = React.useContext(XViewRouterContext)!;
+    const [show, instantHide] = useUserPopper({
         user: props.sender,
         noCardOnMe: false,
     });
     return (
-        <ULink
-            path={`/${props.sender.shortname || props.sender.id}`}
+        <div
+            onClick={(e) => {
+                e.stopPropagation();
+                instantHide();
+                router.navigate(`/${props.sender.shortname || props.sender.id}`);
+            }}
+            onMouseEnter={show}
             className={cx(TextLabel1, senderNameStyle)}
         >
-            <span onMouseEnter={show}>{emoji(props.overrideName || props.sender.name)}</span>
-        </ULink>
+            <span>{emoji(props.overrideName || props.sender.name)}</span>
+        </div>
     );
 });
 
@@ -154,11 +165,11 @@ const MessageTime = React.memo(
             [props.time],
         );
 
-        const [show] = useCaptionPopper({
+        const [show, instantHide] = useCaptionPopper({
             text: tooltipText,
             placement: 'top',
             scope: 'message-date',
-            showTimeout: 400,
+            showTimeout: 500,
         });
 
         return (
@@ -167,17 +178,18 @@ const MessageTime = React.memo(
                 className={cx(
                     TextCaption,
                     senderDateStyle,
-                    props.dateFormat === 'time' && senderDateCursor,
-                    props.dateFormat === 'time' && defaultHover,
+                    props.dateFormat === 'time' && props.mId && senderDateCursor,
+                    props.dateFormat === 'time' && props.mId && defaultHover,
                 )}
                 onClick={
                     props.dateFormat === 'time'
                         ? (e) => {
-                              e.stopPropagation();
-                              if (router && props.mId) {
-                                  router.navigate(`/message/${props.mId}`);
-                              }
-                          }
+                            e.stopPropagation();
+                            instantHide();
+                            if (router && props.mId) {
+                                router.navigate(`/message/${props.mId}`);
+                            }
+                        }
                         : undefined
                 }
             >
@@ -417,7 +429,6 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const [isSelected, toggleSelect] = useChatMessagesSelected({
         messageKey: message.key,
         conversationId: engine.conversationId,
-        userId: engine.isPrivate ? engine.user?.id : undefined,
     });
 
     React.useEffect(() => {

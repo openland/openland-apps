@@ -164,7 +164,6 @@ export const SettingsProfileFragment = React.memo(() => {
                                 <UTextAreaField
                                     placeholder="About"
                                     field={aboutField}
-                                    autoResize={true}
                                 />
                             </XView>
                             <UInputField label="Location" field={locationField} />

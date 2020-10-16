@@ -9,7 +9,7 @@ import { RoomTiny_room, RoomMemberRole, RoomTiny_room_SharedRoom } from 'openlan
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
 import Toast from 'openland-mobile/components/Toast';
-import { shouldShowInviteButton } from 'openland-y-utils/shouldShowInviteButton';
+import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 
 interface ConversationManageButtonProps {
     muted: boolean;
@@ -139,7 +139,9 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         const builder = new ActionSheetBuilder();
         const sharedRoom = room.__typename === 'SharedRoom' && room;
 
-        if (shouldShowInviteButton(room)) {
+        const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(room);
+
+        if (canAddDirectly || canGetInviteLink) {
             builder.action('Add people', onInvitePress, false, require('assets/ic-invite-24.png'));
         }
 

@@ -19,7 +19,7 @@ import {
 } from 'openland-api/spacex.types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
-import { MessageSendHandler, MentionToSend } from './MessageSender';
+import { MessageSendHandler, MentionToSend, MAX_FILES_PER_MESSAGE } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
 import * as Types from 'openland-api/spacex.types';
@@ -44,6 +44,8 @@ const timeGroup = 1000 * 60 * 60;
 
 type DataSourceMessageSourceT = FullMessage_GeneralMessage_source | FullMessage_StickerMessage_source;
 
+export type PendingAttachProps = { uri?: string, key?: string, filePreview?: string | null, progress?: number };
+
 export interface DataSourceMessageItem {
     chatId: string;
     type: 'message';
@@ -59,7 +61,7 @@ export interface DataSourceMessageItem {
     reply?: DataSourceMessageItem[];
     source?: DataSourceMessageSourceT | null;
     reactionCounters: MessageReactionCounter[];
-    attachments?: (MessageAttachments & { uri?: string, key?: string, filePreview?: string | null, progress?: number })[];
+    attachments?: (MessageAttachments & PendingAttachProps)[];
     spans?: MessageSpan[];
     isSending: boolean;
     attachTop: boolean;
@@ -692,10 +694,11 @@ export class ConversationEngine implements MessageSendHandler {
         let quoted = quotedMessages || [];
         let message = text.trim();
         let styledSpans = findSpans(message);
+        let filesToSend = files.slice(0, MAX_FILES_PER_MESSAGE);
 
         let { key, filesKeys } = this.engine.sender.sendFiles({
             conversationId: this.conversationId,
-            files: files.map(x => x.file),
+            files: filesToSend.map(x => x.file),
             callback: this,
             quoted: quoted.map(q => q.id!),
             message,
@@ -703,10 +706,10 @@ export class ConversationEngine implements MessageSendHandler {
             spans: styledSpans
         });
         (async () => {
-            let filesInfo = await Promise.all(files.map(x => x.file.fetchInfo()));
+            let filesInfo = await Promise.all(filesToSend.map(x => x.file.fetchInfo()));
             let filesMeta: PendingMessage['filesMeta'] = filesInfo.map((info, i) => {
-                let width = files[i].localImage?.width;
-                let height = files[i].localImage?.height;
+                let width = filesToSend[i].localImage?.width;
+                let height = filesToSend[i].localImage?.height;
                 return {
                     key: filesKeys[i],
                     file: info.name || 'image.jpg',
@@ -715,7 +718,7 @@ export class ConversationEngine implements MessageSendHandler {
                     uri: info.uri,
                     imageSize: info.imageSize || ((width && height) ? { width, height } : undefined),
                     isImage: !!info.isImage,
-                    filePreview: files[i].localImage?.src || '',
+                    filePreview: filesToSend[i].localImage?.src || '',
                 };
             });
 
@@ -724,7 +727,6 @@ export class ConversationEngine implements MessageSendHandler {
             let pmsg = {
                 date,
                 key,
-                file: name,
                 progress: 0,
                 message,
                 failed: false,
@@ -743,10 +745,10 @@ export class ConversationEngine implements MessageSendHandler {
 
             // Notify
             for (let l of this.listeners) {
-                l.onMessageSend(files[0].file, files[0].localImage);
+                l.onMessageSend(filesToSend[0].file, filesToSend[0].localImage);
             }
         })();
-        return key;
+        return { key, filesKeys };
     }
 
     sendSticker = (sticker: Types.StickerFragment, quotedMessages: DataSourceMessageItem[] | undefined) => {

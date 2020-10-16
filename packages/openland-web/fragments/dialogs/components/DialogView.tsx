@@ -7,6 +7,7 @@ import IcReply from 'openland-icons/s/ic-reply-16.svg';
 import IcMention from 'openland-icons/s/ic-mention-12.svg';
 import IcCall from 'openland-icons/s/ic-call-12.svg';
 import IcMuted from 'openland-icons/s/ic-muted-16.svg';
+import IcFeatured from 'openland-icons/s/ic-featured-16.svg';
 import { XCounter } from 'openland-x/XCounter';
 import { DialogListWebItem } from './DialogListWebDataSource';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
@@ -103,8 +104,14 @@ const mutedIcon = css`
     margin-left: 4px;
 `;
 
+const featuredIcon = css`
+    margin-left: 4px;
+    margin-top: 0;
+    display: var(--featured-icon-display);
+`;
+
 const highlightSecretChatColor = css`
-    color: var(--accentPositive);
+    color: var(--secret-chat-title-color);
 `;
 
 const dialogDateContent = css`
@@ -205,7 +212,8 @@ const replyIconStyle = css`
 
 const lockContainer = css`
    margin-right: 3px;
-   opacity: 0.72; 
+   opacity: 0.72;
+   display: var(--secret-chat-icon-display);
 `;
 
 interface DialogViewProps {
@@ -237,8 +245,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     ) : dialog.sender ? (
         <>{dialog.senderEmojify}: </>
     ) : (
-                    ''
-                );
+                        ''
+                    );
     let message: JSX.Element | null = null;
 
     let typingAnimation: string;
@@ -320,8 +328,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
         [props.hovered],
     );
 
-    const highlightSecretChat =
-        localStorage.getItem('highlight_secret_chat') === 'true' && dialog.kind === 'GROUP' && !isPremium;
+    const highlightSecretChat = dialog.kind === 'GROUP' && !isPremium;
+    const highlightFeaturedChat = dialog.featured;
 
     return (
         <div className="x" ref={containerRef} onMouseOver={props.onMouseOver} onMouseMove={props.onMouseMove}>
@@ -365,6 +373,15 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                         )}
 
                                         <span className={dialogTitle}>{isSavedMessages ? 'Saved messages' : dialog.titleEmojify}</span>
+                                        {highlightFeaturedChat && (
+                                            <div className={cx(dialogIconContainer, featuredIcon)}>
+                                                <UIcon
+                                                    size={16}
+                                                    icon={<IcFeatured />}
+                                                    color={active ? 'var(--foregroundContrast)' : 'var(--accentNegative)'}
+                                                />
+                                            </div>
+                                        )}
                                         {dialog.isMuted && (
                                             <div className={cx(dialogIconContainer, mutedIcon)}>
                                                 <UIcon

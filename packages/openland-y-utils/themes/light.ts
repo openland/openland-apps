@@ -103,4 +103,7 @@ export const ThemeLight: ThemeGlobal = {
     blurType: 'light',
     keyboardAppearance: 'light',
     statusBar: 'dark-content',
+
+    displayFeaturedIcon: true,
+    largeEmoji: true,
 };

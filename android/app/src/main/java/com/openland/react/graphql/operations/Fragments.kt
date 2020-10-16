@@ -528,6 +528,7 @@ internal val RoomShortSelector = obj(
                 field("title", "title", notNull(scalar("String"))),
                 field("photo", "photo", notNull(scalar("String"))),
                 field("membership", "membership", notNull(scalar("String"))),
+                field("featured", "featured", notNull(scalar("Boolean"))),
                 field("role", "role", notNull(scalar("String"))),
                 field("canEdit", "canEdit", notNull(scalar("Boolean"))),
                 field("canSendMessage", "canSendMessage", notNull(scalar("Boolean"))),
@@ -748,7 +749,8 @@ internal val DialogFragmentSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("ModernMessage", DialogMessageSelector)
                 )),
-            field("membership", "membership", notNull(scalar("String")))
+            field("membership", "membership", notNull(scalar("String"))),
+            field("featured", "featured", notNull(scalar("Boolean")))
         )
 
 internal val DialogUpdateFragmentSelector = obj(
@@ -838,7 +840,9 @@ internal val DialogUpdateFragmentSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("id", "id", notNull(scalar("ID"))),
                             field("title", "title", notNull(scalar("String"))),
-                            field("photo", "photo", notNull(scalar("String")))
+                            field("photo", "photo", notNull(scalar("String"))),
+                            field("kind", "kind", notNull(scalar("String"))),
+                            field("featured", "featured", notNull(scalar("Boolean")))
                         ))
                     )))
             )),
@@ -1078,6 +1082,7 @@ internal val RoomSharedNanoSelector = obj(
             field("title", "title", notNull(scalar("String"))),
             field("photo", "photo", notNull(scalar("String"))),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("featured", "featured", notNull(scalar("Boolean"))),
             field("settings", "settings", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
@@ -1545,6 +1550,29 @@ internal val SharedRoomViewSelector = obj(
             field("photo", "photo", notNull(scalar("String"))),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
             field("photo", "photo", notNull(scalar("String")))
+        )
+
+internal val ShortSequenceSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("SequenceCommon", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("uid", "uid", notNull(scalar("ID")))
+            )),
+            inline("SequenceChat", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("cid", "cid", notNull(scalar("ID")))
+            ))
+        )
+
+internal val ShortUpdateSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("UpdateMyProfileChanged", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
+                    )))
+            ))
         )
 
 internal val StickerPackFragmentSelector = obj(

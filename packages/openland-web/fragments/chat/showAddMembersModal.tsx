@@ -22,6 +22,7 @@ import { SearchBox } from 'openland-web/fragments/create/SearchBox';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcClose from 'openland-icons/s/ic-close-16.svg';
+import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 
 interface InviteModalProps {
     id: string;
@@ -292,13 +293,13 @@ export const AddMembersModal = React.memo(
             data = client.useRoomMembersShort({ roomId: id }, { fetchPolicy: 'network-only' });
             const chat = client.useRoomChat({ id: id }).room!;
             const sharedRoom = chat.__typename === 'SharedRoom' && chat;
+
             isPremium = sharedRoom && sharedRoom.isPremium;
-            canAddPeople = sharedRoom && (!isPremium || sharedRoom.role !== 'MEMBER');
 
-            if (sharedRoom && sharedRoom.organization && sharedRoom.organization.private && sharedRoom.role === 'MEMBER') {
-                hideOwnerLink = true;
-            }
+            const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(chat);
 
+            canAddPeople = canAddDirectly;
+            hideOwnerLink = !canGetInviteLink;
         } else if (isOrganization) {
             data = client.useOrganizationMembersShort({ organizationId: id }, { fetchPolicy: 'network-only' });
         }

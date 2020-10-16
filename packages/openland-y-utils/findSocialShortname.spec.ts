@@ -19,6 +19,7 @@ describe('Social Shortnames Parser', () => {
         expect(f.instagram('openlandhq')).toEqual({ name: 'openlandhq', url: 'https://instagram.com/openlandhq/' });
         expect(f.instagram('https://www.instagram.com/')).toBe(null);
         expect(f.instagram('https://www.instagram.com/openlandhq')).toEqual({ name: 'openlandhq', url: 'https://instagram.com/openlandhq/' });
+        expect(f.instagram('https://www.instagram.com/openland.hq')).toEqual({ name: 'openland.hq', url: 'https://instagram.com/openland.hq/' });
         expect(f.instagram('instagram.com/openlandhq')).toEqual({ name: 'openlandhq', url: 'https://instagram.com/openlandhq/' });
         expect(f.instagram('https://instagram.com/openlandhq')).toEqual({ name: 'openlandhq', url: 'https://instagram.com/openlandhq/' });
         expect(f.instagram('http://instagram.com/openlandhq')).toEqual({ name: 'openlandhq', url: 'https://instagram.com/openlandhq/' });

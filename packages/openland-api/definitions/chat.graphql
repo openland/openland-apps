@@ -93,6 +93,7 @@ query RoomChat($id: ID!) {
             shortname
             featuredMembersCount
             socialImage
+            featured
             welcomeMessage {
                 isOn
                 sender {
@@ -566,6 +567,7 @@ query ResolvedInvite($key: String!) {
                 name
                 membersCount
                 about
+                isMine
                 isCommunity: alphaIsCommunity
             }
         }

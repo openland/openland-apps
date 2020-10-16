@@ -143,8 +143,8 @@ const Buttons = (props: {
     messenger: MessengerEngine;
     chat: RoomChat_room;
 }) => {
-    let state = useChatMessagesActionsState({ conversationId: props.conversation.conversationId, userId: props.conversation.isPrivate ? props.conversation.user?.id : undefined });
-    let { clear, reply } = useChatMessagesActionsMethods({ conversationId: props.conversation.conversationId, userId: props.conversation.isPrivate ? props.conversation.user?.id : undefined });
+    let state = useChatMessagesActionsState(props.conversation.conversationId);
+    let { clear, reply } = useChatMessagesActionsMethods(props.conversation.conversationId);
     let deleteCallback = React.useCallback(() => {
         let ids = state.action === 'selected'
             ? state.messages
@@ -153,7 +153,7 @@ const Buttons = (props: {
             : [];
         showDeleteMessagesModal(ids, props.messenger.client, clear);
     }, [state]);
-    let forward = useForward(props.chat.id, props.chat.__typename === 'PrivateRoom' ? props.chat.user.id : undefined);
+    let forward = useForward(props.chat.id);
     let forwardCallback = React.useCallback(() => {
         forward();
     }, []);
@@ -180,8 +180,8 @@ const Buttons = (props: {
 };
 
 export const MessagesActionsHeader = (props: { chat: RoomChat_room }) => {
-    let state = useChatMessagesActionsState({ conversationId: props.chat.id, userId: props.chat.__typename === 'PrivateRoom' ? props.chat.user.id : undefined });
-    let { clear } = useChatMessagesActionsMethods({ conversationId: props.chat.id, userId: props.chat.__typename === 'PrivateRoom' ? props.chat.user.id : undefined });
+    let state = useChatMessagesActionsState(props.chat.id);
+    let { clear } = useChatMessagesActionsMethods(props.chat.id);
     let containerRef = React.useRef<HTMLDivElement>(null);
     let messenger = React.useContext(MessengerContext);
     let conversation = messenger.getConversation(props.chat.id);

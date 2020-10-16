@@ -62,6 +62,7 @@ class RNAsyncKeyboardView: RCTView {
   var keyboardHeight: CGFloat = 0.0
   var keyboardHeightWithAccessory: CGFloat = 0.0
   var keyboardContext: RNAsyncKeyboardContextView?
+  var overrideTransform: CGFloat = -1
   
   init() {
     super.init(frame: CGRect.zero)
@@ -76,6 +77,15 @@ class RNAsyncKeyboardView: RCTView {
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  @objc public func setOverrideTransform(_ overrideTransform: CGFloat) {
+    self.overrideTransform = overrideTransform
+    if self.overrideTransform >= 0 {
+      self.transform = CGAffineTransform(translationX: 0, y: -self.overrideTransform)
+    } else {
+      self.transform = CGAffineTransform(translationX: 0, y: -self.keyboardHeight)
+    }
   }
   
   //
@@ -94,7 +104,9 @@ class RNAsyncKeyboardView: RCTView {
     if w == nil || kbview == nil {
       if self.keyboardHeight != 0 {
         self.keyboardHeight = 0
-        self.transform = CGAffineTransform(translationX: 0, y: 0)
+        if self.overrideTransform < 0 {
+          self.transform = CGAffineTransform(translationX: 0, y: 0)
+        }
       }
       if self.keyboardHeightWithAccessory != self.bounds.size.height {
         self.keyboardHeightWithAccessory = self.bounds.size.height
@@ -119,7 +131,9 @@ class RNAsyncKeyboardView: RCTView {
     
       if self.keyboardHeight != height {
         self.keyboardHeight = height
-        self.transform = CGAffineTransform(translationX: 0, y: -height)
+        if self.overrideTransform < 0 {
+          self.transform = CGAffineTransform(translationX: 0, y: -height)
+        }
       }
     
       if self.keyboardHeightWithAccessory != fullHeight {

@@ -31,6 +31,190 @@ const BubbleMaskImage: { [key in string]: NodeRequire } = {
     'outgoing': require('assets/bubbles/outgoing_mask.png'),
 };
 
+const BubbleMaskImagePile: { [key in string]: { tl?: NodeRequire, tr?: NodeRequire, bl?: NodeRequire, br?: NodeRequire, l: NodeRequire, r: NodeRequire } } = {
+    'outgoing-after-bottom': {
+        l: require('assets/piles-bubbels/mask-bl-wide.png'),
+        r: require('assets/piles-bubbels/mask-br-wide.png'),
+        bl: require('assets/piles-bubbels/mask-bl-wide.png'),
+        br: require('assets/piles-bubbels/mask-br-wide.png'),
+    },
+    'outgoing-after-middle': {
+        l: require('assets/piles-bubbels/mask-bl-wide.png'),
+        r: require('assets/piles-bubbels/mask-br-small.png'),
+        bl: require('assets/piles-bubbels/mask-bl-wide.png'),
+        br: require('assets/piles-bubbels/mask-br-small.png'),
+    },
+    'outgoing-after-top': {
+        l: require('assets/piles-bubbels/mask-bl-wide.png'),
+        r: require('assets/piles-bubbels/mask-br-small.png'),
+        bl: require('assets/piles-bubbels/mask-bl-wide.png'),
+        br: require('assets/piles-bubbels/mask-br-small.png'),
+    },
+    'outgoing-after': {
+        l: require('assets/piles-bubbels/mask-bl-wide.png'),
+        r: require('assets/piles-bubbels/mask-br-wide.png'),
+        bl: require('assets/piles-bubbels/mask-bl-wide.png'),
+        br: require('assets/piles-bubbels/mask-br-wide.png'),
+    },
+    'outgoing-before-bottom': {
+        l: require('assets/piles-bubbels/mask-tl-wide.png'),
+        r: require('assets/piles-bubbels/mask-tr-small.png'),
+        tl: require('assets/piles-bubbels/mask-tl-wide.png'),
+        tr: require('assets/piles-bubbels/mask-tr-small.png'),
+    },
+    'outgoing-before-middle': {
+        l: require('assets/piles-bubbels/mask-tl-wide.png'),
+        r: require('assets/piles-bubbels/mask-tr-small.png'),
+        tl: require('assets/piles-bubbels/mask-tl-wide.png'),
+        tr: require('assets/piles-bubbels/mask-tr-small.png'),
+    },
+    'outgoing-before-top': {
+        l: require('assets/piles-bubbels/mask-tl-wide.png'),
+        r: require('assets/piles-bubbels/mask-tr-wide.png'),
+        tl: require('assets/piles-bubbels/mask-tl-wide.png'),
+        tr: require('assets/piles-bubbels/mask-tr-wide.png'),
+    },
+    'outgoing-before': {
+        l: require('assets/piles-bubbels/mask-tl-wide.png'),
+        r: require('assets/piles-bubbels/mask-tr-wide.png'),
+        tl: require('assets/piles-bubbels/mask-tl-wide.png'),
+        tr: require('assets/piles-bubbels/mask-tr-wide.png'),
+    },
+    'outgoing-bottom': {
+        l: require('assets/piles-bubbels/mask-left-wide-wide.png'),
+        r: require('assets/piles-bubbels/mask-right-small-wide.png'),
+        tl: require('assets/piles-bubbels/mask-tl-wide.png'),
+        tr: require('assets/piles-bubbels/mask-tr-small.png'),
+        bl: require('assets/piles-bubbels/mask-bl-wide.png'),
+        br: require('assets/piles-bubbels/mask-br-wide.png'),
+    },
+    'outgoing-middle': {
+        l: require('assets/piles-bubbels/mask-left-wide-wide.png'),
+        r: require('assets/piles-bubbels/mask-right-small-small.png'),
+        tl: require('assets/piles-bubbels/mask-tl-wide.png'),
+        tr: require('assets/piles-bubbels/mask-tr-small.png'),
+        bl: require('assets/piles-bubbels/mask-bl-wide.png'),
+        br: require('assets/piles-bubbels/mask-br-small.png'),
+    },
+    'outgoing-top': {
+        l: require('assets/piles-bubbels/mask-left-wide-wide.png'),
+        r: require('assets/piles-bubbels/mask-right-wide-small.png'),
+        tl: require('assets/piles-bubbels/mask-tl-wide.png'),
+        tr: require('assets/piles-bubbels/mask-tr-wide.png'),
+        bl: require('assets/piles-bubbels/mask-bl-wide.png'),
+        br: require('assets/piles-bubbels/mask-br-small.png'),
+    },
+    'outgoing': {
+        l: require('assets/piles-bubbels/mask-left-wide-wide.png'),
+        r: require('assets/piles-bubbels/mask-right-wide-wide.png'),
+        tl: require('assets/piles-bubbels/mask-tl-wide.png'),
+        tr: require('assets/piles-bubbels/mask-tr-wide.png'),
+        bl: require('assets/piles-bubbels/mask-bl-wide.png'),
+        br: require('assets/piles-bubbels/mask-br-wide.png'),
+    },
+    'incoming-after-bottom': {
+        l: require('assets/piles-bubbels/mask-bl-wide.png'),
+        r: require('assets/piles-bubbels/mask-br-wide.png'),
+        bl: require('assets/piles-bubbels/mask-bl-wide.png'),
+        br: require('assets/piles-bubbels/mask-br-wide.png'),
+    },
+    'incoming-after-middle': {
+        l: require('assets/piles-bubbels/mask-bl-small.png'),
+        r: require('assets/piles-bubbels/mask-br-wide.png'),
+        bl: require('assets/piles-bubbels/mask-bl-small.png'),
+        br: require('assets/piles-bubbels/mask-br-wide.png'),
+    },
+    'incoming-after-top': {
+        l: require('assets/piles-bubbels/mask-bl-small.png'),
+        r: require('assets/piles-bubbels/mask-br-wide.png'),
+        bl: require('assets/piles-bubbels/mask-bl-small.png'),
+        br: require('assets/piles-bubbels/mask-br-wide.png'),
+    },
+    'incoming-after': {
+        l: require('assets/piles-bubbels/mask-bl-wide.png'),
+        r: require('assets/piles-bubbels/mask-br-wide.png'),
+        bl: require('assets/piles-bubbels/mask-bl-wide.png'),
+        br: require('assets/piles-bubbels/mask-br-wide.png'),
+    },
+    'incoming-before-bottom': {
+        l: require('assets/piles-bubbels/mask-tl-small.png'),
+        r: require('assets/piles-bubbels/mask-tr-wide.png'),
+        tl: require('assets/piles-bubbels/mask-tl-small.png'),
+        tr: require('assets/piles-bubbels/mask-tr-wide.png'),
+    },
+    'incoming-before-middle': {
+        l: require('assets/piles-bubbels/mask-tl-small.png'),
+        r: require('assets/piles-bubbels/mask-tr-wide.png'),
+        tl: require('assets/piles-bubbels/mask-tl-small.png'),
+        tr: require('assets/piles-bubbels/mask-tr-wide.png'),
+    },
+    'incoming-before-top': {
+        l: require('assets/piles-bubbels/mask-tl-wide.png'),
+        r: require('assets/piles-bubbels/mask-tr-wide.png'),
+        tl: require('assets/piles-bubbels/mask-tl-wide.png'),
+        tr: require('assets/piles-bubbels/mask-tr-wide.png'),
+    },
+    'incoming-before': {
+        l: require('assets/piles-bubbels/mask-tl-wide.png'),
+        r: require('assets/piles-bubbels/mask-tr-wide.png'),
+        tl: require('assets/piles-bubbels/mask-tl-wide.png'),
+        tr: require('assets/piles-bubbels/mask-tr-wide.png'),
+    },
+    'incoming-bottom': {
+        l: require('assets/piles-bubbels/mask-left-small-wide.png'),
+        r: require('assets/piles-bubbels/mask-right-wide-wide.png'),
+        tl: require('assets/piles-bubbels/mask-tl-small.png'),
+        tr: require('assets/piles-bubbels/mask-tr-wide.png'),
+        bl: require('assets/piles-bubbels/mask-bl-wide.png'),
+        br: require('assets/piles-bubbels/mask-br-wide.png'),
+    },
+    'incoming-middle': {
+        l: require('assets/piles-bubbels/mask-left-small-small.png'),
+        r: require('assets/piles-bubbels/mask-right-wide-wide.png'),
+        tl: require('assets/piles-bubbels/mask-tl-small.png'),
+        tr: require('assets/piles-bubbels/mask-tr-wide.png'),
+        bl: require('assets/piles-bubbels/mask-bl-small.png'),
+        br: require('assets/piles-bubbels/mask-br-wide.png'),
+    },
+    'incoming-top': {
+        l: require('assets/piles-bubbels/mask-left-wide-small.png'),
+        r: require('assets/piles-bubbels/mask-right-wide-wide.png'),
+        tl: require('assets/piles-bubbels/mask-tl-wide.png'),
+        tr: require('assets/piles-bubbels/mask-tr-wide.png'),
+        bl: require('assets/piles-bubbels/mask-bl-small.png'),
+        br: require('assets/piles-bubbels/mask-br-wide.png'),
+    },
+    'incoming': {
+        l: require('assets/piles-bubbels/mask-left-wide-wide.png'),
+        r: require('assets/piles-bubbels/mask-right-wide-wide.png'),
+        tl: require('assets/piles-bubbels/mask-tl-wide.png'),
+        tr: require('assets/piles-bubbels/mask-tr-wide.png'),
+        bl: require('assets/piles-bubbels/mask-bl-wide.png'),
+        br: require('assets/piles-bubbels/mask-br-wide.png'),
+    },
+};
+
+type PilePosition = 'l' | 'r' | 'tl' | 'tr' | 'bl' | 'br';
+
+export const getPilePosition = (count: number, rowIndex: number, columnIndex: number): PilePosition | undefined => {
+    if (count === 2) {
+        return columnIndex === 0 ? 'l' : 'r';
+    } else if (count === 3) {
+        if (columnIndex === 0) {
+            return 'l';
+        } else {
+            return rowIndex === 0 ? 'tr' : 'br';
+        }
+    } else if (count === 4) {
+        if (columnIndex === 0) {
+            return rowIndex === 0 ? 'tl' : 'bl';
+        } else {
+            return rowIndex === 0 ? 'tr' : 'br';
+        }
+    }
+    return undefined;
+};
+
 interface AsyncBubbleMediaViewProps {
     isOut: boolean;
     attachTop: boolean;
@@ -40,13 +224,14 @@ interface AsyncBubbleMediaViewProps {
     maskColor: string;
     borderColor: string;
     useBorder: boolean;
+    pilePosition?: PilePosition;
     onPress?: (event: ASPressEvent) => void;
     onLongPress?: (event: ASPressEvent) => void;
 }
 
 export class AsyncBubbleMediaView extends React.PureComponent<AsyncBubbleMediaViewProps> {
     render() {
-        const { isOut, attachTop, attachBottom, hasTopContent, hasBottomContent, maskColor, borderColor, useBorder, onPress, onLongPress } = this.props;
+        const { isOut, attachTop, attachBottom, hasTopContent, hasBottomContent, maskColor, borderColor, useBorder, pilePosition, onPress, onLongPress } = this.props;
 
         let bubbleRes = (isOut ? 'outgoing' : 'incoming');
 
@@ -88,6 +273,11 @@ export class AsyncBubbleMediaView extends React.PureComponent<AsyncBubbleMediaVi
             bubbleRes += '-bottom';
         }
 
+        let mask: NodeRequire | undefined = BubbleMaskImage[bubbleRes];
+
+        if (pilePosition && BubbleMaskImagePile[bubbleRes]) {
+            mask = BubbleMaskImagePile[bubbleRes][pilePosition];
+        }
         let capInsets: { left: number, right: number, top: number, bottom: number };
         if (Platform.OS === 'ios') {
             capInsets = { top: 18, left: 18, right: 18, bottom: 18 };
@@ -95,12 +285,12 @@ export class AsyncBubbleMediaView extends React.PureComponent<AsyncBubbleMediaVi
             capInsets = { top: 17, left: 17, right: 17, bottom: 17 };
         }
 
-        const resolved = Image.resolveAssetSource(BubbleMaskImage[bubbleRes]);
+        const resolved = mask && Image.resolveAssetSource(mask);
 
         return (
             <ASFlex
-                backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }}
-                backgroundPatchTintColor={maskColor}
+                backgroundPatch={resolved && { source: resolved.uri, scale: resolved.scale, ...capInsets }}
+                backgroundPatchTintColor={resolved && maskColor}
                 flexGrow={1}
                 alignItems="stretch"
                 onPress={!useBorder ? onPress : undefined}
@@ -114,6 +304,7 @@ export class AsyncBubbleMediaView extends React.PureComponent<AsyncBubbleMediaVi
                         hasTopContent={hasTopContent}
                         hasBottomContent={hasBottomContent}
                         tintColor={borderColor}
+                        pilePosition={pilePosition}
                         onPress={onPress}
                         onLongPress={onLongPress}
                     />

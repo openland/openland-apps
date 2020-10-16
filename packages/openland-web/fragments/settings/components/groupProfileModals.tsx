@@ -44,7 +44,10 @@ import IcCall from 'openland-icons/s/ic-call-24.svg';
 import IcChannel from 'openland-icons/s/ic-channel-24.svg';
 import { modalSubtitle } from './groupProfileModals/shared';
 import { getCallSettingsShortLabel, showGroupCallsModal } from './groupProfileModals/groupCalls';
-import { getServiceMessagesSettingsShortLabel, showServiceMessagesModal } from './groupProfileModals/serviceMessages';
+import {
+    getServiceMessagesSettingsShortLabel,
+    showServiceMessagesModal,
+} from './groupProfileModals/serviceMessages';
 import { RoomEditModalSuperAdminTile } from './groupProfileModals/superAdminSettings';
 
 interface ShortnameModalBodyProps {
@@ -286,7 +289,7 @@ const welcomeMessageSwitchContainer = css`
     padding: 0 8px;
     cursor: pointer;
     &:hover {
-        background-color: var(--backgroundPrimaryHover);
+        background-color: var(--backgroundTertiaryHoverTrans);
     }
     & > div {
         pointer-events: none;
@@ -392,7 +395,6 @@ const WelcomeMessageModalBody = React.memo((props: WelcomeMessageModalBodyProps)
                                 field={messageField}
                                 placeholder="Message"
                                 marginTop={16}
-                                autoResize={true}
                             />
                         </XView>
                     )}
@@ -450,8 +452,8 @@ const EnableRepliesModalBody = React.memo((props: EnableRepliesModalBodyProps) =
             await client.mutateRoomUpdate({
                 roomId,
                 input: {
-                    repliesEnabled: enableRepliesField.value
-                }
+                    repliesEnabled: enableRepliesField.value,
+                },
             });
             await client.refetchRoomChat({ id: roomId });
             hide();
@@ -491,22 +493,15 @@ const EnableRepliesModalBody = React.memo((props: EnableRepliesModalBodyProps) =
     );
 });
 
-const showEnableRepliesModal = (
-    roomId: string,
-    initialValue: boolean
-) => {
+const showEnableRepliesModal = (roomId: string, initialValue: boolean) => {
     showModalBox(
         {
             width: 400,
             title: 'Replies',
         },
         (ctx) => (
-            <EnableRepliesModalBody
-                roomId={roomId}
-                initialValue={initialValue}
-                hide={ctx.hide}
-            />
-        )
+            <EnableRepliesModalBody roomId={roomId} initialValue={initialValue} hide={ctx.hide} />
+        ),
     );
 };
 
@@ -606,7 +601,6 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                         placeholder="Description"
                         marginTop={16}
                         marginBottom={16}
-                        autoResize={true}
                     />
                     {!isShared && <SecretLabel />}
                     <div className={cx(formTitle, TextTitle3)}>Settings</div>
@@ -659,28 +653,38 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                             onClick={() => showEnableRepliesModal(room.id, repliesEnabled)}
                             textRight={repliesEnabled ? 'On' : 'Off'}
                         />
-                        {!room.isChannel && <UListItem
-                            title="Service messages"
-                            icon={<IcChannel />}
-                            paddingHorizontal={24}
-                            onClick={() => showServiceMessagesModal(room.id, {
-                                joinsMessageEnabled: serviceMessageSettings.joinsMessageEnabled,
-                                leavesMessageEnabled: serviceMessageSettings.leavesMessageEnabled
-                            })}
-                            textRight={getServiceMessagesSettingsShortLabel(serviceMessageSettings)}
-                        />}
+                        {!room.isChannel && (
+                            <UListItem
+                                title="Service messages"
+                                icon={<IcChannel />}
+                                paddingHorizontal={24}
+                                onClick={() =>
+                                    showServiceMessagesModal(room.id, {
+                                        joinsMessageEnabled:
+                                            serviceMessageSettings.joinsMessageEnabled,
+                                        leavesMessageEnabled:
+                                            serviceMessageSettings.leavesMessageEnabled,
+                                    })
+                                }
+                                textRight={getServiceMessagesSettingsShortLabel(
+                                    serviceMessageSettings,
+                                )}
+                            />
+                        )}
                         <UListItem
                             title="Group calls"
                             icon={<IcCall />}
                             paddingHorizontal={24}
-                            onClick={() => showGroupCallsModal(room.id, {
-                                mode: callSettings.mode,
-                                callLink: callSettings.callLink || ''
-                            })}
+                            onClick={() =>
+                                showGroupCallsModal(room.id, {
+                                    mode: callSettings.mode,
+                                    callLink: callSettings.callLink || '',
+                                })
+                            }
                             textRight={getCallSettingsShortLabel(callSettings)}
                         />
                         <XWithRole role="super-admin">
-                            <RoomEditModalSuperAdminTile kind={kind} roomId={room.id} />
+                            <RoomEditModalSuperAdminTile kind={kind} roomId={room.id} isChannel={room.isChannel} />
                         </XWithRole>
                     </XView>
                 </XModalContent>
@@ -706,7 +710,7 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
 
 const RoomEditModal = ({ chatId, hide }: { chatId: string; hide: () => void }) => {
     const client = useClient();
-    const {room} = client.useRoomChat({ id: chatId });
+    const { room } = client.useRoomChat({ id: chatId });
     return <RoomEditModalBody onClose={hide} room={room as RoomChat_room_SharedRoom} />;
 };
 

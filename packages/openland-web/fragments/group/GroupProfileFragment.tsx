@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { css } from "linaria";
+import { css } from 'linaria';
 import copy from 'copy-to-clipboard';
 
 import { useClient } from 'openland-api/useClient';
@@ -13,18 +13,30 @@ import { GroupActions } from './components/GroupActions';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { NotFound } from 'openland-unicorn/NotFound';
-import { UListHeroNew } from 'openland-web/components/unicorn/UListHeroNew';
+import { UListHero } from 'openland-web/components/unicorn/UListHero';
 import { ProfileLayout } from 'openland-web/components/ProfileLayout';
 import { ShowMoreText } from 'openland-web/fragments/shortname/components/ShowMoreText';
 import { ProfileTabsFragment } from 'openland-web/fragments/shortname/components/ProfileTabsFragment';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import AtIcon from 'openland-icons/s/ic-at-24.svg';
 import PriceIcon from 'openland-icons/s/ic-tag-price-24.svg';
+import IcFeatured from 'openland-icons/s/ic-featured-16.svg';
 
 const listItemWrapper = css`
     width: 250px;
+`;
+
+const featuredIcon = css`
+    display: var(--featured-icon-display);
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
 `;
 
 export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
@@ -48,6 +60,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         isPremium,
         shortname,
         premiumSettings,
+        featured,
     } = group;
 
     const onCopyLinkClick = React.useCallback(() => {
@@ -67,15 +80,28 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     }
 
     const leftColumn = (
-            <UListHeroNew
-                title={title}
-                titleIcon={isPremium ? <PremiumBadge /> : undefined}
-                description={descriptionHero}
-                avatar={{ photo, id, title }}
-            >
-                <UButton text="View group" path={`/mail/${id}`} size="large" shape="square" marginRight={16}/>
-                <GroupActions group={group} />
-            </UListHeroNew>
+        <UListHero
+            title={title}
+            titleIcon={isPremium ? <PremiumBadge /> : undefined}
+            titleRightIcon={
+                featured ? (
+                    <div className={featuredIcon}>
+                        <UIcon icon={<IcFeatured />} color="var(--accentNegative)" />
+                    </div>
+                ) : undefined
+            }
+            description={descriptionHero}
+            avatar={{ photo, id, title }}
+        >
+            <UButton
+                text="View group"
+                path={`/mail/${id}`}
+                size="large"
+                shape="square"
+                marginRight={16}
+            />
+            <GroupActions group={group} />
+        </UListHero>
     );
 
     const rightColumn = (
@@ -84,13 +110,32 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                 <UListGroup header="About">
                     {!!description && <ShowMoreText text={description} />}
                     <XView flexDirection="row" flexWrap="wrap" marginTop={8}>
-                        {!!shortname && <UListItem title={shortname} icon={<AtIcon />} useRadius={true} wrapperClassName={listItemWrapper} onClick={onCopyLinkClick}/>}
-                        {!!price && <UListItem title={price} icon={<PriceIcon />} useRadius={true} wrapperClassName={listItemWrapper} interactive={false} />}
+                        {!!shortname && (
+                            <UListItem
+                                title={shortname}
+                                icon={<AtIcon />}
+                                useRadius={true}
+                                wrapperClassName={listItemWrapper}
+                                onClick={onCopyLinkClick}
+                            />
+                        )}
+                        {!!price && (
+                            <UListItem
+                                title={price}
+                                icon={<PriceIcon />}
+                                useRadius={true}
+                                wrapperClassName={listItemWrapper}
+                                interactive={false}
+                            />
+                        )}
                     </XView>
                 </UListGroup>
             )}
             {organization && (
-                <UListGroup header={organization.isCommunity ? 'Community' : 'Organization'} marginBottom={16}>
+                <UListGroup
+                    header={organization.isCommunity ? 'Community' : 'Organization'}
+                    marginBottom={16}
+                >
                     <UOrganizationView organization={organization} />
                 </UListGroup>
             )}
@@ -98,5 +143,12 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         </>
     );
 
-    return <ProfileLayout leftColumn={leftColumn} rightColumn={rightColumn} title={title} track="group_profile" />;
+    return (
+        <ProfileLayout
+            leftColumn={leftColumn}
+            rightColumn={rightColumn}
+            title={title}
+            track="group_profile"
+        />
+    );
 });

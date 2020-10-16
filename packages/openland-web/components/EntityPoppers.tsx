@@ -9,9 +9,11 @@ interface UserPopperProps {
     noCardOnMe?: boolean;
 }
 
-export const useUserPopper = (props: UserPopperProps) => {
+export const useUserPopper = (
+    props: UserPopperProps,
+): [(element: HTMLElement | React.MouseEvent<unknown>) => void, () => void] => {
     const engine = React.useContext(MessengerContext);
-    const [, show] = usePopper(
+    const [, show, instantHide] = usePopper(
         {
             placement: 'top',
             hideOnLeave: true,
@@ -22,7 +24,7 @@ export const useUserPopper = (props: UserPopperProps) => {
             hideOnChildClick: false,
             hideOnClick: false,
         },
-        ctx => (
+        (ctx) => (
             <UserPopperContent
                 hidePopper={ctx.hide}
                 noCardOnMe={props.noCardOnMe}
@@ -31,5 +33,5 @@ export const useUserPopper = (props: UserPopperProps) => {
             />
         ),
     );
-    return [show];
+    return [show, instantHide];
 };

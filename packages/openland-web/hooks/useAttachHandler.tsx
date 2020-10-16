@@ -7,8 +7,7 @@ import { useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsS
 export const useAttachHandler = (props: { conversationId: string, onOpen?: () => void, onClose?: () => void }) => {
     let messenger = React.useContext(MessengerContext);
     let conversation = messenger.getConversation(props.conversationId);
-    let privateUserId = conversation.isPrivate ? conversation.user?.id : undefined;
-    let messagesActionsMethods = useChatMessagesActionsMethods({ conversationId: props.conversationId, userId: privateUserId });
+    let messagesActionsMethods = useChatMessagesActionsMethods(props.conversationId);
 
     let refreshFileUploadingTyping = React.useCallback((filename?: string) => {
         const lowercaseFilename = filename && filename.toLowerCase();
@@ -54,7 +53,7 @@ export const useAttachHandler = (props: { conversationId: string, onOpen?: () =>
                     let quotedMessages = messagesActionsMethods.prepareToSend();
                     let keys;
                     if (hasImages) {
-                        keys = conversation!.sendFiles({ files: uploadingFiles, mentions, text, quotedMessages });
+                        keys = conversation!.sendFiles({ files: uploadingFiles, mentions, text, quotedMessages }).filesKeys;
                     } else {
                         keys = uploadingFiles.map(({ file, localImage }) => conversation!.sendFile(file, localImage, undefined));
                         if (text) {

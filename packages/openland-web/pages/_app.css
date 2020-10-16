@@ -1,7 +1,7 @@
 body {}
 
 a {
-    color: rgb(23, 144, 255);
+    color: var(--accentPrimary);
 }
 
 a:hover {

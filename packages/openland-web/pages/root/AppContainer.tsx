@@ -9,6 +9,7 @@ import { useClient } from 'openland-api/useClient';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { dropPersistenceCache } from 'openland-api/spacex.persistance.web';
 import { UnicornSplash } from 'openland-x/XLoader';
+import { highlightSecretOption, showFeaturedIconOption, largeEmojiOption } from 'openland-web/modules/appearance/stored-options';
 
 export const AppContainer = (props: { children: any }) => {
     const client = useClient();
@@ -78,6 +79,21 @@ export const AppContainer = (props: { children: any }) => {
         }
         if (localStorage.getItem('interactive_app_accent') === 'BLUE') {
             removeAllAccentClasses();
+        }
+        if (showFeaturedIconOption.isEnabled()) {
+            document.documentElement.classList.remove('hide-featured-icon');
+        } else {
+            document.documentElement.classList.add('hide-featured-icon');
+        }
+        if (highlightSecretOption.isEnabled()) {
+            document.documentElement.classList.add('highlight-secret-chat');
+        } else {
+            document.documentElement.classList.remove('highlight-secret-chat');
+        }
+        if (largeEmojiOption.isEnabled()) {
+            document.documentElement.classList.remove('regular-emoji-size');
+        } else {
+            document.documentElement.classList.add('regular-emoji-size');
         }
     }, []);
 

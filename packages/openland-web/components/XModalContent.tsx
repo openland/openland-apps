@@ -9,6 +9,7 @@ export const XModalContent = React.memo<XViewProps>(props => {
             paddingHorizontal={24}
             paddingBottom={24}
             color="var(--foregroundPrimary)"
+            backgroundColor="var(--backgroundSecondary)"
             {...props}
             {...TextStyles.Body}
         />

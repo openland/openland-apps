@@ -668,7 +668,12 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
             });
         }
 
-        await client.refetchAccount();
+        await Promise.all([
+            client.refetchAccount(),
+            client.refetchAccountSettings(),
+            client.refetchMyCommunities(),
+        ]);
+
         props.ctx.hide();
         router.navigate('/' + organization.id);
     };
@@ -709,7 +714,6 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
                 <UTextAreaField
                     field={descriptionField}
                     placeholder="Short description"
-                    autoResize={true}
                 />
             </div>
         </CreatingContainer>

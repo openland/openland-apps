@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
+import { DataSourceMessageItem, PendingAttachProps } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
 import { paddedText } from '../AsyncMessageContentView';
@@ -16,7 +16,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface DocumentContentProps {
     message: DataSourceMessageItem;
-    attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
+    attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & PendingAttachProps;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
@@ -48,8 +48,8 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                 false);
         }
 
-        if (this.props.attach && this.props.attach.uri) {
-            this.downloadManagerWatch = UploadManagerInstance.watch(this.props.message.key, s => this.setState({ downloadState: { progress: s.progress } }));
+        if (this.props.attach && this.props.attach.uri && this.props.attach.key) {
+            this.downloadManagerWatch = UploadManagerInstance.watch(this.props.attach.key, s => this.setState({ downloadState: { progress: s.progress } }));
         }
 
     }

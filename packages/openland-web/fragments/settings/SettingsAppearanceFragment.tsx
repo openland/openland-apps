@@ -2,7 +2,6 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { RadioButtonsSelect } from './components/RadioButtonsSelect';
 import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
 import { UHeader } from 'openland-unicorn/UHeader';
@@ -10,6 +9,8 @@ import { Page } from 'openland-unicorn/Page';
 import { useTheme } from 'openland-x-utils/useTheme';
 import { ThemeSelect } from './components/ThemeSelect';
 import { AccentSelect } from './components/AccentSelect';
+import { UCheckboxFiled } from 'openland-web/components/unicorn/UCheckbox';
+import { highlightSecretOption, showFeaturedIconOption, largeEmojiOption } from 'openland-web/modules/appearance/stored-options';
 
 export enum AppearanceOptions {
     DEFAULT = 'DEFAULT',
@@ -43,9 +44,17 @@ export const SettingsAppearanceFragment = React.memo(() => {
 
     const secretGroupDisplay = useField(
         'input.secretGroupDisplay',
-        lsGetItem('highlight_secret_chat') === 'true'
-            ? AppearanceOptions.HIGHLIGHTED
-            : AppearanceOptions.DEFAULT,
+        highlightSecretOption.isEnabled(),
+        form,
+    );
+    const featuredGroupDisplay = useField(
+        'input.featuredGroupDisplay',
+        showFeaturedIconOption.isEnabled(),
+        form,
+    );
+    const largeEmojiField = useField(
+        'input.largeEmojiField',
+        largeEmojiOption.isEnabled(),
         form,
     );
 
@@ -141,15 +150,34 @@ export const SettingsAppearanceFragment = React.memo(() => {
         }
     };
 
+    const otherChecker = () => {
+        if (showFeaturedIconOption.isEnabled()) {
+            document.documentElement.classList.remove('hide-featured-icon');
+        } else {
+            document.documentElement.classList.add('hide-featured-icon');
+        }
+        if (highlightSecretOption.isEnabled()) {
+            document.documentElement.classList.add('highlight-secret-chat');
+        } else {
+            document.documentElement.classList.remove('highlight-secret-chat');
+        }
+        if (largeEmojiOption.isEnabled()) {
+            document.documentElement.classList.remove('regular-emoji-size');
+        } else {
+            document.documentElement.classList.add('regular-emoji-size');
+        }
+    };
+
     React.useEffect(() => {
-        localStorage.setItem(
-            'highlight_secret_chat',
-            secretGroupDisplay.value === AppearanceOptions.HIGHLIGHTED ? 'true' : 'false',
-        );
+        highlightSecretOption.setValue(secretGroupDisplay.value);
+        showFeaturedIconOption.setValue(featuredGroupDisplay.value);
+        largeEmojiOption.setValue(largeEmojiField.value);
+
         localStorage.setItem('interactive_app_theme', themeField.value);
         localStorage.setItem('interactive_app_accent', accentField.value);
         themeChecker();
         accentChecker();
+        otherChecker();
     });
 
     return (
@@ -216,20 +244,22 @@ export const SettingsAppearanceFragment = React.memo(() => {
                         ]}
                     />
                 </FormSection>
-                <FormSection title="Secret groups">
+                <FormSection title="Other">
                     <XView marginHorizontal={-16}>
-                        <RadioButtonsSelect
-                            {...secretGroupDisplay.input}
-                            selectOptions={[
-                                {
-                                    value: AppearanceOptions.DEFAULT,
-                                    label: `Default`,
-                                },
-                                {
-                                    value: AppearanceOptions.HIGHLIGHTED,
-                                    label: `Highlighted`,
-                                },
-                            ]}
+                        <UCheckboxFiled
+                            label="Highlight secret groups"
+                            field={secretGroupDisplay}
+                            asSwitcher={true}
+                        />
+                        <UCheckboxFiled
+                            label="Show large emoji"
+                            field={largeEmojiField}
+                            asSwitcher={true}
+                        />
+                        <UCheckboxFiled
+                            label="Show group featured icon"
+                            field={featuredGroupDisplay}
+                            asSwitcher={true}
                         />
                     </XView>
                 </FormSection>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from "linaria";
+import { css } from 'linaria';
 import { XView } from 'react-mental';
 
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
@@ -8,11 +8,11 @@ import { PrivateCommunityView } from 'openland-web/fragments/settings/components
 import { OrgMember } from 'openland-y-utils/members/EntityMembersManager';
 import { ProfileLayout } from 'openland-web/components/ProfileLayout';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { UListHeroNew } from 'openland-web/components/unicorn/UListHeroNew';
+import { UListHero } from 'openland-web/components/unicorn/UListHero';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
-
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { CreateGroupButton } from './components/CreateGroupButton';
 import { OrganizationGroups } from './components/OrganizationGroups';
 import { OrganizationActions } from './components/OrganizationActions';
@@ -25,9 +25,21 @@ import TwitterIcon from 'openland-icons/s/ic-twitter-24-transparent.svg';
 import FacebookIcon from 'openland-icons/s/ic-facebook-24-transparent.svg';
 import InstagramIcon from 'openland-icons/s/ic-instagram-24-transparent.svg';
 import LinkedInIcon from 'openland-icons/s/ic-linkedin-24-transparent.svg';
+import IcFeatured from 'openland-icons/s/ic-featured-16.svg';
 
 const listItemWrapper = css`
     width: 250px;
+`;
+
+const featuredIcon = css`
+    display: var(--featured-icon-display);
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
 `;
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
@@ -58,6 +70,8 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
         roomsCount,
         membersCount,
         owner,
+        featured,
+        isOwner,
     } = organization;
 
     const [members, setMembers] = React.useState<OrgMember[]>([]);
@@ -77,14 +91,28 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
 
     const leftColumn = (
         <>
-            <UListHeroNew
+            <UListHero
                 title={name}
                 description={isCommunity ? 'Community' : 'Organization'}
                 avatar={{ photo, id, title: name }}
+                titleRightIcon={
+                    featured ? (
+                        <div className={featuredIcon}>
+                            <UIcon icon={<IcFeatured />} color="var(--accentNegative)" />
+                        </div>
+                    ) : undefined
+                }
             >
-                <UButton text="Message Admin" size="large" path={'/mail/' + owner.id} marginRight={16}/>
+                {!isOwner && (
+                    <UButton
+                        text="Message Admin"
+                        size="large"
+                        path={'/mail/' + owner.id}
+                        marginRight={16}
+                    />
+                )}
                 <OrganizationActions organization={organization} onLeave={handleRemoveMember} />
-            </UListHeroNew>
+            </UListHero>
         </>
     );
 
@@ -93,12 +121,60 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
             <UListGroup header="About">
                 {!!about && <ShowMoreText text={about} />}
                 <XView flexDirection="row" flexWrap="wrap" marginTop={8}>
-                    {!!shortname && <UListItem title={shortname} icon={<AtIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={`https://openland.com/${shortname}`}/>}
-                    {!!parsedSite && <UListItem title={parsedSite.name} icon={<LinkIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={parsedSite.url}/>}
-                    {!!parsedTwitter && <UListItem title={parsedTwitter.name} icon={<TwitterIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={parsedTwitter.url}/>}
-                    {!!parsedFacebook && <UListItem title={parsedFacebook.name} icon={<FacebookIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={parsedFacebook.url}/>}
-                    {!!parsedInstagram && <UListItem title={parsedInstagram.name} icon={<InstagramIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={parsedInstagram.url}/>}
-                    {!!parsedLinkedIn && <UListItem title={parsedLinkedIn.name} icon={<LinkedInIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={parsedLinkedIn.url}/>}
+                    {!!shortname && (
+                        <UListItem
+                            title={shortname}
+                            icon={<AtIcon />}
+                            useRadius={true}
+                            wrapperClassName={listItemWrapper}
+                            href={`https://openland.com/${shortname}`}
+                        />
+                    )}
+                    {!!parsedSite && (
+                        <UListItem
+                            title={parsedSite.name}
+                            icon={<LinkIcon />}
+                            useRadius={true}
+                            wrapperClassName={listItemWrapper}
+                            href={parsedSite.url}
+                        />
+                    )}
+                    {!!parsedTwitter && (
+                        <UListItem
+                            title={parsedTwitter.name}
+                            icon={<TwitterIcon />}
+                            useRadius={true}
+                            wrapperClassName={listItemWrapper}
+                            href={parsedTwitter.url}
+                        />
+                    )}
+                    {!!parsedFacebook && (
+                        <UListItem
+                            title={parsedFacebook.name}
+                            icon={<FacebookIcon />}
+                            useRadius={true}
+                            wrapperClassName={listItemWrapper}
+                            href={parsedFacebook.url}
+                        />
+                    )}
+                    {!!parsedInstagram && (
+                        <UListItem
+                            title={parsedInstagram.name}
+                            icon={<InstagramIcon />}
+                            useRadius={true}
+                            wrapperClassName={listItemWrapper}
+                            href={parsedInstagram.url}
+                        />
+                    )}
+                    {!!parsedLinkedIn && (
+                        <UListItem
+                            title={parsedLinkedIn.name}
+                            icon={<LinkedInIcon />}
+                            useRadius={true}
+                            wrapperClassName={listItemWrapper}
+                            href={parsedLinkedIn.url}
+                        />
+                    )}
                 </XView>
             </UListGroup>
             <React.Suspense fallback={null}>
@@ -108,13 +184,23 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 </UListGroup>
             </React.Suspense>
             <UListHeader text="Members" counter={membersCount} paddingVertical={16} height={56} />
-            <OrganizationMembers members={members} setMembers={setMembers} organization={organization} onRemoveMember={handleRemoveMember} />
+            <OrganizationMembers
+                members={members}
+                setMembers={setMembers}
+                organization={organization}
+                onRemoveMember={handleRemoveMember}
+            />
         </>
     );
 
     const track = `${organization.isCommunity ? 'community' : 'org'}_profile`;
 
     return (
-        <ProfileLayout leftColumn={leftColumn} rightColumn={rightColumn} title={name} track={track}/>
+        <ProfileLayout
+            leftColumn={leftColumn}
+            rightColumn={rightColumn}
+            title={name}
+            track={track}
+        />
     );
 });

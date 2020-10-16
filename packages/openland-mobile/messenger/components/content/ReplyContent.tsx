@@ -54,15 +54,17 @@ interface ReplyContentProps {
     onOrganizationPress: (id: string) => void;
     onHashtagPress: (d?: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
-    onDocumentPress: (document: DataSourceMessageItem) => void;
+    onDocumentPress: (message: DataSourceMessageItem) => void;
     onPress?: (message: DataSourceMessageItem) => void;
+    onLongPress: (e: ASPressEvent) => void;
+    onContentPress?: () => void;
     theme: ThemeGlobal;
     isForward?: boolean;
 }
 export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
     render() {
-        let { message, maxWidth, width, compensateBubble, theme, isForward, onPress } = this.props;
+        let { message, maxWidth, width, compensateBubble, theme, isForward, onPress, onContentPress, onLongPress } = this.props;
 
         let lineBackgroundPatch: any;
         let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
@@ -78,10 +80,19 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
         const bubbleForegroundTertiary = message.isOut ? theme.outgoingForegroundTertiary : theme.incomingForegroundTertiary;
         const forwardColor = message.isOut ? theme.tintInverted : theme.foregroundTertiary;
 
+        const handleForwardTextPress = () => {
+            if (!isForward && onPress && message.reply) {
+                onPress(message.reply[0]);
+            }
+            if (onContentPress) {
+                onContentPress();
+            }
+        };
+
         return (
             <>
                 {message.reply && isForward && (
-                    <ASText {...TextStylesAsync.Densed} color={forwardColor}>
+                    <ASText {...TextStylesAsync.Densed} color={forwardColor} onPress={handleForwardTextPress}>
                         {message.reply.length} forwarded {message.reply.length === 1 ? 'message' : 'messages'}
                     </ASText>
                 )}
@@ -96,13 +107,17 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                             if (!isForward && onPress) {
                                 onPress(m);
                             }
+                            if (onContentPress) {
+                                onContentPress();
+                            }
                         };
 
                         if (repliedMessage) {
-                            const attachFile = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+                            const attachFiles = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageAttachmentFile') as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] | undefined;
                             const attachRich = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
                             const sticker = m.sticker && m.sticker.__typename === 'ImageSticker' ? m.sticker : undefined;
                             const attachPurchase = getAttachPurchase(repliedMessage);
+                            const imageFiles = attachFiles?.filter(x => x.fileMetadata.isImage);
                             let miniContent = null;
                             let miniContentSubtitle = null;
                             let miniContentColor = bubbleForegroundSecondary;
@@ -110,24 +125,26 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                             if (sticker) {
                                 miniContent = <StickerContent sticker={sticker} message={m} padded={needPaddedText} width={40} height={40} />;
                                 miniContentSubtitle = repliedMessage.fallback;
-                            } else if (attachFile && attachFile.fileMetadata.isImage && !isForward) {
+                            } else if (imageFiles && imageFiles?.length > 0 && !isForward) {
                                 miniContent = (
                                     <AsyncReplyMessageMediaView
-                                        attach={attachFile}
+                                        attachments={imageFiles}
                                         onPress={this.props.onMediaPress}
                                         message={repliedMessage}
                                         theme={theme}
                                     />
                                 );
                                 miniContentSubtitle = repliedMessage.fallback;
-                            } else if (attachFile && !attachFile.fileMetadata.isImage) {
+                            } else if (attachFiles && attachFiles.some(x => !x.fileMetadata.isImage)) {
                                 miniContent = (
                                     <AsyncReplyMessageDocumentView
-                                        attach={attachFile}
+                                        attach={attachFiles[0]}
                                         message={repliedMessage}
+                                        onPress={() => this.props.onDocumentPress(repliedMessage)}
+                                        onLongPress={onLongPress}
                                     />
                                 );
-                                miniContentSubtitle = attachFile.fileMetadata.name;
+                                miniContentSubtitle = attachFiles[0].fileMetadata.name;
                             } else if (attachRich && !isForward) {
                                 miniContent = (
                                     <AsyncReplyMessageRichAttach
@@ -153,6 +170,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                     backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }}
                                     backgroundPatchTintColor={bubbleForegroundTertiary}
                                     onPress={handlePress}
+                                    onLongPress={onLongPress}
                                 >
                                     <ASFlex
                                         key={'mini-context-' + m.id}
@@ -160,6 +178,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         alignItems="stretch"
                                         marginLeft={9}
                                         flexShrink={1}
+                                        onLongPress={onLongPress}
                                     >
                                         {miniContent && (
                                             <ASFlex marginRight={8}>
@@ -191,15 +210,16 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                                     marginTop={2}
                                                     numberOfLines={1}
                                                     flexGrow={1}
+                                                    onPress={handlePress}
                                                 >
                                                     {miniContentSubtitle}
                                                 </ASText>
                                             )}
                                         </ASFlex>
                                     </ASFlex>
-                                    {attachFile && attachFile.fileMetadata.isImage && isForward && (
+                                    {imageFiles && imageFiles?.length > 0 && isForward && (
                                         <AsyncReplyMessageMediaView
-                                            attach={attachFile}
+                                            attachments={imageFiles}
                                             onPress={this.props.onMediaPress}
                                             message={repliedMessage}
                                             theme={theme}
@@ -214,6 +234,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                             marginLeft={9}
                                             marginRight={paddedMargin ? 65 : undefined}
                                             onPress={handlePress}
+                                            onLongPress={onLongPress}
                                         >
                                             <RenderSpans
                                                 spans={repliedMessage.textSpans}

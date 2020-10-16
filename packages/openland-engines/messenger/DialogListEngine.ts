@@ -41,6 +41,7 @@ export interface DialogDataSourceItemStored {
     unread: number;
     isMuted?: boolean;
     hasActiveCall?: boolean;
+    featured?: boolean;
 
     // Chat Top Message
     message?: string;
@@ -83,6 +84,7 @@ const extractDialog = (dialog: DialogFragment, uid: string): DialogDataSourceIte
         haveMention: dialog.haveMention,
         isMuted: dialog.isMuted,
         hasActiveCall: dialog.hasActiveCall,
+        featured: dialog.featured,
         kind: dialog.kind,
         isChannel: dialog.isChannel,
         isPremium: dialog.isPremium,
@@ -319,7 +321,8 @@ export class DialogListEngine {
                     isMuted: !!existing.isMuted,
                     haveMention: update.haveMention,
                     membership: existing.membership as SharedRoomMembershipStatus,
-                    hasActiveCall: !!existing.hasActiveCall
+                    hasActiveCall: !!existing.hasActiveCall,
+                    featured: !!existing.featured
                 }, this.engine.user.id));
             }
         }
@@ -333,6 +336,8 @@ export class DialogListEngine {
                 ...existing,
                 title: update.peer.__typename === 'PrivateRoom' ? update.peer.user.name : update.peer.title,
                 photo: update.peer.__typename === 'PrivateRoom' ? update.peer.user.photo || undefined : update.peer.photo,
+                kind: update.peer.__typename === 'SharedRoom' ? update.peer.kind : existing.kind,
+                featured: update.peer.__typename === 'SharedRoom' ? update.peer.featured : false,
             });
         }
     }
@@ -435,6 +440,7 @@ export class DialogListEngine {
                     kind: sharedRoom ? sharedRoom.kind : 'PRIVATE',
                     isChannel: sharedRoom ? sharedRoom.isChannel : false,
                     isPremium: sharedRoom ? sharedRoom.isPremium : false,
+                    featured: sharedRoom ? sharedRoom.featured : false,
                     title: sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '',
                     photo:
                         (sharedRoom

@@ -92,7 +92,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
         return (
             <ASFlex flexDirection="column" alignItems="stretch">
                 {content.map((c, i) => {
-                    let type = ignoreMarkdown && (c.type === 'loud' || c.type === 'code_block') ? 'slice' : c.type;
+                    let type = ignoreMarkdown && (c.type === 'loud' || c.type === 'code_block') || !theme.largeEmoji && c.type === 'emoji' ? 'slice' : c.type;
                     if (type === 'slice' || type === 'loud' || type === 'emoji' || type === 'padded') {
                         return (
                             <ASFlex>

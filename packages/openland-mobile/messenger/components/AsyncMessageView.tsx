@@ -83,12 +83,12 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
         reactionCounters,
         isSending
     } = message;
-    const { getState, reply, edit } = useChatMessagesActionsMethods({ conversationId: props.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
-    const [selected, toggleSelect] = useChatMessagesSelected({ conversationId: props.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined, messageKey: message.key });
-    const isSelecting = useChatMessagesSelectionMode({ conversationId: props.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
+    const { getState, reply, edit } = useChatMessagesActionsMethods(props.conversationId);
+    const [selected, toggleSelect] = useChatMessagesSelected({ conversationId: props.conversationId, messageKey: message.key });
+    const isSelecting = useChatMessagesSelectionMode(props.conversationId);
 
     const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
-    const forward = useForward(conversationId, engine.isPrivate ? engine.user?.id : undefined, !canReply);
+    const forward = useForward(conversationId, !canReply);
 
     React.useEffect(() => {
         let timer: any;
@@ -113,6 +113,18 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     messageRef.current = message;
 
     let lastTap: number;
+    const handleDoublePress = () => {
+        if (!isSending) {
+            const now = Date.now();
+            const DOUBLE_PRESS_DELAY = 300;
+
+            if (lastTap && (now - lastTap) < DOUBLE_PRESS_DELAY) {
+                onMessageDoublePress(message);
+            } else {
+                lastTap = now;
+            }
+        }
+    };
     const handlePress = () => {
         if (isSelecting) {
             toggleSelect(message);
@@ -128,16 +140,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
             onMessagePress(message);
         }
 
-        if (!isSending) {
-            const now = Date.now();
-            const DOUBLE_PRESS_DELAY = 300;
-
-            if (lastTap && (now - lastTap) < DOUBLE_PRESS_DELAY) {
-                onMessageDoublePress(message);
-            } else {
-                lastTap = now;
-            }
-        }
+        handleDoublePress();
     };
     const handleLongPress = () => {
         if (isSelecting) {
@@ -195,7 +198,23 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     let res;
 
     if (message.text || message.reply || (message.attachments && message.attachments.length) || message.sticker) {
-        res = <AsyncMessageContentView conversationId={conversationId} theme={theme} key={'message-content'} message={message} onMediaPress={handleMediaPress} onLongPress={handleLongPress} onDocumentPress={onDocumentPress} onUserPress={handleUserPress} onGroupPress={handleGroupPress} onOrganizationPress={handleOrganizationPress} onHashtagPress={onHashtagPress} onReplyPress={handleReplyPress} />;
+        res = (
+            <AsyncMessageContentView
+                conversationId={conversationId}
+                theme={theme}
+                key={'message-content'}
+                message={message}
+                onMediaPress={handleMediaPress}
+                onLongPress={handleLongPress}
+                onDocumentPress={onDocumentPress}
+                onUserPress={handleUserPress}
+                onGroupPress={handleGroupPress}
+                onOrganizationPress={handleOrganizationPress}
+                onHashtagPress={onHashtagPress}
+                onReplyPress={handleReplyPress}
+                onPress={handleDoublePress}
+            />
+        );
     }
 
     if (!res) {

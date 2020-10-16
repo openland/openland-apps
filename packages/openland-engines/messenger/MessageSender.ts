@@ -25,6 +25,8 @@ export interface MessageSendHandler {
     onFailed(key: string): void;
 }
 
+export const MAX_FILES_PER_MESSAGE = 4;
+
 type MessageBodyT = {
     conversationId: string;
     message: string | null;
@@ -107,7 +109,7 @@ export class MessageSender {
         console.log('MessageSender sendFiles');
         let fileIds: string[] = [];
         let parentKey = UUID();
-        let promises = files.map(file => {
+        let promises = files.slice(0, MAX_FILES_PER_MESSAGE).map(file => {
             let key = UUID();
             fileIds.push(key);
             let p = new Promise<string>((resolver, reject) => {

@@ -13,6 +13,7 @@ import { showAttachConfirm } from 'openland-web/fragments/chat/components/Attach
 import { DropZone } from 'openland-web/fragments/chat/components/DropZone';
 import { showNoiseWarning } from 'openland-web/fragments/chat/components/NoiseWarning';
 import { extractTextAndMentions } from 'openland-web/utils/convertTextAndMentions';
+import { isFileImage } from 'openland-web/utils/UploadCareUploading';
 
 const wrapperClass = css`
     display: flex;
@@ -162,7 +163,7 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
             />
             <DropZone
                 isHidden={attachOpen}
-                onDrop={files => handleCommentSentAttach(files, files.every(f => f.type.includes('image')))}
+                onDrop={files => handleCommentSentAttach(files, files.every(f => isFileImage(f)))}
                 text={highlightId ? 'Drop here to send to the branch' : undefined}
             />
         </div>

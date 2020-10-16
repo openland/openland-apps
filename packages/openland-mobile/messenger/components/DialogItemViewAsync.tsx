@@ -80,6 +80,7 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                         <ASText {...TextStylesAsync.Label1} numberOfLines={1} flexShrink={1} color={highlightGroup ? theme.accentPositive : theme.foregroundPrimary}>
                             {isSavedMessages ? 'Saved messages' : item.title}
                         </ASText>
+                        {item.featured && theme.displayFeaturedIcon && <ASFlex alignItems="center" marginLeft={4} marginTop={4}><ASImage tintColor={theme.accentNegative} width={16} height={16} source={require('assets/ic-featured-16.png')} marginBottom={Platform.OS === 'android' ? 4 : 0} /></ASFlex>}
                         {item.isMuted && <ASFlex alignItems="center" marginLeft={4} marginTop={4}><ASImage tintColor={theme.foregroundQuaternary} width={16} height={16} source={require('assets/ic-muted-16.png')} marginBottom={Platform.OS === 'android' ? 4 : 0} /></ASFlex>}
                         <ASFlex marginLeft={10} marginTop={2} flexGrow={1} justifyContent="flex-end">
                             {item.date !== undefined && <ASText {...TextStylesAsync.Caption} color={theme.foregroundTertiary}>{formatDate(item.date)}</ASText>}

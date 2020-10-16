@@ -15,6 +15,7 @@ import {
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
     StickerFragment,
     TypingType,
+    MessageAttachments_MessageAttachmentFile,
 } from 'openland-api/spacex.types';
 import { trackEvent } from 'openland-x-analytics';
 import { throttle } from 'openland-y-utils/timer';
@@ -41,7 +42,8 @@ import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
 import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 import { extractTextAndMentions, convertToInputValue } from 'openland-web/utils/convertTextAndMentions';
 import { convertServerSpan } from 'openland-y-utils/spans/utils';
-import { useChatMessagesActionsState, useChatMessagesActionsMethods, ConversationActionsState, ChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
+import { useChatMessagesActionsState, useChatMessagesActionsMethods, ConversationActionsState, ChatMessagesActionsMethods, setMessagesActionsUserChat } from 'openland-y-utils/MessagesActionsState';
+import { isFileImage } from 'openland-web/utils/UploadCareUploading';
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
@@ -367,11 +369,13 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         ) {
             if (text.length > 0) {
                 messagesActionsMethods.clear();
+                let fileAttachments = (actionMessage.attachments?.filter(x => x.__typename === 'MessageAttachmentFile') || []) as MessageAttachments_MessageAttachmentFile[];
                 await this.conversation!.engine.client.mutateEditMessage({
                     messageId: actionMessage.id!,
                     message: text,
                     mentions: mentionsPrepared,
                     spans: findSpans(text),
+                    fileAttachments: fileAttachments.map(x => ({ fileId: x.fileId })),
                 });
             }
         } else {
@@ -506,7 +510,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                         {showInput && (
                             <DropZone
                                 isHidden={this.props.isAttachModalOpen}
-                                onDrop={files => this.props.onAttach(files, files.every(f => f.type.includes('image')))}
+                                onDrop={files => this.props.onAttach(files, files.every(f => isFileImage(f)))}
                             />
                         )}
                     </>
@@ -532,8 +536,14 @@ export const MessengerRootComponent = React.memo((props: MessengerRootComponentP
     let [isAttachModalOpen, setAttachModalOpen] = React.useState(false);
     const onAttach = useAttachHandler({ conversationId: props.conversationId, onOpen: () => setAttachModalOpen(true), onClose: () => setAttachModalOpen(false) });
     const userId = props.room.__typename === 'PrivateRoom' ? props.room.user.id : undefined;
-    const messagesActionsState = useChatMessagesActionsState({ conversationId: props.conversationId, userId });
-    const messagesActionsMethods = useChatMessagesActionsMethods({ conversationId: props.conversationId, userId });
+    const messagesActionsState = useChatMessagesActionsState(props.conversationId);
+    const messagesActionsMethods = useChatMessagesActionsMethods(props.conversationId);
+
+    React.useEffect(() => {
+        if (userId && props.conversationId) {
+            setMessagesActionsUserChat(props.conversationId, userId);
+        }
+    }, [userId, props.conversationId]);
 
     return (
         <MessagesComponent

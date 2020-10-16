@@ -9,7 +9,7 @@ import {
 } from 'openland-y-utils/members/EntityMembersManager';
 import { debounce } from 'openland-y-utils/timer';
 import { MembersSearchInput } from 'openland-web/components/MembersSearchInput';
-import { shouldShowInviteButton } from 'openland-y-utils/shouldShowInviteButton';
+import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { showAddMembersModal } from 'openland-web/fragments/chat/showAddMembersModal';
@@ -158,6 +158,8 @@ export const GroupMembers = ({ group }: GroupMembersProps) => {
     const isSearching = membersQuery.length > 0;
     const loadingOrSearching = loading || (isSearching && membersFetching.loading > 0 && members.length > 15);
 
+    const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(group);
+
     return (
         <XView marginLeft={-8}>
             <MembersSearchInput
@@ -165,7 +167,7 @@ export const GroupMembers = ({ group }: GroupMembersProps) => {
                 loading={membersFetching.loading > 0}
                 onChange={handleSearchChange}
             />
-            {shouldShowInviteButton(group) && !hasSearched && (
+            {(canAddDirectly || canGetInviteLink) && !hasSearched && (
                 <UAddItem
                     title="Add people"
                     titleStyle={TextStyles.Label1}

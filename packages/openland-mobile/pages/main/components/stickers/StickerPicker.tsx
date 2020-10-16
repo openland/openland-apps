@@ -201,12 +201,11 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
                         }
                     }
                 }}
-                bounces={false}
             />
             <FlatList
                 ref={stickerPackButtonListRef}
                 horizontal={true}
-                style={{ height: 52, backgroundColor: theme.backgroundPrimary }}
+                style={{ height: 52, backgroundColor: theme.backgroundPrimary, alignSelf: 'stretch' }}
                 contentContainerStyle={{ alignItems: 'center' }}
                 data={stickers}
                 renderItem={({ item, index }) => (
