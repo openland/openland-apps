@@ -1546,6 +1546,29 @@ private let SharedRoomViewSelector = obj(
             field("photo", "photo", notNull(scalar("String")))
         )
 
+private let ShortSequenceSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("SequenceCommon", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("uid", "uid", notNull(scalar("ID")))
+            )),
+            inline("SequenceChat", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("cid", "cid", notNull(scalar("ID")))
+            ))
+        )
+
+private let ShortUpdateSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("UpdateMyProfileChanged", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
+                    )))
+            ))
+        )
+
 private let StickerPackFragmentSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -5207,6 +5230,34 @@ private let WalletUpdatesSelector = obj(
                     ))
                 )))
         )
+private let WatchUpdatesSelector = obj(
+            field("watchUpdates", "watchUpdates", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    inline("UpdateSubscriptionStarted", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String")))
+                    )),
+                    inline("UpdateSubscriptionCheckpoint", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String")))
+                    )),
+                    inline("UpdateSubscriptionEvent", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("pts", "pts", notNull(scalar("Int"))),
+                        field("sequence", "sequence", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("Sequence", ShortSequenceSelector)
+                            ))),
+                        field("event", "event", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("UpdateEvent", ShortUpdateSelector)
+                            )))
+                    ))
+                )))
+        )
 
 class Operations {
     static let shared = Operations()
@@ -6778,6 +6829,12 @@ class Operations {
         "subscription WalletUpdates($state:String!){event:walletUpdates(fromState:$state){__typename ... on WalletUpdateSingle{__typename state update{__typename ...WalletUpdateFragment}}... on WalletUpdateBatch{__typename state updates{__typename ...WalletUpdateFragment}}}}fragment WalletUpdateFragment on WalletUpdate{__typename ... on WalletUpdateBalance{__typename amount}... on WalletUpdateLocked{__typename isLocked failingPaymentsCount}... on WalletUpdateTransactionSuccess{__typename transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionCanceled{__typename transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionPending{__typename transaction{__typename ...WalletTransactionFragment}}... on WalletUpdatePaymentStatus{__typename payment{__typename id status intent{__typename id clientSecret}card{__typename id brand last4}}}}fragment WalletTransactionFragment on WalletTransaction{__typename id status date operation{__typename ... on WalletTransactionDeposit{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}}... on WalletTransactionIncome{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}source{__typename ... on WalletSubscription{__typename id product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}... on WalletProductDonation{__typename user{__typename id name photo}}... on WalletProductDonationMessage{__typename user{__typename id name photo}chat{__typename ... on SharedRoom{__typename id title}}}... on WalletProductDonationReaction{__typename user{__typename id name photo}chat{__typename ... on SharedRoom{__typename id title}}}}}... on Purchase{__typename id user{__typename id name photo}product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}... on WalletProductDonation{__typename user{__typename id name photo}}... on WalletProductDonationMessage{__typename user{__typename id name photo}chat{__typename ... on SharedRoom{__typename id title}}}... on WalletProductDonationReaction{__typename user{__typename id name photo}chat{__typename ... on SharedRoom{__typename id title}}}}}}}... on WalletTransactionTransferIn{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}fromUser{__typename ...UserShort}}... on WalletTransactionTransferOut{__typename amount walletAmount chargeAmount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}toUser{__typename ...UserShort}}... on WalletTransactionSubscription{__typename amount walletAmount chargeAmount subscription{__typename id interval amount product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}... on WalletProductDonation{__typename user{__typename id name photo}}... on WalletProductDonationMessage{__typename user{__typename id name photo}chat{__typename ... on SharedRoom{__typename id title}}}... on WalletProductDonationReaction{__typename user{__typename id name photo}chat{__typename ... on SharedRoom{__typename id title}}}}}payment{__typename id status intent{__typename id clientSecret}card{__typename id brand last4}}}... on WalletTransactionPurchase{__typename amount walletAmount chargeAmount purchase{__typename id product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}... on WalletProductDonation{__typename user{__typename id name photo}}... on WalletProductDonationMessage{__typename user{__typename id name photo}chat{__typename ... on SharedRoom{__typename id title}}}... on WalletProductDonationReaction{__typename user{__typename id name photo}chat{__typename ... on SharedRoom{__typename id title}}}}}payment{__typename id status intent{__typename id clientSecret}card{__typename id brand last4}}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite}",
         WalletUpdatesSelector
     )
+    let WatchUpdates = OperationDefinition(
+        "WatchUpdates",
+        .subscription, 
+        "subscription WatchUpdates{watchUpdates{__typename ... on UpdateSubscriptionStarted{__typename seq state}... on UpdateSubscriptionCheckpoint{__typename seq state}... on UpdateSubscriptionEvent{__typename seq pts sequence{__typename ...ShortSequence}event{__typename ...ShortUpdate}}}}fragment ShortSequence on Sequence{__typename ... on SequenceCommon{__typename uid}... on SequenceChat{__typename cid}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}",
+        WatchUpdatesSelector
+    )
     
     func operationByName(_ name: String) -> OperationDefinition {
         if name == "Account" { return Account }
@@ -7041,6 +7098,7 @@ class Operations {
         if name == "SettingsWatch" { return SettingsWatch }
         if name == "TypingsWatch" { return TypingsWatch }
         if name == "WalletUpdates" { return WalletUpdates }
+        if name == "WatchUpdates" { return WatchUpdates }
         fatalError("Unknown operation: " + name)
     }
 }

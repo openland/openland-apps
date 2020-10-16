@@ -1,0 +1,51 @@
+#
+# Updates
+#
+
+fragment ShortUpdate on UpdateEvent {
+    ... on UpdateMyProfileChanged {
+        user {
+            id
+        }
+    }
+}
+
+#
+# Sequences
+#
+
+fragment ShortSequence on Sequence {
+    ... on SequenceCommon {
+        uid
+    }
+    ... on SequenceChat {
+        cid
+    }
+}
+
+#
+# Watch
+#
+
+subscription WatchUpdates {
+    watchUpdates {
+        ... on UpdateSubscriptionStarted {
+            seq
+            state
+        }
+        ... on UpdateSubscriptionCheckpoint {
+            seq
+            state
+        }
+        ... on UpdateSubscriptionEvent {
+            seq
+            pts
+            sequence {
+                ...ShortSequence
+            }
+            event {
+                ...ShortUpdate
+            }
+        }
+    }
+}

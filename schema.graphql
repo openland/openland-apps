@@ -2491,6 +2491,16 @@ input PlatformNotificationSettingsInput {
   notificationPreview: NotificationPreview
 }
 
+type PopularNowOrganization {
+  organization: Organization!
+  newMessages: Int!
+}
+
+type PopularNowOrganizationConnection {
+  items: [PopularNowOrganization!]!
+  cursor: String
+}
+
 type PopularNowRoom {
   room: SharedRoom!
   newMessages: Int!
@@ -2876,6 +2886,8 @@ type Query {
   users(query: String!): [User!]!
   discoverNewAndGrowing(first: Int!, seed: Int!, after: String): SharedRoomConnection!
   discoverPopularNow(first: Int!, after: String): PopularNowRoomConnection!
+  discoverNewAndGrowingOrganizations(first: Int!, seed: Int!, after: String): OrganizationsConnection!
+  discoverPopularNowOrganizations(first: Int!, after: String): PopularNowOrganizationConnection!
   discoverTopPremium(first: Int!, after: String): SharedRoomConnection!
   discoverTopFree(first: Int!, after: String): SharedRoomConnection!
   post(id: ID!): Post
@@ -3117,6 +3129,18 @@ type RoomUserNotificaionSettings {
 
 input RoomUserNotificaionSettingsInput {
   mute: Boolean
+}
+
+union Sequence = SequenceCommon | SequenceChat
+
+type SequenceChat {
+  cid: ID!
+  unread: Int!
+}
+
+type SequenceCommon {
+  uid: ID!
+  unread: Int!
 }
 
 type ServiceMessage implements ModernMessage {
@@ -3373,6 +3397,7 @@ input StickerPackInput {
 type Subscription {
   lifecheck: String
   walletUpdates(fromState: String!): WalletUpdateContainer!
+  watchUpdates: UpdateSubscription!
   debugEvents(fromState: String, eventsCount: Int!, randomDelays: Boolean!, seed: String!): DebugEvent!
   debugReaderState(reader: String!): String
   debugServerId: String!
@@ -3515,6 +3540,11 @@ enum TypingType {
   VIDEO
 }
 
+type UpdateChatRead {
+  cid: ID!
+  seq: Int!
+}
+
 input UpdateConversationSettingsInput {
   mobileNotifications: NotificationMessages
   mute: Boolean
@@ -3527,12 +3557,19 @@ type UpdatedNotificationContentComment {
   comment: CommentEntry
 }
 
+union UpdateEvent = UpdateChatRead | UpdateProfileChanged | UpdateMyProfileChanged
+
 input UpdateGroupInput {
   title: String
   photoRef: ImageRefInput
   description: String
   longDescription: String
   socialImageRef: ImageRefInput
+}
+
+type UpdateMyProfileChanged {
+  user: User!
+  profile: Profile!
 }
 
 input UpdateOrganizationProfileInput {
@@ -3556,6 +3593,10 @@ input UpdateOrganizationProfileInput {
   applyLinkEnabled: Boolean
   autosubscribeRooms: [ID!]
   betaMembersCanInvite: Boolean
+}
+
+type UpdateProfileChanged {
+  user: User!
 }
 
 """Deprecated"""
@@ -3598,6 +3639,25 @@ input UpdateSettingsInput {
   mobileAlert: Boolean
   mobileIncludeText: Boolean
   mute: Boolean
+}
+
+union UpdateSubscription = UpdateSubscriptionStarted | UpdateSubscriptionCheckpoint | UpdateSubscriptionEvent
+
+type UpdateSubscriptionCheckpoint {
+  seq: Int!
+  state: String!
+}
+
+type UpdateSubscriptionEvent {
+  seq: Int!
+  pts: Int!
+  event: UpdateEvent!
+  sequence: Sequence!
+}
+
+type UpdateSubscriptionStarted {
+  seq: Int!
+  state: String!
 }
 
 type UrlAugmentation {

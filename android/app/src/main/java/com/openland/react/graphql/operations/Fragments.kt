@@ -1552,6 +1552,29 @@ internal val SharedRoomViewSelector = obj(
             field("photo", "photo", notNull(scalar("String")))
         )
 
+internal val ShortSequenceSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("SequenceCommon", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("uid", "uid", notNull(scalar("ID")))
+            )),
+            inline("SequenceChat", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("cid", "cid", notNull(scalar("ID")))
+            ))
+        )
+
+internal val ShortUpdateSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("UpdateMyProfileChanged", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
+                    )))
+            ))
+        )
+
 internal val StickerPackFragmentSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
