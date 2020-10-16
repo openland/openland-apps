@@ -79,12 +79,9 @@ export function convertSearchMessage(src: FullMessage_GeneralMessage & { repeatK
             indices.forEach((item, i) => {
                highlightedSpans.push({ __typename: "MessageSpanSearchHighlight", offset: item, length: splittedParts[i].trim().length});
             });
-
-            console.log(indices, '[indices]');
         } else {
             highlightedSpans.push({ __typename: "MessageSpanSearchHighlight", offset: highlightOffset, length: query.length });
         }
-
     }
 
     return {
@@ -134,7 +131,7 @@ export class ChatSearchEngine {
     private cursor: string | null;
     private state: ChatSearchState;
     private loading: boolean;
-    stateHandler: ((state: ChatSearchState) => void) | null = null;
+    private stateHandler: ((state: ChatSearchState) => void) | null = null;
 
     constructor(engine: MessengerEngine, conversationId: string) {
         this.engine = engine;
@@ -164,7 +161,7 @@ export class ChatSearchEngine {
         const messagesSearch = await backoff(async () => {
             try {
                 const loaded = (await this.engine.client.queryMessagesSearchFull(
-                    constructVariables(query, this.conversationId),
+                    constructVariables(this.query, this.conversationId),
                     { fetchPolicy: 'network-only' },
                 )).messagesSearch;
                 this.historyFullyLoaded = !loaded.pageInfo.hasNextPage;
@@ -185,7 +182,7 @@ export class ChatSearchEngine {
                 dsItems.push(createDateDataSourceItem(d));
             }
 
-            dsItems.push(convertSearchMessage(sourceFragments[i], this.conversationId, this.engine, query, sourceFragments[i + 1], sourceFragments[i - 1]));
+            dsItems.push(convertSearchMessage(sourceFragments[i], this.conversationId, this.engine, this.query, sourceFragments[i + 1], sourceFragments[i - 1]));
             prevDate = sourceFragments[i].date;
         }
 
@@ -194,13 +191,11 @@ export class ChatSearchEngine {
             dsItems.push(createDateDataSourceItem(d));
         }
 
-        this.dataSource.initialize(dsItems, !!this.historyFullyLoaded, true);
+        this.dataSource.initialize(dsItems, this.historyFullyLoaded, true);
+
         this.loading = false;
         this.state = new ChatSearchState(this.loading, this.historyFullyLoaded);
-
-        if (this.stateHandler) {
-            this.stateHandler(this.state);
-        }
+        this.onStateUpdated();
     }
 
     loadHistory = async () => {
@@ -248,8 +243,8 @@ export class ChatSearchEngine {
             dsItems.push(createDateDataSourceItem(d));
         }
 
-        this.dataSource.loadedMore(dsItems, !!this.historyFullyLoaded);
-        this.cursor = getCursor(messagesSearch);
+        this.dataSource.loadedMore(dsItems, this.historyFullyLoaded);
+
         this.loading = false;
         this.state = new ChatSearchState(this.loading, this.historyFullyLoaded);
         this.onStateUpdated();

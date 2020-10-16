@@ -68,9 +68,7 @@ export const ChatSearchView = React.memo((props: ChatMessagesSearchProps) => {
     }, 500), [props.query]);
 
     if (!state.loading && dataSource.getSize() === 0) {
-        return (
-            <EmptyView theme={theme}>Nothing found</EmptyView>
-        );
+        return <EmptyView theme={theme}>Nothing found</EmptyView>;
     }
 
     return (
