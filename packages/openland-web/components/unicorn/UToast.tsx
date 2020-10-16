@@ -55,7 +55,7 @@ export interface UToastProps {
 
 export const UToast = React.memo((props: UToastProps) => {
     const { isVisible, className, text, backgroundColor, textColor, closeCb, type = 'text', autoclose = true } = props;
-    const [isRealVisible, setVisible] = React.useState(isVisible);
+    const [isRealVisible, setVisible] = React.useState(false);
 
     React.useEffect(() => {
         if (isVisible) {
