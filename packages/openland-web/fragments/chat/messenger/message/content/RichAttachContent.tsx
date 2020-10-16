@@ -61,6 +61,7 @@ const richImageContainer = css`
     width: var(--image-width);
     height: var(--image-height);
     max-width: 50%;
+    min-width: 144px; /* min-height of the wrapper */
     min-height: 100%;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
