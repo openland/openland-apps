@@ -71,7 +71,7 @@ export const resolveLinkAction = (url: string | null, client: OpenlandClient, ro
         });
         showModalBox({ fullScreen: true }, () => (
             <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
-                <DownloadAppsComponent />
+                <DownloadAppsComponent inModal={true} />
             </XScrollView3>
         ));
     } else if (url === '/onboarding_discover') {
