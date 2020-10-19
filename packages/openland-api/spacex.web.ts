@@ -2786,6 +2786,21 @@ const FetchPushSettingsSelector = obj(
                     field('webPushKey', 'webPushKey', args(), scalar('String'))
                 )))
         );
+const GetStateSelector = obj(
+            field('updatesState', 'updatesState', args(), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('seq', 'seq', args(), notNull(scalar('Int'))),
+                    field('state', 'state', args(), notNull(scalar('String'))),
+                    field('sequences', 'sequences', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('pts', 'pts', args(), notNull(scalar('Int'))),
+                            field('sequence', 'sequence', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    fragment('Sequence', ShortSequenceSelector)
+                                )))
+                        )))))
+                )))
+        );
 const GlobalCounterSelector = obj(
             field('alphaNotificationCounter', 'alphaNotificationCounter', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5582,6 +5597,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'FetchPushSettings',
         body: 'query FetchPushSettings{pushSettings{__typename webPushKey}}',
         selector: FetchPushSettingsSelector
+    },
+    GetState: {
+        kind: 'query',
+        name: 'GetState',
+        body: 'query GetState{updatesState{__typename seq state sequences{__typename pts sequence{__typename ...ShortSequence}}}}fragment ShortSequence on Sequence{__typename ... on SequenceCommon{__typename uid}... on SequenceChat{__typename cid}}',
+        selector: GetStateSelector
     },
     GlobalCounter: {
         kind: 'query',

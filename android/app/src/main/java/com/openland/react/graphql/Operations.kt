@@ -50,6 +50,7 @@ object Operations {
         if (name == "ExploreRooms") return ExploreRooms
         if (name == "FeatureFlags") return FeatureFlags
         if (name == "FetchPushSettings") return FetchPushSettings
+        if (name == "GetState") return GetState
         if (name == "GlobalCounter") return GlobalCounter
         if (name == "GlobalSearch") return GlobalSearch
         if (name == "IpLocation") return IpLocation

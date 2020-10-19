@@ -139,6 +139,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryFetchPushSettings(params?: QueryParameters): Promise<Types.FetchPushSettings> {
         return this.query('FetchPushSettings', undefined, params);
     }
+    queryGetState(params?: QueryParameters): Promise<Types.GetState> {
+        return this.query('GetState', undefined, params);
+    }
     queryGlobalCounter(params?: QueryParameters): Promise<Types.GlobalCounter> {
         return this.query('GlobalCounter', undefined, params);
     }
@@ -496,6 +499,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchFetchPushSettings(params?: QueryParameters): Promise<Types.FetchPushSettings> {
         return this.refetch('FetchPushSettings', undefined, params);
     }
+    refetchGetState(params?: QueryParameters): Promise<Types.GetState> {
+        return this.refetch('GetState', undefined, params);
+    }
     refetchGlobalCounter(params?: QueryParameters): Promise<Types.GlobalCounter> {
         return this.refetch('GlobalCounter', undefined, params);
     }
@@ -852,6 +858,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateFetchPushSettings(updater: (data: Types.FetchPushSettings) => Types.FetchPushSettings | null): Promise<boolean> {
         return this.updateQuery(updater, 'FetchPushSettings', undefined);
+    }
+    updateGetState(updater: (data: Types.GetState) => Types.GetState | null): Promise<boolean> {
+        return this.updateQuery(updater, 'GetState', undefined);
     }
     updateGlobalCounter(updater: (data: Types.GlobalCounter) => Types.GlobalCounter | null): Promise<boolean> {
         return this.updateQuery(updater, 'GlobalCounter', undefined);
@@ -1295,6 +1304,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useFetchPushSettings(params?: SpaceQueryWatchParameters): Types.FetchPushSettings;
     useFetchPushSettings(params?: SpaceQueryWatchParameters): Types.FetchPushSettings | null {
         return this.useQuery('FetchPushSettings', undefined, params);
+    }
+    useGetState(params: SpaceQueryWatchParameters & { suspense: false }): Types.GetState | null;
+    useGetState(params?: SpaceQueryWatchParameters): Types.GetState;
+    useGetState(params?: SpaceQueryWatchParameters): Types.GetState | null {
+        return this.useQuery('GetState', undefined, params);
     }
     useGlobalCounter(params: SpaceQueryWatchParameters & { suspense: false }): Types.GlobalCounter | null;
     useGlobalCounter(params?: SpaceQueryWatchParameters): Types.GlobalCounter;

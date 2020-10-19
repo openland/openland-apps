@@ -5,14 +5,13 @@ import { View } from 'react-native';
 import { Deferred } from 'openland-unicorn/components/Deferred';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-api/useClient';
+import { UpdatesEngine } from 'openland-engines/updates/UpdatesEngine';
 
 export default withApp('Pegasus', ['super-admin', 'software-developer'], props => {
 
     let client = useClient();
-    React.useEffect(() => {
-        client.subscribeWatchUpdates((e) => {
-            console.warn(e);
-        });
+    React.useMemo(() => {
+        return new UpdatesEngine(client);
     }, []);
 
     return (
