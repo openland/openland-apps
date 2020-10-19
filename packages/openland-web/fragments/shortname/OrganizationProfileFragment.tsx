@@ -88,6 +88,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
     const parsedFacebook = findSocialShortname.facebook(facebook);
     const parsedInstagram = findSocialShortname.instagram(instagram);
     const parsedLinkedIn = findSocialShortname.linkedin(linkedin);
+    const aboutVisible = about || shortname || parsedSite || parsedTwitter || parsedFacebook || parsedInstagram || parsedLinkedIn;
 
     const leftColumn = (
         <>
@@ -118,65 +119,67 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
 
     const rightColumn = (
         <>
-            <UListGroup header="About">
-                {!!about && <ShowMoreText text={about} />}
-                <XView flexDirection="row" flexWrap="wrap" marginTop={8}>
-                    {!!shortname && (
-                        <UListItem
-                            title={shortname}
-                            icon={<AtIcon />}
-                            useRadius={true}
-                            wrapperClassName={listItemWrapper}
-                            href={`https://openland.com/${shortname}`}
-                        />
-                    )}
-                    {!!parsedSite && (
-                        <UListItem
-                            title={parsedSite.name}
-                            icon={<LinkIcon />}
-                            useRadius={true}
-                            wrapperClassName={listItemWrapper}
-                            href={parsedSite.url}
-                        />
-                    )}
-                    {!!parsedTwitter && (
-                        <UListItem
-                            title={parsedTwitter.name}
-                            icon={<TwitterIcon />}
-                            useRadius={true}
-                            wrapperClassName={listItemWrapper}
-                            href={parsedTwitter.url}
-                        />
-                    )}
-                    {!!parsedFacebook && (
-                        <UListItem
-                            title={parsedFacebook.name}
-                            icon={<FacebookIcon />}
-                            useRadius={true}
-                            wrapperClassName={listItemWrapper}
-                            href={parsedFacebook.url}
-                        />
-                    )}
-                    {!!parsedInstagram && (
-                        <UListItem
-                            title={parsedInstagram.name}
-                            icon={<InstagramIcon />}
-                            useRadius={true}
-                            wrapperClassName={listItemWrapper}
-                            href={parsedInstagram.url}
-                        />
-                    )}
-                    {!!parsedLinkedIn && (
-                        <UListItem
-                            title={parsedLinkedIn.name}
-                            icon={<LinkedInIcon />}
-                            useRadius={true}
-                            wrapperClassName={listItemWrapper}
-                            href={parsedLinkedIn.url}
-                        />
-                    )}
-                </XView>
-            </UListGroup>
+            {(aboutVisible) && (
+                <UListGroup header="About">
+                    {!!about && <ShowMoreText text={about} />}
+                    <XView flexDirection="row" flexWrap="wrap" marginTop={8}>
+                        {!!shortname && (
+                            <UListItem
+                                title={shortname}
+                                icon={<AtIcon />}
+                                useRadius={true}
+                                wrapperClassName={listItemWrapper}
+                                href={`https://openland.com/${shortname}`}
+                            />
+                        )}
+                        {!!parsedSite && (
+                            <UListItem
+                                title={parsedSite.name}
+                                icon={<LinkIcon />}
+                                useRadius={true}
+                                wrapperClassName={listItemWrapper}
+                                href={parsedSite.url}
+                            />
+                        )}
+                        {!!parsedTwitter && (
+                            <UListItem
+                                title={parsedTwitter.name}
+                                icon={<TwitterIcon />}
+                                useRadius={true}
+                                wrapperClassName={listItemWrapper}
+                                href={parsedTwitter.url}
+                            />
+                        )}
+                        {!!parsedFacebook && (
+                            <UListItem
+                                title={parsedFacebook.name}
+                                icon={<FacebookIcon />}
+                                useRadius={true}
+                                wrapperClassName={listItemWrapper}
+                                href={parsedFacebook.url}
+                            />
+                        )}
+                        {!!parsedInstagram && (
+                            <UListItem
+                                title={parsedInstagram.name}
+                                icon={<InstagramIcon />}
+                                useRadius={true}
+                                wrapperClassName={listItemWrapper}
+                                href={parsedInstagram.url}
+                            />
+                        )}
+                        {!!parsedLinkedIn && (
+                            <UListItem
+                                title={parsedLinkedIn.name}
+                                icon={<LinkedInIcon />}
+                                useRadius={true}
+                                wrapperClassName={listItemWrapper}
+                                href={parsedLinkedIn.url}
+                            />
+                        )}
+                    </XView>
+                </UListGroup>
+            )}
             <React.Suspense fallback={null}>
                 <UListGroup header="Groups" counter={roomsCount}>
                     {isMine && <CreateGroupButton id={id} />}
