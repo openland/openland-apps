@@ -19,7 +19,7 @@ export class UpdatesEngine {
     private online = false;
     private subscribedFrom: number | null = null;
     private currentSeq: number | null = null;
-    // private currentState: string | null = null;
+    private currentState: string | null = null;
     private pending = new Map<number, EventContainer>();
 
     constructor(client: OpenlandClient) {
@@ -48,7 +48,7 @@ export class UpdatesEngine {
         // Became ready
         this.ready = true;
         this.currentSeq = state.updatesState.seq;
-        // this.currentState = state.updatesState.state;
+        this.currentState = state.updatesState.state;
 
         // Enforce invalidation if there is a gap
         if (this.subscribedFrom !== null) {
@@ -75,8 +75,26 @@ export class UpdatesEngine {
         this.ready = false;
         console.warn('subscription: invalidated');
         await this.onUnready();
+        if (this.subscribedFrom !== null) {
+            this.online = false;
+            await this.onOffline();
+        }
 
-        // TODO: Implement
+        // Perform difference
+        let diff = await backoff(() => this.client.queryGetDifference({ state: this.currentState! }));
+        // for(let d of diff) {
+
+        // }
+        console.warn(diff);
+        this.currentState = diff.updatesDifference.state;
+        this.currentSeq = diff.updatesDifference.seq;
+        this.ready = true;
+        await this.onReady();
+
+        if (this.subscribedFrom !== null) {
+            this.online = true;
+            await this.onOnline();
+        }
     }
 
     //
@@ -135,7 +153,7 @@ export class UpdatesEngine {
 
         // Invalidate or became online
         if (this.ready) {
-            if (this.currentSeq! > seq) {
+            if (seq > this.currentSeq!) {
                 await this.invalidate(); // Invalidate if we subscribed after current seq
             } else {
                 // Became online
@@ -161,7 +179,7 @@ export class UpdatesEngine {
 
         // Persist checkpoint if ready
         if (this.ready && this.currentSeq! >= seq) {
-            // this.currentState = state;
+            this.currentState = state;
             console.warn('subscription: checkpoint at ' + seq);
         }
     }

@@ -2829,6 +2829,30 @@ private let FetchPushSettingsSelector = obj(
                     field("webPushKey", "webPushKey", scalar("String"))
                 )))
         )
+private let GetDifferenceSelector = obj(
+            field("updatesDifference", "updatesDifference", arguments(fieldValue("state", refValue("state"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("seq", "seq", notNull(scalar("Int"))),
+                    field("state", "state", notNull(scalar("String"))),
+                    field("hasMore", "hasMore", notNull(scalar("Boolean"))),
+                    field("sequences", "sequences", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("pts", "pts", notNull(scalar("Int"))),
+                            field("events", "events", notNull(list(notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("pts", "pts", notNull(scalar("Int"))),
+                                    field("event", "event", notNull(obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            fragment("UpdateEvent", ShortUpdateSelector)
+                                        )))
+                                ))))),
+                            field("sequence", "sequence", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    fragment("Sequence", ShortSequenceSelector)
+                                )))
+                        )))))
+                )))
+        )
 private let GetStateSelector = obj(
             field("updatesState", "updatesState", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5657,6 +5681,12 @@ class Operations {
         "query FetchPushSettings{pushSettings{__typename webPushKey}}",
         FetchPushSettingsSelector
     )
+    let GetDifference = OperationDefinition(
+        "GetDifference",
+        .query, 
+        "query GetDifference($state:String!){updatesDifference(state:$state){__typename seq state hasMore sequences{__typename pts events{__typename pts event{__typename ...ShortUpdate}}sequence{__typename ...ShortSequence}}}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}",
+        GetDifferenceSelector
+    )
     let GetState = OperationDefinition(
         "GetState",
         .query, 
@@ -7030,6 +7060,7 @@ class Operations {
         if name == "ExploreRooms" { return ExploreRooms }
         if name == "FeatureFlags" { return FeatureFlags }
         if name == "FetchPushSettings" { return FetchPushSettings }
+        if name == "GetDifference" { return GetDifference }
         if name == "GetState" { return GetState }
         if name == "GlobalCounter" { return GlobalCounter }
         if name == "GlobalSearch" { return GlobalSearch }

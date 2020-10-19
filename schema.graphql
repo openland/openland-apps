@@ -3634,7 +3634,13 @@ input UpdateProfileInput {
 type UpdatesDifference {
   seq: Int!
   state: String!
+  hasMore: Boolean!
   sequences: [UpdatesSequenceDifference!]!
+}
+
+type UpdatesDifferenceEvent {
+  pts: Int!
+  event: UpdateEvent!
 }
 
 input UpdateSettingsInput {
@@ -3660,7 +3666,7 @@ input UpdateSettingsInput {
 type UpdatesSequenceDifference {
   sequence: Sequence!
   pts: Int!
-  events: [UpdateEvent!]!
+  events: [UpdatesDifferenceEvent!]!
 }
 
 type UpdatesSequenceState {

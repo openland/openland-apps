@@ -2836,6 +2836,30 @@ const FetchPushSettingsSelector = obj(
                     field('webPushKey', 'webPushKey', args(), scalar('String'))
                 )))
         );
+const GetDifferenceSelector = obj(
+            field('updatesDifference', 'updatesDifference', args(fieldValue("state", refValue('state'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('seq', 'seq', args(), notNull(scalar('Int'))),
+                    field('state', 'state', args(), notNull(scalar('String'))),
+                    field('hasMore', 'hasMore', args(), notNull(scalar('Boolean'))),
+                    field('sequences', 'sequences', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('pts', 'pts', args(), notNull(scalar('Int'))),
+                            field('events', 'events', args(), notNull(list(notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    field('pts', 'pts', args(), notNull(scalar('Int'))),
+                                    field('event', 'event', args(), notNull(obj(
+                                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                            fragment('UpdateEvent', ShortUpdateSelector)
+                                        )))
+                                ))))),
+                            field('sequence', 'sequence', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    fragment('Sequence', ShortSequenceSelector)
+                                )))
+                        )))))
+                )))
+        );
 const GetStateSelector = obj(
             field('updatesState', 'updatesState', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5659,6 +5683,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'FetchPushSettings',
         body: 'query FetchPushSettings{pushSettings{__typename webPushKey}}',
         selector: FetchPushSettingsSelector
+    },
+    GetDifference: {
+        kind: 'query',
+        name: 'GetDifference',
+        body: 'query GetDifference($state:String!){updatesDifference(state:$state){__typename seq state hasMore sequences{__typename pts events{__typename pts event{__typename ...ShortUpdate}}sequence{__typename ...ShortSequence}}}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}',
+        selector: GetDifferenceSelector
     },
     GetState: {
         kind: 'query',

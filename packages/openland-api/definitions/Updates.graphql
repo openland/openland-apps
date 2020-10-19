@@ -65,3 +65,23 @@ query GetState {
         }
     }
 }
+
+query GetDifference($state: String!) {
+    updatesDifference(state: $state) {
+        seq
+        state
+        hasMore
+        sequences {
+            pts
+            events {
+                pts
+                event {
+                    ...ShortUpdate
+                }
+            }
+            sequence {
+                ...ShortSequence
+            }
+        }
+    }
+}
