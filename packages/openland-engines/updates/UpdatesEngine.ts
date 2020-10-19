@@ -5,9 +5,9 @@ import { backoff } from 'openland-y-utils/timer';
 import { OpenlandClient } from 'openland-api/spacex';
 import { WatchUpdates } from 'openland-api/spacex.types';
 
-type Event = WatchUpdates_watchUpdates_UpdateSubscriptionEvent['event'];
+// type Event = WatchUpdates_watchUpdates_UpdateSubscriptionEvent['event'];
 type EventContainer = WatchUpdates_watchUpdates_UpdateSubscriptionEvent;
-type Sequence = WatchUpdates_watchUpdates_UpdateSubscriptionEvent['sequence'];
+// type Sequence = WatchUpdates_watchUpdates_UpdateSubscriptionEvent['sequence'];
 
 export class UpdatesEngine {
     readonly client: OpenlandClient;
@@ -19,7 +19,7 @@ export class UpdatesEngine {
     private online = false;
     private subscribedFrom: number | null = null;
     private currentSeq: number | null = null;
-    private currentState: string | null = null;
+    // private currentState: string | null = null;
     private pending = new Map<number, EventContainer>();
 
     constructor(client: OpenlandClient) {
@@ -48,7 +48,7 @@ export class UpdatesEngine {
         // Became ready
         this.ready = true;
         this.currentSeq = state.updatesState.seq;
-        this.currentState = state.updatesState.state;
+        // this.currentState = state.updatesState.state;
 
         // Enforce invalidation if there is a gap
         if (this.subscribedFrom !== null) {
@@ -161,7 +161,7 @@ export class UpdatesEngine {
 
         // Persist checkpoint if ready
         if (this.ready && this.currentSeq! >= seq) {
-            this.currentState = state;
+            // this.currentState = state;
             console.warn('subscription: checkpoint at ' + seq);
         }
     }
