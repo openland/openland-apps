@@ -1548,12 +1548,10 @@ private let SharedRoomViewSelector = obj(
 
 private let ShortSequenceSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
-            inline("SequenceCommon", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                field("uid", "uid", notNull(scalar("ID")))
-            )),
+            field("id", "id", notNull(scalar("ID"))),
             inline("SequenceChat", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
                 field("cid", "cid", notNull(scalar("ID")))
             ))
         )
@@ -5598,7 +5596,7 @@ class Operations {
     let GetState = OperationDefinition(
         "GetState",
         .query, 
-        "query GetState{updatesState{__typename seq state sequences{__typename pts sequence{__typename ...ShortSequence}}}}fragment ShortSequence on Sequence{__typename ... on SequenceCommon{__typename uid}... on SequenceChat{__typename cid}}",
+        "query GetState{updatesState{__typename seq state sequences{__typename pts sequence{__typename ...ShortSequence}}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}",
         GetStateSelector
     )
     let GlobalCounter = OperationDefinition(
@@ -6918,7 +6916,7 @@ class Operations {
     let WatchUpdates = OperationDefinition(
         "WatchUpdates",
         .subscription, 
-        "subscription WatchUpdates{watchUpdates{__typename ... on UpdateSubscriptionStarted{__typename seq state}... on UpdateSubscriptionCheckpoint{__typename seq state}... on UpdateSubscriptionEvent{__typename seq pts sequence{__typename ...ShortSequence}event{__typename ...ShortUpdate}}}}fragment ShortSequence on Sequence{__typename ... on SequenceCommon{__typename uid}... on SequenceChat{__typename cid}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}",
+        "subscription WatchUpdates{watchUpdates{__typename ... on UpdateSubscriptionStarted{__typename seq state}... on UpdateSubscriptionCheckpoint{__typename seq state}... on UpdateSubscriptionEvent{__typename seq pts sequence{__typename ...ShortSequence}event{__typename ...ShortUpdate}}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}",
         WatchUpdatesSelector
     )
     

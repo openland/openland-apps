@@ -1554,12 +1554,10 @@ internal val SharedRoomViewSelector = obj(
 
 internal val ShortSequenceSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
-            inline("SequenceCommon", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                field("uid", "uid", notNull(scalar("ID")))
-            )),
+            field("id", "id", notNull(scalar("ID"))),
             inline("SequenceChat", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
                 field("cid", "cid", notNull(scalar("ID")))
             ))
         )
