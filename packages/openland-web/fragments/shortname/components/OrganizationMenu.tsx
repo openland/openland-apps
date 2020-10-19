@@ -88,7 +88,7 @@ const MenuComponent = React.memo((props: OrganizationMenuProps & { ctx: UPopperC
         });
     }
 
-    if (isMine) {
+    if (isMine && !isOwner) {
         builder.item({
             title: `Leave ${typeString}`,
             icon: <LeaveIcon />,

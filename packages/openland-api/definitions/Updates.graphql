@@ -15,10 +15,9 @@ fragment ShortUpdate on UpdateEvent {
 #
 
 fragment ShortSequence on Sequence {
-    ... on SequenceCommon {
-        uid
-    }
+    id
     ... on SequenceChat {
+        id
         cid
     }
 }

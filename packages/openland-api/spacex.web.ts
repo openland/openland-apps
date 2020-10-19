@@ -1563,12 +1563,10 @@ const SharedRoomViewSelector = obj(
 
 const ShortSequenceSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
-            inline('SequenceCommon', obj(
-                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                field('uid', 'uid', args(), notNull(scalar('ID')))
-            )),
+            field('id', 'id', args(), notNull(scalar('ID'))),
             inline('SequenceChat', obj(
                 field('__typename', '__typename', args(), notNull(scalar('String'))),
+                field('id', 'id', args(), notNull(scalar('ID'))),
                 field('cid', 'cid', args(), notNull(scalar('ID')))
             ))
         );
@@ -5665,7 +5663,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     GetState: {
         kind: 'query',
         name: 'GetState',
-        body: 'query GetState{updatesState{__typename seq state sequences{__typename pts sequence{__typename ...ShortSequence}}}}fragment ShortSequence on Sequence{__typename ... on SequenceCommon{__typename uid}... on SequenceChat{__typename cid}}',
+        body: 'query GetState{updatesState{__typename seq state sequences{__typename pts sequence{__typename ...ShortSequence}}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}',
         selector: GetStateSelector
     },
     GlobalCounter: {
@@ -6985,7 +6983,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     WatchUpdates: {
         kind: 'subscription',
         name: 'WatchUpdates',
-        body: 'subscription WatchUpdates{watchUpdates{__typename ... on UpdateSubscriptionStarted{__typename seq state}... on UpdateSubscriptionCheckpoint{__typename seq state}... on UpdateSubscriptionEvent{__typename seq pts sequence{__typename ...ShortSequence}event{__typename ...ShortUpdate}}}}fragment ShortSequence on Sequence{__typename ... on SequenceCommon{__typename uid}... on SequenceChat{__typename cid}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}',
+        body: 'subscription WatchUpdates{watchUpdates{__typename ... on UpdateSubscriptionStarted{__typename seq state}... on UpdateSubscriptionCheckpoint{__typename seq state}... on UpdateSubscriptionEvent{__typename seq pts sequence{__typename ...ShortSequence}event{__typename ...ShortUpdate}}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}',
         selector: WatchUpdatesSelector
     },
 };

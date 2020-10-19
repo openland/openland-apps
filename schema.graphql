@@ -3138,15 +3138,18 @@ input RoomUserNotificaionSettingsInput {
   mute: Boolean
 }
 
-union Sequence = SequenceCommon | SequenceChat
+interface Sequence {
+  id: ID!
+}
 
-type SequenceChat {
+type SequenceChat implements Sequence {
+  id: ID!
   cid: ID!
   unread: Int!
 }
 
-type SequenceCommon {
-  uid: ID!
+type SequenceCommon implements Sequence {
+  id: ID!
   unread: Int!
 }
 

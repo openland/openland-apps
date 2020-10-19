@@ -144,7 +144,7 @@ export const OrganizationActions = React.memo(
                     />
                 </XWithRole>
 
-                {isMine && (
+                {isMine && !isOwner && (
                     <UListItem
                         title={`Leave ${typeString}`}
                         useRadius={true}
