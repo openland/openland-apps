@@ -12,8 +12,8 @@ import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { joinPaidGroup } from './components/ChatJoin';
 import { SRouterContext } from 'react-native-s/SRouterContext';
-import { normalizePopularItems, DiscoverRoom } from 'openland-y-utils/discover/normalizePopularItems';
-import { DiscoverListItem } from './components/discover/DiscoverListItem';
+import { normalizePopularItems, DiscoverRoom, DiscoverOrganization, normalizePopularOrgItems } from 'openland-y-utils/discover/normalizePopularItems';
+import { DiscoverListItem, DiscoverListItemOrg } from './components/discover/DiscoverListItem';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
@@ -123,6 +123,36 @@ const DiscoverListingContent = React.memo((props: DiscoverListingContentProps) =
                                 }
                                 room={item}
                             />}
+                        />
+                    )}
+                    keyExtractor={(item, index) => index + '-' + item.id}
+                    onEndReached={props.onEndReached}
+                    ListHeaderComponent={props.beforeContent}
+                    refreshing={props.loading}
+                />
+            </SDeferred>
+        </>
+    );
+});
+
+interface DiscoverOrgsListingProps {
+    title: string;
+    orgs: DiscoverOrganization[];
+    onEndReached?: () => void;
+    loading?: boolean;
+    beforeContent?: JSX.Element;
+}
+
+const DiscoverOrgsListing = React.memo((props: DiscoverOrgsListingProps) => {
+    return (
+        <>
+            <SHeader title={props.title} />
+            <SDeferred>
+                <SFlatList
+                    data={props.orgs}
+                    renderItem={({ item }) => (
+                        <DiscoverListItemOrg
+                            item={item}
                         />
                     )}
                     keyExtractor={(item, index) => index + '-' + item.id}
@@ -436,6 +466,97 @@ const DiscoverRecommendationsListing = (props: { initialRooms: DiscoverRoom[] })
     );
 };
 
+interface DiscoverListingOrgsPageProps {
+    initialOrgs: DiscoverOrganization[];
+    initialAfter: string;
+}
+
+const DiscoverTopOrgsListing = (props: DiscoverListingOrgsPageProps) => {
+    const [orgs, setOrgs] = React.useState(props.initialOrgs);
+    const [loading, setLoading] = React.useState(false);
+    const [after, setAfter] = React.useState<string | null>(props.initialAfter);
+    const first = 10;
+
+    const loadMore = async () => {
+        if (loading || (!after && orgs.length > 0)) {
+            return;
+        }
+        setLoading(true);
+
+        let { items, cursor } = (await getClient().queryDiscoverPopularOrganizations({ after, first }, { fetchPolicy: 'network-only' })).discoverPopularNowOrganizations;
+
+        if (items.length < first) {
+            setAfter('');
+        } else {
+            setAfter(cursor);
+        }
+
+        setOrgs([...orgs, ...normalizePopularOrgItems(items)]);
+        setLoading(false);
+    };
+
+    React.useEffect(() => {
+        if (orgs.length === 0) {
+            loadMore();
+        }
+    }, []);
+
+    return (
+        <DiscoverOrgsListing
+            title="Top communities"
+            orgs={orgs}
+            loading={loading}
+            onEndReached={loadMore}
+        />
+    );
+};
+
+interface DiscoverListingOrgsPageProps {
+    initialOrgs: DiscoverOrganization[];
+    initialAfter: string;
+}
+
+const DiscoverNewOrgsListing = (props: DiscoverListingOrgsPageProps) => {
+    const [orgs, setOrgs] = React.useState(props.initialOrgs);
+    const [loading, setLoading] = React.useState(false);
+    const [after, setAfter] = React.useState<string | null>(props.initialAfter);
+    const first = 10;
+    const seed = getRandomSeed();
+
+    const loadMore = async () => {
+        if (loading || (!after && orgs.length > 0)) {
+            return;
+        }
+        setLoading(true);
+
+        let { items, cursor } = (await getClient().queryDiscoverNewOrganizations({ after, first, seed }, { fetchPolicy: 'network-only' })).discoverNewAndGrowingOrganizations;
+
+        if (items.length < first) {
+            setAfter('');
+        } else {
+            setAfter(cursor);
+        }
+
+        setOrgs([...orgs, ...items]);
+        setLoading(false);
+    };
+
+    React.useEffect(() => {
+        if (orgs.length === 0) {
+            loadMore();
+        }
+    }, []);
+
+    return (
+        <DiscoverOrgsListing
+            title="New communities"
+            orgs={orgs}
+            loading={loading}
+            onEndReached={loadMore}
+        />
+    );
+};
+
 const DiscoverListingComponent = React.memo<PageProps>((props) => {
     const initialRooms = (props.router.params.initialRooms || []) as DiscoverRoom[];
     const type = props.router.params.type as ListingType;
@@ -443,6 +564,7 @@ const DiscoverListingComponent = React.memo<PageProps>((props) => {
     const title = props.router.params.title as string;
     const collectionId = props.router.params.collectionId as string;
     const description = props.router.params.description as string;
+    const initialOrgs = (props.router.params.initialOrgs || []) as DiscoverOrganization[];
 
     if (type === 'new') {
         return <DiscoverNewListing initialAfter={initialAfter} initialRooms={initialRooms} />;
@@ -456,6 +578,10 @@ const DiscoverListingComponent = React.memo<PageProps>((props) => {
         return <DiscoverCollectionsListing collectionId={collectionId} title={title} description={description} />;
     } else if (type === 'recommendations') {
         return <DiscoverRecommendationsListing initialRooms={initialRooms} />;
+    } else if (type === 'top-orgs') {
+        return <DiscoverTopOrgsListing initialAfter={initialAfter} initialOrgs={initialOrgs} />;
+    } else if (type === 'new-orgs') {
+        return <DiscoverNewOrgsListing initialAfter={initialAfter} initialOrgs={initialOrgs} />;
     } else {
         return <DiscoverListingContent title={title} rooms={initialRooms} />;
     }

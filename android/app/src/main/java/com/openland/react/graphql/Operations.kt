@@ -39,9 +39,11 @@ object Operations {
         if (name == "DiscoverEditorsChoice") return DiscoverEditorsChoice
         if (name == "DiscoverIsDone") return DiscoverIsDone
         if (name == "DiscoverNewAndGrowing") return DiscoverNewAndGrowing
+        if (name == "DiscoverNewOrganizations") return DiscoverNewOrganizations
         if (name == "DiscoverNextPage") return DiscoverNextPage
         if (name == "DiscoverNoAuth") return DiscoverNoAuth
         if (name == "DiscoverPopularNow") return DiscoverPopularNow
+        if (name == "DiscoverPopularOrganizations") return DiscoverPopularOrganizations
         if (name == "DiscoverState") return DiscoverState
         if (name == "DiscoverSuggestedRooms") return DiscoverSuggestedRooms
         if (name == "DiscoverTopFree") return DiscoverTopFree

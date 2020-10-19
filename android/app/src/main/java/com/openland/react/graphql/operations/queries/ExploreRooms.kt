@@ -45,11 +45,31 @@ internal val ExploreRoomsSelector = obj(
                         ))))),
                     field("cursor", "cursor", scalar("String"))
                 ))),
+            field("discoverPopularNowOrganizations", "discoverPopularNowOrganizations", arguments(fieldValue("first", intValue(5))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("organization", "organization", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    fragment("Organization", DiscoverOrganizationSelector)
+                                ))),
+                            field("newMessages", "newMessages", notNull(scalar("Int")))
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                ))),
+            field("discoverNewAndGrowingOrganizations", "discoverNewAndGrowingOrganizations", arguments(fieldValue("first", intValue(5)), fieldValue("seed", refValue("seed"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("Organization", DiscoverOrganizationSelector)
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                ))),
             field("betaIsDiscoverDone", "isDiscoverDone", notNull(scalar("Boolean")))
         )
 val ExploreRooms = object: OperationDefinition {
     override val name = "ExploreRooms"
     override val kind = OperationKind.QUERY
-    override val body = "query ExploreRooms(\$seed:Int!){discoverNewAndGrowing(first:3,seed:\$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}"
+    override val body = "query ExploreRooms(\$seed:Int!){discoverNewAndGrowing(first:3,seed:\$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNowOrganizations(first:5){__typename items{__typename organization{__typename ...DiscoverOrganization}newMessages}cursor}discoverNewAndGrowingOrganizations(first:5,seed:\$seed){__typename items{__typename ...DiscoverOrganization}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}fragment DiscoverOrganization on Organization{__typename id name photo membersCount}"
     override val selector = ExploreRoomsSelector
 }

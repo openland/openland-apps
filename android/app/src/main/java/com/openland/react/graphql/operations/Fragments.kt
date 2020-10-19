@@ -945,6 +945,14 @@ internal val DiscoverChatsCollectionShortSelector = obj(
                 )))
         )
 
+internal val DiscoverOrganizationSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String")),
+            field("membersCount", "membersCount", notNull(scalar("Int")))
+        )
+
 internal val FullMessageWithoutSourceSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
