@@ -106,6 +106,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, params?: QueryParameters): Promise<Types.DiscoverNewAndGrowing> {
         return this.query('DiscoverNewAndGrowing', variables, params);
     }
+    queryDiscoverNewOrganizations(variables: Types.DiscoverNewOrganizationsVariables, params?: QueryParameters): Promise<Types.DiscoverNewOrganizations> {
+        return this.query('DiscoverNewOrganizations', variables, params);
+    }
     queryDiscoverNextPage(variables: Types.DiscoverNextPageVariables, params?: QueryParameters): Promise<Types.DiscoverNextPage> {
         return this.query('DiscoverNextPage', variables, params);
     }
@@ -114,6 +117,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, params?: QueryParameters): Promise<Types.DiscoverPopularNow> {
         return this.query('DiscoverPopularNow', variables, params);
+    }
+    queryDiscoverPopularOrganizations(variables: Types.DiscoverPopularOrganizationsVariables, params?: QueryParameters): Promise<Types.DiscoverPopularOrganizations> {
+        return this.query('DiscoverPopularOrganizations', variables, params);
     }
     queryDiscoverState(params?: QueryParameters): Promise<Types.DiscoverState> {
         return this.query('DiscoverState', undefined, params);
@@ -138,6 +144,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryFetchPushSettings(params?: QueryParameters): Promise<Types.FetchPushSettings> {
         return this.query('FetchPushSettings', undefined, params);
+    }
+    queryGetState(params?: QueryParameters): Promise<Types.GetState> {
+        return this.query('GetState', undefined, params);
     }
     queryGlobalCounter(params?: QueryParameters): Promise<Types.GlobalCounter> {
         return this.query('GlobalCounter', undefined, params);
@@ -463,6 +472,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, params?: QueryParameters): Promise<Types.DiscoverNewAndGrowing> {
         return this.refetch('DiscoverNewAndGrowing', variables, params);
     }
+    refetchDiscoverNewOrganizations(variables: Types.DiscoverNewOrganizationsVariables, params?: QueryParameters): Promise<Types.DiscoverNewOrganizations> {
+        return this.refetch('DiscoverNewOrganizations', variables, params);
+    }
     refetchDiscoverNextPage(variables: Types.DiscoverNextPageVariables, params?: QueryParameters): Promise<Types.DiscoverNextPage> {
         return this.refetch('DiscoverNextPage', variables, params);
     }
@@ -471,6 +483,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, params?: QueryParameters): Promise<Types.DiscoverPopularNow> {
         return this.refetch('DiscoverPopularNow', variables, params);
+    }
+    refetchDiscoverPopularOrganizations(variables: Types.DiscoverPopularOrganizationsVariables, params?: QueryParameters): Promise<Types.DiscoverPopularOrganizations> {
+        return this.refetch('DiscoverPopularOrganizations', variables, params);
     }
     refetchDiscoverState(params?: QueryParameters): Promise<Types.DiscoverState> {
         return this.refetch('DiscoverState', undefined, params);
@@ -495,6 +510,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchFetchPushSettings(params?: QueryParameters): Promise<Types.FetchPushSettings> {
         return this.refetch('FetchPushSettings', undefined, params);
+    }
+    refetchGetState(params?: QueryParameters): Promise<Types.GetState> {
+        return this.refetch('GetState', undefined, params);
     }
     refetchGlobalCounter(params?: QueryParameters): Promise<Types.GlobalCounter> {
         return this.refetch('GlobalCounter', undefined, params);
@@ -820,6 +838,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, updater: (data: Types.DiscoverNewAndGrowing) => Types.DiscoverNewAndGrowing | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverNewAndGrowing', variables);
     }
+    updateDiscoverNewOrganizations(variables: Types.DiscoverNewOrganizationsVariables, updater: (data: Types.DiscoverNewOrganizations) => Types.DiscoverNewOrganizations | null): Promise<boolean> {
+        return this.updateQuery(updater, 'DiscoverNewOrganizations', variables);
+    }
     updateDiscoverNextPage(variables: Types.DiscoverNextPageVariables, updater: (data: Types.DiscoverNextPage) => Types.DiscoverNextPage | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverNextPage', variables);
     }
@@ -828,6 +849,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, updater: (data: Types.DiscoverPopularNow) => Types.DiscoverPopularNow | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverPopularNow', variables);
+    }
+    updateDiscoverPopularOrganizations(variables: Types.DiscoverPopularOrganizationsVariables, updater: (data: Types.DiscoverPopularOrganizations) => Types.DiscoverPopularOrganizations | null): Promise<boolean> {
+        return this.updateQuery(updater, 'DiscoverPopularOrganizations', variables);
     }
     updateDiscoverState(updater: (data: Types.DiscoverState) => Types.DiscoverState | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverState', undefined);
@@ -852,6 +876,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateFetchPushSettings(updater: (data: Types.FetchPushSettings) => Types.FetchPushSettings | null): Promise<boolean> {
         return this.updateQuery(updater, 'FetchPushSettings', undefined);
+    }
+    updateGetState(updater: (data: Types.GetState) => Types.GetState | null): Promise<boolean> {
+        return this.updateQuery(updater, 'GetState', undefined);
     }
     updateGlobalCounter(updater: (data: Types.GlobalCounter) => Types.GlobalCounter | null): Promise<boolean> {
         return this.updateQuery(updater, 'GlobalCounter', undefined);
@@ -1241,6 +1268,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, params?: SpaceQueryWatchParameters): Types.DiscoverNewAndGrowing | null {
         return this.useQuery('DiscoverNewAndGrowing', variables, params);
     }
+    useDiscoverNewOrganizations(variables: Types.DiscoverNewOrganizationsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverNewOrganizations | null;
+    useDiscoverNewOrganizations(variables: Types.DiscoverNewOrganizationsVariables, params?: SpaceQueryWatchParameters): Types.DiscoverNewOrganizations;
+    useDiscoverNewOrganizations(variables: Types.DiscoverNewOrganizationsVariables, params?: SpaceQueryWatchParameters): Types.DiscoverNewOrganizations | null {
+        return this.useQuery('DiscoverNewOrganizations', variables, params);
+    }
     useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverNextPage | null;
     useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, params?: SpaceQueryWatchParameters): Types.DiscoverNextPage;
     useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, params?: SpaceQueryWatchParameters): Types.DiscoverNextPage | null {
@@ -1255,6 +1287,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, params?: SpaceQueryWatchParameters): Types.DiscoverPopularNow;
     useDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, params?: SpaceQueryWatchParameters): Types.DiscoverPopularNow | null {
         return this.useQuery('DiscoverPopularNow', variables, params);
+    }
+    useDiscoverPopularOrganizations(variables: Types.DiscoverPopularOrganizationsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverPopularOrganizations | null;
+    useDiscoverPopularOrganizations(variables: Types.DiscoverPopularOrganizationsVariables, params?: SpaceQueryWatchParameters): Types.DiscoverPopularOrganizations;
+    useDiscoverPopularOrganizations(variables: Types.DiscoverPopularOrganizationsVariables, params?: SpaceQueryWatchParameters): Types.DiscoverPopularOrganizations | null {
+        return this.useQuery('DiscoverPopularOrganizations', variables, params);
     }
     useDiscoverState(params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverState | null;
     useDiscoverState(params?: SpaceQueryWatchParameters): Types.DiscoverState;
@@ -1295,6 +1332,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useFetchPushSettings(params?: SpaceQueryWatchParameters): Types.FetchPushSettings;
     useFetchPushSettings(params?: SpaceQueryWatchParameters): Types.FetchPushSettings | null {
         return this.useQuery('FetchPushSettings', undefined, params);
+    }
+    useGetState(params: SpaceQueryWatchParameters & { suspense: false }): Types.GetState | null;
+    useGetState(params?: SpaceQueryWatchParameters): Types.GetState;
+    useGetState(params?: SpaceQueryWatchParameters): Types.GetState | null {
+        return this.useQuery('GetState', undefined, params);
     }
     useGlobalCounter(params: SpaceQueryWatchParameters & { suspense: false }): Types.GlobalCounter | null;
     useGlobalCounter(params?: SpaceQueryWatchParameters): Types.GlobalCounter;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Image, TextInput, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform, PanResponder, PanResponderGestureState } from 'react-native';
+import { View, TouchableOpacity, Image, TextInput, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform } from 'react-native';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { RadiusStyles, HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
@@ -51,21 +51,8 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
         keyboardAppearance: theme.keyboardAppearance,
     };
 
-    const msrp = React.useRef<(gs: PanResponderGestureState) => boolean>(() => false);
-    msrp.current = (gs: PanResponderGestureState) => {
-        if (stickerKeyboardShown && onStickerKeyboardButtonPress && gs.dy > 75) {
-            onStickerKeyboardButtonPress();
-        }
-        return false;
-    };
-    const panResponder = React.useRef(
-        PanResponder.create({
-            onMoveShouldSetPanResponder: (e, gs) => msrp.current(gs)
-        })
-    ).current;
-
     return (
-        <View style={{ flexDirection: 'row', alignItems: 'flex-end', backgroundColor: Platform.OS === 'android' ? theme.backgroundPrimary : undefined, position: 'relative' }} {...panResponder.panHandlers}>
+        <View style={{ flexDirection: 'row', alignItems: 'flex-end', backgroundColor: Platform.OS === 'android' ? theme.backgroundPrimary : undefined, position: 'relative' }}>
             {props.attachesEnabled !== false && (
                 <View width={56} height={52} alignItems="center" justifyContent="center">
                     <TouchableOpacity onPress={props.onAttachPress}>

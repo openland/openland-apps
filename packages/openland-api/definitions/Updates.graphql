@@ -49,3 +49,20 @@ subscription WatchUpdates {
         }
     }
 }
+
+#
+# State
+#
+
+query GetState {
+    updatesState {
+        seq
+        state
+        sequences {
+            pts
+            sequence {
+                ...ShortSequence
+            }
+        }
+    }
+}

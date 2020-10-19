@@ -946,6 +946,14 @@ const DiscoverChatsCollectionShortSelector = obj(
                 )))
         );
 
+const DiscoverOrganizationSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('name', 'name', args(), notNull(scalar('String'))),
+            field('photo', 'photo', args(), scalar('String')),
+            field('membersCount', 'membersCount', args(), notNull(scalar('Int')))
+        );
+
 const FullMessageWithoutSourceSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -2572,6 +2580,16 @@ const DiscoverNewAndGrowingSelector = obj(
                     field('cursor', 'cursor', args(), scalar('String'))
                 )))
         );
+const DiscoverNewOrganizationsSelector = obj(
+            field('discoverNewAndGrowingOrganizations', 'discoverNewAndGrowingOrganizations', args(fieldValue("first", refValue('first')), fieldValue("seed", refValue('seed')), fieldValue("after", refValue('after'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('Organization', DiscoverOrganizationSelector)
+                        ))))),
+                    field('cursor', 'cursor', args(), scalar('String'))
+                )))
+        );
 const DiscoverNextPageSelector = obj(
             field('gammaNextDiscoverPage', 'betaNextDiscoverPage', args(fieldValue("selectedTagsIds", refValue('selectedTagsIds')), fieldValue("excudedGroupsIds", refValue('excudedGroupsIds'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -2665,6 +2683,20 @@ const DiscoverPopularNowSelector = obj(
                             field('room', 'room', args(), notNull(obj(
                                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                                     fragment('SharedRoom', DiscoverSharedRoomSelector)
+                                ))),
+                            field('newMessages', 'newMessages', args(), notNull(scalar('Int')))
+                        ))))),
+                    field('cursor', 'cursor', args(), scalar('String'))
+                )))
+        );
+const DiscoverPopularOrganizationsSelector = obj(
+            field('discoverPopularNowOrganizations', 'discoverPopularNowOrganizations', args(fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('organization', 'organization', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    fragment('Organization', DiscoverOrganizationSelector)
                                 ))),
                             field('newMessages', 'newMessages', args(), notNull(scalar('Int')))
                         ))))),
@@ -2770,6 +2802,26 @@ const ExploreRoomsSelector = obj(
                         ))))),
                     field('cursor', 'cursor', args(), scalar('String'))
                 ))),
+            field('discoverPopularNowOrganizations', 'discoverPopularNowOrganizations', args(fieldValue("first", intValue(5))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('organization', 'organization', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    fragment('Organization', DiscoverOrganizationSelector)
+                                ))),
+                            field('newMessages', 'newMessages', args(), notNull(scalar('Int')))
+                        ))))),
+                    field('cursor', 'cursor', args(), scalar('String'))
+                ))),
+            field('discoverNewAndGrowingOrganizations', 'discoverNewAndGrowingOrganizations', args(fieldValue("first", intValue(5)), fieldValue("seed", refValue('seed'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('Organization', DiscoverOrganizationSelector)
+                        ))))),
+                    field('cursor', 'cursor', args(), scalar('String'))
+                ))),
             field('betaIsDiscoverDone', 'isDiscoverDone', args(), notNull(scalar('Boolean')))
         );
 const FeatureFlagsSelector = obj(
@@ -2784,6 +2836,21 @@ const FetchPushSettingsSelector = obj(
             field('pushSettings', 'pushSettings', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('webPushKey', 'webPushKey', args(), scalar('String'))
+                )))
+        );
+const GetStateSelector = obj(
+            field('updatesState', 'updatesState', args(), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('seq', 'seq', args(), notNull(scalar('Int'))),
+                    field('state', 'state', args(), notNull(scalar('String'))),
+                    field('sequences', 'sequences', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('pts', 'pts', args(), notNull(scalar('Int'))),
+                            field('sequence', 'sequence', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    fragment('Sequence', ShortSequenceSelector)
+                                )))
+                        )))))
                 )))
         );
 const GlobalCounterSelector = obj(
@@ -5517,6 +5584,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query DiscoverNewAndGrowing($first:Int!,$seed:Int!,$after:String){discoverNewAndGrowing(first:$first,seed:$seed,after:$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
         selector: DiscoverNewAndGrowingSelector
     },
+    DiscoverNewOrganizations: {
+        kind: 'query',
+        name: 'DiscoverNewOrganizations',
+        body: 'query DiscoverNewOrganizations($first:Int!,$seed:Int!,$after:String){discoverNewAndGrowingOrganizations(first:$first,seed:$seed,after:$after){__typename items{__typename ...DiscoverOrganization}cursor}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount}',
+        selector: DiscoverNewOrganizationsSelector
+    },
     DiscoverNextPage: {
         kind: 'query',
         name: 'DiscoverNextPage',
@@ -5534,6 +5607,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'DiscoverPopularNow',
         body: 'query DiscoverPopularNow($first:Int!,$after:String){discoverPopularNow(first:$first,after:$after){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
         selector: DiscoverPopularNowSelector
+    },
+    DiscoverPopularOrganizations: {
+        kind: 'query',
+        name: 'DiscoverPopularOrganizations',
+        body: 'query DiscoverPopularOrganizations($first:Int!,$after:String){discoverPopularNowOrganizations(first:$first,after:$after){__typename items{__typename organization{__typename ...DiscoverOrganization}newMessages}cursor}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount}',
+        selector: DiscoverPopularOrganizationsSelector
     },
     DiscoverState: {
         kind: 'query',
@@ -5568,7 +5647,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ExploreRooms: {
         kind: 'query',
         name: 'ExploreRooms',
-        body: 'query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
+        body: 'query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNowOrganizations(first:5){__typename items{__typename organization{__typename ...DiscoverOrganization}newMessages}cursor}discoverNewAndGrowingOrganizations(first:5,seed:$seed){__typename items{__typename ...DiscoverOrganization}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}fragment DiscoverOrganization on Organization{__typename id name photo membersCount}',
         selector: ExploreRoomsSelector
     },
     FeatureFlags: {
@@ -5582,6 +5661,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'FetchPushSettings',
         body: 'query FetchPushSettings{pushSettings{__typename webPushKey}}',
         selector: FetchPushSettingsSelector
+    },
+    GetState: {
+        kind: 'query',
+        name: 'GetState',
+        body: 'query GetState{updatesState{__typename seq state sequences{__typename pts sequence{__typename ...ShortSequence}}}}fragment ShortSequence on Sequence{__typename ... on SequenceCommon{__typename uid}... on SequenceChat{__typename cid}}',
+        selector: GetStateSelector
     },
     GlobalCounter: {
         kind: 'query',
