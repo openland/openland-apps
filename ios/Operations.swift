@@ -939,6 +939,14 @@ private let DiscoverChatsCollectionShortSelector = obj(
                 )))
         )
 
+private let DiscoverOrganizationSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String")),
+            field("membersCount", "membersCount", notNull(scalar("Int")))
+        )
+
 private let FullMessageWithoutSourceSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -2563,6 +2571,16 @@ private let DiscoverNewAndGrowingSelector = obj(
                     field("cursor", "cursor", scalar("String"))
                 )))
         )
+private let DiscoverNewOrganizationsSelector = obj(
+            field("discoverNewAndGrowingOrganizations", "discoverNewAndGrowingOrganizations", arguments(fieldValue("first", refValue("first")), fieldValue("seed", refValue("seed")), fieldValue("after", refValue("after"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("Organization", DiscoverOrganizationSelector)
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                )))
+        )
 private let DiscoverNextPageSelector = obj(
             field("gammaNextDiscoverPage", "betaNextDiscoverPage", arguments(fieldValue("selectedTagsIds", refValue("selectedTagsIds")), fieldValue("excudedGroupsIds", refValue("excudedGroupsIds"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -2656,6 +2674,20 @@ private let DiscoverPopularNowSelector = obj(
                             field("room", "room", notNull(obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("SharedRoom", DiscoverSharedRoomSelector)
+                                ))),
+                            field("newMessages", "newMessages", notNull(scalar("Int")))
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                )))
+        )
+private let DiscoverPopularOrganizationsSelector = obj(
+            field("discoverPopularNowOrganizations", "discoverPopularNowOrganizations", arguments(fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("organization", "organization", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    fragment("Organization", DiscoverOrganizationSelector)
                                 ))),
                             field("newMessages", "newMessages", notNull(scalar("Int")))
                         ))))),
@@ -2758,6 +2790,26 @@ private let ExploreRoomsSelector = obj(
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("SharedRoom", DiscoverSharedRoomSelector)
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                ))),
+            field("discoverPopularNowOrganizations", "discoverPopularNowOrganizations", arguments(fieldValue("first", intValue(5))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("organization", "organization", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    fragment("Organization", DiscoverOrganizationSelector)
+                                ))),
+                            field("newMessages", "newMessages", notNull(scalar("Int")))
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                ))),
+            field("discoverNewAndGrowingOrganizations", "discoverNewAndGrowingOrganizations", arguments(fieldValue("first", intValue(5)), fieldValue("seed", refValue("seed"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("Organization", DiscoverOrganizationSelector)
                         ))))),
                     field("cursor", "cursor", scalar("String"))
                 ))),
@@ -5527,6 +5579,12 @@ class Operations {
         "query DiscoverNewAndGrowing($first:Int!,$seed:Int!,$after:String){discoverNewAndGrowing(first:$first,seed:$seed,after:$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         DiscoverNewAndGrowingSelector
     )
+    let DiscoverNewOrganizations = OperationDefinition(
+        "DiscoverNewOrganizations",
+        .query, 
+        "query DiscoverNewOrganizations($first:Int!,$seed:Int!,$after:String){discoverNewAndGrowingOrganizations(first:$first,seed:$seed,after:$after){__typename items{__typename ...DiscoverOrganization}cursor}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount}",
+        DiscoverNewOrganizationsSelector
+    )
     let DiscoverNextPage = OperationDefinition(
         "DiscoverNextPage",
         .query, 
@@ -5544,6 +5602,12 @@ class Operations {
         .query, 
         "query DiscoverPopularNow($first:Int!,$after:String){discoverPopularNow(first:$first,after:$after){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         DiscoverPopularNowSelector
+    )
+    let DiscoverPopularOrganizations = OperationDefinition(
+        "DiscoverPopularOrganizations",
+        .query, 
+        "query DiscoverPopularOrganizations($first:Int!,$after:String){discoverPopularNowOrganizations(first:$first,after:$after){__typename items{__typename organization{__typename ...DiscoverOrganization}newMessages}cursor}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount}",
+        DiscoverPopularOrganizationsSelector
     )
     let DiscoverState = OperationDefinition(
         "DiscoverState",
@@ -5578,7 +5642,7 @@ class Operations {
     let ExploreRooms = OperationDefinition(
         "ExploreRooms",
         .query, 
-        "query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
+        "query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNowOrganizations(first:5){__typename items{__typename organization{__typename ...DiscoverOrganization}newMessages}cursor}discoverNewAndGrowingOrganizations(first:5,seed:$seed){__typename items{__typename ...DiscoverOrganization}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}fragment DiscoverOrganization on Organization{__typename id name photo membersCount}",
         ExploreRoomsSelector
     )
     let FeatureFlags = OperationDefinition(
@@ -6953,9 +7017,11 @@ class Operations {
         if name == "DiscoverEditorsChoice" { return DiscoverEditorsChoice }
         if name == "DiscoverIsDone" { return DiscoverIsDone }
         if name == "DiscoverNewAndGrowing" { return DiscoverNewAndGrowing }
+        if name == "DiscoverNewOrganizations" { return DiscoverNewOrganizations }
         if name == "DiscoverNextPage" { return DiscoverNextPage }
         if name == "DiscoverNoAuth" { return DiscoverNoAuth }
         if name == "DiscoverPopularNow" { return DiscoverPopularNow }
+        if name == "DiscoverPopularOrganizations" { return DiscoverPopularOrganizations }
         if name == "DiscoverState" { return DiscoverState }
         if name == "DiscoverSuggestedRooms" { return DiscoverSuggestedRooms }
         if name == "DiscoverTopFree" { return DiscoverTopFree }
