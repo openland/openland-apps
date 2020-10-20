@@ -1,7 +1,17 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { TextStyles, TextCaption, TextDensed, TextBody, TextLabel2, TextLabel1, TextTitle1, TextTitle3 } from 'openland-web/utils/TextStyles';
+import {
+    TextStyles,
+    TextCaption,
+    TextDensed,
+    TextBody,
+    TextLabel3,
+    TextLabel1,
+    TextTitle1,
+    TextTitle3,
+    TextLabel2,
+} from 'openland-web/utils/TextStyles';
 import { XView } from 'react-mental';
 
 export default withApp('Typography', ['super-admin', 'software-developer'], props => {
@@ -13,6 +23,7 @@ export default withApp('Typography', ['super-admin', 'software-developer'], prop
                     <XView {...TextStyles.Title3}>XView Title2</XView>
                     <XView {...TextStyles.Label1}>XView Label1</XView>
                     <XView {...TextStyles.Label2}>XView Label2</XView>
+                    <XView {...TextStyles.Label3}>XView Label3</XView>
                     <XView {...TextStyles.Body}>XView Body</XView>
                     <XView {...TextStyles.Densed}>XView Densed</XView>
                     <XView {...TextStyles.Caption}>XView Caption</XView>
@@ -22,6 +33,7 @@ export default withApp('Typography', ['super-admin', 'software-developer'], prop
                     <div className={TextTitle3}>Linaria Title2</div>
                     <div className={TextLabel1}>Linaria Label1</div>
                     <div className={TextLabel2}>Linaria Label2</div>
+                    <div className={TextLabel3}>Linaria Label2</div>
                     <div className={TextBody}>Linaria Body</div>
                     <div className={TextDensed}>Linaria Densed</div>
                     <div className={TextCaption}>Linaria Caption</div>

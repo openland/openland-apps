@@ -10,7 +10,7 @@ import { XModalContent } from 'openland-web/components/XModalContent';
 import { showModalBox } from 'openland-x/showModalBox';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { TextLabel1, TextTitle1, TextLabel2 } from 'openland-web/utils/TextStyles';
+import { TextLabel1, TextTitle1, TextLabel3 } from 'openland-web/utils/TextStyles';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 import { USelectField } from 'openland-web/components/unicorn/USelect';
@@ -149,7 +149,7 @@ export default withApp('Super Admins', ['super-admin', 'software-developer'], ()
             <XView flexDirection="row" alignItems="center">
                 <XView flexGrow={1}>
                     <span className={TextTitle1}>Super Admins</span>
-                    <span className={TextLabel2}>{superAdmins.length + ' total'}</span>
+                    <span className={TextLabel3}>{superAdmins.length + ' total'}</span>
                 </XView>
                 <UButton text="Add New" onClick={() => showAddSuperAdminFormModal()} />
             </XView>

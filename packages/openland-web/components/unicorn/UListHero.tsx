@@ -29,8 +29,10 @@ interface UListHeroProps {
     titleIcon?: JSX.Element;
     titleRightIcon?: JSX.Element;
     score?: number;
+    badge?: string | null;
     description?: string | JSX.Element;
     descriptionColor?: string;
+    online?: boolean;
     avatar?: { photo: string | null; id: string; title: string };
     children?: any;
 }
@@ -43,7 +45,9 @@ export const UListHero = (props: UListHeroProps) => {
         description,
         descriptionColor,
         avatar,
+        badge,
         children,
+        online,
     } = props;
     const titleEmojify = React.useMemo(() => emoji(title), [title]);
     const { compactView } = React.useContext(ProfileLayoutContext);
@@ -54,20 +58,21 @@ export const UListHero = (props: UListHeroProps) => {
 
     return (
         <XView paddingHorizontal={16} flexDirection={compactView ? 'row' : 'column'} flexShrink={1}>
-            {!!avatar && (
-                <UAvatar
-                    {...avatar}
-                    size={isSmallMobile ? 'large' : 'xx-large'}
-                    marginTop={16}
-                    marginRight={16}
-                    onClick={
-                        avatar.photo && !avatar.photo.startsWith('ph://')
-                            ? () => showAvatarModal(avatar.photo!)
-                            : undefined
-                    }
-                />
-            )}
-
+                {!!avatar && (
+                        <UAvatar
+                            {...avatar}
+                            size={isSmallMobile ? 'large' : 'xx-large'}
+                            online={online}
+                            badge={badge}
+                            marginTop={16}
+                            marginRight={16}
+                            onClick={
+                                avatar.photo && !avatar.photo.startsWith('ph://')
+                                    ? () => showAvatarModal(avatar.photo!)
+                                    : undefined
+                            }
+                        />
+                )}
             <XView
                 marginTop={16}
                 flexGrow={1}

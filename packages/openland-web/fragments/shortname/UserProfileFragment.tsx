@@ -6,7 +6,6 @@ import copy from 'copy-to-clipboard';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { useClient } from 'openland-api/useClient';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { UPresence } from 'openland-web/components/unicorn/UPresence';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
@@ -28,6 +27,7 @@ import TwitterIcon from 'openland-icons/s/ic-twitter-24-transparent.svg';
 import LinkedInIcon from 'openland-icons/s/ic-linkedin-24-transparent.svg';
 import BirthDayIcon from 'openland-icons/s/ic-birthday-24.svg';
 import PhoneIcon from 'openland-icons/s/ic-phone.svg';
+import { useLastSeenShort } from 'openland-y-utils/LastSeen';
 
 import { UserActions } from './components/UserActions';
 import { ShowMoreText } from './components/ShowMoreText';
@@ -67,14 +67,16 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
 
     const isMe = engine.user.id === user.id;
     const buttonText = isBot ? 'View messages' : 'Message';
+    const [lastseen] = useLastSeenShort(user);
 
     const joinedTitle = <>Joined <XDate value={joinDate} /></>;
 
     const leftColumn = (
         <UListHero
             title={name}
-            description={<UPresence user={user} />}
             avatar={{ photo, id, title: name }}
+            online={user.online}
+            badge={lastseen}
         >
             {!isMe && <UButton text={buttonText} path={`/mail/${id}`} size="large" shape="square" marginRight={16} />}
             {isMe && <UButton text="Edit profile" path="/settings/profile" size="large" shape="square" marginRight={16} style="secondary" />}
