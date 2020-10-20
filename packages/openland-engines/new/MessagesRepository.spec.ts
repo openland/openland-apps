@@ -1,8 +1,8 @@
 import { SparseIndex } from './SparseIndex';
 import { StoredMessage } from './StoredMessage';
-import { PersistenceProviderInMemory } from './PersistenceProviderInMemory';
+import { PersistenceProviderInMemory } from '../persistence/PersistenceProviderInMemory';
 import { MessagesRepository } from './MessagesRepository';
-import { Persistence } from './Persistence';
+import { Persistence } from '../persistence/Persistence';
 
 function createMessage(seq: number): StoredMessage {
     return {
@@ -19,25 +19,26 @@ describe('MessagesRepository', () => {
         let messagesStore = MessagesRepository.open('1', persistence);
 
         // Write Simple Batch
-        persistence.startTransaction();
-        await messagesStore.writeBatch({
-            minSeq: 10,
-            maxSeq: 20,
-            messages: [
-                createMessage(10),
-                createMessage(11),
-                createMessage(12),
-                createMessage(13),
-                createMessage(14),
-                createMessage(15),
-                createMessage(16),
-                createMessage(17),
-                createMessage(18),
-                createMessage(19),
-                createMessage(20)
-            ]
+        await persistence.inTx(async (tx) => {
+            await messagesStore.writeBatch({
+                minSeq: 10,
+                maxSeq: 20,
+                messages: [
+                    createMessage(10),
+                    createMessage(11),
+                    createMessage(12),
+                    createMessage(13),
+                    createMessage(14),
+                    createMessage(15),
+                    createMessage(16),
+                    createMessage(17),
+                    createMessage(18),
+                    createMessage(19),
+                    createMessage(20)
+                ],
+                tx
+            });
         });
-        await persistence.commitTransaction();
 
         // Reload store
         messagesStore = MessagesRepository.open('1', persistence);
@@ -99,30 +100,32 @@ describe('MessagesRepository', () => {
         let messagesStore = MessagesRepository.open('1', persistence);
 
         // Write data
-        persistence.startTransaction();
-        await messagesStore.writeBatch({
-            minSeq: 10,
-            maxSeq: 20,
-            messages: [
-                createMessage(10),
-                createMessage(11),
-                createMessage(12),
-                createMessage(13),
-                createMessage(14),
-                createMessage(15),
-                createMessage(16),
-                createMessage(17),
-                createMessage(18),
-                createMessage(19),
-                createMessage(20)
-            ]
+        await persistence.inTx(async (tx) => {
+            await messagesStore.writeBatch({
+                minSeq: 10,
+                maxSeq: 20,
+                messages: [
+                    createMessage(10),
+                    createMessage(11),
+                    createMessage(12),
+                    createMessage(13),
+                    createMessage(14),
+                    createMessage(15),
+                    createMessage(16),
+                    createMessage(17),
+                    createMessage(18),
+                    createMessage(19),
+                    createMessage(20)
+                ],
+                tx
+            });
+            await messagesStore.writeBatch({
+                minSeq: 20,
+                maxSeq: null,
+                messages: [],
+                tx
+            });
         });
-        await messagesStore.writeBatch({
-            minSeq: 20,
-            maxSeq: null,
-            messages: []
-        });
-        await persistence.commitTransaction();
 
         // Reload store
         messagesStore = MessagesRepository.open('1', persistence);
@@ -149,9 +152,9 @@ describe('MessagesRepository', () => {
         });
 
         // Append
-        persistence.startTransaction();
-        await messagesStore.handleMessageReceived(createMessage(21));
-        await persistence.commitTransaction();
+        await persistence.inTx(async (tx) => {
+            await messagesStore.handleMessageReceived(createMessage(21), tx);
+        });
 
         read = await messagesStore.readAfter({ after: 18, limit: 3 });
         expect(read).toMatchObject({
