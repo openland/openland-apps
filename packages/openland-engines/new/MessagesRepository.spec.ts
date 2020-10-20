@@ -1,6 +1,6 @@
+import { InMemoryKeyValueStore } from 'openland-y-utils/InMemoryKeyValueStore';
 import { SparseIndex } from './SparseIndex';
 import { StoredMessage } from './StoredMessage';
-import { PersistenceProviderInMemory } from '../persistence/PersistenceProviderInMemory';
 import { MessagesRepository } from './MessagesRepository';
 import { Persistence } from '../persistence/Persistence';
 
@@ -14,7 +14,7 @@ function createMessage(seq: number): StoredMessage {
 
 describe('MessagesRepository', () => {
     it('should write and read batches', async () => {
-        let persistenceProvider = new PersistenceProviderInMemory();
+        let persistenceProvider = new InMemoryKeyValueStore();
         let persistence = new Persistence(persistenceProvider);
         let messagesStore = MessagesRepository.open('1', persistence);
 
@@ -95,7 +95,7 @@ describe('MessagesRepository', () => {
     });
 
     it('should handle appends', async () => {
-        let persistenceProvider = new PersistenceProviderInMemory();
+        let persistenceProvider = new InMemoryKeyValueStore();
         let persistence = new Persistence(persistenceProvider);
         let messagesStore = MessagesRepository.open('1', persistence);
 

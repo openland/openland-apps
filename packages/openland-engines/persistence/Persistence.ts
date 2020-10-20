@@ -1,5 +1,6 @@
-import { PersistenceProvider } from './PersistenceProvider';
+import { delay } from 'openland-y-utils/timer';
 import { AsyncLock } from '@openland/patterns';
+import { KeyValueStore } from 'openland-y-utils/KeyValueStore';
 
 class TransactionHolder {
     private persistence: Persistence;
@@ -62,17 +63,57 @@ export class Transaction {
 }
 
 export class Persistence {
-    private persistence: PersistenceProvider;
-    private lock = new AsyncLock();
+    private store: KeyValueStore;
+
+    private readRequested = false;
+    private readRequests = new Map<string, ((value: string | null) => void)[]>();
+    private readLock = new AsyncLock();
+
     private writeLock = new AsyncLock();
 
-    constructor(persistence: PersistenceProvider) {
-        this.persistence = persistence;
+    constructor(store: KeyValueStore) {
+        this.store = store;
     }
 
     read = async (key: string): Promise<string | null> => {
-        let res = await this.lock.inLock(() => this.persistence.readKeys([key]));
-        return res[0];
+        return new Promise<string | null>(resolve => {
+            let ex = this.readRequests.get(key);
+            if (ex) {
+                ex.push(resolve);
+            } else {
+                this.readRequests.set(key, [resolve]);
+            }
+            this.requestReadIfNeeded();
+        });
+    }
+
+    private requestReadIfNeeded() {
+        if (this.readRequested) {
+            return;
+        }
+        if (this.readRequests.size === 0) {
+            return;
+        }
+        this.readRequested = true;
+        (async () => {
+            await delay(10);
+            let keys = [...this.readRequests.keys()];
+            let values = await this.readLock.inLock(() => this.store.readKeys(keys));
+            for (let i = 0; i < keys.length; i++) {
+                let v = values[i];
+                let callbacks = this.readRequests.get(v.key)!;
+                this.readRequests.delete(v.key);
+                for (let c of callbacks) {
+                    try {
+                        c(v.value);
+                    } catch (e) {
+                        console.warn(e);
+                    }
+                }
+            }
+            this.readRequested = false;
+            this.requestReadIfNeeded();
+        })();
     }
 
     inTx = async <T>(handler: (tx: Transaction) => Promise<T>) => {
@@ -82,7 +123,7 @@ export class Persistence {
             let res = await handler(tx);
             let completed = holder.complete();
             if (completed.length > 0) {
-                await this.lock.inLock(() => this.persistence.writeKeys(completed));
+                await this.readLock.inLock(() => this.store.writeKeys(completed));
             }
             return res;
         });
