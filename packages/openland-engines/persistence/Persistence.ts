@@ -46,7 +46,6 @@ class TransactionHolder {
 }
 
 export class Transaction {
-    private writes = new Map<string, string | null>();
     private holder: TransactionHolder;
 
     constructor(holder: TransactionHolder) {
