@@ -145,6 +145,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryFetchPushSettings(params?: QueryParameters): Promise<Types.FetchPushSettings> {
         return this.query('FetchPushSettings', undefined, params);
     }
+    queryGetDifference(variables: Types.GetDifferenceVariables, params?: QueryParameters): Promise<Types.GetDifference> {
+        return this.query('GetDifference', variables, params);
+    }
     queryGetState(params?: QueryParameters): Promise<Types.GetState> {
         return this.query('GetState', undefined, params);
     }
@@ -511,6 +514,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchFetchPushSettings(params?: QueryParameters): Promise<Types.FetchPushSettings> {
         return this.refetch('FetchPushSettings', undefined, params);
     }
+    refetchGetDifference(variables: Types.GetDifferenceVariables, params?: QueryParameters): Promise<Types.GetDifference> {
+        return this.refetch('GetDifference', variables, params);
+    }
     refetchGetState(params?: QueryParameters): Promise<Types.GetState> {
         return this.refetch('GetState', undefined, params);
     }
@@ -876,6 +882,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateFetchPushSettings(updater: (data: Types.FetchPushSettings) => Types.FetchPushSettings | null): Promise<boolean> {
         return this.updateQuery(updater, 'FetchPushSettings', undefined);
+    }
+    updateGetDifference(variables: Types.GetDifferenceVariables, updater: (data: Types.GetDifference) => Types.GetDifference | null): Promise<boolean> {
+        return this.updateQuery(updater, 'GetDifference', variables);
     }
     updateGetState(updater: (data: Types.GetState) => Types.GetState | null): Promise<boolean> {
         return this.updateQuery(updater, 'GetState', undefined);
@@ -1332,6 +1341,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useFetchPushSettings(params?: SpaceQueryWatchParameters): Types.FetchPushSettings;
     useFetchPushSettings(params?: SpaceQueryWatchParameters): Types.FetchPushSettings | null {
         return this.useQuery('FetchPushSettings', undefined, params);
+    }
+    useGetDifference(variables: Types.GetDifferenceVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.GetDifference | null;
+    useGetDifference(variables: Types.GetDifferenceVariables, params?: SpaceQueryWatchParameters): Types.GetDifference;
+    useGetDifference(variables: Types.GetDifferenceVariables, params?: SpaceQueryWatchParameters): Types.GetDifference | null {
+        return this.useQuery('GetDifference', variables, params);
     }
     useGetState(params: SpaceQueryWatchParameters & { suspense: false }): Types.GetState | null;
     useGetState(params?: SpaceQueryWatchParameters): Types.GetState;

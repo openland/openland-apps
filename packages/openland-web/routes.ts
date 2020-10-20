@@ -74,6 +74,10 @@ routes.add('/discover/premium', '/unicorn/index');
 routes.add('/discover/premium/', '/unicorn/index');
 routes.add('/discover/free', '/unicorn/index');
 routes.add('/discover/free/', '/unicorn/index');
+routes.add('/discover/top-communities', '/unicorn/index');
+routes.add('/discover/top-communities/', '/unicorn/index');
+routes.add('/discover/new-communities', '/unicorn/index');
+routes.add('/discover/new-communities/', '/unicorn/index');
 
 //
 // Discussions

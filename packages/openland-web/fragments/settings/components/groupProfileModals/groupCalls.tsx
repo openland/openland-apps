@@ -131,7 +131,7 @@ export function getCallSettingsShortLabel(o: GroupCallsValue): string {
         case RoomCallsMode.LINK:
             return 'Custom';
         case RoomCallsMode.DISABLED:
-            return 'None';
+            return 'Off';
         case RoomCallsMode.STANDARD:
             return 'Standard';
         default:

@@ -35,27 +35,32 @@ const EditGroupCallsComponent = React.memo((props: PageProps) => {
             checkIsValid: (str) => {
                 let match = matchLinks(str);
                 return !!match;
-            }
-        }
+            },
+        },
     ]);
 
     const handleSave = () => {
         let callLink = customLinkField.value.trim();
-        if (customLinkField.input.invalid) {
+        if (mode === RoomCallsMode.LINK && customLinkField.input.invalid) {
             return;
         }
         form.doAction(async () => {
             try {
-                let variables = {
-                    roomId,
+                const callSettings =
+                    mode === RoomCallsMode.LINK
+                        ? {
+                              mode: mode,
+                              callLink: callLink,
+                          }
+                        : {
+                              mode: mode,
+                          };
+                await client.mutateRoomUpdate({
+                    roomId: roomId,
                     input: {
-                        callSettings: {
-                            mode,
-                            ...callLink !== '' && { callLink }
-                        }
-                    }
-                };
-                await client.mutateRoomUpdate(variables);
+                        callSettings: callSettings,
+                    },
+                });
                 await Promise.all([
                     client.refetchRoomChat({ id: roomId }),
                     client.refetchRoomTiny({ id: roomId }),
@@ -100,9 +105,22 @@ const EditGroupCallsComponent = React.memo((props: PageProps) => {
                 </ZListGroup>
                 {mode === RoomCallsMode.LINK && (
                     <View marginTop={16} paddingHorizontal={16}>
-                        <ZInput placeholder="Call link" field={customLinkField} noWrapper={true} autoFocus={true} />
-                        <Text style={{ ...TextStyles.Caption, color: theme.foregroundTertiary, marginTop: 8, paddingHorizontal: 16 }}>
-                            A link to external call room, e.g. on Zoom, Google Meet, or any other service
+                        <ZInput
+                            placeholder="Call link"
+                            field={customLinkField}
+                            noWrapper={true}
+                            autoFocus={true}
+                        />
+                        <Text
+                            style={{
+                                ...TextStyles.Caption,
+                                color: theme.foregroundTertiary,
+                                marginTop: 8,
+                                paddingHorizontal: 16,
+                            }}
+                        >
+                            A link to external call room, e.g. on Zoom, Google Meet, or any other
+                            service
                         </Text>
                     </View>
                 )}
