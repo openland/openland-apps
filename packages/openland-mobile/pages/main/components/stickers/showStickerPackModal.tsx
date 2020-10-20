@@ -8,7 +8,6 @@ import { useStickerLayout, StickerLayout } from './stickerLayout';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { StickerFragment } from 'openland-api/spacex.types';
 import { ZImage } from 'openland-mobile/components/ZImage';
-import Toast from 'openland-mobile/components/Toast';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 
 const StickerRows = React.memo((props: { stickers: StickerFragment[], stickerLayout: StickerLayout }) => {
@@ -67,9 +66,9 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
             }
             await client.refetchStickerPack({ id });
             await client.refetchMyStickers();
-            Toast.success({ duration: 1000, text: `Stickers ${haveIt ? 'deleted' : 'added'}` }).show();
+            // Toast.success({ duration: 1000, text: `Stickers ${haveIt ? 'deleted' : 'added'}` }).show();
         } catch (e) {
-            Toast.failure({ duration: 1000 }).show();
+            // Toast.failure({ duration: 1000 }).show();
         }
         setLoading(false);
     }, [haveIt, id]);
