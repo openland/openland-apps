@@ -1,3 +1,4 @@
+import { Sequencer } from './utils/Sequencer';
 import { AsyncLock } from '@openland/patterns';
 import { WatchUpdates_watchUpdates_UpdateSubscriptionEvent, GetState } from './../../openland-api/spacex.types';
 import { GraphqlActiveSubscription } from '@openland/spacex';
@@ -5,9 +6,9 @@ import { backoff } from 'openland-y-utils/timer';
 import { OpenlandClient } from 'openland-api/spacex';
 import { WatchUpdates } from 'openland-api/spacex.types';
 
-// type Event = WatchUpdates_watchUpdates_UpdateSubscriptionEvent['event'];
+type Event = WatchUpdates_watchUpdates_UpdateSubscriptionEvent['event'];
 type EventContainer = WatchUpdates_watchUpdates_UpdateSubscriptionEvent;
-// type Sequence = WatchUpdates_watchUpdates_UpdateSubscriptionEvent['sequence'];
+// type EventSequence = WatchUpdates_watchUpdates_UpdateSubscriptionEvent['sequence'];
 
 export class UpdatesEngine {
     readonly client: OpenlandClient;
@@ -15,21 +16,74 @@ export class UpdatesEngine {
     private subscription: GraphqlActiveSubscription<WatchUpdates> | null = null;
     private lock = new AsyncLock();
 
-    private ready = false;
-    private online = false;
+    private checkpoint!: string;
+    private invalidationRequequested = false;
+    private invalidationRequestTimer: any | null = null;
+    private invalidated = true;
     private subscribedFrom: number | null = null;
-    private currentSeq: number | null = null;
-    private currentState: string | null = null;
-    private pending = new Map<number, EventContainer>();
+    private mainSequencer = new Sequencer<EventContainer>();
+    private sequenceSequencers = new Map<string, Sequencer<Event>>();
 
     constructor(client: OpenlandClient) {
         this.client = client;
         this.init();
     }
 
-    private async handleUpdate(event: EventContainer) {
-        console.warn('subscription: update ' + event.seq);
-        // TODO: Implement
+    //
+    // Handler
+    //
+
+    private async handleUpdate(event: Event) {
+        console.warn('subscription: event ', event);
+    }
+
+    private async handleSequenceState(sequence: string, pts: number) {
+        console.warn('subscription: state ', { sequence, pts });
+        let ss = new Sequencer<Event>();
+        ss.reset(pts);
+        this.sequenceSequencers.set(sequence, ss);
+    }
+
+    private async handleSequenceDiffUpdate(sequence: string, pts: number, events: { pts: number, event: Event }[]) {
+        console.warn('subscription: diff ', { sequence, pts, events });
+        if (this.sequenceSequencers.has(sequence)) {
+            let ex = this.sequenceSequencers.get(sequence)!;
+            for (let e of events) {
+                ex.receive(e.pts, e.event);
+            }
+            let drained = ex.drainAllTo(pts);
+            for (let d of drained) {
+                await this.handleUpdate(d);
+            }
+            drained = ex.drain();
+            for (let d of drained) {
+                await this.handleUpdate(d);
+            }
+        } else {
+            for (let d of events) {
+                await this.handleUpdate(d.event);
+            }
+            let ss = new Sequencer<Event>();
+            ss.reset(pts);
+            this.sequenceSequencers.set(sequence, ss);
+        }
+    }
+
+    private async handleSequenceUpdate(sequence: string, pts: number, event: Event) {
+        console.warn('subscription: update ', { sequence, pts, event });
+        if (this.sequenceSequencers.has(sequence)) {
+            let ex = this.sequenceSequencers.get(sequence)!;
+            ex.receive(pts, event);
+            let drained = ex.drain();
+            for (let d of drained) {
+                await this.handleUpdate(d);
+            }
+        } else {
+            await this.handleUpdate(event);
+            let ss = new Sequencer<Event>();
+            ss.reset(pts);
+            this.sequenceSequencers.set(sequence, ss);
+        }
     }
 
     //
@@ -41,14 +95,19 @@ export class UpdatesEngine {
         console.warn(state);
 
         // Ignore if already ready
-        if (this.ready) {
+        if (!this.invalidated) {
             return;
         }
 
-        // Became ready
-        this.ready = true;
-        this.currentSeq = state.updatesState.seq;
-        this.currentState = state.updatesState.state;
+        // Became validated
+        this.invalidated = false;
+        this.mainSequencer.reset(state.updatesState.seq);
+        this.checkpoint = state.updatesState.state;
+
+        // Persist initial pts
+        for (let s of state.updatesState.sequences) {
+            await this.handleSequenceState(s.sequence.id, s.pts);
+        }
 
         // Enforce invalidation if there is a gap
         if (this.subscribedFrom !== null) {
@@ -59,80 +118,107 @@ export class UpdatesEngine {
         }
 
         // Invalidation not needed - became ready
-        await this.onReady();
-
-        // Became online if possible
-        if (this.subscribedFrom !== null) {
-            this.online = true;
-            await this.onOnline();
-        }
+        await this.onValidated();
     }
 
-    private async invalidate() {
-        if (!this.ready) {
+    private updateInvalidationRequest() {
+        if (this.invalidated) {
             return;
         }
-        this.ready = false;
-        console.warn('subscription: invalidated');
-        await this.onUnready();
-        if (this.subscribedFrom !== null) {
-            this.online = false;
-            await this.onOffline();
+
+        // Check if state is invalid
+        let invalidState = this.mainSequencer.hasPending && this.mainSequencer.counter !== null;
+        for (let v of this.sequenceSequencers.values()) {
+            if (v.hasPending) {
+                invalidState = true;
+            }
         }
 
-        // Perform difference
-        let diff = await backoff(() => this.client.queryGetDifference({ state: this.currentState! }));
-        // for(let d of diff) {
-
-        // }
-        console.warn(diff);
-        this.currentState = diff.updatesDifference.state;
-        this.currentSeq = diff.updatesDifference.seq;
-        this.ready = true;
-        await this.onReady();
-
-        if (this.subscribedFrom !== null) {
-            this.online = true;
-            await this.onOnline();
-        }
-    }
-
-    //
-    // Online/Offline
-    //
-
-    private async onReady() {
-
-        console.warn('subscription: ready');
-
-        // Flush pending
-        while (this.pending.has(this.currentSeq! + 1)) {
-            let e = this.pending.get(this.currentSeq! + 1)!;
-            this.pending.delete(this.currentSeq! + 1);
-            this.currentSeq!++;
-            await this.handleUpdate(e);
-        }
-
-        // Delete too old updates
-        for (let k of [...this.pending.keys()]) {
-            if (k <= this.currentSeq!) {
-                this.pending.delete(k);
+        if (!invalidState) {
+            // Cancel invalidation request if needed
+            if (this.invalidationRequequested) {
+                clearTimeout(this.invalidationRequestTimer);
+                this.invalidationRequequested = false;
+                this.invalidationRequestTimer = null;
+            }
+        } else {
+            // Create invalidation request if needed
+            if (!this.invalidationRequequested) {
+                this.invalidationRequequested = true;
+                this.invalidationRequestTimer = setTimeout(() => {
+                    this.lock.inLock(async () => await this.invalidate());
+                }, 5000);
             }
         }
     }
 
-    private async onUnready() {
-        console.warn('subscription: unready');
-        // TODO: Implement
+    private async invalidate() {
+
+        // Mark as invalidated
+        if (this.invalidated) {
+            return;
+        }
+        this.invalidated = true;
+
+        // Reset invalidation timer
+        if (this.invalidationRequequested) {
+            clearTimeout(this.invalidationRequestTimer);
+            this.invalidationRequequested = false;
+            this.invalidationRequestTimer = null;
+        }
+
+        // Lifecycle
+        await this.onInvalidated();
+
+        // Perform difference
+        let hasMore = true;
+        while (hasMore) {
+
+            // Get Difference
+            let diff = await backoff(() => this.client.queryGetDifference({ state: this.checkpoint }));
+
+            // Apply Difference
+            for (let d of diff.updatesDifference.sequences) {
+                await this.handleSequenceDiffUpdate(d.sequence.id, d.pts, d.events);
+            }
+
+            // Save checkpoint
+            this.checkpoint = diff.updatesDifference.state;
+
+            // Reset main sequencer
+            this.mainSequencer.reset(diff.updatesDifference.seq);
+
+            // Continue
+            hasMore = diff.updatesDifference.hasMore;
+
+            // If there is a subscription - check consistency
+            if (!hasMore) {
+                hasMore = this.subscribedFrom !== null && this.mainSequencer.counter !== null && this.subscribedFrom > this.mainSequencer.counter;
+            }
+        }
+
+        // Mark as validated
+        this.invalidated = false;
+        await this.onValidated();
     }
 
-    private async onOnline() {
-        console.warn('subscription: online');
-        // TODO: Implement
+    //
+    // Invalidation
+    //
+
+    private async onValidated() {
+        console.warn('subscription: validated');
+
+        // Drain pending
+        let drained = this.mainSequencer.drain();
+        for (let d of drained) {
+            await this.handleSequenceUpdate(d.sequence.id, d.pts, d.event);
+        }
     }
 
-    private async onOffline() {
-        console.warn('subscription: offline');
+    private async onInvalidated() {
+        console.warn('subscription: invalidated');
+
         // TODO: Implement
     }
 
@@ -142,44 +228,41 @@ export class UpdatesEngine {
 
     private async onSubscriptionStopped() {
         this.subscribedFrom = null;
-        if (this.online) {
-            this.online = false;
-            this.onOffline();
-        }
     }
 
-    private async onSubscriptionStarted(seq: number, state: string) {
+    private async onSubscriptionStarted(seq: number) {
         this.subscribedFrom = seq;
 
-        // Invalidate or became online
-        if (this.ready) {
-            if (seq > this.currentSeq!) {
+        // Invalidate if there is a sequence gap
+        if (!this.invalidated) {
+            if (this.mainSequencer.counter !== null && seq > this.mainSequencer.counter) {
                 await this.invalidate(); // Invalidate if we subscribed after current seq
-            } else {
-                // Became online
-                this.online = true;
-                await this.onOnline();
             }
         }
     }
 
     private async onSubscriptionEvent(event: EventContainer) {
-        if (!this.online) {
-            // If not online: persist to pending
-            if (!this.pending.has(event.seq)) {
-                this.pending.set(event.seq, event);
+
+        // Save update
+        this.mainSequencer.receive(event.seq, event);
+
+        // If not invalidated - drain and apply
+        if (!this.invalidated) {
+            let drained = this.mainSequencer.drain();
+            for (let d of drained) {
+                await this.handleSequenceUpdate(d.sequence.id, d.pts, d.event);
             }
-        } else {
-            this.currentSeq = event.seq;
-            this.handleUpdate(event);
         }
+
+        // Update invalidation request
+        this.updateInvalidationRequest();
     }
 
     private async onSubscriptionCheckpoint(seq: number, state: string) {
 
-        // Persist checkpoint if ready
-        if (this.ready && this.currentSeq! >= seq) {
-            this.currentState = state;
+        // Persist checkpoint if not invalidated
+        if (!this.invalidated && this.mainSequencer.counter !== null && this.mainSequencer.counter >= seq) {
+            this.checkpoint = state;
             console.warn('subscription: checkpoint at ' + seq);
         }
     }
@@ -225,7 +308,7 @@ export class UpdatesEngine {
             } else if (e.type === 'message') {
                 if (e.message.watchUpdates.__typename === 'UpdateSubscriptionStarted') {
                     const update = e.message.watchUpdates;
-                    this.lock.inLock(async () => await this.onSubscriptionStarted(update.seq, update.state));
+                    this.lock.inLock(async () => await this.onSubscriptionStarted(update.seq));
                 } else if (e.message.watchUpdates.__typename === 'UpdateSubscriptionEvent') {
                     const update = e.message.watchUpdates;
                     this.lock.inLock(async () => await this.onSubscriptionEvent(update));
