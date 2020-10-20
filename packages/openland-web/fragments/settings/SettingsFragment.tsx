@@ -163,7 +163,7 @@ export const SettingsFragment = React.memo(() => {
                                                 backgroundColor="var(--accentNegative)"
                                                 selectedColor="var(--accentMuted)"
                                                 selectedBackgroundColor="var(--foregroundContrast)"
-                                                {...TextStyles.Label2}
+                                                {...TextStyles.Label3}
                                             >
                                                 {walletState.failingPaymentsCount}
                                             </SelectableText>

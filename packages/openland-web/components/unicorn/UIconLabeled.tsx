@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView, XViewProps } from 'react-mental';
 import { css, cx } from 'linaria';
 import { UIcon } from './UIcon';
-import { TextLabel2 } from 'openland-web/utils/TextStyles';
+import { TextLabel3 } from 'openland-web/utils/TextStyles';
 import { defaultHover } from 'openland-web/utils/Styles';
 
 type UIconLabeledStyle = 'default' | 'danger';
@@ -39,7 +39,7 @@ export const UIconLabeled = React.memo((props: UIconLabeledProps) => {
         <XView {...other}>
             <div className={cx(containerClass, defaultHover)}>
                 <UIcon icon={icon} color={color} />
-                <span className={cx(TextLabel2, labelClass)} style={{ color }}>{label}</span>
+                <span className={cx(TextLabel3, labelClass)} style={{ color }}>{label}</span>
             </div>
         </XView>
     );

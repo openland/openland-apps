@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import IcClose from '../openland-icons/s/ic-close-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import { TextLabel2, TextTitle3 } from 'openland-web/utils/TextStyles';
+import { TextLabel3, TextTitle3 } from 'openland-web/utils/TextStyles';
 import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 import { useLayout } from './components/utils/LayoutContext';
 import { isElectron } from 'openland-y-utils/isElectron';
@@ -113,7 +113,7 @@ const BannerButton = (props: {
             onClick={props.onClick}
         >
             {props.icon && <UIcon icon={props.icon} color="var(--foregroundSecondary)" />}
-            <span className={TextLabel2}>{props.text}</span>
+            <span className={TextLabel3}>{props.text}</span>
         </a>
     );
 

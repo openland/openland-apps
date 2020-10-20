@@ -2,7 +2,7 @@ import React from 'react';
 import { Page } from 'openland-unicorn/Page';
 import { USlider } from 'openland-web/components/unicorn/USlider';
 import { css } from 'linaria';
-import { ListingCompact } from './components/ListingCompact';
+import { ListingCompact, OrgsListingCompact } from './components/ListingCompact';
 import { XView } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
 import { UHeader } from 'openland-unicorn/UHeader';
@@ -10,7 +10,7 @@ import { DiscoverCollection } from './components/DiscoverCollection';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { EditorsChoiceItem } from './components/EditorsChoiceItem';
 import { getRandomSeed } from './utils/getRandomSeed';
-import { normalizePopularItems } from 'openland-y-utils/discover/normalizePopularItems';
+import { normalizePopularItems, normalizePopularOrgItems } from 'openland-y-utils/discover/normalizePopularItems';
 
 export const editorsChoiceItem = css`
     width: calc(100% + 16px);
@@ -94,10 +94,17 @@ export const DiscoverHomeFragment = React.memo(() => {
                     </USlider>
                 )}
 
-                <XView marginBottom={40} marginTop={20}>
+                <XView marginTop={20}>
                     <div className={listingsContainer}>
                         <ListingCompact title="Top premium" items={rooms.discoverTopPremium.items || []} path="/discover/premium" />
                         <ListingCompact title="Top free" items={rooms.discoverTopFree.items || []} path="/discover/free" />
+                    </div>
+                </XView>
+
+                <XView marginBottom={40} marginTop={20}>
+                    <div className={listingsContainer}>
+                        <OrgsListingCompact title="Top communities" items={normalizePopularOrgItems(rooms.discoverPopularNowOrganizations.items)} path="/discover/top-communities" />
+                        <OrgsListingCompact title="New communities" items={rooms.discoverNewAndGrowingOrganizations.items || []} path="/discover/new-communities" />
                     </div>
                 </XView>
             </XView>

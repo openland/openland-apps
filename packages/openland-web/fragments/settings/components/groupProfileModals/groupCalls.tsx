@@ -8,7 +8,7 @@ import { useField } from 'openland-form/useField';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { GroupSettingsModalBodyProps, modalSubtitle } from './shared';
-import { TextBody, TextLabel2 } from 'openland-web/utils/TextStyles';
+import { TextBody, TextLabel3 } from 'openland-web/utils/TextStyles';
 import { RadioButtonsSelect } from '../RadioButtonsSelect';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
@@ -91,7 +91,7 @@ const GroupCallsModalBody = React.memo((props: GroupSettingsModalBodyProps<Group
                     {callProviderField.value === RoomCallsMode.LINK && (
                         <XView flexGrow={1} flexShrink={1} marginTop={16}>
                             <UInput label={'Call link'} {...customCallLinkField.input} />
-                            <div className={cx(callLinkInputHint, TextLabel2)}>
+                            <div className={cx(callLinkInputHint, TextLabel3)}>
                                 {
                                     'A link to external call room, e.g. on Zoom, Google Meet, or any other service'
                                 }

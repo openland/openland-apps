@@ -34,6 +34,8 @@ import { DiscussionsFragment } from 'openland-web/fragments/discussions/Discussi
 import { DraftsFragment } from 'openland-web/fragments/discussions/DraftsFragment';
 import { DiscussionEditorFragment } from 'openland-web/fragments/discussions/DiscussionEditorFragment';
 import { SettingsCommunitiesFragment } from 'openland-web/fragments/settings/SettingsCommunitiesFragment';
+import { DiscoverPopularOrgsFragment } from 'openland-web/fragments/discover/DiscoverPopularOrgsFragment';
+import { DiscoverNewOrgsFragment } from 'openland-web/fragments/discover/DiscoverNewOrgsFragment';
 
 // temporary stub for /mail/ -> not found bug
 const TemporaryStubMail = React.memo(() => {
@@ -78,6 +80,8 @@ routing.addRoute('/discover/collections', () => DiscoverCollectionsFragment);
 routing.addRoute('/discover/collections/:collectionId', () => DiscoverCollectionFragment);
 routing.addRoute('/discover/premium', () => DiscoverTopPremiumFragment);
 routing.addRoute('/discover/free', () => DiscoverTopFreeFragment);
+routing.addRoute('/discover/top-communities', () => DiscoverPopularOrgsFragment);
+routing.addRoute('/discover/new-communities', () => DiscoverNewOrgsFragment);
 
 // Contacts
 
