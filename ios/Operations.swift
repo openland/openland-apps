@@ -944,7 +944,8 @@ private let DiscoverOrganizationSelector = obj(
             field("id", "id", notNull(scalar("ID"))),
             field("name", "name", notNull(scalar("String"))),
             field("photo", "photo", scalar("String")),
-            field("membersCount", "membersCount", notNull(scalar("Int")))
+            field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("shortname", "shortname", scalar("String"))
         )
 
 private let FullMessageWithoutSourceSelector = obj(
@@ -2664,7 +2665,27 @@ private let DiscoverNoAuthSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("SharedRoom", DiscoverSharedRoomSelector)
                         )))
-                )))))
+                ))))),
+            field("discoverPopularNowOrganizations", "discoverPopularNowOrganizations", arguments(fieldValue("first", intValue(5))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("organization", "organization", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    fragment("Organization", DiscoverOrganizationSelector)
+                                ))),
+                            field("newMessages", "newMessages", notNull(scalar("Int")))
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                ))),
+            field("discoverNewAndGrowingOrganizations", "discoverNewAndGrowingOrganizations", arguments(fieldValue("first", intValue(5)), fieldValue("seed", refValue("seed"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("Organization", DiscoverOrganizationSelector)
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                )))
         )
 private let DiscoverPopularNowSelector = obj(
             field("discoverPopularNow", "discoverPopularNow", arguments(fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(obj(
@@ -5606,7 +5627,7 @@ class Operations {
     let DiscoverNewOrganizations = OperationDefinition(
         "DiscoverNewOrganizations",
         .query, 
-        "query DiscoverNewOrganizations($first:Int!,$seed:Int!,$after:String){discoverNewAndGrowingOrganizations(first:$first,seed:$seed,after:$after){__typename items{__typename ...DiscoverOrganization}cursor}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount}",
+        "query DiscoverNewOrganizations($first:Int!,$seed:Int!,$after:String){discoverNewAndGrowingOrganizations(first:$first,seed:$seed,after:$after){__typename items{__typename ...DiscoverOrganization}cursor}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname}",
         DiscoverNewOrganizationsSelector
     )
     let DiscoverNextPage = OperationDefinition(
@@ -5618,7 +5639,7 @@ class Operations {
     let DiscoverNoAuth = OperationDefinition(
         "DiscoverNoAuth",
         .query, 
-        "query DiscoverNoAuth($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverCollections(first:20){__typename items{__typename ...DiscoverChatsCollectionShort}cursor}discoverEditorsChoice{__typename id image{__typename uuid crop{__typename x y w h}}chat{__typename ...DiscoverSharedRoom}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}fragment DiscoverChatsCollectionShort on DiscoverChatsCollection{__typename id title shortname chatsCount description image{__typename uuid crop{__typename x y w h}}}",
+        "query DiscoverNoAuth($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverCollections(first:20){__typename items{__typename ...DiscoverChatsCollectionShort}cursor}discoverEditorsChoice{__typename id image{__typename uuid crop{__typename x y w h}}chat{__typename ...DiscoverSharedRoom}}discoverPopularNowOrganizations(first:5){__typename items{__typename organization{__typename ...DiscoverOrganization}newMessages}cursor}discoverNewAndGrowingOrganizations(first:5,seed:$seed){__typename items{__typename ...DiscoverOrganization}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}fragment DiscoverChatsCollectionShort on DiscoverChatsCollection{__typename id title shortname chatsCount description image{__typename uuid crop{__typename x y w h}}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname}",
         DiscoverNoAuthSelector
     )
     let DiscoverPopularNow = OperationDefinition(
@@ -5630,7 +5651,7 @@ class Operations {
     let DiscoverPopularOrganizations = OperationDefinition(
         "DiscoverPopularOrganizations",
         .query, 
-        "query DiscoverPopularOrganizations($first:Int!,$after:String){discoverPopularNowOrganizations(first:$first,after:$after){__typename items{__typename organization{__typename ...DiscoverOrganization}newMessages}cursor}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount}",
+        "query DiscoverPopularOrganizations($first:Int!,$after:String){discoverPopularNowOrganizations(first:$first,after:$after){__typename items{__typename organization{__typename ...DiscoverOrganization}newMessages}cursor}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname}",
         DiscoverPopularOrganizationsSelector
     )
     let DiscoverState = OperationDefinition(
@@ -5666,7 +5687,7 @@ class Operations {
     let ExploreRooms = OperationDefinition(
         "ExploreRooms",
         .query, 
-        "query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNowOrganizations(first:5){__typename items{__typename organization{__typename ...DiscoverOrganization}newMessages}cursor}discoverNewAndGrowingOrganizations(first:5,seed:$seed){__typename items{__typename ...DiscoverOrganization}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}fragment DiscoverOrganization on Organization{__typename id name photo membersCount}",
+        "query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNowOrganizations(first:5){__typename items{__typename organization{__typename ...DiscoverOrganization}newMessages}cursor}discoverNewAndGrowingOrganizations(first:5,seed:$seed){__typename items{__typename ...DiscoverOrganization}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname}",
         ExploreRoomsSelector
     )
     let FeatureFlags = OperationDefinition(

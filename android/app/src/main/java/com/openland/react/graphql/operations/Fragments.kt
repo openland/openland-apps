@@ -950,7 +950,8 @@ internal val DiscoverOrganizationSelector = obj(
             field("id", "id", notNull(scalar("ID"))),
             field("name", "name", notNull(scalar("String"))),
             field("photo", "photo", scalar("String")),
-            field("membersCount", "membersCount", notNull(scalar("Int")))
+            field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("shortname", "shortname", scalar("String"))
         )
 
 internal val FullMessageWithoutSourceSelector = obj(

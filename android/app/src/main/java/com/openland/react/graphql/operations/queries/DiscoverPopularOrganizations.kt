@@ -21,6 +21,6 @@ internal val DiscoverPopularOrganizationsSelector = obj(
 val DiscoverPopularOrganizations = object: OperationDefinition {
     override val name = "DiscoverPopularOrganizations"
     override val kind = OperationKind.QUERY
-    override val body = "query DiscoverPopularOrganizations(\$first:Int!,\$after:String){discoverPopularNowOrganizations(first:\$first,after:\$after){__typename items{__typename organization{__typename ...DiscoverOrganization}newMessages}cursor}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount}"
+    override val body = "query DiscoverPopularOrganizations(\$first:Int!,\$after:String){discoverPopularNowOrganizations(first:\$first,after:\$after){__typename items{__typename organization{__typename ...DiscoverOrganization}newMessages}cursor}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname}"
     override val selector = DiscoverPopularOrganizationsSelector
 }

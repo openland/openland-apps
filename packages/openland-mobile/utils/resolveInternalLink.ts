@@ -52,6 +52,8 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
             'discover/premium': { route: 'DiscoverListing', params: { type: 'top-premium' } },
             'discover/free': { route: 'DiscoverListing', params: { type: 'top-free' } },
             'discover/recommendations': { route: 'DiscoverListing', params: { type: 'recommendations' } },
+            'discover/top-communities': { route: 'DiscoverListing', params: { type: 'top-orgs' } },
+            'discover/new-communities': { route: 'DiscoverListing', params: { type: 'new-orgs' } },
             'account/licenses': { route: 'SettingsLicenses' },
             'settings/licenses': { route: 'SettingsLicenses' },
         };

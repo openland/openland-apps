@@ -17,6 +17,8 @@ import { AuthDiscoverCollectionsFragment } from './discover/AuthDiscoverCollecti
 import { AuthDiscoverTopFreeFragment } from './discover/AuthDiscoverTopFreeFragment';
 import { AuthDiscoverTopPremiumFragment } from './discover/AuthDiscoverTopPremiumFragment';
 import { AuthDiscoverCollectionFragment } from './discover/AuthDiscoverCollectionFragment';
+import { AuthDiscoverPopularOrgsFragment } from './discover/AuthDiscoverPopularOrgsFragment';
+import { AuthDiscoverNewOrgsFragment } from './discover/AuthDiscoverNewOrgsFragment';
 
 const ShortnameResolver = React.memo((props: { shortname: string, defaultRedirect: (to: string, args?: { pages?: string[] }) => JSX.Element }) => {
     const client = useClient();
@@ -91,7 +93,11 @@ export const AuthRouter = React.memo((props: { children: any }) => {
     ////////////////////////////////////////////////
 
     if (!userInfo.isLoggedIn && router.path.startsWith('/discover')) {
-        if (router.path.startsWith('/discover/popular')) {
+        if (router.path.startsWith('/discover/top-communities')) {
+            return <AuthDiscoverPopularOrgsFragment />;
+        } if (router.path.startsWith('/discover/new-communities')) {
+            return <AuthDiscoverNewOrgsFragment />;
+        } else if (router.path.startsWith('/discover/popular')) {
             return <AuthDiscoverPopularNowFragment />;
         } else if (router.path.startsWith('/discover/new')) {
             return <AuthDiscoverNewAndGrowingFragment />;

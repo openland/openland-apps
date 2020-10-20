@@ -61,6 +61,7 @@ fragment DiscoverOrganization on Organization {
     name
     photo
     membersCount
+    shortname
 }
 
 query ExploreRooms($seed: Int!) {
@@ -162,6 +163,22 @@ query DiscoverNoAuth($seed: Int!) {
         chat {
             ...DiscoverSharedRoom
         }
+    }
+
+    discoverPopularNowOrganizations(first: 5) {
+        items {
+            organization {
+                ...DiscoverOrganization
+            }
+            newMessages
+        }
+        cursor
+    }
+    discoverNewAndGrowingOrganizations(first: 5, seed: $seed) {
+        items {
+            ...DiscoverOrganization
+        }
+        cursor
     }
 }
 
