@@ -2011,6 +2011,7 @@ type Mutation {
   updateOrganizationProfile(input: UpdateOrganizationProfileInput!, id: ID): OrganizationProfile!
   deleteOrganization(id: ID!): Boolean!
   createOrganization(input: CreateOrganizationInput!): Organization!
+  requestOrganizationMembersExport(id: ID!): Boolean!
   postDraftCreate(input: PostInput!): PostDraft!
   postDraftUpdate(id: ID!, input: PostInput!): PostDraft!
   postDraftPublish(id: ID!): Post!
@@ -2821,6 +2822,7 @@ type Query {
   debugMentionSearchGetUserData(cid: ID!): String!
   debugGetCounters: String!
   debugExperimentalCounter(cid: ID!): String!
+  debugFindUser(email: String, phone: String): User
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!
@@ -3210,6 +3212,7 @@ type Settings {
   excludeMutedChats: Boolean!
   whoCanSeeEmail: PrivacyWhoCanSee!
   whoCanSeePhone: PrivacyWhoCanSee!
+  communityAdminsCanSeeContactInfo: Boolean!
 
   """Deprecated"""
   notificationsDelay: NotificationsDelay!
@@ -3651,6 +3654,7 @@ input UpdateSettingsInput {
   excludeMutedChats: Boolean
   whoCanSeeEmail: PrivacyWhoCanSee
   whoCanSeePhone: PrivacyWhoCanSee
+  communityAdminsCanSeeContactInfo: Boolean
 
   """Deprecated"""
   notificationsDelay: NotificationsDelay

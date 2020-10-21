@@ -2,25 +2,18 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
-import { PrivacyWhoCanSee } from 'openland-api/spacex.types';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import IcDropdown from 'openland-icons/s/ic-dropdown-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
-interface WhoCanSeeItemProps {
+interface SelectorProps {
     text: string;
-    value: PrivacyWhoCanSee;
-    onClick: (value: PrivacyWhoCanSee) => void;
+    items: string[];
+    selectedIndex: number;
+    onClick: (index: number) => void;
 }
-
-const WhoCanSeeLabel: { [key in PrivacyWhoCanSee]: string } = {
-    EVERYONE: 'Everyone',
-    NOBODY: 'Nobody'
-};
-
-const WhoCanSeeLabelOrder: PrivacyWhoCanSee[] = [PrivacyWhoCanSee.EVERYONE, PrivacyWhoCanSee.NOBODY];
 
 const boxClass = css`
     user-select: none;
@@ -35,24 +28,24 @@ const wrapperClass = css`
     }
 `;
 
-const MenuComponent = React.memo((props: WhoCanSeeItemProps & { ctx: UPopperController }) => {
-    const { ctx, value, onClick } = props;
+const MenuComponent = React.memo((props: SelectorProps & { ctx: UPopperController }) => {
+    const { ctx, selectedIndex, onClick, items } = props;
     const builder = new UPopperMenuBuilder();
 
-    WhoCanSeeLabelOrder.forEach(label => {
+    items.forEach((item, i) => {
         builder.item({
-            title: WhoCanSeeLabel[label],
-            onClick: () => onClick(label),
-            selected: label === value
+            title: item,
+            onClick: () => onClick(i),
+            selected: i === selectedIndex
         });
     });
 
     return builder.build(ctx, 160, wrapperClass);
 });
 
-export const WhoCanSee = React.memo((props: WhoCanSeeItemProps) => {
-    const { text, value } = props;
-    const marginTop = ((WhoCanSeeLabelOrder.indexOf(value) + 1) * -48) - 16;
+export const Selector = React.memo((props: SelectorProps) => {
+    const { text, selectedIndex, items } = props;
+    const marginTop = ((selectedIndex + 1) * -48) - 16;
     const [menuVisible, menuShow] = usePopper({ placement: 'bottom-end', hideOnClick: true, marginTop }, (ctx) => <MenuComponent ctx={ctx} {...props} />);
 
     return (
@@ -72,7 +65,7 @@ export const WhoCanSee = React.memo((props: WhoCanSeeItemProps) => {
                     {text}
                 </XView>
                 <XView {...TextStyles.Body} color="var(--foregroundSecondary)">
-                    {WhoCanSeeLabel[value]}
+                    {items[selectedIndex]}
                 </XView>
                 <XView marginLeft={8}><UIcon icon={<IcDropdown />} color="var(--foregroundTertiary)" size={16} /></XView>
             </XView>
