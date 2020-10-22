@@ -4712,6 +4712,9 @@ private let OrganizationMemberRemoveSelector = obj(
                     field("id", "id", notNull(scalar("ID")))
                 )))
         )
+private let OrganizationRequestMembersExportSelector = obj(
+            field("requestOrganizationMembersExport", "requestOrganizationMembersExport", arguments(fieldValue("id", refValue("organizationId"))), notNull(scalar("Boolean")))
+        )
 private let PairEmailSelector = obj(
             field("pairEmail", "pairEmail", arguments(fieldValue("sessionId", refValue("sessionId")), fieldValue("confirmationCode", refValue("confirmationCode"))), notNull(scalar("Boolean")))
         )
@@ -6501,6 +6504,12 @@ class Operations {
         "mutation OrganizationMemberRemove($userId:ID!,$organizationId:ID!){betaOrganizationMemberRemove(userId:$userId,organizationId:$organizationId){__typename id}}",
         OrganizationMemberRemoveSelector
     )
+    let OrganizationRequestMembersExport = OperationDefinition(
+        "OrganizationRequestMembersExport",
+        .mutation, 
+        "mutation OrganizationRequestMembersExport($organizationId:ID!){requestOrganizationMembersExport(id:$organizationId)}",
+        OrganizationRequestMembersExportSelector
+    )
     let PairEmail = OperationDefinition(
         "PairEmail",
         .mutation, 
@@ -7215,6 +7224,7 @@ class Operations {
         if name == "OrganizationChangeMemberRole" { return OrganizationChangeMemberRole }
         if name == "OrganizationCreatePublicInvite" { return OrganizationCreatePublicInvite }
         if name == "OrganizationMemberRemove" { return OrganizationMemberRemove }
+        if name == "OrganizationRequestMembersExport" { return OrganizationRequestMembersExport }
         if name == "PairEmail" { return PairEmail }
         if name == "PairPhone" { return PairPhone }
         if name == "PaymentIntentCancel" { return PaymentIntentCancel }

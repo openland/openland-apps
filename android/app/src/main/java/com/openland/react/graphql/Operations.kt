@@ -185,6 +185,7 @@ object Operations {
         if (name == "OrganizationChangeMemberRole") return OrganizationChangeMemberRole
         if (name == "OrganizationCreatePublicInvite") return OrganizationCreatePublicInvite
         if (name == "OrganizationMemberRemove") return OrganizationMemberRemove
+        if (name == "OrganizationRequestMembersExport") return OrganizationRequestMembersExport
         if (name == "PairEmail") return PairEmail
         if (name == "PairPhone") return PairPhone
         if (name == "PaymentIntentCancel") return PaymentIntentCancel

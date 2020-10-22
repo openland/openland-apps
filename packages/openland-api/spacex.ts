@@ -1897,6 +1897,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateOrganizationMemberRemove(variables: Types.OrganizationMemberRemoveVariables, params?: MutationParameters): Promise<Types.OrganizationMemberRemove> {
         return this.mutate('OrganizationMemberRemove', variables, params);
     }
+    mutateOrganizationRequestMembersExport(variables: Types.OrganizationRequestMembersExportVariables, params?: MutationParameters): Promise<Types.OrganizationRequestMembersExport> {
+        return this.mutate('OrganizationRequestMembersExport', variables, params);
+    }
     mutatePairEmail(variables: Types.PairEmailVariables, params?: MutationParameters): Promise<Types.PairEmail> {
         return this.mutate('PairEmail', variables, params);
     }

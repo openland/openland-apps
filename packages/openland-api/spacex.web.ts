@@ -4719,6 +4719,9 @@ const OrganizationMemberRemoveSelector = obj(
                     field('id', 'id', args(), notNull(scalar('ID')))
                 )))
         );
+const OrganizationRequestMembersExportSelector = obj(
+            field('requestOrganizationMembersExport', 'requestOrganizationMembersExport', args(fieldValue("id", refValue('organizationId'))), notNull(scalar('Boolean')))
+        );
 const PairEmailSelector = obj(
             field('pairEmail', 'pairEmail', args(fieldValue("sessionId", refValue('sessionId')), fieldValue("confirmationCode", refValue('confirmationCode'))), notNull(scalar('Boolean')))
         );
@@ -6503,6 +6506,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'OrganizationMemberRemove',
         body: 'mutation OrganizationMemberRemove($userId:ID!,$organizationId:ID!){betaOrganizationMemberRemove(userId:$userId,organizationId:$organizationId){__typename id}}',
         selector: OrganizationMemberRemoveSelector
+    },
+    OrganizationRequestMembersExport: {
+        kind: 'mutation',
+        name: 'OrganizationRequestMembersExport',
+        body: 'mutation OrganizationRequestMembersExport($organizationId:ID!){requestOrganizationMembersExport(id:$organizationId)}',
+        selector: OrganizationRequestMembersExportSelector
     },
     PairEmail: {
         kind: 'mutation',
