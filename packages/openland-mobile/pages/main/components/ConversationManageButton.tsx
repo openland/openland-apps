@@ -10,6 +10,7 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
 import Toast from 'openland-mobile/components/Toast';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
+import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 
 interface ConversationManageButtonProps {
     muted: boolean;
@@ -154,7 +155,10 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         }
 
         builder.action('Media, files, links', onSharedPress, false, require('assets/ic-attach-24.png'));
-        builder.action('Search messages', onSearchPress, false, require('assets/ic-search-24.png'));
+
+        if (SUPER_ADMIN) {
+            builder.action('Search messages', onSearchPress, false, require('assets/ic-search-24.png'));
+        }
 
         if (sharedRoom) {
             if ((room as RoomTiny_room_SharedRoom).canEdit) {
