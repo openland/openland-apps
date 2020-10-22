@@ -42,6 +42,7 @@ const StickerCatalog = React.memo((props: StickerCatalogProps) => {
                         setButtonLoading(true);
                         try {
                             await client.mutateStickerPackRemoveFromCollection({ id: pack.id });
+                            await client.refetchStickerPack({ id: pack.id });
                             await client.refetchStickerPackCatalog();
                             await client.refetchMyStickers();
                         } catch (e) {
@@ -55,6 +56,7 @@ const StickerCatalog = React.memo((props: StickerCatalogProps) => {
             setButtonLoading(true);
             try {
                 await client.mutateStickerPackAddToCollection({ id: pack.id });
+                await client.refetchStickerPack({ id: pack.id });
                 await client.refetchStickerPackCatalog();
                 await client.refetchMyStickers();
             } catch (e) {
