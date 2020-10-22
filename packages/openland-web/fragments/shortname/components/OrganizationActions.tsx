@@ -14,7 +14,9 @@ import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { ProfileLayoutContext } from 'openland-web/components/ProfileLayout';
+import { UMoreContainer } from 'openland-web/components/unicorn/UMoreContainer';
 import EditIcon from 'openland-icons/s/ic-edit-24.svg';
+import FlashlightIcon from 'openland-icons/s/ic-flashlight-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import CopyIcon from 'openland-icons/s/ic-link-24.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
@@ -135,15 +137,6 @@ export const OrganizationActions = React.memo(
                     />
                 )}
 
-                <XWithRole role="super-admin">
-                    <UListItem
-                        title="Super edit"
-                        useRadius={true}
-                        icon={<EditIcon />}
-                        onClick={onSuperEditClick}
-                    />
-                </XWithRole>
-
                 {isMine && !isOwner && (
                     <UListItem
                         title={`Leave ${typeString}`}
@@ -161,6 +154,19 @@ export const OrganizationActions = React.memo(
                         onClick={onDeleteClick}
                     />
                 )}
+
+                <XWithRole role="super-admin">
+                    <UMoreContainer>
+                        <XWithRole role="super-admin">
+                            <UListItem
+                                title="Super edit"
+                                useRadius={true}
+                                icon={<FlashlightIcon />}
+                                onClick={onSuperEditClick}
+                            />
+                        </XWithRole>
+                    </UMoreContainer>
+                </XWithRole>
             </XView>
         );
     },
