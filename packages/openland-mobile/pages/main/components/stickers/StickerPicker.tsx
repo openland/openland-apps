@@ -215,7 +215,7 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
             <FlatList
                 ref={stickerPackButtonListRef}
                 horizontal={true}
-                style={{ height: 52, backgroundColor: theme.backgroundPrimary, alignSelf: 'stretch' }}
+                style={{ backgroundColor: theme.backgroundPrimary, flexGrow: 0, flexShrink: 0, height: 52 }}
                 contentContainerStyle={{ alignItems: 'center' }}
                 data={stickers}
                 renderItem={({ item, index }) => (
@@ -260,7 +260,7 @@ export const StickerPicker = React.memo((props: StickerPickerComponentProps & { 
     const effectiveHeight = height && height > 0 ? height : 220;
 
     return (
-        <View style={{ height: effectiveHeight, backgroundColor: theme.backgroundTertiary, justifyContent: 'center', alignItems: 'center' }} onLayout={handleLayoutChange}>
+        <View style={{ height: effectiveHeight, backgroundColor: theme.backgroundTertiary, alignItems: 'stretch' }} onLayout={handleLayoutChange}>
             <React.Suspense fallback={<LoaderSpinner />}>
                 {stickerLayout.stickerSize > 0 && stickerLayout.stickersPerRow > 0 && (
                     <StickerPickerComponent {...props} stickerLayout={stickerLayout} height={effectiveHeight} />
