@@ -152,6 +152,7 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
                     await AsyncStorage.setItem('recentStickers', '[]');
                 } else {
                     await client.mutateStickerPackRemoveFromCollection({ id: pack.id });
+                    await client.refetchStickerPack({ id: pack.id });
                     await client.refetchMyStickers();
                 }
                 lastCheckedOffsetRef.current = -1000;
