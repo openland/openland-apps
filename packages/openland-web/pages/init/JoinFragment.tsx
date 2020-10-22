@@ -31,7 +31,7 @@ export const JoinFragment = ({ inviteKey }: { inviteKey: string }) => {
                 titleSocial={InitTexts.socialPageTitle}
             />
 
-            <XView flexDirection="column" minHeight="100vh" width="100%" backgroundColor="#fff">
+            <XView flexDirection="column" minHeight="100vh" width="100%" backgroundColor="var(--backgroundPrimary)">
                 <XView flexGrow={1}>
                     {data.invite && <InviteLandingComponent />}
                     {!data.invite && (

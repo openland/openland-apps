@@ -48,7 +48,7 @@ const InviteInfoInner = (props: any) => {
             />
             {instantRedirect && <XPageRedirect path={instantRedirect} />}
             {!instantRedirect && (
-                <XView flexDirection="column" minHeight="100vh" width="100%" backgroundColor="#fff">
+                <XView flexDirection="column" minHeight="100vh" width="100%" backgroundColor="var(--backgroundPrimary)">
                     <XView flexGrow={1}>
                         {data.invite && (
                             <InviteLandingComponent
