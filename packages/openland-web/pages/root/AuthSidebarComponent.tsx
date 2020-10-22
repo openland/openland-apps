@@ -43,6 +43,7 @@ const logoTitleContainer = css`
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-shrink: 0;
     margin: 16px -24px 0 0;
 `;
 
@@ -57,6 +58,7 @@ const logoSubtitle = css`
     align-self: center;
     color: var(--foregroundSecondary);
     margin: 7px 0 33px;
+    flex-shrink: 0;
 `;
 
 const logoStyle = css`

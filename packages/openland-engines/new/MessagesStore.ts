@@ -1,7 +1,7 @@
 import { backoff } from 'openland-y-utils/timer';
 import { randomKey } from 'openland-y-utils/randomKey';
 import { MessagesApi } from './MessagesApi';
-import { Persistence } from './Persistence';
+import { Persistence } from '../persistence/Persistence';
 import { MessagesRepository } from './MessagesRepository';
 import { AsyncLock } from '@openland/patterns';
 
@@ -111,9 +111,9 @@ export class MessagesStore {
                         source.close();
                         return;
                     } else {
-                        this.persistence.startTransaction();
-                        await this.repo.writeBatch({ minSeq: msg.seq, maxSeq: msg.seq, messages: [msg] });
-                        await this.persistence.commitTransaction();
+                        await this.persistence.inTx(async (tx) => {
+                            await this.repo.writeBatch({ minSeq: msg!.seq, maxSeq: msg!.seq, messages: [msg!], tx });
+                        });
                         continue;
                     }
                 }
@@ -140,9 +140,9 @@ export class MessagesStore {
                     }
 
                     // Note: maxSeq is the seq of the message that we are using as cursor not the max seq of batch
-                    this.persistence.startTransaction();
-                    await this.repo.writeBatch({ minSeq, maxSeq: message.seq, messages: loaded.messages });
-                    await this.persistence.commitTransaction();
+                    await this.persistence.inTx(async (tx) => {
+                        await this.repo.writeBatch({ minSeq, maxSeq: message!.seq, messages: loaded.messages, tx });
+                    });
                     continue;
                 }
 
@@ -168,9 +168,9 @@ export class MessagesStore {
                     }
 
                     // Note: minSeq is the seq of the message that we are using as cursor not the min seq of batch
-                    this.persistence.startTransaction();
-                    await this.repo.writeBatch({ minSeq: message.seq, maxSeq, messages: loaded.messages });
-                    await this.persistence.commitTransaction();
+                    await this.persistence.inTx(async (tx) => {
+                        await this.repo.writeBatch({ minSeq: message!.seq, maxSeq, messages: loaded.messages, tx });
+                    });
                     continue;
                 }
 

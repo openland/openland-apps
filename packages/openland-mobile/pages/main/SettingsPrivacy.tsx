@@ -15,7 +15,7 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import ActionSheet from 'openland-mobile/components/ActionSheet';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { PrivacyWhoCanSee } from 'openland-api/spacex.types';
+import { PrivacyWhoCanSee, UpdateSettingsInput } from 'openland-api/spacex.types';
 import { formatPhone } from 'openland-y-utils/auth/formatPhone';
 
 const ChangeLoginMethodComponent = React.memo((props: PageProps) => {
@@ -111,17 +111,20 @@ const labelBySetting: { [setting in PrivacyWhoCanSee]: SettingLabel } = {
     [PrivacyWhoCanSee.NOBODY]: 'Nobody',
 };
 
+type BooleanSetting = 'Allowed' | 'Disallowed';
+
 const SettingsPrivacyContent = (props: PageProps) => {
     const theme = useTheme();
     const client = useClient();
     const form = useForm({ disableAppLoader: true });
     const { phone, email } = client.useAuthPoints({ fetchPolicy: 'cache-and-network' }).authPoints;
-    const { whoCanSeeEmail, whoCanSeePhone } = client.useSettings({ fetchPolicy: 'cache-and-network' }).settings;
+    const { whoCanSeeEmail, whoCanSeePhone, communityAdminsCanSeeContactInfo } = client.useSettings({ fetchPolicy: 'cache-and-network' }).settings;
     const countryCode = client.useIpLocation({ fetchPolicy: 'cache-and-network' })?.ipLocation?.countryCode;
     const emailStr = email || 'Not paired';
     const phoneStr = phone ? formatPhone(phone) : 'Not paired';
     const phonePrivacyField = useField<SettingLabel>('phone-privacy', labelBySetting[whoCanSeePhone], form);
     const emailPrivacyField = useField<SettingLabel>('email-privacy', labelBySetting[whoCanSeeEmail], form);
+    const communityAdminsContactsPrivacyField = useField<BooleanSetting>('community-admins-contacts-privacy', communityAdminsCanSeeContactInfo ? 'Allowed' : 'Disallowed', form);
 
     const initiateEmailPair = React.useCallback(() => {
         props.router.push('ChangeLoginMethod', { phone: false, initialValue: email });
@@ -130,38 +133,22 @@ const SettingsPrivacyContent = (props: PageProps) => {
         props.router.push('ChangeLoginMethod', { phone: true, countryShortname: countryCode, initialValue: phone });
     }, [phone, countryCode]);
 
-    const handleSave = (input: { whoCanSeeEmail?: PrivacyWhoCanSee, whoCanSeePhone?: PrivacyWhoCanSee }) =>
+    const handleSave = (input: UpdateSettingsInput) =>
         form.doAction(async () => {
             await client.mutateSettingsUpdate({ input });
         });
 
-    const showPhoneModal = React.useCallback(() => {
+    const showEditFieldModal = (title: string, actions: { label: string, newSettings: UpdateSettingsInput }[], field: any) => {
         const actionSheet = ActionSheet.builder();
-        actionSheet.title('Who can see my phone');
-        actionSheet.action('Everyone', () => {
-            phonePrivacyField.input.onChange('Everyone');
-            handleSave({ whoCanSeePhone: PrivacyWhoCanSee.EVERYONE });
-        }, false, null, undefined, phonePrivacyField.value === 'Everyone');
-        actionSheet.action('Nobody', () => {
-            phonePrivacyField.input.onChange('Nobody');
-            handleSave({ whoCanSeePhone: PrivacyWhoCanSee.NOBODY });
-        }, false, null, undefined, phonePrivacyField.value === 'Nobody');
+        actionSheet.title(title);
+        actions.forEach(action => {
+            actionSheet.action(action.label, () => {
+                field.input.onChange(action.label);
+                handleSave(action.newSettings);
+            }, false, null, undefined, field.value === action.label);
+        });
         actionSheet.show();
-    }, [phonePrivacyField.value]);
-
-    const showEmailModal = React.useCallback(() => {
-        const actionSheet = ActionSheet.builder();
-        actionSheet.title('Who can see my email');
-        actionSheet.action('Everyone', () => {
-            emailPrivacyField.input.onChange('Everyone');
-            handleSave({ whoCanSeeEmail: PrivacyWhoCanSee.EVERYONE });
-        }, false, null, undefined, emailPrivacyField.value === 'Everyone');
-        actionSheet.action('Nobody', () => {
-            emailPrivacyField.input.onChange('Nobody');
-            handleSave({ whoCanSeeEmail: PrivacyWhoCanSee.NOBODY });
-        }, false, null, undefined, emailPrivacyField.value === 'Nobody');
-        actionSheet.show();
-    }, [emailPrivacyField.value]);
+    };
 
     return (
         <SScrollView>
@@ -213,13 +200,40 @@ const SettingsPrivacyContent = (props: PageProps) => {
                     text="Who can see my phone"
                     small={true}
                     description={phonePrivacyField.value}
-                    onPress={showPhoneModal}
+                    onPress={() => showEditFieldModal(
+                        'Who can see my phone',
+                        [
+                            { label: 'Everyone', newSettings: { whoCanSeePhone: PrivacyWhoCanSee.EVERYONE } },
+                            { label: 'Nobody', newSettings: { whoCanSeePhone: PrivacyWhoCanSee.NOBODY } }
+                        ],
+                        phonePrivacyField
+                    )}
                 />
                 <ZListItem
                     text="Who can see my email"
                     small={true}
                     description={emailPrivacyField.value}
-                    onPress={showEmailModal}
+                    onPress={() => showEditFieldModal(
+                        'Who can see my email',
+                        [
+                            { label: 'Everyone', newSettings: { whoCanSeeEmail: PrivacyWhoCanSee.EVERYONE } },
+                            { label: 'Nobody', newSettings: { whoCanSeeEmail: PrivacyWhoCanSee.NOBODY } }
+                        ],
+                        emailPrivacyField
+                    )}
+                />
+                <ZListItem
+                    text="Admins can see my contacts"
+                    small={true}
+                    description={communityAdminsContactsPrivacyField.value}
+                    onPress={() => showEditFieldModal(
+                        'Admins can see my contacts',
+                        [
+                            { label: 'Allowed', newSettings: { communityAdminsCanSeeContactInfo: true } },
+                            { label: 'Disallowed', newSettings: { communityAdminsCanSeeContactInfo: false } }
+                        ],
+                        communityAdminsContactsPrivacyField
+                    )}
                 />
             </ZListGroup>
         </SScrollView>

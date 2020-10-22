@@ -39,23 +39,47 @@ const container = css`
     flex-shrink: 1;
 `;
 
-const rootClassName = css`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    background-color: var(--backgroundPrimary);
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
+const noLoginContainer = css`
+    max-height: 100vh;
 `;
 
-const mainContainer = css`
-    padding: 0 32px 32px;
+const rootContainer = css`
     display: flex;
     flex-direction: column;
     justify-content: center;
     flex-grow: 1;
-    flex-shrink: 0;
+    flex-shrink: 1;
+`;
+
+const rootContent = css`
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 0;
+    flex-shrink: 1;
+`;
+
+const shadowClassName = css`
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100px;
+    z-index: 1;
+    background-image: linear-gradient(to bottom, var(--transparent), var(--backgroundPrimary));
+`;
+
+const scrollContainer = css`
+    padding: 32px 32px 88px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-grow: 0;
+    flex-shrink: 1;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    background-color: var(--backgroundPrimary);
 `;
 
 const avatarsContainer = css`
@@ -86,6 +110,7 @@ const titleStyle = css`
     word-wrap: break-word;
     max-width: 320px;
     align-self: center;
+    flex-shrink: 0;
 `;
 
 const descriptionStyle = css`
@@ -94,6 +119,7 @@ const descriptionStyle = css`
     margin-top: 8px;
     max-width: 320px;
     align-self: center;
+    flex-shrink: 0;
 `;
 
 const membersContainer = css`
@@ -112,8 +138,11 @@ const membersAvatarsContainer = css`
 `;
 
 const buttonContainer = css`
-    margin-top: 32px;
+    position: absolute;
+    bottom: 20px;
+    margin: auto;
     flex-shrink: 0;
+    z-index: 2;
     align-self: center;
 `;
 
@@ -154,49 +183,49 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
     const showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
 
     return (
-        <div className={container}>
+        <div className={cx(container, props.noLogin && noLoginContainer)}>
             {props.noLogin && !isMobile && <AuthSidebarComponent />}
-            <div className={rootClassName}>
-                {props.noLogin && isMobile && <AuthMobileHeader />}
-                <div className={mainContainer}>
-                    <div className={avatarsContainer}>
-                        <UAvatar photo={photo} title={entityTitle} id={id} size="xx-large" />
-                    </div>
-                    <div className={cx(TextTitle1, titleStyle)}>{title}</div>
-                    {!!description && (
-                        <div className={cx(TextBody, descriptionStyle)}>
-                            <UText text={description} />
+            {props.noLogin && isMobile && <AuthMobileHeader />}
+            <div className={rootContainer}>
+                <div className={rootContent}>
+                    <div className={scrollContainer}>
+                        <div className={avatarsContainer}>
+                            <UAvatar photo={photo} title={entityTitle} id={id} size="xx-large" />
                         </div>
-                    )}
-                    {showMembers && room && (
-                        <div className={membersContainer}>
-                            <div className={membersAvatarsContainer}>
-                                {avatars.map((i) => (
-                                    <div
-                                        key={i.id}
-                                        className={cx(bigAvatarWrapper, smallAvatarWrapper)}
-                                    >
-                                        <UAvatar
-                                            title={i.name}
-                                            id={i.id}
-                                            photo={i.photo}
-                                            size="small"
-                                        />
-                                    </div>
-                                ))}
-                            </div>
+                        <div className={cx(TextTitle1, titleStyle)}>{title}</div>
+                        {!!description && (
                             <div className={cx(TextBody, descriptionStyle)}>
-                                {membersCount} members
+                                <UText text={description} />
                             </div>
-                        </div>
-                    )}
-                    {!showMembers && !description && (
-                        <div className={cx(TextBody, descriptionStyle)}>
-                            New {whereToInvite}
-                        </div>
-                    )}
-
+                        )}
+                        {showMembers && room && (
+                            <div className={membersContainer}>
+                                <div className={membersAvatarsContainer}>
+                                    {avatars.map((i) => (
+                                        <div
+                                            key={i.id}
+                                            className={cx(bigAvatarWrapper, smallAvatarWrapper)}
+                                        >
+                                            <UAvatar
+                                                title={i.name}
+                                                id={i.id}
+                                                photo={i.photo}
+                                                size="small"
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className={cx(TextBody, descriptionStyle)}>
+                                    {membersCount} members
+                                </div>
+                            </div>
+                        )}
+                        {!showMembers && !description && (
+                            <div className={cx(TextBody, descriptionStyle)}>New {whereToInvite}</div>
+                        )}
+                    </div>
                     <div className={buttonContainer}>{button}</div>
+                    <div className={shadowClassName} />
                 </div>
             </div>
         </div>
@@ -533,7 +562,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                         if (!!toast) {
                             toast.show({
                                 type: 'failure',
-                                text: 'You don’t have an access'
+                                text: 'You don’t have an access',
                             });
                         }
                         return;

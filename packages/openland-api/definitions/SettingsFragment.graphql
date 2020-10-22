@@ -26,6 +26,7 @@ fragment SettingsFull on Settings {
     countUnreadChats
     whoCanSeeEmail
     whoCanSeePhone
+    communityAdminsCanSeeContactInfo
 
     desktop {
         ...PlatformNotificationSettingsFull

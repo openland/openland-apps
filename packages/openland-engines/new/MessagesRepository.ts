@@ -1,4 +1,4 @@
-import { Persistence } from './Persistence';
+import { Persistence, Transaction } from '../persistence/Persistence';
 import { StoredMessage } from './StoredMessage';
 import { SparseIndex } from './SparseIndex';
 import { AsyncLock } from '@openland/patterns';
@@ -23,7 +23,7 @@ export class MessagesRepository {
 
         this._lock.inLock(async () => {
             let state = SparseIndex.EMPTY;
-            let persistedState = await this.persistence.readKey('chat.' + this.id + '.index');
+            let persistedState = await this.persistence.read('chat.' + this.id + '.index');
             if (persistedState) {
                 state = JSON.parse(persistedState);
             }
@@ -34,7 +34,8 @@ export class MessagesRepository {
     writeBatch = async (args: {
         minSeq: number | null,
         maxSeq: number | null,
-        messages: StoredMessage[]
+        messages: StoredMessage[],
+        tx: Transaction
     }) => {
         return await this._lock.inLock(async () => {
 
@@ -42,7 +43,7 @@ export class MessagesRepository {
             for (let i of args.messages.filter((v) => !this._values.has(v.id))) {
                 // Load not loaded values
                 if (!this._values.has(i.id)) {
-                    let existing = await this.persistence.readKey('chat.' + this.id + '.msg.' + i.id);
+                    let existing = await args.tx.read('chat.' + this.id + '.msg.' + i.id);
                     if (existing) {
                         this._values.set(i.id, JSON.parse(existing));
                     }
@@ -51,7 +52,7 @@ export class MessagesRepository {
                 // Apply values if not exist already
                 if (!this._values.has(i.id)) {
                     this._values.set(i.id, i);
-                    this.persistence.write('chat.' + this.id + '.msg.' + i.id, JSON.stringify(i));
+                    args.tx.write('chat.' + this.id + '.msg.' + i.id, JSON.stringify(i));
                 }
             }
 
@@ -62,39 +63,39 @@ export class MessagesRepository {
                 max: args.maxSeq !== null ? args.maxSeq : SparseIndex.MAX,
                 items: filtered.map((v) => ({ id: v.id, sortKey: v.seq }))
             });
-            this.persistence.write('chat.' + this.id + '.index', JSON.stringify(this._index.state));
+            args.tx.write('chat.' + this.id + '.index', JSON.stringify(this._index.state));
         });
     }
 
-    handleMessageReceived = async (message: StoredMessage) => {
+    handleMessageReceived = async (message: StoredMessage, tx: Transaction) => {
         return await this._lock.inLock(async () => {
             this._values.set(message.id, message);
-            this.persistence.write('chat.' + this.id + '.msg.' + message.id, JSON.stringify(message));
+            tx.write('chat.' + this.id + '.msg.' + message.id, JSON.stringify(message));
 
             // Persist to index
             if (!this._index.isInIndex(message.id) && !this._deleted.has(message.id)) {
                 this._index.apply({ min: message.seq, max: SparseIndex.MAX, items: [{ id: message.id, sortKey: message.seq }] });
-                this.persistence.write('chat.' + this.id + '.index', JSON.stringify(this._index.state));
+                tx.write('chat.' + this.id + '.index', JSON.stringify(this._index.state));
             }
         });
     }
 
-    handleMessageUpdated = async (message: StoredMessage) => {
+    handleMessageUpdated = async (message: StoredMessage, tx: Transaction) => {
         return await this._lock.inLock(async () => {
             if (!this._deleted.has(message.id)) {
                 this._values.set(message.id, message);
-                this.persistence.write('chat.' + this.id + '.msg.' + message.id, JSON.stringify(message));
+                tx.write('chat.' + this.id + '.msg.' + message.id, JSON.stringify(message));
             }
         });
     }
 
-    handleMessageDeleted = async (id: string) => {
+    handleMessageDeleted = async (id: string, tx: Transaction) => {
         return await this._lock.inLock(async () => {
             if (!this._deleted.has(id)) {
                 this._deleted.add(id);
                 if (this._index.isInIndex(id)) {
                     this._index.delete([id]);
-                    this.persistence.write('chat.' + this.id + '.index', JSON.stringify(this._index.state));
+                    tx.write('chat.' + this.id + '.index', JSON.stringify(this._index.state));
                 }
             }
         });
@@ -114,7 +115,7 @@ export class MessagesRepository {
                 // Load not loaded values
                 for (let i of after.items) {
                     if (!this._values.has(i.id)) {
-                        let existing = await this.persistence.readKey('chat.' + this.id + '.msg.' + i.id);
+                        let existing = await this.persistence.read('chat.' + this.id + '.msg.' + i.id);
                         if (existing) {
                             this._values.set(i.id, JSON.parse(existing));
                         } else {
@@ -138,7 +139,7 @@ export class MessagesRepository {
                 return null;
             }
             if (!this._values.has(id)) {
-                let existing = await this.persistence.readKey('chat.' + this.id + '.msg.' + id);
+                let existing = await this.persistence.read('chat.' + this.id + '.msg.' + id);
                 if (existing) {
                     this._values.set(id, JSON.parse(existing));
                 } else {
@@ -155,7 +156,7 @@ export class MessagesRepository {
                 return null;
             }
             if (!this._values.has(id)) {
-                let existing = await this.persistence.readKey('chat.' + this.id + '.msg.' + id);
+                let existing = await this.persistence.read('chat.' + this.id + '.msg.' + id);
                 if (existing) {
                     this._values.set(id, JSON.parse(existing));
                 } else {
@@ -176,7 +177,7 @@ export class MessagesRepository {
                 // Load not loaded values
                 for (let i of after.items) {
                     if (!this._values.has(i.id)) {
-                        let existing = await this.persistence.readKey('chat.' + this.id + '.msg.' + i.id);
+                        let existing = await this.persistence.read('chat.' + this.id + '.msg.' + i.id);
                         if (existing) {
                             this._values.set(i.id, JSON.parse(existing));
                         } else {
