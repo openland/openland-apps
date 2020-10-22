@@ -12,6 +12,7 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/UNotificationsSwitch';
 import { ProfileLayoutContext } from 'openland-web/components/ProfileLayout';
+import { UMoreContainer } from 'openland-web/components/unicorn/UMoreContainer';
 
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import CopyIcon from 'openland-icons/s/ic-link-24.svg';
@@ -76,9 +77,12 @@ export const GroupActions = React.memo(({ group }: GroupActions) => {
 
             {canEdit && <UListItem title={editTitle} useRadius={true} icon={<SettingsIcon />} onClick={onEditClick} />}
             <UListItem title={`Leave ${typeString}`} useRadius={true} icon={<LeaveIcon />} onClick={onLeaveClick} />
-
             <XWithRole role="super-admin">
-                <UListItem title={`Delete ${typeString}`} useRadius={true} icon={<DeleteIcon />} onClick={onDeleteClick} />
+                <UMoreContainer>
+                    <XWithRole role="super-admin">
+                        <UListItem title={`Delete ${typeString}`} useRadius={true} icon={<DeleteIcon />} onClick={onDeleteClick} />
+                    </XWithRole>
+                </UMoreContainer>
             </XWithRole>
         </XView>
     );

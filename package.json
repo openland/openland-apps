@@ -318,8 +318,7 @@
     "resolutions": {
         "**/@types/react": "16.8.8",
         "**/@types/react-native": "0.56.4",
-        "**/@babel/core": "7.0.0",
-        "graceful-fs": "4.2.2"
+        "**/@babel/core": "7.0.0"
     },
     "scripts": {
         "format-web": "prettier --write \"./packages/openland-web/**/*.tsx\" \"./packages/openland-web/**/*.ts\" \"./packages/openland-web/**/*.js\"",

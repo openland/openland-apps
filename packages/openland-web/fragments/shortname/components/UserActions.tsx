@@ -13,6 +13,7 @@ import { ProfileLayoutContext } from 'openland-web/components/ProfileLayout';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/UNotificationsSwitch';
+import { UMoreContainer } from 'openland-web/components/unicorn/UMoreContainer';
 
 import CopyIcon from 'openland-icons/s/ic-link-24.svg';
 import SpamIcon from 'openland-icons/s/ic-flag.svg';
@@ -94,11 +95,16 @@ export const UserActions = React.memo(({ user, chat }: UserMenuProps) => {
 
             {isMe && <UListItem title="Saved messages" useRadius={true} path={`/mail/${id}`} icon={<BookmarkIcon />} />}
             <UListItem title="Copy link" useRadius={true} icon={<CopyIcon />} onClick={onCopyLinkClick} />
+
             <XWithRole role="super-admin">
-                {!isMe && <UListItem title="Report spam" useRadius={true} icon={<SpamIcon />} />}
-            </XWithRole>
-            <XWithRole role="super-admin">
-                <UListItem title="Delete user" useRadius={true} onClick={onDeleteUserClick} icon={<DeleteIcon />} />
+                <UMoreContainer>
+                    <XWithRole role="super-admin">
+                        {!isMe && <UListItem title="Report spam" useRadius={true} icon={<SpamIcon />} />}
+                    </XWithRole>
+                    <XWithRole role="super-admin">
+                        <UListItem title="Delete user" useRadius={true} onClick={onDeleteUserClick} icon={<DeleteIcon />} />
+                    </XWithRole>
+                </UMoreContainer>
             </XWithRole>
         </XView>
     );
