@@ -11,7 +11,6 @@ const container = css`
     min-width: 150px;
     background: var(--backgroundSecondary);
     border-radius: 8px;
-    box-shadow: var(--boxShadowPopper);
     padding: 8px 0;
 `;
 

@@ -16,6 +16,20 @@ internal val AuthResolveShortNameSelector = obj(
                         field("photo", "photo", scalar("String")),
                         field("online", "online", notNull(scalar("Boolean")))
                     )),
+                    inline("Organization", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("name", "name", notNull(scalar("String"))),
+                        field("photo", "photo", scalar("String")),
+                        field("about", "about", scalar("String")),
+                        field("applyLinkEnabled", "applyLinkEnabled", notNull(scalar("Boolean"))),
+                        field("applyLink", "applyLink", scalar("String")),
+                        field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+                        field("owner", "owner", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID")))
+                            )))
+                    )),
                     inline("SharedRoom", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("SharedRoom", SharedRoomPreviewSelector)
@@ -29,6 +43,6 @@ internal val AuthResolveShortNameSelector = obj(
 val AuthResolveShortName = object: OperationDefinition {
     override val name = "AuthResolveShortName"
     override val kind = OperationKind.QUERY
-    override val body = "query AuthResolveShortName(\$shortname:String!){item:alphaResolveShortName(shortname:\$shortname){__typename ... on User{__typename id name firstName lastName photo online}... on SharedRoom{__typename ...SharedRoomPreview}... on DiscoverChatsCollection{__typename id}}}fragment SharedRoomPreview on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}title photo membersCount description previewMembers{__typename id name photo}}"
+    override val body = "query AuthResolveShortName(\$shortname:String!){item:alphaResolveShortName(shortname:\$shortname){__typename ... on User{__typename id name firstName lastName photo online}... on Organization{__typename id name photo about applyLinkEnabled applyLink isCommunity:alphaIsCommunity owner{__typename id}}... on SharedRoom{__typename ...SharedRoomPreview}... on DiscoverChatsCollection{__typename id}}}fragment SharedRoomPreview on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}title photo membersCount description previewMembers{__typename id name photo}}"
     override val selector = AuthResolveShortNameSelector
 }

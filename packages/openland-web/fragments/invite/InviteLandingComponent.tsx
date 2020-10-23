@@ -154,83 +154,111 @@ interface InviteLandingComponentLayoutProps {
     id: string;
     membersCount?: number | null;
     description?: string | null;
-    button: any;
+    hideFakeDescription?: boolean;
+    button?: JSX.Element;
     noLogin: boolean;
     room?: SharedRoomPreview;
 }
 
-const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLayoutProps) => {
-    const isMobile = useIsMobile();
-    const {
-        whereToInvite,
-        photo,
-        title,
-        entityTitle,
-        id,
-        membersCount,
-        description,
-        button,
-        room,
-    } = props;
+export const InviteLandingComponentLayout = React.memo(
+    (props: InviteLandingComponentLayoutProps) => {
+        const isMobile = useIsMobile();
+        const scrollRef = React.useRef<HTMLDivElement>(null);
+        const [showShadow, setShowShadow] = React.useState(false);
+        const {
+            whereToInvite,
+            photo,
+            title,
+            entityTitle,
+            id,
+            membersCount,
+            description,
+            hideFakeDescription,
+            button,
+            room,
+        } = props;
 
-    const avatars = room
-        ? room.previewMembers
-              .map((x) => x)
-              .filter((x) => !!x)
-              .slice(0, 5)
-        : [];
+        const avatars = room
+            ? room.previewMembers
+                  .map((x) => x)
+                  .filter((x) => !!x)
+                  .slice(0, 5)
+            : [];
 
-    const showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
+        const showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
 
-    return (
-        <div className={cx(container, props.noLogin && noLoginContainer)}>
-            {props.noLogin && !isMobile && <AuthSidebarComponent />}
-            {props.noLogin && isMobile && <AuthMobileHeader />}
-            <div className={rootContainer}>
-                <div className={rootContent}>
-                    <div className={scrollContainer}>
-                        <div className={avatarsContainer}>
-                            <UAvatar photo={photo} title={entityTitle} id={id} size="xx-large" />
-                        </div>
-                        <div className={cx(TextTitle1, titleStyle)}>{title}</div>
-                        {!!description && (
-                            <div className={cx(TextBody, descriptionStyle)}>
-                                <UText text={description} />
+        React.useEffect(() => {
+            const handler = () => {
+                if (scrollRef && scrollRef.current) {
+                    if (scrollRef.current.scrollHeight !== scrollRef.current.clientHeight) {
+                        setShowShadow(true);
+                    } else {
+                        setShowShadow(false);
+                    }
+                }
+            };
+            handler();
+            document.addEventListener('resize', handler);
+            return () => document.removeEventListener('resize', handler);
+        }, [scrollRef]);
+
+        return (
+            <div className={cx(container, props.noLogin && noLoginContainer)}>
+                {props.noLogin && !isMobile && <AuthSidebarComponent />}
+                {props.noLogin && isMobile && <AuthMobileHeader />}
+                <div className={rootContainer}>
+                    <div className={rootContent}>
+                        <div className={scrollContainer} ref={scrollRef}>
+                            <div className={avatarsContainer}>
+                                <UAvatar
+                                    photo={photo}
+                                    title={entityTitle}
+                                    id={id}
+                                    size="xx-large"
+                                />
                             </div>
-                        )}
-                        {showMembers && room && (
-                            <div className={membersContainer}>
-                                <div className={membersAvatarsContainer}>
-                                    {avatars.map((i) => (
-                                        <div
-                                            key={i.id}
-                                            className={cx(bigAvatarWrapper, smallAvatarWrapper)}
-                                        >
-                                            <UAvatar
-                                                title={i.name}
-                                                id={i.id}
-                                                photo={i.photo}
-                                                size="small"
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
+                            <div className={cx(TextTitle1, titleStyle)}>{title}</div>
+                            {!!description && (
                                 <div className={cx(TextBody, descriptionStyle)}>
-                                    {membersCount} members
+                                    <UText text={description} />
                                 </div>
-                            </div>
-                        )}
-                        {!showMembers && !description && (
-                            <div className={cx(TextBody, descriptionStyle)}>New {whereToInvite}</div>
-                        )}
+                            )}
+                            {showMembers && room && (
+                                <div className={membersContainer}>
+                                    <div className={membersAvatarsContainer}>
+                                        {avatars.map((i) => (
+                                            <div
+                                                key={i.id}
+                                                className={cx(bigAvatarWrapper, smallAvatarWrapper)}
+                                            >
+                                                <UAvatar
+                                                    title={i.name}
+                                                    id={i.id}
+                                                    photo={i.photo}
+                                                    size="small"
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className={cx(TextBody, descriptionStyle)}>
+                                        {membersCount} members
+                                    </div>
+                                </div>
+                            )}
+                            {!showMembers && !description && !hideFakeDescription && (
+                                <div className={cx(TextBody, descriptionStyle)}>
+                                    New {whereToInvite}
+                                </div>
+                            )}
+                        </div>
+                        {button && <div className={buttonContainer}>{button}</div>}
+                        {showShadow && <div className={shadowClassName} />}
                     </div>
-                    <div className={buttonContainer}>{button}</div>
-                    <div className={shadowClassName} />
                 </div>
             </div>
-        </div>
-    );
-});
+        );
+    },
+);
 
 const JoinButton = ({ roomId, text }: { roomId: string; text: string }) => {
     const client = useClient();

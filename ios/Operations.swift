@@ -2183,6 +2183,20 @@ private let AuthResolveShortNameSelector = obj(
                         field("photo", "photo", scalar("String")),
                         field("online", "online", notNull(scalar("Boolean")))
                     )),
+                    inline("Organization", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("name", "name", notNull(scalar("String"))),
+                        field("photo", "photo", scalar("String")),
+                        field("about", "about", scalar("String")),
+                        field("applyLinkEnabled", "applyLinkEnabled", notNull(scalar("Boolean"))),
+                        field("applyLink", "applyLink", scalar("String")),
+                        field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+                        field("owner", "owner", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID")))
+                            )))
+                    )),
                     inline("SharedRoom", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("SharedRoom", SharedRoomPreviewSelector)
@@ -4712,6 +4726,9 @@ private let OrganizationMemberRemoveSelector = obj(
                     field("id", "id", notNull(scalar("ID")))
                 )))
         )
+private let OrganizationRequestMembersExportSelector = obj(
+            field("requestOrganizationMembersExport", "requestOrganizationMembersExport", arguments(fieldValue("id", refValue("organizationId"))), notNull(scalar("Boolean")))
+        )
 private let PairEmailSelector = obj(
             field("pairEmail", "pairEmail", arguments(fieldValue("sessionId", refValue("sessionId")), fieldValue("confirmationCode", refValue("confirmationCode"))), notNull(scalar("Boolean")))
         )
@@ -5472,7 +5489,7 @@ class Operations {
     let AuthResolveShortName = OperationDefinition(
         "AuthResolveShortName",
         .query, 
-        "query AuthResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename id name firstName lastName photo online}... on SharedRoom{__typename ...SharedRoomPreview}... on DiscoverChatsCollection{__typename id}}}fragment SharedRoomPreview on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}title photo membersCount description previewMembers{__typename id name photo}}",
+        "query AuthResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename id name firstName lastName photo online}... on Organization{__typename id name photo about applyLinkEnabled applyLink isCommunity:alphaIsCommunity owner{__typename id}}... on SharedRoom{__typename ...SharedRoomPreview}... on DiscoverChatsCollection{__typename id}}}fragment SharedRoomPreview on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}title photo membersCount description previewMembers{__typename id name photo}}",
         AuthResolveShortNameSelector
     )
     let Channel = OperationDefinition(
@@ -6501,6 +6518,12 @@ class Operations {
         "mutation OrganizationMemberRemove($userId:ID!,$organizationId:ID!){betaOrganizationMemberRemove(userId:$userId,organizationId:$organizationId){__typename id}}",
         OrganizationMemberRemoveSelector
     )
+    let OrganizationRequestMembersExport = OperationDefinition(
+        "OrganizationRequestMembersExport",
+        .mutation, 
+        "mutation OrganizationRequestMembersExport($organizationId:ID!){requestOrganizationMembersExport(id:$organizationId)}",
+        OrganizationRequestMembersExportSelector
+    )
     let PairEmail = OperationDefinition(
         "PairEmail",
         .mutation, 
@@ -7215,6 +7238,7 @@ class Operations {
         if name == "OrganizationChangeMemberRole" { return OrganizationChangeMemberRole }
         if name == "OrganizationCreatePublicInvite" { return OrganizationCreatePublicInvite }
         if name == "OrganizationMemberRemove" { return OrganizationMemberRemove }
+        if name == "OrganizationRequestMembersExport" { return OrganizationRequestMembersExport }
         if name == "PairEmail" { return PairEmail }
         if name == "PairPhone" { return PairPhone }
         if name == "PaymentIntentCancel" { return PaymentIntentCancel }
