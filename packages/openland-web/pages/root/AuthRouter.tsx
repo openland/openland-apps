@@ -9,7 +9,8 @@ import { isPublicPath } from './router/isPublicPath';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useClient } from 'openland-api/useClient';
 import { AuthProfileFragment } from './AuthProfileFragment';
-import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import { InviteLandingComponent, InviteLandingComponentLayout } from 'openland-web/fragments/invite/InviteLandingComponent';
 import { AuthDiscoverFragment } from './discover/AuthDiscoverFragment';
 import { AuthDiscoverPopularNowFragment } from './discover/AuthDiscoverPopularNowFragment';
 import { AuthDiscoverNewAndGrowingFragment } from './discover/AuthDiscoverNewAndGrowingFragment';
@@ -29,6 +30,28 @@ const ShortnameResolver = React.memo((props: { shortname: string, defaultRedirec
     }
     if (shortnameItem?.__typename === 'SharedRoom') {
         return <InviteLandingComponent signupRedirect={'/signin?redirect=' + encodeURIComponent('/' + props.shortname)} />;
+    }
+    if (shortnameItem?.__typename === 'Organization') {
+        return (
+            <InviteLandingComponentLayout
+                whereToInvite={shortnameItem.isCommunity ? 'community' : 'organization'}
+                title={shortnameItem.name}
+                id={shortnameItem.id}
+                photo={shortnameItem.photo}
+                entityTitle={shortnameItem.name}
+                description={shortnameItem.about}
+                hideFakeDescription={true}
+                noLogin={true}
+                button={
+                    <UButton
+                        style="primary"
+                        size="large"
+                        text={`Join ${shortnameItem.isCommunity ? 'community' : 'organization'}`}
+                        path={'/signin?redirect=' + encodeURIComponent('/' + props.shortname)}
+                    />
+                }
+            />
+        );
     }
     if (shortnameItem?.__typename === 'DiscoverChatsCollection') {
         return <AuthDiscoverCollectionFragment id={shortnameItem.id} />;

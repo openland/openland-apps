@@ -2190,6 +2190,14 @@ const AuthResolveShortNameSelector = obj(
                         field('photo', 'photo', args(), scalar('String')),
                         field('online', 'online', args(), notNull(scalar('Boolean')))
                     )),
+                    inline('Organization', obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('id', 'id', args(), notNull(scalar('ID'))),
+                        field('name', 'name', args(), notNull(scalar('String'))),
+                        field('photo', 'photo', args(), scalar('String')),
+                        field('about', 'about', args(), scalar('String')),
+                        field('alphaIsCommunity', 'isCommunity', args(), notNull(scalar('Boolean')))
+                    )),
                     inline('SharedRoom', obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
                         fragment('SharedRoom', SharedRoomPreviewSelector)
@@ -5478,7 +5486,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     AuthResolveShortName: {
         kind: 'query',
         name: 'AuthResolveShortName',
-        body: 'query AuthResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename id name firstName lastName photo online}... on SharedRoom{__typename ...SharedRoomPreview}... on DiscoverChatsCollection{__typename id}}}fragment SharedRoomPreview on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}title photo membersCount description previewMembers{__typename id name photo}}',
+        body: 'query AuthResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename id name firstName lastName photo online}... on Organization{__typename id name photo about isCommunity:alphaIsCommunity}... on SharedRoom{__typename ...SharedRoomPreview}... on DiscoverChatsCollection{__typename id}}}fragment SharedRoomPreview on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}title photo membersCount description previewMembers{__typename id name photo}}',
         selector: AuthResolveShortNameSelector
     },
     Channel: {

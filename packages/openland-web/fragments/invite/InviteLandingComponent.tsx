@@ -154,12 +154,13 @@ interface InviteLandingComponentLayoutProps {
     id: string;
     membersCount?: number | null;
     description?: string | null;
-    button: any;
+    hideFakeDescription?: boolean;
+    button?: JSX.Element;
     noLogin: boolean;
     room?: SharedRoomPreview;
 }
 
-const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLayoutProps) => {
+export const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLayoutProps) => {
     const isMobile = useIsMobile();
     const {
         whereToInvite,
@@ -169,6 +170,7 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
         id,
         membersCount,
         description,
+        hideFakeDescription,
         button,
         room,
     } = props;
@@ -220,11 +222,11 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
                                 </div>
                             </div>
                         )}
-                        {!showMembers && !description && (
+                        {!showMembers && !description && !hideFakeDescription && (
                             <div className={cx(TextBody, descriptionStyle)}>New {whereToInvite}</div>
                         )}
                     </div>
-                    <div className={buttonContainer}>{button}</div>
+                    {button && <div className={buttonContainer}>{button}</div>}
                     <div className={shadowClassName} />
                 </div>
             </div>

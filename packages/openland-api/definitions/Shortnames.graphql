@@ -32,6 +32,13 @@ query AuthResolveShortName($shortname: String!) {
             photo
             online
         }
+        ... on Organization {
+            id
+            name
+            photo
+            about
+            isCommunity: alphaIsCommunity
+        }
         ... on SharedRoom {
             ...SharedRoomPreview
         }
