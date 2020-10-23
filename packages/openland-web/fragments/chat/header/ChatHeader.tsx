@@ -429,7 +429,6 @@ export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
                             <MenuComponent ctx={ctx} id={chat.id} savedMessages={isSavedMessages} />
                         </React.Suspense>
                     )}
-                    useWrapper={false}
                     size="large-densed"
                 />
             </XView>

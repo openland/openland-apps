@@ -8,7 +8,6 @@ import { usePopper } from '../usePopper';
 
 export interface UMoreButtonProps extends XViewProps {
     menu: (ctx: UPopperController) => JSX.Element;
-    useWrapper?: boolean;
     horizontal?: boolean;
     filled?: boolean;
     shape?: UIconButtonShape;
@@ -16,8 +15,8 @@ export interface UMoreButtonProps extends XViewProps {
 }
 
 export const UMoreButton = React.memo((props: UMoreButtonProps) => {
-    const { menu, useWrapper, horizontal, shape, filled, ...other } = props;
-    const [menuVisible, menuShow] = usePopper({ placement: 'bottom-end', hideOnClick: true, useWrapper }, menu);
+    const { menu, horizontal, shape, filled, ...other } = props;
+    const [menuVisible, menuShow] = usePopper({ placement: 'bottom-end', hideOnClick: true }, menu);
 
     return (
         <UIconButton
