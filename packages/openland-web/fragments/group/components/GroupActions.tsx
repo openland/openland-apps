@@ -73,17 +73,15 @@ export const GroupActions = React.memo(({ group }: GroupActions) => {
     return (
         <XView marginTop={16} marginHorizontal={-16}>
             <UNotificationsSwitch id={id} mute={!!settings.mute} marginLeft={16} />
-            <UListItem title="Copy link" useRadius={true} icon={<CopyIcon />} onClick={onCopyLinkClick} />
 
             {canEdit && <UListItem title={editTitle} useRadius={true} icon={<SettingsIcon />} onClick={onEditClick} />}
-            <UListItem title={`Leave ${typeString}`} useRadius={true} icon={<LeaveIcon />} onClick={onLeaveClick} />
-            <XWithRole role="super-admin">
-                <UMoreContainer>
-                    <XWithRole role="super-admin">
-                        <UListItem title={`Delete ${typeString}`} useRadius={true} icon={<DeleteIcon />} onClick={onDeleteClick} />
-                    </XWithRole>
-                </UMoreContainer>
-            </XWithRole>
+            <UMoreContainer>
+                <UListItem title="Copy link" useRadius={true} icon={<CopyIcon />} onClick={onCopyLinkClick} />
+                <UListItem title={`Leave ${typeString}`} useRadius={true} icon={<LeaveIcon />} onClick={onLeaveClick} />
+                <XWithRole role="super-admin">
+                    <UListItem title={`Delete ${typeString}`} useRadius={true} icon={<DeleteIcon />} onClick={onDeleteClick} />
+                </XWithRole>
+            </UMoreContainer>
         </XView>
     );
 });
