@@ -4,7 +4,7 @@ import { XView } from 'react-mental';
 import { Organization_organization } from 'openland-api/spacex.types';
 import { showEditCommunityModal } from 'openland-web/fragments/settings/components/showEditCommunityModal';
 import { showSuperEditCommunityModal } from 'openland-web/fragments/settings/components/showSuperEditCommunityModal';
-import { useRole, XWithRole } from 'openland-x-permissions/XWithRole';
+import { useRole } from 'openland-x-permissions/XWithRole';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import AlertBlanket from 'openland-x/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
@@ -20,6 +20,7 @@ import FlashlightIcon from 'openland-icons/s/ic-flashlight-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import CopyIcon from 'openland-icons/s/ic-link-24.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
+import UserIcon from 'openland-icons/s/ic-user-24.svg';
 import { OrganizationMenu } from './OrganizationMenu';
 
 interface OrganizationMenuProps {
@@ -79,6 +80,8 @@ export const OrganizationActions = React.memo(
         const { id, name, isCommunity, isOwner, isAdmin, isMine, shortname } = organization;
 
         const typeString = isCommunity ? 'community' : 'organization';
+
+        const isSuperAdmin = useRole('super-admin');
 
         const onCopyLinkClick = React.useCallback(() => {
             copy(`https://openland.com/${shortname || id}`, { format: 'text/plain' });
@@ -163,26 +166,26 @@ export const OrganizationActions = React.memo(
                     />
                 )}
 
-                {id === '3YgM91xQP1sa3ea5mxxVTwRkJg' && (isOwner || isAdmin || useRole('super-admin')) && (
-                    <UListItem
-                        title="Export users"
-                        useRadius={true}
-                        onClick={onExportUsersClick}
-                    />
-                )}
-
-                <XWithRole role="super-admin">
+                {(isSuperAdmin || (id === '3YgM91xQP1sa3ea5mxxVTwRkJg' && (isOwner || isAdmin))) && (
                     <UMoreContainer>
-                        <XWithRole role="super-admin">
+                        {id === '3YgM91xQP1sa3ea5mxxVTwRkJg' && (
+                            <UListItem
+                                title="Export users"
+                                useRadius={true}
+                                icon={<UserIcon />}
+                                onClick={onExportUsersClick}
+                            />
+                        )}
+                        {isSuperAdmin && (
                             <UListItem
                                 title="Super edit"
                                 useRadius={true}
                                 icon={<FlashlightIcon />}
                                 onClick={onSuperEditClick}
                             />
-                        </XWithRole>
+                        )}
                     </UMoreContainer>
-                </XWithRole>
+                )}
             </XView>
         );
     },
