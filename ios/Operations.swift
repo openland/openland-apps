@@ -2873,7 +2873,6 @@ private let GetDifferenceSelector = obj(
                     field("hasMore", "hasMore", notNull(scalar("Boolean"))),
                     field("sequences", "sequences", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("pts", "pts", notNull(scalar("Int"))),
                             field("events", "events", notNull(list(notNull(obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),
                                     field("pts", "pts", notNull(scalar("Int"))),
@@ -5723,7 +5722,7 @@ class Operations {
     let GetDifference = OperationDefinition(
         "GetDifference",
         .query, 
-        "query GetDifference($state:String!){updatesDifference(state:$state){__typename seq state hasMore sequences{__typename pts events{__typename pts event{__typename ...ShortUpdate}}sequence{__typename ...ShortSequence}}}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}",
+        "query GetDifference($state:String!){updatesDifference(state:$state){__typename seq state hasMore sequences{__typename events{__typename pts event{__typename ...ShortUpdate}}sequence{__typename ...ShortSequence}}}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}",
         GetDifferenceSelector
     )
     let GetState = OperationDefinition(

@@ -6,12 +6,17 @@ import { Deferred } from 'openland-unicorn/components/Deferred';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-api/useClient';
 import { UpdatesEngine } from 'openland-engines/updates/UpdatesEngine';
+import { Persistence } from 'openland-engines/persistence/Persistence';
+import { InMemoryKeyValueStore } from 'openland-y-utils/InMemoryKeyValueStore';
 
 export default withApp('Pegasus', ['super-admin', 'software-developer'], props => {
 
     let client = useClient();
-    React.useMemo(() => {
-        return new UpdatesEngine(client);
+    React.useEffect(() => {
+        let persistence = new Persistence(new InMemoryKeyValueStore());
+        let engine = new UpdatesEngine(client, persistence);
+        engine.start();
+        return () => engine.close();
     }, []);
 
     return (
