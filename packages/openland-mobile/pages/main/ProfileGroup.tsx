@@ -315,8 +315,8 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                         </View>
                     ) : undefined
                 }
-                titleIconRight={group.featured && theme.displayFeaturedIcon ? require('assets/ic-featured-16.png') : undefined}
-                titleIconRightColor={theme.accentNegative}
+                titleIconRight={group.featured && theme.displayFeaturedIcon ? require('assets/ic-verified-16.png') : undefined}
+                titleIconRightColor={'#3DA7F2' /* special: verified/featured color */}
                 titleColor={highlightGroup ? theme.accentPositive : undefined}
                 subtitle={plural(group.membersCount, ['member', 'members'])}
                 actionPrimary={{

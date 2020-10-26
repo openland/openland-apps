@@ -39,7 +39,7 @@ import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 import { RoomCallsMode, RoomChat_room } from 'openland-api/spacex.types';
-import IcFeatured from 'openland-icons/s/ic-featured-16.svg';
+import IcFeatured from 'openland-icons/s/ic-verified-16.svg';
 
 const secondary = css`
     color: var(--foregroundSecondary);
@@ -375,7 +375,7 @@ export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
                             </span>
                             {highlightFeaturedChat && (
                                 <div className={featuredIcon}>
-                                    <UIcon icon={<IcFeatured />} color="var(--accentNegative)" />
+                                    <UIcon icon={<IcFeatured />} color={'#3DA7F2' /* special: verified/featured color */} />
                                 </div>
                             )}
                             {chat.settings.mute && (
