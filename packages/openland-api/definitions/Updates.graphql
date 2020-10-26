@@ -72,7 +72,6 @@ query GetDifference($state: String!) {
         state
         hasMore
         sequences {
-            pts
             events {
                 pts
                 event {
