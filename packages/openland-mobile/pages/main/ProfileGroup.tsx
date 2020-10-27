@@ -320,7 +320,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 titleColor={highlightGroup ? theme.accentPositive : undefined}
                 subtitle={plural(group.membersCount, ['member', 'members'])}
                 actionPrimary={{
-                    title: group.isChannel ? 'View channel' : 'View chat',
+                    title: group.isChannel ? 'View channel' : 'View group',
                     onPress: handleSend
                 }}
             >

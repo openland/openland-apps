@@ -61,6 +61,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         shortname,
         premiumSettings,
         featured,
+        isChannel,
     } = group;
 
     const onCopyLinkClick = React.useCallback(() => {
@@ -94,7 +95,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
             avatar={{ photo, id, title }}
         >
             <UButton
-                text="View group"
+                text={isChannel ? 'View channel' : 'View group'}
                 path={`/mail/${id}`}
                 size="large"
                 shape="square"
