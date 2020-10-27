@@ -193,7 +193,7 @@ export class MainUpdatesSubscription<T> {
             }
 
             // Handle vt
-            if (event.seq < this._currentSeq && this._vtSeq < event.seq) {
+            if (event.seq <= this._currentSeq && this._vtSeq < event.seq) {
                 this._vt = event.checkpoint;
                 this._vtSeq = event.seq;
                 this._handler!({ type: 'checkpoint', vt: this._vt });
