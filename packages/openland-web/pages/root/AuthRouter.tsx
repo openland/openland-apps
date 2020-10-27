@@ -2,6 +2,7 @@ import * as React from 'react';
 import { UserInfoContext } from '../../components/UserInfo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { normalizeUrl } from 'openland-x-utils/normalizeUrl';
 import { extractRedirect } from './router/extractRedirect';
 import { isRootPath } from './router/isRootPath';
 import { redirectSuffix } from './router/redirectSuffix';
@@ -64,7 +65,7 @@ const ShortnameResolver = React.memo(
                                 text="Apply to join"
                                 as="a"
                                 target="_blank"
-                                href={shortnameItem.applyLink}
+                                href={normalizeUrl(shortnameItem.applyLink)}
                             />
                         ) : (
                             <UButton
