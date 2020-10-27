@@ -3676,6 +3676,7 @@ input UpdateSettingsInput {
 }
 
 type UpdatesSequenceDifference {
+  after: Int!
   sequence: Sequence!
   events: [UpdatesDifferenceEvent!]!
 }

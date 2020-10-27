@@ -23,6 +23,9 @@ export class MainSequenceState<T> {
         this._invalid = !state;
         if (this._checkpoint) {
             this._sequencer.reset(this._checkpoint.seq);
+            this._locked = this._invalid;
+        } else {
+            this._locked = true;
         }
     }
 
@@ -42,8 +45,12 @@ export class MainSequenceState<T> {
         if (this._checkpoint) {
             throw Error('Already inited');
         }
+        if (!this._locked) {
+            throw Error('Not locked');
+        }
         this._checkpoint = { seq, state };
         this._sequencer.reset(this._checkpoint.seq);
+        this._locked = false;
         tx.writeInt('updates.seq', seq);
         tx.write('updates.state', state);
         let drained = this._sequencer.drain();
