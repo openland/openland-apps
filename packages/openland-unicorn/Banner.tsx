@@ -295,8 +295,10 @@ let useUpdateBanner = () => {
                     console.log('update-banner: rechecking', newVersion);
                     if (await queryVersion() === newVersion && run) {
                         console.log('update-banner: recheck successful');
+                        if (!(lastStableVersion === 'development' && newVersion === 'unknown')) {
+                            setShow(true);
+                        }
                         lastStableVersion = newVersion;
-                        setShow(true);
                     }
                 }
             }
