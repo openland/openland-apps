@@ -77,6 +77,9 @@ const scrollContainer = css`
     justify-content: flex-start;
     flex-grow: 0;
     flex-shrink: 1;
+`;
+
+const scrollContainerScroll = css`
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
     background-color: var(--backgroundPrimary);
@@ -208,7 +211,10 @@ export const InviteLandingComponentLayout = React.memo(
                 {props.noLogin && isMobile && <AuthMobileHeader />}
                 <div className={rootContainer}>
                     <div className={rootContent}>
-                        <div className={scrollContainer} ref={scrollRef}>
+                        <div
+                            className={cx(scrollContainer, showShadow && scrollContainerScroll)}
+                            ref={scrollRef}
+                        >
                             <div className={avatarsContainer}>
                                 <UAvatar
                                     photo={photo}
