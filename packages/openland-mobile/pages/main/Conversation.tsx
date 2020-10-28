@@ -11,7 +11,7 @@ import { ChatHeader } from './components/ChatHeader';
 import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/ChatHeaderAvatar';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
-import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType, StickerFragment, RoomCallsMode } from 'openland-api/spacex.types';
+import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType, StickerFragment, RoomCallsMode, MessageAttachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
@@ -209,6 +209,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         if (state.action === 'edit' && state.messages.length > 0) {
             let messageToEdit = state.messages.map(convertMessageBack)[0];
+            let fileAttachments = (state.messages[0].attachments?.filter(x => x.__typename === 'MessageAttachmentFile') || []) as MessageAttachments_MessageAttachmentFile[];
             const loader = Toast.loader();
             loader.show();
             try {
@@ -216,7 +217,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     messageId: messageToEdit.id,
                     message: tx,
                     mentions,
-                    spans: findSpans(tx)
+                    spans: findSpans(tx),
+                    fileAttachments: fileAttachments.map(x => ({ fileId: x.fileId })),
                 });
             } catch (e) {
                 Alert.alert(e.message);
