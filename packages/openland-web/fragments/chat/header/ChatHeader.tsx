@@ -19,6 +19,7 @@ import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
 import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
 import NotificationsOffIcon from 'openland-icons/s/ic-notifications-off-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
+import SearchIcon from 'openland-icons/s/ic-search-24.svg';
 import MutedIcon from 'openland-icons/s/ic-muted-16.svg';
 import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
 import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
@@ -40,6 +41,7 @@ import { useToast } from 'openland-web/components/unicorn/UToast';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 import { RoomCallsMode, RoomChat_room } from 'openland-api/spacex.types';
 import IcFeatured from 'openland-icons/s/ic-featured-16.svg';
+import { ChatSearch } from '../chatSearch/ChatSearch';
 
 const secondary = css`
     color: var(--foregroundSecondary);
@@ -151,7 +153,7 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
     );
 };
 
-const MenuComponent = (props: { ctx: UPopperController; id: string; savedMessages?: boolean }) => {
+const MenuComponent = (props: { ctx: UPopperController; id: string; savedMessages?: boolean, onSearchClick: () => void }) => {
     const layout = useLayout();
     const client = useClient();
     const tabRouter = useTabRouter();
@@ -219,6 +221,13 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; savedMessage
     }
 
     res.item({
+        title: 'Search messages',
+        icon: <SearchIcon />,
+        action: props.onSearchClick,
+        closeDelay: 400,
+    });
+
+    res.item({
         title: 'Media, files, links',
         icon: <AttachIcon />,
         path: `/mail/${props.id}/shared`,
@@ -277,6 +286,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; savedMessage
 export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
     const { chat } = props;
     const layout = useLayout();
+    const [searchEnabled, setSearchEnabled] = React.useState(false);
     const messenger = React.useContext(MessengerContext);
 
     const privateRoom = chat.__typename === 'PrivateRoom' ? chat : undefined;
@@ -306,6 +316,15 @@ export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
     const showInviteButton = layout === 'desktop' && (canAddDirectly || canGetInviteLink);
 
     const highlightFeaturedChat = sharedRoom && sharedRoom.featured;
+
+    const onSearchClick = React.useCallback(() => setSearchEnabled(true), [setSearchEnabled]);
+    const onSearchClose = React.useCallback(() => setSearchEnabled(false), [setSearchEnabled]);
+
+    if (searchEnabled) {
+        return (
+            <ChatSearch onSearchClose={onSearchClose} chatId={chat.id}/>
+        );
+    }
 
     return (
         <XView
@@ -426,7 +445,7 @@ export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
                 <UMoreButton
                     menu={(ctx) => (
                         <React.Suspense fallback={<div style={{ width: 240, height: 100 }} />}>
-                            <MenuComponent ctx={ctx} id={chat.id} savedMessages={isSavedMessages} />
+                            <MenuComponent ctx={ctx} id={chat.id} savedMessages={isSavedMessages} onSearchClick={onSearchClick}/>
                         </React.Suspense>
                     )}
                     size="large-densed"

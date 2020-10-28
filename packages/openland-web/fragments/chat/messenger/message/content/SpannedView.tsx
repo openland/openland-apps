@@ -49,6 +49,10 @@ const ironyTextClassName = css`
     color: var(--accentNegative);
 `;
 
+const searchHighlightClassName = css`
+    background-color: var(--accentPrimaryTrans);
+`;
+
 const codeInlineClassName = css`
     padding-left: 6px;
     padding-right: 6px;
@@ -491,6 +495,8 @@ export const SpanView = React.memo<{
         return <span className={cx(loudTextClassName, TextTitle2)}>{children}</span>;
     } else if (span.type === 'rotating') {
         return <span className={cx(rotatingTextClassName, TextTitle2)}>{children}</span>;
+    } else if (span.type === 'search_highlight') {
+        return <span className={searchHighlightClassName}>{children}</span>;
     } else if (span.type === 'insane') {
         return <span className={cx(insaneTextClassName, TextTitle2)}>{children}</span>;
     } else if (span.type === 'irony') {

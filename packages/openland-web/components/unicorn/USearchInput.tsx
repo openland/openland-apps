@@ -13,6 +13,7 @@ const field = css`
     background-color: var(--backgroundTertiaryTrans);
     border-radius: 8px;
     padding: 8px 40px 8px 36px;
+    flex-shrink: 1;
     color: var(--foregroundPrimary);
 
     &:hover {
@@ -83,6 +84,17 @@ const searchIconWrapper = css`
     }
 `;
 
+const paddedRight = css`
+    padding-right: 120px;
+`;
+
+const nothingFoundClassName = css`
+    position: absolute;
+    top: 7px;
+    right: 16px;
+    color: var(--foregroundTertiary);
+`;
+
 interface USearchInputProps extends XViewProps {
     value?: string;
     onChange?: (e: string) => void;
@@ -93,6 +105,7 @@ interface USearchInputProps extends XViewProps {
     autoFocus?: boolean;
     placeholder?: string;
     rounded?: boolean;
+    showNothingFound?: boolean;
     className?: string;
     loading?: boolean;
 }
@@ -104,7 +117,7 @@ export interface USearchInputRef {
 }
 
 export const USearchInput = React.forwardRef((props: USearchInputProps, ref: React.RefObject<USearchInputRef>) => {
-    const { value, onChange, autoFocus, onKeyDown, onFocus, onBlur, rounded, loading, className, placeholder = 'Search', onCancel, ...other } = props;
+    const { value, onChange, autoFocus, onKeyDown, onFocus, onBlur, rounded, loading, className, showNothingFound, placeholder = 'Search', onCancel, ...other } = props;
 
     const [val, setValue] = React.useState(typeof value === 'string' ? value : '');
     const [focused, setFocused] = React.useState(!!autoFocus);
@@ -159,6 +172,13 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
     }));
 
     const showClear = (props.value && props.value.length > 0) || (!!onCancel && focused);
+    const inputClassNames = cx(
+        'x',
+        TextBody,
+        field,
+        rounded && fieldRounded,
+        showNothingFound && paddedRight,
+    );
 
     return (
         <XView position="relative" {...other}>
@@ -176,7 +196,7 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
             )}
             <input
                 type="search"
-                className={cx('x', TextBody, field, rounded && fieldRounded)}
+                className={inputClassNames}
                 value={val || ''}
                 onChange={e => handleChange(e.target.value)}
                 onKeyDown={onKeyDown}
@@ -187,6 +207,7 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
                 ref={inputRef}
                 autoComplete="openland-search" // chrome does not *always* follow standards and *sometimes* ignores autocomplete="off", hence we must use arbitrary values
             />
+            {showNothingFound && <div className={cx(nothingFoundClassName, TextBody)}>Nothing found</div>}
         </XView>
     );
 });

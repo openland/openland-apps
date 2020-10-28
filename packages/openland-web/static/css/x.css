@@ -57,11 +57,10 @@ html {
     /* end interactive colors */
     --boxShadowModal: 0px 8px 48px rgba(0, 0, 0, 0.16), 0px 0px 96px rgba(0, 0, 0, 0.08);
 
-    --accentPrimaryTrans: rgba(24, 133, 242, 0.24);
-
     --accentPrimary: #248BF2;
     --accentPrimaryHover: #3399FF;
     --accentPrimaryActive: #1677D9;
+    --accentPrimaryTrans: rgba(24, 133, 242, 0.24);
 
     --accentMuted: #4595E5;
     --accentMutedHover: #4595E5;
@@ -227,6 +226,7 @@ html.dark {
     --accentPay: #898B8F;
     --accentPayHover: #898B8F;
     --accentPayActive: #898B8F;
+    --accentPrimaryTrans: rgba(255, 255, 255, 0.16);
 
     --border: rgba(255, 255, 255, 0.08);
     --borderLight: rgba(255, 255, 255, 0.04);

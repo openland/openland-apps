@@ -104,7 +104,7 @@ interface MessageSenderNameProps {
     overrideName?: string | null;
 }
 
-const MessageSenderName = React.memo((props: MessageSenderNameProps) => {
+export const MessageSenderName = React.memo((props: MessageSenderNameProps) => {
     const router = React.useContext(XViewRouterContext)!;
     const [show, instantHide] = useUserPopper({
         user: props.sender,
@@ -125,7 +125,7 @@ const MessageSenderName = React.memo((props: MessageSenderNameProps) => {
     );
 });
 
-const MessageSenderFeatured = React.memo(
+export const MessageSenderFeatured = React.memo(
     (props: { senderBadgeNameEmojify: string | JSX.Element }) => {
         const [show] = useCaptionPopper({ text: props.senderBadgeNameEmojify });
         return (
@@ -136,7 +136,7 @@ const MessageSenderFeatured = React.memo(
     },
 );
 
-const MessageSenderOrg = React.memo(
+export const MessageSenderOrg = React.memo(
     (props: { organization: MessageSender_primaryOrganization }) => (
         <ULink
             path={`/${props.organization.shortname || props.organization.id}`}
@@ -147,7 +147,7 @@ const MessageSenderOrg = React.memo(
     ),
 );
 
-const MessageTime = React.memo(
+export const MessageTime = React.memo(
     (props: { mId?: string; time: number; dateFormat: 'time' | 'date-time' }) => {
         const router = React.useContext(XViewRouterContext);
         const tooltipText = React.useMemo(
@@ -229,7 +229,7 @@ export const MessageSenderContent = React.memo((props: MessageSenderContentProps
     </div>
 ));
 
-const MessageTimeShort = React.memo((props: { mId?: string; date: number }) => {
+export const MessageTimeShort = React.memo((props: { mId?: string; date: number }) => {
     const router = React.useContext(XViewRouterContext);
 
     return (
