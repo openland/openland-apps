@@ -31,7 +31,6 @@ interface ChatSearchProps {
 }
 
 const messagesWrapperClassName = css`
-    padding-top: 96px;
     padding-bottom: 35px;
 `;
 
