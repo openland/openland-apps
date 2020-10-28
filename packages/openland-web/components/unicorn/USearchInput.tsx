@@ -7,18 +7,31 @@ import ThinLoaderIcon from 'openland-icons/s/ic-loader-thin-16.svg';
 import { TextBody } from 'openland-web/utils/TextStyles';
 import { rotate } from 'openland-x/XLoader';
 
-const field = css`
-    appearance: textfield;
-    position: relative;
-    background-color: var(--backgroundTertiaryTrans);
-    border-radius: 8px;
+const inputWrapper = css`
+    display: flex;
+    flex-direction: row;
+    height: 40px;
     padding: 8px 40px 8px 36px;
-    flex-shrink: 1;
-    color: var(--foregroundPrimary);
-
+    border-radius: 8px;
+    align-items: center;
+    background-color: var(--backgroundTertiaryTrans);
+    
     &:hover {
         background-color: var(--backgroundTertiaryHoverTrans);
     }
+`;
+
+const inputWrapperRounded = css`
+    border-radius: 100px;
+    padding: 4px 40px 4px 36px;
+`;
+
+const field = css`
+    appearance: textfield;
+    position: relative;
+    flex-shrink: 1;
+    width: 100%;
+    color: var(--foregroundPrimary);
 
     &::-webkit-search-cancel-button {
         display: none;
@@ -32,11 +45,6 @@ const field = css`
         color: var(--foregroundTertiary);
         opacity: 1;
     }
-`;
-
-const fieldRounded = css`
-    border-radius: 100px;
-    padding: 4px 40px 4px 36px;
 `;
 
 const resetClassName = css`
@@ -84,15 +92,11 @@ const searchIconWrapper = css`
     }
 `;
 
-const paddedRight = css`
-    padding-right: 120px;
-`;
-
-const nothingFoundClassName = css`
-    position: absolute;
-    top: 7px;
-    right: 16px;
+const messageClassName = css`
+    padding-left: 16px;
+    margin-right: -24px;
     color: var(--foregroundTertiary);
+    flex-shrink: 0;
 `;
 
 interface USearchInputProps extends XViewProps {
@@ -105,7 +109,7 @@ interface USearchInputProps extends XViewProps {
     autoFocus?: boolean;
     placeholder?: string;
     rounded?: boolean;
-    showNothingFound?: boolean;
+    message?: string;
     className?: string;
     loading?: boolean;
 }
@@ -117,7 +121,7 @@ export interface USearchInputRef {
 }
 
 export const USearchInput = React.forwardRef((props: USearchInputProps, ref: React.RefObject<USearchInputRef>) => {
-    const { value, onChange, autoFocus, onKeyDown, onFocus, onBlur, rounded, loading, className, showNothingFound, placeholder = 'Search', onCancel, ...other } = props;
+    const { value, onChange, autoFocus, onKeyDown, onFocus, onBlur, rounded, loading, className, message, placeholder = 'Search', onCancel, ...other } = props;
 
     const [val, setValue] = React.useState(typeof value === 'string' ? value : '');
     const [focused, setFocused] = React.useState(!!autoFocus);
@@ -176,8 +180,6 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
         'x',
         TextBody,
         field,
-        rounded && fieldRounded,
-        showNothingFound && paddedRight,
     );
 
     return (
@@ -194,20 +196,22 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
                     <ClearIcon />
                 </div>
             )}
-            <input
-                type="search"
-                className={inputClassNames}
-                value={val || ''}
-                onChange={e => handleChange(e.target.value)}
-                onKeyDown={onKeyDown}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                placeholder={placeholder}
-                autoFocus={autoFocus}
-                ref={inputRef}
-                autoComplete="openland-search" // chrome does not *always* follow standards and *sometimes* ignores autocomplete="off", hence we must use arbitrary values
-            />
-            {showNothingFound && <div className={cx(nothingFoundClassName, TextBody)}>Nothing found</div>}
+            <div className={cx(inputWrapper, rounded && inputWrapperRounded)}>
+                <input
+                    type="search"
+                    value={val || ''}
+                    className={inputClassNames}
+                    onChange={e => handleChange(e.target.value)}
+                    onKeyDown={onKeyDown}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    placeholder={placeholder}
+                    autoFocus={autoFocus}
+                    ref={inputRef}
+                    autoComplete="openland-search" // chrome does not *always* follow standards and *sometimes* ignores autocomplete="off", hence we must use arbitrary values
+                />
+                {message && <div className={cx(messageClassName, TextBody)}>{message}</div>}
+            </div>
         </XView>
     );
 });
