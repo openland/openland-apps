@@ -22,7 +22,7 @@ import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import AtIcon from 'openland-icons/s/ic-at-24.svg';
 import PriceIcon from 'openland-icons/s/ic-tag-price-24.svg';
-import IcFeatured from 'openland-icons/s/ic-verified-16.svg';
+import IcFeatured from 'openland-icons/s/ic-verified-2-16.svg';
 
 const listItemWrapper = css`
     width: 250px;

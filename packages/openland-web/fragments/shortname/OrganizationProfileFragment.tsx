@@ -25,7 +25,7 @@ import TwitterIcon from 'openland-icons/s/ic-twitter-24-transparent.svg';
 import FacebookIcon from 'openland-icons/s/ic-facebook-24-transparent.svg';
 import InstagramIcon from 'openland-icons/s/ic-instagram-24-transparent.svg';
 import LinkedInIcon from 'openland-icons/s/ic-linkedin-24-transparent.svg';
-import IcFeatured from 'openland-icons/s/ic-verified-16.svg';
+import IcFeatured from 'openland-icons/s/ic-verified-2-16.svg';
 
 const listItemWrapper = css`
     width: 250px;
