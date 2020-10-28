@@ -25,7 +25,7 @@ import TwitterIcon from 'openland-icons/s/ic-twitter-24-transparent.svg';
 import FacebookIcon from 'openland-icons/s/ic-facebook-24-transparent.svg';
 import InstagramIcon from 'openland-icons/s/ic-instagram-24-transparent.svg';
 import LinkedInIcon from 'openland-icons/s/ic-linkedin-24-transparent.svg';
-import IcFeatured from 'openland-icons/s/ic-featured-16.svg';
+import IcFeatured from 'openland-icons/s/ic-verified-16.svg';
 
 const listItemWrapper = css`
     width: 250px;
@@ -99,7 +99,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 titleRightIcon={
                     featured ? (
                         <div className={featuredIcon}>
-                            <UIcon icon={<IcFeatured />} color="var(--accentNegative)" />
+                            <UIcon icon={<IcFeatured />} color={'#3DA7F2' /* special: verified/featured color */} />
                         </div>
                     ) : undefined
                 }

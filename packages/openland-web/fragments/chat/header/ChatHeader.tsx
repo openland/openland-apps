@@ -1,19 +1,20 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
+import { normalizeUrl } from 'openland-x-utils/normalizeUrl';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { css, cx } from 'linaria';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useClient } from 'openland-api/useClient';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MessagesActionsHeader } from './MessagesActionsHeader';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
-import { MessengerEngine } from 'openland-engines/MessengerEngine';
+import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
 import ExternalCallIcon from 'openland-icons/s/ic-call-external-24.svg';
 import InviteIcon from 'openland-icons/s/ic-invite-24.svg';
+import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
 import SettingsIcon from 'openland-icons/s/ic-edit-24.svg';
 import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
 import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
@@ -22,15 +23,14 @@ import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import SearchIcon from 'openland-icons/s/ic-search-24.svg';
 import MutedIcon from 'openland-icons/s/ic-muted-16.svg';
 import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
-import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { showAddMembersModal } from '../showAddMembersModal';
 import {
-    showRoomEditModal,
     showLeaveChatConfirmation,
+    showRoomEditModal,
 } from 'openland-web/fragments/settings/components/groupProfileModals';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
-import { TextDensed, TextStyles, HoverAlpha } from 'openland-web/utils/TextStyles';
+import { HoverAlpha, TextDensed, TextStyles } from 'openland-web/utils/TextStyles';
 import { emoji } from 'openland-y-utils/emoji';
 import { useLastSeen, User } from 'openland-y-utils/LastSeen';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -40,9 +40,8 @@ import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 import { RoomCallsMode, RoomChat_room } from 'openland-api/spacex.types';
-import IcFeatured from 'openland-icons/s/ic-featured-16.svg';
+import IcFeatured from 'openland-icons/s/ic-verified-16.svg';
 import { ChatSearch } from '../chatSearch/ChatSearch';
-
 const secondary = css`
     color: var(--foregroundSecondary);
     padding-left: 4px;
@@ -110,13 +109,6 @@ const ChatOnlinesTitle = (props: { id: string }) => {
         </span>
     );
 };
-
-function normalizeUrl(url: any): string {
-    if (!url || typeof url !== 'string') {
-        return '';
-    }
-    return /^https?:\/\//.test(url) ? url : 'http://' + url;
-}
 
 const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) => {
     const calls = props.messenger.calls;
@@ -204,6 +196,20 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; savedMessage
                 showVideoCallModal();
             },
             disabled: currentSession ? currentSession.conversationId === chat.id : false,
+        });
+    }
+
+    if (
+        sharedRoom &&
+        sharedRoom.callSettings.mode === RoomCallsMode.LINK &&
+        sharedRoom.callSettings.callLink
+    ) {
+        res.item({
+            title: 'Call',
+            icon: <ExternalCallIcon />,
+            action: () => {
+                window.open(normalizeUrl(sharedRoom.callSettings.callLink), '_blank');
+            },
         });
     }
 
@@ -394,7 +400,10 @@ export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
                             </span>
                             {highlightFeaturedChat && (
                                 <div className={featuredIcon}>
-                                    <UIcon icon={<IcFeatured />} color="var(--accentNegative)" />
+                                    <UIcon
+                                        icon={<IcFeatured />}
+                                        color={'#3DA7F2' /* special: verified/featured color */}
+                                    />
                                 </div>
                             )}
                             {chat.settings.mute && (

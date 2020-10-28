@@ -57,8 +57,52 @@ export class Transaction {
         this.holder.write(key, value);
     }
 
+    writeBoolean(key: string, value: boolean) {
+        this.write(key, value ? 'true' : 'false');
+    }
+
+    writeInt(key: string, value: number) {
+        if (!Number.isSafeInteger(value)) {
+            throw Error('Value is not integer');
+        }
+        this.write(key, value.toString());
+    }
+
+    writeJson(key: string, value: any) {
+        this.write(key, JSON.stringify(value));
+    }
+
     read = (key: string): Promise<string | null> => {
         return this.holder.read(key);
+    }
+
+    async readBoolean(key: string): Promise<boolean | null> {
+        let res = await this.read(key);
+        if (res === null) {
+            return null;
+        } else if (res === 'true') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    async readInt(key: string): Promise<number | null> {
+        let res = await this.read(key);
+        if (res === null) {
+            return null;
+        } else {
+            return Number.parseInt(res, 10);
+        }
+    }
+
+    async readJson<T extends {} = {}>(key: string): Promise<T | null> {
+        let res = await this.read(key);
+        if (res === null) {
+            return null;
+        } else {
+            return JSON.parse(res) as T;
+        }
     }
 }
 
@@ -75,7 +119,7 @@ export class Persistence {
         this.store = store;
     }
 
-    read = async (key: string): Promise<string | null> => {
+    async read(key: string): Promise<string | null> {
         return new Promise<string | null>(resolve => {
             let ex = this.readRequests.get(key);
             if (ex) {
@@ -85,6 +129,35 @@ export class Persistence {
             }
             this.requestReadIfNeeded();
         });
+    }
+
+    async readBoolean(key: string): Promise<boolean | null> {
+        let res = await this.read(key);
+        if (res === null) {
+            return null;
+        } else if (res === 'true') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    async readInt(key: string): Promise<number | null> {
+        let res = await this.read(key);
+        if (res === null) {
+            return null;
+        } else {
+            return Number.parseInt(res, 10);
+        }
+    }
+
+    async readJson<T extends {} = {}>(key: string): Promise<T | null> {
+        let res = await this.read(key);
+        if (res === null) {
+            return null;
+        } else {
+            return JSON.parse(res) as T;
+        }
     }
 
     private requestReadIfNeeded() {
@@ -116,7 +189,7 @@ export class Persistence {
         })();
     }
 
-    inTx = async <T>(handler: (tx: Transaction) => Promise<T>) => {
+    async inTx<T>(handler: (tx: Transaction) => Promise<T>) {
         return await this.writeLock.inLock(async () => {
             let holder = new TransactionHolder(this);
             let tx = new Transaction(holder);

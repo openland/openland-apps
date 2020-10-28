@@ -1885,6 +1885,7 @@ type Mutation {
   debugMigrateToNewerCounters: Boolean!
   debugUserAuth(id: ID!): Boolean!
   debugCreateOrganizationMailing(oid: ID!, uid: ID!, message: String!, spans: [MessageSpanInput!]): Boolean!
+  debugPaymentCancel(id: ID!): Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2795,6 +2796,7 @@ type Query {
   alphaResolveInvite(key: String!): ResolveInviteEntry
   updatesState: UpdatesState!
   updatesDifference(state: String!): UpdatesDifference!
+  sequenceDifference(id: ID!, seq: Int!): SequenceDifference!
 
   """phonebookRecords(first: Int!, after: ID!): PhonebookRecordConnection!"""
   phonebookWasExported: Boolean!
@@ -3153,6 +3155,12 @@ type SequenceChat implements Sequence {
 type SequenceCommon implements Sequence {
   id: ID!
   unread: Int!
+}
+
+type SequenceDifference {
+  sequence: Sequence!
+  events: [UpdatesDifferenceEvent!]!
+  hasMore: Boolean!
 }
 
 type ServiceMessage implements ModernMessage {
@@ -3668,8 +3676,8 @@ input UpdateSettingsInput {
 }
 
 type UpdatesSequenceDifference {
+  after: Int!
   sequence: Sequence!
-  pts: Int!
   events: [UpdatesDifferenceEvent!]!
 }
 

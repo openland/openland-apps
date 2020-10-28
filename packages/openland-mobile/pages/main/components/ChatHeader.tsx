@@ -62,8 +62,8 @@ const SharedChatHeaderContent = React.memo((props: { room: RoomTiny_room_SharedR
                 {room.featured && theme.displayFeaturedIcon && (
                     <Image
                         alignSelf="center"
-                        source={require('assets/ic-featured-16.png')}
-                        style={{ tintColor: theme.accentNegative, marginLeft: 4, width: 16, height: 16 }}
+                        source={require('assets/ic-verified-16.png')}
+                        style={{ tintColor: '#3DA7F2' /* special: verified/featured color */, marginLeft: 4, width: 16, height: 16 }}
                     />
                 )}
                 {room.settings.mute && (

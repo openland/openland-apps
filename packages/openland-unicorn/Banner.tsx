@@ -269,6 +269,7 @@ let useUpdateBanner = () => {
     }, []);
     React.useEffect(() => {
         let lastStableVersion = getConfig().release || '';
+        console.log('update-banner: initial version', lastStableVersion);
         let run = true;
         let breaker: (() => void) | null = null;
 
@@ -284,14 +285,20 @@ let useUpdateBanner = () => {
                     break;
                 }
                 const newVersion = await queryVersion();
+                console.log('update-banner: new version', newVersion, 'old version', lastStableVersion, 'neq', newVersion !== lastStableVersion);
                 if (newVersion !== lastStableVersion) {
+                    console.log('update-banner: recheck delay');
                     delay = delayBreakable(60000);
                     breaker = delay.resolver;
                     await delay.promise;
                     breaker = null;
+                    console.log('update-banner: rechecking', newVersion);
                     if (await queryVersion() === newVersion && run) {
+                        console.log('update-banner: recheck successful');
+                        if (!(lastStableVersion === 'development' && newVersion === 'unknown')) {
+                            setShow(true);
+                        }
                         lastStableVersion = newVersion;
-                        setShow(true);
                     }
                 }
             }

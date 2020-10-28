@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
+import { normalizeUrl } from 'openland-x-utils/normalizeUrl';
 import { TextTitle1, TextLabel1, TextBody } from 'openland-web/utils/TextStyles';
 import { Page } from 'openland-unicorn/Page';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
@@ -68,7 +69,7 @@ export const PrivateCommunityView = React.memo((props: PrivateCommunityViewProps
                         size="large"
                         as="a"
                         target="_blank"
-                        href={applyLink}
+                        href={normalizeUrl(applyLink)}
                     />
                 )}
                 {!applyLinkEnabled && (

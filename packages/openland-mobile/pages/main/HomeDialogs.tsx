@@ -65,7 +65,7 @@ const DialogsComponent = React.memo((props: PageProps) => {
 
     return (
         <ZTrack event="mail_view">
-            <SHeader title={props.router.params.title || (props.router.params.share ? 'Share with' : 'Chats')} />
+            <SHeader title={props.router.params.title || (props.router.params.share ? 'Share with' : 'Chats')} searchPlaceholder="Chats, messages, and more" />
             {!props.router.params.share && !props.router.params.title && (
                 <SHeaderButton
                     title="New"

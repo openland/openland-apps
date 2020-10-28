@@ -22,7 +22,7 @@ import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import AtIcon from 'openland-icons/s/ic-at-24.svg';
 import PriceIcon from 'openland-icons/s/ic-tag-price-24.svg';
-import IcFeatured from 'openland-icons/s/ic-featured-16.svg';
+import IcFeatured from 'openland-icons/s/ic-verified-16.svg';
 
 const listItemWrapper = css`
     width: 250px;
@@ -61,6 +61,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         shortname,
         premiumSettings,
         featured,
+        isChannel,
     } = group;
 
     const onCopyLinkClick = React.useCallback(() => {
@@ -86,7 +87,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
             titleRightIcon={
                 featured ? (
                     <div className={featuredIcon}>
-                        <UIcon icon={<IcFeatured />} color="var(--accentNegative)" />
+                        <UIcon icon={<IcFeatured />} color={'#3DA7F2' /* special: verified/featured color */} />
                     </div>
                 ) : undefined
             }
@@ -94,7 +95,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
             avatar={{ photo, id, title }}
         >
             <UButton
-                text="View group"
+                text={isChannel ? 'View channel' : 'View group'}
                 path={`/mail/${id}`}
                 size="large"
                 shape="square"
