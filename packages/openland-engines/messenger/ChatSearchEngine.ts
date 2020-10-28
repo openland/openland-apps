@@ -127,6 +127,7 @@ export class ChatSearchEngine {
     readonly dataSource: DataSource<DataSourceMessageItem | DataSourceDateItem>;
 
     private historyFullyLoaded: boolean;
+    private itemsCount: number;
     private query: string;
     private cursor: string | null;
     private state: ChatSearchState;
@@ -141,8 +142,9 @@ export class ChatSearchEngine {
         this.loadingHistory = false;
         this.historyFullyLoaded = false;
         this.cursor = null;
+        this.itemsCount = 0;
         this.query = '';
-        this.state = new ChatSearchState(this.loading, this.loadingHistory, this.historyFullyLoaded);
+        this.state = new ChatSearchState(this.loading, this.loadingHistory, this.historyFullyLoaded, this.itemsCount);
         this.dataSource = new DataSource(() => this.loadHistory());
     }
 
@@ -157,7 +159,7 @@ export class ChatSearchEngine {
     loadQuery = async (query: string) => {
         this.query = query;
         this.loading = true;
-        this.state = new ChatSearchState(this.loading, this.loadingHistory, this.historyFullyLoaded);
+        this.state = { ...this.state, loading: this.loading };
         this.onStateUpdated();
 
         const messagesSearch = await backoff(async () => {
@@ -167,6 +169,7 @@ export class ChatSearchEngine {
                     { fetchPolicy: 'network-only' },
                 )).messagesSearch;
                 this.historyFullyLoaded = !loaded.pageInfo.hasNextPage;
+                this.itemsCount = loaded.pageInfo.itemsCount;
                 this.cursor = getCursor(loaded);
                 return loaded;
             } catch (e) {
@@ -174,6 +177,7 @@ export class ChatSearchEngine {
                 throw e;
             }
         });
+
         const sourceFragments = messagesSearch.edges.reverse().map((edge) => edge.node.message) as FullMessage_GeneralMessage[];
         const dsItems: (DataSourceMessageItem | DataSourceDateItem)[] = [];
         let prevDate: string | undefined;
@@ -196,7 +200,13 @@ export class ChatSearchEngine {
         this.dataSource.initialize(dsItems, this.historyFullyLoaded, true);
 
         this.loading = false;
-        this.state = new ChatSearchState(this.loading, this.loadingHistory, this.historyFullyLoaded);
+        this.state = {
+            ...this.state,
+            loading: this.loading,
+            historyFullyLoaded: this.historyFullyLoaded,
+            itemsCount: this.itemsCount,
+        };
+
         this.onStateUpdated();
     }
 
@@ -205,7 +215,7 @@ export class ChatSearchEngine {
             return;
         }
         this.loadingHistory = true;
-        this.state = new ChatSearchState(this.loading, this.loadingHistory, this.historyFullyLoaded);
+        this.state = { ...this.state, loadingHistory: this.loadingHistory };
         this.onStateUpdated();
 
         const messagesSearch = await backoff(async () => {
@@ -248,7 +258,11 @@ export class ChatSearchEngine {
         this.dataSource.loadedMore(dsItems, this.historyFullyLoaded);
 
         this.loadingHistory = false;
-        this.state = new ChatSearchState(this.loading, this.loadingHistory, this.historyFullyLoaded);
+        this.state = {
+            ...this.state,
+            loadingHistory: this.loadingHistory,
+            historyFullyLoaded: this.historyFullyLoaded,
+        };
         this.onStateUpdated();
     }
 

@@ -64,7 +64,7 @@ const overlayClassName = css`
 
 export const ChatSearch = React.memo(({ chatId, onSearchClose }: ChatSearchProps) => {
     const messenger = React.useContext(MessengerContext);
-    const [queryInProgress, setQueryInProgress] = React.useState(false);
+    const [queryInProgress, setQueryInProgress] = React.useState(true);
     const [engine] = React.useState(() => new ChatSearchEngine(messenger, chatId));
     const [dataSourceWindow, setDataSourceWindow] = React.useState(() => {
         return new DataSourceWindow(buildMessagesSearchDataSource(engine.dataSource), 20);
