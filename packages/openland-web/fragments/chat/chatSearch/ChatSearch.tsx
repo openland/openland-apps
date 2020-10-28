@@ -54,10 +54,9 @@ const messagesListClassName = css`
 
 const overlayClassName = css`
     height: 10000px;
-    background-color: var(--backgroundTertiary);
-    opacity: 0.24;
+    background-color: var(--backgroundTertiaryTrans);
     margin: 0 -2000px;
-    box-shadow: inset 0 0 64px -10px;
+    box-shadow: inset 0px 8px 24px rgba(0, 0, 0, 0.08), inset 0px 0px 48px rgba(0, 0, 0, 0.04);
     flex-shrink: 0;
 `;
 
@@ -158,7 +157,7 @@ export const ChatSearch = React.memo(({ chatId, onSearchClose }: ChatSearchProps
                     wrapWith={dataSourceWrapper}
                 />
             </div>
-            <div className={overlayClassName} />
+            <div className={overlayClassName} onClick={onSearchClose} />
         </XView>
     );
 });
