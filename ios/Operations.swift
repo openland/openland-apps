@@ -1537,6 +1537,7 @@ private let SharedRoomPreviewSelector = obj(
                 )),
             field("title", "title", notNull(scalar("String"))),
             field("photo", "photo", notNull(scalar("String"))),
+            field("externalSocialImage", "externalSocialImage", scalar("String")),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
             field("description", "description", scalar("String")),
             field("previewMembers", "previewMembers", notNull(list(notNull(obj(
@@ -2181,6 +2182,7 @@ private let AuthResolveShortNameSelector = obj(
                         field("firstName", "firstName", notNull(scalar("String"))),
                         field("lastName", "lastName", scalar("String")),
                         field("photo", "photo", scalar("String")),
+                        field("externalSocialImage", "externalSocialImage", scalar("String")),
                         field("online", "online", notNull(scalar("Boolean")))
                     )),
                     inline("Organization", obj(
@@ -2191,6 +2193,7 @@ private let AuthResolveShortNameSelector = obj(
                         field("about", "about", scalar("String")),
                         field("applyLinkEnabled", "applyLinkEnabled", notNull(scalar("Boolean"))),
                         field("applyLink", "applyLink", scalar("String")),
+                        field("externalSocialImage", "externalSocialImage", scalar("String")),
                         field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
                         field("owner", "owner", notNull(obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
@@ -3990,20 +3993,6 @@ private let RoomMembersTinySelector = obj(
                         )))
                 )))))
         )
-private let RoomMetaPreviewSelector = obj(
-            field("alphaResolveShortName", "alphaResolveShortName", arguments(fieldValue("shortname", refValue("shortname"))), obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    inline("SharedRoom", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("title", "title", notNull(scalar("String"))),
-                        field("description", "description", scalar("String")),
-                        field("photo", "photo", notNull(scalar("String"))),
-                        field("socialImage", "socialImage", scalar("String"))
-                    ))
-                )),
-            field("roomSocialImage", "roomSocialImage", arguments(fieldValue("roomId", refValue("id"))), scalar("String"))
-        )
 private let RoomPicoSelector = obj(
             field("room", "room", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5489,7 +5478,7 @@ class Operations {
     let AuthResolveShortName = OperationDefinition(
         "AuthResolveShortName",
         .query, 
-        "query AuthResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename id name firstName lastName photo online}... on Organization{__typename id name photo about applyLinkEnabled applyLink isCommunity:alphaIsCommunity owner{__typename id}}... on SharedRoom{__typename ...SharedRoomPreview}... on DiscoverChatsCollection{__typename id}}}fragment SharedRoomPreview on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}title photo membersCount description previewMembers{__typename id name photo}}",
+        "query AuthResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename id name firstName lastName photo externalSocialImage online}... on Organization{__typename id name photo about applyLinkEnabled applyLink externalSocialImage isCommunity:alphaIsCommunity owner{__typename id}}... on SharedRoom{__typename ...SharedRoomPreview}... on DiscoverChatsCollection{__typename id}}}fragment SharedRoomPreview on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}title photo externalSocialImage membersCount description previewMembers{__typename id name photo}}",
         AuthResolveShortNameSelector
     )
     let Channel = OperationDefinition(
@@ -5981,7 +5970,7 @@ class Operations {
     let ResolvedInvite = OperationDefinition(
         "ResolvedInvite",
         .query, 
-        "query ResolvedInvite($key:String!){invite:alphaResolveInvite(key:$key){__typename ... on InviteInfo{__typename id orgId title creator{__typename ...UserShort}organization{__typename id photo name membersCount about isMine isCommunity:alphaIsCommunity}}... on AppInvite{__typename inviter{__typename ...UserShort}}... on RoomInvite{__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{__typename id kind isChannel title photo socialImage description membership membersCount previewMembers{__typename id photo name}isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}owner{__typename id firstName}}}}}shortnameItem:alphaResolveShortName(shortname:$key){__typename ... on SharedRoom{__typename ...SharedRoomPreview}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite}fragment SharedRoomPreview on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}title photo membersCount description previewMembers{__typename id name photo}}",
+        "query ResolvedInvite($key:String!){invite:alphaResolveInvite(key:$key){__typename ... on InviteInfo{__typename id orgId title creator{__typename ...UserShort}organization{__typename id photo name membersCount about isMine isCommunity:alphaIsCommunity}}... on AppInvite{__typename inviter{__typename ...UserShort}}... on RoomInvite{__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{__typename id kind isChannel title photo socialImage description membership membersCount previewMembers{__typename id photo name}isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}owner{__typename id firstName}}}}}shortnameItem:alphaResolveShortName(shortname:$key){__typename ... on SharedRoom{__typename ...SharedRoomPreview}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite}fragment SharedRoomPreview on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}title photo externalSocialImage membersCount description previewMembers{__typename id name photo}}",
         ResolvedInviteSelector
     )
     let RoomAdminMembers = OperationDefinition(
@@ -6037,12 +6026,6 @@ class Operations {
         .query, 
         "query RoomMembersTiny($roomId:ID!){members:roomMembers(roomId:$roomId){__typename user{__typename id name shortname photo primaryOrganization{__typename id name}}}}",
         RoomMembersTinySelector
-    )
-    let RoomMetaPreview = OperationDefinition(
-        "RoomMetaPreview",
-        .query, 
-        "query RoomMetaPreview($shortname:String!,$id:ID!){alphaResolveShortName(shortname:$shortname){__typename ... on SharedRoom{__typename id title description photo socialImage}}roomSocialImage(roomId:$id)}",
-        RoomMetaPreviewSelector
     )
     let RoomPico = OperationDefinition(
         "RoomPico",
@@ -7158,7 +7141,6 @@ class Operations {
         if name == "RoomMembersSearch" { return RoomMembersSearch }
         if name == "RoomMembersShort" { return RoomMembersShort }
         if name == "RoomMembersTiny" { return RoomMembersTiny }
-        if name == "RoomMetaPreview" { return RoomMetaPreview }
         if name == "RoomPico" { return RoomPico }
         if name == "RoomSearch" { return RoomSearch }
         if name == "RoomSocialImage" { return RoomSocialImage }

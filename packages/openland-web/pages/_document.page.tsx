@@ -181,45 +181,38 @@ export default class OpenlandDocument extends Document {
                 if (linkSegments.length === 2) {
                     const probableShortname = linkSegments[1];
 
-                    const shortnameData = await openland.queryResolveShortName({ shortname: probableShortname });
-
+                    const shortnameData = await openland.queryAuthResolveShortName({ shortname: probableShortname });
                     if (shortnameData.item) {
                         // default meta tags
                         metaTagsInfo = matchMetaTags[originalUrl] || {};
 
                         // user or group exists
-                        if (shortnameData.item.__typename === 'User') {
-                            const { user } = await openland.queryUserPico({ userId: shortnameData.item.id });
+                        if (shortnameData.item.__typename === 'Organization') {
+                            const org = shortnameData.item;
+                            metaTagsInfo = {
+                                title: `${org.name} on Openland`,
+                                url: urlPrefix + originalUrl,
+                                description: org.about || 'Join Openland and find inspiring communities',
+                                image: org.externalSocialImage || 'https://cdn.openland.com/shared/og/og-global-2.png',
+                            };
+                        } else if (shortnameData.item.__typename === 'User') {
+                            const user = shortnameData.item;
 
                             metaTagsInfo = {
                                 title: `${user.name} on Openland`,
                                 url: urlPrefix + originalUrl,
                                 description: `${user.firstName} uses Openland. Want to reach them? Join Openland and write a message `,
-                                image: user.photo || 'https://cdn.openland.com/shared/og/og-global-2.png',
+                                image: user.externalSocialImage || 'https://cdn.openland.com/shared/og/og-global-2.png',
                             };
                         } else if (shortnameData.item.__typename === 'SharedRoom') {
-                            const { alphaResolveShortName: room, roomSocialImage } = await openland.queryRoomMetaPreview({ shortname: probableShortname, id: shortnameData.item.id });
+                            const room = shortnameData.item;
 
-                            if (room?.__typename === 'SharedRoom') {
-                                let roomImage;
-
-                                if (room.socialImage) {
-                                    roomImage = room.socialImage;
-                                } else if (roomSocialImage) {
-                                    roomImage = roomSocialImage;
-                                } else if (room.photo && !room.photo.startsWith('ph://')) {
-                                    roomImage = room.photo;
-                                } else {
-                                    roomImage = 'https://cdn.openland.com/shared/og/og-global-2.png';
-                                }
-
-                                metaTagsInfo = {
-                                    title: `${room.title} on Openland`,
-                                    url: urlPrefix + originalUrl,
-                                    description: room.description || 'Join Openland and find inspiring communities',
-                                    image: roomImage,
-                                };
-                            }
+                            metaTagsInfo = {
+                                title: `${room.title} on Openland`,
+                                url: urlPrefix + originalUrl,
+                                description: room.description || 'Join Openland and find inspiring communities',
+                                image: room.externalSocialImage || 'https://cdn.openland.com/shared/og/og-global-2.png',
+                            };
                         }
                     }
                 }

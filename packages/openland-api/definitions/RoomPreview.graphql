@@ -18,6 +18,7 @@ fragment SharedRoomPreview on SharedRoom {
     }
     title
     photo
+    externalSocialImage
     membersCount
     description
     previewMembers {
