@@ -910,20 +910,6 @@ query ChatJoin($id: ID!) {
     }
 }
 
-query RoomMetaPreview($shortname: String!, $id: ID!) {
-    alphaResolveShortName(shortname: $shortname) {
-        ... on SharedRoom {
-            id
-            title
-            description
-            photo
-            socialImage
-        }
-    }
-
-    roomSocialImage(roomId: $id)
-}
-
 query CommonChatsWithUser($uid: ID!, $first: Int!, $after: ID) {
     commonChatsWithUser(uid: $uid, first: $first, after: $after) {
         items {

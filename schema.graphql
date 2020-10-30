@@ -1886,6 +1886,7 @@ type Mutation {
   debugUserAuth(id: ID!): Boolean!
   debugCreateOrganizationMailing(oid: ID!, uid: ID!, message: String!, spans: [MessageSpanInput!]): Boolean!
   debugPaymentCancel(id: ID!): Boolean!
+  debugInvalidateAllSocialImages: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2307,6 +2308,7 @@ type Organization {
   status: String!
   membersCount: Int!
   personal: Boolean!
+  externalSocialImage: String
   linkedFeedChannels: [FeedChannel!]!
   shortname: String
 }
@@ -2316,6 +2318,11 @@ type OrganizationChatStats {
   chat: SharedRoom!
   messagesCount: Int!
   lastMessageDate: String!
+}
+
+type OrganizationConnection {
+  items: [Organization!]!
+  cursor: String
 }
 
 type OrganizationContact {
@@ -2795,6 +2802,7 @@ type Query {
   appInviteInfo(key: String!): AppInvite
   alphaResolveInvite(key: String!): ResolveInviteEntry
   updatesState: UpdatesState!
+  sequenceState(id: ID!): Sequence!
   updatesDifference(state: String!): UpdatesDifference!
   sequenceDifference(id: ID!, seq: Int!): SequenceDifference!
 
@@ -2825,6 +2833,7 @@ type Query {
   debugGetCounters: String!
   debugExperimentalCounter(cid: ID!): String!
   debugFindUser(email: String, phone: String): User
+  debugSocialSharingImage(template: String!, title: String!, image: String!, subTitle: String!): String!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!
@@ -2899,6 +2908,7 @@ type Query {
   discoverPopularNow(first: Int!, after: String): PopularNowRoomConnection!
   discoverNewAndGrowingOrganizations(first: Int!, seed: Int!, after: String): NewAndGrowingOrganizationConnection!
   discoverPopularNowOrganizations(first: Int!, after: String): PopularNowOrganizationConnection!
+  discoverTopOrganizations(first: Int!, after: String): OrganizationConnection!
   discoverTopPremium(first: Int!, after: String): SharedRoomConnection!
   discoverTopFree(first: Int!, after: String): SharedRoomConnection!
   post(id: ID!): Post
@@ -3305,6 +3315,7 @@ type SharedRoom {
   callSettings: RoomCallSettings!
   featured: Boolean!
   owner: User
+  externalSocialImage: String
   linkedFeedChannels: [FeedChannel!]!
   shortname: String
 }
@@ -3765,6 +3776,7 @@ type User {
   alphaTwitter: String
   alphaLocations: [String!]
   chatsWithBadge: [UserChatWithBadge!]!
+  externalSocialImage: String
   online: Boolean!
   active: Boolean!
   lastSeen: String

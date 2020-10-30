@@ -30,6 +30,7 @@ query AuthResolveShortName($shortname: String!) {
             firstName
             lastName
             photo
+            externalSocialImage
             online
         }
         ... on Organization {
@@ -39,6 +40,7 @@ query AuthResolveShortName($shortname: String!) {
             about
             applyLinkEnabled
             applyLink
+            externalSocialImage
             isCommunity: alphaIsCommunity
             owner {
                 id

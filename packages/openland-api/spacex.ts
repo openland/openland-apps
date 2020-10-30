@@ -304,9 +304,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryRoomMembersTiny(variables: Types.RoomMembersTinyVariables, params?: QueryParameters): Promise<Types.RoomMembersTiny> {
         return this.query('RoomMembersTiny', variables, params);
     }
-    queryRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, params?: QueryParameters): Promise<Types.RoomMetaPreview> {
-        return this.query('RoomMetaPreview', variables, params);
-    }
     queryRoomPico(variables: Types.RoomPicoVariables, params?: QueryParameters): Promise<Types.RoomPico> {
         return this.query('RoomPico', variables, params);
     }
@@ -673,9 +670,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchRoomMembersTiny(variables: Types.RoomMembersTinyVariables, params?: QueryParameters): Promise<Types.RoomMembersTiny> {
         return this.refetch('RoomMembersTiny', variables, params);
     }
-    refetchRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, params?: QueryParameters): Promise<Types.RoomMetaPreview> {
-        return this.refetch('RoomMetaPreview', variables, params);
-    }
     refetchRoomPico(variables: Types.RoomPicoVariables, params?: QueryParameters): Promise<Types.RoomPico> {
         return this.refetch('RoomPico', variables, params);
     }
@@ -1041,9 +1035,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateRoomMembersTiny(variables: Types.RoomMembersTinyVariables, updater: (data: Types.RoomMembersTiny) => Types.RoomMembersTiny | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomMembersTiny', variables);
-    }
-    updateRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, updater: (data: Types.RoomMetaPreview) => Types.RoomMetaPreview | null): Promise<boolean> {
-        return this.updateQuery(updater, 'RoomMetaPreview', variables);
     }
     updateRoomPico(variables: Types.RoomPicoVariables, updater: (data: Types.RoomPico) => Types.RoomPico | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomPico', variables);
@@ -1606,11 +1597,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersTiny;
     useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersTiny | null {
         return this.useQuery('RoomMembersTiny', variables, params);
-    }
-    useRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMetaPreview | null;
-    useRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, params?: SpaceQueryWatchParameters): Types.RoomMetaPreview;
-    useRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, params?: SpaceQueryWatchParameters): Types.RoomMetaPreview | null {
-        return this.useQuery('RoomMetaPreview', variables, params);
     }
     useRoomPico(variables: Types.RoomPicoVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomPico | null;
     useRoomPico(variables: Types.RoomPicoVariables, params?: SpaceQueryWatchParameters): Types.RoomPico;

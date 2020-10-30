@@ -1,7 +1,5 @@
 import React from 'react';
-import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
-
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollValues } from 'openland-x/XScrollView3';
 import { ChatSearchEngine } from 'openland-engines/messenger/ChatSearchEngine';
@@ -14,13 +12,11 @@ import {
     DataSourceDateItem,
     DataSourceNewDividerItem,
 } from 'openland-engines/messenger/ConversationEngine';
-
 import { DataSourceRender } from '../messenger/view/DataSourceRender';
 import {
     buildMessagesSearchDataSource,
     DataSourceWebMessageItem,
 } from '../messenger/data/WebMessageItemDataSource';
-
 import { DateComponent } from '../messenger/view/DateComponent';
 import { ChatSearchInput } from './ChatSearchInput';
 import { ChatSearchMessage } from './ChatSearchMessage';
@@ -30,8 +26,46 @@ interface ChatSearchProps {
     onSearchClose: () => void;
 }
 
+const wrapperClassName = css`
+    width: 100%;
+    display: flex;
+    position: relative;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-direction: column;
+    opacity: 0;
+    will-change: transform;
+    animation-name: visibleClass;
+    animation-duration: 150ms;
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    animation-fill-mode: forwards;
+    @keyframes visibleClass {
+      from {
+        opacity: 0;
+        transform: translateY(-56px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+`;
+
+const hidingWrapperClass = css`
+    animation-name: hiddenClass;
+    @keyframes hiddenClass {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-56px);
+      }
+    }
+`;
+
 const messagesWrapperClassName = css`
-    padding-top: 96px;
     padding-bottom: 35px;
 `;
 
@@ -47,32 +81,39 @@ const messagesListClassName = css`
     max-height: 400px;
     background-color: var(--backgroundPrimary);
     margin: 0 -72px;
-    
-    @media(min-width: 1280px) {
-        margin: 0 -5000px;    
+
+    @media (min-width: 1280px) {
+        margin: 0 -5000px;
     }
 `;
 
 const overlayClassName = css`
     height: 10000px;
-    background-color: var(--backgroundTertiary);
-    opacity: 0.24;
+    background-color: var(--backgroundTertiaryTrans);
     margin: 0 -2000px;
-    box-shadow: inset 0 0 64px -10px;
+    box-shadow: inset 0px 8px 24px rgba(0, 0, 0, 0.08), inset 0px 0px 48px rgba(0, 0, 0, 0.04);
     flex-shrink: 0;
 `;
 
 export const ChatSearch = React.memo(({ chatId, onSearchClose }: ChatSearchProps) => {
     const messenger = React.useContext(MessengerContext);
+    const [hiding, setHiding] = React.useState(false);
     const [queryInProgress, setQueryInProgress] = React.useState(true);
     const [engine] = React.useState(() => new ChatSearchEngine(messenger, chatId));
     const [dataSourceWindow, setDataSourceWindow] = React.useState(() => {
         return new DataSourceWindow(buildMessagesSearchDataSource(engine.dataSource), 20);
     });
 
+    const onClose = React.useCallback(() => {
+        setHiding(true);
+        setTimeout(() => {
+            onSearchClose();
+        }, 150);
+    }, [hiding]);
+
     useShortcuts({
         keys: ['Escape'],
-        callback: onSearchClose,
+        callback: onClose,
     });
 
     const handleScroll = (e: XScrollValues) => {
@@ -87,21 +128,32 @@ export const ChatSearch = React.memo(({ chatId, onSearchClose }: ChatSearchProps
         }
     };
 
-    const loadQuery = React.useCallback(debounce(async (searchText: string) => {
-        if (searchText.length > 2) {
-            await engine.loadQuery(searchText);
+    const loadQuery = React.useCallback(
+        debounce(
+            async (searchText: string) => {
+                if (searchText.length > 2) {
+                    await engine.loadQuery(searchText);
 
-            const searchDataSource = buildMessagesSearchDataSource(engine.dataSource);
-            setDataSourceWindow(new DataSourceWindow(searchDataSource, 20));
-            setQueryInProgress(false);
-        }
-    }, 350, true, true), [engine, setDataSourceWindow]);
+                    const searchDataSource = buildMessagesSearchDataSource(engine.dataSource);
+                    setDataSourceWindow(new DataSourceWindow(searchDataSource, 20));
+                    setQueryInProgress(false);
+                }
+            },
+            350,
+            true,
+            true,
+        ),
+        [engine, setDataSourceWindow],
+    );
 
-    const onSearchChange = React.useCallback(async (searchText: string) => {
-        setQueryInProgress(true);
+    const onSearchChange = React.useCallback(
+        async (searchText: string) => {
+            setQueryInProgress(true);
 
-        await loadQuery(searchText);
-    }, [setQueryInProgress]);
+            await loadQuery(searchText);
+        },
+        [setQueryInProgress],
+    );
 
     const renderMessage = React.memo(
         (data: {
@@ -148,8 +200,13 @@ export const ChatSearch = React.memo(({ chatId, onSearchClose }: ChatSearchProps
     });
 
     return (
-        <XView width="100%">
-            <ChatSearchInput engine={engine} queryInProgress={queryInProgress} onSearchChange={onSearchChange} onSearchClose={onSearchClose} />
+        <div className={cx(wrapperClassName, hiding && hidingWrapperClass)}>
+            <ChatSearchInput
+                engine={engine}
+                queryInProgress={queryInProgress}
+                onSearchChange={onSearchChange}
+                onSearchClose={onClose}
+            />
             <div className={cx('x', messagesListClassName)}>
                 <DataSourceRender
                     dataSource={dataSourceWindow}
@@ -159,7 +216,7 @@ export const ChatSearch = React.memo(({ chatId, onSearchClose }: ChatSearchProps
                     wrapWith={dataSourceWrapper}
                 />
             </div>
-            <div className={overlayClassName} />
-        </XView>
+            <div className={overlayClassName} onClick={onClose} />
+        </div>
     );
 });

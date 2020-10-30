@@ -103,7 +103,7 @@ export const DiscoverHomeFragment = React.memo(() => {
 
                 <XView marginBottom={40} marginTop={20}>
                     <div className={listingsContainer}>
-                        <OrgsListingCompact title="Top communities" items={normalizePopularOrgItems(rooms.discoverPopularNowOrganizations.items)} path="/discover/top-communities" />
+                        <OrgsListingCompact title="Top communities" items={normalizePopularOrgItems(rooms.discoverTopOrganizations.items)} path="/discover/top-communities" />
                         <OrgsListingCompact title="New communities" items={rooms.discoverNewAndGrowingOrganizations.items || []} path="/discover/new-communities" />
                     </div>
                 </XView>

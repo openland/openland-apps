@@ -1543,6 +1543,7 @@ internal val SharedRoomPreviewSelector = obj(
                 )),
             field("title", "title", notNull(scalar("String"))),
             field("photo", "photo", notNull(scalar("String"))),
+            field("externalSocialImage", "externalSocialImage", scalar("String")),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
             field("description", "description", scalar("String")),
             field("previewMembers", "previewMembers", notNull(list(notNull(obj(

@@ -33,7 +33,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
     let popularRooms = normalizePopularItems(rooms.discoverPopularNow.items);
     let topFreeRooms = rooms.discoverTopFree.items || [];
     let topPremiumRooms = rooms.discoverTopPremium.items || [];
-    let popularOrgs = normalizePopularOrgItems(rooms.discoverPopularNowOrganizations.items);
+    let popularOrgs = normalizePopularOrgItems(rooms.discoverTopOrganizations.items);
     let newOrgs = rooms.discoverNewAndGrowingOrganizations.items || [];
 
     return (
@@ -99,7 +99,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                     title: 'See all', onPress: () => props.router.push('DiscoverListing', {
                         initialOrgs: popularOrgs,
                         type: 'top-orgs',
-                        after: rooms.discoverPopularNowOrganizations.cursor,
+                        after: rooms.discoverTopOrganizations.cursor,
                     })
                 } : undefined}
             >
