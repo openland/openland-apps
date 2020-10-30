@@ -1544,6 +1544,7 @@ const SharedRoomPreviewSelector = obj(
                 )),
             field('title', 'title', args(), notNull(scalar('String'))),
             field('photo', 'photo', args(), notNull(scalar('String'))),
+            field('externalSocialImage', 'externalSocialImage', args(), scalar('String')),
             field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
             field('description', 'description', args(), scalar('String')),
             field('previewMembers', 'previewMembers', args(), notNull(list(notNull(obj(
@@ -2188,6 +2189,7 @@ const AuthResolveShortNameSelector = obj(
                         field('firstName', 'firstName', args(), notNull(scalar('String'))),
                         field('lastName', 'lastName', args(), scalar('String')),
                         field('photo', 'photo', args(), scalar('String')),
+                        field('externalSocialImage', 'externalSocialImage', args(), scalar('String')),
                         field('online', 'online', args(), notNull(scalar('Boolean')))
                     )),
                     inline('Organization', obj(
@@ -2198,6 +2200,7 @@ const AuthResolveShortNameSelector = obj(
                         field('about', 'about', args(), scalar('String')),
                         field('applyLinkEnabled', 'applyLinkEnabled', args(), notNull(scalar('Boolean'))),
                         field('applyLink', 'applyLink', args(), scalar('String')),
+                        field('externalSocialImage', 'externalSocialImage', args(), scalar('String')),
                         field('alphaIsCommunity', 'isCommunity', args(), notNull(scalar('Boolean'))),
                         field('owner', 'owner', args(), notNull(obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -2688,15 +2691,11 @@ const DiscoverNoAuthSelector = obj(
                             fragment('SharedRoom', DiscoverSharedRoomSelector)
                         )))
                 ))))),
-            field('discoverPopularNowOrganizations', 'discoverPopularNowOrganizations', args(fieldValue("first", intValue(5))), notNull(obj(
+            field('discoverTopOrganizations', 'discoverTopOrganizations', args(fieldValue("first", intValue(5))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('items', 'items', args(), notNull(list(notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('organization', 'organization', args(), notNull(obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    fragment('Organization', DiscoverOrganizationSelector)
-                                ))),
-                            field('newMessages', 'newMessages', args(), notNull(scalar('Int')))
+                            fragment('Organization', DiscoverOrganizationSelector)
                         ))))),
                     field('cursor', 'cursor', args(), scalar('String'))
                 ))),
@@ -2724,15 +2723,11 @@ const DiscoverPopularNowSelector = obj(
                 )))
         );
 const DiscoverPopularOrganizationsSelector = obj(
-            field('discoverPopularNowOrganizations', 'discoverPopularNowOrganizations', args(fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
+            field('discoverTopOrganizations', 'discoverTopOrganizations', args(fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('items', 'items', args(), notNull(list(notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('organization', 'organization', args(), notNull(obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    fragment('Organization', DiscoverOrganizationSelector)
-                                ))),
-                            field('newMessages', 'newMessages', args(), notNull(scalar('Int')))
+                            fragment('Organization', DiscoverOrganizationSelector)
                         ))))),
                     field('cursor', 'cursor', args(), scalar('String'))
                 )))
@@ -2836,15 +2831,11 @@ const ExploreRoomsSelector = obj(
                         ))))),
                     field('cursor', 'cursor', args(), scalar('String'))
                 ))),
-            field('discoverPopularNowOrganizations', 'discoverPopularNowOrganizations', args(fieldValue("first", intValue(5))), notNull(obj(
+            field('discoverTopOrganizations', 'discoverTopOrganizations', args(fieldValue("first", intValue(5))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('items', 'items', args(), notNull(list(notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('organization', 'organization', args(), notNull(obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    fragment('Organization', DiscoverOrganizationSelector)
-                                ))),
-                            field('newMessages', 'newMessages', args(), notNull(scalar('Int')))
+                            fragment('Organization', DiscoverOrganizationSelector)
                         ))))),
                     field('cursor', 'cursor', args(), scalar('String'))
                 ))),
@@ -3996,20 +3987,6 @@ const RoomMembersTinySelector = obj(
                                 ))
                         )))
                 )))))
-        );
-const RoomMetaPreviewSelector = obj(
-            field('alphaResolveShortName', 'alphaResolveShortName', args(fieldValue("shortname", refValue('shortname'))), obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    inline('SharedRoom', obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        field('id', 'id', args(), notNull(scalar('ID'))),
-                        field('title', 'title', args(), notNull(scalar('String'))),
-                        field('description', 'description', args(), scalar('String')),
-                        field('photo', 'photo', args(), notNull(scalar('String'))),
-                        field('socialImage', 'socialImage', args(), scalar('String'))
-                    ))
-                )),
-            field('roomSocialImage', 'roomSocialImage', args(fieldValue("roomId", refValue('id'))), scalar('String'))
         );
 const RoomPicoSelector = obj(
             field('room', 'room', args(fieldValue("id", refValue('id'))), obj(
@@ -5492,7 +5469,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     AuthResolveShortName: {
         kind: 'query',
         name: 'AuthResolveShortName',
-        body: 'query AuthResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename id name firstName lastName photo online}... on Organization{__typename id name photo about applyLinkEnabled applyLink isCommunity:alphaIsCommunity owner{__typename id}}... on SharedRoom{__typename ...SharedRoomPreview}... on DiscoverChatsCollection{__typename id}}}fragment SharedRoomPreview on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}title photo membersCount description previewMembers{__typename id name photo}}',
+        body: 'query AuthResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename id name firstName lastName photo externalSocialImage online}... on Organization{__typename id name photo about applyLinkEnabled applyLink externalSocialImage isCommunity:alphaIsCommunity owner{__typename id}}... on SharedRoom{__typename ...SharedRoomPreview}... on DiscoverChatsCollection{__typename id}}}fragment SharedRoomPreview on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}title photo externalSocialImage membersCount description previewMembers{__typename id name photo}}',
         selector: AuthResolveShortNameSelector
     },
     Channel: {
@@ -5660,7 +5637,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     DiscoverNoAuth: {
         kind: 'query',
         name: 'DiscoverNoAuth',
-        body: 'query DiscoverNoAuth($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverCollections(first:20){__typename items{__typename ...DiscoverChatsCollectionShort}cursor}discoverEditorsChoice{__typename id image{__typename uuid crop{__typename x y w h}}chat{__typename ...DiscoverSharedRoom}}discoverPopularNowOrganizations(first:5){__typename items{__typename organization{__typename ...DiscoverOrganization}newMessages}cursor}discoverNewAndGrowingOrganizations(first:5,seed:$seed){__typename items{__typename ...DiscoverOrganization}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}fragment DiscoverChatsCollectionShort on DiscoverChatsCollection{__typename id title shortname chatsCount description image{__typename uuid crop{__typename x y w h}}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname}',
+        body: 'query DiscoverNoAuth($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverCollections(first:20){__typename items{__typename ...DiscoverChatsCollectionShort}cursor}discoverEditorsChoice{__typename id image{__typename uuid crop{__typename x y w h}}chat{__typename ...DiscoverSharedRoom}}discoverTopOrganizations(first:5){__typename items{__typename ...DiscoverOrganization}cursor}discoverNewAndGrowingOrganizations(first:5,seed:$seed){__typename items{__typename ...DiscoverOrganization}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}fragment DiscoverChatsCollectionShort on DiscoverChatsCollection{__typename id title shortname chatsCount description image{__typename uuid crop{__typename x y w h}}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname}',
         selector: DiscoverNoAuthSelector
     },
     DiscoverPopularNow: {
@@ -5672,7 +5649,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     DiscoverPopularOrganizations: {
         kind: 'query',
         name: 'DiscoverPopularOrganizations',
-        body: 'query DiscoverPopularOrganizations($first:Int!,$after:String){discoverPopularNowOrganizations(first:$first,after:$after){__typename items{__typename organization{__typename ...DiscoverOrganization}newMessages}cursor}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname}',
+        body: 'query DiscoverPopularOrganizations($first:Int!,$after:String){discoverTopOrganizations(first:$first,after:$after){__typename items{__typename ...DiscoverOrganization}cursor}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname}',
         selector: DiscoverPopularOrganizationsSelector
     },
     DiscoverState: {
@@ -5708,7 +5685,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ExploreRooms: {
         kind: 'query',
         name: 'ExploreRooms',
-        body: 'query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNowOrganizations(first:5){__typename items{__typename organization{__typename ...DiscoverOrganization}newMessages}cursor}discoverNewAndGrowingOrganizations(first:5,seed:$seed){__typename items{__typename ...DiscoverOrganization}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname}',
+        body: 'query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopOrganizations(first:5){__typename items{__typename ...DiscoverOrganization}cursor}discoverNewAndGrowingOrganizations(first:5,seed:$seed){__typename items{__typename ...DiscoverOrganization}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname}',
         selector: ExploreRoomsSelector
     },
     FeatureFlags: {
@@ -5984,7 +5961,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ResolvedInvite: {
         kind: 'query',
         name: 'ResolvedInvite',
-        body: 'query ResolvedInvite($key:String!){invite:alphaResolveInvite(key:$key){__typename ... on InviteInfo{__typename id orgId title creator{__typename ...UserShort}organization{__typename id photo name membersCount about isMine isCommunity:alphaIsCommunity}}... on AppInvite{__typename inviter{__typename ...UserShort}}... on RoomInvite{__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{__typename id kind isChannel title photo socialImage description membership membersCount previewMembers{__typename id photo name}isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}owner{__typename id firstName}}}}}shortnameItem:alphaResolveShortName(shortname:$key){__typename ... on SharedRoom{__typename ...SharedRoomPreview}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite}fragment SharedRoomPreview on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}title photo membersCount description previewMembers{__typename id name photo}}',
+        body: 'query ResolvedInvite($key:String!){invite:alphaResolveInvite(key:$key){__typename ... on InviteInfo{__typename id orgId title creator{__typename ...UserShort}organization{__typename id photo name membersCount about isMine isCommunity:alphaIsCommunity}}... on AppInvite{__typename inviter{__typename ...UserShort}}... on RoomInvite{__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{__typename id kind isChannel title photo socialImage description membership membersCount previewMembers{__typename id photo name}isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}owner{__typename id firstName}}}}}shortnameItem:alphaResolveShortName(shortname:$key){__typename ... on SharedRoom{__typename ...SharedRoomPreview}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite}fragment SharedRoomPreview on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}title photo externalSocialImage membersCount description previewMembers{__typename id name photo}}',
         selector: ResolvedInviteSelector
     },
     RoomAdminMembers: {
@@ -6040,12 +6017,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'RoomMembersTiny',
         body: 'query RoomMembersTiny($roomId:ID!){members:roomMembers(roomId:$roomId){__typename user{__typename id name shortname photo primaryOrganization{__typename id name}}}}',
         selector: RoomMembersTinySelector
-    },
-    RoomMetaPreview: {
-        kind: 'query',
-        name: 'RoomMetaPreview',
-        body: 'query RoomMetaPreview($shortname:String!,$id:ID!){alphaResolveShortName(shortname:$shortname){__typename ... on SharedRoom{__typename id title description photo socialImage}}roomSocialImage(roomId:$id)}',
-        selector: RoomMetaPreviewSelector
     },
     RoomPico: {
         kind: 'query',

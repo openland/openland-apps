@@ -12,7 +12,7 @@ const AuthDiscoverPopularOrgsInner = React.memo(() => {
 
     // initial items
     const newAndGrowing = client.useDiscoverPopularOrganizations({ first: 20 });
-    const { items: initialItems, cursor: initialCursor } = newAndGrowing.discoverPopularNowOrganizations;
+    const { items: initialItems, cursor: initialCursor } = newAndGrowing.discoverTopOrganizations;
 
     const [loading, setLoading] = React.useState<boolean>(false);
     const [after, setAfter] = React.useState<string | null>(initialCursor);
@@ -26,7 +26,7 @@ const AuthDiscoverPopularOrgsInner = React.memo(() => {
         const first = 10;
 
         const loaded = await client.queryDiscoverPopularOrganizations({ first, after });
-        const { items, cursor } = loaded.discoverPopularNowOrganizations;
+        const { items, cursor } = loaded.discoverTopOrganizations;
 
         setAfter(cursor);
         setDisplayItems(prev => prev.concat(normalizePopularOrgItems(items)));

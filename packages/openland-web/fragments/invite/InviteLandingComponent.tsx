@@ -5,7 +5,7 @@ import {
     ResolvedInvite_invite_InviteInfo_organization,
     WalletSubscriptionInterval,
     WalletSubscriptionState,
-    SharedRoomPreview,
+    ResolvedInvite_invite_RoomInvite_room, ResolvedInvite_shortnameItem_SharedRoom,
 } from 'openland-api/spacex.types';
 import { XViewRouterContext } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
@@ -26,6 +26,8 @@ import {
     AuthMobileHeader,
 } from 'openland-web/pages/root/AuthSidebarComponent';
 import { useToast } from 'openland-web/components/unicorn/UToast';
+
+type SharedRoomT = ResolvedInvite_shortnameItem_SharedRoom | ResolvedInvite_invite_RoomInvite_room;
 
 function switchOrganization(id: string, redirect?: string) {
     Cookie.set('x-openland-org', id, { path: '/' });
@@ -160,7 +162,7 @@ interface InviteLandingComponentLayoutProps {
     hideFakeDescription?: boolean;
     button?: JSX.Element;
     noLogin: boolean;
-    room?: SharedRoomPreview;
+    room?: SharedRoomT;
 }
 
 export const InviteLandingComponentLayout = React.memo(
@@ -404,7 +406,7 @@ const BuyPaidChatPassButton = (props: {
     );
 };
 
-const resolveRoomButton = (room: SharedRoomPreview, buttonText: string, key?: string) => {
+const resolveRoomButton = (room: SharedRoomT, buttonText: string, key?: string) => {
     const [loading, setLoading] = React.useState(false);
     if (room && room.isPremium && room.premiumSettings && !room.premiumPassIsActive) {
         if (
@@ -480,7 +482,7 @@ const resolveRoomButton = (room: SharedRoomPreview, buttonText: string, key?: st
     return <></>;
 };
 
-export const SharedRoomPlaceholder = ({ room }: { room: SharedRoomPreview }) => {
+export const SharedRoomPlaceholder = ({ room }: { room: ResolvedInvite_invite_RoomInvite_room }) => {
     const buttonText = room.isChannel ? 'Join channel' : 'Join group';
     const premiumSuspended =
         room &&
@@ -525,7 +527,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     }
 
     let invite = client.useResolvedInvite({ key });
-    let room: SharedRoomPreview | undefined;
+    let room: SharedRoomT | undefined;
     let organization: ResolvedInvite_invite_InviteInfo_organization | undefined;
 
     if (invite.invite && invite.invite.__typename === 'InviteInfo' && invite.invite.organization) {

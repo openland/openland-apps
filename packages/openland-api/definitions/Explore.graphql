@@ -95,12 +95,9 @@ query ExploreRooms($seed: Int!) {
         }
         cursor
     }
-    discoverPopularNowOrganizations(first: 5) {
+    discoverTopOrganizations(first: 5) {
         items {
-            organization {
-                ...DiscoverOrganization
-            }
-            newMessages
+            ...DiscoverOrganization
         }
         cursor
     }
@@ -165,12 +162,9 @@ query DiscoverNoAuth($seed: Int!) {
         }
     }
 
-    discoverPopularNowOrganizations(first: 5) {
+    discoverTopOrganizations(first: 5) {
         items {
-            organization {
-                ...DiscoverOrganization
-            }
-            newMessages
+            ...DiscoverOrganization
         }
         cursor
     }
@@ -323,12 +317,9 @@ query DiscoverTopFree($first: Int!, $after: String) {
 }
 
 query DiscoverPopularOrganizations($first: Int!, $after: String) {
-    discoverPopularNowOrganizations(first: $first, after: $after) {
+    discoverTopOrganizations(first: $first, after: $after) {
         items {
-            organization {
-                ...DiscoverOrganization
-            }
-            newMessages
+            ...DiscoverOrganization
         }
         cursor
     }

@@ -11,7 +11,7 @@ export const DiscoverPopularOrgsFragment = React.memo(() => {
 
     // initial items
     const popularOrgs = client.useDiscoverPopularOrganizations({ first: 20 });
-    const { items: initialItems, cursor: initialCursor } = popularOrgs.discoverPopularNowOrganizations;
+    const { items: initialItems, cursor: initialCursor } = popularOrgs.discoverTopOrganizations;
     const normalizedItems = normalizePopularOrgItems(initialItems);
 
     const [loading, setLoading] = React.useState<boolean>(false);
@@ -25,7 +25,7 @@ export const DiscoverPopularOrgsFragment = React.memo(() => {
         setLoading(true);
         const first = 10;
 
-        const loaded = (await client.queryDiscoverPopularOrganizations({ first, after })).discoverPopularNowOrganizations;
+        const loaded = (await client.queryDiscoverPopularOrganizations({ first, after })).discoverTopOrganizations;
         const { items, cursor } = loaded;
 
         setAfter(cursor);

@@ -21,7 +21,7 @@ const AuthDiscoverInner = React.memo((props: { seed: number }) => {
         discoverNewAndGrowing,
         discoverTopPremium,
         discoverTopFree,
-        discoverPopularNowOrganizations,
+        discoverTopOrganizations,
         discoverNewAndGrowingOrganizations
     } = client.useDiscoverNoAuth({ seed: props.seed });
     const collections = discoverCollections ? discoverCollections.items : [];
@@ -71,7 +71,7 @@ const AuthDiscoverInner = React.memo((props: { seed: number }) => {
 
                         <XView marginBottom={40} marginTop={20}>
                             <div className={listingsContainer}>
-                                <OrgsListingCompact title="Top communities" items={normalizePopularOrgItems(discoverPopularNowOrganizations.items)} path="/discover/top-communities" />
+                                <OrgsListingCompact title="Top communities" items={normalizePopularOrgItems(discoverTopOrganizations.items)} path="/discover/top-communities" />
                                 <OrgsListingCompact title="New communities" items={discoverNewAndGrowingOrganizations.items || []} path="/discover/new-communities" />
                             </div>
                         </XView>

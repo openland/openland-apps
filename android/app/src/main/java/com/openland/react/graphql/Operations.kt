@@ -105,7 +105,6 @@ object Operations {
         if (name == "RoomMembersSearch") return RoomMembersSearch
         if (name == "RoomMembersShort") return RoomMembersShort
         if (name == "RoomMembersTiny") return RoomMembersTiny
-        if (name == "RoomMetaPreview") return RoomMetaPreview
         if (name == "RoomPico") return RoomPico
         if (name == "RoomSearch") return RoomSearch
         if (name == "RoomSocialImage") return RoomSocialImage
