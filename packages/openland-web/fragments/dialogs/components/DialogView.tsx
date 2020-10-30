@@ -7,7 +7,7 @@ import IcReply from 'openland-icons/s/ic-reply-16.svg';
 import IcMention from 'openland-icons/s/ic-mention-12.svg';
 import IcCall from 'openland-icons/s/ic-call-12.svg';
 import IcMuted from 'openland-icons/s/ic-muted-16.svg';
-import IcFeatured from 'openland-icons/s/ic-verified-2-16.svg';
+import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
 import { XCounter } from 'openland-x/XCounter';
 import { DialogListWebItem } from './DialogListWebDataSource';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
