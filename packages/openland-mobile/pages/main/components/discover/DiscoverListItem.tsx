@@ -1,6 +1,9 @@
 import * as React from 'react';
-import { ZListItem } from "openland-mobile/components/ZListItem";
-import { DiscoverRoom, DiscoverOrganization } from 'openland-y-utils/discover/normalizePopularItems';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
+import {
+    DiscoverRoom,
+    DiscoverOrganization,
+} from 'openland-y-utils/discover/normalizePopularItems';
 import { plural } from 'openland-y-utils/plural';
 import { RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
 
@@ -23,8 +26,9 @@ export const DiscoverListItem = ({ item, rightElement, onJoin }: DiscoverListIte
             subTitle={
                 item.newMessages
                     ? plural(item.newMessages, ['new message', 'new messages'])
-                    : item.membersCount ? plural(item.membersCount, ['member', 'members'])
-                        : undefined
+                    : item.membersCount
+                    ? plural(item.membersCount, ['member', 'members'])
+                    : undefined
             }
             rightElement={rightElement}
             path="Conversation"
@@ -49,10 +53,7 @@ export const DiscoverListItemOrg = ({ item, rightElement }: DiscoverListItemOrgP
                 title: item.name,
             }}
             subTitle={
-                item.newMessages
-                    ? plural(item.newMessages, ['new message', 'new messages'])
-                    : item.membersCount ? plural(item.membersCount, ['member', 'members'])
-                        : undefined
+                item.membersCount ? plural(item.membersCount, ['member', 'members']) : undefined
             }
             rightElement={rightElement}
             path="ProfileOrganization"

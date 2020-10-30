@@ -100,7 +100,6 @@ query ExploreRooms($seed: Int!) {
             organization {
                 ...DiscoverOrganization
             }
-            newMessages
         }
         cursor
     }
@@ -170,7 +169,6 @@ query DiscoverNoAuth($seed: Int!) {
             organization {
                 ...DiscoverOrganization
             }
-            newMessages
         }
         cursor
     }
@@ -328,7 +326,6 @@ query DiscoverPopularOrganizations($first: Int!, $after: String) {
             organization {
                 ...DiscoverOrganization
             }
-            newMessages
         }
         cursor
     }
