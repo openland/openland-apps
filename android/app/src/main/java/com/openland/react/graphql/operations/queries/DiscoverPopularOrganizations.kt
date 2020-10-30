@@ -12,8 +12,7 @@ internal val DiscoverPopularOrganizationsSelector = obj(
                             field("organization", "organization", notNull(obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("Organization", DiscoverOrganizationSelector)
-                                ))),
-                            field("newMessages", "newMessages", notNull(scalar("Int")))
+                                )))
                         ))))),
                     field("cursor", "cursor", scalar("String"))
                 )))
@@ -21,6 +20,6 @@ internal val DiscoverPopularOrganizationsSelector = obj(
 val DiscoverPopularOrganizations = object: OperationDefinition {
     override val name = "DiscoverPopularOrganizations"
     override val kind = OperationKind.QUERY
-    override val body = "query DiscoverPopularOrganizations(\$first:Int!,\$after:String){discoverPopularNowOrganizations(first:\$first,after:\$after){__typename items{__typename organization{__typename ...DiscoverOrganization}newMessages}cursor}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname}"
+    override val body = "query DiscoverPopularOrganizations(\$first:Int!,\$after:String){discoverPopularNowOrganizations(first:\$first,after:\$after){__typename items{__typename organization{__typename ...DiscoverOrganization}}cursor}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname}"
     override val selector = DiscoverPopularOrganizationsSelector
 }
