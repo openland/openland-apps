@@ -177,7 +177,7 @@ const ContactsPage = React.memo((props: PageProps) => {
             setHaveContactsPermission(true);
         }
         loader.hide();
-        Toast.success({ duration: 1000}).show();
+        Toast.success({ duration: 1000 }).show();
     }, []);
 
     const handleRemoveMemberFromContacts = React.useCallback(async (userId: string) => {
@@ -186,7 +186,7 @@ const ContactsPage = React.memo((props: PageProps) => {
         await client.mutateRemoveFromContacts({ userId: userId });
         await client.refetchUser({ userId: userId });
         loader.hide();
-        Toast.success({ duration: 1000}).show();
+        Toast.success({ duration: 1000 }).show();
     }, []);
 
     const handleContactLongPress = React.useCallback((user: MyContacts_myContacts_items_user) => {
@@ -216,9 +216,11 @@ const ContactsPage = React.memo((props: PageProps) => {
                 await client.queryMyContacts({ first: 10, after }, { fetchPolicy: 'network-only' })
             ).myContacts;
             setItems((prev) =>
-                prev.concat(
-                    newItems.map((x) => x.user).filter((x) => !prev.some((y) => x.id === y.id)),
-                ),
+                prev
+                    .concat(
+                        newItems.map((x) => x.user).filter((x) => !prev.some((y) => x.id === y.id)),
+                    )
+                    .sort((a, b) => a.name.localeCompare(b.name, 'en')),
             );
             setAfter(cursor);
             setLoading(false);
@@ -228,9 +230,10 @@ const ContactsPage = React.memo((props: PageProps) => {
     React.useEffect(() => {
         return listenUpdates(({ addedUsers, removedUsers }) => {
             setItems((prev) => {
-                return addedUsers.concat(
+                const newItems = addedUsers.concat(
                     prev.filter((x) => !removedUsers.some((y) => y.id === x.id)),
                 );
+                return newItems.sort((a, b) => a.name.localeCompare(b.name, 'en'));
             });
         });
     }, []);

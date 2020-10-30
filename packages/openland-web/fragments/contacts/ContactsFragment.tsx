@@ -4,7 +4,11 @@ import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { trackEvent } from 'openland-x-analytics';
 import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
-import { GlobalSearch_items, GlobalSearch_items_SharedRoom, MyContacts_myContacts_items_user } from 'openland-api/spacex.types';
+import {
+    GlobalSearch_items,
+    GlobalSearch_items_SharedRoom,
+    MyContacts_myContacts_items_user,
+} from 'openland-api/spacex.types';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { ContactsSearchResults, ContactsSearchItemRender } from './ContactsSearchResults';
 import { useStackVisibility } from 'openland-unicorn/StackVisibilityContext';
@@ -24,11 +28,14 @@ const emptyScreenImg = css`
     width: 320px;
 `;
 
-const emptyScreenSubtitle = cx(TextBody, css`
-    padding: 0 8px;
-    color: var(--foregroundSecondary);
-    text-align: center;
-`);
+const emptyScreenSubtitle = cx(
+    TextBody,
+    css`
+        padding: 0 8px;
+        color: var(--foregroundSecondary);
+        text-align: center;
+    `,
+);
 
 const findFriendsImgSrc = css`
     background: url(https://cdn.openland.com/shared/art/art-crowd.png) center center no-repeat;
@@ -65,21 +72,48 @@ const MobileAppButton = (props: { isIOS: boolean } & XViewProps) => {
             {...other}
         >
             <XView justifyContent="center" marginRight={16} opacity={0.72}>
-                <UIcon icon={isIOS ? <AppleIcon /> : <GoogleIcon />} color="var(--foregroundSecondary)" />
+                <UIcon
+                    icon={isIOS ? <AppleIcon /> : <GoogleIcon />}
+                    color="var(--foregroundSecondary)"
+                />
             </XView>
             <XView>
-                <XView {...TextStyles.Caption} color="var(--foregroundSecondary)">{isIOS ? 'Download on the' : 'Get it on'}</XView>
-                <XView {...TextStyles.Label1} color="var(--foregroundSecondary)" marginTop={-2}>{isIOS ? 'App Store' : 'Google Play'}</XView>
+                <XView {...TextStyles.Caption} color="var(--foregroundSecondary)">
+                    {isIOS ? 'Download on the' : 'Get it on'}
+                </XView>
+                <XView {...TextStyles.Label1} color="var(--foregroundSecondary)" marginTop={-2}>
+                    {isIOS ? 'App Store' : 'Google Play'}
+                </XView>
             </XView>
         </XView>
     );
 };
 
-const EmptyScreen = (props: { title: string, subtitle: string, imgSrcStyle: string, children?: JSX.Element }) => {
+const EmptyScreen = (props: {
+    title: string;
+    subtitle: string;
+    imgSrcStyle: string;
+    children?: JSX.Element;
+}) => {
     return (
-        <XView width="100%" alignSelf="center" alignItems="center" justifyContent="center" flexGrow={1} maxWidth={592} paddingHorizontal={16}>
+        <XView
+            width="100%"
+            alignSelf="center"
+            alignItems="center"
+            justifyContent="center"
+            flexGrow={1}
+            maxWidth={592}
+            paddingHorizontal={16}
+        >
             <div className={cx(emptyScreenImg, props.imgSrcStyle)} />
-            <XView {...TextStyles.Title1} marginTop={16} marginBottom={8} color="var(--foregroundPrimary)">{props.title}</XView>
+            <XView
+                {...TextStyles.Title1}
+                marginTop={16}
+                marginBottom={8}
+                color="var(--foregroundPrimary)"
+            >
+                {props.title}
+            </XView>
             <p className={emptyScreenSubtitle}>{props.subtitle}</p>
             {props.children || null}
         </XView>
@@ -94,25 +128,42 @@ export const ContactsFragment = React.memo(() => {
     const route = React.useContext(XViewRouteContext)!;
     const setStackVisibility = useStackVisibility();
     const [query, setQuery] = React.useState<string>('');
-    const didImportContacts = client.usePhonebookWasExported({ fetchPolicy: 'cache-and-network' }).phonebookWasExported;
+    const didImportContacts = client.usePhonebookWasExported({ fetchPolicy: 'cache-and-network' })
+        .phonebookWasExported;
     const isSearching = query.trim().length > 0;
-    const { items: initialItems, cursor: initialAfter } = client.useMyContacts({ first: 20 }, { fetchPolicy: 'cache-and-network' }).myContacts;
-    const [items, setItems] = React.useState<MyContacts_myContacts_items_user[]>(initialItems.map(x => x.user));
+    const { items: initialItems, cursor: initialAfter } = client.useMyContacts(
+        { first: 20 },
+        { fetchPolicy: 'cache-and-network' },
+    ).myContacts;
+    const [items, setItems] = React.useState<MyContacts_myContacts_items_user[]>(
+        initialItems.map((x) => x.user),
+    );
     const [after, setAfter] = React.useState<string | null>(initialAfter);
     const [loading, setLoading] = React.useState(false);
     const [redirected, setRedirected] = React.useState(false);
     const { listenUpdates } = useLocalContacts();
     const isVisible = useVisibleTab();
     const [searchItemsCount, setSearchItemsCount] = React.useState(0);
-    const { selectedIndex, setSelectedIndex } = useListSelection({ disable: !isVisible, maxIndex: isSearching ? searchItemsCount - 1 : items.length - 1 });
+    const { selectedIndex, setSelectedIndex } = useListSelection({
+        disable: !isVisible,
+        maxIndex: isSearching ? searchItemsCount - 1 : items.length - 1,
+    });
 
     let hasContacts = items.length > 0;
 
     const handleLoadMore = async () => {
         if (!loading && after) {
             setLoading(true);
-            const { items: newItems, cursor } = (await client.queryMyContacts({ first: 10, after }, { fetchPolicy: 'network-only' })).myContacts;
-            setItems(prev => prev.concat(newItems.map(x => x.user).filter(x => !prev.some(y => x.id === y.id))));
+            const { items: newItems, cursor } = (
+                await client.queryMyContacts({ first: 10, after }, { fetchPolicy: 'network-only' })
+            ).myContacts;
+            setItems((prev) =>
+                prev
+                    .concat(
+                        newItems.map((x) => x.user).filter((x) => !prev.some((y) => x.id === y.id)),
+                    )
+                    .sort((a, b) => a.name.localeCompare(b.name, 'en')),
+            );
             setAfter(cursor);
             setLoading(false);
         }
@@ -127,24 +178,30 @@ export const ContactsFragment = React.memo(() => {
         }
     }, [route.path, items]);
 
-    const onPick = React.useCallback((item: Exclude<GlobalSearch_items, GlobalSearch_items_SharedRoom>) => {
-        if (refInput && refInput.current) {
-            refInput.current.reset();
-        }
+    const onPick = React.useCallback(
+        (item: Exclude<GlobalSearch_items, GlobalSearch_items_SharedRoom>) => {
+            if (refInput && refInput.current) {
+                refInput.current.reset();
+            }
 
-        stackRouter.navigate(`/contacts/${item.id}`);
-    }, []);
+            stackRouter.navigate(`/contacts/${item.id}`);
+        },
+        [],
+    );
 
-    const onMessagePick = React.useCallback((item: GlobalSearch_items) => {
-        const newPath = `/mail/${item.id}`;
-        if (route.path === newPath) {
-            return;
-        }
-        if (refInput && refInput.current) {
-            refInput.current.reset();
-        }
-        router.navigate(newPath);
-    }, [route.path]);
+    const onMessagePick = React.useCallback(
+        (item: GlobalSearch_items) => {
+            const newPath = `/mail/${item.id}`;
+            if (route.path === newPath) {
+                return;
+            }
+            if (refInput && refInput.current) {
+                refInput.current.reset();
+            }
+            router.navigate(newPath);
+        },
+        [route.path],
+    );
 
     React.useEffect(() => {
         if (isVisible) {
@@ -152,31 +209,36 @@ export const ContactsFragment = React.memo(() => {
         }
     }, [isVisible]);
 
-    React.useLayoutEffect(
-        () => {
-            if (hasContacts && !loading) {
-                setStackVisibility(true);
-            }
-        },
-        [hasContacts, loading],
-    );
+    React.useLayoutEffect(() => {
+        if (hasContacts && !loading) {
+            setStackVisibility(true);
+        }
+    }, [hasContacts, loading]);
 
     const onlines = React.useContext(MessengerContext).getOnlines();
 
     React.useEffect(() => {
         return onlines.onSingleChange((user: string, online: boolean) => {
-            setItems(current => current.map(item => item.id === user && online !== item.online ? { ...item, online, lastSeen: Date.now().toString() } : item));
+            setItems((current) =>
+                current.map((item) =>
+                    item.id === user && online !== item.online
+                        ? { ...item, online, lastSeen: Date.now().toString() }
+                        : item,
+                ),
+            );
         });
     }, [items]);
 
     React.useEffect(() => {
         return listenUpdates(({ addedUsers, removedUsers }) => {
-            setItems(prev => {
-                const newItems = addedUsers.concat(prev.filter(x => !removedUsers.some(y => y.id === x.id)));
+            setItems((prev) => {
+                const newItems = addedUsers.concat(
+                    prev.filter((x) => !removedUsers.some((y) => y.id === x.id)),
+                );
                 if (newItems.length === 0) {
                     setStackVisibility(false);
                 }
-                return newItems;
+                return newItems.sort((a, b) => a.name.localeCompare(b.name, 'en'));
             });
         });
     }, []);
@@ -192,27 +254,27 @@ export const ContactsFragment = React.memo(() => {
             imgSrcStyle={noContactsImgSrc}
         />
     ) : (
-            <EmptyScreen
-                title="Find your friends"
-                subtitle="Import contacts from your phone to find people you know on Openland. Install a mobile app and tap “Import contacts”"
-                imgSrcStyle={findFriendsImgSrc}
-            >
-                <XView marginTop={16} flexWrap="wrap" flexDirection="row" justifyContent="center">
-                    <MobileAppButton
-                        href="https://oplnd.com/ios"
-                        isIOS={true}
-                        marginTop={16}
-                        marginHorizontal={8}
-                    />
-                    <MobileAppButton
-                        href="https://oplnd.com/android"
-                        isIOS={false}
-                        marginTop={16}
-                        marginHorizontal={8}
-                    />
-                </XView>
-            </EmptyScreen>
-        );
+        <EmptyScreen
+            title="Find your friends"
+            subtitle="Import contacts from your phone to find people you know on Openland. Install a mobile app and tap “Import contacts”"
+            imgSrcStyle={findFriendsImgSrc}
+        >
+            <XView marginTop={16} flexWrap="wrap" flexDirection="row" justifyContent="center">
+                <MobileAppButton
+                    href="https://oplnd.com/ios"
+                    isIOS={true}
+                    marginTop={16}
+                    marginHorizontal={8}
+                />
+                <MobileAppButton
+                    href="https://oplnd.com/android"
+                    isIOS={false}
+                    marginTop={16}
+                    marginHorizontal={8}
+                />
+            </XView>
+        </EmptyScreen>
+    );
 
     const content = hasContacts ? (
         <>
@@ -235,29 +297,37 @@ export const ContactsFragment = React.memo(() => {
                         onItemsCountChange={setSearchItemsCount}
                     />
                 ) : (
-                        <UFlatList
-                            loadingHeight={56}
-                            padded={false}
-                            renderItem={(x, i) => (
-                                <ContactsSearchItemRender
-                                    item={x}
-                                    index={i}
-                                    selectedIndex={selectedIndex}
-                                    onPick={onPick}
-                                    onMessagePick={onMessagePick}
-                                />
-                            )}
-                            loading={loading}
-                            items={items}
-                            loadMore={handleLoadMore}
-                        />
-                    )}
+                    <UFlatList
+                        loadingHeight={56}
+                        padded={false}
+                        renderItem={(x, i) => (
+                            <ContactsSearchItemRender
+                                item={x}
+                                index={i}
+                                selectedIndex={selectedIndex}
+                                onPick={onPick}
+                                onMessagePick={onMessagePick}
+                            />
+                        )}
+                        loading={loading}
+                        items={items}
+                        loadMore={handleLoadMore}
+                    />
+                )}
             </XView>
         </>
-    ) : noContactsContent;
+    ) : (
+        noContactsContent
+    );
 
     return (
-        <XView width="100%" height="100%" flexDirection="column" alignItems="stretch" backgroundColor="var(--backgroundPrimary)">
+        <XView
+            width="100%"
+            height="100%"
+            flexDirection="column"
+            alignItems="stretch"
+            backgroundColor="var(--backgroundPrimary)"
+        >
             {content}
         </XView>
     );
