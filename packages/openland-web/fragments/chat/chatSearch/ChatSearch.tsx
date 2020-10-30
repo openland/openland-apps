@@ -45,7 +45,7 @@ const loaderClass = css`
 const messagesListClassName = css`
     max-height: 400px;
     background-color: var(--backgroundPrimary);
-    margin: 0 -72px;
+    margin-left: -72px;
     
     @media(min-width: 1280px) {
         margin: 0 -5000px;    
