@@ -483,7 +483,7 @@ const DiscoverTopOrgsListing = (props: DiscoverListingOrgsPageProps) => {
         }
         setLoading(true);
 
-        let { items, cursor } = (await getClient().queryDiscoverPopularOrganizations({ after, first }, { fetchPolicy: 'network-only' })).discoverPopularNowOrganizations;
+        let { items, cursor } = (await getClient().queryDiscoverPopularOrganizations({ after, first }, { fetchPolicy: 'network-only' })).discoverTopOrganizations;
 
         if (items.length < first) {
             setAfter('');

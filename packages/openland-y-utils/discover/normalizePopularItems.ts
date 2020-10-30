@@ -2,7 +2,7 @@ import {
     DiscoverSharedRoom,
     DiscoverPopularNow_discoverPopularNow_items,
     DiscoverOrganization as DiscoverOrg,
-    DiscoverPopularOrganizations_discoverPopularNowOrganizations_items,
+    DiscoverPopularOrganizations_discoverTopOrganizations_items,
 } from 'openland-api/spacex.types';
 
 export type DiscoverRoom = DiscoverSharedRoom & { newMessages?: number };
@@ -16,7 +16,7 @@ export const normalizePopularItems = (
 export type DiscoverOrganization = DiscoverOrg;
 
 export const normalizePopularOrgItems = (
-    items: DiscoverPopularOrganizations_discoverPopularNowOrganizations_items[],
+    items: DiscoverPopularOrganizations_discoverTopOrganizations_items[],
 ): DiscoverOrganization[] => {
-    return (items || []).map((item) => ({ ...item.organization }));
+    return (items || []).map((item) => ({ ...item }));
 };
