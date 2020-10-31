@@ -44,6 +44,32 @@ const EmptyView = React.memo((props: { theme: ThemeGlobal, children: string }) =
     </View>
 ));
 
+const ChatSearchDataList = React.memo(({ engine, chatId }: { engine: ChatSearchEngine, chatId: string }) => {
+    const theme = React.useContext(ThemeContext);
+    let safeArea = React.useContext(ASSafeAreaContext);
+    const [dataView] = React.useState(() => getMessenger().getSearchView(engine.dataSource, chatId));
+
+    return (
+        <View
+            marginTop={Platform.OS === 'ios' ? -1000 : 0}
+            justifyContent="flex-start"
+            alignItems="stretch"
+            flexGrow={1}
+        >
+            <ASListView
+                dataView={dataView}
+                inverted={false}
+                contentPaddingTop={safeArea.top + (Platform.OS === 'ios' ? 1000 : 0)}
+                style={{ flexGrow: 1 }}
+                headerPadding={
+                    Platform.select({ ios: 0, android: androidMessageInputListOverlap }) + 6
+                }
+                overflowColor={theme.backgroundPrimary}
+            />
+        </View>
+    );
+});
+
 export const ChatSearchView = React.memo((props: ChatMessagesSearchProps) => {
     const theme = React.useContext(ThemeContext);
 
@@ -52,10 +78,8 @@ export const ChatSearchView = React.memo((props: ChatMessagesSearchProps) => {
     }
 
     const { chatId } = props.router.params;
-    let safeArea = React.useContext(ASSafeAreaContext);
     const [engine] = React.useState(() => new ChatSearchEngine(getMessenger().engine, chatId, false));
     const [queryInProgress, setQueryInProgress] = React.useState(true);
-    const [dataView] = React.useState(() => getMessenger().getSearchView(engine.dataSource, chatId));
 
     const loadQuery = React.useCallback(debounce(async (query: string) => {
         if (props.query.length > 2) {
@@ -79,23 +103,5 @@ export const ChatSearchView = React.memo((props: ChatMessagesSearchProps) => {
         return <EmptyView theme={theme}>Nothing found</EmptyView>;
     }
 
-    return (
-        <View
-            marginTop={Platform.OS === 'ios' ? -1000 : 0}
-            justifyContent="flex-start"
-            alignItems="stretch"
-            flexGrow={1}
-        >
-            <ASListView
-                dataView={dataView}
-                inverted={false}
-                contentPaddingTop={safeArea.top + (Platform.OS === 'ios' ? 1000 : 0)}
-                style={{ flexGrow: 1 }}
-                headerPadding={
-                    Platform.select({ ios: 0, android: androidMessageInputListOverlap }) + 6
-                }
-                overflowColor={theme.backgroundPrimary}
-            />
-        </View>
-    );
+    return <ChatSearchDataList engine={engine} chatId={chatId} />;
 });
