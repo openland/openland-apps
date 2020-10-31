@@ -11,6 +11,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { androidMessageInputListOverlap } from './ConversationView';
 import { ChatSearchEngine } from 'openland-engines/messenger/ChatSearchEngine';
 import { debounce } from 'openland-y-utils/timer';
+import { ZLoader } from 'openland-mobile/components/ZLoader';
 
 interface ChatMessagesSearchProps {
     query: string;
@@ -52,44 +53,49 @@ export const ChatSearchView = React.memo((props: ChatMessagesSearchProps) => {
 
     const { chatId } = props.router.params;
     let safeArea = React.useContext(ASSafeAreaContext);
+    const [engine] = React.useState(() => new ChatSearchEngine(getMessenger().engine, chatId, false));
+    const [queryInProgress, setQueryInProgress] = React.useState(true);
+    const [dataView] = React.useState(() => getMessenger().getSearchView(engine.dataSource, chatId));
 
-    const [engine] = React.useState(() => new ChatSearchEngine(getMessenger().engine, chatId));
-    const [state, setState] = React.useState(() => engine.getState());
-    const { dataSource, loadQuery } = engine;
-
-    engine.subscribe(setState);
-
-    React.useEffect(debounce(() => {
+    const loadQuery = React.useCallback(debounce(async (query: string) => {
         if (props.query.length > 2) {
-            (async () => {
-                await loadQuery(props.query);
-            })();
-        }
-    }, 500), [props.query]);
+            await engine.loadQuery(query);
 
-    if (!state.loading && dataSource.getSize() === 0) {
+            setQueryInProgress(false);
+        }
+    }, 500, true, true), []);
+
+    React.useEffect(() => {
+        setQueryInProgress(true);
+
+        (async () => await loadQuery(props.query))();
+    }, [props.query]);
+
+    if (queryInProgress) {
+        return <ZLoader />;
+    }
+
+    if (!queryInProgress && engine.dataSource.getSize() === 0) {
         return <EmptyView theme={theme}>Nothing found</EmptyView>;
     }
 
     return (
-        <React.Suspense fallback={null}>
-            <View
-                marginTop={Platform.OS === 'ios' ? -1000 : 0}
-                justifyContent="flex-start"
-                alignItems="stretch"
-                flexGrow={1}
-            >
-                <ASListView
-                    dataView={getMessenger().getSearchView(engine.dataSource, chatId)}
-                    inverted={true}
-                    contentPaddingTop={safeArea.top + (Platform.OS === 'ios' ? 1000 : 0)}
-                    style={{ flexGrow: 1 }}
-                    headerPadding={
-                        Platform.select({ ios: 0, android: androidMessageInputListOverlap }) + 6
-                    }
-                    overflowColor={theme.backgroundPrimary}
-                />
-            </View>
-        </React.Suspense>
+        <View
+            marginTop={Platform.OS === 'ios' ? -1000 : 0}
+            justifyContent="flex-start"
+            alignItems="stretch"
+            flexGrow={1}
+        >
+            <ASListView
+                dataView={dataView}
+                inverted={false}
+                contentPaddingTop={safeArea.top + (Platform.OS === 'ios' ? 1000 : 0)}
+                style={{ flexGrow: 1 }}
+                headerPadding={
+                    Platform.select({ ios: 0, android: androidMessageInputListOverlap }) + 6
+                }
+                overflowColor={theme.backgroundPrimary}
+            />
+        </View>
     );
 });

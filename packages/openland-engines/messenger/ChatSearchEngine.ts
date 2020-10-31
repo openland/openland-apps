@@ -132,12 +132,14 @@ export class ChatSearchEngine {
     private cursor: string | null;
     private state: ChatSearchState;
     private loading: boolean;
+    private inverted: boolean;
     private loadingHistory: boolean;
     private stateHandler: ((state: ChatSearchState) => void) | null = null;
 
-    constructor(engine: MessengerEngine, conversationId: string) {
+    constructor(engine: MessengerEngine, conversationId: string, inverted: boolean = true) {
         this.engine = engine;
         this.conversationId = conversationId;
+        this.inverted = inverted;
         this.loading = false;
         this.loadingHistory = false;
         this.historyFullyLoaded = false;
@@ -182,19 +184,34 @@ export class ChatSearchEngine {
         const dsItems: (DataSourceMessageItem | DataSourceDateItem)[] = [];
         let prevDate: string | undefined;
 
-        for (let i = sourceFragments.length - 1; i >= 0; i--) {
-            if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
+        if (!this.inverted) {
+            prevDate = sourceFragments[sourceFragments.length - 1].date;
+            dsItems.push(createDateDataSourceItem(new Date(parseInt(prevDate!, 10))));
+
+            for (let i = sourceFragments.length - 1; i >= 0; i--) {
+                if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
+                    const d = new Date(parseInt(sourceFragments[i].date, 10));
+                    dsItems.push(createDateDataSourceItem(d));
+                }
+
+                dsItems.push(convertSearchMessage(sourceFragments[i], this.conversationId, this.engine, this.query, sourceFragments[i + 1], sourceFragments[i - 1]));
+                prevDate = sourceFragments[i].date;
+            }
+        } else {
+            for (let i = sourceFragments.length - 1; i >= 0; i--) {
+                if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
+                    const d = new Date(parseInt(prevDate, 10));
+                    dsItems.push(createDateDataSourceItem(d));
+                }
+
+                dsItems.push(convertSearchMessage(sourceFragments[i], this.conversationId, this.engine, this.query, sourceFragments[i + 1], sourceFragments[i - 1]));
+                prevDate = sourceFragments[i].date;
+            }
+
+            if (this.historyFullyLoaded && prevDate) {
                 const d = new Date(parseInt(prevDate, 10));
                 dsItems.push(createDateDataSourceItem(d));
             }
-
-            dsItems.push(convertSearchMessage(sourceFragments[i], this.conversationId, this.engine, this.query, sourceFragments[i + 1], sourceFragments[i - 1]));
-            prevDate = sourceFragments[i].date;
-        }
-
-        if (this.historyFullyLoaded && prevDate) {
-            const d = new Date(parseInt(prevDate, 10));
-            dsItems.push(createDateDataSourceItem(d));
         }
 
         this.dataSource.initialize(dsItems, this.historyFullyLoaded, true);
@@ -240,19 +257,31 @@ export class ChatSearchEngine {
         if (this.dataSource.getSize() > 0) {
             prevDate = (this.dataSource.getAt(this.dataSource.getSize() - 1) as DataSourceMessageItem).date + '';
         }
-        for (let i = sourceFragments.length - 1; i >= 0; i--) {
-            if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
+        if (!this.inverted) {
+            for (let i = sourceFragments.length - 1; i >= 0; i--) {
+                if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
+                    const d = new Date(parseInt(sourceFragments[i].date, 10));
+                    dsItems.push(createDateDataSourceItem(d));
+                }
+
+                dsItems.push(convertSearchMessage(sourceFragments[i], this.conversationId, this.engine, this.query, sourceFragments[i + 1], sourceFragments[i - 1]));
+                prevDate = sourceFragments[i].date;
+            }
+        } else {
+            for (let i = sourceFragments.length - 1; i >= 0; i--) {
+                if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
+                    const d = new Date(parseInt(prevDate, 10));
+                    dsItems.push(createDateDataSourceItem(d));
+                }
+
+                dsItems.push(convertSearchMessage(sourceFragments[i], this.conversationId, this.engine, this.query, sourceFragments[i + 1], sourceFragments[i - 1]));
+                prevDate = sourceFragments[i].date;
+            }
+
+            if (this.historyFullyLoaded && prevDate) {
                 const d = new Date(parseInt(prevDate, 10));
                 dsItems.push(createDateDataSourceItem(d));
             }
-
-            dsItems.push(convertSearchMessage(sourceFragments[i], this.conversationId, this.engine, this.query, sourceFragments[i + 1], sourceFragments[i - 1]));
-            prevDate = sourceFragments[i].date;
-        }
-
-        if (this.historyFullyLoaded && prevDate) {
-            const d = new Date(parseInt(prevDate, 10));
-            dsItems.push(createDateDataSourceItem(d));
         }
 
         this.dataSource.loadedMore(dsItems, this.historyFullyLoaded);

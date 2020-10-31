@@ -143,7 +143,7 @@ export const ChatSearch = React.memo(({ chatId, onSearchClose }: ChatSearchProps
             true,
             true,
         ),
-        [engine, setDataSourceWindow],
+        [engine],
     );
 
     const onSearchChange = React.useCallback(
@@ -151,9 +151,7 @@ export const ChatSearch = React.memo(({ chatId, onSearchClose }: ChatSearchProps
             setQueryInProgress(true);
 
             await loadQuery(searchText);
-        },
-        [setQueryInProgress],
-    );
+        }, []);
 
     const renderMessage = React.memo(
         (data: {

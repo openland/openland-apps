@@ -327,9 +327,7 @@ export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
     const onSearchClose = React.useCallback(() => setSearchEnabled(false), [setSearchEnabled]);
 
     if (searchEnabled) {
-        return (
-            <ChatSearch onSearchClose={onSearchClose} chatId={chat.id}/>
-        );
+        return <ChatSearch onSearchClose={onSearchClose} chatId={chat.id}/>;
     }
 
     return (
