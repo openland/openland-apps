@@ -20,7 +20,7 @@ const recursiveProcessing = (text: string, spans: ServerSpan[]): Span[] => {
 
         currentSpan.children = (currentSpan.children || [])
             .concat(textSpans)
-            .sort((a, b) => a.offset - b.offset);
+            .sort((a, b) => a.offset === b.offset ? a.length - b.length : a.offset - b.offset);
 
         res = [...[currentSpan], ...recursiveProcessing(text, spans.slice(lastIndex + 1))];
     }
