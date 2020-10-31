@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Platform } from 'react-native';
+import { View, Text, Platform, Keyboard } from 'react-native';
 import { SRouter } from 'react-native-s/SRouter';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ASListView } from 'react-native-async-view/ASListView';
@@ -46,7 +46,8 @@ const EmptyView = React.memo((props: { theme: ThemeGlobal, children: string }) =
 
 const ChatSearchDataList = React.memo(({ engine, chatId }: { engine: ChatSearchEngine, chatId: string }) => {
     const theme = React.useContext(ThemeContext);
-    let safeArea = React.useContext(ASSafeAreaContext);
+    const safeArea = React.useContext(ASSafeAreaContext);
+    const onScroll = React.useCallback(() => Keyboard.dismiss(), []);
     const [dataView] = React.useState(() => getMessenger().getSearchView(engine.dataSource, chatId));
 
     return (
@@ -59,6 +60,7 @@ const ChatSearchDataList = React.memo(({ engine, chatId }: { engine: ChatSearchE
             <ASListView
                 dataView={dataView}
                 inverted={false}
+                onScroll={onScroll}
                 contentPaddingTop={safeArea.top + (Platform.OS === 'ios' ? 1000 : 0)}
                 style={{ flexGrow: 1 }}
                 headerPadding={
