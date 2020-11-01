@@ -20,7 +20,7 @@ import AtIcon from 'openland-icons/s/ic-at-24.svg';
 import MailIcon from 'openland-icons/s/ic-mail-24.svg';
 import LocationIcon from 'openland-icons/s/ic-geo-24.svg';
 import LinkIcon from 'openland-icons/s/ic-link-24.svg';
-import FlagIcon from 'openland-icons/s/ic-flag.svg';
+import FlagIcon from 'openland-icons/s/ic-flag-24.svg';
 import InstagramIcon from 'openland-icons/s/ic-instagram-24-transparent.svg';
 import FacebookIcon from 'openland-icons/s/ic-facebook-24-transparent.svg';
 import TwitterIcon from 'openland-icons/s/ic-twitter-24-transparent.svg';

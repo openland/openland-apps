@@ -50,7 +50,7 @@ export const ReportSpamModal = ({ userId, hide }: { userId: string; hide: () => 
             });
             toastHandlers.show({
                 type: 'success',
-                text: 'Your report has been sent',
+                text: 'Report sent',
             });
             hide();
         });

@@ -13,13 +13,16 @@ import BlockUserModal from 'openland-web/fragments/admin/BlockUserModalFragment'
 import { useClient } from 'openland-api/useClient';
 import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/UNotificationsSwitch';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
+import { showModalBox } from 'openland-x/showModalBox';
 
 import CopyIcon from 'openland-icons/s/ic-link-24.svg';
 import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
 import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
-import SpamIcon from 'openland-icons/s/ic-flag.svg';
+import SpamIcon from 'openland-icons/s/ic-flag-24.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
 import BookmarkIcon from 'openland-icons/s/ic-bookmark-24.svg';
+
+import { ReportSpamModal } from './ReportSpamModal';
 
 interface UserMenuProps {
     user: User_user;
@@ -89,10 +92,15 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
         },
     });
 
-    if (id !== engine.user.id && useRole('super-admin')) {
+    if (id !== engine.user.id) {
         builder.item({
             title: 'Report spam',
-            icon: <SpamIcon />
+            icon: <SpamIcon />,
+            onClick: () => {
+                showModalBox({ width: 400, title: 'Report spam' }, ({ hide }) => (
+                    <ReportSpamModal userId={id} hide={hide} />
+                ));
+            }
         });
     }
 

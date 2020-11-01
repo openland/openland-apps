@@ -21,7 +21,7 @@ import { UMoreContainer } from 'openland-web/components/unicorn/UMoreContainer';
 import { showModalBox } from 'openland-x/showModalBox';
 
 import CopyIcon from 'openland-icons/s/ic-link-24.svg';
-import SpamIcon from 'openland-icons/s/ic-flag.svg';
+import SpamIcon from 'openland-icons/s/ic-flag-24.svg';
 import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
 import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
