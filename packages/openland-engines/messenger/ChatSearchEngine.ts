@@ -172,7 +172,7 @@ export class ChatSearchEngine {
         const dsItems: (DataSourceMessageItem | DataSourceDateItem)[] = [];
         let prevDate: string | undefined;
 
-        if (!this.inverted) {
+        if (!this.inverted && sourceFragments.length > 0) {
             prevDate = sourceFragments[sourceFragments.length - 1].date;
             dsItems.push(createDateDataSourceItem(new Date(parseInt(prevDate!, 10))));
 
