@@ -85,19 +85,19 @@ export interface DataSourceNewDividerItem {
     date: undefined;
 }
 
-const getReplies = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined, chaId: string, engine: MessengerEngine) => {
+export const getReplies = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined, chaId: string, engine: MessengerEngine) => {
     return src && src.quotedMessages ? src.quotedMessages.sort((a, b) => a.date - b.date).map(m => convertMessage(m as Types.FullMessage, chaId, engine)) : undefined;
 };
 
-const getSourceChat = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined) => {
+export const getSourceChat = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined) => {
     return src && src.source && src.source.__typename === 'MessageSourceChat' ? src.source : undefined;
 };
 
-const getCommentsCount = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined) => {
+export const getCommentsCount = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined) => {
     return src ? src.commentsCount : 0;
 };
 
-const getOverrides = (src: Types.FullMessage | undefined) => {
+export const getOverrides = (src: Types.FullMessage | undefined) => {
     return src ? (src.__typename === 'GeneralMessage' || src.__typename === 'StickerMessage' ? { overrideAvatar: src.overrideAvatar, overrideName: src.overrideName } : {}) : {};
 };
 

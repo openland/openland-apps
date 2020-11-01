@@ -66,7 +66,7 @@ const hidingWrapperClass = css`
 `;
 
 const messagesWrapperClassName = css`
-    padding-bottom: 35px;
+    padding-bottom: 20px;
 `;
 
 const loaderClass = css`
@@ -106,6 +106,7 @@ export const ChatSearch = React.memo(({ chatId, onSearchClose }: ChatSearchProps
 
     const onClose = React.useCallback(() => {
         setHiding(true);
+
         setTimeout(() => {
             onSearchClose();
         }, 150);
@@ -116,7 +117,7 @@ export const ChatSearch = React.memo(({ chatId, onSearchClose }: ChatSearchProps
         callback: onClose,
     });
 
-    const handleScroll = (e: XScrollValues) => {
+    const handleScroll = React.useCallback((e: XScrollValues) => {
         if (e.clientHeight === 0) {
             return;
         }
@@ -126,7 +127,7 @@ export const ChatSearch = React.memo(({ chatId, onSearchClose }: ChatSearchProps
         ) {
             dataSourceWindow.needMore();
         }
-    };
+    }, [dataSourceWindow]);
 
     const loadQuery = React.useCallback(
         debounce(

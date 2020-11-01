@@ -6,18 +6,14 @@ import { withApp } from 'openland-mobile/components/withApp';
 
 import { ChatSearchView } from 'openland-mobile/pages/main/components/ChatSearchView';
 
-const SearchQueryContext = React.createContext<string>('');
-
 const ChatSearchComponent = React.memo<{ router: SRouter }>(({ router }) => {
     return (
         <SSearchControler
             searchRender={({ query }) => (
-                <SearchQueryContext.Provider value={query}>
-                    <ChatSearchView
-                        query={query}
-                        router={router}
-                    />
-                </SearchQueryContext.Provider>
+                <ChatSearchView
+                    query={query}
+                    router={router}
+                />
             )}
             openOnMount={true}
             onSearchClose={() => router.back()}

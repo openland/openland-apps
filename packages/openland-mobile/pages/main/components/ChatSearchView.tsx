@@ -8,10 +8,11 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { androidMessageInputListOverlap } from './ConversationView';
 import { ChatSearchEngine } from 'openland-engines/messenger/ChatSearchEngine';
 import { debounce } from 'openland-y-utils/timer';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
+
+import { androidMessageInputListOverlap } from './ConversationView';
 
 interface ChatMessagesSearchProps {
     query: string;
@@ -47,7 +48,11 @@ const EmptyView = React.memo((props: { theme: ThemeGlobal, children: string }) =
 const ChatSearchDataList = React.memo(({ engine, chatId }: { engine: ChatSearchEngine, chatId: string }) => {
     const theme = React.useContext(ThemeContext);
     const safeArea = React.useContext(ASSafeAreaContext);
-    const onScroll = React.useCallback(() => Keyboard.dismiss(), []);
+    const onScroll = React.useCallback((e) => {
+        if (e.nativeEvent.contentOffset.y > 0) {
+            Keyboard.dismiss();
+        }
+    }, []);
     const [dataView] = React.useState(() => getMessenger().getSearchView(engine.dataSource, chatId));
 
     return (

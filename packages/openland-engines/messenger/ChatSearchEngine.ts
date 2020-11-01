@@ -1,36 +1,24 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { backoff } from 'openland-y-utils/timer';
-import {
-    FullMessage,
-    FullMessage_GeneralMessage,
-    FullMessage_StickerMessage, MessagesSearchFull_messagesSearch,
-} from 'openland-api/spacex.types';
+import { FullMessage_GeneralMessage, MessagesSearchFull_messagesSearch, } from 'openland-api/spacex.types';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { createLogger } from 'mental-log';
 import { ServerSpan } from 'openland-y-utils/spans/Span';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
-import { convertMessage, DataSourceDateItem, DataSourceMessageItem, isSameDate } from './ConversationEngine';
+import {
+    DataSourceDateItem,
+    DataSourceMessageItem,
+    getCommentsCount,
+    getOverrides,
+    getReplies,
+    getSourceChat,
+    isSameDate,
+} from './ConversationEngine';
 import { ChatSearchState } from './ChatSearchState';
 
 const log = createLogger('Engine-Messages');
 
 const timeGroup = 1000 * 60 * 60;
-
-const getReplies = (src: FullMessage_GeneralMessage | FullMessage_StickerMessage | undefined, chaId: string, engine: MessengerEngine) => {
-    return src && src.quotedMessages ? src.quotedMessages.sort((a, b) => a.date - b.date).map(m => convertMessage(m as FullMessage, chaId, engine)) : undefined;
-};
-
-const getSourceChat = (src: FullMessage_GeneralMessage | FullMessage_StickerMessage | undefined) => {
-    return src && src.source && src.source.__typename === 'MessageSourceChat' ? src.source : undefined;
-};
-//
-const getCommentsCount = (src: FullMessage_GeneralMessage | FullMessage_StickerMessage | undefined) => {
-    return src ? src.commentsCount : 0;
-};
-
-const getOverrides = (src: FullMessage | undefined) => {
-    return src ? (src.__typename === 'GeneralMessage' || src.__typename === 'StickerMessage' ? { overrideAvatar: src.overrideAvatar, overrideName: src.overrideName } : {}) : {};
-};
 
 const constructVariables = (query: string, chatId: string, after?: string | null) => ({
     query: JSON.stringify({
