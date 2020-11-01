@@ -41,7 +41,6 @@ import { useToast } from 'openland-web/components/unicorn/UToast';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 import { RoomCallsMode, RoomChat_room } from 'openland-api/spacex.types';
 import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
-import { ChatSearch } from '../chatSearch/ChatSearch';
 const secondary = css`
     color: var(--foregroundSecondary);
     padding-left: 4px;
@@ -289,10 +288,9 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; savedMessage
     return res.build(props.ctx, 240);
 };
 
-export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
-    const { chat } = props;
+export const ChatHeader = React.memo((props: { chat: RoomChat_room, onSearchClick: () => void }) => {
+    const { chat, onSearchClick } = props;
     const layout = useLayout();
-    const [searchEnabled, setSearchEnabled] = React.useState(false);
     const messenger = React.useContext(MessengerContext);
 
     const privateRoom = chat.__typename === 'PrivateRoom' ? chat : undefined;
@@ -322,13 +320,6 @@ export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
     const showInviteButton = layout === 'desktop' && (canAddDirectly || canGetInviteLink);
 
     const highlightFeaturedChat = sharedRoom && sharedRoom.featured;
-
-    const onSearchClick = React.useCallback(() => setSearchEnabled(true), [setSearchEnabled]);
-    const onSearchClose = React.useCallback(() => setSearchEnabled(false), [setSearchEnabled]);
-
-    if (searchEnabled) {
-        return <ChatSearch onSearchClose={onSearchClose} chatId={chat.id}/>;
-    }
 
     return (
         <XView
