@@ -85,3 +85,9 @@ query GetDifference($state: String!) {
         }
     }
 }
+
+query GetSequenceState($id: String!) {
+    sequenceState(id: $id) {
+        ...ShortSequence
+    }
+}

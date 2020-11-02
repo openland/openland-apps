@@ -53,6 +53,7 @@ object Operations {
         if (name == "FeatureFlags") return FeatureFlags
         if (name == "FetchPushSettings") return FetchPushSettings
         if (name == "GetDifference") return GetDifference
+        if (name == "GetSequenceState") return GetSequenceState
         if (name == "GetState") return GetState
         if (name == "GlobalCounter") return GlobalCounter
         if (name == "GlobalSearch") return GlobalSearch

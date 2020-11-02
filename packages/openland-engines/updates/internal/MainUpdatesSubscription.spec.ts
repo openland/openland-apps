@@ -5,11 +5,11 @@ import { UpdatesApiMock } from './UpdatesApiMock';
 describe('MainUpdatesSubscription', () => {
 
     it('should subscribe and receive update', async () => {
-        let handler = jest.fn<MainUpdatesSubscriptionHandler<number>>();
-        let mockApi = new UpdatesApiMock<number>();
+        let handler = jest.fn<MainUpdatesSubscriptionHandler<number, { id: string }, { id: string }>>();
+        let mockApi = new UpdatesApiMock<number, { id: string }, { id: string }>();
         let mockSubscription = new UpdatesSubscriptionMock<number>();
-        let subscription = new MainUpdatesSubscription<number>(null, mockApi, mockSubscription);
-        mockApi.setState({ seq: 1, vt: 'vt1' });
+        let subscription = new MainUpdatesSubscription<number, { id: string }, { id: string }>(null, mockApi, mockSubscription);
+        mockApi.setState({ seq: 1, vt: 'vt1', sequences: [] });
         subscription.start(handler);
 
         // Start sequence from the same seq
@@ -26,15 +26,15 @@ describe('MainUpdatesSubscription', () => {
 
         await delay(100);
 
-        let expected: MainUpdatesSubscriptionEvent<number>[] = [
+        let expected: MainUpdatesSubscriptionEvent<number, { id: string }, { id: string }>[] = [
             { type: 'state', state: 'starting' },
             { type: 'state', state: 'connecting' },
             { type: 'state', state: 'connected' },
             { type: 'inited', vt: 'vt1' },
-            { type: 'event', vt: 'vt1', sequence: 'se-1', pts: 2, event: 2 },
-            { type: 'event', vt: 'vt1', sequence: 'se-1', pts: 4, event: 4 },
-            { type: 'event', vt: 'vt1', sequence: 'se-1', pts: 2, event: 5 },
-            { type: 'event', vt: 'vt1', sequence: 'se-1', pts: 6, event: 3 }
+            { type: 'event', vt: 'vt1', id: 'se-1', pts: 2, event: 2 },
+            { type: 'event', vt: 'vt1', id: 'se-1', pts: 4, event: 4 },
+            { type: 'event', vt: 'vt1', id: 'se-1', pts: 2, event: 5 },
+            { type: 'event', vt: 'vt1', id: 'se-1', pts: 6, event: 3 }
         ];
         expect(handler.mock.calls.map((v) => v[0])).toMatchObject(expected);
     });
