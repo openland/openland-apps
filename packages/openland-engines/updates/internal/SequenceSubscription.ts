@@ -7,22 +7,22 @@ export type SequenceSubscriptionEvent = { type: 'event', event: UpdateEvent, pts
 export type SequenceSubscriptionHandler = (event: SequenceSubscriptionEvent) => void;
 
 export class SequenceSubscription {
-    private readonly _id: string;
-    private readonly _persistence: Persistence;
+    // private readonly _id: string;
+    // private readonly _persistence: Persistence;
     private _knownPts!: number;
     private _started = false;
     private _invalidated = false;
     private _handler: SequenceSubscriptionHandler | null = null;
-    private _stopped = false;
+    // private _stopped = false;
 
     // Sequence
     private _pending = new CollapsableSequencer<UpdateEvent>();
 
     constructor(id: string, state: { currentPts: number, knownPts: number }, persistence: Persistence) {
-        this._id = id;
+        // this._id = id;
         this._pending.reset(state.currentPts);
         this._knownPts = state.knownPts;
-        this._persistence = persistence;
+        // this._persistence = persistence;
     }
 
     start(handler: SequenceSubscriptionHandler) {

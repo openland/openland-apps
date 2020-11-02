@@ -148,6 +148,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryGetDifference(variables: Types.GetDifferenceVariables, params?: QueryParameters): Promise<Types.GetDifference> {
         return this.query('GetDifference', variables, params);
     }
+    queryGetSequenceState(variables: Types.GetSequenceStateVariables, params?: QueryParameters): Promise<Types.GetSequenceState> {
+        return this.query('GetSequenceState', variables, params);
+    }
     queryGetState(params?: QueryParameters): Promise<Types.GetState> {
         return this.query('GetState', undefined, params);
     }
@@ -514,6 +517,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchGetDifference(variables: Types.GetDifferenceVariables, params?: QueryParameters): Promise<Types.GetDifference> {
         return this.refetch('GetDifference', variables, params);
     }
+    refetchGetSequenceState(variables: Types.GetSequenceStateVariables, params?: QueryParameters): Promise<Types.GetSequenceState> {
+        return this.refetch('GetSequenceState', variables, params);
+    }
     refetchGetState(params?: QueryParameters): Promise<Types.GetState> {
         return this.refetch('GetState', undefined, params);
     }
@@ -879,6 +885,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateGetDifference(variables: Types.GetDifferenceVariables, updater: (data: Types.GetDifference) => Types.GetDifference | null): Promise<boolean> {
         return this.updateQuery(updater, 'GetDifference', variables);
+    }
+    updateGetSequenceState(variables: Types.GetSequenceStateVariables, updater: (data: Types.GetSequenceState) => Types.GetSequenceState | null): Promise<boolean> {
+        return this.updateQuery(updater, 'GetSequenceState', variables);
     }
     updateGetState(updater: (data: Types.GetState) => Types.GetState | null): Promise<boolean> {
         return this.updateQuery(updater, 'GetState', undefined);
@@ -1337,6 +1346,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useGetDifference(variables: Types.GetDifferenceVariables, params?: SpaceQueryWatchParameters): Types.GetDifference;
     useGetDifference(variables: Types.GetDifferenceVariables, params?: SpaceQueryWatchParameters): Types.GetDifference | null {
         return this.useQuery('GetDifference', variables, params);
+    }
+    useGetSequenceState(variables: Types.GetSequenceStateVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.GetSequenceState | null;
+    useGetSequenceState(variables: Types.GetSequenceStateVariables, params?: SpaceQueryWatchParameters): Types.GetSequenceState;
+    useGetSequenceState(variables: Types.GetSequenceStateVariables, params?: SpaceQueryWatchParameters): Types.GetSequenceState | null {
+        return this.useQuery('GetSequenceState', variables, params);
     }
     useGetState(params: SpaceQueryWatchParameters & { suspense: false }): Types.GetState | null;
     useGetState(params?: SpaceQueryWatchParameters): Types.GetState;
