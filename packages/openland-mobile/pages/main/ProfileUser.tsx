@@ -55,7 +55,13 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
     }, [inContacts, user.id]);
 
     const handleSharePress = React.useCallback(() => {
-        Share.share({ url: `https://openland.com/${user.shortname || user.id}` });
+        let link = `https://openland.com/${user.shortname || user.id}`;
+        Share.share(
+            Platform.select({
+                ios: { url: link },
+                android: { message: link }
+            })
+        );
     }, [user.shortname, user.id]);
 
     const handleManagePress = React.useCallback(() => {

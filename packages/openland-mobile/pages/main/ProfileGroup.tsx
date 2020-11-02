@@ -287,7 +287,13 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     }, [group]);
 
     const handleSharePress = React.useCallback(() => {
-        Share.share({ url: `https://openland.com/${group.shortname || group.id}` });
+        let link = `https://openland.com/${group.shortname || group.id}`;
+        Share.share(
+            Platform.select({
+                ios: { url: link },
+                android: { message: link }
+            })
+        );
     }, [group.shortname, group.id]);
 
     const handleLoadMore = React.useCallback(async () => {

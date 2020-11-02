@@ -403,7 +403,13 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     }, [members, loading]);
 
     const handleSharePress = React.useCallback(() => {
-        Share.share({ url: `https://openland.com/${organization.shortname || organization.id}` });
+        let link = `https://openland.com/${organization.shortname || organization.id}`;
+        Share.share(
+            Platform.select({
+                ios: { url: link },
+                android: { message: link }
+            })
+        );
     }, [organization.shortname, organization.id]);
 
     const shouldShowAddButton =
