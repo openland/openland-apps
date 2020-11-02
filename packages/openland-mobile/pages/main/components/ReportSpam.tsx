@@ -1,7 +1,6 @@
 import React from 'react';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { SHeader } from 'react-native-s/SHeader';
-
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
@@ -11,7 +10,6 @@ import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardA
 import Toast from 'openland-mobile/components/Toast';
 import { useField } from 'openland-form/useField';
 import { ZInput } from 'openland-mobile/components/ZInput';
-
 import { CheckListBoxWraper } from '../modals/UserMultiplePicker';
 
 const ReportSpamOptions = ['Spam', 'Offensive behaviour', 'Harmful content', 'Clone of my profile', 'Other'];
@@ -47,6 +45,9 @@ const ReportSpamComponent = React.memo((props: PageProps) => {
     ]);
 
     const handleSend = async () => {
+        if (isOther && otherMessageField.input.invalid) {
+            return;
+        }
         await form.doAction(async () => {
             try {
                 await client.mutateReportContent({
