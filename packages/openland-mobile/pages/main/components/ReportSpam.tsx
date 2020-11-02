@@ -45,22 +45,24 @@ const ReportSpamComponent = React.memo((props: PageProps) => {
     ]);
 
     const handleSend = async () => {
-        if (isOther && otherMessageField.input.invalid) {
+        const haveMessage = !!(otherMessageField.value.trim() && otherMessageField.value.length < 120);
+        if (isOther && !haveMessage) {
             return;
+        } else {
+            await form.doAction(async () => {
+                try {
+                    await client.mutateReportContent({
+                        contentId: userId,
+                        type: selected,
+                        message: isOther ? otherMessageField.value : undefined
+                    });
+                    Toast.success({ duration: 1000, text: 'Report sent' }).show();
+                    props.router.back();
+                } catch (e) {
+                    Toast.failure({ text: 'Something went wrong', duration: 1000 });
+                }
+            });
         }
-        await form.doAction(async () => {
-            try {
-                await client.mutateReportContent({
-                    contentId: userId,
-                    type: selected,
-                    message: isOther ? otherMessageField.value : undefined
-                });
-                Toast.success({ duration: 1000, text: 'Report sent' }).show();
-                props.router.back();
-            } catch (e) {
-                Toast.failure({ text: 'Something went wrong', duration: 1000 });
-            }
-        });
     };
 
     return (
