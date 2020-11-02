@@ -177,10 +177,15 @@ export default class OpenlandDocument extends Document {
             } else {
                 // probably user meta tags needed
                 const linkSegments = originalUrl.split('/');
-
+                let probableShortname: string | null = null;
                 if (linkSegments.length === 2) {
-                    const probableShortname = linkSegments[1];
+                    probableShortname = linkSegments[1];
+                }
+                if (linkSegments.length === 3) {
+                    probableShortname = linkSegments[2];
+                }
 
+                if (probableShortname) {
                     const shortnameData = await openland.queryAuthResolveShortName({ shortname: probableShortname });
                     if (shortnameData.item) {
                         // default meta tags
