@@ -84,6 +84,7 @@ import { EditCommunityDefaultGroups } from './pages/main/components/edit-communi
 import { EditCommunityApplyLink } from './pages/main/components/edit-community/EditCommunityApplyLink';
 import { ChatSearch } from './pages/main/ChatSearch';
 import { EditCommunitySuperAdmin } from './pages/main/components/edit-community/EditCommunitySuperAdmin';
+import { ReportSpam } from './pages/main/components/ReportSpam';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -177,6 +178,7 @@ export const Routes = new SRoutesBuilder()
 
   .addRoute('SharedMedia', SharedMedia)
   .addRoute('ChatSearch', ChatSearch)
+  .addRoute('ReportSpam', ReportSpam)
   .addRoute('UserMutualGroups', UserMutualGroups)
 
   .addRoute('Wallet', Wallet)

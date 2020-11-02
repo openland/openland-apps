@@ -89,6 +89,15 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
             require('assets/ic-group-24.png'),
         );
 
+        if (SUPER_ADMIN) {
+            builder.action(
+                'Report spam',
+                () => Modals.showReportSpam({ router, userId }),
+                false,
+                require('assets/ic-flag-24.png'),
+            );
+        }
+
         builder.show();
     }, [user.id]);
 
