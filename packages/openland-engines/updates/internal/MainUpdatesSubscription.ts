@@ -1,19 +1,20 @@
 import { UpdatesSubscription, UpdatesSubscriptionEvent } from './UpdatesSubscription';
 import { UpdatesApi } from './UpdatesApi';
 
-export type MainUpdatesSubscriptionEvent<T> =
+export type MainUpdatesSubscriptionEvent<T, STATE, DIFF> =
     | { type: 'inited', vt: string }
-    | { type: 'event', vt: string, sequence: string, pts: number, event: T }
-    | { type: 'events-combined', vt: string, sequence: string, fromPts: number, events: { pts: number, event: T }[] }
+    | { type: 'start', vt: string, state: STATE, pts: number }
+    | { type: 'event', vt: string, id: string, pts: number, event: T }
+    | { type: 'diff', vt: string, state: DIFF, fromPts: number, events: { pts: number, event: T }[] }
     | { type: 'checkpoint', vt: string }
     | { type: 'state', state: MainUpdatesState };
-export type MainUpdatesSubscriptionHandler<T> = (event: MainUpdatesSubscriptionEvent<T>) => void;
+export type MainUpdatesSubscriptionHandler<T, STATE, DIFF> = (event: MainUpdatesSubscriptionEvent<T, STATE, DIFF>) => void;
 
 export type MainUpdatesState = 'inited' | 'starting' | 'connected' | 'connecting' | 'updating' | 'stopped';
 
-export class MainUpdatesSubscription<T> {
+export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF extends { id: string }> {
 
-    private readonly api: UpdatesApi<T>;
+    private readonly api: UpdatesApi<T, STATE, DIFF>;
     private readonly subscription: UpdatesSubscription<T>;
     private _currentSeq!: number;
     private _subscribedFrom: number | null = null;
@@ -25,12 +26,12 @@ export class MainUpdatesSubscription<T> {
     private _invalidated = false;
     private _invalidationTimer: any | null = null;
     private _pending = new Map<number, { sequence: string, pts: number, event: T }>();
-    private _handler: MainUpdatesSubscriptionHandler<T> | null = null;
+    private _handler: MainUpdatesSubscriptionHandler<T, STATE, DIFF> | null = null;
     private _state: MainUpdatesState = 'inited';
 
     constructor(
         vt: string | null,
-        api: UpdatesApi<T>,
+        api: UpdatesApi<T, STATE, DIFF>,
         subscription: UpdatesSubscription<T>
     ) {
         if (vt) {
@@ -40,7 +41,7 @@ export class MainUpdatesSubscription<T> {
         this.subscription = subscription;
     }
 
-    start = (handler: MainUpdatesSubscriptionHandler<T>) => {
+    start = (handler: MainUpdatesSubscriptionHandler<T, STATE, DIFF>) => {
         if (this._launched) {
             throw Error('Already launched');
         }
@@ -88,6 +89,9 @@ export class MainUpdatesSubscription<T> {
                 this.setState('connected');
             }
             this._handler!({ type: 'inited', vt: this._vt });
+            for (let s of state.sequences) {
+                this._handler!({ type: 'start', vt: this._vt, state: s.state, pts: s.pts });
+            }
         } else {
 
             // Load Difference
@@ -102,9 +106,9 @@ export class MainUpdatesSubscription<T> {
             }
             for (let sequence of difference.sequences) {
                 this._handler!({
-                    type: 'events-combined',
+                    type: 'diff',
                     vt: this._vt,
-                    sequence: sequence.sequence,
+                    state: sequence.state,
                     fromPts: sequence.fromPts,
                     events: sequence.events
                 });
@@ -117,7 +121,7 @@ export class MainUpdatesSubscription<T> {
         // Drain received events
         let drained = this.drain();
         for (let d of drained) {
-            this._handler!({ type: 'event', vt: this._vt!, sequence: d.sequence, pts: d.pts, event: d.event });
+            this._handler!({ type: 'event', vt: this._vt!, id: d.sequence, pts: d.pts, event: d.event });
         }
 
         // Request invalidation timeout if there are already pending exists
@@ -142,7 +146,9 @@ export class MainUpdatesSubscription<T> {
 
             // If not started or invalidated - put all to pending
             if (!this._started || this._invalidated) {
-                this._pending.set(event.seq, { sequence: event.sequence, pts: event.pts, event: event.event });
+                if (!this._pending.has(event.seq)) {
+                    this._pending.set(event.seq, { sequence: event.sequence, pts: event.pts, event: event.event });
+                }
                 return;
             }
 
@@ -153,7 +159,7 @@ export class MainUpdatesSubscription<T> {
                 this._handler!({
                     type: 'event',
                     vt: this._vt!,
-                    sequence: event.sequence,
+                    id: event.sequence,
                     pts: event.pts,
                     event: event.event
                 });
@@ -161,7 +167,7 @@ export class MainUpdatesSubscription<T> {
                 // Drain pending
                 let drained = this.drain();
                 for (let d of drained) {
-                    this._handler!({ type: 'event', vt: this._vt!, sequence: d.sequence, pts: d.pts, event: d.event });
+                    this._handler!({ type: 'event', vt: this._vt!, id: d.sequence, pts: d.pts, event: d.event });
                 }
 
                 // Restart invalidation timer
@@ -170,11 +176,13 @@ export class MainUpdatesSubscription<T> {
                     this.startInvalidationTimer();
                 }
             } else {
-                // Persist to pending
-                this._pending.set(event.seq, { sequence: event.sequence, pts: event.pts, event: event.event });
+                if (!this._pending.has(event.seq)) {
+                    // Persist to pending
+                    this._pending.set(event.seq, { sequence: event.sequence, pts: event.pts, event: event.event });
 
-                // Start invalidation timer if not exist
-                this.startInvalidationTimer();
+                    // Start invalidation timer if not exist
+                    this.startInvalidationTimer();
+                }
             }
         } else if (event.type === 'started') {
             this._subscribedFrom = event.seq;
@@ -227,9 +235,9 @@ export class MainUpdatesSubscription<T> {
                 // Call handler
                 for (let sequence of difference.sequences) {
                     this._handler!({
-                        type: 'events-combined',
+                        type: 'diff',
                         vt: this._vt,
-                        sequence: sequence.sequence,
+                        state: sequence.state,
                         fromPts: sequence.fromPts,
                         events: sequence.events
                     });
@@ -245,7 +253,7 @@ export class MainUpdatesSubscription<T> {
             // Drain received events
             let drained = this.drain();
             for (let d of drained) {
-                this._handler!({ type: 'event', vt: this._vt!, sequence: d.sequence, pts: d.pts, event: d.event });
+                this._handler!({ type: 'event', vt: this._vt!, id: d.sequence, pts: d.pts, event: d.event });
             }
 
             // Update state

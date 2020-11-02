@@ -1,8 +1,8 @@
+import { UpdateEvent, UpdateSequenceState, UpdateSeuqenceDiff } from './Types';
 import { UpdatesSubscriptionClient } from './internal/UpdatesSubscriptionClient';
 import { UpdatesApiClient } from './internal/UpdatesApiClient';
 import { MainUpdatesSubscription } from './internal/MainUpdatesSubscription';
 import { OpenlandClient } from 'openland-api/spacex';
-import { ShortUpdate } from 'openland-api/spacex.types';
 import { Persistence } from 'openland-engines/persistence/Persistence';
 
 export class UpdatesEngine {
@@ -10,7 +10,7 @@ export class UpdatesEngine {
     readonly persistence: Persistence;
     private started = false;
     private closed = false;
-    private main: MainUpdatesSubscription<ShortUpdate>;
+    private main: MainUpdatesSubscription<UpdateEvent, UpdateSequenceState, UpdateSeuqenceDiff>;
 
     constructor(client: OpenlandClient, persistence: Persistence) {
         this.client = client;

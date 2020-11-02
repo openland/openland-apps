@@ -1,4 +1,4 @@
-import { Transaction } from './../../persistence/Persistence';
+import { Transaction } from '../../../persistence/Persistence';
 import { Sequencer } from './Sequencer';
 import { Persistence } from 'openland-engines/persistence/Persistence';
 

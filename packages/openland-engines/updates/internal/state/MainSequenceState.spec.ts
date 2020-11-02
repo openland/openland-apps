@@ -1,6 +1,6 @@
 import { InMemoryKeyValueStore } from 'openland-y-utils/InMemoryKeyValueStore';
 import { MainSequenceState } from './MainSequenceState';
-import { Persistence } from '../../persistence/Persistence';
+import { Persistence } from '../../../persistence/Persistence';
 
 describe('MainSequenceState', () => {
     it('should perform init', async () => {
