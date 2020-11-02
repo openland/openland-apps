@@ -15,13 +15,8 @@ const EditCommunityDefaultGroupsComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const client = getClient();
     const organizationId = props.router.params.id;
-    const organization = getClient().useOrganization({ organizationId }, { fetchPolicy: 'network-only' }).organization;
     const profile = getClient().useOrganizationProfile({ organizationId }, { fetchPolicy: 'network-only' }).organizationProfile;
     const publicRooms = client.useOrganizationPublicRooms({ organizationId, first: 100 }, { fetchPolicy: 'network-only' }).organizationPublicRooms;
-
-    if (!organization.private) {
-        return null;
-    }
 
     const form = useForm();
     const autosubscribeRoomsField = useField('applyLink', profile.autosubscribeRooms, form);
