@@ -67,7 +67,7 @@ const ReportSpamComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title="Report spam" />
+            <SHeader title="Report" />
             <SHeaderButton title="Send" onPress={handleSend} />
             <KeyboardAvoidingScrollView>
                 {ReportSpamOptions.map(option => (

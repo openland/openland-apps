@@ -79,7 +79,7 @@ export const UserActions = React.memo(({ user, chat }: UserMenuProps) => {
     }, [user.id, client, deleted, setDelete]);
 
     const onReportSpamClick = React.useCallback(() => {
-        showModalBox({ width: 400, title: 'Report spam' }, (ctx) => (
+        showModalBox({ width: 400, title: 'Report' }, (ctx) => (
             <ReportSpamModal userId={id} hide={ctx.hide} />
         ));
     }, [id]);
@@ -130,7 +130,7 @@ export const UserActions = React.memo(({ user, chat }: UserMenuProps) => {
                 />
                 {!isMe && (
                     <UListItem
-                        title="Report spam"
+                        title="Report"
                         useRadius={true}
                         icon={<SpamIcon />}
                         onClick={onReportSpamClick}

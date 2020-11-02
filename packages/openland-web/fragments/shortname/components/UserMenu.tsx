@@ -94,10 +94,10 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
 
     if (id !== engine.user.id) {
         builder.item({
-            title: 'Report spam',
+            title: 'Report',
             icon: <SpamIcon />,
             onClick: () => {
-                showModalBox({ width: 400, title: 'Report spam' }, ({ hide }) => (
+                showModalBox({ width: 400, title: 'Report' }, ({ hide }) => (
                     <ReportSpamModal userId={id} hide={hide} />
                 ));
             }

@@ -95,14 +95,12 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
             require('assets/ic-group-24.png'),
         );
 
-        if (SUPER_ADMIN) {
-            builder.action(
-                'Report spam',
-                () => Modals.showReportSpam({ router, userId }),
-                false,
-                require('assets/ic-flag-24.png'),
-            );
-        }
+        builder.action(
+            'Report',
+            () => Modals.showReportSpam({ router, userId }),
+            false,
+            require('assets/ic-flag-24.png'),
+        );
 
         builder.show();
     }, [user.id]);
@@ -184,6 +182,13 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                             icon={require('assets/ic-more-h-24.png')}
                             title="More"
                             onPress={handleManagePress}
+                        />
+                    )}
+                    {!SUPER_ADMIN && profileType === 'user' && (
+                        <ZHeroAction
+                            icon={require('assets/ic-flag-24.png')}
+                            title="Report"
+                            onPress={() => Modals.showReportSpam({ router, userId })}
                         />
                     )}
                 </ZHero>
