@@ -25,12 +25,24 @@ const ReportSpamComponent = React.memo((props: PageProps) => {
 
     const otherMessageField = useField('otherMessage', '', form, [
         {
-            checkIsValid: (value) => !isOther || !!value.trim(),
             text: 'Please add description of your problem',
+            checkIsValid: (value) => {
+                if (isOther) {
+                    return !!value.trim();
+                } else {
+                    return true;
+                }
+            },
         },
         {
-            checkIsValid: (value) => value?.length < 120,
             text: 'Your description should be less than 120 characters',
+            checkIsValid: (value) => {
+                if (isOther) {
+                    return value?.length < 120;
+                } else {
+                    return true;
+                }
+            },
         },
     ]);
 
