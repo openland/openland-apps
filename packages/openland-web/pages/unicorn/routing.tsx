@@ -63,6 +63,7 @@ routing.addRoute('/mail/:id/shared', () => SharedMediaFragment);
 
 // Message
 routing.addRoute('/message/:messageId', () => MessageFragment);
+routing.addRoute('/message/:messageId/comment/:commentId\\?reply=false', () => MessageFragment);
 routing.addRoute('/message/:messageId/comment/:commentId', () => MessageFragment);
 
 // Notifications

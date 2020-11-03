@@ -39,7 +39,7 @@ const MessageComponent = React.memo((props: PageProps) => {
     const messenger = getMessenger();
     const theme = React.useContext(ThemeContext);
     const { router } = props;
-    const { messageId, highlightId } = router.params;
+    const { messageId, highlightId, withFocus } = router.params;
     const client = getClient();
     const messageData = client.useMessage({ messageId }, { fetchPolicy: 'cache-and-network' });
     const message = messageData.message;
@@ -96,6 +96,7 @@ const MessageComponent = React.memo((props: PageProps) => {
                 chat={source && source.__typename === 'MessageSourceChat' ? source.chat : undefined}
                 highlightId={highlightId}
                 isDeleted={isDeleted}
+                autofocus={withFocus}
             />
         </>
     );
