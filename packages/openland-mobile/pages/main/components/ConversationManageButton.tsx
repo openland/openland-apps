@@ -146,7 +146,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
             builder.action('Add people', onInvitePress, false, require('assets/ic-invite-24.png'));
         }
 
-        if (isUser && isUser.id !== myID) {
+        if (!isUser || (isUser && isUser.id !== myID)) {
             const notificationsTitle = `${muted ? 'Unmute' : 'Mute'} notifications`;
             const notificationsIcon = muted
                 ? require('assets/ic-notifications-24.png')
