@@ -160,7 +160,7 @@ export class MobileMessenger {
                 if (item.isService) {
                     return <AsyncServiceMessage message={item} onUserPress={this.handleUserPress} onGroupPress={this.handleGroupPress} onOrganizationPress={this.handleOrganizationPress} onHashtagPress={this.handleHashtagPress} />;
                 } else {
-                    return <AsyncMessageView conversationId={chatId} message={item} engine={eng} onUserPress={this.handleUserPress} onGroupPress={this.handleGroupPress} onOrganizationPress={this.handleOrganizationPress} onHashtagPress={this.handleHashtagPress} onDocumentPress={this.handleDocumentPress} onMediaPress={this.handleMediaPress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsPress} onReplyPress={this.handleReplyPress} onReactionsPress={this.handleReactionsPress} onMessagePress={this.handleMessagePress}/>;
+                    return <AsyncMessageView conversationId={chatId} message={item} hideReactions={true} engine={eng} onUserPress={this.handleUserPress} onGroupPress={this.handleGroupPress} onOrganizationPress={this.handleOrganizationPress} onHashtagPress={this.handleHashtagPress} onDocumentPress={this.handleDocumentPress} onMediaPress={this.handleMediaPress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsPress} onReplyPress={this.handleReplyPress} onReactionsPress={this.handleReactionsPress} onMessagePress={this.handleMessagePress}/>;
                 }
             } else if (item.type === 'date') {
                 return <AsyncDateSeparator year={item.year} month={item.month} date={item.date} />;

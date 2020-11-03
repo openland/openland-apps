@@ -44,31 +44,29 @@ const ReportSpamComponent = React.memo((props: PageProps) => {
         },
     ]);
 
+    const validMessage = !!(otherMessageField.value.trim() && otherMessageField.value.length < 120);
+    const disableSend = isOther && !validMessage;
+
     const handleSend = async () => {
-        const haveMessage = !!(otherMessageField.value.trim() && otherMessageField.value.length < 120);
-        if (isOther && !haveMessage) {
-            return;
-        } else {
-            await form.doAction(async () => {
-                try {
-                    await client.mutateReportContent({
-                        contentId: userId,
-                        type: selected,
-                        message: isOther ? otherMessageField.value : undefined
-                    });
-                    Toast.success({ duration: 1000, text: 'Report sent' }).show();
-                    props.router.back();
-                } catch (e) {
-                    Toast.failure({ text: 'Something went wrong', duration: 1000 });
-                }
-            });
-        }
+        await form.doAction(async () => {
+            try {
+                await client.mutateReportContent({
+                    contentId: userId,
+                    type: selected,
+                    message: isOther ? otherMessageField.value : undefined
+                });
+                Toast.success({ duration: 1000, text: 'Report sent' }).show();
+                props.router.back();
+            } catch (e) {
+                Toast.failure({ text: 'Something went wrong', duration: 1000 });
+            }
+        });
     };
 
     return (
         <>
             <SHeader title="Report" />
-            <SHeaderButton title="Send" onPress={handleSend} />
+            <SHeaderButton title="Send" onPress={handleSend} key={`report-${disableSend}`} disabled={disableSend}/>
             <KeyboardAvoidingScrollView>
                 {ReportSpamOptions.map(option => (
                     <CheckListBoxWraper isRadio={true} checked={selected === option}>

@@ -37,6 +37,7 @@ export interface AsyncMessageViewProps {
     canReply?: boolean;
     message: DataSourceMessageItem;
     engine: ConversationEngine;
+    hideReactions?: boolean;
     onMessagePress?: (message: DataSourceMessageItem) => void;
     onMessageDoublePress: (message: DataSourceMessageItem) => void;
     onMessageLongPress?: (message: DataSourceMessageItem, actions: { action?: MessagesAction, reply: ChatMessagesActions['reply'], edit: ChatMessagesActions['edit'], toggleSelect: ChatMessagesActions['toggleSelect'], forward: (messages: DataSourceMessageItem[]) => void }) => void;
@@ -74,7 +75,7 @@ const AsyncMessageViewAvatar = (props: { message: DataSourceMessageItem, handleU
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const theme = useThemeGlobal(false);
-    const { conversationId, canReply, message, engine, onMessagePress, onMessageDoublePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress, onHashtagPress } = props;
+    const { conversationId, canReply, hideReactions, message, engine, onMessagePress, onMessageDoublePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress, onHashtagPress } = props;
     const {
         isOut,
         attachTop,
@@ -221,7 +222,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
         res = <UnsupportedContent message={message} theme={theme} />;
     }
 
-    const showReactions = ((engine.isChannel || commentsCount > 0) || reactionCounters.length > 0) && !isSending;
+    const showReactions = ((engine.isChannel || commentsCount > 0) || reactionCounters.length > 0) && !isSending && !hideReactions;
     const marginTop = attachTop ? 4 : 12;
     const marginBottom = attachBottom && showReactions ? 6 : 0;
 
