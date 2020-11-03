@@ -36,17 +36,18 @@ interface CommentsWrapperProps {
     peerView: JSX.Element;
     groupId?: string;
     commentId?: string;
+    noDefaultReply?: boolean;
 }
 
 export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
-    const { peerId, peerView, groupId, commentId } = props;
+    const { peerId, peerView, groupId, commentId, noDefaultReply } = props;
     const client = useClient();
-    const [highlightId, setHighlightId] = React.useState<string | undefined>(commentId);
+    const [replyingId, setReplyingId] = React.useState<string | undefined>(noDefaultReply ? undefined : commentId);
     const [attachOpen, setAttachOpen] = React.useState(false);
 
     const handleReplyClick = React.useCallback((id: string) => {
-        setHighlightId(current => id === current ? undefined : id);
-    }, [highlightId]);
+        setReplyingId(current => id === current ? undefined : id);
+    }, [replyingId]);
 
     const handleCommentSent = React.useCallback(async (data: URickTextValue, topLevel: boolean = false) => {
         const { text, mentions } = extractTextAndMentions(data);
@@ -71,29 +72,29 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                 mentions: mentionsPrepared,
                 message: text,
                 spans: findSpans(text),
-                replyComment: topLevel ? undefined : highlightId
+                replyComment: topLevel ? undefined : replyingId
             });
 
             if (!topLevel) {
-                setHighlightId(undefined);
+                setReplyingId(undefined);
             }
         }
 
         return true;
-    }, [peerId, highlightId]);
+    }, [peerId, replyingId]);
 
     const handleStickerSent = React.useCallback(async (sticker: StickerFragment, topLevel: boolean = false) => {
         await client.mutateAddStickerComment({
             peerId,
             repeatKey: UUID(),
             stickerId: sticker.id,
-            replyComment: topLevel ? undefined : highlightId
+            replyComment: topLevel ? undefined : replyingId
         });
 
         if (!topLevel) {
-            setHighlightId(undefined);
+            setReplyingId(undefined);
         }
-    }, [peerId, highlightId]);
+    }, [peerId, replyingId]);
 
     const handleCommentSentAttach = React.useCallback((files: File[], isImage: boolean, topLevel: boolean = false) => {
         if (files.length > 0) {
@@ -118,14 +119,14 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                                         peerId,
                                         repeatKey: UUID(),
                                         fileAttachments: uploadedFiles.map(f => ({ fileId: f })),
-                                        replyComment: topLevel ? undefined : highlightId,
+                                        replyComment: topLevel ? undefined : replyingId,
                                         message: text,
                                         spans: text ? findSpans(text) : null,
                                         mentions: text && mentions ? prepareLegacyMentionsForSend(text, mentions) : null
                                     });
 
                                     if (!topLevel) {
-                                        setHighlightId(undefined);
+                                        setReplyingId(undefined);
                                     }
                                 }
                             });
@@ -135,7 +136,7 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                     chatId: groupId
                 });
         }
-    }, [peerId, highlightId]);
+    }, [peerId, replyingId]);
 
     return (
         <div className={wrapperClass}>
@@ -150,7 +151,8 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                         onSent={handleCommentSent}
                         onSentAttach={handleCommentSentAttach}
                         onStickerSent={handleStickerSent}
-                        highlightId={highlightId}
+                        replyingId={replyingId}
+                        highlightId={commentId}
                     />
                 </div>
             </XScrollView3>
@@ -159,12 +161,12 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                 onSentAttach={(files, isImage) => handleCommentSentAttach(files, isImage, true)}
                 onStickerSent={sticker => handleStickerSent(sticker, true)}
                 groupId={groupId}
-                forceAutofocus={!highlightId}
+                forceAutofocus={!replyingId}
             />
             <DropZone
                 isHidden={attachOpen}
                 onDrop={files => handleCommentSentAttach(files, files.every(f => isFileImage(f)))}
-                text={highlightId ? 'Drop here to send to the branch' : undefined}
+                text={replyingId ? 'Drop here to send to the branch' : undefined}
             />
         </div>
     );

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MessageContent } from '../../fragments/chat/messenger/message/MessageContent';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { Span } from 'openland-y-utils/spans/Span';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { CommentTools } from './CommentTools';
 import { CommentInput } from './CommentInput';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
@@ -36,8 +36,14 @@ const content = css`
 const wrapper = css`
     display: flex;
     flex-direction: row;
-    padding: 8px 0;
+    padding: 8px;
     margin-bottom: 8px;
+    border-radius: 8px;
+    transition: background-color 0.15s;
+`;
+
+const highlightedWrapper = css`
+    background-color: var(--backgroundTertiary);
 `;
 
 interface CommentViewProps {
@@ -46,6 +52,7 @@ interface CommentViewProps {
     deleted: boolean;
     depth: number;
     highlighted: boolean;
+    isReplying: boolean;
     groupId?: string;
     generation?: number;
     role: RoomMemberRole | undefined;
@@ -67,7 +74,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
         entryId,
         deleted,
         depth,
-        highlighted,
+        isReplying,
         groupId,
         onReplyClick,
         onDeleteClick,
@@ -84,16 +91,25 @@ export const CommentView = React.memo((props: CommentViewProps) => {
     const [edit, setEdit] = React.useState(false);
     const containerRef = React.useRef<HTMLDivElement>(null);
     const router = React.useContext(XViewRouterContext)!;
+    const [highlighted, setHighlighted] = React.useState(props.highlighted);
 
     React.useLayoutEffect(() => {
         setTimeout(() => {
-            if (highlighted || (generation && comment.sender.id === messenger.user.id)) {
+            if (isReplying || highlighted || (generation && comment.sender.id === messenger.user.id)) {
                 if (containerRef.current) {
-                    containerRef.current.scrollIntoView({ behavior: 'auto', block: 'nearest' });
+                    containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             }
         }, 300);
     }, []);
+
+    React.useEffect(() => {
+        if (props.highlighted) {
+            setTimeout(() => {
+                setHighlighted(false);
+            }, 8000);
+        }
+    }, [props.highlighted]);
 
     React.useEffect(
         () => {
@@ -142,7 +158,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
     return (
         <div
             ref={containerRef}
-            className={wrapper}
+            className={cx(wrapper, highlighted && highlightedWrapper)}
             style={{
                 paddingLeft:
                     depth > 0
@@ -202,7 +218,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                                 onDeleteClick={canDelete ? () => onDeleteClick(id) : undefined}
                             />
                         )}
-                        {highlighted && (
+                        {isReplying && (
                             <CommentInput
                                 onSent={onSent}
                                 onSentAttach={onSentAttach}

@@ -147,7 +147,7 @@ export const NotificationCommentView = React.memo((props: NotificationViewProps)
                     group={sharedRoom}
                     date={date}
                 />
-                <XView path={path} cursor="pointer">
+                <XView path={path + '?reply=false'} cursor="pointer">
                     {!!replyQuoteTextEmojify && (
                         <div className={replyWrapper}>
                             {replyQuoteTextEmojify}
