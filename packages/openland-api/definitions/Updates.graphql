@@ -86,8 +86,26 @@ query GetDifference($state: String!) {
     }
 }
 
-query GetSequenceState($id: String!) {
+query GetSequenceState($id: ID!) {
     sequenceState(id: $id) {
-        ...ShortSequence
+        pts
+        sequence {
+            ...ShortSequence
+        }
+    }
+}
+
+query GetSequenceDifference($id: ID!, $pts: Int!) {
+    sequenceDifference(id: $id, pts: $pts) {
+        sequence {
+            ...ShortSequence
+        }
+        events {
+            pts
+            event {
+                ...ShortUpdate
+            }
+        }
+        hasMore
     }
 }

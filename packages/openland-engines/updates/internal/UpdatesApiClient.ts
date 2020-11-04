@@ -1,8 +1,8 @@
-import { UpdateEvent, UpdateSequenceState, UpdateSeuqenceDiff } from './../Types';
+import { UpdateEvent, UpdateSequenceState, UpdateSequenceDiff } from './../Types';
 import { OpenlandClient } from 'openland-api/spacex';
 import { UpdatesApi } from './UpdatesApi';
 
-export class UpdatesApiClient implements UpdatesApi<UpdateEvent, UpdateSequenceState, UpdateSeuqenceDiff> {
+export class UpdatesApiClient implements UpdatesApi<UpdateEvent, UpdateSequenceState, UpdateSequenceDiff> {
 
     private client: OpenlandClient;
 
@@ -26,9 +26,9 @@ export class UpdatesApiClient implements UpdatesApi<UpdateEvent, UpdateSequenceS
         seq: number,
         vt: string,
         hasMore: boolean,
-        sequences: { state: UpdateSeuqenceDiff, fromPts: number, events: { pts: number, event: UpdateEvent }[] }[]
+        sequences: { state: UpdateSequenceDiff, fromPts: number, events: { pts: number, event: UpdateEvent }[] }[]
     }> {
-        let difference = (await this.client.queryGetDifference({ state: vt })).updatesDifference;
+        let difference = (await this.client.queryGetDifference({ state: vt }, { fetchPolicy: 'network-only' })).updatesDifference;
         return {
             seq: difference.seq,
             vt: difference.state,
@@ -42,11 +42,19 @@ export class UpdatesApiClient implements UpdatesApi<UpdateEvent, UpdateSequenceS
         };
     }
 
-    getSequenceState(id: string): Promise<{ pts: number, state: UpdateSequenceState }> {
-        throw Error('not implemented');
+    async getSequenceState(id: string): Promise<{ pts: number, state: UpdateSequenceState }> {
+        let res = await this.client.queryGetSequenceState({ id }, { fetchPolicy: 'network-only' });
+        return {
+            pts: res.sequenceState.pts,
+            state: res.sequenceState.sequence
+        };
     }
 
-    getSequenceDifference(id: string, seq: number): Promise<{ state: UpdateSeuqenceDiff, events: { pts: number, event: UpdateEvent }[] }> {
-        throw Error('not implemented');
+    async getSequenceDifference(id: string, pts: number): Promise<{ state: UpdateSequenceDiff, events: { pts: number, event: UpdateEvent }[] }> {
+        let res = await this.client.queryGetSequenceDifference({ id, pts }, { fetchPolicy: 'network-only' });
+        return {
+            state: res.sequenceDifference.sequence,
+            events: res.sequenceDifference.events
+        };
     }
 }

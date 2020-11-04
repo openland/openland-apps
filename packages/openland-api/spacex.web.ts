@@ -2887,10 +2887,32 @@ const GetDifferenceSelector = obj(
                         )))))
                 )))
         );
+const GetSequenceDifferenceSelector = obj(
+            field('sequenceDifference', 'sequenceDifference', args(fieldValue("id", refValue('id')), fieldValue("pts", refValue('pts'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('sequence', 'sequence', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('Sequence', ShortSequenceSelector)
+                        ))),
+                    field('events', 'events', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('pts', 'pts', args(), notNull(scalar('Int'))),
+                            field('event', 'event', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    fragment('UpdateEvent', ShortUpdateSelector)
+                                )))
+                        ))))),
+                    field('hasMore', 'hasMore', args(), notNull(scalar('Boolean')))
+                )))
+        );
 const GetSequenceStateSelector = obj(
             field('sequenceState', 'sequenceState', args(fieldValue("id", refValue('id'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('Sequence', ShortSequenceSelector)
+                    field('pts', 'pts', args(), notNull(scalar('Int'))),
+                    field('sequence', 'sequence', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('Sequence', ShortSequenceSelector)
+                        )))
                 )))
         );
 const GetStateSelector = obj(
@@ -5712,10 +5734,16 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query GetDifference($state:String!){updatesDifference(state:$state){__typename seq state hasMore sequences{__typename after events{__typename pts event{__typename ...ShortUpdate}}sequence{__typename ...ShortSequence}}}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}',
         selector: GetDifferenceSelector
     },
+    GetSequenceDifference: {
+        kind: 'query',
+        name: 'GetSequenceDifference',
+        body: 'query GetSequenceDifference($id:ID!,$pts:Int!){sequenceDifference(id:$id,pts:$pts){__typename sequence{__typename ...ShortSequence}events{__typename pts event{__typename ...ShortUpdate}}hasMore}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}',
+        selector: GetSequenceDifferenceSelector
+    },
     GetSequenceState: {
         kind: 'query',
         name: 'GetSequenceState',
-        body: 'query GetSequenceState($id:String!){sequenceState(id:$id){__typename ...ShortSequence}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}',
+        body: 'query GetSequenceState($id:ID!){sequenceState(id:$id){__typename pts sequence{__typename ...ShortSequence}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}',
         selector: GetSequenceStateSelector
     },
     GetState: {

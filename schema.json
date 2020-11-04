@@ -582,8 +582,8 @@
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "INTERFACE",
-                "name": "Sequence",
+                "kind": "OBJECT",
+                "name": "UpdatesSequenceState",
                 "ofType": null
               }
             },
@@ -640,7 +640,7 @@
                 "defaultValue": null
               },
               {
-                "name": "seq",
+                "name": "pts",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
