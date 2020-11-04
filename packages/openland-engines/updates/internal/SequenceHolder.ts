@@ -46,6 +46,7 @@ export class SequenceHolder {
     }
 
     private static async createImpl(tx: Transaction, id: string, state: { pts: number, sequence: UpdateSequenceState } | null, handler: SequenceHolderHandler, api: UpdatesApi<UpdateEvent, UpdateSequenceState, UpdateSequenceDiff>) {
+        console.log('updates: sequence: ' + id + ': creating');
         let pts = await tx.readInt(`updates.sequence.${id}.pts`);
         let invalidated = (await tx.readBoolean(`updates.sequence.${id}.invalidated`)) || false; // Default state is not invalidated
 
@@ -69,6 +70,7 @@ export class SequenceHolder {
     private loading = true;
     private loadingPromise: Promise<void>;
     private loadingResolve!: () => void;
+    private loadingPending: ((tx: Transaction) => Promise<void>)[] = [];
     private subscription: SequenceSubscription | null = null;
 
     private constructor(
@@ -103,19 +105,22 @@ export class SequenceHolder {
     private async start(tx: Transaction, state: { pts: number, sequence: UpdateSequenceState } | null) {
         if (this.loading) {
             if (state) {
+                console.log('updates: sequence: ' + this.id + ': loading from initial state');
                 await this.onStateReceived(tx, state);
             } else {
+                console.log('updates: sequence: ' + this.id + ': download state');
                 this.downloadState(); // NOTE: No await
             }
         } else {
-            this.doStart();
+            console.log('updates: sequence: ' + this.id + ': recover');
+            await this.doStart(tx);
         }
     }
 
     private async downloadState() {
         let response = await this.api.getSequenceState(this.id);
         await this.persistence.inTx(async (tx) => {
-            this.onStateReceived(tx, { pts: response.pts, sequence: response.state });
+            await this.onStateReceived(tx, { pts: response.pts, sequence: response.state });
         });
     }
 
@@ -128,27 +133,27 @@ export class SequenceHolder {
             // Save pts and enforce invalidated flag
             this.startPts = state.pts;
             this.startInvalidated = true;
-            updateInvalidated(tx, this.id, true);
+            await updateInvalidated(tx, this.id, true);
             persistPts(tx, this.id, state.pts);
 
             // Start
-            this.doStart();
+            await this.doStart(tx);
         }
     }
 
-    private doStart() {
+    private async doStart(tx: Transaction) {
         // Start sequence subscription
-        console.log('updates: sequence: start subscription from ' + this.startPts);
+        console.log('updates: sequence: ' + this.id + ': start sequence from ' + this.startPts);
         this.subscription = new SequenceSubscription(this.id, this.api, this.persistence);
-        this.subscription.start(this.startPts!, this.startInvalidated, async (tx, event) => {
+        this.subscription.start(this.startPts!, this.startInvalidated, async (tx2, event) => {
             if (event.type === 'event') {
-                await this.onSequenceUpdate(tx, event.pts, event.event);
+                await this.onSequenceUpdate(tx2, event.pts, event.event);
             } else if (event.type === 'restart') {
-                await this.onSequenceRestart(tx, event.pts, event.sequence);
+                await this.onSequenceRestart(tx2, event.pts, event.sequence);
             } else if (event.type === 'invalidated') {
-                await this.onSequenceInvalidated(tx);
+                await this.onSequenceInvalidated(tx2);
             } else if (event.type === 'validated') {
-                await this.onSequenceValidated(tx);
+                await this.onSequenceValidated(tx2);
             }
         });
 
@@ -156,7 +161,23 @@ export class SequenceHolder {
         if (this.loading) {
             this.loading = false;
             this.loadingResolve();
+
+            // Ovewrite invalidated state because it could be overwritten
+            // by pending operations
+            if (this.startInvalidated) {
+                await updateInvalidated(tx, this.id, true);
+            } else {
+                await updateInvalidated(tx, this.id, false);
+            }
+
+            // Apply pending
+            for (let p of this.loadingPending) {
+                await p(tx);
+            }
+            this.loadingPending = [];
         }
+
+        console.log('updates: sequence: ' + this.id + ': loaded');
     }
 
     //
@@ -164,10 +185,12 @@ export class SequenceHolder {
     //
 
     private async onSequenceInvalidated(tx: Transaction) {
+        console.log('updates: sequence: ' + this.id + ': invalidated');
         await updateInvalidated(tx, this.id, false);
     }
 
     private async onSequenceValidated(tx: Transaction) {
+        console.log('updates: sequence: ' + this.id + ': validated');
         await updateInvalidated(tx, this.id, true);
     }
 
@@ -196,14 +219,9 @@ export class SequenceHolder {
     async onDiffReceived(tx: Transaction, fromPts: number, events: { pts: number, event: UpdateEvent }[], state: UpdateSequenceDiff) {
         if (this.loading) {
             await updateInvalidated(tx, this.id, true);
-
-            // Forward to sequence
-            (async () => {
-                await this.loadingPromise;
-                await this.persistence.inTx(async (tx2) => {
-                    await this.subscription!.onDiff(tx2, fromPts, events, state);
-                });
-            })();
+            this.loadingPending.push(async (tx2) => {
+                await this.subscription!.onDiff(tx2, fromPts, events, state);
+            });
         } else {
             await this.subscription!.onDiff(tx, fromPts, events, state);
         }
@@ -212,14 +230,9 @@ export class SequenceHolder {
     async onUpdate(tx: Transaction, pts: number, update: UpdateEvent) {
         if (this.loading) {
             await updateInvalidated(tx, this.id, true);
-
-            // Forward to sequence
-            (async () => {
-                await this.loadingPromise;
-                await this.persistence.inTx(async (tx2) => {
-                    await this.subscription!.onEvent(tx2, pts, update);
-                });
-            })();
+            this.loadingPending.push(async (tx2) => {
+                await this.subscription!.onEvent(tx2, pts, update);
+            });
         } else {
             await this.subscription!.onEvent(tx, pts, update);
         }
