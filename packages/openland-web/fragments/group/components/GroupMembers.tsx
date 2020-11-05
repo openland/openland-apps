@@ -42,7 +42,7 @@ export const GroupMembers = ({ group }: GroupMembersProps) => {
         hasNextPage: true,
         cursor: '',
     });
-    
+
     const { id, membersCount, isChannel } = group;
 
     const loadSearchMembers = async (reseted?: boolean) => {
@@ -94,14 +94,16 @@ export const GroupMembers = ({ group }: GroupMembersProps) => {
     }, [bottomReached]);
 
     React.useEffect(() => {
-        return onlines.onSingleChange((user: string, online: boolean) => {
-            setMembers((current) =>
-                current.map((m) =>
-                    m.user.id === user && online !== m.user.online
-                        ? { ...m, user: { ...m.user, online, lastSeen: Date.now().toString() } }
-                        : m,
-                ),
-            );
+        return onlines.onSingleChange((userId: string, online: boolean) => {
+            if (members.some(( { user }) => user.id === userId && user.online !== online)) {
+                setMembers((current) =>
+                    current.map((m) =>
+                        m.user.id === userId && online !== m.user.online
+                            ? { ...m, user: { ...m.user, online, lastSeen: Date.now().toString() } }
+                            : m,
+                    ),
+                );
+            }
         });
     }, [members]);
 

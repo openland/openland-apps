@@ -89,6 +89,20 @@ export const OrganizationMembers = ({ members, setMembers, organization, onRemov
         }
     }, [bottomReached]);
 
+    React.useEffect(() => {
+        return onlines.onSingleChange((userId: string, online: boolean) => {
+            if (members.some(( { user }) => user.id === userId && user.online !== online)) {
+                setMembers((current) =>
+                    current.map((m) =>
+                        m.user.id === userId && online !== m.user.online
+                            ? { ...m, user: { ...m.user, online, lastSeen: Date.now().toString() } }
+                            : m,
+                    ),
+                );
+            }
+        });
+    }, [members]);
+
     let handleSearchChange = React.useCallback(
         debounce(async (val: string) => {
             setMembersQuery(val);
