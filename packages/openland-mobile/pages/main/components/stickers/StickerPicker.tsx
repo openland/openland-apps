@@ -261,7 +261,7 @@ export const StickerPicker = React.memo((props: StickerPickerComponentProps & { 
 
     return (
         <View style={{ height: effectiveHeight, backgroundColor: theme.backgroundTertiary, alignItems: 'stretch' }} onLayout={handleLayoutChange}>
-            <React.Suspense fallback={<View style={{ justifyContent: 'center', alignItems: 'center', flexGrow: 1 }}><LoaderSpinner /></View>}>
+            <React.Suspense fallback={<View style={{ justifyContent: 'center', alignItems: 'center' }}><LoaderSpinner /></View>}>
                 {stickerLayout.stickerSize > 0 && stickerLayout.stickersPerRow > 0 && (
                     <StickerPickerComponent {...props} stickerLayout={stickerLayout} height={effectiveHeight} />
                 )}

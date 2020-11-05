@@ -16,7 +16,6 @@ import { ConnectionStatusComponent } from './header/ConnectionStatusComponent';
 import uuid from 'uuid';
 import { ModalProvider } from 'openland-mobile/components/ZModal';
 import { SRouterMountedContext } from 'react-native-s/SRouterContext';
-import { StickersController } from 'openland-mobile/pages/main/components/stickers/StickerContext';
 
 const styles = StyleSheet.create({
     fill: {
@@ -220,7 +219,6 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
 
         // Dismiss keyboard on navigation
         Keyboard.dismiss();
-        StickersController.hide();
 
         if (ModalProvider) {
             ModalProvider.hideModals();
@@ -401,7 +399,6 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
     panResponder = PanResponder.create({
         onPanResponderGrant: () => {
             Keyboard.dismiss();
-            StickersController.hide();
             this.swipeCurrentKey = this.currentHistory.history[this.currentHistory.history.length - 1].key;
             this.swipePrevKey = this.currentHistory.history[this.currentHistory.history.length - 2].key;
             this.mounted = [...this.mounted, this.swipePrevKey];

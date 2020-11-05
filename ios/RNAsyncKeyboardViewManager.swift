@@ -81,17 +81,10 @@ class RNAsyncKeyboardView: RCTView {
 
   @objc public func setOverrideTransform(_ overrideTransform: CGFloat) {
     self.overrideTransform = overrideTransform
-    if self.overrideTransform > 0 {
+    if self.overrideTransform >= 0 {
       self.transform = CGAffineTransform(translationX: 0, y: -self.overrideTransform)
-      RNAsyncKeyboardManager.sharedInstance.reportStickersKeyboardShow()
     } else {
-      RNAsyncKeyboardManager.sharedInstance.reportStickersHide(noKeyboard: self.overrideTransform == -1)
-      
-      if (self.overrideTransform == -1) {
-        UIView.animate(withDuration: 0.3) {
-          self.transform = CGAffineTransform(translationX: 0, y: 0)
-        }
-      }
+      self.transform = CGAffineTransform(translationX: 0, y: -self.keyboardHeight)
     }
   }
   
@@ -111,7 +104,7 @@ class RNAsyncKeyboardView: RCTView {
     if w == nil || kbview == nil {
       if self.keyboardHeight != 0 {
         self.keyboardHeight = 0
-        if self.overrideTransform <= 0 {
+        if self.overrideTransform < 0 {
           self.transform = CGAffineTransform(translationX: 0, y: 0)
         }
       }
@@ -138,7 +131,7 @@ class RNAsyncKeyboardView: RCTView {
     
       if self.keyboardHeight != height {
         self.keyboardHeight = height
-        if self.overrideTransform <= 0 {
+        if self.overrideTransform < 0 {
           self.transform = CGAffineTransform(translationX: 0, y: -height)
         }
       }

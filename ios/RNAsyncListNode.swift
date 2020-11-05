@@ -47,7 +47,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var isApplying = false
   private var didRenderContent = false
   private var animated = false
-  private var stickersKeyboardOpen = false
   
   private var applyModes: [String] = []
   
@@ -109,19 +108,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       }
     }
   }
-
-  func stickersKeyboardWillShow() {
-    self.stickersKeyboardOpen = true
-  }
-
-  func stickersKeyboardWillHide(noKeyboard: Bool) {
-    self.stickersKeyboardOpen = false
-    if (noKeyboard) {
-      UIView.animate(withDuration: 0.3) {
-        self.fixContentInset(interactive: false)
-      }
-    }
-  }
   
   func keyboardWillShow(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int) {
     if self.keyboardCtx == ctx {
@@ -148,9 +134,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   }
   
   private func fixContentInset(interactive: Bool) {
-    if (self.stickersKeyboardOpen) {
-      return
-    }
     let currentInset = self.node.inverted ? self.node.contentInset.top : self.node.contentInset.bottom
     let newInset = max(self.keyboardHeight, CGFloat(self.bottomInset))
     let insetsDiff = currentInset - newInset

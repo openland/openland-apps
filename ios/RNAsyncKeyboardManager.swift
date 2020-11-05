@@ -12,8 +12,6 @@ import Foundation
   func keyboardWillChangeHeight(ctx: String, kbHeight: CGFloat, acHeight: CGFloat)
   func keyboardWillShow(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int)
   func keyboardWillHide(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int)
-  func stickersKeyboardWillShow()
-  func stickersKeyboardWillHide(noKeyboard: Bool)
 }
 
 
@@ -52,18 +50,6 @@ import Foundation
     self.keyboardAcHeight = acHeight
     for i in self.watchers.all() {
       i.value.keyboardWillChangeHeight(ctx: ctx, kbHeight: CGFloat(kbHeight), acHeight: CGFloat(acHeight))
-    }
-  }
-
-  func reportStickersKeyboardShow() {
-    for i in self.watchers.all() {
-      i.value.stickersKeyboardWillShow()
-    }
-  }
-
-  func reportStickersHide(noKeyboard: Bool) {
-    for i in self.watchers.all() {
-      i.value.stickersKeyboardWillHide(noKeyboard: noKeyboard)
     }
   }
   
