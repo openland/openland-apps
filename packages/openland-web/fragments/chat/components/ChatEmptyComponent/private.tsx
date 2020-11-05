@@ -60,7 +60,7 @@ export const PrivatePlaceholder = React.memo((props: ChatEmptyComponentPrivatePr
                             srcSet="//cdn.openland.com/shared/art/art-no-messages@2x.png 2x, //cdn.openland.com/shared/art/art-no-messages@3x.png 3x"
                             alt=""
                         />
-                        <XView marginTop={16}>
+                        <XView marginTop={16} color="var(--foregroundPrimary)">
                             <h2 className={TextTitle1}>No messages yet</h2>
                         </XView>
                         {!isSavedMessages && (

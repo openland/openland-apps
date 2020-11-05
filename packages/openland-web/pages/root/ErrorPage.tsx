@@ -10,11 +10,11 @@ const descriptionClassName = css`
     text-align: center;
     font-size: 14px;
     line-height: 22px;
-    color: rgba(0, 0, 0, 0.6);
+    color: var(--foregroundSecondary);
     margin-bottom: 28px;
 
     a {
-        color: #1790ff;
+        color: var(--accentPrimary);
 
         &:hover {
             text-decoration: underline;
@@ -35,16 +35,7 @@ export const ErrorPage = ({ statusCode, message }: ErrorPageProps) => (
     <>
         <XDocumentHead title={statusCode === 404 ? 'Not found' : 'Something went wrong'} />
         <XTrack event="View 404">
-            <XView minHeight="100vh" width="100%" backgroundColor="#ffffff" alignItems="center">
-                {/* <XView
-                    paddingTop={19}
-                    paddingLeft={32}
-                    paddingBottom={19}
-                    paddingRight={32}
-                    alignSelf="flex-start"
-                >
-                    <XImage width={145} height={42} src="/static/X/signup/logo-2.svg" />
-                </XView> */}
+            <XView minHeight="100vh" width="100%" backgroundColor="var(--backgroundPrimary)" alignItems="center">
                 <XView flexGrow={1} alignItems="center">
                     <XView flexGrow={1} justifyContent="center" alignItems="center">
                         <XImage
@@ -57,7 +48,7 @@ export const ErrorPage = ({ statusCode, message }: ErrorPageProps) => (
                         <XView
                             fontSize={24}
                             lineHeight="29px"
-                            color="#000000"
+                            color="var(--foregroundPrimary)"
                             marginBottom={10}
                             maxWidth={700}
                         >
@@ -88,7 +79,7 @@ export const ErrorPage = ({ statusCode, message }: ErrorPageProps) => (
                     paddingBottom={14}
                     fontSize={14}
                     lineHeight="24px"
-                    color="rgba(0, 0, 0, 0.4)"
+                    color="var(--foregroundTertiary)"
                 >
                     © Openland {new Date().getFullYear()}
                 </XView>

@@ -13,6 +13,7 @@ import { showAttachConfirm } from 'openland-web/fragments/chat/components/Attach
 import { DropZone } from 'openland-web/fragments/chat/components/DropZone';
 import { showNoiseWarning } from 'openland-web/fragments/chat/components/NoiseWarning';
 import { extractTextAndMentions } from 'openland-web/utils/convertTextAndMentions';
+import { isFileImage } from 'openland-web/utils/UploadCareUploading';
 
 const wrapperClass = css`
     display: flex;
@@ -35,16 +36,18 @@ interface CommentsWrapperProps {
     peerView: JSX.Element;
     groupId?: string;
     commentId?: string;
+    noDefaultReply?: boolean;
 }
 
 export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
-    const { peerId, peerView, groupId, commentId } = props;
+    const { peerId, peerView, groupId, commentId, noDefaultReply } = props;
     const client = useClient();
-    const [highlightId, setHighlightId] = React.useState<string | undefined>(commentId);
+    const [replyingId, setReplyingId] = React.useState<string | undefined>(noDefaultReply ? undefined : commentId);
+    const [attachOpen, setAttachOpen] = React.useState(false);
 
     const handleReplyClick = React.useCallback((id: string) => {
-        setHighlightId(current => id === current ? undefined : id);
-    }, [highlightId]);
+        setReplyingId(current => id === current ? undefined : id);
+    }, [replyingId]);
 
     const handleCommentSent = React.useCallback(async (data: URickTextValue, topLevel: boolean = false) => {
         const { text, mentions } = extractTextAndMentions(data);
@@ -69,60 +72,71 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                 mentions: mentionsPrepared,
                 message: text,
                 spans: findSpans(text),
-                replyComment: topLevel ? undefined : highlightId
+                replyComment: topLevel ? undefined : replyingId
             });
 
             if (!topLevel) {
-                setHighlightId(undefined);
+                setReplyingId(undefined);
             }
         }
 
         return true;
-    }, [peerId, highlightId]);
+    }, [peerId, replyingId]);
 
     const handleStickerSent = React.useCallback(async (sticker: StickerFragment, topLevel: boolean = false) => {
         await client.mutateAddStickerComment({
             peerId,
             repeatKey: UUID(),
             stickerId: sticker.id,
-            replyComment: topLevel ? undefined : highlightId
+            replyComment: topLevel ? undefined : replyingId
         });
 
         if (!topLevel) {
-            setHighlightId(undefined);
+            setReplyingId(undefined);
         }
-    }, [peerId, highlightId]);
+    }, [peerId, replyingId]);
 
-    const handleCommentSentAttach = React.useCallback((files: File[], topLevel: boolean = false) => {
+    const handleCommentSentAttach = React.useCallback((files: File[], isImage: boolean, topLevel: boolean = false) => {
         if (files.length > 0) {
-            showAttachConfirm(files, (res) => new Promise(resolve => {
-                const uploadedFiles: string[] = [];
+            setAttachOpen(true);
+            showAttachConfirm(
+                {
+                    files,
+                    isImage,
+                    onSubmit: (res, text, mentions) => new Promise(resolve => {
+                        const uploadedFiles: string[] = [];
 
-                res.map(({file}) => {
-                    file.watch((state) => {
-                        if (state.uuid && !uploadedFiles.includes(state.uuid)) {
-                            uploadedFiles.push(state.uuid);
-                        }
+                        res.map(({ file }) => {
+                            file.watch((state) => {
+                                if (state.uuid && !uploadedFiles.includes(state.uuid)) {
+                                    uploadedFiles.push(state.uuid);
+                                }
 
-                        if (uploadedFiles.length === res.length) {
-                            resolve();
+                                if (uploadedFiles.length === res.length) {
+                                    resolve();
 
-                            client.mutateAddComment({
-                                peerId,
-                                repeatKey: UUID(),
-                                fileAttachments: uploadedFiles.map(f => ({ fileId: f })),
-                                replyComment: topLevel ? undefined : highlightId
+                                    client.mutateAddComment({
+                                        peerId,
+                                        repeatKey: UUID(),
+                                        fileAttachments: uploadedFiles.map(f => ({ fileId: f })),
+                                        replyComment: topLevel ? undefined : replyingId,
+                                        message: text,
+                                        spans: text ? findSpans(text) : null,
+                                        mentions: text && mentions ? prepareLegacyMentionsForSend(text, mentions) : null
+                                    });
+
+                                    if (!topLevel) {
+                                        setReplyingId(undefined);
+                                    }
+                                }
                             });
-
-                            if (!topLevel) {
-                                setHighlightId(undefined);
-                            }
-                        }
-                    });
+                        });
+                    }),
+                    onCancel: () => setAttachOpen(false),
+                    chatId: groupId
                 });
-            }));
         }
-    }, [peerId, highlightId]);
+    }, [peerId, replyingId]);
 
     return (
         <div className={wrapperClass}>
@@ -137,20 +151,22 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                         onSent={handleCommentSent}
                         onSentAttach={handleCommentSentAttach}
                         onStickerSent={handleStickerSent}
-                        highlightId={highlightId}
+                        replyingId={replyingId}
+                        highlightId={commentId}
                     />
                 </div>
             </XScrollView3>
             <CommentInput
                 onSent={data => handleCommentSent(data, true)}
-                onSentAttach={files => handleCommentSentAttach(files, true)}
+                onSentAttach={(files, isImage) => handleCommentSentAttach(files, isImage, true)}
                 onStickerSent={sticker => handleStickerSent(sticker, true)}
                 groupId={groupId}
-                forceAutofocus={!highlightId}
+                forceAutofocus={!replyingId}
             />
             <DropZone
-                onDrop={handleCommentSentAttach}
-                text={highlightId ? 'Drop here to send to the branch' : undefined}
+                isHidden={attachOpen}
+                onDrop={files => handleCommentSentAttach(files, files.every(f => isFileImage(f)))}
+                text={replyingId ? 'Drop here to send to the branch' : undefined}
             />
         </div>
     );

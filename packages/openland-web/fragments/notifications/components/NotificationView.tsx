@@ -17,6 +17,7 @@ import MoreHIcon from 'openland-icons/s/ic-more-h-24.svg';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
+import { XView } from 'react-mental';
 
 const wrapper = css`
     display: flex;
@@ -40,6 +41,7 @@ const content = css`
 
 const replyWrapper = css`
     border-left: 2px solid var(--foregroundQuaternary);
+    color: var(--foregroundPrimary);
     margin: 4px 0;
     padding-left: 12px;
     white-space: nowrap;
@@ -126,6 +128,8 @@ export const NotificationCommentView = React.memo((props: NotificationViewProps)
 
     const [toolsVisible, toolsShow] = usePopper({ hideOnClick: true, hideOnEsc: true, placement: 'bottom-start' }, ctx => <MenuComponent ctx={ctx} onClear={handleClearClick} onFollowToggle={handleFollowToggler} subscribed={!!isSubscribedMessageCommentsRef.current} />);
 
+    const path = `/${peerRootType === 'CommentPeerRootFeedItem' ? 'feed' : 'message'}/${peerRootId}/comment/${id}`;
+
     return (
         <div className={wrapper}>
             <div className={avatarWrapper}>
@@ -143,21 +147,23 @@ export const NotificationCommentView = React.memo((props: NotificationViewProps)
                     group={sharedRoom}
                     date={date}
                 />
-                {!!replyQuoteTextEmojify && (
-                    <div className={replyWrapper}>
-                        {replyQuoteTextEmojify}
-                    </div>
-                )}
-                <MessageContent
-                    id={id}
-                    text={text}
-                    textSpans={textSpans}
-                    attachments={attachments}
-                    fallback={fallback}
-                />
+                <XView path={path + '?reply=false'} cursor="pointer">
+                    {!!replyQuoteTextEmojify && (
+                        <div className={replyWrapper}>
+                            {replyQuoteTextEmojify}
+                        </div>
+                    )}
+                    <MessageContent
+                        id={id}
+                        text={text}
+                        textSpans={textSpans}
+                        attachments={attachments}
+                        fallback={fallback}
+                    />
+                </XView>
                 {notificationType === 'new_comment' && (
                     <div className={toolsWrapperClass}>
-                        <UIconLabeled path={`/${peerRootType === 'CommentPeerRootFeedItem' ? 'feed' : 'message'}/${peerRootId}/comment/${id}`} icon={<ReplyIcon />} label="Reply" />
+                        <UIconLabeled path={path} icon={<ReplyIcon />} label="Reply" />
                         <UIconButton size="small" icon={<MoreHIcon />} onClick={toolsShow} active={toolsVisible} />
                     </div>
                 )}

@@ -11,23 +11,18 @@ import { Modals } from './modals/Modals';
 import { formatError } from 'openland-y-forms/errorHandling';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
-import { View, Platform, Text, Linking } from 'react-native';
+import { View, Platform, Linking, Share } from 'react-native';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import {
     OrganizationMemberRole,
-    Organization_organization,
     OrganizationMembers_organization_members_user,
 } from 'openland-api/spacex.types';
 import { GroupView } from './components/GroupView';
 import { SFlatList } from 'react-native-s/SFlatList';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';
 import { trackEvent } from 'openland-mobile/analytics';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { OrgMemberType } from './modals/MembersSearch';
 import { SDeferred } from 'react-native-s/SDeferred';
 import {
@@ -39,71 +34,12 @@ import { ZHero } from 'openland-mobile/components/ZHero';
 import { plural } from 'openland-y-utils/plural';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 import { ProfileDeleted } from './components/ProfileDeleted';
-
-const PrivateProfile = React.memo(
-    (props: PageProps & { organization: Organization_organization }) => {
-        const { organization } = props;
-        const theme = React.useContext(ThemeContext);
-        const area = React.useContext(ASSafeAreaContext);
-        const typeString = organization.isCommunity ? 'Community' : 'Organization';
-
-        return (
-            <View
-                flexGrow={1}
-                paddingTop={area.top}
-                paddingBottom={area.bottom + 16}
-                paddingHorizontal={32}
-                alignItems="center"
-                flexDirection="column"
-            >
-                <View flexGrow={1} justifyContent="center" alignItems="center">
-                    <ZAvatar
-                        size="xx-large"
-                        photo={organization.photo}
-                        id={organization.id}
-                        title={organization.name}
-                    />
-                    <Text
-                        style={{
-                            color: theme.foregroundPrimary,
-                            marginTop: 16,
-                            textAlign: 'center',
-                            ...TextStyles.Title2,
-                        }}
-                        allowFontScaling={false}
-                    >
-                        {organization.name}
-                    </Text>
-                    <Text
-                        style={{
-                            color: theme.foregroundTertiary,
-                            marginTop: 4,
-                            textAlign: 'center',
-                            ...TextStyles.Subhead,
-                        }}
-                        allowFontScaling={false}
-                    >
-                        {typeString}
-                    </Text>
-                </View>
-                <View flexShrink={1} flexDirection="row" alignItems="flex-end">
-                    <Text
-                        style={{
-                            color: theme.foregroundTertiary,
-                            textAlign: 'center',
-                            ...TextStyles.Caption,
-                        }}
-                        allowFontScaling={false}
-                    >
-                        You must be invited to view this community. Its creator made it private
-                    </Text>
-                </View>
-            </View>
-        );
-    },
-);
+import { ProfileOrganizationPrivate } from './components/ProfileOrganizationPrivate';
+import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const ProfileOrganizationComponent = React.memo((props: PageProps) => {
+    const theme = React.useContext(ThemeContext);
     const client = getClient();
     const onlines = getMessenger().engine.getOnlines();
     const settings = client.useAccountSettings();
@@ -113,7 +49,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     ).organization;
 
     if (!organization.isMine && organization.private) {
-        return <PrivateProfile {...props} organization={organization} />;
+        return <ProfileOrganizationPrivate organization={organization} />;
     }
 
     const profilesRef = React.useRef<EntityMembersManagerRef>(null);
@@ -231,6 +167,15 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                         organization.isCommunity ? 'EditCommunity' : 'EditOrganization',
                         { id: props.router.params.id },
                     ),
+                false,
+                require('assets/ic-edit-24.png'),
+            );
+        }
+
+        if (SUPER_ADMIN) {
+            builder.action(
+                'Super edit',
+                () => props.router.push('EditCommunitySuperAdmin', { id: props.router.params.id }),
                 false,
                 require('assets/ic-edit-24.png'),
             );
@@ -457,6 +402,16 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
         }
     }, [members, loading]);
 
+    const handleSharePress = React.useCallback(() => {
+        let link = `https://openland.com/${organization.shortname || organization.id}`;
+        Share.share(
+            Platform.select({
+                ios: { url: link },
+                android: { message: link }
+            })
+        );
+    }, [organization.shortname, organization.id]);
+
     const shouldShowAddButton =
         organization.isMine && (organization.isAdmin || organization.membersCanInvite);
 
@@ -466,14 +421,30 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
         }
     }, []);
 
-    const website = React.useMemo(() => findSocialShortname.site(organization.website), [organization.website]);
-    const instagram = React.useMemo(() => findSocialShortname.instagram(organization.instagram), [organization.instagram]);
-    const twitter = React.useMemo(() => findSocialShortname.twitter(organization.twitter), [organization.twitter]);
-    const facebook = React.useMemo(() => findSocialShortname.facebook(organization.facebook), [organization.facebook]);
-    const linkedin = React.useMemo(() => findSocialShortname.linkedin(organization.linkedin), [organization.linkedin]);
+    const website = React.useMemo(() => findSocialShortname.site(organization.website), [
+        organization.website,
+    ]);
+    const instagram = React.useMemo(() => findSocialShortname.instagram(organization.instagram), [
+        organization.instagram,
+    ]);
+    const twitter = React.useMemo(() => findSocialShortname.twitter(organization.twitter), [
+        organization.twitter,
+    ]);
+    const facebook = React.useMemo(() => findSocialShortname.facebook(organization.facebook), [
+        organization.facebook,
+    ]);
+    const linkedin = React.useMemo(() => findSocialShortname.linkedin(organization.linkedin), [
+        organization.linkedin,
+    ]);
 
     if (organization.isDeleted) {
-        return <ProfileDeleted photo={organization.photo} id={organization.id} title={organization.name} />;
+        return (
+            <ProfileDeleted
+                photo={organization.photo}
+                id={organization.id}
+                title={organization.name}
+            />
+        );
     }
 
     const content = (
@@ -488,7 +459,24 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 photo={organization.photo}
                 id={organization.id}
                 title={organization.name}
-                subtitle={(organization.isCommunity ? 'Community' : 'Organization') + '  ·  ' + plural(organization.membersCount, ['member', 'members'])}
+                titleIconRight={organization.featured && theme.displayFeaturedIcon ? require('assets/ic-verified-16.png') : undefined}
+                titleIconRightColor={'#3DA7F2' /* special: verified/featured color */}
+                subtitle={
+                    (organization.isCommunity ? 'Community' : 'Organization') +
+                    '  ·  ' +
+                    plural(organization.membersCount, ['member', 'members'])
+                }
+                actionPrimary={
+                    organization.owner.id !== myUserID
+                        ? {
+                            title: 'Message admin',
+                            onPress: () =>
+                                props.router.pushAndReset('Conversation', {
+                                    flexibleId: organization.owner.id,
+                                }),
+                        }
+                        : undefined
+                }
             />
 
             <ZListGroup header="About" useSpacer={true}>
@@ -501,7 +489,8 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                         text={organization.shortname}
                         leftIcon={require('assets/ic-at-24.png')}
                         small={true}
-                        copy={true}
+                        onPress={handleSharePress}
+                        onLongPress={handleSharePress}
                     />
                 )}
                 {!!website && (

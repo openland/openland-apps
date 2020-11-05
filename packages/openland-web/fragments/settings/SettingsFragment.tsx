@@ -103,7 +103,7 @@ export const SettingsFragment = React.memo(() => {
     return (
         <>
             <AccountCounter />
-            <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
+            <XView width="100%" height="100%" flexDirection="column" alignItems="stretch" backgroundColor="var(--backgroundPrimary)">
                 <USideHeader title="Settings" />
                 <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} flexDirection="column">
                     <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
@@ -159,11 +159,11 @@ export const SettingsFragment = React.memo(() => {
                                                 borderRadius={11}
                                                 alignItems="center"
                                                 justifyContent="center"
-                                                color="var(--foregroundInverted)"
+                                                color="var(--foregroundContrast)"
                                                 backgroundColor="var(--accentNegative)"
                                                 selectedColor="var(--accentMuted)"
-                                                selectedBackgroundColor="var(--foregroundInverted)"
-                                                {...TextStyles.Label2}
+                                                selectedBackgroundColor="var(--foregroundContrast)"
+                                                {...TextStyles.Label3}
                                             >
                                                 {walletState.failingPaymentsCount}
                                             </SelectableText>

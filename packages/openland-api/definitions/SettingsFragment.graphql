@@ -7,10 +7,6 @@ fragment PlatformNotificationSettingsFull on PlatformNotificationSettings {
         showNotification
         sound
     }
-    organizationChat {
-        showNotification
-        sound
-    }
     communityChat {
         showNotification
         sound
@@ -30,6 +26,7 @@ fragment SettingsFull on Settings {
     countUnreadChats
     whoCanSeeEmail
     whoCanSeePhone
+    communityAdminsCanSeeContactInfo
 
     desktop {
         ...PlatformNotificationSettingsFull

@@ -72,14 +72,14 @@ export const StripeCardComponent = React.memo((props: StripeCardProps) => {
                 paddingTop={12}
                 paddingHorizontal={24}
             >
-                <XView flexDirection="column" alignItems="stretch" height={40} paddingHorizontal={12} paddingVertical={10} backgroundColor="var(--backgroundTertiary)" borderRadius={4}>
+                <XView flexDirection="column" alignItems="stretch" height={40} paddingHorizontal={12} paddingVertical={10} backgroundColor="var(--backgroundTertiaryTrans)" borderRadius={4}>
                     <div ref={container} />
                 </XView>
                 {error && (<XView marginTop={8} marginHorizontal={16} color="var(--accentNegative)" {...TextStyles.Caption}>{error}</XView>)}
                 {!modalCtx && <UButton text={text} onClick={handleSubmit} loading={loading} />}
             </XView>
             {!!modalCtx && (
-                <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} backgroundColor="var(--backgroundTertiary)" justifyContent="flex-end" flexDirection="row">
+                <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} backgroundColor="var(--backgroundTertiaryTrans)" justifyContent="flex-end" flexDirection="row">
                     <XView flexGrow={1} alignSelf="center" color="var(--accentPositive)" {...TextStyles.Subhead} flexDirection="row">
                         <XView marginRight={8} opacity={0.72}>
                             <UIcon icon={<LockIcon />} color="var(--accentPositive)" />

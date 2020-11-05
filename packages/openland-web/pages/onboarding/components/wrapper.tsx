@@ -23,7 +23,7 @@ export const Wrapper = React.forwardRef((props: { children: any; fullHeight?: bo
             ref={ref}
         >
             <XView
-                backgroundColor="white"
+                backgroundColor="var(--backgroundPrimary)"
                 flexGrow={1}
                 flexShrink={0}
                 flexBasis={0}

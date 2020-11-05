@@ -28,10 +28,17 @@ const styles = StyleSheet.create({
     } as TextStyle,
     titleBox: {
         flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'flex-start'
+    } as ViewStyle,
+    titleIconBox: {
+        justifyContent: 'center',
+        height: 26
     } as ViewStyle,
     title: {
         ...TextStyles.Title2,
+        flexShrink: 1,
+        textAlign: 'center'
     } as TextStyle,
     subtitleBox: {
         marginTop: 4,
@@ -58,6 +65,8 @@ interface ZHeroProps {
     title: string;
     titleIcon?: NodeRequire;
     titleIconElement?: JSX.Element;
+    titleIconRight?: NodeRequire;
+    titleIconRightColor?: string;
     titleColor?: string;
     subtitle?: string | null;
     subtitleColor?: string;
@@ -73,7 +82,7 @@ interface ZHeroProps {
 
 export const ZHero = React.memo<ZHeroProps>((props) => {
     const theme = React.useContext(ThemeContext);
-    const { photo, id, online, title, titleIcon, titleIconElement, titleColor, subtitle, subtitleColor, actionPrimary, badge, children } = props;
+    const { photo, id, online, title, titleIcon, titleIconElement, titleIconRight, titleIconRightColor, titleColor, subtitle, subtitleColor, actionPrimary, badge, children } = props;
     const actions: any[] = [];
 
     React.Children.forEach(children, (c) => {
@@ -98,11 +107,16 @@ export const ZHero = React.memo<ZHeroProps>((props) => {
             </View>
 
             <View style={styles.titleBox}>
-                {titleIcon && <Image source={titleIcon} style={{ width: 20, height: 20, marginRight: 4, alignSelf: 'center', tintColor: titleColor || theme.foregroundPrimary }} />}
-                {titleIconElement}
-                <Text style={[{ color: titleColor || theme.foregroundPrimary }, styles.title]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
+                <View style={styles.titleIconBox}>
+                    {titleIcon && <Image source={titleIcon} style={{ width: 20, height: 20, marginRight: 4, alignSelf: 'center', tintColor: titleColor || theme.foregroundPrimary }} />}
+                    {titleIconElement}
+                </View>
+                <Text style={[{ color: titleColor || theme.foregroundPrimary }, styles.title]} numberOfLines={2} ellipsizeMode="tail" allowFontScaling={false}>
                     {title}
                 </Text>
+                <View style={styles.titleIconBox}>
+                    {titleIconRight && <Image source={titleIconRight} style={{ width: 16, height: 16, marginLeft: 4, marginTop: 2, alignSelf: 'center', tintColor: titleIconRightColor || theme.foregroundPrimary }} />}
+                </View>
             </View>
 
             {!!subtitle && (

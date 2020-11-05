@@ -2,14 +2,14 @@ import { Platform, Linking, Clipboard } from 'react-native';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import Toast from 'openland-mobile/components/Toast';
 
-export const openCalendar = (date: string) => {
+export const openCalendar = (date: string | number) => {
     return async () => {
         const loader = Toast.loader();
         loader.show();
 
         if (Platform.OS === 'ios') {
             const referenceDate = new Date('2001-01-01');
-            const secondsSinceRefDate = (parseInt(date, 10) - referenceDate.valueOf()) / 1000;
+            const secondsSinceRefDate = ((typeof date === 'string' ? parseInt(date, 10) : date) - referenceDate.getTime()) / 1000;
 
             await Linking.openURL('calshow:' + secondsSinceRefDate);
         } else if (Platform.OS === 'android') {

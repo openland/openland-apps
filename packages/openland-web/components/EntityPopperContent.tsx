@@ -17,11 +17,11 @@ import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { useToast } from './unicorn/UToast';
 
 const userStatus = css`
-    color: #676d7a;
+    color: var(--foregroundSecondary);
 `;
 
 const userOnlineStatus = css`
-    color: #1790ff;
+    color: var(--accentPrimary);
 `;
 
 const Status = (({ variables }) => {
@@ -102,9 +102,9 @@ export const UserPopperContent = React.memo(
                     justifyContent="center"
                     alignItems="center"
                     height={30}
-                    color={'white'}
+                    color="var(--foregroundInverted)"
                     borderRadius={15}
-                    backgroundColor={'#000'}
+                    backgroundColor="var(--foregroundPrimary)"
                 >
                     It&apos;s you
                 </XView>
@@ -172,8 +172,8 @@ export const UserPopperContent = React.memo(
                                 lineHeight={1.41}
                                 fontWeight="600"
                                 flexDirection="row"
-                                color="rgba(0, 0, 0, 0.9)"
-                                hoverColor="#1790ff"
+                                color="var(--foregroundPrimary)"
+                                hoverColor="var(--accentPrimary)"
                                 cursor="pointer"
                                 alignSelf="flex-start"
                                 onClick={(e: React.MouseEvent) => {

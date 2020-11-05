@@ -20,10 +20,12 @@ type ChatMentionT = MessageSpan_MessageSpanRoomMention_room_SharedRoom | Message
 export type MentionToSend = ChatMentionT | { __typename: 'AllMention' };
 
 export interface MessageSendHandler {
-    onProgress(key: string, progress: number): void;
+    onFileProgress(key: string, messageKey: string, progress: number): void;
     onCompleted(key: string): void;
     onFailed(key: string): void;
 }
+
+export const MAX_FILES_PER_MESSAGE = 4;
 
 type MessageBodyT = {
     conversationId: string;
@@ -61,7 +63,7 @@ export class MessageSender {
                             if (state.status === UploadStatus.FAILED) {
                                 reject();
                             } else if (state.status === UploadStatus.UPLOADING) {
-                                callback.onProgress(key, state.progress!!);
+                                callback.onFileProgress(key, key, state.progress!!);
                             } else if (state.status === UploadStatus.COMPLETED) {
                                 resolver(state.uuid!!);
                             }
@@ -85,6 +87,64 @@ export class MessageSender {
             });
         })();
         return key;
+    }
+
+    sendFiles({
+        conversationId,
+        files,
+        callback,
+        quoted,
+        message,
+        mentions,
+        spans
+    }: {
+        conversationId: string,
+        files: UploadingFile[],
+        message: string;
+        mentions: MentionToSend[] | null;
+        callback: MessageSendHandler;
+        quoted?: string[];
+        spans: MessageSpanInput[] | null;
+    }) {
+        console.log('MessageSender sendFiles');
+        let fileIds: string[] = [];
+        let parentKey = UUID();
+        let promises = files.slice(0, MAX_FILES_PER_MESSAGE).map(file => {
+            let key = UUID();
+            fileIds.push(key);
+            let p = new Promise<string>((resolver, reject) => {
+                file.watch(state => {
+                    if (state.status === UploadStatus.FAILED) {
+                        reject();
+                    } else if (state.status === UploadStatus.UPLOADING) {
+                        callback.onFileProgress(key, parentKey, state.progress!!);
+                    } else if (state.status === UploadStatus.COMPLETED) {
+                        resolver(state.uuid!!);
+                    }
+                });
+            });
+            return p.then(res => {
+                if (!this.uploadedFiles.has(key)) {
+                    this.uploadedFiles.set(key, res);
+                }
+            }).catch(e => {
+                callback.onFailed(key);
+            });
+        });
+        Promise.all(promises).then(() => {
+            this.doSendMessage({
+                fileAttachments: fileIds.map(x => ({ fileId: this.uploadedFiles.get(x)!! })),
+                mentions: prepareLegacyMentionsForSend(message, mentions || []),
+                replyMessages: quoted || null,
+                message,
+                conversationId,
+                key: parentKey,
+                callback,
+                spans,
+                sticker: null,
+            });
+        });
+        return { key: parentKey, filesKeys: fileIds };
     }
 
     shareFile(conversationId: string, fileId: string) {

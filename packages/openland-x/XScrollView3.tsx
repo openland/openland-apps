@@ -71,6 +71,7 @@ const NativeScrollStyle = css`
     flex-shrink: 1;
     display: flex;
     flex-direction: column;
+    background-color: var(--backgroundPrimary);
 `;
 
 export const NativeWindowsScrollStyle = css`
@@ -100,29 +101,30 @@ const NativeBackend = React.memo<{
     onScroll: (values: XScrollValues) => void;
     innerRef: any;
     children?: any;
-}>(props => {
+}>((props) => {
     const isWindows = React.useMemo(() => detectOS() === 'Windows', []);
 
     React.useEffect(() => {
         if (props.innerRef && props.innerRef.current) {
             const src = props.innerRef.current;
-            src.addEventListener(
-                'scroll',
-                () => {
-                    requestAnimationFrame(() => {
-                        let scrollHeight = (src as HTMLDivElement).scrollHeight;
-                        let scrollTop = (src as HTMLDivElement).scrollTop;
-                        let clientHeight = (src as HTMLDivElement).clientHeight;
-                        props.onScroll({ scrollHeight, scrollTop, clientHeight });
-                    });
-                },
-                { passive: true },
-            );
+            let handleScroll = () => {
+                requestAnimationFrame(() => {
+                    let scrollHeight = (src as HTMLDivElement).scrollHeight;
+                    let scrollTop = (src as HTMLDivElement).scrollTop;
+                    let clientHeight = (src as HTMLDivElement).clientHeight;
+                    props.onScroll({ scrollHeight, scrollTop, clientHeight });
+                });
+            };
+            src.addEventListener('scroll', handleScroll, { passive: true });
+            handleScroll();
         }
     }, []);
 
     return (
-        <div className={cx(NativeScrollStyle, isWindows && NativeWindowsScrollStyle)} ref={props.innerRef}>
+        <div
+            className={cx(NativeScrollStyle, isWindows && NativeWindowsScrollStyle, 'scroll-view')}
+            ref={props.innerRef}
+        >
             {props.children}
         </div>
     );

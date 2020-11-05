@@ -2,6 +2,7 @@ import * as React from 'react';
 import { UserInfoContext } from '../../components/UserInfo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { normalizeUrl } from 'openland-x-utils/normalizeUrl';
 import { extractRedirect } from './router/extractRedirect';
 import { isRootPath } from './router/isRootPath';
 import { redirectSuffix } from './router/redirectSuffix';
@@ -9,7 +10,11 @@ import { isPublicPath } from './router/isPublicPath';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useClient } from 'openland-api/useClient';
 import { AuthProfileFragment } from './AuthProfileFragment';
-import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import {
+    InviteLandingComponent,
+    InviteLandingComponentLayout,
+} from 'openland-web/fragments/invite/InviteLandingComponent';
 import { AuthDiscoverFragment } from './discover/AuthDiscoverFragment';
 import { AuthDiscoverPopularNowFragment } from './discover/AuthDiscoverPopularNowFragment';
 import { AuthDiscoverNewAndGrowingFragment } from './discover/AuthDiscoverNewAndGrowingFragment';
@@ -17,23 +22,73 @@ import { AuthDiscoverCollectionsFragment } from './discover/AuthDiscoverCollecti
 import { AuthDiscoverTopFreeFragment } from './discover/AuthDiscoverTopFreeFragment';
 import { AuthDiscoverTopPremiumFragment } from './discover/AuthDiscoverTopPremiumFragment';
 import { AuthDiscoverCollectionFragment } from './discover/AuthDiscoverCollectionFragment';
+import { AuthDiscoverPopularOrgsFragment } from './discover/AuthDiscoverPopularOrgsFragment';
+import { AuthDiscoverNewOrgsFragment } from './discover/AuthDiscoverNewOrgsFragment';
 
-const ShortnameResolver = React.memo((props: { shortname: string, defaultRedirect: (to: string, args?: { pages?: string[] }) => JSX.Element }) => {
-    const client = useClient();
-    const shortnameItem = client.useAuthResolveShortName({ shortname: props.shortname }, { fetchPolicy: 'network-only' }).item;
+const ShortnameResolver = React.memo(
+    (props: {
+        shortname: string;
+        defaultRedirect: (to: string, args?: { pages?: string[] }) => JSX.Element;
+    }) => {
+        const client = useClient();
+        const shortnameItem = client.useAuthResolveShortName(
+            { shortname: props.shortname },
+            { fetchPolicy: 'network-only' },
+        ).item;
 
-    if (shortnameItem?.__typename === 'User') {
-        return <AuthProfileFragment user={shortnameItem} />;
-    }
-    if (shortnameItem?.__typename === 'SharedRoom') {
-        return <InviteLandingComponent signupRedirect={'/signin?redirect=' + encodeURIComponent('/' + props.shortname)} />;
-    }
-    if (shortnameItem?.__typename === 'DiscoverChatsCollection') {
-        return <AuthDiscoverCollectionFragment id={shortnameItem.id} />;
-    }
+        if (shortnameItem?.__typename === 'User') {
+            return <AuthProfileFragment user={shortnameItem} />;
+        }
+        if (shortnameItem?.__typename === 'SharedRoom') {
+            return (
+                <InviteLandingComponent
+                    signupRedirect={'/signin?redirect=' + encodeURIComponent('/' + props.shortname)}
+                />
+            );
+        }
+        if (shortnameItem?.__typename === 'Organization') {
+            return (
+                <InviteLandingComponentLayout
+                    whereToInvite={shortnameItem.isCommunity ? 'community' : 'organization'}
+                    title={shortnameItem.name}
+                    id={shortnameItem.id}
+                    photo={shortnameItem.photo}
+                    entityTitle={shortnameItem.name}
+                    description={shortnameItem.about}
+                    hideFakeDescription={true}
+                    noLogin={true}
+                    button={
+                        shortnameItem.applyLinkEnabled && shortnameItem.applyLink ? (
+                            <UButton
+                                style="primary"
+                                size="large"
+                                text="Apply to join"
+                                as="a"
+                                target="_blank"
+                                href={normalizeUrl(shortnameItem.applyLink)}
+                            />
+                        ) : (
+                            <UButton
+                                style="primary"
+                                size="large"
+                                text="Message admin"
+                                path={
+                                    '/signin?redirect=' +
+                                    encodeURIComponent('/mail/' + shortnameItem.owner.id)
+                                }
+                            />
+                        )
+                    }
+                />
+            );
+        }
+        if (shortnameItem?.__typename === 'DiscoverChatsCollection') {
+            return <AuthDiscoverCollectionFragment id={shortnameItem.id} />;
+        }
 
-    return props.defaultRedirect('/signin');
-});
+        return props.defaultRedirect('/signin');
+    },
+);
 
 export const AuthRouter = React.memo((props: { children: any }) => {
     const router = React.useContext(XRouterContext)!;
@@ -91,7 +146,12 @@ export const AuthRouter = React.memo((props: { children: any }) => {
     ////////////////////////////////////////////////
 
     if (!userInfo.isLoggedIn && router.path.startsWith('/discover')) {
-        if (router.path.startsWith('/discover/popular')) {
+        if (router.path.startsWith('/discover/top-communities')) {
+            return <AuthDiscoverPopularOrgsFragment />;
+        }
+        if (router.path.startsWith('/discover/new-communities')) {
+            return <AuthDiscoverNewOrgsFragment />;
+        } else if (router.path.startsWith('/discover/popular')) {
             return <AuthDiscoverPopularNowFragment />;
         } else if (router.path.startsWith('/discover/new')) {
             return <AuthDiscoverNewAndGrowingFragment />;
@@ -124,7 +184,10 @@ export const AuthRouter = React.memo((props: { children: any }) => {
     //         return defaultRoute;
     //     }
     // }
-    if (!userInfo.isLoggedIn && (router.path.startsWith('/join/') || router.path.startsWith('/invite/'))) {
+    if (
+        !userInfo.isLoggedIn &&
+        (router.path.startsWith('/join/') || router.path.startsWith('/invite/'))
+    ) {
         return redirectIfNeeded('/signin/invite');
     }
 

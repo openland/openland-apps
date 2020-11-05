@@ -77,7 +77,7 @@ const RawToast = ({ text, iconSource, IconComponent, textStyle }: ToastBuildConf
     );
 };
 
-const ToastComponent = ({ text, iconSource, IconComponent, textStyle, fn, Success, Failure, hide }: ToastBuildConfig) => {
+const ToastComponent = ({ text, iconSource, IconComponent, textStyle, fn, Success, Failure, hide, duration }: ToastBuildConfig) => {
     const [content, setContent] = React.useState(
         <RawToast
             text={text}
@@ -94,10 +94,16 @@ const ToastComponent = ({ text, iconSource, IconComponent, textStyle, fn, Succes
             }).catch(() => {
                 setContent(<Failure />);
             }).finally(() => {
-                setTimeout(hide, 1000);
+                setTimeout(hide, duration);
             });
         }
-    });
+    }, []);
+
+    React.useEffect(() => {
+        if (duration && hide) {
+            setTimeout(hide, duration);
+        }
+    }, []);
 
     return (
         <>{content}</>
@@ -119,17 +125,15 @@ function build(config: ToastBuildConfig) {
                 overlayStyle: { backgroundColor: 'transparent' },
                 cancelable: false,
                 hideKeyboardOnOpen: config.hideKeyboardOnOpen,
+                viewProps: {
+                    pointerEvents: 'none'
+                }
             },
-
         );
 
     const hide = () => {
         setTimeout(() => modal && modal.hide(), 1);
     };
-
-    if (config.duration) {
-        setTimeout(hide, config.duration);
-    }
 
     return { show, hide };
 }

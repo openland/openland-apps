@@ -39,9 +39,11 @@ object Operations {
         if (name == "DiscoverEditorsChoice") return DiscoverEditorsChoice
         if (name == "DiscoverIsDone") return DiscoverIsDone
         if (name == "DiscoverNewAndGrowing") return DiscoverNewAndGrowing
+        if (name == "DiscoverNewOrganizations") return DiscoverNewOrganizations
         if (name == "DiscoverNextPage") return DiscoverNextPage
         if (name == "DiscoverNoAuth") return DiscoverNoAuth
         if (name == "DiscoverPopularNow") return DiscoverPopularNow
+        if (name == "DiscoverPopularOrganizations") return DiscoverPopularOrganizations
         if (name == "DiscoverState") return DiscoverState
         if (name == "DiscoverSuggestedRooms") return DiscoverSuggestedRooms
         if (name == "DiscoverTopFree") return DiscoverTopFree
@@ -50,6 +52,10 @@ object Operations {
         if (name == "ExploreRooms") return ExploreRooms
         if (name == "FeatureFlags") return FeatureFlags
         if (name == "FetchPushSettings") return FetchPushSettings
+        if (name == "GetDifference") return GetDifference
+        if (name == "GetSequenceDifference") return GetSequenceDifference
+        if (name == "GetSequenceState") return GetSequenceState
+        if (name == "GetState") return GetState
         if (name == "GlobalCounter") return GlobalCounter
         if (name == "GlobalSearch") return GlobalSearch
         if (name == "IpLocation") return IpLocation
@@ -58,6 +64,7 @@ object Operations {
         if (name == "MessageMultiSpan") return MessageMultiSpan
         if (name == "MessagesBatch") return MessagesBatch
         if (name == "MessagesSearch") return MessagesSearch
+        if (name == "MessagesSearchFull") return MessagesSearchFull
         if (name == "MyApps") return MyApps
         if (name == "MyCards") return MyCards
         if (name == "MyCommunities") return MyCommunities
@@ -100,10 +107,10 @@ object Operations {
         if (name == "RoomMembersSearch") return RoomMembersSearch
         if (name == "RoomMembersShort") return RoomMembersShort
         if (name == "RoomMembersTiny") return RoomMembersTiny
-        if (name == "RoomMetaPreview") return RoomMetaPreview
         if (name == "RoomPico") return RoomPico
         if (name == "RoomSearch") return RoomSearch
         if (name == "RoomSocialImage") return RoomSocialImage
+        if (name == "RoomSuper") return RoomSuper
         if (name == "RoomTiny") return RoomTiny
         if (name == "Settings") return Settings
         if (name == "SharedMedia") return SharedMedia
@@ -179,6 +186,7 @@ object Operations {
         if (name == "OrganizationChangeMemberRole") return OrganizationChangeMemberRole
         if (name == "OrganizationCreatePublicInvite") return OrganizationCreatePublicInvite
         if (name == "OrganizationMemberRemove") return OrganizationMemberRemove
+        if (name == "OrganizationRequestMembersExport") return OrganizationRequestMembersExport
         if (name == "PairEmail") return PairEmail
         if (name == "PairPhone") return PairPhone
         if (name == "PaymentIntentCancel") return PaymentIntentCancel
@@ -200,6 +208,7 @@ object Operations {
         if (name == "ReportContent") return ReportContent
         if (name == "ReportOnline") return ReportOnline
         if (name == "RoomAddMembers") return RoomAddMembers
+        if (name == "RoomAlterFeatured") return RoomAlterFeatured
         if (name == "RoomChangeRole") return RoomChangeRole
         if (name == "RoomCreate") return RoomCreate
         if (name == "RoomDelete") return RoomDelete
@@ -266,6 +275,7 @@ object Operations {
         if (name == "SettingsWatch") return SettingsWatch
         if (name == "TypingsWatch") return TypingsWatch
         if (name == "WalletUpdates") return WalletUpdates
+        if (name == "WatchUpdates") return WatchUpdates
         error("Unknown operation: $name")
     }
 }

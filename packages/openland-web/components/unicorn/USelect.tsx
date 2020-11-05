@@ -98,26 +98,27 @@ const customStyles = (config: CustomStylesConfig) =>
             ...TextStyles.Caption,
             padding: 0,
             paddingLeft: 0,
-            color: '#fff',
+            color: 'var(--foregroundContrast)',
         }),
         multiValueRemove: (styles) => ({
             ...styles,
             paddingLeft: 0,
             paddingRight: 0,
             marginLeft: 4,
-            color: '#fff',
+            color: 'var(--foregroundContrast)',
             opacity: 0.84,
             '&:hover': {
                 backgroundColor: 'var(--accentPrimary)',
-                color: '#fff',
+                color: 'var(--foregroundContrast)',
                 opacity: 1,
             },
         }),
         menu: (styles) => ({
             ...styles,
-            boxShadow: '0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08)',
+            boxShadow: 'var(--boxShadowPopper)',
             borderRadius: 8,
             display: config.hideSelector ? 'none' : undefined,
+            backgroundColor: 'var(--backgroundSecondary)'
         }),
         menuPortal: (styles) => ({
             ...styles,
@@ -137,7 +138,7 @@ const customStyles = (config: CustomStylesConfig) =>
             justifyContent: 'space-between',
             color: 'var(--foregroundPrimary)',
             padding: config.size === 'small' ? '8px 16px' : '6px 16px',
-            backgroundColor: state.isFocused ? 'var(--backgroundPrimaryHover)' : undefined,
+            backgroundColor: state.isFocused ? 'var(--backgroundTertiaryTrans)' : undefined,
             paddingLeft: config.optionRender ? 0 : undefined,
             paddingTop: config.optionRender ? 0 : undefined,
             paddingBottom: config.optionRender ? 0 : undefined,
@@ -331,7 +332,7 @@ const VirtualMenuList = (props: MenuListComponentProps<OptionType> & { children?
                 </div>
             )
             }
-        </FixedSizeList >
+        </FixedSizeList>
     );
 };
 

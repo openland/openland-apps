@@ -7,16 +7,20 @@ import { UHeader } from 'openland-unicorn/UHeader';
 import { ChatHeader } from './header/ChatHeader';
 import { Deferred } from 'openland-unicorn/components/Deferred';
 import { NotFound } from 'openland-unicorn/NotFound';
+import { ChatSearch } from './chatSearch/ChatSearch';
 
 export const MessengerFragment = React.memo<{ id: string }>(props => {
     // Load chat info
     const client = useClient();
+    const [searchEnabled, setSearchEnabled] = React.useState(false);
     let chat = client.useRoomChat({ id: props.id }).room;
 
     if (!chat) {
         return <NotFound />;
     }
 
+    const onSearchClick = React.useCallback(() => setSearchEnabled(true), []);
+    const onSearchClose = React.useCallback(() => setSearchEnabled(false), []);
     const onChatLostAccess = React.useCallback(
         async () => {
             await client.refetchRoomChat({ id: props.id });
@@ -33,9 +37,12 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
     // Check group state
     const header = React.useMemo(
         () => {
-            return <ChatHeader chat={chat!} />;
-        },
-        [chat],
+            if (searchEnabled) {
+                return <ChatSearch chatId={chat!.id} onSearchClose={onSearchClose} />;
+            } else {
+                return <ChatHeader chat={chat!} onSearchClick={onSearchClick} />;
+            }
+        }, [chat, searchEnabled],
     );
 
     if (
@@ -56,7 +63,7 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
                 titleView={header}
                 documentTitle={chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title}
                 appearance="wide"
-                forceShowBack={true}
+                forceShowBack={!searchEnabled}
             />
             <Deferred>
                 <XView

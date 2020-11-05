@@ -15,7 +15,7 @@ import { SRouting } from 'react-native-s/SRouting';
 import Toast from 'openland-mobile/components/Toast';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, MessageReactionType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage, Message_message, CommentSubscriptionType } from 'openland-api/spacex.types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, MessageReactionType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage, Message_message } from 'openland-api/spacex.types';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
@@ -37,16 +37,15 @@ import UUID from 'uuid/v4';
 import { ChatMessagesActions, MessagesAction, useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 import { AsyncSharedItem } from 'openland-mobile/pages/shared-media/AsyncSharedItem';
 import { useMessagesActionsForward } from 'openland-y-utils/MessagesActionsState';
-import LinearGradient from 'react-native-linear-gradient';
-import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { ReactionsPicker } from './components/ReactionsPicker';
+import { NotificationCenterHandlers } from 'openland-mobile/notificationCenter/NotificationCenterHandlers';
+import { DataSource } from 'openland-y-utils/DataSource';
 
-export const useForward = (sourceId: string, sourceUserId: string | undefined, disableSource?: boolean) => {
+export const useForward = (sourceId: string, disableSource?: boolean) => {
     const messenger = getMessenger().engine;
     const conversationEngine = messenger.getConversation(sourceId);
-    const { prepareForward, forward } = useMessagesActionsForward({ sourceId, userId: sourceUserId });
+    const { prepareForward, forward } = useMessagesActionsForward(sourceId);
 
     return (messages?: DataSourceMessageItem[]) => {
         getMessenger().history.navigationManager.push('HomeDialogs', {
@@ -126,7 +125,7 @@ export class MobileMessenger {
             };
             this.dialogs = new ASDataView(
                 this.engine.dialogList.dataSource,
-                item => <DialogItemViewAsync item={item} onPress={this.handleDialogPress} onLongPress={this.handleDialogLongPress} onDiscoverPress={onDiscoverPress} showDiscover={showDiscover} />
+                item => <DialogItemViewAsync item={item} onPress={this.handleDialogPress} onDiscoverPress={onDiscoverPress} showDiscover={showDiscover} />
             );
         }
         this.prevDialogsCb = setTab;
@@ -151,6 +150,24 @@ export class MobileMessenger {
             }));
         }
         return this.conversations.get(id)!!;
+    }
+
+    getSearchView(dataSource:  DataSource<DataSourceMessageItem | DataSourceDateItem>, chatId: string) {
+        let eng = this.engine.getConversation(chatId);
+
+        return new ASDataView(dataSource, (item) => {
+            if (item.type === 'message') {
+                if (item.isService) {
+                    return <AsyncServiceMessage message={item} onUserPress={this.handleUserPress} onGroupPress={this.handleGroupPress} onOrganizationPress={this.handleOrganizationPress} onHashtagPress={this.handleHashtagPress} />;
+                } else {
+                    return <AsyncMessageView conversationId={chatId} message={item} hideReactions={true} engine={eng} onUserPress={this.handleUserPress} onGroupPress={this.handleGroupPress} onOrganizationPress={this.handleOrganizationPress} onHashtagPress={this.handleHashtagPress} onDocumentPress={this.handleDocumentPress} onMediaPress={this.handleMediaPress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsPress} onReplyPress={this.handleReplyPress} onReactionsPress={this.handleReactionsPress} onMessagePress={this.handleMessagePress}/>;
+                }
+            } else if (item.type === 'date') {
+                return <AsyncDateSeparator year={item.year} month={item.month} date={item.date} />;
+            } else {
+                return <AsyncNewMessageDivider />;
+            }
+        });
     }
 
     handleSharedLongPress = (forward: (messages: DataSourceMessageItem[]) => void) =>
@@ -184,22 +201,21 @@ export class MobileMessenger {
             builder.show(true);
         }
 
-    renderSharedMediaItem = (chatId: string, userId: string | undefined, wrapperWidth: number) => (item: SharedMediaDataSourceItem) => {
-        return <AsyncSharedItem chatId={chatId} userId={userId} wrapperWidth={wrapperWidth} item={item} onLongPress={this.handleSharedLongPress} />;
+    renderSharedMediaItem = (chatId: string, wrapperWidth: number) => (item: SharedMediaDataSourceItem) => {
+        return <AsyncSharedItem chatId={chatId} wrapperWidth={wrapperWidth} item={item} onLongPress={this.handleSharedLongPress} />;
     }
 
     getSharedMedia = (id: string, type: SharedMediaItemType, wrapperWidth: number) => {
         const key = `${type}-${wrapperWidth}`;
         const convEngine = this.engine.getConversation(id);
         const engine = convEngine.getSharedMedia(type);
-        const userId = convEngine.isPrivate ? convEngine.user?.id : undefined;
         if (!this.sharedMedias.has(id)) {
             this.sharedMedias.set(
                 id,
-                new Map([[key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, userId, wrapperWidth))]])
+                new Map([[key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, wrapperWidth))]])
             );
         } else if (!this.sharedMedias.get(id)!!.has(key)) {
-            this.sharedMedias.get(id)!!.set(key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, userId, wrapperWidth)));
+            this.sharedMedias.get(id)!!.set(key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, wrapperWidth)));
         }
 
         return this.sharedMedias.get(id)!!.get(key)!!;
@@ -245,8 +261,8 @@ export class MobileMessenger {
         this.routerSuitable.push('Message', { messageId: quotedMessage.id });
     }
 
-    handleDocumentPress = (document: DataSourceMessageItem) => {
-        let attach = document.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
+    handleDocumentPress = (message: DataSourceMessageItem) => {
+        let attach = message.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
         // { config: { uuid, name, size }
         // this.history.navigationManager.push('FilePreview', { config: { uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size } });
 
@@ -361,6 +377,27 @@ export class MobileMessenger {
         }
     }
 
+    handleSaveMessages = async (messageIds: string[]) => {
+        const loader = Toast.loader();
+        loader.show();
+
+        const savedMessages = (await this.engine.client.queryRoomPico({ id: this.engine.user.id })).room;
+
+        if (savedMessages) {
+            await this.engine.client.mutateSendMessage({
+                repeatKey: UUID(),
+                replyMessages: messageIds,
+                chatId: savedMessages.id,
+            });
+
+            Toast.showSuccess('Saved');
+        } else {
+            Toast.failure({ duration: 1000 }).show();
+        }
+
+        loader.hide();
+    }
+
     handleMessagePageMenuPress = (
         message: Message_message,
         isSubscribed: boolean,
@@ -376,10 +413,12 @@ export class MobileMessenger {
         const canPin = canEdit || (chat.__typename === 'PrivateRoom') || false;
         const canSendMessage = (chat.__typename === 'SharedRoom') ? chat.canSendMessage : (chat.__typename === 'PrivateRoom') ? !chat.user.isBot : true;
         const role = (chat.__typename === 'SharedRoom' && chat.role) || null;
+        const repliesEnabled = chat.__typename === 'SharedRoom' ? chat.repliesEnabled : true;
+        const isSavedMessages = chat.__typename === 'PrivateRoom' ? chat.user.id === this.engine.user.id : false;
 
         const builder = new ActionSheetBuilder();
-        const { reply, edit, clear } = useChatMessagesActionsMethods({ conversationId: chat.id, userId: chat.__typename === 'PrivateRoom' ? chat.user.id : undefined });
-        const forward = useForward(chat.id, chat.__typename === 'PrivateRoom' ? chat.user.id : undefined);
+        const { reply, edit, clear } = useChatMessagesActionsMethods(chat.id);
+        const forward = useForward(chat.id);
 
         builder.view((ctx: ZModalController) => (
             <ReactionsPicker
@@ -391,24 +430,14 @@ export class MobileMessenger {
             />
         ));
 
-        builder.action(isSubscribed ? 'Unfollow thread' : 'Follow thread', async () => {
-            const loader = Toast.loader();
-            loader.show();
-            try {
-                if (isSubscribed) {
-                    await this.engine.client.mutateUnSubscribeFromComments({ peerId: message.id });
-                } else {
-                    await this.engine.client.mutateSubscribeToComments({ peerId: message.id, type: CommentSubscriptionType.ALL });
-                }
-                Toast.showSuccess(isSubscribed ? 'Unfollowed' : 'Followed');
-            } catch (e) {
-                console.warn(e);
-            } finally {
-                loader.hide();
-            }
-        }, false, isSubscribed ? require('assets/ic-follow-off-24.png') : require('assets/ic-follow-24.png'));
+        builder.action(
+            isSubscribed ? 'Unfollow thread' : 'Follow thread',
+            () => NotificationCenterHandlers.toggleSubscription(message.id, isSubscribed),
+            false,
+            isSubscribed ? require('assets/ic-follow-off-24.png') : require('assets/ic-follow-24.png')
+        );
 
-        if (canSendMessage) {
+        if (canSendMessage && repliesEnabled) {
             builder.action('Reply', () => {
                 reply(convertedMessage);
 
@@ -416,9 +445,11 @@ export class MobileMessenger {
             }, false, require('assets/ic-reply-24.png'));
         }
 
-        builder.action('Forward', () => {
-            forward([convertedMessage]);
-        }, false, require('assets/ic-forward-24.png'));
+        builder.action('Forward', () => forward([convertedMessage]), false, require('assets/ic-forward-24.png'));
+
+        if (!isSavedMessages) {
+            builder.action('Save', () => this.handleSaveMessages([message.id]), false, require('assets/ic-bookmark-24.png'));
+        }
 
         if (convertedMessage.text) {
             builder.action('Copy', () => {
@@ -471,44 +502,8 @@ export class MobileMessenger {
         builder.show(true);
     }
 
-    private handleDialogLongPress = (id: string, item: DialogDataSourceItem, theme: ThemeGlobal) => {
-        // do not show menu for Saved messages
-        if (item.flexibleId === this.engine.user.id) {
-            return;
-        }
-
-        const builder = new ActionSheetBuilder();
-        const muted = item.isMuted;
-
-        builder.view((ctx: ZModalController) => (
-            <LinearGradient
-                colors={[theme.gradient0to100Start, theme.gradient0to100End]}
-                marginBottom={8}
-                paddingBottom={8}
-            >
-                <ZListItem
-                    text={item.title}
-                    leftAvatar={{ photo: item.photo, id: item.key, title: item.title }}
-                />
-            </LinearGradient>
-        ));
-
-        if (item.messageId && item.unread > 0) {
-            builder.action('Mark as read', () => {
-                this.engine.client.mutateRoomRead({ id: item.key, mid: item.messageId! });
-            }, false, require('assets/ic-unread-off-24.png'));
-        }
-
-        const notificationsTitle = `${muted ? 'Unmute' : 'Mute'} notifications`;
-        const notificationsIcon = muted
-            ? require('assets/ic-notifications-24.png')
-            : require('assets/ic-notifications-off-24.png');
-        builder.action(notificationsTitle, () => {
-            this.engine.client.mutateRoomSettingsUpdate({ roomId: item.key, settings: { mute: !muted } });
-            this.engine.client.refetchRoomTiny({ id: item.key });
-        }, false, notificationsIcon);
-
-        builder.show(true);
+    private handleMessagePress = (message: DataSourceMessageItem) => {
+        this.routerSuitable.push('Message', { messageId: message.id });
     }
 
     private handleMessageLongPress = (
@@ -551,20 +546,18 @@ export class MobileMessenger {
 
         const hideSelect = action === 'reply' || action === 'forward';
         if (!hideSelect) {
-            builder.action('Select', () => {
-                toggleSelect(message);
-            }, false, require('assets/ic-select-24.png'));
+            builder.action('Select', () => toggleSelect(message), false, require('assets/ic-select-24.png'));
         }
 
         if (conversation.canSendMessage && conversation.canReply) {
-            builder.action('Reply', () => {
-                reply(message);
-            }, false, require('assets/ic-reply-24.png'));
+            builder.action('Reply', () => reply(message), false, require('assets/ic-reply-24.png'));
         }
 
-        builder.action('Forward', () => {
-            forward([message]);
-        }, false, require('assets/ic-forward-24.png'));
+        builder.action('Forward', () => forward([message]), false, require('assets/ic-forward-24.png'));
+
+        if (!conversation.isSavedMessage) {
+            builder.action('Save', () => this.handleSaveMessages([message.id!]), false, require('assets/ic-bookmark-24.png'));
+        }
 
         builder.action('Comment', () => {
             this.routerSuitable.push('Message', { messageId: message.id });

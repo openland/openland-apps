@@ -17,10 +17,16 @@ export function formatDate(date: number) {
     return month + ' ' + day;
 }
 
-export function formatAbsoluteDate(date: number) {
-    let dt = new Date(date);
-    let month = months[dt.getMonth()];
-    let day = dt.getDate();
+export function formatAbsoluteDate(date: number, withYear?: boolean) {
+    const dt = new Date(date);
+    const month = months[dt.getMonth()];
+    const day = dt.getDate();
+
+    if (withYear) {
+        const now = new Date();
+
+        return month + ' ' + day + (now.getFullYear() !== dt.getFullYear() ? (', ' + dt.getFullYear()) : '');
+    }
 
     return month + ' ' + day;
 }
@@ -57,4 +63,12 @@ export function formatDateShort(date: number) {
     }
 
     return month + ' ' + day;
+}
+
+export function formatBirthDay(date: number | string) {
+    const bd = new Date(typeof date === 'string' ? parseInt(date, 10) : date);
+    const now = new Date();
+    const age = (now.getTime() - bd.getTime()) / (365 * 24 * 60 * 60 * 1000);
+
+    return `${bd.getDate()} ${months[bd.getMonth()]} ${bd.getFullYear()}, ${Math.floor(age)} y. o.`;
 }

@@ -30,6 +30,7 @@ import {
 import { UpdateSettingsInput } from 'openland-api/spacex.types';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { WhoCanSee } from './components/WhoCanSee';
+import { Selector } from './components/Selector';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { validateEmail } from 'openland-y-utils/validateEmail';
 
@@ -484,7 +485,7 @@ const entityItemContainer = css`
     padding: 10px 16px;
     height: 64px;
     border-radius: 8px;
-    background: linear-gradient(180deg, rgba(242, 243, 245, 0.56) 0%, #f2f3f5 100%);
+    background: linear-gradient(180deg, var(--backgroundTertiaryTrans) 0%, var(--backgroundTertiary) 100%);
 `;
 
 const ellipsesText = css`
@@ -524,9 +525,9 @@ const EntityItem = React.memo((props: EntityItemProps) => {
 export const SettingsPrivacyFragment = React.memo(() => {
     const client = useClient();
     const { phone, email } = client.useAuthPoints({ fetchPolicy: 'network-only' }).authPoints;
-    const { whoCanSeeEmail, whoCanSeePhone } = client.useSettings({ fetchPolicy: 'network-only' }).settings;
+    const { whoCanSeeEmail, whoCanSeePhone, communityAdminsCanSeeContactInfo } = client.useSettings({ fetchPolicy: 'network-only' }).settings;
 
-    const handleChangeWhoCanSee = React.useCallback(async (input: UpdateSettingsInput) => {
+    const handleChangeSettings = React.useCallback(async (input: UpdateSettingsInput) => {
         await client.mutateSettingsUpdate({ input });
         await client.refetchSettings();
     }, []);
@@ -570,8 +571,9 @@ export const SettingsPrivacyFragment = React.memo(() => {
                 </XView>
             </UListGroup>
             <UListGroup header="Privacy" padded={false}>
-                <WhoCanSee key={'phone-' + whoCanSeePhone} text="Who can see my phone" value={whoCanSeePhone} onClick={v => handleChangeWhoCanSee({ whoCanSeePhone: v })} />
-                <WhoCanSee key={'email-' + whoCanSeeEmail} text="Who can see my email" value={whoCanSeeEmail} onClick={v => handleChangeWhoCanSee({ whoCanSeeEmail: v })} />
+                <WhoCanSee key={'phone-' + whoCanSeePhone} text="Who can see my phone" value={whoCanSeePhone} onClick={v => handleChangeSettings({ whoCanSeePhone: v })} />
+                <WhoCanSee key={'email-' + whoCanSeeEmail} text="Who can see my email" value={whoCanSeeEmail} onClick={v => handleChangeSettings({ whoCanSeeEmail: v })} />
+                <Selector text="Admins can see my contacts" items={['Allowed', 'Disallowed']} selectedIndex={communityAdminsCanSeeContactInfo ? 0 : 1} onClick={i => handleChangeSettings({ communityAdminsCanSeeContactInfo: i === 0 })} />
             </UListGroup>
         </Page>
     );

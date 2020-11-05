@@ -23,7 +23,7 @@ const forwardMessageGroupClass = css`
         left: 0;
         top: 4px;
         bottom: 4px;
-        background-color: #c4c7cc;
+        background-color: var(--foregroundQuaternary);
         border-radius: 2px;
     }
 `;

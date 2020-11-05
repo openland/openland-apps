@@ -50,6 +50,11 @@ const ContainerClass = css`
     }
 `;
 
+const ContainerProfileClass = css`
+    margin: 0 -8px;
+    width: 100%;
+`;
+
 const ImgContianerClass = css`
     display: flex;
     flex-shrink: 0;
@@ -71,7 +76,7 @@ const ImgContianerClass = css`
 `;
 
 const ImgClass = css`
-    object-fit: contain;
+    object-fit: cover;
 `;
 
 const TextInner = css`
@@ -104,13 +109,14 @@ const MobilePadding = css`
     padding: 16px 32px;
 `;
 
-export const RichContent = (props: { item: SharedItemRich, chatId: string }) => {
+export const RichContent = (props: { item: SharedItemRich, chatId: string, profileView?: boolean }) => {
     const router = React.useContext(XViewRouterContext)!;
     const sharedItemMenu = useSharedItemMenu(props.chatId);
     const menuClick = React.useCallback((ctx: UPopperController) => {
         return sharedItemMenu(ctx, props.item);
     }, []);
     const [menuVisible, menuShow] = usePopper({ placement: 'bottom-start', hideOnClick: true }, menuClick);
+    const layout = useLayout();
 
     const menuIconClick = React.useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.preventDefault();
@@ -124,9 +130,14 @@ export const RichContent = (props: { item: SharedItemRich, chatId: string }) => 
         router.navigate(`/${props.item.sender.id}`);
     }, []);
 
-    const layout = useLayout();
+    const containerClassName = cx(
+        ContainerClass,
+        props.profileView && ContainerProfileClass,
+        layout === 'mobile' && MobilePadding,
+    );
+
     return (
-        <ULink className={cx(ContainerClass, layout === 'mobile' && MobilePadding)} href={props.item.attach.titleLink || undefined} >
+        <ULink className={containerClassName} href={props.item.attach.titleLink || undefined} >
             {props.item.attach.image && (
                 <div className={ImgContianerClass}>
                     <ImgWithRetry

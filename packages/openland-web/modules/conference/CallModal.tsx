@@ -45,7 +45,7 @@ const watermarkIconStyle = cx('x', css`
     pointer-events: none;
 `);
 
-export const CallModalConponent = React.memo((props: { chatId: string, calls: CallsEngine, client: OpenlandClient, ctx: XModalController, messenger: MessengerEngine, onAttach: (files: File[], cb?: () => void) => void }) => {
+export const CallModalConponent = React.memo((props: { chatId: string, calls: CallsEngine, client: OpenlandClient, ctx: XModalController, messenger: MessengerEngine, onAttach: (files: File[], isImage: boolean, cb?: () => void) => void }) => {
     let conference = props.client.useConference({ id: props.chatId }, { suspense: false });
     let currentMediaSession = props.calls.useCurrentSession();
     let mediaSession = React.useMemo(() => currentMediaSession!, []);

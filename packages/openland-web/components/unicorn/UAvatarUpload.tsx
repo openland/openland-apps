@@ -42,7 +42,7 @@ const contentContainer = css`
         z-index: 1;
     }
     & .avatar-container:hover {
-        background-color: var(--backgroundTertiaryHover);
+        background-color: var(--backgroundTertiaryHoverTrans);
     }
 `;
 
@@ -85,7 +85,7 @@ const hasImageIndicator = css`
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #fff;
+    border: 2px solid var(--backgroundPrimary);
     border-radius: 100%;
     background-color: var(--accentPrimary);
     position: absolute;
@@ -105,7 +105,7 @@ const avatarContainer = css`
     align-items: stretch;
     justify-content: center;
     flex-direction: column;
-    background-color: var(--backgroundTertiary);
+    background-color: var(--backgroundTertiaryTrans);
 `;
 
 const hasImageAvatarContainer = css`
@@ -153,7 +153,7 @@ const clearContainer = css`
       opacity: 0.72;
     }
     & svg {
-        box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
+        box-shadow: var(--boxShadowPopper);
         border-radius: 100px;
     }
 `;
@@ -237,7 +237,7 @@ const AvatarRender = (props: AvatarRenderProps) => {
                         className={avatarImage}
                     />
                 )}
-                {!hasImage && <UIcon icon={<IcPhoto />} color="#C8C9CC" className="ic-camera" />}
+                {!hasImage && <UIcon icon={<IcPhoto />} color="var(--foregroundQuaternary)" className="ic-camera" />}
                 {(props.isLoading || isLoading) && (
                     <XLoader
                         transparentBackground={true}
@@ -249,7 +249,7 @@ const AvatarRender = (props: AvatarRenderProps) => {
             </div>
             {hasImage && props.hideImageIndicator !== true && (
                 <div className={hasImageIndicator}>
-                    <UIcon icon={<IcPhotoIndicator />} color="#fff" />
+                    <UIcon icon={<IcPhotoIndicator />} color="var(--foregroundContrast)" />
                 </div>
             )}
             {hasImage && props.clearable && (
@@ -261,7 +261,7 @@ const AvatarRender = (props: AvatarRenderProps) => {
                     }}
                 >
                     <div className={clearContainerIcon}>
-                        <UIcon icon={<IcClear />} size={24} color="#fff" />
+                        <UIcon icon={<IcClear />} size={24} color="var(--foregroundContrast)" />
                     </div>
                 </div>
             )}
@@ -331,11 +331,11 @@ export const fromValue = (value2?: StoredFileT | null): UploadedFile | null => {
         let size = value2.size;
         let crop = value2.crop
             ? {
-                  left: Math.round(value2.crop.x),
-                  top: Math.round(value2.crop.y),
-                  width: Math.round(value2.crop.w),
-                  height: Math.round(value2.crop.h),
-              }
+                left: Math.round(value2.crop.x),
+                top: Math.round(value2.crop.y),
+                width: Math.round(value2.crop.w),
+                height: Math.round(value2.crop.h),
+            }
             : null;
 
         return {

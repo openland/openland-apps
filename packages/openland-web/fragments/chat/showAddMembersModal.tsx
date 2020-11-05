@@ -22,6 +22,7 @@ import { SearchBox } from 'openland-web/fragments/create/SearchBox';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcClose from 'openland-icons/s/ic-close-16.svg';
+import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 
 interface InviteModalProps {
     id: string;
@@ -45,6 +46,7 @@ const sectionTitleStyle = css`
     height: 48px;
     padding: 12px 0;
     flex-shrink: 0;
+    color: var(--foregroundPrimary);
 `;
 
 const SectionTitle = (props: { title: string }) => (
@@ -62,8 +64,8 @@ const AddMemberModalInner = (props: InviteModalProps) => {
             ? 'channel'
             : 'group'
         : props.isCommunity
-        ? 'community'
-        : 'organization';
+            ? 'community'
+            : 'organization';
 
     const onChange = (data: { label: string; value: string }[] | null) => {
         const newSelected = new Map();
@@ -158,7 +160,7 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                             <React.Suspense
                                 fallback={
                                     <XView flexGrow={1} flexShrink={0}>
-                                        <XLoader loading={true} />
+                                        <XLoader loading={true} transparentBackground={true} />
                                     </XView>
                                 }
                             >
@@ -186,29 +188,29 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                         onClick={
                             !!options.length
                                 ? async () => {
-                                      if (props.isGroup) {
-                                          await (props.addMembers as any)({
-                                              variables: {
-                                                  roomId: props.id,
-                                                  invites: options.map(i => ({
-                                                      userId: i.value,
-                                                      role: RoomMemberRole.MEMBER,
-                                                  })),
-                                              },
-                                          });
-                                      } else if (props.isOrganization) {
-                                          await (props.addMembers as any)({
-                                              variables: {
-                                                  organizationId: props.id,
-                                                  userIds: options.map(i => i.value),
-                                              },
-                                          });
-                                      }
-                                      setSelectedUsers(null);
-                                      if (props.hide) {
-                                          props.hide();
-                                      }
-                                  }
+                                    if (props.isGroup) {
+                                        await (props.addMembers as any)({
+                                            variables: {
+                                                roomId: props.id,
+                                                invites: options.map(i => ({
+                                                    userId: i.value,
+                                                    role: RoomMemberRole.MEMBER,
+                                                })),
+                                            },
+                                        });
+                                    } else if (props.isOrganization) {
+                                        await (props.addMembers as any)({
+                                            variables: {
+                                                organizationId: props.id,
+                                                userIds: options.map(i => i.value),
+                                            },
+                                        });
+                                    }
+                                    setSelectedUsers(null);
+                                    if (props.hide) {
+                                        props.hide();
+                                    }
+                                }
                                 : undefined
                         }
                     />
@@ -291,13 +293,13 @@ export const AddMembersModal = React.memo(
             data = client.useRoomMembersShort({ roomId: id }, { fetchPolicy: 'network-only' });
             const chat = client.useRoomChat({ id: id }).room!;
             const sharedRoom = chat.__typename === 'SharedRoom' && chat;
+
             isPremium = sharedRoom && sharedRoom.isPremium;
-            canAddPeople = sharedRoom && (!isPremium || sharedRoom.role !== 'MEMBER');
 
-            if (sharedRoom && sharedRoom.organization && sharedRoom.organization.private && sharedRoom.role === 'MEMBER') {
-                hideOwnerLink = true;
-            }
+            const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(chat);
 
+            canAddPeople = canAddDirectly;
+            hideOwnerLink = !canGetInviteLink;
         } else if (isOrganization) {
             data = client.useOrganizationMembersShort({ organizationId: id }, { fetchPolicy: 'network-only' });
         }

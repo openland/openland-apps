@@ -3,7 +3,7 @@ import { css, cx } from 'linaria';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/spacex.types';
 import { layoutMedia, MediaLayout } from 'openland-y-utils/MediaLayout';
 import { isInternalLink } from 'openland-y-utils/isInternalLink';
-import { TextTitle3, TextBody, TextLabel2 } from 'openland-web/utils/TextStyles';
+import { TextTitle3, TextBody, TextLabel3 } from 'openland-web/utils/TextStyles';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -61,6 +61,7 @@ const richImageContainer = css`
     width: var(--image-width);
     height: var(--image-height);
     max-width: 50%;
+    min-width: 144px; /* min-height of the wrapper */
     min-height: 100%;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
@@ -318,7 +319,7 @@ export const RichAttachContent = React.memo((props: RichAttachContentProps) => {
                 {img}
                 <div className={textContentContainer}>
                     {(siteIcon || attach.titleLinkHostname) && (
-                        <div className={cx(linkHostnameContainer, TextLabel2)}>
+                        <div className={cx(linkHostnameContainer, TextLabel3)}>
                             {siteIcon}
                             <span>{attach.titleLinkHostname}</span>
                         </div>

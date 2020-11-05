@@ -27,6 +27,7 @@ export enum SpanType {
     rotating = 'rotating',
     emoji = 'emoji',
     hashtag = 'hashtag',
+    search_highlight = 'search_highlight',
 }
 
 export type Span =
@@ -48,6 +49,7 @@ export type Span =
     | SpanItalic
     | SpanLoud
     | SpanRotating
+    | SpanSearchHighlight
     | SpanEmoji;
 
 interface SpanAbs {
@@ -78,6 +80,10 @@ export interface SpanBold extends SpanAbs {
 
 export interface SpanHashtag extends SpanAbs {
     type: SpanType.hashtag;
+}
+
+export interface SpanSearchHighlight extends SpanAbs {
+    type: SpanType.search_highlight;
 }
 
 export interface SpanCodeBlock extends SpanAbs {
@@ -141,7 +147,7 @@ export interface SpanOrganization extends SpanAbs {
     organization: MessageSpan_MessageSpanOrganizationMention_organization;
 }
 
-export type ServerSpan = MessageSpan;
+export type ServerSpan = MessageSpan | { __typename: 'MessageSpanSearchHighlight', offset: number, length: number };
 
 export type SpanSymbolToTypeT = {
     [key: string]: { type: MessageSpanType; master?: boolean; lined?: boolean };

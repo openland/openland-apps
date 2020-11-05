@@ -7,11 +7,13 @@ import { XModalController } from './showModal';
 export class AlertBlanketBuilder {
     _title?: string;
     _message?: string;
-    _body?: (ctx: XModalController) => JSX.Element;
+    _body?: (ctx: XModalController, confirm: () => void) => JSX.Element;
     _cancelable?: boolean;
     _cancelAction = true;
     _actions: { name: string, action: () => Promise<void>, style: UButtonStyle }[] = [];
     _width?: number;
+    _hideOnEscape?: boolean;
+    _confirmOnEnter?: boolean;
     _onCancel?: () => void;
 
     constructor() {
@@ -34,6 +36,16 @@ export class AlertBlanketBuilder {
         return this;
     }
 
+    hideOnEscape(hideOnEscape: boolean): AlertBlanketBuilder {
+        this._hideOnEscape = hideOnEscape;
+        return this;
+    }
+
+    confirmOnEnter(confirmOnEnter: boolean): AlertBlanketBuilder {
+        this._confirmOnEnter = confirmOnEnter;
+        return this;
+    }
+
     cancelDefaultAction(cancelable: boolean): AlertBlanketBuilder {
         this._cancelAction = cancelable;
         return this;
@@ -44,7 +56,7 @@ export class AlertBlanketBuilder {
         return this;
     }
 
-    body(body: (ctx: XModalController) => JSX.Element): AlertBlanketBuilder {
+    body(body: (ctx: XModalController, confirm: () => void) => JSX.Element): AlertBlanketBuilder {
         this._body = body;
         return this;
     }
@@ -65,7 +77,7 @@ export class AlertBlanketBuilder {
     }
 
     show() {
-        showModalBox({ title: this._title, width: this._width, onCancel: this._onCancel }, ctx => {
+        showModalBox({ title: this._title, width: this._width, hideOnEsc: this._hideOnEscape, onCancel: this._onCancel }, ctx => {
             return (
                 <AlertBlanketComponent builder={this} controller={ctx} />
             );

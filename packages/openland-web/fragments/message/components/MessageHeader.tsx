@@ -31,8 +31,8 @@ import { useStackRouter } from 'openland-unicorn/components/StackRouter';
 
 const useBuildMessageMenu = (engine: ConversationEngine) => {
     const router = useStackRouter();
-    const forward = useForward(engine.conversationId, engine.isPrivate && engine.user ? engine.user.id : undefined, !engine.canReply);
-    const { reply } = useChatMessagesActionsMethods({ conversationId: engine.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
+    const forward = useForward(engine.conversationId, !engine.canReply);
+    const { reply } = useChatMessagesActionsMethods(engine.conversationId);
     const toastHandlers = useToast();
     return (ctx: UPopperController, message: DataSourceWebMessageItem, isSubscribed: boolean) => {
         let menu = new UPopperMenuBuilder();

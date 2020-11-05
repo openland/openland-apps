@@ -7,6 +7,8 @@ import ArrowRight from 'openland-icons/s/ic-arrow-right-16.svg';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { DiscoverRoom } from 'openland-y-utils/discover/normalizePopularItems';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
+import { DiscoverOrganization } from 'openland-api/spacex.types';
+import { DiscoverOrganizationItem } from './DiscoverOrganizationItem';
 
 const contentContainer = css`
     display: flex;
@@ -58,20 +60,20 @@ const groupContainer = css`
     width: calc(100% + 16px);
 `;
 
-interface ListingCompactProps {
+interface ListingCompactInnerProps {
     title?: string;
-    items: DiscoverRoom[];
+    itemsCount: number;
     path?: string;
+    content: JSX.Element[];
 }
 
-export const ListingCompact = React.memo((props: ListingCompactProps) => {
-    if (props.items.length === 0) {
+const ListingCompactInner = React.memo((props: ListingCompactInnerProps) => {
+    if (props.itemsCount === 0) {
         return null;
     }
 
     const tabRouter = useTabRouter();
     const xRouter = React.useContext(XViewRouterContext);
-    const userInfo = React.useContext(UserInfoContext)!;
 
     const onClick = () => {
         if (props.path) {
@@ -88,7 +90,7 @@ export const ListingCompact = React.memo((props: ListingCompactProps) => {
             <XView marginTop={16} paddingHorizontal={16} alignItems="flex-start">
                 {props.title && (
                     <div className={titleContainer}>
-                        <XView flexDirection="row" alignItems="center" onClick={onClick}>
+                        <XView flexDirection="row" alignItems="center" onClick={onClick} color="var(--foregroundPrimary)">
                             <h2 className={TextTitle3}>{props.title}</h2>
                             <span className={iconContainer}>
                                 <ArrowRight />
@@ -98,16 +100,60 @@ export const ListingCompact = React.memo((props: ListingCompactProps) => {
                 )}
                 <div className={groupContainer}>
                     <XView width='100%'>
-                        {props.items.map(item => (
-                            <UGroupView
-                                key={'group-' + item.id}
-                                group={item}
-                                path={!userInfo.isLoggedIn ? `/${item.id}` : `/mail/${item.id}`}
-                            />
-                        ))}
+                        {props.content}
                     </XView>
                 </div>
             </XView>
         </div>
+    );
+});
+
+interface ListingCompactProps {
+    title?: string;
+    items: DiscoverRoom[];
+    path?: string;
+}
+
+export const ListingCompact = React.memo((props: ListingCompactProps) => {
+    const { items, ...other } = props;
+    const userInfo = React.useContext(UserInfoContext)!;
+    return (
+        <ListingCompactInner
+            {...other}
+            itemsCount={props.items.length}
+            content={(
+                props.items.map(item => (
+                    <UGroupView
+                        key={'group-' + item.id}
+                        group={item}
+                        path={!userInfo.isLoggedIn ? `/${item.id}` : `/mail/${item.id}`}
+                    />
+                )))
+            }
+        />
+    );
+});
+
+interface OrgsListingCompactProps {
+    title?: string;
+    items: DiscoverOrganization[];
+    path?: string;
+}
+
+export const OrgsListingCompact = React.memo((props: OrgsListingCompactProps) => {
+    const { items, ...other } = props;
+    return (
+        <ListingCompactInner
+            {...other}
+            itemsCount={props.items.length}
+            content={(
+                props.items.map(item => (
+                    <DiscoverOrganizationItem
+                        key={'group-' + item.id}
+                        organization={item}
+                    />
+                )))
+            }
+        />
     );
 });

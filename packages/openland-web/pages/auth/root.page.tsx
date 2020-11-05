@@ -17,6 +17,7 @@ import { BackSkipLogo, BackSkipLogoProps } from '../components/BackSkipLogo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { countriesMeta } from 'openland-y-utils/auth/countriesMeta';
+import { isElectron } from 'openland-y-utils/isElectron';
 
 const getAppInvite = (router: any) => {
     if (router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite') {
@@ -62,11 +63,11 @@ const fetchCountry = async (): Promise<string | undefined> => {
                 { 
                     countryCode
                 } 
-            }`
+            }`,
         }),
     })
-        .then(r => r.json())
-        .then(r => r?.data?.ipLocation?.countryCode)
+        .then((r) => r.json())
+        .then((r) => r?.data?.ipLocation?.countryCode)
         .catch(() => {
             console.warn('Country fetch failed');
         });
@@ -76,7 +77,7 @@ const pageContainer = css`
     display: flex;
     justify-content: center;
     align-items: stretch;
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;
 `;
@@ -94,7 +95,7 @@ const forwardIn = css`
     @keyframes forwardIn {
         from {
             opacity: 0;
-            transform: translateX(432px);
+            transform: translateX(500px);
         }
         to {
             opacity: 1;
@@ -112,7 +113,7 @@ const forwardOut = css`
         }
         to {
             opacity: 0;
-            transform: translateX(-432px);
+            transform: translateX(-500px);
         }
     }
     animation: forwardOut 350ms cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
@@ -123,7 +124,7 @@ const backwardIn = css`
     @keyframes forwardIn {
         from {
             opacity: 0;
-            transform: translateX(-432px);
+            transform: translateX(-500px);
         }
         to {
             opacity: 1;
@@ -141,7 +142,7 @@ const backwardOut = css`
         }
         to {
             opacity: 0;
-            transform: translateX(432px);
+            transform: translateX(500px);
         }
     }
     animation: forwardOut 350ms cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
@@ -169,10 +170,8 @@ export const AuthHeaderConfig = React.memo((props: BackSkipLogoProps) => {
         authHeaderConfigContex.setOnBack(props.onBack);
         authHeaderConfigContex.setOnSkip(props.onSkip);
         authHeaderConfigContex.setMobileTransparent(props.mobileTransparent);
-
-        console.warn('setting header', props.onBack, props.onSkip, props.mobileTransparent);
     }, []);
-    return <></>;
+    return null;
 });
 
 interface AuthHeaderInstance {
@@ -220,13 +219,11 @@ const AuthHeader = React.memo(
         );
 
         return (
-            <XView position="absolute" width="100%">
-                <BackSkipLogo
-                    onBack={onBackPressed}
-                    onSkip={onSkip.callback ? onSkipPressed : undefined}
-                    mobileTransparent={mobileTransparent}
-                />
-            </XView>
+            <BackSkipLogo
+                onBack={onBackPressed}
+                onSkip={onSkip.callback ? onSkipPressed : undefined}
+                mobileTransparent={mobileTransparent}
+            />
         );
     }),
 );
@@ -266,7 +263,7 @@ const Root = (props: { countryCode?: string }) => {
         }
     }
 
-    const initialCountry = countriesMeta.find(x => x.shortname === props.countryCode) || {
+    const initialCountry = countriesMeta.find((x) => x.shortname === props.countryCode) || {
         label: 'United States',
         value: '+1',
         shortname: 'US',
@@ -318,7 +315,9 @@ const Root = (props: { countryCode?: string }) => {
         setAuthValue('');
         setAuthError('');
         setAuthSending(false);
-        const loginPath = phone ? '/authorization/ask-auth-data?phone=true' : '/authorization/ask-auth-data';
+        const loginPath = phone
+            ? '/authorization/ask-auth-data?phone=true'
+            : '/authorization/ask-auth-data';
         setTimeout(() => {
             router.push(loginPath);
         }, 0);
@@ -378,27 +377,27 @@ const Root = (props: { countryCode?: string }) => {
                 (!authValue ? (
                     <XPageRedirect path="/" />
                 ) : (
-                        <AskAuthCodePage
-                            authValue={authValue}
-                            phoneCodeValue={phoneCodeValue}
-                            authWasResend={authWasResend}
-                            authSending={authSending}
-                            setAuthWasResend={setAuthWasResend}
-                            isExistingUser={isExistingUser}
-                            avatarId={avatarId}
-                            backButtonClick={() => {
-                                setFromOutside(false);
-                            }}
-                            resendCodeClick={async () => {
-                                trackEvent('code_resend_action');
-                                setAuthSending(true);
-                                if (prevDataFired.current) {
-                                    await fireAuth(prevDataFired.current, isPhoneAuth);
-                                }
-                                setAuthWasResend(true);
-                            }}
-                        />
-                    ))}
+                    <AskAuthCodePage
+                        authValue={authValue}
+                        phoneCodeValue={phoneCodeValue}
+                        authWasResend={authWasResend}
+                        authSending={authSending}
+                        setAuthWasResend={setAuthWasResend}
+                        isExistingUser={isExistingUser}
+                        avatarId={avatarId}
+                        backButtonClick={() => {
+                            setFromOutside(false);
+                        }}
+                        resendCodeClick={async () => {
+                            trackEvent('code_resend_action');
+                            setAuthSending(true);
+                            if (prevDataFired.current) {
+                                await fireAuth(prevDataFired.current, isPhoneAuth);
+                            }
+                            setAuthWasResend(true);
+                        }}
+                    />
+                ))}
             {page === pages.introduceYourself && (
                 <XTrack event="signin_profile_view">
                     <IntroduceYourselfPage />
@@ -430,10 +429,10 @@ const Root = (props: { countryCode?: string }) => {
         }
     }, []);
 
+    const showBack = isElectron ? page !== pages.createNewAccount : page !== pages.acceptInvite;
+
     return (
         <div className={outerContainer}>
-            {page !== 'acceptInvite' && <AuthHeader ref={headerRef} />}
-
             <AuthHeaderConfigContex.Provider
                 value={{
                     setOnBack,
@@ -451,9 +450,14 @@ const Root = (props: { countryCode?: string }) => {
                         </div>
                     </>
                 ) : (
-                        render
-                    )}
+                    <div className={pageContainer}>{render}</div>
+                )}
             </AuthHeaderConfigContex.Provider>
+            {showBack && (
+                <XView width="100%" height={0}>
+                    <AuthHeader ref={headerRef} />
+                </XView>
+            )}
         </div>
     );
 };

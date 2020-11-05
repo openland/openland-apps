@@ -5,8 +5,8 @@ import { getRandomSeed } from 'openland-web/fragments/discover/utils/getRandomSe
 import { XView } from 'react-mental';
 import { USlider } from 'openland-web/components/unicorn/USlider';
 import { EditorsChoiceItem } from 'openland-web/fragments/discover/components/EditorsChoiceItem';
-import { ListingCompact } from 'openland-web/fragments/discover/components/ListingCompact';
-import { normalizePopularItems } from 'openland-y-utils/discover/normalizePopularItems';
+import { ListingCompact, OrgsListingCompact } from 'openland-web/fragments/discover/components/ListingCompact';
+import { normalizePopularItems, normalizePopularOrgItems } from 'openland-y-utils/discover/normalizePopularItems';
 import { DiscoverCollection } from 'openland-web/fragments/discover/components/DiscoverCollection';
 import { AuthDiscoverContainer } from './AuthDiscoverContainer';
 import { XScrollView3 } from 'openland-x/XScrollView3';
@@ -14,7 +14,16 @@ import { XScrollView3 } from 'openland-x/XScrollView3';
 const AuthDiscoverInner = React.memo((props: { seed: number }) => {
     const client = useClient();
 
-    const { discoverPopularNow, discoverCollections, discoverEditorsChoice, discoverNewAndGrowing, discoverTopPremium, discoverTopFree } = client.useDiscoverNoAuth({ seed: props.seed });
+    const {
+        discoverPopularNow,
+        discoverCollections,
+        discoverEditorsChoice,
+        discoverNewAndGrowing,
+        discoverTopPremium,
+        discoverTopFree,
+        discoverTopOrganizations,
+        discoverNewAndGrowingOrganizations
+    } = client.useDiscoverNoAuth({ seed: props.seed });
     const collections = discoverCollections ? discoverCollections.items : [];
     const editorsChoice = discoverEditorsChoice;
 
@@ -53,10 +62,17 @@ const AuthDiscoverInner = React.memo((props: { seed: number }) => {
                             ))}
                         </USlider>
 
-                        <XView marginBottom={40} marginTop={20}>
+                        <XView marginTop={20}>
                             <div className={listingsContainer}>
                                 <ListingCompact title="Top premium" items={discoverTopPremium.items || []} path="/discover/premium" />
                                 <ListingCompact title="Top free" items={discoverTopFree.items || []} path="/discover/free" />
+                            </div>
+                        </XView>
+
+                        <XView marginBottom={40} marginTop={20}>
+                            <div className={listingsContainer}>
+                                <OrgsListingCompact title="Top communities" items={normalizePopularOrgItems(discoverTopOrganizations.items)} path="/discover/top-communities" />
+                                <OrgsListingCompact title="New communities" items={discoverNewAndGrowingOrganizations.items || []} path="/discover/new-communities" />
                             </div>
                         </XView>
                     </XView>

@@ -9,9 +9,8 @@ import { XView } from 'react-mental';
 
 const container = css`
     min-width: 150px;
-    background: var(--backgroundPrimary);
+    background: var(--backgroundSecondary);
     border-radius: 8px;
-    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
     padding: 8px 0;
 `;
 

@@ -16,11 +16,23 @@ const boxStyle = css`
     position: absolute;
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background-color: var(--backgroundSecondary);
     border-radius: 8px;
-    box-shadow: 0 3px 14px 4px #82777747;
+    box-shadow: var(--boxShadowModal);
     max-height: 95%;
     max-width: calc(100vw - 20px);
+    color: var(--foregroundPrimary);
+
+    & .scroll-view {
+        background-color: var(--backgroundSecondary);
+    }
+`;
+
+const fullScreenBoxStyle = css`
+    background-color: var(--backgroundPrimary);
+    & .scroll-view {
+        background-color: var(--backgroundPrimary);
+    }
 `;
 
 const boxOverflow = css`
@@ -62,7 +74,7 @@ const overlayStyle = css`
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: var(--overlayLight);
 `;
 
 const darkOverlayStyle = css`
@@ -88,7 +100,7 @@ const titleStyle = css`
 
 const Loader = (
     <XView height="100px" alignItems="center" justifyContent="center">
-        <XLoader loading={true} />
+        <XLoader loading={true} transparentBackground={true} />
     </XView>
 );
 
@@ -96,7 +108,7 @@ const ModalBoxComponent = React.memo<{
     ctx: XModalController;
     modal: XModal;
     config: XModalBoxConfig;
-}>(props => {
+}>((props) => {
     const { hideOnEsc = true } = props.config;
 
     const [state, setState] = React.useState<'showing' | 'visible' | 'hiding'>('showing');
@@ -159,7 +171,7 @@ const ModalBoxComponent = React.memo<{
         let windowWidth = 0;
         let contentHeight = 0;
         let contentWidth = 0;
-        let observer = new ResizeObserver(src => {
+        let observer = new ResizeObserver((src) => {
             for (let s of src) {
                 if (s.target === containerRef.current) {
                     windowHeight = s.contentRect.height;
@@ -197,27 +209,28 @@ const ModalBoxComponent = React.memo<{
 
     const boxInlineStyle = isFullscreen
         ? {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            maxWidth: 'initial',
-            maxHeight: 'initial',
-            borderRadius: 0,
-            transition: 'none',
-        }
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              maxWidth: 'initial',
+              maxHeight: 'initial',
+              borderRadius: 0,
+              transition: 'none',
+          }
         : {
-            top,
-            left,
-            width: props.config.flowing ? 'auto' : props.config.width ? props.config.width : 440,
-        };
+              top,
+              left,
+              width: props.config.flowing ? 'auto' : props.config.width ? props.config.width : 440,
+          };
 
     return (
         <XModalBoxContext.Provider
             value={{
                 close: tryHide,
+                fullScreen: isFullscreen
             }}
         >
             <div
@@ -237,6 +250,7 @@ const ModalBoxComponent = React.memo<{
                     ref={boxRef}
                     className={cx(
                         boxStyle,
+                        isFullscreen && fullScreenBoxStyle,
                         props.config.darkOverlay && darkOverlayStyle,
                         props.config.transparentBox && transparentBoxStyle,
                         !props.config.overflowVisible && boxOverflow,
@@ -257,7 +271,7 @@ const ModalBoxComponent = React.memo<{
                                 width={36}
                                 height={36}
                                 borderRadius={50}
-                                hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+                                hoverBackgroundColor="var(--backgroundTertiaryTrans)"
                             >
                                 <UIcon icon={<IcClose />} />
                             </XView>
@@ -270,6 +284,7 @@ const ModalBoxComponent = React.memo<{
                                 paddingRight={14}
                                 flexDirection="row"
                                 alignItems="center"
+                                color="var(--foregroundPrimary)"
                                 {...TextStyles.Title1}
                             >
                                 <div className={cx(props.config.titleTruncation && titleStyle)}>
@@ -312,7 +327,7 @@ export interface XModalBoxConfig {
 
 export function showModalBox(config: XModalBoxConfig, modal: XModal) {
     const { hideOnEsc = true } = config;
-    showModal(ctx => {
+    showModal((ctx) => {
         if (hideOnEsc) {
             ctx.setOnEscPressed(ctx.hide);
         }

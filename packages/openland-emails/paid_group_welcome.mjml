@@ -2,21 +2,21 @@
     <mj-head>
         <mj-include path="./includes/attributes.mjml" />
         <mj-breakpoint width="680px" />
-        <mj-title>You’ve bought access to a paid group</mj-title>
-        <mj-preview>You've bought access to {{groupName}}</mj-preview>
+        <mj-title>Purchase confirmation for {{groupName}}</mj-title>
+        <mj-preview>Congrats for joining 🎉 Install Openland app for full access to {{roomKind}}</mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header.mjml" />
         <mj-section mj-class="wrapper">
             <mj-column mj-class="container">
                 <mj-text mj-class="title">
-                    You've bought access to {{groupName}}
+                    Purchase confirmation for {{groupName}}
                 </mj-text>
                 <mj-text mj-class="text">
-                    {{welcomeMessage}}
+                    Congrats for joining 🎉 This {{roomKind}} runs on Openland messenger. To participate in real time and never miss a message, install Openland app at <a href="https://openland.com">https://openland.com</a>
                 </mj-text>
 
-                <mj-button mj-class="button" href="{{link}}">View</mj-button>
+                <mj-button mj-class="button" href="{{link}}">View {{roomKind}}</mj-button>
             </mj-column>
         </mj-section>
         <mj-include path="./includes/install-app.mjml" />

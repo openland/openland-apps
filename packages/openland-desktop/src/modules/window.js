@@ -6,6 +6,7 @@ const {
 } = require('electron');
 const windowStateKeeper = require('electron-window-state');
 const handleLinkOpen = require('./links').handleLinkOpen;
+const os = require('os');
 
 function onDownload(event, item, webContents) {
     if (item.getMimeType() == 'application/pdf') {
@@ -27,7 +28,10 @@ module.exports = {
             defaultWidth: 1280,
             defaultHeight: 800,
         });
-        let win = new BrowserWindow({
+
+        var path = require('path');
+
+        let opts = {
             width: mainWindowState.width,
             height: mainWindowState.height,
             minHeight: 375,
@@ -36,23 +40,22 @@ module.exports = {
             webPreferences: {
                 nodeIntegration: true
             }
-        });
+        };
+
+        if (os.platform() === 'linux') {
+            opts.icon = path.join(app.getAppPath(), '../../openland.png');
+        }
+
+        let win = new BrowserWindow(opts);
         mainWindowState.manage(win);
 
         // Setup Link Handling
         win.webContents.on('new-window', handleLinkOpen);
 
-        var path = require('path');
         win.webContents.session.setPreloads([path.join(__dirname, 'getUserMedia.js')])
-        win.webContents.session.setPermissionCheckHandler(async (webContents, permission, details) => {
-            return true
-        })
-        win.webContents.session.setPermissionRequestHandler(async (webContents, permission, callback, details) => {
-            callback(true)
-        })
 
         // Load app URL
-        win.loadURL(devMode ? 'http://localhost:3000' : 'https://openland.com');
+        win.loadURL(devMode ? 'http://localhost:3000/mail' : 'https://openland.com/mail');
 
         return win;
     }

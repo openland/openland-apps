@@ -29,6 +29,7 @@ RCT_EXPORT_VIEW_PROPERTY(applyModes, NSArray)
 @end
 
 @interface RCT_EXTERN_MODULE(RNAsyncKeyboardViewManager, RCTViewManager)
+RCT_EXPORT_VIEW_PROPERTY(overrideTransform, CGFloat)
 @end
 
 @interface RCT_EXTERN_MODULE(RNAsyncKeyboardContextViewManager, RCTViewManager)

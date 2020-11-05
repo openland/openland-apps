@@ -56,6 +56,14 @@ fragment DiscoverChatsCollectionShort on DiscoverChatsCollection {
     }
 }
 
+fragment DiscoverOrganization on Organization {
+    id
+    name
+    photo
+    membersCount
+    shortname
+}
+
 query ExploreRooms($seed: Int!) {
     discoverNewAndGrowing(first: 3, seed: $seed) {
         items {
@@ -84,6 +92,18 @@ query ExploreRooms($seed: Int!) {
     discoverTopFree(first: 5) {
         items {
             ...DiscoverSharedRoom
+        }
+        cursor
+    }
+    discoverTopOrganizations(first: 5) {
+        items {
+            ...DiscoverOrganization
+        }
+        cursor
+    }
+    discoverNewAndGrowingOrganizations(first: 5, seed: $seed) {
+        items {
+            ...DiscoverOrganization
         }
         cursor
     }
@@ -140,6 +160,19 @@ query DiscoverNoAuth($seed: Int!) {
         chat {
             ...DiscoverSharedRoom
         }
+    }
+
+    discoverTopOrganizations(first: 5) {
+        items {
+            ...DiscoverOrganization
+        }
+        cursor
+    }
+    discoverNewAndGrowingOrganizations(first: 5, seed: $seed) {
+        items {
+            ...DiscoverOrganization
+        }
+        cursor
     }
 }
 
@@ -278,6 +311,24 @@ query DiscoverTopFree($first: Int!, $after: String) {
     discoverTopFree(first: $first, after: $after) {
         items {
             ...DiscoverSharedRoom
+        }
+        cursor
+    }
+}
+
+query DiscoverPopularOrganizations($first: Int!, $after: String) {
+    discoverTopOrganizations(first: $first, after: $after) {
+        items {
+            ...DiscoverOrganization
+        }
+        cursor
+    }
+}
+
+query DiscoverNewOrganizations($first: Int!, $seed: Int!, $after: String) {
+    discoverNewAndGrowingOrganizations(first: $first, seed: $seed, after: $after) {
+        items {
+            ...DiscoverOrganization
         }
         cursor
     }

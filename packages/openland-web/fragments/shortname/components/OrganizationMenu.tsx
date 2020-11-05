@@ -2,11 +2,12 @@ import * as React from 'react';
 import { Organization_organization } from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { showEditCommunityModal } from 'openland-web/fragments/settings/components/showEditCommunityModal';
+import { showSuperEditCommunityModal } from 'openland-web/fragments/settings/components/showSuperEditCommunityModal';
 import { useRole } from 'openland-x-permissions/XWithRole';
 import copy from 'copy-to-clipboard';
 import EditIcon from 'openland-icons/s/ic-edit-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
-import CopyIcon from 'openland-icons/s/ic-copy-24.svg';
+import CopyIcon from 'openland-icons/s/ic-link-24.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
@@ -83,11 +84,11 @@ const MenuComponent = React.memo((props: OrganizationMenuProps & { ctx: UPopperC
         builder.item({
             title: 'Super edit',
             icon: <EditIcon />,
-            path: `/super/orgs/${id}`
+            onClick: () => showSuperEditCommunityModal(id, isCommunity)
         });
     }
 
-    if (isMine) {
+    if (isMine && !isOwner) {
         builder.item({
             title: `Leave ${typeString}`,
             icon: <LeaveIcon />,
@@ -123,7 +124,9 @@ export const OrganizationMenu = React.memo((props: OrganizationMenuProps) => {
 
     return (
         <UMoreButton
-            marginRight={-8}
+            horizontal={true}
+            shape="square"
+            filled={true}
             menu={ctx => <MenuComponent {...props} router={router} ctx={ctx} toastHandlers={toastHandlers} />}
         />
     );

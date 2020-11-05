@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
+import { DataSourceMessageItem, PendingAttachProps } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
 import { Platform, Dimensions } from 'react-native';
@@ -13,11 +13,14 @@ import { contentInsetsHorizontal, contentInsetsBottom, contentInsetsTop } from '
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { AsyncBubbleMediaView } from '../AsyncBubbleMediaView';
+import { AsyncBubbleMediaView, getPilePosition } from '../AsyncBubbleMediaView';
+import { MAX_FILES_PER_MESSAGE } from 'openland-engines/messenger/MessageSender';
+
+type AttachType = FullMessage_GeneralMessage_attachments_MessageAttachmentFile & PendingAttachProps;
 
 interface MediaContentProps {
     message: DataSourceMessageItem;
-    attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
+    maxSize: number;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
@@ -43,37 +46,51 @@ export let layoutImage = (fileMetadata?: { imageWidth: number | null, imageHeigh
     return undefined;
 };
 
-const IMAGE_MIN_SIZE = 120;
+export const IMAGE_MIN_SIZE = 120;
 
-export class MediaContent extends React.PureComponent<MediaContentProps, { downloadState?: DownloadState }> {
+export class MediaContent extends React.PureComponent<
+    MediaContentProps,
+    {
+        downloadStates: Record<string, DownloadState>,
+        uploadStates: Record<string, DownloadState>
+    }
+    > {
     mounted = false;
     serverDownloadManager = false;
     constructor(props: MediaContentProps) {
         super(props);
-        this.state = {};
+        this.state = {
+            downloadStates: {},
+            uploadStates: {}
+        };
     }
 
-    private downloadManagerWatch?: WatchSubscription;
-    private handlePress = (event: ASPressEvent) => {
-        const { attach, message, layout, onMediaPress } = this.props;
-        const { downloadState } = this.state;
+    private downloadManagerWatches?: WatchSubscription[];
+    private handlePress = (event: ASPressEvent, fileId: string, radius: number = 18) => {
+        const { message, layout, onMediaPress } = this.props;
+
+        const downloadState = this.state.downloadStates[fileId];
+        const attachments = this.getFileAttachments();
+        const attach = attachments.find(f => f.fileId === fileId);
         // Ignore clicks for not-downloaded files
         let path = (downloadState && downloadState.path) || (attach && attach.uri);
-        if (path && attach.fileMetadata.imageHeight && attach.fileMetadata.imageWidth) {
+        if (path && attach && attach.fileMetadata.imageHeight && attach.fileMetadata.imageWidth) {
             let w = attach.fileMetadata.imageWidth;
             let h = attach.fileMetadata.imageHeight;
-
             onMediaPress(
                 { imageHeight: h, imageWidth: w },
                 {
-                    ...event, path,
-                    // Sorry universe. Try to fix bug with distorted images in animation of ZPictureModal
-                    w: layout.width,
-                    h: layout.height,
-                    x: event.w !== layout.width ? event.x + ((event.w - layout.width) / 2) : event.x,
-                    y: event.h !== layout.height ? event.y + ((event.h - layout.height) / 2) : event.y,
+                    ...event,
+                    path,
+                    ...attachments.length === 1 ? {
+                        // Sorry universe. Try to fix bug with distorted images in animation of ZPictureModal
+                        w: layout.width,
+                        h: layout.height,
+                        x: event.w !== layout.width ? event.x + ((event.w - layout.width) / 2) : event.x,
+                        y: event.h !== layout.height ? event.y + ((event.h - layout.height) / 2) : event.y,
+                    } : {}
                 },
-                18,
+                radius,
                 message.sender.name,
                 message.date
             );
@@ -81,29 +98,40 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     }
 
     bindDownloadManager = () => {
-        let fileAttach = this.props.attach;
-        if (fileAttach && fileAttach.fileId && fileAttach!!.fileMetadata.imageWidth!! && fileAttach!!.fileMetadata.imageHeight!!) {
-            this.serverDownloadManager = true;
-            let optimalSize = layoutMedia(fileAttach!!.fileMetadata.imageWidth!!, fileAttach!!.fileMetadata.imageHeight!!, 1024, 1024);
-            this.downloadManagerWatch = DownloadManagerInstance.watch(fileAttach!!.fileId!, (fileAttach!!.fileMetadata.imageFormat !== 'GIF') ? optimalSize : null, (state) => {
-                if (this.mounted) {
-                    this.setState({ downloadState: state });
-                }
-            });
-        }
+        let fileAttachements = (this.props.message.attachments?.filter(x => x.__typename === 'MessageAttachmentFile') || []) as AttachType[];
 
-        if (fileAttach && fileAttach.uri) {
-            this.downloadManagerWatch = UploadManagerInstance.watch(this.props.message.key, s => {
-                if (this.mounted) {
-                    this.setState({ downloadState: { progress: s.progress } });
-                }
-            });
-        }
+        let watches = fileAttachements.map(attach => {
+            const isDownloading = attach && attach.fileId && attach!!.fileMetadata.imageWidth!! && attach!!.fileMetadata.imageHeight!!;
+            const isUploading = attach && attach.uri && attach.key;
+            if (isDownloading) {
+                this.serverDownloadManager = true;
+                let optimalSize = layoutMedia(attach!!.fileMetadata.imageWidth!!, attach!!.fileMetadata.imageHeight!!, 1024, 1024);
+                return DownloadManagerInstance.watch(attach!!.fileId!, (attach!!.fileMetadata.imageFormat !== 'GIF') ? optimalSize : null, (state) => {
+                    if (this.mounted) {
+                        this.setState(prev => ({ downloadStates: { ...prev.downloadStates, [attach!!.fileId!]: state } }));
+                    }
+                });
+            } else if (isUploading) {
+                return UploadManagerInstance.watch(attach!.key!, s => {
+                    if (this.mounted) {
+                        this.setState(prev => ({
+                            uploadStates: {
+                                ...prev.uploadStates, [attach!!.key!]: {
+                                    progress: s.progress
+                                }
+                            }
+                        }));
+                    }
+                });
+            }
+            return null;
+        }).filter(Boolean) as WatchSubscription[];
+        this.downloadManagerWatches = watches;
     }
 
     unbindDownloadManager = () => {
-        if (this.downloadManagerWatch) {
-            this.downloadManagerWatch();
+        if (this.downloadManagerWatches) {
+            this.downloadManagerWatches.forEach(f => f());
         }
     }
 
@@ -112,10 +140,11 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
         this.bindDownloadManager();
     }
 
-    componentDidUpdate() {
-        let fileAttach = this.props.attach;
+    componentDidUpdate(prevProps: MediaContentProps) {
+        let attachments = this.props.message.attachments;
+        let prevAttachments = prevProps.message.attachments;
 
-        if (fileAttach && fileAttach.fileId && !this.serverDownloadManager) {
+        if (attachments !== prevAttachments && !this.serverDownloadManager) {
             this.unbindDownloadManager();
             this.bindDownloadManager();
         }
@@ -126,88 +155,191 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
         this.unbindDownloadManager();
     }
 
+    getFileAttachments() {
+        return (this.props.message.attachments?.filter(x => x.__typename === 'MessageAttachmentFile') || []).slice(0, MAX_FILES_PER_MESSAGE) as AttachType[];
+    }
+
     render() {
-        const { hasTopContent, hasBottomContent, message, attach, layout, compensateBubble, theme, onLongPress } = this.props;
-        const { downloadState } = this.state;
-        const isSingle = !hasTopContent && !hasBottomContent;
-        const useBorder = isSingle && !!compensateBubble && layout.height >= IMAGE_MIN_SIZE && layout.width >= IMAGE_MIN_SIZE;
-        const viewWidth = isSingle ? Math.max(layout.width, IMAGE_MIN_SIZE) : undefined;
-        const viewHeight = Math.max(layout.height, IMAGE_MIN_SIZE);
+        const { hasTopContent, hasBottomContent, message, maxSize, layout, compensateBubble, theme, onLongPress } = this.props;
+        const noOtherContent = !hasTopContent && !hasBottomContent;
+        let fileAttachements = this.getFileAttachments();
+        const isSingleImage = fileAttachements.length === 1;
+
+        const viewWidth = isSingleImage && noOtherContent
+            ? Math.max(layout.width, IMAGE_MIN_SIZE)
+            : maxSize;
+        const viewHeight = isSingleImage
+            ? Math.max(layout.height, IMAGE_MIN_SIZE)
+            : Math.max(Math.min(maxSize, 168), IMAGE_MIN_SIZE);
+
+        const useBorder = isSingleImage
+            ? noOtherContent && !!compensateBubble && layout.height >= IMAGE_MIN_SIZE && layout.width >= IMAGE_MIN_SIZE
+            : true;
 
         const bubbleBackgroundSecondary = message.isOut ? theme.outgoingBackgroundSecondary : theme.incomingBackgroundSecondary;
+        const hasEmptySpace = isSingleImage && (
+            layout.height < IMAGE_MIN_SIZE
+            || layout.width < IMAGE_MIN_SIZE
+            || layout.height === maxSize && layout.width !== maxSize
+            || layout.width === maxSize && layout.height !== maxSize
+        );
+        let content = fileAttachements
+            .reduce((acc, file, i) => {
+                let state = this.state.uploadStates[file.key!] || this.state.downloadStates[file.fileId];
+                let path = state && state.path;
+                let el = { file, uri: path ? ('file://' + path) : file.uri };
+
+                if (acc.length < 2) {
+                    acc.push([el]);
+                } else if (i === 2) {
+                    acc[1].push(el);
+                } else if (i === 3) {
+                    let prevLast = acc[1].pop();
+                    acc[0].push(prevLast!);
+                    acc[1].push(el);
+                }
+                return acc;
+            }, [] as { file: AttachType, uri: string | undefined }[][])
+            .map((column, columnIndex, row) => {
+                const width = isSingleImage
+                    ? layout.width
+                    : viewWidth / row.length - (row.length === 2 ? 1 : 0);
+                return (
+                    <ASFlex
+                        key={column.length + columnIndex}
+                        maxWidth={width}
+                        width={width}
+                        marginLeft={columnIndex === 1 ? 2 : 0}
+                        flexDirection="column"
+                    >
+                        {column.map(({ file, uri }, rowIndex) => {
+                            const height = isSingleImage
+                                ? layout.height
+                                : viewHeight / column.length - (column.length === 2 ? 1 : 0);
+                            let position = getPilePosition(fileAttachements.length, rowIndex, columnIndex);
+                            let state = this.state.uploadStates[file.key!] || this.state.downloadStates[file.fileId];
+                            let hasNoRadius = hasTopContent && position && ['tl', 'tr'].includes(position)
+                                || hasBottomContent && position && ['bl', 'br'].includes(position)
+                                || hasTopContent && hasBottomContent;
+
+                            return (
+                                <ASFlex
+                                    key={file.fileId + uri + file.key}
+                                    maxWidth={width}
+                                    width={width}
+                                    height={height}
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    marginTop={rowIndex === 1 ? 2 : 0}
+                                >
+                                    <ASFlex
+                                        maxWidth={width}
+                                        width={width}
+                                        height={height}
+                                    >
+                                        <ASImage
+                                            key={file.fileId}
+                                            source={{ uri }}
+                                            isGif={file.fileMetadata.imageFormat === 'GIF'}
+                                            maxWidth={width}
+                                            width={width}
+                                            height={height}
+                                        />
+                                        <ASFlex
+                                            overlay={true}
+                                            alignItems="flex-end"
+                                            justifyContent="flex-end"
+                                        >
+                                            {
+                                                state && state.progress !== undefined && state.progress < 1 && !state.path && <ASFlex
+                                                    overlay={true}
+                                                    width={width}
+                                                    height={height}
+                                                    justifyContent="center"
+                                                    alignItems="center"
+                                                >
+                                                    <ASFlex
+                                                        backgroundColor={theme.backgroundPrimary}
+                                                        borderRadius={20}
+                                                    >
+                                                        <ASText color={theme.foregroundPrimary} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(state.progress * 100)}</ASText>
+                                                    </ASFlex>
+                                                </ASFlex>
+                                            }
+                                        </ASFlex>
+                                    </ASFlex>
+                                    {compensateBubble && !hasEmptySpace && (
+                                        <ASFlex
+                                            overlay={true}
+                                            width={width}
+                                            height={height}
+                                            alignItems="stretch"
+                                        >
+                                            <AsyncBubbleMediaView
+                                                isOut={message.isOut}
+                                                attachTop={message.attachTop}
+                                                attachBottom={message.attachBottom}
+                                                hasTopContent={hasTopContent}
+                                                hasBottomContent={hasBottomContent}
+                                                maskColor={theme.backgroundPrimary}
+                                                onPress={e => this.handlePress(e, file.fileId, hasNoRadius ? 0 : undefined)}
+                                                onLongPress={onLongPress}
+                                                borderColor={theme.border}
+                                                useBorder={useBorder}
+                                                pilePosition={position}
+                                            />
+                                        </ASFlex>
+                                    )}
+                                </ASFlex>
+                            );
+                        })}
+                    </ASFlex>
+                );
+            });
 
         return (
             <ASFlex
-                flexDirection="column"
                 width={viewWidth}
                 height={viewHeight}
                 marginTop={compensateBubble ? (hasTopContent ? 0 : -contentInsetsTop) : undefined}
                 marginLeft={compensateBubble ? -contentInsetsHorizontal : undefined}
                 marginRight={compensateBubble ? -contentInsetsHorizontal : undefined}
-                marginBottom={compensateBubble ? (isSingle || !hasBottomContent ? -contentInsetsBottom : 8) : undefined}
-                backgroundColor={isSingle ? theme.backgroundTertiary : bubbleBackgroundSecondary}
+                marginBottom={compensateBubble ? (noOtherContent || !hasBottomContent ? -contentInsetsBottom : 8) : undefined}
+                backgroundColor={noOtherContent ? theme.backgroundTertiary : bubbleBackgroundSecondary}
                 alignItems="center"
                 justifyContent="center"
-                onPress={Platform.OS === 'android' ? this.handlePress : undefined}
                 onLongPress={Platform.OS === 'android' ? onLongPress : undefined}
             >
-                <ASFlex>
-                    <ASImage
-                        maxWidth={layout.width}
-                        source={{ uri: (downloadState && downloadState.path) ? ('file://' + downloadState.path) : (attach && attach.uri) ? attach.uri : undefined }}
-                        isGif={attach!!.fileMetadata.imageFormat === 'GIF'}
-                        width={layout.width}
-                        height={layout.height}
-                    />
-
-                    <ASFlex
-                        overlay={true}
-                        alignItems="flex-end"
-                        justifyContent="flex-end"
-                        marginRight={8}
-                    >
-                        {downloadState && downloadState.progress !== undefined && downloadState.progress < 1 && !downloadState.path && <ASFlex
+                <ASFlex
+                    width={viewWidth}
+                    height={viewHeight}
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    {content}
+                    {compensateBubble && hasEmptySpace && (
+                        <ASFlex
                             overlay={true}
-                            width={layout.width}
-                            height={layout.height}
-                            justifyContent="center"
-                            alignItems="center"
+                            width={viewWidth}
+                            height={viewHeight}
+                            alignItems="stretch"
                         >
-                            <ASFlex
-                                backgroundColor={theme.backgroundPrimary}
-                                borderRadius={20}
-                            >
-                                <ASText color={theme.foregroundPrimary} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(downloadState.progress * 100)}</ASText>
-                            </ASFlex>
-                        </ASFlex>}
-                    </ASFlex>
+                            <AsyncBubbleMediaView
+                                isOut={message.isOut}
+                                attachTop={message.attachTop}
+                                attachBottom={message.attachBottom}
+                                hasTopContent={hasTopContent}
+                                hasBottomContent={hasBottomContent}
+                                maskColor={theme.backgroundPrimary}
+                                onPress={e => this.handlePress(e, fileAttachements[0]?.fileId)}
+                                onLongPress={onLongPress}
+                                borderColor={theme.border}
+                                useBorder={useBorder}
+                            />
+                        </ASFlex>
+                    )}
                 </ASFlex>
-
-                {compensateBubble && (
-                    <ASFlex
-                        overlay={true}
-                        width={viewWidth}
-                        height={viewHeight}
-                        marginTop={Platform.OS === 'ios' ? (hasTopContent ? 0 : -contentInsetsTop) : undefined}
-                        marginLeft={Platform.OS === 'ios' ? -contentInsetsHorizontal : undefined}
-                        marginRight={Platform.OS === 'ios' ? -contentInsetsHorizontal : undefined}
-                        marginBottom={Platform.OS === 'ios' ? (isSingle || !hasBottomContent ? -contentInsetsBottom : 8) : undefined}
-                        alignItems="stretch"
-                    >
-                        <AsyncBubbleMediaView
-                            isOut={message.isOut}
-                            attachTop={message.attachTop}
-                            attachBottom={message.attachBottom}
-                            hasTopContent={hasTopContent}
-                            hasBottomContent={hasBottomContent}
-                            maskColor={theme.backgroundPrimary}
-                            onPress={Platform.OS === 'ios' ? this.handlePress : undefined}
-                            onLongPress={Platform.OS === 'ios' ? onLongPress : undefined}
-                            borderColor={theme.border}
-                            useBorder={useBorder}
-                        />
-                    </ASFlex>
-                )}
             </ASFlex>
         );
     }

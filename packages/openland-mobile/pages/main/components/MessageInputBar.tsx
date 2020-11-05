@@ -6,11 +6,11 @@ import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { MessageInputBarProps, MessageInputInner } from './MessageInputInner';
 
-export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & { reloadButton?: any }, ref: React.RefObject<TextInput>) => {
+export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & { reloadButton?: any, overrideTransform?: number }, ref: React.RefObject<TextInput>) => {
     let theme = React.useContext(ThemeContext);
 
     return (
-        <ZKeyboardAwareBar>
+        <ZKeyboardAwareBar overrideTransform={props.overrideTransform}>
             {props.reloadButton}
             {props.suggestions && (
                 <ZBlurredView intensity="normal" style={{ position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: SDevice.safeArea.bottom }}>
@@ -25,7 +25,7 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & {
                     </View>
                 )}
 
-                <MessageInputInner {...props} theme={theme} ref={ref} />
+                <MessageInputInner {...props} theme={theme} ref={ref} stickerKeyboardShown={props.stickerKeyboardShown} />
             </View>
         </ZKeyboardAwareBar>
     );

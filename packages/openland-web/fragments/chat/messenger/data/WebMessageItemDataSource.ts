@@ -38,3 +38,26 @@ export function buildMessagesDataSource(
 ): DataSource<DataSourceWebMessageItem | DataSourceDateItem> {
     return ds.throttledMap(convertDsMessage);
 }
+
+export function convertDsSearchMessage(src: DataSourceMessageItem): DataSourceWebMessageItem {
+    return {
+        ...src,
+        senderNameEmojify:
+            src.type === 'message' && !src.attachTop
+                ? emoji(src.sender.name)
+                : undefined,
+        senderBadgeNameEmojify: src.senderBadge
+            ? emoji(src.senderBadge.name)
+            : undefined,
+        replyWeb: (src.reply || []).map(convertDsMessage),
+        replyQuoteTextEmojify: src.replyQuoteText
+            ? emoji(src.replyQuoteText)
+            : undefined,
+    };
+}
+
+export function buildMessagesSearchDataSource(
+    ds: DataSource<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>,
+): DataSource<DataSourceWebMessageItem | DataSourceDateItem> {
+    return ds.throttledMap(convertDsSearchMessage);
+}

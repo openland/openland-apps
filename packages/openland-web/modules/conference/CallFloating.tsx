@@ -41,11 +41,7 @@ const FloatContainerClass = css`
     width: 320px;
     transition: opacity 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
         box-shadow 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
-    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
-
-    /* &:hover {
-        box-shadow: 0px 0px 96px rgba(0, 0, 0, 0.08), 0px 8px 48px rgba(0, 0, 0, 0.16);
-    } */
+    box-shadow: var(--boxShadowPopper);
 `;
 
 const VideoOnClass = css`
@@ -53,7 +49,7 @@ const VideoOnClass = css`
 `;
 
 const MiniFloatingVideo = css`
-    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--boxShadowPopper);
     border-radius: 8px;
 `;
 

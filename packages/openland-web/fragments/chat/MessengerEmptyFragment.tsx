@@ -36,11 +36,12 @@ export const MessengerEmptyFragment = React.memo((props: MessengerEmptyFragmentP
             >
                 <XImage
                     width={358}
+                    height={340}
                     src="/static/X/messenger/messenger-empty.svg"
                     marginBottom={50}
                     maxWidth="100%"
                 />
-                <XView fontSize={16} lineHeight="24px" color="rgba(0, 0, 0, 0.4)" marginBottom={32}>
+                <XView fontSize={16} lineHeight="24px" color="var(--foregroundSecondary)" marginBottom={32}>
                     <span className={textWrapper}>
                         {text || 'Select a chat to start messaging'}
                     </span>

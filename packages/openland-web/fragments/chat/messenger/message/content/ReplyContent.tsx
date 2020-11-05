@@ -49,7 +49,7 @@ const replyMessageGroupClass = css`
         left: 0;
         top: 4px;
         bottom: 4px;
-        background-color: #c4c7cc;
+        background-color: var(--foregroundQuaternary);
         border-radius: 2px;
     }
 `;
@@ -169,7 +169,7 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
     const senderContent = isReplyAction ? (
         <ShortSenderName name={sender.name} overrideName={overrideName} />
     ) : (
-        <MessageSenderContent sender={sender} date={date} />
+        <MessageSenderContent sender={sender} date={date} mId={message.id} />
     );
 
     const attachFile = (title: string) => (
@@ -207,10 +207,6 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
     }
 
     if (documentAttach) {
-        const isVideo =
-            (documentAttach.fileMetadata.mimeType &&
-                !!documentAttach.fileMetadata.mimeType.match('video')) ||
-            fileFormat(documentAttach.fileMetadata.name) === 'VIDEO';
         return (
             <div
                 className={isReplyAction ? replyBasicStyle : replyMessageGroupClass}
@@ -222,7 +218,7 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
                 </div>
                 <div className={replyAttachContentClass}>
                     {senderContent}
-                    {attachFile(isVideo ? 'Video' : documentAttach.fileMetadata.name)}
+                    {attachFile(documentAttach.fileMetadata.name)}
                 </div>
             </div>
         );

@@ -85,7 +85,7 @@ const sticker = css`
 const stickerSanded = css`
     cursor: pointer;
     &:hover {
-        background-color: #f2f3f5;
+        background-color: var(--backgroundSecondaryHover);
     }
 `;
 
@@ -103,12 +103,12 @@ const titleContainerStyle = css`
     font-weight: 600;
     top: 0px;
     z-index: 2;
-    background-color: #fff;
+    background-color: var(--backgroundPrimary);
     padding-left: 16px;
     padding-right: 4px;
     user-select: none;
     @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
-        background-color: rgba(255, 255, 255, 0.72);
+        background-color: var(--backgroundBlurPrimary);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
     }
@@ -147,7 +147,7 @@ const categorySelector = css`
     top: 0px;
     height: 2px;
     width: 40px;
-    background: #1885f2;
+    background: var(--accentMuted);
     border-radius: 0px 0px 100px 100px;
     transition: transform 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
     will-change: transform;

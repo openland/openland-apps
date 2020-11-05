@@ -33,7 +33,7 @@ const contentStyle = css`
     align-items: stretch;
     
     backface-visibility: hidden;
-    background-color: white;
+    background-color: var(--backgroundPrimary);
     will-change: transform;
     contain: content;
 `;

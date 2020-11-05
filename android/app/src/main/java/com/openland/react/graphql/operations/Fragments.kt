@@ -354,6 +354,7 @@ internal val ServiceMessageMetadataSelector = obj(
 internal val FullMessageSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
+            field("seq", "seq", scalar("Int")),
             field("date", "date", notNull(scalar("Date"))),
             field("sender", "sender", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -527,6 +528,7 @@ internal val RoomShortSelector = obj(
                 field("title", "title", notNull(scalar("String"))),
                 field("photo", "photo", notNull(scalar("String"))),
                 field("membership", "membership", notNull(scalar("String"))),
+                field("featured", "featured", notNull(scalar("Boolean"))),
                 field("role", "role", notNull(scalar("String"))),
                 field("canEdit", "canEdit", notNull(scalar("Boolean"))),
                 field("canSendMessage", "canSendMessage", notNull(scalar("Boolean"))),
@@ -555,6 +557,11 @@ internal val RoomShortSelector = obj(
                         field("firstName", "firstName", notNull(scalar("String"))),
                         field("isYou", "isYou", notNull(scalar("Boolean")))
                     )),
+                field("callSettings", "callSettings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("mode", "mode", notNull(scalar("String"))),
+                        field("callLink", "callLink", scalar("String"))
+                    ))),
                 field("repliesEnabled", "repliesEnabled", notNull(scalar("Boolean")))
             ))
         )
@@ -742,7 +749,8 @@ internal val DialogFragmentSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("ModernMessage", DialogMessageSelector)
                 )),
-            field("membership", "membership", notNull(scalar("String")))
+            field("membership", "membership", notNull(scalar("String"))),
+            field("featured", "featured", notNull(scalar("Boolean")))
         )
 
 internal val DialogUpdateFragmentSelector = obj(
@@ -832,7 +840,9 @@ internal val DialogUpdateFragmentSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("id", "id", notNull(scalar("ID"))),
                             field("title", "title", notNull(scalar("String"))),
-                            field("photo", "photo", notNull(scalar("String")))
+                            field("photo", "photo", notNull(scalar("String"))),
+                            field("kind", "kind", notNull(scalar("String"))),
+                            field("featured", "featured", notNull(scalar("Boolean")))
                         ))
                     )))
             )),
@@ -935,9 +945,19 @@ internal val DiscoverChatsCollectionShortSelector = obj(
                 )))
         )
 
+internal val DiscoverOrganizationSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String")),
+            field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("shortname", "shortname", scalar("String"))
+        )
+
 internal val FullMessageWithoutSourceSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
+            field("seq", "seq", scalar("Int")),
             field("date", "date", notNull(scalar("Date"))),
             field("sender", "sender", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -1071,6 +1091,7 @@ internal val RoomSharedNanoSelector = obj(
             field("title", "title", notNull(scalar("String"))),
             field("photo", "photo", notNull(scalar("String"))),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("featured", "featured", notNull(scalar("Boolean"))),
             field("settings", "settings", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
@@ -1281,6 +1302,12 @@ internal val OrganizationFragmentSelector = obj(
             field("linkedin", "linkedin", scalar("String")),
             field("instagram", "instagram", scalar("String")),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("applyLink", "applyLink", scalar("String")),
+            field("applyLinkEnabled", "applyLinkEnabled", notNull(scalar("Boolean"))),
+            field("owner", "owner", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
+                ))),
             field("alphaIsPrivate", "private", notNull(scalar("Boolean"))),
             field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
             field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
@@ -1329,6 +1356,9 @@ internal val OrganizationProfileFragmentSelector = obj(
             field("linkedin", "linkedin", scalar("String")),
             field("instagram", "instagram", scalar("String")),
             field("shortname", "shortname", scalar("String")),
+            field("applyLink", "applyLink", scalar("String")),
+            field("applyLinkEnabled", "applyLinkEnabled", notNull(scalar("Boolean"))),
+            field("autosubscribeRooms", "autosubscribeRooms", notNull(list(notNull(scalar("ID"))))),
             field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
             field("alphaIsPrivate", "private", notNull(scalar("Boolean"))),
             field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
@@ -1400,11 +1430,6 @@ internal val PlatformNotificationSettingsFullSelector = obj(
                     field("sound", "sound", notNull(scalar("Boolean")))
                 ))),
             field("secretChat", "secretChat", notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("showNotification", "showNotification", notNull(scalar("Boolean"))),
-                    field("sound", "sound", notNull(scalar("Boolean")))
-                ))),
-            field("organizationChat", "organizationChat", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("showNotification", "showNotification", notNull(scalar("Boolean"))),
                     field("sound", "sound", notNull(scalar("Boolean")))
@@ -1483,6 +1508,7 @@ internal val SettingsFullSelector = obj(
             field("countUnreadChats", "countUnreadChats", notNull(scalar("Boolean"))),
             field("whoCanSeeEmail", "whoCanSeeEmail", notNull(scalar("String"))),
             field("whoCanSeePhone", "whoCanSeePhone", notNull(scalar("String"))),
+            field("communityAdminsCanSeeContactInfo", "communityAdminsCanSeeContactInfo", notNull(scalar("Boolean"))),
             field("desktop", "desktop", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("PlatformNotificationSettings", PlatformNotificationSettingsFullSelector)
@@ -1517,6 +1543,7 @@ internal val SharedRoomPreviewSelector = obj(
                 )),
             field("title", "title", notNull(scalar("String"))),
             field("photo", "photo", notNull(scalar("String"))),
+            field("externalSocialImage", "externalSocialImage", scalar("String")),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
             field("description", "description", scalar("String")),
             field("previewMembers", "previewMembers", notNull(list(notNull(obj(
@@ -1536,10 +1563,32 @@ internal val SharedRoomViewSelector = obj(
             field("photo", "photo", notNull(scalar("String")))
         )
 
+internal val ShortSequenceSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            inline("SequenceChat", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("cid", "cid", notNull(scalar("ID")))
+            ))
+        )
+
+internal val ShortUpdateSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("UpdateMyProfileChanged", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
+                    )))
+            ))
+        )
+
 internal val StickerPackFragmentSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             field("title", "title", notNull(scalar("String"))),
+            field("added", "added", notNull(scalar("Boolean"))),
             field("stickers", "stickers", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Sticker", StickerFragmentSelector)
@@ -1568,9 +1617,11 @@ internal val UserFullSelector = obj(
             field("lastName", "lastName", scalar("String")),
             field("photo", "photo", scalar("String")),
             field("phone", "phone", scalar("String")),
+            field("birthDay", "birthDay", scalar("Date")),
             field("email", "email", scalar("String")),
             field("website", "website", scalar("String")),
             field("about", "about", scalar("String")),
+            field("birthDay", "birthDay", scalar("Date")),
             field("location", "location", scalar("String")),
             field("isBot", "isBot", notNull(scalar("Boolean"))),
             field("isDeleted", "isDeleted", notNull(scalar("Boolean"))),

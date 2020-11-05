@@ -8,21 +8,31 @@ interface PageProps {
     children?: any;
 }
 
-export const Page = React.memo((props: PageProps) => (
-    <XView
-        overflow="hidden"
-        flexDirection="column"
-        width="100%"
-        minHeight="100vh"
-        backgroundColor="#ffffff"
-        color="var(--foregroundPrimary)"
-    >
-        <Header transparent={props.transparentHeader} />
+export const Page = React.memo((props: PageProps) => {
+    React.useEffect(() => {
+        document.documentElement.classList.add('landing');
 
-        <XView flexGrow={1}>
-            {props.children}
+        return () => {
+            document.documentElement.classList.remove('landing');
+        };
+    }, []);
+
+    return (
+        <XView
+            overflow="hidden"
+            flexDirection="column"
+            width="100%"
+            minHeight="100vh"
+            backgroundColor="var(--backgroundPrimary)"
+            color="var(--foregroundPrimary)"
+        >
+            <Header transparent={props.transparentHeader} />
+
+            <XView flexGrow={1}>
+                {props.children}
+            </XView>
+
+            <Footer />
         </XView>
-
-        <Footer />
-    </XView>
-));
+    );
+});

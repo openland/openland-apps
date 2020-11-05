@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
+import { XView, XViewProps } from 'react-mental';
 import { TextStyles, HoverAlpha } from 'openland-web/utils/TextStyles';
 
 interface UListHeaderProps {
@@ -14,8 +14,8 @@ interface UListHeaderProps {
     rightElement?: JSX.Element;
 }
 
-export const UListHeader = (props: UListHeaderProps) => {
-    const { text, counter, action, padded, rightElement } = props;
+export const UListHeader = (props: UListHeaderProps & XViewProps) => {
+    const { text, counter, action, padded, rightElement, ...styles } = props;
 
     return (
         <XView
@@ -24,6 +24,7 @@ export const UListHeader = (props: UListHeaderProps) => {
             paddingHorizontal={padded !== false ? 16 : undefined}
             flexDirection="row"
             alignItems="center"
+            {...styles}
         >
             <XView flexDirection="row" flexGrow={1} flexShrink={1} justifyContent="flex-start">
                 <XView {...TextStyles.Title3} color="var(--foregroundPrimary)" flexShrink={1}>

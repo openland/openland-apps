@@ -20,9 +20,9 @@ const pickerBodyInvisible = css`
 
 const pickerInnerBody = css`
     display: flex;
-    background-color: white;
+    background-color: var(--backgroundSecondary);
     border-radius: 8px;
-    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--boxShadowPopper);
 `;
 
 const darkPickerInnerBody = css`
@@ -38,14 +38,14 @@ const arrowStyle = css`
     display: block;
     width: 10px;
     height: 10px;
-    background-color: #fff;
+    background-color: var(--foregroundPrimary);
     transform: rotate(45deg);
     border-radius: 2px;
     z-index: -1;
 `;
 
 const arrowDarkStyle = css`
-    background-color: #000;
+    background-color: var(--foregroundPrimary);
 `;
 
 const Arrow = (props: { darkStyle?: boolean }) => (
@@ -226,7 +226,7 @@ interface PopperConfig {
 export const usePopper = (
     config: PopperConfig,
     popper: (ctx: UPopperController) => React.ReactElement<{}>,
-): [boolean, (element: HTMLElement | React.MouseEvent<unknown>) => void] => {
+): [boolean, (element: HTMLElement | React.MouseEvent<unknown>) => void, () => void] => {
     const [isVisible, setVisible] = React.useState(false);
     const ctxRef = React.useRef<UPopperController | undefined>(undefined);
     const popperBodyRef = React.useRef<PopperBodyRef>(null);
@@ -251,6 +251,12 @@ export const usePopper = (
         },
         [config.placement],
     );
+
+    const instantHide = React.useCallback(() => {
+        if (popperBodyRef.current) {
+            popperBodyRef.current.instantHide();
+        }
+    }, [isVisible]);
 
     const show = React.useMemo(
         () => {
@@ -346,5 +352,5 @@ export const usePopper = (
             }
         };
     }, []);
-    return [isVisible, show];
+    return [isVisible, show, instantHide];
 };

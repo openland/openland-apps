@@ -3,7 +3,7 @@ import { css } from 'linaria';
 import IconUpload from 'openland-icons/s/ic-drop-72.svg';
 import { TextTitle1 } from 'openland-web/utils/TextStyles';
 
-export const fileListToArray = (files?: FileList) => {
+export const fileListToArray = (files?: FileList | null) => {
     let res = [];
     if (files && files.length) {
         for (let i = 0; i < files.length; i++) {
@@ -20,7 +20,7 @@ const dropZoneClass = css`
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.92);
+    background-color: var(--backgroundBlurPrimary);
     color: var(--foregroundTertiary);
     display: none;
     flex-direction: column;
@@ -60,6 +60,7 @@ const iconContainerAnim = css`
 interface DropZoneProps {
     onDrop: (files: File[]) => void;
     text?: string;
+    isHidden?: boolean;
 }
 
 export const DropZone = (props: DropZoneProps) => {
@@ -117,7 +118,7 @@ export const DropZone = (props: DropZoneProps) => {
             containerRef.current.style.color = 'var(--foregroundPrimary)';
         }
         if (iconContainerRef.current) {
-            iconContainerRef.current.style.backgroundColor = 'var(--accentPrimary)';
+            iconContainerRef.current.style.backgroundColor = 'var(--accentMuted)';
         }
         if (iconContainerAnimRef.current) {
             iconContainerAnimRef.current.style.transform = 'scale(1.4)';
@@ -141,6 +142,10 @@ export const DropZone = (props: DropZoneProps) => {
     const onDrop = React.useCallback((ev: React.DragEvent) => {
         props.onDrop(fileListToArray(ev.dataTransfer.files));
     }, [props.onDrop]);
+
+    if (props.isHidden) {
+        return null;
+    }
 
     return (
         <div ref={containerRef} className={dropZoneClass} onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}>

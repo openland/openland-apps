@@ -6,15 +6,11 @@ import { ASKeyboardTracker } from 'react-native-async-view/ASKeyboardTracker';
 import { ASKeyboardAcessoryViewContext } from 'react-native-async-view/ASKeyboardContext';
 import { SDevice } from 'react-native-s/SDevice';
 
-class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updateSize: (size: number) => void } }> {
+class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updateSize: (size: number) => void }, overrideTransform?: number }> {
 
     handleLayout = (event: LayoutChangeEvent) => {
         if (this.props.context) {
-            if (Platform.OS === 'ios') {
-                this.props.context.updateSize(event.nativeEvent.layout.height - SDevice.safeArea.bottom);
-            } else {
-                this.props.context.updateSize(event.nativeEvent.layout.height - SDevice.safeArea.bottom);
-            }
+            this.props.context.updateSize(event.nativeEvent.layout.height - SDevice.safeArea.bottom);
         }
     }
 
@@ -28,15 +24,14 @@ class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updat
         if (Platform.OS === 'ios') {
             return (
                 <View position="absolute" left={0} bottom={0} right={0}>
-                    <ASKeyboardTracker>
+                    <ASKeyboardTracker overrideTransform={this.props.overrideTransform}>
                         <View
+                            onLayout={this.handleLayout}
                             style={{
                                 flexDirection: 'column',
                                 alignItems: 'stretch',
                             }}
-                            onLayout={this.handleLayout}
                         >
-                            {/* <View height={0.5} backgroundColor="#b7bdc6" opacity={0.3} /> */}
                             <ZBlurredView intensity="normal" alignItems="stretch" flexDirection="column" paddingBottom={SDevice.safeArea.bottom}>
                                 {this.props.children}
                             </ZBlurredView>
@@ -57,10 +52,10 @@ class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updat
     }
 }
 
-export const ZKeyboardAwareBar = (props: { children: any }) => {
+export const ZKeyboardAwareBar = (props: { children: any, overrideTransform?: number }) => {
     return (
         <ASKeyboardAcessoryViewContext.Consumer>
-            {context => (<ZKeyboardAwareBarComponent context={context}>{props.children}</ZKeyboardAwareBarComponent>)}
+            {context => (<ZKeyboardAwareBarComponent context={context} overrideTransform={props.overrideTransform}>{props.children}</ZKeyboardAwareBarComponent>)}
         </ASKeyboardAcessoryViewContext.Consumer>
     );
 };

@@ -2,16 +2,16 @@ import { findSocialShortname as f } from './findSocialShortname';
 
 describe('Social Shortnames Parser', () => {
     it('should parse sites', () => {
-        expect(f.site('https://openland.com')).toEqual({ name: 'openland.com', url: 'https://openland.com/' });
-        expect(f.site('https://openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com/' });
-        expect(f.site('http://openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com/' });
-        expect(f.site('//openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com/' });
-        expect(f.site('https://www.openland.com')).toEqual({ name: 'openland.com', url: 'https://openland.com/' });
-        expect(f.site('https://www.openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com/' });
-        expect(f.site('http://www.openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com/' });
-        expect(f.site('//www.openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com/' });
-        expect(f.site('openland.com/about')).toEqual({ name: 'openland.com/about', url: 'https://openland.com/about/' });
-        expect(f.site('www.openland.com/about/')).toEqual({ name: 'openland.com/about', url: 'https://openland.com/about/' });
+        expect(f.site('https://openland.com')).toEqual({ name: 'openland.com', url: 'https://openland.com' });
+        expect(f.site('https://openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com' });
+        expect(f.site('http://openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com' });
+        expect(f.site('//openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com' });
+        expect(f.site('https://www.openland.com')).toEqual({ name: 'openland.com', url: 'https://openland.com' });
+        expect(f.site('https://www.openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com' });
+        expect(f.site('http://www.openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com' });
+        expect(f.site('//www.openland.com/')).toEqual({ name: 'openland.com', url: 'https://openland.com' });
+        expect(f.site('openland.com/about')).toEqual({ name: 'openland.com/about', url: 'https://openland.com/about' });
+        expect(f.site('www.openland.com/about/')).toEqual({ name: 'openland.com/about', url: 'https://openland.com/about' });
     });
 
     it('should parse instagram', () => {
@@ -19,6 +19,7 @@ describe('Social Shortnames Parser', () => {
         expect(f.instagram('openlandhq')).toEqual({ name: 'openlandhq', url: 'https://instagram.com/openlandhq/' });
         expect(f.instagram('https://www.instagram.com/')).toBe(null);
         expect(f.instagram('https://www.instagram.com/openlandhq')).toEqual({ name: 'openlandhq', url: 'https://instagram.com/openlandhq/' });
+        expect(f.instagram('https://www.instagram.com/openland.hq')).toEqual({ name: 'openland.hq', url: 'https://instagram.com/openland.hq/' });
         expect(f.instagram('instagram.com/openlandhq')).toEqual({ name: 'openlandhq', url: 'https://instagram.com/openlandhq/' });
         expect(f.instagram('https://instagram.com/openlandhq')).toEqual({ name: 'openlandhq', url: 'https://instagram.com/openlandhq/' });
         expect(f.instagram('http://instagram.com/openlandhq')).toEqual({ name: 'openlandhq', url: 'https://instagram.com/openlandhq/' });
@@ -32,6 +33,7 @@ describe('Social Shortnames Parser', () => {
         expect(f.twitter('https://www.twitter.com/OpenlandHQ')).toEqual({ name: 'OpenlandHQ', url: 'https://twitter.com/OpenlandHQ/' });
         expect(f.twitter('twitter.com/OpenlandHQ')).toEqual({ name: 'OpenlandHQ', url: 'https://twitter.com/OpenlandHQ/' });
         expect(f.twitter('https://twitter.com/OpenlandHQ')).toEqual({ name: 'OpenlandHQ', url: 'https://twitter.com/OpenlandHQ/' });
+        expect(f.twitter('https://twitter.com/OpenlandHQ/')).toEqual({ name: 'OpenlandHQ', url: 'https://twitter.com/OpenlandHQ/' });
         expect(f.twitter('http://twitter.com/OpenlandHQ')).toEqual({ name: 'OpenlandHQ', url: 'https://twitter.com/OpenlandHQ/' });
         expect(f.twitter('//twitter.com/OpenlandHQ')).toEqual({ name: 'OpenlandHQ', url: 'https://twitter.com/OpenlandHQ/' });
         expect(f.twitter('//twitter.com/@OpenlandHQ')).toEqual({ name: 'OpenlandHQ', url: 'https://twitter.com/OpenlandHQ/' });

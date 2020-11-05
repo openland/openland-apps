@@ -6,7 +6,7 @@ const body = css`
     overflow: hidden;
     width: 100vw;
     /* do not add 100vh! it will overflow on mobile */
-    background-color: #F0F2F5;
+    background-color: var(--backgroundPrimary);
 `;
 
 const inner = css`

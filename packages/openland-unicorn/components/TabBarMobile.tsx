@@ -4,8 +4,8 @@ import { TabRouter } from './TabRouter';
 import { css } from 'linaria';
 
 const counterStyle = css`
-    background-color: #E62E3D;
-    border: 2px solid #fff;
+    background-color: var(--accentNegative);
+    border: 2px solid var(--backgroundPrimary);
     position: absolute;
     top: 8px;
     left: 50%;
@@ -16,12 +16,13 @@ const counterStyle = css`
     display: flex;
     color: white;
     font-size: 10px;
-    line-height: 16px;
+    line-height: 12px;
     text-align: center;
-    font-weight: 600;
+    font-weight: 700;
     border-radius: 20px;
     padding-left: 4px;
     padding-right: 4px;
+    letter-spacing: 0.25px;
 `;
 
 export const TabBarMobile = React.memo((props: {
@@ -43,7 +44,7 @@ export const TabBarMobile = React.memo((props: {
                     minWidth={0}
                     alignItems="center"
                     justifyContent="center"
-                    hoverBackgroundColor="var(--backgroundPrimaryHover)"
+                    hoverBackgroundColor="var(--backgroundTertiaryHover)"
                     cursor="pointer"
                     onClick={() => props.setSelected(i)}
                 >

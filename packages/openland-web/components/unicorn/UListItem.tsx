@@ -12,7 +12,7 @@ const SelectableSVG = React.memo((props: { icon: JSX.Element }) => {
     return (
         <UIcon
             icon={props.icon}
-            color={selected ? 'var(--foregroundInverted)' : 'var(--foregroundSecondary)'}
+            color={selected ? 'var(--foregroundContrast)' : 'var(--foregroundSecondary)'}
         />
     );
 });
@@ -50,6 +50,7 @@ export interface UListItemProps {
     onMouseMove?: (event: React.MouseEvent) => void;
     path?: string;
     large?: boolean;
+    label?: boolean;
     useRadius?: boolean;
     textRight?: string;
     rightElement?: JSX.Element;
@@ -82,6 +83,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
         onMouseMove,
         path,
         large,
+        label,
         useRadius,
         textRight,
         rightElement,
@@ -96,9 +98,9 @@ export const UListItem = React.memo((props: UListItemProps) => {
     } = props;
     const selected = React.useContext(XViewSelectedContext);
     const height = large ? 80 : !!avatar || !!leftElement || !!iconBackground ? 56 : 48;
-    const titleFont = !!description || savedMessages ? TextStyles.Label1 : TextStyles.Body;
+    const titleFont = !!description || savedMessages || label ? TextStyles.Label1 : TextStyles.Body;
     const subtitleFont = TextStyles.Caption;
-    const descriptionFont = large ? TextStyles.Densed : TextStyles.Caption;
+    const descriptionFont = large ? TextStyles.Densed : TextStyles.Subhead;
     const textRightFont = TextStyles.Body;
 
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -239,7 +241,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 alignItems="center"
                 flexDirection="row"
                 backgroundColor={hovered && !selected ? 'var(--backgroundPrimaryHover)' : undefined}
-                hoverBackgroundColor={props.disableHover ? undefined : 'var(--backgroundPrimaryHover)'}
+                hoverBackgroundColor={props.disableHover ? undefined : 'var(--backgroundSecondaryHover)'}
                 hoverTextDecoration="none"
                 selectedBackgroundColor="var(--accentMuted)"
                 selectedHoverBackgroundColor="var(--accentMutedHover) !important"

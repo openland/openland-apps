@@ -14,6 +14,7 @@ import { cx, css } from 'linaria';
 const titleBox = css`
     text-align: center;
     margin-top: 16px;
+    color: var(--foregroundPrimary);
 `;
 
 const typeBox = css`
@@ -26,13 +27,17 @@ const statusBox = css`
     margin-left: 8px;
 `;
 
+const infoRowLabel = css`
+    color: var(--foregroundPrimary);
+`;
+
 const infoRowSecondaryLabel = css`
     color: var(--foregroundSecondary);
 `;
 
 const InfoRow = React.memo((props: { label: string; secondary?: boolean; children: any }) => (
     <XView flexDirection="row" justifyContent="space-between" paddingVertical={12} paddingLeft={props.secondary ? 16 : undefined}>
-        <span className={cx(TextBody, props.secondary && infoRowSecondaryLabel)}>{props.label}</span>
+        <span className={cx(TextBody, props.secondary ? infoRowSecondaryLabel : infoRowLabel)}>{props.label}</span>
         <XView {...TextStyles.Body} color="var(--foregroundSecondary)">
             {props.children}
         </XView>

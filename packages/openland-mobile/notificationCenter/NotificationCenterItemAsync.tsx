@@ -25,7 +25,7 @@ const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterI
     const maxWidth = Dimensions.get('screen').width - 32 - (isPad ? 320 : 0);
 
     const handlePress = React.useCallback(() => {
-        NotificationCenterHandlers.handlePress(item.key, item);
+        NotificationCenterHandlers.handleReplyPress(item.key, item, false);
     }, [item]);
 
     const handleLongPress = React.useCallback(() => {

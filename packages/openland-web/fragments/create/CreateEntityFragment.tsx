@@ -40,7 +40,7 @@ const rootHeader = css`
     align-items: center;
     height: 72px;
     padding: 10px;
-    background-color: var(--foregroundContrast);
+    background-color: var(--backgroundPrimary);
     z-index: 2;
 `;
 
@@ -70,7 +70,7 @@ const gradient = css`
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+    background: linear-gradient(180deg, var(--transparent) 0%, var(--backgroundPrimary) 100%);
     pointer-events: none;
 `;
 
@@ -225,7 +225,7 @@ const ExplorePeopleFragment = React.memo((props: ExplorePeopleFragmentProps) => 
             <React.Suspense
                 fallback={
                     <XView flexGrow={1} flexShrink={0}>
-                        <XLoader loading={true} />
+                        <XLoader loading={true} transparentBackground={true} />
                     </XView>
                 }
             >
@@ -437,7 +437,7 @@ export const GroupPriceSettings = React.memo((props: GroupPriceSettingsProps) =>
                         className={cx(
                             otherInputContainer,
                             distributionField.value === DistributionType.SUBSCRIPTION &&
-                                multiInputsContainer,
+                            multiInputsContainer,
                         )}
                     >
                         <UInputField
@@ -668,7 +668,12 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
             });
         }
 
-        await client.refetchAccount();
+        await Promise.all([
+            client.refetchAccount(),
+            client.refetchAccountSettings(),
+            client.refetchMyCommunities(),
+        ]);
+
         props.ctx.hide();
         router.navigate('/' + organization.id);
     };
@@ -709,7 +714,6 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
                 <UTextAreaField
                     field={descriptionField}
                     placeholder="Short description"
-                    autoResize={true}
                 />
             </div>
         </CreatingContainer>

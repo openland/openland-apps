@@ -496,9 +496,13 @@ input CreateOrganizationInput {
   website: String
   personal: Boolean!
   photoRef: ImageRefInput
+  socialImageRef: ImageRefInput
   about: String
   isCommunity: Boolean
   isPrivate: Boolean
+  applyLink: String
+  applyLinkEnabled: Boolean
+  autosubscribeRooms: [ID!]
 }
 
 """Deprecated"""
@@ -601,6 +605,7 @@ type Dialog {
   isPremium: Boolean!
   title: String!
   photo: String!
+  featured: Boolean!
   unreadCount: Int!
   topMessage: Message
   betaTopMessage: RoomMessage
@@ -1862,6 +1867,7 @@ type Mutation {
   debugDeleteAllContacts: Boolean!
   debugChangeGlobalCounterTypeForAll: Boolean!
   debugReindexOrganizationMembers: Boolean!
+  debugReindexRoomParticipants: Boolean!
   debugDeleteTask(taskType: String!, id: String!): Boolean!
   debugDeliverCallStateEventsForAll: Boolean!
   debugMigrateMuteSettings: Boolean!
@@ -1872,6 +1878,15 @@ type Mutation {
   debugMigrateToNewCounters: Boolean!
   debugMigrateToNewLastRead: Boolean!
   debugFixReadSeqs: Boolean!
+  debugExportUsers: Boolean!
+  debugMigrateUserStatus: Boolean!
+  debugMigrateToExperimentalCounters: Boolean!
+  debugFixCompactMessages: Boolean!
+  debugMigrateToNewerCounters: Boolean!
+  debugUserAuth(id: ID!): Boolean!
+  debugCreateOrganizationMailing(oid: ID!, uid: ID!, message: String!, spans: [MessageSpanInput!]): Boolean!
+  debugPaymentCancel(id: ID!): Boolean!
+  debugInvalidateAllSocialImages: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -1998,6 +2013,7 @@ type Mutation {
   updateOrganizationProfile(input: UpdateOrganizationProfileInput!, id: ID): OrganizationProfile!
   deleteOrganization(id: ID!): Boolean!
   createOrganization(input: CreateOrganizationInput!): Organization!
+  requestOrganizationMembersExport(id: ID!): Boolean!
   postDraftCreate(input: PostInput!): PostDraft!
   postDraftUpdate(id: ID!, input: PostInput!): PostDraft!
   postDraftPublish(id: ID!): Post!
@@ -2105,6 +2121,11 @@ type Mutation {
   alphaSetFeedChannelShortName(id: ID!, shortname: String!): String
   alphaSetRoomShortName(id: ID!, shortname: String!): String
   alphaSetCollectionShortName(id: ID!, shortname: String!): String
+}
+
+type NewAndGrowingOrganizationConnection {
+  items: [Organization!]!
+  cursor: String
 }
 
 type NewCommentNotification {
@@ -2267,6 +2288,10 @@ type Organization {
   betaIsOwner: Boolean!
   betaIsAdmin: Boolean!
   betaIsPrimary: Boolean!
+  owner: User!
+  applyLinkEnabled: Boolean!
+  applyLink: String
+  socialImage: String
 
   """# Refactor?"""
   superAccountId: ID!
@@ -2283,6 +2308,7 @@ type Organization {
   status: String!
   membersCount: Int!
   personal: Boolean!
+  externalSocialImage: String
   linkedFeedChannels: [FeedChannel!]!
   shortname: String
 }
@@ -2292,6 +2318,11 @@ type OrganizationChatStats {
   chat: SharedRoom!
   messagesCount: Int!
   lastMessageDate: String!
+}
+
+type OrganizationConnection {
+  items: [Organization!]!
+  cursor: String
 }
 
 type OrganizationContact {
@@ -2345,12 +2376,16 @@ type OrganizationProfile {
   instagram: String
   contacts: [OrganizationContact!]!
   location: String
+  socialImage: String
   alphaPublished: Boolean!
   alphaEditorial: Boolean!
   alphaFeatured: Boolean!
   alphaIsCommunity: Boolean!
   alphaIsPrivate: Boolean!
+  applyLink: String
+  applyLinkEnabled: Boolean!
   betaMembersCanInvite: Boolean!
+  autosubscribeRooms: [ID!]!
   shortname: String
 }
 
@@ -2468,6 +2503,16 @@ input PlatformNotificationSettingsInput {
   communityChat: ChatTypeNotificationSettingsInput
   comments: ChatTypeNotificationSettingsInput
   notificationPreview: NotificationPreview
+}
+
+type PopularNowOrganization {
+  organization: Organization!
+  newMessages: Int!
+}
+
+type PopularNowOrganizationConnection {
+  items: [PopularNowOrganization!]!
+  cursor: String
 }
 
 type PopularNowRoom {
@@ -2657,6 +2702,8 @@ type Profile {
   facebook: String
   authEmail: String
   badge: ProfileBadge
+  birthDay: Date
+  status: String
 
   """Deprecated"""
   alphaLinkedin: String
@@ -2699,6 +2746,8 @@ input ProfileInput {
   twitter: String
   facebook: String
   primaryOrganization: ID
+  birthDay: Date
+  status: String
 }
 
 type ProfilePrefill {
@@ -2752,6 +2801,10 @@ type Query {
   appInviteFromUser(shortname: String!): String!
   appInviteInfo(key: String!): AppInvite
   alphaResolveInvite(key: String!): ResolveInviteEntry
+  updatesState: UpdatesState!
+  sequenceState(id: ID!): UpdatesSequenceState!
+  updatesDifference(state: String!): UpdatesDifference!
+  sequenceDifference(id: ID!, pts: Int!): SequenceDifference!
 
   """phonebookRecords(first: Int!, after: ID!): PhonebookRecordConnection!"""
   phonebookWasExported: Boolean!
@@ -2778,6 +2831,9 @@ type Query {
   debugMentionSearch(query: String!, first: Int!, index: String!): String!
   debugMentionSearchGetUserData(cid: ID!): String!
   debugGetCounters: String!
+  debugExperimentalCounter(cid: ID!): String!
+  debugFindUser(email: String, phone: String): User
+  debugSocialSharingImage(template: String!, title: String!, image: String!, subTitle: String!): String!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!
@@ -2850,6 +2906,9 @@ type Query {
   users(query: String!): [User!]!
   discoverNewAndGrowing(first: Int!, seed: Int!, after: String): SharedRoomConnection!
   discoverPopularNow(first: Int!, after: String): PopularNowRoomConnection!
+  discoverNewAndGrowingOrganizations(first: Int!, seed: Int!, after: String): NewAndGrowingOrganizationConnection!
+  discoverPopularNowOrganizations(first: Int!, after: String): PopularNowOrganizationConnection!
+  discoverTopOrganizations(first: Int!, after: String): OrganizationConnection!
   discoverTopPremium(first: Int!, after: String): SharedRoomConnection!
   discoverTopFree(first: Int!, after: String): SharedRoomConnection!
   post(id: ID!): Post
@@ -2898,7 +2957,7 @@ type Query {
   alphaGlobalSearch(query: String!, kinds: [GlobalSearchEntryKind!]): [GlobalSearchEntry!]!
   featuredGroups: [SharedRoom!]
   featuredCommunities: [Organization!]
-  messagesSearch(query: String!, sort: String, first: Int!, after: String): MessageConnection!
+  messagesSearch(query: String!, sort: String, first: Int!, after: String, cid: ID): MessageConnection!
   chatMembersSearch(cid: ID!, query: String, first: Int!, after: String, page: Int): RoomMemberConnection!
   chatMentionSearch(cid: ID!, query: String, first: Int!, after: String): GlobalSearchConnection!
   orgMembersSearch(orgId: ID!, query: String, first: Int!, after: String, page: Int): JoinedOrganizationMembersConnection!
@@ -2955,6 +3014,22 @@ type ReactionCounter {
 union ResolveInviteEntry = InviteInfo | AppInvite | RoomInvite
 
 union Room = PrivateRoom | SharedRoom
+
+type RoomCallSettings {
+  mode: RoomCallsMode!
+  callLink: String
+}
+
+input RoomCallSettingsInput {
+  mode: RoomCallsMode!
+  callLink: String
+}
+
+enum RoomCallsMode {
+  STANDARD
+  LINK
+  DISABLED
+}
 
 type RoomConnection {
   edges: [RoomConnectionEdge!]!
@@ -3040,6 +3115,16 @@ type RoomPowerup {
   userSettings: PowerupUserSettings!
 }
 
+type RoomServiceMessageSettings {
+  joinsMessageEnabled: Boolean!
+  leavesMessageEnabled: Boolean!
+}
+
+input RoomServiceMessageSettingsInput {
+  joinsMessageEnabled: Boolean!
+  leavesMessageEnabled: Boolean!
+}
+
 type RoomSuper {
   id: ID!
   featured: Boolean!
@@ -3054,6 +3139,8 @@ input RoomUpdateInput {
   socialImageRef: ImageRefInput
   kind: SharedRoomKind
   repliesEnabled: Boolean
+  serviceMessageSettings: RoomServiceMessageSettingsInput
+  callSettings: RoomCallSettingsInput
 }
 
 type RoomUserNotificaionSettings {
@@ -3063,6 +3150,27 @@ type RoomUserNotificaionSettings {
 
 input RoomUserNotificaionSettingsInput {
   mute: Boolean
+}
+
+interface Sequence {
+  id: ID!
+}
+
+type SequenceChat implements Sequence {
+  id: ID!
+  cid: ID!
+  unread: Int!
+}
+
+type SequenceCommon implements Sequence {
+  id: ID!
+  unread: Int!
+}
+
+type SequenceDifference {
+  sequence: Sequence!
+  events: [UpdatesDifferenceEvent!]!
+  hasMore: Boolean!
 }
 
 type ServiceMessage implements ModernMessage {
@@ -3122,6 +3230,7 @@ type Settings {
   excludeMutedChats: Boolean!
   whoCanSeeEmail: PrivacyWhoCanSee!
   whoCanSeePhone: PrivacyWhoCanSee!
+  communityAdminsCanSeeContactInfo: Boolean!
 
   """Deprecated"""
   notificationsDelay: NotificationsDelay!
@@ -3202,7 +3311,11 @@ type SharedRoom {
   premiumSubscription: WalletSubscription
   premiumSettings: PremiumChatSettings
   repliesEnabled: Boolean!
+  serviceMessageSettings: RoomServiceMessageSettings!
+  callSettings: RoomCallSettings!
+  featured: Boolean!
   owner: User
+  externalSocialImage: String
   linkedFeedChannels: [FeedChannel!]!
   shortname: String
 }
@@ -3304,6 +3417,7 @@ type StickerPack {
   stickers: [Sticker!]!
   author: User!
   usesCount: Int!
+  added: Boolean!
   published: Boolean!
 }
 
@@ -3315,6 +3429,7 @@ input StickerPackInput {
 type Subscription {
   lifecheck: String
   walletUpdates(fromState: String!): WalletUpdateContainer!
+  watchUpdates: UpdateSubscription!
   debugEvents(fromState: String, eventsCount: Int!, randomDelays: Boolean!, seed: String!): DebugEvent!
   debugReaderState(reader: String!): String
   debugServerId: String!
@@ -3457,6 +3572,11 @@ enum TypingType {
   VIDEO
 }
 
+type UpdateChatRead {
+  cid: ID!
+  seq: Int!
+}
+
 input UpdateConversationSettingsInput {
   mobileNotifications: NotificationMessages
   mute: Boolean
@@ -3469,12 +3589,19 @@ type UpdatedNotificationContentComment {
   comment: CommentEntry
 }
 
+union UpdateEvent = UpdateChatRead | UpdateProfileChanged | UpdateMyProfileChanged
+
 input UpdateGroupInput {
   title: String
   photoRef: ImageRefInput
   description: String
   longDescription: String
   socialImageRef: ImageRefInput
+}
+
+type UpdateMyProfileChanged {
+  user: User!
+  profile: Profile!
 }
 
 input UpdateOrganizationProfileInput {
@@ -3489,11 +3616,19 @@ input UpdateOrganizationProfileInput {
   instagram: String
   location: String
   contacts: [ContactPersonInput!]
+  socialImageRef: ImageRefInput
   alphaPublished: Boolean
   alphaEditorial: Boolean
   alphaFeatured: Boolean
   alphaIsPrivate: Boolean
+  applyLink: String
+  applyLinkEnabled: Boolean
+  autosubscribeRooms: [ID!]
   betaMembersCanInvite: Boolean
+}
+
+type UpdateProfileChanged {
+  user: User!
 }
 
 """Deprecated"""
@@ -3518,6 +3653,18 @@ input UpdateProfileInput {
   alphaPrimaryOrganizationId: ID
 }
 
+type UpdatesDifference {
+  seq: Int!
+  state: String!
+  hasMore: Boolean!
+  sequences: [UpdatesSequenceDifference!]!
+}
+
+type UpdatesDifferenceEvent {
+  pts: Int!
+  event: UpdateEvent!
+}
+
 input UpdateSettingsInput {
   emailFrequency: EmailFrequency
   desktop: PlatformNotificationSettingsInput
@@ -3526,6 +3673,7 @@ input UpdateSettingsInput {
   excludeMutedChats: Boolean
   whoCanSeeEmail: PrivacyWhoCanSee
   whoCanSeePhone: PrivacyWhoCanSee
+  communityAdminsCanSeeContactInfo: Boolean
 
   """Deprecated"""
   notificationsDelay: NotificationsDelay
@@ -3536,6 +3684,42 @@ input UpdateSettingsInput {
   mobileAlert: Boolean
   mobileIncludeText: Boolean
   mute: Boolean
+}
+
+type UpdatesSequenceDifference {
+  after: Int!
+  sequence: Sequence!
+  events: [UpdatesDifferenceEvent!]!
+}
+
+type UpdatesSequenceState {
+  sequence: Sequence!
+  pts: Int!
+}
+
+type UpdatesState {
+  seq: Int!
+  state: String!
+  sequences: [UpdatesSequenceState!]!
+}
+
+union UpdateSubscription = UpdateSubscriptionStarted | UpdateSubscriptionCheckpoint | UpdateSubscriptionEvent
+
+type UpdateSubscriptionCheckpoint {
+  seq: Int!
+  state: String!
+}
+
+type UpdateSubscriptionEvent {
+  seq: Int!
+  pts: Int!
+  event: UpdateEvent!
+  sequence: Sequence!
+}
+
+type UpdateSubscriptionStarted {
+  seq: Int!
+  state: String!
 }
 
 type UrlAugmentation {
@@ -3577,6 +3761,8 @@ type User {
   audienceSize: Int!
   badge: ProfileBadge
   joinDate: Date!
+  birthDay: Date
+  status: String
 
   """TODO: Refactor"""
   channelsJoined: [ChannelConversation!]!
@@ -3590,6 +3776,7 @@ type User {
   alphaTwitter: String
   alphaLocations: [String!]
   chatsWithBadge: [UserChatWithBadge!]!
+  externalSocialImage: String
   online: Boolean!
   active: Boolean!
   lastSeen: String

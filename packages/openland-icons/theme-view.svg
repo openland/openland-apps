@@ -1,0 +1,59 @@
+<svg width="120" height="84" viewBox="0 0 120 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="matrix(1, 0, 0, 1, -24, -16)">
+      <path d="M24 20C24 17.7909 25.7909 16 28 16H144V92C144 96.4183 140.418 100 136 100H24V20Z" fill="var(--backgroundPrimary)"></path>
+      <g opacity="0.48">
+        <rect x="128" y="93" width="48" height="1" rx="0.5" fill="var(--foregroundQuaternary)"></rect>
+        <rect x="128" y="89" width="24" height="2" rx="1" fill="var(--foregroundQuaternary)"></rect>
+        <ellipse cx="120" cy="92" rx="4" ry="4" fill="var(--foregroundQuaternary)"></ellipse>
+      </g>
+      <g opacity="0.48">
+        <rect x="128" y="77" width="48" height="1" rx="0.5" fill="var(--foregroundQuaternary)"></rect>
+        <rect x="128" y="73" width="24" height="2" rx="1" fill="var(--foregroundQuaternary)"></rect>
+        <ellipse cx="120" cy="76" rx="4" ry="4" fill="var(--foregroundQuaternary)"></ellipse>
+      </g>
+      <g opacity="0.48">
+        <rect x="128" y="61" width="48" height="1" rx="0.5" fill="var(--foregroundQuaternary)"></rect>
+        <rect x="128" y="57" width="24" height="2" rx="1" fill="var(--foregroundQuaternary)"></rect>
+        <ellipse cx="120" cy="60" rx="4" ry="4" fill="var(--foregroundQuaternary)"></ellipse>
+      </g>
+      <g opacity="0.48">
+        <rect x="128" y="45" width="48" height="1" rx="0.5" fill="var(--foregroundQuaternary)"></rect>
+        <rect x="128" y="41" width="24" height="2" rx="1" fill="var(--foregroundQuaternary)"></rect>
+        <ellipse cx="120" cy="44" rx="4" ry="4" fill="var(--foregroundQuaternary)"></ellipse>
+      </g>
+      <g opacity="0.48">
+        <rect x="128" y="29" width="48" height="1" rx="0.5" fill="var(--foregroundQuaternary)"></rect>
+        <rect x="128" y="25" width="24" height="2" rx="1" fill="var(--foregroundQuaternary)"></rect>
+        <ellipse cx="120" cy="28" rx="4" ry="4" fill="var(--foregroundQuaternary)"></ellipse>
+      </g>
+      <rect x="107" y="16" width="1" height="84" fill="var(--backgroundTertiary)"></rect>
+      <rect x="36" y="28" width="72" height="20" fill="var(--accentPrimary)"></rect>
+      <g opacity="0.48">
+        <rect x="56" y="98" width="44" height="1" rx="0.5" fill="var(--foregroundQuaternary)"></rect>
+        <rect x="56" y="94" width="24" height="2" rx="1" fill="var(--foregroundQuaternary)"></rect>
+        <circle cx="46" cy="98" r="6" fill="var(--foregroundQuaternary)"></circle>
+      </g>
+      <g opacity="0.48">
+        <rect x="56" y="81" width="32" height="1" rx="0.5" fill="var(--foregroundQuaternary)"></rect>
+        <rect x="56" y="78" width="44" height="1" rx="0.5" fill="var(--foregroundQuaternary)"></rect>
+        <rect x="56" y="74" width="24" height="2" rx="1" fill="var(--foregroundQuaternary)"></rect>
+        <circle cx="46" cy="78" r="6" fill="var(--foregroundQuaternary)"></circle>
+      </g>
+      <g opacity="0.48">
+        <rect x="56" y="61" width="32" height="1" rx="0.5" fill="var(--foregroundQuaternary)"></rect>
+        <rect x="56" y="58" width="44" height="1" rx="0.5" fill="var(--foregroundQuaternary)"></rect>
+        <rect x="56" y="54" width="24" height="2" rx="1" fill="var(--foregroundQuaternary)"></rect>
+        <circle cx="46" cy="58" r="6" fill="var(--foregroundQuaternary)"></circle>
+      </g>
+      <rect x="56" y="41" width="32" height="1" rx="0.5" fill="var(--foregroundContrast)"></rect>
+      <rect x="56" y="38" width="44" height="1" rx="0.5" fill="var(--foregroundContrast)"></rect>
+      <rect x="56" y="34" width="24" height="2" rx="1" fill="var(--foregroundContrast)"></rect>
+      <circle cx="46" cy="38" r="6" fill="var(--foregroundContrast)"></circle>
+      <rect opacity="0.48" x="40" y="20" width="24" height="4" rx="2" fill="var(--foregroundQuaternary)"></rect>
+      <rect x="24" y="16" width="12" height="84" fill="var(--backgroundTertiary)"></rect>
+      <circle opacity="0.48" cx="30" cy="46" r="2" fill="var(--foregroundQuaternary)"></circle>
+      <circle opacity="0.48" cx="30" cy="38" r="2" fill="var(--foregroundQuaternary)"></circle>
+      <circle opacity="0.48" cx="30" cy="30" r="2" fill="var(--foregroundQuaternary)"></circle>
+      <circle opacity="0.48" cx="30" cy="22" r="2" fill="var(--foregroundQuaternary)"></circle>
+  </g>
+</svg>

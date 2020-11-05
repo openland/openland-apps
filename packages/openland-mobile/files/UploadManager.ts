@@ -17,7 +17,7 @@ export interface UploadState {
 }
 
 interface Task {
-    messageId: string;
+    fileKey: string;
     name: string;
     uri: string;
     retryCount: number;
@@ -29,6 +29,12 @@ interface Callbacks {
     onFail: () => void;
 }
 
+interface FileMeta {
+    name: string;
+    path: string;
+    size?: number;
+}
+
 const MAX_FILE_SIZE = 1e+8;
 
 export class UploadManager {
@@ -37,87 +43,115 @@ export class UploadManager {
     private _queue: Task[] = [];
     private uploadedFiles = new Map<string, string>();
 
-    watch = (conversationId: string, handler: (state: UploadState) => void) => {
-        return this.getWatcher(conversationId).watch(handler);
+    watch = (fileKey: string, handler: (state: UploadState) => void) => {
+        return this.getWatcher(fileKey).watch(handler);
     }
 
-    registerMessageUpload = async (conversationId: string, name: string, uri: string, quoted: DataSourceMessageItem[] | undefined, fileSize?: number) => {
+    registerMessageUploads = async (conversationId: string, filesMeta: FileMeta[], quoted: DataSourceMessageItem[] | undefined) => {
         if (!(await checkPermissions('android-storage'))) {
             return;
         }
+        let newFilesMeta = await this.prepareMeta(filesMeta);
 
-        let fallback = fileSize === undefined ? await RNFetchBlob.fs.stat(uri.replace('file://', '')) : undefined;
-
-        if ((fileSize || (fallback && fallback.size) || 0) > MAX_FILE_SIZE) {
+        let hasBigFiles = newFilesMeta.some(x => (x.size || 0) > MAX_FILE_SIZE);
+        if (hasBigFiles) {
             AlertBlanket.alert("Files bigger than 100mb are not supported yet.");
             return;
         }
-
-        const w = new Watcher<UploadState>();
-        w.setState({ progress: 0, status: UploadStatus.UPLOADING });
-        let messageId = getMessenger().engine.getConversation(conversationId).sendFile({
-            fetchInfo: () => new Promise(async (resolver, onError) => {
-                let uriLower = uri.toLowerCase();
-                let isImage = uriLower.endsWith('.png') || uriLower.endsWith('.jpg') || uriLower.endsWith('.jpeg');
-                let imageSize: { width: number, height: number } | undefined = undefined;
-                if (isImage) {
-                    imageSize = await new Promise<{ width: number, height: number }>((res) => {
-                        Image.getSize(uri, (width, height) => res({ width, height }), e => onError(e));
-                    });
-                }
-                if (fallback) {
-                    resolver({ name, uri, fileSize: fallback.size, isImage, imageSize });
-                } else {
-                    resolver({ name, uri, fileSize, isImage, imageSize });
-                }
+        const watchers = newFilesMeta.map(() => {
+            let w = new Watcher<UploadState>();
+            w.setState({ progress: 0, status: UploadStatus.UPLOADING });
+            return w;
+        });
+        let { filesKeys } = getMessenger().engine.getConversation(conversationId).sendFiles({
+            files: newFilesMeta.map(({ name, path, size }, i) => {
+                return {
+                    file: {
+                        fetchInfo: () => new Promise(async (resolver, onError) => {
+                            let uriLower = path.toLowerCase();
+                            let isImage = uriLower.endsWith('.png') || uriLower.endsWith('.jpg') || uriLower.endsWith('.jpeg');
+                            let imageSize: { width: number, height: number } | undefined = undefined;
+                            if (isImage) {
+                                imageSize = await new Promise<{ width: number, height: number }>((res) => {
+                                    Image.getSize(path, (width, height) => res({ width, height }), e => onError(e));
+                                });
+                            }
+                            resolver({ name, uri: path, fileSize: size, isImage, imageSize });
+                        }),
+                        watch: (handler: (state: UploadState) => void) => watchers[i].watch(handler)
+                    },
+                    localImage: undefined,
+                };
             }),
-            watch: (handler) => w.watch(handler)
-        }, undefined, quoted);
-        this._watchers.set(messageId, w);
-        this._queue.push({ messageId, name, uri, retryCount: 0 });
+            quotedMessages: quoted,
+            mentions: [],
+            text: undefined,
+        });
+
+        filesKeys.forEach((key, i) => {
+            let { path, name } = newFilesMeta[i];
+
+            this._watchers.set(key, watchers[i]);
+            this._queue.push({ fileKey: key, name, uri: path, retryCount: 0 });
+        });
 
         this.checkQueue();
     }
 
-    registerUpload = async (name: string, uri: string, callbacks: Callbacks, fileSize?: number) => {
+    prepareMeta = async (filesMeta: FileMeta[]) => {
+        let fallbackSizes = await Promise.all(filesMeta.map(({ size, path }) => size === undefined ? RNFetchBlob.fs.stat(path.replace('file://', '')) : undefined));
+
+        return filesMeta.map((x, i) => ({ ...x, size: x.size || fallbackSizes[i] as (number | undefined) }));
+    }
+
+    registerUploads = async (filesMeta: { name: string, path: string, size?: number }[], callbacks: Callbacks) => {
         if (!(await checkPermissions('android-storage'))) {
             return;
         }
-        let fallback = fileSize === undefined ? await RNFetchBlob.fs.stat(uri.replace('file://', '')) : undefined;
-        if ((fileSize || (fallback && fallback.size) || 0) > MAX_FILE_SIZE) {
+
+        let newFilesMeta = await this.prepareMeta(filesMeta);
+
+        let hasBigFiles = newFilesMeta.some(x => (x.size || 0) > MAX_FILE_SIZE);
+        if (hasBigFiles) {
             AlertBlanket.alert("Files bigger than 100mb are not supported yet.");
             return;
         }
-        const w = new Watcher<UploadState>();
-        w.setState({ progress: 0, status: UploadStatus.UPLOADING });
 
-        let key = UUID();
+        const watchers = newFilesMeta.map(() => {
+            let w = new Watcher<UploadState>();
+            w.setState({ progress: 0, status: UploadStatus.UPLOADING });
+            return w;
+        });
+        newFilesMeta.forEach((meta, i) => {
+            let key = UUID();
+            let w = watchers[i];
 
-        (async () => {
-            try {
-                if (!this.uploadedFiles.has(key)) {
-                    let res = await new Promise<string>((resolver, reject) => {
-                        w.watch(state => {
-                            if (state.status === UploadStatus.FAILED) {
-                                reject();
-                            } else if (state.status === UploadStatus.UPLOADING) {
-                                callbacks.onProgress(state.progress!!);
-                            } else if (state.status === UploadStatus.COMPLETED) {
-                                resolver(state.uuid!!);
-                            }
+            (async () => {
+                try {
+                    if (!this.uploadedFiles.has(key)) {
+                        let res = await new Promise<string>((resolver, reject) => {
+                            w.watch(state => {
+                                if (state.status === UploadStatus.FAILED) {
+                                    reject();
+                                } else if (state.status === UploadStatus.UPLOADING) {
+                                    callbacks.onProgress(state.progress!!);
+                                } else if (state.status === UploadStatus.COMPLETED) {
+                                    resolver(state.uuid!!);
+                                }
+                            });
                         });
-                    });
-                    this.uploadedFiles.set(key, res);
+                        this.uploadedFiles.set(key, res);
+                    }
+                } catch (e) {
+                    callbacks.onFail();
                 }
-            } catch (e) {
-                callbacks.onFail();
-            }
 
-            callbacks.onDone(this.uploadedFiles.get(key)!!);
-        })();
+                callbacks.onDone(this.uploadedFiles.get(key)!!);
+            })();
 
-        this._watchers.set(key, w);
-        this._queue.push({ messageId: key, name, uri, retryCount: 0 });
+            this._watchers.set(key, w);
+            this._queue.push({ fileKey: key, name: meta.name, uri: meta.path, retryCount: 0 });
+        });
 
         this.checkQueue();
 
@@ -133,7 +167,7 @@ export class UploadManager {
                 let upload = new UploadCareDirectUploading(q.name, q.uri, contentType);
                 upload.watch((s) => {
                     if (s.status === UploadStatus.UPLOADING) {
-                        this.getWatcher(q.messageId).setState({ progress: s.progress || 0, status: s.status });
+                        this.getWatcher(q.fileKey).setState({ progress: s.progress || 0, status: s.status });
                     } else if (s.status === UploadStatus.FAILED) {
                         this.slots++;
                         if (q.retryCount++ < 3) {
@@ -143,7 +177,7 @@ export class UploadManager {
                     } else if (s.status === UploadStatus.COMPLETED) {
                         this.slots++;
                         RNFetchBlob.fs.cp(q.uri.replace('file://', ''), DownloadManagerInstance.resolvePath(s.uuid!, null, true));
-                        this.getWatcher(q.messageId).setState({ progress: 1, status: s.status, uuid: s.uuid });
+                        this.getWatcher(q.fileKey).setState({ progress: 1, status: s.status, uuid: s.uuid });
                         this.checkQueue();
                     }
                 });
@@ -151,13 +185,13 @@ export class UploadManager {
         }
     }
 
-    private getWatcher(messageId: string) {
-        if (!this._watchers.has(messageId)) {
+    private getWatcher(fileKey: string) {
+        if (!this._watchers.has(fileKey)) {
             const w = new Watcher<UploadState>();
             w.setState({ progress: 0, status: UploadStatus.UPLOADING });
-            this._watchers.set(messageId, w);
+            this._watchers.set(fileKey, w);
         }
-        return this._watchers.get(messageId)!!;
+        return this._watchers.get(fileKey)!!;
     }
 }
 

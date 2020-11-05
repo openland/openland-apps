@@ -30,7 +30,7 @@ const messageActonInnerContainerClass = css`
 `;
 
 const messageActionInnerContainerEdit = css`
-    flex-grow: 1;
+    flex-grow: 0;
     margin-left: 55px;
 `;
 
@@ -63,12 +63,20 @@ const messageActionCloseWrap = css`
     width: 24px;
     height: 24px;
     border-radius: 24px;
-    background-color: #f2f3f5;
+    background-color: var(--backgroundTertiary);
 
     & svg * {
-        fill: #676d7a;
-        stroke: #676d7a;
+        fill: var(--foregroundSecondary);
+        stroke: var(--foregroundSecondary);
     }
+`;
+
+const contentTitleClass = css`
+    color: var(--foregroundPrimary);
+`;
+
+const contentSubtitleClass = css`
+    color: var(--foregroundSecondary);
 `;
 
 const messageActionCloseWrapEdit = css`
@@ -78,7 +86,7 @@ const messageActionCloseWrapEdit = css`
     justify-content: center;
     width: 24px;
     height: 24px;
-    margin: 0 6px;
+    margin: 0 4px;
 
     /* optical compensation */
     position: relative;
@@ -91,14 +99,8 @@ const messageActionCloseWrapEdit = css`
 `;
 
 export const InputMessageActionComponent = (props: { chatId: string; userId?: string }) => {
-    const state = useChatMessagesActionsState({
-        conversationId: props.chatId,
-        userId: props.userId,
-    });
-    const { clear } = useChatMessagesActionsMethods({
-        conversationId: props.chatId,
-        userId: props.userId,
-    });
+    const state = useChatMessagesActionsState(props.chatId);
+    const { clear } = useChatMessagesActionsMethods(props.chatId);
     useShortcuts({
         keys: ['Escape'],
         callback: () => {
@@ -131,10 +133,10 @@ export const InputMessageActionComponent = (props: { chatId: string; userId?: st
         } else {
             content = (
                 <>
-                    <span className={TextLabel1} style={{ userSelect: 'none' }}>
+                    <span className={cx(contentTitleClass, TextLabel1)} style={{ userSelect: 'none' }}>
                         {names}
                     </span>
-                    <span className={TextBody} style={{ userSelect: 'none' }}>
+                    <span className={cx(contentSubtitleClass, TextBody)} style={{ userSelect: 'none' }}>
                         {' '}
                         {plural(state.messages.length, ['message', 'messages'])}{' '}
                     </span>
@@ -142,7 +144,7 @@ export const InputMessageActionComponent = (props: { chatId: string; userId?: st
             );
         }
     } else if (state.action === 'edit' && state.messages.length === 1) {
-        content = <span className={TextLabel1}>Edit message</span>;
+        content = <span className={cx(contentTitleClass, TextLabel1)}>Edit message</span>;
     } else {
         return null;
     }
@@ -161,7 +163,7 @@ export const InputMessageActionComponent = (props: { chatId: string; userId?: st
         <div className={messageActonContainerClass}>
             {!!ActionIcon && (
                 <div className={messageActionIconWrap}>
-                    <UIcon icon={<ActionIcon />} color={'#676d7a'} />
+                    <UIcon icon={<ActionIcon />} color="var(--foregroundSecondary)" />
                 </div>
             )}
             <div
@@ -186,7 +188,7 @@ export const InputMessageActionComponent = (props: { chatId: string; userId?: st
                             : messageActionCloseWrap
                     }
                 >
-                    <UIcon icon={<CloseIcon />} color={'var(--foregroundTertiary)'} />
+                    <UIcon icon={<CloseIcon />} color="var(--foregroundSecondary)" />
                 </div>
             </div>
         </div>

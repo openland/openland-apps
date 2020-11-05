@@ -20,7 +20,7 @@ const ProfileOrganizationGroupsComponent = React.memo((props: PageProps) => {
             return;
         }
         setLoading(true);
-        const loaded = await client.queryOrganizationPublicRooms({ organizationId, first: 10, after });
+        const loaded = await client.queryOrganizationPublicRooms({ organizationId, first: 10, after }, { fetchPolicy: 'network-only' });
         const { items, cursor } = loaded.organizationPublicRooms;
         setAfter(cursor);
         setRooms(prev => prev.concat(items));

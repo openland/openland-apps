@@ -9,21 +9,20 @@ import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import MediaIcon from 'openland-icons/s/ic-gallery-24.svg';
 import FileIcon from 'openland-icons/s/ic-document-24.svg';
 import DonationIcon from 'openland-icons/s/ic-donation-24.svg';
-import { fileListToArray } from 'openland-web/fragments/chat/components/DropZone';
 import { useDonationModal } from 'openland-web/fragments/chat/components/showDonation';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { AutoCompleteComponent, AutoCompleteComponentRef } from 'openland-web/fragments/chat/components/SendMessageComponent';
+import { AutoCompleteComponent, AutoCompleteComponentRef, useInputAutocompleteHanlders } from 'openland-web/fragments/chat/components/SendMessageComponent';
 import { Deferred } from 'openland-unicorn/components/Deferred';
-import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { XModalController } from 'openland-x/showModal';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { StickerFragment } from 'openland-api/spacex.types';
-import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import { showNoiseWarning } from 'openland-web/fragments/chat/components/NoiseWarning';
 import { plural } from 'openland-y-utils/plural';
 import { useShake } from 'openland-web/pages/auth/components/authComponents';
 import { extractTextAndMentions } from 'openland-web/utils/convertTextAndMentions';
+import { useAttachButtonHandlers } from 'openland-web/fragments/chat/components/AttachConfirm';
+import { isFileImage } from 'openland-web/utils/UploadCareUploading';
 
 const inputStyle = css`
     min-height: 88px;
@@ -51,14 +50,13 @@ interface MessageModalProps {
     isChannel?: boolean;
     isPrivate?: boolean;
     membersCount?: number;
-    onAttach: (files: File[], cb?: () => void) => void;
+    onAttach: (files: File[], isImage: boolean, cb?: () => void) => void;
 }
 
 const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
     let messenger = React.useContext(MessengerContext);
-    let inputRef = React.useRef<URickInputInstance>(null);
-    let fileInputRef = React.useRef<HTMLInputElement>(null);
     let conversation = messenger.getConversation(props.chatId);
+    let inputRef = React.useRef<URickInputInstance>(null);
     let suggestRef = React.useRef<AutoCompleteComponentRef>(null);
     let [shakeStyle, shake] = useShake();
 
@@ -70,19 +68,12 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
         onDonate: props.ctx.hide,
         onWalletLockedContinue: props.ctx.hide,
     });
-    let onFileInputChange = React.useCallback(e => {
-        if (props.onAttach) {
-            props.onAttach(fileListToArray(e.target.files), () => props.ctx.hide());
-        }
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
-    }, []);
-    let onAttachPress = React.useCallback(() => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click();
-        }
-    }, []);
+    let handleAttach = (files: File[]) => {
+        props.onAttach(files, files.every(f => isFileImage(f)), () => props.ctx.hide());
+    };
+    let { inputElements, onAttachClick } = useAttachButtonHandlers({
+        onAttach: handleAttach
+    });
     let onDonationPress = React.useCallback(() => {
         showDonation();
     }, [showDonation]);
@@ -122,45 +113,22 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
         conversation.sendSticker(sticker, undefined);
         props.ctx.hide();
     };
-    const [activeWord, setActiveWord] = React.useState<string | null>(null);
-    const onAutocompleteWordChange = React.useCallback((word: string) => {
-        setActiveWord(word);
-    }, []);
-    const onUserPicked = React.useCallback((mention: MentionToSend) => {
-        inputRef.current!.commitSuggestion('mention', mention);
-    }, []);
-    const onEmojiPicked = React.useCallback((emoji: { name: string; value: string }) => {
-        inputRef.current!.commitSuggestion('emoji', emoji);
-    }, []);
+    const {
+        prefixes,
+        activeWord,
+        onWordChange,
+        onUserPicked,
+        onEmojiPicked,
+        onPressUp,
+        onPressDown,
+        onPressTab,
+        onPressEnter,
+    } = useInputAutocompleteHanlders({ inputRef, suggestRef });
 
-    let onPressUp = React.useCallback(() => {
-        let s = suggestRef.current;
-        if (s && s.isActive()) {
-            s.onPressUp();
+    let handlePressEnter = async () => {
+        let handled = onPressEnter();
+        if (handled) {
             return true;
-        }
-        return false;
-    }, []);
-    let onPressDown = React.useCallback(() => {
-        let s = suggestRef.current;
-        if (s) {
-            return s.onPressDown();
-        }
-        return false;
-    }, []);
-    let onPressTab = React.useCallback(() => {
-        let s = suggestRef.current;
-        if (s) {
-            return s.onPressEnter();
-        }
-        return false;
-    }, []);
-    let onPressEnter = async () => {
-        let s = suggestRef.current;
-        if (s) {
-            if (s.onPressEnter()) {
-                return true;
-            }
         }
         return await onSend();
     };
@@ -168,13 +136,6 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
         <XView flexDirection="column" paddingTop={12}>
             <XView>
                 <XView marginHorizontal={24} marginBottom={12}>
-                    <input
-                        ref={fileInputRef}
-                        type="file"
-                        multiple={true}
-                        style={{ display: 'none' }}
-                        onChange={onFileInputChange}
-                    />
                     <Deferred>
                         <AutoCompleteComponent
                             onSelected={onUserPicked}
@@ -193,19 +154,20 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
                         className={cx(inputStyle, shakeStyle)}
                         placeholder="Write a message..."
                         autofocus={true}
-                        autocompletePrefixes={['@', ':', ...Object.keys(emojiWordMap)]}
-                        onAutocompleteWordChange={onAutocompleteWordChange}
+                        autocompletePrefixes={prefixes}
+                        onAutocompleteWordChange={onWordChange}
                         onPressUp={onPressUp}
                         onPressDown={onPressDown}
                         onPressTab={onPressTab}
-                        onPressEnter={onPressEnter}
-                        onFilesPaste={props.onAttach}
+                        onPressEnter={handlePressEnter}
+                        onFilesPaste={handleAttach}
                         onStickerSent={onStickerSent}
                     />
                 </XView>
+                {inputElements}
                 <XView flexDirection="row" paddingHorizontal={20} paddingBottom={20}>
-                    <IconButton icon={<MediaIcon />} caption="Photo or video" onClick={onAttachPress} />
-                    <IconButton icon={<FileIcon />} caption="Document" onClick={onAttachPress} />
+                    <IconButton icon={<MediaIcon />} caption="Photo" onClick={() => onAttachClick('image')} />
+                    <IconButton icon={<FileIcon />} caption="Document" onClick={() => onAttachClick('document')} />
                     <IconButton icon={<DonationIcon />} caption="Donation" onClick={onDonationPress} />
                 </XView>
             </XView>

@@ -26,6 +26,7 @@ class RNAsyncListView: RCTView {
   var eventDispatcher: RCTEventDispatcher
   private var datatViewKey: String?
   private var node: RNASyncListNode!
+  var ignoreKeyboard: Bool = false
   
   init(eventDispatcher: RCTEventDispatcher) {
     self.eventDispatcher = eventDispatcher
@@ -90,7 +91,7 @@ class RNAsyncListView: RCTView {
   @objc public func setApplyModes(_ applyModes: NSArray) {
     self.node.setApplyModes(applyModes.map({String($0 as! NSString)}).sorted())
   }
-  
+
   @objc override func reactSetFrame(_ frame: CGRect) {
     super.reactSetFrame(frame)
     self.node.frame = frame

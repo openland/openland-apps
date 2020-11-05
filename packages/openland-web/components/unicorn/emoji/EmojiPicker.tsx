@@ -111,7 +111,7 @@ const categorySelector = css`
     top: 0px;
     height: 2px;
     width: 40px;
-    background: #1885f2;
+    background: var(--accentMuted);
     border-radius: 0px 0px 100px 100px;
     transition: transform 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
 `;
@@ -148,10 +148,10 @@ const titleContainerStyle = css`
     font-weight: 600;
     top: 0;
     z-index: 2;
-    background-color: #fff;
+    background-color: var(--backgroundPrimary);
     padding-left: 16px;
     @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
-        background-color: rgba(255, 255, 255, 0.72);
+        background-color: var(--backgroundBlurPrimary);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
     }
@@ -192,7 +192,7 @@ const EmojiComponent = React.memo(
                     onEmojiSent(props.name);
                     props.onEmojiPicked(props.value);
                 }}
-                hoverBackgroundColor="#F2F3F5"
+                hoverBackgroundColor="var(--backgroundSecondaryHover)"
                 paddingTop={6 /* Emoji are aligned by baseline and we need to compensate this */}
                 borderRadius={8}
                 cursor="pointer"
@@ -365,10 +365,10 @@ const CategoryButton = React.memo(
         return (
             <div className={categoryButton} onClick={() => props.onClick(props.offset, props.index)}>
                 <div className={props.focused ? categoryIconActive : categoryIconInactive}>
-                    <UIcon color="#1885F2" icon={props.iconActive} size={20} />
+                    <UIcon color="var(--accentMuted)" icon={props.iconActive} size={20} />
                 </div>
                 <div className={props.focused ? categoryIconInactive : categoryIconActive}>
-                    <UIcon color="#676D7A" icon={props.iconInactive} size={20} />
+                    <UIcon color="var(--foregroundSecondary)" icon={props.iconInactive} size={20} />
                 </div>
             </div>
         );
@@ -629,7 +629,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                 </>
             )}
             {stickers && (
-                <React.Suspense fallback={<XLoader loading={true} className={loaderStyle} />}>
+                <React.Suspense fallback={<XLoader loading={true} className={loaderStyle} transparentBackground={true} />}>
                     <StickerComponent onStickerSent={props.onStickerSent} />
                 </React.Suspense>
             )}

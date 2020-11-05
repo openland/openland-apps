@@ -106,6 +106,7 @@ export const MessageView = React.memo((props: MessageViewProps) => {
                     fallback={message.fallback}
                     sticker={message.__typename === 'StickerMessage' ? message.sticker : undefined}
                     isOut={sender.id === messenger.user.id}
+                    chatId={(message.source && message.source.__typename === 'MessageSourceChat') ? message.source.chat.id : undefined}
                 />
                 {message.source && message.source.__typename === 'MessageSourceChat' && message.source.chat.__typename === 'SharedRoom' && (
                     <div className={cx(TextBody, messageSourceClass)}>

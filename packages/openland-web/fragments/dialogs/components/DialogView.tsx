@@ -7,6 +7,7 @@ import IcReply from 'openland-icons/s/ic-reply-16.svg';
 import IcMention from 'openland-icons/s/ic-mention-12.svg';
 import IcCall from 'openland-icons/s/ic-call-12.svg';
 import IcMuted from 'openland-icons/s/ic-muted-16.svg';
+import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
 import { XCounter } from 'openland-x/XCounter';
 import { DialogListWebItem } from './DialogListWebDataSource';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
@@ -29,19 +30,19 @@ const dialogContainer = css`
 
 const dialogContainerWithHover = css`
     &:hover {
-        background-color: #f0f2f5;
+        background-color: var(--backgroundPrimaryHover);
     }
     
     &:hover .online-dot {
-        border-color: #f0f2f5;
+        border-color: var(--backgroundPrimaryHover);
     }
 `;
 
 const dialogHoveredContainer = css`
-    background-color: #f0f2f5;
+    background-color: var(--backgroundPrimaryHover);
     
     .online-dot {
-        border-color: #f0f2f5;
+        border-color: var(--backgroundPrimaryHover);
     }
 `;
 
@@ -91,7 +92,7 @@ const dialogTitleContent = css`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: #1c2229;
+    color: var(--foregroundPrimary);
 `;
 
 const dialogTitle = css`
@@ -103,8 +104,14 @@ const mutedIcon = css`
     margin-left: 4px;
 `;
 
+const featuredIcon = css`
+    margin-left: 4px;
+    margin-top: 0;
+    display: var(--featured-icon-display);
+`;
+
 const highlightSecretChatColor = css`
-    color: #36b36a;
+    color: var(--secret-chat-title-color);
 `;
 
 const dialogDateContent = css`
@@ -113,7 +120,7 @@ const dialogDateContent = css`
     margin-left: 5px;
     white-space: nowrap;
     align-self: center;
-    color: #a9aeb8;
+    color: var(--foregroundTertiary);
 `;
 
 const dialogMessageContent = css`
@@ -124,11 +131,11 @@ const dialogMessageContent = css`
     height: 40px;
     min-width: 0;
     overflow: hidden;
-    color: #78808f;
+    color: var(--foregroundSecondary);
 `;
 
 const dialogActiveColor = css`
-    color: #fff;
+    color: var(--foregroundContrast);
 `;
 
 const dialogUnreadContainer = css`
@@ -159,6 +166,10 @@ const mentionContainer = css`
     & svg path {
         fill: none;
     }
+    & svg path,
+    & svg circle {
+        stroke: var(--foregroundContrast);
+    }
 `;
 
 const callBadgeContainer = css`
@@ -173,20 +184,20 @@ const callBadgeContainer = css`
 `;
 
 const mentionContainerActive = css`
-    background-color: var(--backgroundPrimary);
+    background-color: var(--foregroundContrast);
 
     & svg path,
     & svg circle {
-        stroke: var(--accentPrimary);
+        stroke: var(--accentMuted);
     }
 `;
 
 const callBadgeContainerActive = css`
-    background-color: var(--backgroundPrimary);
+    background-color: var(--foregroundContrast);
 
     & svg path,
     & svg circle {
-        fill: var(--accentPrimary);
+        fill: var(--accentMuted);
     }
 `;
 
@@ -201,7 +212,8 @@ const replyIconStyle = css`
 
 const lockContainer = css`
    margin-right: 3px;
-   opacity: 0.72; 
+   opacity: 0.72;
+   display: var(--secret-chat-icon-display);
 `;
 
 interface DialogViewProps {
@@ -233,8 +245,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     ) : dialog.sender ? (
         <>{dialog.senderEmojify}: </>
     ) : (
-                    ''
-                );
+                        ''
+                    );
     let message: JSX.Element | null = null;
 
     let typingAnimation: string;
@@ -290,7 +302,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                         {active => (
                             <UIcon
                                 icon={<IcReply className={replyIconStyle} />}
-                                color={active ? '#fff' : '#78808f'}
+                                color={active ? 'var(--foregroundContrast)' : 'var(--foregroundSecondary)'}
                             />
                         )}
                     </XViewSelectedContext.Consumer>
@@ -316,8 +328,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
         [props.hovered],
     );
 
-    const highlightSecretChat =
-        localStorage.getItem('highlight_secret_chat') === 'true' && dialog.kind === 'GROUP' && !isPremium;
+    const highlightSecretChat = dialog.kind === 'GROUP' && !isPremium;
+    const highlightFeaturedChat = dialog.featured;
 
     return (
         <div className="x" ref={containerRef} onMouseOver={props.onMouseOver} onMouseMove={props.onMouseMove}>
@@ -355,18 +367,27 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                             <div className={cx(dialogIconContainer, lockContainer)}>
                                                 <UIcon
                                                     icon={<IcLock />}
-                                                    color={active ? '#fff' : '#36b36a'}
+                                                    color={active ? 'var(--foregroundContrast)' : 'var(--accentPositive)'}
                                                 />
                                             </div>
                                         )}
 
                                         <span className={dialogTitle}>{isSavedMessages ? 'Saved messages' : dialog.titleEmojify}</span>
+                                        {highlightFeaturedChat && (
+                                            <div className={cx(dialogIconContainer, featuredIcon)}>
+                                                <UIcon
+                                                    size={16}
+                                                    icon={<IcFeatured />}
+                                                    color={active ? 'var(--foregroundContrast)' : '#3DA7F2' /* special: verified/featured color */}
+                                                />
+                                            </div>
+                                        )}
                                         {dialog.isMuted && (
                                             <div className={cx(dialogIconContainer, mutedIcon)}>
                                                 <UIcon
                                                     size={16}
                                                     icon={<IcMuted />}
-                                                    color={active ? 'var(--foregroundInverted)' : 'var(--foregroundQuaternary)'}
+                                                    color={active ? 'var(--foregroundContrast)' : 'var(--foregroundQuaternary)'}
                                                 />
                                             </div>
                                         )}

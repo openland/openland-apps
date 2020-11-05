@@ -52,6 +52,8 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
             'discover/premium': { route: 'DiscoverListing', params: { type: 'top-premium' } },
             'discover/free': { route: 'DiscoverListing', params: { type: 'top-free' } },
             'discover/recommendations': { route: 'DiscoverListing', params: { type: 'recommendations' } },
+            'discover/top-communities': { route: 'DiscoverListing', params: { type: 'top-orgs' } },
+            'discover/new-communities': { route: 'DiscoverListing', params: { type: 'new-orgs' } },
             'account/licenses': { route: 'SettingsLicenses' },
             'settings/licenses': { route: 'SettingsLicenses' },
         };
@@ -109,8 +111,11 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         // GENERIC INVITE
         //
         try {
+            // Sorry universe. Ugly fix for PLN-546
+            let processedLink = link.endsWith('.') ? (link.slice(0, link.length - 1)) : link;
+
             let genericInvitePattern = new UrlPattern(patternBase + 'invite/:invite');
-            let genericInviteMatch = genericInvitePattern.match(link);
+            let genericInviteMatch = genericInvitePattern.match(processedLink);
 
             if (genericInviteMatch && genericInviteMatch.invite) {
                 loader.show();
@@ -454,8 +459,10 @@ export const joinInviteIfHave = async () => {
     //
     // JOIN GENERIC INVITE
     //
+    // Sorry universe. Ugly fix for PLN-546
+    let processedLink = link.endsWith('.') ? (link.slice(0, link.length - 1)) : link;
     let globalInvitePattern = new UrlPattern(patternBase + 'invite/:invite');
-    let matchGlobal = globalInvitePattern.match(link);
+    let matchGlobal = globalInvitePattern.match(processedLink);
     if (matchGlobal && matchGlobal.invite) {
         try {
             loader.show();

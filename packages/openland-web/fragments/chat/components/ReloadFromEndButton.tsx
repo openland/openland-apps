@@ -5,7 +5,7 @@ import ArrowIcon from 'openland-icons/s/ic-back-24.svg';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XLoader } from 'openland-x/XLoader';
 
-const outerContainer = css` 
+const outerContainer = css`
     position: relative;
     display: flex;
     align-self: stretch;
@@ -17,7 +17,7 @@ const inputPlacehodler = css`
     margin-bottom: 16px;
 `;
 
-const reloadButtonContainer = css` 
+const reloadButtonContainer = css`
     position: relative;
     display: flex;
     max-width: 824px;
@@ -44,55 +44,71 @@ const reloadButtonClass = css`
     right: 16px;
     position: absolute;
 
-    box-shadow:  0px 8px 24px rgba(23, 26, 31, 0.08), 0px 2px 8px rgba(23, 26, 31, 0.02);
+    box-shadow: var(--boxShadowPopper);
     width: 40px;
     height: 40px;
     border-radius: 40px;
-    background-color: var(--backgroundPrimary);
+    background-color: var(--backgroundSecondary);
 
     cursor: pointer;
     transition: color 0.08s ease-in, all 0.15s ease;
 
     &:hover {
-    background-color: var(--backgroundPrimaryHover);
+        background-color: var(--backgroundSecondaryHover);
     }
     &:active {
-    background-color: var(--backgroundPrimaryActive);
+        background-color: var(--backgroundSecondaryActive);
     }
-    display: flex;
-    justify-content: 'center';
-    align-items: 'center';
+    justify-content: center;
+    align-items: center;
 `;
 
 const iconRotation = css`
     transform: rotate(-90deg);
 `;
-export const ReloadFromEndButton = React.memo((props: { conversation: ConversationEngine, showInput: boolean }) => {
-    const [show, setShow] = React.useState<boolean | null>(!props.conversation.dataSource.isCompletedForward());
-    const [loading, setLoading] = React.useState<boolean>(false);
-    React.useEffect(() => {
-        setShow(!props.conversation.dataSource.isCompletedForward());
-        let sub = props.conversation.dataSource.dumbWatch(async () => {
-            await null;
+export const ReloadFromEndButton = React.memo(
+    (props: { conversation: ConversationEngine; showInput: boolean }) => {
+        const [show, setShow] = React.useState<boolean | null>(
+            !props.conversation.dataSource.isCompletedForward(),
+        );
+        const [loading, setLoading] = React.useState<boolean>(false);
+        React.useEffect(() => {
             setShow(!props.conversation.dataSource.isCompletedForward());
-        });
-        return () => {
-            sub();
+            let sub = props.conversation.dataSource.dumbWatch(async () => {
+                await null;
+                setShow(!props.conversation.dataSource.isCompletedForward());
+            });
+            return () => {
+                sub();
+                setLoading(false);
+            };
+        }, [props.conversation]);
+
+        const onClick = React.useCallback(async () => {
+            setLoading(true);
+            await props.conversation.restart('end');
             setLoading(false);
-        };
-    }, [props.conversation]);
+        }, []);
 
-    const onClick = React.useCallback(async () => {
-        setLoading(true);
-        await props.conversation.restart('end');
-        setLoading(false);
-    }, []);
-
-    return <div className={outerContainer}>
-        <div className={reloadButtonContainer}>
-            <div className={cx(reloadButtonClass, show ? showClass : hideClass, !props.showInput && inputPlacehodler)} onClick={onClick} >
-                {loading ? <XLoader loading={true} size="medium" transparentBackground={true} /> : <UIcon icon={<ArrowIcon />} className={iconRotation} />}
+        return (
+            <div className={outerContainer}>
+                <div className={reloadButtonContainer}>
+                    <div
+                        className={cx(
+                            reloadButtonClass,
+                            show ? showClass : hideClass,
+                            !props.showInput && inputPlacehodler,
+                        )}
+                        onClick={onClick}
+                    >
+                        {loading ? (
+                            <XLoader loading={true} size="medium" transparentBackground={true} />
+                        ) : (
+                            <UIcon icon={<ArrowIcon />} className={iconRotation} />
+                        )}
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>;
-});
+        );
+    },
+);

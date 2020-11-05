@@ -59,6 +59,13 @@ const SharedChatHeaderContent = React.memo((props: { room: RoomTiny_room_SharedR
                 )}
                 {room.isPremium && <View marginRight={8} marginTop={Platform.OS === 'ios' ? 0 : 1} marginBottom={Platform.OS === 'ios' ? 0 : -1} alignSelf="center"><PremiumBadge /></View>}
                 <Text style={[styles.title, { color: highlightGroup ? theme.accentPositive : theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
+                {room.featured && theme.displayFeaturedIcon && (
+                    <Image
+                        alignSelf="center"
+                        source={require('assets/ic-verified-16.png')}
+                        style={{ tintColor: '#3DA7F2' /* special: verified/featured color */, marginLeft: 4, width: 16, height: 16 }}
+                    />
+                )}
                 {room.settings.mute && (
                     <Image
                         alignSelf="center"

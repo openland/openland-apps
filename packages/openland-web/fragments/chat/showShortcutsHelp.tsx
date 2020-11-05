@@ -50,7 +50,7 @@ const shortcutRow = css`
 const shortcutTagStyle = css`
     display: inline-block;
     color: var(--foregroundSecondary);
-    background-color: var(--backgroundTertiary);
+    background-color: var(--backgroundTertiaryTrans);
     border-radius: 8px;
     margin-right: 8px;
     padding: 2px 8px;
@@ -58,10 +58,12 @@ const shortcutTagStyle = css`
 
 const shortcutDescriptionStyle = css`
     margin-left: 4px;
+    color: var(--foregroundPrimary);
 `;
 
 const shortcutTitle = css`
     margin-bottom: 16px;
+    color: var(--foregroundPrimary);
 `;
 
 const Shortcut = ({ shortcuts, description }: { shortcuts: string[]; description?: string }) => (

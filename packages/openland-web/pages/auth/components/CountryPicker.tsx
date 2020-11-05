@@ -118,7 +118,7 @@ const menuWrapper = css`
     display: flex;
     flex-direction: column;
     z-index: 20;
-    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--boxShadowPopper);
     border-radius: 8px;
     overflow: hidden;
 `;
@@ -141,7 +141,7 @@ const optionStyle = cx(TextBody, css`
 `);
 
 const optionStyleActive = css`
-    background-color: var(--backgroundTertiary);
+    background-color: var(--backgroundTertiaryHoverTrans);
 `;
 
 const optionLabelStyle = css`

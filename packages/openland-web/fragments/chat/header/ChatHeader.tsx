@@ -1,35 +1,36 @@
 import * as React from 'react';
-import { ChatInfo } from '../types';
 import { XView } from 'react-mental';
+import { normalizeUrl } from 'openland-x-utils/normalizeUrl';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { css, cx } from 'linaria';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useClient } from 'openland-api/useClient';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MessagesActionsHeader } from './MessagesActionsHeader';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
-import { MessengerEngine } from 'openland-engines/MessengerEngine';
+import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
+import ExternalCallIcon from 'openland-icons/s/ic-call-external-24.svg';
 import InviteIcon from 'openland-icons/s/ic-invite-24.svg';
+import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
 import SettingsIcon from 'openland-icons/s/ic-edit-24.svg';
 import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
 import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
 import NotificationsOffIcon from 'openland-icons/s/ic-notifications-off-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
+import SearchIcon from 'openland-icons/s/ic-search-24.svg';
 import MutedIcon from 'openland-icons/s/ic-muted-16.svg';
 import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
-import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { showAddMembersModal } from '../showAddMembersModal';
 import {
-    showRoomEditModal,
     showLeaveChatConfirmation,
+    showRoomEditModal,
 } from 'openland-web/fragments/settings/components/groupProfileModals';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
-import { TextDensed, TextStyles, HoverAlpha } from 'openland-web/utils/TextStyles';
+import { HoverAlpha, TextDensed, TextStyles } from 'openland-web/utils/TextStyles';
 import { emoji } from 'openland-y-utils/emoji';
 import { useLastSeen, User } from 'openland-y-utils/LastSeen';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -37,14 +38,27 @@ import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { useVideoCallModal } from 'openland-web/modules/conference/CallModal';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { useToast } from 'openland-web/components/unicorn/UToast';
-import { shouldShowInviteButton } from 'openland-y-utils/shouldShowInviteButton';
-
+import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
+import { RoomCallsMode, RoomChat_room } from 'openland-api/spacex.types';
+import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
 const secondary = css`
     color: var(--foregroundSecondary);
     padding-left: 4px;
 `;
+
 const secondaryAccent = css`
     color: var(--accentPrimary);
+`;
+
+const featuredIcon = css`
+    display: var(--featured-icon-display);
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
 `;
 
 const titleStyle = css`
@@ -95,8 +109,10 @@ const ChatOnlinesTitle = (props: { id: string }) => {
     );
 };
 
-const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
+const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) => {
     const calls = props.messenger.calls;
+    const callSettings =
+        props.chat.__typename === 'SharedRoom' ? props.chat.callSettings : undefined;
     const currentSession = calls.useCurrentSession();
     const showVideoCallModal = useVideoCallModal({ chatId: props.chat.id });
 
@@ -106,19 +122,29 @@ const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
                 currentSession && currentSession.conversationId === props.chat.id && disabledBtn,
             )}
         >
-            <UIconButton
-                icon={<PhoneIcon />}
-                onClick={() => {
-                    calls.joinCall(props.chat.id);
-                    showVideoCallModal();
-                }}
-                size="large"
-            />
+            {callSettings && callSettings.mode === RoomCallsMode.LINK ? (
+                <UIconButton
+                    icon={<ExternalCallIcon />}
+                    as={'a'}
+                    href={normalizeUrl(callSettings.callLink)}
+                    target={'_blank'}
+                    size="large"
+                />
+            ) : (
+                <UIconButton
+                    icon={<PhoneIcon />}
+                    onClick={() => {
+                        calls.joinCall(props.chat.id);
+                        showVideoCallModal();
+                    }}
+                    size="large"
+                />
+            )}
         </div>
     );
 };
 
-const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessages: boolean }) => {
+const MenuComponent = (props: { ctx: UPopperController; id: string; savedMessages?: boolean, onSearchClick: () => void }) => {
     const layout = useLayout();
     const client = useClient();
     const tabRouter = useTabRouter();
@@ -128,11 +154,19 @@ const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessage
     const calls = messenger.calls;
     const currentSession = calls.useCurrentSession();
     const showVideoCallModal = useVideoCallModal({ chatId: chat.id });
-    const chatUser = chat.__typename === 'PrivateRoom' && chat.user;
-    const { isContact } = useLocalContact(chatUser ? chatUser.id : '', chatUser ? chatUser.inContacts : false);
+
+    const privateRoom = chat.__typename === 'PrivateRoom' ? chat : undefined;
+    const sharedRoom = chat.__typename === 'SharedRoom' ? chat : undefined;
+
+    const chatUser = privateRoom && privateRoom.user;
+    const { isContact } = useLocalContact(
+        chatUser ? chatUser.id : '',
+        chatUser ? chatUser.inContacts : false,
+    );
     const toastHandlers = useToast();
 
-    const showInviteButton = layout === 'mobile' && shouldShowInviteButton(chat);
+    const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(chat);
+    const showInviteButton = layout === 'mobile' && (canAddDirectly || canGetInviteLink);
 
     let res = new UPopperMenuBuilder();
     if (showInviteButton) {
@@ -144,7 +178,15 @@ const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessage
         });
     }
 
-    if (!props.savedMessages && layout === 'mobile' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true)) {
+    if (
+        !props.savedMessages &&
+        layout === 'mobile' &&
+        (privateRoom
+            ? !privateRoom.user.isBot
+            : sharedRoom
+            ? sharedRoom.callSettings.mode === RoomCallsMode.STANDARD
+            : true)
+    ) {
         res.item({
             title: 'Call',
             icon: <PhoneIcon />,
@@ -153,6 +195,20 @@ const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessage
                 showVideoCallModal();
             },
             disabled: currentSession ? currentSession.conversationId === chat.id : false,
+        });
+    }
+
+    if (
+        sharedRoom &&
+        sharedRoom.callSettings.mode === RoomCallsMode.LINK &&
+        sharedRoom.callSettings.callLink
+    ) {
+        res.item({
+            title: 'Call',
+            icon: <ExternalCallIcon />,
+            action: () => {
+                window.open(normalizeUrl(sharedRoom.callSettings.callLink), '_blank');
+            },
         });
     }
 
@@ -170,30 +226,33 @@ const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessage
     }
 
     res.item({
+        title: 'Search messages',
+        icon: <SearchIcon />,
+        action: props.onSearchClick,
+        closeDelay: 400,
+    });
+
+    res.item({
         title: 'Media, files, links',
         icon: <AttachIcon />,
         path: `/mail/${props.id}/shared`,
         closeDelay: 400,
     });
 
-    if (
-        chat.__typename === 'PrivateRoom' &&
-        chat.user.id !== messenger.user.id
-    ) {
-
+    if (privateRoom && privateRoom.user.id !== messenger.user.id) {
         res.item({
             title: isContact ? 'Remove from contacts' : 'Add to contacts',
             icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,
             closeAfterAction: false,
             action: async () => {
                 if (isContact) {
-                    await client.mutateRemoveFromContacts({ userId: chat.user.id });
+                    await client.mutateRemoveFromContacts({ userId: privateRoom.user.id });
                     toastHandlers.show({
                         type: 'success',
                         text: 'Removed from contacts',
                     });
                 } else {
-                    await client.mutateAddToContacts({ userId: chat.user.id });
+                    await client.mutateAddToContacts({ userId: privateRoom.user.id });
                     toastHandlers.show({
                         type: 'success',
                         text: 'Added to contacts',
@@ -204,12 +263,12 @@ const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessage
         });
     }
 
-    if (chat.__typename === 'SharedRoom') {
-        if (chat.canEdit) {
+    if (sharedRoom) {
+        if (sharedRoom.canEdit) {
             res.item({
-                title: chat.isChannel ? 'Edit channel' : 'Edit group',
+                title: sharedRoom.isChannel ? 'Edit channel' : 'Edit group',
                 icon: <SettingsIcon />,
-                action: () => showRoomEditModal(chat.id, chat.isChannel),
+                action: () => showRoomEditModal(sharedRoom.id, sharedRoom.isChannel),
             });
         }
         res.item({
@@ -220,8 +279,8 @@ const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessage
                     client,
                     chat.id,
                     tabRouter,
-                    chat.__typename === 'SharedRoom' && chat.isPremium,
-                    chat.kind === 'PUBLIC',
+                    sharedRoom && sharedRoom.isPremium,
+                    sharedRoom.kind === 'PUBLIC',
                 ),
         });
     }
@@ -229,23 +288,38 @@ const MenuComponent = (props: { ctx: UPopperController; id: string, savedMessage
     return res.build(props.ctx, 240);
 };
 
-export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
-    const { chat } = props;
+export const ChatHeader = React.memo((props: { chat: RoomChat_room, onSearchClick: () => void }) => {
+    const { chat, onSearchClick } = props;
     const layout = useLayout();
     const messenger = React.useContext(MessengerContext);
-    const isSavedMessages = chat.__typename === 'PrivateRoom' && messenger.user.id === chat.user.id;
-    const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
-    const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
-    const path =
-        isSavedMessages ? `/mail/${chat.id}/shared` :
-            chat.__typename === 'PrivateRoom'
-                ? `/${chat.user.shortname || chat.user.id}`
-                : `/group/${chat.id}`;
-    const showCallButton =
-        layout === 'desktop' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true);
-    const titleEmojify = isSavedMessages ? 'Saved messages' : React.useMemo(() => emoji(title), [title]);
 
-    const showInviteButton = layout === 'desktop' && shouldShowInviteButton(chat);
+    const privateRoom = chat.__typename === 'PrivateRoom' ? chat : undefined;
+    const sharedRoom = chat.__typename === 'SharedRoom' ? chat : undefined;
+
+    const isSavedMessages = privateRoom && messenger.user.id === privateRoom.user.id;
+    const title = privateRoom ? privateRoom.user.name : sharedRoom!.title;
+    const photo = privateRoom ? privateRoom.user.photo : sharedRoom!.photo;
+    const path = isSavedMessages
+        ? `/mail/${chat.id}/shared`
+        : privateRoom
+        ? `/${privateRoom.user.shortname || privateRoom.user.id}`
+        : `/group/${chat.id}`;
+    const showCallButton =
+        !isSavedMessages &&
+        layout === 'desktop' &&
+        (privateRoom
+            ? !privateRoom.user.isBot
+            : sharedRoom
+            ? sharedRoom.callSettings.mode !== RoomCallsMode.DISABLED
+            : true);
+    const titleEmojify = isSavedMessages
+        ? 'Saved messages'
+        : React.useMemo(() => emoji(title), [title]);
+
+    const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(chat);
+    const showInviteButton = layout === 'desktop' && (canAddDirectly || canGetInviteLink);
+
+    const highlightFeaturedChat = sharedRoom && sharedRoom.featured;
 
     return (
         <XView
@@ -271,7 +345,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         size="medium"
                         title={title}
                         photo={photo}
-                        id={chat.__typename === 'PrivateRoom' ? chat.user.id : chat.id}
+                        id={privateRoom ? privateRoom.user.id : sharedRoom!.id}
                         savedMessages={isSavedMessages}
                     />
                 </XView>
@@ -302,16 +376,25 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                             flexDirection="row"
                             alignItems="center"
                         >
-                            {chat.__typename === 'SharedRoom' && chat.isPremium && <PremiumBadge />}
+                            {sharedRoom && sharedRoom.isPremium && <PremiumBadge />}
                             <span className={titleStyle}>
                                 {titleEmojify}
-                                {!isSavedMessages && chat.__typename === 'PrivateRoom' &&
-                                    chat.user.primaryOrganization && (
+                                {!isSavedMessages &&
+                                    privateRoom &&
+                                    privateRoom.user.primaryOrganization && (
                                         <span className={cx(secondary, TextDensed)}>
-                                            {chat.user.primaryOrganization.name}
+                                            {privateRoom.user.primaryOrganization.name}
                                         </span>
                                     )}
                             </span>
+                            {highlightFeaturedChat && (
+                                <div className={featuredIcon}>
+                                    <UIcon
+                                        icon={<IcFeatured />}
+                                        color={'#3DA7F2' /* special: verified/featured color */}
+                                    />
+                                </div>
+                            )}
                             {chat.settings.mute && (
                                 <UIcon
                                     className={mutedIcon}
@@ -324,15 +407,13 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         {!isSavedMessages && (
                             <XView {...TextStyles.Densed} color="var(--foregroundSecondary)">
                                 <span className={oneLiner}>
-                                    {chat.__typename === 'PrivateRoom' && (
-                                        <HeaderLastSeen user={chat.user} />
-                                    )}
-                                    {chat.__typename === 'SharedRoom' &&
-                                        chat.membersCount !== null &&
-                                        chat.membersCount !== 0 && (
+                                    {privateRoom && <HeaderLastSeen user={privateRoom.user} />}
+                                    {sharedRoom &&
+                                        sharedRoom.membersCount !== null &&
+                                        sharedRoom.membersCount !== 0 && (
                                             <>
-                                                {chat.membersCount >= 1
-                                                    ? `${chat.membersCount} members`
+                                                {sharedRoom.membersCount >= 1
+                                                    ? `${sharedRoom.membersCount} members`
                                                     : `1 member`}
                                                 <ChatOnlinesTitle id={chat.id} />
                                             </>
@@ -357,15 +438,14 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         size="large"
                     />
                 )}
-                {!isSavedMessages && showCallButton && <CallButton chat={chat} messenger={messenger} />}
+                {showCallButton && <CallButton chat={chat} messenger={messenger} />}
 
                 <UMoreButton
                     menu={(ctx) => (
                         <React.Suspense fallback={<div style={{ width: 240, height: 100 }} />}>
-                            <MenuComponent ctx={ctx} id={chat.id} savedMessages={isSavedMessages} />
+                            <MenuComponent ctx={ctx} id={chat.id} savedMessages={isSavedMessages} onSearchClick={onSearchClick}/>
                         </React.Suspense>
                     )}
-                    useWrapper={false}
                     size="large-densed"
                 />
             </XView>

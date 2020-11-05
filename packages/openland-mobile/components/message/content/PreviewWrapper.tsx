@@ -12,6 +12,7 @@ interface PreviewWrapperProps {
     isGif?: boolean;
     senderName?: string;
     date?: string;
+    crossFade?: boolean;
 }
 
 export class PreviewWrapper extends React.PureComponent<PreviewWrapperProps> {
@@ -35,6 +36,7 @@ export class PreviewWrapper extends React.PureComponent<PreviewWrapperProps> {
                 height: this.props.height || 1024,
                 isGif: this.props.isGif || false,
                 animate: { x: pageX, y: pageY, width, height, borderRadius: this.props.radius },
+                crossFade: this.props.crossFade,
                 onBegin: () => {
                     view!!.setNativeProps({ 'opacity': 0 });
                 },

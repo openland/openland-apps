@@ -10,15 +10,18 @@ export interface PendingMessage {
     isService?: false;
     date: string;
     key: string;
-    progress: number;
+    filesMeta?: {
+        key: string;
+        fileSize?: number;
+        filePreview?: string;
+        imageSize?: { width: number; height: number };
+        progress: number;
+        file: string | null;
+        uri?: string;
+        isImage: boolean;
+    }[];
     message: string | null;
     spans: FullMessage_GeneralMessage_spans[];
-    file: string | null;
-    uri?: string;
-    fileSize?: number;
-    filePreview?: string;
-    isImage: boolean;
-    imageSize?: { width: number; height: number };
     failed?: boolean;
     quoted?: DataSourceMessageItem[];
     senderBadge?: UserBadge;

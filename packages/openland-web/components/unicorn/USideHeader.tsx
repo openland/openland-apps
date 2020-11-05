@@ -17,6 +17,7 @@ export const USideHeader = React.memo((props: USideHeaderProps) => {
             paddingRight={3}
             paddingVertical={12}
             flexDirection="row"
+            backgroundColor="var(--backgroundPrimary)"
         >
             <XView {...TextStyles.Title1} flexGrow={1} minWidth={0} flexBasis={0} color="var(--foregroundPrimary)">
                 {title}

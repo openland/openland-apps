@@ -5,6 +5,7 @@ import { UIcon } from './UIcon';
 import { XLoader } from 'openland-x/XLoader';
 
 export type UIconButtonSize = 'xsmall' | 'small' | 'small-densed' | 'medium' | 'large' | 'large-densed';
+export type UIconButtonShape = 'round' | 'square';
 
 const wrapper = css`
     display: flex;
@@ -25,6 +26,24 @@ const wrapper = css`
         width: var(--ripple-size);
         height: var(--ripple-size);
         border-radius: calc(var(--ripple-size) / 2);
+        position: absolute;
+        z-index: 1;
+    }
+`;
+
+const roundStyle = css`
+    border-radius: 100px !important;
+`;
+
+const squareStyle = css`
+    border-radius: 8px !important;
+    &::before {
+        content: '';
+        transition: all 0.1s ease;
+        transform: scale3d(0, 0, 0);
+        width: var(--ripple-size);
+        height: var(--ripple-size);
+        border-radius: 8px !important;
         position: absolute;
         z-index: 1;
     }
@@ -57,6 +76,10 @@ const container = css`
     user-select: none;
 `;
 
+const filledContainer = css`
+    background-color: var(--backgroundTertiary);
+`;
+
 const containerHover = css`
     &:hover .${wrapper}::before {
         background: var(--hover-ripple-color);
@@ -68,6 +91,8 @@ interface UIconButtonProps extends XViewProps {
     icon: JSX.Element;
     size?: UIconButtonSize;
     active?: boolean;
+    shape?: UIconButtonShape;
+    filled?: boolean;
     loading?: boolean;
     rippleColor?: string;
     defaultRippleColor?: string;
@@ -116,12 +141,19 @@ const loaderStyle = css`
     z-index: 1;
 `;
 
+const shapeResolver: { [key in UIconButtonShape]: string } = {
+    round: roundStyle,
+    square: squareStyle,
+};
+
 export const UIconButton = React.memo((props: UIconButtonProps) => {
     const {
         icon,
         size = 'medium',
         active,
         color,
+        shape,
+        filled,
         loading,
         rippleColor,
         defaultRippleColor,
@@ -135,15 +167,23 @@ export const UIconButton = React.memo((props: UIconButtonProps) => {
     const iconSize = iconBySize[size];
     const hasHover = (!props.disableHover && !active) || hoverActiveRippleColor;
 
+    const containerClassNames = cx(
+        container,
+        hasHover && containerHover,
+        shape && shapeResolver[shape],
+        filled && filledContainer,
+    );
+
     return (
         <XView {...other} cursor="pointer" width={width} height={height}>
-            <div className={cx(container, hasHover && containerHover)}>
+            <div className={containerClassNames}>
                 {!loading && (
                     <div
                         className={cx(
                             wrapper,
                             wrapperRipple,
                             active && wrapperActive,
+                            shape && shapeResolver[shape],
                             defaultRippleColor && wrapperRippleTransform,
                         )}
                         style={

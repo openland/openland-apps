@@ -16,6 +16,7 @@ const NativeScrollStyle = css`
     width: 100%;
     will-change: transform;
     transform: translateZ(0);
+    background-color: var(--backgroundPrimary);
     /* height: 100%; */
 `;
 

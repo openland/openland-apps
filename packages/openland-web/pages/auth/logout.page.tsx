@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as Cookie from 'js-cookie';
+import { isElectron } from 'openland-y-utils/isElectron';
 
 export default class LogoutHandler extends React.Component<{}, {}> {
     constructor(props: {}) {
@@ -25,7 +26,7 @@ export default class LogoutHandler extends React.Component<{}, {}> {
         Cookie.defaults.domain = keepDomain;
         Cookie.defaults.path = keepPath;
 
-        window.location.href = '/';
+        window.location.href = isElectron ? '/signin' : '/';
     }
 
     render() {

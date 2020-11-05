@@ -1,0 +1,111 @@
+#
+# Updates
+#
+
+fragment ShortUpdate on UpdateEvent {
+    ... on UpdateMyProfileChanged {
+        user {
+            id
+        }
+    }
+}
+
+#
+# Sequences
+#
+
+fragment ShortSequence on Sequence {
+    id
+    ... on SequenceChat {
+        id
+        cid
+    }
+}
+
+#
+# Watch
+#
+
+subscription WatchUpdates {
+    watchUpdates {
+        ... on UpdateSubscriptionStarted {
+            seq
+            state
+        }
+        ... on UpdateSubscriptionCheckpoint {
+            seq
+            state
+        }
+        ... on UpdateSubscriptionEvent {
+            seq
+            pts
+            sequence {
+                ...ShortSequence
+            }
+            event {
+                ...ShortUpdate
+            }
+        }
+    }
+}
+
+#
+# State
+#
+
+query GetState {
+    updatesState {
+        seq
+        state
+        sequences {
+            pts
+            sequence {
+                ...ShortSequence
+            }
+        }
+    }
+}
+
+query GetDifference($state: String!) {
+    updatesDifference(state: $state) {
+        seq
+        state
+        hasMore
+        sequences {
+            after
+            events {
+                pts
+                event {
+                    ...ShortUpdate
+                }
+            }
+            sequence {
+                ...ShortSequence
+            }
+        }
+    }
+}
+
+query GetSequenceState($id: ID!) {
+    sequenceState(id: $id) {
+        pts
+        sequence {
+            ...ShortSequence
+        }
+    }
+}
+
+query GetSequenceDifference($id: ID!, $pts: Int!) {
+    sequenceDifference(id: $id, pts: $pts) {
+        sequence {
+            ...ShortSequence
+        }
+        events {
+            pts
+            event {
+                ...ShortUpdate
+            }
+        }
+        hasMore
+    }
+}

@@ -46,6 +46,11 @@ const DocumentContentContainerClass = css`
     }
 `;
 
+const DocumentContentContainerProfileClass = css`
+    margin: 0 -7px;
+    width: 100%;
+`;
+
 const MobilePadding = css`
     padding: 0 16px;
 `;
@@ -54,15 +59,22 @@ const MenuContainerMobile = css`
     right: 16px;
 `;
 
-export const DocContent = (props: { item: SharedItemFile, chatId: string }) => {
+export const DocContent = (props: { item: SharedItemFile, chatId: string,  profileView?: boolean }) => {
     const sharedItemMenu = useSharedItemMenu(props.chatId);
     const menuClick = React.useCallback((ctx: UPopperController) => {
         return sharedItemMenu(ctx, props.item);
     }, []);
     const [menuVisible, menuShow] = usePopper({ placement: 'bottom-start', hideOnClick: true }, menuClick);
     const layout = useLayout();
+
+    const wrapperClassName = cx(
+        DocumentContentContainerClass,
+        props.profileView && DocumentContentContainerProfileClass,
+        layout === 'mobile' && MobilePadding,
+    );
+
     return (
-        <div className={cx(DocumentContentContainerClass, layout === 'mobile' && MobilePadding)}>
+        <div className={wrapperClassName}>
             <DocumentContent file={props.item.attach} className={DocumentContentClass} sender={props.item.sender} senderNameEmojify={emoji(props.item.sender.name)} />
             <div className={cx('menu-container', MenuContainer, layout === 'mobile' && MenuContainerMobile, (menuVisible || layout === 'mobile') && MenuVisible)}>
                 <UIconButton

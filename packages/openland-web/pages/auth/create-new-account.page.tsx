@@ -56,7 +56,7 @@ export const CreateNewAccountPage = (props: AuthMechanism) => {
         router.query.redirect &&
         router.query.redirect.includes('acceptChannelInvite');
     return (
-        <XView backgroundColor="white" flexGrow={1} flexShrink={1}>
+        <XView backgroundColor="var(--backgroundPrimary)" flexGrow={1} flexShrink={1}>
             <XDocumentHead title="Login" />
             {!isElectron && (
                 <AuthHeaderConfig

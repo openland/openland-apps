@@ -31,6 +31,10 @@ const _findName: (opts: { source: string | null, domain: string, url: string, re
         link = link.slice(2, link.length);
     }
 
+    if (link.endsWith('/')) {
+        link = link.slice(0, link.length - 1);
+    }
+
     const matches = link.match(regexp);
 
     if (matches && matches.length === 2) {
@@ -61,7 +65,7 @@ export const findSocialShortname: FindSocialShortnameInterface = {
             link = link.slice(0, link.length - 1);
         }
 
-        return { name: link, url: `https://${link}/` };
+        return { name: link, url: `https://${link}` };
     },
 
     instagram: (source: string | null) => {
@@ -69,7 +73,7 @@ export const findSocialShortname: FindSocialShortnameInterface = {
             source,
             domain: 'instagram.com',
             url: 'https://instagram.com',
-            regexp: new RegExp(/^(?:https?:\/\/)?(?:www\.)?instagram\.com\/(?:#!\/)?@?([a-z0-9_]+)(?:\/\w+)*$/i)
+            regexp: new RegExp(/^(?:https?:\/\/)?(?:www\.)?instagram\.com\/(?:#!\/)?@?([a-z0-9_.]+)(?:\/\w+)*$/i)
         });
     },
 

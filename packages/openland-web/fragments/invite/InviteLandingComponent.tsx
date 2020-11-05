@@ -1,14 +1,14 @@
 import * as React from 'react';
+import * as Cookie from 'js-cookie';
 import { css, cx } from 'linaria';
 import {
     ResolvedInvite_invite_InviteInfo_organization,
     WalletSubscriptionInterval,
     WalletSubscriptionState,
-    SharedRoomPreview,
+    ResolvedInvite_invite_RoomInvite_room, ResolvedInvite_shortnameItem_SharedRoom,
 } from 'openland-api/spacex.types';
 import { XViewRouterContext } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
-import { switchOrganization } from 'openland-web/utils/switchOrganization';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { UButton } from 'openland-web/components/unicorn/UButton';
@@ -20,12 +20,19 @@ import { showPayConfirm } from '../wallet/modals/showPayConfirm';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
 import { UText } from 'openland-web/components/unicorn/UText';
+import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import {
     AuthSidebarComponent,
     AuthMobileHeader,
 } from 'openland-web/pages/root/AuthSidebarComponent';
-import * as Cookie from 'js-cookie';
-import { useTabRouter } from 'openland-unicorn/components/TabLayout';
+import { useToast } from 'openland-web/components/unicorn/UToast';
+
+type SharedRoomT = ResolvedInvite_shortnameItem_SharedRoom | ResolvedInvite_invite_RoomInvite_room;
+
+function switchOrganization(id: string, redirect?: string) {
+    Cookie.set('x-openland-org', id, { path: '/' });
+    window.location.href = redirect || '/';
+}
 
 const container = css`
     display: flex;
@@ -34,23 +41,50 @@ const container = css`
     flex-shrink: 1;
 `;
 
-const rootClassName = css`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    background-color: var(--backgroundPrimary);
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
+const noLoginContainer = css`
+    max-height: 100vh;
 `;
 
-const mainContainer = css`
-    padding: 0 32px 32px;
+const rootContainer = css`
     display: flex;
     flex-direction: column;
     justify-content: center;
     flex-grow: 1;
-    flex-shrink: 0;
+    flex-shrink: 1;
+`;
+
+const rootContent = css`
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 0;
+    flex-shrink: 1;
+`;
+
+const shadowClassName = css`
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100px;
+    z-index: 1;
+    background-image: linear-gradient(to bottom, var(--transparent), var(--backgroundPrimary));
+`;
+
+const scrollContainer = css`
+    padding: 32px 32px 88px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-grow: 0;
+    flex-shrink: 1;
+`;
+
+const scrollContainerScroll = css`
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    background-color: var(--backgroundPrimary);
 `;
 
 const avatarsContainer = css`
@@ -81,6 +115,7 @@ const titleStyle = css`
     word-wrap: break-word;
     max-width: 320px;
     align-self: center;
+    flex-shrink: 0;
 `;
 
 const descriptionStyle = css`
@@ -89,6 +124,7 @@ const descriptionStyle = css`
     margin-top: 8px;
     max-width: 320px;
     align-self: center;
+    flex-shrink: 0;
 `;
 
 const membersContainer = css`
@@ -107,122 +143,130 @@ const membersAvatarsContainer = css`
 `;
 
 const buttonContainer = css`
-    margin-top: 32px;
+    position: absolute;
+    bottom: 20px;
+    margin: auto;
     flex-shrink: 0;
+    z-index: 2;
     align-self: center;
 `;
 
 interface InviteLandingComponentLayoutProps {
-    invitedByUser?: {
-        id: string;
-        name: string;
-        photo?: string | null;
-    } | null;
-    whereToInvite: 'Channel' | 'Group' | 'Organization' | 'Community';
+    whereToInvite: 'channel' | 'group' | 'organization' | 'community';
     photo: string | null;
     title: string;
     entityTitle: string;
     id: string;
     membersCount?: number | null;
     description?: string | null;
-    button: any;
+    hideFakeDescription?: boolean;
+    button?: JSX.Element;
     noLogin: boolean;
-    room?: SharedRoomPreview;
+    room?: SharedRoomT;
 }
 
-const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLayoutProps) => {
-    const isMobile = useIsMobile();
-    const {
-        invitedByUser,
-        whereToInvite,
-        photo,
-        title,
-        entityTitle,
-        id,
-        membersCount,
-        description,
-        button,
-        room,
-    } = props;
+export const InviteLandingComponentLayout = React.memo(
+    (props: InviteLandingComponentLayoutProps) => {
+        const isMobile = useIsMobile();
+        const scrollRef = React.useRef<HTMLDivElement>(null);
+        const [showShadow, setShowShadow] = React.useState(false);
+        const {
+            whereToInvite,
+            photo,
+            title,
+            entityTitle,
+            id,
+            membersCount,
+            description,
+            hideFakeDescription,
+            button,
+            room,
+        } = props;
 
-    const avatars = room
-        ? room.previewMembers
-              .map(x => x)
-              .filter(x => !!x)
-              .slice(0, 5)
-        : [];
+        const avatars = room
+            ? room.previewMembers
+                  .map((x) => x)
+                  .filter((x) => !!x)
+                  .slice(0, 5)
+            : [];
 
-    const showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
+        const showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
 
-    const joinTitle = !!invitedByUser
-        ? `${invitedByUser.name} invites you to join “${title}”`
-        : title;
+        React.useEffect(() => {
+            const handler = () => {
+                if (scrollRef && scrollRef.current) {
+                    if (scrollRef.current.scrollHeight !== scrollRef.current.clientHeight) {
+                        setShowShadow(true);
+                    } else {
+                        setShowShadow(false);
+                    }
+                }
+            };
+            handler();
+            document.addEventListener('resize', handler);
+            return () => document.removeEventListener('resize', handler);
+        }, [scrollRef]);
 
-    return (
-        <div className={container}>
-            {props.noLogin && !isMobile && <AuthSidebarComponent />}
-            <div className={rootClassName}>
+        return (
+            <div className={cx(container, props.noLogin && noLoginContainer)}>
+                {props.noLogin && !isMobile && <AuthSidebarComponent />}
                 {props.noLogin && isMobile && <AuthMobileHeader />}
-                <div className={mainContainer}>
-                    {invitedByUser ? (
-                        <div className={avatarsContainer}>
-                            <div className={bigAvatarWrapper}>
+                <div className={rootContainer}>
+                    <div className={rootContent}>
+                        <div
+                            className={cx(scrollContainer, showShadow && scrollContainerScroll)}
+                            ref={scrollRef}
+                        >
+                            <div className={avatarsContainer}>
                                 <UAvatar
-                                    photo={invitedByUser.photo}
-                                    title={invitedByUser.name}
-                                    id={invitedByUser.id}
-                                    size="x-large"
+                                    photo={photo}
+                                    title={entityTitle}
+                                    id={id}
+                                    size="xx-large"
                                 />
                             </div>
-                            <div className={bigAvatarWrapper}>
-                                <UAvatar photo={photo} title={entityTitle} id={id} size="x-large" />
-                            </div>
-                        </div>
-                    ) : (
-                        <div className={avatarsContainer}>
-                            <UAvatar photo={photo} title={entityTitle} id={id} size="xx-large" />
-                        </div>
-                    )}
-                    <div className={cx(TextTitle1, titleStyle)}>{joinTitle}</div>
-                    {!!description && (
-                        <div className={cx(TextBody, descriptionStyle)}>
-                            <UText text={description} />
-                        </div>
-                    )}
-                    {showMembers && room && (
-                        <div className={membersContainer}>
-                            <div className={membersAvatarsContainer}>
-                                {avatars.map(i => (
-                                    <div
-                                        key={i.id}
-                                        className={cx(bigAvatarWrapper, smallAvatarWrapper)}
-                                    >
-                                        <UAvatar
-                                            title={i.name}
-                                            id={i.id}
-                                            photo={i.photo}
-                                            size="small"
-                                        />
+                            <div className={cx(TextTitle1, titleStyle)}>{title}</div>
+                            {!!description && (
+                                <div className={cx(TextBody, descriptionStyle)}>
+                                    <UText text={description} />
+                                </div>
+                            )}
+                            {showMembers && room && (
+                                <div className={membersContainer}>
+                                    <div className={membersAvatarsContainer}>
+                                        {avatars.map((i) => (
+                                            <div
+                                                key={i.id}
+                                                className={cx(bigAvatarWrapper, smallAvatarWrapper)}
+                                            >
+                                                <UAvatar
+                                                    title={i.name}
+                                                    id={i.id}
+                                                    photo={i.photo}
+                                                    size="small"
+                                                />
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
-                            <div className={cx(TextBody, descriptionStyle)}>
-                                {membersCount} members
-                            </div>
+                                    <div className={cx(TextBody, descriptionStyle)}>
+                                        {membersCount} members
+                                    </div>
+                                </div>
+                            )}
+                            {!showMembers && !description && !hideFakeDescription && (
+                                <div className={cx(TextBody, descriptionStyle)}>
+                                    New {whereToInvite}
+                                </div>
+                            )}
                         </div>
-                    )}
-                    {!showMembers && !description && (
-                        <div className={cx(TextBody, descriptionStyle)}>
-                            New {whereToInvite.toLocaleLowerCase()}
-                        </div>
-                    )}
-
-                    <div className={buttonContainer}>{button}</div>
+                        {button && <div className={buttonContainer}>{button}</div>}
+                        {showShadow && <div className={shadowClassName} />}
+                    </div>
                 </div>
             </div>
-        </div>
-    );
-});
+        );
+    },
+);
 
 const JoinButton = ({ roomId, text }: { roomId: string; text: string }) => {
     const client = useClient();
@@ -315,9 +359,11 @@ const BuyPaidChatPassButton = (props: {
                 try {
                     let passIsActive = false;
                     if (props.premiumSettings.interval) {
-                        passIsActive = (await client.mutateBuyPremiumChatSubscription({
-                            chatId: props.id,
-                        })).betaBuyPremiumChatSubscription.premiumPassIsActive;
+                        passIsActive = (
+                            await client.mutateBuyPremiumChatSubscription({
+                                chatId: props.id,
+                            })
+                        ).betaBuyPremiumChatSubscription.premiumPassIsActive;
                     } else {
                         passIsActive = (await client.mutateBuyPremiumChatPass({ chatId: props.id }))
                             .betaBuyPremiumChatPass.premiumPassIsActive;
@@ -360,11 +406,7 @@ const BuyPaidChatPassButton = (props: {
     );
 };
 
-const resolveRoomButton = (
-    room: SharedRoomPreview,
-    buttonText: string,
-    key?: string,
-) => {
+const resolveRoomButton = (room: SharedRoomT, buttonText: string, key?: string) => {
     const [loading, setLoading] = React.useState(false);
     if (room && room.isPremium && room.premiumSettings && !room.premiumPassIsActive) {
         if (
@@ -425,13 +467,7 @@ const resolveRoomButton = (
             />
         );
     } else if (room && key) {
-        return (
-            <JoinLinkButton
-                invite={key}
-                onAccept={setLoading}
-                text={buttonText}
-            />
-        );
+        return <JoinLinkButton invite={key} onAccept={setLoading} text={buttonText} />;
     } else if (room && room.membership === 'REQUESTED') {
         return (
             <UButton
@@ -446,18 +482,18 @@ const resolveRoomButton = (
     return <></>;
 };
 
-export const SharedRoomPlaceholder = ({ room }: { room: SharedRoomPreview }) => {
+export const SharedRoomPlaceholder = ({ room }: { room: ResolvedInvite_invite_RoomInvite_room }) => {
     const buttonText = room.isChannel ? 'Join channel' : 'Join group';
     const premiumSuspended =
         room &&
         room.isPremium &&
         !room.premiumPassIsActive &&
-        (room.premiumSubscription &&
-            room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED);
+        room.premiumSubscription &&
+        room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED;
     return (
         <InviteLandingComponentLayout
             button={resolveRoomButton(room, buttonText)}
-            whereToInvite="Group"
+            whereToInvite="group"
             photo={room.photo}
             title={premiumSuspended ? `Your access to “${room.title}” is suspended` : room.title}
             entityTitle={room.title}
@@ -479,25 +515,27 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     const loggedIn = userInfo && userInfo.isLoggedIn;
     const client = useClient();
     const unicorn = useUnicorn();
-    const router = React.useContext(XViewRouterContext);
+    const router = React.useContext(XViewRouterContext)!;
+    const toast = useToast();
 
     const path = window.location.pathname.split('/');
-    const key = unicorn ? unicorn.id : path[path.length - 1];
+    let key = unicorn ? unicorn.id : path[path.length - 1];
+
+    // Sorry universe. Ugly fix for PLN-546
+    if (key.endsWith('.')) {
+        key = key.slice(0, key.length - 1);
+    }
 
     let invite = client.useResolvedInvite({ key });
-    let room: SharedRoomPreview | undefined;
+    let room: SharedRoomT | undefined;
     let organization: ResolvedInvite_invite_InviteInfo_organization | undefined;
-
-    // let invitedByUser;
 
     if (invite.invite && invite.invite.__typename === 'InviteInfo' && invite.invite.organization) {
         organization = invite.invite.organization;
-        // invitedByUser = invite.invite.creator;
     }
 
     if (invite.invite && invite.invite.__typename === 'RoomInvite') {
         room = invite.invite.room;
-        // invitedByUser = invite.invite.invitedByUser;
     }
 
     if (invite.shortnameItem && invite.shortnameItem.__typename === 'SharedRoom') {
@@ -506,7 +544,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     }
 
     if (invite.invite && invite.invite.__typename === 'AppInvite') {
-        router!.navigate('/');
+        router.navigate('/');
         return null;
     }
 
@@ -515,13 +553,13 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
 
     const whereToInvite = room
         ? room.isChannel
-            ? 'Channel'
-            : 'Group'
+            ? 'channel'
+            : 'group'
         : organization && organization.isCommunity
-        ? 'Community'
-        : 'Organization';
+        ? 'community'
+        : 'organization';
 
-    const buttonText = 'Join ' + whereToInvite.toLocaleLowerCase();
+    const buttonText = 'Join ' + whereToInvite;
 
     if (!loggedIn) {
         button = (
@@ -545,12 +583,30 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     } else if (organization) {
         button = (
             <UButton
-                text={buttonText}
+                text={organization.isMine ? 'Open ' + whereToInvite : buttonText}
                 action={async () => {
+                    if (organization!.isMine && loggedIn) {
+                        router.navigate(`/${organization!.id}`);
+                        return;
+                    }
                     trackEvent('invite_button_clicked');
-                    await client.mutateAccountInviteJoin({
-                        inviteKey: key,
-                    });
+                    try {
+                        await client.mutateAccountInviteJoin({
+                            inviteKey: key,
+                        });
+                    } catch (e) {
+                        if (!!toast) {
+                            toast.show({
+                                type: 'failure',
+                                text: 'You don’t have an access',
+                            });
+                        }
+                        return;
+                    }
+                    if (loggedIn) {
+                        router.navigate(`/${organization!.id}`);
+                        return;
+                    }
                     switchOrganization(organization!.id);
                 }}
                 style="primary"
@@ -565,16 +621,16 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
         room &&
         room.isPremium &&
         !room.premiumPassIsActive &&
-        (room.premiumSubscription &&
-            room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED);
+        room.premiumSubscription &&
+        room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED;
 
     return (
         <>
             <XTrack
                 event={loggedIn ? 'invite_screen_view' : 'invite_landing_view'}
                 params={{
-                    invite_type: whereToInvite.toLowerCase(),
-                    entity_id: room?.id || organization?.id
+                    invite_type: whereToInvite,
+                    entity_id: room?.id || organization?.id,
                 }}
             />
             {premiumSuspended ? (
@@ -595,7 +651,6 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 />
             ) : (
                 <InviteLandingComponentLayout
-                    // invitedByUser={invitedByUser}
                     button={button}
                     whereToInvite={whereToInvite}
                     photo={room ? room.photo : organization!.photo}

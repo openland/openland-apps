@@ -5,6 +5,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { ASText } from 'react-native-async-view/ASText';
 import { colorByExtension } from 'openland-mobile/utils/colorByExtension';
+import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 
 const getExtension = (name: string) => {
     const nameSplit = name.split('.');
@@ -16,11 +17,13 @@ interface ASDocumentExtProps {
     name: string;
     isInverted?: boolean;
     size?: 'medium' | 'large';
+    onPress?: () => void;
+    onLongPress?: (e: ASPressEvent) => void;
 }
 
 export const ASDocumentExt = (props: ASDocumentExtProps) => {
     const theme = React.useContext(ThemeContext);
-    const { name, size = 'medium', isInverted = false } = props;
+    const { name, size = 'medium', isInverted = false, onPress, onLongPress } = props;
 
     const ext = getExtension(name);
     const boxSize = size === 'large' ? 72 : 40;
@@ -37,6 +40,8 @@ export const ASDocumentExt = (props: ASDocumentExtProps) => {
             flexDirection="row"
             alignItems="center"
             justifyContent="center"
+            onPress={onPress}
+            onLongPress={onLongPress}
         >
             <ASImage
                 source={containerImage}

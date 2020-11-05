@@ -104,7 +104,7 @@ const StickerPackModalInner = React.memo((props: { packId: string; hide: () => v
 
 export const showStickerStickerPackModal = (packId: string, name: string) => {
     showModalBox({ title: name, useTopCloser: true, width: 464 }, ctx => (
-        <React.Suspense fallback={<XLoader loading={true} />}>
+        <React.Suspense fallback={<XLoader loading={true} transparentBackground={true} />}>
             <StickerPackModalInner packId={packId} hide={ctx.hide} />
         </React.Suspense>
     ));

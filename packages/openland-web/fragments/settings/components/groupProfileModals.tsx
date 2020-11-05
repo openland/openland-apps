@@ -3,15 +3,15 @@ import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { TextTitle3, TextBody, TextLabel1 } from 'openland-web/utils/TextStyles';
+import { TextBody, TextLabel1, TextTitle3 } from 'openland-web/utils/TextStyles';
 import { TabRouterContextProps } from 'openland-unicorn/components/TabLayout';
 import { showModalBox } from 'openland-x/showModalBox';
 import {
-    WalletSubscriptionInterval,
     RoomChat_room_SharedRoom,
     RoomChat_room_SharedRoom_welcomeMessage,
     SharedRoomKind,
     UserShort,
+    WalletSubscriptionInterval,
 } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { useForm } from 'openland-form/useForm';
@@ -32,7 +32,7 @@ import { useShortnameField } from 'openland-y-utils/form/useShortnameField';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { MentionItemComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';
-import { GroupPriceSettings, DistributionType } from '../../create/CreateEntityFragment';
+import { DistributionType, GroupPriceSettings } from '../../create/CreateEntityFragment';
 import { trackEvent } from 'openland-x-analytics';
 import IcAt from 'openland-icons/s/ic-at-24.svg';
 import IcWallet from 'openland-icons/s/ic-wallet-24.svg';
@@ -40,14 +40,15 @@ import IcGallery from 'openland-icons/s/ic-gallery-24.svg';
 import IcMessage from 'openland-icons/s/ic-message-24.svg';
 import IcLock from 'openland-icons/s/ic-lock-16.svg';
 import IcReply from 'openland-icons/s/ic-reply-24.svg';
-
-const modalSubtitle = css`
-    color: var(--foregroundPrimary);
-    margin-bottom: 20px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 320px;
-`;
+import IcCall from 'openland-icons/s/ic-call-24.svg';
+import IcChannel from 'openland-icons/s/ic-channel-24.svg';
+import { modalSubtitle } from './groupProfileModals/shared';
+import { getCallSettingsShortLabel, showGroupCallsModal } from './groupProfileModals/groupCalls';
+import {
+    getServiceMessagesSettingsShortLabel,
+    showServiceMessagesModal,
+} from './groupProfileModals/serviceMessages';
+import { RoomEditModalSuperAdminTile } from './groupProfileModals/superAdminSettings';
 
 interface ShortnameModalBodyProps {
     roomId: string;
@@ -288,7 +289,7 @@ const welcomeMessageSwitchContainer = css`
     padding: 0 8px;
     cursor: pointer;
     &:hover {
-        background-color: var(--backgroundPrimaryHover);
+        background-color: var(--backgroundTertiaryHoverTrans);
     }
     & > div {
         pointer-events: none;
@@ -394,7 +395,6 @@ const WelcomeMessageModalBody = React.memo((props: WelcomeMessageModalBodyProps)
                                 field={messageField}
                                 placeholder="Message"
                                 marginTop={16}
-                                autoResize={true}
                             />
                         </XView>
                     )}
@@ -452,8 +452,8 @@ const EnableRepliesModalBody = React.memo((props: EnableRepliesModalBodyProps) =
             await client.mutateRoomUpdate({
                 roomId,
                 input: {
-                    repliesEnabled: enableRepliesField.value
-                }
+                    repliesEnabled: enableRepliesField.value,
+                },
             });
             await client.refetchRoomChat({ id: roomId });
             hide();
@@ -464,7 +464,19 @@ const EnableRepliesModalBody = React.memo((props: EnableRepliesModalBodyProps) =
         <>
             <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
                 <XModalContent>
-                    <UCheckboxFiled label="Enable replies" field={enableRepliesField} asSwitcher={true} />
+                    <div className={cx(modalSubtitle, TextBody)}>
+                        Choose whether to allow replies in group
+                    </div>
+                    <XView marginHorizontal={-24}>
+                        <UCheckboxFiled
+                            label="Allow replies"
+                            field={enableRepliesField}
+                            asSwitcher={true}
+                            disableHorizontalPadding={true}
+                            paddingHorizontal={24}
+                            withCorners={true}
+                        />
+                    </XView>
                 </XModalContent>
             </XScrollView3>
             <XModalFooter>
@@ -481,22 +493,15 @@ const EnableRepliesModalBody = React.memo((props: EnableRepliesModalBodyProps) =
     );
 });
 
-const showEnableRepliesModal = (
-    roomId: string,
-    initialValue: boolean
-) => {
+const showEnableRepliesModal = (roomId: string, initialValue: boolean) => {
     showModalBox(
         {
             width: 400,
-            title: 'Disable replies',
+            title: 'Replies',
         },
         (ctx) => (
-            <EnableRepliesModalBody
-                roomId={roomId}
-                initialValue={initialValue}
-                hide={ctx.hide}
-            />
-        )
+            <EnableRepliesModalBody roomId={roomId} initialValue={initialValue} hide={ctx.hide} />
+        ),
     );
 };
 
@@ -544,6 +549,8 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
         socialImage,
         welcomeMessage,
         repliesEnabled,
+        callSettings,
+        serviceMessageSettings,
     } = room;
     const client = useClient();
     const form = useForm();
@@ -594,7 +601,6 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                         placeholder="Description"
                         marginTop={16}
                         marginBottom={16}
-                        autoResize={true}
                     />
                     {!isShared && <SecretLabel />}
                     <div className={cx(formTitle, TextTitle3)}>Settings</div>
@@ -641,12 +647,45 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                             />
                         )}
                         <UListItem
-                            title="Enable replies"
+                            title="Replies"
                             icon={<IcReply />}
                             paddingHorizontal={24}
                             onClick={() => showEnableRepliesModal(room.id, repliesEnabled)}
                             textRight={repliesEnabled ? 'On' : 'Off'}
                         />
+                        {!room.isChannel && (
+                            <UListItem
+                                title="Service messages"
+                                icon={<IcChannel />}
+                                paddingHorizontal={24}
+                                onClick={() =>
+                                    showServiceMessagesModal(room.id, {
+                                        joinsMessageEnabled:
+                                            serviceMessageSettings.joinsMessageEnabled,
+                                        leavesMessageEnabled:
+                                            serviceMessageSettings.leavesMessageEnabled,
+                                    })
+                                }
+                                textRight={getServiceMessagesSettingsShortLabel(
+                                    serviceMessageSettings,
+                                )}
+                            />
+                        )}
+                        <UListItem
+                            title="Group calls"
+                            icon={<IcCall />}
+                            paddingHorizontal={24}
+                            onClick={() =>
+                                showGroupCallsModal(room.id, {
+                                    mode: callSettings.mode,
+                                    callLink: callSettings.callLink || '',
+                                })
+                            }
+                            textRight={getCallSettingsShortLabel(callSettings)}
+                        />
+                        <XWithRole role="super-admin">
+                            <RoomEditModalSuperAdminTile kind={kind} roomId={room.id} isChannel={room.isChannel} />
+                        </XWithRole>
                     </XView>
                 </XModalContent>
             </XScrollView3>
@@ -671,9 +710,8 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
 
 const RoomEditModal = ({ chatId, hide }: { chatId: string; hide: () => void }) => {
     const client = useClient();
-    const data = client.useRoomChat({ id: chatId }).room;
-    let chat = data as RoomChat_room_SharedRoom;
-    return <RoomEditModalBody onClose={hide} room={chat} />;
+    const { room } = client.useRoomChat({ id: chatId });
+    return <RoomEditModalBody onClose={hide} room={room as RoomChat_room_SharedRoom} />;
 };
 
 export const showRoomEditModal = (chatId: string, isChannel: boolean) => {

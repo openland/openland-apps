@@ -45,6 +45,7 @@ interface RenderSpansProps {
     numberOfLines?: number;
     emojiOnly?: boolean;
     hasPurchase?: boolean;
+    ignoreMarkdown?: boolean;
 
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
@@ -75,7 +76,7 @@ const letterSpacing = {
 
 export class RenderSpans extends React.PureComponent<RenderSpansProps> {
     render() {
-        const { emojiOnly, hasPurchase, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetVertical, numberOfLines, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress } = this.props;
+        const { emojiOnly, hasPurchase, ignoreMarkdown, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetVertical, numberOfLines, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress } = this.props;
 
         let bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
         const bubbleBackgroundSecondary = message.isOut ? theme.outgoingBackgroundSecondary : theme.incomingBackgroundSecondary;
@@ -91,24 +92,25 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
         return (
             <ASFlex flexDirection="column" alignItems="stretch">
                 {content.map((c, i) => {
-                    if (c.type === 'slice' || c.type === 'loud' || c.type === 'emoji' || c.type === 'padded') {
+                    let type = ignoreMarkdown && (c.type === 'loud' || c.type === 'code_block') || !theme.largeEmoji && c.type === 'emoji' ? 'slice' : c.type;
+                    if (type === 'slice' || type === 'loud' || type === 'emoji' || type === 'padded') {
                         return (
                             <ASFlex>
                                 <TextWrapper
-                                    key={c.type + '-' + i}
+                                    key={type + '-' + i}
                                     color={color}
                                     fontStyle={fontStyle}
-                                    fontSize={fontSize[c.type]}
-                                    lineHeight={lineHeight[c.type]}
-                                    letterSpacing={letterSpacing[c.type]}
-                                    marginTop={(c.type === 'loud' && i !== 0) ? insetVertical : undefined}
-                                    marginBottom={(c.type !== 'emoji' && i !== content.length - 1) ? insetVertical : undefined}
+                                    fontSize={fontSize[type]}
+                                    lineHeight={lineHeight[type]}
+                                    letterSpacing={letterSpacing[type]}
+                                    marginTop={(type === 'loud' && i !== 0) ? insetVertical : undefined}
+                                    marginBottom={(type !== 'emoji' && i !== content.length - 1) ? insetVertical : undefined}
                                     textAlign={textAlign}
                                     maxWidth={!width ? maxWidth : undefined}
                                     width={width}
                                     numberOfLines={numberOfLines}
                                 >
-                                    {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress)}
+                                    {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress, ignoreMarkdown)}
                                     {c.padded && paddedText(message.isEdited)}
                                 </TextWrapper>
                             </ASFlex>
@@ -117,7 +119,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
 
                     return (
                         <ASFlex
-                            key={c.type + '-' + i}
+                            key={type + '-' + i}
                             marginLeft={-insetLeft}
                             marginRight={-insetRight}
                             marginTop={i === 0 ? insetVertical + ((message.isOut || message.attachTop) ? 2 : 0) : undefined}
@@ -126,9 +128,9 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                         >
                             <ASFlex marginLeft={insetLeft} marginRight={insetRight} marginTop={5} marginBottom={5}>
                                 <TextWrapper
-                                    fontSize={fontSize[c.type]}
-                                    lineHeight={lineHeight[c.type]}
-                                    letterSpacing={letterSpacing[c.type]}
+                                    fontSize={fontSize[type]}
+                                    lineHeight={lineHeight[type]}
+                                    letterSpacing={letterSpacing[type]}
                                     numberOfLines={numberOfLines}
                                     color={color}
                                     maxWidth={!width ? maxWidth : undefined}

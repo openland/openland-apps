@@ -17,7 +17,6 @@ import { SettingsOrganizations } from './pages/main/beta/SettingsOrganizations';
 import { SRoutesBuilder } from 'react-native-s/SRoutes';
 import { NewOrganization } from './pages/main/NewOrganization';
 import { EditOrganization } from './pages/main/EditOrganization';
-import { EditCommunity } from './pages/main/EditCommunity';
 import { SignupUser } from './pages/auth/SignupUser';
 import { Waitlist } from './pages/auth/Waitlist';
 import { Compose } from './pages/main/Compose';
@@ -41,10 +40,10 @@ import { SettingsAbout } from './pages/main/SettingsAbout';
 import { SettingsLicenses } from './pages/main/SettingsLicenses';
 import { HomeDialogs } from './pages/main/HomeDialogs';
 import { SetShortname } from './pages/main/SetShortname';
-import { EditGroup } from './pages/main/EditGroup';
-import { EditGroupSocialImage } from './pages/main/EditGroupSocialImage';
-import { EditGroupWelcomeMessage } from './pages/main/EditGroupWelcomeMessage';
-import { EditGroupPrice } from './pages/main/EditGroupPrice';
+import { EditGroup } from './pages/main/components/edit-group/EditGroup';
+import { EditGroupSocialImage } from './pages/main/components/edit-group/EditGroupSocialImage';
+import { EditGroupWelcomeMessage } from './pages/main/components/edit-group/EditGroupWelcomeMessage';
+import { EditGroupPrice } from './pages/main/components/edit-group/EditGroupPrice';
 import { GroupInvite } from './pages/main/GroupInvite';
 import { UserPicker } from './pages/main/modals/UserPicker';
 import { CountryPicker } from './pages/main/modals/CountryPicker';
@@ -75,6 +74,17 @@ import { Donation } from './pages/wallet/Donation';
 import { SettingsCommunities } from './pages/main/SettingsCommunities';
 import { MembersSearch } from './pages/main/modals/MembersSearch';
 import { UserMutualGroups } from './pages/main/UserMutualGroups';
+import { EditGroupServiceMessages } from './pages/main/components/edit-group/EditGroupServiceMessages';
+import { EditGroupCalls } from './pages/main/components/edit-group/EditGroupCalls';
+import { EditGroupSuperadmin } from './pages/main/components/edit-group/EditGroupSuperadmin';
+import { StickersCatalog } from './pages/main/StickersCatalog';
+import { EditCommunity } from './pages/main/components/edit-community/EditCommunity';
+import { EditCommunitySocialImage } from './pages/main/components/edit-community/EditCommunitySocialImage';
+import { EditCommunityDefaultGroups } from './pages/main/components/edit-community/EditCommunityDefaultGroups';
+import { EditCommunityApplyLink } from './pages/main/components/edit-community/EditCommunityApplyLink';
+import { ChatSearch } from './pages/main/ChatSearch';
+import { EditCommunitySuperAdmin } from './pages/main/components/edit-community/EditCommunitySuperAdmin';
+import { ReportSpam } from './pages/main/components/ReportSpam';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -87,6 +97,9 @@ export const Routes = new SRoutesBuilder()
   .addRoute('EditGroupSocialImage', EditGroupSocialImage)
   .addRoute('EditGroupWelcomeMessage', EditGroupWelcomeMessage)
   .addRoute('EditGroupPrice', EditGroupPrice)
+  .addRoute('EditGroupServiceMessages', EditGroupServiceMessages)
+  .addRoute('EditGroupCalls', EditGroupCalls)
+  .addRoute('EditGroupSuperadmin', EditGroupSuperadmin)
   .addRoute('SettingsProfile', SettingsProfile)
   .addRoute('SettingsPrivacy', SettingsPrivacy)
   .addRoute('ChangeLoginMethod', ChangeLoginMethod)
@@ -100,6 +113,10 @@ export const Routes = new SRoutesBuilder()
   .addRoute('SettingsCommunities', SettingsCommunities)
   .addRoute('NewOrganization', NewOrganization)
   .addRoute('EditCommunity', EditCommunity)
+  .addRoute('EditCommunitySocialImage', EditCommunitySocialImage)
+  .addRoute('EditCommunityDefaultGroups', EditCommunityDefaultGroups)
+  .addRoute('EditCommunityApplyLink', EditCommunityApplyLink)
+  .addRoute('EditCommunitySuperAdmin', EditCommunitySuperAdmin)
   .addRoute('EditOrganization', EditOrganization)
   .addRoute('Compose', Compose)
   .addRoute('CreateGroupAttrs', CreateGroupAttrs)
@@ -115,6 +132,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('GroupInvite', GroupInvite)
   .addRoute('Message', Message)
   .addRoute('NotificationCenter', NotificationCenter)
+  .addRoute('StickersCatalog', StickersCatalog)
 
   .addRoute('SetUserShortname', SetUserShortname)
   .addRoute('SetShortname', SetShortname)
@@ -159,6 +177,8 @@ export const Routes = new SRoutesBuilder()
   .addRoute('Apps/Tasks', Tasks)
 
   .addRoute('SharedMedia', SharedMedia)
+  .addRoute('ChatSearch', ChatSearch)
+  .addRoute('ReportSpam', ReportSpam)
   .addRoute('UserMutualGroups', UserMutualGroups)
 
   .addRoute('Wallet', Wallet)

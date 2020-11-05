@@ -49,6 +49,10 @@ const ironyTextClassName = css`
     color: var(--accentNegative);
 `;
 
+const searchHighlightClassName = css`
+    background-color: var(--accentPrimaryTrans);
+`;
+
 const codeInlineClassName = css`
     padding-left: 6px;
     padding-right: 6px;
@@ -79,8 +83,8 @@ const loudTextClassName = css`
 `;
 
 const onlyEmojiClassName = css`
-    font-size: 38px;
-    line-height: 38px;
+    font-size: var(--emoji-size);
+    line-height: var(--emoji-size);
 `;
 
 const rotatingTextClassName = css`
@@ -106,27 +110,28 @@ const insaneTextClassName = css`
 `;
 
 const mentionServiceClassName = css`
-    color: #676d7a !important;
+    color: var(--foregroundSecondary) !important;
     font-weight: 600;
 
     &:hover {
-        color: #676d7a !important;
+        color: var(--foregroundSecondary) !important;
         text-decoration: none;
     }
 `;
 
 const mentionClassName = css`
-    color: #1885f2;
+    cursor: pointer;
+    color: var(--accentPrimary);
     font-weight: 600;
 
     &:hover {
-        color: #1885f2;
+        color: var(--accentPrimary);
         text-decoration: none;
     }
 `;
 
 const mentionBgClassName = css`
-    background-color: #d6edff;
+    background-color: var(--accentPrimaryTrans);
     padding: 2px 4px;
     border-radius: 4px;
 `;
@@ -150,11 +155,12 @@ const MentionedUserPopperContent = React.memo(
 const MentionedUser = React.memo(
     (props: { userId: string; children: any; isService?: boolean }) => {
         const engine = React.useContext(MessengerContext);
+        const router = React.useContext(XViewRouterContext)!;
         const { userId, children, isService } = props;
 
         const useWrapper = userId !== engine.user.id;
 
-        const [, show] = usePopper(
+        const [, show, instantHide] = usePopper(
             {
                 placement: 'top',
                 hideOnLeave: true,
@@ -168,7 +174,7 @@ const MentionedUser = React.memo(
                 updatedDeps: userId,
             },
             (ctx) => (
-                <React.Suspense fallback={<XLoader loading={true} />}>
+                <React.Suspense fallback={<XLoader loading={true} transparentBackground={true} />}>
                     <MentionedUserPopperContent
                         userId={userId}
                         myId={engine.user.id}
@@ -178,9 +184,14 @@ const MentionedUser = React.memo(
             ),
         );
         return (
-            <span onMouseEnter={show}>
-                <ULink
-                    path={`/${userId}`}
+            <span>
+                <span
+                    onMouseEnter={show}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        instantHide();
+                        router.navigate(`/${userId}`);
+                    }}
                     className={cx(
                         mentionClassName,
                         userId === engine.user.id && !isService && mentionBgClassName,
@@ -189,7 +200,7 @@ const MentionedUser = React.memo(
                     )}
                 >
                     {children}
-                </ULink>
+                </span>
             </span>
         );
     },
@@ -228,7 +239,7 @@ const MentionedOtherUsersPopperContent = React.memo(
                             {findSpans.users.map((user, i) => (
                                 <XView
                                     key={`user-${user.name}-${i}`}
-                                    hoverBackgroundColor="var(--backgroundPrimaryHover)"
+                                    hoverBackgroundColor="var(--backgroundTertiaryTrans)"
                                     cursor="pointer"
                                     path={`/${user.shortname || user.id}`}
                                     onClick={() => props.hide()}
@@ -265,7 +276,7 @@ const MentionedOtherUsers = React.memo((props: { mId?: string; children: any }) 
             showTimeout: 400,
         },
         (ctx) => (
-            <React.Suspense fallback={<XLoader loading={true} />}>
+            <React.Suspense fallback={<XLoader loading={true} transparentBackground={true} />}>
                 <MentionedOtherUsersPopperContent mId={mId} hide={ctx.hide} />
             </React.Suspense>
         ),
@@ -332,8 +343,8 @@ const MentionedGroupPopperContent = React.memo((props: { groupId: string; hide: 
 const MentionedGroup = React.memo(
     (props: { groupId: string; children: any; isService?: boolean }) => {
         const { groupId, children, isService } = props;
-
-        const [, show] = usePopper(
+        const router = React.useContext(XViewRouterContext)!;
+        const [, show, instantHide] = usePopper(
             {
                 placement: 'top',
                 hideOnLeave: true,
@@ -344,24 +355,25 @@ const MentionedGroup = React.memo(
                 updatedDeps: groupId,
             },
             (ctx) => (
-                <React.Suspense fallback={<XLoader loading={true} />}>
+                <React.Suspense fallback={<XLoader loading={true} transparentBackground={true} />}>
                     <MentionedGroupPopperContent hide={ctx.hide} groupId={groupId} />
                 </React.Suspense>
             ),
         );
 
-        const router = React.useContext(XViewRouterContext)!;
-
         return (
-            <span onMouseEnter={show}>
-                <ULink
-                    onClick={() =>
+            <span>
+                <span
+                    onMouseEnter={show}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        instantHide();
                         openEntity({
                             isGroup: true,
                             entity: groupId,
                             router,
-                        })
-                    }
+                        });
+                    }}
                     className={cx(
                         mentionClassName,
                         isService && mentionServiceClassName,
@@ -369,7 +381,7 @@ const MentionedGroup = React.memo(
                     )}
                 >
                     {children}
-                </ULink>
+                </span>
             </span>
         );
     },
@@ -402,8 +414,8 @@ const MentionedOrgPopperContent = React.memo(
 const MentionedOrganization = React.memo(
     (props: { organizationId: string; children: any; isService?: boolean }) => {
         const { organizationId, children, isService } = props;
-
-        const [, show] = usePopper(
+        const router = React.useContext(XViewRouterContext)!;
+        const [, show, instantHide] = usePopper(
             {
                 placement: 'top',
                 hideOnLeave: true,
@@ -414,22 +426,24 @@ const MentionedOrganization = React.memo(
                 updatedDeps: organizationId,
             },
             (ctx) => (
-                <React.Suspense fallback={<XLoader loading={true} />}>
+                <React.Suspense fallback={<XLoader loading={true} transparentBackground={true} />}>
                     <MentionedOrgPopperContent hide={ctx.hide} organizationId={organizationId} />
                 </React.Suspense>
             ),
         );
-        const router = React.useContext(XViewRouterContext)!;
         return (
-            <span onMouseEnter={show}>
-                <ULink
-                    onClick={() =>
+            <span>
+                <span
+                    onMouseEnter={show}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        instantHide();
                         openEntity({
                             isGroup: false,
                             entity: organizationId,
                             router,
-                        })
-                    }
+                        });
+                    }}
                     className={cx(
                         mentionClassName,
                         isService && mentionServiceClassName,
@@ -437,7 +451,7 @@ const MentionedOrganization = React.memo(
                     )}
                 >
                     {children}
-                </ULink>
+                </span>
             </span>
         );
     },
@@ -481,6 +495,8 @@ export const SpanView = React.memo<{
         return <span className={cx(loudTextClassName, TextTitle2)}>{children}</span>;
     } else if (span.type === 'rotating') {
         return <span className={cx(rotatingTextClassName, TextTitle2)}>{children}</span>;
+    } else if (span.type === 'search_highlight') {
+        return <span className={searchHighlightClassName}>{children}</span>;
     } else if (span.type === 'insane') {
         return <span className={cx(insaneTextClassName, TextTitle2)}>{children}</span>;
     } else if (span.type === 'irony') {

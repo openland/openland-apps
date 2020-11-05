@@ -16,17 +16,17 @@ const selectorStyle = css`
     left: 0px;
     height: 48px;
     width: 3px;
-    background-color: #1885f2;
+    background-color: var(--accentMuted);
     border-radius: 0px 100px 100px 0px;
     transition: transform 150ms cubic-bezier(0, 0, 0.2, 1);
     will-change: transform;
 `;
 
 export const counterStyle = css`
-    background-color: #e62e3d;
+    background-color: var(--accentNegative);
     position: absolute;
     top: 8px;
-    border: 2px solid #f2f3f5;
+    border: 2px solid var(--backgroundTertiary);
     right: 15px;
     height: 20px;
     min-width: 20px;
@@ -35,12 +35,13 @@ export const counterStyle = css`
     display: flex;
     color: white;
     font-size: 10px;
-    line-height: 16px;
+    line-height: 12px;
     text-align: center;
-    font-weight: 600;
+    font-weight: 700;
     border-radius: 20px;
     padding-left: 4px;
     padding-right: 4px;
+    letter-spacing: 0.25px;
 `;
 
 const counterDozenStyle = css`

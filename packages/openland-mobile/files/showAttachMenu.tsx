@@ -1,30 +1,59 @@
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Platform } from 'react-native';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
-import Picker from 'react-native-image-picker';
+import Picker, { ImageOrVideo } from 'react-native-image-crop-picker';
+
 import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
 import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 
-export const showAttachMenu = (fileCallback?: (type: 'document' | 'photo' | 'video', name: string, path: string, size: number) => void, donationCb?: () => void) => {
+type PickerMedia = {
+    type: 'document' | 'photo' | 'video',
+    name: string,
+    path: string,
+    size: number,
+};
+
+const normalizeMedia = (data: ImageOrVideo[]) => {
+    let filesMeta = data.reduce((acc, response) => {
+        const isPhoto = checkFileIsPhoto(response.path);
+        if (isPhoto) {
+            acc.images.push({ type: 'photo', name: 'image.jpg', path: response.path, size: response.size });
+        } else {
+            acc.videos.push({ type: 'video', name: 'video.mp4', path: response.path, size: response.size });
+        }
+        return acc;
+    }, { images: [] as PickerMedia[], videos: [] as PickerMedia[] });
+
+    let imagesBatches = filesMeta.images.reduce((acc, image, i) => {
+        let current = acc[acc.length - 1];
+        if (!current || current && current.length === 4) {
+            acc.push([image]);
+        } else if (current && current.length < 4) {
+            current.push(image);
+        }
+        return acc;
+    }, [] as PickerMedia[][]);
+
+    return { imagesBatches, videos: filesMeta.videos };
+};
+
+export const showAttachMenu = (fileCallback?: (filesMeta: ({ type: 'document' | 'photo' | 'video', name: string, path: string, size: number })[]) => void, donationCb?: () => void) => {
     let builder = new ActionSheetBuilder();
 
     builder.action(Platform.select({ ios: 'Take photo or video', android: 'Take photo' }), async () => {
         if (await checkPermissions('camera')) {
-            Picker.launchCamera({ title: 'Camera', mediaType: 'mixed' }, (response) => {
-                if (response.error) {
-                    handlePermissionDismiss('camera');
-                    return;
-                }
-
-                if (response.didCancel) {
-                    return;
-                }
-
-                let isPhoto = checkFileIsPhoto(response.uri);
+            Picker.openCamera({
+                mediaType: Platform.select({ ios: 'any', android: 'photo' }),
+            }).then(response => {
+                let isPhoto = checkFileIsPhoto(response.path);
 
                 if (fileCallback) {
-                    fileCallback(isPhoto ? 'photo' : 'video', isPhoto ? 'image.jpg' : 'video.mp4', response.path ? 'file://' + response.path : response.uri, response.fileSize);
+                    fileCallback([{ type: isPhoto ? 'photo' : 'video', name: isPhoto ? 'image.jpg' : 'video.mp4', path: response.path, size: response.size }]);
+                }
+            }).catch(e => {
+                if (e.code === 'E_PERMISSION_MISSING') {
+                    handlePermissionDismiss('camera');
                 }
             });
         }
@@ -33,20 +62,15 @@ export const showAttachMenu = (fileCallback?: (type: 'document' | 'photo' | 'vid
     if (Platform.OS === 'android') {
         builder.action('Record video', async () => {
             if (await checkPermissions('camera')) {
-                Picker.launchCamera({
+                Picker.openCamera({
                     mediaType: 'video',
-                }, (response) => {
-                    if (response.error) {
-                        handlePermissionDismiss('camera');
-                        return;
-                    }
-
-                    if (response.didCancel) {
-                        return;
-                    }
-
+                }).then(response => {
                     if (fileCallback) {
-                        fileCallback('video', 'video.mp4', response.uri, response.fileSize);
+                        fileCallback([{ type: 'video', name: 'video.mp4', path: response.path, size: response.size }]);
+                    }
+                }).catch(e => {
+                    if (e.code === 'E_PERMISSION_MISSING') {
+                        handlePermissionDismiss('camera');
                     }
                 });
             }
@@ -55,51 +79,59 @@ export const showAttachMenu = (fileCallback?: (type: 'document' | 'photo' | 'vid
 
     builder.action(Platform.select({ ios: 'Choose from library', android: 'Photo gallery' }), async () => {
         if (await checkPermissions('gallery')) {
-            Picker.launchImageLibrary(
-                {
-                    maxWidth: 1024,
-                    maxHeight: 1024,
-                    quality: 1,
-                    videoQuality: Platform.OS === 'ios' ? 'medium' : undefined,
-                    mediaType: Platform.select({ ios: 'mixed', android: 'photo', default: 'photo' }) as 'photo' | 'mixed'
-                },
-                (response) => {
-                    if (response.error) {
-                        handlePermissionDismiss('gallery');
-                        return;
+            Picker.openPicker({
+                multiple: true,
+                width: 1024,
+                height: 1024,
+                compressImageQuality: 1,
+                compressVideoPreset: 'MediumQuality',
+                cropping: false,
+                maxFiles: Platform.select({ ios: 20, android: undefined }),
+                mediaType: Platform.select({ ios: 'any', android: 'photo', default: 'photo' })
+            }).then(pickerResponse => {
+                if (fileCallback) {
+                    let { imagesBatches, videos } = normalizeMedia(pickerResponse);
+
+                    if (imagesBatches.length > 0) {
+                        imagesBatches.forEach(x => fileCallback(x));
                     }
-
-                    if (response.didCancel) {
-                        return;
-                    }
-
-                    let isPhoto = checkFileIsPhoto(response.uri);
-
-                    if (fileCallback) {
-                        fileCallback(isPhoto ? 'photo' : 'video', isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
+                    if (videos.length > 0) {
+                        videos.forEach(x => fileCallback([x]));
                     }
                 }
-            );
+            }).catch(e => {
+                if (e.code === 'E_PERMISSION_MISSING') {
+                    handlePermissionDismiss('gallery');
+                }
+            });
         }
     }, false, require('assets/ic-gallery-24.png'));
 
     if (Platform.OS === 'android') {
         builder.action('Video gallery', async () => {
             if (await checkPermissions('gallery')) {
-                Picker.launchImageLibrary({
-                    mediaType: 'video',
-                }, (response) => {
-                    if (response.error) {
-                        handlePermissionDismiss('gallery');
-                        return;
-                    }
-
-                    if (response.didCancel) {
-                        return;
-                    }
-
+                Picker.openPicker({
+                    multiple: true,
+                    width: 1024,
+                    height: 1024,
+                    compressImageQuality: 1,
+                    compressVideoPreset: 'MediumQuality',
+                    cropping: false,
+                    mediaType: 'video'
+                }).then(pickerResponse => {
                     if (fileCallback) {
-                        fileCallback('video', 'video.mp4', response.uri, response.fileSize);
+                        let { imagesBatches, videos } = normalizeMedia(pickerResponse);
+
+                        if (imagesBatches.length > 0) {
+                            imagesBatches.forEach(x => fileCallback(x));
+                        }
+                        if (videos.length > 0) {
+                            videos.forEach(x => fileCallback([x]));
+                        }
+                    }
+                }).catch(e => {
+                    if (e.code === 'E_PERMISSION_MISSING') {
+                        handlePermissionDismiss('gallery');
                     }
                 });
             }
@@ -114,17 +146,17 @@ export const showAttachMenu = (fileCallback?: (type: 'document' | 'photo' | 'vid
                 }
 
                 if (fileCallback) {
-                    fileCallback('document', response.fileName, response.uri, response.fileSize);
+                    fileCallback([{ type: 'document', name: response.fileName, path: response.uri, size: response.fileSize }]);
                 }
             }
         );
     }, false, require('assets/ic-document-24.png'));
 
-    // if (donationCb && Platform.OS !== 'ios') {
-    //     builder.action(Platform.select({ ios: 'Make donation', android: 'Donation' }), () => {
-    //         donationCb();
-    //     }, false, require('assets/ic-donation-24.png'));
-    // }
+    if (donationCb && Platform.OS !== 'ios') {
+        builder.action(Platform.select({ ios: 'Make donation', android: 'Donation' }), () => {
+            donationCb();
+        }, false, require('assets/ic-donation-24.png'));
+    }
 
     builder.show();
 };

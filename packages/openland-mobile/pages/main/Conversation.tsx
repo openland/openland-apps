@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextInput } from 'react-native';
+import { View, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextInput, Linking } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine, convertMessageBack } from 'openland-engines/messenger/ConversationEngine';
 import { MessageInputBar } from './components/MessageInputBar';
@@ -11,8 +11,7 @@ import { ChatHeader } from './components/ChatHeader';
 import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/ChatHeaderAvatar';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
-import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType } from 'openland-api/spacex.types';
+import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType, StickerFragment, RoomCallsMode, MessageAttachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
@@ -45,8 +44,11 @@ import { showNoiseWarning } from 'openland-mobile/messenger/components/showNoise
 import { plural } from 'openland-y-utils/plural';
 import { SRouterMountedContext } from 'react-native-s/SRouterContext';
 import { SUPER_ADMIN } from '../Init';
-import { ChatMessagesActionsMethods, ConversationActionsState } from 'openland-y-utils/MessagesActionsState';
+import { ChatMessagesActionsMethods, ConversationActionsState, setMessagesActionsUserChat } from 'openland-y-utils/MessagesActionsState';
 import { useChatMessagesActionsState, useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
+import { matchLinks } from 'openland-y-utils/TextProcessor';
+import { StickerPicker } from './components/stickers/StickerPicker';
+import { SDevice } from 'react-native-s/SDevice';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -67,12 +69,21 @@ interface ConversationRootState {
         end: number
     };
     muted: boolean;
+    stickerKeyboardShown: boolean;
+    keyboardHeight: number;
+    keyboardOpened: boolean;
+    closingQuoted: boolean;
 }
 
 class ConversationRoot extends React.Component<ConversationRootProps, ConversationRootState> {
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
     inputRef = React.createRef<TextInput>();
+    waitingForKeyboard = false;
+    waitingForKeyboardNative = false;
+    shouldHideStickerKeyboard = true;
+    stickerKeyboardHeight = 0;
+    openKeyboardHeight = 0;
 
     private setTyping = throttle(() => {
         getMessenger().engine.client.mutateSetTyping({ conversationId: this.props.chat.id, type: TypingType.TEXT });
@@ -89,7 +100,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             },
             mentions: [],
             inputFocused: false,
-            muted: !!this.props.chat.settings.mute
+            muted: !!this.props.chat.settings.mute,
+            stickerKeyboardShown: false,
+            keyboardHeight: 0,
+            keyboardOpened: false,
+            closingQuoted: false,
         };
 
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
@@ -167,9 +182,17 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     handleFocus = () => {
-        this.setState({
-            inputFocused: true
-        });
+        if (this.shouldHideStickerKeyboard) {
+            this.waitingForKeyboardNative = true;
+            this.setState({
+                inputFocused: true,
+                stickerKeyboardShown: false,
+                keyboardHeight: this.stickerKeyboardHeight
+            });
+        } else {
+            this.shouldHideStickerKeyboard = true;
+            this.setState({ inputFocused: true });
+        }
     }
 
     handleBlur = () => {
@@ -186,6 +209,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         if (state.action === 'edit' && state.messages.length > 0) {
             let messageToEdit = state.messages.map(convertMessageBack)[0];
+            let fileAttachments = (state.messages[0].attachments?.filter(x => x.__typename === 'MessageAttachmentFile') || []) as MessageAttachments_MessageAttachmentFile[];
             const loader = Toast.loader();
             loader.show();
             try {
@@ -193,7 +217,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     messageId: messageToEdit.id,
                     message: tx,
                     mentions,
-                    spans: findSpans(tx)
+                    spans: findSpans(tx),
+                    fileAttachments: fileAttachments.map(x => ({ fileId: x.fileId })),
                 });
             } catch (e) {
                 Alert.alert(e.message);
@@ -239,8 +264,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     this.props.router.push('Donation', { chatId: this.props.chat.id, name: user.firstName });
                 }
             };
-        showAttachMenu((type, name, path, size) => {
-            UploadManagerInstance.registerMessageUpload(this.props.chat.id, name, path, this.props.messagesActionsMethods.prepareToSend(), size);
+        showAttachMenu((filesMeta) => {
+            UploadManagerInstance.registerMessageUploads(this.props.chat.id, filesMeta, this.props.messagesActionsMethods.prepareToSend());
         }, donationCb);
     }
 
@@ -288,15 +313,48 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         this.props.router.push('Message', { messageId: mid });
     }
 
-    onQuotedClearPress = () => {
-        this.props.messagesActionsMethods.clear();
+    handleStickerKeyboardButtonPress = () => {
+        if (this.state.stickerKeyboardShown) {
+            this.waitingForKeyboardNative = true;
+            this.setState({ stickerKeyboardShown: false, keyboardHeight: this.stickerKeyboardHeight }, () => {
+                if (this.inputRef.current && !this.inputRef.current.isFocused()) {
+                    this.inputRef.current.focus();
+                }
+            });
+        } else {
+            if (this.openKeyboardHeight > 0) {
+                this.stickerKeyboardHeight = this.openKeyboardHeight;
+                this.setState({ keyboardHeight: 0, stickerKeyboardShown: true }, () => {
+                    if (this.inputRef.current && this.inputRef.current.isFocused()) {
+                        this.inputRef.current.blur();
+                    }
+                });
+            } else if (this.inputRef.current) {
+                if (this.inputRef.current.isFocused()) {
+                    this.inputRef.current.blur();
+                }
+                this.waitingForKeyboard = true;
+                this.shouldHideStickerKeyboard = false;
+                this.inputRef.current.focus();
+            }
+        }
+    }
 
+    clearActionsBar = () => {
+        this.setState({ closingQuoted: true });
+        setTimeout(() => {
+            this.props.messagesActionsMethods.clear();
+            this.setState({ closingQuoted: false });
+        }, 2000);
+    }
+
+    onQuotedClearPress = () => {
+        this.clearActionsBar();
         this.removeDraft();
     }
 
     onEditedClearPress = () => {
-        this.props.messagesActionsMethods.clear();
-
+        this.clearActionsBar();
         this.setState({
             text: '',
             mentions: []
@@ -307,6 +365,18 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     onMutedChange = () => {
         this.setState(prevState => ({ muted: !prevState.muted }));
+    }
+
+    onCustomCallPress = async () => {
+        let customCallLink = this.props.chat?.__typename === 'SharedRoom' && this.props.chat?.callSettings.callLink;
+        let matchedLink = customCallLink && matchLinks(customCallLink)?.[0].url;
+        if (matchedLink) {
+            try {
+                await Linking.openURL(matchedLink);
+            } catch (e) {
+                /**/
+            }
+        }
     }
 
     render() {
@@ -361,12 +431,14 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let canSubmit = this.state.text.trim().length > 0;
 
         if (['reply', 'forward'].includes(messagesActionsState.action)) {
-            canSubmit = true;
-            quoted = <ForwardReplyView onClearPress={this.onQuotedClearPress} messages={messagesActionsState.messages.map(convertMessageBack)} action={messagesActionsState.action === 'forward' ? 'forward' : 'reply'} />;
+            if (messagesActionsState.action === 'forward') {
+                canSubmit = true;
+            }
+            quoted = <ForwardReplyView isClosing={this.state.closingQuoted} onClearPress={this.onQuotedClearPress} messages={messagesActionsState.messages.map(convertMessageBack)} action={messagesActionsState.action === 'forward' ? 'forward' : 'reply'} />;
         }
 
         if (messagesActionsState.action === 'edit') {
-            quoted = <EditView onClearPress={this.onEditedClearPress} message={messagesActionsState.messages.map(convertMessageBack)[0]} />;
+            quoted = <EditView isClosing={this.state.closingQuoted} onClearPress={this.onEditedClearPress} message={messagesActionsState.messages.map(convertMessageBack)[0]} />;
         }
 
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
@@ -385,8 +457,9 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         if (!showSelectedMessagesActions && privateRoom && privateRoom.user.isBot) {
             inputPlaceholder = <ChatInputPlaceholder text="View profile" onPress={() => this.props.router.push("ProfileUser", { id: privateRoom!.user.id })} />;
         }
-        let reloadButton = <ReloadFromBottomButton conversation={this.engine} />;
-        let isBot = privateRoom && privateRoom.user.isBot;
+        const reloadButton = <ReloadFromBottomButton conversation={this.engine} />;
+        const isBot = privateRoom && privateRoom.user.isBot;
+        const callMode = sharedRoom ? sharedRoom.callSettings.mode : RoomCallsMode.STANDARD;
         return (
             <>
                 {!showSelectedMessagesActions && (
@@ -394,11 +467,20 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                         {header}
                     </SHeaderView>
                 )}
-                {!isSavedMessages && !isBot && !showSelectedMessagesActions && (
+                {!isSavedMessages && !isBot && !showSelectedMessagesActions && callMode === RoomCallsMode.STANDARD && (
                     <SHeaderButton
                         title="Call"
+                        priority={1}
                         icon={require('assets/ic-call-24.png')}
                         onPress={this.props.showCallModal}
+                    />
+                )}
+                {!isSavedMessages && !isBot && !showSelectedMessagesActions && callMode === RoomCallsMode.LINK && (
+                    <SHeaderButton
+                        title="Call"
+                        priority={1}
+                        icon={require('assets/ic-call-external-24.png')}
+                        onPress={this.onCustomCallPress}
                     />
                 )}
                 {!showSelectedMessagesActions && (
@@ -410,8 +492,17 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     />
                 )}
                 <SDeferred>
-                    <KeyboardSafeAreaView>
-                        <View style={{ height: '100%', flexDirection: 'column' }}>
+                    <View style={{ height: '100%', flexDirection: 'column', position: 'relative' }}>
+                        <View
+                            style={{
+                                flex: 1,
+                                flexGrow: 1,
+                                flexBasis: 1,
+                                flexShrink: 0,
+                                flexDirection: 'column',
+                                paddingBottom: this.state.stickerKeyboardShown ? this.stickerKeyboardHeight : (Platform.OS === 'android' ? this.state.keyboardHeight : 0)
+                            }}
+                        >
                             <ConversationView inverted={true} engine={this.engine} />
                             {pinnedMessage && (
                                 <PinnedMessage
@@ -438,13 +529,52 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     topView={quoted}
                                     placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message'}
                                     canSubmit={canSubmit}
+                                    onStickerKeyboardButtonPress={this.state.keyboardOpened || this.state.stickerKeyboardShown ? this.handleStickerKeyboardButtonPress : undefined}
+                                    stickerKeyboardShown={this.state.stickerKeyboardShown}
+                                    overrideTransform={this.state.stickerKeyboardShown ? (this.stickerKeyboardHeight + 0) : -1}
                                 />
                             )}
                             {!showInputBar && reloadButton}
                             {!showInputBar && inputPlaceholder}
                             {showSelectedMessagesActions && <ChatSelectedActions conversation={this.engine} chat={this.props.chat} />}
                         </View>
-                    </KeyboardSafeAreaView>
+                        {this.state.stickerKeyboardShown && (
+                            <View style={{ bottom: SDevice.safeArea.bottom, position: 'absolute', zIndex: 4, left: 0, right: 0 }}>
+                                <StickerPicker
+                                    onStickerSent={(sticker: StickerFragment) => this.engine.sendSticker(sticker, undefined)}
+                                    theme={this.props.theme}
+                                    height={this.stickerKeyboardHeight}
+                                />
+                            </View>
+                        )}
+                    </View>
+                    <ASSafeAreaContext.Consumer>
+                        {context => {
+                            const keyboardOpened = context.openKeyboardHeight > 0;
+                            if (keyboardOpened) {
+                                this.openKeyboardHeight = context.openKeyboardHeight;
+                            }
+                            if (this.waitingForKeyboard && keyboardOpened) {
+                                this.stickerKeyboardHeight = this.openKeyboardHeight;
+                                this.waitingForKeyboard = false;
+                                this.setState({ keyboardHeight: 0, stickerKeyboardShown: true }, () => {
+                                    if (this.inputRef.current && this.inputRef.current.isFocused()) {
+                                        this.inputRef.current.blur();
+                                    }
+                                });
+                            } else if (this.state.keyboardHeight !== context.openKeyboardHeight || keyboardOpened !== this.state.keyboardOpened) {
+                                if (!this.waitingForKeyboardNative) {
+                                    this.setState({ keyboardHeight: context.openKeyboardHeight, keyboardOpened });
+                                } else if (keyboardOpened) {
+                                    this.waitingForKeyboardNative = false;
+                                    this.setState({ keyboardHeight: context.openKeyboardHeight, keyboardOpened });
+                                }
+                            } else if (this.waitingForKeyboardNative && keyboardOpened) {
+                                this.waitingForKeyboardNative = false;
+                            }
+                            return null;
+                        }}
+                    </ASSafeAreaContext.Consumer>
                 </SDeferred>
             </>
         );
@@ -457,8 +587,15 @@ const ConversationComponent = React.memo((props: PageProps) => {
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id }, { fetchPolicy: 'cache-and-network' }).room;
     let mountedRef = React.useContext(SRouterMountedContext);
     let showCallModal = useCallModal({ id: room?.id! });
-    let messagesActionsState = useChatMessagesActionsState({ conversationId: room?.id, userId: room?.__typename === 'PrivateRoom' ? room.user.id : undefined });
-    let messagesActionsMethods = useChatMessagesActionsMethods({ conversationId: room?.id, userId: room?.__typename === 'PrivateRoom' ? room.user.id : undefined });
+    let userId = room?.__typename === 'PrivateRoom' ? room.user.id : undefined;
+    let messagesActionsState = useChatMessagesActionsState(room?.id);
+    let messagesActionsMethods = useChatMessagesActionsMethods(room?.id);
+
+    React.useEffect(() => {
+        if (userId && room?.id) {
+            setMessagesActionsUserChat(room.id, userId);
+        }
+    }, [userId, room?.id]);
 
     if (room === null) {
         return <ChatAccessDenied theme={theme} onPress={() => props.router.back()} />;

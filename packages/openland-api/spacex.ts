@@ -106,6 +106,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, params?: QueryParameters): Promise<Types.DiscoverNewAndGrowing> {
         return this.query('DiscoverNewAndGrowing', variables, params);
     }
+    queryDiscoverNewOrganizations(variables: Types.DiscoverNewOrganizationsVariables, params?: QueryParameters): Promise<Types.DiscoverNewOrganizations> {
+        return this.query('DiscoverNewOrganizations', variables, params);
+    }
     queryDiscoverNextPage(variables: Types.DiscoverNextPageVariables, params?: QueryParameters): Promise<Types.DiscoverNextPage> {
         return this.query('DiscoverNextPage', variables, params);
     }
@@ -114,6 +117,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, params?: QueryParameters): Promise<Types.DiscoverPopularNow> {
         return this.query('DiscoverPopularNow', variables, params);
+    }
+    queryDiscoverPopularOrganizations(variables: Types.DiscoverPopularOrganizationsVariables, params?: QueryParameters): Promise<Types.DiscoverPopularOrganizations> {
+        return this.query('DiscoverPopularOrganizations', variables, params);
     }
     queryDiscoverState(params?: QueryParameters): Promise<Types.DiscoverState> {
         return this.query('DiscoverState', undefined, params);
@@ -139,6 +145,18 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryFetchPushSettings(params?: QueryParameters): Promise<Types.FetchPushSettings> {
         return this.query('FetchPushSettings', undefined, params);
     }
+    queryGetDifference(variables: Types.GetDifferenceVariables, params?: QueryParameters): Promise<Types.GetDifference> {
+        return this.query('GetDifference', variables, params);
+    }
+    queryGetSequenceDifference(variables: Types.GetSequenceDifferenceVariables, params?: QueryParameters): Promise<Types.GetSequenceDifference> {
+        return this.query('GetSequenceDifference', variables, params);
+    }
+    queryGetSequenceState(variables: Types.GetSequenceStateVariables, params?: QueryParameters): Promise<Types.GetSequenceState> {
+        return this.query('GetSequenceState', variables, params);
+    }
+    queryGetState(params?: QueryParameters): Promise<Types.GetState> {
+        return this.query('GetState', undefined, params);
+    }
     queryGlobalCounter(params?: QueryParameters): Promise<Types.GlobalCounter> {
         return this.query('GlobalCounter', undefined, params);
     }
@@ -162,6 +180,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryMessagesSearch(variables: Types.MessagesSearchVariables, params?: QueryParameters): Promise<Types.MessagesSearch> {
         return this.query('MessagesSearch', variables, params);
+    }
+    queryMessagesSearchFull(variables: Types.MessagesSearchFullVariables, params?: QueryParameters): Promise<Types.MessagesSearchFull> {
+        return this.query('MessagesSearchFull', variables, params);
     }
     queryMyApps(params?: QueryParameters): Promise<Types.MyApps> {
         return this.query('MyApps', undefined, params);
@@ -289,9 +310,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryRoomMembersTiny(variables: Types.RoomMembersTinyVariables, params?: QueryParameters): Promise<Types.RoomMembersTiny> {
         return this.query('RoomMembersTiny', variables, params);
     }
-    queryRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, params?: QueryParameters): Promise<Types.RoomMetaPreview> {
-        return this.query('RoomMetaPreview', variables, params);
-    }
     queryRoomPico(variables: Types.RoomPicoVariables, params?: QueryParameters): Promise<Types.RoomPico> {
         return this.query('RoomPico', variables, params);
     }
@@ -300,6 +318,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryRoomSocialImage(variables: Types.RoomSocialImageVariables, params?: QueryParameters): Promise<Types.RoomSocialImage> {
         return this.query('RoomSocialImage', variables, params);
+    }
+    queryRoomSuper(variables: Types.RoomSuperVariables, params?: QueryParameters): Promise<Types.RoomSuper> {
+        return this.query('RoomSuper', variables, params);
     }
     queryRoomTiny(variables: Types.RoomTinyVariables, params?: QueryParameters): Promise<Types.RoomTiny> {
         return this.query('RoomTiny', variables, params);
@@ -457,6 +478,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, params?: QueryParameters): Promise<Types.DiscoverNewAndGrowing> {
         return this.refetch('DiscoverNewAndGrowing', variables, params);
     }
+    refetchDiscoverNewOrganizations(variables: Types.DiscoverNewOrganizationsVariables, params?: QueryParameters): Promise<Types.DiscoverNewOrganizations> {
+        return this.refetch('DiscoverNewOrganizations', variables, params);
+    }
     refetchDiscoverNextPage(variables: Types.DiscoverNextPageVariables, params?: QueryParameters): Promise<Types.DiscoverNextPage> {
         return this.refetch('DiscoverNextPage', variables, params);
     }
@@ -465,6 +489,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, params?: QueryParameters): Promise<Types.DiscoverPopularNow> {
         return this.refetch('DiscoverPopularNow', variables, params);
+    }
+    refetchDiscoverPopularOrganizations(variables: Types.DiscoverPopularOrganizationsVariables, params?: QueryParameters): Promise<Types.DiscoverPopularOrganizations> {
+        return this.refetch('DiscoverPopularOrganizations', variables, params);
     }
     refetchDiscoverState(params?: QueryParameters): Promise<Types.DiscoverState> {
         return this.refetch('DiscoverState', undefined, params);
@@ -490,6 +517,18 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchFetchPushSettings(params?: QueryParameters): Promise<Types.FetchPushSettings> {
         return this.refetch('FetchPushSettings', undefined, params);
     }
+    refetchGetDifference(variables: Types.GetDifferenceVariables, params?: QueryParameters): Promise<Types.GetDifference> {
+        return this.refetch('GetDifference', variables, params);
+    }
+    refetchGetSequenceDifference(variables: Types.GetSequenceDifferenceVariables, params?: QueryParameters): Promise<Types.GetSequenceDifference> {
+        return this.refetch('GetSequenceDifference', variables, params);
+    }
+    refetchGetSequenceState(variables: Types.GetSequenceStateVariables, params?: QueryParameters): Promise<Types.GetSequenceState> {
+        return this.refetch('GetSequenceState', variables, params);
+    }
+    refetchGetState(params?: QueryParameters): Promise<Types.GetState> {
+        return this.refetch('GetState', undefined, params);
+    }
     refetchGlobalCounter(params?: QueryParameters): Promise<Types.GlobalCounter> {
         return this.refetch('GlobalCounter', undefined, params);
     }
@@ -513,6 +552,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchMessagesSearch(variables: Types.MessagesSearchVariables, params?: QueryParameters): Promise<Types.MessagesSearch> {
         return this.refetch('MessagesSearch', variables, params);
+    }
+    refetchMessagesSearchFull(variables: Types.MessagesSearchFullVariables, params?: QueryParameters): Promise<Types.MessagesSearchFull> {
+        return this.refetch('MessagesSearchFull', variables, params);
     }
     refetchMyApps(params?: QueryParameters): Promise<Types.MyApps> {
         return this.refetch('MyApps', undefined, params);
@@ -640,9 +682,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchRoomMembersTiny(variables: Types.RoomMembersTinyVariables, params?: QueryParameters): Promise<Types.RoomMembersTiny> {
         return this.refetch('RoomMembersTiny', variables, params);
     }
-    refetchRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, params?: QueryParameters): Promise<Types.RoomMetaPreview> {
-        return this.refetch('RoomMetaPreview', variables, params);
-    }
     refetchRoomPico(variables: Types.RoomPicoVariables, params?: QueryParameters): Promise<Types.RoomPico> {
         return this.refetch('RoomPico', variables, params);
     }
@@ -651,6 +690,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchRoomSocialImage(variables: Types.RoomSocialImageVariables, params?: QueryParameters): Promise<Types.RoomSocialImage> {
         return this.refetch('RoomSocialImage', variables, params);
+    }
+    refetchRoomSuper(variables: Types.RoomSuperVariables, params?: QueryParameters): Promise<Types.RoomSuper> {
+        return this.refetch('RoomSuper', variables, params);
     }
     refetchRoomTiny(variables: Types.RoomTinyVariables, params?: QueryParameters): Promise<Types.RoomTiny> {
         return this.refetch('RoomTiny', variables, params);
@@ -808,6 +850,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, updater: (data: Types.DiscoverNewAndGrowing) => Types.DiscoverNewAndGrowing | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverNewAndGrowing', variables);
     }
+    updateDiscoverNewOrganizations(variables: Types.DiscoverNewOrganizationsVariables, updater: (data: Types.DiscoverNewOrganizations) => Types.DiscoverNewOrganizations | null): Promise<boolean> {
+        return this.updateQuery(updater, 'DiscoverNewOrganizations', variables);
+    }
     updateDiscoverNextPage(variables: Types.DiscoverNextPageVariables, updater: (data: Types.DiscoverNextPage) => Types.DiscoverNextPage | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverNextPage', variables);
     }
@@ -816,6 +861,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, updater: (data: Types.DiscoverPopularNow) => Types.DiscoverPopularNow | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverPopularNow', variables);
+    }
+    updateDiscoverPopularOrganizations(variables: Types.DiscoverPopularOrganizationsVariables, updater: (data: Types.DiscoverPopularOrganizations) => Types.DiscoverPopularOrganizations | null): Promise<boolean> {
+        return this.updateQuery(updater, 'DiscoverPopularOrganizations', variables);
     }
     updateDiscoverState(updater: (data: Types.DiscoverState) => Types.DiscoverState | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverState', undefined);
@@ -841,6 +889,18 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateFetchPushSettings(updater: (data: Types.FetchPushSettings) => Types.FetchPushSettings | null): Promise<boolean> {
         return this.updateQuery(updater, 'FetchPushSettings', undefined);
     }
+    updateGetDifference(variables: Types.GetDifferenceVariables, updater: (data: Types.GetDifference) => Types.GetDifference | null): Promise<boolean> {
+        return this.updateQuery(updater, 'GetDifference', variables);
+    }
+    updateGetSequenceDifference(variables: Types.GetSequenceDifferenceVariables, updater: (data: Types.GetSequenceDifference) => Types.GetSequenceDifference | null): Promise<boolean> {
+        return this.updateQuery(updater, 'GetSequenceDifference', variables);
+    }
+    updateGetSequenceState(variables: Types.GetSequenceStateVariables, updater: (data: Types.GetSequenceState) => Types.GetSequenceState | null): Promise<boolean> {
+        return this.updateQuery(updater, 'GetSequenceState', variables);
+    }
+    updateGetState(updater: (data: Types.GetState) => Types.GetState | null): Promise<boolean> {
+        return this.updateQuery(updater, 'GetState', undefined);
+    }
     updateGlobalCounter(updater: (data: Types.GlobalCounter) => Types.GlobalCounter | null): Promise<boolean> {
         return this.updateQuery(updater, 'GlobalCounter', undefined);
     }
@@ -864,6 +924,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateMessagesSearch(variables: Types.MessagesSearchVariables, updater: (data: Types.MessagesSearch) => Types.MessagesSearch | null): Promise<boolean> {
         return this.updateQuery(updater, 'MessagesSearch', variables);
+    }
+    updateMessagesSearchFull(variables: Types.MessagesSearchFullVariables, updater: (data: Types.MessagesSearchFull) => Types.MessagesSearchFull | null): Promise<boolean> {
+        return this.updateQuery(updater, 'MessagesSearchFull', variables);
     }
     updateMyApps(updater: (data: Types.MyApps) => Types.MyApps | null): Promise<boolean> {
         return this.updateQuery(updater, 'MyApps', undefined);
@@ -991,9 +1054,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateRoomMembersTiny(variables: Types.RoomMembersTinyVariables, updater: (data: Types.RoomMembersTiny) => Types.RoomMembersTiny | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomMembersTiny', variables);
     }
-    updateRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, updater: (data: Types.RoomMetaPreview) => Types.RoomMetaPreview | null): Promise<boolean> {
-        return this.updateQuery(updater, 'RoomMetaPreview', variables);
-    }
     updateRoomPico(variables: Types.RoomPicoVariables, updater: (data: Types.RoomPico) => Types.RoomPico | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomPico', variables);
     }
@@ -1002,6 +1062,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateRoomSocialImage(variables: Types.RoomSocialImageVariables, updater: (data: Types.RoomSocialImage) => Types.RoomSocialImage | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomSocialImage', variables);
+    }
+    updateRoomSuper(variables: Types.RoomSuperVariables, updater: (data: Types.RoomSuper) => Types.RoomSuper | null): Promise<boolean> {
+        return this.updateQuery(updater, 'RoomSuper', variables);
     }
     updateRoomTiny(variables: Types.RoomTinyVariables, updater: (data: Types.RoomTiny) => Types.RoomTiny | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomTiny', variables);
@@ -1223,6 +1286,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, params?: SpaceQueryWatchParameters): Types.DiscoverNewAndGrowing | null {
         return this.useQuery('DiscoverNewAndGrowing', variables, params);
     }
+    useDiscoverNewOrganizations(variables: Types.DiscoverNewOrganizationsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverNewOrganizations | null;
+    useDiscoverNewOrganizations(variables: Types.DiscoverNewOrganizationsVariables, params?: SpaceQueryWatchParameters): Types.DiscoverNewOrganizations;
+    useDiscoverNewOrganizations(variables: Types.DiscoverNewOrganizationsVariables, params?: SpaceQueryWatchParameters): Types.DiscoverNewOrganizations | null {
+        return this.useQuery('DiscoverNewOrganizations', variables, params);
+    }
     useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverNextPage | null;
     useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, params?: SpaceQueryWatchParameters): Types.DiscoverNextPage;
     useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, params?: SpaceQueryWatchParameters): Types.DiscoverNextPage | null {
@@ -1237,6 +1305,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, params?: SpaceQueryWatchParameters): Types.DiscoverPopularNow;
     useDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, params?: SpaceQueryWatchParameters): Types.DiscoverPopularNow | null {
         return this.useQuery('DiscoverPopularNow', variables, params);
+    }
+    useDiscoverPopularOrganizations(variables: Types.DiscoverPopularOrganizationsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverPopularOrganizations | null;
+    useDiscoverPopularOrganizations(variables: Types.DiscoverPopularOrganizationsVariables, params?: SpaceQueryWatchParameters): Types.DiscoverPopularOrganizations;
+    useDiscoverPopularOrganizations(variables: Types.DiscoverPopularOrganizationsVariables, params?: SpaceQueryWatchParameters): Types.DiscoverPopularOrganizations | null {
+        return this.useQuery('DiscoverPopularOrganizations', variables, params);
     }
     useDiscoverState(params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverState | null;
     useDiscoverState(params?: SpaceQueryWatchParameters): Types.DiscoverState;
@@ -1278,6 +1351,26 @@ export class OpenlandClient extends BaseSpaceXClient {
     useFetchPushSettings(params?: SpaceQueryWatchParameters): Types.FetchPushSettings | null {
         return this.useQuery('FetchPushSettings', undefined, params);
     }
+    useGetDifference(variables: Types.GetDifferenceVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.GetDifference | null;
+    useGetDifference(variables: Types.GetDifferenceVariables, params?: SpaceQueryWatchParameters): Types.GetDifference;
+    useGetDifference(variables: Types.GetDifferenceVariables, params?: SpaceQueryWatchParameters): Types.GetDifference | null {
+        return this.useQuery('GetDifference', variables, params);
+    }
+    useGetSequenceDifference(variables: Types.GetSequenceDifferenceVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.GetSequenceDifference | null;
+    useGetSequenceDifference(variables: Types.GetSequenceDifferenceVariables, params?: SpaceQueryWatchParameters): Types.GetSequenceDifference;
+    useGetSequenceDifference(variables: Types.GetSequenceDifferenceVariables, params?: SpaceQueryWatchParameters): Types.GetSequenceDifference | null {
+        return this.useQuery('GetSequenceDifference', variables, params);
+    }
+    useGetSequenceState(variables: Types.GetSequenceStateVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.GetSequenceState | null;
+    useGetSequenceState(variables: Types.GetSequenceStateVariables, params?: SpaceQueryWatchParameters): Types.GetSequenceState;
+    useGetSequenceState(variables: Types.GetSequenceStateVariables, params?: SpaceQueryWatchParameters): Types.GetSequenceState | null {
+        return this.useQuery('GetSequenceState', variables, params);
+    }
+    useGetState(params: SpaceQueryWatchParameters & { suspense: false }): Types.GetState | null;
+    useGetState(params?: SpaceQueryWatchParameters): Types.GetState;
+    useGetState(params?: SpaceQueryWatchParameters): Types.GetState | null {
+        return this.useQuery('GetState', undefined, params);
+    }
     useGlobalCounter(params: SpaceQueryWatchParameters & { suspense: false }): Types.GlobalCounter | null;
     useGlobalCounter(params?: SpaceQueryWatchParameters): Types.GlobalCounter;
     useGlobalCounter(params?: SpaceQueryWatchParameters): Types.GlobalCounter | null {
@@ -1317,6 +1410,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useMessagesSearch(variables: Types.MessagesSearchVariables, params?: SpaceQueryWatchParameters): Types.MessagesSearch;
     useMessagesSearch(variables: Types.MessagesSearchVariables, params?: SpaceQueryWatchParameters): Types.MessagesSearch | null {
         return this.useQuery('MessagesSearch', variables, params);
+    }
+    useMessagesSearchFull(variables: Types.MessagesSearchFullVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.MessagesSearchFull | null;
+    useMessagesSearchFull(variables: Types.MessagesSearchFullVariables, params?: SpaceQueryWatchParameters): Types.MessagesSearchFull;
+    useMessagesSearchFull(variables: Types.MessagesSearchFullVariables, params?: SpaceQueryWatchParameters): Types.MessagesSearchFull | null {
+        return this.useQuery('MessagesSearchFull', variables, params);
     }
     useMyApps(params: SpaceQueryWatchParameters & { suspense: false }): Types.MyApps | null;
     useMyApps(params?: SpaceQueryWatchParameters): Types.MyApps;
@@ -1528,11 +1626,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersTiny | null {
         return this.useQuery('RoomMembersTiny', variables, params);
     }
-    useRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMetaPreview | null;
-    useRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, params?: SpaceQueryWatchParameters): Types.RoomMetaPreview;
-    useRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, params?: SpaceQueryWatchParameters): Types.RoomMetaPreview | null {
-        return this.useQuery('RoomMetaPreview', variables, params);
-    }
     useRoomPico(variables: Types.RoomPicoVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomPico | null;
     useRoomPico(variables: Types.RoomPicoVariables, params?: SpaceQueryWatchParameters): Types.RoomPico;
     useRoomPico(variables: Types.RoomPicoVariables, params?: SpaceQueryWatchParameters): Types.RoomPico | null {
@@ -1547,6 +1640,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useRoomSocialImage(variables: Types.RoomSocialImageVariables, params?: SpaceQueryWatchParameters): Types.RoomSocialImage;
     useRoomSocialImage(variables: Types.RoomSocialImageVariables, params?: SpaceQueryWatchParameters): Types.RoomSocialImage | null {
         return this.useQuery('RoomSocialImage', variables, params);
+    }
+    useRoomSuper(variables: Types.RoomSuperVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomSuper | null;
+    useRoomSuper(variables: Types.RoomSuperVariables, params?: SpaceQueryWatchParameters): Types.RoomSuper;
+    useRoomSuper(variables: Types.RoomSuperVariables, params?: SpaceQueryWatchParameters): Types.RoomSuper | null {
+        return this.useQuery('RoomSuper', variables, params);
     }
     useRoomTiny(variables: Types.RoomTinyVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomTiny | null;
     useRoomTiny(variables: Types.RoomTinyVariables, params?: SpaceQueryWatchParameters): Types.RoomTiny;
@@ -1813,6 +1911,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateOrganizationMemberRemove(variables: Types.OrganizationMemberRemoveVariables, params?: MutationParameters): Promise<Types.OrganizationMemberRemove> {
         return this.mutate('OrganizationMemberRemove', variables, params);
     }
+    mutateOrganizationRequestMembersExport(variables: Types.OrganizationRequestMembersExportVariables, params?: MutationParameters): Promise<Types.OrganizationRequestMembersExport> {
+        return this.mutate('OrganizationRequestMembersExport', variables, params);
+    }
     mutatePairEmail(variables: Types.PairEmailVariables, params?: MutationParameters): Promise<Types.PairEmail> {
         return this.mutate('PairEmail', variables, params);
     }
@@ -1875,6 +1976,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateRoomAddMembers(variables: Types.RoomAddMembersVariables, params?: MutationParameters): Promise<Types.RoomAddMembers> {
         return this.mutate('RoomAddMembers', variables, params);
+    }
+    mutateRoomAlterFeatured(variables: Types.RoomAlterFeaturedVariables, params?: MutationParameters): Promise<Types.RoomAlterFeatured> {
+        return this.mutate('RoomAlterFeatured', variables, params);
     }
     mutateRoomChangeRole(variables: Types.RoomChangeRoleVariables, params?: MutationParameters): Promise<Types.RoomChangeRole> {
         return this.mutate('RoomChangeRole', variables, params);
@@ -2073,5 +2177,8 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     subscribeWalletUpdates(variables: Types.WalletUpdatesVariables, handler: GraphqlSubscriptionHandler<Types.WalletUpdates>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.WalletUpdates> {
         return this.subscribe(handler, 'WalletUpdates', variables, params);
+    }
+    subscribeWatchUpdates(handler: GraphqlSubscriptionHandler<Types.WatchUpdates>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.WatchUpdates> {
+        return this.subscribe(handler, 'WatchUpdates', undefined, params);
     }
 }

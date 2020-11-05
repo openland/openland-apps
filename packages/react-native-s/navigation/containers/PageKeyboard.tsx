@@ -8,12 +8,13 @@ export interface PageKeyboardProps {
     contextKey: string;
 }
 
-export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keyboardHeight: number, acessoryHeight: number }> {
+export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keyboardHeight: number, acessoryHeight: number, actualAccessoryHeight: number }> {
     constructor(props: PageKeyboardProps) {
         super(props);
         this.state = {
             keyboardHeight: 0,
-            acessoryHeight: 0
+            acessoryHeight: 0,
+            actualAccessoryHeight: 0
         };
     }
 
@@ -39,9 +40,9 @@ export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keybo
         }
     }
 
-    handleKeyboard = (event?: NativeSyntheticEvent<{ state: { height: number, duration: number, curve: number, name: string } }>) => {
+    handleKeyboard = (event?: NativeSyntheticEvent<{ state: { height: number, duration: number, curve: number, name: string, acHeight: number } }>) => {
         if (event) {
-            this.setState({ keyboardHeight: event.nativeEvent.state.height });
+            this.setState({ keyboardHeight: event.nativeEvent.state.height, actualAccessoryHeight: event.nativeEvent.state.acHeight });
         }
     }
 
@@ -61,6 +62,7 @@ export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keybo
                     >
                         <ASSafeAreaProvider
                             bottom={this.state.keyboardHeight}
+                            openKeyboardHeight={this.state.keyboardHeight - this.state.actualAccessoryHeight}
                         >
                             <ASKeyboardAcessoryViewContext.Provider value={this}>
                                 {this.props.children}
@@ -72,7 +74,11 @@ export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keybo
         }
         return (
             <View style={{ width: '100%', height: '100%' }}>
-                <ASSafeAreaProvider bottom={this.state.keyboardHeight} keyboardHeight={this.state.keyboardHeight}>
+                <ASSafeAreaProvider
+                    bottom={this.state.keyboardHeight}
+                    keyboardHeight={this.state.keyboardHeight}
+                    openKeyboardHeight={this.state.keyboardHeight}
+                >
                     {this.props.children}
                 </ASSafeAreaProvider>
             </View>

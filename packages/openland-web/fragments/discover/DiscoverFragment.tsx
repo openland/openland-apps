@@ -17,6 +17,8 @@ import IcCollections from 'openland-icons/s/ic-collections-24.svg';
 import IcPremium from 'openland-icons/s/ic-premium-24.svg';
 import IcFree from 'openland-icons/s/ic-free-24.svg';
 import IcStar from 'openland-icons/s/ic-star-24.svg';
+import IcGlob from 'openland-icons/s/ic-community-2-24.svg';
+import IcNewGlobStar from 'openland-icons/s/ic-new-community-24.svg';
 
 export const DiscoverFragment = React.memo(() => {
     const isMobile = useIsMobile();
@@ -47,7 +49,7 @@ export const DiscoverFragment = React.memo(() => {
     }, []);
 
     return (
-        <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
+        <XView width="100%" height="100%" flexDirection="column" alignItems="stretch" backgroundColor="var(--backgroundPrimary)">
             <USideHeader title="Discover" />
             <USearchInput
                 value={query}
@@ -87,6 +89,16 @@ export const DiscoverFragment = React.memo(() => {
                                 icon={<IcPremium />}
                             />
                             <UListItem title="Top free" path="/discover/free" icon={<IcFree />} />
+                            <UListItem
+                                title="Top communities"
+                                path="/discover/top-communities"
+                                icon={<IcGlob />}
+                            />
+                            <UListItem
+                                title="New communities"
+                                path="/discover/new-communities"
+                                icon={<IcNewGlobStar />}
+                            />
                             <UListItem
                                 title="Recommendations"
                                 path="/discover/recommendations"

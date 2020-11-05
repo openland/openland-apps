@@ -11,13 +11,13 @@ const toastWrapper = css`
     align-items: center;
     justify-content: flex-start;
     border-radius: 8px;
-    background-color: var(--overlayHeavy);
+    background-color: var(--foregroundPrimary);
     padding: 7px 16px 9px;
     opacity: 0;
     transform: scale(0.84) translateY(-8px);
     transition: transform 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
         opacity 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
-    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--boxShadowPopper);
 `;
 
 const toastVisible = css`
@@ -30,15 +30,15 @@ const iconClass = css`
     width: 16px;
     height: 16px;
     margin-right: 8px;
-
+    flex-shrink: 0;
     svg,
     path {
-        fill: var(--foregroundContrast);
+        fill: var(--foregroundInverted);
     }
 `;
 
 const textClass = css`
-    color: var(--foregroundContrast);
+    color: var(--foregroundInverted);
     text-align: center;
 `;
 
@@ -47,14 +47,15 @@ export interface UToastProps {
     type?: 'text' | 'loading' | 'success' | 'failure';
     text?: string;
     backgroundColor?: string;
+    textColor?: string;
     autoclose?: boolean;
     closeCb?: () => void;
     className?: string;
 }
 
 export const UToast = React.memo((props: UToastProps) => {
-    const { isVisible, className, text, backgroundColor, closeCb, type = 'text', autoclose = true } = props;
-    const [isRealVisible, setVisible] = React.useState(isVisible);
+    const { isVisible, className, text, backgroundColor, textColor, closeCb, type = 'text', autoclose = true } = props;
+    const [isRealVisible, setVisible] = React.useState(false);
 
     React.useEffect(() => {
         if (isVisible) {
@@ -104,7 +105,7 @@ export const UToast = React.memo((props: UToastProps) => {
                     <Icon />
                 </div>
             )}
-            <h5 className={cx(TextLabel1, textClass)}>{text}</h5>
+            <h5 className={cx(TextLabel1, textClass)} style={{ color: textColor }}>{text}</h5>
         </div>
     ) : null;
 });
@@ -114,6 +115,7 @@ export interface UToastConfig {
     type?: 'text' | 'loading' | 'success' | 'failure';
     text?: string;
     backgroundColor?: string;
+    textColor?: string;
     autoclose?: boolean;
 }
 

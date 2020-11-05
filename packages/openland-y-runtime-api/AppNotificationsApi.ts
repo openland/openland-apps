@@ -6,5 +6,5 @@ export interface AppNotificationsApi {
     unwatch(handler: (state: AppNotifcationsState) => void): void;
     requestPermission(): void;
     playIncomingSound(): void;
-    displayNotification(content: { path: string, title: string, body: string, image?: string, replace?: boolean }): void;
+    displayNotification(content: { path: string, title: string, body: string, image?: string, replace?: boolean, silent?: boolean, soundOnly?: boolean }): void;
 }

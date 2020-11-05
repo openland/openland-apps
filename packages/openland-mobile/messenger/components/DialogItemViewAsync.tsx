@@ -13,6 +13,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { avatarSizes } from 'openland-mobile/components/ZAvatar';
 import { PremiumBadgeAsync } from 'openland-mobile/components/PremiumBadge';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { showDialogMenu } from './DialogMenu';
 
 const ASCounter = (props: { value: number | string, muted?: boolean, theme: ThemeGlobal }) => (
     <ASFlex borderRadius={11} backgroundColor={props.muted ? props.theme.foregroundQuaternary : props.theme.accentPrimary} height={22} minWidth={22} marginLeft={6} justifyContent="center" alignItems="center">
@@ -27,7 +28,6 @@ interface DialogItemViewAsyncProps {
     showDiscover: (key: string) => boolean;
     compact?: boolean;
     onPress: (id: string, item: DialogDataSourceItem) => void;
-    onLongPress?: (id: string, item: DialogDataSourceItem, theme: ThemeGlobal) => void;
     onDiscoverPress?: () => void;
 }
 
@@ -44,12 +44,6 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
 
     const isSavedMessages = item.flexibleId === getMessenger().engine.user.id;
 
-    const handleLongPress = () => {
-        if (props.onLongPress) {
-            props.onLongPress(item.key, item, theme);
-        }
-    };
-
     return (
         <ASFlex flexDirection={shouldShowDiscover ? 'column' : 'row'} flexGrow={1} alignItems="stretch">
             <ASFlex
@@ -58,7 +52,7 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                 flexDirection="row"
                 highlightColor={theme.backgroundPrimaryActive}
                 onPress={() => props.onPress(item.key, item)}
-                onLongPress={handleLongPress}
+                onLongPress={() => showDialogMenu(item)}
                 alignItems={props.compact ? 'center' : undefined}
             >
                 <ASFlex marginLeft={paddingHorizontal} width={size} height={height} alignItems="center" justifyContent="center">
@@ -86,6 +80,7 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                         <ASText {...TextStylesAsync.Label1} numberOfLines={1} flexShrink={1} color={highlightGroup ? theme.accentPositive : theme.foregroundPrimary}>
                             {isSavedMessages ? 'Saved messages' : item.title}
                         </ASText>
+                        {item.featured && theme.displayFeaturedIcon && <ASFlex alignItems="center" marginLeft={4} marginTop={4}><ASImage tintColor={'#3DA7F2' /* special: verified/featured color */} width={16} height={16} source={require('assets/ic-verified-16.png')} marginBottom={Platform.OS === 'android' ? 4 : 0} /></ASFlex>}
                         {item.isMuted && <ASFlex alignItems="center" marginLeft={4} marginTop={4}><ASImage tintColor={theme.foregroundQuaternary} width={16} height={16} source={require('assets/ic-muted-16.png')} marginBottom={Platform.OS === 'android' ? 4 : 0} /></ASFlex>}
                         <ASFlex marginLeft={10} marginTop={2} flexGrow={1} justifyContent="flex-end">
                             {item.date !== undefined && <ASText {...TextStylesAsync.Caption} color={theme.foregroundTertiary}>{formatDate(item.date)}</ASText>}

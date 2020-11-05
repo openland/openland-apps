@@ -33,16 +33,6 @@ export const SettingsNotificationsFragment = React.memo(() => {
         settings.desktop.secretChat.sound,
         form,
     );
-    const organizationChatShowNotification = useField(
-        'input.desktop.organizationChat.showNotification',
-        settings.desktop.organizationChat.showNotification,
-        form,
-    );
-    const organizationChatSound = useField(
-        'input.desktop.organizationChat.sound',
-        settings.desktop.organizationChat.sound,
-        form,
-    );
     const communityChatShowNotification = useField(
         'input.desktop.communityChat.showNotification',
         settings.desktop.communityChat.showNotification,
@@ -95,10 +85,6 @@ export const SettingsNotificationsFragment = React.memo(() => {
                             showNotification: secretChatShowNotification.value,
                             sound: secretChatSound.value,
                         },
-                        organizationChat: {
-                            showNotification: organizationChatShowNotification.value,
-                            sound: organizationChatSound.value,
-                        },
                         communityChat: {
                             showNotification: communityChatShowNotification.value,
                             sound: communityChatSound.value,
@@ -119,8 +105,6 @@ export const SettingsNotificationsFragment = React.memo(() => {
             directSound.value,
             secretChatShowNotification.value,
             secretChatSound.value,
-            organizationChatShowNotification.value,
-            organizationChatSound.value,
             communityChatShowNotification.value,
             communityChatSound.value,
             commentsShowNotification.value,
@@ -151,20 +135,6 @@ export const SettingsNotificationsFragment = React.memo(() => {
                             asSwitcher={true}
                         />
                         <UCheckboxFiled label="Sound" field={secretChatSound} asSwitcher={true} />
-                    </XView>
-                </FormSection>
-                <FormSection title="Organization groups messages">
-                    <XView marginHorizontal={-16}>
-                        <UCheckboxFiled
-                            label="Show notifications"
-                            field={organizationChatShowNotification}
-                            asSwitcher={true}
-                        />
-                        <UCheckboxFiled
-                            label="Sound"
-                            field={organizationChatSound}
-                            asSwitcher={true}
-                        />
                     </XView>
                 </FormSection>
                 <FormSection title="Community groups messages">
@@ -205,6 +175,7 @@ export const SettingsNotificationsFragment = React.memo(() => {
                                     label: 'Show name only',
                                 },
                             ]}
+                            withCorners={true}
                         />
                     </XView>
                 </FormSection>

@@ -5,7 +5,7 @@ import { ZListGroup } from '../../components/ZListGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { Modals } from './modals/Modals';
 import { PageProps } from '../../components/PageProps';
-import { RoomMemberRole, UserShort, RoomChat_room_SharedRoom, SharedRoomKind } from 'openland-api/spacex.types';
+import { RoomMemberRole, UserShort, RoomChat_room_SharedRoom, SharedRoomKind, SharedRoomMembershipStatus } from 'openland-api/spacex.types';
 import { getMessenger } from '../../utils/messenger';
 import { UserView } from './components/UserView';
 import { useClient } from 'openland-api/useClient';
@@ -26,6 +26,8 @@ import { ZHero } from 'openland-mobile/components/ZHero';
 import { ZHeroAction } from 'openland-mobile/components/ZHeroAction';
 import { plural } from 'openland-y-utils/plural';
 import { SHeader } from 'react-native-s/SHeader';
+import { ChatJoin } from './components/ChatJoin';
+import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 
 const ProfileGroupComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
@@ -40,6 +42,10 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     const [members, setMembers] = React.useState<GroupMember[]>([]);
     const [loading, setLoading] = React.useState(false);
     const [muted, setMuted] = React.useState(group.settings.mute);
+
+    if (group.membership !== SharedRoomMembershipStatus.MEMBER) {
+        return <ChatJoin room={group} theme={theme} router={props.router} />;
+    }
 
     // callbacks
     const handleAddMembers = React.useCallback(
@@ -217,8 +223,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
         [roomId],
     );
 
-    const memberInviteDisabled = group.organization && !group.organization.isAdmin && !group.organization.membersCanInvite;
-    const hideOwnerLink = group.organization && group.organization.private && group.role === 'MEMBER';
+    const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(group);
 
     const handleAddMember = React.useCallback(() => {
         trackEvent('invite_view', { invite_type: 'group' });
@@ -251,7 +256,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             group.isPremium ? 'Add people for free' : 'Add people',
             members.map((m) => m.user.id),
             [getMessenger().engine.user.id],
-            hideOwnerLink ? undefined : { path: 'ProfileGroupLink', pathParams: { room: group } },
+            canGetInviteLink ? { path: 'ProfileGroupLink', pathParams: { room: group } } : undefined,
         );
     }, [members]);
 
@@ -261,8 +266,6 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
 
     const handleManageClick = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
-
-        builder.action('Shared media', onSharedPress, false, require('assets/ic-attach-24.png'));
 
         if (group.canEdit) {
             builder.action(
@@ -284,7 +287,13 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     }, [group]);
 
     const handleSharePress = React.useCallback(() => {
-        Share.share({ url: `https://openland.com/${group.shortname || group.id}` });
+        let link = `https://openland.com/${group.shortname || group.id}`;
+        Share.share(
+            Platform.select({
+                ios: { url: link },
+                android: { message: link }
+            })
+        );
     }, [group.shortname, group.id]);
 
     const handleLoadMore = React.useCallback(async () => {
@@ -312,10 +321,12 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                         </View>
                     ) : undefined
                 }
+                titleIconRight={group.featured && theme.displayFeaturedIcon ? require('assets/ic-verified-16.png') : undefined}
+                titleIconRightColor={'#3DA7F2' /* special: verified/featured color */}
                 titleColor={highlightGroup ? theme.accentPositive : undefined}
                 subtitle={plural(group.membersCount, ['member', 'members'])}
                 actionPrimary={{
-                    title: group.isChannel ? 'View channel' : 'View chat',
+                    title: group.isChannel ? 'View channel' : 'View group',
                     onPress: handleSend
                 }}
             >
@@ -349,6 +360,8 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                         text={group.shortname}
                         leftIcon={require('assets/ic-at-24.png')}
                         small={true}
+                        onPress={handleSharePress}
+                        onLongPress={handleSharePress}
                     />
                 )}
                 {group.isPremium && !!group.premiumSettings && (
@@ -361,7 +374,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             </ZListGroup>
 
             {!!group.organization && (
-                <ZListGroup header="Community" useSpacer={true}>
+                <ZListGroup header={group.organization.isCommunity ? 'Community' : 'Organization'} useSpacer={true}>
                     <ZListItem
                         text={group.organization.name}
                         subTitle={group.organization.about}
@@ -385,14 +398,14 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             </ZListGroup>
 
             <ZListHeader text="Members" counter={group.membersCount} useSpacer={true} />
-            {(!group.isPremium || group.role !== 'MEMBER') && !memberInviteDisabled && (
+            {canAddDirectly && (
                 <ZListItem
                     text="Add people"
                     leftIcon={require('assets/ic-add-glyph-24.png')}
                     onPress={handleAddMember}
                 />
             )}
-            {!hideOwnerLink && !memberInviteDisabled && (
+            {canGetInviteLink && (
                 <ZListItem
                     leftIcon={require('assets/ic-link-glyph-24.png')}
                     text={`Invite with link`}

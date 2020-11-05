@@ -57,9 +57,9 @@ interface ChatSelectedActionsProps {
 
 export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
     const theme = React.useContext(ThemeContext);
-    const state = useChatMessagesActionsState({ conversationId: props.chat.id, userId: props.chat.__typename === 'PrivateRoom' ? props.chat.user?.id : undefined });
+    const state = useChatMessagesActionsState(props.chat.id);
 
-    const { clear } = useChatMessagesActionsMethods({ conversationId: props.chat.id, userId: props.chat.__typename === 'PrivateRoom' ? props.chat.user?.id : undefined });
+    const { clear } = useChatMessagesActionsMethods(props.chat.id);
     const del = React.useCallback(() => {
         if (state.action !== 'selected') {
             return;
@@ -78,7 +78,16 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
             })
             .show();
     }, [state]);
-    const forward = useForward(props.chat.id, props.chat.__typename === 'PrivateRoom' ? props.chat.user.id : undefined);
+    const save = React.useCallback(async () => {
+        if (state.action !== 'selected') {
+            return;
+        }
+
+        await getMessenger().handleSaveMessages(state.messages.map((m) => m.id!));
+
+        clear();
+    }, [state]);
+    const forward = useForward(props.chat.id);
     let height = 52;
 
     let canDelete = true;
@@ -119,6 +128,24 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
                     </View>
                 </TouchableOpacity>
             </View>
+            {!props.conversation.isSavedMessage && (
+                <View flexGrow={1}>
+                    <TouchableOpacity onPress={save} disabled={isForwardDisabled}>
+                        <View
+                            style={{
+                                height: height,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <Image
+                                source={require('assets/ic-bookmark-24.png')}
+                                style={{ tintColor: theme.foregroundSecondary }}
+                            />
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            )}
             <View flexGrow={1}>
                 <TouchableOpacity onPress={() => forward()} disabled={isForwardDisabled}>
                     <View

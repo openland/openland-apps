@@ -27,7 +27,7 @@ const footerLinkStyle = css`
 export function MessagePage(props: { children?: any; hideLegalText?: boolean }) {
     return (
         <XView
-            backgroundColor="#fff"
+            backgroundColor="var(--backgroundPrimary)"
             flexDirection="column"
             alignItems="center"
             justifyContent="space-between"

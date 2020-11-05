@@ -3,6 +3,7 @@ import { css, cx } from 'linaria';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { TextSubhead } from '../utils/TextStyles';
 import { UPopperController } from './unicorn/UPopper';
+import { useTheme } from 'openland-x-utils/useTheme';
 
 const captionWrapper = css`
     display: flex;
@@ -23,12 +24,15 @@ const captionContent = css`
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: var(--foregroundContrast);
+    color: var(--foregroundInverted);
     max-width: 280px;
     padding: 6px 12px;
-    background-color: var(--overlayTotal);
-    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
+    background-color: var(--foregroundPrimary);
     border-radius: 8px;
+`;
+
+const boxShadowClass = css`
+    box-shadow: var(--boxShadowPopper);
 `;
 
 interface CaptionPopperConfig {
@@ -44,9 +48,12 @@ interface CaptionPopperConfig {
     showTimeout?: number;
 }
 
-export const useCaptionPopper = (opts: CaptionPopperConfig) => {
+export const useCaptionPopper = (
+    opts: CaptionPopperConfig,
+): [(element: HTMLElement | React.MouseEvent<unknown>) => void, () => void] => {
     const { text, getText, placement = 'top', scope, width } = opts;
-    const [, show] = usePopper(
+    const theme = useTheme();
+    const [, show, instantHide] = usePopper(
         {
             placement,
             hideOnLeave: true,
@@ -59,10 +66,10 @@ export const useCaptionPopper = (opts: CaptionPopperConfig) => {
             marginLeft: opts.marginLeft,
             marginTop: opts.marginTop,
             marginBottom: opts.marginBottom,
-            updatedDeps: text,
-            showTimeout: opts.showTimeout
+            updatedDeps: [text, theme.theme],
+            showTimeout: opts.showTimeout,
         },
-        ctx => (
+        (ctx) => (
             <div
                 className={cx(
                     captionWrapper,
@@ -73,12 +80,18 @@ export const useCaptionPopper = (opts: CaptionPopperConfig) => {
                     width: width,
                 }}
             >
-                <div className={cx(captionContent, TextSubhead)}>
+                <div
+                    className={cx(
+                        captionContent,
+                        TextSubhead,
+                        theme.theme !== 'dark' && boxShadowClass,
+                    )}
+                >
                     {getText ? getText(ctx) : text}
                 </div>
             </div>
         ),
     );
 
-    return [show];
+    return [show, instantHide];
 };

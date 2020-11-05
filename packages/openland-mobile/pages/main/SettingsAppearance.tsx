@@ -12,6 +12,7 @@ import { ThemePreview } from './components/appearance/ThemePreview';
 import { AccentCircle } from './components/appearance/AccentCircle';
 import { ZTab } from 'openland-mobile/components/ZTab';
 import { SUPER_ADMIN } from '../Init';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
 
 const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
@@ -25,6 +26,8 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
             setCurrentTheme(appearance.theme);
         });
     }, []);
+    const [displayFeaturedIcon, setDisplayFeaturedIcon] = React.useState(theme.displayFeaturedIcon);
+    const [largeEmoji, setLargeEmoji] = React.useState(theme.largeEmoji);
 
     return (
         <>
@@ -54,6 +57,27 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                         ))}
                     </View>
                 </ZListGroup>
+
+                <ZListGroup header="Other">
+                    <ZListItem
+                        text="Show large emoji"
+                        onToggle={(value) => {
+                            setLargeEmoji(x => !x);
+                            handleChange({ theme: currentTheme, largeEmoji: value });
+                        }}
+                        toggle={largeEmoji}
+                    />
+                    <ZListItem
+                        text="Show group featured icon"
+                        onToggle={(value) => {
+                            setDisplayFeaturedIcon(x => !x);
+                            handleChange({ theme: currentTheme, displayFeaturedIcon: value });
+                        }}
+                        toggle={displayFeaturedIcon}
+                    />
+                </ZListGroup>
+
+                <View height={16} />
             </SScrollView>
         </>
     );

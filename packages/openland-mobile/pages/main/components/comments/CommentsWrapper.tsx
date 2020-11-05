@@ -32,6 +32,7 @@ interface CommentsWrapperProps {
     chat?: Message_message_GeneralMessage_source_MessageSourceChat_chat;
     highlightId?: string;
     isDeleted: boolean;
+    autofocus?: boolean;
 }
 
 const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentEntryFragment[], role: RoomMemberRole | undefined }) => {
@@ -39,7 +40,7 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
     const scrollRef = React.createRef<ScrollView>();
     const area = React.useContext(ASSafeAreaContext);
 
-    const { peerView, peerId, comments, chat, highlightId, isDeleted } = props;
+    const { peerView, peerId, comments, chat, highlightId, isDeleted, autofocus } = props;
 
     // state
     const [replied, setReplied] = React.useState<CommentEntryFragment_comment | undefined>(undefined);
@@ -49,6 +50,7 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
     const [inputSelection, setInputSelection] = React.useState<{ start: number, end: number }>({ start: 0, end: 0 });
     const [sending, setSending] = React.useState<boolean>(false);
     const [mentions, setMentions] = React.useState<(MentionToSend)[]>([]);
+    const [hideInitialReply, setHideInitialReply] = React.useState(!autofocus);
 
     const handleSubmit = React.useCallback(async (attachment?: FileAttachmentInput) => {
         let text = inputText.trim();
@@ -143,12 +145,11 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
     }, [inputText, inputSelection, mentions]);
 
     const handleAttach = React.useCallback(() => {
-        showAttachMenu((type, name, path, size) => {
+        showAttachMenu((filesMeta) => {
             setSending(true);
 
-            UploadManagerInstance.registerUpload(
-                name,
-                path,
+            UploadManagerInstance.registerUploads(
+                filesMeta,
                 {
                     onProgress: (progress: number) => {
                         // temp ignore
@@ -162,7 +163,6 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
                         Alert.alert('Error while uploading file');
                     }
                 },
-                size
             );
         });
     }, [inputText, mentions, replied, edited]);
@@ -178,6 +178,7 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
         if (inputRef.current) {
             inputRef.current.focus();
         }
+        setHideInitialReply(false);
     }, [inputRef, edited, replied]);
 
     const handleEditPress = React.useCallback((comment: CommentEntryFragment_comment) => {
@@ -228,6 +229,12 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
         }
     }, []);
 
+    React.useEffect(() => {
+        if (autofocus) {
+            inputRef.current?.focus();
+        }
+    }, []);
+
     let activeWord = findActiveWord(inputText, inputSelection);
 
     let suggestions: JSX.Element | null = null;
@@ -245,7 +252,7 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
         suggestions = <EmojiSuggestionsRow items={emojiWordMap[activeWord.toLowerCase()]} activeWord={activeWord} onEmojiPress={handleEmojiPress} />;
     }
 
-    if (replied) {
+    if (replied && !hideInitialReply) {
         quoted = <ForwardReplyView messages={[replied]} onClearPress={handleReplyClear} />;
     }
 

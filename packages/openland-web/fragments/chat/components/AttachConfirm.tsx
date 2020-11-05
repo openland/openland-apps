@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { XScrollView3 } from 'openland-x/XScrollView3';
 import { DocumentContent } from '../messenger/message/content/DocumentContent';
-import { pluralForm } from 'openland-y-utils/plural';
+import { plural } from 'openland-y-utils/plural';
 import AlertBlanket from 'openland-x/AlertBlanket';
 import { css, cx } from 'linaria';
 import { XModalController } from 'openland-x/showModal';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
-import { UploadCareUploading } from 'openland-web/utils/UploadCareUploading';
+import { UploadCareUploading, isFileImage } from 'openland-web/utils/UploadCareUploading';
 import { LocalImage } from 'openland-engines/messenger/types';
 import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
@@ -16,32 +15,185 @@ import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import MediaIcon from 'openland-icons/s/ic-gallery-24.svg';
 import FileIcon from 'openland-icons/s/ic-document-24.svg';
 import DonationIcon from 'openland-icons/s/ic-donation-24.svg';
+import ClearIcon from 'openland-icons/s/ic-clear-16.svg';
+import CloseIcon from 'openland-icons/s/ic-close-24.svg';
 import { TextTitle1 } from 'openland-web/utils/TextStyles';
+import { XView } from 'react-mental';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { fileListToArray } from './DropZone';
+import { Deferred } from 'openland-unicorn/components/Deferred';
+import { AutoCompleteComponent, AutoCompleteComponentRef, useInputAutocompleteHanlders } from './SendMessageComponent';
+import { URickInput, URickInputInstance, URickTextValue } from 'openland-web/components/unicorn/URickInput';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { extractTextAndMentions } from 'openland-web/utils/convertTextAndMentions';
+import { MAX_FILES_PER_MESSAGE, MentionToSend } from 'openland-engines/messenger/MessageSender';
+import { UToast } from 'openland-web/components/unicorn/UToast';
+import { useClient } from 'openland-api/useClient';
+import { RoomPico_room_PrivateRoom, RoomPico_room_SharedRoom } from 'openland-api/spacex.types';
+
+const MAX_FILE_SIZE = 1e8;
 
 const imgClass = css`
-    margin-top: 8px;
-    margin-bottom: 8px;
+    position: relative;
     border-radius: 8px;
-    align-self: center;
-    cursor: pointer;
+    flex: 1;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    &:not(:last-child) {
+        margin-bottom: 16px;
+    }
 `;
 
 const titleClass = css`
+    position: relative;
     padding: 20px 24px;
 `;
 
-let Img = React.memo((props: { file: File; onClick: (f: File) => void, onLoad: (img: LocalImage) => void, index: number; }) => {
-    let ref = React.useRef<HTMLImageElement>(null);
+const imageColumn = css`
+    height: 240px;
+    flex: 1;
+
+    &:not(:last-child) {
+        margin-right: 16px;
+    }
+`;
+
+const clearContainerStyle = css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    cursor: pointer;
+    z-index: 2;
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    &:hover {
+      opacity: 0.72;
+    }
+
+    & svg {
+        box-shadow: var(--boxShadowPopper);
+        border-radius: 100px;
+    }
+`;
+
+const clearContainerIconStyle = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        background-color: rgba(0, 0, 0, 0.2);
+        z-index: -1;
+    }
+`;
+
+const docStyle = css`
+    pointer-events: none;
+`;
+
+const docCloseStyle = css`
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+`;
+
+const mentionsStyle = css`
+    max-height: 140px;
+    left: 24px;
+    right: 24px;
+    && {
+        bottom: 100%;
+    }
+`;
+
+const inputStyle = css`
+    max-height: 250px;
+`;
+
+const toastStyle = css`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+`;
+
+export const useAttachButtonHandlers = (props: { onAttach: (files: File[], isImage: boolean) => void }) => {
+    const imageInputRef = React.useRef<HTMLInputElement>(null);
+    const documentInputRef = React.useRef<HTMLInputElement>(null);
+    const onAttachClick = React.useCallback((type: 'image' | 'document') => {
+        if (type === 'image') {
+            imageInputRef.current?.click();
+        } else {
+            documentInputRef.current?.click();
+        }
+    }, []);
+
+    const onInputChange = (isImage: boolean) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (props.onAttach) {
+            props.onAttach(fileListToArray(e.target.files).filter(f => isImage ? isFileImage(f) : true), isImage);
+        }
+        if (imageInputRef.current) {
+            imageInputRef.current.value = '';
+        }
+        if (documentInputRef.current) {
+            documentInputRef.current.value = '';
+        }
+    };
+    const inputElements = (
+        <>
+            <input
+                ref={imageInputRef}
+                type="file"
+                accept="image/gif, image/jpeg, image/jpg, image/png, image/webp"
+                multiple={true}
+                style={{ display: 'none' }}
+                onChange={onInputChange(true)}
+            />
+            <input
+                ref={documentInputRef}
+                type="file"
+                multiple={true}
+                style={{ display: 'none' }}
+                onChange={onInputChange(false)}
+            />
+        </>
+    );
+    return {
+        onAttachClick,
+        inputElements,
+    };
+};
+
+let Img = React.memo((props: {
+    file: File;
+    index: number;
+    imagesCount: number;
+    onClick: (f: File) => void,
+    onLoad: (file: File, img: LocalImage) => void,
+}) => {
+    let ref = React.useRef<HTMLDivElement>(null);
     React.useEffect(() => {
         let reader = new FileReader();
         let image = new Image();
         image.onload = () => {
             const layout = layoutMedia(image.width || 0, image.height || 0, 392, 392, 32, 32);
             if (ref.current) {
-                ref.current.src = reader.result as any;
-                ref.current.width = layout.width;
-                ref.current.height = layout.height;
-                props.onLoad({ index: props.index, src: (reader.result as string), width: image.width, height: image.height });
+                ref.current.style.backgroundImage = `url(${reader.result})`;
+                props.onLoad(props.file, { index: props.index, src: (reader.result as string), width: layout.width, height: layout.height });
             }
         };
         reader.onloadend = () => {
@@ -49,95 +201,300 @@ let Img = React.memo((props: { file: File; onClick: (f: File) => void, onLoad: (
         };
         reader.readAsDataURL(props.file);
     }, []);
-    return <img className={imgClass} ref={ref} onClick={() => props.onClick(props.file)} />;
+
+    return (
+        <div className={imgClass} ref={ref}>
+            <div
+                className={clearContainerStyle}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    props.onClick(props.file);
+                }}
+            >
+                <div className={clearContainerIconStyle}>
+                    <UIcon icon={<ClearIcon />} size={24} color="var(--foregroundContrast)" />
+                </div>
+            </div>
+        </div>
+    );
 });
 
-const Body = (props: { files: File[][]; onImageLoad: (img: LocalImage) => void; ctx: XModalController }) => {
-    let { files, onImageLoad } = props;
-    let [bodyFiles, setFiles] = React.useState(files[0]);
+const Body = (props: {
+    chatId?: string;
+    isImage?: boolean;
+    files: File[];
+    addFile: (f: File) => string | File;
+    removeFile: (f: File) => void;
+    onImageLoad: (file: File, img: LocalImage) => void;
+    onTextChange: (text: URickTextValue | undefined) => void;
+    onFileTypeChange: (hasImages: boolean) => void;
+    ctx: XModalController;
+    confirm: () => void;
+    errorText?: string;
+}) => {
+    let { files, addFile, removeFile, isImage, onImageLoad, onTextChange, onFileTypeChange } = props;
+    let [bodyFiles, setFiles] = React.useState(files);
+    let client = useClient();
+    let [room, setRoom] = React.useState<RoomPico_room_PrivateRoom | RoomPico_room_SharedRoom | null>(null);
+    let [errorText, setErrorText] = React.useState(props.errorText);
 
-    // workaround - somehow DocumentContent is not recreating
-    let filesRef = React.useRef(bodyFiles);
+    React.useEffect(() => {
+        (async () => {
+            if (props.chatId) {
+                setRoom((await client.queryRoomPico({ id: props.chatId })).room);
+            }
+        })();
+    }, [props.chatId]);
 
-    filesRef.current = bodyFiles;
     let onClick = React.useCallback(
         (fileToRemove: File) => {
-            let res = filesRef.current.filter(f => f !== fileToRemove);
-            setFiles(res);
-            files[0] = res;
+            let res = bodyFiles.filter(f => f !== fileToRemove);
             if (!res.length) {
                 props.ctx.hide();
+            } else {
+                setFiles(res);
+                removeFile(fileToRemove);
             }
         },
         [bodyFiles],
     );
-    let hasPhoto = false;
-    let hasFiles = false;
-    let list = bodyFiles.map((f, i) => {
-        let isImage = f.type.includes('image');
-        hasPhoto = hasPhoto || isImage;
-        hasFiles = hasFiles || !isImage;
+    let { documents, imageColumns } = bodyFiles.reduce((acc, f, i, { length }) => {
         if (isImage) {
-            return <Img key={f.name + f.size + f.lastModified} file={f} onClick={onClick} index={i} onLoad={onImageLoad} />;
+            let el = <Img key={f.name + f.size + f.lastModified} file={f} onClick={onClick} index={i} imagesCount={bodyFiles.length} onLoad={onImageLoad} />;
+            if (acc.imageColumns.length < 2) {
+                acc.imageColumns.push([el]);
+            } else if (i === 2) {
+                acc.imageColumns[1].push(el);
+            } else if (i === 3) {
+                let prevLast = acc.imageColumns[1].pop();
+                acc.imageColumns[0].push(prevLast!);
+                acc.imageColumns[1].push(el);
+            }
         } else {
-            return (
+            acc.documents.push(
                 <div
                     key={f.name + f.size + f.lastModified}
-                    style={{ marginTop: 16, marginBottom: 16 }}
+                    style={{ position: 'relative', marginBottom: i !== length - 1 ? 16 : 0 }}
                 >
                     <DocumentContent
-                        onClick={() => onClick(f)}
+                        className={docStyle}
                         file={{ fileMetadata: { name: f.name, size: f.size, mimeType: null } }}
                     />
+                    <div className={docCloseStyle}>
+                        <UIconButton icon={<CloseIcon />} color="var(--foregroundSecondary)" onClick={() => onClick(f)} />
+                    </div>
                 </div>
             );
         }
-    });
+        return acc;
+    }, { imageColumns: [] as (JSX.Element[])[], documents: [] as JSX.Element[] });
 
-    let title = `Share ${
-        hasPhoto && !hasFiles
-            ? pluralForm(bodyFiles.length, ['a photo', bodyFiles.length + ' photos'])
-            : pluralForm(bodyFiles.length, ['a file', bodyFiles.length + ' files'])
-        }`;
+    let title = `Send ${plural(bodyFiles.length, ['item', 'items'])}`;
+    const hasImages = imageColumns.length > 0;
+
+    const handleAttach = (filesToAdd: File[]) => {
+        let addedFiles = filesToAdd.map(addFile);
+        let successfullyAdded = addedFiles.filter(x => typeof x !== 'string') as File[];
+        let errors = addedFiles.filter(x => typeof x === 'string') as string[];
+        if (errors.length > 0) {
+            setErrorText(errors[0]);
+        }
+        setFiles(prevFiles => prevFiles.concat(successfullyAdded));
+    };
+    const { inputElements, onAttachClick } = useAttachButtonHandlers({ onAttach: handleAttach });
+    let inputRef = React.useRef<URickInputInstance>(null);
+    let suggestRef = React.useRef<AutoCompleteComponentRef>(null);
+    const {
+        prefixes,
+        activeWord,
+        onWordChange,
+        onUserPicked,
+        onEmojiPicked,
+        onPressUp,
+        onPressDown,
+        onPressTab,
+        onPressEnter,
+    } = useInputAutocompleteHanlders({ inputRef, suggestRef });
+
+    let handlePressEnter = () => {
+        let handled = onPressEnter();
+        if (handled) {
+            return true;
+        }
+        return true;
+    };
+
+    useShortcuts([{
+        keys: ['Escape'],
+        callback: () => {
+            if (suggestRef.current?.isActive()) {
+                return false;
+            }
+            props.ctx.hide();
+            return true;
+        },
+    }, {
+        keys: ['Enter'],
+        callback: () => {
+            if (activeWord && suggestRef.current?.isActive() && (activeWord.startsWith('@') || activeWord.startsWith(':'))) {
+                return false;
+            }
+            props.confirm();
+            return true;
+        },
+    }]);
+
+    React.useEffect(() => {
+        onFileTypeChange(hasImages);
+    }, [documents, imageColumns]);
 
     return (
         <>
-            <span className={cx(TextTitle1, titleClass)}>{title}</span>
-            <XScrollView3 maxHeight={500} paddingHorizontal={24} useDefaultScroll={true}>
-                {list}
-                <div style={{ height: 16 }} />
-            </XScrollView3>
+            <span className={cx(TextTitle1, titleClass)}>
+                {title}
+                <UToast
+                    isVisible={!!errorText}
+                    text={errorText}
+                    autoclose={true}
+                    className={toastStyle}
+                    closeCb={() => setErrorText('')}
+                />
+            </span>
+            <XView paddingHorizontal={24}>
+                {imageColumns.length > 0 ? (
+                    <XView flexDirection="row">
+                        {imageColumns.map((column, i) => (
+                            <div className={cx('x', imageColumn)} key={column.length + i}>
+                                {column}
+                            </div>
+                        ))}
+                    </XView>
+                ) : documents}
+            </XView>
+            <XView flexDirection="row" paddingVertical={16} paddingHorizontal={24}>
+                <XView flexShrink={0} marginRight={16}>
+                    {inputElements}
+                    <UIconButton icon={<AttachIcon />} onClick={() => onAttachClick(hasImages ? 'image' : 'document')} />
+                </XView>
+                <Deferred>
+                    <AutoCompleteComponent
+                        onSelected={onUserPicked}
+                        onEmojiSelected={onEmojiPicked}
+                        groupId={props.chatId}
+                        activeWord={activeWord}
+                        isChannel={!!(room?.__typename === 'SharedRoom' && room.isChannel)}
+                        isPrivate={room?.__typename === 'PrivateRoom'}
+                        ref={suggestRef}
+                        containerClassName={mentionsStyle}
+                    />
+                </Deferred>
+                <URickInput
+                    ref={inputRef}
+                    className={inputStyle}
+                    placeholder="Add a note"
+                    autofocus={true}
+                    autocompletePrefixes={prefixes}
+                    onAutocompleteWordChange={onWordChange}
+                    onPressUp={onPressUp}
+                    onPressDown={onPressDown}
+                    onPressTab={onPressTab}
+                    onPressEnter={handlePressEnter}
+                    onFilesPaste={handleAttach}
+                    onContentChange={onTextChange}
+                />
+            </XView>
         </>
     );
 };
 
-const MAX_FILE_SIZE = 1e8;
-export const showAttachConfirm = (
+export const showAttachConfirm = ({
+    files,
+    chatId,
+    isImage,
+    onSubmit: callback,
+    onFileUploadingProgress,
+    onFileUploadingEnd,
+    onCancel,
+}: {
     files: File[],
-    callback: (files: { file: UploadCareUploading, localImage?: LocalImage }[]) => void,
+    onSubmit: (files: { file: UploadCareUploading, localImage?: LocalImage }[], text: string | undefined, mentions: MentionToSend[] | undefined, hasImages: boolean) => void,
+    chatId?: string,
+    isImage?: boolean,
     onFileUploadingProgress?: (filename?: string) => void,
     onFileUploadingEnd?: () => void,
-) => {
+    onCancel?: () => void,
+}) => {
     let tooBig = false;
-    let filesFiltered = files.filter(f => {
+    let filesRes = files.filter(f => {
         let b = f.size > MAX_FILE_SIZE;
         tooBig = tooBig || b;
         return !b;
-    });
+    }).slice(0, MAX_FILES_PER_MESSAGE);
+    let errorText = tooBig
+        ? 'Files bigger than 100mb are not supported yet'
+        : files.length > 4
+            ? 'Maximum 4 attachments'
+            : undefined;
 
-    let filesRes = [[...filesFiltered]];
-    const uploading = filesFiltered.map(f => new UploadCareUploading(f));
+    let uploading = filesRes.map(f => new UploadCareUploading(f));
+    let addUpload = (file: File): string | File => {
+        let isBig = file.size > MAX_FILE_SIZE;
+        if (isBig) {
+            return 'Files bigger than 100mb are not supported yet';
+        }
+        if (filesRes.length === 4) {
+            return 'Maximum 4 attachments';
+        }
 
-    let loadedImages: LocalImage[] = [];
-    let saveImage = (img: LocalImage) => {
-        loadedImages[img.index] = img;
+        uploading.push(new UploadCareUploading(file));
+        filesRes.push(file);
+        return file;
+    };
+    let removeUpload = (file: File) => {
+        filesRes = filesRes.filter(f => f !== file);
     };
 
-    if (filesFiltered.length > 0) {
-        AlertBlanket.builder()
-            .body(ctx => <Body files={filesRes} onImageLoad={saveImage} ctx={ctx} />)
+    let imagesPreviews: Map<File, LocalImage> = new Map();
+    let savePreview = (file: File, img: LocalImage) => {
+        imagesPreviews.set(file, img);
+    };
+    let messageInfo: { hasImages: boolean, inputValue: URickTextValue | undefined } = { hasImages: false, inputValue: undefined };
+    let setInputText = (inputValue: URickTextValue | undefined) => {
+        messageInfo.inputValue = inputValue;
+    };
+    let setHasImages = (hasImages: boolean) => {
+        messageInfo.hasImages = hasImages;
+    };
+    let isUploading = false;
+
+    if (filesRes.length > 0) {
+        let builder = AlertBlanket.builder()
+            .width(528)
+            .hideOnEscape(false)
+            .confirmOnEnter(false)
+            .body((ctx, confirm) => (
+                <Body
+                    chatId={chatId}
+                    files={filesRes.slice()}
+                    addFile={addUpload}
+                    removeFile={removeUpload}
+                    onImageLoad={savePreview}
+                    onTextChange={setInputText}
+                    onFileTypeChange={setHasImages}
+                    ctx={ctx}
+                    confirm={confirm}
+                    errorText={errorText}
+                    isImage={isImage}
+                />
+            ))
             .action('Send', async () => {
-                await callback(uploading.map((u, i) => ({ file: u, localImage: loadedImages[i] })).filter(({ file }) => filesRes[0].includes(file.getSourceFile())));
+                if (isUploading) {
+                    return;
+                }
+                isUploading = true;
+                let uploadedFiles = uploading.filter(file => filesRes.includes(file.getSourceFile())).map((u, i) => ({ file: u, localImage: imagesPreviews.get(filesRes[i]) }));
+                let { text, mentions } = messageInfo.inputValue ? extractTextAndMentions(messageInfo.inputValue) : { text: undefined, mentions: undefined };
+                await callback(uploadedFiles, text, mentions, isImage === undefined ? messageInfo.hasImages : isImage);
 
                 const { name } = await uploading[0].fetchInfo();
 
@@ -155,12 +512,11 @@ export const showAttachConfirm = (
                     }
                 });
 
-            })
-            .show();
-    }
-
-    if (tooBig) {
-        AlertBlanket.alert('Files bigger than 100mb are not supported yet.');
+            });
+        if (onCancel) {
+            builder.onCancel(onCancel);
+        }
+        builder.show();
     }
 };
 
@@ -168,18 +524,18 @@ const attachButtonContainer = css`
     flex-shrink: 0;
 `;
 
-const AttachMenu = (props: { ctx: UPopperController, hideDonation: boolean, onAttachClick: () => void, onDonationClick: () => void }) => {
+const AttachMenu = (props: { ctx: UPopperController, hideDonation: boolean, onAttachClick: (type: 'image' | 'document') => void, onDonationClick: () => void }) => {
     let builder = new UPopperMenuBuilder();
 
     builder.item({
-        title: 'Photo or video',
+        title: 'Photo',
         icon: <MediaIcon />,
-        onClick: props.onAttachClick,
+        onClick: () => props.onAttachClick('image'),
     });
     builder.item({
-        title: 'Document',
+        title: 'Document or video',
         icon: <FileIcon />,
-        onClick: props.onAttachClick,
+        onClick: () => props.onAttachClick('document'),
     });
     if (!props.hideDonation) {
         builder.item({
@@ -189,20 +545,26 @@ const AttachMenu = (props: { ctx: UPopperController, hideDonation: boolean, onAt
         });
     }
 
-    return builder.build(props.ctx, 200);
+    return builder.build(props.ctx, 206);
 };
 
 interface AttachConfirmButtonProps {
     hideDonation: boolean;
-    onAttachClick: () => void;
-    onDonationClick: () => void;
+    onAttach: (files: File[], isImage: boolean) => void;
+    onDonate: () => void;
 }
 
 export const AttachConfirmButton = (props: AttachConfirmButtonProps) => {
-    const [active, show] = usePopper({ placement: 'top-start' }, ctx => <AttachMenu ctx={ctx} onAttachClick={props.onAttachClick} onDonationClick={props.onDonationClick} hideDonation={props.hideDonation} />);
+    const {
+        onAttachClick,
+        inputElements,
+    } = useAttachButtonHandlers({ onAttach: props.onAttach });
+
+    const [active, show] = usePopper({ placement: 'top-start' }, ctx => <AttachMenu ctx={ctx} onAttachClick={onAttachClick} onDonationClick={props.onDonate} hideDonation={props.hideDonation} />);
 
     return (
         <div className={attachButtonContainer}>
+            {inputElements}
             <UIconButton active={active} icon={<AttachIcon />} onClick={show} />
         </div>
     );
