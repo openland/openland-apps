@@ -30,6 +30,14 @@ class RNAsyncKeyboardContextView: RCTView, RNAsyncKeyboardManagerDelegate {
     
   }
   
+  @objc func stickersKeyboardWillShow() {
+    
+  }
+  
+  @objc func stickersKeyboardWillHide(noKeyboard: Bool) {
+    
+  }
+  
   @objc func keyboardWillHide(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int) {
     if let clb = self.onKeyboardCallback {
       if ctx == self.keyboardContextKey {
