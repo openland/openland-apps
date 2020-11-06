@@ -49,6 +49,7 @@ import { useChatMessagesActionsState, useChatMessagesActionsMethods } from 'open
 import { matchLinks } from 'openland-y-utils/TextProcessor';
 import { StickerPicker } from './components/stickers/StickerPicker';
 import { SDevice } from 'react-native-s/SDevice';
+import { StickersController } from './components/stickers/StickerContext';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -106,6 +107,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             keyboardOpened: false,
             closingQuoted: false,
         };
+
+        StickersController.setHide(() => this.setState({ stickerKeyboardShown: false, keyboardHeight: 0 }));
 
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
         AsyncStorage.getItem('compose_draft_mentions_v2_' + this.props.chat.id).then(s => this.setState({ mentions: JSON.parse(s) || [] }));
@@ -500,7 +503,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 flexBasis: 1,
                                 flexShrink: 0,
                                 flexDirection: 'column',
-                                paddingBottom: this.state.stickerKeyboardShown ? this.stickerKeyboardHeight : (Platform.OS === 'android' ? this.state.keyboardHeight : 0)
+                                paddingBottom: Platform.select({
+                                    ios: 0,
+                                    android: this.state.stickerKeyboardShown ? this.stickerKeyboardHeight : this.state.keyboardHeight,
+                                })
                             }}
                         >
                             <ConversationView inverted={true} engine={this.engine} />
@@ -531,15 +537,24 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     canSubmit={canSubmit}
                                     onStickerKeyboardButtonPress={this.state.keyboardOpened || this.state.stickerKeyboardShown ? this.handleStickerKeyboardButtonPress : undefined}
                                     stickerKeyboardShown={this.state.stickerKeyboardShown}
-                                    overrideTransform={this.state.stickerKeyboardShown ? (this.stickerKeyboardHeight + 0) : -1}
+                                    overrideTransform={this.state.stickerKeyboardShown ? (this.stickerKeyboardHeight + 0) : (this.state.keyboardHeight > 0 ? 0 : -1)}
                                 />
                             )}
                             {!showInputBar && reloadButton}
                             {!showInputBar && inputPlaceholder}
                             {showSelectedMessagesActions && <ChatSelectedActions conversation={this.engine} chat={this.props.chat} />}
                         </View>
-                        {this.state.stickerKeyboardShown && (
-                            <View style={{ bottom: SDevice.safeArea.bottom, position: 'absolute', zIndex: 4, left: 0, right: 0 }}>
+                        {(Platform.OS === 'ios' || this.state.stickerKeyboardShown) && (
+                            <View
+                                style={{
+                                    bottom: SDevice.safeArea.bottom,
+                                    position: 'absolute',
+                                    zIndex: 4,
+                                    left: 0,
+                                    right: 0,
+                                    display: Platform.select({ ios: this.state.stickerKeyboardShown ? 'flex' : 'none' })
+                                }}
+                            >
                                 <StickerPicker
                                     onStickerSent={(sticker: StickerFragment) => this.engine.sendSticker(sticker, undefined)}
                                     theme={this.props.theme}
