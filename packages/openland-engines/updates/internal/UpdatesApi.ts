@@ -16,5 +16,5 @@ export interface UpdatesApi<T, STATE extends { id: string }, DIFF extends { id: 
         }[]
     }>;
     getSequenceState(id: string): Promise<{ pts: number, state: STATE }>;
-    getSequenceDifference(id: string, seq: number): Promise<{ state: DIFF, events: { pts: number, event: T }[] }>;
+    getSequenceDifference(id: string, seq: number): Promise<{ state: DIFF, hasMore: boolean, pts: number, events: { pts: number, event: T }[] }>;
 }

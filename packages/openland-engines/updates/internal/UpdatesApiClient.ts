@@ -50,11 +50,13 @@ export class UpdatesApiClient implements UpdatesApi<UpdateEvent, UpdateSequenceS
         };
     }
 
-    async getSequenceDifference(id: string, pts: number): Promise<{ state: UpdateSequenceDiff, events: { pts: number, event: UpdateEvent }[] }> {
+    async getSequenceDifference(id: string, pts: number): Promise<{ state: UpdateSequenceDiff, hasMore: boolean, pts: number, events: { pts: number, event: UpdateEvent }[] }> {
         let res = await this.client.queryGetSequenceDifference({ id, pts }, { fetchPolicy: 'network-only' });
         return {
             state: res.sequenceDifference.sequence,
-            events: res.sequenceDifference.events
+            events: res.sequenceDifference.events,
+            hasMore: res.sequenceDifference.hasMore,
+            pts: res.sequenceDifference.after
         };
     }
 }

@@ -2895,6 +2895,7 @@ private let GetSequenceDifferenceSelector = obj(
                                     fragment("UpdateEvent", ShortUpdateSelector)
                                 )))
                         ))))),
+                    field("after", "after", notNull(scalar("Int"))),
                     field("hasMore", "hasMore", notNull(scalar("Boolean")))
                 )))
         )
@@ -5734,7 +5735,7 @@ class Operations {
     let GetSequenceDifference = OperationDefinition(
         "GetSequenceDifference",
         .query, 
-        "query GetSequenceDifference($id:ID!,$pts:Int!){sequenceDifference(id:$id,pts:$pts){__typename sequence{__typename ...ShortSequence}events{__typename pts event{__typename ...ShortUpdate}}hasMore}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}",
+        "query GetSequenceDifference($id:ID!,$pts:Int!){sequenceDifference(id:$id,pts:$pts){__typename sequence{__typename ...ShortSequence}events{__typename pts event{__typename ...ShortUpdate}}after hasMore}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}",
         GetSequenceDifferenceSelector
     )
     let GetSequenceState = OperationDefinition(
