@@ -89,7 +89,7 @@ class RNAsyncKeyboardView: RCTView {
       
       if (self.overrideTransform == -1) {
         UIView.animate(withDuration: 0.3) {
-          self.transform = CGAffineTransform(translationX: 0, y: 0)
+          self.transform = CGAffineTransform(translationX: 0, y: -self.keyboardHeight)
         }
       }
     }
