@@ -3,7 +3,7 @@ import { AsyncLock } from '@openland/patterns';
 import { KeyValueStore } from 'openland-y-utils/KeyValueStore';
 
 class TransactionHolder {
-    private persistence: Persistence;
+    readonly persistence: Persistence;
     private completed = false;
     private writes = new Map<string, string | null>();
 
@@ -48,6 +48,10 @@ class TransactionHolder {
 
 export class Transaction {
     private holder: TransactionHolder;
+    
+    get persistence() {
+        return this.holder.persistence;
+    }
 
     constructor(holder: TransactionHolder) {
         this.holder = holder;

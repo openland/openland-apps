@@ -2880,10 +2880,33 @@ private let GetDifferenceSelector = obj(
                         )))))
                 )))
         )
+private let GetSequenceDifferenceSelector = obj(
+            field("sequenceDifference", "sequenceDifference", arguments(fieldValue("id", refValue("id")), fieldValue("pts", refValue("pts"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("sequence", "sequence", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("Sequence", ShortSequenceSelector)
+                        ))),
+                    field("events", "events", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("pts", "pts", notNull(scalar("Int"))),
+                            field("event", "event", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    fragment("UpdateEvent", ShortUpdateSelector)
+                                )))
+                        ))))),
+                    field("after", "after", notNull(scalar("Int"))),
+                    field("hasMore", "hasMore", notNull(scalar("Boolean")))
+                )))
+        )
 private let GetSequenceStateSelector = obj(
             field("sequenceState", "sequenceState", arguments(fieldValue("id", refValue("id"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Sequence", ShortSequenceSelector)
+                    field("pts", "pts", notNull(scalar("Int"))),
+                    field("sequence", "sequence", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("Sequence", ShortSequenceSelector)
+                        )))
                 )))
         )
 private let GetStateSelector = obj(
@@ -5709,10 +5732,16 @@ class Operations {
         "query GetDifference($state:String!){updatesDifference(state:$state){__typename seq state hasMore sequences{__typename after events{__typename pts event{__typename ...ShortUpdate}}sequence{__typename ...ShortSequence}}}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}",
         GetDifferenceSelector
     )
+    let GetSequenceDifference = OperationDefinition(
+        "GetSequenceDifference",
+        .query, 
+        "query GetSequenceDifference($id:ID!,$pts:Int!){sequenceDifference(id:$id,pts:$pts){__typename sequence{__typename ...ShortSequence}events{__typename pts event{__typename ...ShortUpdate}}after hasMore}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}",
+        GetSequenceDifferenceSelector
+    )
     let GetSequenceState = OperationDefinition(
         "GetSequenceState",
         .query, 
-        "query GetSequenceState($id:String!){sequenceState(id:$id){__typename ...ShortSequence}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}",
+        "query GetSequenceState($id:ID!){sequenceState(id:$id){__typename pts sequence{__typename ...ShortSequence}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}",
         GetSequenceStateSelector
     )
     let GetState = OperationDefinition(
@@ -7089,6 +7118,7 @@ class Operations {
         if name == "FeatureFlags" { return FeatureFlags }
         if name == "FetchPushSettings" { return FetchPushSettings }
         if name == "GetDifference" { return GetDifference }
+        if name == "GetSequenceDifference" { return GetSequenceDifference }
         if name == "GetSequenceState" { return GetSequenceState }
         if name == "GetState" { return GetState }
         if name == "GlobalCounter" { return GlobalCounter }

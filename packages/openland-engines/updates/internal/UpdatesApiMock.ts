@@ -27,7 +27,7 @@ export class UpdatesApiMock<T, S extends { id: string }, D extends { id: string 
     getSequenceState(id: string): Promise<{ pts: number, state: S }> {
         throw Error('Not implemented');
     }
-    getSequenceDifference(id: string, seq: number): Promise<{ state: D, events: { pts: number, event: T }[] }> {
+    getSequenceDifference(id: string, seq: number): Promise<{ state: D, hasMore: boolean, pts: number, events: { pts: number, event: T }[] }> {
         throw Error('Not implemented');
     }
 }

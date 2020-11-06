@@ -1,11 +1,19 @@
 {
-    "applinks": {
-        "apps": [],
-        "details": [
-            {
-                "appID": "ATWUYU6747.com.openland.app",
-                "paths": [ "/joinRoom/*",  "/joinChannel/*", "/join/*", "/invite/*", "/directory/o/*", "/directory/u/*", "/*"]
-            }
-        ]
-    }
+  "applinks": {
+      "details": [
+           {
+             "appIDs": [ "ATWUYU6747.com.openland.app"],
+             "components": [
+               {
+                  "#": "no_universal_links",
+                  "exclude": true,
+                  "comment": "Matches any URL whose fragment equals no_universal_links and instructs the system not to open it as a universal link"
+               },
+               {
+                  "/": "/*"
+               }
+             ]
+           }
+       ]
+   }
 }
