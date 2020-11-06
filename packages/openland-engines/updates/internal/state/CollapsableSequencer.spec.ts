@@ -13,7 +13,7 @@ describe('CollapsableSequencer', () => {
         expect(seq.pick()).toMatchObject({ pts: 12, event: '4' });
         expect(seq.pick()).toMatchObject({ pts: 13, event: '5' });
 
-        seq.putCollapsed(12, [{ pts: 13, event: '5' }, { pts: 14, event: '6' }]);
+        seq.putCollapsed(12, 14, [{ pts: 13, event: '5' }, { pts: 14, event: '6' }]);
         expect(seq.pick()).toMatchObject({ pts: 14, event: '6' });
     });
 });

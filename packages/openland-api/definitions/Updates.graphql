@@ -106,6 +106,7 @@ query GetSequenceDifference($id: ID!, $pts: Int!) {
                 ...ShortUpdate
             }
         }
+        after
         hasMore
     }
 }

@@ -27,25 +27,22 @@ export class CollapsableSequencer<T> {
         this._cleanup();
     }
 
-    putCollapsed(pts: number, events: { pts: number, event: T }[]) {
-
+    putCollapsed(pts: number, toPts: number, events: { pts: number, event: T }[]) {
         let updated = false;
-
-        // Calculate maximum
-        let max = events[0].pts;
-        for (let i = 1; i < events.length; i++) {
-            if (events[i].pts > max) {
-                max = events[i].pts;
-            }
-        }
 
         // Put events
         for (let e of events) {
+            if (e.pts <= pts) {
+                throw Error('Invalid pts');
+            }
+            if (e.pts > toPts) {
+                throw Error('Invalid pts');
+            }
             updated = updated || this.put(e.pts, e.event);
         }
 
         // Put region
-        this._regions.push({ from: pts, to: max });
+        this._regions.push({ from: pts, to: toPts });
 
         return updated;
     }

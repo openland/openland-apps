@@ -2902,6 +2902,7 @@ const GetSequenceDifferenceSelector = obj(
                                     fragment('UpdateEvent', ShortUpdateSelector)
                                 )))
                         ))))),
+                    field('after', 'after', args(), notNull(scalar('Int'))),
                     field('hasMore', 'hasMore', args(), notNull(scalar('Boolean')))
                 )))
         );
@@ -5737,7 +5738,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     GetSequenceDifference: {
         kind: 'query',
         name: 'GetSequenceDifference',
-        body: 'query GetSequenceDifference($id:ID!,$pts:Int!){sequenceDifference(id:$id,pts:$pts){__typename sequence{__typename ...ShortSequence}events{__typename pts event{__typename ...ShortUpdate}}hasMore}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}',
+        body: 'query GetSequenceDifference($id:ID!,$pts:Int!){sequenceDifference(id:$id,pts:$pts){__typename sequence{__typename ...ShortSequence}events{__typename pts event{__typename ...ShortUpdate}}after hasMore}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}',
         selector: GetSequenceDifferenceSelector
     },
     GetSequenceState: {

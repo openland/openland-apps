@@ -51,14 +51,15 @@ export class SequenceSubscription {
         }
 
         // Put pending and call handler
-        if (this._pending.put(pts, event)) {
-            if (this._started && !this._invalidated) {
-                let drained = this.drain();
-                for (let d of drained) {
-                    this._handler!(tx, { type: 'event', event: d.event, pts: d.pts });
-                }
+        if (this._pending.put(pts, event)) /* if 'event was added' */ {
 
-                // Update invalidation timer
+            let drained = this.drain();
+            for (let d of drained) {
+                await this._handler!(tx, { type: 'event', event: d.event, pts: d.pts });
+            }
+
+            // Update invalidation timer if not in process of invalidation
+            if (!this._invalidated) {
                 this.stopInvalidationTimer();
                 if (!this._pending.empty) {
                     this.startInvalidationTimer();
@@ -69,24 +70,42 @@ export class SequenceSubscription {
         await this.updateInvalidatedState(tx);
     }
 
-    async onDiff(tx: Transaction, fromPts: number, events: { pts: number, event: UpdateEvent }[], state: UpdateSequenceDiff) {
+    async onDiff(tx: Transaction, fromPts: number, toPts: number, events: { pts: number, event: UpdateEvent }[], state: UpdateSequenceDiff) {
         if (!this._started) {
             throw Error('Not started');
         }
 
-        if (this._pending.putCollapsed(fromPts, events)) {
-            if (this._started && !this._invalidated) {
+        if (this._invalidated) {
+            // If invalidated casually try to apply updates if possible
+            this._pending.putCollapsed(fromPts, toPts, events);
 
-                let drained = this.drain();
-                for (let d of drained) {
-                    this._handler!(tx, { type: 'event', event: d.event, pts: d.pts });
-                }
+            // Drain pending updates
+            let drained = this.drain();
+            for (let d of drained) {
+                await this._handler!(tx, { type: 'event', event: d.event, pts: d.pts });
+            }
+        } else {
 
-                // Update invalidation timer
-                this.stopInvalidationTimer();
-                if (!this._pending.empty) {
-                    this.startInvalidationTimer();
-                }
+            // If not invalidated: try to apply updates if possible and handle stream restart if happens
+            if (this._pending.currentPts < fromPts) {
+                // Reset pending collection
+                this._pending.reset(toPts);
+                await this._handler!(tx, { type: 'restart', sequence: state, pts: toPts });
+            } else {
+                // Put to pending collection (to be drained soon)
+                this._pending.putCollapsed(fromPts, toPts, events);
+            }
+
+            // Drain pending updates
+            let drained = this.drain();
+            for (let d of drained) {
+                await this._handler!(tx, { type: 'event', event: d.event, pts: d.pts });
+            }
+
+            // Update invalidation timer if not invalidating already
+            this.stopInvalidationTimer();
+            if (!this._pending.empty) {
+                this.startInvalidationTimer();
             }
         }
 
@@ -121,7 +140,9 @@ export class SequenceSubscription {
     private startInvalidationTimer() {
         if (!this._invalidationTimer) {
             this._invalidationTimer = setTimeout(() => {
-                this.invalidate();
+                this._persistence.inTx(async (tx) => { // TODO: Avoid transaction
+                    this.invalidate();
+                });
             }, 5000);
         }
     }
@@ -132,22 +153,58 @@ export class SequenceSubscription {
         }
         this._invalidated = true;
 
+        // Stop timer
+        this.stopInvalidationTimer();
+
         // Getting difference
         (async () => {
-            // Load difference
-            let fromPts = this._pending.currentPts;
-            let diff = await this._api.getSequenceDifference(this.id, fromPts);
 
-            // Apply difference
-            await this._persistence.inTx(async (tx) => {
-                if (diff.events.length > 0) {
-                    await this.onDiff(tx, fromPts, diff.events, diff.state);
-                }
+            let hasMore = true;
+            while (hasMore) {
 
-                // Stop invalidation
-                this._invalidated = false;
-                await this.updateInvalidatedState(tx);
-            });
+                // Load difference
+                let fromPts = this._pending.currentPts;
+                let diff = await this._api.getSequenceDifference(this.id, fromPts);
+                hasMore = diff.hasMore;
+
+                // Apply difference
+                await this._persistence.inTx(async (tx) => {
+
+                    // If stream was reset
+                    if (diff.events.length > 0) {
+                        let toPts = diff.events[0].pts;
+                        for (let e of diff.events) {
+                            toPts = Math.max(e.pts);
+                        }
+
+                        if (this._pending.currentPts < diff.pts) {
+                            // Reset stream
+                            this._pending.reset(toPts);
+                            await this._handler!(tx, { type: 'restart', sequence: diff.state, pts: toPts });
+                        } else {
+                            // Put to pending
+                            this._pending.putCollapsed(diff.pts, toPts, diff.events);
+                        }
+
+                        // Drain pending updates
+                        let drained = this.drain();
+                        for (let d of drained) {
+                            await this._handler!(tx, { type: 'event', event: d.event, pts: d.pts });
+                        }
+                    }
+
+                    // Complete invalidation
+                    if (!hasMore) {
+                        this._invalidated = false;
+                        await this.updateInvalidatedState(tx);
+
+                        // Start invalidation timer if there are some empty updates
+                        if (!this._pending.empty) {
+                            this.startInvalidationTimer();
+                        }
+                    }
+                });
+            }
         })();
     }
 

@@ -217,13 +217,17 @@ export class SequenceHolder {
     //
 
     async onDiffReceived(tx: Transaction, fromPts: number, events: { pts: number, event: UpdateEvent }[], state: UpdateSequenceDiff) {
+        let toPts = events[0].pts;
+        for (let e of events) {
+            toPts = Math.max(toPts, e.pts);
+        }
         if (this.loading) {
             await updateInvalidated(tx, this.id, true);
             this.loadingPending.push(async (tx2) => {
-                await this.subscription!.onDiff(tx2, fromPts, events, state);
+                await this.subscription!.onDiff(tx2, fromPts, toPts, events, state);
             });
         } else {
-            await this.subscription!.onDiff(tx, fromPts, events, state);
+            await this.subscription!.onDiff(tx, fromPts, toPts, events, state);
         }
     }
 
