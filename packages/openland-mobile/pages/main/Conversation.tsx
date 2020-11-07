@@ -49,6 +49,7 @@ import { useChatMessagesActionsState, useChatMessagesActionsMethods } from 'open
 import { matchLinks } from 'openland-y-utils/TextProcessor';
 import { StickerPicker } from './components/stickers/StickerPicker';
 import { SDevice } from 'react-native-s/SDevice';
+import { StickersController } from './components/stickers/StickerContext';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -73,6 +74,7 @@ interface ConversationRootState {
     keyboardHeight: number;
     keyboardOpened: boolean;
     closingQuoted: boolean;
+    hasStickerTranslation: boolean;
 }
 
 class ConversationRoot extends React.Component<ConversationRootProps, ConversationRootState> {
@@ -105,7 +107,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             keyboardHeight: 0,
             keyboardOpened: false,
             closingQuoted: false,
+            hasStickerTranslation: true,
         };
+
+        StickersController.setHide(() => this.setState({ stickerKeyboardShown: false, hasStickerTranslation: true, keyboardHeight: 0 }));
 
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
         AsyncStorage.getItem('compose_draft_mentions_v2_' + this.props.chat.id).then(s => this.setState({ mentions: JSON.parse(s) || [] }));
@@ -324,7 +329,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         } else {
             if (this.openKeyboardHeight > 0) {
                 this.stickerKeyboardHeight = this.openKeyboardHeight;
-                this.setState({ keyboardHeight: 0, stickerKeyboardShown: true }, () => {
+                this.setState({ keyboardHeight: 0, stickerKeyboardShown: true, hasStickerTranslation: false }, () => {
                     if (this.inputRef.current && this.inputRef.current.isFocused()) {
                         this.inputRef.current.blur();
                     }
@@ -500,7 +505,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 flexBasis: 1,
                                 flexShrink: 0,
                                 flexDirection: 'column',
-                                paddingBottom: this.state.stickerKeyboardShown ? this.stickerKeyboardHeight : (Platform.OS === 'android' ? this.state.keyboardHeight : 0)
+                                paddingBottom: Platform.select({
+                                    ios: 0,
+                                    android: this.state.stickerKeyboardShown ? this.stickerKeyboardHeight : this.state.keyboardHeight,
+                                })
                             }}
                         >
                             <ConversationView inverted={true} engine={this.engine} />
@@ -531,15 +539,45 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     canSubmit={canSubmit}
                                     onStickerKeyboardButtonPress={this.state.keyboardOpened || this.state.stickerKeyboardShown ? this.handleStickerKeyboardButtonPress : undefined}
                                     stickerKeyboardShown={this.state.stickerKeyboardShown}
-                                    overrideTransform={this.state.stickerKeyboardShown ? (this.stickerKeyboardHeight + 0) : -1}
+                                    overrideTransform={this.state.stickerKeyboardShown ? (this.stickerKeyboardHeight + 0) : (this.state.keyboardHeight > 0 ? 0 : -1)}
+                                    bottomView={
+                                        Platform.OS === 'ios' && (
+                                            <View
+                                                style={{
+                                                    top: '100%',
+                                                    paddingBottom: SDevice.safeArea.bottom,
+                                                    backgroundColor: this.props.theme.backgroundPrimary,
+                                                    position: 'absolute',
+                                                    zIndex: 4,
+                                                    left: 0,
+                                                    right: 0,
+                                                }}
+                                                transform={this.state.hasStickerTranslation ? [{ translateY: SDevice.safeArea.bottom }] : undefined}
+                                            >
+                                                <StickerPicker
+                                                    onStickerSent={(sticker: StickerFragment) => this.engine.sendSticker(sticker, undefined)}
+                                                    theme={this.props.theme}
+                                                    height={this.stickerKeyboardHeight}
+                                                />
+                                            </View>
+                                        )
+                                    }
                                 />
                             )}
                             {!showInputBar && reloadButton}
                             {!showInputBar && inputPlaceholder}
                             {showSelectedMessagesActions && <ChatSelectedActions conversation={this.engine} chat={this.props.chat} />}
                         </View>
-                        {this.state.stickerKeyboardShown && (
-                            <View style={{ bottom: SDevice.safeArea.bottom, position: 'absolute', zIndex: 4, left: 0, right: 0 }}>
+                        {Platform.OS === 'android' && this.state.stickerKeyboardShown && (
+                            <View
+                                style={{
+                                    bottom: SDevice.safeArea.bottom,
+                                    position: 'absolute',
+                                    zIndex: 4,
+                                    left: 0,
+                                    right: 0,
+                                }}
+                            >
                                 <StickerPicker
                                     onStickerSent={(sticker: StickerFragment) => this.engine.sendSticker(sticker, undefined)}
                                     theme={this.props.theme}
