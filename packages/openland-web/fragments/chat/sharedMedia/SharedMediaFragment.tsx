@@ -258,7 +258,7 @@ const TabsMenuMobile = React.memo((props: { items: (TabItem & { icon: React.Reac
 });
 
 const TabsMenuMobileButton = (props: { menu: (ctx: UPopperController) => JSX.Element, selected: string }) => {
-    const [, menuShow] = usePopper({ placement: 'bottom-end', marginTop: -56, marginRight: -8 }, props.menu);
+    const [, menuShow] = usePopper({ placement: 'bottom-end', marginTop: -56, marginRight: -8, updatedDeps: props.selected }, props.menu);
     return (
         <XView {...TextStyles.Label1} color="var(--foregroundSecondary)" flexDirection="row" onClick={menuShow} paddingVertical={16} alignItems="center" >
             <XView marginRight={10}>{props.selected}</XView><UIcon size={16} icon={<DropIcon />} />

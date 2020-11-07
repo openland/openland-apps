@@ -83,7 +83,7 @@ export const ProfileLayout = ({ title, track, leftColumn, rightColumn }: Profile
                                 {leftColumn}
                             </div>
                         </XView>
-                        <XView maxWidth={504}>{rightColumn}</XView>
+                        <XView maxWidth={536} width="100%" flexShrink={1}>{rightColumn}</XView>
                     </XView>
                 </XView>
             </ProfileLayoutContext.Provider>
