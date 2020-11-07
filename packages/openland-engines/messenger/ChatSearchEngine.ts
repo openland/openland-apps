@@ -43,33 +43,15 @@ export function convertSearchMessage(src: FullMessage_GeneralMessage & { repeatK
 
     if (src.message) {
         const message = src.message.toLowerCase();
-        const highlightOffset = message.indexOf(query.toLowerCase());
-        const splittedParts = query.toLowerCase().split(/@+/);
+        const splittedParts = query.toLowerCase().trim().replace('@', '').split(' ');
 
-        if (splittedParts.length > 1) {
-            const indices: number[] = [];
-            let index = 0;
-
-            if (splittedParts[0].length > 0) {
-                highlightedSpans.push({
-                    __typename: 'MessageSpanSearchHighlight',
-                    offset: highlightOffset,
-                    length: splittedParts[0].length
-                });
+        splittedParts.forEach(part => {
+            let startIndex = 0, index;
+            while ((index = message.indexOf(part, startIndex)) > -1) {
+                highlightedSpans.push({ __typename: 'MessageSpanSearchHighlight', offset: index, length: part.length });
+                startIndex = index + part.length;
             }
-            splittedParts.shift();
-            splittedParts.forEach(part => {
-                    const foundIndex = message.indexOf(part, index);
-                    indices.push(foundIndex);
-                    index = foundIndex + part.length;
-            });
-
-            indices.forEach((item, i) => {
-               highlightedSpans.push({ __typename: "MessageSpanSearchHighlight", offset: item, length: splittedParts[i].trim().length});
-            });
-        } else {
-            highlightedSpans.push({ __typename: "MessageSpanSearchHighlight", offset: highlightOffset, length: query.length });
-        }
+        });
     }
 
     return {
