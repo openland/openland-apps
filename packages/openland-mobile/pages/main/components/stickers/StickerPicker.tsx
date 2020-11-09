@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, LayoutChangeEvent, TouchableOpacity, Image, FlatList, AsyncStorage } from 'react-native';
+import { View, Text, LayoutChangeEvent, TouchableOpacity, Image, FlatList, AsyncStorage, Platform } from 'react-native';
 import { useClient } from 'openland-api/useClient';
 import { ZImage } from 'openland-mobile/components/ZImage';
 import { MyStickers_stickers_packs, StickerFragment } from 'openland-api/spacex.types';
@@ -9,6 +9,7 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { StickerLayout, useStickerLayout } from './stickerLayout';
+import FastImage from 'react-native-fast-image';
 
 const RECENT_ID = 'recent';
 
@@ -20,6 +21,8 @@ interface StickerRowProps {
     sendSticker: SendStickerF;
 }
 
+const getStickerUrl = (sticker: StickerFragment) => `https://ucarecdn.com/${sticker.image.uuid}/-/format/png/-/preview/128x128/`;
+
 const StickerRow = React.memo((props: StickerRowProps) => {
     const { stickers, stickerSize, sendSticker } = props;
 
@@ -29,7 +32,7 @@ const StickerRow = React.memo((props: StickerRowProps) => {
                 <TouchableOpacity onPress={() => sendSticker(e)} activeOpacity={HighlightAlpha} style={{ padding: 8 }}>
                     <ZImage
                         resize='none'
-                        source={`https://ucarecdn.com/${e.image.uuid}/-/format/png/-/preview/128x128/`}
+                        source={getStickerUrl(e)}
                         width={stickerSize}
                         height={stickerSize}
                     />
@@ -141,6 +144,12 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
             setRecentStickers(JSON.parse(await AsyncStorage.getItem('recentStickers') || '[]'));
         })();
     }, []);
+
+    React.useEffect(() => {
+        if (Platform.OS === 'ios' && clientStickers) {
+            FastImage.preload(clientStickers.flatMap(pack => pack.stickers.map(s => ({ uri: getStickerUrl(s) }))));
+        }
+    }, [clientStickers]);
 
     const handleDeletePackPressed = React.useCallback((pack: MyStickers_stickers_packs | 'recent') => {
         Alert.builder()
