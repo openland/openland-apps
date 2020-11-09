@@ -19,13 +19,13 @@ export const ChannelMuteButton = (props: ChannelMuteButtonProps) => {
 
     const theme = React.useContext(ThemeContext);
 
-    const handleNotifications = React.useCallback(() => {
+    const handleNotifications = React.useCallback(async () => {
         let value = !notifications;
 
         onMutedChange();
 
-        client.mutateRoomSettingsUpdate({ roomId: props.id, settings: { mute: !value } });
-        client.refetchRoomTiny({ id: props.id });
+        await client.mutateRoomSettingsUpdate({ roomId: props.id, settings: { mute: !value } });
+        await client.refetchRoomTiny({ id: props.id });
     }, [notifications]);
 
     if (Platform.OS === 'ios') {

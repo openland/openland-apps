@@ -335,7 +335,10 @@ const Body = (props: {
         },
     }, {
         keys: ['Enter'],
-        callback: () => {
+        callback: (ev: KeyboardEvent) => {
+            if (ev.shiftKey) {
+                return;
+            }
             if (activeWord && suggestRef.current?.isActive() && (activeWord.startsWith('@') || activeWord.startsWith(':'))) {
                 return false;
             }

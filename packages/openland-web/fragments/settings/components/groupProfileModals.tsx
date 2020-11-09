@@ -731,11 +731,12 @@ export const showLeaveChatConfirmation = (
     tabRouter: TabRouterContextProps,
     isPremium?: boolean,
     isPublic?: boolean,
+    isChannel?: boolean,
 ) => {
     const builder = new AlertBlanketBuilder();
 
     builder
-        .title('Leave chat')
+        .title(isChannel ? 'Leave channel' : 'Leave group')
         .message(
             isPremium
                 ? 'Leaving the group only removes it from your chat list. To cancel the associated subscription, visit Subscriptions section in your Account tab and cancel it from there.'

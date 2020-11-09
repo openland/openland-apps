@@ -121,6 +121,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     componentDidUpdate(prevProps: ConversationRootProps) {
+        if (prevProps.chat.settings.mute !== this.props.chat.settings.mute) {
+            this.setState({
+                muted: !!this.props.chat.settings.mute
+            });
+        }
         if (prevProps.messagesActionsState !== this.props.messagesActionsState) {
             this.handleMessagesActions(this.props.messagesActionsState);
         }
@@ -394,7 +399,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             <TouchableOpacity disabled={!path.path} onPress={() => this.props.router.push(path.path!, path.pathArgs)}>
                 <View flexDirection="row" flexShrink={1} marginLeft={Platform.OS === 'android' ? -12 : 0}>
                     <ChatHeaderAvatar conversationId={this.engine.conversationId} router={this.props.router} />
-                    <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />
+                    <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} muted={this.state.muted} />
                 </View>
             </TouchableOpacity>
         );
