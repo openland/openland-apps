@@ -64,6 +64,7 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
                 tabRouter,
                 group.__typename === 'SharedRoom' && group.isPremium,
                 group.kind === 'PUBLIC',
+                group.isChannel,
             ),
     });
 

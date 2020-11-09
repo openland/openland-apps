@@ -144,7 +144,11 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
     );
 };
 
-const MenuComponent = (props: { ctx: UPopperController; id: string; savedMessages?: boolean, onSearchClick: () => void }) => {
+const MenuComponent = (props: {
+    ctx: UPopperController;
+    id: string;
+    onSearchClick: () => void;
+}) => {
     const layout = useLayout();
     const client = useClient();
     const tabRouter = useTabRouter();
@@ -179,7 +183,6 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; savedMessage
     }
 
     if (
-        !props.savedMessages &&
         layout === 'mobile' &&
         (privateRoom
             ? !privateRoom.user.isBot
@@ -199,6 +202,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; savedMessage
     }
 
     if (
+        layout === 'mobile' &&
         sharedRoom &&
         sharedRoom.callSettings.mode === RoomCallsMode.LINK &&
         sharedRoom.callSettings.callLink
@@ -212,30 +216,21 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; savedMessage
         });
     }
 
-    if (!props.savedMessages) {
-        res.item({
-            title: `${muted ? 'Unmute' : 'Mute'} notifications`,
-            icon: muted ? <NotificationsIcon /> : <NotificationsOffIcon />,
-            action: async () => {
-                let newMuted = !chat.settings.mute;
-                client.mutateRoomSettingsUpdate({ roomId: chat.id, settings: { mute: newMuted } });
-                setMuted(newMuted);
-            },
-            closeDelay: 400,
-        });
-    }
+    res.item({
+        title: `${muted ? 'Unmute' : 'Mute'} notifications`,
+        icon: muted ? <NotificationsIcon /> : <NotificationsOffIcon />,
+        action: async () => {
+            let newMuted = !chat.settings.mute;
+            client.mutateRoomSettingsUpdate({ roomId: chat.id, settings: { mute: newMuted } });
+            setMuted(newMuted);
+        },
+        closeDelay: 400,
+    });
 
     res.item({
         title: 'Search messages',
         icon: <SearchIcon />,
         action: props.onSearchClick,
-        closeDelay: 400,
-    });
-
-    res.item({
-        title: 'Media, files, links',
-        icon: <AttachIcon />,
-        path: `/mail/${props.id}/shared`,
         closeDelay: 400,
     });
 
@@ -272,7 +267,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; savedMessage
             });
         }
         res.item({
-            title: 'Leave chat',
+            title: sharedRoom.isChannel ? 'Leave channel' : 'Leave group',
             icon: <LeaveIcon />,
             action: () =>
                 showLeaveChatConfirmation(
@@ -281,6 +276,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; savedMessage
                     tabRouter,
                     sharedRoom && sharedRoom.isPremium,
                     sharedRoom.kind === 'PUBLIC',
+                    sharedRoom.isChannel,
                 ),
         });
     }
@@ -288,168 +284,181 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; savedMessage
     return res.build(props.ctx, 240);
 };
 
-export const ChatHeader = React.memo((props: { chat: RoomChat_room, onSearchClick: () => void }) => {
-    const { chat, onSearchClick } = props;
-    const layout = useLayout();
-    const messenger = React.useContext(MessengerContext);
+export const ChatHeader = React.memo(
+    (props: { chat: RoomChat_room; onSearchClick: () => void }) => {
+        const { chat, onSearchClick } = props;
+        const layout = useLayout();
+        const messenger = React.useContext(MessengerContext);
 
-    const privateRoom = chat.__typename === 'PrivateRoom' ? chat : undefined;
-    const sharedRoom = chat.__typename === 'SharedRoom' ? chat : undefined;
+        const privateRoom = chat.__typename === 'PrivateRoom' ? chat : undefined;
+        const sharedRoom = chat.__typename === 'SharedRoom' ? chat : undefined;
 
-    const isSavedMessages = privateRoom && messenger.user.id === privateRoom.user.id;
-    const title = privateRoom ? privateRoom.user.name : sharedRoom!.title;
-    const photo = privateRoom ? privateRoom.user.photo : sharedRoom!.photo;
-    const path = isSavedMessages
-        ? `/mail/${chat.id}/shared`
-        : privateRoom
-        ? `/${privateRoom.user.shortname || privateRoom.user.id}`
-        : `/group/${chat.id}`;
-    const showCallButton =
-        !isSavedMessages &&
-        layout === 'desktop' &&
-        (privateRoom
-            ? !privateRoom.user.isBot
-            : sharedRoom
-            ? sharedRoom.callSettings.mode !== RoomCallsMode.DISABLED
-            : true);
-    const titleEmojify = isSavedMessages
-        ? 'Saved messages'
-        : React.useMemo(() => emoji(title), [title]);
+        const isSavedMessages = privateRoom && messenger.user.id === privateRoom.user.id;
+        const title = privateRoom ? privateRoom.user.name : sharedRoom!.title;
+        const photo = privateRoom ? privateRoom.user.photo : sharedRoom!.photo;
+        const path = isSavedMessages
+            ? `/mail/${chat.id}/shared`
+            : privateRoom
+            ? `/${privateRoom.user.shortname || privateRoom.user.id}`
+            : `/group/${chat.id}`;
+        const showCallButton =
+            !isSavedMessages &&
+            layout === 'desktop' &&
+            (privateRoom
+                ? !privateRoom.user.isBot
+                : sharedRoom
+                ? sharedRoom.callSettings.mode !== RoomCallsMode.DISABLED
+                : true);
+        const titleEmojify = isSavedMessages
+            ? 'Saved messages'
+            : React.useMemo(() => emoji(title), [title]);
 
-    const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(chat);
-    const showInviteButton = layout === 'desktop' && (canAddDirectly || canGetInviteLink);
+        const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(chat);
+        const showInviteButton = layout === 'desktop' && (canAddDirectly || canGetInviteLink);
 
-    const highlightFeaturedChat = sharedRoom && sharedRoom.featured;
+        const highlightFeaturedChat = sharedRoom && sharedRoom.featured;
 
-    return (
-        <XView
-            flexDirection="row"
-            flexGrow={1}
-            flexBasis={0}
-            minWidth={0}
-            position="relative"
-            justifyContent="space-between"
-            paddingHorizontal={16}
-        >
+        return (
             <XView
-                hoverOpacity={HoverAlpha}
                 flexDirection="row"
-                flexShrink={1}
-                flexGrow={0}
+                flexGrow={1}
+                flexBasis={0}
                 minWidth={0}
-                path={path}
-                cursor="pointer"
+                position="relative"
+                justifyContent="space-between"
+                paddingHorizontal={16}
             >
-                <XView paddingTop={8} paddingRight={16}>
-                    <UAvatar
-                        size="medium"
-                        title={title}
-                        photo={photo}
-                        id={privateRoom ? privateRoom.user.id : sharedRoom!.id}
-                        savedMessages={isSavedMessages}
-                    />
-                </XView>
                 <XView
-                    flexDirection="column"
-                    flexGrow={1}
-                    flexBasis={0}
+                    hoverOpacity={HoverAlpha}
+                    flexDirection="row"
+                    flexShrink={1}
+                    flexGrow={0}
                     minWidth={0}
-                    paddingRight={16}
+                    path={path}
+                    cursor="pointer"
                 >
+                    <XView paddingTop={8} paddingRight={16}>
+                        <UAvatar
+                            size="medium"
+                            title={title}
+                            photo={photo}
+                            id={privateRoom ? privateRoom.user.id : sharedRoom!.id}
+                            savedMessages={isSavedMessages}
+                        />
+                    </XView>
                     <XView
                         flexDirection="column"
                         flexGrow={1}
                         flexBasis={0}
                         minWidth={0}
-                        maxWidth="100%"
-                        alignSelf="flex-start"
-                        color="var(--foregroundPrimary)"
-                        justifyContent={isSavedMessages ? 'center' : undefined}
+                        paddingRight={16}
                     >
                         <XView
-                            fontSize={15}
-                            marginTop={isSavedMessages ? 0 : 6}
-                            height={24}
-                            lineHeight="24px"
-                            fontWeight="600"
-                            overflow="hidden"
-                            flexDirection="row"
-                            alignItems="center"
+                            flexDirection="column"
+                            flexGrow={1}
+                            flexBasis={0}
+                            minWidth={0}
+                            maxWidth="100%"
+                            alignSelf="flex-start"
+                            color="var(--foregroundPrimary)"
+                            justifyContent={isSavedMessages ? 'center' : undefined}
                         >
-                            {sharedRoom && sharedRoom.isPremium && <PremiumBadge />}
-                            <span className={titleStyle}>
-                                {titleEmojify}
-                                {!isSavedMessages &&
-                                    privateRoom &&
-                                    privateRoom.user.primaryOrganization && (
-                                        <span className={cx(secondary, TextDensed)}>
-                                            {privateRoom.user.primaryOrganization.name}
-                                        </span>
-                                    )}
-                            </span>
-                            {highlightFeaturedChat && (
-                                <div className={featuredIcon}>
-                                    <UIcon
-                                        icon={<IcFeatured />}
-                                        color={'#3DA7F2' /* special: verified/featured color */}
-                                    />
-                                </div>
-                            )}
-                            {chat.settings.mute && (
-                                <UIcon
-                                    className={mutedIcon}
-                                    icon={<MutedIcon />}
-                                    color="var(--foregroundQuaternary)"
-                                    size={16}
-                                />
-                            )}
-                        </XView>
-                        {!isSavedMessages && (
-                            <XView {...TextStyles.Densed} color="var(--foregroundSecondary)">
-                                <span className={oneLiner}>
-                                    {privateRoom && <HeaderLastSeen user={privateRoom.user} />}
-                                    {sharedRoom &&
-                                        sharedRoom.membersCount !== null &&
-                                        sharedRoom.membersCount !== 0 && (
-                                            <>
-                                                {sharedRoom.membersCount >= 1
-                                                    ? `${sharedRoom.membersCount} members`
-                                                    : `1 member`}
-                                                <ChatOnlinesTitle id={chat.id} />
-                                            </>
+                            <XView
+                                fontSize={15}
+                                marginTop={isSavedMessages ? 0 : 6}
+                                height={24}
+                                lineHeight="24px"
+                                fontWeight="600"
+                                overflow="hidden"
+                                flexDirection="row"
+                                alignItems="center"
+                            >
+                                {sharedRoom && sharedRoom.isPremium && <PremiumBadge />}
+                                <span className={titleStyle}>
+                                    {titleEmojify}
+                                    {!isSavedMessages &&
+                                        privateRoom &&
+                                        privateRoom.user.primaryOrganization && (
+                                            <span className={cx(secondary, TextDensed)}>
+                                                {privateRoom.user.primaryOrganization.name}
+                                            </span>
                                         )}
                                 </span>
+                                {highlightFeaturedChat && (
+                                    <div className={featuredIcon}>
+                                        <UIcon
+                                            icon={<IcFeatured />}
+                                            color={'#3DA7F2' /* special: verified/featured color */}
+                                        />
+                                    </div>
+                                )}
+                                {chat.settings.mute && (
+                                    <UIcon
+                                        className={mutedIcon}
+                                        icon={<MutedIcon />}
+                                        color="var(--foregroundQuaternary)"
+                                        size={16}
+                                    />
+                                )}
                             </XView>
-                        )}
+                            {!isSavedMessages && (
+                                <XView {...TextStyles.Densed} color="var(--foregroundSecondary)">
+                                    <span className={oneLiner}>
+                                        {privateRoom && <HeaderLastSeen user={privateRoom.user} />}
+                                        {sharedRoom &&
+                                            sharedRoom.membersCount !== null &&
+                                            sharedRoom.membersCount !== 0 && (
+                                                <>
+                                                    {sharedRoom.membersCount >= 1
+                                                        ? `${sharedRoom.membersCount} members`
+                                                        : `1 member`}
+                                                    <ChatOnlinesTitle id={chat.id} />
+                                                </>
+                                            )}
+                                    </span>
+                                </XView>
+                            )}
+                        </XView>
                     </XView>
                 </XView>
-            </XView>
-            <XView flexDirection="row" alignItems="center">
-                {showInviteButton && (
-                    <UIconButton
-                        icon={<InviteIcon />}
-                        onClick={() =>
-                            showAddMembersModal({
-                                id: chat.id,
-                                isGroup: true,
-                                isOrganization: false,
-                            })
-                        }
-                        size="large"
-                    />
-                )}
-                {showCallButton && <CallButton chat={chat} messenger={messenger} />}
-
-                <UMoreButton
-                    menu={(ctx) => (
-                        <React.Suspense fallback={<div style={{ width: 240, height: 100 }} />}>
-                            <MenuComponent ctx={ctx} id={chat.id} savedMessages={isSavedMessages} onSearchClick={onSearchClick}/>
-                        </React.Suspense>
+                <XView flexDirection="row" alignItems="center">
+                    {showInviteButton && (
+                        <UIconButton
+                            icon={<InviteIcon />}
+                            onClick={() =>
+                                showAddMembersModal({
+                                    id: chat.id,
+                                    isGroup: true,
+                                    isOrganization: false,
+                                })
+                            }
+                            size="large"
+                        />
                     )}
-                    size="large-densed"
-                />
+                    {showCallButton && <CallButton chat={chat} messenger={messenger} />}
+
+                    {!isSavedMessages && (
+                        <UMoreButton
+                            menu={(ctx) => (
+                                <React.Suspense
+                                    fallback={<div style={{ width: 240, height: 100 }} />}
+                                >
+                                    <MenuComponent
+                                        ctx={ctx}
+                                        id={chat.id}
+                                        onSearchClick={onSearchClick}
+                                    />
+                                </React.Suspense>
+                            )}
+                            size="large-densed"
+                        />
+                    )}
+                    {isSavedMessages && (
+                        <UIconButton icon={<SearchIcon />} size="large" onClick={onSearchClick} />
+                    )}
+                </XView>
+                <MessagesActionsHeader chat={chat} />
             </XView>
-            <MessagesActionsHeader chat={chat} />
-        </XView>
-    );
-});
+        );
+    },
+);

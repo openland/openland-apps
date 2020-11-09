@@ -4,7 +4,10 @@ import { XView } from 'react-mental';
 
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
-import { showRoomEditModal, showLeaveChatConfirmation } from 'openland-web/fragments/settings/components/groupProfileModals';
+import {
+    showRoomEditModal,
+    showLeaveChatConfirmation,
+} from 'openland-web/fragments/settings/components/groupProfileModals';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { useClient } from 'openland-api/useClient';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
@@ -49,22 +52,31 @@ export const GroupActions = React.memo(({ group }: GroupActions) => {
 
     const onEditClick = React.useCallback(() => showRoomEditModal(id, isChannel), [id, isChannel]);
 
-    const onLeaveClick = React.useCallback(() => showLeaveChatConfirmation(
-        client,
-        id,
-        tabRouter,
-        group.__typename === 'SharedRoom' && group.isPremium,
-        group.kind === 'PUBLIC',
-    ), [group]);
+    const onLeaveClick = React.useCallback(
+        () =>
+            showLeaveChatConfirmation(
+                client,
+                id,
+                tabRouter,
+                group.__typename === 'SharedRoom' && group.isPremium,
+                group.kind === 'PUBLIC',
+                group.isChannel,
+            ),
+        [group],
+    );
 
     const onDeleteClick = React.useCallback(() => {
         const alertBuilder = new AlertBlanketBuilder();
 
         alertBuilder.title(`Delete this ${typeString}?`);
         alertBuilder.message('Are you sure?');
-        alertBuilder.action('Delete', async () => {
-            await client.mutateRoomDelete({ chatId: id });
-        }, 'danger');
+        alertBuilder.action(
+            'Delete',
+            async () => {
+                await client.mutateRoomDelete({ chatId: id });
+            },
+            'danger',
+        );
         alertBuilder.show();
     }, [typeString, id]);
 
@@ -74,12 +86,34 @@ export const GroupActions = React.memo(({ group }: GroupActions) => {
         <XView marginTop={16} marginHorizontal={-16}>
             <UNotificationsSwitch id={id} mute={!!settings.mute} marginLeft={16} />
 
-            {canEdit && <UListItem title={editTitle} useRadius={true} icon={<SettingsIcon />} onClick={onEditClick} />}
+            {canEdit && (
+                <UListItem
+                    title={editTitle}
+                    useRadius={true}
+                    icon={<SettingsIcon />}
+                    onClick={onEditClick}
+                />
+            )}
             <UMoreContainer>
-                <UListItem title="Copy link" useRadius={true} icon={<CopyIcon />} onClick={onCopyLinkClick} />
-                <UListItem title={`Leave ${typeString}`} useRadius={true} icon={<LeaveIcon />} onClick={onLeaveClick} />
+                <UListItem
+                    title="Copy link"
+                    useRadius={true}
+                    icon={<CopyIcon />}
+                    onClick={onCopyLinkClick}
+                />
+                <UListItem
+                    title={`Leave ${typeString}`}
+                    useRadius={true}
+                    icon={<LeaveIcon />}
+                    onClick={onLeaveClick}
+                />
                 <XWithRole role="super-admin">
-                    <UListItem title={`Delete ${typeString}`} useRadius={true} icon={<DeleteIcon />} onClick={onDeleteClick} />
+                    <UListItem
+                        title={`Delete ${typeString}`}
+                        useRadius={true}
+                        icon={<DeleteIcon />}
+                        onClick={onDeleteClick}
+                    />
                 </XWithRole>
             </UMoreContainer>
         </XView>
