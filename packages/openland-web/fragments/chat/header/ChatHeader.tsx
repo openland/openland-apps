@@ -11,18 +11,6 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
-import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
-import ExternalCallIcon from 'openland-icons/s/ic-call-external-24.svg';
-import InviteIcon from 'openland-icons/s/ic-invite-24.svg';
-import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
-import SettingsIcon from 'openland-icons/s/ic-edit-24.svg';
-import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
-import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
-import NotificationsOffIcon from 'openland-icons/s/ic-notifications-off-24.svg';
-import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
-import SearchIcon from 'openland-icons/s/ic-search-24.svg';
-import MutedIcon from 'openland-icons/s/ic-muted-16.svg';
-import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { showAddMembersModal } from '../showAddMembersModal';
 import {
@@ -40,7 +28,19 @@ import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 import { RoomCallsMode, RoomChat_room } from 'openland-api/spacex.types';
+import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
+import ExternalCallIcon from 'openland-icons/s/ic-call-external-24.svg';
+import InviteIcon from 'openland-icons/s/ic-invite-24.svg';
+import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
+import SettingsIcon from 'openland-icons/s/ic-edit-24.svg';
+import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
+import NotificationsOffIcon from 'openland-icons/s/ic-notifications-off-24.svg';
+import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
+import SearchIcon from 'openland-icons/s/ic-search-24.svg';
+import MutedIcon from 'openland-icons/s/ic-muted-16.svg';
+import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
 import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
+
 const secondary = css`
     color: var(--foregroundSecondary);
     padding-left: 4px;

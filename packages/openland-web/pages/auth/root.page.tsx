@@ -42,10 +42,6 @@ const checkIfIsSignInInvite = (query: any) => {
     );
 };
 
-const isIntroduceYourself = (path: string) => {
-    return path.includes('introduce-yourself') || path.includes('/createProfile');
-};
-
 const isAcceptInvite = (path: string, query: any) => {
     return path.includes('accept-invite') || checkIfIsSignInInvite(query);
 };
@@ -184,7 +180,7 @@ const AuthHeader = React.memo(
         const [onBack, setOnBack] = React.useState<{
             callback?: (event: React.MouseEvent) => void;
         }>({
-            callback: (event: React.MouseEvent) => {
+            callback: () => {
                 history.back();
             },
         });
@@ -250,7 +246,10 @@ const Root = (props: { countryCode?: string }) => {
     if (router.path.includes('ask-auth-code')) {
         page = pages.askAuthCode;
     }
-    if (isIntroduceYourself(router.path)) {
+    if (router.path.includes('/createProfile') && !Cookie.get('x-openland-token')) {
+        return <XPageRedirect path="/" />;
+    }
+    if (router.path.includes('/createProfile') && Cookie.get('x-openland-token')) {
         page = pages.introduceYourself;
     }
 
@@ -465,7 +464,7 @@ const Root = (props: { countryCode?: string }) => {
 Root.getInitialProps = async (props: any) => {
     const countryCode = await fetchCountry();
 
-    return { countryCode, forceSSR: props.asPath && !isIntroduceYourself(props.asPath) && !isAcceptInvite(props.asPath, props.query) };
+    return { countryCode, forceSSR: props.asPath && !props.asPath.includes('/createProfile') && !isAcceptInvite(props.asPath, props.query) };
 };
 
 export default Root;

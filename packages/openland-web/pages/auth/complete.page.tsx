@@ -5,6 +5,7 @@ import { AUTH_ENDPOINT } from 'openland-api/endpoint';
 import { ErrorPage } from '../root/ErrorPage';
 import { trackError } from 'openland-x-analytics';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
+
 interface AuthResult {
     expiresIn: number;
     accessToken: string;
