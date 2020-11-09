@@ -23,6 +23,7 @@ import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcClose from 'openland-icons/s/ic-close-16.svg';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
+import { MembersWarning } from './components/MembersWarning';
 
 interface InviteModalProps {
     id: string;
@@ -57,7 +58,15 @@ const AddMemberModalInner = (props: InviteModalProps) => {
     const { canAddPeople } = props;
     const [searchQuery, setSearchQuery] = React.useState('');
     const [selectedUsers, setSelectedUsers] = React.useState<null | Map<string, string>>(null);
+    const [warningShown, setWarningShown] = React.useState(false);
     const [options, setOptions] = React.useState<{ label: string; value: string }[]>([]);
+
+    React.useEffect(() => {
+        if (selectedUsers && selectedUsers.size > 10 && !warningShown) {
+            setWarningShown(true);
+            showModalBox({ title: 'Do you know people you are adding?', width: 480 }, ctx => <MembersWarning hide={ctx.hide} parentHide={props.hide!}/>);
+        }
+    }, [selectedUsers?.size]);
 
     const objType = props.isGroup
         ? props.isChannel
