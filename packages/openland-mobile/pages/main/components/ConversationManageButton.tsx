@@ -172,7 +172,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         }
 
         if (sharedRoom) {
-            builder.action('Leave group', onLeavePress, false, require('assets/ic-leave-24.png'));
+            builder.action(sharedRoom.isChannel ? 'Leave channel' : 'Leave group', onLeavePress, false, require('assets/ic-leave-24.png'));
         }
 
         if (isUser) {
