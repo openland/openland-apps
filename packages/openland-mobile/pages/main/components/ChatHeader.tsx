@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     } as TextStyle,
 });
 
-const SharedChatHeaderContent = React.memo((props: { room: RoomTiny_room_SharedRoom, typing?: string, theme: ThemeGlobal }) => {
+const SharedChatHeaderContent = React.memo((props: { room: RoomTiny_room_SharedRoom, typing?: string, theme: ThemeGlobal, muted: boolean }) => {
     const { room, typing, theme } = props;
     const [onlineCount, setOnlineCount] = React.useState<number>(0);
 
@@ -66,7 +66,7 @@ const SharedChatHeaderContent = React.memo((props: { room: RoomTiny_room_SharedR
                         style={{ tintColor: '#3DA7F2' /* special: verified/featured color */, marginLeft: 4, width: 16, height: 16 }}
                     />
                 )}
-                {room.settings.mute && (
+                {props.muted && (
                     <Image
                         alignSelf="center"
                         source={require('assets/ic-muted-16.png')}
@@ -82,7 +82,7 @@ const SharedChatHeaderContent = React.memo((props: { room: RoomTiny_room_SharedR
     );
 });
 
-const PrivateChatHeaderContent = React.memo((props: { room: RoomTiny_room_PrivateRoom, typing?: string, typingType?: string, theme: ThemeGlobal }) => {
+const PrivateChatHeaderContent = React.memo((props: { room: RoomTiny_room_PrivateRoom, typing?: string, typingType?: string, theme: ThemeGlobal, muted: boolean }) => {
     const { room, typing, theme, typingType } = props;
 
     let [subtitle, accent] = useLastSeen(room.user);
@@ -108,7 +108,7 @@ const PrivateChatHeaderContent = React.memo((props: { room: RoomTiny_room_Privat
         <View flexDirection="column" alignItems="flex-start" alignSelf="center" justifyContent="center" pointerEvents="box-none" height={44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
             <View flexDirection="row">
                 <Text style={[styles.title, { color: theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{isSavedMessages ? 'Saved messages' : title}</Text>
-                {room.settings.mute && (
+                {props.muted && (
                     <Image
                         alignSelf="center"
                         source={require('assets/ic-muted-16.png')}
@@ -203,7 +203,7 @@ const PrivateChatHeaderContent = React.memo((props: { room: RoomTiny_room_Privat
     );
 });
 
-const ChatHeaderContent = React.memo((props: { conversationId: string, router: SRouter, typing?: string, typingType?: string }) => {
+const ChatHeaderContent = React.memo((props: { conversationId: string, router: SRouter, typing?: string, typingType?: string, muted: boolean }) => {
     let theme = React.useContext(ThemeContext);
     let room = getClient().useRoomTiny({ id: props.conversationId });
 
@@ -211,21 +211,21 @@ const ChatHeaderContent = React.memo((props: { conversationId: string, router: S
     let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room as RoomTiny_room_PrivateRoom : null;
 
     if (sharedRoom) {
-        return <SharedChatHeaderContent room={sharedRoom} typing={props.typing} theme={theme} />;
+        return <SharedChatHeaderContent room={sharedRoom} typing={props.typing} theme={theme} muted={props.muted} />;
     }
 
     if (privateRoom) {
-        return <PrivateChatHeaderContent room={privateRoom} typing={props.typing} typingType={props.typingType} theme={theme} />;
+        return <PrivateChatHeaderContent room={privateRoom} typing={props.typing} typingType={props.typingType} theme={theme} muted={props.muted} />;
     }
 
     return null;
 });
 
-export class ChatHeader extends React.PureComponent<{ conversationId: string, router: SRouter }, { typing?: string, typingType?: string }> {
+export class ChatHeader extends React.PureComponent<{ conversationId: string, router: SRouter, muted: boolean }, { typing?: string, typingType?: string }> {
 
     disposeSubscription?: () => any;
 
-    constructor(props: any) {
+    constructor(props: { conversationId: string, router: SRouter, muted: boolean }) {
         super(props);
         this.state = {};
     }
