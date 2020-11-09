@@ -31,7 +31,7 @@ const FloatContainerClass = css`
     display: none;
     position: absolute;
     top: 0;
-    z-index: 2;
+    z-index: 3;
     flex-shrink: 0;
     align-items: center;
     background-color: var(--overlayHeavy);
