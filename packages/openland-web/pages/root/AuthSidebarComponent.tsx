@@ -9,6 +9,7 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
 import { detectOS } from 'openland-x-utils/detectOS';
+import { useTheme } from 'openland-x-utils/useTheme';
 import { trackEvent } from 'openland-x-analytics';
 
 const sidebarContainer = css`
@@ -177,6 +178,7 @@ const mobileHeaderContainer = css`
 `;
 
 export const AuthMobileHeader = React.memo(() => {
+    const theme = useTheme();
     const os = detectOS();
     let path = 'https://oplnd.com/ios';
     if (os === 'Android') {
@@ -185,7 +187,9 @@ export const AuthMobileHeader = React.memo(() => {
     return (
         <div className={mobileHeaderContainer}>
             <XView path={'/'} cursor="pointer">
-                <img src="/static/landing/logo.svg" width={130} height={44} />
+                {theme.theme === 'dark' ? (
+                    <img src="/static/landing/logo-light.svg" width={130} height={44} />
+                ) : (<img src="/static/landing/logo.svg" width={130} height={44} />)}
             </XView>
             <UButton
                 text="Install the app"

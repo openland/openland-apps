@@ -41,6 +41,10 @@ const container = css`
     flex-shrink: 1;
 `;
 
+const mobileContainer = css`
+    flex-direction: column;
+`;
+
 const noLoginContainer = css`
     max-height: 100vh;
 `;
@@ -208,7 +212,7 @@ export const InviteLandingComponentLayout = React.memo(
         }, [scrollRef]);
 
         return (
-            <div className={cx(container, props.noLogin && noLoginContainer)}>
+            <div className={cx(container, props.noLogin && noLoginContainer, isMobile && mobileContainer)}>
                 {props.noLogin && !isMobile && <AuthSidebarComponent />}
                 {props.noLogin && isMobile && <AuthMobileHeader />}
                 <div className={rootContainer}>
