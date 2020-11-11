@@ -75,6 +75,7 @@ interface ConversationRootState {
     keyboardOpened: boolean;
     closingQuoted: boolean;
     hasStickerTranslation: boolean;
+    isStickersOpaque: boolean;
 }
 
 class ConversationRoot extends React.Component<ConversationRootProps, ConversationRootState> {
@@ -86,6 +87,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     shouldHideStickerKeyboard = true;
     stickerKeyboardHeight = 0;
     openKeyboardHeight = 0;
+    stickerButtonPressedCount = 0;
 
     private setTyping = throttle(() => {
         getMessenger().engine.client.mutateSetTyping({ conversationId: this.props.chat.id, type: TypingType.TEXT });
@@ -108,6 +110,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             keyboardOpened: false,
             closingQuoted: false,
             hasStickerTranslation: true,
+            isStickersOpaque: false,
         };
 
         StickersController.setHide(() => this.setState({ stickerKeyboardShown: false, hasStickerTranslation: true, keyboardHeight: 0 }));
@@ -324,6 +327,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     handleStickerKeyboardButtonPress = () => {
+        let prevCount = ++this.stickerButtonPressedCount;
         if (this.state.stickerKeyboardShown) {
             this.waitingForKeyboardNative = true;
             this.setState({ stickerKeyboardShown: false, keyboardHeight: this.stickerKeyboardHeight }, () => {
@@ -331,10 +335,16 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     this.inputRef.current.focus();
                 }
             });
+            setTimeout(() => {
+                if (prevCount !== this.stickerButtonPressedCount) {
+                    return;
+                }
+                this.setState({ isStickersOpaque: false });
+            }, 400);
         } else {
             if (this.openKeyboardHeight > 0) {
                 this.stickerKeyboardHeight = this.openKeyboardHeight;
-                this.setState({ keyboardHeight: 0, stickerKeyboardShown: true, hasStickerTranslation: false }, () => {
+                this.setState({ keyboardHeight: 0, stickerKeyboardShown: true, hasStickerTranslation: false, isStickersOpaque: true }, () => {
                     if (this.inputRef.current && this.inputRef.current.isFocused()) {
                         this.inputRef.current.blur();
                     }
@@ -385,6 +395,16 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 await Linking.openURL(matchedLink);
             } catch (e) {
                 /**/
+            }
+        }
+    }
+
+    handleScroll = (event: NativeSyntheticEvent<any>) => {
+        if (this.stickerKeyboardHeight > 0 && event.nativeEvent.touchPositionY > 0 && this.state.stickerKeyboardShown) {
+            let height = this.stickerKeyboardHeight;
+            let newHeight = event.nativeEvent.touchPositionY - SDevice.safeArea.bottom;
+            if (newHeight + 20 < height) {
+                this.setState({ stickerKeyboardShown: false, hasStickerTranslation: true });
             }
         }
     }
@@ -516,7 +536,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 })
                             }}
                         >
-                            <ConversationView inverted={true} engine={this.engine} />
+                            <ConversationView inverted={true} engine={this.engine} onScroll={this.handleScroll} />
                             {pinnedMessage && (
                                 <PinnedMessage
                                     message={pinnedMessage}
@@ -556,6 +576,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                                     zIndex: 4,
                                                     left: 0,
                                                     right: 0,
+                                                    opacity: this.state.isStickersOpaque ? 1 : 0,
                                                 }}
                                                 transform={this.state.hasStickerTranslation ? [{ translateY: SDevice.safeArea.bottom }] : undefined}
                                             >
