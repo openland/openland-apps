@@ -160,7 +160,7 @@ export class XDialogProviderComponent extends React.Component<{}, XDialogProvide
                     ariaHideApp={false}
                     style={{
                         overlay: {
-                            zIndex: 3,
+                            zIndex: 4,
                             backgroundColor: 'transparent',
                         },
                         content: {
