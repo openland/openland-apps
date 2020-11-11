@@ -13,7 +13,8 @@ internal val CommonChatsWithUserSelector = obj(
                             field("title", "title", notNull(scalar("String"))),
                             field("description", "description", scalar("String")),
                             field("photo", "photo", notNull(scalar("String"))),
-                            field("membersCount", "membersCount", notNull(scalar("Int")))
+                            field("membersCount", "membersCount", notNull(scalar("Int"))),
+                            field("featured", "featured", notNull(scalar("Boolean")))
                         ))))),
                     field("cursor", "cursor", scalar("String")),
                     field("count", "count", notNull(scalar("Int")))
@@ -22,6 +23,6 @@ internal val CommonChatsWithUserSelector = obj(
 val CommonChatsWithUser = object: OperationDefinition {
     override val name = "CommonChatsWithUser"
     override val kind = OperationKind.QUERY
-    override val body = "query CommonChatsWithUser(\$uid:ID!,\$first:Int!,\$after:ID){commonChatsWithUser(uid:\$uid,first:\$first,after:\$after){__typename items{__typename id title description photo membersCount}cursor count}}"
+    override val body = "query CommonChatsWithUser(\$uid:ID!,\$first:Int!,\$after:ID){commonChatsWithUser(uid:\$uid,first:\$first,after:\$after){__typename items{__typename id title description photo membersCount featured}cursor count}}"
     override val selector = CommonChatsWithUserSelector
 }

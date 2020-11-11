@@ -21,6 +21,6 @@ internal val DiscoverPopularNowSelector = obj(
 val DiscoverPopularNow = object: OperationDefinition {
     override val name = "DiscoverPopularNow"
     override val kind = OperationKind.QUERY
-    override val body = "query DiscoverPopularNow(\$first:Int!,\$after:String){discoverPopularNow(first:\$first,after:\$after){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}"
+    override val body = "query DiscoverPopularNow(\$first:Int!,\$after:String){discoverPopularNow(first:\$first,after:\$after){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive featured}"
     override val selector = DiscoverPopularNowSelector
 }

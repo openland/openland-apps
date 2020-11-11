@@ -28,6 +28,6 @@ internal val DiscoverEditorsChoiceSelector = obj(
 val DiscoverEditorsChoice = object: OperationDefinition {
     override val name = "DiscoverEditorsChoice"
     override val kind = OperationKind.QUERY
-    override val body = "query DiscoverEditorsChoice{discoverEditorsChoice{__typename id image{__typename uuid crop{__typename x y w h}}chat{__typename ...DiscoverSharedRoom}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}"
+    override val body = "query DiscoverEditorsChoice{discoverEditorsChoice{__typename id image{__typename uuid crop{__typename x y w h}}chat{__typename ...DiscoverSharedRoom}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive featured}"
     override val selector = DiscoverEditorsChoiceSelector
 }

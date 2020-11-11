@@ -24,6 +24,6 @@ internal val UserAvailableRoomsSelector = obj(
 val UserAvailableRooms = object: OperationDefinition {
     override val name = "UserAvailableRooms"
     override val kind = OperationKind.QUERY
-    override val body = "query UserAvailableRooms(\$first:Int!,\$after:String,\$query:String){alphaUserAvailableRooms(first:\$first,after:\$after,query:\$query){__typename edges{__typename node{__typename ...DiscoverSharedRoom}cursor}pageInfo{__typename hasNextPage}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}"
+    override val body = "query UserAvailableRooms(\$first:Int!,\$after:String,\$query:String){alphaUserAvailableRooms(first:\$first,after:\$after,query:\$query){__typename edges{__typename node{__typename ...DiscoverSharedRoom}cursor}pageInfo{__typename hasNextPage}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive featured}"
     override val selector = UserAvailableRoomsSelector
 }

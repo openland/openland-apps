@@ -7,7 +7,7 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 interface GroupViewProps {
-    item: Omit<SharedRoomView, 'photo'>;
+    item: Omit<SharedRoomView, 'photo' | 'featured'>;
     photo?: string;
     paddingRight?: number;
     onPress: (id: string) => void;

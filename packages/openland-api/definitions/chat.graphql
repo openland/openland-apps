@@ -918,6 +918,7 @@ query CommonChatsWithUser($uid: ID!, $first: Int!, $after: ID) {
             description
             photo
             membersCount
+            featured
         }
         cursor
         count

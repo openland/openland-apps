@@ -898,7 +898,8 @@ internal val DiscoverSharedRoomSelector = obj(
                     field("interval", "interval", scalar("String"))
                 )),
             field("isPremium", "isPremium", notNull(scalar("Boolean"))),
-            field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean")))
+            field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean"))),
+            field("featured", "featured", notNull(scalar("Boolean")))
         )
 
 internal val DiscoverChatsCollectionSelector = obj(
@@ -951,7 +952,8 @@ internal val DiscoverOrganizationSelector = obj(
             field("name", "name", notNull(scalar("String"))),
             field("photo", "photo", scalar("String")),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
-            field("shortname", "shortname", scalar("String"))
+            field("shortname", "shortname", scalar("String")),
+            field("alphaFeatured", "featured", notNull(scalar("Boolean")))
         )
 
 internal val FullMessageWithoutSourceSelector = obj(
@@ -1560,7 +1562,8 @@ internal val SharedRoomViewSelector = obj(
             field("title", "title", notNull(scalar("String"))),
             field("photo", "photo", notNull(scalar("String"))),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
-            field("photo", "photo", notNull(scalar("String")))
+            field("photo", "photo", notNull(scalar("String"))),
+            field("featured", "featured", notNull(scalar("Boolean")))
         )
 
 internal val ShortSequenceSelector = obj(
