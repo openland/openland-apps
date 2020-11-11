@@ -3,7 +3,7 @@ import { XView } from 'react-mental';
 
 import { useClient } from 'openland-api/useClient';
 import {
-    RoomChat_room_SharedRoom,
+    RoomChat_room_SharedRoom, SharedMediaCounters,
     SharedMediaCounters_counters,
     SharedMediaType,
 } from 'openland-api/spacex.types';
@@ -40,6 +40,16 @@ const MenuIcons = {
     Links: <LinkIcon />,
 };
 
+const getCountersSum = (counters: SharedMediaCounters | null) => {
+    if (!counters) {
+        return 0;
+    }
+
+    const { images, documents, links, videos } = counters.counters;
+
+    return images + documents + links + videos;
+};
+
 const getNotEmptyTab = (counters: SharedMediaCounters_counters) => {
     if (counters.images > 0) {
         return 'Media';
@@ -58,6 +68,7 @@ const TabsMenuMobile = React.memo(
     }) => {
         const builder = new UPopperMenuBuilder();
         props.items
+            .filter(({ counter }) => counter)
             .map((i) => ({
                 ...i,
                 title: (
@@ -104,6 +115,7 @@ export const ProfileTabsFragment = React.memo(({ chatId, group }: ProfileSharedM
     const { bottomReached } = React.useContext(ProfileLayoutContext);
     const layout = useLayout();
     const counters = client.useSharedMediaCounters({ chatId }, { suspense: false });
+    const countersSum = getCountersSum(counters);
 
     const tabs: [string, number | null][] = [
         ['Media', counters && counters.counters.images],
@@ -151,7 +163,7 @@ export const ProfileTabsFragment = React.memo(({ chatId, group }: ProfileSharedM
                         hideEmpty={true}
                     />
                 )}
-                {counters && layout === 'mobile' && (
+                {counters && countersSum > 0 && layout === 'mobile' && (
                     <TabsMenuMobileButton
                         selected={selected}
                         menu={(ctx) => (
