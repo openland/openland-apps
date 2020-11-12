@@ -30,12 +30,14 @@ import { Deferred } from 'openland-unicorn/components/Deferred';
 import { detectOS } from 'openland-x-utils/detectOS';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { isFileImage } from 'openland-web/utils/UploadCareUploading';
+import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
 
 interface MentionItemComponentProps {
     id: string;
     photo: string | null;
     title: string;
     subtitle?: string;
+    featured?: boolean;
 }
 
 const mentionContainer = css`
@@ -61,6 +63,7 @@ const userName = css`
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    flex-shrink: 1;
 `;
 
 const placeholderContainer = css`
@@ -95,11 +98,25 @@ const listItemIcon = css`
     margin-left: 2px;
 `;
 
+const featuredIcon = css`
+    display: var(--featured-icon-display);
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
+    flex-shrink: 0;
+`;
+
 export const MentionItemComponent = (props: MentionItemComponentProps) => (
     <div className={mentionContainer}>
         <UAvatar id={props.id} title={props.title} photo={props.photo} size="x-small" />
         <div className={mentionUserDataWrap}>
             <div className={cx(userName, TextLabel1)}>{props.title}</div>
+            {props.featured && (
+                <div className={featuredIcon}>
+                    <UIcon icon={<IcFeatured />} color={'#3DA7F2'} />
+                </div>
+            )}
             {!!props.subtitle && (
                 <div className={cx(userOrg, TextDensed)}>{props.subtitle}</div>
             )}
@@ -346,6 +363,7 @@ export const AutoCompleteComponent = React.memo(
                                 photo={v.organization.photo}
                                 title={v.organization.name}
                                 subtitle={v.organization.isCommunity ? 'Community' : 'Organization'}
+                                featured={v.organization.featured}
                             />
                         );
                     } else if (v.__typename === 'MentionSearchSharedRoom') {
@@ -355,6 +373,7 @@ export const AutoCompleteComponent = React.memo(
                                 photo={v.room.photo}
                                 title={v.room.title}
                                 subtitle="Group"
+                                featured={v.room.featured}
                             />
                         );
                     }

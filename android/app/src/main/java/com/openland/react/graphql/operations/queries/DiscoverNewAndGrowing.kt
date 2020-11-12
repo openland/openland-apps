@@ -17,6 +17,6 @@ internal val DiscoverNewAndGrowingSelector = obj(
 val DiscoverNewAndGrowing = object: OperationDefinition {
     override val name = "DiscoverNewAndGrowing"
     override val kind = OperationKind.QUERY
-    override val body = "query DiscoverNewAndGrowing(\$first:Int!,\$seed:Int!,\$after:String){discoverNewAndGrowing(first:\$first,seed:\$seed,after:\$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}"
+    override val body = "query DiscoverNewAndGrowing(\$first:Int!,\$seed:Int!,\$after:String){discoverNewAndGrowing(first:\$first,seed:\$seed,after:\$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive featured}"
     override val selector = DiscoverNewAndGrowingSelector
 }

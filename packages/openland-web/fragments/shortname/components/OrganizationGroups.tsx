@@ -42,7 +42,10 @@ export const OrganizationGroups = React.memo((props: { id: string; roomsCount: n
     return (
         <>
             {displayGroups.map((group) => (
-                <UGroupView key={'room-' + group.id} group={group} />
+                <UGroupView
+                    key={'room-' + group.id}
+                    group={group}
+                />
             ))}
             {displayGroups.length !== roomsCount && (
                 <UListItem

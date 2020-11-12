@@ -23,6 +23,7 @@ const buttonStyle = css`
     min-width: 56px;
     height: 32px;
     margin-right: 8px;
+    margin-left: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;

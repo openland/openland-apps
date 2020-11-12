@@ -17,6 +17,6 @@ internal val DiscoverTopFreeSelector = obj(
 val DiscoverTopFree = object: OperationDefinition {
     override val name = "DiscoverTopFree"
     override val kind = OperationKind.QUERY
-    override val body = "query DiscoverTopFree(\$first:Int!,\$after:String){discoverTopFree(first:\$first,after:\$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}"
+    override val body = "query DiscoverTopFree(\$first:Int!,\$after:String){discoverTopFree(first:\$first,after:\$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive featured}"
     override val selector = DiscoverTopFreeSelector
 }

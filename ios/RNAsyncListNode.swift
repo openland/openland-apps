@@ -266,6 +266,9 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     // Forward scroll offset
     var offsetX = scrollView.contentOffset.x
     var offsetY = scrollView.contentOffset.y + CGFloat(self.topInset)
+    let touchLocation = scrollView.panGestureRecognizer.location(in: self.node.view)
+    let touchPositionY = touchLocation.y - scrollView.contentOffset.y
+    let touchPositionX = touchLocation.x - scrollView.contentOffset.x
     
     if self.isApplying && offsetY == 0 {
       // autofix
@@ -285,6 +288,8 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       contentOffset.setValue(offsetX, forKey: "x")
       let body = NSMutableDictionary()
       body.setValue(contentOffset, forKey: "contentOffset")
+      body.setValue(touchPositionY, forKey: "touchPositionY")
+      body.setValue(touchPositionX, forKey: "touchPositionX")
       self.onScrollCallback!(body as! [AnyHashable : Any])
     }
     

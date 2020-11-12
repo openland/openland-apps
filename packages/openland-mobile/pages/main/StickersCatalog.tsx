@@ -91,11 +91,11 @@ const StickerCatalog = React.memo((props: StickerCatalogProps) => {
                     {buttonLoading ? (
                         <LoaderSpinner color={theme.foregroundTertiary} />
                     ) : (
-                        <Image
-                            source={haveIt ? require('assets/ic-done-24.png') : require('assets/ic-add-24.png')}
-                            style={{ tintColor: haveIt ? theme.foregroundTertiary : theme.foregroundContrast, width: 24, height: 24 }}
-                        />
-                    )}
+                            <Image
+                                source={haveIt ? require('assets/ic-done-24.png') : require('assets/ic-add-24.png')}
+                                style={{ tintColor: haveIt ? theme.foregroundTertiary : theme.foregroundInverted, width: 24, height: 24 }}
+                            />
+                        )}
                 </TouchableOpacity>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>

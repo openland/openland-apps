@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { View, Text, Platform, Animated, Easing, Image, StyleSheet, ImageStyle, TextStyle } from 'react-native';
+import { View, Text, Platform, Animated, Easing, Image, StyleSheet, ImageStyle, TextStyle, NativeSyntheticEvent } from 'react-native';
 import { ConversationMessagesView } from './ConversationMessagesView';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { trackEvent } from 'openland-mobile/analytics';
@@ -16,6 +16,7 @@ export interface MessagesListProps {
     engine: ConversationEngine;
     messagesPaddingBottom?: number;
     inverted: boolean;
+    onScroll?: (event?: NativeSyntheticEvent<any>) => void;
 }
 export const androidMessageInputListOverlap = 52;
 
@@ -117,6 +118,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                     loaded={this.state.conversation.historyFullyLoaded}
                     engine={this.props.engine}
                     selectionMode={this.props.selectionMode}
+                    onScroll={this.props.onScroll}
                 />
                 {
                     !this.state.conversation.loading && this.state.conversation.messages.length === 0 && (

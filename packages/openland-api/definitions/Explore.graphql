@@ -17,6 +17,7 @@ fragment DiscoverSharedRoom on SharedRoom {
     }
     isPremium
     premiumPassIsActive
+    featured
 }
 
 fragment DiscoverChatsCollection on DiscoverChatsCollection {
@@ -62,6 +63,7 @@ fragment DiscoverOrganization on Organization {
     photo
     membersCount
     shortname
+    featured: alphaFeatured
 }
 
 query ExploreRooms($seed: Int!) {

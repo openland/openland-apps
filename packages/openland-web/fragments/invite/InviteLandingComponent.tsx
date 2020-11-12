@@ -26,6 +26,8 @@ import {
     AuthMobileHeader,
 } from 'openland-web/pages/root/AuthSidebarComponent';
 import { useToast } from 'openland-web/components/unicorn/UToast';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
 
 type SharedRoomT = ResolvedInvite_shortnameItem_SharedRoom | ResolvedInvite_invite_RoomInvite_room;
 
@@ -111,15 +113,30 @@ const smallAvatarWrapper = css`
     margin: 0 -4px;
 `;
 
-const titleStyle = css`
-    text-align: center;
-    color: var(--foregroundPrimary);
+const titleWrapperStyle = css`
     margin-top: 32px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
     max-width: 320px;
     align-self: center;
     flex-shrink: 0;
+    display: flex;
+`;
+
+const titleStyle = css`
+    text-align: center;
+    color: var(--foregroundPrimary);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+`;
+
+const featuredIconWrapperStyle = css`
+    margin-left: 4px;
+    align-self: center;
+    display: inline-flex;
+    vertical-align: middle;
+`;
+
+const featuredIconStyle = css`
+    display: var(--featured-icon-display);
 `;
 
 const descriptionStyle = css`
@@ -189,9 +206,9 @@ export const InviteLandingComponentLayout = React.memo(
 
         const avatars = room
             ? room.previewMembers
-                  .map((x) => x)
-                  .filter((x) => !!x)
-                  .slice(0, 5)
+                .map((x) => x)
+                .filter((x) => !!x)
+                .slice(0, 5)
             : [];
 
         const showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
@@ -229,7 +246,19 @@ export const InviteLandingComponentLayout = React.memo(
                                     size="xx-large"
                                 />
                             </div>
-                            <div className={cx(TextTitle1, titleStyle)}>{title}</div>
+                            <div className={titleWrapperStyle}>
+                                <div className={cx(TextTitle1, titleStyle)}>
+                                    {title}
+                                    <div className={featuredIconWrapperStyle}>
+                                        <UIcon
+                                            className={featuredIconStyle}
+                                            size={18}
+                                            icon={<IcFeatured />}
+                                            color="#3DA7F2"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                             {!!description && (
                                 <div className={cx(TextBody, descriptionStyle)}>
                                     <UText text={description} />
@@ -560,8 +589,8 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
             ? 'channel'
             : 'group'
         : organization && organization.isCommunity
-        ? 'community'
-        : 'organization';
+            ? 'community'
+            : 'organization';
 
     const buttonText = 'Join ' + whereToInvite;
 
@@ -642,9 +671,8 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                     button={button}
                     whereToInvite={whereToInvite}
                     photo={room ? room.photo : organization!.photo}
-                    title={`Your access to “${
-                        room ? room.title : organization!.name
-                    }” is suspended`}
+                    title={`Your access to “${room ? room.title : organization!.name
+                        }” is suspended`}
                     entityTitle={room ? room.title : organization!.name}
                     id={room ? room.id : organization!.id}
                     description={
@@ -654,19 +682,19 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                     noLogin={!loggedIn}
                 />
             ) : (
-                <InviteLandingComponentLayout
-                    button={button}
-                    whereToInvite={whereToInvite}
-                    photo={room ? room.photo : organization!.photo}
-                    title={room ? room.title : organization!.name}
-                    entityTitle={room ? room.title : organization!.name}
-                    id={room ? room.id : organization!.id}
-                    membersCount={room ? room.membersCount : organization!.membersCount}
-                    description={room ? room.description : organization!.about}
-                    room={room}
-                    noLogin={!loggedIn}
-                />
-            )}
+                    <InviteLandingComponentLayout
+                        button={button}
+                        whereToInvite={whereToInvite}
+                        photo={room ? room.photo : organization!.photo}
+                        title={room ? room.title : organization!.name}
+                        entityTitle={room ? room.title : organization!.name}
+                        id={room ? room.id : organization!.id}
+                        membersCount={room ? room.membersCount : organization!.membersCount}
+                        description={room ? room.description : organization!.about}
+                        room={room}
+                        noLogin={!loggedIn}
+                    />
+                )}
         </>
     );
 };
