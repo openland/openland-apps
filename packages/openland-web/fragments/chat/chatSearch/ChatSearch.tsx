@@ -81,6 +81,7 @@ const messagesListClassName = css`
     max-height: 400px;
     background-color: var(--backgroundPrimary);
     margin-left: -72px;
+    margin-right: -16px;
     
     @media(min-width: 751px) {
         margin-left: -16px;
