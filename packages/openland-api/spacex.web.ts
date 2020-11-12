@@ -3126,6 +3126,7 @@ const MessagesSearchSelector = obj(
                                                 field('role', 'role', args(), notNull(scalar('String'))),
                                                 field('canEdit', 'canEdit', args(), notNull(scalar('Boolean'))),
                                                 field('photo', 'photo', args(), notNull(scalar('String'))),
+                                                field('featured', 'featured', args(), notNull(scalar('Boolean'))),
                                                 field('settings', 'settings', args(), notNull(obj(
                                                         field('__typename', '__typename', args(), notNull(scalar('String'))),
                                                         field('id', 'id', args(), notNull(scalar('ID'))),
@@ -5810,7 +5811,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     MessagesSearch: {
         kind: 'query',
         name: 'MessagesSearch',
-        body: 'query MessagesSearch($query:String!,$sort:String,$first:Int!,$after:String,$cid:ID){messagesSearch(query:$query,sort:$sort,first:$first,after:$after,cid:$cid){__typename edges{__typename node{__typename chat{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename id kind title membership isChannel role canEdit photo settings{__typename id mute}}}message{__typename id date sender{__typename id name firstName photo}senderBadge{__typename ...UserBadge}message fallback ... on GeneralMessage{__typename id attachments{__typename id fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename isImage imageFormat}}}quotedMessages{__typename id}}}}cursor}pageInfo{__typename hasNextPage hasPreviousPage itemsCount currentPage pagesCount openEnded}}}fragment UserBadge on UserBadge{__typename id name verified}',
+        body: 'query MessagesSearch($query:String!,$sort:String,$first:Int!,$after:String,$cid:ID){messagesSearch(query:$query,sort:$sort,first:$first,after:$after,cid:$cid){__typename edges{__typename node{__typename chat{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename id kind title membership isChannel role canEdit photo featured settings{__typename id mute}}}message{__typename id date sender{__typename id name firstName photo}senderBadge{__typename ...UserBadge}message fallback ... on GeneralMessage{__typename id attachments{__typename id fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename isImage imageFormat}}}quotedMessages{__typename id}}}}cursor}pageInfo{__typename hasNextPage hasPreviousPage itemsCount currentPage pagesCount openEnded}}}fragment UserBadge on UserBadge{__typename id name verified}',
         selector: MessagesSearchSelector
     },
     MessagesSearchFull: {
