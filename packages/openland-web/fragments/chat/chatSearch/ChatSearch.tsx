@@ -82,7 +82,11 @@ const messagesListClassName = css`
     background-color: var(--backgroundPrimary);
     margin-left: -72px;
     
-    @media(min-width: 1280px) {
+    @media(min-width: 751px) {
+        margin-left: -16px;
+    }
+    
+    @media(min-width: 1260px) {
         margin: 0 -5000px;    
     }
 `;
