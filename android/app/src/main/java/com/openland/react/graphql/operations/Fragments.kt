@@ -474,7 +474,8 @@ internal val OrganizationShortSelector = obj(
             field("alphaIsPrivate", "private", notNull(scalar("Boolean"))),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
             field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
-            field("betaMembersCanInvite", "membersCanInvite", notNull(scalar("Boolean")))
+            field("betaMembersCanInvite", "membersCanInvite", notNull(scalar("Boolean"))),
+            field("alphaFeatured", "featured", notNull(scalar("Boolean")))
         )
 
 internal val UserShortSelector = obj(
@@ -1332,7 +1333,8 @@ internal val OrganizationMediumSelector = obj(
             field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
             field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
             field("alphaIsPrivate", "private", notNull(scalar("Boolean"))),
-            field("betaMembersCanInvite", "membersCanInvite", notNull(scalar("Boolean")))
+            field("betaMembersCanInvite", "membersCanInvite", notNull(scalar("Boolean"))),
+            field("alphaFeatured", "featured", notNull(scalar("Boolean")))
         )
 
 internal val OrganizationProfileFragmentSelector = obj(
@@ -1548,6 +1550,7 @@ internal val SharedRoomPreviewSelector = obj(
             field("externalSocialImage", "externalSocialImage", scalar("String")),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
             field("description", "description", scalar("String")),
+            field("featured", "featured", notNull(scalar("Boolean"))),
             field("previewMembers", "previewMembers", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),

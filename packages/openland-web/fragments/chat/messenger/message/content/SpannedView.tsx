@@ -336,6 +336,7 @@ const MentionedGroupPopperContent = React.memo((props: { groupId: string; hide: 
             title={group.__typename === 'SharedRoom' ? group.title : group.user.name}
             photo={group.__typename === 'SharedRoom' ? group.photo : group.user.photo}
             hidePopper={props.hide}
+            featured={group.__typename === 'SharedRoom' && group.featured}
         />
     );
 });
@@ -406,6 +407,7 @@ const MentionedOrgPopperContent = React.memo(
                 title={organization.name}
                 photo={organization.photo}
                 hidePopper={props.hide}
+                featured={organization.featured}
             />
         );
     },

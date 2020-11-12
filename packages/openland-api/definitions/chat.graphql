@@ -519,6 +519,7 @@ query RoomInviteInfo($invite: String!) {
                 photo
                 socialImage
                 description
+                featured
                 organization {
                     ...OrganizationShort
                 }
@@ -593,6 +594,7 @@ query ResolvedInvite($key: String!) {
                     description
                     membership
                     membersCount
+                    featured
                     previewMembers {
                         id
                         photo

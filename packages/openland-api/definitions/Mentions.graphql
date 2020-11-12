@@ -4,7 +4,6 @@ query ChatMentionSearch($cid: ID!, $query: String, $first: Int!, $after: String)
             ... on MentionSearchOrganization {
                 organization {
                     ...OrganizationShort
-                    featured: alphaFeatured
                 }
             }
             ... on MentionSearchUser {

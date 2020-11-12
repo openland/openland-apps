@@ -15,6 +15,8 @@ import { UIconButton } from './unicorn/UIconButton';
 import { useCaptionPopper } from './CaptionPopper';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { useToast } from './unicorn/UToast';
+import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
 const userStatus = css`
     color: var(--foregroundSecondary);
@@ -245,6 +247,17 @@ const entityName = css`
     text-overflow: ellipsis;
 `;
 
+const featuredIconWrapperStyle = css`
+    margin-left: 4px;
+    align-self: center;
+    display: inline-flex;
+    vertical-align: middle;
+`;
+
+const featuredIconStyle = css`
+    display: var(--featured-icon-display);
+`;
+
 export const EntityPopperContent = React.memo(
     ({
         title,
@@ -252,12 +265,14 @@ export const EntityPopperContent = React.memo(
         id,
         photo,
         hidePopper,
+        featured,
     }: {
         title: string;
         subtitle?: string;
         id: string;
         photo?: string | null;
         hidePopper: Function;
+        featured?: boolean;
     }) => {
         const router = React.useContext(XViewRouterContext);
         return (
@@ -299,7 +314,19 @@ export const EntityPopperContent = React.memo(
                                 }
                             }}
                         >
-                            <div className={entityName}>{emoji(title)}</div>
+                            <div className={entityName}>
+                                {emoji(title)} {emoji(title)}
+                                {featured && (
+                                    <div className={featuredIconWrapperStyle}>
+                                        <UIcon
+                                            className={featuredIconStyle}
+                                            size={16}
+                                            icon={<IcFeatured />}
+                                            color="#3DA7F2"
+                                        />
+                                    </div>
+                                )}
+                            </div>
                         </XView>
                         <XView {...TextStyles.Caption} color="var(--foregroundSecondary)">
                             {subtitle}

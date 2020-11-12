@@ -69,7 +69,7 @@ interface PrivateCommunityViewProps {
 }
 
 export const PrivateCommunityView = React.memo((props: PrivateCommunityViewProps) => {
-    const { id, photo, name, about, applyLinkEnabled, applyLink, owner } = props.organization;
+    const { id, photo, name, about, applyLinkEnabled, applyLink, owner, featured } = props.organization;
     return (
         <Page flexGrow={1}>
             <div className={container}>
@@ -83,14 +83,16 @@ export const PrivateCommunityView = React.memo((props: PrivateCommunityViewProps
                 <div className={titleWrapperStyle}>
                     <div className={cx(TextTitle1, titleStyle)}>
                         {name}
-                        <div className={featuredIconWrapperStyle}>
-                            <UIcon
-                                className={featuredIconStyle}
-                                size={18}
-                                icon={<IcFeatured />}
-                                color="#3DA7F2"
-                            />
-                        </div>
+                        {featured && (
+                            <div className={featuredIconWrapperStyle}>
+                                <UIcon
+                                    className={featuredIconStyle}
+                                    size={18}
+                                    icon={<IcFeatured />}
+                                    color="#3DA7F2"
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className={cx(aboutStyle, TextBody)}>{about}</div>

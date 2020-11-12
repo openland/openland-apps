@@ -21,6 +21,7 @@ fragment SharedRoomPreview on SharedRoom {
     externalSocialImage
     membersCount
     description
+    featured
     previewMembers {
         id
         name
