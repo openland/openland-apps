@@ -49,7 +49,6 @@ import { useChatMessagesActionsState, useChatMessagesActionsMethods } from 'open
 import { matchLinks } from 'openland-y-utils/TextProcessor';
 import { StickerPicker } from './components/stickers/StickerPicker';
 import { SDevice } from 'react-native-s/SDevice';
-import { StickersController } from './components/stickers/StickerContext';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -112,8 +111,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             hasStickerTranslation: true,
             isStickersOpaque: false,
         };
-
-        StickersController.setHide(() => this.setState({ stickerKeyboardShown: false, hasStickerTranslation: true, keyboardHeight: 0 }));
 
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
         AsyncStorage.getItem('compose_draft_mentions_v2_' + this.props.chat.id).then(s => this.setState({ mentions: JSON.parse(s) || [] }));
