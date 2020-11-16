@@ -29,12 +29,7 @@ export const ReportSpamModal = ({ userId, hide }: { userId: string; hide: () => 
     const toastHandlers = useToast();
 
     const reasonField = useField('reason.input', 'Spam', form);
-    const isOther = reasonField.value === 'Other';
-    const otherTextField = useField('otherText.input', '', form, [
-        {
-            checkIsValid: (value) => !isOther || !!value.trim(),
-            text: 'Please add description of your problem',
-        },
+    const messageTextField = useField('message.input', '', form, [
         {
             checkIsValid: (value) => value?.length < 120,
             text: 'Your description should be less than 120 characters'
@@ -46,7 +41,7 @@ export const ReportSpamModal = ({ userId, hide }: { userId: string; hide: () => 
             await client.mutateReportContent({
                 contentId: userId,
                 type: reasonField.value,
-                message: isOther ? otherTextField.value : undefined
+                message: messageTextField.value
             });
             toastHandlers.show({
                 type: 'success',
@@ -78,9 +73,7 @@ export const ReportSpamModal = ({ userId, hide }: { userId: string; hide: () => 
                             withCorners={true}
                         />
                     </XView>
-                    {isOther && (
-                        <UInputField label="Describe your problem" field={otherTextField} hasPlaceholder={true}/>
-                    )}
+                    <UInputField label="Add details (optional)" field={messageTextField} hasPlaceholder={true}/>
                 </XModalContent>
             </XScrollView3>
             <XModalFooter>
@@ -94,7 +87,6 @@ export const ReportSpamModal = ({ userId, hide }: { userId: string; hide: () => 
                     text="Send"
                     style="primary"
                     size="large"
-                    disable={isOther && !otherTextField.value}
                     onClick={onSend}
                     loading={form.loading}
                 />
