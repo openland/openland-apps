@@ -4,7 +4,23 @@ import { formatAbsoluteDate } from 'openland-mobile/utils/formatDate';
 const dateToday = new Date();
 const date1900 = new Date('1900-01-01');
 
-export const isValidDate = (date: Date) => !isNaN(date.getTime()) && date > date1900 && date <= dateToday;
+export const getValidatedDate = (day: number, month: number, year: number) => {
+    const date = new Date(year, month, day);
+    const valid =
+        date.getTime() &&
+        date.getDate() === day &&
+        date.getMonth() === month &&
+        date.getFullYear() === year;
+
+    if (valid) {
+        return date;
+    }
+
+    return new Date('Invalid date');
+};
+
+export const isValidDate = (date: Date) =>
+    !isNaN(date.getTime()) && date > date1900 && date <= dateToday;
 
 export const extractDateTime = (
     unixTime: string,

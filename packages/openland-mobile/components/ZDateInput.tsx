@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
 
-import { isValidDate } from 'openland-y-utils/wallet/dateTime';
+import { getValidatedDate, isValidDate } from 'openland-y-utils/wallet/dateTime';
 import { FormField } from 'openland-form/useField';
 
 import { ZInput } from './ZInput';
@@ -12,10 +12,10 @@ import { ThemeContext } from '../themes/ThemeContext';
 const styles = StyleSheet.create({
     errorContainer: {
         paddingHorizontal: 16,
-        paddingTop: 8
+        paddingTop: 8,
     } as ViewStyle,
     error: {
-        ...TextStyles.Caption
+        ...TextStyles.Caption,
     } as TextStyle,
 });
 
@@ -34,7 +34,7 @@ const MONTHS = [
     'December',
 ];
 
-const OPTIONS: SelectedMonth[] = MONTHS.map((item, index) => ({ value: index + 1, label: item }));
+const OPTIONS: SelectedMonth[] = MONTHS.map((item, index) => ({ value: index, label: item }));
 
 type SelectedMonth = { value: number; label: string };
 
@@ -64,7 +64,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
             return;
         }
 
-        onChange(new Date(`${year}-${month.value}-${day}`));
+        onChange(getValidatedDate(Number(day), month.value, Number(year)));
     }, [day, month, year]);
 
     React.useEffect(() => {
@@ -108,7 +108,13 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
             </View>
             {!!errorText && (
                 <View style={styles.errorContainer}>
-                    <Text style={[styles.error, { color: invalid ? theme.accentNegative : theme.foregroundSecondary }]} allowFontScaling={false}>
+                    <Text
+                        style={[
+                            styles.error,
+                            { color: invalid ? theme.accentNegative : theme.foregroundSecondary },
+                        ]}
+                        allowFontScaling={false}
+                    >
                         {errorText}
                     </Text>
                 </View>
