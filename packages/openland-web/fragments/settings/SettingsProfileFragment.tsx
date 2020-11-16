@@ -112,7 +112,7 @@ export const SettingsProfileFragment = React.memo(() => {
                     location: locationField.value,
                     twitter: twitterField.value,
                     facebook: facebookField.value,
-                    birthDay: birthDayField.value?.getTime(),
+                    birthDay: birthDayField.value?.getTime() || null,
                 },
             });
 

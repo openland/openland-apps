@@ -91,6 +91,7 @@ export const UDateInput = React.memo(({ value, errorText, invalid, onChange }: U
                     label="Month"
                     width="100%"
                     flexShrink={1}
+                    clearable={true}
                     marginHorizontal={16}
                     value={month}
                     invalid={invalid}

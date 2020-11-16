@@ -83,7 +83,7 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                     instagram: instagramField.value,
                     facebook: facebookField.value,
                     twitter: twitterField.value,
-                    birthDay: birthDayField.value?.getTime(),
+                    birthDay: birthDayField.value?.getTime() || null,
                 },
             });
             await getClient().refetchAccount();
