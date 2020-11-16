@@ -18,12 +18,12 @@ export class UpdatesEngine {
     private closed = false;
     private main: MainUpdatesSubscription<UpdateEvent, UpdateSequenceState, UpdateSequenceDiff>;
     private sequences = new Map<string, SequenceHolder>();
-    private dialogs: DialogsEngine;
+    // private dialogs: DialogsEngine;
 
     constructor(client: OpenlandClient, persistence: Persistence) {
         this.client = client;
         this.persistence = persistence;
-        this.dialogs = new DialogsEngine(client, persistence);
+        // this.dialogs = new DialogsEngine(client, persistence);
         this.api = new UpdatesApiClient(this.client);
         this.main = new MainUpdatesSubscription(null,
             new UpdatesApiClient(this.client),
