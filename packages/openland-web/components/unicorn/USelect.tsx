@@ -279,7 +279,7 @@ const OptionComponent = React.memo((
     );
 });
 
-interface USelectBasicProps extends XViewProps{
+interface USelectBasicProps extends XViewProps {
     options: OptionType[];
     onInputChange?: (v: string) => void;
     size?: USelectSize;
