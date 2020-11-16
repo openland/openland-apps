@@ -83,6 +83,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
                         placeholder="Day"
                         keyboardType="numeric"
                         value={day}
+                        maxLength={2}
                         noWrapper={true}
                         onChangeText={setDay}
                     />
@@ -102,6 +103,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
                         keyboardType="decimal-pad"
                         value={year}
                         noWrapper={true}
+                        maxLength={4}
                         onChangeText={setYear}
                     />
                 </View>
