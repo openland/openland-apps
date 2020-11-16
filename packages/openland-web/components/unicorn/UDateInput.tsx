@@ -4,7 +4,7 @@ import { css, cx } from 'linaria';
 
 import { TextCaption } from 'openland-web/utils/TextStyles';
 import { FormField } from 'openland-form/useField';
-import { isValidDate } from 'openland-y-utils/wallet/dateTime';
+import { getValidatedDate, isValidDate } from 'openland-y-utils/wallet/dateTime';
 
 import { UInput, UInputErrorText } from './UInput';
 import { USelect } from './USelect';
@@ -30,7 +30,7 @@ const MONTHS = [
     'December',
 ];
 
-const OPTIONS = MONTHS.map((item, index) => ({ value: index + 1, label: item }));
+const OPTIONS: SelectedMonth[] = MONTHS.map((item, index) => ({ value: index, label: item }));
 
 type SelectedMonth = { value: number; label: string };
 
@@ -61,7 +61,7 @@ export const UDateInput = React.memo(({ value, errorText, invalid, onChange }: U
             return;
         }
 
-        onChange(new Date(`${year}-${month.value}-${day}`));
+        onChange(getValidatedDate(Number(day), month.value, Number(year)));
     }, [day, month, year]);
 
     React.useEffect(() => {
