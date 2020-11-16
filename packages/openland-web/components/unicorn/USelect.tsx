@@ -279,7 +279,7 @@ const OptionComponent = React.memo((
     );
 });
 
-interface USelectBasicProps {
+interface USelectBasicProps extends XViewProps{
     options: OptionType[];
     onInputChange?: (v: string) => void;
     size?: USelectSize;
@@ -299,7 +299,7 @@ interface USelectBasicProps {
     filterOption?: (option: { label: string, value: string }, rawInput: string) => boolean;
 }
 
-export interface USelectProps extends USelectBasicProps, XViewProps {
+export interface USelectProps extends USelectBasicProps {
     value: ValueType<OptionType>;
     onChange: (v: ValueType<OptionType>) => void;
     multi?: boolean;
