@@ -76,7 +76,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
     }, [value]);
 
     return (
-        <View>
+        <React.Suspense fallback={null}>
             <View flexDirection="row" marginHorizontal={noWrapper ? 0 : 16}>
                 <View flexShrink={0} marginRight={16} minWidth={72}>
                     <ZInput
@@ -113,7 +113,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
                     </Text>
                 </View>
             )}
-        </View>
+        </React.Suspense>
     );
 });
 
