@@ -1569,13 +1569,20 @@ internal val SharedRoomViewSelector = obj(
             field("featured", "featured", notNull(scalar("Boolean")))
         )
 
+internal val ShortSequenceChatSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("cid", "cid", notNull(scalar("ID"))),
+            field("unread", "unread", notNull(scalar("Int")))
+        )
+
 internal val ShortSequenceSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             inline("SequenceChat", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("id", "id", notNull(scalar("ID"))),
-                field("cid", "cid", notNull(scalar("ID")))
+                fragment("SequenceChat", ShortSequenceChatSelector)
             ))
         )
 

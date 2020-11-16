@@ -1563,13 +1563,20 @@ private let SharedRoomViewSelector = obj(
             field("featured", "featured", notNull(scalar("Boolean")))
         )
 
+private let ShortSequenceChatSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("cid", "cid", notNull(scalar("ID"))),
+            field("unread", "unread", notNull(scalar("Int")))
+        )
+
 private let ShortSequenceSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             inline("SequenceChat", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("id", "id", notNull(scalar("ID"))),
-                field("cid", "cid", notNull(scalar("ID")))
+                fragment("SequenceChat", ShortSequenceChatSelector)
             ))
         )
 
@@ -5423,7 +5430,7 @@ private let WatchUpdatesSelector = obj(
                         field("pts", "pts", notNull(scalar("Int"))),
                         field("sequence", "sequence", notNull(obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
-                                fragment("Sequence", ShortSequenceSelector)
+                                field("id", "id", notNull(scalar("ID")))
                             ))),
                         field("event", "event", notNull(obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
@@ -5704,31 +5711,31 @@ class Operations {
     let GetDifference = OperationDefinition(
         "GetDifference",
         .query, 
-        "query GetDifference($state:String!){updatesDifference(state:$state){__typename seq state hasMore sequences{__typename after events{__typename pts event{__typename ...ShortUpdate}}sequence{__typename ...ShortSequence}}}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}",
+        "query GetDifference($state:String!){updatesDifference(state:$state){__typename seq state hasMore sequences{__typename after events{__typename pts event{__typename ...ShortUpdate}}sequence{__typename ...ShortSequence}}}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid unread}",
         GetDifferenceSelector
     )
     let GetInitialDialogs = OperationDefinition(
         "GetInitialDialogs",
         .query, 
-        "query GetInitialDialogs($after:String){syncUserChats(first:500,after:$after){__typename items{__typename sequence{__typename ...ShortSequence}pts}cursor}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}",
+        "query GetInitialDialogs($after:String){syncUserChats(first:500,after:$after){__typename items{__typename sequence{__typename ...ShortSequence}pts}cursor}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid unread}",
         GetInitialDialogsSelector
     )
     let GetSequenceDifference = OperationDefinition(
         "GetSequenceDifference",
         .query, 
-        "query GetSequenceDifference($id:ID!,$pts:Int!){sequenceDifference(id:$id,pts:$pts){__typename sequence{__typename ...ShortSequence}events{__typename pts event{__typename ...ShortUpdate}}after hasMore}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}",
+        "query GetSequenceDifference($id:ID!,$pts:Int!){sequenceDifference(id:$id,pts:$pts){__typename sequence{__typename ...ShortSequence}events{__typename pts event{__typename ...ShortUpdate}}after hasMore}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid unread}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}",
         GetSequenceDifferenceSelector
     )
     let GetSequenceState = OperationDefinition(
         "GetSequenceState",
         .query, 
-        "query GetSequenceState($id:ID!){sequenceState(id:$id){__typename pts sequence{__typename ...ShortSequence}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}",
+        "query GetSequenceState($id:ID!){sequenceState(id:$id){__typename pts sequence{__typename ...ShortSequence}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid unread}",
         GetSequenceStateSelector
     )
     let GetState = OperationDefinition(
         "GetState",
         .query, 
-        "query GetState{updatesState{__typename seq state sequences{__typename pts sequence{__typename ...ShortSequence}}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}",
+        "query GetState{updatesState{__typename seq state sequences{__typename pts sequence{__typename ...ShortSequence}}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid unread}",
         GetStateSelector
     )
     let GlobalCounter = OperationDefinition(
@@ -7030,7 +7037,7 @@ class Operations {
     let WatchUpdates = OperationDefinition(
         "WatchUpdates",
         .subscription, 
-        "subscription WatchUpdates{watchUpdates{__typename ... on UpdateSubscriptionStarted{__typename seq state}... on UpdateSubscriptionCheckpoint{__typename seq state}... on UpdateSubscriptionEvent{__typename seq pts sequence{__typename ...ShortSequence}event{__typename ...ShortUpdate}}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}",
+        "subscription WatchUpdates{watchUpdates{__typename ... on UpdateSubscriptionStarted{__typename seq state}... on UpdateSubscriptionCheckpoint{__typename seq state}... on UpdateSubscriptionEvent{__typename seq pts sequence{__typename id}event{__typename ...ShortUpdate}}}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}",
         WatchUpdatesSelector
     )
     

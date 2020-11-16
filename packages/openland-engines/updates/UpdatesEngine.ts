@@ -1,5 +1,5 @@
 import { ShortSequence, ShortUpdate } from 'openland-api/spacex.types';
-// import { DialogsEngine } from './dialogs/DialogsEngine';
+import { ChatsEngine } from './engines/ChatsEngine';
 import { Transaction } from './../persistence/Persistence';
 import { SequenceHolder, SequenceHolderEvent } from './internal/SequenceHolder';
 import { UpdateEvent, UpdateSequenceState, UpdateSequenceDiff } from './Types';
@@ -18,12 +18,12 @@ export class UpdatesEngine {
     private closed = false;
     private main: MainUpdatesSubscription<UpdateEvent, UpdateSequenceState, UpdateSequenceDiff>;
     private sequences = new Map<string, SequenceHolder>();
-    // private dialogs: DialogsEngine;
+    private chats: ChatsEngine;
 
     constructor(client: OpenlandClient, persistence: Persistence) {
         this.client = client;
         this.persistence = persistence;
-        // this.dialogs = new DialogsEngine(client, persistence);
+        this.chats = new ChatsEngine(client, persistence);
         this.api = new UpdatesApiClient(this.client);
         this.main = new MainUpdatesSubscription(null,
             new UpdatesApiClient(this.client),
@@ -95,10 +95,11 @@ export class UpdatesEngine {
         //
         // Loading Initial Dialogs
         // 
-
+        let start = Date.now();
         let completed = await initTx.readBoolean('dialogs.sync.completed');
         let cursor = await initTx.read('dialogs.sync.cursor');
         if (completed) {
+            await this.chats.onDialogsLoaded();
             return;
         }
 
@@ -110,9 +111,8 @@ export class UpdatesEngine {
                 await this.persistence.inTx(async (tx) => {
 
                     // Apply sequences
-                    for (let d of dialogs.syncUserChats.items) {
-                        await this.receiveSequence(tx, d.sequence, d.pts);
-                    }
+                    console.info('Apply dialogs...');
+                    await Promise.all(dialogs.syncUserChats.items.map((d) => this.receiveSequence(tx, d.sequence, d.pts)));
 
                     if (dialogs.syncUserChats.cursor) {
                         tx.write('dialogs.sync.cursor', cursor);
@@ -126,10 +126,18 @@ export class UpdatesEngine {
                     }
                 });
             }
+
+            await this.chats.onDialogsLoaded();
+            console.info('Dialogs loaded in ' + (Date.now() - start) + ' ms');
         })();
     }
 
     private handleSequenceEvent = async (tx: Transaction, event: SequenceHolderEvent) => {
+        if (event.type === 'start') {
+            if (event.sequence.__typename === 'SequenceChat') {
+                await this.chats.onSequenceStart(tx, event.sequence);
+            }
+        }
         console.log('updates: sequence: ', event);
     }
 }

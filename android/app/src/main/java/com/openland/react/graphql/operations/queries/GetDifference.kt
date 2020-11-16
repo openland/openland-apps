@@ -31,6 +31,6 @@ internal val GetDifferenceSelector = obj(
 val GetDifference = object: OperationDefinition {
     override val name = "GetDifference"
     override val kind = OperationKind.QUERY
-    override val body = "query GetDifference(\$state:String!){updatesDifference(state:\$state){__typename seq state hasMore sequences{__typename after events{__typename pts event{__typename ...ShortUpdate}}sequence{__typename ...ShortSequence}}}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}"
+    override val body = "query GetDifference(\$state:String!){updatesDifference(state:\$state){__typename seq state hasMore sequences{__typename after events{__typename pts event{__typename ...ShortUpdate}}sequence{__typename ...ShortSequence}}}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid unread}"
     override val selector = GetDifferenceSelector
 }

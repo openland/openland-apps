@@ -26,6 +26,6 @@ internal val GetSequenceDifferenceSelector = obj(
 val GetSequenceDifference = object: OperationDefinition {
     override val name = "GetSequenceDifference"
     override val kind = OperationKind.QUERY
-    override val body = "query GetSequenceDifference(\$id:ID!,\$pts:Int!){sequenceDifference(id:\$id,pts:\$pts){__typename sequence{__typename ...ShortSequence}events{__typename pts event{__typename ...ShortUpdate}}after hasMore}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}"
+    override val body = "query GetSequenceDifference(\$id:ID!,\$pts:Int!){sequenceDifference(id:\$id,pts:\$pts){__typename sequence{__typename ...ShortSequence}events{__typename pts event{__typename ...ShortUpdate}}after hasMore}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid unread}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}"
     override val selector = GetSequenceDifferenceSelector
 }

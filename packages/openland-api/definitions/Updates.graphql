@@ -14,11 +14,17 @@ fragment ShortUpdate on UpdateEvent {
 # Sequences
 #
 
+fragment ShortSequenceChat on SequenceChat {
+    id
+    cid
+    unread
+}
+
 fragment ShortSequence on Sequence {
     id
     ... on SequenceChat {
         id
-        cid
+        ...ShortSequenceChat
     }
 }
 
@@ -40,7 +46,7 @@ subscription WatchUpdates {
             seq
             pts
             sequence {
-                ...ShortSequence
+                id
             }
             event {
                 ...ShortUpdate

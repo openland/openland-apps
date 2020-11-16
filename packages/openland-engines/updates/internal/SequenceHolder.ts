@@ -46,7 +46,7 @@ export class SequenceHolder {
     }
 
     private static async createImpl(tx: Transaction, id: string, state: { pts: number, sequence: UpdateSequenceState } | null, handler: SequenceHolderHandler, api: UpdatesApi<UpdateEvent, UpdateSequenceState, UpdateSequenceDiff>) {
-        console.log('updates: sequence: ' + id + ': creating');
+        // console.log('updates: sequence: ' + id + ': creating');
         let pts = await tx.readInt(`updates.sequence.${id}.pts`);
         let invalidated = (await tx.readBoolean(`updates.sequence.${id}.invalidated`)) || false; // Default state is not invalidated
 
@@ -57,7 +57,7 @@ export class SequenceHolder {
         }
 
         let res = new SequenceHolder(id, pts, invalidated, tx.persistence, handler, api);
-        res.start(tx, state);
+        await res.start(tx, state);
         return res;
     }
 
@@ -105,14 +105,14 @@ export class SequenceHolder {
     private async start(tx: Transaction, state: { pts: number, sequence: UpdateSequenceState } | null) {
         if (this.loading) {
             if (state) {
-                console.log('updates: sequence: ' + this.id + ': loading from initial state');
+                // console.log('updates: sequence: ' + this.id + ': loading from initial state');
                 await this.onStateReceived(tx, state);
             } else {
-                console.log('updates: sequence: ' + this.id + ': download state');
+                // console.log('updates: sequence: ' + this.id + ': download state');
                 this.downloadState(); // NOTE: No await
             }
         } else {
-            console.log('updates: sequence: ' + this.id + ': recover');
+            // console.log('updates: sequence: ' + this.id + ': recover');
             await this.doStart(tx);
         }
     }
@@ -132,8 +132,8 @@ export class SequenceHolder {
 
             // Save pts and enforce invalidated flag
             this.startPts = state.pts;
-            this.startInvalidated = true;
-            await updateInvalidated(tx, this.id, true);
+            this.startInvalidated = false;
+            await updateInvalidated(tx, this.id, false);
             persistPts(tx, this.id, state.pts);
 
             // Start
@@ -143,7 +143,7 @@ export class SequenceHolder {
 
     private async doStart(tx: Transaction) {
         // Start sequence subscription
-        console.log('updates: sequence: ' + this.id + ': start sequence from ' + this.startPts);
+        // console.log('updates: sequence: ' + this.id + ': start sequence from ' + this.startPts);
         this.subscription = new SequenceSubscription(this.id, this.api, this.persistence);
         this.subscription.start(this.startPts!, this.startInvalidated, async (tx2, event) => {
             if (event.type === 'event') {
@@ -177,7 +177,7 @@ export class SequenceHolder {
             this.loadingPending = [];
         }
 
-        console.log('updates: sequence: ' + this.id + ': loaded');
+        // console.log('updates: sequence: ' + this.id + ': loaded');
     }
 
     //
@@ -185,12 +185,12 @@ export class SequenceHolder {
     //
 
     private async onSequenceInvalidated(tx: Transaction) {
-        console.log('updates: sequence: ' + this.id + ': invalidated');
+        // console.log('updates: sequence: ' + this.id + ': invalidated');
         await updateInvalidated(tx, this.id, false);
     }
 
     private async onSequenceValidated(tx: Transaction) {
-        console.log('updates: sequence: ' + this.id + ': validated');
+        // console.log('updates: sequence: ' + this.id + ': validated');
         await updateInvalidated(tx, this.id, true);
     }
 
