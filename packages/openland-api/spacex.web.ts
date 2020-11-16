@@ -2895,7 +2895,8 @@ const GetInitialDialogsSelector = obj(
                             field('sequence', 'sequence', args(), notNull(obj(
                                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                                     fragment('Sequence', ShortSequenceSelector)
-                                )))
+                                ))),
+                            field('pts', 'pts', args(), notNull(scalar('Int')))
                         ))))),
                     field('cursor', 'cursor', args(), scalar('String'))
                 )))
@@ -5712,7 +5713,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     GetInitialDialogs: {
         kind: 'query',
         name: 'GetInitialDialogs',
-        body: 'query GetInitialDialogs($after:String){syncUserChats(first:500,after:$after){__typename items{__typename sequence{__typename ...ShortSequence}}cursor}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}',
+        body: 'query GetInitialDialogs($after:String){syncUserChats(first:500,after:$after){__typename items{__typename sequence{__typename ...ShortSequence}pts}cursor}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}',
         selector: GetInitialDialogsSelector
     },
     GetSequenceDifference: {

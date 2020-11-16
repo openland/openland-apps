@@ -117,6 +117,7 @@ query GetInitialDialogs($after: String) {
             sequence {
                 ...ShortSequence
             }
+            pts
         }
         cursor
     }

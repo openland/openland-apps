@@ -1,3 +1,4 @@
+import { ShortSequence, ShortUpdate } from 'openland-api/spacex.types';
 import { DialogsEngine } from './dialogs/DialogsEngine';
 import { Transaction } from './../persistence/Persistence';
 import { SequenceHolder, SequenceHolderEvent } from './internal/SequenceHolder';
@@ -41,31 +42,45 @@ export class UpdatesEngine {
             console.log('updates: ', event);
 
             this.persistence.inTx(async (tx) => {
-                if (event.type === 'start') {
-                    let sequence = this.sequences.get(event.state.id);
-                    if (sequence) {
-                        await sequence.onStateReceived(tx, { pts: event.pts, sequence: event.state });
-                    } else {
-                        sequence = await SequenceHolder.createFromState(tx, { sequence: event.state, pts: event.pts }, this.handleSequenceEvent, this.api);
-                        this.sequences.set(event.state.id, sequence);
-                    }
+                if (event.type === 'inited') {
+                    await this.onInited(tx);
+                } else if (event.type === 'start') {
+                    await this.receiveSequence(tx, event.state, event.pts);
                 } else if (event.type === 'event') {
-                    let sequence = this.sequences.get(event.id);
-                    if (!sequence) {
-                        sequence = await SequenceHolder.create(tx, event.id, this.handleSequenceEvent, this.api);
-                        this.sequences.set(event.id, sequence);
-                    }
-                    await sequence.onUpdate(tx, event.pts, event.event);
+                    await this.receiveEvent(tx, event.id, event.pts, event.event);
                 } else if (event.type === 'diff') {
-                    let sequence = this.sequences.get(event.state.id);
-                    if (!sequence) {
-                        sequence = await SequenceHolder.create(tx, event.state.id, this.handleSequenceEvent, this.api);
-                        this.sequences.set(event.state.id, sequence);
-                    }
-                    await sequence.onDiffReceived(tx, event.fromPts, event.events, event.state);
+                    await this.receiveDiff(tx, event.fromPts, event.events, event.state);
                 }
             });
         });
+    }
+
+    async receiveSequence(tx: Transaction, state: ShortSequence, pts: number) {
+        let sequence = this.sequences.get(state.id);
+        if (sequence) {
+            await sequence.onStateReceived(tx, { pts: pts, sequence: state });
+        } else {
+            sequence = await SequenceHolder.createFromState(tx, { sequence: state, pts: pts }, this.handleSequenceEvent, this.api);
+            this.sequences.set(state.id, sequence);
+        }
+    }
+
+    async receiveDiff(tx: Transaction, fromPts: number, events: { pts: number, event: ShortUpdate }[], state: ShortSequence) {
+        let sequence = this.sequences.get(state.id);
+        if (!sequence) {
+            sequence = await SequenceHolder.create(tx, state.id, this.handleSequenceEvent, this.api);
+            this.sequences.set(state.id, sequence);
+        }
+        await sequence.onDiffReceived(tx, fromPts, events, state);
+    }
+
+    async receiveEvent(tx: Transaction, id: string, pts: number, event: ShortUpdate) {
+        let sequence = this.sequences.get(id);
+        if (!sequence) {
+            sequence = await SequenceHolder.create(tx, id, this.handleSequenceEvent, this.api);
+            this.sequences.set(id, sequence);
+        }
+        await sequence.onUpdate(tx, pts, event);
     }
 
     close() {
@@ -75,10 +90,46 @@ export class UpdatesEngine {
         }
     }
 
-    private handleSequenceEvent = async (tx: Transaction, event: SequenceHolderEvent) => {
-        if (event.type === 'start') {
-            this.dialogs.start();
+    private onInited = async (initTx: Transaction) => {
+
+        //
+        // Loading Initial Dialogs
+        // 
+
+        let completed = await initTx.readBoolean('dialogs.sync.completed');
+        let cursor = await initTx.read('dialogs.sync.cursor');
+        if (completed) {
+            return;
         }
+
+        (async () => {
+            completed = false;
+            while (!completed) {
+                console.info('Loading dialogs...');
+                let dialogs = await this.client.queryGetInitialDialogs({ after: cursor });
+                await this.persistence.inTx(async (tx) => {
+
+                    // Apply sequences
+                    for (let d of dialogs.syncUserChats.items) {
+                        await this.receiveSequence(tx, d.sequence, d.pts);
+                    }
+
+                    if (dialogs.syncUserChats.cursor) {
+                        tx.write('dialogs.sync.cursor', cursor);
+                        tx.writeBoolean('dialogs.sync.completed', false);
+                        completed = false;
+                        cursor = dialogs.syncUserChats.cursor;
+                    } else {
+                        tx.write('dialogs.sync.cursor', null);
+                        tx.writeBoolean('dialogs.sync.completed', true);
+                        completed = true;
+                    }
+                });
+            }
+        })();
+    }
+
+    private handleSequenceEvent = async (tx: Transaction, event: SequenceHolderEvent) => {
         console.log('updates: sequence: ', event);
     }
 }

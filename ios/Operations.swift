@@ -2888,7 +2888,8 @@ private let GetInitialDialogsSelector = obj(
                             field("sequence", "sequence", notNull(obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("Sequence", ShortSequenceSelector)
-                                )))
+                                ))),
+                            field("pts", "pts", notNull(scalar("Int")))
                         ))))),
                     field("cursor", "cursor", scalar("String"))
                 )))
@@ -5709,7 +5710,7 @@ class Operations {
     let GetInitialDialogs = OperationDefinition(
         "GetInitialDialogs",
         .query, 
-        "query GetInitialDialogs($after:String){syncUserChats(first:500,after:$after){__typename items{__typename sequence{__typename ...ShortSequence}}cursor}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}",
+        "query GetInitialDialogs($after:String){syncUserChats(first:500,after:$after){__typename items{__typename sequence{__typename ...ShortSequence}pts}cursor}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}",
         GetInitialDialogsSelector
     )
     let GetSequenceDifference = OperationDefinition(
