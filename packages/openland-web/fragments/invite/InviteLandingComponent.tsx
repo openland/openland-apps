@@ -249,14 +249,16 @@ export const InviteLandingComponentLayout = React.memo(
                             <div className={titleWrapperStyle}>
                                 <div className={cx(TextTitle1, titleStyle)}>
                                     {title}
-                                    <div className={featuredIconWrapperStyle}>
-                                        <UIcon
-                                            className={featuredIconStyle}
-                                            size={18}
-                                            icon={<IcFeatured />}
-                                            color="#3DA7F2"
-                                        />
-                                    </div>
+                                    {room && room.featured && (
+                                        <div className={featuredIconWrapperStyle}>
+                                            <UIcon
+                                                className={featuredIconStyle}
+                                                size={18}
+                                                icon={<IcFeatured />}
+                                                color="#3DA7F2"
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             {!!description && (

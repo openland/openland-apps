@@ -9,4 +9,5 @@ fragment OrganizationShort on Organization {
     membersCount
     isAdmin: betaIsAdmin
     membersCanInvite: betaMembersCanInvite
+    featured: alphaFeatured
 }

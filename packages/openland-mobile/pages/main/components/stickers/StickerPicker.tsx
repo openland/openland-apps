@@ -155,7 +155,7 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
         Alert.builder()
             .title(pack === 'recent' ? 'Clear recent stickers?' : `Delete ${pack.title} stickers?`)
             .button('Cancel', 'cancel')
-            .button('Delete', 'destructive', async () => {
+            .action('Delete', 'destructive', async () => {
                 if (pack === 'recent') {
                     setRecentStickers([]);
                     await AsyncStorage.setItem('recentStickers', '[]');
@@ -164,10 +164,14 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
                     await client.refetchStickerPack({ id: pack.id });
                     await client.refetchMyStickers();
                 }
+                let selectedIndex = stickers.findIndex(x => x.id === selected);
+                if (selectedIndex === stickers.length - 1) {
+                    stickerPackListRef.current?.scrollToIndex({ index: stickers.length - 2 });
+                }
                 lastCheckedOffsetRef.current = -1000;
             })
             .show();
-    }, []);
+    }, [selected]);
 
     const handleStickerPressed = React.useCallback(async (sticker: StickerFragment) => {
         onStickerSent(sticker);
@@ -175,6 +179,8 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
         setRecentStickers(newRecents);
         await AsyncStorage.setItem('recentStickers', JSON.stringify(newRecents));
     }, [onStickerSent, recentStickers]);
+
+    // console.log('@@ selected', selected)
 
     return (
         <>

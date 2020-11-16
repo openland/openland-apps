@@ -218,6 +218,7 @@ query GlobalSearch($query: String!, $kinds: [GlobalSearchEntryKind!]) {
             photo
             shortname
             isCommunity: alphaIsCommunity
+            featured: alphaFeatured
         }
         ... on User {
             ...UserShort
@@ -235,6 +236,7 @@ query GlobalSearch($query: String!, $kinds: [GlobalSearchEntryKind!]) {
                 name
                 photo
             }
+            featured
         }
     }
 }

@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 });
 
 interface ChatJoinProps {
-    room: RoomTiny_room_SharedRoom;
+    room: Omit<RoomTiny_room_SharedRoom, 'featured'>;
     theme: ThemeGlobal;
     router: SRouter;
 }
@@ -350,7 +350,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
 });
 
 export const ChatJoin = React.memo((props: ChatJoinProps) => {
-    const onJoin = props.router.params.onJoin as (room: RoomTiny_room_SharedRoom) => void;
+    const onJoin = props.router.params.onJoin as (room: Omit<RoomTiny_room_SharedRoom, 'featured'>) => void;
     const client = getClient();
     const room = client.useChatJoin({ id: props.room.id }).room as ChatJoin_room_SharedRoom;
     const action = React.useCallback(async () => {
