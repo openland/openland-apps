@@ -10,6 +10,7 @@ import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { StickerLayout, useStickerLayout } from './stickerLayout';
 import FastImage from 'react-native-fast-image';
+import { ZButton } from 'openland-mobile/components/ZButton';
 
 const RECENT_ID = 'recent';
 
@@ -179,54 +180,61 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
         setRecentStickers(newRecents);
         await AsyncStorage.setItem('recentStickers', JSON.stringify(newRecents));
     }, [onStickerSent, recentStickers]);
-
-    // console.log('@@ selected', selected)
+    const hasStickers = stickers.length > 0;
 
     return (
         <>
-            <FlatList
-                ref={stickerPackListRef}
-                contentContainerStyle={{ paddingBottom: 8, paddingHorizontal: 8 }}
-                data={stickers}
-                renderItem={({ item }) => (
-                    <StickerPack
-                        deleteStickerPack={handleDeletePackPressed}
-                        sendSticker={handleStickerPressed}
-                        pack={item}
-                        key={`sticker-pack-${item.id}`}
-                        theme={theme}
-                        stickerSize={stickerSize}
-                        stickersPerRow={stickersPerRow}
-                        isRecent={!!item.isRecent}
-                    />
-                )}
-                scrollEventThrottle={1}
-                onScroll={e => {
-                    if (e) {
-                        const effectiveCenter = e.nativeEvent.contentOffset.y + (height - 52) / 2;
-                        if (Math.abs(lastCheckedOffsetRef.current - effectiveCenter) < 30) {
-                            return;
-                        }
-                        let offset = 0;
-                        for (let i = 0; i < stickers.length; ++i) {
-                            const pack = stickers[i];
-                            const packHeight = 48 + Math.ceil(pack.stickers.length / stickersPerRow) * (16 + stickerSize);
-                            if (effectiveCenter < packHeight + offset) {
-                                if (stickerPackButtonListRef.current) {
-                                    stickerPackButtonListRef.current.scrollToIndex({ index: i, viewPosition: 0.5 });
+            {hasStickers ? (
+                <FlatList
+                    ref={stickerPackListRef}
+                    contentContainerStyle={{ paddingBottom: 8, paddingHorizontal: 8 }}
+                    data={stickers}
+                    renderItem={({ item }) => (
+                        <StickerPack
+                            deleteStickerPack={handleDeletePackPressed}
+                            sendSticker={handleStickerPressed}
+                            pack={item}
+                            key={`sticker-pack-${item.id}`}
+                            theme={theme}
+                            stickerSize={stickerSize}
+                            stickersPerRow={stickersPerRow}
+                            isRecent={!!item.isRecent}
+                        />
+                    )}
+                    scrollEventThrottle={1}
+                    onScroll={e => {
+                        if (e) {
+                            const effectiveCenter = e.nativeEvent.contentOffset.y + (height - 52) / 2;
+                            if (Math.abs(lastCheckedOffsetRef.current - effectiveCenter) < 30) {
+                                return;
+                            }
+                            let offset = 0;
+                            for (let i = 0; i < stickers.length; ++i) {
+                                const pack = stickers[i];
+                                const packHeight = 48 + Math.ceil(pack.stickers.length / stickersPerRow) * (16 + stickerSize);
+                                if (effectiveCenter < packHeight + offset) {
+                                    if (stickerPackButtonListRef.current) {
+                                        stickerPackButtonListRef.current.scrollToIndex({ index: i, viewPosition: 0.5 });
+                                    }
+                                    lastCheckedOffsetRef.current = effectiveCenter;
+                                    if (selected !== pack.id) {
+                                        setSelected(pack.id);
+                                    }
+                                    break;
+                                } else {
+                                    offset += packHeight;
                                 }
-                                lastCheckedOffsetRef.current = effectiveCenter;
-                                if (selected !== pack.id) {
-                                    setSelected(pack.id);
-                                }
-                                break;
-                            } else {
-                                offset += packHeight;
                             }
                         }
-                    }
-                }}
-            />
+                    }}
+                />
+            ) : (
+                    <View justifyContent="center" alignItems="center" flexGrow={1} flexDirection="column">
+                        <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, marginBottom: 16 }}>Your stickers will be displayed here</Text>
+                        <ZButton title="Discover stickers" style="secondary" onPress={() => router?.push('StickersCatalog')} />
+
+                    </View>
+                )}
             <FlatList
                 ref={stickerPackButtonListRef}
                 horizontal={true}
