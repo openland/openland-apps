@@ -151,6 +151,9 @@ export const UInput = React.forwardRef(
         const [inputShift, setInputShift] = React.useState(0);
 
         const handleChange = (v: string) => {
+            if (maxLength && v.length > maxLength) {
+                return;
+            }
             let stopUpdate: boolean = false;
             if (onChange) {
                 stopUpdate = !!onChange(v);

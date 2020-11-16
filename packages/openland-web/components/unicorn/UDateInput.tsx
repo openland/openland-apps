@@ -80,6 +80,7 @@ export const UDateInput = React.memo(({ value, errorText, invalid, onChange }: U
                     type="number"
                     width={96}
                     value={day}
+                    maxLength={2}
                     onChange={setDay}
                     invalid={invalid}
                 />
@@ -97,6 +98,7 @@ export const UDateInput = React.memo(({ value, errorText, invalid, onChange }: U
                 <UInput
                     value={year}
                     onChange={setYear}
+                    maxLength={4}
                     invalid={invalid}
                     type="number"
                     label="Year"
