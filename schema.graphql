@@ -70,6 +70,27 @@ type AuthPoint {
   phone: String
 }
 
+type BlackListAdded {
+  bannedBy: User!
+  bannedUser: User!
+}
+
+type BlackListRemoved {
+  bannedBy: User!
+  bannedUser: User!
+}
+
+union BlackListUpdate = BlackListAdded | BlackListRemoved
+
+type BlackListUpdateContainer {
+  updates: [BlackListUpdate!]!
+  state: String!
+}
+
+type BlackListUpdatesState {
+  state: String!
+}
+
 type CardSetupIntent {
   id: ID!
   clientSecret: String!
@@ -824,12 +845,6 @@ enum EventPlatform {
   MobileWeb
 }
 
-type FeatureFlag {
-  id: ID!
-  key: String!
-  title: String!
-}
-
 type FeedChannel {
   id: ID!
   title: String!
@@ -1006,11 +1021,6 @@ type GeneralMessage implements ModernMessage {
 }
 
 type GeoLocation {
-  long: Float!
-  lat: Float!
-}
-
-input GeoLocationInput {
   long: Float!
   lat: Float!
 }
@@ -1934,12 +1944,13 @@ type Mutation {
   superAdminAdd(userId: ID!, role: SuperAdminRole!): String!
   superAdminRemove(userId: ID!): String!
   alphaAlterPublished(id: ID!, published: Boolean!): Organization!
-  alphaRenderVideo(name: String!): String!
   betaFixCounter(uid: ID!): Boolean!
   betaFixCountersForAll: Boolean!
   deliverCountersForAll: Boolean!
   conversationDraftUpdate(conversationId: ID!, message: String): String!
   alphaSaveDraftMessage(conversationId: ID!, message: String): String!
+  banUser(id: ID!): Boolean!
+  unBanUser(id: ID!): Boolean!
   discoverCollectionsCreate(collection: DiscoverChatsCollectionInput!): DiscoverChatsCollection!
   discoverCollectionsUpdate(id: ID!, input: DiscoverChatsCollectionUpdateInput!): DiscoverChatsCollection!
   discoverCollectionsDelete(id: ID!): Boolean!
@@ -1947,11 +1958,6 @@ type Mutation {
   discoverEditorsChoiceUpdate(id: ID!, input: EditorsChoiceChatUpdateInput!): EditorsChoiceChat!
   discoverEditorsChoiceDelete(id: ID!): Boolean!
   track(did: String!, events: [Event!]!, platform: EventPlatform, isProd: Boolean): String!
-  createPowerup(input: PowerupInput!): Powerup!
-  updatePowerup(id: ID!, input: PowerupInput!): Powerup!
-  addPowerupToChat(id: ID!, powerupId: ID!): Boolean!
-  removePowerupFromChat(id: ID!, powerupId: ID!): Boolean!
-  updatePowerupUserSettingsInChat(id: ID!, powerupId: ID!, settings: PowerupUserSettingsInput!): PowerupUserSettings!
   createApp(name: String!, photoRef: ImageRefInput, about: String, shortname: String): AppProfile!
   createSuperApp(name: String!, photoRef: ImageRefInput, about: String, shortname: String): AppProfile!
   refreshAppToken(appId: ID!): AppProfile!
@@ -1984,10 +1990,6 @@ type Mutation {
   setEnvVarString(name: String!, value: String!): Boolean!
   setEnvVarNumber(name: String!, value: Int!): Boolean!
   setEnvVarBoolean(name: String!, value: Boolean!): Boolean!
-  featureFlagAdd(key: String!, title: String!): FeatureFlag!
-  superAccountFeatureAdd(id: ID!, featureId: ID!): SuperAccount!
-  superAccountFeatureRemove(id: ID!, featureId: ID!): SuperAccount!
-  shareLocation(location: GeoLocationInput!): Boolean!
   stickerPackCreate(title: String!, stickers: [StickerInput!]): StickerPack!
   stickerPackUpdate(id: ID!, input: StickerPackInput!): StickerPack!
   stickerPackAddSticker(id: ID!, input: StickerInput!): Sticker!
@@ -2439,33 +2441,8 @@ enum PaymentStatus {
   SUCCESS
 }
 
-enum PermissionAppType {
-  POWERUP
-}
-
-type PermissionGroup {
-  id: ID!
-  name: String!
-  description: String!
-  requests: [PermissionRequest!]!
-}
-
-type PermissionRequest {
-  id: ID!
-  group: PermissionGroup!
-  appType: PermissionAppType!
-  powerup: Powerup
-  scope: PermissionScope!
-  chat: Room
-}
-
 type Permissions {
   roles: [String!]!
-}
-
-enum PermissionScope {
-  GLOBAL
-  CHAT
 }
 
 """
@@ -2633,27 +2610,6 @@ enum PostSpanType {
   Italic
   Irony
   Link
-}
-
-type Powerup {
-  id: ID!
-  name: String!
-  description: String!
-  image: ImageRef
-}
-
-input PowerupInput {
-  name: String
-  description: String
-  image: ImageRefInput
-}
-
-type PowerupUserSettings {
-  enabled: Boolean!
-}
-
-input PowerupUserSettingsInput {
-  enabled: Boolean!
 }
 
 type PremiumChatSettings {
@@ -2845,26 +2801,22 @@ type Query {
 
   """deprecated"""
   alphaOrganizationPublicInvite(organizationId: ID): Invite
-  permissionGroups: [PermissionGroup!]!
-  waitingPermissionRequests: [PermissionRequest!]!
   myProfile: Profile
   superAccounts: [SuperAccount!]!
   superAccount(id: ID!, viaOrgId: Boolean): SuperAccount!
   superAdmins: [SuperAdmin!]!
-  chatLocations(id: ID!): [UserLocation!]!
   alphaChatTextSearch(query: String!): [Conversation!]!
   betaDialogTextSearch(query: String!): [Dialog!]!
   conversationDraft(conversationId: ID!): String
   alphaDraftMessage(conversationId: ID!): String
+  myBlackList: [User!]!
   discoverCollections(first: Int!, after: String): DiscoverChatsCollectionConnection
   discoverCollection(id: ID!): DiscoverChatsCollection
   discoverEditorsChoice: [EditorsChoiceChat!]!
   discoverEditorsChoiceChat(id: ID!): EditorsChoiceChat!
-  powerups: [Powerup!]!
-  chatsWithPowerup(id: ID!): [Room!]!
-  chatPowerups(id: ID!): [RoomPowerup!]!
   myApps: [AppProfile!]!
   userStorage(namespace: String!, keys: [String!]!): [AppStorageValue!]!
+  blackListUpdatesState: BlackListUpdatesState!
   chatState(chatId: ID!): ChatUpdateState!
   conversationState(id: ID!): ConversationUpdateState!
   messageComments(messageId: ID!): CommentsPeer!
@@ -2880,10 +2832,7 @@ type Query {
   dialogsState: DialogUpdateState!
   envVars: [EnvVar!]
   envVar(name: String!): EnvVar
-  featureFlags: [FeatureFlag!]!
-  myLocation: UserLocation!
   ipLocation: IpLocation
-  shouldShareLocation: Boolean!
   myStickers: UserStickers!
   createdStickerPacks: [StickerPack!]!
   stickersByEmoji(emoji: String!): [Sticker!]!
@@ -2920,6 +2869,7 @@ type Query {
   pushSettings: PushSettings!
   activeSessions: [Session]!
   sessionState: SessionState!
+  syncUserChats(first: Int!, after: String): SyncChatsConnection!
 
   """deprecated"""
   betaNextDiscoverPage(selectedTagsIds: [String!]!, excudedGroupsIds: [String!]!): DiscoverPage
@@ -3108,12 +3058,6 @@ type RoomMessage {
   alphaTitle: String
   alphaPostType: PostMessageType
   alphaMentions: [Mention!]
-}
-
-type RoomPowerup {
-  id: ID!
-  powerup: Powerup!
-  userSettings: PowerupUserSettings!
 }
 
 type RoomServiceMessageSettings {
@@ -3441,11 +3385,9 @@ type Subscription {
   watchSettings: Settings!
   alphaConferenceWatch(id: ID!): Conference!
   alphaConferenceMediaWatch(id: ID!, peerId: ID!): ConferenceMedia!
-  permissionsUpdates: PermissionRequest!
-  waitingPermissionRequestsUpdates: PermissionRequest!
-  chatLocationUpdates(id: ID!): UserLocation!
   userEventBus(topic: String!): UserEventBusMessage!
   globalEventBus(topic: String!): UserEventBusMessage!
+  blackListUpdates(fromState: String!): BlackListUpdateContainer!
   chatUpdates(chatId: ID!, fromState: String): ChatUpdateContainer!
   commentUpdates(peerId: ID!, fromState: String): CommentUpdateContainer
   conferenceWatch(id: ID!): Conference!
@@ -3453,7 +3395,6 @@ type Subscription {
   myContactsUpdates(fromState: String!): ContactsUpdateContainer!
   dialogsUpdates(fromState: String): DialogUpdateContainer!
   homeFeedUpdates(fromState: String): FeedUpdateContainer!
-  shouldShareLocationUpdates: Boolean!
   notificationCenterUpdates(fromState: String): NotificationCenterUpdateContainer
   alphaSubscribeOnline(users: [ID!]!): OnlineEvent!
   chatOnlinesCount(chatId: ID!): ChatOnlineEvent!
@@ -3467,7 +3408,6 @@ type SuperAccount {
   name: String!
   state: SuperAccountState!
   members: [User!]!
-  features: [FeatureFlag!]!
   alphaPublished: Boolean!
   createdAt: String
   createdBy: User
@@ -3498,6 +3438,16 @@ enum SuperNotificationType {
   ON_ORG_ACTIVATED_BY_ADMIN
   ON_ORG_ACTIVATED_VIA_INVITE
   ON_ORG_SUSPEND
+}
+
+type SyncChat {
+  conversation: Conversation!
+  sequence: Sequence!
+}
+
+type SyncChatsConnection {
+  items: [SyncChat!]!
+  cursor: String
 }
 
 type Tag {
@@ -3574,6 +3524,17 @@ enum TypingType {
   VIDEO
 }
 
+type UpdateChatMessage {
+  cid: ID!
+  message: ModernMessage!
+}
+
+type UpdateChatMessageDeleted {
+  cid: ID!
+  mid: ID!
+  seq: Int!
+}
+
 type UpdateChatRead {
   cid: ID!
   seq: Int!
@@ -3591,7 +3552,7 @@ type UpdatedNotificationContentComment {
   comment: CommentEntry
 }
 
-union UpdateEvent = UpdateChatRead | UpdateProfileChanged | UpdateMyProfileChanged
+union UpdateEvent = UpdateChatRead | UpdateProfileChanged | UpdateMyProfileChanged | UpdateChatMessage | UpdateChatMessageDeleted
 
 input UpdateGroupInput {
   title: String
@@ -3779,6 +3740,8 @@ type User {
   alphaLocations: [String!]
   chatsWithBadge: [UserChatWithBadge!]!
   externalSocialImage: String
+  isBanned: Boolean!
+  isMeBanned: Boolean!
   online: Boolean!
   active: Boolean!
   lastSeen: String
@@ -3818,13 +3781,6 @@ type UserEdge {
 
 type UserEventBusMessage {
   message: String!
-}
-
-type UserLocation {
-  id: ID!
-  isSharing: Boolean!
-  user: User!
-  lastLocations: [GeoLocation!]!
 }
 
 type UserMention {

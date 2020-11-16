@@ -139,14 +139,14 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryExploreRooms(variables: Types.ExploreRoomsVariables, params?: QueryParameters): Promise<Types.ExploreRooms> {
         return this.query('ExploreRooms', variables, params);
     }
-    queryFeatureFlags(params?: QueryParameters): Promise<Types.FeatureFlags> {
-        return this.query('FeatureFlags', undefined, params);
-    }
     queryFetchPushSettings(params?: QueryParameters): Promise<Types.FetchPushSettings> {
         return this.query('FetchPushSettings', undefined, params);
     }
     queryGetDifference(variables: Types.GetDifferenceVariables, params?: QueryParameters): Promise<Types.GetDifference> {
         return this.query('GetDifference', variables, params);
+    }
+    queryGetInitialDialogs(variables: Types.GetInitialDialogsVariables, params?: QueryParameters): Promise<Types.GetInitialDialogs> {
+        return this.query('GetInitialDialogs', variables, params);
     }
     queryGetSequenceDifference(variables: Types.GetSequenceDifferenceVariables, params?: QueryParameters): Promise<Types.GetSequenceDifference> {
         return this.query('GetSequenceDifference', variables, params);
@@ -511,14 +511,14 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchExploreRooms(variables: Types.ExploreRoomsVariables, params?: QueryParameters): Promise<Types.ExploreRooms> {
         return this.refetch('ExploreRooms', variables, params);
     }
-    refetchFeatureFlags(params?: QueryParameters): Promise<Types.FeatureFlags> {
-        return this.refetch('FeatureFlags', undefined, params);
-    }
     refetchFetchPushSettings(params?: QueryParameters): Promise<Types.FetchPushSettings> {
         return this.refetch('FetchPushSettings', undefined, params);
     }
     refetchGetDifference(variables: Types.GetDifferenceVariables, params?: QueryParameters): Promise<Types.GetDifference> {
         return this.refetch('GetDifference', variables, params);
+    }
+    refetchGetInitialDialogs(variables: Types.GetInitialDialogsVariables, params?: QueryParameters): Promise<Types.GetInitialDialogs> {
+        return this.refetch('GetInitialDialogs', variables, params);
     }
     refetchGetSequenceDifference(variables: Types.GetSequenceDifferenceVariables, params?: QueryParameters): Promise<Types.GetSequenceDifference> {
         return this.refetch('GetSequenceDifference', variables, params);
@@ -883,14 +883,14 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateExploreRooms(variables: Types.ExploreRoomsVariables, updater: (data: Types.ExploreRooms) => Types.ExploreRooms | null): Promise<boolean> {
         return this.updateQuery(updater, 'ExploreRooms', variables);
     }
-    updateFeatureFlags(updater: (data: Types.FeatureFlags) => Types.FeatureFlags | null): Promise<boolean> {
-        return this.updateQuery(updater, 'FeatureFlags', undefined);
-    }
     updateFetchPushSettings(updater: (data: Types.FetchPushSettings) => Types.FetchPushSettings | null): Promise<boolean> {
         return this.updateQuery(updater, 'FetchPushSettings', undefined);
     }
     updateGetDifference(variables: Types.GetDifferenceVariables, updater: (data: Types.GetDifference) => Types.GetDifference | null): Promise<boolean> {
         return this.updateQuery(updater, 'GetDifference', variables);
+    }
+    updateGetInitialDialogs(variables: Types.GetInitialDialogsVariables, updater: (data: Types.GetInitialDialogs) => Types.GetInitialDialogs | null): Promise<boolean> {
+        return this.updateQuery(updater, 'GetInitialDialogs', variables);
     }
     updateGetSequenceDifference(variables: Types.GetSequenceDifferenceVariables, updater: (data: Types.GetSequenceDifference) => Types.GetSequenceDifference | null): Promise<boolean> {
         return this.updateQuery(updater, 'GetSequenceDifference', variables);
@@ -1341,11 +1341,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useExploreRooms(variables: Types.ExploreRoomsVariables, params?: SpaceQueryWatchParameters): Types.ExploreRooms | null {
         return this.useQuery('ExploreRooms', variables, params);
     }
-    useFeatureFlags(params: SpaceQueryWatchParameters & { suspense: false }): Types.FeatureFlags | null;
-    useFeatureFlags(params?: SpaceQueryWatchParameters): Types.FeatureFlags;
-    useFeatureFlags(params?: SpaceQueryWatchParameters): Types.FeatureFlags | null {
-        return this.useQuery('FeatureFlags', undefined, params);
-    }
     useFetchPushSettings(params: SpaceQueryWatchParameters & { suspense: false }): Types.FetchPushSettings | null;
     useFetchPushSettings(params?: SpaceQueryWatchParameters): Types.FetchPushSettings;
     useFetchPushSettings(params?: SpaceQueryWatchParameters): Types.FetchPushSettings | null {
@@ -1355,6 +1350,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useGetDifference(variables: Types.GetDifferenceVariables, params?: SpaceQueryWatchParameters): Types.GetDifference;
     useGetDifference(variables: Types.GetDifferenceVariables, params?: SpaceQueryWatchParameters): Types.GetDifference | null {
         return this.useQuery('GetDifference', variables, params);
+    }
+    useGetInitialDialogs(variables: Types.GetInitialDialogsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.GetInitialDialogs | null;
+    useGetInitialDialogs(variables: Types.GetInitialDialogsVariables, params?: SpaceQueryWatchParameters): Types.GetInitialDialogs;
+    useGetInitialDialogs(variables: Types.GetInitialDialogsVariables, params?: SpaceQueryWatchParameters): Types.GetInitialDialogs | null {
+        return this.useQuery('GetInitialDialogs', variables, params);
     }
     useGetSequenceDifference(variables: Types.GetSequenceDifferenceVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.GetSequenceDifference | null;
     useGetSequenceDifference(variables: Types.GetSequenceDifferenceVariables, params?: SpaceQueryWatchParameters): Types.GetSequenceDifference;
@@ -1853,15 +1853,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateEditMessage(variables: Types.EditMessageVariables, params?: MutationParameters): Promise<Types.EditMessage> {
         return this.mutate('EditMessage', variables, params);
-    }
-    mutateFeatureFlagAdd(variables: Types.FeatureFlagAddVariables, params?: MutationParameters): Promise<Types.FeatureFlagAdd> {
-        return this.mutate('FeatureFlagAdd', variables, params);
-    }
-    mutateFeatureFlagDisable(variables: Types.FeatureFlagDisableVariables, params?: MutationParameters): Promise<Types.FeatureFlagDisable> {
-        return this.mutate('FeatureFlagDisable', variables, params);
-    }
-    mutateFeatureFlagEnable(variables: Types.FeatureFlagEnableVariables, params?: MutationParameters): Promise<Types.FeatureFlagEnable> {
-        return this.mutate('FeatureFlagEnable', variables, params);
     }
     mutateGlobalEventBusPublish(variables: Types.GlobalEventBusPublishVariables, params?: MutationParameters): Promise<Types.GlobalEventBusPublish> {
         return this.mutate('GlobalEventBusPublish', variables, params);

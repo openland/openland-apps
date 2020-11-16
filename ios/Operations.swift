@@ -2850,14 +2850,6 @@ private let ExploreRoomsSelector = obj(
                 ))),
             field("betaIsDiscoverDone", "isDiscoverDone", notNull(scalar("Boolean")))
         )
-private let FeatureFlagsSelector = obj(
-            field("featureFlags", "featureFlags", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("key", "key", notNull(scalar("String"))),
-                    field("title", "title", notNull(scalar("String")))
-                )))))
-        )
 private let FetchPushSettingsSelector = obj(
             field("pushSettings", "pushSettings", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -2886,6 +2878,19 @@ private let GetDifferenceSelector = obj(
                                     fragment("Sequence", ShortSequenceSelector)
                                 )))
                         )))))
+                )))
+        )
+private let GetInitialDialogsSelector = obj(
+            field("syncUserChats", "syncUserChats", arguments(fieldValue("first", intValue(500)), fieldValue("after", refValue("after"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("sequence", "sequence", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    fragment("Sequence", ShortSequenceSelector)
+                                )))
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
                 )))
         )
 private let GetSequenceDifferenceSelector = obj(
@@ -4248,12 +4253,6 @@ private let SuperAccountSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         ))))),
-                    field("features", "features", notNull(list(notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("key", "key", notNull(scalar("String"))),
-                            field("title", "title", notNull(scalar("String")))
-                        ))))),
                     field("orgId", "orgId", notNull(scalar("ID"))),
                     field("createdAt", "createdAt", scalar("String")),
                     field("createdBy", "createdBy", obj(
@@ -4617,38 +4616,6 @@ private let EditCommentSelector = obj(
         )
 private let EditMessageSelector = obj(
             field("editMessage", "editMessage", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("message", refValue("message")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("mentions", refValue("mentions")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
-        )
-private let FeatureFlagAddSelector = obj(
-            field("featureFlagAdd", "featureFlagAdd", arguments(fieldValue("key", refValue("key")), fieldValue("title", refValue("title"))), notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("key", "key", notNull(scalar("String"))),
-                    field("title", "title", notNull(scalar("String")))
-                )))
-        )
-private let FeatureFlagDisableSelector = obj(
-            field("superAccountFeatureRemove", "superAccountFeatureRemove", arguments(fieldValue("id", refValue("accountId")), fieldValue("featureId", refValue("featureId"))), notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("features", "features", notNull(list(notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("key", "key", notNull(scalar("String"))),
-                            field("title", "title", notNull(scalar("String")))
-                        )))))
-                )))
-        )
-private let FeatureFlagEnableSelector = obj(
-            field("superAccountFeatureAdd", "superAccountFeatureAdd", arguments(fieldValue("id", refValue("accountId")), fieldValue("featureId", refValue("featureId"))), notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("features", "features", notNull(list(notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("key", "key", notNull(scalar("String"))),
-                            field("title", "title", notNull(scalar("String")))
-                        )))))
-                )))
         )
 private let GlobalEventBusPublishSelector = obj(
             field("globalEventBusPublish", "globalEventBusPublish", arguments(fieldValue("topic", refValue("topic")), fieldValue("message", refValue("message"))), notNull(scalar("Boolean")))
@@ -5727,12 +5694,6 @@ class Operations {
         "query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopOrganizations(first:5){__typename items{__typename ...DiscoverOrganization}cursor}discoverNewAndGrowingOrganizations(first:5,seed:$seed){__typename items{__typename ...DiscoverOrganization}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive featured}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname featured:alphaFeatured}",
         ExploreRoomsSelector
     )
-    let FeatureFlags = OperationDefinition(
-        "FeatureFlags",
-        .query, 
-        "query FeatureFlags{featureFlags{__typename id key title}}",
-        FeatureFlagsSelector
-    )
     let FetchPushSettings = OperationDefinition(
         "FetchPushSettings",
         .query, 
@@ -5744,6 +5705,12 @@ class Operations {
         .query, 
         "query GetDifference($state:String!){updatesDifference(state:$state){__typename seq state hasMore sequences{__typename after events{__typename pts event{__typename ...ShortUpdate}}sequence{__typename ...ShortSequence}}}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}",
         GetDifferenceSelector
+    )
+    let GetInitialDialogs = OperationDefinition(
+        "GetInitialDialogs",
+        .query, 
+        "query GetInitialDialogs($after:String){syncUserChats(first:500,after:$after){__typename items{__typename sequence{__typename ...ShortSequence}}cursor}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}",
+        GetInitialDialogsSelector
     )
     let GetSequenceDifference = OperationDefinition(
         "GetSequenceDifference",
@@ -6150,7 +6117,7 @@ class Operations {
     let SuperAccount = OperationDefinition(
         "SuperAccount",
         .query, 
-        "query SuperAccount($accountId:ID!,$viaOrgId:Boolean){superAccount(id:$accountId,viaOrgId:$viaOrgId){__typename id title state members{__typename ...UserShort}features{__typename id key title}orgId createdAt createdBy{__typename id name}published:alphaPublished}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
+        "query SuperAccount($accountId:ID!,$viaOrgId:Boolean){superAccount(id:$accountId,viaOrgId:$viaOrgId){__typename id title state members{__typename ...UserShort}orgId createdAt createdBy{__typename id name}published:alphaPublished}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
         SuperAccountSelector
     )
     let SuperAccounts = OperationDefinition(
@@ -6428,24 +6395,6 @@ class Operations {
         .mutation, 
         "mutation EditMessage($messageId:ID!,$message:String,$replyMessages:[ID!],$mentions:[MentionInput!],$fileAttachments:[FileAttachmentInput!],$spans:[MessageSpanInput!]){editMessage(messageId:$messageId,message:$message,replyMessages:$replyMessages,mentions:$mentions,fileAttachments:$fileAttachments,spans:$spans)}",
         EditMessageSelector
-    )
-    let FeatureFlagAdd = OperationDefinition(
-        "FeatureFlagAdd",
-        .mutation, 
-        "mutation FeatureFlagAdd($key:String!,$title:String!){featureFlagAdd(key:$key,title:$title){__typename id key title}}",
-        FeatureFlagAddSelector
-    )
-    let FeatureFlagDisable = OperationDefinition(
-        "FeatureFlagDisable",
-        .mutation, 
-        "mutation FeatureFlagDisable($accountId:ID!,$featureId:ID!){superAccountFeatureRemove(id:$accountId,featureId:$featureId){__typename id features{__typename id key title}}}",
-        FeatureFlagDisableSelector
-    )
-    let FeatureFlagEnable = OperationDefinition(
-        "FeatureFlagEnable",
-        .mutation, 
-        "mutation FeatureFlagEnable($accountId:ID!,$featureId:ID!){superAccountFeatureAdd(id:$accountId,featureId:$featureId){__typename id features{__typename id key title}}}",
-        FeatureFlagEnableSelector
     )
     let GlobalEventBusPublish = OperationDefinition(
         "GlobalEventBusPublish",
@@ -7128,9 +7077,9 @@ class Operations {
         if name == "DiscoverTopPremium" { return DiscoverTopPremium }
         if name == "ExplorePeople" { return ExplorePeople }
         if name == "ExploreRooms" { return ExploreRooms }
-        if name == "FeatureFlags" { return FeatureFlags }
         if name == "FetchPushSettings" { return FetchPushSettings }
         if name == "GetDifference" { return GetDifference }
+        if name == "GetInitialDialogs" { return GetInitialDialogs }
         if name == "GetSequenceDifference" { return GetSequenceDifference }
         if name == "GetSequenceState" { return GetSequenceState }
         if name == "GetState" { return GetState }
@@ -7245,9 +7194,6 @@ class Operations {
         if name == "DiscoverEditorsChoiceUpdate" { return DiscoverEditorsChoiceUpdate }
         if name == "EditComment" { return EditComment }
         if name == "EditMessage" { return EditMessage }
-        if name == "FeatureFlagAdd" { return FeatureFlagAdd }
-        if name == "FeatureFlagDisable" { return FeatureFlagDisable }
-        if name == "FeatureFlagEnable" { return FeatureFlagEnable }
         if name == "GlobalEventBusPublish" { return GlobalEventBusPublish }
         if name == "MakeCardDefault" { return MakeCardDefault }
         if name == "MarkSequenceRead" { return MarkSequenceRead }

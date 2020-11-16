@@ -50,9 +50,9 @@ object Operations {
         if (name == "DiscoverTopPremium") return DiscoverTopPremium
         if (name == "ExplorePeople") return ExplorePeople
         if (name == "ExploreRooms") return ExploreRooms
-        if (name == "FeatureFlags") return FeatureFlags
         if (name == "FetchPushSettings") return FetchPushSettings
         if (name == "GetDifference") return GetDifference
+        if (name == "GetInitialDialogs") return GetInitialDialogs
         if (name == "GetSequenceDifference") return GetSequenceDifference
         if (name == "GetSequenceState") return GetSequenceState
         if (name == "GetState") return GetState
@@ -167,9 +167,6 @@ object Operations {
         if (name == "DiscoverEditorsChoiceUpdate") return DiscoverEditorsChoiceUpdate
         if (name == "EditComment") return EditComment
         if (name == "EditMessage") return EditMessage
-        if (name == "FeatureFlagAdd") return FeatureFlagAdd
-        if (name == "FeatureFlagDisable") return FeatureFlagDisable
-        if (name == "FeatureFlagEnable") return FeatureFlagEnable
         if (name == "GlobalEventBusPublish") return GlobalEventBusPublish
         if (name == "MakeCardDefault") return MakeCardDefault
         if (name == "MarkSequenceRead") return MarkSequenceRead

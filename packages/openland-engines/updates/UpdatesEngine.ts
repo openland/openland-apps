@@ -1,3 +1,4 @@
+import { DialogsEngine } from './dialogs/DialogsEngine';
 import { Transaction } from './../persistence/Persistence';
 import { SequenceHolder, SequenceHolderEvent } from './internal/SequenceHolder';
 import { UpdateEvent, UpdateSequenceState, UpdateSequenceDiff } from './Types';
@@ -16,10 +17,12 @@ export class UpdatesEngine {
     private closed = false;
     private main: MainUpdatesSubscription<UpdateEvent, UpdateSequenceState, UpdateSequenceDiff>;
     private sequences = new Map<string, SequenceHolder>();
+    private dialogs: DialogsEngine;
 
     constructor(client: OpenlandClient, persistence: Persistence) {
         this.client = client;
         this.persistence = persistence;
+        this.dialogs = new DialogsEngine(client, persistence);
         this.api = new UpdatesApiClient(this.client);
         this.main = new MainUpdatesSubscription(null,
             new UpdatesApiClient(this.client),
@@ -73,6 +76,9 @@ export class UpdatesEngine {
     }
 
     private handleSequenceEvent = async (tx: Transaction, event: SequenceHolderEvent) => {
+        if (event.type === 'start') {
+            this.dialogs.start();
+        }
         console.log('updates: sequence: ', event);
     }
 }

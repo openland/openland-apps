@@ -2857,14 +2857,6 @@ const ExploreRoomsSelector = obj(
                 ))),
             field('betaIsDiscoverDone', 'isDiscoverDone', args(), notNull(scalar('Boolean')))
         );
-const FeatureFlagsSelector = obj(
-            field('featureFlags', 'featureFlags', args(), notNull(list(notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('id', 'id', args(), notNull(scalar('ID'))),
-                    field('key', 'key', args(), notNull(scalar('String'))),
-                    field('title', 'title', args(), notNull(scalar('String')))
-                )))))
-        );
 const FetchPushSettingsSelector = obj(
             field('pushSettings', 'pushSettings', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -2893,6 +2885,19 @@ const GetDifferenceSelector = obj(
                                     fragment('Sequence', ShortSequenceSelector)
                                 )))
                         )))))
+                )))
+        );
+const GetInitialDialogsSelector = obj(
+            field('syncUserChats', 'syncUserChats', args(fieldValue("first", intValue(500)), fieldValue("after", refValue('after'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('sequence', 'sequence', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    fragment('Sequence', ShortSequenceSelector)
+                                )))
+                        ))))),
+                    field('cursor', 'cursor', args(), scalar('String'))
                 )))
         );
 const GetSequenceDifferenceSelector = obj(
@@ -4255,12 +4260,6 @@ const SuperAccountSelector = obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             fragment('User', UserShortSelector)
                         ))))),
-                    field('features', 'features', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('key', 'key', args(), notNull(scalar('String'))),
-                            field('title', 'title', args(), notNull(scalar('String')))
-                        ))))),
                     field('orgId', 'orgId', args(), notNull(scalar('ID'))),
                     field('createdAt', 'createdAt', args(), scalar('String')),
                     field('createdBy', 'createdBy', args(), obj(
@@ -4624,38 +4623,6 @@ const EditCommentSelector = obj(
         );
 const EditMessageSelector = obj(
             field('editMessage', 'editMessage', args(fieldValue("messageId", refValue('messageId')), fieldValue("message", refValue('message')), fieldValue("replyMessages", refValue('replyMessages')), fieldValue("mentions", refValue('mentions')), fieldValue("fileAttachments", refValue('fileAttachments')), fieldValue("spans", refValue('spans'))), notNull(scalar('Boolean')))
-        );
-const FeatureFlagAddSelector = obj(
-            field('featureFlagAdd', 'featureFlagAdd', args(fieldValue("key", refValue('key')), fieldValue("title", refValue('title'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('id', 'id', args(), notNull(scalar('ID'))),
-                    field('key', 'key', args(), notNull(scalar('String'))),
-                    field('title', 'title', args(), notNull(scalar('String')))
-                )))
-        );
-const FeatureFlagDisableSelector = obj(
-            field('superAccountFeatureRemove', 'superAccountFeatureRemove', args(fieldValue("id", refValue('accountId')), fieldValue("featureId", refValue('featureId'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('id', 'id', args(), notNull(scalar('ID'))),
-                    field('features', 'features', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('key', 'key', args(), notNull(scalar('String'))),
-                            field('title', 'title', args(), notNull(scalar('String')))
-                        )))))
-                )))
-        );
-const FeatureFlagEnableSelector = obj(
-            field('superAccountFeatureAdd', 'superAccountFeatureAdd', args(fieldValue("id", refValue('accountId')), fieldValue("featureId", refValue('featureId'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('id', 'id', args(), notNull(scalar('ID'))),
-                    field('features', 'features', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('key', 'key', args(), notNull(scalar('String'))),
-                            field('title', 'title', args(), notNull(scalar('String')))
-                        )))))
-                )))
         );
 const GlobalEventBusPublishSelector = obj(
             field('globalEventBusPublish', 'globalEventBusPublish', args(fieldValue("topic", refValue('topic')), fieldValue("message", refValue('message'))), notNull(scalar('Boolean')))
@@ -5730,12 +5697,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopOrganizations(first:5){__typename items{__typename ...DiscoverOrganization}cursor}discoverNewAndGrowingOrganizations(first:5,seed:$seed){__typename items{__typename ...DiscoverOrganization}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive featured}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname featured:alphaFeatured}',
         selector: ExploreRoomsSelector
     },
-    FeatureFlags: {
-        kind: 'query',
-        name: 'FeatureFlags',
-        body: 'query FeatureFlags{featureFlags{__typename id key title}}',
-        selector: FeatureFlagsSelector
-    },
     FetchPushSettings: {
         kind: 'query',
         name: 'FetchPushSettings',
@@ -5747,6 +5708,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'GetDifference',
         body: 'query GetDifference($state:String!){updatesDifference(state:$state){__typename seq state hasMore sequences{__typename after events{__typename pts event{__typename ...ShortUpdate}}sequence{__typename ...ShortSequence}}}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}',
         selector: GetDifferenceSelector
+    },
+    GetInitialDialogs: {
+        kind: 'query',
+        name: 'GetInitialDialogs',
+        body: 'query GetInitialDialogs($after:String){syncUserChats(first:500,after:$after){__typename items{__typename sequence{__typename ...ShortSequence}}cursor}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id cid}}',
+        selector: GetInitialDialogsSelector
     },
     GetSequenceDifference: {
         kind: 'query',
@@ -6153,7 +6120,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     SuperAccount: {
         kind: 'query',
         name: 'SuperAccount',
-        body: 'query SuperAccount($accountId:ID!,$viaOrgId:Boolean){superAccount(id:$accountId,viaOrgId:$viaOrgId){__typename id title state members{__typename ...UserShort}features{__typename id key title}orgId createdAt createdBy{__typename id name}published:alphaPublished}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
+        body: 'query SuperAccount($accountId:ID!,$viaOrgId:Boolean){superAccount(id:$accountId,viaOrgId:$viaOrgId){__typename id title state members{__typename ...UserShort}orgId createdAt createdBy{__typename id name}published:alphaPublished}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
         selector: SuperAccountSelector
     },
     SuperAccounts: {
@@ -6431,24 +6398,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'EditMessage',
         body: 'mutation EditMessage($messageId:ID!,$message:String,$replyMessages:[ID!],$mentions:[MentionInput!],$fileAttachments:[FileAttachmentInput!],$spans:[MessageSpanInput!]){editMessage(messageId:$messageId,message:$message,replyMessages:$replyMessages,mentions:$mentions,fileAttachments:$fileAttachments,spans:$spans)}',
         selector: EditMessageSelector
-    },
-    FeatureFlagAdd: {
-        kind: 'mutation',
-        name: 'FeatureFlagAdd',
-        body: 'mutation FeatureFlagAdd($key:String!,$title:String!){featureFlagAdd(key:$key,title:$title){__typename id key title}}',
-        selector: FeatureFlagAddSelector
-    },
-    FeatureFlagDisable: {
-        kind: 'mutation',
-        name: 'FeatureFlagDisable',
-        body: 'mutation FeatureFlagDisable($accountId:ID!,$featureId:ID!){superAccountFeatureRemove(id:$accountId,featureId:$featureId){__typename id features{__typename id key title}}}',
-        selector: FeatureFlagDisableSelector
-    },
-    FeatureFlagEnable: {
-        kind: 'mutation',
-        name: 'FeatureFlagEnable',
-        body: 'mutation FeatureFlagEnable($accountId:ID!,$featureId:ID!){superAccountFeatureAdd(id:$accountId,featureId:$featureId){__typename id features{__typename id key title}}}',
-        selector: FeatureFlagEnableSelector
     },
     GlobalEventBusPublish: {
         kind: 'mutation',

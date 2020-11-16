@@ -110,3 +110,14 @@ query GetSequenceDifference($id: ID!, $pts: Int!) {
         hasMore
     }
 }
+
+query GetInitialDialogs($after: String) {
+    syncUserChats(first: 500, after: $after) {
+        items {
+            sequence {
+                ...ShortSequence
+            }
+        }
+        cursor
+    }
+}
