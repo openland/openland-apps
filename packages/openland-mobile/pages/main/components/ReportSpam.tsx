@@ -12,40 +12,28 @@ import { useField } from 'openland-form/useField';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { CheckListBoxWraper } from '../modals/UserMultiplePicker';
 
-const ReportSpamOptions = ['Spam', 'Offensive behaviour', 'Harmful content', 'Clone of my profile', 'Other'];
+const ReportSpamOptions = [
+    'Spam',
+    'Offensive behaviour',
+    'Harmful content',
+    'Clone of my profile',
+    'Other',
+];
 
 const ReportSpamComponent = React.memo((props: PageProps) => {
     const client = getClient();
     const form = useForm();
     const [selected, setSelected] = React.useState('Spam');
-    const isOther = selected === 'Other';
     const userId = props.router.params.userId;
 
     const otherMessageField = useField('otherMessage', '', form, [
         {
-            text: 'Please add description of your problem',
-            checkIsValid: (value) => {
-                if (isOther) {
-                    return !!value.trim();
-                } else {
-                    return true;
-                }
-            },
-        },
-        {
             text: 'Your description should be less than 120 characters',
-            checkIsValid: (value) => {
-                if (isOther) {
-                    return value?.length < 120;
-                } else {
-                    return true;
-                }
-            },
+            checkIsValid: (value) =>  value?.length < 120
         },
     ]);
 
-    const validMessage = !!(otherMessageField.value.trim() && otherMessageField.value.length < 120);
-    const disableSend = isOther && !validMessage;
+    const validMessage = otherMessageField.value.length < 120;
 
     const handleSend = async () => {
         await form.doAction(async () => {
@@ -53,7 +41,7 @@ const ReportSpamComponent = React.memo((props: PageProps) => {
                 await client.mutateReportContent({
                     contentId: userId,
                     type: selected,
-                    message: isOther ? otherMessageField.value : undefined
+                    message: otherMessageField.value,
                 });
                 Toast.success({ duration: 1000, text: 'Report sent' }).show();
                 props.router.back();
@@ -66,22 +54,19 @@ const ReportSpamComponent = React.memo((props: PageProps) => {
     return (
         <>
             <SHeader title="Report" />
-            <SHeaderButton title="Send" onPress={handleSend} key={`report-${disableSend}`} disabled={disableSend}/>
+            <SHeaderButton
+                title="Send"
+                onPress={handleSend}
+                key={`report-${validMessage}`}
+                disabled={!validMessage}
+            />
             <KeyboardAvoidingScrollView>
-                {ReportSpamOptions.map(option => (
+                {ReportSpamOptions.map((option) => (
                     <CheckListBoxWraper isRadio={true} checked={selected === option}>
-                        <ZListItem
-                            text={option}
-                            onPress={() => setSelected(option)}
-                        />
+                        <ZListItem text={option} onPress={() => setSelected(option)} />
                     </CheckListBoxWraper>
                 ))}
-                {isOther && (
-                    <ZInput
-                        placeholder="Describe your problem"
-                        field={otherMessageField}
-                    />
-                )}
+                <ZInput placeholder="Add details (optional)" field={otherMessageField} marginTop={16} />
             </KeyboardAvoidingScrollView>
         </>
     );
