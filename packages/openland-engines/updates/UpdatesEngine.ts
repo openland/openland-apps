@@ -1,5 +1,5 @@
 import { ShortSequence, ShortUpdate } from 'openland-api/spacex.types';
-import { DialogsEngine } from './dialogs/DialogsEngine';
+// import { DialogsEngine } from './dialogs/DialogsEngine';
 import { Transaction } from './../persistence/Persistence';
 import { SequenceHolder, SequenceHolderEvent } from './internal/SequenceHolder';
 import { UpdateEvent, UpdateSequenceState, UpdateSequenceDiff } from './Types';
