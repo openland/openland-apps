@@ -83,6 +83,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
                         placeholder="Day"
                         keyboardType="numeric"
                         value={day}
+                        invalid={invalid}
                         maxLength={2}
                         noWrapper={true}
                         onChangeText={setDay}
@@ -93,6 +94,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
                         label="Month"
                         options={OPTIONS}
                         value={month?.value}
+                        invalid={invalid}
                         noWrapper={true}
                         onChange={(val) => setMonth(val as SelectedMonth)}
                     />
@@ -102,6 +104,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
                         placeholder="Year"
                         keyboardType="decimal-pad"
                         value={year}
+                        invalid={invalid}
                         noWrapper={true}
                         maxLength={4}
                         onChangeText={setYear}

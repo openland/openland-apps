@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
 export interface ZPickFieldProps {
     label: string;
     value?: string;
+    invalid?: boolean;
     noWrapper?: boolean;
     path?: string;
     pathParams?: any;
@@ -77,7 +78,7 @@ const arrowIcon = {
 };
 
 const ZPickFieldComponent = (props: ZPickFieldProps & { router: SRouter }) => {
-    const { label, value, noWrapper, description, arrow = 'right', disabled } = props;
+    const { label, value, noWrapper, description, invalid, arrow = 'right', disabled } = props;
     const theme = React.useContext(ThemeContext);
     const hasValue = !!(value && value.length > 0);
 
@@ -102,7 +103,7 @@ const ZPickFieldComponent = (props: ZPickFieldProps & { router: SRouter }) => {
                             style={[
                                 styles.label,
                                 hasValue && styles.labelFocused,
-                                { color: theme.foregroundTertiary },
+                                { color: invalid ? theme.accentNegative : theme.foregroundTertiary },
                             ]}
                             numberOfLines={1}
                             ellipsizeMode="tail"
