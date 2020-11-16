@@ -83,7 +83,7 @@ const ZSelectComponent = (props: ZSelectProps) => {
         [props.options],
     );
 
-    return <ZSelectBasic {...props} value={value} onChange={handleChange} />;
+    return <ZSelectBasic {...props} value={props.value || value} onChange={handleChange} />;
 };
 
 export const ZSelect = React.memo((props: ZSelectProps) => {
