@@ -22,7 +22,7 @@ export class ChatsEngine {
 
     async onSequenceStart(tx: Transaction, state: ShortSequenceChat) {
         this.chats.set(state.cid, {
-            unread: state.unread,
+            unread: 0,
             draft: state.draft ? {
                 version: state.draft.version,
                 date: parseInt(state.draft.date, 10),
