@@ -315,7 +315,7 @@ export const EntityPopperContent = React.memo(
                             }}
                         >
                             <div className={entityName}>
-                                {emoji(title)} {emoji(title)}
+                                {emoji(title)}}
                                 {featured && (
                                     <div className={featuredIconWrapperStyle}>
                                         <UIcon
