@@ -4679,9 +4679,6 @@ const MakeCardDefaultSelector = obj(
                     field('isDefault', 'isDefault', args(), notNull(scalar('Boolean')))
                 )))
         );
-const MarkSequenceReadSelector = obj(
-            field('alphaGlobalRead', 'alphaGlobalRead', args(fieldValue("toSeq", refValue('seq'))), notNull(scalar('String')))
-        );
 const MediaAnswerSelector = obj(
             field('mediaStreamAnswer', 'mediaStreamAnswer', args(fieldValue("id", refValue('id')), fieldValue("peerId", refValue('peerId')), fieldValue("answer", refValue('answer')), fieldValue("seq", refValue('seq'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -6507,12 +6504,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'MakeCardDefault',
         body: 'mutation MakeCardDefault($id:ID!){cardMakeDefault(id:$id){__typename id isDefault}}',
         selector: MakeCardDefaultSelector
-    },
-    MarkSequenceRead: {
-        kind: 'mutation',
-        name: 'MarkSequenceRead',
-        body: 'mutation MarkSequenceRead($seq:Int!){alphaGlobalRead(toSeq:$seq)}',
-        selector: MarkSequenceReadSelector
     },
     MediaAnswer: {
         kind: 'mutation',

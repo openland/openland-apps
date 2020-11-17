@@ -673,9 +673,7 @@ mutation EditMessage(
         spans: $spans
     )
 }
-mutation MarkSequenceRead($seq: Int!) {
-    alphaGlobalRead(toSeq: $seq)
-}
+
 subscription TypingsWatch {
     typings {
         conversation: chat {

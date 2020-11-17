@@ -4672,9 +4672,6 @@ private let MakeCardDefaultSelector = obj(
                     field("isDefault", "isDefault", notNull(scalar("Boolean")))
                 )))
         )
-private let MarkSequenceReadSelector = obj(
-            field("alphaGlobalRead", "alphaGlobalRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("String")))
-        )
 private let MediaAnswerSelector = obj(
             field("mediaStreamAnswer", "mediaStreamAnswer", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId")), fieldValue("answer", refValue("answer")), fieldValue("seq", refValue("seq"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -6505,12 +6502,6 @@ class Operations {
         "mutation MakeCardDefault($id:ID!){cardMakeDefault(id:$id){__typename id isDefault}}",
         MakeCardDefaultSelector
     )
-    let MarkSequenceRead = OperationDefinition(
-        "MarkSequenceRead",
-        .mutation, 
-        "mutation MarkSequenceRead($seq:Int!){alphaGlobalRead(toSeq:$seq)}",
-        MarkSequenceReadSelector
-    )
     let MediaAnswer = OperationDefinition(
         "MediaAnswer",
         .mutation, 
@@ -7308,7 +7299,6 @@ class Operations {
         if name == "EditMessage" { return EditMessage }
         if name == "GlobalEventBusPublish" { return GlobalEventBusPublish }
         if name == "MakeCardDefault" { return MakeCardDefault }
-        if name == "MarkSequenceRead" { return MarkSequenceRead }
         if name == "MediaAnswer" { return MediaAnswer }
         if name == "MediaCandidate" { return MediaCandidate }
         if name == "MediaFailed" { return MediaFailed }

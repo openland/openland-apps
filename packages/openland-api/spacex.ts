@@ -1891,9 +1891,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateMakeCardDefault(variables: Types.MakeCardDefaultVariables, params?: MutationParameters): Promise<Types.MakeCardDefault> {
         return this.mutate('MakeCardDefault', variables, params);
     }
-    mutateMarkSequenceRead(variables: Types.MarkSequenceReadVariables, params?: MutationParameters): Promise<Types.MarkSequenceRead> {
-        return this.mutate('MarkSequenceRead', variables, params);
-    }
     mutateMediaAnswer(variables: Types.MediaAnswerVariables, params?: MutationParameters): Promise<Types.MediaAnswer> {
         return this.mutate('MediaAnswer', variables, params);
     }

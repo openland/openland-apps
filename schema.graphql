@@ -148,11 +148,6 @@ type ChatOnlineEvent {
   onlineMembers: Int!
 }
 
-type ChatReadResult {
-  conversation: Conversation!
-  counter: NotificationCounter!
-}
-
 type ChatTypeNotificationSettings {
   showNotification: Boolean!
   sound: Boolean!
@@ -298,8 +293,6 @@ type CommonChatsWithUserResponse {
   count: Int!
 }
 
-union ComposeSearchResult = User | Organization
-
 type Conference {
   id: ID!
   startTime: Date
@@ -403,69 +396,6 @@ interface Conversation {
   settings: ConversationSettings!
 }
 
-type ConversationBlockedUser {
-  user: User!
-  blockedBy: User!
-}
-
-type ConversationConnection {
-  conversations: [Conversation!]!
-  counter: NotificationCounter!
-  seq: Int!
-  next: String
-}
-
-interface ConversationEvent {
-  seq: Int!
-}
-
-type ConversationEventDelete implements ConversationEvent {
-  seq: Int!
-  messageId: ID!
-}
-
-type ConversationEventEditMessage implements ConversationEvent {
-  seq: Int!
-  message: ConversationMessage!
-}
-
-type ConversationEventKick implements ConversationEvent {
-  seq: Int!
-  user: User!
-  kickedBy: User!
-}
-
-type ConversationEventMessage implements ConversationEvent {
-  seq: Int!
-  message: ConversationMessage!
-}
-
-type ConversationEventNewMembers implements ConversationEvent {
-  seq: Int!
-  users: [User!]
-  invitedBy: User!
-}
-
-type ConversationEventSimpleBatch {
-  events: [ConversationEvent!]!
-}
-
-type ConversationEventTitle implements ConversationEvent {
-  seq: Int!
-  title: String!
-}
-
-type ConversationEventUpdate implements ConversationEvent {
-  seq: Int!
-  chat: Conversation!
-}
-
-type ConversationEventUpdateRole implements ConversationEvent {
-  seq: Int!
-  user: User!
-  newRole: String!
-}
-
 type ConversationMessage {
   id: ID!
   message: String
@@ -495,16 +425,6 @@ type ConversationSettings {
   id: ID!
   mobileNotifications: NotificationMessages!
   mute: Boolean!
-}
-
-type ConversationState {
-  seq: Int!
-  messages: [ConversationMessage!]!
-}
-
-type ConversationUpdateResponse {
-  chat: Conversation!
-  curSeq: Int!
 }
 
 type ConversationUpdateState {
@@ -628,7 +548,6 @@ type Dialog {
   photo: String!
   featured: Boolean!
   unreadCount: Int!
-  topMessage: Message
   betaTopMessage: RoomMessage
   alphaTopMessage: ModernMessage
   isMuted: Boolean!
@@ -1058,12 +977,6 @@ type GqlTraceConnection {
   cursor: ID
 }
 
-type GroupChatUpdateResponse {
-  chat: Conversation!
-  chatEventMessage: ConversationEventMessage
-  chatEvent: ConversationEvent
-}
-
 type GroupConversation implements Conversation {
   id: ID!
   flexibleId: ID!
@@ -1081,16 +994,6 @@ type GroupConversation implements Conversation {
   pinnedMessage: ConversationMessage
   membersOnline: Int!
   myRole: String
-}
-
-input GroupConversationInvite {
-  userId: ID!
-  role: String!
-}
-
-type GroupConversationMember {
-  user: User!
-  role: String!
 }
 
 type H1Paragraph {
@@ -1457,22 +1360,6 @@ type MentionSearchUser {
   fromSameChat: Boolean!
 }
 
-type Message {
-  id: ID!
-  date: Date!
-  sender: User!
-  edited: Boolean!
-
-  """Content"""
-  text: String
-
-  """References"""
-  quoted: [Message!]!
-
-  """Reactions"""
-  alphaReactions: [Reaction!]!
-}
-
 type MessageAttachment {
   fileId: String!
   fileMetadata: FileMetadata
@@ -1697,7 +1584,7 @@ type MessageWithChat {
   chat: Room!
 }
 
-union MessageWithMention = FeedPost | Message
+union MessageWithMention = FeedPost
 
 interface ModernMessage {
   """State"""
@@ -1764,27 +1651,6 @@ type MultiselectMatchmakingQuestion {
 
 type Mutation {
   lifecheck: String
-  alphaSendMessage(conversationId: ID!, message: String, file: String, repeatKey: String, replyMessages: [ID!], mentions: [ID!]): ConversationEventMessage!
-  alphaReadChat(conversationId: ID!, messageId: ID!): ChatReadResult!
-  alphaEditMessage(messageId: ID!, message: String, file: String, replyMessages: [ID!], mentions: [ID!]): ConversationEventEditMessage!
-  alphaSendIntro(conversationId: ID!, userId: ID!, about: String, message: String, file: String, repeatKey: String): ConversationEventMessage!
-  alphaEditIntro(messageId: ID!, userId: ID!, about: String, message: String, file: String): ConversationEventMessage!
-  alphaDeleteMessageUrlAugmentation(messageId: ID!): ConversationEventMessage!
-  alphaDeleteMessage(messageId: ID!): ConversationEventDelete!
-  alphaChatSetReaction(messageId: ID!, reaction: String!): String!
-  alphaChatUnsetReaction(messageId: ID!, reaction: String!): String!
-  alphaGlobalRead(toSeq: Int!): String!
-  alphaBlockUser(userId: ID!): String!
-  alphaUnblockUser(userId: ID!, conversationId: ID): String!
-  alphaChatCreateGroup(title: String, photoRef: ImageRefInput, members: [ID!]!, message: String): Conversation!
-  alphaChatUpdateGroup(conversationId: ID!, input: UpdateGroupInput!): ConversationUpdateResponse!
-  alphaChatChangeGroupTitle(conversationId: ID!, title: String!): GroupChatUpdateResponse!
-  alphaChatInviteToGroup(conversationId: ID!, invites: [GroupConversationInvite!]!): GroupChatUpdateResponse!
-  alphaChatKickFromGroup(conversationId: ID!, userId: ID!): GroupChatUpdateResponse!
-  alphaChatChangeRoleInGroup(conversationId: ID!, userId: ID!, newRole: String!): GroupChatUpdateResponse!
-  alphaChatCopyGroup(conversationId: ID!, title: String, extraMembers: [ID!], message: String!): GroupChatUpdateResponse!
-  alphaChatLeave(conversationId: ID!): ConversationUpdateResponse!
-  alphaUpdateConversationSettings(settings: UpdateConversationSettingsInput!, conversationId: ID!): ConversationSettings!
 
   """Payment Method management"""
   cardCreateSetupIntent(retryKey: String!): CardSetupIntent!
@@ -2010,8 +1876,6 @@ type Mutation {
   betaMessageDelete(mid: ID, mids: [ID!]): Boolean!
   betaReactionSet(mid: ID!, reaction: String!): Boolean!
   betaReactionRemove(mid: ID!, reaction: String!): Boolean!
-  betaIntroSend(room: ID!, uid: ID!, about: String, message: String, file: String, repeatKey: String): Boolean!
-  betaIntroEdit(mid: ID!, uid: ID!, about: String, message: String, file: String): Boolean!
   readNotification(notificationId: ID!): NotificationCenter!
   deleteNotification(notificationId: ID!): Boolean!
   notificationCenterMarkSeqRead(toSeq: Int!): Boolean!
@@ -2752,12 +2616,6 @@ enum PushType {
 
 type Query {
   lifecheck: String
-  alphaNotificationCounter: NotificationCounter!
-  alphaChat(conversationId: ID, shortName: String): Conversation!
-  alphaLoadMessages(conversationId: ID!, first: Int, before: ID, after: ID): ConversationState!
-  alphaChatsSearchForCompose(query: String, organizations: Boolean, limit: Int): [ComposeSearchResult!]!
-  alphaChatSearch(members: [ID!]!): Conversation
-  alphaGroupConversationMembers(conversationId: ID!): [GroupConversationMember!]!
   myCards: [CreditCard!]!
   myWallet: WalletAccount!
   transactionsPending: [WalletTransaction!]!
@@ -2816,8 +2674,6 @@ type Query {
   superAccounts: [SuperAccount!]!
   superAccount(id: ID!, viaOrgId: Boolean): SuperAccount!
   superAdmins: [SuperAdmin!]!
-  alphaChatTextSearch(query: String!): [Conversation!]!
-  betaDialogTextSearch(query: String!): [Dialog!]!
   myBlackList: [User!]!
   discoverCollections(first: Int!, after: String): DiscoverChatsCollectionConnection
   discoverCollection(id: ID!): DiscoverChatsCollection
@@ -2838,6 +2694,7 @@ type Query {
   myContacts(first: Int!, after: String): ContactConnection!
   myContactsSearch(query: String, first: Int!, after: String, page: Int): UserConnection!
   myContactsState: ContactsState!
+  alphaNotificationCounter: NotificationCounter!
   dialogsState: DialogUpdateState!
   envVars: [EnvVar!]
   envVar(name: String!): EnvVar
@@ -2958,11 +2815,6 @@ type Range {
 input RangeInput {
   from: Int
   to: Int
-}
-
-type Reaction {
-  user: User!
-  reaction: String!
 }
 
 type ReactionCounter {
@@ -3558,11 +3410,6 @@ type UpdateChatRead {
   seq: Int!
 }
 
-input UpdateConversationSettingsInput {
-  mobileNotifications: NotificationMessages
-  mute: Boolean
-}
-
 union UpdatedNotificationContent = UpdatedNotificationContentComment
 
 type UpdatedNotificationContentComment {
@@ -3571,14 +3418,6 @@ type UpdatedNotificationContentComment {
 }
 
 union UpdateEvent = UpdateChatRead | UpdateProfileChanged | UpdateMyProfileChanged | UpdateChatMessage | UpdateChatMessageDeleted | UpdateChatDraftChanged
-
-input UpdateGroupInput {
-  title: String
-  photoRef: ImageRefInput
-  description: String
-  longDescription: String
-  socialImageRef: ImageRefInput
-}
 
 type UpdateMyProfileChanged {
   user: User!

@@ -172,7 +172,6 @@ object Operations {
         if (name == "EditMessage") return EditMessage
         if (name == "GlobalEventBusPublish") return GlobalEventBusPublish
         if (name == "MakeCardDefault") return MakeCardDefault
-        if (name == "MarkSequenceRead") return MarkSequenceRead
         if (name == "MediaAnswer") return MediaAnswer
         if (name == "MediaCandidate") return MediaCandidate
         if (name == "MediaFailed") return MediaFailed
