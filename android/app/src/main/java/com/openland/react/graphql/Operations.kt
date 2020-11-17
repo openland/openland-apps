@@ -14,6 +14,7 @@ object Operations {
         if (name == "AccountSettings") return AccountSettings
         if (name == "AuthPoints") return AuthPoints
         if (name == "AuthResolveShortName") return AuthResolveShortName
+        if (name == "BlackListUpdatesState") return BlackListUpdatesState
         if (name == "Channel") return Channel
         if (name == "Channels") return Channels
         if (name == "ChatInit") return ChatInit
@@ -66,6 +67,7 @@ object Operations {
         if (name == "MessagesSearch") return MessagesSearch
         if (name == "MessagesSearchFull") return MessagesSearchFull
         if (name == "MyApps") return MyApps
+        if (name == "MyBlackList") return MyBlackList
         if (name == "MyCards") return MyCards
         if (name == "MyCommunities") return MyCommunities
         if (name == "MyContacts") return MyContacts
@@ -136,6 +138,7 @@ object Operations {
         if (name == "AddComment") return AddComment
         if (name == "AddStickerComment") return AddStickerComment
         if (name == "AddToContacts") return AddToContacts
+        if (name == "BanUser") return BanUser
         if (name == "BetaDiscoverSkip") return BetaDiscoverSkip
         if (name == "BetaNextDiscoverReset") return BetaNextDiscoverReset
         if (name == "BetaSubmitNextDiscover") return BetaSubmitNextDiscover
@@ -247,6 +250,7 @@ object Operations {
         if (name == "SuperAdminRemove") return SuperAdminRemove
         if (name == "SuperBadgeCreateToRoom") return SuperBadgeCreateToRoom
         if (name == "SuperBadgeUnsetToRoom") return SuperBadgeUnsetToRoom
+        if (name == "UnBanUser") return UnBanUser
         if (name == "UnSubscribeFromComments") return UnSubscribeFromComments
         if (name == "UnpinMessage") return UnpinMessage
         if (name == "UnsetTyping") return UnsetTyping
@@ -258,6 +262,7 @@ object Operations {
         if (name == "conferenceAlterMediaState") return conferenceAlterMediaState
         if (name == "conferenceRemoveScreenShare") return conferenceRemoveScreenShare
         if (name == "conferenceRequestLocalMediaChange") return conferenceRequestLocalMediaChange
+        if (name == "BlackListUpdates") return BlackListUpdates
         if (name == "ChatOnlinesCountWatch") return ChatOnlinesCountWatch
         if (name == "ChatWatch") return ChatWatch
         if (name == "CommentWatch") return CommentWatch

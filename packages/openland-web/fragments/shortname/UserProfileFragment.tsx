@@ -2,7 +2,6 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import copy from 'copy-to-clipboard';
-
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { useClient } from 'openland-api/useClient';
 import { UButton } from 'openland-web/components/unicorn/UButton';
@@ -15,7 +14,11 @@ import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 import { XDate } from 'openland-x/XDate';
 import { getLocationUrl } from 'openland-y-utils/getLocationUrl';
 import { useToast } from 'openland-web/components/unicorn/UToast';
-
+import { useLastSeenShort } from 'openland-y-utils/LastSeen';
+import { UserActions } from './components/UserActions';
+import { ShowMoreText } from './components/ShowMoreText';
+import { ProfileTabsFragment } from './components/ProfileTabsFragment';
+import { UserGroups } from './components/UserGroups';
 import AtIcon from 'openland-icons/s/ic-at-24.svg';
 import MailIcon from 'openland-icons/s/ic-mail-24.svg';
 import LocationIcon from 'openland-icons/s/ic-geo-24.svg';
@@ -27,12 +30,6 @@ import TwitterIcon from 'openland-icons/s/ic-twitter-24-transparent.svg';
 import LinkedInIcon from 'openland-icons/s/ic-linkedin-24-transparent.svg';
 import BirthDayIcon from 'openland-icons/s/ic-birthday-24.svg';
 import PhoneIcon from 'openland-icons/s/ic-phone.svg';
-import { useLastSeenShort } from 'openland-y-utils/LastSeen';
-
-import { UserActions } from './components/UserActions';
-import { ShowMoreText } from './components/ShowMoreText';
-import { ProfileTabsFragment } from './components/ProfileTabsFragment';
-import { UserGroups } from './components/UserGroups';
 
 const listItemWrapper = css`
     width: 250px;

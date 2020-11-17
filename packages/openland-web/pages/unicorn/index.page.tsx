@@ -12,6 +12,7 @@ import { IndexFragment } from 'openland-web/fragments/discussions/IndexFragment'
 import { useRole } from 'openland-x-permissions/XWithRole';
 import { ContactsFragment } from 'openland-web/fragments/contacts/ContactsFragment';
 import { LocalContactsProvider } from 'openland-y-utils/contacts/LocalContacts';
+import { LocalBlackListProvider } from 'openland-y-utils/blacklist/LocalBlackList';
 import { UToastProvider } from 'openland-web/components/unicorn/UToast';
 import { MessagesActionsStateProvider } from 'openland-y-runtime/MessagesActionsState';
 import ProfileIcon from './navigation/icon_profile.svg';
@@ -125,13 +126,15 @@ export default React.memo(() => {
         <React.StrictMode>
             <React.Suspense fallback={<XLoader loading={true} />}>
                 <AuthRouter>
-                    <LocalContactsProvider>
-                        <MessagesActionsStateProvider>
-                            <UToastProvider>
-                                <Unicorn />
-                            </UToastProvider>
-                        </MessagesActionsStateProvider>
-                    </LocalContactsProvider>
+                    <LocalBlackListProvider>
+                        <LocalContactsProvider>
+                            <MessagesActionsStateProvider>
+                                <UToastProvider>
+                                    <Unicorn />
+                                </UToastProvider>
+                            </MessagesActionsStateProvider>
+                        </LocalContactsProvider>
+                    </LocalBlackListProvider>
                 </AuthRouter>
             </React.Suspense>
         </React.StrictMode>

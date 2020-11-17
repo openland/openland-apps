@@ -15,6 +15,7 @@ import BlockUserModal from 'openland-web/fragments/admin/BlockUserModalFragment'
 import { useClient } from 'openland-api/useClient';
 import { ProfileLayoutContext } from 'openland-web/components/ProfileLayout';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
+import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/UNotificationsSwitch';
 import { UMoreContainer } from 'openland-web/components/unicorn/UMoreContainer';
@@ -26,6 +27,8 @@ import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
 import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
 import BookmarkIcon from 'openland-icons/s/ic-bookmark-24.svg';
+import BlockIcon from 'openland-icons/s/ic-block-24.svg';
+import UnBlockIcon from 'openland-icons/s/ic-unblock-24.svg';
 
 import { UserMenu } from './UserMenu';
 import { ReportSpamModal } from './ReportSpamModal';
@@ -37,6 +40,8 @@ interface UserMenuProps {
 
 export const UserActions = React.memo(({ user, chat }: UserMenuProps) => {
     const { compactView } = React.useContext(ProfileLayoutContext);
+
+    const { isBanned } = useUserBanInfo(user.id, user.isBanned, user.isMeBanned);
 
     if (compactView) {
         return <UserMenu chat={chat} user={user} />;
@@ -57,6 +62,14 @@ export const UserActions = React.memo(({ user, chat }: UserMenuProps) => {
             text: 'Link copied',
         });
     }, [shortname, id]);
+
+    const onBannedClick = React.useCallback(async () => {
+        if (isBanned) {
+            await client.mutateUnBanUser({ id: id });
+        } else {
+            await client.mutateBanUser({ id: id });
+        }
+    }, [id, isBanned]);
 
     const onAddContactClick = React.useCallback(async () => {
         await client.mutateAddToContacts({ userId: id });
@@ -128,6 +141,14 @@ export const UserActions = React.memo(({ user, chat }: UserMenuProps) => {
                     icon={<CopyIcon />}
                     onClick={onCopyLinkClick}
                 />
+                {!isMe && (
+                    <UListItem
+                        title={isBanned ? 'Unblock person' : 'Block person'}
+                        useRadius={true}
+                        onClick={onBannedClick}
+                        icon={isBanned ? <UnBlockIcon /> : <BlockIcon />}
+                    />
+                )}
                 {!isMe && (
                     <UListItem
                         title="Report"

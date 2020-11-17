@@ -2,6 +2,7 @@ import * as React from 'react';
 import { MessengerRootComponent } from './components/MessengerRootComponent';
 import { XView } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
+import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
 import { SharedRoomPlaceholder } from '../invite/InviteLandingComponent';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { ChatHeader } from './header/ChatHeader';
@@ -9,7 +10,7 @@ import { Deferred } from 'openland-unicorn/components/Deferred';
 import { NotFound } from 'openland-unicorn/NotFound';
 import { ChatSearch } from './chatSearch/ChatSearch';
 
-export const MessengerFragment = React.memo<{ id: string }>(props => {
+export const MessengerFragment = React.memo<{ id: string }>((props) => {
     // Load chat info
     const client = useClient();
     const [searchEnabled, setSearchEnabled] = React.useState(false);
@@ -18,15 +19,20 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
     if (!chat) {
         return <NotFound />;
     }
+    const privateRoom = chat.__typename === 'PrivateRoom' && chat;
+    const banInfo = privateRoom
+        ? useUserBanInfo(
+              privateRoom.user.id,
+              privateRoom.user.isBanned,
+              privateRoom.user.isMeBanned,
+          )
+        : undefined;
 
     const onSearchClick = React.useCallback(() => setSearchEnabled(true), []);
     const onSearchClose = React.useCallback(() => setSearchEnabled(false), []);
-    const onChatLostAccess = React.useCallback(
-        async () => {
-            await client.refetchRoomChat({ id: props.id });
-        },
-        [],
-    );
+    const onChatLostAccess = React.useCallback(async () => {
+        await client.refetchRoomChat({ id: props.id });
+    }, []);
 
     // Pin message
     const pinMessage =
@@ -35,15 +41,13 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
             : null;
 
     // Check group state
-    const header = React.useMemo(
-        () => {
-            if (searchEnabled) {
-                return <ChatSearch chatId={chat!.id} onSearchClose={onSearchClose} />;
-            } else {
-                return <ChatHeader chat={chat!} onSearchClick={onSearchClick} />;
-            }
-        }, [chat, searchEnabled],
-    );
+    const header = React.useMemo(() => {
+        if (searchEnabled) {
+            return <ChatSearch chatId={chat!.id} onSearchClose={onSearchClose} />;
+        } else {
+            return <ChatHeader chat={chat!} onSearchClick={onSearchClick} />;
+        }
+    }, [chat, searchEnabled]);
 
     if (
         chat.__typename === 'SharedRoom' &&
@@ -84,6 +88,7 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
                                 chat.__typename === 'SharedRoom' ? chat.kind : 'PRIVATE'
                             }
                             room={chat}
+                            banInfo={banInfo}
                         />
                     </XView>
                 </XView>

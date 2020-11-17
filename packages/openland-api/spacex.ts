@@ -31,6 +31,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, params?: QueryParameters): Promise<Types.AuthResolveShortName> {
         return this.query('AuthResolveShortName', variables, params);
     }
+    queryBlackListUpdatesState(params?: QueryParameters): Promise<Types.BlackListUpdatesState> {
+        return this.query('BlackListUpdatesState', undefined, params);
+    }
     queryChannel(variables: Types.ChannelVariables, params?: QueryParameters): Promise<Types.Channel> {
         return this.query('Channel', variables, params);
     }
@@ -186,6 +189,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryMyApps(params?: QueryParameters): Promise<Types.MyApps> {
         return this.query('MyApps', undefined, params);
+    }
+    queryMyBlackList(params?: QueryParameters): Promise<Types.MyBlackList> {
+        return this.query('MyBlackList', undefined, params);
     }
     queryMyCards(params?: QueryParameters): Promise<Types.MyCards> {
         return this.query('MyCards', undefined, params);
@@ -403,6 +409,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, params?: QueryParameters): Promise<Types.AuthResolveShortName> {
         return this.refetch('AuthResolveShortName', variables, params);
     }
+    refetchBlackListUpdatesState(params?: QueryParameters): Promise<Types.BlackListUpdatesState> {
+        return this.refetch('BlackListUpdatesState', undefined, params);
+    }
     refetchChannel(variables: Types.ChannelVariables, params?: QueryParameters): Promise<Types.Channel> {
         return this.refetch('Channel', variables, params);
     }
@@ -558,6 +567,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchMyApps(params?: QueryParameters): Promise<Types.MyApps> {
         return this.refetch('MyApps', undefined, params);
+    }
+    refetchMyBlackList(params?: QueryParameters): Promise<Types.MyBlackList> {
+        return this.refetch('MyBlackList', undefined, params);
     }
     refetchMyCards(params?: QueryParameters): Promise<Types.MyCards> {
         return this.refetch('MyCards', undefined, params);
@@ -775,6 +787,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, updater: (data: Types.AuthResolveShortName) => Types.AuthResolveShortName | null): Promise<boolean> {
         return this.updateQuery(updater, 'AuthResolveShortName', variables);
     }
+    updateBlackListUpdatesState(updater: (data: Types.BlackListUpdatesState) => Types.BlackListUpdatesState | null): Promise<boolean> {
+        return this.updateQuery(updater, 'BlackListUpdatesState', undefined);
+    }
     updateChannel(variables: Types.ChannelVariables, updater: (data: Types.Channel) => Types.Channel | null): Promise<boolean> {
         return this.updateQuery(updater, 'Channel', variables);
     }
@@ -930,6 +945,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateMyApps(updater: (data: Types.MyApps) => Types.MyApps | null): Promise<boolean> {
         return this.updateQuery(updater, 'MyApps', undefined);
+    }
+    updateMyBlackList(updater: (data: Types.MyBlackList) => Types.MyBlackList | null): Promise<boolean> {
+        return this.updateQuery(updater, 'MyBlackList', undefined);
     }
     updateMyCards(updater: (data: Types.MyCards) => Types.MyCards | null): Promise<boolean> {
         return this.updateQuery(updater, 'MyCards', undefined);
@@ -1160,6 +1178,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, params?: SpaceQueryWatchParameters): Types.AuthResolveShortName;
     useAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, params?: SpaceQueryWatchParameters): Types.AuthResolveShortName | null {
         return this.useQuery('AuthResolveShortName', variables, params);
+    }
+    useBlackListUpdatesState(params: SpaceQueryWatchParameters & { suspense: false }): Types.BlackListUpdatesState | null;
+    useBlackListUpdatesState(params?: SpaceQueryWatchParameters): Types.BlackListUpdatesState;
+    useBlackListUpdatesState(params?: SpaceQueryWatchParameters): Types.BlackListUpdatesState | null {
+        return this.useQuery('BlackListUpdatesState', undefined, params);
     }
     useChannel(variables: Types.ChannelVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.Channel | null;
     useChannel(variables: Types.ChannelVariables, params?: SpaceQueryWatchParameters): Types.Channel;
@@ -1420,6 +1443,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useMyApps(params?: SpaceQueryWatchParameters): Types.MyApps;
     useMyApps(params?: SpaceQueryWatchParameters): Types.MyApps | null {
         return this.useQuery('MyApps', undefined, params);
+    }
+    useMyBlackList(params: SpaceQueryWatchParameters & { suspense: false }): Types.MyBlackList | null;
+    useMyBlackList(params?: SpaceQueryWatchParameters): Types.MyBlackList;
+    useMyBlackList(params?: SpaceQueryWatchParameters): Types.MyBlackList | null {
+        return this.useQuery('MyBlackList', undefined, params);
     }
     useMyCards(params: SpaceQueryWatchParameters & { suspense: false }): Types.MyCards | null;
     useMyCards(params?: SpaceQueryWatchParameters): Types.MyCards;
@@ -1761,6 +1789,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateAddToContacts(variables: Types.AddToContactsVariables, params?: MutationParameters): Promise<Types.AddToContacts> {
         return this.mutate('AddToContacts', variables, params);
     }
+    mutateBanUser(variables: Types.BanUserVariables, params?: MutationParameters): Promise<Types.BanUser> {
+        return this.mutate('BanUser', variables, params);
+    }
     mutateBetaDiscoverSkip(variables: Types.BetaDiscoverSkipVariables, params?: MutationParameters): Promise<Types.BetaDiscoverSkip> {
         return this.mutate('BetaDiscoverSkip', variables, params);
     }
@@ -2094,6 +2125,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateSuperBadgeUnsetToRoom(variables: Types.SuperBadgeUnsetToRoomVariables, params?: MutationParameters): Promise<Types.SuperBadgeUnsetToRoom> {
         return this.mutate('SuperBadgeUnsetToRoom', variables, params);
     }
+    mutateUnBanUser(variables: Types.UnBanUserVariables, params?: MutationParameters): Promise<Types.UnBanUser> {
+        return this.mutate('UnBanUser', variables, params);
+    }
     mutateUnSubscribeFromComments(variables: Types.UnSubscribeFromCommentsVariables, params?: MutationParameters): Promise<Types.UnSubscribeFromComments> {
         return this.mutate('UnSubscribeFromComments', variables, params);
     }
@@ -2126,6 +2160,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateconferenceRequestLocalMediaChange(variables: Types.conferenceRequestLocalMediaChangeVariables, params?: MutationParameters): Promise<Types.conferenceRequestLocalMediaChange> {
         return this.mutate('conferenceRequestLocalMediaChange', variables, params);
+    }
+    subscribeBlackListUpdates(variables: Types.BlackListUpdatesVariables, handler: GraphqlSubscriptionHandler<Types.BlackListUpdates>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.BlackListUpdates> {
+        return this.subscribe(handler, 'BlackListUpdates', variables, params);
     }
     subscribeChatOnlinesCountWatch(variables: Types.ChatOnlinesCountWatchVariables, handler: GraphqlSubscriptionHandler<Types.ChatOnlinesCountWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.ChatOnlinesCountWatch> {
         return this.subscribe(handler, 'ChatOnlinesCountWatch', variables, params);
