@@ -1575,7 +1575,12 @@ internal val ShortSequenceChatSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             field("cid", "cid", notNull(scalar("ID"))),
-            field("unread", "unread", notNull(scalar("Int")))
+            field("draft", "draft", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("version", "version", notNull(scalar("Int"))),
+                    field("message", "message", scalar("String")),
+                    field("date", "date", notNull(scalar("Date")))
+                ))
         )
 
 internal val ShortSequenceSelector = obj(
@@ -1594,8 +1599,17 @@ internal val ShortUpdateSelector = obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("user", "user", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID")))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("firstName", "firstName", notNull(scalar("String"))),
+                        field("lastName", "lastName", scalar("String"))
                     )))
+            )),
+            inline("UpdateChatDraftChanged", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("cid", "cid", notNull(scalar("ID"))),
+                field("draft", "draft", scalar("String")),
+                field("version", "version", notNull(scalar("Int"))),
+                field("date", "date", notNull(scalar("Date")))
             ))
         )
 

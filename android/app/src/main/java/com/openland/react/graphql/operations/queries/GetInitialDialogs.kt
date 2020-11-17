@@ -21,6 +21,6 @@ internal val GetInitialDialogsSelector = obj(
 val GetInitialDialogs = object: OperationDefinition {
     override val name = "GetInitialDialogs"
     override val kind = OperationKind.QUERY
-    override val body = "query GetInitialDialogs(\$after:String){syncUserChats(first:500,after:\$after){__typename items{__typename sequence{__typename ...ShortSequence}pts}cursor}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid unread}"
+    override val body = "query GetInitialDialogs(\$after:String){syncUserChats(first:500,after:\$after){__typename items{__typename sequence{__typename ...ShortSequence}pts}cursor}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid draft{__typename version message date}}"
     override val selector = GetInitialDialogsSelector
 }

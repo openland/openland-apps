@@ -22,6 +22,6 @@ internal val GetStateSelector = obj(
 val GetState = object: OperationDefinition {
     override val name = "GetState"
     override val kind = OperationKind.QUERY
-    override val body = "query GetState{updatesState{__typename seq state sequences{__typename pts sequence{__typename ...ShortSequence}}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid unread}"
+    override val body = "query GetState{updatesState{__typename seq state sequences{__typename pts sequence{__typename ...ShortSequence}}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid draft{__typename version message date}}"
     override val selector = GetStateSelector
 }

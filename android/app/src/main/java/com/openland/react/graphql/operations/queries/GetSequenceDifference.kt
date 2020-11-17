@@ -20,12 +20,13 @@ internal val GetSequenceDifferenceSelector = obj(
                                 )))
                         ))))),
                     field("after", "after", notNull(scalar("Int"))),
-                    field("hasMore", "hasMore", notNull(scalar("Boolean")))
+                    field("hasMore", "hasMore", notNull(scalar("Boolean"))),
+                    field("seq", "seq", notNull(scalar("Int")))
                 )))
         )
 val GetSequenceDifference = object: OperationDefinition {
     override val name = "GetSequenceDifference"
     override val kind = OperationKind.QUERY
-    override val body = "query GetSequenceDifference(\$id:ID!,\$pts:Int!){sequenceDifference(id:\$id,pts:\$pts){__typename sequence{__typename ...ShortSequence}events{__typename pts event{__typename ...ShortUpdate}}after hasMore}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid unread}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}"
+    override val body = "query GetSequenceDifference(\$id:ID!,\$pts:Int!){sequenceDifference(id:\$id,pts:\$pts){__typename sequence{__typename ...ShortSequence}events{__typename pts event{__typename ...ShortUpdate}}after hasMore seq}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid draft{__typename version message date}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id firstName lastName}}... on UpdateChatDraftChanged{__typename cid draft version date}}"
     override val selector = GetSequenceDifferenceSelector
 }

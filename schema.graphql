@@ -799,6 +799,12 @@ type DiscoverPage {
   tagGroup: TagGroup
 }
 
+type Draft {
+  message: String
+  date: Date!
+  version: Int!
+}
+
 type EditorsChoiceChat {
   id: ID!
   image: ImageRef!
@@ -1947,8 +1953,6 @@ type Mutation {
   betaFixCounter(uid: ID!): Boolean!
   betaFixCountersForAll: Boolean!
   deliverCountersForAll: Boolean!
-  conversationDraftUpdate(conversationId: ID!, message: String): String!
-  alphaSaveDraftMessage(conversationId: ID!, message: String): String!
   banUser(id: ID!): Boolean!
   unBanUser(id: ID!): Boolean!
   discoverCollectionsCreate(collection: DiscoverChatsCollectionInput!): DiscoverChatsCollection!
@@ -1986,6 +1990,7 @@ type Mutation {
   mediaStreamFailed(id: ID!, peerId: ID!): ConferenceMedia!
   addToContacts(userId: ID!): Boolean!
   removeFromContacts(userId: ID!): Boolean!
+  conversationDraftUpdate(id: ID!, message: String): Draft!
   setEnvVar(name: String!, value: String!): Boolean!
   setEnvVarString(name: String!, value: String!): Boolean!
   setEnvVarNumber(name: String!, value: Int!): Boolean!
@@ -2618,6 +2623,12 @@ type PremiumChatSettings {
   interval: WalletSubscriptionInterval
 }
 
+enum PrivacyWhoCanAddToGroups {
+  EVERYONE
+  CORRESPONDENTS
+  NOBODY
+}
+
 enum PrivacyWhoCanSee {
   EVERYONE
   NOBODY
@@ -2807,8 +2818,6 @@ type Query {
   superAdmins: [SuperAdmin!]!
   alphaChatTextSearch(query: String!): [Conversation!]!
   betaDialogTextSearch(query: String!): [Dialog!]!
-  conversationDraft(conversationId: ID!): String
-  alphaDraftMessage(conversationId: ID!): String
   myBlackList: [User!]!
   discoverCollections(first: Int!, after: String): DiscoverChatsCollectionConnection
   discoverCollection(id: ID!): DiscoverChatsCollection
@@ -3104,12 +3113,11 @@ interface Sequence {
 type SequenceChat implements Sequence {
   id: ID!
   cid: ID!
-  unread: Int!
+  draft: Draft
 }
 
 type SequenceCommon implements Sequence {
   id: ID!
-  unread: Int!
 }
 
 type SequenceDifference {
@@ -3117,6 +3125,7 @@ type SequenceDifference {
   events: [UpdatesDifferenceEvent!]!
   after: Int!
   hasMore: Boolean!
+  seq: Int!
 }
 
 type ServiceMessage implements ModernMessage {
@@ -3177,6 +3186,7 @@ type Settings {
   whoCanSeeEmail: PrivacyWhoCanSee!
   whoCanSeePhone: PrivacyWhoCanSee!
   communityAdminsCanSeeContactInfo: Boolean!
+  whoCanAddToGroups: PrivacyWhoCanAddToGroups!
 
   """Deprecated"""
   notificationsDelay: NotificationsDelay!
@@ -3525,6 +3535,13 @@ enum TypingType {
   VIDEO
 }
 
+type UpdateChatDraftChanged {
+  cid: ID!
+  draft: String
+  version: Int!
+  date: Date!
+}
+
 type UpdateChatMessage {
   cid: ID!
   message: ModernMessage!
@@ -3553,7 +3570,7 @@ type UpdatedNotificationContentComment {
   comment: CommentEntry
 }
 
-union UpdateEvent = UpdateChatRead | UpdateProfileChanged | UpdateMyProfileChanged | UpdateChatMessage | UpdateChatMessageDeleted
+union UpdateEvent = UpdateChatRead | UpdateProfileChanged | UpdateMyProfileChanged | UpdateChatMessage | UpdateChatMessageDeleted | UpdateChatDraftChanged
 
 input UpdateGroupInput {
   title: String
@@ -3638,6 +3655,7 @@ input UpdateSettingsInput {
   whoCanSeeEmail: PrivacyWhoCanSee
   whoCanSeePhone: PrivacyWhoCanSee
   communityAdminsCanSeeContactInfo: Boolean
+  whoCanAddToGroups: PrivacyWhoCanAddToGroups
 
   """Deprecated"""
   notificationsDelay: NotificationsDelay
@@ -3659,6 +3677,7 @@ type UpdatesSequenceDifference {
 type UpdatesSequenceState {
   sequence: Sequence!
   pts: Int!
+  seq: Int!
 }
 
 type UpdatesState {
@@ -3667,11 +3686,17 @@ type UpdatesState {
   sequences: [UpdatesSequenceState!]!
 }
 
-union UpdateSubscription = UpdateSubscriptionStarted | UpdateSubscriptionCheckpoint | UpdateSubscriptionEvent
+union UpdateSubscription = UpdateSubscriptionStarted | UpdateSubscriptionCheckpoint | UpdateSubscriptionEvent | UpdateSubscriptionEphemeralEvent
 
 type UpdateSubscriptionCheckpoint {
   seq: Int!
   state: String!
+}
+
+type UpdateSubscriptionEphemeralEvent {
+  seq: Int!
+  event: UpdateEvent!
+  sequence: Sequence!
 }
 
 type UpdateSubscriptionEvent {

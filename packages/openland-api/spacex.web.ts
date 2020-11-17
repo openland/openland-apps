@@ -1576,7 +1576,12 @@ const ShortSequenceChatSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
             field('cid', 'cid', args(), notNull(scalar('ID'))),
-            field('unread', 'unread', args(), notNull(scalar('Int')))
+            field('draft', 'draft', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('version', 'version', args(), notNull(scalar('Int'))),
+                    field('message', 'message', args(), scalar('String')),
+                    field('date', 'date', args(), notNull(scalar('Date')))
+                ))
         );
 
 const ShortSequenceSelector = obj(
@@ -1595,8 +1600,17 @@ const ShortUpdateSelector = obj(
                 field('__typename', '__typename', args(), notNull(scalar('String'))),
                 field('user', 'user', args(), notNull(obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        field('id', 'id', args(), notNull(scalar('ID')))
+                        field('id', 'id', args(), notNull(scalar('ID'))),
+                        field('firstName', 'firstName', args(), notNull(scalar('String'))),
+                        field('lastName', 'lastName', args(), scalar('String'))
                     )))
+            )),
+            inline('UpdateChatDraftChanged', obj(
+                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                field('cid', 'cid', args(), notNull(scalar('ID'))),
+                field('draft', 'draft', args(), scalar('String')),
+                field('version', 'version', args(), notNull(scalar('Int'))),
+                field('date', 'date', args(), notNull(scalar('Date')))
             ))
         );
 
@@ -2934,13 +2948,15 @@ const GetSequenceDifferenceSelector = obj(
                                 )))
                         ))))),
                     field('after', 'after', args(), notNull(scalar('Int'))),
-                    field('hasMore', 'hasMore', args(), notNull(scalar('Boolean')))
+                    field('hasMore', 'hasMore', args(), notNull(scalar('Boolean'))),
+                    field('seq', 'seq', args(), notNull(scalar('Int')))
                 )))
         );
 const GetSequenceStateSelector = obj(
             field('sequenceState', 'sequenceState', args(fieldValue("id", refValue('id'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('pts', 'pts', args(), notNull(scalar('Int'))),
+                    field('seq', 'seq', args(), notNull(scalar('Int'))),
                     field('sequence', 'sequence', args(), notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             fragment('Sequence', ShortSequenceSelector)
@@ -5775,31 +5791,31 @@ export const Operations: { [key: string]: OperationDefinition } = {
     GetDifference: {
         kind: 'query',
         name: 'GetDifference',
-        body: 'query GetDifference($state:String!){updatesDifference(state:$state){__typename seq state hasMore sequences{__typename after events{__typename pts event{__typename ...ShortUpdate}}sequence{__typename ...ShortSequence}}}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid unread}',
+        body: 'query GetDifference($state:String!){updatesDifference(state:$state){__typename seq state hasMore sequences{__typename after events{__typename pts event{__typename ...ShortUpdate}}sequence{__typename ...ShortSequence}}}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id firstName lastName}}... on UpdateChatDraftChanged{__typename cid draft version date}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid draft{__typename version message date}}',
         selector: GetDifferenceSelector
     },
     GetInitialDialogs: {
         kind: 'query',
         name: 'GetInitialDialogs',
-        body: 'query GetInitialDialogs($after:String){syncUserChats(first:500,after:$after){__typename items{__typename sequence{__typename ...ShortSequence}pts}cursor}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid unread}',
+        body: 'query GetInitialDialogs($after:String){syncUserChats(first:500,after:$after){__typename items{__typename sequence{__typename ...ShortSequence}pts}cursor}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid draft{__typename version message date}}',
         selector: GetInitialDialogsSelector
     },
     GetSequenceDifference: {
         kind: 'query',
         name: 'GetSequenceDifference',
-        body: 'query GetSequenceDifference($id:ID!,$pts:Int!){sequenceDifference(id:$id,pts:$pts){__typename sequence{__typename ...ShortSequence}events{__typename pts event{__typename ...ShortUpdate}}after hasMore}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid unread}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}',
+        body: 'query GetSequenceDifference($id:ID!,$pts:Int!){sequenceDifference(id:$id,pts:$pts){__typename sequence{__typename ...ShortSequence}events{__typename pts event{__typename ...ShortUpdate}}after hasMore seq}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid draft{__typename version message date}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id firstName lastName}}... on UpdateChatDraftChanged{__typename cid draft version date}}',
         selector: GetSequenceDifferenceSelector
     },
     GetSequenceState: {
         kind: 'query',
         name: 'GetSequenceState',
-        body: 'query GetSequenceState($id:ID!){sequenceState(id:$id){__typename pts sequence{__typename ...ShortSequence}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid unread}',
+        body: 'query GetSequenceState($id:ID!){sequenceState(id:$id){__typename pts seq sequence{__typename ...ShortSequence}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid draft{__typename version message date}}',
         selector: GetSequenceStateSelector
     },
     GetState: {
         kind: 'query',
         name: 'GetState',
-        body: 'query GetState{updatesState{__typename seq state sequences{__typename pts sequence{__typename ...ShortSequence}}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid unread}',
+        body: 'query GetState{updatesState{__typename seq state sequences{__typename pts sequence{__typename ...ShortSequence}}}}fragment ShortSequence on Sequence{__typename id ... on SequenceChat{__typename id ...ShortSequenceChat}}fragment ShortSequenceChat on SequenceChat{__typename id cid draft{__typename version message date}}',
         selector: GetStateSelector
     },
     GlobalCounter: {
@@ -7125,7 +7141,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     WatchUpdates: {
         kind: 'subscription',
         name: 'WatchUpdates',
-        body: 'subscription WatchUpdates{watchUpdates{__typename ... on UpdateSubscriptionStarted{__typename seq state}... on UpdateSubscriptionCheckpoint{__typename seq state}... on UpdateSubscriptionEvent{__typename seq pts sequence{__typename id}event{__typename ...ShortUpdate}}}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id}}}',
+        body: 'subscription WatchUpdates{watchUpdates{__typename ... on UpdateSubscriptionStarted{__typename seq state}... on UpdateSubscriptionCheckpoint{__typename seq state}... on UpdateSubscriptionEvent{__typename seq pts sequence{__typename id}event{__typename ...ShortUpdate}}}}fragment ShortUpdate on UpdateEvent{__typename ... on UpdateMyProfileChanged{__typename user{__typename id firstName lastName}}... on UpdateChatDraftChanged{__typename cid draft version date}}',
         selector: WatchUpdatesSelector
     },
 };

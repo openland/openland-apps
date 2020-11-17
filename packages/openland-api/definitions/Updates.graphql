@@ -6,7 +6,15 @@ fragment ShortUpdate on UpdateEvent {
     ... on UpdateMyProfileChanged {
         user {
             id
+            firstName
+            lastName
         }
+    }
+    ... on UpdateChatDraftChanged {
+        cid
+        draft
+        version
+        date
     }
 }
 
@@ -17,7 +25,11 @@ fragment ShortUpdate on UpdateEvent {
 fragment ShortSequenceChat on SequenceChat {
     id
     cid
-    unread
+    draft {
+        version
+        message
+        date
+    }
 }
 
 fragment ShortSequence on Sequence {
@@ -95,6 +107,7 @@ query GetDifference($state: String!) {
 query GetSequenceState($id: ID!) {
     sequenceState(id: $id) {
         pts
+        seq
         sequence {
             ...ShortSequence
         }
@@ -114,6 +127,7 @@ query GetSequenceDifference($id: ID!, $pts: Int!) {
         }
         after
         hasMore
+        seq
     }
 }
 
