@@ -21,7 +21,7 @@ import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { ChannelMuteButton, ChatInputPlaceholder } from './components/ChannelMuteButton';
+import { ChannelMuteButton, ChatInputPlaceholder, ChatInputBlockPlaceholder } from './components/InputPlaceholder';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { useCallModal } from './Call';
 import { EmojiSuggestions, EmojiSuggestionsRow } from './components/suggestions/EmojiSuggestions';
@@ -32,6 +32,7 @@ import { ChatSelectedActions } from './components/ChatSelectedActions';
 import { prepareLegacyMentionsForSend, convertMentionsFromMessage } from 'openland-engines/legacy/legacymentions';
 import { findSpans } from 'openland-y-utils/findSpans';
 import { throttle } from 'openland-y-utils/timer';
+import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { PinnedMessage, PINNED_MESSAGE_HEIGHT } from './components/PinnedMessage';
@@ -58,6 +59,7 @@ interface ConversationRootProps extends PageProps {
     mountedRef: { mounted: string[] };
     messagesActionsState: ConversationActionsState;
     messagesActionsMethods: ChatMessagesActionsMethods;
+    banInfo: { isBanned: boolean; isMeBanned: boolean } | undefined;
 }
 
 interface ConversationRootState {
@@ -470,7 +472,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
         let privateRoom = this.props.chat.__typename === 'PrivateRoom' ? this.props.chat : undefined;
-        let showInputBar = (sharedRoom ? (sharedRoom.kind === SharedRoomKind.INTERNAL || sharedRoom.canSendMessage) : true) && (privateRoom ? !privateRoom.user.isBot : true);
+        let showInputBar = (sharedRoom ? (sharedRoom.kind === SharedRoomKind.INTERNAL || sharedRoom.canSendMessage) : true) && (privateRoom ? !privateRoom.user.isBot && !this.props.banInfo?.isBanned && !this.props.banInfo?.isMeBanned : true);
 
         let showPinAuthor = sharedRoom && (sharedRoom!.kind !== SharedRoomKind.PUBLIC);
 
@@ -483,6 +485,9 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         }
         if (!showSelectedMessagesActions && privateRoom && privateRoom.user.isBot) {
             inputPlaceholder = <ChatInputPlaceholder text="View profile" onPress={() => this.props.router.push("ProfileUser", { id: privateRoom!.user.id })} />;
+        }
+        if (!showSelectedMessagesActions && privateRoom && !!this.props.banInfo && (this.props.banInfo.isBanned || this.props.banInfo.isMeBanned)) {
+            inputPlaceholder = <ChatInputBlockPlaceholder banInfo={this.props.banInfo}/>;
         }
         const reloadButton = <ReloadFromBottomButton conversation={this.engine} />;
         const isBot = privateRoom && privateRoom.user.isBot;
@@ -666,6 +671,14 @@ const ConversationComponent = React.memo((props: PageProps) => {
     let privateRoom = room.__typename === 'PrivateRoom' ? room as RoomTiny_room_PrivateRoom : null;
     let hasPinnedMessage = (sharedRoom || privateRoom)?.pinnedMessage;
 
+    const banInfo = privateRoom
+        ? useUserBanInfo(
+            privateRoom.user.id,
+            privateRoom.user.isBanned,
+            privateRoom.user.isMeBanned,
+        )
+        : undefined;
+
     if (sharedRoom && sharedRoom.membership !== 'MEMBER') {
         return <ChatJoin room={sharedRoom!} theme={theme} router={props.router} />;
     }
@@ -682,6 +695,7 @@ const ConversationComponent = React.memo((props: PageProps) => {
                 mountedRef={mountedRef}
                 messagesActionsState={messagesActionsState}
                 messagesActionsMethods={messagesActionsMethods}
+                banInfo={banInfo}
             />
             <ASSafeAreaContext.Consumer>
                 {safe => (

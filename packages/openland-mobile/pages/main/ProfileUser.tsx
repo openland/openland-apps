@@ -27,6 +27,7 @@ import { ProfileDeleted } from './components/ProfileDeleted';
 import { formatAbsoluteDate, formatBirthDay } from 'openland-mobile/utils/formatDate';
 import { openMapsApp } from 'openland-mobile/utils/openMapsApp';
 import { openCalendar } from 'openland-mobile/utils/openCalendar';
+import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
 
 const ProfileUserComponent = React.memo((props: PageProps) => {
     const client = getClient();
@@ -36,14 +37,31 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
     const user = data.user;
     const conversation = data.conversation as User_conversation_PrivateRoom;
 
-    const mutualGroups = client.useCommonChatsWithUser({ uid: userId, first: 3 }, { fetchPolicy: 'cache-and-network' }).commonChatsWithUser;
+    const { isBanned } = useUserBanInfo(user.id, user.isBanned, user.isMeBanned);
+
+    const mutualGroups = client.useCommonChatsWithUser(
+        { uid: userId, first: 3 },
+        { fetchPolicy: 'cache-and-network' },
+    ).commonChatsWithUser;
 
     const localContact = useLocalContact(user.id, user.inContacts);
     const phone = !!user.phone ? formatPhone(user.phone) : undefined;
     const [inContacts, setInContacts] = React.useState(localContact.isContact);
     const [muted, setMuted] = React.useState(conversation.settings.mute);
 
-    const profileType: 'user' | 'bot' | 'my' = !user.isBot ? (getMessenger().engine.user.id === user.id ? 'my' : 'user') : 'bot';
+    const profileType: 'user' | 'bot' | 'my' = !user.isBot
+        ? getMessenger().engine.user.id === user.id
+            ? 'my'
+            : 'user'
+        : 'bot';
+
+    const onBannedClick = React.useCallback(async () => {
+        if (isBanned) {
+            await client.mutateUnBanUser({ id: user.id });
+        } else {
+            await client.mutateBanUser({ id: user.id });
+        }
+    }, [user.id, isBanned]);
 
     const handleContactPress = React.useCallback(async () => {
         setInContacts(!inContacts);
@@ -59,51 +77,58 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
         Share.share(
             Platform.select({
                 ios: { url: link },
-                android: { message: link }
-            })
+                android: { message: link },
+            }),
         );
     }, [user.shortname, user.id]);
 
     const handleManagePress = React.useCallback(() => {
         const builder = new ActionSheetBuilder();
 
-        builder.action(
-            'Add to groups',
-            () => {
-                Modals.showGroupMuptiplePicker(router, {
-                    title: 'Add',
-                    action: async (groups) => {
-                        if (groups.length > 0) {
-                            const loader = Toast.loader();
-                            loader.show();
-                            try {
-                                await client.mutateRoomsInviteUser({
-                                    userId: user.id,
-                                    roomIds: groups.map((u) => u.id),
-                                });
-                            } catch (e) {
-                                Alert.alert(formatError(e));
+        if (SUPER_ADMIN) {
+            builder.action(
+                'Add to groups',
+                () => {
+                    Modals.showGroupMuptiplePicker(router, {
+                        title: 'Add',
+                        action: async (groups) => {
+                            if (groups.length > 0) {
+                                const loader = Toast.loader();
+                                loader.show();
+                                try {
+                                    await client.mutateRoomsInviteUser({
+                                        userId: user.id,
+                                        roomIds: groups.map((u) => u.id),
+                                    });
+                                } catch (e) {
+                                    Alert.alert(formatError(e));
+                                }
+                                loader.hide();
                             }
-                            loader.hide();
-                        }
 
-                        router.back();
-                    },
-                });
-            },
-            false,
-            require('assets/ic-group-24.png'),
-        );
-
+                            router.back();
+                        },
+                    });
+                },
+                false,
+                require('assets/ic-group-24.png'),
+            );
+        }
         builder.action(
-            'Report',
+            isBanned ? 'Unblock person' : 'Block person',
+            onBannedClick,
+            false,
+            isBanned ? require('assets/ic-unblock-24.png') : require('assets/ic-block-24.png'),
+        );
+        builder.action(
+            'Report spam',
             () => Modals.showReportSpam({ router, userId }),
             false,
             require('assets/ic-flag-24.png'),
         );
 
         builder.show();
-    }, [user.id]);
+    }, [user.id, isBanned]);
 
     const handleLinkPress = React.useCallback(async (link: string) => {
         if (await Linking.canOpenURL(link)) {
@@ -112,10 +137,16 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
     }, []);
 
     const website = React.useMemo(() => findSocialShortname.site(user.website), [user.website]);
-    const instagram = React.useMemo(() => findSocialShortname.instagram(user.instagram), [user.instagram]);
+    const instagram = React.useMemo(() => findSocialShortname.instagram(user.instagram), [
+        user.instagram,
+    ]);
     const twitter = React.useMemo(() => findSocialShortname.twitter(user.twitter), [user.twitter]);
-    const facebook = React.useMemo(() => findSocialShortname.facebook(user.facebook), [user.facebook]);
-    const linkedin = React.useMemo(() => findSocialShortname.linkedin(user.linkedin), [user.linkedin]);
+    const facebook = React.useMemo(() => findSocialShortname.facebook(user.facebook), [
+        user.facebook,
+    ]);
+    const linkedin = React.useMemo(() => findSocialShortname.linkedin(user.linkedin), [
+        user.linkedin,
+    ]);
 
     const [lastseen] = useLastSeenShort(user);
 
@@ -136,7 +167,12 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                     badge={lastseen}
                     subtitle={profileType === 'bot' ? 'Bot' : user.primaryOrganization?.name}
                     actionPrimary={{
-                        title: profileType === 'my' ? 'Edit profile' : (profileType === 'bot' ? 'View messages' : 'Message'),
+                        title:
+                            profileType === 'my'
+                                ? 'Edit profile'
+                                : profileType === 'bot'
+                                ? 'View messages'
+                                : 'Message',
                         style: profileType === 'my' ? 'secondary' : 'primary',
                         onPress: () => {
                             if (profileType === 'my') {
@@ -144,22 +180,33 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                             } else {
                                 router.pushAndReset('Conversation', { id: conversation.id });
                             }
-                        }
+                        },
                     }}
                 >
                     {(profileType === 'user' || profileType === 'bot') && (
                         <ZHeroAction
-                            icon={muted ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-off-24.png')}
+                            icon={
+                                muted
+                                    ? require('assets/ic-notifications-24.png')
+                                    : require('assets/ic-notifications-off-24.png')
+                            }
                             title={muted ? 'Unmute' : 'Mute'}
                             onPress={() => {
                                 setMuted(!muted);
-                                client.mutateRoomSettingsUpdate({ roomId: conversation.id, settings: { mute: !muted } });
+                                client.mutateRoomSettingsUpdate({
+                                    roomId: conversation.id,
+                                    settings: { mute: !muted },
+                                });
                             }}
                         />
                     )}
                     {profileType === 'user' && (
                         <ZHeroAction
-                            icon={inContacts ? require('assets/ic-user-remove-24.png') : require('assets/ic-user-add-24.png')}
+                            icon={
+                                inContacts
+                                    ? require('assets/ic-user-remove-24.png')
+                                    : require('assets/ic-user-add-24.png')
+                            }
                             title={inContacts ? 'Remove' : 'Save'}
                             onPress={handleContactPress}
                         />
@@ -177,18 +224,11 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                         title="Share"
                         onPress={handleSharePress}
                     />
-                    {SUPER_ADMIN && profileType === 'user' && (
+                    {profileType === 'user' && (
                         <ZHeroAction
                             icon={require('assets/ic-more-h-24.png')}
                             title="More"
                             onPress={handleManagePress}
-                        />
-                    )}
-                    {!SUPER_ADMIN && profileType === 'user' && (
-                        <ZHeroAction
-                            icon={require('assets/ic-flag-24.png')}
-                            title="Report"
-                            onPress={() => Modals.showReportSpam({ router, userId })}
                         />
                     )}
                 </ZHero>
@@ -303,10 +343,14 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                     <ZListGroup
                         header="Mutual groups"
                         counter={mutualGroups.count}
-                        actionRight={mutualGroups.count > 3 ? {
-                            title: 'See all',
-                            onPress: () => router.push('UserMutualGroups', { userId })
-                        } : undefined}
+                        actionRight={
+                            mutualGroups.count > 3
+                                ? {
+                                      title: 'See all',
+                                      onPress: () => router.push('UserMutualGroups', { userId }),
+                                  }
+                                : undefined
+                        }
                         useSpacer={true}
                     >
                         {mutualGroups.items.map((item) => (
