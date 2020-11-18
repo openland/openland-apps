@@ -2255,6 +2255,7 @@ const AuthResolveShortNameSelector = obj(
                         field('applyLink', 'applyLink', args(), scalar('String')),
                         field('externalSocialImage', 'externalSocialImage', args(), scalar('String')),
                         field('alphaIsCommunity', 'isCommunity', args(), notNull(scalar('Boolean'))),
+                        field('alphaFeatured', 'featured', args(), notNull(scalar('Boolean'))),
                         field('owner', 'owner', args(), notNull(obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
                                 field('id', 'id', args(), notNull(scalar('ID')))
@@ -5577,7 +5578,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     AuthResolveShortName: {
         kind: 'query',
         name: 'AuthResolveShortName',
-        body: 'query AuthResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename id name firstName lastName photo externalSocialImage online}... on Organization{__typename id name photo about applyLinkEnabled applyLink externalSocialImage isCommunity:alphaIsCommunity owner{__typename id}}... on SharedRoom{__typename ...SharedRoomPreview}... on DiscoverChatsCollection{__typename id}}}fragment SharedRoomPreview on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}title photo externalSocialImage membersCount description featured previewMembers{__typename id name photo}}',
+        body: 'query AuthResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename id name firstName lastName photo externalSocialImage online}... on Organization{__typename id name photo about applyLinkEnabled applyLink externalSocialImage isCommunity:alphaIsCommunity featured:alphaFeatured owner{__typename id}}... on SharedRoom{__typename ...SharedRoomPreview}... on DiscoverChatsCollection{__typename id}}}fragment SharedRoomPreview on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}title photo externalSocialImage membersCount description featured previewMembers{__typename id name photo}}',
         selector: AuthResolveShortNameSelector
     },
     BlackListUpdatesState: {

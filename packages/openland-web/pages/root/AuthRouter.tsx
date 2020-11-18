@@ -56,6 +56,7 @@ const ShortnameResolver = React.memo(
                     entityTitle={shortnameItem.name}
                     description={shortnameItem.about}
                     hideFakeDescription={true}
+                    featured={shortnameItem.featured}
                     noLogin={true}
                     button={
                         shortnameItem.applyLinkEnabled && shortnameItem.applyLink ? (
@@ -68,16 +69,16 @@ const ShortnameResolver = React.memo(
                                 href={normalizeUrl(shortnameItem.applyLink)}
                             />
                         ) : (
-                            <UButton
-                                style="primary"
-                                size="large"
-                                text="Message admin"
-                                path={
-                                    '/signin?redirect=' +
-                                    encodeURIComponent('/mail/' + shortnameItem.owner.id)
-                                }
-                            />
-                        )
+                                <UButton
+                                    style="primary"
+                                    size="large"
+                                    text="Message admin"
+                                    path={
+                                        '/signin?redirect=' +
+                                        encodeURIComponent('/mail/' + shortnameItem.owner.id)
+                                    }
+                                />
+                            )
                     }
                 />
             );
