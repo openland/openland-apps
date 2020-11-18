@@ -222,6 +222,7 @@ let Img = React.memo((props: {
 const Body = (props: {
     chatId?: string;
     isImage?: boolean;
+    text?: URickTextValue;
     files: File[];
     addFile: (f: File) => string | File;
     removeFile: (f: File) => void;
@@ -232,7 +233,7 @@ const Body = (props: {
     confirm: () => void;
     errorText?: string;
 }) => {
-    let { files, addFile, removeFile, isImage, onImageLoad, onTextChange, onFileTypeChange } = props;
+    let { files, addFile, removeFile, isImage, text, onImageLoad, onTextChange, onFileTypeChange } = props;
     let [bodyFiles, setFiles] = React.useState(files);
     let client = useClient();
     let [room, setRoom] = React.useState<RoomPico_room_PrivateRoom | RoomPico_room_SharedRoom | null>(null);
@@ -393,6 +394,7 @@ const Body = (props: {
                 </Deferred>
                 <URickInput
                     ref={inputRef}
+                    initialContent={text}
                     className={inputStyle}
                     placeholder="Add a note"
                     autofocus={true}
@@ -412,6 +414,7 @@ const Body = (props: {
 
 export const showAttachConfirm = ({
     files,
+    text,
     chatId,
     isImage,
     onSubmit: callback,
@@ -420,6 +423,7 @@ export const showAttachConfirm = ({
     onCancel,
 }: {
     files: File[],
+    text: URickTextValue | undefined;
     onSubmit: (files: { file: UploadCareUploading, localImage?: LocalImage }[], text: string | undefined, mentions: MentionToSend[] | undefined, hasImages: boolean) => void,
     chatId?: string,
     isImage?: boolean,
@@ -488,6 +492,7 @@ export const showAttachConfirm = ({
                     confirm={confirm}
                     errorText={errorText}
                     isImage={isImage}
+                    text={text}
                 />
             ))
             .action('Send', async () => {
@@ -496,8 +501,8 @@ export const showAttachConfirm = ({
                 }
                 isUploading = true;
                 let uploadedFiles = uploading.filter(file => filesRes.includes(file.getSourceFile())).map((u, i) => ({ file: u, localImage: imagesPreviews.get(filesRes[i]) }));
-                let { text, mentions } = messageInfo.inputValue ? extractTextAndMentions(messageInfo.inputValue) : { text: undefined, mentions: undefined };
-                await callback(uploadedFiles, text, mentions, isImage === undefined ? messageInfo.hasImages : isImage);
+                let { text: messageText, mentions } = messageInfo.inputValue ? extractTextAndMentions(messageInfo.inputValue) : { text: undefined, mentions: undefined };
+                await callback(uploadedFiles, messageText, mentions, isImage === undefined ? messageInfo.hasImages : isImage);
 
                 const { name } = await uploading[0].fetchInfo();
 

@@ -60,7 +60,7 @@ interface CommentViewProps {
     onDeleteClick: (id: string) => void;
     onReactionClick: (comment: CommentEntryFragment_comment) => void;
     onSent: (data: URickTextValue) => Promise<boolean>;
-    onSentAttach: (files: File[], isImage: boolean) => void;
+    onSentAttach: (files: File[], text: URickTextValue | undefined, isImage: boolean) => void;
     onStickerSent: (sticker: StickerFragment) => void;
 }
 

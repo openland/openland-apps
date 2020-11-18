@@ -17,6 +17,7 @@ import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
 import { useIncomingMessages } from './useIncomingMessages';
 import { useRouteChange } from 'openland-web/hooks/useRouteChange';
 import { useClient } from 'openland-api/useClient';
+import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 
 const watermarkContainerstyle = css`
     will-change: transform;
@@ -45,7 +46,7 @@ const watermarkIconStyle = cx('x', css`
     pointer-events: none;
 `);
 
-export const CallModalConponent = React.memo((props: { chatId: string, calls: CallsEngine, client: OpenlandClient, ctx: XModalController, messenger: MessengerEngine, onAttach: (files: File[], isImage: boolean, cb?: () => void) => void }) => {
+export const CallModalConponent = React.memo((props: { chatId: string, calls: CallsEngine, client: OpenlandClient, ctx: XModalController, messenger: MessengerEngine, onAttach: (files: File[], text: URickTextValue, isImage: boolean, cb?: () => void) => void }) => {
     let conference = props.client.useConference({ id: props.chatId }, { suspense: false });
     let currentMediaSession = props.calls.useCurrentSession();
     let mediaSession = React.useMemo(() => currentMediaSession!, []);

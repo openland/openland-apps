@@ -18,16 +18,23 @@ const wrapperCompactClass = css`
 
 interface CommentInputProps {
     onSent: (data: URickTextValue) => Promise<boolean>;
-    onSentAttach: (files: File[], isImage: boolean) => void;
+    onSentAttach: (files: File[], text: URickTextValue | undefined, isImage: boolean) => void;
     onStickerSent: (sticker: StickerFragment) => void;
     groupId?: string;
     compact?: boolean;
     forceAutofocus?: boolean;
 }
 
-export const CommentInput = React.memo((props: CommentInputProps) => {
+export type CommentInputRef = Pick<URickInputInstance, 'getText' | 'clear'>;
+
+export const CommentInput = React.memo(React.forwardRef<CommentInputRef, CommentInputProps>((props, forwardedRef) => {
     const { onSent, onSentAttach, onStickerSent, groupId, compact } = props;
     const ref = React.useRef<URickInputInstance>(null);
+
+    React.useImperativeHandle(forwardedRef, () => ({
+        getText: () => ref.current!.getText(),
+        clear: () => ref.current!.clear(),
+    }));
 
     React.useLayoutEffect(() => {
         let timer: any;
@@ -38,12 +45,17 @@ export const CommentInput = React.memo((props: CommentInputProps) => {
         }
         return () => clearTimeout(timer);
     }, []);
+
+    const handleAttach = React.useCallback((files: File[], text: URickTextValue | undefined, isImage: boolean) => {
+        ref.current?.clear();
+        onSentAttach(files, text, isImage);
+    }, []);
     return (
         <div className={compact ? wrapperCompactClass : wrapperClass}>
             <SendMessageComponent
                 groupId={groupId}
                 onTextSentAsync={onSent}
-                onAttach={onSentAttach}
+                onAttach={handleAttach}
                 onStickerSentAsync={onStickerSent}
                 rickRef={ref}
                 hideDonation={true}
@@ -51,4 +63,4 @@ export const CommentInput = React.memo((props: CommentInputProps) => {
             />
         </div>
     );
-});
+}));
