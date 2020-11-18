@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useClient } from 'openland-api/useClient';
 import { css } from 'linaria';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { CommentInput } from './CommentInput';
+import { CommentInput, CommentInputRef } from './CommentInput';
 import { CommentsList } from './CommentsList';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { findSpans } from 'openland-y-utils/findSpans';
@@ -44,6 +44,7 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
     const client = useClient();
     const [replyingId, setReplyingId] = React.useState<string | undefined>(noDefaultReply ? undefined : commentId);
     const [attachOpen, setAttachOpen] = React.useState(false);
+    const inputRef = React.useRef<CommentInputRef>(null);
 
     const handleReplyClick = React.useCallback((id: string) => {
         setReplyingId(current => id === current ? undefined : id);
@@ -96,13 +97,15 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
         }
     }, [peerId, replyingId]);
 
-    const handleCommentSentAttach = React.useCallback((files: File[], isImage: boolean, topLevel: boolean = false) => {
+    const handleCommentSentAttach = React.useCallback((files: File[], initialText: URickTextValue | undefined, isImage: boolean, topLevel: boolean = false) => {
         if (files.length > 0) {
             setAttachOpen(true);
+            inputRef.current?.clear();
             showAttachConfirm(
                 {
                     files,
                     isImage,
+                    text: initialText!!,
                     onSubmit: (res, text, mentions) => new Promise(resolve => {
                         const uploadedFiles: string[] = [];
 
@@ -157,15 +160,16 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                 </div>
             </XScrollView3>
             <CommentInput
+                ref={inputRef}
                 onSent={data => handleCommentSent(data, true)}
-                onSentAttach={(files, isImage) => handleCommentSentAttach(files, isImage, true)}
+                onSentAttach={(files, text, isImage) => handleCommentSentAttach(files, text, isImage, true)}
                 onStickerSent={sticker => handleStickerSent(sticker, true)}
                 groupId={groupId}
                 forceAutofocus={!replyingId}
             />
             <DropZone
                 isHidden={attachOpen}
-                onDrop={files => handleCommentSentAttach(files, files.every(f => isFileImage(f)))}
+                onDrop={files => handleCommentSentAttach(files, inputRef.current?.getText(), files.every(f => isFileImage(f)), true)}
                 text={replyingId ? 'Drop here to send to the branch' : undefined}
             />
         </div>

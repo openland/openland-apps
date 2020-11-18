@@ -561,7 +561,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     }, []);
 
     let addImages = React.useCallback((files: File[]) => {
-        showAttachConfirm({ files, isImage: true, onSubmit: res => res.map(addImage) });
+        showAttachConfirm({ files, text: undefined, isImage: true, onSubmit: res => res.map(addImage) });
     }, []);
 
     useShortcuts({ keys: ['Control', 't'], callback: addText });
