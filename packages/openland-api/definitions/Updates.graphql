@@ -16,6 +16,11 @@ fragment ShortUpdate on UpdateEvent {
         version
         date
     }
+    ... on UpdateSettingsChanged {
+        settings {
+            ...SettingsFull
+        }
+    }
 }
 
 #
@@ -32,11 +37,22 @@ fragment ShortSequenceChat on SequenceChat {
     }
 }
 
+fragment ShortSequenceCommon on SequenceCommon {
+    id
+    settings {
+        ...SettingsFull
+    }
+}
+
 fragment ShortSequence on Sequence {
     id
     ... on SequenceChat {
         id
         ...ShortSequenceChat
+    }
+    ... on SequenceCommon {
+        id
+        ...ShortSequenceCommon
     }
 }
 

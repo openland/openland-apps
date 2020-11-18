@@ -20,6 +20,7 @@ fragment PlatformNotificationSettingsFull on PlatformNotificationSettings {
 
 fragment SettingsFull on Settings {
     id
+    version
     primaryEmail
     emailFrequency
     excludeMutedChats

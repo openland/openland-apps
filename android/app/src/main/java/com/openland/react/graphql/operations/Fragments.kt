@@ -1508,6 +1508,7 @@ internal val PostSimpleSelector = obj(
 internal val SettingsFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
+            field("version", "version", notNull(scalar("Int"))),
             field("primaryEmail", "primaryEmail", notNull(scalar("String"))),
             field("emailFrequency", "emailFrequency", notNull(scalar("String"))),
             field("excludeMutedChats", "excludeMutedChats", notNull(scalar("Boolean"))),
@@ -1583,6 +1584,15 @@ internal val ShortSequenceChatSelector = obj(
                 ))
         )
 
+internal val ShortSequenceCommonSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("settings", "settings", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Settings", SettingsFullSelector)
+                )))
+        )
+
 internal val ShortSequenceSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -1590,6 +1600,11 @@ internal val ShortSequenceSelector = obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("id", "id", notNull(scalar("ID"))),
                 fragment("SequenceChat", ShortSequenceChatSelector)
+            )),
+            inline("SequenceCommon", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                fragment("SequenceCommon", ShortSequenceCommonSelector)
             ))
         )
 
@@ -1610,6 +1625,13 @@ internal val ShortUpdateSelector = obj(
                 field("draft", "draft", scalar("String")),
                 field("version", "version", notNull(scalar("Int"))),
                 field("date", "date", notNull(scalar("Date")))
+            )),
+            inline("UpdateSettingsChanged", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("settings", "settings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("Settings", SettingsFullSelector)
+                    )))
             ))
         )
 

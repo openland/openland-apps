@@ -11,16 +11,6 @@ type AlphaSignupData {
   organization: Organization
 }
 
-type AnonymousConversation implements Conversation {
-  id: ID!
-  flexibleId: ID!
-  title: String!
-  photos: [String!]!
-  unreadCount: Int!
-  topMessage: ConversationMessage
-  settings: ConversationSettings!
-}
-
 type AppChat {
   chat: Room!
   webhook: String!
@@ -108,7 +98,6 @@ type ChannelConversation implements Conversation {
   id: ID!
   flexibleId: ID!
   title: String!
-  photos: [String!]!
   members: [User!]!
   unreadCount: Int!
   topMessage: ConversationMessage
@@ -390,7 +379,6 @@ interface Conversation {
   id: ID!
   flexibleId: ID!
   title: String!
-  photos: [String!]!
   unreadCount: Int!
   topMessage: ConversationMessage
   settings: ConversationSettings!
@@ -418,7 +406,6 @@ type ConversationMessage {
   alphaType: MessageType!
   alphaTitle: String
   postType: String
-  alphaMentions: [Mention!]
 }
 
 type ConversationSettings {
@@ -548,7 +535,6 @@ type Dialog {
   photo: String!
   featured: Boolean!
   unreadCount: Int!
-  betaTopMessage: RoomMessage
   alphaTopMessage: ModernMessage
   isMuted: Boolean!
   haveMention: Boolean!
@@ -599,8 +585,6 @@ type DialogMentionedChanged {
 type DialogMessageDeleted {
   cid: ID!
   message: ConversationMessage!
-  betaMessage: RoomMessage!
-  prevMessage: RoomMessage
   alphaPrevMessage: ModernMessage
   alphaMessage: ModernMessage!
   unread: Int!
@@ -619,7 +603,6 @@ type DialogMessageRead {
 type DialogMessageReceived {
   cid: ID!
   message: ConversationMessage!
-  betaMessage: RoomMessage!
   alphaMessage: ModernMessage!
   unread: Int!
   globalUnread: Int!
@@ -632,7 +615,6 @@ type DialogMessageReceived {
 type DialogMessageUpdated {
   cid: ID!
   message: ConversationMessage!
-  betaMessage: RoomMessage!
   alphaMessage: ModernMessage!
   haveMention: Boolean!
 }
@@ -981,7 +963,6 @@ type GroupConversation implements Conversation {
   id: ID!
   flexibleId: ID!
   title: String!
-  photos: [String!]!
   members: [User!]!
   unreadCount: Int!
   topMessage: ConversationMessage
@@ -1320,8 +1301,6 @@ enum MediaStreamVideoSource {
   camera
   screen_share
 }
-
-union Mention = UserMention | SharedRoomMention
 
 input MentionInput {
   chatId: ID
@@ -2435,7 +2414,6 @@ enum PostMessageType {
 }
 
 type PostRespondServiceMetadata {
-  post: RoomMessage!
   postRoom: Room!
   responder: User!
   respondType: ID!
@@ -2502,7 +2480,6 @@ type PrivateConversation implements Conversation {
   id: ID!
   flexibleId: ID!
   title: String!
-  photos: [String!]!
   user: User!
   unreadCount: Int!
   topMessage: ConversationMessage
@@ -2791,7 +2768,6 @@ type Query {
   room(id: ID!): Room
   rooms(ids: [ID!]!): [Room!]!
   roomSuper(id: ID!): RoomSuper
-  roomMessages(roomId: ID!, first: Int, before: ID): [RoomMessage!]!
   roomMembers(roomId: ID!, first: Int, after: ID): [RoomMember!]!
   roomAdmins(roomId: ID!): [RoomMember!]!
   roomFeaturedMembers(roomId: ID!, first: Int): [RoomMember!]!
@@ -2896,31 +2872,6 @@ enum RoomMemberRole {
   MEMBER
 }
 
-type RoomMessage {
-  id: ID!
-  message: String
-  file: String
-  fileMetadata: FileMetadata
-  filePreview: String
-  sender: User!
-  date: Date!
-  repeatKey: String
-  isService: Boolean!
-  serviceMetadata: ServiceMetadata
-  urlAugmentation: UrlAugmentation
-  edited: Boolean!
-  reactions: [MessageReaction!]!
-  replyMessages: [RoomMessage!]
-  plainText: String
-  mentions: [User!]
-  alphaAttachments: [MessageAttachment!]!
-  alphaButtons: [[MessageButton!]]!
-  alphaType: MessageType!
-  alphaTitle: String
-  alphaPostType: PostMessageType
-  alphaMentions: [Mention!]
-}
-
 type RoomServiceMessageSettings {
   joinsMessageEnabled: Boolean!
   leavesMessageEnabled: Boolean!
@@ -2970,6 +2921,7 @@ type SequenceChat implements Sequence {
 
 type SequenceCommon implements Sequence {
   id: ID!
+  settings: Settings!
 }
 
 type SequenceDifference {
@@ -3029,6 +2981,7 @@ type SessionState {
 
 type Settings {
   id: ID!
+  version: Int!
   primaryEmail: String!
   emailFrequency: EmailFrequency!
   desktop: PlatformNotificationSettings!
@@ -3055,7 +3008,6 @@ type SharedConversation implements Conversation {
   id: ID!
   flexibleId: ID!
   title: String!
-  photos: [String!]!
   organizations: [Organization!]!
   unreadCount: Int!
   topMessage: ConversationMessage
@@ -3145,10 +3097,6 @@ enum SharedRoomMembershipStatus {
   LEFT
   KICKED
   NONE
-}
-
-type SharedRoomMention {
-  sharedRoom: SharedRoom!
 }
 
 union ShortNameDestination = User | Organization | FeedChannel | SharedRoom | DiscoverChatsCollection | Channel
@@ -3303,7 +3251,6 @@ enum SuperNotificationType {
 }
 
 type SyncChat {
-  conversation: Conversation!
   sequence: Sequence!
   pts: Int!
 }
@@ -3417,7 +3364,7 @@ type UpdatedNotificationContentComment {
   comment: CommentEntry
 }
 
-union UpdateEvent = UpdateChatRead | UpdateProfileChanged | UpdateMyProfileChanged | UpdateChatMessage | UpdateChatMessageDeleted | UpdateChatDraftChanged
+union UpdateEvent = UpdateChatRead | UpdateProfileChanged | UpdateMyProfileChanged | UpdateChatMessage | UpdateChatMessageDeleted | UpdateChatDraftChanged | UpdateSettingsChanged
 
 type UpdateMyProfileChanged {
   user: User!
@@ -3483,6 +3430,10 @@ type UpdatesDifference {
 type UpdatesDifferenceEvent {
   pts: Int!
   event: UpdateEvent!
+}
+
+type UpdateSettingsChanged {
+  settings: Settings!
 }
 
 input UpdateSettingsInput {
@@ -3646,10 +3597,6 @@ type UserEdge {
 
 type UserEventBusMessage {
   message: String!
-}
-
-type UserMention {
-  user: User!
 }
 
 type UserStickers {
