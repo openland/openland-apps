@@ -29,6 +29,7 @@ interface UOrganizationViewProps {
     organization: OrganizationShort;
     usePath?: boolean;
     hovered?: boolean;
+    description?: string;
 }
 
 export const UOrganizationView = React.memo(
@@ -50,7 +51,7 @@ export const UOrganizationView = React.memo(
                     </>
                 )}
                 titleStyle={{ flexDirection: 'row' }}
-                description={about}
+                description={props.description || about}
                 avatar={{ photo, id, title: name }}
                 useRadius={true}
                 path={props.usePath !== false ? `/${shortname || id}` : undefined}

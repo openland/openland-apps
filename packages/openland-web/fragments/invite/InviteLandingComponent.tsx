@@ -184,6 +184,7 @@ interface InviteLandingComponentLayoutProps {
     button?: JSX.Element;
     noLogin: boolean;
     room?: SharedRoomT;
+    featured: boolean | undefined;
 }
 
 export const InviteLandingComponentLayout = React.memo(
@@ -202,6 +203,7 @@ export const InviteLandingComponentLayout = React.memo(
             hideFakeDescription,
             button,
             room,
+            featured
         } = props;
 
         const avatars = room
@@ -249,7 +251,7 @@ export const InviteLandingComponentLayout = React.memo(
                             <div className={titleWrapperStyle}>
                                 <div className={cx(TextTitle1, titleStyle)}>
                                     {title}
-                                    {room && room.featured && (
+                                    {featured && (
                                         <div className={featuredIconWrapperStyle}>
                                             <UIcon
                                                 className={featuredIconStyle}
@@ -531,6 +533,7 @@ export const SharedRoomPlaceholder = ({ room }: { room: ResolvedInvite_invite_Ro
             whereToInvite="group"
             photo={room.photo}
             title={premiumSuspended ? `Your access to “${room.title}” is suspended` : room.title}
+            featured={room.featured}
             entityTitle={room.title}
             id={room.id}
             membersCount={room.membersCount}
@@ -680,6 +683,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                     description={
                         'To keep your access to the group by subscription you need to complete payment'
                     }
+                    featured={room ? room.featured : organization?.featured}
                     room={room}
                     noLogin={!loggedIn}
                 />
@@ -693,6 +697,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                         id={room ? room.id : organization!.id}
                         membersCount={room ? room.membersCount : organization!.membersCount}
                         description={room ? room.description : organization!.about}
+                        featured={room ? room.featured : organization?.featured}
                         room={room}
                         noLogin={!loggedIn}
                     />

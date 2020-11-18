@@ -572,6 +572,7 @@ query ResolvedInvite($key: String!) {
                 about
                 isMine
                 isCommunity: alphaIsCommunity
+                featured: alphaFeatured
             }
         }
         ... on AppInvite {

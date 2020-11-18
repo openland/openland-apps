@@ -257,7 +257,7 @@ export const SettingsAppearanceFragment = React.memo(() => {
                             asSwitcher={true}
                         />
                         <UCheckboxFiled
-                            label="Show group featured icon"
+                            label="Show featured mark"
                             field={featuredGroupDisplay}
                             asSwitcher={true}
                         />
