@@ -29,7 +29,9 @@ const DialogsComponent = React.memo((props: PageProps) => {
                         let path = attach.split('/');
                         filesMeta.push({ name: path[path.length - 1], path: attach });
                     }
-                    await UploadManagerInstance.registerMessageUploads(id, filesMeta, undefined);
+                    try {
+                        await UploadManagerInstance.registerMessageUploads(id, filesMeta, undefined);
+                    } catch (err) { }
                 }
 
                 if (props.router.params.share.strings) {
