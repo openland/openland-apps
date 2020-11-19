@@ -31,7 +31,7 @@ const DialogsComponent = React.memo((props: PageProps) => {
                     }
                     try {
                         await UploadManagerInstance.registerMessageUploads(id, filesMeta, undefined);
-                    } catch (err) { }
+                    } catch (err) { /**/ }
                 }
 
                 if (props.router.params.share.strings) {
