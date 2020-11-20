@@ -12,7 +12,7 @@ import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigR
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
-export interface SSearchControlerProps {
+export interface ChatSearchControllerProps {
     backgroundColor?: string;
     initialValue?: string;
     searchRender: (params: { query: string }) => JSX.Element;
@@ -22,14 +22,14 @@ export interface SSearchControlerProps {
 }
 
 export class ChatSearchControllerComponent extends React.PureComponent<
-    SSearchControlerProps & { theme: ThemeGlobal },
+    ChatSearchControllerProps & { theme: ThemeGlobal },
     { search: boolean; searchMounted: boolean; query: string }
 > {
     private containerShadowView = new SAnimatedShadowView(UUID());
     private searchShadowView = new SAnimatedShadowView(UUID());
     private searchContext: SearchContext;
 
-    constructor(props: SSearchControlerProps & { theme: ThemeGlobal }) {
+    constructor(props: ChatSearchControllerProps & { theme: ThemeGlobal }) {
         super(props);
         this.searchContext = new SearchContext(this.handleSearchChanged);
         this.searchContext.value = props.initialValue || '';
@@ -153,7 +153,7 @@ export class ChatSearchControllerComponent extends React.PureComponent<
     }
 }
 
-export const ChatSearchController = React.memo<SSearchControlerProps>((props) => {
+export const ChatSearchController = React.memo<ChatSearchControllerProps>((props) => {
     let theme = React.useContext(ThemeContext);
     return <ChatSearchControllerComponent {...props} theme={theme} />;
 });
