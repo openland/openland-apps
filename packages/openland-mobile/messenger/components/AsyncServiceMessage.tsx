@@ -10,7 +10,7 @@ export interface AsyncServiceMessageProps {
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
     onOrganizationPress: (id: string) => void;
-    onHashtagPress: (d?: string) => void;
+    onHashtagPress: (d?: string, chatId?: string) => void;
 }
 
 export const AsyncServiceMessage = (props: AsyncServiceMessageProps) => {

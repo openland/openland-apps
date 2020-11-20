@@ -49,7 +49,7 @@ export let renderPreprocessedText = (
     onUserPress: (id: string) => void,
     onGroupPress: (id: string) => void,
     onOrganizationPress: (id: string) => void,
-    onHashtagPress: (d?: string) => void,
+    onHashtagPress: (d?: string, chatId?: string) => void,
     ignoreMarkdown?: boolean,
 ) => {
     const SpanView = (props: { span: Span, children?: any }) => {
@@ -74,7 +74,7 @@ export let renderPreprocessedText = (
         if (span.type === 'link') {
             return <ASText key={'link'} color={linkColor} onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))} textDecorationLine={linkTextDecoration}>{children}</ASText>;
         } else if (span.type === 'hashtag') {
-            return <ASText key={'hashtag'} color={linkColor} onPress={() => onHashtagPress(span.textRaw)} textDecorationLine={linkTextDecoration}>{children}</ASText>;
+            return <ASText key={'hashtag'} color={linkColor} onPress={() => onHashtagPress(span.textRaw, message.chatId)} textDecorationLine={linkTextDecoration}>{children}</ASText>;
         } else if (span.type === 'search_highlight') {
             return <ASText key={'search_highlight'} backgroundColor={message.isOut ? theme.outgoingBackgroundSecondary : theme.accentPrimaryTrans}>{children}</ASText>;
         } else if (span.type === 'mention_user') {

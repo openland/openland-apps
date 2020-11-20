@@ -304,8 +304,8 @@ export class MobileMessenger {
         this.routerSuitable.push('ProfileOrganization', { id });
     }
 
-    handleHashtagPress = (hashtag?: string) => {
-        this.routerSuitable.push('HomeDialogs', { searchValue: hashtag, title: hashtag });
+    handleHashtagPress = (hashtag?: string, chatId?: string) => {
+        this.routerSuitable.push('ChatSearch', { chatId, initialValue: hashtag });
     }
 
     handleReactionSetUnset = async (message: DataSourceMessageItem, reaction: MessageReactionType, doubleTap?: boolean) => {

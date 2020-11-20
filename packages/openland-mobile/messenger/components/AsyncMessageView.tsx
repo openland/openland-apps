@@ -44,7 +44,7 @@ export interface AsyncMessageViewProps {
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
     onOrganizationPress: (id: string) => void;
-    onHashtagPress: (d?: string) => void;
+    onHashtagPress: (d?: string, chatId?: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
     onCommentsPress: (messageId: string) => void;
