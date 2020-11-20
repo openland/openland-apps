@@ -16,6 +16,7 @@ import { plural } from 'openland-y-utils/plural';
 import { isInviteLink, InviteLink } from './InviteContent';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { XLoader } from 'openland-x/XLoader';
+import { ChatSearchContext } from 'openland-web/fragments/chat/MessengerFragment';
 
 const boldTextClassName = css`
     font-weight: bold;
@@ -460,12 +461,10 @@ const MentionedOrganization = React.memo(
 );
 
 const HashtagView = React.memo((props: { text?: string; children: any }) => {
-    const globalSearch = useGlobalSearch();
+    const chatSearchContext = React.useContext(ChatSearchContext);
 
     const handleClick = () => {
-        if (props.text) {
-            globalSearch.onChange(props.text);
-        }
+        chatSearchContext!.setChatSearchState({ enabled: true, initialQuery: props.text });
     };
 
     return <ULink onClick={handleClick}>{props.children}</ULink>;

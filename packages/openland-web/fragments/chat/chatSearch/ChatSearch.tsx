@@ -1,5 +1,6 @@
 import React from 'react';
 import { css, cx } from 'linaria';
+
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollValues } from 'openland-x/XScrollView3';
 import { ChatSearchEngine } from 'openland-engines/messenger/ChatSearchEngine';
@@ -7,6 +8,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
 import { XScrollViewAnchored } from 'openland-x/XScrollViewAnchored';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { ChatSearchContext } from 'openland-web/fragments/chat/MessengerFragment';
 import { debounce } from 'openland-y-utils/timer';
 import {
     DataSourceDateItem,
@@ -23,7 +25,6 @@ import { ChatSearchMessage } from './ChatSearchMessage';
 
 interface ChatSearchProps {
     chatId: string;
-    onSearchClose: () => void;
 }
 
 const wrapperClassName = css`
@@ -100,8 +101,9 @@ const overlayClassName = css`
     flex-shrink: 0;
 `;
 
-export const ChatSearch = React.memo(({ chatId, onSearchClose }: ChatSearchProps) => {
+export const ChatSearch = React.memo(({ chatId }: ChatSearchProps) => {
     const messenger = React.useContext(MessengerContext);
+    const chatSearchContext = React.useContext(ChatSearchContext);
     const [hiding, setHiding] = React.useState(false);
     const [queryInProgress, setQueryInProgress] = React.useState(true);
     const [engine] = React.useState(() => new ChatSearchEngine(messenger, chatId));
@@ -113,7 +115,7 @@ export const ChatSearch = React.memo(({ chatId, onSearchClose }: ChatSearchProps
         setHiding(true);
 
         setTimeout(() => {
-            onSearchClose();
+            chatSearchContext!.setChatSearchState({ enabled: false });
         }, 150);
     }, [hiding]);
 

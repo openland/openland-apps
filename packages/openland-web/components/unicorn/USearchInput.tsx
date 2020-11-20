@@ -110,6 +110,7 @@ interface USearchInputProps extends XViewProps {
     placeholder?: string;
     rounded?: boolean;
     message?: string;
+    hideClear?: boolean;
     className?: string;
     loading?: boolean;
 }
@@ -175,7 +176,7 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
         blur: () => inputRef.current?.blur(),
     }));
 
-    const showClear = (props.value && props.value.length > 0) || (!!onCancel && focused);
+    const showClear = (props.value && !props.hideClear && props.value.length > 0) || (!!onCancel && focused);
     const inputClassNames = cx(
         'x',
         TextBody,

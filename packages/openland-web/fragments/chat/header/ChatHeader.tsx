@@ -28,6 +28,8 @@ import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 import { RoomCallsMode, RoomChat_room } from 'openland-api/spacex.types';
+import { ChatSearchContext } from 'openland-web/fragments/chat/MessengerFragment';
+
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
 import ExternalCallIcon from 'openland-icons/s/ic-call-external-24.svg';
 import InviteIcon from 'openland-icons/s/ic-invite-24.svg';
@@ -147,7 +149,6 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
 const MenuComponent = (props: {
     ctx: UPopperController;
     id: string;
-    onSearchClick: () => void;
 }) => {
     const layout = useLayout();
     const client = useClient();
@@ -227,13 +228,6 @@ const MenuComponent = (props: {
         closeDelay: 400,
     });
 
-    res.item({
-        title: 'Search messages',
-        icon: <SearchIcon />,
-        action: props.onSearchClick,
-        closeDelay: 400,
-    });
-
     if (privateRoom && privateRoom.user.id !== messenger.user.id) {
         res.item({
             title: isContact ? 'Remove from contacts' : 'Add to contacts',
@@ -285,10 +279,15 @@ const MenuComponent = (props: {
 };
 
 export const ChatHeader = React.memo(
-    (props: { chat: RoomChat_room; onSearchClick: () => void }) => {
-        const { chat, onSearchClick } = props;
+    (props: { chat: RoomChat_room }) => {
+        const { chat } = props;
         const layout = useLayout();
         const messenger = React.useContext(MessengerContext);
+        const chatSearchContext = React.useContext(ChatSearchContext);
+
+        const onSearchClick = React.useCallback(() => {
+            chatSearchContext!.setChatSearchState({ enabled: true });
+        }, []);
 
         const privateRoom = chat.__typename === 'PrivateRoom' ? chat : undefined;
         const sharedRoom = chat.__typename === 'SharedRoom' ? chat : undefined;
@@ -437,6 +436,7 @@ export const ChatHeader = React.memo(
                     )}
                     {showCallButton && <CallButton chat={chat} messenger={messenger} />}
 
+                    <UIconButton icon={<SearchIcon />} size="large" onClick={onSearchClick} />
                     {!isSavedMessages && (
                         <UMoreButton
                             menu={(ctx) => (
@@ -446,15 +446,11 @@ export const ChatHeader = React.memo(
                                     <MenuComponent
                                         ctx={ctx}
                                         id={chat.id}
-                                        onSearchClick={onSearchClick}
                                     />
                                 </React.Suspense>
                             )}
                             size="large-densed"
                         />
-                    )}
-                    {isSavedMessages && (
-                        <UIconButton icon={<SearchIcon />} size="large" onClick={onSearchClick} />
                     )}
                 </XView>
                 <MessagesActionsHeader chat={chat} />
