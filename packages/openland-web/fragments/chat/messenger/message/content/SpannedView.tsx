@@ -5,7 +5,6 @@ import { UserPopperContent } from 'openland-web/components/EntityPopperContent';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { EntityPopperContent } from 'openland-web/components/EntityPopperContent';
 import { MentionItemComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';
-import { useGlobalSearch } from 'openland-unicorn/components/TabLayout';
 import { Span } from 'openland-y-utils/spans/Span';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { ULink } from 'openland-web/components/unicorn/ULink';
