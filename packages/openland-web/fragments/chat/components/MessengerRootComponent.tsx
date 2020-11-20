@@ -26,7 +26,10 @@ import { pluralForm, plural } from 'openland-y-utils/plural';
 import { MessageListComponent } from '../messenger/view/MessageListComponent';
 import { TypingsView } from '../messenger/typings/TypingsView';
 import { XLoader } from 'openland-x/XLoader';
-import { URickInputInstance, URickTextValue } from 'openland-web/components/unicorn/URickInput';
+import {
+    URickInputInstance,
+    URickTextValue
+} from 'openland-web/components/unicorn/URickInput';
 import { InputMessageActionComponent } from './InputMessageActionComponent';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import { findSpans } from 'openland-y-utils/findSpans';
@@ -62,11 +65,11 @@ interface MessagesComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
     pinMessage:
-        | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
-    onAttach: (files: File[], isImage?: boolean) => void;
+    onAttach: (files: File[], text?: URickTextValue, isImage?: boolean) => void;
     messagesActionsState: ConversationActionsState;
     messagesActionsMethods: ChatMessagesActionsMethods;
     isAttachModalOpen: boolean;
@@ -272,9 +275,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     handleMessagesActions = (state: ConversationActionsState) => {
         let message = state.messages[0];
         if (state.action === 'edit' && message && message.text) {
-            const spans = (message.spans || []).map((span) =>
-                convertServerSpan(message.text || '', span),
-            );
+            const spans = (message.spans || []).map(span => convertServerSpan(message.text || '', span));
             const value = convertToInputValue(message.text, spans);
 
             this.rickRef.current?.setContent(value);
@@ -426,10 +427,9 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                             : ['member', 'members'];
 
                         await showNoiseWarning(
-                            `Notify all ${
-                                !!this.props.room.membersCount
-                                    ? plural(this.props.room.membersCount, membersType)
-                                    : membersType[1]
+                            `Notify all ${!!this.props.room.membersCount
+                                ? plural(this.props.room.membersCount, membersType)
+                                : membersType[1]
                             }?`,
                             `By using @All, you’re about to notify all ${chatType} ${membersType[1]} even when they muted this chat. Please use it only for important messages`,
                         );
@@ -461,6 +461,19 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             this.initialContent = text;
             localStorage.setItem('drafts-' + this.props.conversationId, JSON.stringify(text));
         }
+    }
+
+    handleAttach = (files: File[], isImage?: boolean) => {
+        this.props.onAttach(
+            files,
+            this.rickRef.current?.getText(),
+            typeof isImage === 'undefined' ? files.every(f => isFileImage(f)) : isImage
+        );
+        this.rickRef.current?.clear();
+    }
+
+    onAttach = (files: File[], text: URickTextValue, isImage: boolean) => {
+        this.handleAttach(files, isImage);
     }
 
     //
@@ -536,7 +549,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                         }
                                     />
                                     <SendMessageComponent
-                                        onAttach={props.onAttach}
+                                        onAttach={this.onAttach}
                                         initialText={this.initialContent}
                                         onPressUp={this.onInputPressUp}
                                         rickRef={this.rickRef}
@@ -561,13 +574,8 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                         )}
                         {showInput && (
                             <DropZone
-                                isHidden={props.isAttachModalOpen}
-                                onDrop={(files) =>
-                                    props.onAttach(
-                                        files,
-                                        files.every((f) => isFileImage(f)),
-                                    )
-                                }
+                                isHidden={this.props.isAttachModalOpen}
+                                onDrop={this.handleAttach}
                             />
                         )}
                         {!showInput && !!props.banInfo && (
@@ -590,9 +598,9 @@ interface MessengerRootComponentProps {
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
     pinMessage:
-        | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
     banInfo: { isBanned: boolean; isMeBanned: boolean } | undefined;
 }
@@ -600,11 +608,7 @@ interface MessengerRootComponentProps {
 export const MessengerRootComponent = React.memo((props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
     let [isAttachModalOpen, setAttachModalOpen] = React.useState(false);
-    const onAttach = useAttachHandler({
-        conversationId: props.conversationId,
-        onOpen: () => setAttachModalOpen(true),
-        onClose: () => setAttachModalOpen(false),
-    });
+    const onAttach = useAttachHandler({ conversationId: props.conversationId, onOpen: () => setAttachModalOpen(true), onClose: () => setAttachModalOpen(false) });
     const userId = props.room.__typename === 'PrivateRoom' ? props.room.user.id : undefined;
     const messagesActionsState = useChatMessagesActionsState(props.conversationId);
     const messagesActionsMethods = useChatMessagesActionsMethods(props.conversationId);

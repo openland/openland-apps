@@ -606,7 +606,7 @@ interface SendMessageComponentProps {
     initialText?: URickTextValue;
     rickRef?: React.RefObject<URickInputInstance>;
     onPressUp?: () => boolean;
-    onAttach?: (files: File[], isImage: boolean) => void;
+    onAttach?: (files: File[], text: URickTextValue | undefined, isImage: boolean) => void;
     autoFocus?: boolean;
     ownerName?: string;
     isEditing?: boolean;
@@ -735,9 +735,13 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     const onDonateClick = React.useCallback(() => {
         showDonation();
     }, [showDonation]);
-    const handleFilePaste = React.useCallback((files: File[]) => {
+    const handleAttach = React.useCallback((files: File[], isImage?: boolean) => {
         if (props.onAttach) {
-            props.onAttach(files, files.every(x => isFileImage(x)));
+            props.onAttach(
+                files,
+                ref.current?.getText(),
+                typeof isImage === 'undefined' ? files.every(x => isFileImage(x)) : isImage
+            );
         }
     }, []);
 
@@ -759,7 +763,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             {!!props.onAttach && (
                 <AttachConfirmButton
                     hideDonation={props.hideDonation}
-                    onAttach={props.onAttach}
+                    onAttach={handleAttach}
                     onDonate={onDonateClick}
                 />
             )}
@@ -789,7 +793,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     }
                     autofocus={props.autoFocus}
                     placeholder={props.placeholder || 'Write a message...'}
-                    onFilesPaste={handleFilePaste}
+                    onFilesPaste={handleAttach}
                     className={(isWindows || isLinux) ? hideScrollStyle : undefined}
                     onEmojiPickerShow={props.onEmojiPickerShow}
                     onEmojiPickerHide={props.onEmojiPickerHide}

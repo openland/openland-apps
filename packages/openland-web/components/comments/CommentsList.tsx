@@ -25,7 +25,7 @@ interface CommentsListProps {
     highlightId?: string;
     onReply: (id: string) => void;
     onSent: (data: URickTextValue) => Promise<boolean>;
-    onSentAttach: (files: File[], isImage: boolean) => void;
+    onSentAttach: (files: File[], text: URickTextValue | undefined, isImage: boolean) => void;
     onStickerSent: (sticker: StickerFragment) => void;
 }
 

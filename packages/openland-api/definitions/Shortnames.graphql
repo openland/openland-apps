@@ -42,6 +42,7 @@ query AuthResolveShortName($shortname: String!) {
             applyLink
             externalSocialImage
             isCommunity: alphaIsCommunity
+            featured: alphaFeatured
             owner {
                 id
             }

@@ -18,11 +18,10 @@ export const LocalBlackListProvider = React.memo((props: { children: any }) => {
     const [myBans, setMyBans] = React.useState<Set<string>>(new Set());
 
     const client = useClient();
-    const myId = client.useAccount().me?.id;
-
     const subscribeRef = React.useRef<any>();
 
     const subscribe = async () => {
+        const me = (await client.queryAccount()).me;
         const { state: initialState } = (
             await client.queryBlackListUpdatesState({ fetchPolicy: 'network-only' })
         ).blackListUpdatesState;
@@ -32,7 +31,7 @@ export const LocalBlackListProvider = React.memo((props: { children: any }) => {
             ({ blackListUpdates }) => {
                 blackListUpdates.updates.map((i) => {
                     if (i.__typename === 'BlackListAdded') {
-                        if (i.bannedBy.id === myId) {
+                        if (i.bannedBy.id === me?.id) {
                             setMyBans((prev) => {
                                 const newState = new Set(prev);
                                 newState.add(i.bannedUser.id);
@@ -47,7 +46,7 @@ export const LocalBlackListProvider = React.memo((props: { children: any }) => {
                         }
                     }
                     if (i.__typename === 'BlackListRemoved') {
-                        if (i.bannedBy.id === myId) {
+                        if (i.bannedBy.id === me?.id) {
                             setMyBans((prev) => {
                                 const newState = new Set(prev);
                                 newState.delete(i.bannedUser.id);

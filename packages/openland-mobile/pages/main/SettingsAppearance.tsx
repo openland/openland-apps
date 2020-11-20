@@ -68,7 +68,7 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                         toggle={largeEmoji}
                     />
                     <ZListItem
-                        text="Show group featured icon"
+                        text="Show featured mark"
                         onToggle={(value) => {
                             setDisplayFeaturedIcon(x => !x);
                             handleChange({ theme: currentTheme, displayFeaturedIcon: value });

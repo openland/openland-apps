@@ -6,23 +6,8 @@ import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { XView } from 'react-mental';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { showCreatingOrgFragment } from '../create/CreateEntityFragment';
-import { MyCommunities_myCommunities } from 'openland-api/spacex.types';
-import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { plural } from 'openland-y-utils/plural';
-
-const Item = React.memo((props: { community: MyCommunities_myCommunities }) => {
-    const { id, photo, name, membersCount, shortname } = props.community;
-
-    return (
-        <UListItem
-            title={name}
-            description={plural(membersCount, ['member', 'members'])}
-            avatar={{ photo, id, title: name }}
-            useRadius={true}
-            path={`/${shortname || id}`}
-        />
-    );
-});
+import { UOrganizationView } from 'openland-web/components/unicorn/templates/UOrganizationView';
 
 export const SettingsCommunitiesFragment = React.memo(() => {
     const client = useClient();
@@ -39,11 +24,11 @@ export const SettingsCommunitiesFragment = React.memo(() => {
             <UAddItem title="Create community" onClick={() => showCreatingOrgFragment({ entityType: 'community' })} />
 
             <UListGroup header="Admin">
-                {adminCommunities.map(c => <Item key={c.id} community={c} />)}
+                {adminCommunities.map(c => <UOrganizationView key={c.id} organization={c} description={plural(c.membersCount, ['member', 'members'])} />)}
             </UListGroup>
 
             <UListGroup header="Member">
-                {memberCommunities.map(c => <Item key={c.id} community={c} />)}
+                {memberCommunities.map(c => <UOrganizationView key={c.id} organization={c} description={plural(c.membersCount, ['member', 'members'])} />)}
             </UListGroup>
 
             <XView height={56} />
