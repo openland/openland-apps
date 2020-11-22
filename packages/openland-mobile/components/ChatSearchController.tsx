@@ -111,7 +111,7 @@ export class ChatSearchControllerComponent extends React.PureComponent<
                             name={this.searchShadowView.name}
                             style={{
                                 position: 'absolute',
-                                top: 0,
+                                top: -56,
                                 left: 0,
                                 right: 0,
                                 bottom: 0,
