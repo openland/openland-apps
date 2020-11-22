@@ -304,19 +304,20 @@ export class FastImageViewer extends React.PureComponent<FastImageViewerProps> {
     }
 
     private _onPandHandlerStateChange = (event: PanGestureHandlerStateChangeEvent) => {
+        const { state, oldState, velocityX, velocityY, translationX, translationY } = event.nativeEvent;
 
         // Mark pan as started
-        if (event.nativeEvent.state === State.ACTIVE) {
+        if (state === State.ACTIVE) {
             this._panStarted = true;
         }
 
         // Handle completition
-        if (event.nativeEvent.oldState === State.ACTIVE) {
-            this._lastPan.x += event.nativeEvent.translationX;
-            this._lastPan.y += event.nativeEvent.translationY;
+        if (oldState === State.ACTIVE) {
+            this._lastPan.x += translationX;
+            this._lastPan.y += translationY;
 
-            this._panLastVelocityX = event.nativeEvent.velocityX;
-            this._panLastVelocityY = event.nativeEvent.velocityY;
+            this._panLastVelocityX = velocityX;
+            this._panLastVelocityY = velocityY;
 
             this._panCompleted = true;
             if ((this._pinchStarted && this._pinchCompleted) || !this._pinchStarted) {
@@ -326,6 +327,10 @@ export class FastImageViewer extends React.PureComponent<FastImageViewerProps> {
                 this._pinchCompleted = false;
                 this._handleCompleted();
             }
+        }
+
+        if (state === State.END && velocityX === 0 && velocityY === 0 && this.props.onTap) {
+            this.props.onTap();
         }
     }
 
