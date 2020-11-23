@@ -9,7 +9,6 @@ import { ChatHeader } from './header/ChatHeader';
 import { Deferred } from 'openland-unicorn/components/Deferred';
 import { NotFound } from 'openland-unicorn/NotFound';
 import { ChatSearch } from './chatSearch/ChatSearch';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { ChatSearchContext } from 'openland-web/pages/root/AppContainer';
 
 export const MessengerFragment = React.memo<{ id: string }>((props) => {
