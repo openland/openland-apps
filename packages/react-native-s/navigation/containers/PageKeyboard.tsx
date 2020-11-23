@@ -17,7 +17,7 @@ function throttleWithLastCall(callback: Function, limit: number) {
                 waiting = false;
             }, limit);
         }
-    }
+    };
 }
 
 export interface PageKeyboardProps {
@@ -58,7 +58,7 @@ export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keybo
 
     handleIOSKeyboardChange = throttleWithLastCall((state: { height: number, duration: number, curve: number, name: string, acHeight: number }) => {
         this.setState({ keyboardHeight: state.height, actualAccessoryHeight: state.acHeight });
-    }, 100)
+    }, 100);
 
     handleKeyboard = (event?: NativeSyntheticEvent<{ state: { height: number, duration: number, curve: number, name: string, acHeight: number } }>) => {
         if (event) {
