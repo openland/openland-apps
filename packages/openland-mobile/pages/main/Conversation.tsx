@@ -89,6 +89,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     stickerKeyboardHeight = 0;
     openKeyboardHeight = 0;
     stickerButtonPressedCount = 0;
+    prevScrollY = Infinity;
 
     private setTyping = throttle(() => {
         getMessenger().engine.client.mutateSetTyping({ conversationId: this.props.chat.id, type: TypingType.TEXT });
@@ -399,12 +400,15 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     handleScroll = (event: NativeSyntheticEvent<any>) => {
-        if (this.stickerKeyboardHeight > 0 && event.nativeEvent.touchPositionY > 0 && this.state.stickerKeyboardShown) {
+        if (this.stickerKeyboardHeight > 0 && event.nativeEvent.touchPositionY > 0 && this.state.stickerKeyboardShown && this.prevScrollY !== event.nativeEvent.touchPositionY) {
             let height = this.stickerKeyboardHeight;
             let newHeight = event.nativeEvent.touchPositionY - SDevice.safeArea.bottom;
             if (newHeight + 20 < height) {
                 this.setState({ stickerKeyboardShown: false, hasStickerTranslation: true });
             }
+        }
+        if (event.nativeEvent.touchPositionY > 0) {
+            this.prevScrollY = event.nativeEvent.touchPositionY;
         }
     }
 
@@ -487,7 +491,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             inputPlaceholder = <ChatInputPlaceholder text="View profile" onPress={() => this.props.router.push("ProfileUser", { id: privateRoom!.user.id })} />;
         }
         if (!showSelectedMessagesActions && privateRoom && !!this.props.banInfo && (this.props.banInfo.isBanned || this.props.banInfo.isMeBanned)) {
-            inputPlaceholder = <ChatInputBlockPlaceholder banInfo={this.props.banInfo}/>;
+            inputPlaceholder = <ChatInputBlockPlaceholder banInfo={this.props.banInfo} />;
         }
         const reloadButton = <ReloadFromBottomButton conversation={this.engine} />;
         const isBot = privateRoom && privateRoom.user.isBot;
