@@ -114,6 +114,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
         sticker,
         fallback,
         isOut = false,
+        chatId,
         attachTop = false,
         isPending,
         isComment = false,
@@ -225,7 +226,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
     if (hasText) {
         content.push(
             <ContentWrapper key="msg-text" className={textClassName}>
-                <MessageTextComponent spans={textSpans} edited={!!edited} mId={id} />
+                <MessageTextComponent spans={textSpans} edited={!!edited} mId={id} chatId={chatId} />
             </ContentWrapper>,
         );
     }

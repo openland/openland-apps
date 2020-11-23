@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { XViewRouterContext, XViewRouter, XView } from 'react-mental';
+import { XViewRouterContext, XViewRouter, XView, XViewRouteContext } from 'react-mental';
 import { UserPopperContent } from 'openland-web/components/EntityPopperContent';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { EntityPopperContent } from 'openland-web/components/EntityPopperContent';
@@ -15,7 +15,7 @@ import { plural } from 'openland-y-utils/plural';
 import { isInviteLink, InviteLink } from './InviteContent';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { XLoader } from 'openland-x/XLoader';
-import { ChatSearchContext } from 'openland-web/fragments/chat/MessengerFragment';
+import { ChatSearchContext } from 'openland-web/pages/root/AppContainer';
 
 const boldTextClassName = css`
     font-weight: bold;
@@ -252,8 +252,8 @@ const MentionedOtherUsersPopperContent = React.memo(
                                             user.isBot
                                                 ? 'Bot'
                                                 : user.primaryOrganization
-                                                    ? user.primaryOrganization.name
-                                                    : undefined
+                                                ? user.primaryOrganization.name
+                                                : undefined
                                         }
                                     />
                                 </XView>
@@ -459,11 +459,18 @@ const MentionedOrganization = React.memo(
     },
 );
 
-const HashtagView = React.memo((props: { text?: string; children: any }) => {
+const HashtagView = React.memo((props: { text?: string; children: any, chatId?: string }) => {
     const chatSearchContext = React.useContext(ChatSearchContext);
+    const router = React.useContext(XViewRouterContext)!;
+    const route = React.useContext(XViewRouteContext)!;
 
     const handleClick = () => {
-        chatSearchContext!.setChatSearchState({ enabled: true, initialQuery: props.text });
+        if (route.path.indexOf('/mail/') !== 0 && props.chatId) {
+            router.navigate(`/mail/${props.chatId}`);
+            setTimeout(() => chatSearchContext!.setChatSearchState({ enabled: true, initialQuery: props.text }), 600);
+        } else {
+            chatSearchContext!.setChatSearchState({ enabled: true, initialQuery: props.text });
+        }
     };
 
     return <ULink onClick={handleClick}>{props.children}</ULink>;
@@ -473,16 +480,17 @@ export const SpanView = React.memo<{
     span: Span;
     children?: any;
     isService?: boolean;
+    chatId?: string;
     mId?: string;
 }>((props) => {
-    const { span, children } = props;
+    const { span, children, chatId } = props;
     if (span.type === 'link') {
         if (isInviteLink(span.link)) {
             return <InviteLink link={span.link}>{children}</InviteLink>;
         }
         return <ULink href={span.link}>{children}</ULink>;
     } else if (span.type === 'hashtag') {
-        return <HashtagView text={span.textRaw}>{children}</HashtagView>;
+        return <HashtagView text={span.textRaw} chatId={chatId}>{children}</HashtagView>;
     } else if (span.type === 'bold') {
         return (
             <span className={cx(boldTextClassName, props.isService && boldTextServiceClassName)}>
@@ -539,8 +547,13 @@ export const SpanView = React.memo<{
     return props.children ? <span>{props.children}</span> : null;
 });
 
-export const SpannedView = React.memo<{ spans: Span[]; isService?: boolean; mId?: string }>(
-    (props) => {
-        return <>{renderSpans(SpanView, props.spans, props.isService, props.mId)}</>;
-    },
-);
+interface SpannedViewProps {
+    spans: Span[];
+    isService?: boolean;
+    mId?: string;
+    chatId?: string;
+}
+
+export const SpannedView = React.memo((props: SpannedViewProps) => {
+    return <>{renderSpans(SpanView, props.spans, props.isService, props.mId, props.chatId)}</>;
+});

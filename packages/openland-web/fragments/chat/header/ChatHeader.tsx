@@ -28,7 +28,7 @@ import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 import { RoomCallsMode, RoomChat_room } from 'openland-api/spacex.types';
-import { ChatSearchContext } from 'openland-web/fragments/chat/MessengerFragment';
+import { ChatSearchContext } from 'openland-web/pages/root/AppContainer';
 
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
 import ExternalCallIcon from 'openland-icons/s/ic-call-external-24.svg';

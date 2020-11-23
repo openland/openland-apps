@@ -9,12 +9,31 @@ import { useClient } from 'openland-api/useClient';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { dropPersistenceCache } from 'openland-api/spacex.persistance.web';
 import { UnicornSplash } from 'openland-x/XLoader';
-import { highlightSecretOption, showFeaturedIconOption, largeEmojiOption } from 'openland-web/modules/appearance/stored-options';
+import {
+    highlightSecretOption,
+    showFeaturedIconOption,
+    largeEmojiOption,
+} from 'openland-web/modules/appearance/stored-options';
+
+interface ChatSearchState {
+    enabled: boolean;
+    initialQuery?: string;
+}
+
+interface СhatSearchContextProps {
+    chatSearchState: ChatSearchState;
+    setChatSearchState: (chatSearchState: ChatSearchState) => void;
+}
+
+export const ChatSearchContext = React.createContext<СhatSearchContextProps | null>(null);
 
 export const AppContainer = (props: { children: any }) => {
     const client = useClient();
 
     const data = client.useAccount({ suspense: false, fetchPolicy: 'network-only' });
+    const [chatSearchState, setChatSearchState] = React.useState<ChatSearchState>({
+        enabled: false,
+    });
 
     if (canUseDOM) {
         useShortcuts([
@@ -113,11 +132,11 @@ export const AppContainer = (props: { children: any }) => {
                 profile={data.myProfile}
                 roles={data.myPermissions.roles}
             >
-                <MessengerProvider user={hasMessenger ? data.me!! : undefined}>
-                    <ThemeProvider>
-                        {props.children}
-                    </ThemeProvider>
-                </MessengerProvider>
+                <ChatSearchContext.Provider value={{ chatSearchState, setChatSearchState }}>
+                    <MessengerProvider user={hasMessenger ? data.me!! : undefined}>
+                        <ThemeProvider>{props.children}</ThemeProvider>
+                    </MessengerProvider>
+                </ChatSearchContext.Provider>
             </UserInfoProvider>
         </>
     );

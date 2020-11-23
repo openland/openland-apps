@@ -8,6 +8,7 @@ export interface MessageTextComponentProps {
     mId?: string;
     spans: Span[];
     edited?: boolean;
+    chatId?: string;
 }
 
 const spansMessageWrapper = css`
@@ -40,13 +41,13 @@ const EditLabelStyle = css`
 `;
 
 export const MessageTextComponent = React.memo((props: MessageTextComponentProps) => {
-    const { spans, edited } = props;
+    const { spans, edited, chatId } = props;
 
     return (
         <div className={spansMessageWrapper}>
             <div className={styleSpansMessageContainer}>
                 <span>
-                    <SpannedView spans={spans} mId={props.mId} />
+                    <SpannedView spans={spans} mId={props.mId} chatId={chatId} />
                     {!!edited && (
                         <span className={cx(EditLabelStyle, TextCaption)}>
                             {'\u00A0'}

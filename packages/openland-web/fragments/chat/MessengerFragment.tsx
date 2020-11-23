@@ -9,23 +9,14 @@ import { ChatHeader } from './header/ChatHeader';
 import { Deferred } from 'openland-unicorn/components/Deferred';
 import { NotFound } from 'openland-unicorn/NotFound';
 import { ChatSearch } from './chatSearch/ChatSearch';
-
-interface ChatSearchState {
-    enabled: boolean;
-    initialQuery?: string;
-}
-
-interface СhatSearchContextProps {
-    chatSearchState: ChatSearchState;
-    setChatSearchState: (chatSearchState: ChatSearchState) => void;
-}
-
-export const ChatSearchContext = React.createContext<СhatSearchContextProps | null>(null);
+import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { ChatSearchContext } from 'openland-web/pages/root/AppContainer';
 
 export const MessengerFragment = React.memo<{ id: string }>((props) => {
     // Load chat info
     const client = useClient();
-    const [chatSearchState, setChatSearchState] = React.useState<ChatSearchState>({ enabled: false });
+    const { chatSearchState } = React.useContext(ChatSearchContext)!;
+
     let chat = client.useRoomChat({ id: props.id }).room;
 
     if (!chat) {
@@ -51,12 +42,10 @@ export const MessengerFragment = React.memo<{ id: string }>((props) => {
             : null;
 
     // Check group state
-    const header = React.useMemo(() => {
-        return (
-            <ChatSearchContext.Provider value={{ chatSearchState, setChatSearchState }}>
-                {chatSearchState.enabled ? <ChatSearch chatId={chat!.id} /> : <ChatHeader chat={chat!} />}
-            </ChatSearchContext.Provider>);
-    }, [chat, chatSearchState]);
+    const header = React.useMemo(
+        () => chatSearchState.enabled ? <ChatSearch chatId={chat!.id} /> : <ChatHeader chat={chat!} />,
+        [chat, chatSearchState.enabled],
+    );
 
     if (
         chat.__typename === 'SharedRoom' &&
@@ -71,7 +60,7 @@ export const MessengerFragment = React.memo<{ id: string }>((props) => {
     }
 
     return (
-        <ChatSearchContext.Provider value={{ chatSearchState, setChatSearchState }}>
+        <>
             <UHeader
                 titleView={header}
                 documentTitle={chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title}
@@ -102,6 +91,6 @@ export const MessengerFragment = React.memo<{ id: string }>((props) => {
                     </XView>
                 </XView>
             </Deferred>
-        </ChatSearchContext.Provider>
+        </>
     );
 });

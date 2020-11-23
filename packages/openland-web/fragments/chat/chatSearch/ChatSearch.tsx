@@ -8,7 +8,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
 import { XScrollViewAnchored } from 'openland-x/XScrollViewAnchored';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
-import { ChatSearchContext } from 'openland-web/fragments/chat/MessengerFragment';
+import { ChatSearchContext } from 'openland-web/pages/root/AppContainer';
 import { debounce } from 'openland-y-utils/timer';
 import {
     DataSourceDateItem,

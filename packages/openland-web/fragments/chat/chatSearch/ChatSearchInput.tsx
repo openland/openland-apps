@@ -4,7 +4,7 @@ import { XView } from 'react-mental';
 import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { ChatSearchEngine } from 'openland-engines/messenger/ChatSearchEngine';
-import { ChatSearchContext } from 'openland-web/fragments/chat/MessengerFragment';
+import { ChatSearchContext } from 'openland-web/pages/root/AppContainer';
 import { plural } from 'openland-y-utils/plural';
 
 import CloseIcon from 'openland-icons/s/ic-close-24.svg';
