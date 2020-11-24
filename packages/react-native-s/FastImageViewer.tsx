@@ -330,10 +330,12 @@ export class FastImageViewer extends React.PureComponent<FastImageViewerProps> {
         }
 
         // Try ugly fix to enable taps on android, cause tap and pinch gesture handlers not working together
-        const translationDeviation = Math.abs(translationX) > 10 || Math.abs(translationY) > 10;
+        if (Platform.OS === 'android') {
+            const translationDeviation = Math.abs(translationX) > 10 || Math.abs(translationY) > 10;
 
-        if (state === State.END && !translationDeviation && this.props.onTap) {
-            this.props.onTap();
+            if (state === State.END && !translationDeviation && this.props.onTap) {
+                this.props.onTap();
+            }
         }
     }
 
