@@ -896,6 +896,7 @@ query ChatJoin($id: ID!) {
             }
             isChannel
             isPremium
+            featured
             premiumPassIsActive
             premiumSubscription {
                 id

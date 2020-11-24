@@ -11,9 +11,11 @@ import { plural } from 'openland-y-utils/plural';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { SRouter } from 'react-native-s/SRouter';
 import { View } from 'react-native';
+import { useTheme } from 'openland-mobile/themes/ThemeContext';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
-const Item = React.memo((props: { community: MyCommunities_myCommunities, router: SRouter }) => {
-    const { id, photo, name, membersCount } = props.community;
+const Item = React.memo((props: { community: MyCommunities_myCommunities, router: SRouter, theme: ThemeGlobal }) => {
+    const { id, photo, name, membersCount, featured } = props.community;
 
     return (
         <ZListItem
@@ -21,6 +23,7 @@ const Item = React.memo((props: { community: MyCommunities_myCommunities, router
             subTitle={plural(membersCount, ['member', 'members'])}
             leftAvatar={{ photo, id, title: name }}
             onPress={() => props.router.push('ProfileOrganization', { id })}
+            {...featured && props.theme.displayFeaturedIcon ? { descriptionIcon: require('assets/ic-verified-16.png'), descriptionColor: '#3DA7F2' } : {}}
         />
     );
 });
@@ -28,6 +31,7 @@ const Item = React.memo((props: { community: MyCommunities_myCommunities, router
 const SettingsCommunitiesContent = React.memo(() => {
     const client = getClient();
     const router = React.useContext(SRouterContext)!;
+    const theme = useTheme();
     const communities = client.useMyCommunities({ fetchPolicy: 'cache-and-network' }).myCommunities;
     const adminCommunities = communities.filter(c => c.isOwner || c.isAdmin);
     const memberCommunities = communities.filter(c => !c.isOwner && !c.isAdmin);
@@ -44,11 +48,11 @@ const SettingsCommunitiesContent = React.memo(() => {
             />
 
             <ZListGroup header="Admin">
-                {adminCommunities.map(c => <Item key={c.id} community={c} router={router} />)}
+                {adminCommunities.map(c => <Item key={c.id} community={c} router={router} theme={theme} />)}
             </ZListGroup>
 
             <ZListGroup header="Member">
-                {memberCommunities.map(c => <Item key={c.id} community={c} router={router} />)}
+                {memberCommunities.map(c => <Item key={c.id} community={c} router={router} theme={theme} />)}
             </ZListGroup>
 
             <View height={32} />

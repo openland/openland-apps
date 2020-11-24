@@ -17,7 +17,7 @@ interface ProfileOrganizationPrivateProps {
 }
 
 export const ProfileOrganizationPrivate = React.memo((props: ProfileOrganizationPrivateProps) => {
-    const { id, photo, name, about, isCommunity, applyLink, applyLinkEnabled, owner, membersCount } = props.organization;
+    const { id, photo, name, about, isCommunity, applyLink, applyLinkEnabled, owner, membersCount, featured } = props.organization;
     const isIos = Platform.OS === 'ios';
     const isXGen = isIos && Dimensions.get('window').height > 800;
     const defaultIosPadding = isXGen ? 34 : 16;
@@ -43,17 +43,28 @@ export const ProfileOrganizationPrivate = React.memo((props: ProfileOrganization
                         id={id}
                         title={name}
                     />
-                    <Text
-                        style={{
-                            color: theme.foregroundPrimary,
-                            marginTop: 32,
-                            textAlign: 'center',
-                            ...TextStyles.Title2,
-                        }}
-                        allowFontScaling={false}
+                    <View
+                        flexDirection="row"
+                        marginTop={32}
                     >
-                        {name}
-                    </Text>
+                        <Text
+                            style={{
+                                color: theme.foregroundPrimary,
+                                textAlign: 'center',
+                                ...TextStyles.Title2,
+                            }}
+                            numberOfLines={3}
+                            allowFontScaling={false}
+                        >
+                            {name}
+                        </Text>
+                        {featured && theme.displayFeaturedIcon && (
+                            <Image
+                                source={require('assets/ic-verified-16.png')}
+                                style={{ tintColor: '#3DA7F2', width: 16, height: 16, flexShrink: 0, marginLeft: 4, marginTop: 2, alignSelf: 'center' }}
+                            />
+                        )}
+                    </View>
                     <Text
                         style={{
                             color: theme.foregroundTertiary,

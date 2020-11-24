@@ -6,6 +6,7 @@ import {
 } from 'openland-y-utils/discover/normalizePopularItems';
 import { plural } from 'openland-y-utils/plural';
 import { RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
+import { useTheme } from 'openland-mobile/themes/ThemeContext';
 
 interface DiscoverListItemProps {
     item: DiscoverRoom;
@@ -14,6 +15,7 @@ interface DiscoverListItemProps {
 }
 
 export const DiscoverListItem = ({ item, rightElement, onJoin }: DiscoverListItemProps) => {
+    const theme = useTheme();
     return (
         <ZListItem
             key={item.id}
@@ -27,12 +29,13 @@ export const DiscoverListItem = ({ item, rightElement, onJoin }: DiscoverListIte
                 item.newMessages
                     ? plural(item.newMessages, ['new message', 'new messages'])
                     : item.membersCount
-                    ? plural(item.membersCount, ['member', 'members'])
-                    : undefined
+                        ? plural(item.membersCount, ['member', 'members'])
+                        : undefined
             }
             rightElement={rightElement}
             path="Conversation"
             pathParams={{ flexibleId: item.id, onJoin }}
+            {...item.featured && theme.displayFeaturedIcon ? { descriptionIcon: require('assets/ic-verified-16.png'), descriptionColor: '#3DA7F2' } : {}}
         />
     );
 };
@@ -43,6 +46,7 @@ interface DiscoverListItemOrgProps {
 }
 
 export const DiscoverListItemOrg = ({ item, rightElement }: DiscoverListItemOrgProps) => {
+    const theme = useTheme();
     return (
         <ZListItem
             key={item.id}
@@ -58,6 +62,7 @@ export const DiscoverListItemOrg = ({ item, rightElement }: DiscoverListItemOrgP
             rightElement={rightElement}
             path="ProfileOrganization"
             pathParams={{ id: item.id }}
+            {...item.featured && theme.displayFeaturedIcon ? { descriptionIcon: require('assets/ic-verified-16.png'), descriptionColor: '#3DA7F2' } : {}}
         />
     );
 };
