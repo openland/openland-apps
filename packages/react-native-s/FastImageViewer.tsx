@@ -328,6 +328,13 @@ export class FastImageViewer extends React.PureComponent<FastImageViewerProps> {
                 this._handleCompleted();
             }
         }
+
+        // Try ugly fix to enable taps on android, cause tap and pinch gesture handlers not working together
+        const translationDeviation = Math.abs(translationX) > 10 || Math.abs(translationY) > 10;
+
+        if (state === State.END && !translationDeviation && this.props.onTap) {
+            this.props.onTap();
+        }
     }
 
     private _onPinchHandlerStateChange = (event: PinchGestureHandlerStateChangeEvent) => {
@@ -610,48 +617,38 @@ export class FastImageViewer extends React.PureComponent<FastImageViewerProps> {
         );
 
         const panZoomedContent = (
-            <TapGestureHandler
-                ref={this._tapRef}
-                maxDeltaX={15}
-                maxDeltaY={15}
-                minPointers={1}
-                maxDurationMs={100}
-                onHandlerStateChange={this._handleTap}
-                waitFor={[this._doubleTapRef as any]}
-            >
-                <Animated.View style={{ width: '100%', height: '100%' }}>
-                    <PanGestureHandler
-                        onGestureEvent={this._panEvent}
-                        onHandlerStateChange={this._onPandHandlerStateChange}
-                        simultaneousHandlers={[this._pinchRef as any]}
-                        waitFor={[this._tapRef as any, this._doubleTapRef as any]}
-                        ref={this._panRef}
-                        minPointers={1}
-                        maxPointers={2}
-                        minDist={0}
-                        minDeltaX={0}
-                        minDeltaY={0}
-                        minOffsetX={0}
-                        minOffsetY={0}
-                        minVelocityX={0}
-                        minVelocityY={0}
-                        minVelocity={0}
-                        avgTouches={true}
-                    >
-                            <Animated.View style={{ width: '100%', height: '100%' }}>
-                                <PinchGestureHandler
-                                    ref={this._pinchRef}
-                                    simultaneousHandlers={[this._panRef as any]}
-                                    onGestureEvent={this._pinchEvent}
-                                    onHandlerStateChange={this._onPinchHandlerStateChange}
-                                    waitFor={[this._tapRef as any, this._doubleTapRef as any]}
-                                >
-                                    {content}
-                                </PinchGestureHandler>
-                            </Animated.View>
-                    </PanGestureHandler>
-                </Animated.View>
-            </TapGestureHandler>
+            <Animated.View style={{ width: '100%', height: '100%' }}>
+                <PanGestureHandler
+                    onGestureEvent={this._panEvent}
+                    onHandlerStateChange={this._onPandHandlerStateChange}
+                    simultaneousHandlers={[this._pinchRef as any]}
+                    waitFor={[this._tapRef as any, this._doubleTapRef as any]}
+                    ref={this._panRef}
+                    minPointers={1}
+                    maxPointers={2}
+                    minDist={0}
+                    minDeltaX={0}
+                    minDeltaY={0}
+                    minOffsetX={0}
+                    minOffsetY={0}
+                    minVelocityX={0}
+                    minVelocityY={0}
+                    minVelocity={0}
+                    avgTouches={true}
+                >
+                    <Animated.View style={{ width: '100%', height: '100%' }}>
+                        <PinchGestureHandler
+                            ref={this._pinchRef}
+                            simultaneousHandlers={[this._panRef as any]}
+                            onGestureEvent={this._pinchEvent}
+                            onHandlerStateChange={this._onPinchHandlerStateChange}
+                            waitFor={[this._tapRef as any, this._doubleTapRef as any]}
+                        >
+                            {content}
+                        </PinchGestureHandler>
+                    </Animated.View>
+                </PanGestureHandler>
+            </Animated.View>
         );
 
         let platformContent = panZoomedContent;
