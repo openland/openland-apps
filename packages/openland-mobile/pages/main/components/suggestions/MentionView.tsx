@@ -71,6 +71,7 @@ export const MentionView = React.memo((props: MentionViewProps) => {
                             theme={theme}
                             name={mention.organization.name}
                             description={mention.organization.isCommunity ? 'Community' : 'Organization'}
+                            featured={mention.organization.featured}
                         />
                     )}
                     {mention.__typename === 'MentionSearchSharedRoom' && (
@@ -78,6 +79,7 @@ export const MentionView = React.memo((props: MentionViewProps) => {
                             theme={theme}
                             name={mention.room.title}
                             description="Group"
+                            featured={mention.room.featured}
                         />
                     )}
                     {mention.__typename === 'AllMention' && (

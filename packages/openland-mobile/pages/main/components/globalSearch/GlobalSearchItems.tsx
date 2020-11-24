@@ -1,27 +1,31 @@
 import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
-import { FontStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStylesAsync } from 'openland-mobile/styles/AppStyles';
 import { GlobalSearch_items_User, GlobalSearch_items_Organization, GlobalSearch_items_SharedRoom, GlobalSearch_items } from 'openland-api/spacex.types';
 import { ASAvatar } from 'openland-mobile/messenger/components/ASAvatar';
 import { UserAvatar } from 'openland-mobile/messenger/components/UserAvatar';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { Platform } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 import { ASView } from 'react-native-async-view/ASView';
 import { GlobalSearchProps } from './GlobalSearch';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { ASImage } from 'react-native-async-view/ASImage';
 
 interface ItemBaseProps {
     avatar: JSX.Element;
     name: string;
     theme: ThemeGlobal;
+    featured?: boolean;
 
     onPress: () => void;
 }
 
 const ItemBase = React.memo((props: ItemBaseProps) => {
-    const { onPress, avatar, name, theme } = props;
+    const { onPress, avatar, name, featured, theme } = props;
+    const showFeatured = featured && theme.displayFeaturedIcon;
+    const width = React.useMemo(() => Dimensions.get('screen').width - (showFeatured ? 94 : 74), [showFeatured]);
 
     return (
         <ASFlex marginLeft={16} marginRight={16} flexDirection="row" highlightColor={theme.backgroundPrimaryActive} onPress={onPress} alignItems="center">
@@ -29,9 +33,12 @@ const ItemBase = React.memo((props: ItemBaseProps) => {
                 {avatar}
             </ASFlex>
             <ASFlex marginLeft={16} flexGrow={1} flexBasis={0} alignItems="center">
-                <ASText fontSize={17} fontWeight={FontStyles.Weight.Medium} color={theme.foregroundPrimary} flexGrow={1} flexBasis={0} numberOfLines={1}>
+                <ASText {...TextStylesAsync.Label1} maxWidth={width} color={theme.foregroundPrimary} numberOfLines={1}>
                     {name}
                 </ASText>
+                {showFeatured && (
+                    <ASImage source={require('assets/ic-verified-16.png')} tintColor="#3DA7F2" width={16} height={16} marginLeft={4} marginTop={2} alignSelf="center" />
+                )}
             </ASFlex>
         </ASFlex>
     );
@@ -55,6 +62,7 @@ const GlobalSearchItemSharedRoom = React.memo((props: ItemRoomProps) => {
             name={item.title}
             onPress={handlePress}
             theme={theme}
+            featured={item.featured}
             avatar={
                 <ASAvatar
                     src={item.roomPhoto}
@@ -82,6 +90,7 @@ const GlobalSearchItemOrganization = React.memo((props: ItemOrganizationProps) =
             name={item.name}
             onPress={handlePress}
             theme={theme}
+            featured={item.featured}
             avatar={
                 <ASAvatar
                     src={item.photo}

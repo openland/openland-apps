@@ -2348,6 +2348,7 @@ const ChatJoinSelector = obj(
                             ))))),
                         field('isChannel', 'isChannel', args(), notNull(scalar('Boolean'))),
                         field('isPremium', 'isPremium', args(), notNull(scalar('Boolean'))),
+                        field('featured', 'featured', args(), notNull(scalar('Boolean'))),
                         field('premiumPassIsActive', 'premiumPassIsActive', args(), notNull(scalar('Boolean'))),
                         field('premiumSubscription', 'premiumSubscription', args(), obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5614,7 +5615,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ChatJoin: {
         kind: 'query',
         name: 'ChatJoin',
-        body: 'query ChatJoin($id:ID!){room(id:$id){__typename ... on SharedRoom{__typename id title description photo membersCount previewMembers{__typename id photo name}isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}owner{__typename id firstName}}}}',
+        body: 'query ChatJoin($id:ID!){room(id:$id){__typename ... on SharedRoom{__typename id title description photo membersCount previewMembers{__typename id photo name}isChannel isPremium featured premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}owner{__typename id firstName}}}}',
         selector: ChatJoinSelector
     },
     ChatMentionSearch: {
