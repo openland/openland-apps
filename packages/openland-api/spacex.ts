@@ -382,6 +382,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryUserPico(variables: Types.UserPicoVariables, params?: QueryParameters): Promise<Types.UserPico> {
         return this.query('UserPico', variables, params);
     }
+    queryUserSearchForChat(variables: Types.UserSearchForChatVariables, params?: QueryParameters): Promise<Types.UserSearchForChat> {
+        return this.query('UserSearchForChat', variables, params);
+    }
+    queryUserSearchForOrganization(variables: Types.UserSearchForOrganizationVariables, params?: QueryParameters): Promise<Types.UserSearchForOrganization> {
+        return this.query('UserSearchForOrganization', variables, params);
+    }
     queryUserStorage(variables: Types.UserStorageVariables, params?: QueryParameters): Promise<Types.UserStorage> {
         return this.query('UserStorage', variables, params);
     }
@@ -760,6 +766,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchUserPico(variables: Types.UserPicoVariables, params?: QueryParameters): Promise<Types.UserPico> {
         return this.refetch('UserPico', variables, params);
     }
+    refetchUserSearchForChat(variables: Types.UserSearchForChatVariables, params?: QueryParameters): Promise<Types.UserSearchForChat> {
+        return this.refetch('UserSearchForChat', variables, params);
+    }
+    refetchUserSearchForOrganization(variables: Types.UserSearchForOrganizationVariables, params?: QueryParameters): Promise<Types.UserSearchForOrganization> {
+        return this.refetch('UserSearchForOrganization', variables, params);
+    }
     refetchUserStorage(variables: Types.UserStorageVariables, params?: QueryParameters): Promise<Types.UserStorage> {
         return this.refetch('UserStorage', variables, params);
     }
@@ -1137,6 +1149,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateUserPico(variables: Types.UserPicoVariables, updater: (data: Types.UserPico) => Types.UserPico | null): Promise<boolean> {
         return this.updateQuery(updater, 'UserPico', variables);
+    }
+    updateUserSearchForChat(variables: Types.UserSearchForChatVariables, updater: (data: Types.UserSearchForChat) => Types.UserSearchForChat | null): Promise<boolean> {
+        return this.updateQuery(updater, 'UserSearchForChat', variables);
+    }
+    updateUserSearchForOrganization(variables: Types.UserSearchForOrganizationVariables, updater: (data: Types.UserSearchForOrganization) => Types.UserSearchForOrganization | null): Promise<boolean> {
+        return this.updateQuery(updater, 'UserSearchForOrganization', variables);
     }
     updateUserStorage(variables: Types.UserStorageVariables, updater: (data: Types.UserStorage) => Types.UserStorage | null): Promise<boolean> {
         return this.updateQuery(updater, 'UserStorage', variables);
@@ -1763,6 +1781,16 @@ export class OpenlandClient extends BaseSpaceXClient {
     useUserPico(variables: Types.UserPicoVariables, params?: SpaceQueryWatchParameters): Types.UserPico;
     useUserPico(variables: Types.UserPicoVariables, params?: SpaceQueryWatchParameters): Types.UserPico | null {
         return this.useQuery('UserPico', variables, params);
+    }
+    useUserSearchForChat(variables: Types.UserSearchForChatVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.UserSearchForChat | null;
+    useUserSearchForChat(variables: Types.UserSearchForChatVariables, params?: SpaceQueryWatchParameters): Types.UserSearchForChat;
+    useUserSearchForChat(variables: Types.UserSearchForChatVariables, params?: SpaceQueryWatchParameters): Types.UserSearchForChat | null {
+        return this.useQuery('UserSearchForChat', variables, params);
+    }
+    useUserSearchForOrganization(variables: Types.UserSearchForOrganizationVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.UserSearchForOrganization | null;
+    useUserSearchForOrganization(variables: Types.UserSearchForOrganizationVariables, params?: SpaceQueryWatchParameters): Types.UserSearchForOrganization;
+    useUserSearchForOrganization(variables: Types.UserSearchForOrganizationVariables, params?: SpaceQueryWatchParameters): Types.UserSearchForOrganization | null {
+        return this.useQuery('UserSearchForOrganization', variables, params);
     }
     useUserStorage(variables: Types.UserStorageVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.UserStorage | null;
     useUserStorage(variables: Types.UserStorageVariables, params?: SpaceQueryWatchParameters): Types.UserStorage;

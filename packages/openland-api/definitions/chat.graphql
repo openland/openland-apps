@@ -654,7 +654,7 @@ mutation RoomDeleteUrlAugmentation($messageId: ID!) {
 }
 
 mutation RoomDelete($chatId: ID!) {
-  deleteChat(chatId: $chatId)
+    deleteChat(chatId: $chatId)
 }
 
 mutation EditMessage(
@@ -926,5 +926,20 @@ query CommonChatsWithUser($uid: ID!, $first: Int!, $after: ID) {
         }
         cursor
         count
+    }
+}
+
+query UserSearchForChat($chatId: ID!, $query: String, $first: Int!,$after: String, $sort: String) {
+    userSearchForChat(chatId: $chatId, query: $query, first: $first, after: $after, sort: $sort) {
+        edges {
+            node {
+                ...UserShort
+            }
+            isMember
+            cursor
+        }
+        pageInfo {
+            hasNextPage
+        }
     }
 }

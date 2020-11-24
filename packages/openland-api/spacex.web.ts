@@ -4439,6 +4439,42 @@ const UserPicoSelector = obj(
                     field('photo', 'photo', args(), scalar('String'))
                 )))
         );
+const UserSearchForChatSelector = obj(
+            field('userSearchForChat', 'userSearchForChat', args(fieldValue("chatId", refValue('chatId')), fieldValue("query", refValue('query')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after')), fieldValue("sort", refValue('sort'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('edges', 'edges', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('node', 'node', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    fragment('User', UserShortSelector)
+                                ))),
+                            field('isMember', 'isMember', args(), notNull(scalar('Boolean'))),
+                            field('cursor', 'cursor', args(), notNull(scalar('String')))
+                        ))))),
+                    field('pageInfo', 'pageInfo', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('hasNextPage', 'hasNextPage', args(), notNull(scalar('Boolean')))
+                        )))
+                )))
+        );
+const UserSearchForOrganizationSelector = obj(
+            field('userSearchForOrg', 'userSearchForOrg', args(fieldValue("orgId", refValue('orgId')), fieldValue("query", refValue('query')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after')), fieldValue("sort", refValue('sort'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('edges', 'edges', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('node', 'node', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    fragment('User', UserShortSelector)
+                                ))),
+                            field('isMember', 'isMember', args(), notNull(scalar('Boolean'))),
+                            field('cursor', 'cursor', args(), notNull(scalar('String')))
+                        ))))),
+                    field('pageInfo', 'pageInfo', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('hasNextPage', 'hasNextPage', args(), notNull(scalar('Boolean')))
+                        )))
+                )))
+        );
 const UserStorageSelector = obj(
             field('userStorage', 'userStorage', args(fieldValue("namespace", refValue('namespace')), fieldValue("keys", refValue('keys'))), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -6282,6 +6318,18 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'UserPico',
         body: 'query UserPico($userId:ID!){user:user(id:$userId){__typename id name firstName photo}}',
         selector: UserPicoSelector
+    },
+    UserSearchForChat: {
+        kind: 'query',
+        name: 'UserSearchForChat',
+        body: 'query UserSearchForChat($chatId:ID!,$query:String,$first:Int!,$after:String,$sort:String){userSearchForChat(chatId:$chatId,query:$query,first:$first,after:$after,sort:$sort){__typename edges{__typename node{__typename ...UserShort}isMember cursor}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
+        selector: UserSearchForChatSelector
+    },
+    UserSearchForOrganization: {
+        kind: 'query',
+        name: 'UserSearchForOrganization',
+        body: 'query UserSearchForOrganization($orgId:ID!,$query:String,$first:Int!,$after:String,$sort:String){userSearchForOrg(orgId:$orgId,query:$query,first:$first,after:$after,sort:$sort){__typename edges{__typename node{__typename ...UserShort}isMember cursor}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
+        selector: UserSearchForOrganizationSelector
     },
     UserStorage: {
         kind: 'query',

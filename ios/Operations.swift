@@ -4432,6 +4432,42 @@ private let UserPicoSelector = obj(
                     field("photo", "photo", scalar("String"))
                 )))
         )
+private let UserSearchForChatSelector = obj(
+            field("userSearchForChat", "userSearchForChat", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("query", refValue("query")), fieldValue("first", refValue("first")), fieldValue("after", refValue("after")), fieldValue("sort", refValue("sort"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    fragment("User", UserShortSelector)
+                                ))),
+                            field("isMember", "isMember", notNull(scalar("Boolean"))),
+                            field("cursor", "cursor", notNull(scalar("String")))
+                        ))))),
+                    field("pageInfo", "pageInfo", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean")))
+                        )))
+                )))
+        )
+private let UserSearchForOrganizationSelector = obj(
+            field("userSearchForOrg", "userSearchForOrg", arguments(fieldValue("orgId", refValue("orgId")), fieldValue("query", refValue("query")), fieldValue("first", refValue("first")), fieldValue("after", refValue("after")), fieldValue("sort", refValue("sort"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    fragment("User", UserShortSelector)
+                                ))),
+                            field("isMember", "isMember", notNull(scalar("Boolean"))),
+                            field("cursor", "cursor", notNull(scalar("String")))
+                        ))))),
+                    field("pageInfo", "pageInfo", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean")))
+                        )))
+                )))
+        )
 private let UserStorageSelector = obj(
             field("userStorage", "userStorage", arguments(fieldValue("namespace", refValue("namespace")), fieldValue("keys", refValue("keys"))), notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -6280,6 +6316,18 @@ class Operations {
         "query UserPico($userId:ID!){user:user(id:$userId){__typename id name firstName photo}}",
         UserPicoSelector
     )
+    let UserSearchForChat = OperationDefinition(
+        "UserSearchForChat",
+        .query, 
+        "query UserSearchForChat($chatId:ID!,$query:String,$first:Int!,$after:String,$sort:String){userSearchForChat(chatId:$chatId,query:$query,first:$first,after:$after,sort:$sort){__typename edges{__typename node{__typename ...UserShort}isMember cursor}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
+        UserSearchForChatSelector
+    )
+    let UserSearchForOrganization = OperationDefinition(
+        "UserSearchForOrganization",
+        .query, 
+        "query UserSearchForOrganization($orgId:ID!,$query:String,$first:Int!,$after:String,$sort:String){userSearchForOrg(orgId:$orgId,query:$query,first:$first,after:$after,sort:$sort){__typename edges{__typename node{__typename ...UserShort}isMember cursor}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
+        UserSearchForOrganizationSelector
+    )
     let UserStorage = OperationDefinition(
         "UserStorage",
         .query, 
@@ -7282,6 +7330,8 @@ class Operations {
         if name == "UserAvailableRooms" { return UserAvailableRooms }
         if name == "UserNano" { return UserNano }
         if name == "UserPico" { return UserPico }
+        if name == "UserSearchForChat" { return UserSearchForChat }
+        if name == "UserSearchForOrganization" { return UserSearchForOrganization }
         if name == "UserStorage" { return UserStorage }
         if name == "Users" { return Users }
         if name == "AccountInviteJoin" { return AccountInviteJoin }

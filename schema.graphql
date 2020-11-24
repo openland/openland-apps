@@ -182,6 +182,7 @@ type ChatUserEdge {
   node: User!
   isMember: Boolean!
   cursor: String!
+  inviteRestricted: Boolean!
 }
 
 input CodecCapabilities {
@@ -2257,6 +2258,17 @@ type OrganizationsEdge {
   cursor: String!
 }
 
+type OrgUserConnection {
+  edges: [OrgUserEdge!]!
+  pageInfo: PageInfo!
+}
+
+type OrgUserEdge {
+  node: User!
+  isMember: Boolean!
+  cursor: String!
+}
+
 type PageInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
@@ -2319,6 +2331,7 @@ type PlatformNotificationSettings {
   organizationChat: ChatTypeNotificationSettings!
   communityChat: ChatTypeNotificationSettings!
   comments: ChatTypeNotificationSettings!
+  channels: ChatTypeNotificationSettings!
   notificationPreview: NotificationPreview!
 }
 
@@ -2328,6 +2341,7 @@ input PlatformNotificationSettingsInput {
   organizationChat: ChatTypeNotificationSettingsInput
   communityChat: ChatTypeNotificationSettingsInput
   comments: ChatTypeNotificationSettingsInput
+  channels: ChatTypeNotificationSettingsInput
   notificationPreview: NotificationPreview
 }
 
@@ -2733,6 +2747,7 @@ type Query {
   badgeInRoom(roomId: ID!): UserBadge
   userSearch(query: String, first: Int!, after: String, page: Int, sort: String): UserConnection!
   userSearchForChat(chatId: ID!, query: String, first: Int!, after: String, page: Int, sort: String): ChatUserConnection!
+  userSearchForOrg(orgId: ID!, query: String, first: Int!, after: String, page: Int, sort: String): OrgUserConnection!
 
   """Deprecated"""
   alphaProfiles(query: String, first: Int!, after: String, page: Int, sort: String): UserConnection!

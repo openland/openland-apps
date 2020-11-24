@@ -192,3 +192,18 @@ query RoomSocialImage($roomId: ID!) {
 mutation OrganizationRequestMembersExport($organizationId: ID!) {
     requestOrganizationMembersExport(id: $organizationId)
 }
+
+query UserSearchForOrganization($orgId: ID!, $query: String, $first: Int!,$after: String, $sort: String) {
+    userSearchForOrg(orgId: $orgId, query: $query, first: $first, after: $after, sort: $sort) {
+        edges {
+            node {
+                ...UserShort
+            }
+            isMember
+            cursor
+        }
+        pageInfo {
+            hasNextPage
+        }
+    }
+}

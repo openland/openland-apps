@@ -131,6 +131,8 @@ object Operations {
         if (name == "UserAvailableRooms") return UserAvailableRooms
         if (name == "UserNano") return UserNano
         if (name == "UserPico") return UserPico
+        if (name == "UserSearchForChat") return UserSearchForChat
+        if (name == "UserSearchForOrganization") return UserSearchForOrganization
         if (name == "UserStorage") return UserStorage
         if (name == "Users") return Users
         if (name == "AccountInviteJoin") return AccountInviteJoin
