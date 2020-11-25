@@ -8,7 +8,6 @@ import { SettingsPrivacyFragment } from 'openland-web/fragments/settings/Setting
 import { SettingsAppearanceFragment } from 'openland-web/fragments/settings/SettingsAppearanceFragment';
 import { RecommendationsFragment } from 'openland-web/fragments/discover/RecommendationsFragment';
 import { DiscoverHomeFragment } from 'openland-web/fragments/discover/DiscoverHomeFragment';
-import { DiscoverGroupsFragment } from 'openland-web/fragments/discover/DiscoverGroupsFragment';
 import { SettingsNotificationsFragment } from 'openland-web/fragments/settings/SettingsNotificationsFragment';
 import { SettingsEmailFragment } from 'openland-web/fragments/settings/SettingsEmailFragment';
 import { NotificationsFragment } from 'openland-web/fragments/notifications/NofiticationsFragment';
@@ -74,7 +73,6 @@ routing.addRoute('/discover', () => DiscoverHomeFragment);
 routing.addRoute('/discover/', () => DiscoverHomeFragment);
 routing.addRoute('/discover/home', () => DiscoverHomeFragment);
 routing.addRoute('/discover/recommendations', () => RecommendationsFragment);
-routing.addRoute('/discover/groups', () => DiscoverGroupsFragment);
 routing.addRoute('/discover/popular', () => DiscoverPopularNowFragment);
 routing.addRoute('/discover/new', () => DiscoverNewAndGrowingFragment);
 routing.addRoute('/discover/collections', () => DiscoverCollectionsFragment);

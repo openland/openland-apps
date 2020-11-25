@@ -1,12 +1,13 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
-import { XView } from 'react-mental';
 import { DiscoverOrganizationItem } from './components/DiscoverOrganizationItem';
 import { getRandomSeed } from './utils/getRandomSeed';
+import { DiscoverNoLoginProps } from './utils/DiscoverNoLoginContent';
 
-export const DiscoverNewOrgsFragment = React.memo(() => {
+export const DiscoverNewOrgsFragment = React.memo((props: DiscoverNoLoginProps) => {
     const client = useClient();
     const seed = getRandomSeed();
 
@@ -36,11 +37,11 @@ export const DiscoverNewOrgsFragment = React.memo(() => {
 
     return (
         <>
-            <UHeader title="New communities" />
+            {!props.noLogin && <UHeader title="New communities" />}
             <UFlatList
                 gap={16}
                 track="discover_new_communities"
-                title="New communities"
+                title={props.noLogin ? undefined : 'New communities'}
                 loading={loading}
                 loadMore={handleLoadMore}
                 items={displayItems}

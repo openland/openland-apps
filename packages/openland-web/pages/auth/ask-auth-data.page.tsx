@@ -5,8 +5,8 @@ import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { Wrapper } from '../onboarding/components/wrapper';
 import {
+    Wrapper,
     Title,
     Subtitle,
     FormLayout,

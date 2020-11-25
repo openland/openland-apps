@@ -1,6 +1,5 @@
 export type pagesT =
     | 'loading'
-    | 'acceptInvite'
     | 'askAuthCode'
     | 'askAuthData'
     | 'createNewAccount'
@@ -10,9 +9,8 @@ export const pages: { [K in pagesT]: pagesT } = {
     loading: 'loading',
     askAuthCode: 'askAuthCode',
     askAuthData: 'askAuthData',
-    acceptInvite: 'acceptInvite',
     createNewAccount: 'createNewAccount',
     introduceYourself: 'introduceYourself',
 };
 
-export const pagesArr = ['acceptInvite', 'createNewAccount', 'askAuthData', 'askAuthCode', 'introduceYourself'];
+export const pagesArr = ['createNewAccount', 'askAuthData', 'askAuthCode', 'introduceYourself'];

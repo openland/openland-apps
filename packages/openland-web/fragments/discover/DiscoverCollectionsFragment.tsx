@@ -1,11 +1,12 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { useClient } from 'openland-api/useClient';
 import { DiscoverCollection } from './components/DiscoverCollection';
-import { XView } from 'react-mental';
+import { DiscoverNoLoginProps } from './utils/DiscoverNoLoginContent';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 
-export const DiscoverCollectionsFragment = React.memo(() => {
+export const DiscoverCollectionsFragment = React.memo((props: DiscoverNoLoginProps) => {
     const client = useClient();
 
     const collections = client.useDiscoverCollections({ first: 20 });
@@ -40,11 +41,11 @@ export const DiscoverCollectionsFragment = React.memo(() => {
 
     return (
         <>
-            <UHeader title="Collections" />
+            {!props.noLogin && <UHeader title="Collections" />}
             <UFlatList
                 gap={16}
                 track="discover_collections"
-                title="Collections"
+                title={props.noLogin ? undefined : 'Collections'}
                 grid={true}
                 loading={loading}
                 loadMore={handleLoadMore}

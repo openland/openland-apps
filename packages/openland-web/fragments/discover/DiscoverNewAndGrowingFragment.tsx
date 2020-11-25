@@ -5,10 +5,11 @@ import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { getRandomSeed } from './utils/getRandomSeed';
-import { JoinButton } from './components/JoinButton';
+import { DiscoverNoLoginProps } from './utils/DiscoverNoLoginContent';
+import { JoinButton, JoinButtonSimple } from './components/JoinButton';
 import { XView } from 'react-mental';
 
-export const DiscoverNewAndGrowingFragment = React.memo(() => {
+export const DiscoverNewAndGrowingFragment = React.memo((props: DiscoverNoLoginProps) => {
     const client = useClient();
     const seed = getRandomSeed();
 
@@ -31,26 +32,31 @@ export const DiscoverNewAndGrowingFragment = React.memo(() => {
         const { items, cursor } = loaded.discoverNewAndGrowing;
 
         setAfter(cursor);
-        setDisplayItems(prev => prev.concat(items));
+        setDisplayItems((prev) => prev.concat(items));
         setLoading(false);
-
     }, [after, loading]);
 
     return (
         <>
-            <UHeader title="New and growing" />
+            {!props.noLogin && <UHeader title="New and growing" />}
             <UFlatList
                 gap={16}
                 track="discover_new_and_growing"
-                title="New and growing"
+                title={props.noLogin ? undefined : 'New and growing'}
                 loading={loading}
                 loadMore={handleLoadMore}
                 items={displayItems}
-                renderItem={item => (
+                renderItem={(item) => (
                     <XView marginHorizontal={-16} maxWidth={560 + 16 * 2}>
                         <UGroupView
                             group={item as DiscoverSharedRoom}
-                            rightElement={<JoinButton group={item as DiscoverSharedRoom} />}
+                            rightElement={
+                                props.noLogin ? (
+                                    <JoinButtonSimple group={item as DiscoverSharedRoom} />
+                                ) : (
+                                    <JoinButton group={item as DiscoverSharedRoom} />
+                                )
+                            }
                         />
                     </XView>
                 )}

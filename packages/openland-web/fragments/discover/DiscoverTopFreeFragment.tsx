@@ -1,13 +1,14 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
-import { JoinButton } from './components/JoinButton';
-import { XView } from 'react-mental';
+import { JoinButton, JoinButtonSimple } from './components/JoinButton';
+import { DiscoverNoLoginProps } from './utils/DiscoverNoLoginContent';
 
-export const DiscoverTopFreeFragment = React.memo(() => {
+export const DiscoverTopFreeFragment = React.memo((props: DiscoverNoLoginProps) => {
     const client = useClient();
 
     // initial items
@@ -29,26 +30,31 @@ export const DiscoverTopFreeFragment = React.memo(() => {
         const { items, cursor } = loaded.discoverTopFree;
 
         setAfter(cursor);
-        setDisplayItems(prev => prev.concat(items));
+        setDisplayItems((prev) => prev.concat(items));
         setLoading(false);
-
     }, [after, loading]);
 
     return (
         <>
-            <UHeader title="Top free" />
+            {!props.noLogin && <UHeader title="Top free" />}
             <UFlatList
                 gap={16}
                 track="discover_top_free"
-                title="Top free"
+                title={props.noLogin ? undefined : 'Top free'}
                 loading={loading}
                 loadMore={handleLoadMore}
                 items={displayItems}
-                renderItem={item => (
-                    <XView marginHorizontal={-16} maxWidth={560 + 16 * 2}>
+                renderItem={(item) => (
+                    <XView marginHorizontal={-16} maxWidth={592}>
                         <UGroupView
                             group={item as DiscoverSharedRoom}
-                            rightElement={<JoinButton group={item as DiscoverSharedRoom} />}
+                            rightElement={
+                                props.noLogin ? (
+                                    <JoinButtonSimple group={item as DiscoverSharedRoom} />
+                                ) : (
+                                    <JoinButton group={item as DiscoverSharedRoom} />
+                                )
+                            }
                         />
                     </XView>
                 )}

@@ -1,5 +1,8 @@
 import React from 'react';
-import { DiscoverEditorsChoice_discoverEditorsChoice, DiscoverSharedRoom } from 'openland-api/spacex.types';
+import {
+    DiscoverEditorsChoice_discoverEditorsChoice,
+    DiscoverSharedRoom,
+} from 'openland-api/spacex.types';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { css } from 'linaria';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
@@ -43,19 +46,30 @@ const container = css`
     max-width: 560px;
 `;
 
-export const EditorsChoiceItem = React.memo((props: DiscoverEditorsChoice_discoverEditorsChoice) => {
-    const userInfo = React.useContext(UserInfoContext)!;
-
-    return (
-        <XView path={!userInfo.isLoggedIn ? `/${props.chat.id}` : `/mail/${props.chat.id}`} cursor="pointer">
-            <div className={container}>
-                <div className={imageContainer}>
-                    <XCloudImage photoRef={props.image} resize="fill" width={560} height={200} />
+export const EditorsChoiceItem = React.memo(
+    (props: DiscoverEditorsChoice_discoverEditorsChoice) => {
+        const userInfo = React.useContext(UserInfoContext)!;
+        const path = !userInfo.isLoggedIn ? `/${props.chat.id}` : `/mail/${props.chat.id}`;
+        return (
+            <XView path={path} cursor="pointer">
+                <div className={container}>
+                    <div className={imageContainer}>
+                        <XCloudImage
+                            photoRef={props.image}
+                            resize="fill"
+                            width={560}
+                            height={200}
+                        />
+                    </div>
+                    <XView marginTop={8} marginHorizontal={-16}>
+                        <UGroupView
+                            group={props.chat as DiscoverSharedRoom}
+                            disableHover={true}
+                            path={null}
+                        />
+                    </XView>
                 </div>
-                <XView marginTop={8} marginHorizontal={-16}>
-                    <UGroupView group={props.chat as DiscoverSharedRoom} disableHover={true} />
-                </XView>
-            </div>
-        </XView>
-    );
-});
+            </XView>
+        );
+    },
+);

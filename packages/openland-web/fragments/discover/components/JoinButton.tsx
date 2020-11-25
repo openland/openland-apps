@@ -8,15 +8,14 @@ import { XLoader } from 'openland-x/XLoader';
 import IcAdd from 'openland-icons/s/ic-add-24.svg';
 import IcDone from 'openland-icons/s/ic-done-24.svg';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
-import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 interface JoinButtonProps {
     group:
-    | DiscoverSharedRoom
-    | Pick<
-        RoomChat_room_SharedRoom,
-        'id' | 'isPremium' | 'premiumSettings' | 'title' | 'photo' | 'membership'
-    >;
+        | DiscoverSharedRoom
+        | Pick<
+              RoomChat_room_SharedRoom,
+              'id' | 'isPremium' | 'premiumSettings' | 'title' | 'photo' | 'membership'
+          >;
 }
 
 const buttonStyle = css`
@@ -138,16 +137,11 @@ export const JoinButton = React.memo((props: JoinButtonProps) => {
 
 export const JoinButtonSimple = React.memo((props: JoinButtonProps) => {
     const router = React.useContext(XViewRouterContext);
-    const userInfo = React.useContext(UserInfoContext);
     const onClick = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.stopPropagation();
 
         if (router) {
-            if (!userInfo?.isLoggedIn) {
-                router.navigate('/signin?redirect=' + encodeURIComponent('/' + props.group.id));
-            } else {
-                router.navigate('/' + props.group.id);
-            }
+            router.navigate('/signin?redirect=' + encodeURIComponent('/' + props.group.id));
         }
     };
 

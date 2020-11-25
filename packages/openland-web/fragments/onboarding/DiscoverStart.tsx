@@ -1,17 +1,20 @@
 import * as React from 'react';
-import { withApp } from 'openland-web/components/withApp';
+import { css } from 'linaria';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { useClient } from 'openland-api/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { BackSkipLogo } from '../components/BackSkipLogo';
-import { getPercentageOfOnboarding } from '../components/utils';
-import { TagsCloud } from '../components/TagsCloud';
-import { TagGroup, Tag } from '../components/TagButton';
-import { ChatsForYou } from './chats-for-you.page';
+import { BackSkipLogo } from 'openland-web/pages/components/BackSkipLogo';
+import { TagsCloud } from 'openland-web/pages//components/TagsCloud';
+import { TagGroup, Tag } from 'openland-web/pages//components/TagButton';
+import { ChatsForYou } from './DiscoverChatsForYou';
 import { XLoader } from 'openland-x/XLoader';
-import { Wrapper } from './components/wrapper';
-import { Title, AuthActionButton, FormLayout, useShake } from '../auth/components/authComponents';
-import { css } from 'linaria';
+import {
+    Wrapper,
+    Title,
+    AuthActionButton,
+    FormLayout,
+    useShake,
+} from 'openland-web/pages/auth/components/authComponents';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
@@ -57,38 +60,25 @@ const TagsGroupPage = (props: {
 };
 
 const LocalDiscoverComponent = ({
-    noLogo,
-    noTopBar,
     noBackSkipLogo,
     group,
     onContinueClick,
     selected,
-    fullHeight,
-    progressInPercents,
     onSkip,
     onBack,
-    allowContinue,
 }: {
-    allowContinue?: boolean;
-    noLogo?: boolean;
-    noTopBar?: boolean;
     noBackSkipLogo?: boolean;
     group?: TagGroup | null;
     onContinueClick: (data: any) => void;
     selected: string[];
-    fullHeight?: boolean;
-    progressInPercents: number;
-    onSkip?: ((event: React.MouseEvent) => void);
-    onBack?: ((event: React.MouseEvent) => void);
+    onSkip?: (event: React.MouseEvent) => void;
+    onBack?: (event: React.MouseEvent) => void;
 }) => {
     const [localSelected, setLocalSelected] = React.useState<string[]>(() => selected);
 
-    React.useLayoutEffect(
-        () => {
-            setLocalSelected(selected);
-        },
-        [selected],
-    );
+    React.useLayoutEffect(() => {
+        setLocalSelected(selected);
+    }, [selected]);
 
     const onTagPress = React.useCallback(
         (tag: Tag) => {
@@ -107,16 +97,13 @@ const LocalDiscoverComponent = ({
 
     const [shakeClassName, shake] = useShake();
 
-    const onMyContinueClick = React.useCallback(
-        () => {
-            if (localSelected.length === 0) {
-                shake();
-                return;
-            }
-            onContinueClick(localSelected);
-        },
-        [localSelected],
-    );
+    const onMyContinueClick = React.useCallback(() => {
+        if (localSelected.length === 0) {
+            shake();
+            return;
+        }
+        onContinueClick(localSelected);
+    }, [localSelected]);
 
     const wrapperRef = React.useRef<HTMLDivElement>(null);
 
@@ -142,14 +129,17 @@ const LocalDiscoverComponent = ({
     const { title, subtitle } = group;
 
     return (
-        <Wrapper fullHeight={fullHeight} ref={wrapperRef}>
+        <Wrapper ref={wrapperRef}>
             <XDocumentHead title={title!!} />
-            {!noBackSkipLogo && (
-                <BackSkipLogo onBack={onBack} onSkip={onSkip} />
-            )}
+            {!noBackSkipLogo && <BackSkipLogo onBack={onBack} onSkip={onSkip} />}
             <FormLayout paddingTop={isMobile ? 56 : 72} paddingBottom={130}>
                 <Title text={subtitle!!} />
-                <TagsGroupPage group={group} selected={localSelected} className={shakeClassName} onPress={onTagPress} />
+                <TagsGroupPage
+                    group={group}
+                    selected={localSelected}
+                    className={shakeClassName}
+                    onPress={onTagPress}
+                />
                 {isScrollable ? (
                     <div className={shadowWrapper}>
                         <AuthActionButton
@@ -161,25 +151,19 @@ const LocalDiscoverComponent = ({
                         <div className={shadowClassName} />
                     </div>
                 ) : (
-                        <AuthActionButton
-                            marginTop={24}
-                            zIndex={2}
-                            text="Continue"
-                            onClick={onMyContinueClick}
-                        />
-                    )}
+                    <AuthActionButton
+                        marginTop={24}
+                        zIndex={2}
+                        text="Continue"
+                        onClick={onMyContinueClick}
+                    />
+                )}
             </FormLayout>
         </Wrapper>
     );
 };
 
-// const arrowify = (value: string | string[]) => {
-//     return typeof value === 'string' ? [value] : value || [];
-// };
-
-export const Discover = ({
-    noLogo,
-    noTopBar,
+const Discover = ({
     noBackSkipLogo,
     previousChoisesMap,
     rootSelected,
@@ -189,12 +173,8 @@ export const Discover = ({
     onBack,
     onChatsForYouSkip,
     onChatsForYouBack,
-    fullHeight,
     onJoinChats,
-    allowContinue,
 }: {
-    noLogo?: boolean;
-    noTopBar?: boolean;
     noBackSkipLogo?: boolean;
     previousChoisesMap: any;
     rootSelected: string[];
@@ -204,9 +184,7 @@ export const Discover = ({
     onBack?: (event: React.MouseEvent) => void;
     onChatsForYouSkip?: (event: React.MouseEvent) => void;
     onChatsForYouBack: (event: React.MouseEvent) => void;
-    fullHeight?: boolean;
     onJoinChats?: Function;
-    allowContinue?: boolean;
 }) => {
     const client = useClient();
 
@@ -220,14 +198,11 @@ export const Discover = ({
         { fetchPolicy: 'network-only' },
     );
 
-    React.useLayoutEffect(
-        () => {
-            client.refetchSuggestedRooms().then(() => {
-                client.refetchDiscoverIsDone();
-            });
-        },
-        [currentPage.betaNextDiscoverPage!!.tagGroup],
-    );
+    React.useLayoutEffect(() => {
+        client.refetchSuggestedRooms().then(() => {
+            client.refetchDiscoverIsDone();
+        });
+    }, [currentPage.betaNextDiscoverPage!!.tagGroup]);
 
     if (!currentPage.betaNextDiscoverPage!!.tagGroup!! || discoverDone.betaIsDiscoverDone) {
         if (!discoverDone.betaIsDiscoverDone) {
@@ -236,10 +211,8 @@ export const Discover = ({
         return (
             <ChatsForYou
                 onJoinChats={onJoinChats}
-                noTopBar={noTopBar}
                 onSkip={onChatsForYouSkip}
                 onBack={onChatsForYouBack}
-                fullHeight={fullHeight}
             />
         );
     }
@@ -273,37 +246,26 @@ export const Discover = ({
 
     return (
         <LocalDiscoverComponent
-            noLogo={noLogo}
-            noTopBar={noTopBar}
             noBackSkipLogo={noBackSkipLogo}
             onSkip={onSkip && onLocalSkip}
             onBack={onBack && onBack}
             group={currentPage.betaNextDiscoverPage!!.tagGroup!!}
             onContinueClick={localOnContinueClick}
             selected={finalSelected}
-            progressInPercents={getPercentageOfOnboarding(7 + rootExclude.length)}
-            fullHeight={fullHeight}
-            allowContinue={allowContinue}
         />
     );
 };
-export const DiscoverOnLocalState = ({
+export const DiscoverStart = ({
     noSkipOnChatsForYou,
     noBackOnFirstScreen,
     noSkipOnFirstScreen,
-    noLogo,
-    noTopBar,
     noBackSkipLogo,
-    fullHeight,
     onJoinChats,
 }: {
     noSkipOnChatsForYou?: boolean;
     noBackOnFirstScreen?: boolean;
     noSkipOnFirstScreen?: boolean;
-    noLogo?: boolean;
-    noTopBar?: boolean;
     noBackSkipLogo?: boolean;
-    fullHeight?: boolean;
     onJoinChats?: Function;
 }) => {
     const client = useClient();
@@ -314,24 +276,21 @@ export const DiscoverOnLocalState = ({
         [],
     );
 
-    const mergeAllSelected = React.useCallback(
-        () => {
-            const allSelectedArrays = rootState.map(({ selected }) => {
-                return selected;
-            });
+    const mergeAllSelected = React.useCallback(() => {
+        const allSelectedArrays = rootState.map(({ selected }) => {
+            return selected;
+        });
 
-            const allSelected: string[] = [];
-            for (let selected of allSelectedArrays) {
-                for (let selectedItem of selected) {
-                    if (!allSelected.includes(selectedItem)) {
-                        allSelected.push(selectedItem);
-                    }
+        const allSelected: string[] = [];
+        for (let selected of allSelectedArrays) {
+            for (let selectedItem of selected) {
+                if (!allSelected.includes(selectedItem)) {
+                    allSelected.push(selectedItem);
                 }
             }
-            return allSelected;
-        },
-        [rootState],
-    );
+        }
+        return allSelected;
+    }, [rootState]);
 
     const onContinueClick = React.useCallback(
         async (data: { selected: string[]; exclude: string[]; currentPageId: string }) => {
@@ -393,56 +352,43 @@ export const DiscoverOnLocalState = ({
         [previousChoisesMap, rootState],
     );
 
-    const onBack = React.useCallback(
-        async () => {
-            if (rootState.length !== 0) {
-                const cloneRootState = [...rootState];
+    const onBack = React.useCallback(async () => {
+        if (rootState.length !== 0) {
+            const cloneRootState = [...rootState];
 
-                cloneRootState.pop();
+            cloneRootState.pop();
 
-                setRootState(cloneRootState);
-            }
-        },
-        [rootState],
-    );
+            setRootState(cloneRootState);
+        }
+    }, [rootState]);
 
-    const getLastStateOrEmpty = React.useCallback(
-        () => {
-            if (rootState.length === 0) {
-                return { selected: [], exclude: [] };
-            }
-            return rootState[rootState.length - 1];
-        },
-        [rootState],
-    );
+    const getLastStateOrEmpty = React.useCallback(() => {
+        if (rootState.length === 0) {
+            return { selected: [], exclude: [] };
+        }
+        return rootState[rootState.length - 1];
+    }, [rootState]);
 
-    const onChatsForYouBack = React.useCallback(
-        async () => {
-            await client.mutateBetaNextDiscoverReset();
-            await client.refetchSuggestedRooms();
-            await client.refetchDiscoverIsDone();
+    const onChatsForYouBack = React.useCallback(async () => {
+        await client.mutateBetaNextDiscoverReset();
+        await client.refetchSuggestedRooms();
+        await client.refetchDiscoverIsDone();
 
-            const result = await client.queryDiscoverNextPage({
-                selectedTagsIds: getLastStateOrEmpty().selected,
-                excudedGroupsIds: getLastStateOrEmpty().exclude,
-            });
+        const result = await client.queryDiscoverNextPage({
+            selectedTagsIds: getLastStateOrEmpty().selected,
+            excudedGroupsIds: getLastStateOrEmpty().exclude,
+        });
 
-            if (result.betaNextDiscoverPage!!.tagGroup === null) {
-                await onBack();
-            }
-        },
-        [rootState],
-    );
+        if (result.betaNextDiscoverPage!!.tagGroup === null) {
+            await onBack();
+        }
+    }, [rootState]);
 
     const lastStateOrEmpty = getLastStateOrEmpty();
-
-    const allowContinue = rootState.length !== 0 && fullHeight;
 
     return (
         <Discover
             onJoinChats={onJoinChats}
-            noLogo={noLogo}
-            noTopBar={noTopBar}
             noBackSkipLogo={noBackSkipLogo}
             onChatsForYouSkip={noSkipOnChatsForYou ? undefined : onChatsForYouSkip}
             onChatsForYouBack={onChatsForYouBack}
@@ -452,10 +398,6 @@ export const DiscoverOnLocalState = ({
             rootSelected={lastStateOrEmpty.selected}
             rootExclude={lastStateOrEmpty.exclude}
             onContinueClick={onContinueClick}
-            fullHeight={fullHeight}
-            allowContinue={allowContinue}
         />
     );
 };
-
-export default withApp('Home', 'viewer', () => <DiscoverOnLocalState noBackOnFirstScreen={true} />);

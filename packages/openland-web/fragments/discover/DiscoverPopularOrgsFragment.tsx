@@ -1,12 +1,13 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { normalizePopularOrgItems } from 'openland-y-utils/discover/normalizePopularItems';
-import { XView } from 'react-mental';
 import { DiscoverOrganizationItem } from './components/DiscoverOrganizationItem';
+import { DiscoverNoLoginProps } from './utils/DiscoverNoLoginContent';
 
-export const DiscoverPopularOrgsFragment = React.memo(() => {
+export const DiscoverPopularOrgsFragment = React.memo((props: DiscoverNoLoginProps) => {
     const client = useClient();
 
     // initial items
@@ -36,11 +37,11 @@ export const DiscoverPopularOrgsFragment = React.memo(() => {
 
     return (
         <>
-            <UHeader title="Top communities" />
+            {!props.noLogin && <UHeader title="Top communities" />}
             <UFlatList
                 gap={16}
                 track="discover_top_communities"
-                title="Top communities"
+                title={props.noLogin ? undefined : 'Top communities'}
                 loading={loading}
                 loadMore={handleLoadMore}
                 items={displayItems}

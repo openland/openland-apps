@@ -8,7 +8,7 @@ import { EditorsChoiceItem } from 'openland-web/fragments/discover/components/Ed
 import { ListingCompact, OrgsListingCompact } from 'openland-web/fragments/discover/components/ListingCompact';
 import { normalizePopularItems, normalizePopularOrgItems } from 'openland-y-utils/discover/normalizePopularItems';
 import { DiscoverCollection } from 'openland-web/fragments/discover/components/DiscoverCollection';
-import { AuthDiscoverContainer } from './AuthDiscoverContainer';
+import { AuthDiscoverContainer } from '../components/AuthDiscoverContainer';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 
 const AuthDiscoverInner = React.memo((props: { seed: number }) => {
@@ -86,7 +86,7 @@ export const AuthDiscoverFragment = React.memo(() => {
     const seed = React.useMemo(getRandomSeed, []);
 
     return (
-        <AuthDiscoverContainer title="Discover">
+        <AuthDiscoverContainer title="Discover" showBack={false}>
             <AuthDiscoverInner seed={seed} />
         </AuthDiscoverContainer>
     );
