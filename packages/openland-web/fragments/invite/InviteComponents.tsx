@@ -16,7 +16,7 @@ import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { showPayConfirm } from '../wallet/modals/showPayConfirm';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { useToast } from 'openland-web/components/unicorn/UToast';
-import { showModalBox } from 'openland-x/showModalBox';
+// import { showModalBox } from 'openland-x/showModalBox';
 
 type SharedRoomT = ResolvedInvite_shortnameItem_SharedRoom | ResolvedInvite_invite_RoomInvite_room;
 type OrgT = ResolvedInvite_invite_InviteInfo_organization;
@@ -283,19 +283,45 @@ export const resolveOrgButton = (organization: OrgT, noLogin: boolean, inviteKey
     );
 };
 
-const showMobileModal = () => {
-    showModalBox({ title: 'hui' }, (ctx) => <div>hui</div>);
-};
+// const showMobileModal = () => {
+//     showModalBox({ title: 'hui' }, (ctx) => <div>hui</div>);
+// };
 
-export const noLoginMobileButton = (buttonText: string) => {
-    const onClick = React.useCallback(() => {
-        window.location.href = 'https://openland.com' + window.location.pathname;
+export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') => {
+    // console.log(window.location);
+    // console.log(os);
+
+    React.useEffect(() => {
+        if (window.location.search === '?q=store') {
+            window.location.href = 'https://apps.apple.com/ru/app/openland-messenger/id1435537685';
+        }
+    }, [window.location]);
+
+    const androidOsClick = React.useCallback(() => {
+        window.location.href = 'openland://deep' + window.location.pathname;
         setTimeout(() => {
-            showMobileModal();
+            window.location.href = 'https://play.google.com/store/apps/details?id=com.openland.app';
         }, 300);
     }, []);
+
+    const iosClick = React.useCallback(() => {
+        window.location.href = 'openland://deep' + window.location.pathname;
+        setTimeout(() => {
+            window.location.href = window.location.origin + window.location.pathname + '?q=store';
+        }, 150);
+
+        // window.location.href = window.location.origin + window.location.pathname + '?q=store';
+        // setTimeout(() => {
+        //     showMobileModal();
+        // }, 300);
+    }, []);
     return (
-        <UButton text={buttonText} size="large" shape="square" onClick={onClick} />
+        <UButton
+            text={buttonText}
+            size="large"
+            shape="square"
+            onClick={os === 'Android' ? androidOsClick : iosClick}
+        />
     );
 };
 
