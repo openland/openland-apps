@@ -299,7 +299,7 @@ export const noLoginMobileButton = (buttonText: string) => {
     );
 };
 
-export const noLoginDesktopButton = (buttonText: string, room?: SharedRoomT) => {
+export const noLoginDesktopButton = (buttonText: string, id: string, room?: SharedRoomT) => {
     const isPremium = room && room.isPremium;
     return (
         <UButton
@@ -313,7 +313,10 @@ export const noLoginDesktopButton = (buttonText: string, room?: SharedRoomT) => 
             }
             alignSelf="center"
             flexShrink={0}
-            path={'/signin'}
+            onClick={() => {
+                Cookie.set('x-signin-redirect', id, { path: '/' });
+                window.location.href = '/signin';
+            }}
             zIndex={2}
         />
     );

@@ -141,7 +141,7 @@ export const JoinButtonSimple = React.memo((props: JoinButtonProps) => {
         e.stopPropagation();
 
         if (router) {
-            router.navigate('/signin?redirect=' + encodeURIComponent('/' + props.group.id));
+            router.navigate('/' + props.group.id);
         }
     };
 

@@ -184,7 +184,6 @@ export const AuthRouter = React.memo((props: { children: any }) => {
         !userInfo.isLoggedIn &&
         (router.path.startsWith('/join/') || router.path.startsWith('/invite/'))
     ) {
-        // return redirectIfNeeded('/signin/invite');
         return (
             <AuthPageContainer>
                 <InviteLandingComponent noLogin={true} />

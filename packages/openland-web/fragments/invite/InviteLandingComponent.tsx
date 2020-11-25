@@ -198,7 +198,7 @@ export const InviteLandingComponentLayout = React.memo(
             if (isMobile) {
                 button = noLoginMobileButton(buttonText);
             } else {
-                button = noLoginDesktopButton(buttonText, room);
+                button = noLoginDesktopButton(buttonText, id, room);
             }
         }
 

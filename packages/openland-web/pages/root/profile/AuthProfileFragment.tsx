@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as Cookie from 'js-cookie';
 import { css, cx } from 'linaria';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { UButton } from 'openland-web/components/unicorn/UButton';
@@ -52,7 +53,10 @@ export const AuthProfileFragment = React.memo((props: { user: AuthResolveShortNa
                 <UButton
                     text={`Message ${props.user.firstName}`}
                     size="large"
-                    path={`/signin?redirect=%2Fmail%2F${props.user.id}`}
+                    onClick={() => {
+                        Cookie.set('x-signin-redirect', props.user.id, { path: '/' });
+                        window.location.href = '/signin';
+                    }}
                 />
             </div>
         </AuthPageContainer>
