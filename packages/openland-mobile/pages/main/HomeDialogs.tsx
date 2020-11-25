@@ -17,6 +17,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { GlobalSearchEntryKind } from 'openland-api/spacex.types';
 import { SetTabContext } from './Home';
 import { getRateAppInfo, rateApp, setRateAppInfo } from './modals/RateApp';
+import { SUPER_ADMIN } from '../Init';
 
 const DialogsComponent = React.memo((props: PageProps) => {
     const messenger = getMessenger();
@@ -68,6 +69,9 @@ const DialogsComponent = React.memo((props: PageProps) => {
 
     React.useEffect(() => {
         (async () => {
+            if (!SUPER_ADMIN) {
+                return;
+            }
             let rateAppMeta = await getRateAppInfo();
 
             if (rateAppMeta.stopShowingRating) {

@@ -40,6 +40,7 @@ const rateOptions = {
     AppleAppID: '1435537685',
     GooglePackageName: 'com.openland.app',
     preferInApp: true,
+    openAppStoreIfInAppFails: false,
 };
 
 const RateApp = (props: { ctx: ModalProps }) => {
@@ -75,7 +76,7 @@ const RateApp = (props: { ctx: ModalProps }) => {
             />
             <View paddingHorizontal={32} marginTop={16}>
                 <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, textAlign: 'center' }}>
-                    Enjoy using Openland?
+                    Enjoying Openland?
                 </Text>
                 <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginTop: 6 }}>
                     Rate the app on {Platform.select({ ios: 'App Store', android: 'Google Play' })}
