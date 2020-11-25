@@ -5,5 +5,5 @@ export const isInternalLink = (l: string) => {
     if (url.host.length === 0) {
         url = parse('http://' + l, {});
     }
-    return ['http:', 'https:', ''].includes(url.protocol) && ['openland.com', 'next.openland.com', 'app.openland.com'].includes(url.host);
+    return ['http:', 'https:', ''].includes(url.protocol) && ['openland.com', 'next.openland.com'].includes(url.host);
 };
