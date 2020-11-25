@@ -9,7 +9,6 @@ import { InitTexts } from 'openland-web/pages/init/_text';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useClient } from 'openland-api/useClient';
-import * as Cookie from 'js-cookie';
 import {
     Wrapper,
     Title,
@@ -27,7 +26,6 @@ import { AuthHeaderConfig } from './root.page';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { TextCaption } from 'openland-web/utils/TextStyles';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
-import { ResolvedInvite } from 'openland-api/spacex.types';
 import { trackEvent } from 'openland-x-analytics';
 
 const captionText = css`
