@@ -16,6 +16,7 @@ import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { GlobalSearchEntryKind } from 'openland-api/spacex.types';
 import { SetTabContext } from './Home';
+import { getRateAppInfo, rateApp, setRateAppInfo } from './modals/RateApp';
 
 const DialogsComponent = React.memo((props: PageProps) => {
     const messenger = getMessenger();
@@ -64,6 +65,31 @@ const DialogsComponent = React.memo((props: PageProps) => {
         ) : messenger.getDialogs(setTab);
 
     const globalSearchValue = props.router.params.searchValue;
+
+    React.useEffect(() => {
+        (async () => {
+            let rateAppMeta = await getRateAppInfo();
+
+            if (rateAppMeta.stopShowingRating) {
+                return;
+            }
+
+            if (rateAppMeta.appOpenedCount === 2) {
+                rateApp();
+                setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, firstSeenTimestamp: Date.now() }));
+                return;
+            }
+
+            let twoDaysInMs = 48 * 3.6e6;
+            if (rateAppMeta.firstSeenTimestamp && (Date.now() - rateAppMeta.firstSeenTimestamp > twoDaysInMs)) {
+                rateApp();
+                setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, stopShowingRating: true }));
+                return;
+            }
+
+            setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1 }));
+        })();
+    }, []);
 
     return (
         <ZTrack event="mail_view">
