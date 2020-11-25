@@ -288,32 +288,24 @@ export const resolveOrgButton = (organization: OrgT, noLogin: boolean, inviteKey
 // };
 
 export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') => {
-    // console.log(window.location);
-    // console.log(os);
+    const iosStore = 'https://apps.apple.com/ru/app/openland-messenger/id1435537685';
+    const androidStore = 'https://play.google.com/store/apps/details?id=com.openland.app';
 
     React.useEffect(() => {
         if (window.location.search === '?q=store') {
-            window.location.href = 'https://apps.apple.com/ru/app/openland-messenger/id1435537685';
+            window.location.href = iosStore;
         }
     }, [window.location]);
 
     const androidOsClick = React.useCallback(() => {
         window.location.href = 'openland://deep' + window.location.pathname;
         setTimeout(() => {
-            window.location.href = 'https://play.google.com/store/apps/details?id=com.openland.app';
+            window.location.href = androidStore;
         }, 300);
     }, []);
 
     const iosClick = React.useCallback(() => {
-        window.location.href = 'openland://deep' + window.location.pathname;
-        setTimeout(() => {
-            window.location.href = window.location.origin + window.location.pathname + '?q=store';
-        }, 150);
-
-        // window.location.href = window.location.origin + window.location.pathname + '?q=store';
-        // setTimeout(() => {
-        //     showMobileModal();
-        // }, 300);
+        window.location.href = window.location.origin + window.location.pathname + '?q=store';
     }, []);
     return (
         <UButton
