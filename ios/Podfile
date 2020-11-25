@@ -72,7 +72,7 @@ target 'openland' do
 
   pod 'RCTRestart', :path => '../node_modules/react-native-restart/ios'
   
-  pod 'RNRate', :path => '../node_modules/react-native-rate/ios'
+  pod 'RNRate', :path => '../node_modules/react-native-rate'
   pod 'react-native-document-picker', :path => '../node_modules/react-native-document-picker'
 
   pod 'ReactNativeIncallManager', :path => '../node_modules/react-native-incall-manager'
