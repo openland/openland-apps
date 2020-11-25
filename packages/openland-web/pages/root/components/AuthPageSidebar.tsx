@@ -141,7 +141,7 @@ const DownloadButton = (props: DownloadButtonProps) => (
     </a>
 );
 
-export const AuthSidebarComponent = React.memo((props: { className?: string }) => {
+export const DesktopSidebar = React.memo((props: { className?: string }) => {
     return (
         <div className={cx(sidebarContainer, props.className)}>
             <XView path={'/'} hoverTextDecoration="none" cursor="pointer">
@@ -177,7 +177,7 @@ const mobileHeaderContainer = css`
     align-self: stretch;
 `;
 
-export const AuthMobileHeader = React.memo(() => {
+export const MobileSidebar = React.memo(() => {
     const theme = useTheme();
     const os = detectOS();
     let path = 'https://oplnd.com/ios';

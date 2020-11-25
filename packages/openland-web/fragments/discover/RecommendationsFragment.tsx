@@ -1,13 +1,13 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
 import { showModalBox } from 'openland-x/showModalBox';
-import { DiscoverOnLocalState } from 'openland-web/pages/onboarding/discover.page';
+import { DiscoverStart } from 'openland-web/fragments/onboarding/DiscoverStart';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { DiscoverRecommendationsStart } from './components/DiscoverRecommendationsStart';
-import { XView } from 'react-mental';
 import { JoinButton } from './components/JoinButton';
 
 export const RecommendationsFragment = React.memo(() => {
@@ -18,7 +18,7 @@ export const RecommendationsFragment = React.memo(() => {
 
     const onStartClick = React.useCallback(() => {
         showModalBox({ fullScreen: true }, (ctx) => (
-            <DiscoverOnLocalState fullHeight={true} onJoinChats={ctx.hide} />
+            <DiscoverStart onJoinChats={ctx.hide} />
         ));
     }, []);
 

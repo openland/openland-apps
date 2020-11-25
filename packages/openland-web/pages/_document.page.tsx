@@ -105,8 +105,6 @@ export default class OpenlandDocument extends Document {
 
             if (originalUrl.startsWith('/invite/')) {
                 inviteKey = originalUrl.slice('/invite/'.length);
-            } else if (originalUrl.startsWith('/joinChannel/')) {
-                inviteKey = originalUrl.slice('/joinChannel/'.length);
             } else if (originalUrl.startsWith('/discover/collections/')) {
                 collectionId = originalUrl.slice('/discover/collections/'.length);
             }

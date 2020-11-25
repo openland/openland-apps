@@ -30,8 +30,6 @@ routes.add('/signin', '/auth/root');
 routes.add('/signin/', '/auth/root');
 routes.add('/signin/invite', '/auth/root');
 routes.add('/signin/invite/', '/auth/root');
-routes.add('/need_info', '/init/need_info');
-routes.add('/need_info/', '/init/need_info');
 routes.add('/suspended', '/init/suspended');
 routes.add('/suspended/', '/init/suspended');
 routes.add('/createProfile', '/auth/root');
@@ -54,8 +52,6 @@ routes.add('/discover/home', '/unicorn/index');
 routes.add('/discover/home/', '/unicorn/index');
 routes.add('/discover/recommendations', '/unicorn/index');
 routes.add('/discover/recommendations/', '/unicorn/index');
-routes.add('/discover/groups', '/unicorn/index');
-routes.add('/discover/groups/', '/unicorn/index');
 routes.add('/discover/communities', '/unicorn/index');
 routes.add('/discover/communities/', '/unicorn/index');
 routes.add('/discover/people', '/unicorn/index');
@@ -90,17 +86,6 @@ routes.add('/channels/edit/:id', '/unicorn/index');
 routes.add('/channels/edit/:id/', '/unicorn/index');
 
 //
-// Onboardinng
-//
-
-routes.add('/onboarding/start', '/onboarding/start');
-routes.add('/onboarding/start/', '/onboarding/start/');
-routes.add('/onboarding/chats-for-you', '/onboarding/chats-for-you');
-routes.add('/onboarding/chats-for-you/', '/onboarding/chats-for-you/');
-routes.add('/onboarding/discover', '/onboarding/discover');
-routes.add('/onboarding/discover/', '/onboarding/discover/');
-
-//
 // Invites
 //
 
@@ -108,14 +93,6 @@ routes.add('/join/:inviteKey', '/unicorn/index');
 routes.add('/join/:inviteKey/', '/unicorn/index');
 routes.add('/invite/:inviteKey', '/unicorn/index');
 routes.add('/invite/:inviteKey/', '/unicorn/index');
-routes.add('/resolveInvite/:inviteKey', '/init/resolveInvite');
-routes.add('/resolveInvite/:inviteKey/', '/init/resolveInvite');
-routes.add('/joinChannel/:inviteKey', '/init/resolveInvite');
-routes.add('/joinChannel/:inviteKey/', '/init/resolveInvite');
-routes.add('/resolveInvite/:inviteKey', '/init/resolveInvite');
-routes.add('/resolveInvite/:inviteKey/', '/init/resolveInvite');
-routes.add('/acceptChannelInvite/:invite', '/init/acceptChannelInvite');
-routes.add('/acceptChannelInvite/:invite/', '/init/acceptChannelInvite');
 
 //
 // Mail
@@ -136,37 +113,26 @@ routes.add('/notifications/', '/unicorn/index');
 
 routes.add('/ui', '/dev/ui/typo');
 routes.add('/ui/', '/dev/ui/typo');
-
 routes.add('/ui/list', '/dev/ui/list');
 routes.add('/ui/list/', '/dev/ui/list');
-
 routes.add('/ui/buttons', '/dev/ui/buttons');
 routes.add('/ui/buttons/', '/dev/ui/buttons');
-
 routes.add('/ui/inputs', '/dev/ui/inputs');
 routes.add('/ui/inputs/', '/dev/ui/inputs');
-
 routes.add('/ui/modals', '/dev/ui/modals');
 routes.add('/ui/modals/', '/dev/ui/modals');
-
 routes.add('/ui/rick', '/dev/ui/rick');
 routes.add('/ui/rick/', '/dev/ui/rick');
-
 routes.add('/ui/shortcuts', '/dev/ui/shortcuts');
 routes.add('/ui/shortcuts/', '/dev/ui/shortcuts');
-
 routes.add('/ui/video', '/dev/ui/video');
 routes.add('/ui/video/', '/dev/ui/video');
-
 routes.add('/ui/avatars', '/dev/ui/avatars');
 routes.add('/ui/avatars/', '/dev/ui/avatars');
-
 routes.add('/ui/checkbox', '/dev/ui/checkbox');
 routes.add('/ui/checkbox/', '/dev/ui/checkbox');
-
 routes.add('/ui/scroll', '/dev/ui/scroll');
 routes.add('/ui/scroll/', '/dev/ui/scroll');
-
 routes.add('/ui/pegasus', '/dev/ui/pegasus');
 routes.add('/ui/pegasus/', '/dev/ui/pegasus');
 

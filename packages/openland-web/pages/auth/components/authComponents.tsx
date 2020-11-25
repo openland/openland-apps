@@ -8,6 +8,35 @@ import { UInput, UInputProps } from 'openland-web/components/unicorn/UInput';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import { UToast, UToastProps } from 'openland-web/components/unicorn/UToast';
 
+const wrapperClassName = css`
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+`;
+
+export const Wrapper = React.forwardRef(
+    (props: { children: any }, ref: React.RefObject<HTMLDivElement>) => {
+        return (
+            <div className={wrapperClassName} ref={ref}>
+                <XView
+                    backgroundColor="var(--backgroundPrimary)"
+                    flexGrow={1}
+                    flexShrink={0}
+                    flexBasis={0}
+                    width="100%"
+                    height="100%"
+                >
+                    <XView flexShrink={1} flexGrow={1} flexBasis={0}>
+                        {props.children}
+                    </XView>
+                </XView>
+            </div>
+        );
+    },
+);
+
 export const textClassName = css`
     text-align: center;
     color: var(--foregroundPrimary);

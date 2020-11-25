@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { DiscoverOnLocalState } from 'openland-web/pages/onboarding/discover.page';
+import { DiscoverStart } from 'openland-web/fragments/onboarding/DiscoverStart';
 import { showWriteFirstMessageModal } from 'openland-web/fragments/onboarding/showWriteFirstMessageModal';
 import { InviteFriendsFullscreen } from 'openland-web/fragments/settings/SettingsInviteFriendsFragment';
 import { DownloadAppsComponent } from 'openland-web/fragments/settings/SettingsDownloadAppsFragment';
@@ -79,7 +79,7 @@ export const resolveLinkAction = (url: string | null, client: OpenlandClient, ro
             action_type: 'complete_chat_navigator'
         });
         showModalBox({ fullScreen: true }, ctx => (
-            <DiscoverOnLocalState fullHeight={true} onJoinChats={ctx.hide} />
+            <DiscoverStart onJoinChats={ctx.hide} />
         ));
     } else if (url === '/onboarding_send_first_message') {
         trackEvent('billy_bot_button_action', {

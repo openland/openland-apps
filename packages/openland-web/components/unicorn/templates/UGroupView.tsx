@@ -26,7 +26,7 @@ const featuredIcon = css`
     margin-left: 4px;
 `;
 
-export const UGroupView = React.memo((props: { group: SharedRoomView & { newMessages?: number }, disableHover?: boolean, rightElement?: JSX.Element, path?: string }) => {
+export const UGroupView = React.memo((props: { group: SharedRoomView & { newMessages?: number }, disableHover?: boolean, rightElement?: JSX.Element, path?: string | null }) => {
     const { id, photo, title, membersCount, newMessages, featured } = props.group;
     const description = newMessages
         ? plural(newMessages, ['new message', 'new messages'])
@@ -51,7 +51,7 @@ export const UGroupView = React.memo((props: { group: SharedRoomView & { newMess
             description={description}
             avatar={{ photo, id, title }}
             useRadius={true}
-            path={props.path || ('/mail/' + id)}
+            path={props.path === null ? undefined : props.path || ('/mail/' + id)}
             disableHover={props.disableHover}
             rightElement={props.rightElement}
         />

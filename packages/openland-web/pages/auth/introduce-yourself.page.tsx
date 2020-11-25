@@ -10,8 +10,8 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useClient } from 'openland-api/useClient';
 import * as Cookie from 'js-cookie';
-import { Wrapper } from '../onboarding/components/wrapper';
 import {
+    Wrapper,
     Title,
     Subtitle,
     FormLayout,
@@ -206,7 +206,7 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
             </XView>
             <AuthActionButton
                 loading={sending}
-                text={InitTexts.create_profile.next}
+                text={InitTexts.auth.next}
                 onClick={handleNext}
             />
             <p className={cx(TextCaption, captionText, textClassName)}>

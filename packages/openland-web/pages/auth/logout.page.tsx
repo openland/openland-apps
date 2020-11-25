@@ -10,9 +10,9 @@ export default class LogoutHandler extends React.Component<{}, {}> {
     componentDidMount() {
         Cookie.remove('x-openland-org', { path: '/' });
         Cookie.remove('x-openland-token', { path: '/' });
-        Cookie.remove('sign-redirect', { path: '/' });
 
         Cookie.remove('x-openland-app-invite', { path: '/' });
+        Cookie.remove('x-openland-org-invite', { path: '/' });
         localStorage.removeItem('app-inviter-name');
         Cookie.remove('x-openland-invite', { path: '/' });
         Cookie.remove('x-openland-shortname', { path: '/' });

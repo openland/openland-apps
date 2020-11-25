@@ -2,14 +2,19 @@ import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
-import { BackSkipLogo } from '../components/BackSkipLogo';
+import { BackSkipLogo } from 'openland-web/pages/components/BackSkipLogo';
 import { useClient } from 'openland-api/useClient';
 import { SuggestedRooms_suggestedRooms_SharedRoom } from 'openland-api/spacex.types';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XLoader } from 'openland-x/XLoader';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
-import { Wrapper } from './components/wrapper';
-import { Title, Subtitle, AuthActionButton, FormLayout } from '../auth/components/authComponents';
+import {
+    Wrapper,
+    Title,
+    Subtitle,
+    AuthActionButton,
+    FormLayout,
+} from 'openland-web/pages/auth/components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { CheckComponent } from 'openland-web/components/unicorn/UCheckbox';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
@@ -162,16 +167,12 @@ const ChatsItemList = ({
 };
 
 export const ChatsForYou = ({
-    noTopBar,
     onBack,
     onSkip,
-    fullHeight,
     onJoinChats,
 }: {
-    noTopBar?: boolean;
     onSkip?: (event: React.MouseEvent) => void;
     onBack: (event: React.MouseEvent) => void;
-    fullHeight?: boolean;
     onJoinChats?: Function;
 }) => {
     const client = useClient();
@@ -206,7 +207,7 @@ export const ChatsForYou = ({
     }, [data.suggestedRooms]);
 
     return (
-        <Wrapper fullHeight={fullHeight} ref={wrapperRef}>
+        <Wrapper ref={wrapperRef}>
             <XDocumentHead title="Choose role" />
             <BackSkipLogo onBack={onBack} onSkip={onSkip} />
             <FormLayout

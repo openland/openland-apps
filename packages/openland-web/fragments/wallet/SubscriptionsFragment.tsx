@@ -139,7 +139,7 @@ export const SubscriptionsFragment = React.memo(() => {
                                     shape="square"
                                     size="large"
                                     onClick={() => {
-                                        router.navigate('/discover/groups');
+                                        router.navigate('/discover/premium');
                                     }}
                                 />
 
