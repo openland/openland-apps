@@ -40,6 +40,7 @@ const rateOptions = {
     AppleAppID: '1435537685',
     GooglePackageName: 'com.openland.app',
     preferInApp: true,
+    openAppStoreIfInAppFails: false,
 };
 
 const RateApp = (props: { ctx: ModalProps }) => {
