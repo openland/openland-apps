@@ -312,7 +312,6 @@ export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') =
                 size="large"
                 shape="square"
                 as="a"
-                target="_blank"
                 href={window.location.origin + window.location.pathname + '?q=store'}
             />
         );
