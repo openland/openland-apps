@@ -20,6 +20,7 @@ import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardA
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { formatPhone } from 'openland-y-utils/auth/formatPhone';
 import { isValidDate } from 'openland-y-utils/wallet/dateTime';
+import { SUPER_ADMIN } from '../Init';
 
 const PrivacyLink = React.memo((props: { router: SRouter }) => {
     const theme = useTheme();
@@ -126,9 +127,11 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                     />
                 </ZListGroup>
 
-                <ZListGroup header="Birthday" headerMarginTop={0}>
-                    <ZDateInputField field={birthDayField} />
-                </ZListGroup>
+                {SUPER_ADMIN && (
+                    <ZListGroup header="Birthday" headerMarginTop={0}>
+                        <ZDateInputField field={birthDayField} />
+                    </ZListGroup>
+                )}
 
                 <ZListGroup header="Contacts" headerMarginTop={16}>
                     <ZInput placeholder="Phone" field={phoneField} disabled={true} />
