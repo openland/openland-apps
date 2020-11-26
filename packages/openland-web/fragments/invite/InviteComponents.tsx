@@ -293,9 +293,9 @@ export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') =
 
     React.useEffect(() => {
         if (window.location.search === '?q=store') {
-            window.location.replace(os === 'iOS' ? iosStore : androidStore);
+            window.location.replace(iosStore);
         }
-    }, [window.location]);
+    }, []);
 
     const onClick = () => {
         const location = window.location;
