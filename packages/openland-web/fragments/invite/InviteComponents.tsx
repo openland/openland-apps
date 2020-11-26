@@ -288,8 +288,8 @@ export const resolveOrgButton = (organization: OrgT, noLogin: boolean, inviteKey
 // };
 
 export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') => {
-    const iosStore = 'https://apps.apple.com/ru/app/openland-messenger/id1435537685';
-    const androidStore = 'https://play.google.com/store/apps/details?id=com.openland.app';
+    const iosStore = 'https://oplnd.com/ios';
+    const androidStore = 'https://oplnd.com/android';
 
     const onClick = () => {
         const location = window.location;
