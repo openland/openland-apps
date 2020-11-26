@@ -296,7 +296,7 @@ export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') =
         window.location.replace('openland://deep' + location.pathname);
         setTimeout(() => {
             window.location.replace(os === 'iOS' ? iosStore : androidStore);
-        }, 500);
+        }, 1000);
     };
 
     return (
