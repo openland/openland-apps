@@ -294,12 +294,12 @@ export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') =
     const onClick = () => {
         setTimeout(() => {
             window.location.replace(os === 'iOS' ? iosStore : androidStore);
-        }, 2000);
+        }, 500);
         const location = window.location;
         if (os === 'Android') {
             window.location.replace('openland://deep' + location.pathname);
         } else {
-            window.location.replace('http://' + location.hostname + location.pathname);
+            window.location.replace('https://openland.com' + location.pathname);
         }
     };
 
