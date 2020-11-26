@@ -80,6 +80,7 @@ class RNAsyncKeyboardView: RCTView {
   }
 
   @objc public func setOverrideTransform(_ overrideTransform: CGFloat) {
+    self.recalculateSize()
     self.overrideTransform = overrideTransform
     if self.overrideTransform > 0 {
       self.transform = CGAffineTransform(translationX: 0, y: -self.overrideTransform)

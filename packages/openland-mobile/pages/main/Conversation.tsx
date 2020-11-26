@@ -328,7 +328,14 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     handleStickerKeyboardButtonPress = () => {
         if (!this.state.keyboardOpened && !this.state.stickerKeyboardShown) {
-            this.inputRef.current?.focus();
+            if (Platform.OS === 'ios') {
+                this.waitingForKeyboard = true;
+                this.shouldHideStickerKeyboard = false;
+                this.inputRef.current?.focus();
+                this.inputRef.current?.blur();
+            } else {
+                this.inputRef.current?.focus();
+            }
             return;
         }
         let prevCount = ++this.stickerButtonPressedCount;
@@ -631,7 +638,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                             if (this.waitingForKeyboard && keyboardOpened) {
                                 this.stickerKeyboardHeight = this.openKeyboardHeight;
                                 this.waitingForKeyboard = false;
-                                this.setState({ keyboardHeight: 0, stickerKeyboardShown: true }, () => {
+                                this.setState({ keyboardHeight: 0, stickerKeyboardShown: true, isStickersOpaque: true, hasStickerTranslation: false }, () => {
                                     if (this.inputRef.current && this.inputRef.current.isFocused()) {
                                         this.inputRef.current.blur();
                                     }
