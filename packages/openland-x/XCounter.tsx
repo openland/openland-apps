@@ -40,6 +40,8 @@ const counterBigStyle = css`
     border-radius: 20px;
 `;
 
+const getCounterValue = (count: number) => count > 1000 ? `${Math.floor(count / 1000)}K+` : count;
+
 const XCounterBig = (props: XCounterProps) => (
     <div
         className={cx(
@@ -49,7 +51,7 @@ const XCounterBig = (props: XCounterProps) => (
             props.active && activeStyle,
         )}
     >
-        {props.count}
+        {getCounterValue(props.count)}
     </div>
 );
 
@@ -72,7 +74,7 @@ const XCounterSmall = (props: XCounterProps) => (
             props.active && activeStyle,
         )}
     >
-        {props.count}
+        {getCounterValue(props.count)}
     </div>
 );
 
