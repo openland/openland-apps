@@ -117,7 +117,7 @@ export const HomeHelp = React.forwardRef((props: {}, ref: React.Ref<HTMLDivEleme
             <div className={title}>Always here to help</div>
 
             <div className={items}>
-                <a href="https://www.notion.so/openland/Why-The-World-Needs-a-New-Social-Network-a1f8dcd410264613a2035d1ad53b83fc" target="_blank" className={item}>
+                <a href="https://www.notion.so/openland/Openland-Product-Updates-636c05fad9ec4579ac4b4b8bca0bfe59" target="_blank" className={item}>
                     <div className={itemImage}>
                         <img
                             src="https://cdn.openland.com/shared/landing/start/home-article-01.png"
@@ -126,12 +126,12 @@ export const HomeHelp = React.forwardRef((props: {}, ref: React.Ref<HTMLDivEleme
                         />
                     </div>
                     <div className={itemInfo}>
-                        <div className={itemTag}>Manifesto</div>
-                        <div className={itemText}>Why the world needs a&nbsp;new&nbsp;social network</div>
+                        <div className={itemTag}>What's New</div>
+                        <div className={itemText}>Openland Product Updates</div>
                     </div>
                 </a>
 
-                <a href="https://www.notion.so/openland/Welcome-guide-a249051153614aef9c5b87ad8b2ef0ac" target="_blank" className={item}>
+                <a href="https://www.notion.so/openland/Openland-User-Guide-2af553fb409a42c296651e708d5561f3" target="_blank" className={item}>
                     <div className={itemImage}>
                         <img
                             src="https://cdn.openland.com/shared/landing/start/home-article-02.png"
@@ -140,8 +140,8 @@ export const HomeHelp = React.forwardRef((props: {}, ref: React.Ref<HTMLDivEleme
                         />
                     </div>
                     <div className={itemInfo}>
-                        <div className={itemTag}>Welcome guide</div>
-                        <div className={itemText}>Making friends through communities</div>
+                        <div className={itemTag}>Product</div>
+                        <div className={itemText}>Openland User Guide</div>
                     </div>
                 </a>
 

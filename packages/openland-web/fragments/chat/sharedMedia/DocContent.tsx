@@ -70,7 +70,7 @@ export const DocContent = (props: { item: SharedItemFile, chatId: string,  profi
     const wrapperClassName = cx(
         DocumentContentContainerClass,
         props.profileView && DocumentContentContainerProfileClass,
-        layout === 'mobile' && MobilePadding,
+        layout === 'mobile' && !props.profileView && MobilePadding,
     );
 
     return (

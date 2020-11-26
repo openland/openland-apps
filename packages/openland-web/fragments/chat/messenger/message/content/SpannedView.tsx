@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { XViewRouterContext, XViewRouter, XView } from 'react-mental';
+import { XViewRouterContext, XViewRouter, XView, XViewRouteContext } from 'react-mental';
 import { UserPopperContent } from 'openland-web/components/EntityPopperContent';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { EntityPopperContent } from 'openland-web/components/EntityPopperContent';
 import { MentionItemComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';
-import { useGlobalSearch } from 'openland-unicorn/components/TabLayout';
 import { Span } from 'openland-y-utils/spans/Span';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { ULink } from 'openland-web/components/unicorn/ULink';
@@ -16,6 +15,7 @@ import { plural } from 'openland-y-utils/plural';
 import { isInviteLink, InviteLink } from './InviteContent';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { XLoader } from 'openland-x/XLoader';
+import { ChatSearchContext } from 'openland-web/pages/root/AppContainer';
 
 const boldTextClassName = css`
     font-weight: bold;
@@ -49,6 +49,10 @@ const ironyTextClassName = css`
     color: var(--accentNegative);
 `;
 
+const searchHighlightClassName = css`
+    background-color: var(--accentPrimaryTrans);
+`;
+
 const codeInlineClassName = css`
     padding-left: 6px;
     padding-right: 6px;
@@ -79,8 +83,8 @@ const loudTextClassName = css`
 `;
 
 const onlyEmojiClassName = css`
-    font-size: 38px;
-    line-height: 38px;
+    font-size: var(--emoji-size);
+    line-height: var(--emoji-size);
 `;
 
 const rotatingTextClassName = css`
@@ -116,11 +120,12 @@ const mentionServiceClassName = css`
 `;
 
 const mentionClassName = css`
-    color: var(--accentMuted);
+    cursor: pointer;
+    color: var(--accentPrimary);
     font-weight: 600;
 
     &:hover {
-        color: var(--accentMuted);
+        color: var(--accentPrimary);
         text-decoration: none;
     }
 `;
@@ -150,11 +155,12 @@ const MentionedUserPopperContent = React.memo(
 const MentionedUser = React.memo(
     (props: { userId: string; children: any; isService?: boolean }) => {
         const engine = React.useContext(MessengerContext);
+        const router = React.useContext(XViewRouterContext)!;
         const { userId, children, isService } = props;
 
         const useWrapper = userId !== engine.user.id;
 
-        const [, show] = usePopper(
+        const [, show, instantHide] = usePopper(
             {
                 placement: 'top',
                 hideOnLeave: true,
@@ -178,9 +184,14 @@ const MentionedUser = React.memo(
             ),
         );
         return (
-            <span onMouseEnter={show}>
-                <ULink
-                    path={`/${userId}`}
+            <span>
+                <span
+                    onMouseEnter={show}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        instantHide();
+                        router.navigate(`/${userId}`);
+                    }}
                     className={cx(
                         mentionClassName,
                         userId === engine.user.id && !isService && mentionBgClassName,
@@ -189,7 +200,7 @@ const MentionedUser = React.memo(
                     )}
                 >
                     {children}
-                </ULink>
+                </span>
             </span>
         );
     },
@@ -228,7 +239,7 @@ const MentionedOtherUsersPopperContent = React.memo(
                             {findSpans.users.map((user, i) => (
                                 <XView
                                     key={`user-${user.name}-${i}`}
-                                    hoverBackgroundColor="var(--backgroundPrimaryHover)"
+                                    hoverBackgroundColor="var(--backgroundTertiaryTrans)"
                                     cursor="pointer"
                                     path={`/${user.shortname || user.id}`}
                                     onClick={() => props.hide()}
@@ -241,8 +252,8 @@ const MentionedOtherUsersPopperContent = React.memo(
                                             user.isBot
                                                 ? 'Bot'
                                                 : user.primaryOrganization
-                                                    ? user.primaryOrganization.name
-                                                    : undefined
+                                                ? user.primaryOrganization.name
+                                                : undefined
                                         }
                                     />
                                 </XView>
@@ -325,6 +336,7 @@ const MentionedGroupPopperContent = React.memo((props: { groupId: string; hide: 
             title={group.__typename === 'SharedRoom' ? group.title : group.user.name}
             photo={group.__typename === 'SharedRoom' ? group.photo : group.user.photo}
             hidePopper={props.hide}
+            featured={group.__typename === 'SharedRoom' && group.featured}
         />
     );
 });
@@ -332,8 +344,8 @@ const MentionedGroupPopperContent = React.memo((props: { groupId: string; hide: 
 const MentionedGroup = React.memo(
     (props: { groupId: string; children: any; isService?: boolean }) => {
         const { groupId, children, isService } = props;
-
-        const [, show] = usePopper(
+        const router = React.useContext(XViewRouterContext)!;
+        const [, show, instantHide] = usePopper(
             {
                 placement: 'top',
                 hideOnLeave: true,
@@ -350,18 +362,19 @@ const MentionedGroup = React.memo(
             ),
         );
 
-        const router = React.useContext(XViewRouterContext)!;
-
         return (
-            <span onMouseEnter={show}>
-                <ULink
-                    onClick={() =>
+            <span>
+                <span
+                    onMouseEnter={show}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        instantHide();
                         openEntity({
                             isGroup: true,
                             entity: groupId,
                             router,
-                        })
-                    }
+                        });
+                    }}
                     className={cx(
                         mentionClassName,
                         isService && mentionServiceClassName,
@@ -369,7 +382,7 @@ const MentionedGroup = React.memo(
                     )}
                 >
                     {children}
-                </ULink>
+                </span>
             </span>
         );
     },
@@ -394,6 +407,7 @@ const MentionedOrgPopperContent = React.memo(
                 title={organization.name}
                 photo={organization.photo}
                 hidePopper={props.hide}
+                featured={organization.featured}
             />
         );
     },
@@ -402,8 +416,8 @@ const MentionedOrgPopperContent = React.memo(
 const MentionedOrganization = React.memo(
     (props: { organizationId: string; children: any; isService?: boolean }) => {
         const { organizationId, children, isService } = props;
-
-        const [, show] = usePopper(
+        const router = React.useContext(XViewRouterContext)!;
+        const [, show, instantHide] = usePopper(
             {
                 placement: 'top',
                 hideOnLeave: true,
@@ -419,17 +433,19 @@ const MentionedOrganization = React.memo(
                 </React.Suspense>
             ),
         );
-        const router = React.useContext(XViewRouterContext)!;
         return (
-            <span onMouseEnter={show}>
-                <ULink
-                    onClick={() =>
+            <span>
+                <span
+                    onMouseEnter={show}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        instantHide();
                         openEntity({
                             isGroup: false,
                             entity: organizationId,
                             router,
-                        })
-                    }
+                        });
+                    }}
                     className={cx(
                         mentionClassName,
                         isService && mentionServiceClassName,
@@ -437,18 +453,23 @@ const MentionedOrganization = React.memo(
                     )}
                 >
                     {children}
-                </ULink>
+                </span>
             </span>
         );
     },
 );
 
-const HashtagView = React.memo((props: { text?: string; children: any }) => {
-    const globalSearch = useGlobalSearch();
+const HashtagView = React.memo((props: { text?: string; children: any, chatId?: string }) => {
+    const chatSearchContext = React.useContext(ChatSearchContext);
+    const router = React.useContext(XViewRouterContext)!;
+    const route = React.useContext(XViewRouteContext)!;
 
     const handleClick = () => {
-        if (props.text) {
-            globalSearch.onChange(props.text);
+        if (props.chatId && route.path.indexOf('/mail/') !== 0) {
+            router.navigate(`/mail/${props.chatId}`);
+            setTimeout(() => chatSearchContext!.setChatSearchState({ chatId: props.chatId!, initialQuery: props.text }), 800);
+        } else {
+            chatSearchContext!.setChatSearchState({ chatId: props.chatId!, initialQuery: props.text });
         }
     };
 
@@ -459,16 +480,17 @@ export const SpanView = React.memo<{
     span: Span;
     children?: any;
     isService?: boolean;
+    chatId?: string;
     mId?: string;
 }>((props) => {
-    const { span, children } = props;
+    const { span, children, chatId } = props;
     if (span.type === 'link') {
         if (isInviteLink(span.link)) {
             return <InviteLink link={span.link}>{children}</InviteLink>;
         }
         return <ULink href={span.link}>{children}</ULink>;
     } else if (span.type === 'hashtag') {
-        return <HashtagView text={span.textRaw}>{children}</HashtagView>;
+        return <HashtagView text={span.textRaw} chatId={chatId}>{children}</HashtagView>;
     } else if (span.type === 'bold') {
         return (
             <span className={cx(boldTextClassName, props.isService && boldTextServiceClassName)}>
@@ -481,6 +503,8 @@ export const SpanView = React.memo<{
         return <span className={cx(loudTextClassName, TextTitle2)}>{children}</span>;
     } else if (span.type === 'rotating') {
         return <span className={cx(rotatingTextClassName, TextTitle2)}>{children}</span>;
+    } else if (span.type === 'search_highlight') {
+        return <span className={searchHighlightClassName}>{children}</span>;
     } else if (span.type === 'insane') {
         return <span className={cx(insaneTextClassName, TextTitle2)}>{children}</span>;
     } else if (span.type === 'irony') {
@@ -523,8 +547,13 @@ export const SpanView = React.memo<{
     return props.children ? <span>{props.children}</span> : null;
 });
 
-export const SpannedView = React.memo<{ spans: Span[]; isService?: boolean; mId?: string }>(
-    (props) => {
-        return <>{renderSpans(SpanView, props.spans, props.isService, props.mId)}</>;
-    },
-);
+interface SpannedViewProps {
+    spans: Span[];
+    isService?: boolean;
+    mId?: string;
+    chatId?: string;
+}
+
+export const SpannedView = React.memo((props: SpannedViewProps) => {
+    return <>{renderSpans(SpanView, props.spans, props.isService, props.mId, props.chatId)}</>;
+});

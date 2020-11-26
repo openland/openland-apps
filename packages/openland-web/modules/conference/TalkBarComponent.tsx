@@ -2,8 +2,7 @@ import * as React from 'react';
 import { useTalkWatch } from './useTalkWatch';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
-import { ChatInfo } from 'openland-web/fragments/chat/types';
-import { Conference_conference_peers_user } from 'openland-api/spacex.types';
+import { Conference_conference_peers_user, RoomChat_room } from 'openland-api/spacex.types';
 import { css } from 'linaria';
 import { useVideoCallModal } from './CallModal';
 import { UTopBar } from 'openland-web/components/unicorn/UTopBar';
@@ -36,7 +35,7 @@ const getSubtitle = (users: Conference_conference_peers_user[]) => {
                     );
 };
 
-export const TalkBarComponent = (props: { chat: ChatInfo }) => {
+export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
     let messenger = React.useContext(MessengerContext);
     let calls = messenger.calls;
     let currentSession = calls.useCurrentSession();

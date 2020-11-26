@@ -1,0 +1,160 @@
+#
+# Updates
+#
+
+fragment ShortUpdate on UpdateEvent {
+    ... on UpdateMyProfileChanged {
+        user {
+            id
+            firstName
+            lastName
+        }
+    }
+    ... on UpdateChatDraftChanged {
+        cid
+        draft
+        version
+        date
+    }
+    ... on UpdateSettingsChanged {
+        settings {
+            ...SettingsFull
+        }
+    }
+}
+
+#
+# Sequences
+#
+
+fragment ShortSequenceChat on SequenceChat {
+    id
+    cid
+    draft {
+        version
+        message
+        date
+    }
+}
+
+fragment ShortSequenceCommon on SequenceCommon {
+    id
+    settings {
+        ...SettingsFull
+    }
+}
+
+fragment ShortSequence on Sequence {
+    id
+    ... on SequenceChat {
+        id
+        ...ShortSequenceChat
+    }
+    ... on SequenceCommon {
+        id
+        ...ShortSequenceCommon
+    }
+}
+
+#
+# Watch
+#
+
+subscription WatchUpdates {
+    watchUpdates {
+        ... on UpdateSubscriptionStarted {
+            seq
+            state
+        }
+        ... on UpdateSubscriptionCheckpoint {
+            seq
+            state
+        }
+        ... on UpdateSubscriptionEvent {
+            seq
+            pts
+            sequence {
+                id
+            }
+            event {
+                ...ShortUpdate
+            }
+        }
+    }
+}
+
+#
+# State
+#
+
+query GetState {
+    updatesState {
+        seq
+        state
+        sequences {
+            pts
+            sequence {
+                ...ShortSequence
+            }
+        }
+    }
+}
+
+query GetDifference($state: String!) {
+    updatesDifference(state: $state) {
+        seq
+        state
+        hasMore
+        sequences {
+            after
+            events {
+                pts
+                event {
+                    ...ShortUpdate
+                }
+            }
+            sequence {
+                ...ShortSequence
+            }
+        }
+    }
+}
+
+query GetSequenceState($id: ID!) {
+    sequenceState(id: $id) {
+        pts
+        seq
+        sequence {
+            ...ShortSequence
+        }
+    }
+}
+
+query GetSequenceDifference($id: ID!, $pts: Int!) {
+    sequenceDifference(id: $id, pts: $pts) {
+        sequence {
+            ...ShortSequence
+        }
+        events {
+            pts
+            event {
+                ...ShortUpdate
+            }
+        }
+        after
+        hasMore
+        seq
+    }
+}
+
+query GetInitialDialogs($after: String) {
+    syncUserChats(first: 500, after: $after) {
+        items {
+            sequence {
+                ...ShortSequence
+            }
+            pts
+        }
+        cursor
+    }
+}

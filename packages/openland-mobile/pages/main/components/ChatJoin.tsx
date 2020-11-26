@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Alert, StyleSheet, ViewStyle, TextStyle, Platform } from 'react-native';
+import { View, Text, Alert, StyleSheet, ViewStyle, TextStyle, Platform, Image } from 'react-native';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { ZText } from 'openland-mobile/components/ZText';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     } as ViewStyle,
     title: {
         ...TextStyles.Title2,
-        marginTop: 32,
         textAlign: 'center',
     } as TextStyle,
     description: {
@@ -48,26 +47,13 @@ const styles = StyleSheet.create({
 });
 
 interface ChatJoinProps {
-    room: RoomTiny_room_SharedRoom;
+    room: Omit<RoomTiny_room_SharedRoom, 'featured'>;
     theme: ThemeGlobal;
     router: SRouter;
 }
 
 interface ChatJoinComponentProps {
-    room: Pick<
-        ChatJoin_room_SharedRoom,
-        | 'id'
-        | 'title'
-        | 'photo'
-        | 'description'
-        | 'membersCount'
-        | 'previewMembers'
-        | 'isChannel'
-        | 'isPremium'
-        | 'premiumPassIsActive'
-        | 'premiumSettings'
-        | 'premiumSubscription'
-    >;
+    room: ChatJoin_room_SharedRoom;
     ownerId?: string;
     theme: ThemeGlobal;
     action: () => Promise<any>;
@@ -194,6 +180,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
         membersCount,
         previewMembers = [],
         isChannel,
+        featured,
     } = room;
     const typeStr = isChannel ? 'channel' : 'group';
     const paddingBottom = Platform.OS === 'ios' ? area.bottom || 16 : area.bottom + 16;
@@ -317,13 +304,21 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
         <View style={{ flexGrow: 1, paddingTop: area.top, paddingBottom }}>
             <View style={styles.container}>
                 {joinAvatars}
-                <Text
-                    style={[styles.title, { color: theme.foregroundPrimary }]}
-                    numberOfLines={3}
-                    allowFontScaling={false}
-                >
-                    {joinTitle}
-                </Text>
+                <View flexDirection="row" marginTop={32}>
+                    <Text
+                        style={[styles.title, { color: theme.foregroundPrimary, }]}
+                        numberOfLines={3}
+                        allowFontScaling={false}
+                    >
+                        {joinTitle}
+                    </Text>
+                    {featured && theme.displayFeaturedIcon && (
+                        <Image
+                            source={require('assets/ic-verified-16.png')}
+                            style={{ tintColor: '#3DA7F2', width: 16, height: 16, flexShrink: 0, marginLeft: 4, marginTop: 2, alignSelf: 'center' }}
+                        />
+                    )}
+                </View>
                 {!!description && (
                     <ZText
                         text={description}
@@ -350,16 +345,11 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
 });
 
 export const ChatJoin = React.memo((props: ChatJoinProps) => {
-    const onJoin = props.router.params.onJoin as (room: RoomTiny_room_SharedRoom) => void;
     const client = getClient();
     const room = client.useChatJoin({ id: props.room.id }).room as ChatJoin_room_SharedRoom;
     const action = React.useCallback(async () => {
         await client.mutateRoomJoin({ roomId: props.room.id });
         await client.refetchRoomTiny({ id: props.room.id });
-
-        if (onJoin) {
-            onJoin(props.room);
-        }
     }, [props.room]);
 
     return (

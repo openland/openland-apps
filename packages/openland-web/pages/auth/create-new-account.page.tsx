@@ -9,7 +9,6 @@ import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { AuthHeaderConfig } from './root.page';
 import { AskAuthDataProps } from './ask-auth-data.page';
-import Cookies from 'js-cookie';
 
 type AuthMechanism = AskAuthDataProps & {
     loginWith: (phone: boolean) => void;
@@ -18,14 +17,12 @@ type AuthMechanism = AskAuthDataProps & {
 const SignUpAuthMechanism = (props: AuthMechanism) => {
     const { loginWith } = props;
     const [width] = useWithWidth();
-    const hasAppInvite = !!Cookies.get('x-openland-app-invite');
-    const inviterName = hasAppInvite ? localStorage.getItem('app-inviter-name') : null;
     return (
         <FormLayout>
             <XView alignItems="center" marginBottom={16}>
                 <Unicorn width="96" height="96" />
             </XView>
-            <Title text={inviterName ? `${inviterName} invites you to join Openland` : 'Openland'} />
+            <Title text="Openland" />
             <Subtitle text="Modern social network built&nbsp;for&nbsp;you,&nbsp;not&nbsp;advertisers" />
 
             <XView alignSelf="center" width={width && width < 400 ? '100%' : 240} marginTop={32}>
@@ -51,10 +48,6 @@ const SignUpAuthMechanism = (props: AuthMechanism) => {
 
 export const CreateNewAccountPage = (props: AuthMechanism) => {
     const router = React.useContext(XRouterContext)!;
-    const isInvite =
-        router.query &&
-        router.query.redirect &&
-        router.query.redirect.includes('acceptChannelInvite');
     return (
         <XView backgroundColor="var(--backgroundPrimary)" flexGrow={1} flexShrink={1}>
             <XDocumentHead title="Login" />
@@ -62,11 +55,7 @@ export const CreateNewAccountPage = (props: AuthMechanism) => {
                 <AuthHeaderConfig
                     mobileTransparent={true}
                     onBack={() => {
-                        if (isInvite) {
-                            router.replace('/joinChannel/' + router.query.redirect.split('/')[2]);
-                        } else {
-                            router.replace('/');
-                        }
+                        router.replace('/');
                     }}
                 />
             )}

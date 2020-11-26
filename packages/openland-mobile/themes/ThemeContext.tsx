@@ -35,10 +35,19 @@ export function resolveTheme(appearance: ThemeGlobalKind): ThemeGlobal {
     }
 
     const resolvedAccentObject = getAccentByType(resolvedAccentType);
+    const resolvedOptionsObject = {
+        displayFeaturedIcon: typeof appearance.displayFeaturedIcon !== 'undefined'
+            ? appearance.displayFeaturedIcon
+            : resolvedThemeObject.displayFeaturedIcon,
+        largeEmoji: typeof appearance.largeEmoji !== 'undefined'
+            ? appearance.largeEmoji
+            : resolvedThemeObject.largeEmoji,
+    };
 
     return {
         ...resolvedThemeObject,
-        ...resolvedAccentObject
+        ...resolvedAccentObject,
+        ...resolvedOptionsObject,
     };
 }
 

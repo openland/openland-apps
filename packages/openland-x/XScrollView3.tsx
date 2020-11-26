@@ -107,18 +107,16 @@ const NativeBackend = React.memo<{
     React.useEffect(() => {
         if (props.innerRef && props.innerRef.current) {
             const src = props.innerRef.current;
-            src.addEventListener(
-                'scroll',
-                () => {
-                    requestAnimationFrame(() => {
-                        let scrollHeight = (src as HTMLDivElement).scrollHeight;
-                        let scrollTop = (src as HTMLDivElement).scrollTop;
-                        let clientHeight = (src as HTMLDivElement).clientHeight;
-                        props.onScroll({ scrollHeight, scrollTop, clientHeight });
-                    });
-                },
-                { passive: true },
-            );
+            let handleScroll = () => {
+                requestAnimationFrame(() => {
+                    let scrollHeight = (src as HTMLDivElement).scrollHeight;
+                    let scrollTop = (src as HTMLDivElement).scrollTop;
+                    let clientHeight = (src as HTMLDivElement).clientHeight;
+                    props.onScroll({ scrollHeight, scrollTop, clientHeight });
+                });
+            };
+            src.addEventListener('scroll', handleScroll, { passive: true });
+            handleScroll();
         }
     }, []);
 

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
+import { XView } from 'react-mental';
 import { showModalBox } from 'openland-x/showModalBox';
 import { useClient } from 'openland-api/useClient';
 import { useForm } from 'openland-form/useForm';
@@ -7,9 +8,8 @@ import { useField } from 'openland-form/useField';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { GroupSettingsModalBodyProps, modalSubtitle } from './shared';
-import { TextBody, TextLabel2 } from 'openland-web/utils/TextStyles';
+import { TextBody, TextLabel3 } from 'openland-web/utils/TextStyles';
 import { RadioButtonsSelect } from '../RadioButtonsSelect';
-import { XView } from 'react-mental';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { UButton } from 'openland-web/components/unicorn/UButton';
@@ -27,7 +27,7 @@ const callLinkInputHint = css`
 `;
 
 function isUrlValid(str: string): boolean {
-    return (/^(https?:\/\/)?[^\s$.?#].[^\s]*$/).test(str);
+    return /^(https?:\/\/)?[^\s$.?#].[^\s]*$/.test(str);
 }
 
 const GroupCallsModalBody = React.memo((props: GroupSettingsModalBodyProps<GroupCallsValue>) => {
@@ -38,8 +38,15 @@ const GroupCallsModalBody = React.memo((props: GroupSettingsModalBodyProps<Group
 
     const callProviderField = useField('callProvider', initialValue.mode, form);
     const customCallLinkField = useField('customCallLink', initialValue.callLink || '', form, [
-        {checkIsValid: v => (callProviderField.input.value !== RoomCallsMode.LINK || !!v), text: 'Call link is empty!'},
-        {checkIsValid: v => (callProviderField.input.value !== RoomCallsMode.LINK || isUrlValid(v)), text: 'Link is invalid'},
+        {
+            checkIsValid: (v) => callProviderField.input.value !== RoomCallsMode.LINK || !!v,
+            text: 'Call link is empty!',
+        },
+        {
+            checkIsValid: (v) =>
+                callProviderField.input.value !== RoomCallsMode.LINK || isUrlValid(v),
+            text: 'Link is invalid',
+        },
     ]);
 
     const onSave = async () => {
@@ -47,13 +54,16 @@ const GroupCallsModalBody = React.memo((props: GroupSettingsModalBodyProps<Group
             await client.mutateRoomUpdate({
                 roomId,
                 input: {
-                    callSettings: callProviderField.input.value === RoomCallsMode.LINK ? {
-                        mode: callProviderField.value,
-                        callLink: customCallLinkField.value
-                    } : {
-                        mode: callProviderField.value,
-                    },
-                }
+                    callSettings:
+                        callProviderField.input.value === RoomCallsMode.LINK
+                            ? {
+                                  mode: callProviderField.value,
+                                  callLink: customCallLinkField.value,
+                              }
+                            : {
+                                  mode: callProviderField.value,
+                              },
+                },
             });
             await client.refetchRoomChat({ id: roomId });
             hide();
@@ -64,28 +74,30 @@ const GroupCallsModalBody = React.memo((props: GroupSettingsModalBodyProps<Group
         <>
             <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
                 <XModalContent>
-                    <div className={cx(modalSubtitle, TextBody)}>
-                        {`Choose what calls to use`}
-                    </div>
-                    <RadioButtonsSelect
-                        selectOptions={[
-                            { label: 'Standard Openland calls', value: RoomCallsMode.STANDARD },
-                            { label: 'Custom call link', value: RoomCallsMode.LINK },
-                            { label: 'No calls', value: RoomCallsMode.DISABLED },
-                        ]}
-                        {...callProviderField.input}
-                    />
-                    {callProviderField.value === RoomCallsMode.LINK &&
+                    <div className={cx(modalSubtitle, TextBody)}>{`Choose what calls to use`}</div>
+                    <XView marginHorizontal={-24}>
+                        <RadioButtonsSelect
+                            selectOptions={[
+                                { label: 'Standard Openland calls', value: RoomCallsMode.STANDARD },
+                                { label: 'Custom call link', value: RoomCallsMode.LINK },
+                                { label: 'No calls', value: RoomCallsMode.DISABLED },
+                            ]}
+                            {...callProviderField.input}
+                            disableHorizontalPadding={true}
+                            paddingHorizontal={24}
+                            withCorners={true}
+                        />
+                    </XView>
+                    {callProviderField.value === RoomCallsMode.LINK && (
                         <XView flexGrow={1} flexShrink={1} marginTop={16}>
-                            <UInput
-                                label={'Call link'}
-                                {...customCallLinkField.input}
-                            />
-                            <div className={cx(callLinkInputHint, TextLabel2)}>
-                                {'A link to external call room, e.g. on Zoom, Google Meet, or any other service'}
+                            <UInput label={'Call link'} {...customCallLinkField.input} />
+                            <div className={cx(callLinkInputHint, TextLabel3)}>
+                                {
+                                    'A link to external call room, e.g. on Zoom, Google Meet, or any other service'
+                                }
                             </div>
                         </XView>
-                    }
+                    )}
                 </XModalContent>
             </XScrollView3>
             <XModalFooter>
@@ -102,21 +114,14 @@ const GroupCallsModalBody = React.memo((props: GroupSettingsModalBodyProps<Group
     );
 });
 
-export const showGroupCallsModal = (
-    roomId: string,
-    initialValue: GroupCallsValue,
-) => {
+export const showGroupCallsModal = (roomId: string, initialValue: GroupCallsValue) => {
     showModalBox(
         {
             width: 400,
             title: 'Group calls',
         },
         (ctx) => (
-            <GroupCallsModalBody
-                roomId={roomId}
-                initialValue={initialValue}
-                hide={ctx.hide}
-            />
+            <GroupCallsModalBody roomId={roomId} initialValue={initialValue} hide={ctx.hide} />
         ),
     );
 };
@@ -126,7 +131,7 @@ export function getCallSettingsShortLabel(o: GroupCallsValue): string {
         case RoomCallsMode.LINK:
             return 'Custom';
         case RoomCallsMode.DISABLED:
-            return 'None';
+            return 'Off';
         case RoomCallsMode.STANDARD:
             return 'Standard';
         default:

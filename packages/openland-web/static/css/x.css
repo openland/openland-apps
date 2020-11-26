@@ -57,11 +57,10 @@ html {
     /* end interactive colors */
     --boxShadowModal: 0px 8px 48px rgba(0, 0, 0, 0.16), 0px 0px 96px rgba(0, 0, 0, 0.08);
 
-    --accentPrimaryTrans: rgba(24, 133, 242, 0.24);
-
     --accentPrimary: #248BF2;
     --accentPrimaryHover: #3399FF;
     --accentPrimaryActive: #1677D9;
+    --accentPrimaryTrans: rgba(24, 133, 242, 0.24);
 
     --accentMuted: #4595E5;
     --accentMutedHover: #4595E5;
@@ -109,6 +108,13 @@ html {
     --tintGreyHover: #81848A;
     --tintGreyActive: #5C5F66;
     --tintInverted: rgba(255, 255, 255, 0.32);
+
+    --featured-icon-display: flex;
+    
+    --secret-chat-title-color: var(--foregroundPrimary);
+    --secret-chat-icon-display: none;
+
+    --emoji-size: 38px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -220,6 +226,7 @@ html.dark {
     --accentPay: #898B8F;
     --accentPayHover: #898B8F;
     --accentPayActive: #898B8F;
+    --accentPrimaryTrans: rgba(255, 255, 255, 0.16);
 
     --border: rgba(255, 255, 255, 0.08);
     --borderLight: rgba(255, 255, 255, 0.04);
@@ -298,4 +305,17 @@ html.grey:not(.landing) {
     --accentMuted: #71747A;
     --accentMutedHover: #71747A;
     --accentMutedActive: #71747A;
+}
+
+html.hide-featured-icon {
+    --featured-icon-display: none;
+}
+
+html.highlight-secret-chat {
+    --secret-chat-title-color: var(--accentPositive);
+    --secret-chat-icon-display: flex;
+}
+
+html.regular-emoji-size {
+    --emoji-size: inherit;
 }

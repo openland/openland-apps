@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { AuthRouter } from './AuthRouter';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { ThemeProvider } from 'openland-x-utils/useTheme';
 import { UserInfoProvider } from 'openland-web/components/UserInfo';
@@ -9,11 +10,31 @@ import { useClient } from 'openland-api/useClient';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { dropPersistenceCache } from 'openland-api/spacex.persistance.web';
 import { UnicornSplash } from 'openland-x/XLoader';
+import {
+    highlightSecretOption,
+    showFeaturedIconOption,
+    largeEmojiOption,
+} from 'openland-web/modules/appearance/stored-options';
+
+interface ChatSearchState {
+    chatId: string | null;
+    initialQuery?: string;
+}
+
+interface ChatSearchContextProps {
+    chatSearchState: ChatSearchState;
+    setChatSearchState: (chatSearchState: ChatSearchState) => void;
+}
+
+export const ChatSearchContext = React.createContext<ChatSearchContextProps | null>(null);
 
 export const AppContainer = (props: { children: any }) => {
     const client = useClient();
 
     const data = client.useAccount({ suspense: false, fetchPolicy: 'network-only' });
+    const [chatSearchState, setChatSearchState] = React.useState<ChatSearchState>({
+        chatId: null,
+    });
 
     if (canUseDOM) {
         useShortcuts([
@@ -79,15 +100,30 @@ export const AppContainer = (props: { children: any }) => {
         if (localStorage.getItem('interactive_app_accent') === 'BLUE') {
             removeAllAccentClasses();
         }
+        if (showFeaturedIconOption.isEnabled()) {
+            document.documentElement.classList.remove('hide-featured-icon');
+        } else {
+            document.documentElement.classList.add('hide-featured-icon');
+        }
+        if (highlightSecretOption.isEnabled()) {
+            document.documentElement.classList.add('highlight-secret-chat');
+        } else {
+            document.documentElement.classList.remove('highlight-secret-chat');
+        }
+        if (largeEmojiOption.isEnabled()) {
+            document.documentElement.classList.remove('regular-emoji-size');
+        } else {
+            document.documentElement.classList.add('regular-emoji-size');
+        }
     }, []);
 
     if (!data) {
         return <UnicornSplash />;
     }
 
-    let hasMessenger = canUseDOM && !!data.me && !!data.sessionState.isCompleted;
+    let hasMessenger = canUseDOM && !!data.me && data.sessionState.isCompleted;
     return (
-        <>
+        <React.Suspense fallback={<UnicornSplash />}>
             <PushEngineComponent enable={hasMessenger} />
             <XDocumentHead title={[]} />
             <UserInfoProvider
@@ -97,13 +133,17 @@ export const AppContainer = (props: { children: any }) => {
                 profile={data.myProfile}
                 roles={data.myPermissions.roles}
             >
-                <MessengerProvider user={hasMessenger ? data.me!! : undefined}>
-                    <ThemeProvider>
-                        {props.children}
-                    </ThemeProvider>
-                </MessengerProvider>
+                <ThemeProvider>
+                    <AuthRouter>
+                        <ChatSearchContext.Provider value={{ chatSearchState, setChatSearchState }}>
+                            <MessengerProvider user={hasMessenger ? data.me!! : undefined}>
+                                {props.children}
+                            </MessengerProvider>
+                        </ChatSearchContext.Provider>
+                    </AuthRouter>
+                </ThemeProvider>
             </UserInfoProvider>
-        </>
+        </React.Suspense>
     );
 };
 

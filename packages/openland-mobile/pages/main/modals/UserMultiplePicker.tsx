@@ -15,6 +15,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { showMembersWarning } from 'openland-mobile/messenger/components/showMembersWarning';
 
 export const CheckListBoxWraper = React.memo(
     (props: { checked?: boolean; isRadio?: boolean; children: any }) => {
@@ -46,7 +47,7 @@ export const CheckListBoxWraper = React.memo(
                             alignSelf="center"
                             alignItems="center"
                             justifyContent="center"
-                            right={16}
+                            right={17}
                             backgroundColor={
                                 props.checked ? theme.accentPrimary : theme.backgroundPrimary
                             }
@@ -123,6 +124,14 @@ const UserMultiplePickerComponent = React.memo((props: PageProps) => {
     let [users, setUsers] = React.useState([] as { id: string; name: string }[]);
     let [query, setQuery] = React.useState('');
     let [searchHeight, serSearchHeight] = React.useState(0);
+    let [warningShown, setWarningShown] = React.useState(false);
+
+    React.useEffect(() => {
+        if (users && users.length > 10 && !warningShown) {
+            setWarningShown(true);
+            showMembersWarning().catch(props.router.back);
+        }
+    }, [users.length]);
 
     let handleRemoveUser = React.useCallback(
         (id: string) => {

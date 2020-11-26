@@ -14,7 +14,7 @@ import Popper from 'popper.js';
 import { css } from 'linaria';
 
 const style = css`
-    z-index: 3;
+    z-index: 4;
     pointer-events: none;
     &[x-placement^='top'] {
         & .popper-arrow {
@@ -160,7 +160,7 @@ export class XDialogProviderComponent extends React.Component<{}, XDialogProvide
                     ariaHideApp={false}
                     style={{
                         overlay: {
-                            zIndex: 3,
+                            zIndex: 4,
                             backgroundColor: 'transparent',
                         },
                         content: {

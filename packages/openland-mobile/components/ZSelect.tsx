@@ -16,6 +16,7 @@ interface ZSelectBasicProps {
     label: string;
     modalTitle?: string;
     options: ZSelectOption[];
+    invalid?: boolean;
     disabled?: boolean;
     value?: ZSelectValue;
     description?: string;
@@ -64,6 +65,7 @@ const ZSelectBasic = (props: ZSelectBasicProps) => {
             {...props}
             arrow={'bottom'}
             onPress={handleFieldPress}
+            invalid={props.invalid}
             value={selectedOption && selectedOption.label}
         />
     );
@@ -83,7 +85,7 @@ const ZSelectComponent = (props: ZSelectProps) => {
         [props.options],
     );
 
-    return <ZSelectBasic {...props} value={value} onChange={handleChange} />;
+    return <ZSelectBasic {...props} value={props.value || value} onChange={handleChange} />;
 };
 
 export const ZSelect = React.memo((props: ZSelectProps) => {
@@ -94,6 +96,7 @@ export const ZSelect = React.memo((props: ZSelectProps) => {
             <ZSelectBasic
                 {...other}
                 value={field.input.value}
+                invalid={field.input.invalid || props.invalid}
                 onChange={(value) => {
                     field.input.onChange(value.value);
                 }}

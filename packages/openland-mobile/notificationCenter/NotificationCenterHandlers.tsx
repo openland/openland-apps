@@ -53,13 +53,14 @@ class NotificationCenterHandlersClass {
         builder.show(true);
     }
 
-    handleReplyPress = (id: string, item: NotificationsDataSourceItem) => {
+    handleReplyPress = (id: string, item: NotificationsDataSourceItem, withFocus: boolean = true) => {
         const { peerRootId, peerRootType } = item;
 
         if (peerRootType === 'CommentPeerRootMessage') {
             getMessenger().history.navigationManager.push('Message', {
                 messageId: peerRootId,
-                highlightId: item.id
+                highlightId: item.id,
+                withFocus
             });
         } else if (peerRootType === 'CommentPeerRootFeedItem') {
             getMessenger().history.navigationManager.push('FeedItem', {

@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { MessageInputInner, MessageInputBarProps } from './MessageInputInner';
-import { StickerPicker } from './stickers/StickerPicker';
-import { StickerFragment } from 'openland-api/spacex.types';
 
-export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & { reloadButton: any, onStickerSent?: (sticker: StickerFragment) => void }, ref: any) => {
-    const { reloadButton, onStickerSent, suggestions, topView, stickerKeyboardShown, stickerKeyboardHeight } = props;
+export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & { bottomView?: any, reloadButton?: any, useTracker?: boolean }, ref: React.RefObject<TextInput>) => {
+    const { reloadButton, suggestions, topView, stickerKeyboardShown } = props;
 
     let theme = React.useContext(ThemeContext);
 
@@ -15,7 +13,7 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & {
         <>
             {reloadButton}
             <View marginBottom={SDevice.safeArea.bottom}>
-                <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+                <View style={{ flexDirection: 'column', alignItems: 'stretch', position: 'relative' }}>
                     {suggestions && (
                         <View style={{ backgroundColor: theme.backgroundPrimary, position: 'absolute', bottom: '100%', left: 0, right: 0 }}>
                             {suggestions}
@@ -32,12 +30,10 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & {
                         {...props}
                         theme={theme}
                         ref={ref}
-                        stickerKeyboardShown={onStickerSent && stickerKeyboardShown}
+                        stickerKeyboardShown={stickerKeyboardShown}
                     />
 
-                    {stickerKeyboardShown && onStickerSent && (
-                        <StickerPicker theme={theme} onStickerSent={onStickerSent} height={stickerKeyboardHeight} />
-                    )}
+                    {props.bottomView}
                 </View>
             </View>
         </>

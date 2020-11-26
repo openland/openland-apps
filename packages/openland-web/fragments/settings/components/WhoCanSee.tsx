@@ -39,7 +39,7 @@ const MenuComponent = React.memo((props: WhoCanSeeItemProps & { ctx: UPopperCont
     const { ctx, value, onClick } = props;
     const builder = new UPopperMenuBuilder();
 
-    WhoCanSeeLabelOrder.map(label => {
+    WhoCanSeeLabelOrder.forEach(label => {
         builder.item({
             title: WhoCanSeeLabel[label],
             onClick: () => onClick(label),

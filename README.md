@@ -23,6 +23,7 @@ Requirements:
 * SDK `Android 9.0 (Pie)` for Android Studio and for your virtual device
 
 Open `openland-app/android` in Android Studio \
-Sync project with Gradle files \
+Sync project with Gradle files (don't update Gradle Plugin if offered) \
 Start your virtual device \
-Run `yarn native:android`
+Run `yarn native` to start dev-server \
+Run `yarn native:android` to build and install the app to AVD

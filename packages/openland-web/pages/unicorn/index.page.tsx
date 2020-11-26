@@ -7,11 +7,11 @@ import { SettingsFragment } from 'openland-web/fragments/settings/SettingsFragme
 import { DialogsFragment } from 'openland-web/fragments/dialogs/DialogsFragment';
 import { DiscoverFragment } from 'openland-web/fragments/discover/DiscoverFragment';
 import { XLoader } from 'openland-x/XLoader';
-import { AuthRouter } from '../root/AuthRouter';
 import { IndexFragment } from 'openland-web/fragments/discussions/IndexFragment';
 import { useRole } from 'openland-x-permissions/XWithRole';
 import { ContactsFragment } from 'openland-web/fragments/contacts/ContactsFragment';
 import { LocalContactsProvider } from 'openland-y-utils/contacts/LocalContacts';
+import { LocalBlackListProvider } from 'openland-y-utils/blacklist/LocalBlackList';
 import { UToastProvider } from 'openland-web/components/unicorn/UToast';
 import { MessagesActionsStateProvider } from 'openland-y-runtime/MessagesActionsState';
 import ProfileIcon from './navigation/icon_profile.svg';
@@ -124,7 +124,7 @@ export default React.memo(() => {
     return (
         <React.StrictMode>
             <React.Suspense fallback={<XLoader loading={true} />}>
-                <AuthRouter>
+                <LocalBlackListProvider>
                     <LocalContactsProvider>
                         <MessagesActionsStateProvider>
                             <UToastProvider>
@@ -132,7 +132,7 @@ export default React.memo(() => {
                             </UToastProvider>
                         </MessagesActionsStateProvider>
                     </LocalContactsProvider>
-                </AuthRouter>
+                </LocalBlackListProvider>
             </React.Suspense>
         </React.StrictMode>
     );

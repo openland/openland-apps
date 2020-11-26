@@ -39,6 +39,7 @@ export const ThemeDark: ThemeGlobal = {
     accentPrimary: '#FFFFFF',
     accentPrimaryHover: '#FFFFFF',
     accentPrimaryActive: '#FFFFFF',
+    accentPrimaryTrans: 'rgba(255, 255, 255, 0.16)',
 
     accentMuted: '#FFFFFF',
     accentMutedHover: '#FFFFFF',
@@ -92,4 +93,7 @@ export const ThemeDark: ThemeGlobal = {
     blurType: 'none',
     keyboardAppearance: 'dark',
     statusBar: 'light-content',
+
+    displayFeaturedIcon: true,
+    largeEmoji: true,
 };

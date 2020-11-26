@@ -23,6 +23,7 @@ fragment RoomShort on Room {
         title
         photo
         membership
+        featured
         role
         canEdit
         canSendMessage

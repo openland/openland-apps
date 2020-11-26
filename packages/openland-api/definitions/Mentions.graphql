@@ -15,6 +15,7 @@ query ChatMentionSearch($cid: ID!, $query: String, $first: Int!, $after: String)
             ... on MentionSearchSharedRoom {
                 room {
                     ...RoomSharedNano
+                    featured
                 }
             }
         }

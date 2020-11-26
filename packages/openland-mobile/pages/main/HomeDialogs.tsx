@@ -16,6 +16,8 @@ import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { GlobalSearchEntryKind } from 'openland-api/spacex.types';
 import { SetTabContext } from './Home';
+import { getRateAppInfo, rateApp, setRateAppInfo } from './modals/RateApp';
+import { SUPER_ADMIN } from '../Init';
 
 const DialogsComponent = React.memo((props: PageProps) => {
     const messenger = getMessenger();
@@ -24,10 +26,14 @@ const DialogsComponent = React.memo((props: PageProps) => {
         if (props.router.params.share) {
             Alert.builder().title(`Share with ${title}?`).button('Cancel', 'cancel').button('Share', 'default', async () => {
                 if (props.router.params.share.files) {
+                    let filesMeta: { name: string, path: string }[] = [];
                     for (let attach of props.router.params.share.files) {
                         let path = attach.split('/');
-                        await UploadManagerInstance.registerMessageUpload(id, path[path.length - 1], attach, undefined);
+                        filesMeta.push({ name: path[path.length - 1], path: attach });
                     }
+                    try {
+                        await UploadManagerInstance.registerMessageUploads(id, filesMeta, undefined);
+                    } catch (err) { /**/ }
                 }
 
                 if (props.router.params.share.strings) {
@@ -61,9 +67,37 @@ const DialogsComponent = React.memo((props: PageProps) => {
 
     const globalSearchValue = props.router.params.searchValue;
 
+    React.useEffect(() => {
+        (async () => {
+            if (!SUPER_ADMIN) {
+                return;
+            }
+            let rateAppMeta = await getRateAppInfo();
+
+            if (rateAppMeta.stopShowingRating) {
+                return;
+            }
+
+            if (rateAppMeta.appOpenedCount === 2) {
+                rateApp();
+                setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, firstSeenTimestamp: Date.now() }));
+                return;
+            }
+
+            let twoDaysInMs = 48 * 3.6e6;
+            if (rateAppMeta.firstSeenTimestamp && (Date.now() - rateAppMeta.firstSeenTimestamp > twoDaysInMs)) {
+                rateApp();
+                setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, stopShowingRating: true }));
+                return;
+            }
+
+            setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1 }));
+        })();
+    }, []);
+
     return (
         <ZTrack event="mail_view">
-            <SHeader title={props.router.params.title || (props.router.params.share ? 'Share with' : 'Chats')} />
+            <SHeader title={props.router.params.title || (props.router.params.share ? 'Share with' : 'Chats')} searchPlaceholder="Chats, messages, and more" />
             {!props.router.params.share && !props.router.params.title && (
                 <SHeaderButton
                     title="New"

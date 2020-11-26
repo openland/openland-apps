@@ -171,21 +171,21 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                                     : this.props.appearance === 'danger' ? theme.accentNegative
                                         : theme.foregroundPrimary,
                                 textAlignVertical: 'center',
-                                flexGrow: 1,
-                                flexBasis: 0,
+                                ...!this.props.descriptionIcon ? { flexGrow: 1, flexBasis: 0 } : {},
                                 alignSelf: !this.props.title || this.props.leftAvatar ? 'center' : 'flex-start',
                             }, this.props.textStyle]}
                             numberOfLines={this.props.multiline ? undefined : 1}
                             text={this.props.text}
                         />
                         {this.props.descriptionIcon && (
-                            <Image
-                                source={this.props.descriptionIcon}
-                                style={{
-                                    tintColor: descriptionColor,
-                                    marginLeft: 15
-                                }}
-                            />
+                            <View marginLeft={4} flexGrow={1}>
+                                <Image
+                                    source={this.props.descriptionIcon}
+                                    style={{
+                                        tintColor: descriptionColor,
+                                    }}
+                                />
+                            </View>
                         )}
                         {this.props.description && (
                             <ZText

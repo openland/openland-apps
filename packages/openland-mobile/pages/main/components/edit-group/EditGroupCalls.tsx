@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZInput } from 'openland-mobile/components/ZInput';
@@ -33,44 +33,48 @@ const EditGroupCallsComponent = React.memo((props: PageProps) => {
         {
             text: 'Enter a valid link',
             checkIsValid: (str) => {
-                let match = matchLinks(str);
-                return !!match;
-            }
-        }
+                if (mode === RoomCallsMode.LINK) {
+                    let match = matchLinks(str);
+                    return !!match;
+                } else {
+                    return true;
+                }
+            },
+        },
     ]);
-
-    const handleSave = () => {
+    const handleSave = React.useCallback(() => {
         let callLink = customLinkField.value.trim();
-        if (customLinkField.input.invalid) {
+        if (mode === RoomCallsMode.LINK && customLinkField.input.invalid) {
             return;
         }
         form.doAction(async () => {
-            try {
-                let variables = {
-                    roomId,
-                    input: {
-                        callSettings: {
-                            mode,
-                            ...callLink !== '' && { callLink }
-                        }
+            const callSettings =
+                mode === RoomCallsMode.LINK
+                    ? {
+                        mode: mode,
+                        callLink: callLink,
                     }
-                };
-                await client.mutateRoomUpdate(variables);
-                await Promise.all([
-                    client.refetchRoomChat({ id: roomId }),
-                    client.refetchRoomTiny({ id: roomId }),
-                ]);
-                Toast.success({ duration: 1000 }).show();
-                props.router.back();
-            } catch (e) {
-                Toast.failure({ text: 'Something went wrong', duration: 1000 });
-            }
+                    : {
+                        mode: mode,
+                    };
+            await client.mutateRoomUpdate({
+                roomId: roomId,
+                input: {
+                    callSettings: callSettings,
+                },
+            });
+            await Promise.all([
+                client.refetchRoomChat({ id: roomId }),
+                client.refetchRoomTiny({ id: roomId }),
+            ]);
+            Toast.success({ duration: 1000 }).show();
+            props.router.back();
         });
-    };
+    }, [mode, form]);
 
     return (
         <>
-            <SHeaderButton title="Save" onPress={handleSave} />
+            <SHeaderButton title="Save" onPress={() => handleSave()} />
             <KeyboardAvoidingScrollView>
                 <EditPageHeader
                     icon={require('assets/ic-call-glyph-48.png')}
@@ -78,34 +82,49 @@ const EditGroupCallsComponent = React.memo((props: PageProps) => {
                     title="Group calls"
                     description="Choose what calls to use"
                 />
-                <ZListGroup header={null}>
-                    <CheckListBoxWraper isRadio={true} checked={mode === RoomCallsMode.STANDARD}>
-                        <ZListItem
-                            text="Standard Openland calls"
-                            onPress={() => setMode(RoomCallsMode.STANDARD)}
-                        />
-                    </CheckListBoxWraper>
-                    <CheckListBoxWraper isRadio={true} checked={mode === RoomCallsMode.LINK}>
-                        <ZListItem
-                            text="Custom call link"
-                            onPress={() => setMode(RoomCallsMode.LINK)}
-                        />
-                    </CheckListBoxWraper>
-                    <CheckListBoxWraper isRadio={true} checked={mode === RoomCallsMode.DISABLED}>
-                        <ZListItem
-                            text="No calls"
-                            onPress={() => setMode(RoomCallsMode.DISABLED)}
-                        />
-                    </CheckListBoxWraper>
-                </ZListGroup>
-                {mode === RoomCallsMode.LINK && (
-                    <View marginTop={16} paddingHorizontal={16}>
-                        <ZInput placeholder="Call link" field={customLinkField} noWrapper={true} autoFocus={true} />
-                        <Text style={{ ...TextStyles.Caption, color: theme.foregroundTertiary, marginTop: 8, paddingHorizontal: 16 }}>
-                            A link to external call room, e.g. on Zoom, Google Meet, or any other service
-                        </Text>
-                    </View>
-                )}
+                <React.Suspense fallback={null}>
+                    <ZListGroup header={null}>
+                        <CheckListBoxWraper isRadio={true} checked={mode === RoomCallsMode.STANDARD}>
+                            <ZListItem
+                                text="Standard Openland calls"
+                                onPress={() => setMode(RoomCallsMode.STANDARD)}
+                            />
+                        </CheckListBoxWraper>
+                        <CheckListBoxWraper isRadio={true} checked={mode === RoomCallsMode.LINK}>
+                            <ZListItem
+                                text="Custom call link"
+                                onPress={() => setMode(RoomCallsMode.LINK)}
+                            />
+                        </CheckListBoxWraper>
+                        <CheckListBoxWraper isRadio={true} checked={mode === RoomCallsMode.DISABLED}>
+                            <ZListItem
+                                text="No calls"
+                                onPress={() => setMode(RoomCallsMode.DISABLED)}
+                            />
+                        </CheckListBoxWraper>
+                    </ZListGroup>
+                    {mode === RoomCallsMode.LINK && (
+                        <View marginTop={16} paddingHorizontal={16}>
+                            <ZInput
+                                placeholder="Call link"
+                                field={customLinkField}
+                                noWrapper={true}
+                                autoFocus={true}
+                            />
+                            <Text
+                                style={{
+                                    ...TextStyles.Caption,
+                                    color: theme.foregroundTertiary,
+                                    marginTop: 8,
+                                    paddingHorizontal: 16,
+                                }}
+                            >
+                                A link to external call room, e.g. on Zoom, Google Meet, or any other
+                                service
+                            </Text>
+                        </View>
+                    )}
+                </React.Suspense>
             </KeyboardAvoidingScrollView>
         </>
     );

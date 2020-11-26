@@ -8,7 +8,7 @@ type ShortcutKeys = StringUnionAutocompleteFix<'Control' | 'Meta' | 'Shift' | 'A
 interface ShortcutsProps {
     uuid: string;
     keys: ShortcutKeys[];
-    callback: () => void | boolean;
+    callback: (event: KeyboardEvent) => void | boolean;
     disabled?: boolean;
 }
 const checkAlteringKeys = (ev: KeyboardEvent, key: ShortcutKeys) => {
@@ -49,7 +49,7 @@ const init = () => {
         for (let i = listeners.length - 1; i >= 0; i--) {
             listener = listeners[i];
             if (checkFires(ev, listener.keys)) {
-                let handled = listener.callback && await listener.callback();
+                let handled = listener.callback && await listener.callback(ev);
                 if (handled === undefined || handled === true) {
                     ev.preventDefault();
                     return;
@@ -87,7 +87,7 @@ const listen = (listener: ShortcutsProps) => {
 
 interface ShortcutProps {
     keys: ShortcutKeys[];
-    callback?: () => void | boolean;
+    callback?: (event: KeyboardEvent) => void | boolean;
 }
 export const useShortcuts = (shortcuts: ShortcutProps[] | ShortcutProps, deps?: any[]) => {
     let shrtcts = Array.isArray(shortcuts) ? shortcuts : [shortcuts];

@@ -1,31 +1,16 @@
 import { createFifoQueue } from 'openland-y-utils/Queue';
 import { MessengerEngine } from '../MessengerEngine';
-import { MessageReactionType } from 'openland-api/spacex.types';
+import * as Types from 'openland-api/spacex.types';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 import { backoff, delay } from 'openland-y-utils/timer';
-import {
-    UserBadge,
-    FullMessage,
-    MessageSpan,
-    MessageSender,
-    FullMessage_GeneralMessage_source,
-    FullMessage_StickerMessage_source,
-    MessageReactionCounter,
-    MessageAttachments,
-    ServiceMessageMetadata,
-    FullMessage_GeneralMessage,
-    FullMessage_StickerMessage,
-    DialogUpdateFragment_DialogPeerUpdated_peer,
-} from 'openland-api/spacex.types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
-import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
-import { MessageSendHandler, MentionToSend } from './MessageSender';
+import { isPendingMessage, isServerMessage, ModelMessage, PendingMessage, UploadingFile } from './types';
+import { MAX_FILES_PER_MESSAGE, MentionToSend, MessageSendHandler } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
-import * as Types from 'openland-api/spacex.types';
 import { createLogger } from 'mental-log';
 import { SharedMediaEngine, SharedMediaItemType } from 'openland-engines/messenger/SharedMediaEngine';
-import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
+import { findSpans, prepareLegacySpans } from 'openland-y-utils/findSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
@@ -42,7 +27,9 @@ export interface ConversationStateHandler {
 
 const timeGroup = 1000 * 60 * 60;
 
-type DataSourceMessageSourceT = FullMessage_GeneralMessage_source | FullMessage_StickerMessage_source;
+type DataSourceMessageSourceT = Types.FullMessage_GeneralMessage_source | Types.FullMessage_StickerMessage_source;
+
+export type PendingAttachProps = { uri?: string, key?: string, filePreview?: string | null, progress?: number };
 
 export interface DataSourceMessageItem {
     chatId: string;
@@ -52,19 +39,19 @@ export interface DataSourceMessageItem {
     seq: null | number;
     date: number;
     isOut: boolean;
-    sender: MessageSender;
-    senderBadge?: UserBadge;
+    sender: Types.MessageSender;
+    senderBadge?: Types.UserBadge;
     text?: string;
     isEdited?: boolean;
     reply?: DataSourceMessageItem[];
     source?: DataSourceMessageSourceT | null;
-    reactionCounters: MessageReactionCounter[];
-    attachments?: (MessageAttachments & { uri?: string, key?: string, filePreview?: string | null, progress?: number })[];
-    spans?: MessageSpan[];
+    reactionCounters: Types.MessageReactionCounter[];
+    attachments?: (Types.MessageAttachments & PendingAttachProps)[];
+    spans?: Types.MessageSpan[];
     isSending: boolean;
     attachTop: boolean;
     attachBottom: boolean;
-    serviceMetaData?: ServiceMessageMetadata;
+    serviceMetaData?: Types.ServiceMessageMetadata;
     isService?: boolean;
     commentsCount: number;
     fallback: string;
@@ -98,19 +85,19 @@ export interface DataSourceNewDividerItem {
     date: undefined;
 }
 
-const getReplies = (src: FullMessage_GeneralMessage | FullMessage_StickerMessage | undefined, chaId: string, engine: MessengerEngine) => {
-    return src && src.quotedMessages ? src.quotedMessages.sort((a, b) => a.date - b.date).map(m => convertMessage(m as FullMessage, chaId, engine)) : undefined;
+export const getReplies = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined, chaId: string, engine: MessengerEngine) => {
+    return src && src.quotedMessages ? src.quotedMessages.sort((a, b) => a.date - b.date).map(m => convertMessage(m as Types.FullMessage, chaId, engine)) : undefined;
 };
 
-const getSourceChat = (src: FullMessage_GeneralMessage | FullMessage_StickerMessage | undefined) => {
+export const getSourceChat = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined) => {
     return src && src.source && src.source.__typename === 'MessageSourceChat' ? src.source : undefined;
 };
 
-const getCommentsCount = (src: FullMessage_GeneralMessage | FullMessage_StickerMessage | undefined) => {
+export const getCommentsCount = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined) => {
     return src ? src.commentsCount : 0;
 };
 
-const getOverrides = (src: FullMessage | undefined) => {
+export const getOverrides = (src: Types.FullMessage | undefined) => {
     return src ? (src.__typename === 'GeneralMessage' || src.__typename === 'StickerMessage' ? { overrideAvatar: src.overrideAvatar, overrideName: src.overrideName } : {}) : {};
 };
 
@@ -122,8 +109,8 @@ type RecursivePartial<T> = {
     [P in keyof T]?: RecursivePartial<T[P]>;
 };
 
-export function convertPartialMessage(src: RecursivePartial<FullMessage> & { id: string }, chatId: string, engine: MessengerEngine): DataSourceMessageItem {
-    const genericGeneralMessage: FullMessage = {
+export function convertPartialMessage(src: RecursivePartial<Types.FullMessage> & { id: string }, chatId: string, engine: MessengerEngine): DataSourceMessageItem {
+    const genericGeneralMessage: Types.FullMessage = {
         __typename: "GeneralMessage",
         id: 'will_be_overriten',
         seq: null,
@@ -142,10 +129,10 @@ export function convertPartialMessage(src: RecursivePartial<FullMessage> & { id:
         overrideAvatar: null,
         overrideName: null
     };
-    return convertMessage({ ...genericGeneralMessage, ...src as FullMessage }, chatId, engine);
+    return convertMessage({ ...genericGeneralMessage, ...src as Types.FullMessage }, chatId, engine);
 }
 
-export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId: string, engine: MessengerEngine, prev?: FullMessage, next?: FullMessage): DataSourceMessageItem {
+export function convertMessage(src: Types.FullMessage & { repeatKey?: string }, chatId: string, engine: MessengerEngine, prev?: Types.FullMessage, next?: Types.FullMessage): DataSourceMessageItem {
     const generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     const serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
     const stickerMessage = src.__typename === 'StickerMessage' ? src : undefined;
@@ -217,7 +204,7 @@ export function isSameDate(a: string, b: string) {
     return isSameIntDate(a1, b1);
 }
 
-const createDateDataSourceItem = (date: Date): DataSourceDateItem => {
+export const createDateDataSourceItem = (date: Date): DataSourceDateItem => {
     return {
         type: 'date',
         key: 'date-' + date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate(),
@@ -271,18 +258,17 @@ export class ConversationEngine implements MessageSendHandler {
     canEdit?: boolean;
     canPin?: boolean;
     canReply?: boolean;
-    pinId: string | null;
+    pinId?: string;
     canSendMessage?: boolean;
     isChannel?: boolean;
     isPrivate?: boolean;
     user?: Types.ChatInit_room_PrivateRoom_user;
-    badge?: UserBadge;
+    badge?: Types.UserBadge;
     isSavedMessage?: boolean;
 
     constructor(engine: MessengerEngine, conversationId: string, onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void) {
         this.engine = engine;
         this.conversationId = conversationId;
-        this.pinId = null;
         this.state = new ConversationState(true, [], [], undefined, false, false, false, false);
         this.dataSource = new DataSource(() => {
             this.load('backward');
@@ -351,7 +337,7 @@ export class ConversationEngine implements MessageSendHandler {
         let messages = [...(initialChat).messages];
         messages.reverse();
         this.messages = messages;
-        this.pinId = (initialChat.room && initialChat.room.pinnedMessage) ? initialChat.room.pinnedMessage.id : null;
+        this.pinId = (initialChat.room && initialChat.room.pinnedMessage) ? initialChat.room.pinnedMessage.id : undefined;
         this.role = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.role || null;
         this.badge = initialChat.room && initialChat.room.myBadge || undefined;
         this.canEdit = ((initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.canEdit) || AppConfig.isSuperAdmin()) || false;
@@ -377,7 +363,7 @@ export class ConversationEngine implements MessageSendHandler {
 
         // Update Data Source
         let dsItems: (DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem)[] = [];
-        let sourceFragments = messages as FullMessage[];
+        let sourceFragments = messages as Types.FullMessage[];
         let prevDate: string | undefined;
         let newMessagesDivider: DataSourceNewDividerItem | undefined;
         let anchor;
@@ -486,7 +472,7 @@ export class ConversationEngine implements MessageSendHandler {
         if (!cursor) {
             return;
         }
-        let id = (cursor as FullMessage).id;
+        let id = (cursor as Types.FullMessage).id;
 
         if (direction === 'backward') {
             this.loadingHistory = id;
@@ -504,7 +490,7 @@ export class ConversationEngine implements MessageSendHandler {
         if (gen !== this.gen) {
             return;
         }
-        let batch = [...(loaded.gammaMessages!.messages as any as FullMessage[])].filter((remote: FullMessage) => this.messages.findIndex(local => isServerMessage(local) && local.id === remote.id) === -1);
+        let batch = [...(loaded.gammaMessages!.messages as any as Types.FullMessage[])].filter((remote: Types.FullMessage) => this.messages.findIndex(local => isServerMessage(local) && local.id === remote.id) === -1);
         batch.reverse();
 
         this.messages = [...(direction === 'backward' ? batch : []), ...this.messages, ...(direction === 'forward' ? batch : [])];
@@ -692,10 +678,11 @@ export class ConversationEngine implements MessageSendHandler {
         let quoted = quotedMessages || [];
         let message = text.trim();
         let styledSpans = findSpans(message);
+        let filesToSend = files.slice(0, MAX_FILES_PER_MESSAGE);
 
         let { key, filesKeys } = this.engine.sender.sendFiles({
             conversationId: this.conversationId,
-            files: files.map(x => x.file),
+            files: filesToSend.map(x => x.file),
             callback: this,
             quoted: quoted.map(q => q.id!),
             message,
@@ -703,10 +690,10 @@ export class ConversationEngine implements MessageSendHandler {
             spans: styledSpans
         });
         (async () => {
-            let filesInfo = await Promise.all(files.map(x => x.file.fetchInfo()));
+            let filesInfo = await Promise.all(filesToSend.map(x => x.file.fetchInfo()));
             let filesMeta: PendingMessage['filesMeta'] = filesInfo.map((info, i) => {
-                let width = files[i].localImage?.width;
-                let height = files[i].localImage?.height;
+                let width = filesToSend[i].localImage?.width;
+                let height = filesToSend[i].localImage?.height;
                 return {
                     key: filesKeys[i],
                     file: info.name || 'image.jpg',
@@ -715,7 +702,7 @@ export class ConversationEngine implements MessageSendHandler {
                     uri: info.uri,
                     imageSize: info.imageSize || ((width && height) ? { width, height } : undefined),
                     isImage: !!info.isImage,
-                    filePreview: files[i].localImage?.src || '',
+                    filePreview: filesToSend[i].localImage?.src || '',
                 };
             });
 
@@ -724,7 +711,6 @@ export class ConversationEngine implements MessageSendHandler {
             let pmsg = {
                 date,
                 key,
-                file: name,
                 progress: 0,
                 message,
                 failed: false,
@@ -743,10 +729,10 @@ export class ConversationEngine implements MessageSendHandler {
 
             // Notify
             for (let l of this.listeners) {
-                l.onMessageSend(files[0].file, files[0].localImage);
+                l.onMessageSend(filesToSend[0].file, filesToSend[0].localImage);
             }
         })();
-        return key;
+        return { key, filesKeys };
     }
 
     sendSticker = (sticker: Types.StickerFragment, quotedMessages: DataSourceMessageItem[] | undefined) => {
@@ -889,7 +875,7 @@ export class ConversationEngine implements MessageSendHandler {
         });
     }
 
-    handlePeerUpdated = async (peer: DialogUpdateFragment_DialogPeerUpdated_peer) => {
+    handlePeerUpdated = async (peer: Types.DialogUpdateFragment_DialogPeerUpdated_peer) => {
         await this.engine.client.updateRoomChat({ id: this.conversationId }, (data) => {
             if (data.room) {
                 if (peer.__typename === 'SharedRoom' && data.room.__typename === 'SharedRoom') {
@@ -957,8 +943,8 @@ export class ConversationEngine implements MessageSendHandler {
         return null;
     }
 
-    private updateHandler = async (event: any) => {
-        // console.log('ConversationEngine', event);
+    private updateHandler = async (event: Types.ChatWatch_event_ChatUpdateSingle_update) => {
+        // console.log('ConversationEngine ---------- ', event);
         if (event.__typename === 'ChatMessageReceived') {
             // Handle message
             log.log('Received new message');
@@ -975,16 +961,16 @@ export class ConversationEngine implements MessageSendHandler {
                 let existing = this.messages.findIndex((v) => isPendingMessage(v) && v.key === event.repeatKey);
                 if (existing >= 0) {
                     local = true;
-                    let msgs = [...this.messages];
+                    let msgs: any = [...this.messages];
                     msgs[existing] = {
                         ...event.message,
                         key: event.repeatKey,
                         attachments: (msgs[existing] as any).attachments,
                         date: msgs[existing].date
                     };
-                    this.messages = msgs.sort((a: FullMessage, b: FullMessage) => (a && b && a.seq && b.seq) ? a.seq - b.seq : 1);
+                    this.messages = msgs.sort((a: Types.FullMessage, b: Types.FullMessage) => (a && b && a.seq && b.seq) ? a.seq - b.seq : 1);
                     this.localMessagesMap.set(event.message.id, event.repeatKey);
-                    event.message.local = true;
+                    (event.message as any).local = true;
                 } else {
                     this.messages = [...this.messages, event.message];
                 }
@@ -995,7 +981,7 @@ export class ConversationEngine implements MessageSendHandler {
             this.onMessagesUpdated();
 
             // Add to datasource
-            this.appendMessage({ ...event.message, repeatKey: local ? event.repeatKey : undefined });
+            this.appendMessage({ ...event.message, repeatKey: local ? event.repeatKey : undefined } as any);
         } else if (event.__typename === 'ChatMessageDeleted') {
             // Handle message
             log.log('Received delete message');
@@ -1013,7 +999,7 @@ export class ConversationEngine implements MessageSendHandler {
             log.log('Received edit message');
 
             // Write message to store
-            this.messages = this.messages.map((m: ModelMessage) => ((m as FullMessage).id !== event.message.id) ? m : event.message);
+            this.messages = this.messages.map((m: ModelMessage) => ((m as Types.FullMessage).id !== event.message.id) ? m : event.message);
 
             this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
             this.onMessagesUpdated();
@@ -1030,8 +1016,8 @@ export class ConversationEngine implements MessageSendHandler {
                 l.onChatLostAccess();
             }
         } else if (event.__typename === 'ChatUpdated') {
-            this.pinId = (event.chat && event.chat.pinnedMessage) ? event.chat.pinnedMessage.id : null;
-            this.canReply = getCanReply(event.chat.room);
+            this.pinId = (event.chat && event.chat.pinnedMessage) ? event.chat.pinnedMessage.id : undefined;
+            this.canReply = getCanReply(event.chat);
         } else {
             log.warn('Received unknown message');
         }
@@ -1213,7 +1199,7 @@ export class ConversationEngine implements MessageSendHandler {
         //
         // Start a new sender group
         //
-        let prepareSenderIfNeeded = (sender: MessageSender, message: ModelMessage, date: number) => {
+        let prepareSenderIfNeeded = (sender: Types.MessageSender, message: ModelMessage, date: number) => {
             let day = prepareDateIfNeeded(date);
             let isService = isServerMessage(message) && message.__typename === 'ServiceMessage';
             if (prevMessageSender === sender.id && prevMessageDate !== undefined && isService === prevMessageIsService) {
@@ -1250,12 +1236,12 @@ export class ConversationEngine implements MessageSendHandler {
         return res;
     }
 
-    setReaction = (messageKey: string, reaction: MessageReactionType) => {
+    setReaction = (messageKey: string, reaction: Types.MessageReactionType) => {
         const oldMessage = this.dataSource.getItem(messageKey) as DataSourceMessageItem;
 
         const existingReaction = !!oldMessage.reactionCounters.find(i => i.reaction === reaction);
 
-        const newReactions = [] as MessageReactionCounter[];
+        const newReactions = [] as Types.MessageReactionCounter[];
         if (existingReaction) {
             oldMessage.reactionCounters.map(r => {
                 if (r.reaction === reaction) {
@@ -1283,10 +1269,10 @@ export class ConversationEngine implements MessageSendHandler {
         this.dataSource.updateItem(newMessage);
     }
 
-    unsetReaction = (messageKey: string, reaction: MessageReactionType) => {
+    unsetReaction = (messageKey: string, reaction: Types.MessageReactionType) => {
         const oldMessage = this.dataSource.getItem(messageKey) as DataSourceMessageItem;
 
-        const newReactions = [] as MessageReactionCounter[];
+        const newReactions = [] as Types.MessageReactionCounter[];
 
         oldMessage.reactionCounters.map(r => {
             if (r.reaction === reaction && r.count - 1 !== 0) {

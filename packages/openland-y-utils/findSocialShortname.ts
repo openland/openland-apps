@@ -73,7 +73,7 @@ export const findSocialShortname: FindSocialShortnameInterface = {
             source,
             domain: 'instagram.com',
             url: 'https://instagram.com',
-            regexp: new RegExp(/^(?:https?:\/\/)?(?:www\.)?instagram\.com\/(?:#!\/)?@?([a-z0-9_]+)(?:\/\w+)*$/i)
+            regexp: new RegExp(/^(?:https?:\/\/)?(?:www\.)?instagram\.com\/(?:#!\/)?@?([a-z0-9_.]+)(?:\/\w+)*$/i)
         });
     },
 

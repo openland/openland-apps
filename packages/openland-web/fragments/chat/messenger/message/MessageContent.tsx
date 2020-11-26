@@ -20,6 +20,7 @@ import { StickerContent } from './content/StickerContent';
 import { css, cx } from 'linaria';
 import { createSimpleSpan } from 'openland-y-utils/spans/processSpans';
 import { ImagePileContent } from './content/ImagePileContent';
+import { MAX_FILES_PER_MESSAGE } from 'openland-engines/messenger/MessageSender';
 
 type MsgAttachFile = FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { progress?: number };
 type MsgAttachRich = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
@@ -28,6 +29,7 @@ type MsgAttachPurchase = FullMessage_GeneralMessage_attachments_MessageAttachmen
 const wrapper = css`
     flex-grow: 1;
     flex-shrink: 1;
+    overflow: hidden;
 `;
 
 const textWrapper = css`
@@ -112,6 +114,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
         sticker,
         fallback,
         isOut = false,
+        chatId,
         attachTop = false,
         isPending,
         isComment = false,
@@ -119,7 +122,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
 
     const imageAttaches = attachments.filter(
         (a) => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage,
-    ) as MsgAttachFile[];
+    ).slice(0, MAX_FILES_PER_MESSAGE) as MsgAttachFile[];
 
     const documentsAttaches = attachments.filter(
         (a) => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage,
@@ -159,7 +162,6 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
         } else {
             imagesContent = imageAttaches
                 .reduce((acc, file, i) => {
-                    let column = acc.reduce((y, x) => x.length === 1 ? x : y, null);
                     if (acc.length < 2) {
                         acc.push([(
                             <ImagePileContent
@@ -175,23 +177,28 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
                                 isHalf={imageAttaches.length === 3 && i === 1 || imageAttaches.length === 4}
                             />
                         )]);
-                    } else if (column) {
-                        column.push(
-                            (
-                                <ImagePileContent
-                                    key={'msg-' + id + '-media-' + (file.fileId || file.id) + i}
-                                    file={file}
-                                    sender={props.sender}
-                                    senderNameEmojify={props.senderNameEmojify}
-                                    date={props.date}
-                                    chatId={props.chatId}
-                                    mId={id}
-                                    isPending={isPending}
-                                    progress={file.progress}
-                                    isHalf={true}
-                                />
-                            )
+                    } else {
+                        let el = (
+                            <ImagePileContent
+                                key={'msg-' + id + '-media-' + (file.fileId || file.id) + i}
+                                file={file}
+                                sender={props.sender}
+                                senderNameEmojify={props.senderNameEmojify}
+                                date={props.date}
+                                chatId={props.chatId}
+                                mId={id}
+                                isPending={isPending}
+                                progress={file.progress}
+                                isHalf={true}
+                            />
                         );
+                        if (i === 2) {
+                            acc[1].push(el);
+                        } else if (i === 3) {
+                            let prevLast = acc[1].pop();
+                            acc[0].push(prevLast!);
+                            acc[1].push(el);
+                        }
                     }
                     return acc;
                 }, [] as JSX.Element[][])
@@ -219,7 +226,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
     if (hasText) {
         content.push(
             <ContentWrapper key="msg-text" className={textClassName}>
-                <MessageTextComponent spans={textSpans} edited={!!edited} mId={id} />
+                <MessageTextComponent spans={textSpans} edited={!!edited} mId={id} chatId={chatId} />
             </ContentWrapper>,
         );
     }

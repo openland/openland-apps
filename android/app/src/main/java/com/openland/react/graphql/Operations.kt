@@ -14,6 +14,7 @@ object Operations {
         if (name == "AccountSettings") return AccountSettings
         if (name == "AuthPoints") return AuthPoints
         if (name == "AuthResolveShortName") return AuthResolveShortName
+        if (name == "BlackListUpdatesState") return BlackListUpdatesState
         if (name == "Channel") return Channel
         if (name == "Channels") return Channels
         if (name == "ChatInit") return ChatInit
@@ -39,17 +40,23 @@ object Operations {
         if (name == "DiscoverEditorsChoice") return DiscoverEditorsChoice
         if (name == "DiscoverIsDone") return DiscoverIsDone
         if (name == "DiscoverNewAndGrowing") return DiscoverNewAndGrowing
+        if (name == "DiscoverNewOrganizations") return DiscoverNewOrganizations
         if (name == "DiscoverNextPage") return DiscoverNextPage
         if (name == "DiscoverNoAuth") return DiscoverNoAuth
         if (name == "DiscoverPopularNow") return DiscoverPopularNow
+        if (name == "DiscoverPopularOrganizations") return DiscoverPopularOrganizations
         if (name == "DiscoverState") return DiscoverState
         if (name == "DiscoverSuggestedRooms") return DiscoverSuggestedRooms
         if (name == "DiscoverTopFree") return DiscoverTopFree
         if (name == "DiscoverTopPremium") return DiscoverTopPremium
         if (name == "ExplorePeople") return ExplorePeople
         if (name == "ExploreRooms") return ExploreRooms
-        if (name == "FeatureFlags") return FeatureFlags
         if (name == "FetchPushSettings") return FetchPushSettings
+        if (name == "GetDifference") return GetDifference
+        if (name == "GetInitialDialogs") return GetInitialDialogs
+        if (name == "GetSequenceDifference") return GetSequenceDifference
+        if (name == "GetSequenceState") return GetSequenceState
+        if (name == "GetState") return GetState
         if (name == "GlobalCounter") return GlobalCounter
         if (name == "GlobalSearch") return GlobalSearch
         if (name == "IpLocation") return IpLocation
@@ -58,7 +65,9 @@ object Operations {
         if (name == "MessageMultiSpan") return MessageMultiSpan
         if (name == "MessagesBatch") return MessagesBatch
         if (name == "MessagesSearch") return MessagesSearch
+        if (name == "MessagesSearchFull") return MessagesSearchFull
         if (name == "MyApps") return MyApps
+        if (name == "MyBlackList") return MyBlackList
         if (name == "MyCards") return MyCards
         if (name == "MyCommunities") return MyCommunities
         if (name == "MyContacts") return MyContacts
@@ -100,7 +109,6 @@ object Operations {
         if (name == "RoomMembersSearch") return RoomMembersSearch
         if (name == "RoomMembersShort") return RoomMembersShort
         if (name == "RoomMembersTiny") return RoomMembersTiny
-        if (name == "RoomMetaPreview") return RoomMetaPreview
         if (name == "RoomPico") return RoomPico
         if (name == "RoomSearch") return RoomSearch
         if (name == "RoomSocialImage") return RoomSocialImage
@@ -123,6 +131,8 @@ object Operations {
         if (name == "UserAvailableRooms") return UserAvailableRooms
         if (name == "UserNano") return UserNano
         if (name == "UserPico") return UserPico
+        if (name == "UserSearchForChat") return UserSearchForChat
+        if (name == "UserSearchForOrganization") return UserSearchForOrganization
         if (name == "UserStorage") return UserStorage
         if (name == "Users") return Users
         if (name == "AccountInviteJoin") return AccountInviteJoin
@@ -130,6 +140,7 @@ object Operations {
         if (name == "AddComment") return AddComment
         if (name == "AddStickerComment") return AddStickerComment
         if (name == "AddToContacts") return AddToContacts
+        if (name == "BanUser") return BanUser
         if (name == "BetaDiscoverSkip") return BetaDiscoverSkip
         if (name == "BetaNextDiscoverReset") return BetaNextDiscoverReset
         if (name == "BetaSubmitNextDiscover") return BetaSubmitNextDiscover
@@ -161,12 +172,8 @@ object Operations {
         if (name == "DiscoverEditorsChoiceUpdate") return DiscoverEditorsChoiceUpdate
         if (name == "EditComment") return EditComment
         if (name == "EditMessage") return EditMessage
-        if (name == "FeatureFlagAdd") return FeatureFlagAdd
-        if (name == "FeatureFlagDisable") return FeatureFlagDisable
-        if (name == "FeatureFlagEnable") return FeatureFlagEnable
         if (name == "GlobalEventBusPublish") return GlobalEventBusPublish
         if (name == "MakeCardDefault") return MakeCardDefault
-        if (name == "MarkSequenceRead") return MarkSequenceRead
         if (name == "MediaAnswer") return MediaAnswer
         if (name == "MediaCandidate") return MediaCandidate
         if (name == "MediaFailed") return MediaFailed
@@ -180,6 +187,7 @@ object Operations {
         if (name == "OrganizationChangeMemberRole") return OrganizationChangeMemberRole
         if (name == "OrganizationCreatePublicInvite") return OrganizationCreatePublicInvite
         if (name == "OrganizationMemberRemove") return OrganizationMemberRemove
+        if (name == "OrganizationRequestMembersExport") return OrganizationRequestMembersExport
         if (name == "PairEmail") return PairEmail
         if (name == "PairPhone") return PairPhone
         if (name == "PaymentIntentCancel") return PaymentIntentCancel
@@ -243,6 +251,7 @@ object Operations {
         if (name == "SuperAdminRemove") return SuperAdminRemove
         if (name == "SuperBadgeCreateToRoom") return SuperBadgeCreateToRoom
         if (name == "SuperBadgeUnsetToRoom") return SuperBadgeUnsetToRoom
+        if (name == "UnBanUser") return UnBanUser
         if (name == "UnSubscribeFromComments") return UnSubscribeFromComments
         if (name == "UnpinMessage") return UnpinMessage
         if (name == "UnsetTyping") return UnsetTyping
@@ -254,6 +263,7 @@ object Operations {
         if (name == "conferenceAlterMediaState") return conferenceAlterMediaState
         if (name == "conferenceRemoveScreenShare") return conferenceRemoveScreenShare
         if (name == "conferenceRequestLocalMediaChange") return conferenceRequestLocalMediaChange
+        if (name == "BlackListUpdates") return BlackListUpdates
         if (name == "ChatOnlinesCountWatch") return ChatOnlinesCountWatch
         if (name == "ChatWatch") return ChatWatch
         if (name == "CommentWatch") return CommentWatch
@@ -268,6 +278,7 @@ object Operations {
         if (name == "SettingsWatch") return SettingsWatch
         if (name == "TypingsWatch") return TypingsWatch
         if (name == "WalletUpdates") return WalletUpdates
+        if (name == "WatchUpdates") return WatchUpdates
         error("Unknown operation: $name")
     }
 }

@@ -5,7 +5,6 @@ import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessa
 import { TextContent } from './TextContent';
 import { MediaContent } from './MediaContent';
 import { DocumentContent } from './DocumentContent';
-import { layoutImage } from 'openland-mobile/messenger/components/content/MediaContent';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface ReplyContentProps {
@@ -34,16 +33,13 @@ export const ReplyContent = (props: ReplyContentProps) => {
                     let fileAttaches = generalMesage.attachments && generalMesage.attachments.filter(a => a.__typename === 'MessageAttachmentFile') as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
                     let contentAttach: JSX.Element[] = [];
 
+                    if (fileAttaches.length > 0 && fileAttaches.every(x => x.fileMetadata.isImage)) {
+                        contentAttach.push(<MediaContent key={'msg-reply-' + quote.id + '-media'} maxWidth={maxWidth} message={generalMesage!} theme={theme} />);
+                    }
                     fileAttaches.map((file, index) => {
                         let isImage = file.fileMetadata.isImage;
 
-                        if (isImage) {
-                            let imageLayout = layoutImage(file.fileMetadata, maxWidth);
-
-                            if (imageLayout) {
-                                contentAttach.push(<MediaContent key={'msg-reply-' + quote.id + '-media-' + index} imageLayout={imageLayout} message={generalMesage!} attach={file} theme={theme} />);
-                            }
-                        } else {
+                        if (!isImage) {
                             contentAttach.push(<DocumentContent key={'msg-reply-' + quote.id + '-document-' + index} attach={file} onDocumentPress={props.onDocumentPress} theme={theme} />);
                         }
                     });

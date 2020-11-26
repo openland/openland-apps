@@ -133,7 +133,7 @@ export const RichContent = (props: { item: SharedItemRich, chatId: string, profi
     const containerClassName = cx(
         ContainerClass,
         props.profileView && ContainerProfileClass,
-        layout === 'mobile' && MobilePadding,
+        layout === 'mobile' && !props.profileView && MobilePadding,
     );
 
     return (

@@ -399,6 +399,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
     panResponder = PanResponder.create({
         onPanResponderGrant: () => {
             Keyboard.dismiss();
+
             this.swipeCurrentKey = this.currentHistory.history[this.currentHistory.history.length - 1].key;
             this.swipePrevKey = this.currentHistory.history[this.currentHistory.history.length - 2].key;
             this.mounted = [...this.mounted, this.swipePrevKey];

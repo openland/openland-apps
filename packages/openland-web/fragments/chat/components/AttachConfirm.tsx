@@ -5,7 +5,7 @@ import AlertBlanket from 'openland-x/AlertBlanket';
 import { css, cx } from 'linaria';
 import { XModalController } from 'openland-x/showModal';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
-import { UploadCareUploading } from 'openland-web/utils/UploadCareUploading';
+import { UploadCareUploading, isFileImage } from 'openland-web/utils/UploadCareUploading';
 import { LocalImage } from 'openland-engines/messenger/types';
 import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
@@ -26,7 +26,7 @@ import { AutoCompleteComponent, AutoCompleteComponentRef, useInputAutocompleteHa
 import { URickInput, URickInputInstance, URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { extractTextAndMentions } from 'openland-web/utils/convertTextAndMentions';
-import { MentionToSend } from 'openland-engines/messenger/MessageSender';
+import { MAX_FILES_PER_MESSAGE, MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { UToast } from 'openland-web/components/unicorn/UToast';
 import { useClient } from 'openland-api/useClient';
 import { RoomPico_room_PrivateRoom, RoomPico_room_SharedRoom } from 'openland-api/spacex.types';
@@ -144,7 +144,7 @@ export const useAttachButtonHandlers = (props: { onAttach: (files: File[], isIma
 
     const onInputChange = (isImage: boolean) => (e: React.ChangeEvent<HTMLInputElement>) => {
         if (props.onAttach) {
-            props.onAttach(fileListToArray(e.target.files).filter(f => isImage ? f.type.includes('image') : true), isImage);
+            props.onAttach(fileListToArray(e.target.files).filter(f => isImage ? isFileImage(f) : true), isImage);
         }
         if (imageInputRef.current) {
             imageInputRef.current.value = '';
@@ -158,7 +158,7 @@ export const useAttachButtonHandlers = (props: { onAttach: (files: File[], isIma
             <input
                 ref={imageInputRef}
                 type="file"
-                accept="image/*"
+                accept="image/gif, image/jpeg, image/jpg, image/png, image/webp"
                 multiple={true}
                 style={{ display: 'none' }}
                 onChange={onInputChange(true)}
@@ -183,7 +183,7 @@ let Img = React.memo((props: {
     index: number;
     imagesCount: number;
     onClick: (f: File) => void,
-    onLoad: (img: LocalImage) => void,
+    onLoad: (file: File, img: LocalImage) => void,
 }) => {
     let ref = React.useRef<HTMLDivElement>(null);
     React.useEffect(() => {
@@ -193,7 +193,7 @@ let Img = React.memo((props: {
             const layout = layoutMedia(image.width || 0, image.height || 0, 392, 392, 32, 32);
             if (ref.current) {
                 ref.current.style.backgroundImage = `url(${reader.result})`;
-                props.onLoad({ index: props.index, src: (reader.result as string), width: layout.width, height: layout.height });
+                props.onLoad(props.file, { index: props.index, src: (reader.result as string), width: layout.width, height: layout.height });
             }
         };
         reader.onloadend = () => {
@@ -222,17 +222,18 @@ let Img = React.memo((props: {
 const Body = (props: {
     chatId?: string;
     isImage?: boolean;
+    text?: URickTextValue;
     files: File[];
     addFile: (f: File) => string | File;
     removeFile: (f: File) => void;
-    onImageLoad: (img: LocalImage) => void;
+    onImageLoad: (file: File, img: LocalImage) => void;
     onTextChange: (text: URickTextValue | undefined) => void;
     onFileTypeChange: (hasImages: boolean) => void;
     ctx: XModalController;
     confirm: () => void;
     errorText?: string;
 }) => {
-    let { files, addFile, removeFile, isImage, onImageLoad, onTextChange, onFileTypeChange } = props;
+    let { files, addFile, removeFile, isImage, text, onImageLoad, onTextChange, onFileTypeChange } = props;
     let [bodyFiles, setFiles] = React.useState(files);
     let client = useClient();
     let [room, setRoom] = React.useState<RoomPico_room_PrivateRoom | RoomPico_room_SharedRoom | null>(null);
@@ -259,15 +260,16 @@ const Body = (props: {
         [bodyFiles],
     );
     let { documents, imageColumns } = bodyFiles.reduce((acc, f, i, { length }) => {
-        // let isImage = f.type.includes('image');
-
         if (isImage) {
-            let column = acc.imageColumns.reduce((y, x) => x.length === 1 ? x : y, null);
             let el = <Img key={f.name + f.size + f.lastModified} file={f} onClick={onClick} index={i} imagesCount={bodyFiles.length} onLoad={onImageLoad} />;
             if (acc.imageColumns.length < 2) {
                 acc.imageColumns.push([el]);
-            } else if (column) {
-                column.push(el);
+            } else if (i === 2) {
+                acc.imageColumns[1].push(el);
+            } else if (i === 3) {
+                let prevLast = acc.imageColumns[1].pop();
+                acc.imageColumns[0].push(prevLast!);
+                acc.imageColumns[1].push(el);
             }
         } else {
             acc.documents.push(
@@ -334,8 +336,11 @@ const Body = (props: {
         },
     }, {
         keys: ['Enter'],
-        callback: () => {
-            if (suggestRef.current?.isActive()) {
+        callback: (ev: KeyboardEvent) => {
+            if (ev.shiftKey) {
+                return;
+            }
+            if (activeWord && suggestRef.current?.isActive() && (activeWord.startsWith('@') || activeWord.startsWith(':'))) {
                 return false;
             }
             props.confirm();
@@ -389,6 +394,7 @@ const Body = (props: {
                 </Deferred>
                 <URickInput
                     ref={inputRef}
+                    initialContent={text}
                     className={inputStyle}
                     placeholder="Add a note"
                     autofocus={true}
@@ -408,6 +414,7 @@ const Body = (props: {
 
 export const showAttachConfirm = ({
     files,
+    text,
     chatId,
     isImage,
     onSubmit: callback,
@@ -416,6 +423,7 @@ export const showAttachConfirm = ({
     onCancel,
 }: {
     files: File[],
+    text: URickTextValue | undefined;
     onSubmit: (files: { file: UploadCareUploading, localImage?: LocalImage }[], text: string | undefined, mentions: MentionToSend[] | undefined, hasImages: boolean) => void,
     chatId?: string,
     isImage?: boolean,
@@ -428,7 +436,7 @@ export const showAttachConfirm = ({
         let b = f.size > MAX_FILE_SIZE;
         tooBig = tooBig || b;
         return !b;
-    }).slice(0, 4);
+    }).slice(0, MAX_FILES_PER_MESSAGE);
     let errorText = tooBig
         ? 'Files bigger than 100mb are not supported yet'
         : files.length > 4
@@ -453,9 +461,9 @@ export const showAttachConfirm = ({
         filesRes = filesRes.filter(f => f !== file);
     };
 
-    let loadedImages: LocalImage[] = [];
-    let saveImage = (img: LocalImage) => {
-        loadedImages[img.index] = img;
+    let imagesPreviews: Map<File, LocalImage> = new Map();
+    let savePreview = (file: File, img: LocalImage) => {
+        imagesPreviews.set(file, img);
     };
     let messageInfo: { hasImages: boolean, inputValue: URickTextValue | undefined } = { hasImages: false, inputValue: undefined };
     let setInputText = (inputValue: URickTextValue | undefined) => {
@@ -477,13 +485,14 @@ export const showAttachConfirm = ({
                     files={filesRes.slice()}
                     addFile={addUpload}
                     removeFile={removeUpload}
-                    onImageLoad={saveImage}
+                    onImageLoad={savePreview}
                     onTextChange={setInputText}
                     onFileTypeChange={setHasImages}
                     ctx={ctx}
                     confirm={confirm}
                     errorText={errorText}
                     isImage={isImage}
+                    text={text}
                 />
             ))
             .action('Send', async () => {
@@ -491,9 +500,9 @@ export const showAttachConfirm = ({
                     return;
                 }
                 isUploading = true;
-                let uploadedFiles = uploading.map((u, i) => ({ file: u, localImage: loadedImages[i] })).filter(({ file }) => filesRes.includes(file.getSourceFile()));
-                let { text, mentions } = messageInfo.inputValue ? extractTextAndMentions(messageInfo.inputValue) : { text: undefined, mentions: undefined };
-                await callback(uploadedFiles, text, mentions, isImage === undefined ? messageInfo.hasImages : isImage);
+                let uploadedFiles = uploading.filter(file => filesRes.includes(file.getSourceFile())).map((u, i) => ({ file: u, localImage: imagesPreviews.get(filesRes[i]) }));
+                let { text: messageText, mentions } = messageInfo.inputValue ? extractTextAndMentions(messageInfo.inputValue) : { text: undefined, mentions: undefined };
+                await callback(uploadedFiles, messageText, mentions, isImage === undefined ? messageInfo.hasImages : isImage);
 
                 const { name } = await uploading[0].fetchInfo();
 

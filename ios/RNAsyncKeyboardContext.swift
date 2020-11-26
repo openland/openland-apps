@@ -27,6 +27,24 @@ class RNAsyncKeyboardContextView: RCTView, RNAsyncKeyboardManagerDelegate {
   }
   
   @objc func keyboardWillChangeHeight(ctx: String, kbHeight: CGFloat, acHeight: CGFloat) {
+      if let clb = self.onKeyboardCallback {
+        if ctx == self.keyboardContextKey {
+          let contentOffset = NSMutableDictionary()
+          contentOffset.setValue(kbHeight + acHeight, forKey: "height")
+          contentOffset.setValue(acHeight, forKey: "acHeight")
+          contentOffset.setValue("keyboardWillChangeHeight", forKey: "name")
+          let body = NSMutableDictionary()
+          body.setValue(contentOffset, forKey: "state")
+          clb(body as! [AnyHashable : Any])
+        }
+      }
+  }
+  
+  @objc func stickersKeyboardWillShow() {
+    
+  }
+  
+  @objc func stickersKeyboardWillHide(noKeyboard: Bool) {
     
   }
   

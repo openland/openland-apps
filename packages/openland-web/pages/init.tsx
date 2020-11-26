@@ -71,7 +71,7 @@ css.global('a', {
     textDecoration: 'none',
 });
 css.global('a:hover', {
-    color: '#1790ff',
+    color: 'var(--accentPrimary)',
 });
 css.global('sub, sup', {
     fontSize: '75%',

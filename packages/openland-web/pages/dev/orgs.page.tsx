@@ -140,6 +140,7 @@ const FilteredOptions = (props: FilteredOptionsProps) => {
                             private: false,
                             isAdmin: false,
                             membersCanInvite: false,
+                            featured: false,
                         }}
                     />
                 </XView>

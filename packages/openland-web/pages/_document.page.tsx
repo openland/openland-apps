@@ -105,8 +105,6 @@ export default class OpenlandDocument extends Document {
 
             if (originalUrl.startsWith('/invite/')) {
                 inviteKey = originalUrl.slice('/invite/'.length);
-            } else if (originalUrl.startsWith('/joinChannel/')) {
-                inviteKey = originalUrl.slice('/joinChannel/'.length);
             } else if (originalUrl.startsWith('/discover/collections/')) {
                 collectionId = originalUrl.slice('/discover/collections/'.length);
             }
@@ -177,49 +175,47 @@ export default class OpenlandDocument extends Document {
             } else {
                 // probably user meta tags needed
                 const linkSegments = originalUrl.split('/');
-
+                let probableShortname: string | null = null;
                 if (linkSegments.length === 2) {
-                    const probableShortname = linkSegments[1];
+                    probableShortname = linkSegments[1];
+                }
+                if (linkSegments.length === 3) {
+                    probableShortname = linkSegments[2];
+                }
 
-                    const shortnameData = await openland.queryResolveShortName({ shortname: probableShortname });
-
+                if (probableShortname) {
+                    const shortnameData = await openland.queryAuthResolveShortName({ shortname: probableShortname });
                     if (shortnameData.item) {
                         // default meta tags
                         metaTagsInfo = matchMetaTags[originalUrl] || {};
 
                         // user or group exists
-                        if (shortnameData.item.__typename === 'User') {
-                            const { user } = await openland.queryUserPico({ userId: shortnameData.item.id });
+                        if (shortnameData.item.__typename === 'Organization') {
+                            const org = shortnameData.item;
+                            metaTagsInfo = {
+                                title: `${org.name} on Openland`,
+                                url: urlPrefix + originalUrl,
+                                description: org.about || 'Join Openland and find inspiring communities',
+                                image: org.externalSocialImage || 'https://cdn.openland.com/shared/og/og-global-2.png',
+                            };
+                        } else if (shortnameData.item.__typename === 'User') {
+                            const user = shortnameData.item;
 
                             metaTagsInfo = {
                                 title: `${user.name} on Openland`,
                                 url: urlPrefix + originalUrl,
                                 description: `${user.firstName} uses Openland. Want to reach them? Join Openland and write a message `,
-                                image: user.photo || 'https://cdn.openland.com/shared/og/og-global-2.png',
+                                image: user.externalSocialImage || 'https://cdn.openland.com/shared/og/og-global-2.png',
                             };
                         } else if (shortnameData.item.__typename === 'SharedRoom') {
-                            const { alphaResolveShortName: room, roomSocialImage } = await openland.queryRoomMetaPreview({ shortname: probableShortname, id: shortnameData.item.id });
+                            const room = shortnameData.item;
 
-                            if (room?.__typename === 'SharedRoom') {
-                                let roomImage;
-
-                                if (room.socialImage) {
-                                    roomImage = room.socialImage;
-                                } else if (roomSocialImage) {
-                                    roomImage = roomSocialImage;
-                                } else if (room.photo && !room.photo.startsWith('ph://')) {
-                                    roomImage = room.photo;
-                                } else {
-                                    roomImage = 'https://cdn.openland.com/shared/og/og-global-2.png';
-                                }
-
-                                metaTagsInfo = {
-                                    title: `${room.title} on Openland`,
-                                    url: urlPrefix + originalUrl,
-                                    description: room.description || 'Join Openland and find inspiring communities',
-                                    image: roomImage,
-                                };
-                            }
+                            metaTagsInfo = {
+                                title: `${room.title} on Openland`,
+                                url: urlPrefix + originalUrl,
+                                description: room.description || 'Join Openland and find inspiring communities',
+                                image: room.externalSocialImage || 'https://cdn.openland.com/shared/og/og-global-2.png',
+                            };
                         }
                     }
                 }
@@ -257,7 +253,7 @@ export default class OpenlandDocument extends Document {
                     <meta name="apple-mobile-web-app-title" content="Openland" />
                     <meta name="supported-color-schemes" content="light dark" />
                     <meta name="color-scheme" content="light dark" />
-                    <link rel="stylesheet" href="/static/css/x.css?v=23" />
+                    <link rel="stylesheet" href="/static/css/x.css?v=25" />
                     {process.env.APP_ENVIRONMENT !== 'next' && (
                         <meta name="apple-itunes-app" content="app-id=1435537685" />
                     )}

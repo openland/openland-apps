@@ -27,6 +27,7 @@ import { ZHeroAction } from 'openland-mobile/components/ZHeroAction';
 import { plural } from 'openland-y-utils/plural';
 import { SHeader } from 'react-native-s/SHeader';
 import { ChatJoin } from './components/ChatJoin';
+import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 
 const ProfileGroupComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
@@ -222,8 +223,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
         [roomId],
     );
 
-    const memberInviteDisabled = group.organization && !group.organization.isAdmin && !group.organization.membersCanInvite;
-    const hideOwnerLink = group.organization && group.organization.private && group.role === 'MEMBER';
+    const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(group);
 
     const handleAddMember = React.useCallback(() => {
         trackEvent('invite_view', { invite_type: 'group' });
@@ -256,7 +256,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             group.isPremium ? 'Add people for free' : 'Add people',
             members.map((m) => m.user.id),
             [getMessenger().engine.user.id],
-            hideOwnerLink ? undefined : { path: 'ProfileGroupLink', pathParams: { room: group } },
+            canGetInviteLink ? { path: 'ProfileGroupLink', pathParams: { room: group } } : undefined,
         );
     }, [members]);
 
@@ -287,7 +287,13 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     }, [group]);
 
     const handleSharePress = React.useCallback(() => {
-        Share.share({ url: `https://openland.com/${group.shortname || group.id}` });
+        let link = `https://openland.com/${group.shortname || group.id}`;
+        Share.share(
+            Platform.select({
+                ios: { url: link },
+                android: { message: link }
+            })
+        );
     }, [group.shortname, group.id]);
 
     const handleLoadMore = React.useCallback(async () => {
@@ -315,10 +321,12 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                         </View>
                     ) : undefined
                 }
+                titleIconRight={group.featured && theme.displayFeaturedIcon ? require('assets/ic-verified-16.png') : undefined}
+                titleIconRightColor={'#3DA7F2' /* special: verified/featured color */}
                 titleColor={highlightGroup ? theme.accentPositive : undefined}
                 subtitle={plural(group.membersCount, ['member', 'members'])}
                 actionPrimary={{
-                    title: group.isChannel ? 'View channel' : 'View chat',
+                    title: group.isChannel ? 'View channel' : 'View group',
                     onPress: handleSend
                 }}
             >
@@ -390,14 +398,14 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             </ZListGroup>
 
             <ZListHeader text="Members" counter={group.membersCount} useSpacer={true} />
-            {(!group.isPremium || group.role !== 'MEMBER') && !memberInviteDisabled && (
+            {canAddDirectly && (
                 <ZListItem
                     text="Add people"
                     leftIcon={require('assets/ic-add-glyph-24.png')}
                     onPress={handleAddMember}
                 />
             )}
-            {!hideOwnerLink && !memberInviteDisabled && (
+            {canGetInviteLink && (
                 <ZListItem
                     leftIcon={require('assets/ic-link-glyph-24.png')}
                     text={`Invite with link`}

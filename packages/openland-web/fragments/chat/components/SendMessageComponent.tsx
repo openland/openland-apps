@@ -29,12 +29,15 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { Deferred } from 'openland-unicorn/components/Deferred';
 import { detectOS } from 'openland-x-utils/detectOS';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
+import { isFileImage } from 'openland-web/utils/UploadCareUploading';
+import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
 
 interface MentionItemComponentProps {
     id: string;
     photo: string | null;
     title: string;
     subtitle?: string;
+    featured?: boolean;
 }
 
 const mentionContainer = css`
@@ -60,6 +63,7 @@ const userName = css`
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    flex-shrink: 1;
 `;
 
 const placeholderContainer = css`
@@ -94,11 +98,25 @@ const listItemIcon = css`
     margin-left: 2px;
 `;
 
+const featuredIcon = css`
+    display: var(--featured-icon-display);
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
+    flex-shrink: 0;
+`;
+
 export const MentionItemComponent = (props: MentionItemComponentProps) => (
     <div className={mentionContainer}>
         <UAvatar id={props.id} title={props.title} photo={props.photo} size="x-small" />
         <div className={mentionUserDataWrap}>
             <div className={cx(userName, TextLabel1)}>{props.title}</div>
+            {props.featured && (
+                <div className={featuredIcon}>
+                    <UIcon icon={<IcFeatured />} color={'#3DA7F2'} />
+                </div>
+            )}
             {!!props.subtitle && (
                 <div className={cx(userOrg, TextDensed)}>{props.subtitle}</div>
             )}
@@ -345,6 +363,7 @@ export const AutoCompleteComponent = React.memo(
                                 photo={v.organization.photo}
                                 title={v.organization.name}
                                 subtitle={v.organization.isCommunity ? 'Community' : 'Organization'}
+                                featured={v.organization.featured}
                             />
                         );
                     } else if (v.__typename === 'MentionSearchSharedRoom') {
@@ -354,6 +373,7 @@ export const AutoCompleteComponent = React.memo(
                                 photo={v.room.photo}
                                 title={v.room.title}
                                 subtitle="Group"
+                                featured={v.room.featured}
                             />
                         );
                     }
@@ -586,7 +606,7 @@ interface SendMessageComponentProps {
     initialText?: URickTextValue;
     rickRef?: React.RefObject<URickInputInstance>;
     onPressUp?: () => boolean;
-    onAttach?: (files: File[], isImage: boolean) => void;
+    onAttach?: (files: File[], text: URickTextValue | undefined, isImage: boolean) => void;
     autoFocus?: boolean;
     ownerName?: string;
     isEditing?: boolean;
@@ -715,9 +735,13 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     const onDonateClick = React.useCallback(() => {
         showDonation();
     }, [showDonation]);
-    const handleFilePaste = React.useCallback((files: File[]) => {
+    const handleAttach = React.useCallback((files: File[], isImage?: boolean) => {
         if (props.onAttach) {
-            props.onAttach(files, files.every(x => x.type.includes('image')));
+            props.onAttach(
+                files,
+                ref.current?.getText(),
+                typeof isImage === 'undefined' ? files.every(x => isFileImage(x)) : isImage
+            );
         }
     }, []);
 
@@ -739,7 +763,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             {!!props.onAttach && (
                 <AttachConfirmButton
                     hideDonation={props.hideDonation}
-                    onAttach={props.onAttach}
+                    onAttach={handleAttach}
                     onDonate={onDonateClick}
                 />
             )}
@@ -769,7 +793,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     }
                     autofocus={props.autoFocus}
                     placeholder={props.placeholder || 'Write a message...'}
-                    onFilesPaste={handleFilePaste}
+                    onFilesPaste={handleAttach}
                     className={(isWindows || isLinux) ? hideScrollStyle : undefined}
                     onEmojiPickerShow={props.onEmojiPickerShow}
                     onEmojiPickerHide={props.onEmojiPickerHide}

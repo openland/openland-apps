@@ -304,19 +304,20 @@ export class FastImageViewer extends React.PureComponent<FastImageViewerProps> {
     }
 
     private _onPandHandlerStateChange = (event: PanGestureHandlerStateChangeEvent) => {
+        const { state, oldState, velocityX, velocityY, translationX, translationY } = event.nativeEvent;
 
         // Mark pan as started
-        if (event.nativeEvent.state === State.ACTIVE) {
+        if (state === State.ACTIVE) {
             this._panStarted = true;
         }
 
         // Handle completition
-        if (event.nativeEvent.oldState === State.ACTIVE) {
-            this._lastPan.x += event.nativeEvent.translationX;
-            this._lastPan.y += event.nativeEvent.translationY;
+        if (oldState === State.ACTIVE) {
+            this._lastPan.x += translationX;
+            this._lastPan.y += translationY;
 
-            this._panLastVelocityX = event.nativeEvent.velocityX;
-            this._panLastVelocityY = event.nativeEvent.velocityY;
+            this._panLastVelocityX = velocityX;
+            this._panLastVelocityY = velocityY;
 
             this._panCompleted = true;
             if ((this._pinchStarted && this._pinchCompleted) || !this._pinchStarted) {
@@ -325,6 +326,15 @@ export class FastImageViewer extends React.PureComponent<FastImageViewerProps> {
                 this._pinchStarted = false;
                 this._pinchCompleted = false;
                 this._handleCompleted();
+            }
+        }
+
+        // Try ugly fix to enable taps on android, cause tap and pinch gesture handlers not working together
+        if (Platform.OS === 'android') {
+            const translationDeviation = Math.abs(translationX) > 10 || Math.abs(translationY) > 10;
+
+            if (state === State.END && !translationDeviation && this.props.onTap) {
+                this.props.onTap();
             }
         }
     }

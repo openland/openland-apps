@@ -23,6 +23,8 @@ fragment UserFull on User {
     shortname
     audienceSize
     inContacts
+    isBanned
+    isMeBanned
     primaryOrganization {
         ...OrganizationShort
     }

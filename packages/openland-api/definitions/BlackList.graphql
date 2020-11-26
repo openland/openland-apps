@@ -1,0 +1,43 @@
+mutation BanUser($id: ID!) {
+    banUser(id: $id)
+}
+
+mutation UnBanUser($id: ID!) {
+    unBanUser(id: $id)
+}
+
+query BlackListUpdatesState {
+    blackListUpdatesState {
+        state
+    }
+}
+
+query MyBlackList {
+    myBlackList {
+        ... UserShort
+    }
+}
+
+subscription BlackListUpdates($fromState: String!) {
+    blackListUpdates(fromState: $fromState) {
+        state
+        updates {
+            ... on BlackListAdded {
+                bannedBy {
+                    ... UserShort
+                }
+                bannedUser {
+                    ... UserShort
+                }
+            }
+            ... on BlackListRemoved {
+                bannedBy {
+                    ... UserShort
+                }
+                bannedUser {
+                    ... UserShort
+                }
+            }
+        }
+    }
+}

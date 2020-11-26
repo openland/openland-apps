@@ -47,6 +47,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var isApplying = false
   private var didRenderContent = false
   private var animated = false
+  private var stickersKeyboardOpen = false
   
   private var applyModes: [String] = []
   
@@ -88,7 +89,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.viewLoaded = true
     
     
-    self.keyboardCtx = (self.parent.resolveKeyboardContextKey()?.keyboardContextKey) ?? "default"
+    self.keyboardCtx = self.parent.resolveKeyboardContextKey()?.keyboardContextKey ?? "default"
     self.keyboardSubscription = RNAsyncKeyboardManager.sharedInstance.watch(delegate: self, ctx: self.keyboardCtx)
     
     
@@ -105,6 +106,19 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
 
          print("keyboardWillChangeHeight")
          // self.fixContentInset(interactive: true)
+      }
+    }
+  }
+
+  func stickersKeyboardWillShow() {
+    self.stickersKeyboardOpen = true
+  }
+
+  func stickersKeyboardWillHide(noKeyboard: Bool) {
+    self.stickersKeyboardOpen = false
+    if (noKeyboard) {
+      UIView.animate(withDuration: 0.3) {
+        self.fixContentInset(interactive: false)
       }
     }
   }
@@ -134,6 +148,9 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   }
   
   private func fixContentInset(interactive: Bool) {
+    if (self.stickersKeyboardOpen) {
+      return
+    }
     let currentInset = self.node.inverted ? self.node.contentInset.top : self.node.contentInset.bottom
     let newInset = max(self.keyboardHeight, CGFloat(self.bottomInset))
     let insetsDiff = currentInset - newInset
@@ -249,6 +266,9 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     // Forward scroll offset
     var offsetX = scrollView.contentOffset.x
     var offsetY = scrollView.contentOffset.y + CGFloat(self.topInset)
+    let touchLocation = scrollView.panGestureRecognizer.location(in: self.node.view)
+    let touchPositionY = touchLocation.y - scrollView.contentOffset.y
+    let touchPositionX = touchLocation.x - scrollView.contentOffset.x
     
     if self.isApplying && offsetY == 0 {
       // autofix
@@ -268,6 +288,8 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       contentOffset.setValue(offsetX, forKey: "x")
       let body = NSMutableDictionary()
       body.setValue(contentOffset, forKey: "contentOffset")
+      body.setValue(touchPositionY, forKey: "touchPositionY")
+      body.setValue(touchPositionX, forKey: "touchPositionX")
       self.onScrollCallback!(body as! [AnyHashable : Any])
     }
     

@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val MessagesSearchSelector = obj(
-            field("messagesSearch", "messagesSearch", arguments(fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort")), fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(obj(
+            field("messagesSearch", "messagesSearch", arguments(fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort")), fieldValue("first", refValue("first")), fieldValue("after", refValue("after")), fieldValue("cid", refValue("cid"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("edges", "edges", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
@@ -38,6 +38,7 @@ internal val MessagesSearchSelector = obj(
                                                 field("role", "role", notNull(scalar("String"))),
                                                 field("canEdit", "canEdit", notNull(scalar("Boolean"))),
                                                 field("photo", "photo", notNull(scalar("String"))),
+                                                field("featured", "featured", notNull(scalar("Boolean"))),
                                                 field("settings", "settings", notNull(obj(
                                                         field("__typename", "__typename", notNull(scalar("String"))),
                                                         field("id", "id", notNull(scalar("ID"))),
@@ -103,6 +104,6 @@ internal val MessagesSearchSelector = obj(
 val MessagesSearch = object: OperationDefinition {
     override val name = "MessagesSearch"
     override val kind = OperationKind.QUERY
-    override val body = "query MessagesSearch(\$query:String!,\$sort:String,\$first:Int!,\$after:String){messagesSearch(query:\$query,sort:\$sort,first:\$first,after:\$after){__typename edges{__typename node{__typename chat{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename id kind title membership isChannel role canEdit photo settings{__typename id mute}}}message{__typename id date sender{__typename id name firstName photo}senderBadge{__typename ...UserBadge}message fallback ... on GeneralMessage{__typename id attachments{__typename id fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename isImage imageFormat}}}quotedMessages{__typename id}}}}cursor}pageInfo{__typename hasNextPage hasPreviousPage itemsCount currentPage pagesCount openEnded}}}fragment UserBadge on UserBadge{__typename id name verified}"
+    override val body = "query MessagesSearch(\$query:String!,\$sort:String,\$first:Int!,\$after:String,\$cid:ID){messagesSearch(query:\$query,sort:\$sort,first:\$first,after:\$after,cid:\$cid){__typename edges{__typename node{__typename chat{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename id kind title membership isChannel role canEdit photo featured settings{__typename id mute}}}message{__typename id date sender{__typename id name firstName photo}senderBadge{__typename ...UserBadge}message fallback ... on GeneralMessage{__typename id attachments{__typename id fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename isImage imageFormat}}}quotedMessages{__typename id}}}}cursor}pageInfo{__typename hasNextPage hasPreviousPage itemsCount currentPage pagesCount openEnded}}}fragment UserBadge on UserBadge{__typename id name verified}"
     override val selector = MessagesSearchSelector
 }

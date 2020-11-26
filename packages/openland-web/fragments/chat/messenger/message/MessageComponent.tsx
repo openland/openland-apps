@@ -38,6 +38,11 @@ const senderNameStyle = css`
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    cursor: pointer;
+
+    &:hover {
+        color: var(--accentPrimary);
+    }
 `;
 
 const dateStyle = css`
@@ -99,22 +104,28 @@ interface MessageSenderNameProps {
     overrideName?: string | null;
 }
 
-const MessageSenderName = React.memo((props: MessageSenderNameProps) => {
-    const [show] = useUserPopper({
+export const MessageSenderName = React.memo((props: MessageSenderNameProps) => {
+    const router = React.useContext(XViewRouterContext)!;
+    const [show, instantHide] = useUserPopper({
         user: props.sender,
         noCardOnMe: false,
     });
     return (
-        <ULink
-            path={`/${props.sender.shortname || props.sender.id}`}
+        <div
+            onClick={(e) => {
+                e.stopPropagation();
+                instantHide();
+                router.navigate(`/${props.sender.shortname || props.sender.id}`);
+            }}
+            onMouseEnter={show}
             className={cx(TextLabel1, senderNameStyle)}
         >
-            <span onMouseEnter={show}>{emoji(props.overrideName || props.sender.name)}</span>
-        </ULink>
+            <span>{emoji(props.overrideName || props.sender.name)}</span>
+        </div>
     );
 });
 
-const MessageSenderFeatured = React.memo(
+export const MessageSenderFeatured = React.memo(
     (props: { senderBadgeNameEmojify: string | JSX.Element }) => {
         const [show] = useCaptionPopper({ text: props.senderBadgeNameEmojify });
         return (
@@ -125,7 +136,7 @@ const MessageSenderFeatured = React.memo(
     },
 );
 
-const MessageSenderOrg = React.memo(
+export const MessageSenderOrg = React.memo(
     (props: { organization: MessageSender_primaryOrganization }) => (
         <ULink
             path={`/${props.organization.shortname || props.organization.id}`}
@@ -136,7 +147,7 @@ const MessageSenderOrg = React.memo(
     ),
 );
 
-const MessageTime = React.memo(
+export const MessageTime = React.memo(
     (props: { mId?: string; time: number; dateFormat: 'time' | 'date-time' }) => {
         const router = React.useContext(XViewRouterContext);
         const tooltipText = React.useMemo(
@@ -154,7 +165,7 @@ const MessageTime = React.memo(
             [props.time],
         );
 
-        const [show] = useCaptionPopper({
+        const [show, instantHide] = useCaptionPopper({
             text: tooltipText,
             placement: 'top',
             scope: 'message-date',
@@ -167,17 +178,18 @@ const MessageTime = React.memo(
                 className={cx(
                     TextCaption,
                     senderDateStyle,
-                    (props.dateFormat === 'time' && props.mId) && senderDateCursor,
-                    (props.dateFormat === 'time' && props.mId) && defaultHover,
+                    props.dateFormat === 'time' && props.mId && senderDateCursor,
+                    props.dateFormat === 'time' && props.mId && defaultHover,
                 )}
                 onClick={
                     props.dateFormat === 'time'
                         ? (e) => {
-                              e.stopPropagation();
-                              if (router && props.mId) {
-                                  router.navigate(`/message/${props.mId}`);
-                              }
-                          }
+                            e.stopPropagation();
+                            instantHide();
+                            if (router && props.mId) {
+                                router.navigate(`/message/${props.mId}`);
+                            }
+                        }
                         : undefined
                 }
             >
@@ -217,7 +229,7 @@ export const MessageSenderContent = React.memo((props: MessageSenderContentProps
     </div>
 ));
 
-const MessageTimeShort = React.memo((props: { mId?: string; date: number }) => {
+export const MessageTimeShort = React.memo((props: { mId?: string; date: number }) => {
     const router = React.useContext(XViewRouterContext);
 
     return (
@@ -417,7 +429,6 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const [isSelected, toggleSelect] = useChatMessagesSelected({
         messageKey: message.key,
         conversationId: engine.conversationId,
-        userId: engine.isPrivate ? engine.user?.id : undefined,
     });
 
     React.useEffect(() => {

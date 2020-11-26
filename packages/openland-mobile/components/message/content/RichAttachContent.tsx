@@ -246,6 +246,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                             zIndex: 1,
                         }}
                         numberOfLines={5}
+                        onPress={this.onTitleClick}
                         allowFontScaling={false}
                     >
                         {!subTitle && this.imageCompact && imgLayout && paddedTextPrefix}

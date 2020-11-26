@@ -32,11 +32,6 @@ query SuperAccount($accountId: ID!, $viaOrgId: Boolean) {
         members {
             ...UserShort
         }
-        features {
-            id
-            key
-            title
-        }
         orgId
         createdAt
         createdBy {

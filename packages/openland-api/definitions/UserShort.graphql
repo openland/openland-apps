@@ -10,6 +10,8 @@ fragment UserShort on User {
     isBot
     shortname
     inContacts
+    isBanned
+    isMeBanned
     primaryOrganization {
         ...OrganizationShort
     }

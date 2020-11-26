@@ -17,8 +17,8 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { EditorsChoiceList } from './components/discover/EditorsChoiceList';
 import { DiscoverCollectionsList } from './components/discover/DiscoverCollectionsList';
-import { normalizePopularItems } from 'openland-y-utils/discover/normalizePopularItems';
-import { DiscoverListItem } from './components/discover/DiscoverListItem';
+import { normalizePopularItems, normalizePopularOrgItems } from 'openland-y-utils/discover/normalizePopularItems';
+import { DiscoverListItem, DiscoverListItemOrg } from './components/discover/DiscoverListItem';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { getRandomSeed } from './DiscoverListing';
@@ -27,12 +27,14 @@ import { ComponentRefContext } from './Home';
 export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) => {
     const theme = useTheme();
     let discoverSeed = getRandomSeed();
-    let rooms = getClient().useExploreRooms({seed: discoverSeed}, { fetchPolicy: 'cache-and-network' });
+    let rooms = getClient().useExploreRooms({ seed: discoverSeed }, { fetchPolicy: 'cache-and-network' });
     let suggestedRooms = (rooms.suggestedRooms || []).filter(v => v.__typename === 'SharedRoom') as DiscoverSharedRoom[];
     let newRooms = rooms.discoverNewAndGrowing.items || [];
     let popularRooms = normalizePopularItems(rooms.discoverPopularNow.items);
     let topFreeRooms = rooms.discoverTopFree.items || [];
     let topPremiumRooms = rooms.discoverTopPremium.items || [];
+    let popularOrgs = normalizePopularOrgItems(rooms.discoverTopOrganizations.items);
+    let newOrgs = rooms.discoverNewAndGrowingOrganizations.items || [];
 
     return (
         <>
@@ -63,7 +65,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                 {popularRooms.map(v => <DiscoverListItem key={v.id} item={v} />)}
             </ZListGroup>
 
-            <DiscoverCollectionsList  />
+            <DiscoverCollectionsList />
 
             <ZListGroup
                 header="Top premium"
@@ -91,9 +93,35 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                 {topFreeRooms.map(v => <DiscoverListItem key={v.id} item={v} />)}
             </ZListGroup>
 
+            <ZListGroup
+                header="Top communities"
+                actionRight={popularOrgs.length === 5 ? {
+                    title: 'See all', onPress: () => props.router.push('DiscoverListing', {
+                        initialOrgs: popularOrgs,
+                        type: 'top-orgs',
+                        after: rooms.discoverTopOrganizations.cursor,
+                    })
+                } : undefined}
+            >
+                {popularOrgs.map(v => <DiscoverListItemOrg key={v.id} item={v} />)}
+            </ZListGroup>
+
+            <ZListGroup
+                header="New communities"
+                actionRight={newOrgs.length === 5 ? {
+                    title: 'See all', onPress: () => props.router.push('DiscoverListing', {
+                        initialOrgs: newOrgs,
+                        type: 'new-orgs',
+                        after: rooms.discoverNewAndGrowingOrganizations.cursor,
+                    })
+                } : undefined}
+            >
+                {newOrgs.map(v => <DiscoverListItemOrg key={v.id} item={v} />)}
+            </ZListGroup>
+
             {props.isDiscoverDone ? (
                 <>
-                    <ZListGroup 
+                    <ZListGroup
                         header="Recommendations"
                         actionRight={suggestedRooms.length > 5 ? {
                             title: 'See all', onPress: () => props.router.push('DiscoverListing', {
@@ -107,26 +135,26 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                     <View height={32} />
                 </>
             ) : (
-                <>
-                    <LinearGradient 
-                        colors={[theme.gradient0to100End, theme.gradient0to100Start]} 
-                        paddingVertical={16} 
-                        paddingHorizontal={32}
-                        flexDirection="column"
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <Image
-                            source={require('assets/art-discover.png')}
-                            style={{ width: 240, height: 150, marginBottom: 16 }}
-                        />
-                        <Text style={{...TextStyles.Title2, color: theme.foregroundPrimary, marginBottom: 4}}>Get chat recommendations</Text>
-                        <Text style={{...TextStyles.Body, color: theme.foregroundSecondary, marginBottom: 16}}>Find the right chats for you</Text>
-                        <ZButton title="Start" onPress={() => { props.router.push('Discover'); }} />
-                    </LinearGradient>
-                    <View height={16} />
-                </>
-            )}
+                    <>
+                        <LinearGradient
+                            colors={[theme.gradient0to100End, theme.gradient0to100Start]}
+                            paddingVertical={16}
+                            paddingHorizontal={32}
+                            flexDirection="column"
+                            alignItems="center"
+                            justifyContent="center"
+                        >
+                            <Image
+                                source={require('assets/art-discover.png')}
+                                style={{ width: 240, height: 150, marginBottom: 16 }}
+                            />
+                            <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginBottom: 4 }}>Get chat recommendations</Text>
+                            <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, marginBottom: 16 }}>Find the right chats for you</Text>
+                            <ZButton title="Start" onPress={() => { props.router.push('Discover'); }} />
+                        </LinearGradient>
+                        <View height={16} />
+                    </>
+                )}
         </>
     );
 };

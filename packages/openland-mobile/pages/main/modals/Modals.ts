@@ -89,5 +89,8 @@ export const Modals = {
     }
     ) {
         router.push('MembersSearch', { orgId, membersCount, initialMembers, onPress, onLongPress });
+    },
+    showReportSpam({ router, userId }: { router: SRouter, userId: string }) {
+        router.push('ReportSpam', { userId });
     }
 };

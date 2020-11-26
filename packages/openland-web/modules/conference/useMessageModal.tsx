@@ -3,7 +3,7 @@ import { XView } from 'react-mental';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
-import { URickInput, URickInputInstance } from 'openland-web/components/unicorn/URickInput';
+import { URickInput, URickInputInstance, URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { css, cx } from 'linaria';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import MediaIcon from 'openland-icons/s/ic-gallery-24.svg';
@@ -22,6 +22,7 @@ import { plural } from 'openland-y-utils/plural';
 import { useShake } from 'openland-web/pages/auth/components/authComponents';
 import { extractTextAndMentions } from 'openland-web/utils/convertTextAndMentions';
 import { useAttachButtonHandlers } from 'openland-web/fragments/chat/components/AttachConfirm';
+import { isFileImage } from 'openland-web/utils/UploadCareUploading';
 
 const inputStyle = css`
     min-height: 88px;
@@ -49,7 +50,7 @@ interface MessageModalProps {
     isChannel?: boolean;
     isPrivate?: boolean;
     membersCount?: number;
-    onAttach: (files: File[], isImage: boolean, cb?: () => void) => void;
+    onAttach: (files: File[], text: URickTextValue, isImage: boolean, cb?: () => void) => void;
 }
 
 const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
@@ -68,7 +69,7 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
         onWalletLockedContinue: props.ctx.hide,
     });
     let handleAttach = (files: File[]) => {
-        props.onAttach(files, files.every(f => f.type.includes('image')), () => props.ctx.hide());
+        props.onAttach(files, inputRef.current?.getText()!, files.every(f => isFileImage(f)), () => props.ctx.hide());
     };
     let { inputElements, onAttachClick } = useAttachButtonHandlers({
         onAttach: handleAttach

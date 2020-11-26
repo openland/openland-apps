@@ -40,11 +40,12 @@ import { useMessagesActionsForward } from 'openland-y-utils/MessagesActionsState
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { ReactionsPicker } from './components/ReactionsPicker';
 import { NotificationCenterHandlers } from 'openland-mobile/notificationCenter/NotificationCenterHandlers';
+import { DataSource } from 'openland-y-utils/DataSource';
 
-export const useForward = (sourceId: string, sourceUserId: string | undefined, disableSource?: boolean) => {
+export const useForward = (sourceId: string, disableSource?: boolean) => {
     const messenger = getMessenger().engine;
     const conversationEngine = messenger.getConversation(sourceId);
-    const { prepareForward, forward } = useMessagesActionsForward({ sourceId, userId: sourceUserId });
+    const { prepareForward, forward } = useMessagesActionsForward(sourceId);
 
     return (messages?: DataSourceMessageItem[]) => {
         getMessenger().history.navigationManager.push('HomeDialogs', {
@@ -151,6 +152,24 @@ export class MobileMessenger {
         return this.conversations.get(id)!!;
     }
 
+    getSearchView(dataSource:  DataSource<DataSourceMessageItem | DataSourceDateItem>, chatId: string) {
+        let eng = this.engine.getConversation(chatId);
+
+        return new ASDataView(dataSource, (item) => {
+            if (item.type === 'message') {
+                if (item.isService) {
+                    return <AsyncServiceMessage message={item} onUserPress={this.handleUserPress} onGroupPress={this.handleGroupPress} onOrganizationPress={this.handleOrganizationPress} onHashtagPress={this.handleHashtagPress} />;
+                } else {
+                    return <AsyncMessageView conversationId={chatId} message={item} hideReactions={true} engine={eng} onUserPress={this.handleUserPress} onGroupPress={this.handleGroupPress} onOrganizationPress={this.handleOrganizationPress} onHashtagPress={this.handleHashtagPress} onDocumentPress={this.handleDocumentPress} onMediaPress={this.handleMediaPress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsPress} onReplyPress={this.handleReplyPress} onReactionsPress={this.handleReactionsPress} onMessagePress={this.handleMessagePress}/>;
+                }
+            } else if (item.type === 'date') {
+                return <AsyncDateSeparator year={item.year} month={item.month} date={item.date} />;
+            } else {
+                return <AsyncNewMessageDivider />;
+            }
+        });
+    }
+
     handleSharedLongPress = (forward: (messages: DataSourceMessageItem[]) => void) =>
         ({ filePath, message, chatId }: { chatId: string, filePath?: string, message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage, }) => {
             let builder = new ActionSheetBuilder();
@@ -182,22 +201,21 @@ export class MobileMessenger {
             builder.show(true);
         }
 
-    renderSharedMediaItem = (chatId: string, userId: string | undefined, wrapperWidth: number) => (item: SharedMediaDataSourceItem) => {
-        return <AsyncSharedItem chatId={chatId} userId={userId} wrapperWidth={wrapperWidth} item={item} onLongPress={this.handleSharedLongPress} />;
+    renderSharedMediaItem = (chatId: string, wrapperWidth: number) => (item: SharedMediaDataSourceItem) => {
+        return <AsyncSharedItem chatId={chatId} wrapperWidth={wrapperWidth} item={item} onLongPress={this.handleSharedLongPress} />;
     }
 
     getSharedMedia = (id: string, type: SharedMediaItemType, wrapperWidth: number) => {
         const key = `${type}-${wrapperWidth}`;
         const convEngine = this.engine.getConversation(id);
         const engine = convEngine.getSharedMedia(type);
-        const userId = convEngine.isPrivate ? convEngine.user?.id : undefined;
         if (!this.sharedMedias.has(id)) {
             this.sharedMedias.set(
                 id,
-                new Map([[key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, userId, wrapperWidth))]])
+                new Map([[key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, wrapperWidth))]])
             );
         } else if (!this.sharedMedias.get(id)!!.has(key)) {
-            this.sharedMedias.get(id)!!.set(key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, userId, wrapperWidth)));
+            this.sharedMedias.get(id)!!.set(key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, wrapperWidth)));
         }
 
         return this.sharedMedias.get(id)!!.get(key)!!;
@@ -243,8 +261,8 @@ export class MobileMessenger {
         this.routerSuitable.push('Message', { messageId: quotedMessage.id });
     }
 
-    handleDocumentPress = (document: DataSourceMessageItem) => {
-        let attach = document.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
+    handleDocumentPress = (message: DataSourceMessageItem) => {
+        let attach = message.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
         // { config: { uuid, name, size }
         // this.history.navigationManager.push('FilePreview', { config: { uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size } });
 
@@ -286,8 +304,8 @@ export class MobileMessenger {
         this.routerSuitable.push('ProfileOrganization', { id });
     }
 
-    handleHashtagPress = (hashtag?: string) => {
-        this.routerSuitable.push('HomeDialogs', { searchValue: hashtag, title: hashtag });
+    handleHashtagPress = (hashtag?: string, chatId?: string) => {
+        this.routerSuitable.push('ChatSearch', { chatId, initialValue: hashtag });
     }
 
     handleReactionSetUnset = async (message: DataSourceMessageItem, reaction: MessageReactionType, doubleTap?: boolean) => {
@@ -399,8 +417,8 @@ export class MobileMessenger {
         const isSavedMessages = chat.__typename === 'PrivateRoom' ? chat.user.id === this.engine.user.id : false;
 
         const builder = new ActionSheetBuilder();
-        const { reply, edit, clear } = useChatMessagesActionsMethods({ conversationId: chat.id, userId: chat.__typename === 'PrivateRoom' ? chat.user.id : undefined });
-        const forward = useForward(chat.id, chat.__typename === 'PrivateRoom' ? chat.user.id : undefined);
+        const { reply, edit, clear } = useChatMessagesActionsMethods(chat.id);
+        const forward = useForward(chat.id);
 
         builder.view((ctx: ZModalController) => (
             <ReactionsPicker
@@ -482,6 +500,10 @@ export class MobileMessenger {
         }
 
         builder.show(true);
+    }
+
+    private handleMessagePress = (message: DataSourceMessageItem) => {
+        this.routerSuitable.push('Message', { messageId: message.id });
     }
 
     private handleMessageLongPress = (

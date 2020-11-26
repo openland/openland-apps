@@ -137,10 +137,10 @@ export class ZTagView extends React.PureComponent<
                                         height={28}
                                         paddingLeft={8}
                                         paddingRight={5}
-                                        borderRadius={RadiusStyles.Medium}
+                                        borderRadius={RadiusStyles.Large}
                                         backgroundColor={
                                             this.state.focused === v.id
-                                                ? this.props.theme.accentPrimaryHover
+                                                ? this.props.theme.accentPrimary
                                                 : undefined
                                         }
                                         flexDirection="row"

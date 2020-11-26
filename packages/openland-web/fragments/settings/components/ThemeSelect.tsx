@@ -36,8 +36,8 @@ const themePreview = css`
 
     svg {
         position: absolute;
-        bottom: 0;
-        right: 0;
+        bottom: -1px;
+        right: -1px;
         box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.24);
         border-radius: 4px 0 0 0;
         width: 68%;

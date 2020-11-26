@@ -8,6 +8,8 @@ import { plural } from 'openland-y-utils/plural';
 import { GlobalSearch_items, GlobalSearchVariables } from 'openland-api/spacex.types';
 import { useGlobalSearch } from './useGlobalSearch';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
 const noResultContainer = css`
     display: flex;
@@ -19,11 +21,28 @@ const noResultContainer = css`
 const imageStyle = css`
     width: 178px;
     height: 155px;
-    background-image: url(/static/X/messenger/channels-search-empty.svg);
+    background-image: url("/static/X/messenger/channels-search-empty.svg");
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
     margin-bottom: 20px;
+`;
+
+const titleFeaturedStyle = css`
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+    width: calc(100% - 20px);
+`;
+
+const featuredIcon = css`
+    display: var(--featured-icon-display);
+    align-self: center;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
 `;
 
 export interface DialogSearchResults {
@@ -37,7 +56,7 @@ export interface DialogSearchResults {
 export const DialogSearchEmptyView = React.memo(() => (
     <div className={noResultContainer}>
         <div className={imageStyle} />
-        <XView color="rgba(0, 0, 0, 0.5)">No results</XView>
+        <XView color="var(--foregroundSecondary)">No results</XView>
     </div>
 ));
 
@@ -49,7 +68,24 @@ interface DialogSearchItemRenderProps {
     onPick: (item: GlobalSearch_items) => void;
     paddingHorizontal?: number;
     isForwarding?: boolean;
+    featured?: boolean;
 }
+
+const getFeaturedTitleProps = (title: string) => {
+    return {
+        title: (
+            <>
+                <div className={titleFeaturedStyle}>
+                    {title}
+                </div>
+                <div className={featuredIcon}>
+                    <UIcon icon={<IcFeatured />} color={'#3DA7F2'} />
+                </div>
+            </>
+        ),
+        titleStyle: { flexDirection: 'row' as 'row' },
+    };
+};
 
 export const DialogSearchItemRender = React.memo((props: DialogSearchItemRenderProps) => {
     const { item, index, selectedIndex, isForwarding, onPick, paddingHorizontal } = props;
@@ -62,11 +98,11 @@ export const DialogSearchItemRender = React.memo((props: DialogSearchItemRenderP
                     key={item.id}
                     onClick={() => onPick(item)}
                     hovered={selected}
-                    title={item.title}
                     description={plural(item.membersCount || 0, ['member', 'members'])}
                     avatar={{ id: item.id, photo: item.roomPhoto, title: item.title }}
                     useRadius={false}
                     paddingHorizontal={paddingHorizontal}
+                    {...item.featured ? getFeaturedTitleProps(item.title) : { title: item.title }}
                 />
             );
         }
@@ -76,11 +112,11 @@ export const DialogSearchItemRender = React.memo((props: DialogSearchItemRenderP
                 key={item.id}
                 onClick={() => onPick(item)}
                 hovered={selected}
-                title={item.name}
                 description={item.about}
                 avatar={{ id: item.id, photo: item.photo, title: item.name }}
                 useRadius={false}
                 paddingHorizontal={paddingHorizontal}
+                {...item.featured ? getFeaturedTitleProps(item.name) : { title: item.name }}
             />
         );
     } else if (item.__typename === 'User') {
@@ -121,7 +157,7 @@ const DialogSearchInner = React.memo((props: DialogSearchResults) => {
 
 export const DialogSearchResults = (props: DialogSearchResults) => {
     return (
-        <React.Suspense fallback={<XLoader loading={true} />}>
+        <React.Suspense fallback={<XLoader loading={true} transparentBackground={true} />}>
             <DialogSearchInner {...props} />
         </React.Suspense>
     );

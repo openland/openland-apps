@@ -11,16 +11,6 @@ type AlphaSignupData {
   organization: Organization
 }
 
-type AnonymousConversation implements Conversation {
-  id: ID!
-  flexibleId: ID!
-  title: String!
-  photos: [String!]!
-  unreadCount: Int!
-  topMessage: ConversationMessage
-  settings: ConversationSettings!
-}
-
 type AppChat {
   chat: Room!
   webhook: String!
@@ -70,6 +60,27 @@ type AuthPoint {
   phone: String
 }
 
+type BlackListAdded {
+  bannedBy: User!
+  bannedUser: User!
+}
+
+type BlackListRemoved {
+  bannedBy: User!
+  bannedUser: User!
+}
+
+union BlackListUpdate = BlackListAdded | BlackListRemoved
+
+type BlackListUpdateContainer {
+  updates: [BlackListUpdate!]!
+  state: String!
+}
+
+type BlackListUpdatesState {
+  state: String!
+}
+
 type CardSetupIntent {
   id: ID!
   clientSecret: String!
@@ -87,7 +98,6 @@ type ChannelConversation implements Conversation {
   id: ID!
   flexibleId: ID!
   title: String!
-  photos: [String!]!
   members: [User!]!
   unreadCount: Int!
   topMessage: ConversationMessage
@@ -125,11 +135,6 @@ type ChatMessageUpdated {
 
 type ChatOnlineEvent {
   onlineMembers: Int!
-}
-
-type ChatReadResult {
-  conversation: Conversation!
-  counter: NotificationCounter!
 }
 
 type ChatTypeNotificationSettings {
@@ -177,6 +182,7 @@ type ChatUserEdge {
   node: User!
   isMember: Boolean!
   cursor: String!
+  inviteRestricted: Boolean!
 }
 
 input CodecCapabilities {
@@ -277,8 +283,6 @@ type CommonChatsWithUserResponse {
   count: Int!
 }
 
-union ComposeSearchResult = User | Organization
-
 type Conference {
   id: ID!
   startTime: Date
@@ -376,73 +380,9 @@ interface Conversation {
   id: ID!
   flexibleId: ID!
   title: String!
-  photos: [String!]!
   unreadCount: Int!
   topMessage: ConversationMessage
   settings: ConversationSettings!
-}
-
-type ConversationBlockedUser {
-  user: User!
-  blockedBy: User!
-}
-
-type ConversationConnection {
-  conversations: [Conversation!]!
-  counter: NotificationCounter!
-  seq: Int!
-  next: String
-}
-
-interface ConversationEvent {
-  seq: Int!
-}
-
-type ConversationEventDelete implements ConversationEvent {
-  seq: Int!
-  messageId: ID!
-}
-
-type ConversationEventEditMessage implements ConversationEvent {
-  seq: Int!
-  message: ConversationMessage!
-}
-
-type ConversationEventKick implements ConversationEvent {
-  seq: Int!
-  user: User!
-  kickedBy: User!
-}
-
-type ConversationEventMessage implements ConversationEvent {
-  seq: Int!
-  message: ConversationMessage!
-}
-
-type ConversationEventNewMembers implements ConversationEvent {
-  seq: Int!
-  users: [User!]
-  invitedBy: User!
-}
-
-type ConversationEventSimpleBatch {
-  events: [ConversationEvent!]!
-}
-
-type ConversationEventTitle implements ConversationEvent {
-  seq: Int!
-  title: String!
-}
-
-type ConversationEventUpdate implements ConversationEvent {
-  seq: Int!
-  chat: Conversation!
-}
-
-type ConversationEventUpdateRole implements ConversationEvent {
-  seq: Int!
-  user: User!
-  newRole: String!
 }
 
 type ConversationMessage {
@@ -467,23 +407,12 @@ type ConversationMessage {
   alphaType: MessageType!
   alphaTitle: String
   postType: String
-  alphaMentions: [Mention!]
 }
 
 type ConversationSettings {
   id: ID!
   mobileNotifications: NotificationMessages!
   mute: Boolean!
-}
-
-type ConversationState {
-  seq: Int!
-  messages: [ConversationMessage!]!
-}
-
-type ConversationUpdateResponse {
-  chat: Conversation!
-  curSeq: Int!
 }
 
 type ConversationUpdateState {
@@ -605,9 +534,8 @@ type Dialog {
   isPremium: Boolean!
   title: String!
   photo: String!
+  featured: Boolean!
   unreadCount: Int!
-  topMessage: Message
-  betaTopMessage: RoomMessage
   alphaTopMessage: ModernMessage
   isMuted: Boolean!
   haveMention: Boolean!
@@ -658,8 +586,6 @@ type DialogMentionedChanged {
 type DialogMessageDeleted {
   cid: ID!
   message: ConversationMessage!
-  betaMessage: RoomMessage!
-  prevMessage: RoomMessage
   alphaPrevMessage: ModernMessage
   alphaMessage: ModernMessage!
   unread: Int!
@@ -678,7 +604,6 @@ type DialogMessageRead {
 type DialogMessageReceived {
   cid: ID!
   message: ConversationMessage!
-  betaMessage: RoomMessage!
   alphaMessage: ModernMessage!
   unread: Int!
   globalUnread: Int!
@@ -691,7 +616,6 @@ type DialogMessageReceived {
 type DialogMessageUpdated {
   cid: ID!
   message: ConversationMessage!
-  betaMessage: RoomMessage!
   alphaMessage: ModernMessage!
   haveMention: Boolean!
 }
@@ -777,6 +701,12 @@ type DiscoverPage {
   tagGroup: TagGroup
 }
 
+type Draft {
+  message: String
+  date: Date!
+  version: Int!
+}
+
 type EditorsChoiceChat {
   id: ID!
   image: ImageRef!
@@ -821,12 +751,6 @@ enum EventPlatform {
   iOS
   WEB
   MobileWeb
-}
-
-type FeatureFlag {
-  id: ID!
-  key: String!
-  title: String!
 }
 
 type FeedChannel {
@@ -1009,11 +933,6 @@ type GeoLocation {
   lat: Float!
 }
 
-input GeoLocationInput {
-  long: Float!
-  lat: Float!
-}
-
 type GlobalSearchConnection {
   globalItems: [GlobalSearchEntry!]!
   localItems: [User!]!
@@ -1041,17 +960,10 @@ type GqlTraceConnection {
   cursor: ID
 }
 
-type GroupChatUpdateResponse {
-  chat: Conversation!
-  chatEventMessage: ConversationEventMessage
-  chatEvent: ConversationEvent
-}
-
 type GroupConversation implements Conversation {
   id: ID!
   flexibleId: ID!
   title: String!
-  photos: [String!]!
   members: [User!]!
   unreadCount: Int!
   topMessage: ConversationMessage
@@ -1064,16 +976,6 @@ type GroupConversation implements Conversation {
   pinnedMessage: ConversationMessage
   membersOnline: Int!
   myRole: String
-}
-
-input GroupConversationInvite {
-  userId: ID!
-  role: String!
-}
-
-type GroupConversationMember {
-  user: User!
-  role: String!
 }
 
 type H1Paragraph {
@@ -1401,8 +1303,6 @@ enum MediaStreamVideoSource {
   screen_share
 }
 
-union Mention = UserMention | SharedRoomMention
-
 input MentionInput {
   chatId: ID
   userId: ID
@@ -1438,22 +1338,6 @@ type MentionSearchSharedRoom {
 type MentionSearchUser {
   user: User!
   fromSameChat: Boolean!
-}
-
-type Message {
-  id: ID!
-  date: Date!
-  sender: User!
-  edited: Boolean!
-
-  """Content"""
-  text: String
-
-  """References"""
-  quoted: [Message!]!
-
-  """Reactions"""
-  alphaReactions: [Reaction!]!
 }
 
 type MessageAttachment {
@@ -1680,7 +1564,7 @@ type MessageWithChat {
   chat: Room!
 }
 
-union MessageWithMention = FeedPost | Message
+union MessageWithMention = FeedPost
 
 interface ModernMessage {
   """State"""
@@ -1747,27 +1631,6 @@ type MultiselectMatchmakingQuestion {
 
 type Mutation {
   lifecheck: String
-  alphaSendMessage(conversationId: ID!, message: String, file: String, repeatKey: String, replyMessages: [ID!], mentions: [ID!]): ConversationEventMessage!
-  alphaReadChat(conversationId: ID!, messageId: ID!): ChatReadResult!
-  alphaEditMessage(messageId: ID!, message: String, file: String, replyMessages: [ID!], mentions: [ID!]): ConversationEventEditMessage!
-  alphaSendIntro(conversationId: ID!, userId: ID!, about: String, message: String, file: String, repeatKey: String): ConversationEventMessage!
-  alphaEditIntro(messageId: ID!, userId: ID!, about: String, message: String, file: String): ConversationEventMessage!
-  alphaDeleteMessageUrlAugmentation(messageId: ID!): ConversationEventMessage!
-  alphaDeleteMessage(messageId: ID!): ConversationEventDelete!
-  alphaChatSetReaction(messageId: ID!, reaction: String!): String!
-  alphaChatUnsetReaction(messageId: ID!, reaction: String!): String!
-  alphaGlobalRead(toSeq: Int!): String!
-  alphaBlockUser(userId: ID!): String!
-  alphaUnblockUser(userId: ID!, conversationId: ID): String!
-  alphaChatCreateGroup(title: String, photoRef: ImageRefInput, members: [ID!]!, message: String): Conversation!
-  alphaChatUpdateGroup(conversationId: ID!, input: UpdateGroupInput!): ConversationUpdateResponse!
-  alphaChatChangeGroupTitle(conversationId: ID!, title: String!): GroupChatUpdateResponse!
-  alphaChatInviteToGroup(conversationId: ID!, invites: [GroupConversationInvite!]!): GroupChatUpdateResponse!
-  alphaChatKickFromGroup(conversationId: ID!, userId: ID!): GroupChatUpdateResponse!
-  alphaChatChangeRoleInGroup(conversationId: ID!, userId: ID!, newRole: String!): GroupChatUpdateResponse!
-  alphaChatCopyGroup(conversationId: ID!, title: String, extraMembers: [ID!], message: String!): GroupChatUpdateResponse!
-  alphaChatLeave(conversationId: ID!): ConversationUpdateResponse!
-  alphaUpdateConversationSettings(settings: UpdateConversationSettingsInput!, conversationId: ID!): ConversationSettings!
 
   """Payment Method management"""
   cardCreateSetupIntent(retryKey: String!): CardSetupIntent!
@@ -1882,6 +1745,11 @@ type Mutation {
   debugMigrateToExperimentalCounters: Boolean!
   debugFixCompactMessages: Boolean!
   debugMigrateToNewerCounters: Boolean!
+  debugUserAuth(id: ID!): Boolean!
+  debugCreateOrganizationMailing(oid: ID!, uid: ID!, message: String!, spans: [MessageSpanInput!]): Boolean!
+  debugPaymentCancel(id: ID!): Boolean!
+  debugInvalidateAllSocialImages: Boolean!
+  debugChangeChatPrice(cid: ID!, price: Int!): Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -1928,12 +1796,11 @@ type Mutation {
   superAdminAdd(userId: ID!, role: SuperAdminRole!): String!
   superAdminRemove(userId: ID!): String!
   alphaAlterPublished(id: ID!, published: Boolean!): Organization!
-  alphaRenderVideo(name: String!): String!
   betaFixCounter(uid: ID!): Boolean!
   betaFixCountersForAll: Boolean!
   deliverCountersForAll: Boolean!
-  conversationDraftUpdate(conversationId: ID!, message: String): String!
-  alphaSaveDraftMessage(conversationId: ID!, message: String): String!
+  banUser(id: ID!): Boolean!
+  unBanUser(id: ID!): Boolean!
   discoverCollectionsCreate(collection: DiscoverChatsCollectionInput!): DiscoverChatsCollection!
   discoverCollectionsUpdate(id: ID!, input: DiscoverChatsCollectionUpdateInput!): DiscoverChatsCollection!
   discoverCollectionsDelete(id: ID!): Boolean!
@@ -1941,11 +1808,6 @@ type Mutation {
   discoverEditorsChoiceUpdate(id: ID!, input: EditorsChoiceChatUpdateInput!): EditorsChoiceChat!
   discoverEditorsChoiceDelete(id: ID!): Boolean!
   track(did: String!, events: [Event!]!, platform: EventPlatform, isProd: Boolean): String!
-  createPowerup(input: PowerupInput!): Powerup!
-  updatePowerup(id: ID!, input: PowerupInput!): Powerup!
-  addPowerupToChat(id: ID!, powerupId: ID!): Boolean!
-  removePowerupFromChat(id: ID!, powerupId: ID!): Boolean!
-  updatePowerupUserSettingsInChat(id: ID!, powerupId: ID!, settings: PowerupUserSettingsInput!): PowerupUserSettings!
   createApp(name: String!, photoRef: ImageRefInput, about: String, shortname: String): AppProfile!
   createSuperApp(name: String!, photoRef: ImageRefInput, about: String, shortname: String): AppProfile!
   refreshAppToken(appId: ID!): AppProfile!
@@ -1974,14 +1836,11 @@ type Mutation {
   mediaStreamFailed(id: ID!, peerId: ID!): ConferenceMedia!
   addToContacts(userId: ID!): Boolean!
   removeFromContacts(userId: ID!): Boolean!
+  conversationDraftUpdate(id: ID!, message: String): Draft!
   setEnvVar(name: String!, value: String!): Boolean!
   setEnvVarString(name: String!, value: String!): Boolean!
   setEnvVarNumber(name: String!, value: Int!): Boolean!
   setEnvVarBoolean(name: String!, value: Boolean!): Boolean!
-  featureFlagAdd(key: String!, title: String!): FeatureFlag!
-  superAccountFeatureAdd(id: ID!, featureId: ID!): SuperAccount!
-  superAccountFeatureRemove(id: ID!, featureId: ID!): SuperAccount!
-  shareLocation(location: GeoLocationInput!): Boolean!
   stickerPackCreate(title: String!, stickers: [StickerInput!]): StickerPack!
   stickerPackUpdate(id: ID!, input: StickerPackInput!): StickerPack!
   stickerPackAddSticker(id: ID!, input: StickerInput!): Sticker!
@@ -1997,8 +1856,6 @@ type Mutation {
   betaMessageDelete(mid: ID, mids: [ID!]): Boolean!
   betaReactionSet(mid: ID!, reaction: String!): Boolean!
   betaReactionRemove(mid: ID!, reaction: String!): Boolean!
-  betaIntroSend(room: ID!, uid: ID!, about: String, message: String, file: String, repeatKey: String): Boolean!
-  betaIntroEdit(mid: ID!, uid: ID!, about: String, message: String, file: String): Boolean!
   readNotification(notificationId: ID!): NotificationCenter!
   deleteNotification(notificationId: ID!): Boolean!
   notificationCenterMarkSeqRead(toSeq: Int!): Boolean!
@@ -2008,6 +1865,7 @@ type Mutation {
   updateOrganizationProfile(input: UpdateOrganizationProfileInput!, id: ID): OrganizationProfile!
   deleteOrganization(id: ID!): Boolean!
   createOrganization(input: CreateOrganizationInput!): Organization!
+  requestOrganizationMembersExport(id: ID!): Boolean!
   postDraftCreate(input: PostInput!): PostDraft!
   postDraftUpdate(id: ID!, input: PostInput!): PostDraft!
   postDraftPublish(id: ID!): Post!
@@ -2115,6 +1973,11 @@ type Mutation {
   alphaSetFeedChannelShortName(id: ID!, shortname: String!): String
   alphaSetRoomShortName(id: ID!, shortname: String!): String
   alphaSetCollectionShortName(id: ID!, shortname: String!): String
+}
+
+type NewAndGrowingOrganizationConnection {
+  items: [Organization!]!
+  cursor: String
 }
 
 type NewCommentNotification {
@@ -2297,6 +2160,7 @@ type Organization {
   status: String!
   membersCount: Int!
   personal: Boolean!
+  externalSocialImage: String
   linkedFeedChannels: [FeedChannel!]!
   shortname: String
 }
@@ -2306,6 +2170,11 @@ type OrganizationChatStats {
   chat: SharedRoom!
   messagesCount: Int!
   lastMessageDate: String!
+}
+
+type OrganizationConnection {
+  items: [Organization!]!
+  cursor: String
 }
 
 type OrganizationContact {
@@ -2389,6 +2258,17 @@ type OrganizationsEdge {
   cursor: String!
 }
 
+type OrgUserConnection {
+  edges: [OrgUserEdge!]!
+  pageInfo: PageInfo!
+}
+
+type OrgUserEdge {
+  node: User!
+  isMember: Boolean!
+  cursor: String!
+}
+
 type PageInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
@@ -2421,33 +2301,8 @@ enum PaymentStatus {
   SUCCESS
 }
 
-enum PermissionAppType {
-  POWERUP
-}
-
-type PermissionGroup {
-  id: ID!
-  name: String!
-  description: String!
-  requests: [PermissionRequest!]!
-}
-
-type PermissionRequest {
-  id: ID!
-  group: PermissionGroup!
-  appType: PermissionAppType!
-  powerup: Powerup
-  scope: PermissionScope!
-  chat: Room
-}
-
 type Permissions {
   roles: [String!]!
-}
-
-enum PermissionScope {
-  GLOBAL
-  CHAT
 }
 
 """
@@ -2476,6 +2331,7 @@ type PlatformNotificationSettings {
   organizationChat: ChatTypeNotificationSettings!
   communityChat: ChatTypeNotificationSettings!
   comments: ChatTypeNotificationSettings!
+  channels: ChatTypeNotificationSettings!
   notificationPreview: NotificationPreview!
 }
 
@@ -2485,7 +2341,18 @@ input PlatformNotificationSettingsInput {
   organizationChat: ChatTypeNotificationSettingsInput
   communityChat: ChatTypeNotificationSettingsInput
   comments: ChatTypeNotificationSettingsInput
+  channels: ChatTypeNotificationSettingsInput
   notificationPreview: NotificationPreview
+}
+
+type PopularNowOrganization {
+  organization: Organization!
+  newMessages: Int!
+}
+
+type PopularNowOrganizationConnection {
+  items: [PopularNowOrganization!]!
+  cursor: String
 }
 
 type PopularNowRoom {
@@ -2561,7 +2428,6 @@ enum PostMessageType {
 }
 
 type PostRespondServiceMetadata {
-  post: RoomMessage!
   postRoom: Room!
   responder: User!
   respondType: ID!
@@ -2607,31 +2473,16 @@ enum PostSpanType {
   Link
 }
 
-type Powerup {
-  id: ID!
-  name: String!
-  description: String!
-  image: ImageRef
-}
-
-input PowerupInput {
-  name: String
-  description: String
-  image: ImageRefInput
-}
-
-type PowerupUserSettings {
-  enabled: Boolean!
-}
-
-input PowerupUserSettingsInput {
-  enabled: Boolean!
-}
-
 type PremiumChatSettings {
   id: ID!
   price: Int!
   interval: WalletSubscriptionInterval
+}
+
+enum PrivacyWhoCanAddToGroups {
+  EVERYONE
+  CORRESPONDENTS
+  NOBODY
 }
 
 enum PrivacyWhoCanSee {
@@ -2643,7 +2494,6 @@ type PrivateConversation implements Conversation {
   id: ID!
   flexibleId: ID!
   title: String!
-  photos: [String!]!
   user: User!
   unreadCount: Int!
   topMessage: ConversationMessage
@@ -2757,12 +2607,6 @@ enum PushType {
 
 type Query {
   lifecheck: String
-  alphaNotificationCounter: NotificationCounter!
-  alphaChat(conversationId: ID, shortName: String): Conversation!
-  alphaLoadMessages(conversationId: ID!, first: Int, before: ID, after: ID): ConversationState!
-  alphaChatsSearchForCompose(query: String, organizations: Boolean, limit: Int): [ComposeSearchResult!]!
-  alphaChatSearch(members: [ID!]!): Conversation
-  alphaGroupConversationMembers(conversationId: ID!): [GroupConversationMember!]!
   myCards: [CreditCard!]!
   myWallet: WalletAccount!
   transactionsPending: [WalletTransaction!]!
@@ -2774,6 +2618,10 @@ type Query {
   appInviteFromUser(shortname: String!): String!
   appInviteInfo(key: String!): AppInvite
   alphaResolveInvite(key: String!): ResolveInviteEntry
+  updatesState: UpdatesState!
+  sequenceState(id: ID!): UpdatesSequenceState!
+  updatesDifference(state: String!): UpdatesDifference!
+  sequenceDifference(id: ID!, pts: Int!): SequenceDifference!
 
   """phonebookRecords(first: Int!, after: ID!): PhonebookRecordConnection!"""
   phonebookWasExported: Boolean!
@@ -2801,6 +2649,8 @@ type Query {
   debugMentionSearchGetUserData(cid: ID!): String!
   debugGetCounters: String!
   debugExperimentalCounter(cid: ID!): String!
+  debugFindUser(email: String, phone: String): User
+  debugSocialSharingImage(template: String!, title: String!, image: String!, subTitle: String!): String!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!
@@ -2811,26 +2661,18 @@ type Query {
 
   """deprecated"""
   alphaOrganizationPublicInvite(organizationId: ID): Invite
-  permissionGroups: [PermissionGroup!]!
-  waitingPermissionRequests: [PermissionRequest!]!
   myProfile: Profile
   superAccounts: [SuperAccount!]!
   superAccount(id: ID!, viaOrgId: Boolean): SuperAccount!
   superAdmins: [SuperAdmin!]!
-  chatLocations(id: ID!): [UserLocation!]!
-  alphaChatTextSearch(query: String!): [Conversation!]!
-  betaDialogTextSearch(query: String!): [Dialog!]!
-  conversationDraft(conversationId: ID!): String
-  alphaDraftMessage(conversationId: ID!): String
+  myBlackList: [User!]!
   discoverCollections(first: Int!, after: String): DiscoverChatsCollectionConnection
   discoverCollection(id: ID!): DiscoverChatsCollection
   discoverEditorsChoice: [EditorsChoiceChat!]!
   discoverEditorsChoiceChat(id: ID!): EditorsChoiceChat!
-  powerups: [Powerup!]!
-  chatsWithPowerup(id: ID!): [Room!]!
-  chatPowerups(id: ID!): [RoomPowerup!]!
   myApps: [AppProfile!]!
   userStorage(namespace: String!, keys: [String!]!): [AppStorageValue!]!
+  blackListUpdatesState: BlackListUpdatesState!
   chatState(chatId: ID!): ChatUpdateState!
   conversationState(id: ID!): ConversationUpdateState!
   messageComments(messageId: ID!): CommentsPeer!
@@ -2843,13 +2685,11 @@ type Query {
   myContacts(first: Int!, after: String): ContactConnection!
   myContactsSearch(query: String, first: Int!, after: String, page: Int): UserConnection!
   myContactsState: ContactsState!
+  alphaNotificationCounter: NotificationCounter!
   dialogsState: DialogUpdateState!
   envVars: [EnvVar!]
   envVar(name: String!): EnvVar
-  featureFlags: [FeatureFlag!]!
-  myLocation: UserLocation!
   ipLocation: IpLocation
-  shouldShareLocation: Boolean!
   myStickers: UserStickers!
   createdStickerPacks: [StickerPack!]!
   stickersByEmoji(emoji: String!): [Sticker!]!
@@ -2873,6 +2713,9 @@ type Query {
   users(query: String!): [User!]!
   discoverNewAndGrowing(first: Int!, seed: Int!, after: String): SharedRoomConnection!
   discoverPopularNow(first: Int!, after: String): PopularNowRoomConnection!
+  discoverNewAndGrowingOrganizations(first: Int!, seed: Int!, after: String): NewAndGrowingOrganizationConnection!
+  discoverPopularNowOrganizations(first: Int!, after: String): PopularNowOrganizationConnection!
+  discoverTopOrganizations(first: Int!, after: String): OrganizationConnection!
   discoverTopPremium(first: Int!, after: String): SharedRoomConnection!
   discoverTopFree(first: Int!, after: String): SharedRoomConnection!
   post(id: ID!): Post
@@ -2883,6 +2726,7 @@ type Query {
   pushSettings: PushSettings!
   activeSessions: [Session]!
   sessionState: SessionState!
+  syncUserChats(first: Int!, after: String): SyncChatsConnection!
 
   """deprecated"""
   betaNextDiscoverPage(selectedTagsIds: [String!]!, excudedGroupsIds: [String!]!): DiscoverPage
@@ -2903,6 +2747,7 @@ type Query {
   badgeInRoom(roomId: ID!): UserBadge
   userSearch(query: String, first: Int!, after: String, page: Int, sort: String): UserConnection!
   userSearchForChat(chatId: ID!, query: String, first: Int!, after: String, page: Int, sort: String): ChatUserConnection!
+  userSearchForOrg(orgId: ID!, query: String, first: Int!, after: String, page: Int, sort: String): OrgUserConnection!
 
   """Deprecated"""
   alphaProfiles(query: String, first: Int!, after: String, page: Int, sort: String): UserConnection!
@@ -2938,7 +2783,6 @@ type Query {
   room(id: ID!): Room
   rooms(ids: [ID!]!): [Room!]!
   roomSuper(id: ID!): RoomSuper
-  roomMessages(roomId: ID!, first: Int, before: ID): [RoomMessage!]!
   roomMembers(roomId: ID!, first: Int, after: ID): [RoomMember!]!
   roomAdmins(roomId: ID!): [RoomMember!]!
   roomFeaturedMembers(roomId: ID!, first: Int): [RoomMember!]!
@@ -2962,11 +2806,6 @@ type Range {
 input RangeInput {
   from: Int
   to: Int
-}
-
-type Reaction {
-  user: User!
-  reaction: String!
 }
 
 type ReactionCounter {
@@ -3048,37 +2887,6 @@ enum RoomMemberRole {
   MEMBER
 }
 
-type RoomMessage {
-  id: ID!
-  message: String
-  file: String
-  fileMetadata: FileMetadata
-  filePreview: String
-  sender: User!
-  date: Date!
-  repeatKey: String
-  isService: Boolean!
-  serviceMetadata: ServiceMetadata
-  urlAugmentation: UrlAugmentation
-  edited: Boolean!
-  reactions: [MessageReaction!]!
-  replyMessages: [RoomMessage!]
-  plainText: String
-  mentions: [User!]
-  alphaAttachments: [MessageAttachment!]!
-  alphaButtons: [[MessageButton!]]!
-  alphaType: MessageType!
-  alphaTitle: String
-  alphaPostType: PostMessageType
-  alphaMentions: [Mention!]
-}
-
-type RoomPowerup {
-  id: ID!
-  powerup: Powerup!
-  userSettings: PowerupUserSettings!
-}
-
 type RoomServiceMessageSettings {
   joinsMessageEnabled: Boolean!
   leavesMessageEnabled: Boolean!
@@ -3114,6 +2922,29 @@ type RoomUserNotificaionSettings {
 
 input RoomUserNotificaionSettingsInput {
   mute: Boolean
+}
+
+interface Sequence {
+  id: ID!
+}
+
+type SequenceChat implements Sequence {
+  id: ID!
+  cid: ID!
+  draft: Draft
+}
+
+type SequenceCommon implements Sequence {
+  id: ID!
+  settings: Settings!
+}
+
+type SequenceDifference {
+  sequence: Sequence!
+  events: [UpdatesDifferenceEvent!]!
+  after: Int!
+  hasMore: Boolean!
+  seq: Int!
 }
 
 type ServiceMessage implements ModernMessage {
@@ -3165,6 +2996,7 @@ type SessionState {
 
 type Settings {
   id: ID!
+  version: Int!
   primaryEmail: String!
   emailFrequency: EmailFrequency!
   desktop: PlatformNotificationSettings!
@@ -3173,6 +3005,8 @@ type Settings {
   excludeMutedChats: Boolean!
   whoCanSeeEmail: PrivacyWhoCanSee!
   whoCanSeePhone: PrivacyWhoCanSee!
+  communityAdminsCanSeeContactInfo: Boolean!
+  whoCanAddToGroups: PrivacyWhoCanAddToGroups!
 
   """Deprecated"""
   notificationsDelay: NotificationsDelay!
@@ -3189,7 +3023,6 @@ type SharedConversation implements Conversation {
   id: ID!
   flexibleId: ID!
   title: String!
-  photos: [String!]!
   organizations: [Organization!]!
   unreadCount: Int!
   topMessage: ConversationMessage
@@ -3257,6 +3090,7 @@ type SharedRoom {
   callSettings: RoomCallSettings!
   featured: Boolean!
   owner: User
+  externalSocialImage: String
   linkedFeedChannels: [FeedChannel!]!
   shortname: String
 }
@@ -3278,10 +3112,6 @@ enum SharedRoomMembershipStatus {
   LEFT
   KICKED
   NONE
-}
-
-type SharedRoomMention {
-  sharedRoom: SharedRoom!
 }
 
 union ShortNameDestination = User | Organization | FeedChannel | SharedRoom | DiscoverChatsCollection | Channel
@@ -3370,6 +3200,7 @@ input StickerPackInput {
 type Subscription {
   lifecheck: String
   walletUpdates(fromState: String!): WalletUpdateContainer!
+  watchUpdates: UpdateSubscription!
   debugEvents(fromState: String, eventsCount: Int!, randomDelays: Boolean!, seed: String!): DebugEvent!
   debugReaderState(reader: String!): String
   debugServerId: String!
@@ -3379,11 +3210,9 @@ type Subscription {
   watchSettings: Settings!
   alphaConferenceWatch(id: ID!): Conference!
   alphaConferenceMediaWatch(id: ID!, peerId: ID!): ConferenceMedia!
-  permissionsUpdates: PermissionRequest!
-  waitingPermissionRequestsUpdates: PermissionRequest!
-  chatLocationUpdates(id: ID!): UserLocation!
   userEventBus(topic: String!): UserEventBusMessage!
   globalEventBus(topic: String!): UserEventBusMessage!
+  blackListUpdates(fromState: String!): BlackListUpdateContainer!
   chatUpdates(chatId: ID!, fromState: String): ChatUpdateContainer!
   commentUpdates(peerId: ID!, fromState: String): CommentUpdateContainer
   conferenceWatch(id: ID!): Conference!
@@ -3391,7 +3220,6 @@ type Subscription {
   myContactsUpdates(fromState: String!): ContactsUpdateContainer!
   dialogsUpdates(fromState: String): DialogUpdateContainer!
   homeFeedUpdates(fromState: String): FeedUpdateContainer!
-  shouldShareLocationUpdates: Boolean!
   notificationCenterUpdates(fromState: String): NotificationCenterUpdateContainer
   alphaSubscribeOnline(users: [ID!]!): OnlineEvent!
   chatOnlinesCount(chatId: ID!): ChatOnlineEvent!
@@ -3405,7 +3233,6 @@ type SuperAccount {
   name: String!
   state: SuperAccountState!
   members: [User!]!
-  features: [FeatureFlag!]!
   alphaPublished: Boolean!
   createdAt: String
   createdBy: User
@@ -3436,6 +3263,16 @@ enum SuperNotificationType {
   ON_ORG_ACTIVATED_BY_ADMIN
   ON_ORG_ACTIVATED_VIA_INVITE
   ON_ORG_SUSPEND
+}
+
+type SyncChat {
+  sequence: Sequence!
+  pts: Int!
+}
+
+type SyncChatsConnection {
+  items: [SyncChat!]!
+  cursor: String
 }
 
 type Tag {
@@ -3512,9 +3349,27 @@ enum TypingType {
   VIDEO
 }
 
-input UpdateConversationSettingsInput {
-  mobileNotifications: NotificationMessages
-  mute: Boolean
+type UpdateChatDraftChanged {
+  cid: ID!
+  draft: String
+  version: Int!
+  date: Date!
+}
+
+type UpdateChatMessage {
+  cid: ID!
+  message: ModernMessage!
+}
+
+type UpdateChatMessageDeleted {
+  cid: ID!
+  mid: ID!
+  seq: Int!
+}
+
+type UpdateChatRead {
+  cid: ID!
+  seq: Int!
 }
 
 union UpdatedNotificationContent = UpdatedNotificationContentComment
@@ -3524,12 +3379,11 @@ type UpdatedNotificationContentComment {
   comment: CommentEntry
 }
 
-input UpdateGroupInput {
-  title: String
-  photoRef: ImageRefInput
-  description: String
-  longDescription: String
-  socialImageRef: ImageRefInput
+union UpdateEvent = UpdateChatRead | UpdateProfileChanged | UpdateMyProfileChanged | UpdateChatMessage | UpdateChatMessageDeleted | UpdateChatDraftChanged | UpdateSettingsChanged
+
+type UpdateMyProfileChanged {
+  user: User!
+  profile: Profile!
 }
 
 input UpdateOrganizationProfileInput {
@@ -3555,6 +3409,10 @@ input UpdateOrganizationProfileInput {
   betaMembersCanInvite: Boolean
 }
 
+type UpdateProfileChanged {
+  user: User!
+}
+
 """Deprecated"""
 input UpdateProfileInput {
   firstName: String
@@ -3577,6 +3435,22 @@ input UpdateProfileInput {
   alphaPrimaryOrganizationId: ID
 }
 
+type UpdatesDifference {
+  seq: Int!
+  state: String!
+  hasMore: Boolean!
+  sequences: [UpdatesSequenceDifference!]!
+}
+
+type UpdatesDifferenceEvent {
+  pts: Int!
+  event: UpdateEvent!
+}
+
+type UpdateSettingsChanged {
+  settings: Settings!
+}
+
 input UpdateSettingsInput {
   emailFrequency: EmailFrequency
   desktop: PlatformNotificationSettingsInput
@@ -3585,6 +3459,8 @@ input UpdateSettingsInput {
   excludeMutedChats: Boolean
   whoCanSeeEmail: PrivacyWhoCanSee
   whoCanSeePhone: PrivacyWhoCanSee
+  communityAdminsCanSeeContactInfo: Boolean
+  whoCanAddToGroups: PrivacyWhoCanAddToGroups
 
   """Deprecated"""
   notificationsDelay: NotificationsDelay
@@ -3595,6 +3471,49 @@ input UpdateSettingsInput {
   mobileAlert: Boolean
   mobileIncludeText: Boolean
   mute: Boolean
+}
+
+type UpdatesSequenceDifference {
+  after: Int!
+  sequence: Sequence!
+  events: [UpdatesDifferenceEvent!]!
+}
+
+type UpdatesSequenceState {
+  sequence: Sequence!
+  pts: Int!
+  seq: Int!
+}
+
+type UpdatesState {
+  seq: Int!
+  state: String!
+  sequences: [UpdatesSequenceState!]!
+}
+
+union UpdateSubscription = UpdateSubscriptionStarted | UpdateSubscriptionCheckpoint | UpdateSubscriptionEvent | UpdateSubscriptionEphemeralEvent
+
+type UpdateSubscriptionCheckpoint {
+  seq: Int!
+  state: String!
+}
+
+type UpdateSubscriptionEphemeralEvent {
+  seq: Int!
+  event: UpdateEvent!
+  sequence: Sequence!
+}
+
+type UpdateSubscriptionEvent {
+  seq: Int!
+  pts: Int!
+  event: UpdateEvent!
+  sequence: Sequence!
+}
+
+type UpdateSubscriptionStarted {
+  seq: Int!
+  state: String!
 }
 
 type UrlAugmentation {
@@ -3651,6 +3570,9 @@ type User {
   alphaTwitter: String
   alphaLocations: [String!]
   chatsWithBadge: [UserChatWithBadge!]!
+  externalSocialImage: String
+  isBanned: Boolean!
+  isMeBanned: Boolean!
   online: Boolean!
   active: Boolean!
   lastSeen: String
@@ -3690,17 +3612,6 @@ type UserEdge {
 
 type UserEventBusMessage {
   message: String!
-}
-
-type UserLocation {
-  id: ID!
-  isSharing: Boolean!
-  user: User!
-  lastLocations: [GeoLocation!]!
-}
-
-type UserMention {
-  user: User!
 }
 
 type UserStickers {

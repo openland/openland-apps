@@ -37,12 +37,14 @@ export interface AsyncMessageViewProps {
     canReply?: boolean;
     message: DataSourceMessageItem;
     engine: ConversationEngine;
+    hideReactions?: boolean;
+    onMessagePress?: (message: DataSourceMessageItem) => void;
     onMessageDoublePress: (message: DataSourceMessageItem) => void;
-    onMessageLongPress: (message: DataSourceMessageItem, actions: { action?: MessagesAction, reply: ChatMessagesActions['reply'], edit: ChatMessagesActions['edit'], toggleSelect: ChatMessagesActions['toggleSelect'], forward: (messages: DataSourceMessageItem[]) => void }) => void;
+    onMessageLongPress?: (message: DataSourceMessageItem, actions: { action?: MessagesAction, reply: ChatMessagesActions['reply'], edit: ChatMessagesActions['edit'], toggleSelect: ChatMessagesActions['toggleSelect'], forward: (messages: DataSourceMessageItem[]) => void }) => void;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
     onOrganizationPress: (id: string) => void;
-    onHashtagPress: (d?: string) => void;
+    onHashtagPress: (d?: string, chatId?: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
     onCommentsPress: (messageId: string) => void;
@@ -73,7 +75,7 @@ const AsyncMessageViewAvatar = (props: { message: DataSourceMessageItem, handleU
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const theme = useThemeGlobal(false);
-    const { conversationId, canReply, message, engine, onMessageDoublePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress, onHashtagPress } = props;
+    const { conversationId, canReply, hideReactions, message, engine, onMessagePress, onMessageDoublePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress, onHashtagPress } = props;
     const {
         isOut,
         attachTop,
@@ -82,12 +84,12 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
         reactionCounters,
         isSending
     } = message;
-    const { getState, reply, edit } = useChatMessagesActionsMethods({ conversationId: props.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
-    const [selected, toggleSelect] = useChatMessagesSelected({ conversationId: props.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined, messageKey: message.key });
-    const isSelecting = useChatMessagesSelectionMode({ conversationId: props.conversationId, userId: engine.isPrivate ? engine.user?.id : undefined });
+    const { getState, reply, edit } = useChatMessagesActionsMethods(props.conversationId);
+    const [selected, toggleSelect] = useChatMessagesSelected({ conversationId: props.conversationId, messageKey: message.key });
+    const isSelecting = useChatMessagesSelectionMode(props.conversationId);
 
     const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
-    const forward = useForward(conversationId, engine.isPrivate ? engine.user?.id : undefined, !canReply);
+    const forward = useForward(conversationId, !canReply);
 
     React.useEffect(() => {
         let timer: any;
@@ -112,17 +114,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     messageRef.current = message;
 
     let lastTap: number;
-    const handlePress = () => {
-        if (isSelecting) {
-            toggleSelect(message);
-            return;
-        }
-
-        if (message.sticker) {
-            showStickerPackModal(message.sticker.pack.id);
-            return;
-        }
-
+    const handleDoublePress = () => {
         if (!isSending) {
             const now = Date.now();
             const DOUBLE_PRESS_DELAY = 300;
@@ -134,11 +126,31 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
             }
         }
     };
+    const handlePress = () => {
+        if (isSelecting) {
+            toggleSelect(message);
+            return;
+        }
+
+        if (message.sticker) {
+            showStickerPackModal(message.sticker.pack.id);
+            return;
+        }
+
+        if (onMessagePress) {
+            onMessagePress(message);
+        }
+
+        handleDoublePress();
+    };
     const handleLongPress = () => {
         if (isSelecting) {
             return;
         }
-        onMessageLongPress(message, { action: getState().action, reply, edit, toggleSelect, forward });
+
+        if (onMessageLongPress) {
+            onMessageLongPress(message, { action: getState().action, reply, edit, toggleSelect, forward });
+        }
     };
     const handleCommentPress = React.useCallback(() => {
         if (message.id) {
@@ -187,14 +199,30 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     let res;
 
     if (message.text || message.reply || (message.attachments && message.attachments.length) || message.sticker) {
-        res = <AsyncMessageContentView conversationId={conversationId} theme={theme} key={'message-content'} message={message} onMediaPress={handleMediaPress} onLongPress={handleLongPress} onDocumentPress={onDocumentPress} onUserPress={handleUserPress} onGroupPress={handleGroupPress} onOrganizationPress={handleOrganizationPress} onHashtagPress={onHashtagPress} onReplyPress={handleReplyPress} />;
+        res = (
+            <AsyncMessageContentView
+                conversationId={conversationId}
+                theme={theme}
+                key={'message-content'}
+                message={message}
+                onMediaPress={handleMediaPress}
+                onLongPress={handleLongPress}
+                onDocumentPress={onDocumentPress}
+                onUserPress={handleUserPress}
+                onGroupPress={handleGroupPress}
+                onOrganizationPress={handleOrganizationPress}
+                onHashtagPress={onHashtagPress}
+                onReplyPress={handleReplyPress}
+                onPress={handleDoublePress}
+            />
+        );
     }
 
     if (!res) {
         res = <UnsupportedContent message={message} theme={theme} />;
     }
 
-    const showReactions = ((engine.isChannel || commentsCount > 0) || reactionCounters.length > 0) && !isSending;
+    const showReactions = ((engine.isChannel || commentsCount > 0) || reactionCounters.length > 0) && !isSending && !hideReactions;
     const marginTop = attachTop ? 4 : 12;
     const marginBottom = attachBottom && showReactions ? 6 : 0;
 

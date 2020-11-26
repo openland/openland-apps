@@ -52,12 +52,15 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
             'discover/premium': { route: 'DiscoverListing', params: { type: 'top-premium' } },
             'discover/free': { route: 'DiscoverListing', params: { type: 'top-free' } },
             'discover/recommendations': { route: 'DiscoverListing', params: { type: 'recommendations' } },
+            'discover/top-communities': { route: 'DiscoverListing', params: { type: 'top-orgs' } },
+            'discover/new-communities': { route: 'DiscoverListing', params: { type: 'new-orgs' } },
             'account/licenses': { route: 'SettingsLicenses' },
             'settings/licenses': { route: 'SettingsLicenses' },
         };
 
         let pagePattern = /(http(s)?\:\/\/)?(.*\.)?openland\.com\/(.*)/g;
         let matchPage = pagePattern.exec(link);
+
         if (matchPage && matchPage[4]) {
             const page = pages[matchPage[4]];
             if (page) {
@@ -113,8 +116,8 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
             let processedLink = link.endsWith('.') ? (link.slice(0, link.length - 1)) : link;
 
             let genericInvitePattern = new UrlPattern(patternBase + 'invite/:invite');
-            let genericInviteMatch = genericInvitePattern.match(processedLink);
-
+            let genericInvitePatternDeep = new UrlPattern(patternBaseDeep + 'invite/:invite');
+            let genericInviteMatch = genericInvitePattern.match(processedLink) || genericInvitePatternDeep.match(processedLink);
             if (genericInviteMatch && genericInviteMatch.invite) {
                 loader.show();
                 try {
@@ -139,29 +142,10 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         }
 
         // DEPRICATED, delete after adoption, web + mobile link generation migration
-        // JOIN ROOMS 
-        //
-        let roomInvitePattern = new UrlPattern(patternBase + 'joinChannel/:invite');
-        let roomInvitePatternDeep = new UrlPattern(patternBaseDeep + 'joinroom/:invite');
-        let match = roomInvitePattern.match(link) || roomInvitePatternDeep.match(srcLink);
-
-        if (match && match.invite) {
-            loader.show();
-            try {
-                let info = await getMessenger().engine.client.queryRoomInviteInfo({ invite: match.invite });
-                await joinRoom(info.invite, match.invite);
-            } catch (e) {
-                Alert.alert(e.message);
-            }
-            loader.hide();
-            return;
-        }
-
-        // DEPRICATED, delete after adoption, web + mobile link generation migration
         // JOIN ORGANIZATION
         //
         let orgInvitePattern = new UrlPattern(patternBase + 'join/:invite');
-        let orgInvitePatternDeep = new UrlPattern(patternBaseDeep + 'joinorg/:invite');
+        let orgInvitePatternDeep = new UrlPattern(patternBaseDeep + 'join/:invite');
         let matchOrg = orgInvitePattern.match(link) || orgInvitePatternDeep.match(srcLink);
 
         if (matchOrg && matchOrg.invite) {
@@ -368,9 +352,10 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
 export let saveLinkIfInvite = async (srcLink: string) => {
     let link = srcLink.toLowerCase();
     let keep =
-        (link.includes('openland.com/joinchannel/') || link.includes('openland://deep/joinroom/')) ||
-        (link.includes('openland.com/join/') || link.includes('openland://deep/joinorg/')) ||
-        link.includes('openland.com/invite/');
+        (link.includes('openland.com/join/') ||
+            link.includes('openland://deep/join/')) ||
+        (link.includes('openland.com/invite/') ||
+            link.includes('openland://deep/invite/'));
 
     if (keep) {
         await AsyncStorage.setItem('initial_invite_link', srcLink);
@@ -385,6 +370,13 @@ export const joinInviteIfHave = async () => {
     if (link.includes('?')) {
         link = link.split('?')[0];
     }
+    if (link.endsWith('/')) {
+        link = link.substr(0, link.length - 1);
+    }
+    if (link.endsWith('.')) {
+        link = link.slice(0, link.length - 1);
+    }
+
     let patternBase = '(http(s)\\://)(:subdomain.)openland.com/';
     let patternBaseDeep = 'openland\\://deep/';
 
@@ -423,9 +415,9 @@ export const joinInviteIfHave = async () => {
     // 
     // JOIN ROOMS
     //
-    let roomInvitePattern = new UrlPattern(patternBase + 'joinChannel/:invite');
-    let roomInvitePatternDeep = new UrlPattern(patternBaseDeep + 'joinroom/:invite');
-    let match = roomInvitePattern.match(link) || roomInvitePatternDeep.match(srcLink);
+    let roomInvitePattern = new UrlPattern(patternBase + 'invite/:invite');
+    let roomInvitePatternDeep = new UrlPattern(patternBaseDeep + 'invite/:invite');
+    let match = roomInvitePattern.match(link) || roomInvitePatternDeep.match(link);
     if (match && match.invite) {
         loader.show();
         try {
@@ -441,8 +433,8 @@ export const joinInviteIfHave = async () => {
     // JOIN ORGANIZATION
     //
     let orgInvitePattern = new UrlPattern(patternBase + 'join/:invite');
-    let orgInvitePatternDeep = new UrlPattern(patternBaseDeep + 'joinorg/:invite');
-    let matchOrg = orgInvitePattern.match(link) || orgInvitePatternDeep.match(srcLink);
+    let orgInvitePatternDeep = new UrlPattern(patternBaseDeep + 'join/:invite');
+    let matchOrg = orgInvitePattern.match(link) || orgInvitePatternDeep.match(link);
     if (matchOrg && matchOrg.invite) {
         loader.show();
         try {
@@ -452,39 +444,6 @@ export const joinInviteIfHave = async () => {
             Alert.alert(formatError(e));
         }
         loader.hide();
-    }
-
-    //
-    // JOIN GENERIC INVITE
-    //
-    // Sorry universe. Ugly fix for PLN-546
-    let processedLink = link.endsWith('.') ? (link.slice(0, link.length - 1)) : link;
-    let globalInvitePattern = new UrlPattern(patternBase + 'invite/:invite');
-    let matchGlobal = globalInvitePattern.match(processedLink);
-    if (matchGlobal && matchGlobal.invite) {
-        try {
-            loader.show();
-            let info = await getMessenger().engine.client.queryResolvedInvite({ key: matchGlobal.invite }, { fetchPolicy: 'network-only' });
-            if (info.invite) {
-                if (info.invite.__typename === 'AppInvite') {
-                    await getMessenger().engine.client.mutateOrganizationActivateByInvite({ inviteKey: matchGlobal.invite });
-                    await next(getMessenger().history.navigationManager);
-                    loader.hide();
-                } else if (info.invite.__typename === 'InviteInfo') {
-                    await joinOraganizaion(info.invite, matchGlobal.invite);
-                    loader.hide();
-                } else if (info.invite.__typename === 'RoomInvite') {
-                    await joinRoom(info.invite, matchGlobal.invite);
-                    loader.hide();
-                }
-            } else {
-                loader.hide();
-                Alert.alert('This invitation has been revoked');
-            }
-        } catch (e) {
-            loader.hide();
-            Alert.alert(formatError(e));
-        }
     }
 
     await AsyncStorage.removeItem('initial_invite_link');

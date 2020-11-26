@@ -53,12 +53,12 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
     private inited: boolean = false;
     private destroyed: boolean = false;
     private needMoreCallback: () => void;
-    private needMoreForwardCallback: () => void;
+    private needMoreForwardCallback?: () => void;
     private completed: boolean = false;
     private completedForward: boolean = true;
     private anchor?: string;
 
-    constructor(needMoreCallback: () => void, needMoreForwardCallback: () => void) {
+    constructor(needMoreCallback: () => void, needMoreForwardCallback?: () => void) {
         this.needMoreCallback = needMoreCallback;
         this.needMoreForwardCallback = needMoreForwardCallback;
     }
@@ -69,7 +69,7 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         }
     }
     needMoreForward() {
-        if (!this.completedForward) {
+        if (!this.completedForward && this.needMoreForwardCallback) {
             this.needMoreForwardCallback();
         }
     }

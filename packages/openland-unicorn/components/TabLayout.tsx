@@ -192,6 +192,7 @@ const StackContent = React.memo((props: {
                     <XView
                         key="sep1"
                         width={1}
+                        zIndex={3}
                         backgroundColor="var(--border)"
                         height="100%"
                     />
@@ -200,6 +201,7 @@ const StackContent = React.memo((props: {
                         maxWidth={stackVisible ? 370 : undefined}
                         flexShrink={1}
                         flexGrow={1}
+                        zIndex={3}
                         height="100%"
                         flexDirection="column"
                     >
@@ -223,6 +225,7 @@ const StackContent = React.memo((props: {
                             <XView
                                 key="sep2"
                                 width={1}
+                                zIndex={3}
                                 height="100%"
                                 backgroundColor="var(--border)"
                             />
@@ -327,7 +330,7 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
                                 />
                             ))}
                             {layout === 'desktop' && (
-                                <XView position="absolute" top={0} left={0} bottom={0} width={64}>
+                                <XView position="absolute" top={0} left={0} bottom={0} width={64} zIndex={2}>
                                     <TabBarDesktop
                                         selected={selected}
                                         setSelected={setSelectedClb}

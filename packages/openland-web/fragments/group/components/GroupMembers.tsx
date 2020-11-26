@@ -9,7 +9,7 @@ import {
 } from 'openland-y-utils/members/EntityMembersManager';
 import { debounce } from 'openland-y-utils/timer';
 import { MembersSearchInput } from 'openland-web/components/MembersSearchInput';
-import { shouldShowInviteButton } from 'openland-y-utils/shouldShowInviteButton';
+import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { showAddMembersModal } from 'openland-web/fragments/chat/showAddMembersModal';
@@ -42,7 +42,7 @@ export const GroupMembers = ({ group }: GroupMembersProps) => {
         hasNextPage: true,
         cursor: '',
     });
-    
+
     const { id, membersCount, isChannel } = group;
 
     const loadSearchMembers = async (reseted?: boolean) => {
@@ -64,7 +64,7 @@ export const GroupMembers = ({ group }: GroupMembersProps) => {
             return;
         }
         setMembers((prev) =>
-            reseted ? edges.map(x => x.node) : prev.concat(edges.map(x => x.node)),
+            reseted ? edges.map((x) => x.node) : prev.concat(edges.map((x) => x.node)),
         );
         setMembersFetching((prev) => ({
             loading: Math.max(prev.loading - 1, 0),
@@ -94,14 +94,16 @@ export const GroupMembers = ({ group }: GroupMembersProps) => {
     }, [bottomReached]);
 
     React.useEffect(() => {
-        return onlines.onSingleChange((user: string, online: boolean) => {
-            setMembers((current) =>
-                current.map((m) =>
-                    m.user.id === user && online !== m.user.online
-                        ? { ...m, user: { ...m.user, online, lastSeen: Date.now().toString() } }
-                        : m,
-                ),
-            );
+        return onlines.onSingleChange((userId: string, online: boolean) => {
+            if (members.some(({ user }) => user.id === userId && user.online !== online)) {
+                setMembers((current) =>
+                    current.map((m) =>
+                        m.user.id === userId && online !== m.user.online
+                            ? { ...m, user: { ...m.user, online, lastSeen: Date.now().toString() } }
+                            : m,
+                    ),
+                );
+            }
         });
     }, [members]);
 
@@ -156,73 +158,77 @@ export const GroupMembers = ({ group }: GroupMembersProps) => {
     );
 
     const isSearching = membersQuery.length > 0;
-    const loadingOrSearching = loading || (isSearching && membersFetching.loading > 0 && members.length > 15);
+    const loadingOrSearching =
+        loading || (isSearching && membersFetching.loading > 0 && members.length > 15);
+
+    const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(group);
 
     return (
-        <XView marginLeft={-8}>
+        <XView marginLeft={-8} width="100%">
             <MembersSearchInput
                 query={membersQuery}
                 loading={membersFetching.loading > 0}
                 onChange={handleSearchChange}
-            />
-            {shouldShowInviteButton(group) && !hasSearched && (
-                <UAddItem
-                    title="Add people"
-                    titleStyle={TextStyles.Label1}
-                    onClick={() => {
-                        showAddMembersModal({
-                            id,
-                            isChannel,
-                            isGroup: true,
-                            isOrganization: false,
-                            onGroupMembersAdd: handleAddMembers,
-                        });
-                    }}
-                />
-            )}
-            {members.length === 0 && isSearching && (
-                <XView
-                    paddingTop={32}
-                    paddingBottom={32}
-                    alignItems="center"
-                    {...TextStyles.Body}
-                    color="var(--foregroundSecondary)"
-                >
-                    Nobody found
+            >
+                {(canAddDirectly || canGetInviteLink) && !hasSearched && (
+                    <UAddItem
+                        title="Add people"
+                        titleStyle={TextStyles.Label1}
+                        onClick={() => {
+                            showAddMembersModal({
+                                id,
+                                isChannel,
+                                isGroup: true,
+                                isOrganization: false,
+                                onGroupMembersAdd: handleAddMembers,
+                            });
+                        }}
+                    />
+                )}
+                {members.length === 0 && isSearching && (
+                    <XView
+                        paddingTop={32}
+                        paddingBottom={32}
+                        alignItems="center"
+                        {...TextStyles.Body}
+                        color="var(--foregroundSecondary)"
+                    >
+                        Nobody found
+                    </XView>
+                )}
+                <React.Suspense fallback={null}>
+                    <EntityMembersManager
+                        isGroup={true}
+                        loading={loading}
+                        members={members}
+                        membersCount={membersCount}
+                        entityId={id}
+                        setLoading={setLoading}
+                        setMembers={setMembers}
+                        setInitialMembers={setInitialMembers}
+                        onlineWatcher={onlines}
+                        ref={profilesRef}
+                    />
+                </React.Suspense>
+                {members.map((member) => (
+                    <UUserView
+                        key={'member-' + member.user.id + '-' + member.role}
+                        user={member.user}
+                        role={member.role}
+                        rightElement={
+                            <GroupMemberMenu
+                                group={group}
+                                member={member}
+                                onRemove={handleRemoveMember}
+                                updateUserRole={updateUserRole}
+                            />
+                        }
+                    />
+                ))}
+                <XView height={56} alignItems="center" justifyContent="center">
+                    {loadingOrSearching && <XLoader loading={true} />}
                 </XView>
-            )}
-            <React.Suspense fallback={null}>
-                <EntityMembersManager
-                    isGroup={true}
-                    loading={loading}
-                    members={members}
-                    membersCount={membersCount}
-                    entityId={id}
-                    setLoading={setLoading}
-                    setMembers={setMembers}
-                    setInitialMembers={setInitialMembers}
-                    onlineWatcher={onlines}
-                    ref={profilesRef}
-                />
-            </React.Suspense>
-            {members.map((member) => (
-                <UUserView
-                    key={'member-' + member.user.id + '-' + member.role}
-                    user={member.user}
-                    role={member.role}
-                    rightElement={
-                        <GroupMemberMenu
-                            group={group}
-                            member={member}
-                            onRemove={handleRemoveMember}
-                            updateUserRole={updateUserRole}
-                        />
-                    }
-                />
-            ))}
-            <XView height={56} alignItems="center" justifyContent="center">
-                {loadingOrSearching && <XLoader loading={true} />}
-            </XView>
+            </MembersSearchInput>
         </XView>
     );
 };

@@ -1,22 +1,26 @@
 import * as React from 'react';
 import { View, Platform, Text, TouchableWithoutFeedback } from 'react-native';
-import { withApp } from '../../components/withApp';
-import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
-import { PageProps } from '../../components/PageProps';
+import { SRouter } from 'react-native-s/SRouter';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
+
+import { withApp } from 'openland-mobile/components/withApp';
+import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
+import { PageProps } from 'openland-mobile/components/PageProps';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
+import { ZDateInputField } from 'openland-mobile/components/ZDateInput';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
-import { SRouter } from 'react-native-s/SRouter';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { formatPhone } from 'openland-y-utils/auth/formatPhone';
+import { isValidDate } from 'openland-y-utils/wallet/dateTime';
+import { SUPER_ADMIN } from '../Init';
 
 const PrivacyLink = React.memo((props: { router: SRouter }) => {
     const theme = useTheme();
@@ -40,6 +44,10 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
         return null;
     }
 
+    const birthDay = React.useMemo(() => {
+        return profile.birthDay && new Date(Number(profile.birthDay));
+    }, [profile.birthDay]);
+
     const form = useForm();
     const firstNameField = useField('firstName', profile.firstName || '', form);
     const lastNameField = useField('lastName', profile.lastName || '', form);
@@ -47,6 +55,12 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
     const aboutField = useField('about', profile.about || '', form);
     const phoneField = useField('phone', (phone && formatPhone(phone)) || '', form);
     const emailField = useField('email', email || '', form);
+    const birthDayField = useField('input.birthDay', birthDay || null, form, [
+        {
+            checkIsValid: (value) => !value || isValidDate(value),
+            text: 'Please enter valid date',
+        },
+    ]);
     const locationField = useField('location', profile.location || '', form);
     const websiteField = useField('website', profile.website || '', form);
     const linkedinField = useField('linkedin', profile.linkedin || '', form);
@@ -70,6 +84,7 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                     instagram: instagramField.value,
                     facebook: facebookField.value,
                     twitter: twitterField.value,
+                    birthDay: birthDayField.value?.getTime() || null,
                 },
             });
             await getClient().refetchAccount();
@@ -112,10 +127,23 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                     />
                 </ZListGroup>
 
-                <ZListGroup header="Contacts" headerMarginTop={0}>
+                {SUPER_ADMIN && (
+                    <ZListGroup header="Birthday" headerMarginTop={0}>
+                        <ZDateInputField field={birthDayField} />
+                    </ZListGroup>
+                )}
+
+                <ZListGroup header="Contacts" headerMarginTop={16}>
                     <ZInput placeholder="Phone" field={phoneField} disabled={true} />
                     <ZInput placeholder="Email" field={emailField} disabled={true} />
-                    <Text style={{ ...TextStyles.Caption, marginHorizontal: 32, marginBottom: 24, color: theme.foregroundTertiary }}>
+                    <Text
+                        style={{
+                            ...TextStyles.Caption,
+                            marginHorizontal: 32,
+                            marginBottom: 24,
+                            color: theme.foregroundTertiary,
+                        }}
+                    >
                         {'Edit phone/email and their visibility \nin '}
                         <PrivacyLink router={props.router} />
                     </Text>

@@ -9,7 +9,8 @@ import { RoomTiny_room, RoomMemberRole, RoomTiny_room_SharedRoom } from 'openlan
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
 import Toast from 'openland-mobile/components/Toast';
-import { shouldShowInviteButton } from 'openland-y-utils/shouldShowInviteButton';
+import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
+import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 
 interface ConversationManageButtonProps {
     muted: boolean;
@@ -126,6 +127,10 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         router.push('SharedMedia', { chatId: room.id });
     }, [room.id]);
 
+    const onSearchPress = React.useCallback(() => {
+        router.push('ChatSearch', { chatId: room.id });
+    }, [room.id]);
+
     const { onInvitePress, onLeavePress } = useSharedHandlers(
         room as RoomTiny_room_SharedRoom,
         router,
@@ -135,11 +140,13 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         const builder = new ActionSheetBuilder();
         const sharedRoom = room.__typename === 'SharedRoom' && room;
 
-        if (shouldShowInviteButton(room)) {
+        const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(room);
+
+        if (canAddDirectly || canGetInviteLink) {
             builder.action('Add people', onInvitePress, false, require('assets/ic-invite-24.png'));
         }
 
-        if (isUser && isUser.id !== myID) {
+        if (!isUser || (isUser && isUser.id !== myID)) {
             const notificationsTitle = `${muted ? 'Unmute' : 'Mute'} notifications`;
             const notificationsIcon = muted
                 ? require('assets/ic-notifications-24.png')
@@ -148,6 +155,10 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         }
 
         builder.action('Media, files, links', onSharedPress, false, require('assets/ic-attach-24.png'));
+
+        if (SUPER_ADMIN) {
+            builder.action('Search messages', onSearchPress, false, require('assets/ic-search-24.png'));
+        }
 
         if (sharedRoom) {
             if ((room as RoomTiny_room_SharedRoom).canEdit) {
@@ -161,7 +172,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         }
 
         if (sharedRoom) {
-            builder.action('Leave group', onLeavePress, false, require('assets/ic-leave-24.png'));
+            builder.action(sharedRoom.isChannel ? 'Leave channel' : 'Leave group', onLeavePress, false, require('assets/ic-leave-24.png'));
         }
 
         if (isUser) {

@@ -224,7 +224,7 @@ export const URickInput = React.memo(
                 if (containerRef.current && containerRef.current.firstChild && props.onFilesPaste) {
                     let q = containerRef.current.firstChild;
                     const pasteListener = (ev: ClipboardEvent) => {
-                        if (props.onFilesPaste && ev.clipboardData && ev.clipboardData.files) {
+                        if (props.onFilesPaste && ev.clipboardData && ev.clipboardData.files && ev.clipboardData.files.length > 0) {
                             props.onFilesPaste(fileListToArray(ev.clipboardData.files));
                         }
                     };

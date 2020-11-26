@@ -13,12 +13,11 @@ type LongPressHandler = (options: { filePath?: string, chatId: string, message: 
 export const AsyncSharedItem = React.memo((props: {
     item: SharedMediaDataSourceItem,
     chatId: string,
-    userId: string | undefined,
     wrapperWidth: number,
     onLongPress: (forward: (messages: DataSourceMessageItem[]) => void) => LongPressHandler
 }) => {
-    const { item, chatId, userId, wrapperWidth, onLongPress } = props;
-    const forward = useForward(chatId, userId);
+    const { item, chatId, wrapperWidth, onLongPress } = props;
+    const forward = useForward(chatId);
     if (item.type === SharedMediaItemType.MEDIA) {
         return <AsyncSharedMediaRow item={item} chatId={chatId} wrapperWidth={wrapperWidth} onLongPress={onLongPress(forward)} />;
     }

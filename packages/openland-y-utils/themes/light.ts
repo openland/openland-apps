@@ -49,6 +49,7 @@ export const ThemeLight: ThemeGlobal = {
     accentPrimary: TintBlue.primary,
     accentPrimaryHover: TintBlue.hover,
     accentPrimaryActive: TintBlue.active,
+    accentPrimaryTrans: 'rgba(36, 139, 242, 0.16)',
 
     accentMuted: '#4595E5',
     accentMutedHover: '#4595E5',
@@ -102,4 +103,7 @@ export const ThemeLight: ThemeGlobal = {
     blurType: 'light',
     keyboardAppearance: 'light',
     statusBar: 'dark-content',
+
+    displayFeaturedIcon: true,
+    largeEmoji: true,
 };

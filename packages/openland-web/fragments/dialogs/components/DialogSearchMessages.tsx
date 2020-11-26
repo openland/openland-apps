@@ -244,7 +244,8 @@ const DialogSearchMessagesInner = React.forwardRef(
                                         isOut: message.sender.id === messenger.user.id,
                                         isMuted: !!chat.settings.mute,
                                         sender: message.sender.name,
-                                        membership: chat.__typename === 'SharedRoom' ? chat.membership : 'NONE'
+                                        membership: chat.__typename === 'SharedRoom' ? chat.membership : 'NONE',
+                                        featured: chat.__typename === 'SharedRoom' ? chat.featured : false,
                                     }}
                                     hovered={index === (selectedIndex - items.length)}
                                     selected={selected}

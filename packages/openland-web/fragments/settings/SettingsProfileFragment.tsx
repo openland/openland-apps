@@ -19,6 +19,9 @@ import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
+import { UDateInputField } from 'openland-web/components/unicorn/UDateInput';
+import { isValidDate } from 'openland-y-utils/wallet/dateTime';
+import { XWithRole } from '../../../openland-x-permissions/XWithRole';
 
 const privacyText = css`
     margin-bottom: 24px;
@@ -41,6 +44,10 @@ export const SettingsProfileFragment = React.memo(() => {
     if (!user || !profile) {
         return null;
     }
+
+    const birthDay = React.useMemo(() => {
+        return profile.birthDay && new Date(Number(profile.birthDay));
+    }, [profile.birthDay]);
 
     const firstNameField = useField('input.firstName', profile.firstName || '', form, [
         {
@@ -79,6 +86,12 @@ export const SettingsProfileFragment = React.memo(() => {
             text: 'A username can only contain a-z, 0-9, and underscores',
         },
     ]);
+    const birthDayField = useField('input.birthDay', birthDay || null, form, [
+        {
+            checkIsValid: (value) => !value || isValidDate(value),
+            text: 'Please enter valid date',
+        },
+    ]);
     const websiteField = useField('input.website', profile.website || '', form);
     const linkedinField = useField('input.linkedin', profile.linkedin || '', form);
     const instagramField = useField('input.instagram', profile.instagram || '', form);
@@ -100,6 +113,7 @@ export const SettingsProfileFragment = React.memo(() => {
                     location: locationField.value,
                     twitter: twitterField.value,
                     facebook: facebookField.value,
+                    birthDay: birthDayField.value?.getTime() || null,
                 },
             });
 
@@ -161,10 +175,7 @@ export const SettingsProfileFragment = React.memo(() => {
                                 />
                             </XView>
                             <XView marginBottom={16}>
-                                <UTextAreaField
-                                    placeholder="About"
-                                    field={aboutField}
-                                />
+                                <UTextAreaField placeholder="About" field={aboutField} />
                             </XView>
                             <UInputField label="Location" field={locationField} />
                         </FormSection>
@@ -176,6 +187,11 @@ export const SettingsProfileFragment = React.memo(() => {
                                 errorText={form.error}
                             />
                         </FormSection>
+                        <XWithRole role="super-admin">
+                            <FormSection title="Birthday">
+                                <UDateInputField field={birthDayField} />
+                            </FormSection>
+                        </XWithRole>
                         <FormSection title="Contacts">
                             <XView
                                 marginBottom={16}
@@ -203,7 +219,8 @@ export const SettingsProfileFragment = React.memo(() => {
                                 />
                             </XView>
                             <div className={cx(privacyText, TextCaption)}>
-                                Edit phone/email and their visibility in <ULink path="/settings/privacy">Account and privacy</ULink>
+                                Edit phone/email and their visibility in{' '}
+                                <ULink path="/settings/privacy">Account and privacy</ULink>
                             </div>
                             <XView marginBottom={16}>
                                 <UInputField label="Website" field={websiteField} />

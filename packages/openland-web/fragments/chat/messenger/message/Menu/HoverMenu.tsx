@@ -29,8 +29,8 @@ const menuContainerClass = css`
     flex-shrink: 0;
     background-color: var(--backgroundPrimary);
     border-radius: 8px;
-    @media(max-width: 1350px) {
-      right: 0;
+    @media (max-width: 1350px) {
+        right: 0;
     }
 `;
 const attachTop = css`
@@ -57,25 +57,22 @@ export const HoverMenu = React.memo((props: HoverMenuProps) => {
     const [menuPlacement, setMenuPlacement] = React.useState<Placement>('bottom-end');
     const toastHandlers = useToast();
 
-    React.useLayoutEffect(
-        () => {
-            if (width && width > 1600) {
-                setMenuPlacement('right-start');
-            } else if (width && width < 1600) {
-                setMenuPlacement('bottom-end');
-            }
-        },
-        [width],
-    );
+    React.useLayoutEffect(() => {
+        if (width && width > 1600) {
+            setMenuPlacement('right-start');
+        } else if (width && width < 1600) {
+            setMenuPlacement('bottom-end');
+        }
+    }, [width]);
 
     messageRef.current = message;
     const buildMessageMenu = useBuildMessageMenu(props.engine);
     const [menuVisible, menuShow] = usePopper(
         { placement: menuPlacement, hideOnClick: true },
-        ctx => buildMessageMenu(ctx, messageRef.current),
+        (ctx) => buildMessageMenu(ctx, messageRef.current),
     );
     const handleCommentClick = React.useCallback(
-        e => {
+        (e) => {
             e.stopPropagation();
 
             if (router && message.id) {
@@ -92,14 +89,11 @@ export const HoverMenu = React.memo((props: HoverMenuProps) => {
     const messageKeyRef = React.useRef(message.key);
     messageKeyRef.current = message.key;
 
-    React.useEffect(
-        () => {
-            if (pickerRef && pickerRef.current) {
-                pickerRef.current.update(message.reactionCounters);
-            }
-        },
-        [pickerRef, message.reactionCounters],
-    );
+    React.useEffect(() => {
+        if (pickerRef && pickerRef.current) {
+            pickerRef.current.update(message.reactionCounters);
+        }
+    }, [pickerRef, message.reactionCounters]);
 
     const handleReactionClick = async (reaction: MessageReactionType, remove?: boolean) => {
         const messageId = messageIdRef.current;
@@ -115,7 +109,7 @@ export const HoverMenu = React.memo((props: HoverMenuProps) => {
                 toastHandlers.show({
                     type: 'loading',
                     text: 'Loading',
-                    autoclose: false
+                    autoclose: false,
                 });
                 await client.mutateMessageSetDonationReaction({ messageId });
                 toastHandlers.show({
@@ -150,7 +144,11 @@ export const HoverMenu = React.memo((props: HoverMenuProps) => {
         };
 
         if (messageId) {
-            if (remove === undefined ? !!reactions.find(r => r.reaction === reaction && r.setByMe) : remove) {
+            if (
+                remove === undefined
+                    ? !!reactions.find((r) => r.reaction === reaction && r.setByMe)
+                    : remove
+            ) {
                 if (reaction !== MessageReactionType.DONATE) {
                     unsetEmoji();
                     await client.mutateMessageUnsetReaction({ messageId, reaction });
@@ -165,7 +163,9 @@ export const HoverMenu = React.memo((props: HoverMenuProps) => {
                         } catch (e) {
                             unsetEmoji();
                         }
-                    } catch (e) { /* noop */ }
+                    } catch (e) {
+                        /* noop */
+                    }
                 } else {
                     setEmoji();
                     await client.mutateMessageSetReaction({ messageId, reaction });
@@ -175,7 +175,13 @@ export const HoverMenu = React.memo((props: HoverMenuProps) => {
     };
 
     const [reactionsVisible, reactionsShow] = usePopper(
-        { placement: 'top', hideOnLeave: true, borderRadius: 20, scope: 'reaction-picker' },
+        {
+            placement: 'top',
+            hideOnLeave: true,
+            borderRadius: 20,
+            scope: 'reaction-picker',
+            updatedDeps: message.reactionCounters,
+        },
         () => (
             <ReactionPicker
                 ref={pickerRef}
@@ -202,7 +208,7 @@ export const HoverMenu = React.memo((props: HoverMenuProps) => {
                 size="small"
                 active={reactionsVisible}
                 onMouseEnter={reactionsShow}
-                onClick={e => {
+                onClick={(e) => {
                     e.stopPropagation();
                     handleReactionClick(MessageReactionType.LIKE);
                 }}

@@ -179,7 +179,7 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
                 onChange={globalSearch.onChange}
                 onFocus={onInputFocus}
                 ref={ref}
-                placeholder="Groups, people and more"
+                placeholder="Chats, messages, and more"
                 loading={loading}
                 marginHorizontal={16}
                 marginBottom={16}

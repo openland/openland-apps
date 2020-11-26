@@ -109,7 +109,7 @@ export const Footer = (props: { useCorners: boolean, children: any }) => {
 };
 
 export const useSharedItemMenu = (conversationId: string) => {
-    const forward = useForward(conversationId, undefined);
+    const forward = useForward(conversationId);
     const messenger = React.useContext(MessengerContext);
     return (ctx: UPopperController, item: SharedItem) => {
         const builder = new UPopperMenuBuilder();
@@ -215,9 +215,9 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
             }
         } else {
             if (i.attach.__typename === 'MessageAttachmentFile') {
-                items.push(<DocContent key={'doc_' + key} item={i as SharedItemFile} chatId={props.chatId} profileView={props.profileView}/>);
+                items.push(<DocContent key={'doc_' + key} item={i as SharedItemFile} chatId={props.chatId} profileView={props.profileView} />);
             } else if (i.attach.__typename === 'MessageRichAttachment') {
-                items.push(<RichContent key={'rich_' + key} item={i as SharedItemRich} chatId={props.chatId} profileView={props.profileView}/>);
+                items.push(<RichContent key={'rich_' + key} item={i as SharedItemRich} chatId={props.chatId} profileView={props.profileView} />);
             } else {
                 items.push(<XView key={'x_' + key} padding={8} flexGrow={1}>Unknown content</XView>);
             }
@@ -258,7 +258,7 @@ const TabsMenuMobile = React.memo((props: { items: (TabItem & { icon: React.Reac
 });
 
 const TabsMenuMobileButton = (props: { menu: (ctx: UPopperController) => JSX.Element, selected: string }) => {
-    const [, menuShow] = usePopper({ placement: 'bottom-end', marginTop: -56, marginRight: -8 }, props.menu);
+    const [, menuShow] = usePopper({ placement: 'bottom-end', marginTop: -56, marginRight: -8, updatedDeps: props.selected }, props.menu);
     return (
         <XView {...TextStyles.Label1} color="var(--foregroundSecondary)" flexDirection="row" onClick={menuShow} paddingVertical={16} alignItems="center" >
             <XView marginRight={10}>{props.selected}</XView><UIcon size={16} icon={<DropIcon />} />

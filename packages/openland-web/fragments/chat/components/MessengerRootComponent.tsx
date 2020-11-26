@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
+import { TextBody } from 'openland-web/utils/TextStyles';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import {
     ConversationEngine,
@@ -15,6 +16,7 @@ import {
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
     StickerFragment,
     TypingType,
+    MessageAttachments_MessageAttachmentFile,
 } from 'openland-api/spacex.types';
 import { trackEvent } from 'openland-x-analytics';
 import { throttle } from 'openland-y-utils/timer';
@@ -39,9 +41,21 @@ import { showNoiseWarning } from './NoiseWarning';
 import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarComponent';
 import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
 import { AppConfig } from 'openland-y-runtime-web/AppConfig';
-import { extractTextAndMentions, convertToInputValue } from 'openland-web/utils/convertTextAndMentions';
+import {
+    extractTextAndMentions,
+    convertToInputValue,
+} from 'openland-web/utils/convertTextAndMentions';
 import { convertServerSpan } from 'openland-y-utils/spans/utils';
-import { useChatMessagesActionsState, useChatMessagesActionsMethods, ConversationActionsState, ChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import {
+    useChatMessagesActionsState,
+    useChatMessagesActionsMethods,
+    ConversationActionsState,
+    ChatMessagesActionsMethods,
+    setMessagesActionsUserChat,
+} from 'openland-y-utils/MessagesActionsState';
+import { isFileImage } from 'openland-web/utils/UploadCareUploading';
+import IcWarning from 'openland-icons/s/ic-warning-16.svg';
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
@@ -55,14 +69,14 @@ interface MessagesComponentProps {
     | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
     | null;
     room: RoomChat_room;
-    onAttach: (files: File[], isImage?: boolean) => void;
+    onAttach: (files: File[], text?: URickTextValue, isImage?: boolean) => void;
     messagesActionsState: ConversationActionsState;
     messagesActionsMethods: ChatMessagesActionsMethods;
     isAttachModalOpen: boolean;
+    banInfo: { isBanned: boolean; isMeBanned: boolean } | undefined;
 }
 
 interface MessagesComponentState {
-    hideInput: boolean;
     loading: boolean;
 }
 
@@ -110,6 +124,24 @@ const messagesListContainer = css`
     overflow: hidden;
 `;
 
+const blockContainer = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    align-self: stretch;
+    flex-shrink: 0;
+    height: 72px;
+    & > div {
+      flex-grow: 0;
+    }
+`;
+
+const blockTitle = css`
+    color: var(--foregroundSecondary);
+    margin-left: 8px;
+`;
+
 const composeContainer = css`
     display: flex;
     flex-direction: row;
@@ -148,27 +180,27 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     private setTyping = throttle(() => {
         this.props.messenger.client.mutateSetTyping({
             conversationId: this.props.conversationId,
-            type: TypingType.TEXT
+            type: TypingType.TEXT,
         });
     }, 1000);
 
     private setTypingRaw = () => {
         this.props.messenger.client.mutateSetTyping({
             conversationId: this.props.conversationId,
-            type: TypingType.TEXT
+            type: TypingType.TEXT,
         });
     }
 
     private setStickerPicking = () => {
         this.props.messenger.client.mutateSetTyping({
             conversationId: this.props.conversationId,
-            type: TypingType.STICKER
+            type: TypingType.STICKER,
         });
     }
 
     private unsetTyping = () => {
         this.props.messenger.client.mutateUnsetTyping({
-            conversationId: this.props.conversationId
+            conversationId: this.props.conversationId,
         });
     }
 
@@ -178,14 +210,17 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         const typingFunction = stickers ? this.setStickerPicking : this.setTypingRaw;
 
         typingFunction();
-        this.stickerPickingMutationIntervals.push(setInterval(() => {
-            console.log('From the interval');
-            typingFunction();
-        }, 3000));
+        this.stickerPickingMutationIntervals.push(
+            setInterval(() => {
+                console.log('From the interval');
+                typingFunction();
+            }, 3000),
+        );
 
         // clear typing after one minute in case it somehow stuck
         setTimeout(this.finishStickerPicking, 1000 * 60);
     }
+
     private finishStickerPicking = () => {
         this.stickerPickingMutationIntervals.forEach(clearInterval);
         this.unsetTyping();
@@ -205,7 +240,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         };
 
         this.conversation = props.messenger.getConversation(props.conversationId);
-        this.state = { hideInput: false, loading: this.conversation.getState().loading };
+        this.state = { loading: this.conversation.getState().loading };
 
         let ex = localStorage.getItem('drafts-' + props.conversationId);
         if (ex) {
@@ -322,28 +357,25 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         this.messageText = text;
     }
 
-    handleShowIput = (show: boolean) => {
-        this.setState({
-            hideInput: !show,
-        });
-    }
-
     onInputPressUp = () => {
         if (
             this.rickRef.current &&
             this.rickRef.current
                 .getText()
-                .map(c => (typeof c === 'string' ? c : c.__typename === 'User' ? c.name : 'All'))
+                .map((c) => (typeof c === 'string' ? c : c.__typename === 'User' ? c.name : 'All'))
                 .join()
                 .trim()
         ) {
             return false;
         }
         let myMessages = this.conversation!.dataSource.getItems().filter(
-            m => m.type === 'message' && m.isOut && m.text && !m.isSending && !m.isService,
+            (m) => m.type === 'message' && m.isOut && m.text && !m.isSending && !m.isService,
         );
         let myMessage = myMessages[0] as DataSourceMessageItem | undefined;
-        let hasPurchase = myMessage && myMessage.attachments && myMessage.attachments.some(a => a.__typename === 'MessageAttachmentPurchase');
+        let hasPurchase =
+            myMessage &&
+            myMessage.attachments &&
+            myMessage.attachments.some((a) => a.__typename === 'MessageAttachmentPurchase');
         if (myMessage && !hasPurchase) {
             this.props.messagesActionsMethods.edit(myMessage);
             return true;
@@ -367,11 +399,15 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         ) {
             if (text.length > 0) {
                 messagesActionsMethods.clear();
+                let fileAttachments = (actionMessage.attachments?.filter(
+                    (x) => x.__typename === 'MessageAttachmentFile',
+                ) || []) as MessageAttachments_MessageAttachmentFile[];
                 await this.conversation!.engine.client.mutateEditMessage({
                     messageId: actionMessage.id!,
                     message: text,
                     mentions: mentionsPrepared,
                     spans: findSpans(text),
+                    fileAttachments: fileAttachments.map((x) => ({ fileId: x.fileId })),
                 });
             }
         } else {
@@ -380,14 +416,22 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 actionState.action === 'reply' ||
                 actionState.action === 'forward'
             ) {
-                if (this.props.room.__typename === 'SharedRoom' && mentionsPrepared.filter(m => m.all === true).length) {
+                if (
+                    this.props.room.__typename === 'SharedRoom' &&
+                    mentionsPrepared.filter((m) => m.all === true).length
+                ) {
                     try {
                         const chatType = this.props.room.isChannel ? 'channel' : 'group';
-                        const membersType = this.props.room.isChannel ? ['follower', 'followers'] : ['member', 'members'];
+                        const membersType = this.props.room.isChannel
+                            ? ['follower', 'followers']
+                            : ['member', 'members'];
 
                         await showNoiseWarning(
-                            `Notify all ${!!this.props.room.membersCount ? plural(this.props.room.membersCount, membersType) : membersType[1]}?`,
-                            `By using @All, you’re about to notify all ${chatType} ${membersType[1]} even when they muted this chat. Please use it only for important messages`
+                            `Notify all ${!!this.props.room.membersCount
+                                ? plural(this.props.room.membersCount, membersType)
+                                : membersType[1]
+                            }?`,
+                            `By using @All, you’re about to notify all ${chatType} ${membersType[1]} even when they muted this chat. Please use it only for important messages`,
                         );
                     } catch {
                         return false;
@@ -395,7 +439,11 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 }
 
                 localStorage.removeItem('drafts-' + this.props.conversationId);
-                this.conversation!.sendMessage(text, mentions, messagesActionsMethods.prepareToSend());
+                this.conversation!.sendMessage(
+                    text,
+                    mentions,
+                    messagesActionsMethods.prepareToSend(),
+                );
             }
         }
 
@@ -415,31 +463,46 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         }
     }
 
+    handleAttach = (files: File[], isImage?: boolean) => {
+        this.props.onAttach(
+            files,
+            this.rickRef.current?.getText(),
+            typeof isImage === 'undefined' ? files.every(f => isFileImage(f)) : isImage
+        );
+        this.rickRef.current?.clear();
+    }
+
+    onAttach = (files: File[], text: URickTextValue, isImage: boolean) => {
+        this.handleAttach(files, isImage);
+    }
+
     //
     // Rendering
     //
 
     render() {
+        const { props } = this;
         if (!this.conversation) {
             return <XLoader loading={true} static={true} />;
         }
         const isChannel =
-            this.props.room &&
-            this.props.room.__typename === 'SharedRoom' &&
-            this.props.room.isChannel;
+            props.room && props.room.__typename === 'SharedRoom' && props.room.isChannel;
 
-        const pin = this.props.pinMessage;
-        const showInput = !this.state.hideInput && this.conversation.canSendMessage;
+        const pin = props.pinMessage;
+
+        const showInput =
+            props.room.__typename === 'SharedRoom'
+                ? this.conversation.canSendMessage
+                : !props.banInfo?.isBanned && !props.banInfo?.isMeBanned;
+
         const membersCount =
-            this.props.room.__typename === 'SharedRoom' ? this.props.room.membersCount : undefined;
-        const user = this.props.room.__typename === 'SharedRoom'
-            ? this.props.room.owner
-            : this.props.room.user;
+            props.room.__typename === 'SharedRoom' ? props.room.membersCount : undefined;
+        const user = props.room.__typename === 'SharedRoom' ? props.room.owner : props.room.user;
         const userFirstName = user ? user.firstName : undefined;
         const isYou = user ? user.isYou : undefined;
-        const canDonate = this.props.conversationId && !isChannel && !isYou;
-        const chatTitle = this.props.room.__typename === 'SharedRoom' ? this.props.room.title : undefined;
-        const isEditing = this.props.messagesActionsState.action === 'edit';
+        const canDonate = props.conversationId && !isChannel && !isYou;
+        const chatTitle = props.room.__typename === 'SharedRoom' ? props.room.title : undefined;
+        const isEditing = props.messagesActionsState.action === 'edit';
 
         return (
             <div className={messengerContainer}>
@@ -462,29 +525,35 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                             <MessageListComponent
                                 ref={this.messagesList}
                                 isChannel={isChannel}
-                                me={this.props.me}
+                                me={props.me}
                                 conversation={this.conversation}
-                                conversationType={this.props.conversationType}
-                                inputShower={this.handleShowIput}
-                                conversationId={this.props.conversationId}
-                                room={this.props.room}
+                                conversationType={props.conversationType}
+                                conversationId={props.conversationId}
+                                room={props.room}
                             />
-                            <TypingsView conversationId={this.props.conversationId} />
+                            <TypingsView conversationId={props.conversationId} />
                         </div>
-                        <ReloadFromEndButton conversation={this.conversation} showInput={!!showInput} />
+                        <ReloadFromEndButton
+                            conversation={this.conversation}
+                            showInput={!!showInput}
+                        />
                         {showInput && (
                             <div className={composeContainer}>
                                 <div className={composeContent}>
                                     <InputMessageActionComponent
-                                        chatId={this.props.conversationId}
-                                        userId={this.props.room.__typename === 'PrivateRoom' ? this.props.room.user.id : undefined}
+                                        chatId={props.conversationId}
+                                        userId={
+                                            props.room.__typename === 'PrivateRoom'
+                                                ? props.room.user.id
+                                                : undefined
+                                        }
                                     />
                                     <SendMessageComponent
-                                        onAttach={this.props.onAttach}
+                                        onAttach={this.onAttach}
                                         initialText={this.initialContent}
                                         onPressUp={this.onInputPressUp}
                                         rickRef={this.rickRef}
-                                        groupId={this.props.conversationId}
+                                        groupId={props.conversationId}
                                         isEditing={isEditing}
                                         chatTitle={chatTitle}
                                         membersCount={membersCount}
@@ -493,7 +562,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                         onTextChange={this.handleChange}
                                         onContentChange={this.onContentChange}
                                         isChannel={isChannel}
-                                        isPrivate={this.props.conversationType === 'PRIVATE'}
+                                        isPrivate={props.conversationType === 'PRIVATE'}
                                         autoFocus={true}
                                         ownerName={userFirstName}
                                         hideDonation={!canDonate}
@@ -506,8 +575,16 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                         {showInput && (
                             <DropZone
                                 isHidden={this.props.isAttachModalOpen}
-                                onDrop={files => this.props.onAttach(files, files.every(f => f.type.includes('image')))}
+                                onDrop={this.handleAttach}
                             />
+                        )}
+                        {!showInput && !!props.banInfo && (
+                            <div className={blockContainer}>
+                                <UIcon icon={<IcWarning />} />
+                                <div className={cx(blockTitle, TextBody)}>
+                                    {props.banInfo.isBanned ? 'You blocked this person' : 'You are blocked'}
+                                </div>
+                            </div>
                         )}
                     </>
                 )}
@@ -525,6 +602,7 @@ interface MessengerRootComponentProps {
     | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
     | null;
     room: RoomChat_room;
+    banInfo: { isBanned: boolean; isMeBanned: boolean } | undefined;
 }
 
 export const MessengerRootComponent = React.memo((props: MessengerRootComponentProps) => {
@@ -532,8 +610,14 @@ export const MessengerRootComponent = React.memo((props: MessengerRootComponentP
     let [isAttachModalOpen, setAttachModalOpen] = React.useState(false);
     const onAttach = useAttachHandler({ conversationId: props.conversationId, onOpen: () => setAttachModalOpen(true), onClose: () => setAttachModalOpen(false) });
     const userId = props.room.__typename === 'PrivateRoom' ? props.room.user.id : undefined;
-    const messagesActionsState = useChatMessagesActionsState({ conversationId: props.conversationId, userId });
-    const messagesActionsMethods = useChatMessagesActionsMethods({ conversationId: props.conversationId, userId });
+    const messagesActionsState = useChatMessagesActionsState(props.conversationId);
+    const messagesActionsMethods = useChatMessagesActionsMethods(props.conversationId);
+
+    React.useEffect(() => {
+        if (userId && props.conversationId) {
+            setMessagesActionsUserChat(props.conversationId, userId);
+        }
+    }, [userId, props.conversationId]);
 
     return (
         <MessagesComponent
@@ -549,6 +633,7 @@ export const MessengerRootComponent = React.memo((props: MessengerRootComponentP
             messagesActionsState={messagesActionsState}
             messagesActionsMethods={messagesActionsMethods}
             isAttachModalOpen={isAttachModalOpen}
+            banInfo={props.banInfo}
         />
     );
 });

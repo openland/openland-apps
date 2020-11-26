@@ -4,6 +4,22 @@ import { NativeSyntheticEvent, Platform, View, DeviceEventEmitter } from 'react-
 import { SDevice } from '../../SDevice';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 
+function throttleWithLastCall(callback: Function, limit: number) {
+    let waiting = false;
+    let lastArgs: any;
+    return function (...args: any) {
+        lastArgs = args;
+        if (!waiting) {
+            callback(...lastArgs);
+            waiting = true;
+            setTimeout(function () {
+                callback(...lastArgs);
+                waiting = false;
+            }, limit);
+        }
+    };
+}
+
 export interface PageKeyboardProps {
     contextKey: string;
 }
@@ -40,9 +56,13 @@ export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keybo
         }
     }
 
+    handleIOSKeyboardChange = throttleWithLastCall((state: { height: number, duration: number, curve: number, name: string, acHeight: number }) => {
+        this.setState({ keyboardHeight: state.height, actualAccessoryHeight: state.acHeight });
+    }, 100);
+
     handleKeyboard = (event?: NativeSyntheticEvent<{ state: { height: number, duration: number, curve: number, name: string, acHeight: number } }>) => {
         if (event) {
-            this.setState({ keyboardHeight: event.nativeEvent.state.height, actualAccessoryHeight: event.nativeEvent.state.acHeight });
+            this.handleIOSKeyboardChange(event.nativeEvent.state);
         }
     }
 

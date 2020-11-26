@@ -67,48 +67,51 @@ export const TextContent = (props: TextContentProps) => {
 
     return (
         <>
-            {content.map((c, i) => (
-                <>
-                    {(c.type === 'slice' || c.type === 'loud' || c.type === 'emoji' || c.type === 'padded') && (
-                        <TextWrapper
-                            key={c.type + '-' + i}
-                            color={theme.foregroundPrimary}
-                            style={{
-                                fontStyle: fontStyle,
-                                marginTop: (c.type === 'loud' && i !== 0) ? (wrapped ? 5 : 8) : undefined,
-                                marginBottom: (c.type !== 'emoji' && i !== content.length - 1) ? (wrapped ? 5 : 8) : undefined,
-                                fontSize: fontSize[c.type],
-                                lineHeight: lineHeight[c.type]
-                            }}
-                        >
-                            {c.spans.length > 0 && renderPreprocessedText(c.spans, theme, message.id, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress)}
-                        </TextWrapper>
-                    )}
-                    {c.type === 'code_block' && (
-                        <View
-                            key={c.type + '-' + i}
-                            backgroundColor={theme.incomingBackgroundSecondary}
-                            marginTop={i === 0 && inReply ? 4 : undefined}
-                            marginLeft={codeMarginLeft}
-                            marginRight={codeMarginRight}
-                            marginBottom={(!(content[i + 1] && content[i + 1].type === 'padded')) ? 8 : undefined}
-                            paddingLeft={codePaddingLeft}
-                            paddingRight={codePaddingRight}
-                            paddingVertical={6}
-                        >
+            {content.map((c, i) => {
+                let type = c.type === 'emoji' && !theme.largeEmoji ? 'slice' : c.type;
+                return (
+                    <>
+                        {(type === 'slice' || type === 'loud' || type === 'emoji' || type === 'padded') && (
                             <TextWrapper
+                                key={type + '-' + i}
+                                color={theme.foregroundPrimary}
                                 style={{
-                                    fontSize: fontSize[c.type],
-                                    lineHeight: lineHeight[c.type]
+                                    fontStyle: fontStyle,
+                                    marginTop: (type === 'loud' && i !== 0) ? (wrapped ? 5 : 8) : undefined,
+                                    marginBottom: (type !== 'emoji' && i !== content.length - 1) ? (wrapped ? 5 : 8) : undefined,
+                                    fontSize: fontSize[type],
+                                    lineHeight: lineHeight[type]
                                 }}
-                                color={theme.incomingForegroundPrimary}
                             >
-                                {renderPreprocessedText(c.spans, theme, message.id, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress)}
+                                {c.spans.length > 0 && renderPreprocessedText(c.spans, theme, message.id, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress)}
                             </TextWrapper>
-                        </View>
-                    )}
-                </>
-            ))}
+                        )}
+                        {type === 'code_block' && (
+                            <View
+                                key={type + '-' + i}
+                                backgroundColor={theme.incomingBackgroundSecondary}
+                                marginTop={i === 0 && inReply ? 4 : undefined}
+                                marginLeft={codeMarginLeft}
+                                marginRight={codeMarginRight}
+                                marginBottom={(!(content[i + 1] && content[i + 1].type === 'padded')) ? 8 : undefined}
+                                paddingLeft={codePaddingLeft}
+                                paddingRight={codePaddingRight}
+                                paddingVertical={6}
+                            >
+                                <TextWrapper
+                                    style={{
+                                        fontSize: fontSize[type],
+                                        lineHeight: lineHeight[type]
+                                    }}
+                                    color={theme.incomingForegroundPrimary}
+                                >
+                                    {renderPreprocessedText(c.spans, theme, message.id, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress)}
+                                </TextWrapper>
+                            </View>
+                        )}
+                    </>
+                );
+            })}
         </>
     );
 };

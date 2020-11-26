@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Organization_organization } from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { showEditCommunityModal } from 'openland-web/fragments/settings/components/showEditCommunityModal';
+import { showSuperEditCommunityModal } from 'openland-web/fragments/settings/components/showSuperEditCommunityModal';
 import { useRole } from 'openland-x-permissions/XWithRole';
 import copy from 'copy-to-clipboard';
 import EditIcon from 'openland-icons/s/ic-edit-24.svg';
@@ -83,11 +84,11 @@ const MenuComponent = React.memo((props: OrganizationMenuProps & { ctx: UPopperC
         builder.item({
             title: 'Super edit',
             icon: <EditIcon />,
-            path: `/super/orgs/${id}`
+            onClick: () => showSuperEditCommunityModal(id, isCommunity)
         });
     }
 
-    if (isMine) {
+    if (isMine && !isOwner) {
         builder.item({
             title: `Leave ${typeString}`,
             icon: <LeaveIcon />,

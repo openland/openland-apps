@@ -14,8 +14,6 @@ describe('isInternalLink', () => {
         expect(isInternalLink('next.openland.com/arbitrary')).toBe(true);
         expect(isInternalLink('http://next.openland.com/arbitrary')).toBe(true);
         expect(isInternalLink('//next.openland.com/arbitrary')).toBe(true);
-
-        expect(isInternalLink('app.openland.com')).toBe(true);
     });
 
     it('should ignore subdomains other than app and next', () => {

@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { View, Text, Platform, Animated, Easing, Image, StyleSheet, ImageStyle, TextStyle } from 'react-native';
+import { View, Text, Platform, Animated, Easing, Image, StyleSheet, ImageStyle, TextStyle, NativeSyntheticEvent } from 'react-native';
 import { ConversationMessagesView } from './ConversationMessagesView';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { trackEvent } from 'openland-mobile/analytics';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
@@ -17,6 +16,7 @@ export interface MessagesListProps {
     engine: ConversationEngine;
     messagesPaddingBottom?: number;
     inverted: boolean;
+    onScroll?: (event?: NativeSyntheticEvent<any>) => void;
 }
 export const androidMessageInputListOverlap = 52;
 
@@ -39,13 +39,13 @@ const styles = StyleSheet.create({
     } as TextStyle
 });
 
-class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number, theme: ThemeGlobal, selectionMode: boolean }, { conversation: ConversationState }> implements ConversationStateHandler {
+class ConversationViewComponent extends React.PureComponent<MessagesListProps & { theme: ThemeGlobal, selectionMode: boolean }, { conversation: ConversationState }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
     // private listRef = React.createRef<ConversationMessagesView>();
     private rotation = new Animated.Value(0);
 
-    constructor(props: MessagesListProps & { bottomInset: number, topInset: number, theme: ThemeGlobal, selectionMode: boolean }) {
+    constructor(props: MessagesListProps & { theme: ThemeGlobal, selectionMode: boolean }) {
         super(props);
         let initialState = props.engine.getState();
 
@@ -118,6 +118,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                     loaded={this.state.conversation.historyFullyLoaded}
                     engine={this.props.engine}
                     selectionMode={this.props.selectionMode}
+                    onScroll={this.props.onScroll}
                 />
                 {
                     !this.state.conversation.loading && this.state.conversation.messages.length === 0 && (
@@ -167,10 +168,8 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
 
 export const ConversationView = (props: MessagesListProps) => {
     let theme = React.useContext(ThemeContext);
-    let selectionMode = useChatMessagesSelectionMode({ conversationId: props.engine.conversationId, userId: props.engine.isPrivate ? props.engine.user?.id : undefined });
+    let selectionMode = useChatMessagesSelectionMode(props.engine.conversationId);
     return (
-        <ASSafeAreaContext.Consumer>
-            {area => (<ConversationViewComponent {...props} bottomInset={area.bottom} topInset={area.top} theme={theme} selectionMode={selectionMode} />)}
-        </ASSafeAreaContext.Consumer>
+        <ConversationViewComponent {...props} theme={theme} selectionMode={selectionMode} />
     );
 };

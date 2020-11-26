@@ -67,6 +67,8 @@ query RoomChat($id: ID!) {
                 isYou
                 online
                 lastSeen
+                isBanned
+                isMeBanned
             }
             pinnedMessage {
                 ...FullMessage
@@ -93,6 +95,7 @@ query RoomChat($id: ID!) {
             shortname
             featuredMembersCount
             socialImage
+            featured
             welcomeMessage {
                 isOn
                 sender {
@@ -518,6 +521,7 @@ query RoomInviteInfo($invite: String!) {
                 photo
                 socialImage
                 description
+                featured
                 organization {
                     ...OrganizationShort
                 }
@@ -566,7 +570,9 @@ query ResolvedInvite($key: String!) {
                 name
                 membersCount
                 about
+                isMine
                 isCommunity: alphaIsCommunity
+                featured: alphaFeatured
             }
         }
         ... on AppInvite {
@@ -591,6 +597,7 @@ query ResolvedInvite($key: String!) {
                     description
                     membership
                     membersCount
+                    featured
                     previewMembers {
                         id
                         photo
@@ -647,7 +654,7 @@ mutation RoomDeleteUrlAugmentation($messageId: ID!) {
 }
 
 mutation RoomDelete($chatId: ID!) {
-  deleteChat(chatId: $chatId)
+    deleteChat(chatId: $chatId)
 }
 
 mutation EditMessage(
@@ -667,9 +674,7 @@ mutation EditMessage(
         spans: $spans
     )
 }
-mutation MarkSequenceRead($seq: Int!) {
-    alphaGlobalRead(toSeq: $seq)
-}
+
 subscription TypingsWatch {
     typings {
         conversation: chat {
@@ -748,8 +753,8 @@ query Message($messageId: ID!) {
         }
     }
 }
-query MessagesSearch($query: String!, $sort: String, $first: Int!, $after: String) {
-    messagesSearch(query: $query, sort: $sort, first: $first, after: $after) {
+query MessagesSearch($query: String!, $sort: String, $first: Int!, $after: String, $cid: ID) {
+    messagesSearch(query: $query, sort: $sort, first: $first, after: $after, cid: $cid) {
         edges {
             node {
                 chat {
@@ -774,6 +779,7 @@ query MessagesSearch($query: String!, $sort: String, $first: Int!, $after: Strin
                         role
                         canEdit
                         photo
+                        featured
                         settings {
                             id
                             mute
@@ -826,6 +832,55 @@ query MessagesSearch($query: String!, $sort: String, $first: Int!, $after: Strin
         }
     }
 }
+query MessagesSearchFull($query: String!, $sort: String, $first: Int!, $after: String, $cid: ID) {
+    messagesSearch(query: $query, sort: $sort, first: $first, after: $after, cid: $cid) {
+        edges {
+            node {
+                chat {
+                    ... on PrivateRoom {
+                        id
+                        user {
+                            id
+                            name
+                            photo
+                        }
+                        settings {
+                            id
+                            mute
+                        }
+                    }
+                    ... on SharedRoom {
+                        id
+                        kind
+                        title
+                        membership
+                        isChannel
+                        role
+                        canEdit
+                        photo
+                        settings {
+                            id
+                            mute
+                        }
+                    }
+                }
+                message {
+                    ...FullMessage
+                }
+            }
+            cursor
+        }
+        pageInfo {
+            hasNextPage
+            hasPreviousPage
+            itemsCount
+            currentPage
+            pagesCount
+            openEnded
+        }
+    }
+}
+
 query ChatJoin($id: ID!) {
     room(id: $id) {
         ... on SharedRoom {
@@ -841,6 +896,7 @@ query ChatJoin($id: ID!) {
             }
             isChannel
             isPremium
+            featured
             premiumPassIsActive
             premiumSubscription {
                 id
@@ -859,20 +915,6 @@ query ChatJoin($id: ID!) {
     }
 }
 
-query RoomMetaPreview($shortname: String!, $id: ID!) {
-    alphaResolveShortName(shortname: $shortname) {
-        ... on SharedRoom {
-            id
-            title
-            description
-            photo
-            socialImage
-        }
-    }
-
-    roomSocialImage(roomId: $id)
-}
-
 query CommonChatsWithUser($uid: ID!, $first: Int!, $after: ID) {
     commonChatsWithUser(uid: $uid, first: $first, after: $after) {
         items {
@@ -881,8 +923,24 @@ query CommonChatsWithUser($uid: ID!, $first: Int!, $after: ID) {
             description
             photo
             membersCount
+            featured
         }
         cursor
         count
+    }
+}
+
+query UserSearchForChat($chatId: ID!, $query: String, $first: Int!,$after: String, $sort: String) {
+    userSearchForChat(chatId: $chatId, query: $query, first: $first, after: $after, sort: $sort) {
+        edges {
+            node {
+                ...UserShort
+            }
+            isMember
+            cursor
+        }
+        pageInfo {
+            hasNextPage
+        }
     }
 }

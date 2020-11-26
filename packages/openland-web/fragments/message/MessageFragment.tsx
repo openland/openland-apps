@@ -7,8 +7,8 @@ import { CommentsWrapper } from 'openland-web/components/comments/CommentsWrappe
 import { MessageHeader } from './components/MessageHeader';
 import { Message_message } from 'openland-api/spacex.types';
 
-const MessageFragmentInner = React.memo((props: { messageId: string; commentId?: string, message: Message_message | null }) => {
-    const { message, commentId } = props;
+const MessageFragmentInner = React.memo((props: { messageId: string; commentId?: string, noDefaultReply: boolean; message: Message_message | null }) => {
+    const { message, commentId, noDefaultReply } = props;
 
     if (!message || message.__typename === 'ServiceMessage') {
         return null;
@@ -19,6 +19,7 @@ const MessageFragmentInner = React.memo((props: { messageId: string; commentId?:
             peerId={message.id}
             commentId={commentId}
             peerView={<MessageView message={message} />}
+            noDefaultReply={noDefaultReply}
             groupId={
                 message.source &&
                     message.source.__typename === 'MessageSourceChat' &&
@@ -37,10 +38,12 @@ export const MessageFragment = React.memo(() => {
     const messageData = client.useMessage({ messageId }, { fetchPolicy: 'cache-and-network' });
     const message = messageData.message;
 
+    let noDefaultReply = React.useMemo(() => (new URLSearchParams(window.location.search)).get('reply') === 'false', []);
+
     return (
         <>
             <UHeader titleView={<MessageHeader message={message} isSubscribed={!!messageData.comments.subscription} />} appearance="wide" />
-            <MessageFragmentInner message={message} messageId={messageId} commentId={commentId} />
+            <MessageFragmentInner message={message} messageId={messageId} commentId={commentId} noDefaultReply={noDefaultReply} />
         </>
     );
 });

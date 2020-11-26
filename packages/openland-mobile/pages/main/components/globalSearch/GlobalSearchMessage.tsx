@@ -20,6 +20,7 @@ export const GlobalSearchMessage = React.memo<GlobalSearchMessageProps>((props) 
     const title = isSavedMessages ? 'Saved messages' : (chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title);
     const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
     const highlightGroup = chat.__typename === 'PrivateRoom' ? false : chat.kind === 'GROUP';
+    const featured = chat.__typename === 'SharedRoom' && chat.featured;
     const date = parseInt(message.date, 10);
     const sender = isSavedMessages ? '' : (message.sender.id === messenger.engine.user.id ? 'You' : message.sender.name) + ': ';
 
@@ -46,6 +47,12 @@ export const GlobalSearchMessage = React.memo<GlobalSearchMessageProps>((props) 
                             <Text numberOfLines={1} allowFontScaling={false} ellipsizeMode="tail" style={{ ...TextStyles.Label1, color: highlightGroup ? theme.accentPositive : theme.foregroundPrimary }}>
                                 {title}
                             </Text>
+                            {featured && theme.displayFeaturedIcon && (
+                                <Image
+                                    source={require('assets/ic-verified-16.png')}
+                                    style={{ tintColor: '#3DA7F2', width: 16, height: 16, flexShrink: 0, marginLeft: 4, marginTop: 2, alignSelf: 'center' }}
+                                />
+                            )}
                         </View>
                         <View marginLeft={10} marginTop={3}>
                             <Text style={{ ...TextStyles.Caption, color: theme.foregroundTertiary }} allowFontScaling={false}>{formatDate(date)}</Text>

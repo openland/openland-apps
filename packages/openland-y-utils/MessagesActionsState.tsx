@@ -4,13 +4,13 @@ import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEn
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { WatchSubscription } from './Watcher';
 
-export type Action = { type: 'forward', messages?: DataSourceMessageItem[], sourceId?: string, conversationId: string, userId?: string }
-    | { type: 'reply', message?: DataSourceMessageItem, conversationId: string, userId?: string }
-    | { type: 'edit', message: DataSourceMessageItem, conversationId: string, userId?: string }
-    | { type: 'toggle_select', message: DataSourceMessageItem, conversationId: string, userId?: string }
-    | { type: 'clear', conversationId: string, userId?: string }
+export type Action = { type: 'forward', messages?: DataSourceMessageItem[], sourceId?: string, conversationId: string }
+    | { type: 'reply', message?: DataSourceMessageItem, conversationId: string }
+    | { type: 'edit', message: DataSourceMessageItem, conversationId: string }
+    | { type: 'toggle_select', message: DataSourceMessageItem, conversationId: string }
+    | { type: 'clear', conversationId: string }
     | { type: 'clear_all' }
-    | { type: 'update_messages', messages: DataSourceMessageItem[], conversationId: string, userId?: string };
+    | { type: 'update_messages', messages: DataSourceMessageItem[], conversationId: string };
 
 export type MessagesAction = 'forward' | 'reply' | 'edit' | 'selected' | 'none';
 
@@ -43,7 +43,7 @@ export const reducer = (state: State, action: Action) => {
                 messages: state[action.sourceId].messages
             };
             return {
-                ...omit(action.userId ? [action.sourceId, action.userId] : [action.sourceId], state),
+                ...omit([action.sourceId], state),
                 [action.conversationId]: value,
             };
         } if (action.messages) {
@@ -65,7 +65,6 @@ export const reducer = (state: State, action: Action) => {
         return {
             ...state,
             [action.conversationId]: value,
-            ...action.userId && { [action.userId]: value },
         };
     }
     if (action.type === 'reply') {
@@ -77,7 +76,6 @@ export const reducer = (state: State, action: Action) => {
             return {
                 ...state,
                 [action.conversationId]: value,
-                ...action.userId && { [action.userId]: value },
             };
         } else {
             let value = {
@@ -87,7 +85,6 @@ export const reducer = (state: State, action: Action) => {
             return {
                 ...state,
                 [action.conversationId]: value,
-                ...action.userId && { [action.userId]: value },
             };
         }
     }
@@ -113,14 +110,13 @@ export const reducer = (state: State, action: Action) => {
             return {
                 ...state,
                 [conversationId]: value,
-                ...action.userId && { [action.userId]: value },
             };
         } else {
-            return omit([conversationId, action.userId!], state);
+            return omit([conversationId], state);
         }
     }
     if (action.type === 'clear') {
-        return omit([action.conversationId, action.userId!], state);
+        return omit([action.conversationId], state);
     }
     if (action.type === 'clear_all') {
         return {};
@@ -133,7 +129,6 @@ export const reducer = (state: State, action: Action) => {
         return {
             ...state,
             [action.conversationId]: value,
-            ...action.userId && { [action.userId]: value },
         };
     }
     return state;
@@ -166,16 +161,17 @@ type MessagesActionsStateHandler = (ops: { state: ConversationActionsState, disp
 class MessagesActionsState {
     private engine: MessengerEngine | undefined;
     private dataSourceWatchMap = new Map<string, WatchSubscription>();
-    private listeners: { conversationId: string, userId?: string, handler: MessagesActionsStateHandler }[] = [];
+    private listeners: { conversationId: string, handler: MessagesActionsStateHandler }[] = [];
     private context: Context = { state: {}, dispatch: () => {/**/ } };
+    private userChatMap: Record<string, string> = {};
 
-    listen = ({ conversationId, userId, handler }: { conversationId: string, userId?: string, handler: MessagesActionsStateHandler }) => {
-        handler({ state: this.getItemState({ conversationId, userId }) || { action: 'none', messages: [] }, dispatch: this.context.dispatch });
-        this.listeners.push({ conversationId, userId, handler });
+    setUserChat: (userId: string, chatId: string) => void = () => {/**/ };
+
+    listen = ({ conversationId, handler }: { conversationId: string, handler: MessagesActionsStateHandler }) => {
+        handler({ state: this.getItemState(conversationId) || { action: 'none', messages: [] }, dispatch: this.context.dispatch });
+        this.listeners.push({ conversationId, handler });
         this.subscribeToDataSource(conversationId);
-        if (userId) {
-            this.subscribeToDataSource(userId);
-        }
+
         return () => {
             let index = this.listeners.findIndex(x => x.handler === handler);
             if (index < 0) {
@@ -184,19 +180,11 @@ class MessagesActionsState {
                 this.listeners.splice(index, 1);
             }
             let shouldUnsubConvDs = this.listeners.filter(x => x.conversationId === conversationId).length === 1;
-            let shouldUnsubUserDs = this.listeners.filter(x => x.userId && userId && x.userId === userId).length === 1;
             if (shouldUnsubConvDs) {
                 let unsub = this.dataSourceWatchMap.get(conversationId);
                 if (unsub) {
                     unsub();
                     this.dataSourceWatchMap.delete(conversationId);
-                }
-            }
-            if (shouldUnsubUserDs) {
-                let unsub = this.dataSourceWatchMap.get(userId!);
-                if (unsub) {
-                    unsub();
-                    this.dataSourceWatchMap.delete(userId!);
                 }
             }
         };
@@ -239,8 +227,9 @@ class MessagesActionsState {
         }));
     }
 
-    getItemState = ({ conversationId, userId }: { conversationId?: string, userId?: string }): ConversationActionsState => {
-        let userState = userId && this.getState()[userId];
+    getItemState = (conversationId: string | undefined): ConversationActionsState => {
+        let userChatId = conversationId && this.userChatMap[conversationId];
+        let userState = userChatId && this.getState()[userChatId];
         let convState = conversationId && this.getState()[conversationId];
         return userState || convState || { action: 'none', messages: [] };
     }
@@ -255,27 +244,29 @@ class MessagesActionsState {
 
     useProvider = (engine: MessengerEngine) => {
         const [state, dispatch] = React.useReducer<React.Reducer<State, Action>>(reducer, {});
+        const [userChatMap, setUserChatMap] = React.useState<{ [userId: string]: string }>({});
 
         this.context = { state, dispatch };
         this.engine = engine;
+        this.userChatMap = userChatMap;
+
+        this.setUserChat = (chatId: string, userId: string) => setUserChatMap(x => ({ ...x, [chatId]: userId }));
 
         React.useEffect(() => {
-            this.listeners.forEach(({ conversationId, userId, handler }) => {
-                handler({ state: this.getItemState({ conversationId, userId }), dispatch: this.context.dispatch });
+            this.listeners.forEach(({ conversationId, handler }) => {
+                handler({ state: this.getItemState(conversationId), dispatch: this.context.dispatch });
             });
-        }, [state]);
+        }, [state, userChatMap]);
     }
 }
 
 export const MessagesActionsStateController = new MessagesActionsState();
 
-type ChatIds = { conversationId: string | undefined, userId: string | undefined };
-
-export const useChatMessagesActionsMethods = ({ conversationId, userId }: ChatIds) => {
-    const _getState = () => MessagesActionsStateController.getItemState({ userId, conversationId });
+export const useChatMessagesActionsMethods = (conversationId: string | undefined) => {
+    const _getState = () => MessagesActionsStateController.getItemState(conversationId);
     const clear = () => {
         if (conversationId) {
-            MessagesActionsStateController.dispatch({ type: 'clear', conversationId, userId });
+            MessagesActionsStateController.dispatch({ type: 'clear', conversationId });
         }
     };
     const clearAll = () => {
@@ -288,12 +279,12 @@ export const useChatMessagesActionsMethods = ({ conversationId, userId }: ChatId
     };
     const toggleSelect = (message: DataSourceMessageItem) => {
         if (conversationId) {
-            MessagesActionsStateController.dispatch({ type: 'toggle_select', message, conversationId, userId });
+            MessagesActionsStateController.dispatch({ type: 'toggle_select', message, conversationId });
         }
     };
     const reply = (message?: DataSourceMessageItem) => {
         if (conversationId) {
-            MessagesActionsStateController.dispatch({ type: 'reply', message, conversationId, userId });
+            MessagesActionsStateController.dispatch({ type: 'reply', message, conversationId });
         }
     };
     const prepareToSend = () => {
@@ -309,7 +300,7 @@ export const useChatMessagesActionsMethods = ({ conversationId, userId }: ChatId
     return { clear, clearAll, edit, toggleSelect, reply, prepareToSend, getState: _getState };
 };
 
-export const useChatMessagesActionsState = ({ conversationId, userId }: ChatIds) => {
+export const useChatMessagesActionsState = (conversationId: string | undefined) => {
     const [state, setState] = React.useState<ConversationActionsState>({ action: 'none', messages: [] });
     React.useEffect(() => {
         if (!conversationId) {
@@ -317,19 +308,18 @@ export const useChatMessagesActionsState = ({ conversationId, userId }: ChatIds)
         }
         return MessagesActionsStateController.listen({
             conversationId,
-            userId,
             handler: x => setState(x.state)
         });
 
-    }, [userId, conversationId]);
+    }, [conversationId]);
     return state;
 };
 
-export const useChatMessagesSelected = ({ conversationId, userId, messageKey }: ChatIds & { messageKey: string }): [boolean, (message: DataSourceMessageItem) => void] => {
+export const useChatMessagesSelected = ({ conversationId, messageKey }: { conversationId: string | undefined, messageKey: string }): [boolean, (message: DataSourceMessageItem) => void] => {
     const [selected, setSelected] = React.useState(false);
     const toggleSelect = (message: DataSourceMessageItem) => {
         if (conversationId) {
-            MessagesActionsStateController.dispatch({ type: 'toggle_select', message, conversationId, userId });
+            MessagesActionsStateController.dispatch({ type: 'toggle_select', message, conversationId });
         }
     };
     React.useEffect(() => {
@@ -343,13 +333,13 @@ export const useChatMessagesSelected = ({ conversationId, userId, messageKey }: 
         if (!conversationId) {
             return;
         }
-        return MessagesActionsStateController.listen({ userId, conversationId, handler });
-    }, [userId, conversationId]);
+        return MessagesActionsStateController.listen({ conversationId, handler });
+    }, [conversationId]);
 
     return [selected, toggleSelect];
 };
 
-export const useChatMessagesSelectionMode = ({ conversationId, userId }: { conversationId: string | undefined, userId: string | undefined }) => {
+export const useChatMessagesSelectionMode = (conversationId: string | undefined) => {
     const [selected, setSelected] = React.useState(false);
     React.useEffect(() => {
         const handler = ({ state }: { state: ConversationActionsState }) => {
@@ -362,22 +352,24 @@ export const useChatMessagesSelectionMode = ({ conversationId, userId }: { conve
         if (!conversationId) {
             return;
         }
-        return MessagesActionsStateController.listen({ userId, conversationId, handler });
-    }, [userId, conversationId]);
+        return MessagesActionsStateController.listen({ conversationId, handler });
+    }, [conversationId]);
 
     return selected;
 };
 
-export const useMessagesActionsForward = ({ sourceId, userId }: { sourceId: string, userId: string | undefined }) => {
+export const useMessagesActionsForward = (sourceId: string) => {
     const prepareForward = ({ targetId, messages }: { targetId: string, messages?: DataSourceMessageItem[] }) => {
-        const payload = messages ? { messages, conversationId: targetId } : { sourceId, userId, conversationId: targetId };
+        const payload = messages ? { messages, conversationId: targetId } : { sourceId, conversationId: targetId };
         const newState = reducer(MessagesActionsStateController.getState(), { type: 'forward', ...payload });
         MessagesActionsStateController.dispatch({ type: 'clear_all' });
         return newState[targetId].messages || [];
     };
     const forward = ({ targetId, messages }: { targetId: string, messages?: DataSourceMessageItem[] }) => {
-        const payload = messages ? { messages, conversationId: targetId } : { sourceId, userId, conversationId: targetId };
+        const payload = messages ? { messages, conversationId: targetId } : { sourceId, conversationId: targetId };
         MessagesActionsStateController.dispatch({ type: 'forward', ...payload });
     };
     return { forward, prepareForward };
 };
+
+export const setMessagesActionsUserChat = (chatId: string, userId: string) => MessagesActionsStateController.setUserChat(chatId, userId);

@@ -2,8 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import IcClose from '../openland-icons/s/ic-close-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import { TextLabel2, TextTitle3 } from 'openland-web/utils/TextStyles';
-import { defaultHover } from 'openland-web/utils/Styles';
+import { TextLabel3, TextTitle3 } from 'openland-web/utils/TextStyles';
 import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 import { useLayout } from './components/utils/LayoutContext';
 import { isElectron } from 'openland-y-utils/isElectron';
@@ -16,6 +15,7 @@ import IcMac from 'openland-icons/s/ic-mac-16.svg';
 import IcLinux from 'openland-icons/s/ic-linux-16.svg';
 import { getConfig } from 'openland-web/config';
 import { delayBreakable } from 'openland-y-utils/timer';
+import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 
 const bannerContainerClass = css`
     right: 16px;
@@ -25,12 +25,12 @@ const bannerContainerClass = css`
     position: absolute;
 `;
 
-const iconContainerClass = css`
+const bannerCloseClass = css`
     position: absolute;
-    top: 8px;
-    right: 0;
-    width: 56px;
-    height: 56px;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,7 +38,7 @@ const iconContainerClass = css`
 
 const bannerTextClass = css`
     color: var(--foregroundPrimary);
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 `;
 
 const bannerButton = css`
@@ -57,7 +57,7 @@ const bannerContentWrapper = css`
     box-shadow: var(--boxShadowPopper);
     border-radius: 12px;
     background-color: var(--backgroundSecondary);
-    padding: 24px;
+    padding: 20px 24px;
     position: relative;
 `;
 
@@ -65,8 +65,8 @@ const BannerContainer = (props: { onClosePress?: () => void; banner?: any }) => 
     return (
         <div className={bannerContainerClass}>
             <div className={bannerContentWrapper}>
-                <div onClick={props.onClosePress} className={cx(iconContainerClass, defaultHover)}>
-                    <UIcon color="var(--foregroundQuaternary)" icon={<IcClose />} />
+                <div className={bannerCloseClass}>
+                    <UIconButton size="xsmall" icon={<IcClose />} color="var(--foregroundTertiary)" onClick={props.onClosePress} />
                 </div>
                 {props.banner}
             </div>
@@ -75,21 +75,28 @@ const BannerContainer = (props: { onClosePress?: () => void; banner?: any }) => 
 };
 
 const bannerButtonContainer = css`
-    background-color: var(--backgroundTertiaryTrans);
+    text-decoration: none!important;
     cursor: pointer;
     display: flex;
     align-items: center;
     height: 32px;
-    color: var(--foregroundSecondary);
-    border-radius: 100px;
-    padding: 8px 16px;
+    border-radius: 32px;
+    padding: 6px 16px;
+    color: var(--foregroundSecondary)!important;
+    background-color: var(--backgroundTertiaryTrans);
+
+    &:hover {
+        background-color: var(--backgroundTertiaryHoverTrans);
+    }
+    &:active {
+        background-color: var(--backgroundTertiaryActiveTrans);
+    }
+    &:focus {
+        background-color: var(--backgroundTertiaryActiveTrans);
+    }
+
     & > div {
         margin-right: 8px;
-    }
-    &:hover {
-        text-decoration: none;
-        color: var(--foregroundSecondary);
-        background-color: var(--backgroundTertiaryHoverTrans);
     }
 `;
 
@@ -106,7 +113,7 @@ const BannerButton = (props: {
             onClick={props.onClick}
         >
             {props.icon && <UIcon icon={props.icon} color="var(--foregroundSecondary)" />}
-            <span className={TextLabel2}>{props.text}</span>
+            <span className={TextLabel3}>{props.text}</span>
         </a>
     );
 
@@ -262,6 +269,7 @@ let useUpdateBanner = () => {
     }, []);
     React.useEffect(() => {
         let lastStableVersion = getConfig().release || '';
+        console.log('update-banner: initial version', lastStableVersion);
         let run = true;
         let breaker: (() => void) | null = null;
 
@@ -277,14 +285,20 @@ let useUpdateBanner = () => {
                     break;
                 }
                 const newVersion = await queryVersion();
+                console.log('update-banner: new version', newVersion, 'old version', lastStableVersion, 'neq', newVersion !== lastStableVersion);
                 if (newVersion !== lastStableVersion) {
+                    console.log('update-banner: recheck delay');
                     delay = delayBreakable(60000);
                     breaker = delay.resolver;
                     await delay.promise;
                     breaker = null;
+                    console.log('update-banner: rechecking', newVersion);
                     if (await queryVersion() === newVersion && run) {
+                        console.log('update-banner: recheck successful');
+                        if (!(lastStableVersion === 'development' && newVersion === 'unknown')) {
+                            setShow(true);
+                        }
                         lastStableVersion = newVersion;
-                        setShow(true);
                     }
                 }
             }

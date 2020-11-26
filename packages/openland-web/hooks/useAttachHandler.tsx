@@ -3,12 +3,12 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { TypingType } from 'openland-api/spacex.types';
 import { showAttachConfirm } from 'openland-web/fragments/chat/components/AttachConfirm';
 import { useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
+import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 
 export const useAttachHandler = (props: { conversationId: string, onOpen?: () => void, onClose?: () => void }) => {
     let messenger = React.useContext(MessengerContext);
     let conversation = messenger.getConversation(props.conversationId);
-    let privateUserId = conversation.isPrivate ? conversation.user?.id : undefined;
-    let messagesActionsMethods = useChatMessagesActionsMethods({ conversationId: props.conversationId, userId: privateUserId });
+    let messagesActionsMethods = useChatMessagesActionsMethods(props.conversationId);
 
     let refreshFileUploadingTyping = React.useCallback((filename?: string) => {
         const lowercaseFilename = filename && filename.toLowerCase();
@@ -36,13 +36,14 @@ export const useAttachHandler = (props: { conversationId: string, onOpen?: () =>
         });
     }, [messenger]);
 
-    let handleAttach = (files: File[], isImage: boolean, onAttach?: () => void) => {
+    let handleAttach = (files: File[], initialText: URickTextValue, isImage: boolean, onAttach?: () => void) => {
         if (files.length) {
             if (props.onOpen) {
                 props.onOpen();
             }
             showAttachConfirm({
                 files,
+                text: initialText,
                 isImage,
                 onSubmit: (uploadingFiles, text, mentions, hasImages) => {
                     if (onAttach) {
@@ -54,7 +55,7 @@ export const useAttachHandler = (props: { conversationId: string, onOpen?: () =>
                     let quotedMessages = messagesActionsMethods.prepareToSend();
                     let keys;
                     if (hasImages) {
-                        keys = conversation!.sendFiles({ files: uploadingFiles, mentions, text, quotedMessages });
+                        keys = conversation!.sendFiles({ files: uploadingFiles, mentions, text, quotedMessages }).filesKeys;
                     } else {
                         keys = uploadingFiles.map(({ file, localImage }) => conversation!.sendFile(file, localImage, undefined));
                         if (text) {

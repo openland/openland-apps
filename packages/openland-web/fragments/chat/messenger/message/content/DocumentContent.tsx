@@ -304,7 +304,10 @@ const VideoContent = React.memo(
 export const fileIcon = {
     FILE: <IcBlue />,
     PNG: <IcBlue />,
-    JPEG: <IcBlue />,
+    JPG: <IcBlue />,
+    GIF: <IcBlue />,
+    SVG: <IcBlue />,
+    WEBP: <IcBlue />,
     PDF: <IcRed />,
     ZIP: <IcViolet />,
     VIDEO: <IcViolet />,
@@ -328,7 +331,10 @@ export const fileColor = {
     PPTX: '#FFAE0D',
     KEY: '#FFAE0D',
     PNG: '#248BF2',
-    JPEG: '#248BF2',
+    JPG: '#248BF2',
+    GIF: '#248BF2',
+    SVG: '#248BF2',
+    WEBP: '#248BF2',
 };
 
 export const fileFormat = (name: string) => {
@@ -364,7 +370,16 @@ export const fileFormat = (name: string) => {
         format = 'PNG';
     }
     if (name.endsWith('.jpg') || name.endsWith('.jpeg')) {
-        format = 'JPEG';
+        format = 'JPG';
+    }
+    if (name.endsWith('.gif')) {
+        format = 'GIF';
+    }
+    if (name.endsWith('.svg')) {
+        format = 'SVG';
+    }
+    if (name.endsWith('.webp')) {
+        format = 'WEBP';
     }
     return format;
 };
@@ -444,6 +459,7 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
             className={cx(fileContainer, 'message-document-wrapper', props.className)}
             onClick={onClick}
             href={!props.onClick && !isUpload ? fileSrc : undefined}
+            target="_blank"
         >
             <div className={infoContent}>
                 <div className={fileIconContainer} style={isUpload ? uploadStyles : undefined}>

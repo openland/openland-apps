@@ -1,12 +1,15 @@
 import * as React from 'react';
+import { css, cx } from 'linaria';
 import { XView, XImage, XViewProps } from 'react-mental';
+
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { emoji } from 'openland-y-utils/emoji';
-import { css, cx } from 'linaria';
 import { PlaceholderColors } from 'openland-y-utils/themes/placeholders';
 import { useReloadImage } from 'openland-web/components/ImgWithRetry';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 import BookmarkIcon from 'openland-icons/s/ic-bookmark-filled-24.svg';
+
 import { UIcon } from './UIcon';
 
 export type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'xxx-large';
@@ -17,6 +20,7 @@ export interface UAvatarProps extends XViewProps {
     id: string;
     photo?: string | null;
     uuid?: string | null;
+    badge?: string | null;
     online?: boolean;
     size?: UAvatarSize;
     selected?: boolean;
@@ -236,6 +240,17 @@ const colorProvider = css`
     flex-grow: 1;
 `;
 
+const badgeBoxStyle = {
+    position: 'absolute',
+    bottom: 2,
+    right: 2,
+    borderWidth: 2,
+    borderStyle: 'solid',
+    borderRadius: 18,
+    paddingVertical: 3,
+    paddingHorizontal: 6,
+} as XViewProps;
+
 export const UAvatar = React.memo((props: UAvatarProps) => {
     const {
         title,
@@ -248,6 +263,7 @@ export const UAvatar = React.memo((props: UAvatarProps) => {
         selected,
         squared,
         savedMessages,
+        badge,
         ...other
     } = props;
     let content: any = undefined;
@@ -293,6 +309,11 @@ export const UAvatar = React.memo((props: UAvatarProps) => {
                     {content}
                 </XView>
                 {!savedMessages && online && <OnlineDot size={size} />}
+                {badge && badge.length > 0 && (
+                    <XView {...badgeBoxStyle} backgroundColor="var(--backgroundTertiary)" borderColor="var(--backgroundPrimary)">
+                        <XView {...TextStyles.Detail} color="var(--foregroundSecondary)">{badge}</XView>
+                    </XView>
+                )}
             </div>
         </XView>
     );

@@ -31,7 +31,6 @@ interface MessageListProps {
     isChannel: boolean;
     conversation: ConversationEngine;
     conversationType?: SharedRoomKind | 'PRIVATE';
-    inputShower?: (show: boolean) => void;
     me?: UserShort | null;
     conversationId: string;
     scrollPosition?: (data: number) => void;

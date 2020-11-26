@@ -21,16 +21,17 @@ const wrapper = css`
 interface CommentsListProps {
     peerId: string;
     groupId?: string;
+    replyingId?: string;
     highlightId?: string;
     onReply: (id: string) => void;
     onSent: (data: URickTextValue) => Promise<boolean>;
-    onSentAttach: (files: File[], isImage: boolean) => void;
+    onSentAttach: (files: File[], text: URickTextValue | undefined, isImage: boolean) => void;
     onStickerSent: (sticker: StickerFragment) => void;
 }
 
 const CommentsListInner = React.memo((props: CommentsListProps & { comments: CommentEntryFragment[], role: RoomMemberRole | undefined }) => {
     const client = useClient();
-    const { groupId, comments, highlightId, onSent, onSentAttach, onReply, onStickerSent } = props;
+    const { groupId, comments, highlightId, replyingId, onSent, onSentAttach, onReply, onStickerSent } = props;
     const commnetsUpdatedCounter = React.useRef(0);
     React.useEffect(() => {
         commnetsUpdatedCounter.current++;
@@ -92,6 +93,7 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Com
                     onReplyClick={onReply}
                     onDeleteClick={handleDeleteClick}
                     onReactionClick={handleReactionClick}
+                    isReplying={replyingId === item.comment.id}
                     highlighted={highlightId === item.comment.id}
                     groupId={groupId}
                     onSent={onSent}

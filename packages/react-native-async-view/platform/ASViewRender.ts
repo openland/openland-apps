@@ -15,4 +15,5 @@ export const ASViewListRender = Animated.createAnimatedComponent(requireNativeCo
     overflowColor?: number,
     loaderColor?: number,
     applyModes?: string[],
+    ignoreKeyboard: boolean,
 }>('RNAsyncListView'));

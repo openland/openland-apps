@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { TextLabel2 } from 'openland-web/utils/TextStyles';
+import { TextLabel3 } from 'openland-web/utils/TextStyles';
 import DoneIcon from 'openland-icons/s/ic-done-new-16.svg';
 
 const wrapper = css`
@@ -66,7 +66,7 @@ export const UChip = (props: {
 }) => {
     return (
         <div
-            className={cx(TextLabel2, wrapper, props.selected && wrapperSelected)}
+            className={cx(TextLabel3, wrapper, props.selected && wrapperSelected)}
             onClick={props.onClick}
         >
             <DoneIcon className={cx(iconWrapper, props.selected && iconSelected)} />

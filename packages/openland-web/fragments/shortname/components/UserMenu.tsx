@@ -1,7 +1,11 @@
 import * as React from 'react';
 import copy from 'copy-to-clipboard';
 
-import { User_user, User_conversation_SharedRoom, User_conversation_PrivateRoom } from 'openland-api/spacex.types';
+import {
+    User_user,
+    User_conversation_SharedRoom,
+    User_conversation_PrivateRoom,
+} from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
@@ -11,15 +15,21 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useRole } from 'openland-x-permissions/XWithRole';
 import BlockUserModal from 'openland-web/fragments/admin/BlockUserModalFragment';
 import { useClient } from 'openland-api/useClient';
-import { UNotificationsSwitchNew } from 'openland-web/components/unicorn/templates/UNotificationsSwitchNew';
+import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/UNotificationsSwitch';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
+import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
+import { showModalBox } from 'openland-x/showModalBox';
 
 import CopyIcon from 'openland-icons/s/ic-link-24.svg';
 import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
 import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
-import SpamIcon from 'openland-icons/s/ic-flag.svg';
+import SpamIcon from 'openland-icons/s/ic-flag-24.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
 import BookmarkIcon from 'openland-icons/s/ic-bookmark-24.svg';
+import BlockIcon from 'openland-icons/s/ic-block-24.svg';
+import UnBlockIcon from 'openland-icons/s/ic-unblock-24.svg';
+
+import { ReportSpamModal } from './ReportSpamModal';
 
 interface UserMenuProps {
     user: User_user;
@@ -27,85 +37,105 @@ interface UserMenuProps {
     marginLeft?: number;
 }
 
-const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperController, toastHandlers: UToastHandlers }) => {
-    const engine = React.useContext(MessengerContext);
-    const { ctx, user, chat, toastHandlers } = props;
-    const { id, shortname, inContacts } = user;
-    const builder = new UPopperMenuBuilder();
-    const client = useClient();
-    const [deleted, setDelete] = React.useState(false);
-    const { isContact } = useLocalContact(id, inContacts);
+const MenuComponent = React.memo(
+    (props: UserMenuProps & { ctx: UPopperController; toastHandlers: UToastHandlers }) => {
+        const engine = React.useContext(MessengerContext);
+        const { ctx, user, chat, toastHandlers } = props;
+        const { id, shortname, inContacts } = user;
+        const builder = new UPopperMenuBuilder();
+        const client = useClient();
+        const [deleted, setDelete] = React.useState(false);
+        const { isContact } = useLocalContact(id, inContacts);
+        const { isBanned } = useUserBanInfo(user.id, user.isBanned, user.isMeBanned);
 
-    if (engine.user.id !== id && chat?.__typename === 'PrivateRoom') {
-        builder.element(() =>
-            <UNotificationsSwitchNew
-                id={chat.id}
-                mute={!!chat.settings.mute}
-            />
-        );
-    }
+        const onBannedClick = React.useCallback(async () => {
+            if (isBanned) {
+                await client.mutateUnBanUser({ id: id });
+            } else {
+                await client.mutateBanUser({ id: id });
+            }
+        }, [id, isBanned]);
 
-    if (id !== engine.user.id) {
+        if (engine.user.id !== id && chat?.__typename === 'PrivateRoom') {
+            builder.element(() => (
+                <UNotificationsSwitch id={chat.id} mute={!!chat.settings.mute} />
+            ));
+        }
+
+        if (id !== engine.user.id) {
+            builder.item({
+                title: isContact ? 'Remove from contacts' : 'Add to contacts',
+                icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,
+                closeAfterAction: false,
+                action: async () => {
+                    if (isContact) {
+                        await client.mutateRemoveFromContacts({ userId: id });
+                        toastHandlers.show({
+                            type: 'success',
+                            text: 'Removed from contacts',
+                        });
+                    } else {
+                        await client.mutateAddToContacts({ userId: id });
+                        toastHandlers.show({
+                            type: 'success',
+                            text: 'Added to contacts',
+                        });
+                    }
+                },
+            });
+        }
+
+        if (engine.user.id === id) {
+            builder.item({
+                title: 'Saved messages',
+                icon: <BookmarkIcon />,
+                path: `/mail/${id}`,
+            });
+        }
+
         builder.item({
-            title: isContact ? 'Remove from contacts' : 'Add to contacts',
-            icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,
-            closeAfterAction: false,
-            action: async () => {
-                if (isContact) {
-                    await client.mutateRemoveFromContacts({ userId: id });
-                    toastHandlers.show({
-                        type: 'success',
-                        text: 'Removed from contacts',
-                    });
-                } else {
-                    await client.mutateAddToContacts({ userId: id });
-                    toastHandlers.show({
-                        type: 'success',
-                        text: 'Added to contacts',
-                    });
-                }
+            title: 'Copy link',
+            icon: <CopyIcon />,
+            onClick: () => {
+                copy(`https://openland.com/${shortname || id}`, { format: 'text/plain' });
+
+                toastHandlers.show({
+                    type: 'success',
+                    text: 'Link copied',
+                });
             },
         });
-    }
 
-    if (engine.user.id === id) {
-        builder.item({
-            title: 'Saved messages',
-            icon: <BookmarkIcon />,
-            path: `/mail/${id}`,
-        });
-    }
-
-    builder.item({
-        title: 'Copy link',
-        icon: <CopyIcon />,
-        onClick: () => {
-            copy(`https://openland.com/${shortname || id}`, { format: 'text/plain' });
-
-            toastHandlers.show({
-                type: 'success',
-                text: 'Link copied',
+        if (id !== engine.user.id) {
+            if (useRole('super-admin')) {
+                builder.item({
+                    title: isBanned ? 'Unblock person' : 'Block person',
+                    icon: isBanned ? <UnBlockIcon /> : <BlockIcon />,
+                    onClick: onBannedClick,
+                });
+            }
+            builder.item({
+                title: 'Report',
+                icon: <SpamIcon />,
+                onClick: () => {
+                    showModalBox({ width: 400, title: 'Report' }, ({ hide }) => (
+                        <ReportSpamModal userId={id} hide={hide} />
+                    ));
+                },
             });
-        },
-    });
+        }
 
-    if (id !== engine.user.id && useRole('super-admin')) {
-        builder.item({
-            title: 'Report spam',
-            icon: <SpamIcon />
-        });
-    }
+        if (useRole('super-admin')) {
+            builder.item({
+                title: 'Delete user',
+                icon: <DeleteIcon />,
+                onClick: () => BlockUserModal(user.id, client, deleted, setDelete),
+            });
+        }
 
-    if (useRole('super-admin')) {
-        builder.item({
-            title: 'Delete user',
-            icon: <DeleteIcon />,
-            onClick: () => BlockUserModal(user.id, client, deleted, setDelete)
-        });
-    }
-
-    return builder.build(ctx, 240);
-});
+        return builder.build(ctx, 240);
+    },
+);
 
 export const UserMenu = React.memo((props: UserMenuProps) => {
     const toastHandlers = useToast();
@@ -115,7 +145,7 @@ export const UserMenu = React.memo((props: UserMenuProps) => {
             horizontal={true}
             shape="square"
             filled={true}
-            menu={ctx => <MenuComponent {...props} ctx={ctx} toastHandlers={toastHandlers} />}
+            menu={(ctx) => <MenuComponent {...props} ctx={ctx} toastHandlers={toastHandlers} />}
         />
     );
 });

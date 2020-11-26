@@ -18,6 +18,7 @@ const wrapper = css`
         height: var(--icon-size);
         z-index: 2;
         position: relative;
+        transform: translateZ(0);
     }
     &::before {
         content: '';

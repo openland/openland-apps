@@ -3,8 +3,6 @@ import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import {
     RoomMemberRole,
-    OrganizationMembersShort,
-    RoomMembersShort,
     OrganizationMembers_organization_members,
     RoomMembersPaginated_members,
 } from 'openland-api/spacex.types';
@@ -17,20 +15,17 @@ import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { OwnerLinkComponent } from 'openland-web/fragments/invite/OwnerLinkComponent';
-import { ExplorePeople } from 'openland-web/fragments/create/ExplorePeople';
 import { SearchBox } from 'openland-web/fragments/create/SearchBox';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcClose from 'openland-icons/s/ic-close-16.svg';
+import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
+import { MembersWarning } from './components/MembersWarning';
+import { UserSearch } from './components/UserSearch';
 
 interface InviteModalProps {
     id: string;
     addMembers: any;
-    members: {
-        user: {
-            id: string;
-        };
-    }[];
     isGroup: boolean;
     isChannel?: boolean;
     isOrganization: boolean;
@@ -56,7 +51,15 @@ const AddMemberModalInner = (props: InviteModalProps) => {
     const { canAddPeople } = props;
     const [searchQuery, setSearchQuery] = React.useState('');
     const [selectedUsers, setSelectedUsers] = React.useState<null | Map<string, string>>(null);
+    const [warningShown, setWarningShown] = React.useState(false);
     const [options, setOptions] = React.useState<{ label: string; value: string }[]>([]);
+
+    React.useEffect(() => {
+        if (selectedUsers && selectedUsers.size > 10 && !warningShown) {
+            setWarningShown(true);
+            showModalBox({ title: 'Do you know people you are adding?', width: 480 }, ctx => <MembersWarning hide={ctx.hide} parentHide={props.hide!}/>);
+        }
+    }, [selectedUsers?.size]);
 
     const objType = props.isGroup
         ? props.isChannel
@@ -164,11 +167,12 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                                 }
                             >
                                 <XView flexGrow={1} flexShrink={1} marginHorizontal={-24}>
-                                    <ExplorePeople
+                                    <UserSearch
                                         query={searchQuery}
                                         onPick={selectMembers}
+                                        isOrganization={props.isOrganization}
                                         selectedUsers={selectedUsers}
-                                        roomUsers={props.members}
+                                        entityId={props.id}
                                     />
                                 </XView>
                             </React.Suspense>
@@ -266,8 +270,6 @@ export const AddMembersModal = React.memo(
             if (onGroupMembersAdd) {
                 onGroupMembersAdd(addedMembers);
             }
-
-            await client.refetchRoomMembersShort({ roomId: id });
         };
 
         const addMembersToOrganization = async ({ variables }: AddMemberToOrganization) => {
@@ -279,41 +281,29 @@ export const AddMembersModal = React.memo(
             if (onOrganizationMembersAdd) {
                 onOrganizationMembersAdd(addedMembers);
             }
-
-            await client.refetchOrganizationMembersShort({ organizationId: id });
         };
 
-        let data = null;
         let isPremium = false;
         let hideOwnerLink = false;
         let canAddPeople = true;
 
         if (isGroup) {
-            data = client.useRoomMembersShort({ roomId: id }, { fetchPolicy: 'network-only' });
             const chat = client.useRoomChat({ id: id }).room!;
             const sharedRoom = chat.__typename === 'SharedRoom' && chat;
+
             isPremium = sharedRoom && sharedRoom.isPremium;
-            canAddPeople = sharedRoom && (!isPremium || sharedRoom.role !== 'MEMBER');
 
-            if (sharedRoom && sharedRoom.organization && sharedRoom.organization.private && sharedRoom.role === 'MEMBER') {
-                hideOwnerLink = true;
-            }
+            const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(chat);
 
-        } else if (isOrganization) {
-            data = client.useOrganizationMembersShort({ organizationId: id }, { fetchPolicy: 'network-only' });
+            canAddPeople = canAddDirectly;
+            hideOwnerLink = !canGetInviteLink;
         }
-
         return (
             <AddMemberModalInner
                 hideOwnerLink={hideOwnerLink}
                 hide={hide}
                 addMembers={isOrganization ? addMembersToOrganization : addMembersToRoom}
                 id={id}
-                members={
-                    isOrganization
-                        ? (data as OrganizationMembersShort).organization.members
-                        : (data as RoomMembersShort).members
-                }
                 isGroup={isGroup}
                 isChannel={isChannel}
                 isOrganization={isOrganization}

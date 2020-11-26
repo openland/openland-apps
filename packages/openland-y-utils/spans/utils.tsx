@@ -61,6 +61,8 @@ export const convertServerSpan = (text: string, s: ServerSpan): Span => {
         span = { offset, length, type: SpanType.rotating };
     } else if (s.__typename === 'MessageSpanHashTag') {
         span = { offset, length, type: SpanType.hashtag };
+    } else if (s.__typename === 'MessageSpanSearchHighlight') {
+        span = { offset, length, type: SpanType.search_highlight };
     } else {
         span = {
             offset,
@@ -84,7 +86,7 @@ export const preprocessRawText = (text: string, startOffset: number, parent: Spa
         parent.type === SpanType.rotating ||
         parent.type === SpanType.insane;
 
-    rows.map((p, i) => {
+    rows.forEach((p, i) => {
         if (p.length > 0) {
             res.push({
                 type: SpanType.text,
@@ -99,12 +101,21 @@ export const preprocessRawText = (text: string, startOffset: number, parent: Spa
             });
         }
 
-        if (i !== rows.length - 1) {
-            res.push({
-                type: SpanType.new_line,
-                length: 0,
-                offset: startOffset + garbageString.length,
-            });
+        if (i < rows.length - 1) {
+            if (res.length > 0) {
+                const lastSpan = res[res.length - 1];
+                res.push({
+                    type: SpanType.new_line,
+                    length: 0,
+                    offset: lastSpan.offset + lastSpan.length,
+                });
+            } else {
+                res.push({
+                    type: SpanType.new_line,
+                    length: 0,
+                    offset: startOffset,
+                });
+            }
         }
 
         garbageString += p;

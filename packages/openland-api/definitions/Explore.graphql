@@ -17,6 +17,7 @@ fragment DiscoverSharedRoom on SharedRoom {
     }
     isPremium
     premiumPassIsActive
+    featured
 }
 
 fragment DiscoverChatsCollection on DiscoverChatsCollection {
@@ -56,6 +57,15 @@ fragment DiscoverChatsCollectionShort on DiscoverChatsCollection {
     }
 }
 
+fragment DiscoverOrganization on Organization {
+    id
+    name
+    photo
+    membersCount
+    shortname
+    featured: alphaFeatured
+}
+
 query ExploreRooms($seed: Int!) {
     discoverNewAndGrowing(first: 3, seed: $seed) {
         items {
@@ -84,6 +94,18 @@ query ExploreRooms($seed: Int!) {
     discoverTopFree(first: 5) {
         items {
             ...DiscoverSharedRoom
+        }
+        cursor
+    }
+    discoverTopOrganizations(first: 5) {
+        items {
+            ...DiscoverOrganization
+        }
+        cursor
+    }
+    discoverNewAndGrowingOrganizations(first: 5, seed: $seed) {
+        items {
+            ...DiscoverOrganization
         }
         cursor
     }
@@ -141,6 +163,19 @@ query DiscoverNoAuth($seed: Int!) {
             ...DiscoverSharedRoom
         }
     }
+
+    discoverTopOrganizations(first: 5) {
+        items {
+            ...DiscoverOrganization
+        }
+        cursor
+    }
+    discoverNewAndGrowingOrganizations(first: 5, seed: $seed) {
+        items {
+            ...DiscoverOrganization
+        }
+        cursor
+    }
 }
 
 query SuggestedRooms {
@@ -183,6 +218,7 @@ query GlobalSearch($query: String!, $kinds: [GlobalSearchEntryKind!]) {
             photo
             shortname
             isCommunity: alphaIsCommunity
+            featured: alphaFeatured
         }
         ... on User {
             ...UserShort
@@ -200,6 +236,7 @@ query GlobalSearch($query: String!, $kinds: [GlobalSearchEntryKind!]) {
                 name
                 photo
             }
+            featured
         }
     }
 }
@@ -278,6 +315,24 @@ query DiscoverTopFree($first: Int!, $after: String) {
     discoverTopFree(first: $first, after: $after) {
         items {
             ...DiscoverSharedRoom
+        }
+        cursor
+    }
+}
+
+query DiscoverPopularOrganizations($first: Int!, $after: String) {
+    discoverTopOrganizations(first: $first, after: $after) {
+        items {
+            ...DiscoverOrganization
+        }
+        cursor
+    }
+}
+
+query DiscoverNewOrganizations($first: Int!, $seed: Int!, $after: String) {
+    discoverNewAndGrowingOrganizations(first: $first, seed: $seed, after: $after) {
+        items {
+            ...DiscoverOrganization
         }
         cursor
     }

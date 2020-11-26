@@ -8,7 +8,6 @@ import { useStickerLayout, StickerLayout } from './stickerLayout';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { StickerFragment } from 'openland-api/spacex.types';
 import { ZImage } from 'openland-mobile/components/ZImage';
-import Toast from 'openland-mobile/components/Toast';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 
 const StickerRows = React.memo((props: { stickers: StickerFragment[], stickerLayout: StickerLayout }) => {
@@ -63,13 +62,13 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
             if (haveIt) {
                 await client.mutateStickerPackRemoveFromCollection({ id });
             } else {
-                await client.mutateStickerPackAddToCollection({ id });    
+                await client.mutateStickerPackAddToCollection({ id });
             }
             await client.refetchStickerPack({ id });
             await client.refetchMyStickers();
-            Toast.success({ duration: 1000, text: `Stickers ${haveIt ? 'deleted' : 'added'}` }).show();
+            // Toast.success({ duration: 1000, text: `Stickers ${haveIt ? 'deleted' : 'added'}` }).show();
         } catch (e) {
-            Toast.failure({ duration: 1000 }).show();
+            // Toast.failure({ duration: 1000 }).show();
         }
         setLoading(false);
     }, [haveIt, id]);
@@ -80,7 +79,7 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
     }
 
     return (
-        <View onLayout={handleLayoutChange} style={{ paddingHorizontal: 8 }}>
+        <View onLayout={handleLayoutChange} style={{ paddingHorizontal: 8, minHeight: 217 }}>
             <View style={{ paddingHorizontal: 8, paddingVertical: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>{stickerPack.title}</Text>
                 <TouchableOpacity
@@ -102,12 +101,14 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
                 <StickerRows stickers={stickerPack.stickers} stickerLayout={stickerLayout} />
             )}
             {(stickerLayout.stickerSize === 0 || stickerLayout.stickersPerRow === 0) && (
-                <LoaderSpinner />
+                <View alignItems="center" justifyContent="center" flexGrow={1}>
+                    <LoaderSpinner />
+                </View>
             )}
             <View style={{ paddingHorizontal: 8 }}>
                 <ZButton
                     size='large'
-                    title={`${haveIt ? 'Delete' : 'Add'} ${stickerPack.stickers.length} stickers`} 
+                    title={`${haveIt ? 'Delete' : 'Add'} ${stickerPack.stickers.length} stickers`}
                     onPress={handleButtonPressed}
                     style={haveIt ? 'secondary' : 'primary'}
                     loading={loading}

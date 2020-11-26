@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
+import { normalizeUrl } from 'openland-x-utils/normalizeUrl';
 import { TextTitle1, TextLabel1, TextBody } from 'openland-web/utils/TextStyles';
 import { Page } from 'openland-unicorn/Page';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
@@ -7,6 +8,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { Organization_organization } from 'openland-api/spacex.types';
 import IcLock from 'openland-icons/s/ic-lock-16.svg';
+import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
 
 const container = css`
     padding-bottom: 32px;
@@ -17,10 +19,30 @@ const container = css`
     flex-grow: 1;
 `;
 
+const titleWrapperStyle = css`
+    max-width: 320px;
+    align-self: center;
+    flex-shrink: 0;
+    display: flex;
+`;
+
 const titleStyle = css`
     text-align: center;
     color: var(--foregroundPrimary);
     margin-bottom: 8px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+`;
+
+const featuredIconWrapperStyle = css`
+    margin-left: 4px;
+    align-self: center;
+    display: inline-flex;
+    vertical-align: middle;
+`;
+
+const featuredIconStyle = css`
+    display: var(--featured-icon-display);
 `;
 
 const aboutStyle = css`
@@ -47,7 +69,7 @@ interface PrivateCommunityViewProps {
 }
 
 export const PrivateCommunityView = React.memo((props: PrivateCommunityViewProps) => {
-    const { id, photo, name, about, applyLinkEnabled, applyLink, owner } = props.organization;
+    const { id, photo, name, about, applyLinkEnabled, applyLink, owner, featured } = props.organization;
     return (
         <Page flexGrow={1}>
             <div className={container}>
@@ -58,7 +80,21 @@ export const PrivateCommunityView = React.memo((props: PrivateCommunityViewProps
                     size="xx-large"
                     marginBottom={32}
                 />
-                <div className={cx(titleStyle, TextTitle1)}>{name}</div>
+                <div className={titleWrapperStyle}>
+                    <div className={cx(TextTitle1, titleStyle)}>
+                        {name}
+                        {featured && (
+                            <div className={featuredIconWrapperStyle}>
+                                <UIcon
+                                    className={featuredIconStyle}
+                                    size={18}
+                                    icon={<IcFeatured />}
+                                    color="#3DA7F2"
+                                />
+                            </div>
+                        )}
+                    </div>
+                </div>
                 <div className={cx(aboutStyle, TextBody)}>{about}</div>
                 {applyLinkEnabled && applyLink && (
                     <UButton
@@ -68,7 +104,7 @@ export const PrivateCommunityView = React.memo((props: PrivateCommunityViewProps
                         size="large"
                         as="a"
                         target="_blank"
-                        href={applyLink}
+                        href={normalizeUrl(applyLink)}
                     />
                 )}
                 {!applyLinkEnabled && (

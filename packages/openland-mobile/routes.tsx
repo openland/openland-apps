@@ -82,6 +82,9 @@ import { EditCommunity } from './pages/main/components/edit-community/EditCommun
 import { EditCommunitySocialImage } from './pages/main/components/edit-community/EditCommunitySocialImage';
 import { EditCommunityDefaultGroups } from './pages/main/components/edit-community/EditCommunityDefaultGroups';
 import { EditCommunityApplyLink } from './pages/main/components/edit-community/EditCommunityApplyLink';
+import { ChatSearch } from './pages/main/ChatSearch';
+import { EditCommunitySuperAdmin } from './pages/main/components/edit-community/EditCommunitySuperAdmin';
+import { ReportSpam } from './pages/main/components/ReportSpam';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -113,6 +116,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('EditCommunitySocialImage', EditCommunitySocialImage)
   .addRoute('EditCommunityDefaultGroups', EditCommunityDefaultGroups)
   .addRoute('EditCommunityApplyLink', EditCommunityApplyLink)
+  .addRoute('EditCommunitySuperAdmin', EditCommunitySuperAdmin)
   .addRoute('EditOrganization', EditOrganization)
   .addRoute('Compose', Compose)
   .addRoute('CreateGroupAttrs', CreateGroupAttrs)
@@ -173,6 +177,8 @@ export const Routes = new SRoutesBuilder()
   .addRoute('Apps/Tasks', Tasks)
 
   .addRoute('SharedMedia', SharedMedia)
+  .addRoute('ChatSearch', ChatSearch)
+  .addRoute('ReportSpam', ReportSpam)
   .addRoute('UserMutualGroups', UserMutualGroups)
 
   .addRoute('Wallet', Wallet)

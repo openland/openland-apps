@@ -16,13 +16,19 @@ const getStickerLayout = (w: number): StickerLayout => {
         stickersPerRow = 6;
     }
 
-    return { stickersPerRow, stickerSize: Math.round((w - (stickersPerRow + 1) * 16) / stickersPerRow) };
+    return { stickersPerRow, stickerSize: Math.floor((w - (stickersPerRow + 1) * 16) / stickersPerRow) };
 };
 
 export const useStickerLayout = (): [StickerLayout, (w: number) => void] => {
+    const lastWidth = React.useRef(-1);
     const [stickerLayout, setStickerLayout] = React.useState<StickerLayout>({ stickerSize: 0, stickersPerRow: 0 });
 
-    const handleWidthChange = React.useCallback((w: number) => setStickerLayout(getStickerLayout(w)), []);
+    const handleWidthChange = React.useCallback((w: number) => {
+        if (w !== lastWidth.current) {
+            lastWidth.current = w;
+            setStickerLayout(getStickerLayout(w));
+        }
+    }, []);
 
     return [stickerLayout, handleWidthChange];
 };

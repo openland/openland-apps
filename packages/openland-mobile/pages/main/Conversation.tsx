@@ -11,7 +11,7 @@ import { ChatHeader } from './components/ChatHeader';
 import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/ChatHeaderAvatar';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
-import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType, StickerFragment, RoomCallsMode } from 'openland-api/spacex.types';
+import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType, StickerFragment, RoomCallsMode, MessageAttachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
@@ -21,7 +21,7 @@ import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { ChannelMuteButton, ChatInputPlaceholder } from './components/ChannelMuteButton';
+import { ChannelMuteButton, ChatInputPlaceholder, ChatInputBlockPlaceholder } from './components/InputPlaceholder';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { useCallModal } from './Call';
 import { EmojiSuggestions, EmojiSuggestionsRow } from './components/suggestions/EmojiSuggestions';
@@ -32,6 +32,7 @@ import { ChatSelectedActions } from './components/ChatSelectedActions';
 import { prepareLegacyMentionsForSend, convertMentionsFromMessage } from 'openland-engines/legacy/legacymentions';
 import { findSpans } from 'openland-y-utils/findSpans';
 import { throttle } from 'openland-y-utils/timer';
+import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { PinnedMessage, PINNED_MESSAGE_HEIGHT } from './components/PinnedMessage';
@@ -44,9 +45,11 @@ import { showNoiseWarning } from 'openland-mobile/messenger/components/showNoise
 import { plural } from 'openland-y-utils/plural';
 import { SRouterMountedContext } from 'react-native-s/SRouterContext';
 import { SUPER_ADMIN } from '../Init';
-import { ChatMessagesActionsMethods, ConversationActionsState } from 'openland-y-utils/MessagesActionsState';
+import { ChatMessagesActionsMethods, ConversationActionsState, setMessagesActionsUserChat } from 'openland-y-utils/MessagesActionsState';
 import { useChatMessagesActionsState, useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 import { matchLinks } from 'openland-y-utils/TextProcessor';
+import { StickerPicker } from './components/stickers/StickerPicker';
+import { SDevice } from 'react-native-s/SDevice';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -56,6 +59,7 @@ interface ConversationRootProps extends PageProps {
     mountedRef: { mounted: string[] };
     messagesActionsState: ConversationActionsState;
     messagesActionsMethods: ChatMessagesActionsMethods;
+    banInfo: { isBanned: boolean; isMeBanned: boolean } | undefined;
 }
 
 interface ConversationRootState {
@@ -69,7 +73,10 @@ interface ConversationRootState {
     muted: boolean;
     stickerKeyboardShown: boolean;
     keyboardHeight: number;
+    keyboardOpened: boolean;
     closingQuoted: boolean;
+    hasStickerTranslation: boolean;
+    isStickersOpaque: boolean;
 }
 
 class ConversationRoot extends React.Component<ConversationRootProps, ConversationRootState> {
@@ -77,7 +84,12 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     listRef = React.createRef<FlatList<any>>();
     inputRef = React.createRef<TextInput>();
     waitingForKeyboard = false;
+    waitingForKeyboardNative = false;
+    shouldHideStickerKeyboard = true;
     stickerKeyboardHeight = 0;
+    openKeyboardHeight = 0;
+    stickerButtonPressedCount = 0;
+    prevScrollY = Infinity;
 
     private setTyping = throttle(() => {
         getMessenger().engine.client.mutateSetTyping({ conversationId: this.props.chat.id, type: TypingType.TEXT });
@@ -97,7 +109,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             muted: !!this.props.chat.settings.mute,
             stickerKeyboardShown: false,
             keyboardHeight: 0,
+            keyboardOpened: false,
             closingQuoted: false,
+            hasStickerTranslation: true,
+            isStickersOpaque: false,
         };
 
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
@@ -109,6 +124,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     componentDidUpdate(prevProps: ConversationRootProps) {
+        if (prevProps.chat.settings.mute !== this.props.chat.settings.mute) {
+            this.setState({
+                muted: !!this.props.chat.settings.mute
+            });
+        }
         if (prevProps.messagesActionsState !== this.props.messagesActionsState) {
             this.handleMessagesActions(this.props.messagesActionsState);
         }
@@ -175,9 +195,17 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     handleFocus = () => {
-        this.setState({
-            inputFocused: true
-        });
+        if (this.shouldHideStickerKeyboard) {
+            this.waitingForKeyboardNative = true;
+            this.setState({
+                inputFocused: true,
+                stickerKeyboardShown: false,
+                keyboardHeight: this.stickerKeyboardHeight
+            });
+        } else {
+            this.shouldHideStickerKeyboard = true;
+            this.setState({ inputFocused: true });
+        }
     }
 
     handleBlur = () => {
@@ -194,6 +222,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         if (state.action === 'edit' && state.messages.length > 0) {
             let messageToEdit = state.messages.map(convertMessageBack)[0];
+            let fileAttachments = (state.messages[0].attachments?.filter(x => x.__typename === 'MessageAttachmentFile') || []) as MessageAttachments_MessageAttachmentFile[];
             const loader = Toast.loader();
             loader.show();
             try {
@@ -201,7 +230,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     messageId: messageToEdit.id,
                     message: tx,
                     mentions,
-                    spans: findSpans(tx)
+                    spans: findSpans(tx),
+                    fileAttachments: fileAttachments.map(x => ({ fileId: x.fileId })),
                 });
             } catch (e) {
                 Alert.alert(e.message);
@@ -247,8 +277,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     this.props.router.push('Donation', { chatId: this.props.chat.id, name: user.firstName });
                 }
             };
-        showAttachMenu((type, name, path, size) => {
-            UploadManagerInstance.registerMessageUpload(this.props.chat.id, name, path, this.props.messagesActionsMethods.prepareToSend(), size);
+        showAttachMenu((filesMeta) => {
+            UploadManagerInstance.registerMessageUploads(this.props.chat.id, filesMeta, this.props.messagesActionsMethods.prepareToSend());
         }, donationCb);
     }
 
@@ -297,19 +327,46 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     handleStickerKeyboardButtonPress = () => {
-        if (this.state.stickerKeyboardShown) {
-            this.setState({ stickerKeyboardShown: false });
-        } else {
-            if (this.inputRef.current && this.inputRef.current.isFocused()) {
-                this.inputRef.current.blur();
-            }
-            if (this.state.keyboardHeight > 0 && Platform.OS !== 'ios') {
-                this.setState({ stickerKeyboardShown: true });
+        if (!this.state.keyboardOpened && !this.state.stickerKeyboardShown) {
+            if (Platform.OS === 'ios') {
+                this.waitingForKeyboard = true;
+                this.shouldHideStickerKeyboard = false;
+                this.inputRef.current?.focus();
+                this.inputRef.current?.blur();
             } else {
-                if (this.inputRef.current) {
-                    this.waitingForKeyboard = true;
+                this.inputRef.current?.focus();
+            }
+            return;
+        }
+        let prevCount = ++this.stickerButtonPressedCount;
+        if (this.state.stickerKeyboardShown) {
+            this.waitingForKeyboardNative = true;
+            this.setState({ stickerKeyboardShown: false, keyboardHeight: this.stickerKeyboardHeight }, () => {
+                if (this.inputRef.current && !this.inputRef.current.isFocused()) {
                     this.inputRef.current.focus();
                 }
+            });
+            setTimeout(() => {
+                if (prevCount !== this.stickerButtonPressedCount) {
+                    return;
+                }
+                this.setState({ isStickersOpaque: false });
+            }, 400);
+        } else {
+            if (this.openKeyboardHeight > 0) {
+                this.stickerKeyboardHeight = this.openKeyboardHeight;
+                this.setState({ keyboardHeight: 0, stickerKeyboardShown: true, hasStickerTranslation: false, isStickersOpaque: true }, () => {
+                    if (this.inputRef.current && this.inputRef.current.isFocused()) {
+                        this.inputRef.current.blur();
+                    }
+                });
+            } else if (this.inputRef.current) {
+                if (this.inputRef.current.isFocused()) {
+                    this.inputRef.current.blur();
+                }
+                this.waitingForKeyboard = true;
+                this.shouldHideStickerKeyboard = false;
+                this.inputRef.current.focus();
             }
         }
     }
@@ -353,6 +410,19 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         }
     }
 
+    handleScroll = (event: NativeSyntheticEvent<any>) => {
+        if (this.stickerKeyboardHeight > 0 && event.nativeEvent.touchPositionY > 0 && this.state.stickerKeyboardShown && this.prevScrollY !== event.nativeEvent.touchPositionY) {
+            let height = this.stickerKeyboardHeight;
+            let newHeight = event.nativeEvent.touchPositionY - SDevice.safeArea.bottom;
+            if (newHeight + 20 < height) {
+                this.setState({ stickerKeyboardShown: false, hasStickerTranslation: true });
+            }
+        }
+        if (event.nativeEvent.touchPositionY > 0) {
+            this.prevScrollY = event.nativeEvent.touchPositionY;
+        }
+    }
+
     render() {
         let { messagesActionsState } = this.props;
 
@@ -363,7 +433,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             <TouchableOpacity disabled={!path.path} onPress={() => this.props.router.push(path.path!, path.pathArgs)}>
                 <View flexDirection="row" flexShrink={1} marginLeft={Platform.OS === 'android' ? -12 : 0}>
                     <ChatHeaderAvatar conversationId={this.engine.conversationId} router={this.props.router} />
-                    <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />
+                    <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} muted={this.state.muted} />
                 </View>
             </TouchableOpacity>
         );
@@ -417,7 +487,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
         let privateRoom = this.props.chat.__typename === 'PrivateRoom' ? this.props.chat : undefined;
-        let showInputBar = (sharedRoom ? (sharedRoom.kind === SharedRoomKind.INTERNAL || sharedRoom.canSendMessage) : true) && (privateRoom ? !privateRoom.user.isBot : true);
+        let showInputBar = (sharedRoom ? (sharedRoom.kind === SharedRoomKind.INTERNAL || sharedRoom.canSendMessage) : true) && (privateRoom ? !privateRoom.user.isBot && !this.props.banInfo?.isBanned && !this.props.banInfo?.isMeBanned : true);
 
         let showPinAuthor = sharedRoom && (sharedRoom!.kind !== SharedRoomKind.PUBLIC);
 
@@ -430,6 +500,9 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         }
         if (!showSelectedMessagesActions && privateRoom && privateRoom.user.isBot) {
             inputPlaceholder = <ChatInputPlaceholder text="View profile" onPress={() => this.props.router.push("ProfileUser", { id: privateRoom!.user.id })} />;
+        }
+        if (!showSelectedMessagesActions && privateRoom && !!this.props.banInfo && (this.props.banInfo.isBanned || this.props.banInfo.isMeBanned)) {
+            inputPlaceholder = <ChatInputBlockPlaceholder banInfo={this.props.banInfo} />;
         }
         const reloadButton = <ReloadFromBottomButton conversation={this.engine} />;
         const isBot = privateRoom && privateRoom.user.isBot;
@@ -466,51 +539,119 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     />
                 )}
                 <SDeferred>
-                    <View style={{ height: '100%', flexDirection: 'column', paddingBottom: this.state.keyboardHeight }}>
-                        <ConversationView inverted={true} engine={this.engine} />
-                        {pinnedMessage && (
-                            <PinnedMessage
-                                message={pinnedMessage}
-                                onPress={this.handlePinnedMessagePress}
-                                theme={this.props.theme}
-                                showAuthor={showPinAuthor}
-                                canUnpin={this.props.chat.__typename === 'PrivateRoom' || this.props.chat.canUnpinMessage || SUPER_ADMIN}
-                                chatId={this.props.chat.id}
-                            />
+                    <View style={{ height: '100%', flexDirection: 'column', position: 'relative' }}>
+                        <View
+                            style={{
+                                flex: 1,
+                                flexGrow: 1,
+                                flexBasis: 1,
+                                flexShrink: 0,
+                                flexDirection: 'column',
+                                paddingBottom: Platform.select({
+                                    ios: 0,
+                                    android: this.state.stickerKeyboardShown ? this.stickerKeyboardHeight : this.state.keyboardHeight,
+                                })
+                            }}
+                        >
+                            <ConversationView inverted={true} engine={this.engine} onScroll={this.handleScroll} />
+                            {pinnedMessage && (
+                                <PinnedMessage
+                                    message={pinnedMessage}
+                                    onPress={this.handlePinnedMessagePress}
+                                    theme={this.props.theme}
+                                    showAuthor={showPinAuthor}
+                                    canUnpin={this.props.chat.__typename === 'PrivateRoom' || this.props.chat.canUnpinMessage || SUPER_ADMIN}
+                                    chatId={this.props.chat.id}
+                                />
+                            )}
+                            {showInputBar && !showSelectedMessagesActions && (
+                                <MessageInputBar
+                                    reloadButton={reloadButton}
+                                    ref={this.inputRef}
+                                    onAttachPress={this.handleAttach}
+                                    onSubmitPress={this.handleSubmit}
+                                    onChangeText={this.handleTextChange}
+                                    onSelectionChange={this.handleSelectionChange}
+                                    onFocus={this.handleFocus}
+                                    onBlur={this.handleBlur}
+                                    text={this.state.text}
+                                    suggestions={suggestions}
+                                    topView={quoted}
+                                    placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message'}
+                                    canSubmit={canSubmit}
+                                    onStickerKeyboardButtonPress={this.handleStickerKeyboardButtonPress}
+                                    stickerKeyboardShown={this.state.stickerKeyboardShown}
+                                    overrideTransform={this.state.stickerKeyboardShown ? (this.stickerKeyboardHeight + 0) : (this.state.keyboardHeight > 0 ? 0 : -1)}
+                                    bottomView={
+                                        Platform.OS === 'ios' && (
+                                            <View
+                                                style={{
+                                                    top: '100%',
+                                                    paddingBottom: SDevice.safeArea.bottom,
+                                                    backgroundColor: this.props.theme.backgroundPrimary,
+                                                    position: 'absolute',
+                                                    zIndex: 4,
+                                                    left: 0,
+                                                    right: 0,
+                                                    opacity: this.state.isStickersOpaque ? 1 : 0,
+                                                }}
+                                                transform={this.state.hasStickerTranslation ? [{ translateY: SDevice.safeArea.bottom }] : undefined}
+                                            >
+                                                <StickerPicker
+                                                    onStickerSent={(sticker: StickerFragment) => this.engine.sendSticker(sticker, undefined)}
+                                                    theme={this.props.theme}
+                                                    height={this.stickerKeyboardHeight}
+                                                />
+                                            </View>
+                                        )
+                                    }
+                                />
+                            )}
+                            {!showInputBar && reloadButton}
+                            {!showInputBar && inputPlaceholder}
+                            {showSelectedMessagesActions && <ChatSelectedActions conversation={this.engine} chat={this.props.chat} />}
+                        </View>
+                        {Platform.OS === 'android' && this.state.stickerKeyboardShown && (
+                            <View
+                                style={{
+                                    bottom: SDevice.safeArea.bottom,
+                                    position: 'absolute',
+                                    zIndex: 4,
+                                    left: 0,
+                                    right: 0,
+                                }}
+                            >
+                                <StickerPicker
+                                    onStickerSent={(sticker: StickerFragment) => this.engine.sendSticker(sticker, undefined)}
+                                    theme={this.props.theme}
+                                    height={this.stickerKeyboardHeight}
+                                />
+                            </View>
                         )}
-                        {showInputBar && !showSelectedMessagesActions && (
-                            <MessageInputBar
-                                reloadButton={reloadButton}
-                                ref={this.inputRef}
-                                onAttachPress={this.handleAttach}
-                                onSubmitPress={this.handleSubmit}
-                                onChangeText={this.handleTextChange}
-                                onSelectionChange={this.handleSelectionChange}
-                                onFocus={this.handleFocus}
-                                onBlur={this.handleBlur}
-                                text={this.state.text}
-                                suggestions={suggestions}
-                                topView={quoted}
-                                placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message'}
-                                canSubmit={canSubmit}
-                                onStickerSent={(sticker: StickerFragment) => this.engine.sendSticker(sticker, undefined)}
-                                onStickerKeyboardButtonPress={this.handleStickerKeyboardButtonPress}
-                                stickerKeyboardShown={this.state.stickerKeyboardShown}
-                                stickerKeyboardHeight={this.stickerKeyboardHeight}
-                            />
-                        )}
-                        {!showInputBar && reloadButton}
-                        {!showInputBar && inputPlaceholder}
-                        {showSelectedMessagesActions && <ChatSelectedActions conversation={this.engine} chat={this.props.chat} />}
                     </View>
                     <ASSafeAreaContext.Consumer>
                         {context => {
-                            if (this.waitingForKeyboard && context.openKeyboardHeight > 100) {
-                                this.stickerKeyboardHeight = context.openKeyboardHeight;
+                            const keyboardOpened = context.openKeyboardHeight > 0;
+                            if (keyboardOpened) {
+                                this.openKeyboardHeight = context.openKeyboardHeight;
+                            }
+                            if (this.waitingForKeyboard && keyboardOpened) {
+                                this.stickerKeyboardHeight = this.openKeyboardHeight;
                                 this.waitingForKeyboard = false;
-                                this.setState({ keyboardHeight: 0, stickerKeyboardShown: true });
-                            } else if (this.state.keyboardHeight !== context.keyboardHeight) {
-                                this.setState({ keyboardHeight: context.keyboardHeight });
+                                this.setState({ keyboardHeight: 0, stickerKeyboardShown: true, isStickersOpaque: true, hasStickerTranslation: false }, () => {
+                                    if (this.inputRef.current && this.inputRef.current.isFocused()) {
+                                        this.inputRef.current.blur();
+                                    }
+                                });
+                            } else if (this.state.keyboardHeight !== context.openKeyboardHeight || keyboardOpened !== this.state.keyboardOpened) {
+                                if (!this.waitingForKeyboardNative) {
+                                    this.setState({ keyboardHeight: context.openKeyboardHeight, keyboardOpened });
+                                } else if (keyboardOpened) {
+                                    this.waitingForKeyboardNative = false;
+                                    this.setState({ keyboardHeight: context.openKeyboardHeight, keyboardOpened });
+                                }
+                            } else if (this.waitingForKeyboardNative && keyboardOpened) {
+                                this.waitingForKeyboardNative = false;
                             }
                             return null;
                         }}
@@ -527,8 +668,15 @@ const ConversationComponent = React.memo((props: PageProps) => {
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id }, { fetchPolicy: 'cache-and-network' }).room;
     let mountedRef = React.useContext(SRouterMountedContext);
     let showCallModal = useCallModal({ id: room?.id! });
-    let messagesActionsState = useChatMessagesActionsState({ conversationId: room?.id, userId: room?.__typename === 'PrivateRoom' ? room.user.id : undefined });
-    let messagesActionsMethods = useChatMessagesActionsMethods({ conversationId: room?.id, userId: room?.__typename === 'PrivateRoom' ? room.user.id : undefined });
+    let userId = room?.__typename === 'PrivateRoom' ? room.user.id : undefined;
+    let messagesActionsState = useChatMessagesActionsState(room?.id);
+    let messagesActionsMethods = useChatMessagesActionsMethods(room?.id);
+
+    React.useEffect(() => {
+        if (userId && room?.id) {
+            setMessagesActionsUserChat(room.id, userId);
+        }
+    }, [userId, room?.id]);
 
     if (room === null) {
         return <ChatAccessDenied theme={theme} onPress={() => props.router.back()} />;
@@ -537,6 +685,14 @@ const ConversationComponent = React.memo((props: PageProps) => {
     let sharedRoom = room.__typename === 'SharedRoom' ? room as RoomTiny_room_SharedRoom : null;
     let privateRoom = room.__typename === 'PrivateRoom' ? room as RoomTiny_room_PrivateRoom : null;
     let hasPinnedMessage = (sharedRoom || privateRoom)?.pinnedMessage;
+
+    const banInfo = privateRoom
+        ? useUserBanInfo(
+            privateRoom.user.id,
+            privateRoom.user.isBanned,
+            privateRoom.user.isMeBanned,
+        )
+        : undefined;
 
     if (sharedRoom && sharedRoom.membership !== 'MEMBER') {
         return <ChatJoin room={sharedRoom!} theme={theme} router={props.router} />;
@@ -554,6 +710,7 @@ const ConversationComponent = React.memo((props: PageProps) => {
                 mountedRef={mountedRef}
                 messagesActionsState={messagesActionsState}
                 messagesActionsMethods={messagesActionsMethods}
+                banInfo={banInfo}
             />
             <ASSafeAreaContext.Consumer>
                 {safe => (

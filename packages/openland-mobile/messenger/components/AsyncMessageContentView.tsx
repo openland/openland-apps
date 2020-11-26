@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Platform, Linking } from 'react-native';
-import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
+import { DataSourceMessageItem, PendingAttachProps } from 'openland-engines/messenger/ConversationEngine';
 import { ASText } from 'react-native-async-view/ASText';
 import { AsyncBubbleView, bubbleMaxWidth, bubbleMaxWidthIncoming } from './AsyncBubbleView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
@@ -39,6 +39,7 @@ interface AsyncMessageTextViewProps {
     onLongPress: (e: ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onReplyPress?: (message: DataSourceMessageItem) => void;
+    onPress?: () => void;
 }
 
 export let renderPreprocessedText = (
@@ -48,7 +49,7 @@ export let renderPreprocessedText = (
     onUserPress: (id: string) => void,
     onGroupPress: (id: string) => void,
     onOrganizationPress: (id: string) => void,
-    onHashtagPress: (d?: string) => void,
+    onHashtagPress: (d?: string, chatId?: string) => void,
     ignoreMarkdown?: boolean,
 ) => {
     const SpanView = (props: { span: Span, children?: any }) => {
@@ -73,7 +74,9 @@ export let renderPreprocessedText = (
         if (span.type === 'link') {
             return <ASText key={'link'} color={linkColor} onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))} textDecorationLine={linkTextDecoration}>{children}</ASText>;
         } else if (span.type === 'hashtag') {
-            return <ASText key={'hashtag'} color={linkColor} onPress={() => onHashtagPress(span.textRaw)} textDecorationLine={linkTextDecoration}>{children}</ASText>;
+            return <ASText key={'hashtag'} color={linkColor} onPress={() => onHashtagPress(span.textRaw, message.chatId)} textDecorationLine={linkTextDecoration}>{children}</ASText>;
+        } else if (span.type === 'search_highlight') {
+            return <ASText key={'search_highlight'} backgroundColor={message.isOut ? theme.outgoingBackgroundSecondary : theme.accentPrimaryTrans}>{children}</ASText>;
         } else if (span.type === 'mention_user') {
             return <ASText key={'mention-user'} fontWeight={message.isService ? FontStyles.Weight.Bold : undefined} color={linkColor} textDecorationLine={linkTextDecoration} onPress={() => onUserPress(span.user.id)}>{children}</ASText>;
         } else if (span.type === 'mention_all') {
@@ -117,11 +120,11 @@ export let renderPreprocessedText = (
 };
 
 export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number, compensateBubble?: boolean) => {
-    const { conversationId, theme, message, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress, onMediaPress, onDocumentPress, onLongPress, onReplyPress } = props;
+    const { conversationId, theme, message, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress, onMediaPress, onDocumentPress, onLongPress, onReplyPress, onPress } = props;
 
     // todo: handle multiple attaches
     const attaches = (message.attachments || []);
-    const fileAttach = attaches.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+    const fileAttach = attaches.filter(a => a.__typename === 'MessageAttachmentFile')[0] as (FullMessage_GeneralMessage_attachments_MessageAttachmentFile & PendingAttachProps) | undefined;
     const augmenationAttach = attaches.filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
     const purchaseAttach = attaches.filter(a => a.__typename === 'MessageAttachmentPurchase')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase | undefined;
     const hasImage = !!(fileAttach && fileAttach.fileMetadata.isImage);
@@ -132,7 +135,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     const hasPurchase = !!purchaseAttach;
     const sticker = message.sticker && message.sticker.__typename === 'ImageSticker' ? message.sticker : undefined;
 
-    const isEmojiOnly = message.textSpans.length === 1 && message.textSpans[0].type === 'emoji' && (message.attachments || []).length === 0 && (message.reply || []).length === 0;
+    const isEmojiOnly = theme.largeEmoji && message.textSpans.length === 1 && message.textSpans[0].type === 'emoji' && (message.attachments || []).length === 0 && (message.reply || []).length === 0;
     const isStickerOnly = sticker && (message.attachments || []).length === 0 && (message.reply || []).length === 0;
 
     let imageLayout;
@@ -157,7 +160,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     const textSize = !compensateBubble ? maxSize : undefined;
 
     if (hasImage && imageLayout) {
-        topContent.push(<MediaContent key="msg-media" theme={theme} compensateBubble={compensateBubble} layout={imageLayout} message={message} attach={fileAttach!} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onLongPress={onLongPress} hasTopContent={hasReply && !hasForward} hasBottomContent={hasText || hasUrlAug || hasForward} />);
+        topContent.push(<MediaContent key="msg-media" maxSize={maxSize!} theme={theme} compensateBubble={compensateBubble} layout={imageLayout} message={message} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onLongPress={onLongPress} hasTopContent={hasReply && !hasForward} hasBottomContent={hasText || hasUrlAug || hasForward} />);
     }
     if (sticker) {
         topContent.push(<StickerContent key="msg-sticker" sticker={sticker} message={message} padded={hasReply} />);
@@ -172,7 +175,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         topContent.push(<DocumentContent key="msg-document" theme={theme} compensateBubble={compensateBubble} attach={fileAttach!} message={message} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onLongPress={onLongPress} />);
     }
     if (hasReply) {
-        let replyContent = <ReplyContent key="msg-reply" isForward={hasForward} compensateBubble={compensateBubble} width={textSize} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onHashtagPress={onHashtagPress} onMediaPress={onMediaPress} onPress={onReplyPress} />;
+        let replyContent = <ReplyContent key="msg-reply" isForward={hasForward} compensateBubble={compensateBubble} width={textSize} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onHashtagPress={onHashtagPress} onMediaPress={onMediaPress} onContentPress={onPress} onPress={onReplyPress} onLongPress={onLongPress} />;
         if (hasForward) {
             topContent.push(replyContent);
         } else {
