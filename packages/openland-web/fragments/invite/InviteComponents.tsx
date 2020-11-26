@@ -306,7 +306,7 @@ export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') =
             }, 500);
         } else {
             let host = location.hostname.startsWith('next.') ? 'https://openland.com' : 'https://next.openland.com';
-            window.location.replace(host + location.pathname + '?q=appstore');
+            window.location.replace(host + location.pathname + '?q=store');
         }
     };
 
