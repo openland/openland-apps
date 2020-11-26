@@ -142,12 +142,14 @@ export const UserActions = React.memo(({ user, chat }: UserMenuProps) => {
                     onClick={onCopyLinkClick}
                 />
                 {!isMe && (
-                    <UListItem
-                        title={isBanned ? 'Unblock person' : 'Block person'}
-                        useRadius={true}
-                        onClick={onBannedClick}
-                        icon={isBanned ? <UnBlockIcon /> : <BlockIcon />}
-                    />
+                    <XWithRole role="super-admin">
+                        <UListItem
+                            title={isBanned ? 'Unblock person' : 'Block person'}
+                            useRadius={true}
+                            onClick={onBannedClick}
+                            icon={isBanned ? <UnBlockIcon /> : <BlockIcon />}
+                        />
+                    </XWithRole>
                 )}
                 {!isMe && (
                     <UListItem
