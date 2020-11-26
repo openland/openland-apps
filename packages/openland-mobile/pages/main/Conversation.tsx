@@ -327,6 +327,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     handleStickerKeyboardButtonPress = () => {
+        if (!this.state.keyboardOpened && !this.state.stickerKeyboardShown) {
+            this.inputRef.current?.focus();
+            return;
+        }
         let prevCount = ++this.stickerButtonPressedCount;
         if (this.state.stickerKeyboardShown) {
             this.waitingForKeyboardNative = true;
@@ -568,7 +572,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     topView={quoted}
                                     placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message'}
                                     canSubmit={canSubmit}
-                                    onStickerKeyboardButtonPress={this.state.keyboardOpened || this.state.stickerKeyboardShown ? this.handleStickerKeyboardButtonPress : undefined}
+                                    onStickerKeyboardButtonPress={this.handleStickerKeyboardButtonPress}
                                     stickerKeyboardShown={this.state.stickerKeyboardShown}
                                     overrideTransform={this.state.stickerKeyboardShown ? (this.stickerKeyboardHeight + 0) : (this.state.keyboardHeight > 0 ? 0 : -1)}
                                     bottomView={
