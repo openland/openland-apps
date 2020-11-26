@@ -299,16 +299,33 @@ export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') =
 
     const onClick = () => {
         const location = window.location;
+        window.location.replace('openland://deep' + location.pathname);
+
         if (os === 'Android') {
-            window.location.replace('openland://deep' + location.pathname);
             setTimeout(() => {
                 window.location.replace(androidStore);
             }, 500);
         } else {
             let host = location.hostname.startsWith('next.') ? 'https://openland.com' : 'https://next.openland.com';
-            window.location.replace(host + location.pathname + '?q=store');
+            setTimeout(() => {
+                window.location.replace(host + location.pathname + '?q=store');
+            }, 20);
         }
     };
+
+    if (os === 'iOS') {
+        return (
+            <UButton
+                text={buttonText}
+                size="large"
+                shape="square"
+                onClick={onClick}
+                as="a"
+                target="_blank"
+                href={window.location.hostname + window.location.pathname + '?q=store'}
+            />
+        );
+    }
 
     return (
         <UButton
