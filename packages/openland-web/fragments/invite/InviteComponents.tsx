@@ -292,14 +292,15 @@ export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') =
     const androidStore = 'https://play.google.com/store/apps/details?id=com.openland.app';
 
     const onClick = () => {
-        const location = window.location;
-        window.location.replace('openland://deep' + location.pathname);
-        setTimeout(() => {
-            window.location.replace(location.origin + location.pathname);
-        }, 10);
         setTimeout(() => {
             window.location.replace(os === 'iOS' ? iosStore : androidStore);
-        }, 1000);
+        }, 2000);
+        const location = window.location;
+        if (os === 'Android') {
+            window.location.replace('openland://deep' + location.pathname);
+        } else {
+            window.location.replace('http://' + location.hostname + location.pathname);
+        }
     };
 
     return (
