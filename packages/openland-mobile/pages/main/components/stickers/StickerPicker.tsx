@@ -154,7 +154,7 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
 
     const handleDeletePackPressed = React.useCallback((pack: MyStickers_stickers_packs | 'recent') => {
         Alert.builder()
-            .title(pack === 'recent' ? 'Clear recent stickers?' : `Delete ${pack.title} stickers?`)
+            .title(pack === 'recent' ? 'Clear recent stickers?' : `Delete ${pack.title} stickerpack?`)
             .button('Cancel', 'cancel')
             .action('Delete', 'destructive', async () => {
                 if (pack === 'recent') {

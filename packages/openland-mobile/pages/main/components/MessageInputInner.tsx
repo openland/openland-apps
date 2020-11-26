@@ -4,7 +4,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { RadiusStyles, HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { hexToRgba } from 'openland-y-utils/hexToRgba';
-import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
+import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 
 export interface MessageInputBarProps {
     onAttachPress?: () => void;
@@ -111,7 +111,7 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
                     {...inputProps}
                 />
             )}
-            {NON_PRODUCTION && props.text.length === 0 && onStickerKeyboardButtonPress && (
+            {SUPER_ADMIN && props.text.length === 0 && onStickerKeyboardButtonPress && (
                 <View style={{ position: 'absolute', right: 56 }} width={40} height={52} alignItems="center" justifyContent="center">
                     <TouchableOpacity onPress={onStickerKeyboardButtonPress} activeOpacity={HighlightAlpha}>
                         <View width={40} height={44} alignItems="center" justifyContent="center">
