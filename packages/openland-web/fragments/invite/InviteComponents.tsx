@@ -291,31 +291,13 @@ export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') =
     const iosStore = 'https://apps.apple.com/ru/app/openland-messenger/id1435537685';
     const androidStore = 'https://play.google.com/store/apps/details?id=com.openland.app';
 
-    React.useEffect(() => {
-        if (window.location.search === '?q=store') {
-            window.location.replace(iosStore);
-        }
-    }, []);
-
     const onClick = () => {
         const location = window.location;
         window.location.replace('openland://deep' + location.pathname);
         setTimeout(() => {
-            window.location.replace(androidStore);
+            window.location.replace(os === 'iOS' ? iosStore : androidStore);
         }, 500);
     };
-
-    if (os === 'iOS') {
-        return (
-            <UButton
-                text={buttonText}
-                size="large"
-                shape="square"
-                as="a"
-                href={window.location.origin + window.location.pathname + '?q=store'}
-            />
-        );
-    }
 
     return (
         <UButton
