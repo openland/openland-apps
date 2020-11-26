@@ -314,7 +314,7 @@ export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') =
                 onClick={onClick}
                 as="a"
                 target="_blank"
-                href={window.location.hostname + window.location.pathname + '?q=store'}
+                href={window.location.origin + window.location.pathname + '?q=store'}
             />
         );
     }
