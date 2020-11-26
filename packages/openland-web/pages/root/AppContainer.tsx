@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { AuthRouter } from './AuthRouter';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { ThemeProvider } from 'openland-x-utils/useTheme';
 import { UserInfoProvider } from 'openland-web/components/UserInfo';
@@ -20,12 +21,12 @@ interface ChatSearchState {
     initialQuery?: string;
 }
 
-interface СhatSearchContextProps {
+interface ChatSearchContextProps {
     chatSearchState: ChatSearchState;
     setChatSearchState: (chatSearchState: ChatSearchState) => void;
 }
 
-export const ChatSearchContext = React.createContext<СhatSearchContextProps | null>(null);
+export const ChatSearchContext = React.createContext<ChatSearchContextProps | null>(null);
 
 export const AppContainer = (props: { children: any }) => {
     const client = useClient();
@@ -120,9 +121,9 @@ export const AppContainer = (props: { children: any }) => {
         return <UnicornSplash />;
     }
 
-    let hasMessenger = canUseDOM && !!data.me && !!data.sessionState.isCompleted;
+    let hasMessenger = canUseDOM && !!data.me && data.sessionState.isCompleted;
     return (
-        <>
+        <React.Suspense fallback={<UnicornSplash />}>
             <PushEngineComponent enable={hasMessenger} />
             <XDocumentHead title={[]} />
             <UserInfoProvider
@@ -132,13 +133,17 @@ export const AppContainer = (props: { children: any }) => {
                 profile={data.myProfile}
                 roles={data.myPermissions.roles}
             >
-                <ChatSearchContext.Provider value={{ chatSearchState, setChatSearchState }}>
-                    <MessengerProvider user={hasMessenger ? data.me!! : undefined}>
-                        <ThemeProvider>{props.children}</ThemeProvider>
-                    </MessengerProvider>
-                </ChatSearchContext.Provider>
+                <ThemeProvider>
+                    <AuthRouter>
+                        <ChatSearchContext.Provider value={{ chatSearchState, setChatSearchState }}>
+                            <MessengerProvider user={hasMessenger ? data.me!! : undefined}>
+                                {props.children}
+                            </MessengerProvider>
+                        </ChatSearchContext.Provider>
+                    </AuthRouter>
+                </ThemeProvider>
             </UserInfoProvider>
-        </>
+        </React.Suspense>
     );
 };
 

@@ -396,7 +396,7 @@ interface EmojiPickerBodyProps {
 const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
     const ref = React.useRef<VariableSizeList>(null);
     const [currentSection, setCurrentSection] = React.useState(0);
-    const [stickers, setStickers] = React.useState(false);
+    const [stickers, setStickers] = React.useState(!!props.onStickerSent);
     const [searchInput, setSearchInput] = React.useState<string>('');
     const [foundEmoji, setFoundEmoji] = React.useState<Emoji[]>([]);
     const onSearch = (e: string) => {

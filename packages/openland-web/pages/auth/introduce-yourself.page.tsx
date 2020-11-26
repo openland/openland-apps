@@ -9,9 +9,8 @@ import { InitTexts } from 'openland-web/pages/init/_text';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useClient } from 'openland-api/useClient';
-import * as Cookie from 'js-cookie';
-import { Wrapper } from '../onboarding/components/wrapper';
 import {
+    Wrapper,
     Title,
     Subtitle,
     FormLayout,
@@ -27,7 +26,6 @@ import { AuthHeaderConfig } from './root.page';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { TextCaption } from 'openland-web/utils/TextStyles';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
-import { ResolvedInvite } from 'openland-api/spacex.types';
 import { trackEvent } from 'openland-x-analytics';
 
 const captionText = css`
@@ -56,6 +54,8 @@ type EnterYourOrganizationPageProps = {
 };
 
 const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
+    const router = React.useContext(XRouterContext)!;
+    const signupRedirect = router.query.redirect;
     const isMobile = useIsMobile();
     const [sending, setSending] = React.useState(false);
     const client = useClient();
@@ -99,18 +99,13 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
 
             setSending(true);
 
-            const inviteKey =
-                Cookie.get('x-openland-invite') || Cookie.get('x-openland-org-invite') || Cookie.get('x-openland-app-invite');
-
             if (props.initialProfileFormData) {
                 await client.mutateProfileUpdate({
                     input: formData,
-                    inviteKey,
                 });
             } else {
                 await client.mutateProfileCreate({
                     input: formData,
-                    inviteKey,
                 });
                 await client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
             }
@@ -121,34 +116,14 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
                 },
             });
 
-            let inviteInfo: ResolvedInvite | undefined;
-            let isPremium = false;
-            if (inviteKey) {
-                inviteInfo = await client.queryResolvedInvite({ key: inviteKey });
-                if (inviteInfo.invite?.__typename === 'RoomInvite') {
-                    isPremium = inviteInfo.invite.room.isPremium;
-
-                    if (!isPremium) {
-                        await client.mutateRoomJoinInviteLink({
-                            invite: inviteKey,
-                        });
-                    }
-                } else if (inviteInfo.invite?.__typename === 'AppInvite') {
-                    await client.mutateOrganizationActivateByInvite({ inviteKey });
-                }
-            }
             await Promise.all([
                 client.refetchProfile(),
                 client.refetchProfilePrefill(),
                 client.refetchAccount(),
             ]);
             trackEvent('registration_complete');
-            if (isPremium) {
-                window.location.href = `/invite/${inviteKey}`;
-            } else if (Cookie.get('x-openland-org-invite')) {
-                const orgInvite = Cookie.get('x-openland-org-invite');
-                Cookie.remove('x-openland-org-invite');
-                window.location.href = `/join/${orgInvite}`;
+            if (signupRedirect) {
+                window.location.href = signupRedirect;
             } else {
                 window.location.href = '/';
             }
@@ -206,7 +181,7 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
             </XView>
             <AuthActionButton
                 loading={sending}
-                text={InitTexts.create_profile.next}
+                text={InitTexts.auth.next}
                 onClick={handleNext}
             />
             <p className={cx(TextCaption, captionText, textClassName)}>
@@ -225,7 +200,7 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
 
 const IntroduceYourselfPageInner = (props: EnterYourOrganizationPageProps) => {
     const client = useClient();
-    let router = React.useContext(XRouterContext)!;
+    const router = React.useContext(XRouterContext)!;
 
     if (canUseDOM) {
         localStorage.setItem('isnewuser', 'newuser');

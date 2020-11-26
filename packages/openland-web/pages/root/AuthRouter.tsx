@@ -2,28 +2,26 @@ import * as React from 'react';
 import { UserInfoContext } from '../../components/UserInfo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { normalizeUrl } from 'openland-x-utils/normalizeUrl';
 import { extractRedirect } from './router/extractRedirect';
-import { isRootPath } from './router/isRootPath';
 import { redirectSuffix } from './router/redirectSuffix';
 import { isPublicPath } from './router/isPublicPath';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useClient } from 'openland-api/useClient';
-import { AuthProfileFragment } from './AuthProfileFragment';
-import { UButton } from 'openland-web/components/unicorn/UButton';
 import {
     InviteLandingComponent,
     InviteLandingComponentLayout,
 } from 'openland-web/fragments/invite/InviteLandingComponent';
 import { AuthDiscoverFragment } from './discover/AuthDiscoverFragment';
-import { AuthDiscoverPopularNowFragment } from './discover/AuthDiscoverPopularNowFragment';
-import { AuthDiscoverNewAndGrowingFragment } from './discover/AuthDiscoverNewAndGrowingFragment';
-import { AuthDiscoverCollectionsFragment } from './discover/AuthDiscoverCollectionsFragment';
-import { AuthDiscoverTopFreeFragment } from './discover/AuthDiscoverTopFreeFragment';
-import { AuthDiscoverTopPremiumFragment } from './discover/AuthDiscoverTopPremiumFragment';
-import { AuthDiscoverCollectionFragment } from './discover/AuthDiscoverCollectionFragment';
-import { AuthDiscoverPopularOrgsFragment } from './discover/AuthDiscoverPopularOrgsFragment';
-import { AuthDiscoverNewOrgsFragment } from './discover/AuthDiscoverNewOrgsFragment';
+import { AuthProfileFragment } from './profile/AuthProfileFragment';
+import { AuthPageContainer } from './components/AuthPageContainer';
+import { AuthDiscoverContainer } from './components/AuthDiscoverContainer';
+import { DiscoverPopularOrgsFragment } from 'openland-web/fragments/discover/DiscoverPopularOrgsFragment';
+import { DiscoverNewOrgsFragment } from 'openland-web/fragments/discover/DiscoverNewOrgsFragment';
+import { DiscoverPopularNowFragment } from 'openland-web/fragments/discover/DiscoverPopularNowFragment';
+import { DiscoverNewAndGrowingFragment } from 'openland-web/fragments/discover/DiscoverNewAndGrowingFragment';
+import { DiscoverTopPremiumFragment } from 'openland-web/fragments/discover/DiscoverTopPremiumFragment';
+import { DiscoverTopFreeFragment } from 'openland-web/fragments/discover/DiscoverTopFreeFragment';
+import { DiscoverCollectionsFragment } from 'openland-web/fragments/discover/DiscoverCollectionsFragment';
+import { DiscoverCollectionFragment } from 'openland-web/fragments/discover/DiscoverCollectionFragment';
 
 const ShortnameResolver = React.memo(
     (props: {
@@ -41,71 +39,107 @@ const ShortnameResolver = React.memo(
         }
         if (shortnameItem?.__typename === 'SharedRoom') {
             return (
-                <InviteLandingComponent
-                    signupRedirect={'/signin?redirect=' + encodeURIComponent('/' + props.shortname)}
-                />
+                <AuthPageContainer>
+                    <InviteLandingComponent noLogin={true} />
+                </AuthPageContainer>
             );
         }
         if (shortnameItem?.__typename === 'Organization') {
             return (
-                <InviteLandingComponentLayout
-                    whereToInvite={shortnameItem.isCommunity ? 'community' : 'organization'}
-                    title={shortnameItem.name}
-                    id={shortnameItem.id}
-                    photo={shortnameItem.photo}
-                    entityTitle={shortnameItem.name}
-                    description={shortnameItem.about}
-                    hideFakeDescription={true}
-                    featured={shortnameItem.featured}
-                    noLogin={true}
-                    button={
-                        shortnameItem.applyLinkEnabled && shortnameItem.applyLink ? (
-                            <UButton
-                                style="primary"
-                                size="large"
-                                text="Apply to join"
-                                as="a"
-                                target="_blank"
-                                href={normalizeUrl(shortnameItem.applyLink)}
-                            />
-                        ) : (
-                                <UButton
-                                    style="primary"
-                                    size="large"
-                                    text="Message admin"
-                                    path={
-                                        '/signin?redirect=' +
-                                        encodeURIComponent('/mail/' + shortnameItem.owner.id)
-                                    }
-                                />
-                            )
-                    }
-                />
+                <AuthPageContainer>
+                    <InviteLandingComponentLayout
+                        whereToInvite={shortnameItem.isCommunity ? 'community' : 'organization'}
+                        title={shortnameItem.name}
+                        id={shortnameItem.id}
+                        photo={shortnameItem.photo}
+                        entityTitle={shortnameItem.name}
+                        description={shortnameItem.about}
+                        hideFakeDescription={true}
+                        featured={shortnameItem.featured}
+                        noLogin={true}
+                    />
+                </AuthPageContainer>
             );
         }
         if (shortnameItem?.__typename === 'DiscoverChatsCollection') {
-            return <AuthDiscoverCollectionFragment id={shortnameItem.id} />;
+            return (
+                <AuthDiscoverContainer title="Collection">
+                    <DiscoverCollectionFragment noLogin={true} id={shortnameItem.id} />
+                </AuthDiscoverContainer>
+            );
         }
 
         return props.defaultRedirect('/signin');
     },
 );
 
+const DiscoverResolver = React.memo((props: { path: string }) => {
+    if (props.path.startsWith('/discover/top-communities')) {
+        return (
+            <AuthDiscoverContainer title="Top communities">
+                <DiscoverPopularOrgsFragment noLogin={true} />
+            </AuthDiscoverContainer>
+        );
+    } else if (props.path.startsWith('/discover/new-communities')) {
+        return (
+            <AuthDiscoverContainer title="New communities">
+                <DiscoverNewOrgsFragment noLogin={true} />
+            </AuthDiscoverContainer>
+        );
+    } else if (props.path.startsWith('/discover/popular')) {
+        return (
+            <AuthDiscoverContainer title="Popular now">
+                <DiscoverPopularNowFragment noLogin={true} />
+            </AuthDiscoverContainer>
+        );
+    } else if (props.path.startsWith('/discover/new')) {
+        return (
+            <AuthDiscoverContainer title="New and growing">
+                <DiscoverNewAndGrowingFragment noLogin={true} />
+            </AuthDiscoverContainer>
+        );
+    } else if (props.path.startsWith('/discover/premium')) {
+        return (
+            <AuthDiscoverContainer title="Top premium">
+                <DiscoverTopPremiumFragment noLogin={true} />
+            </AuthDiscoverContainer>
+        );
+    } else if (props.path.startsWith('/discover/free')) {
+        return (
+            <AuthDiscoverContainer title="Top free">
+                <DiscoverTopFreeFragment noLogin={true} />
+            </AuthDiscoverContainer>
+        );
+    } else if (props.path.startsWith('/discover/collections')) {
+        const splitPath = props.path.split('/');
+
+        if (splitPath.length === 4 && typeof splitPath[3] === 'string') {
+            return (
+                <AuthDiscoverContainer title="Collection">
+                    <DiscoverCollectionFragment noLogin={true} id={splitPath[3]} />
+                </AuthDiscoverContainer>
+            );
+        }
+
+        return (
+            <AuthDiscoverContainer title="Collections">
+                <DiscoverCollectionsFragment noLogin={true} />
+            </AuthDiscoverContainer>
+        );
+    } else {
+        return <AuthDiscoverFragment />;
+    }
+});
+
 export const AuthRouter = React.memo((props: { children: any }) => {
     const router = React.useContext(XRouterContext)!;
     const userInfo = React.useContext(UserInfoContext)!;
+
     let redirectPath: string = extractRedirect(router);
 
-    const { hostName, path, routeQuery } = router;
+    const { routeQuery } = router;
 
     const shortname = routeQuery && routeQuery.shortname ? routeQuery.shortname : null;
-    if (hostName === 'app.openland.com') {
-        if (canUseDOM) {
-            window.location.replace(`https://openland.com${path}`);
-        }
-
-        return null;
-    }
 
     const defaultRoute = <>{props.children}</>;
 
@@ -125,19 +159,12 @@ export const AuthRouter = React.memo((props: { children: any }) => {
         }
     }
 
-    function redirectJoin(to: string) {
-        if (!router.path.startsWith(to + '/')) {
-            return <XPageRedirect path={redirectPath} />;
-        } else {
-            return defaultRoute;
-        }
-    }
-
     ////////////////////////////////////////////////
     //               Public Pages
     ////////////////////////////////////////////////
 
     // Do not redirect for public paths
+    // '/', /download, /start, /about, /terms, /privacy
     if (!userInfo.isLoggedIn && isPublicPath(router.path)) {
         return defaultRoute;
     }
@@ -147,49 +174,21 @@ export const AuthRouter = React.memo((props: { children: any }) => {
     ////////////////////////////////////////////////
 
     if (!userInfo.isLoggedIn && router.path.startsWith('/discover')) {
-        if (router.path.startsWith('/discover/top-communities')) {
-            return <AuthDiscoverPopularOrgsFragment />;
-        }
-        if (router.path.startsWith('/discover/new-communities')) {
-            return <AuthDiscoverNewOrgsFragment />;
-        } else if (router.path.startsWith('/discover/popular')) {
-            return <AuthDiscoverPopularNowFragment />;
-        } else if (router.path.startsWith('/discover/new')) {
-            return <AuthDiscoverNewAndGrowingFragment />;
-        } else if (router.path.startsWith('/discover/premium')) {
-            return <AuthDiscoverTopPremiumFragment />;
-        } else if (router.path.startsWith('/discover/free')) {
-            return <AuthDiscoverTopFreeFragment />;
-        } else if (router.path.startsWith('/discover/collections')) {
-            const splitPath = router.path.split('/');
-
-            if (splitPath.length === 4 && typeof splitPath[3] === 'string') {
-                return <AuthDiscoverCollectionFragment id={splitPath[3]} />;
-            }
-
-            return <AuthDiscoverCollectionsFragment />;
-        } else {
-            return <AuthDiscoverFragment />;
-        }
+        return <DiscoverResolver path={router.path} />;
     }
 
     ////////////////////////////////////////////////
     //                Sign In/Up
     ////////////////////////////////////////////////
-
-    // Redirect to Join prview before Signup/Signin if there are was redirect to join
-    // if (router.path.startsWith('/join/') || router.path.startsWith('/invite/')) {
-    //     if (!userInfo.isCompleted) {
-    //         return redirectIfNeeded('/signin/invite');
-    //     } else {
-    //         return defaultRoute;
-    //     }
-    // }
     if (
         !userInfo.isLoggedIn &&
         (router.path.startsWith('/join/') || router.path.startsWith('/invite/'))
     ) {
-        return redirectIfNeeded('/signin/invite');
+        return (
+            <AuthPageContainer>
+                <InviteLandingComponent noLogin={true} />
+            </AuthPageContainer>
+        );
     }
 
     if (!userInfo.isLoggedIn && shortname) {
@@ -219,60 +218,10 @@ export const AuthRouter = React.memo((props: { children: any }) => {
         return redirectIfNeeded('/createProfile');
     }
 
-    ////////////////////////////////////////////////
-    //            Organization handling
-    ////////////////////////////////////////////////
-
-    // Trying to ask to join organization
-    if (router.path.startsWith('/join/') || redirectPath.startsWith('/join/')) {
-        return redirectJoin('/join');
-    }
-
     // TODO: Remove account organization
     // Redirect to organization add
     if (!userInfo.isAccountExists) {
         return redirectIfNeeded('/createProfile');
-    }
-
-    ////////////////////////////////////////////////
-    //                Room Join
-    ////////////////////////////////////////////////
-
-    // Handle channel joins
-    if (router.path.includes('joinChannel') || router.path.includes('acceptChannelInvite')) {
-        return defaultRoute;
-    }
-
-    ////////////////////////////////////////////////
-    //          Final activation steps
-    ////////////////////////////////////////////////
-
-    // Activate user if needed and possible
-    if (
-        (!userInfo.isCompleted && router.path.startsWith('/invite/')) ||
-        redirectPath.startsWith('/invite/')
-    ) {
-        return redirectJoin('/invite');
-    }
-
-    // TODO: remove waitList
-    // Redirect to generic 'need more info' page if signup is not completed
-    if (!userInfo.isCompleted) {
-        return redirectIfNeeded('/waitlist');
-    }
-
-    ////////////////////////////////////////////////
-    //               Launch App
-    ////////////////////////////////////////////////
-
-    // Redirect from service pages to the app root
-    if (userInfo.isCompleted) {
-        if (isRootPath(router) || router.path.startsWith('/invite/')) {
-            if (router.path.startsWith('/invite/')) {
-                redirectPath = '/';
-            }
-            return <XPageRedirect path={redirectPath} />;
-        }
     }
 
     // Everything is ok! Display content

@@ -7,7 +7,6 @@ import { trackEvent } from 'openland-x-analytics';
 import { XLoader } from 'openland-x/XLoader';
 import { pages, pagesT, pagesArr } from './components/pages';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { AcceptInvitePage } from './accept-invite.page';
 import { AskAuthDataPage } from './ask-auth-data.page';
 import { AskAuthCodePage } from './ask-auth-code.page';
 import { CreateNewAccountPage } from './create-new-account.page';
@@ -18,33 +17,6 @@ import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { countriesMeta } from 'openland-y-utils/auth/countriesMeta';
 import { isElectron } from 'openland-y-utils/isElectron';
-
-const getAppInvite = (router: any) => {
-    if (router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite') {
-        return router.query.redirect.split('/')[2];
-    }
-    return null;
-};
-
-const getOrgInvite = (router: any) => {
-    if (router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'join') {
-        return router.query.redirect.split('/')[2];
-    }
-    return null;
-};
-
-const checkIfIsSignInInvite = (query: any) => {
-    return (
-        query &&
-        query.redirect &&
-        (query.redirect.split('/')[1] === 'invite' ||
-            query.redirect.split('/')[1] === 'joinChannel')
-    );
-};
-
-const isAcceptInvite = (path: string, query: any) => {
-    return path.includes('accept-invite') || checkIfIsSignInInvite(query);
-};
 
 const fetchCountry = async (): Promise<string | undefined> => {
     if (!canUseDOM) {
@@ -229,17 +201,6 @@ const Root = (props: { countryCode?: string }) => {
     const isPhoneAuth = !!router.query.phone;
     let page: pagesT = pages.createNewAccount;
 
-    if (getAppInvite(router)) {
-        Cookie.set('x-openland-app-invite', getAppInvite(router));
-    }
-
-    if (getOrgInvite(router)) {
-        Cookie.set('x-openland-org-invite', getOrgInvite(router));
-    }
-
-    if (isAcceptInvite(router.path, router.query)) {
-        page = pages.acceptInvite;
-    }
     if (router.path.includes('ask-auth-data')) {
         page = pages.askAuthData;
     }
@@ -251,15 +212,6 @@ const Root = (props: { countryCode?: string }) => {
     }
     if (router.path.includes('/createProfile') && Cookie.get('x-openland-token')) {
         page = pages.introduceYourself;
-    }
-
-    if (router.routeQuery.redirect) {
-        if (router.routeQuery.redirect.indexOf('/acceptChannelInvite/') !== -1) {
-            Cookie.set(
-                'x-openland-invite',
-                router.routeQuery.redirect.slice('/acceptChannelInvite/'.length),
-            );
-        }
     }
 
     const initialCountry = countriesMeta.find((x) => x.shortname === props.countryCode) || {
@@ -277,15 +229,7 @@ const Root = (props: { countryCode?: string }) => {
     const [avatarId, setAvatarId] = React.useState(null);
     const prevDataFired = React.useRef<string>();
 
-    const checkRedirect = () => {
-        let redirect = router.query ? (router.query.redirect ? router.query.redirect : null) : null;
-        if (redirect) {
-            Cookie.set('sign-redirect', redirect, { path: '/' });
-        }
-    };
-
     const fireAuth = React.useCallback(async (dataToFire: string, isPhoneFire: boolean) => {
-        checkRedirect();
         const authHost = isPhoneFire ? '/phone/sendCode' : '/sendCode';
         const authBody = isPhoneFire ? { phone: dataToFire } : { email: dataToFire };
         prevDataFired.current = dataToFire;
@@ -334,13 +278,6 @@ const Root = (props: { countryCode?: string }) => {
     const render = (
         <>
             {page === pages.loading && <XLoader loading={true} />}
-            {page === pages.acceptInvite && (
-                <AcceptInvitePage
-                    variables={{
-                        inviteKey: router.query.redirect.split('/')[2],
-                    }}
-                />
-            )}
             {page === pages.createNewAccount && (
                 <XTrack event={'signin_view'} key={'signin-track'}>
                     <CreateNewAccountPage
@@ -428,7 +365,7 @@ const Root = (props: { countryCode?: string }) => {
         }
     }, []);
 
-    const showBack = isElectron ? page !== pages.createNewAccount : page !== pages.acceptInvite;
+    const showBack = isElectron && page !== pages.createNewAccount;
 
     return (
         <div className={outerContainer}>
@@ -464,7 +401,7 @@ const Root = (props: { countryCode?: string }) => {
 Root.getInitialProps = async (props: any) => {
     const countryCode = await fetchCountry();
 
-    return { countryCode, forceSSR: props.asPath && !props.asPath.includes('/createProfile') && !isAcceptInvite(props.asPath, props.query) };
+    return { countryCode, forceSSR: props.asPath && !props.asPath.includes('/createProfile') };
 };
 
 export default Root;

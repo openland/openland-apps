@@ -107,11 +107,13 @@ const MenuComponent = React.memo(
         });
 
         if (id !== engine.user.id) {
-            builder.item({
-                title: isBanned ? 'Unblock person' : 'Block person',
-                icon: isBanned ? <UnBlockIcon /> : <BlockIcon />,
-                onClick: onBannedClick,
-            });
+            if (useRole('super-admin')) {
+                builder.item({
+                    title: isBanned ? 'Unblock person' : 'Block person',
+                    icon: isBanned ? <UnBlockIcon /> : <BlockIcon />,
+                    onClick: onBannedClick,
+                });
+            }
             builder.item({
                 title: 'Report',
                 icon: <SpamIcon />,

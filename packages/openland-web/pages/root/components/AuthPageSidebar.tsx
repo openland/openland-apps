@@ -24,9 +24,11 @@ const sidebarContainer = css`
     position: relative;
 
     &:after {
-        content: "";
+        content: '';
         position: absolute;
-        top: 0; right: 0; bottom: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
         width: 1px;
         opacity: 0.56;
         background-color: var(--border);
@@ -131,7 +133,10 @@ const DownloadButton = (props: DownloadButtonProps) => (
         className={buttonContainer}
         target="_blank"
         href={props.ios ? 'https://oplnd.com/ios' : 'https://oplnd.com/android'}
-        onClick={() => props.analyticsEvent && trackEvent(props.analyticsEvent.name, props.analyticsEvent.params)}
+        onClick={() =>
+            props.analyticsEvent &&
+            trackEvent(props.analyticsEvent.name, props.analyticsEvent.params)
+        }
     >
         {props.ios ? <IcIos className={buttonIcon} /> : <IcAndroid className={buttonIcon} />}
         <div className={buttonTextContainer}>
@@ -141,7 +146,7 @@ const DownloadButton = (props: DownloadButtonProps) => (
     </a>
 );
 
-export const AuthSidebarComponent = React.memo((props: { className?: string }) => {
+export const DesktopSidebar = React.memo((props: { className?: string }) => {
     return (
         <div className={cx(sidebarContainer, props.className)}>
             <XView path={'/'} hoverTextDecoration="none" cursor="pointer">
@@ -177,7 +182,7 @@ const mobileHeaderContainer = css`
     align-self: stretch;
 `;
 
-export const AuthMobileHeader = React.memo(() => {
+export const MobileSidebar = React.memo(() => {
     const theme = useTheme();
     const os = detectOS();
     let path = 'https://oplnd.com/ios';
@@ -186,11 +191,11 @@ export const AuthMobileHeader = React.memo(() => {
     }
     return (
         <div className={mobileHeaderContainer}>
-            <XView path={'/'} cursor="pointer">
-                {theme.theme === 'dark' ? (
-                    <img src="/static/landing/logo-light.svg" width={130} height={44} />
-                ) : (<img src="/static/landing/logo.svg" width={130} height={44} />)}
-            </XView>
+            {theme.theme === 'dark' ? (
+                <img src="/static/landing/logo-light.svg" width={130} height={44} />
+            ) : (
+                <img src="/static/landing/logo.svg" width={130} height={44} />
+            )}
             <UButton
                 text="Install the app"
                 size="small"

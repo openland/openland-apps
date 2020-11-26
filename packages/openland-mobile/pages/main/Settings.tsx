@@ -7,7 +7,6 @@ import { ZListHero } from '../../components/ZListHero';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import Rate from 'react-native-rate';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -17,6 +16,7 @@ import Toast from 'openland-mobile/components/Toast';
 import { logout } from 'openland-mobile/utils/logout';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import { ComponentRefContext } from './Home';
+import { rateApp } from './modals/RateApp';
 
 export const handleGlobalInvitePress = async () => {
     const loader = Toast.loader();
@@ -141,12 +141,7 @@ let SettingsContent = ((props: PageProps) => {
                     leftIconColor={theme.tintOrange}
                     leftIcon={require('assets/ic-star-glyph-24.png')}
                     text="Rate the app"
-                    onPress={() => {
-                        Rate.rate({
-                            AppleAppID: '1435537685',
-                            GooglePackageName: 'com.openland.app'
-                        }, () => { /**/ });
-                    }}
+                    onPress={() => rateApp()}
                 />
                 <ZListItem
                     leftIconColor={theme.tintGreen}

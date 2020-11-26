@@ -352,7 +352,7 @@ PODS:
     - TOCropViewController
   - RNLocalize (1.4.0):
     - React
-  - RNRate (1.0.1):
+  - RNRate (1.2.4):
     - React
   - RNShare (2.0.0):
     - React
@@ -439,7 +439,7 @@ DEPENDENCIES:
   - "RNGoogleSignin (from `../node_modules/@react-native-community/google-signin`)"
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNLocalize (from `../node_modules/react-native-localize`)
-  - RNRate (from `../node_modules/react-native-rate/ios`)
+  - RNRate (from `../node_modules/react-native-rate`)
   - RNShare (from `../node_modules/react-native-share`)
   - Starscream (~> 3.0.2)
   - Stripe
@@ -578,7 +578,7 @@ EXTERNAL SOURCES:
   RNLocalize:
     :path: "../node_modules/react-native-localize"
   RNRate:
-    :path: "../node_modules/react-native-rate/ios"
+    :path: "../node_modules/react-native-rate"
   RNShare:
     :path: "../node_modules/react-native-share"
   Texture:
@@ -660,7 +660,7 @@ SPEC CHECKSUMS:
   RNGoogleSignin: a10b849c165088c737d4465de6c2062f24d06002
   RNImageCropPicker: 82f4caef16a37c07cbb0171be95aa5584f99bd9d
   RNLocalize: b6df30cc25ae736d37874f9bce13351db2f56796
-  RNRate: 29be49c24b314c4e8ec09d848c3965f61cb0be47
+  RNRate: 15b861025a7821730761fce7f44561ce7e0b2de0
   RNShare: 8b171d4b43c1d886917fdd303bf7a4b87167b05c
   SDWebImage: 97351f6582ceca541ea294ba66a1fcb342a331c2
   SDWebImageWebPCoder: 947093edd1349d820c40afbd9f42acb6cdecd987
@@ -671,6 +671,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 2a1ae1242600b1f2d996fd91a5268b2309a33b5c
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: 7ce88e05b5bc07d0a6bc20616240b075b5c6f167
+PODFILE CHECKSUM: 0dd554c97cb4997dd1f359761134a2471d4424f4
 
 COCOAPODS: 1.9.3
