@@ -300,17 +300,9 @@ export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') =
     const onClick = () => {
         const location = window.location;
         window.location.replace('openland://deep' + location.pathname);
-
-        if (os === 'Android') {
-            setTimeout(() => {
-                window.location.replace(androidStore);
-            }, 500);
-        } else {
-            let host = location.hostname.startsWith('next.') ? 'https://openland.com' : 'https://next.openland.com';
-            setTimeout(() => {
-                window.location.replace(host + location.pathname + '?q=store');
-            }, 20);
-        }
+        setTimeout(() => {
+            window.location.replace(androidStore);
+        }, 500);
     };
 
     if (os === 'iOS') {
