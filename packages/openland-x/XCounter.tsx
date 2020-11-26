@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
+import { getCounterValue } from 'openland-y-utils/getCounterValue';
 
 type XCounterProps = {
     big?: boolean;
@@ -39,8 +40,6 @@ const counterBigStyle = css`
     padding-right: 6px;
     border-radius: 20px;
 `;
-
-const getCounterValue = (count: number) => count > 1000 ? `${Math.floor(count / 1000)}K+` : count;
 
 const XCounterBig = (props: XCounterProps) => (
     <div
