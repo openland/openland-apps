@@ -56,12 +56,12 @@ async function start() {
     if (process.env.APP_REDIRECT_HTTPS === 'true') {
         server.use(redirectToHTTPS());
     }
-    server.all(/.*/, (req, res, next) => {
+    server.all(/.*/, (req, res, n) => {
         let host = req.header("host");
         if (host && host.startsWith('www.')) {
             res.redirect(301, "https://" + host.slice(4));
         } else {
-            next();
+            n();
         }
     });
 
