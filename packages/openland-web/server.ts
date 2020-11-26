@@ -41,14 +41,6 @@ async function start() {
     });
 
     //
-    // invite redirect
-    //
-    server.get('/r', (req, res) => {
-        const path = req.url.replace('/r?redirect=', '');
-        res.redirect(path);
-    });
-
-    //
     // Enable Loggin
     //
     server.use(Morgan('tiny'));
