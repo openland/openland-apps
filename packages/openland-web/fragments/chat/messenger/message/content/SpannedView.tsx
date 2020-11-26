@@ -465,11 +465,11 @@ const HashtagView = React.memo((props: { text?: string; children: any, chatId?: 
     const route = React.useContext(XViewRouteContext)!;
 
     const handleClick = () => {
-        if (route.path.indexOf('/mail/') !== 0 && props.chatId) {
+        if (props.chatId && route.path.indexOf('/mail/') !== 0) {
             router.navigate(`/mail/${props.chatId}`);
-            setTimeout(() => chatSearchContext!.setChatSearchState({ enabled: true, initialQuery: props.text }), 600);
+            setTimeout(() => chatSearchContext!.setChatSearchState({ chatId: props.chatId!, initialQuery: props.text }), 800);
         } else {
-            chatSearchContext!.setChatSearchState({ enabled: true, initialQuery: props.text });
+            chatSearchContext!.setChatSearchState({ chatId: props.chatId!, initialQuery: props.text });
         }
     };
 

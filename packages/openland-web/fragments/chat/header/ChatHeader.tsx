@@ -286,7 +286,7 @@ export const ChatHeader = React.memo(
         const chatSearchContext = React.useContext(ChatSearchContext);
 
         const onSearchClick = React.useCallback(() => {
-            chatSearchContext!.setChatSearchState({ enabled: true });
+            chatSearchContext!.setChatSearchState({ chatId: chat.id });
         }, []);
 
         const privateRoom = chat.__typename === 'PrivateRoom' ? chat : undefined;

@@ -42,8 +42,8 @@ export const MessengerFragment = React.memo<{ id: string }>((props) => {
 
     // Check group state
     const header = React.useMemo(
-        () => chatSearchState.enabled ? <ChatSearch chatId={chat!.id} /> : <ChatHeader chat={chat!} />,
-        [chat, chatSearchState.enabled],
+        () => chatSearchState.chatId === chat!.id ? <ChatSearch chatId={chat!.id} /> : <ChatHeader chat={chat!} />,
+        [chat, chatSearchState.chatId],
     );
 
     if (
@@ -57,14 +57,14 @@ export const MessengerFragment = React.memo<{ id: string }>((props) => {
             return null;
         }
     }
-
+    
     return (
         <>
             <UHeader
                 titleView={header}
                 documentTitle={chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title}
                 appearance="wide"
-                forceShowBack={!chatSearchState.enabled}
+                forceShowBack={chatSearchState.chatId !== chat.id}
             />
             <Deferred>
                 <XView

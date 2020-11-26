@@ -16,7 +16,7 @@ import {
 } from 'openland-web/modules/appearance/stored-options';
 
 interface ChatSearchState {
-    enabled: boolean;
+    chatId: string | null;
     initialQuery?: string;
 }
 
@@ -32,7 +32,7 @@ export const AppContainer = (props: { children: any }) => {
 
     const data = client.useAccount({ suspense: false, fetchPolicy: 'network-only' });
     const [chatSearchState, setChatSearchState] = React.useState<ChatSearchState>({
-        enabled: false,
+        chatId: null,
     });
 
     if (canUseDOM) {
