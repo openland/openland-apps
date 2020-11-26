@@ -311,7 +311,6 @@ export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') =
                 text={buttonText}
                 size="large"
                 shape="square"
-                onClick={onClick}
                 as="a"
                 target="_blank"
                 href={window.location.origin + window.location.pathname + '?q=store'}
