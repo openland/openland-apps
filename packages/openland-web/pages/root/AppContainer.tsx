@@ -133,13 +133,15 @@ export const AppContainer = (props: { children: any }) => {
                 profile={data.myProfile}
                 roles={data.myPermissions.roles}
             >
-                <AuthRouter>
-                    <ChatSearchContext.Provider value={{ chatSearchState, setChatSearchState }}>
-                        <MessengerProvider user={hasMessenger ? data.me!! : undefined}>
-                            <ThemeProvider>{props.children}</ThemeProvider>
-                        </MessengerProvider>
-                    </ChatSearchContext.Provider>
-                </AuthRouter>
+                <ThemeProvider>
+                    <AuthRouter>
+                        <ChatSearchContext.Provider value={{ chatSearchState, setChatSearchState }}>
+                            <MessengerProvider user={hasMessenger ? data.me!! : undefined}>
+                                {props.children}
+                            </MessengerProvider>
+                        </ChatSearchContext.Provider>
+                    </AuthRouter>
+                </ThemeProvider>
             </UserInfoProvider>
         </React.Suspense>
     );
