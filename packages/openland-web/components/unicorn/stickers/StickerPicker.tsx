@@ -334,17 +334,17 @@ const InnerElementType = React.forwardRef<HTMLDivElement>((props: any, ref) => {
     const { children, sections, ...rest } = props;
     const client = useClient();
     const [show] = useCaptionPopper({
-        text: 'Delete stickers',
+        text: 'Delete stickerpack',
         placement: 'top',
         marginBottom: -10,
         marginRight: -2,
         scope: 'stickers-deleting',
     });
 
-    const removePack = (packId: string) => {
+    const removePack = (packId: string, packTitle: string) => {
         AlertBlanket.builder()
             .title(`Delete stickerpack?`)
-            .message(`Are you sure you want to delete stickerpack? This cannot be undone.`)
+            .message(`Are you sure you want to delete ${packTitle} stickerpack?`)
             .action(
                 'Delete',
                 async () => {
@@ -381,7 +381,7 @@ const InnerElementType = React.forwardRef<HTMLDivElement>((props: any, ref) => {
                         <div
                             className={deletePackContainer}
                             onMouseEnter={show}
-                            onClick={() => removePack(pack.id)}
+                            onClick={() => removePack(pack.id, pack.title)}
                         >
                             <UIcon icon={<IcDelete />} />
                         </div>
