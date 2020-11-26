@@ -297,7 +297,7 @@ export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') =
             window.location.replace(window.location.origin + window.location.pathname);
         }, 10);
         setTimeout(() => {
-            window.location.href = os === 'iOS' ? iosStore : androidStore;
+            window.location.replace(os === 'iOS' ? iosStore : androidStore);
         }, 300);
     }, []);
 
