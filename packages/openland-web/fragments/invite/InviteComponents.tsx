@@ -291,17 +291,29 @@ export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') =
     const iosStore = 'https://oplnd.com/ios';
     const androidStore = 'https://oplnd.com/android';
 
+    React.useEffect(() => {
+        if (window.location.search === '?q=store') {
+            window.location.replace(iosStore);
+        }
+    }, []);
+
     const onAndroidClick = () => {
         const location = window.location;
-        window.location.replace('openland://deep' + location.pathname);
+        location.replace('openland://deep' + location.pathname);
         setTimeout(() => {
-            window.location.replace(os === 'iOS' ? iosStore : androidStore);
+            location.replace(androidStore);
         }, 1000);
     };
 
     const onIosClick = () => {
         const location = window.location;
-        window.location.replace('https://www.next.openland.com' + location.pathname + '?q=store');
+        const host = location.host.startsWith('next.openland')
+            ? 'https://next.openland.com'
+            : location.host.startsWith('openland.')
+            ? 'https://www.openland.com'
+            : 'https://openland.com';
+
+        location.replace(host + location.pathname + '?q=store');
     };
 
     return (
