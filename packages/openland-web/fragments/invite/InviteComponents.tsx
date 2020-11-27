@@ -291,7 +291,7 @@ export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') =
     const iosStore = 'https://oplnd.com/ios';
     const androidStore = 'https://oplnd.com/android';
 
-    const onClick = () => {
+    const onAndroidClick = () => {
         const location = window.location;
         window.location.replace('openland://deep' + location.pathname);
         setTimeout(() => {
@@ -299,12 +299,17 @@ export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') =
         }, 1000);
     };
 
+    const onIosClick = () => {
+        const location = window.location;
+        window.location.replace('https://www.next.openland.com' + location.pathname + '?q=store');
+    };
+
     return (
         <UButton
             text={buttonText}
             size="large"
             shape="square"
-            onClick={onClick}
+            onClick={os === 'iOS' ? onIosClick : onAndroidClick}
         />
     );
 };
