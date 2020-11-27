@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
+import { getCounterValue } from 'openland-y-utils/getCounterValue';
 
 type XCounterProps = {
     big?: boolean;
@@ -49,7 +50,7 @@ const XCounterBig = (props: XCounterProps) => (
             props.active && activeStyle,
         )}
     >
-        {props.count}
+        {getCounterValue(props.count)}
     </div>
 );
 
@@ -72,7 +73,7 @@ const XCounterSmall = (props: XCounterProps) => (
             props.active && activeStyle,
         )}
     >
-        {props.count}
+        {getCounterValue(props.count)}
     </div>
 );
 

@@ -115,9 +115,11 @@ export const ChatSearch = React.memo(({ chatId }: ChatSearchProps) => {
         setHiding(true);
 
         setTimeout(() => {
-            chatSearchContext!.setChatSearchState({ enabled: false });
+            chatSearchContext!.setChatSearchState({ chatId: null });
         }, 150);
     }, [hiding]);
+
+    React.useEffect(() => () => chatSearchContext!.setChatSearchState({ chatId: null }), []);
 
     useShortcuts({
         keys: ['Escape'],
