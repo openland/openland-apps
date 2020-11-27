@@ -39,7 +39,7 @@ export const ChatSearchInput = React.memo(
         }
 
         return (
-            <XView width="100%" maxWidth={824} flexDirection="row" alignItems="center" padding={8}>
+            <XView width="100%" maxWidth={824} flexDirection="row" alignItems="center" padding={8} marginLeft={6}>
                 <USearchInput
                     loading={state.loading}
                     message={message}
