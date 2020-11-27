@@ -15,6 +15,10 @@ fragment PlatformNotificationSettingsFull on PlatformNotificationSettings {
         showNotification
         sound
     }
+    channels {
+        showNotification
+        sound
+    }
     notificationPreview
 }
 
