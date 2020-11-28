@@ -81,24 +81,21 @@ const loaderClass = css`
 const messagesListClassName = css`
     max-height: 400px;
     background-color: var(--backgroundPrimary);
-    margin-left: -72px;
-    margin-right: -16px;
-    
-    @media(min-width: 751px) {
-        margin-left: -16px;
-    }
-    
+    margin: 0 -16px;
     @media(min-width: 1260px) {
-        margin: 0 -5000px;    
+      margin: 0 calc(0px - (100vw - 100% - 370px - 64px) / 2);
     }
 `;
 
 const overlayClassName = css`
     height: 10000px;
     background-color: var(--backgroundTertiaryTrans);
-    margin: 0 -2000px;
     box-shadow: inset 0px 8px 24px rgba(0, 0, 0, 0.08), inset 0px 0px 48px rgba(0, 0, 0, 0.04);
     flex-shrink: 0;
+    margin: 0 -16px;
+    @media(min-width: 1260px) {
+      margin: 0 calc(0px - (100vw - 100% - 370px - 64px) / 2);
+    }
 `;
 
 export const ChatSearch = React.memo(({ chatId }: ChatSearchProps) => {

@@ -12,7 +12,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     const router = useStackRouter();
     const layout = useLayout();
 
-    const hasBack = router.pages.length > 1 || props.config.forceShowBack || layout === 'mobile';
+    const hasBack = !props.config.forceHideBack && (router.pages.length > 1 || props.config.forceShowBack || layout === 'mobile');
 
     const appearance = props.config.appearance || 'normal';
     const hasTitleView = !!props.config.titleView;

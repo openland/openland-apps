@@ -4,6 +4,7 @@ export interface HeaderConfig {
     titleView?: any;
     appearance?: 'normal' | 'wide' | 'fullwidth';
     forceShowBack?: boolean;
+    forceHideBack?: boolean;
 }
 
 export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
@@ -12,6 +13,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let appearance: 'normal' | 'wide' | 'fullwidth' | undefined;
     let titleView: any | undefined;
     let forceShowBack: boolean | undefined;
+    let forceHideBack: boolean | undefined;
     for (let c of configs) {
         if (c.title) {
             title = c.title;
@@ -28,8 +30,11 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
         if (c.forceShowBack) {
             forceShowBack = c.forceShowBack;
         }
+        if (c.forceHideBack) {
+            forceHideBack = c.forceHideBack;
+        }
     }
-    return { title, documentTitle, appearance, titleView, forceShowBack };
+    return { title, documentTitle, appearance, titleView, forceShowBack, forceHideBack };
 }
 
 export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
@@ -46,6 +51,9 @@ export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
         return false;
     }
     if (a.forceShowBack !== b.forceShowBack) {
+        return false;
+    }
+    if (a.forceHideBack !== b.forceHideBack) {
         return false;
     }
     return true;

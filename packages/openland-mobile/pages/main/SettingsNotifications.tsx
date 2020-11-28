@@ -34,6 +34,10 @@ const sendMutate = async (state: SettingsState) => {
                 showNotification: state.commentsShowNotification,
                 sound: state.commentsSound
             },
+            channels: {
+                showNotification: state.channelsShowNotification,
+                sound: state.channelsSound,
+            },
             notificationPreview: state.notificationPreview
         }
     };
@@ -49,7 +53,7 @@ const sendMutateDelayed = debounce((state: SettingsState) => {
     }
 }, 3000);
 
-type SettingsStateKeys = 'excludeMutedChats' | 'countUnreadChats' | 'directShowNotification' | 'directSound' | 'secretChatShowNotification' | 'secretChatSound' | 'organizationChatShowNotification' | 'organizationChatSound' | 'communityChatShowNotification' | 'communityChatSound' | 'commentsShowNotification' | 'commentsSound' | 'notificationPreview';
+type SettingsStateKeys = 'excludeMutedChats' | 'countUnreadChats' | 'directShowNotification' | 'directSound' | 'secretChatShowNotification' | 'secretChatSound' | 'organizationChatShowNotification' | 'organizationChatSound' | 'communityChatShowNotification' | 'communityChatSound' | 'commentsShowNotification' | 'commentsSound' | 'channelsShowNotification' | 'channelsSound' | 'notificationPreview';
 interface SettingsState {
     excludeMutedChats: boolean;
     countUnreadChats: boolean;
@@ -62,6 +66,8 @@ interface SettingsState {
     communityChatSound: boolean;
     commentsShowNotification: boolean;
     commentsSound: boolean;
+    channelsShowNotification: boolean;
+    channelsSound: boolean;
     notificationPreview: NotificationPreview;
 }
 
@@ -79,6 +85,8 @@ const SettingsNotificationsContent = React.memo(() => {
         communityChatSound: settingsData.mobile.communityChat.sound,
         commentsShowNotification: settingsData.mobile.comments.showNotification,
         commentsSound: settingsData.mobile.comments.sound,
+        channelsShowNotification: settingsData.mobile.channels.showNotification,
+        channelsSound: settingsData.mobile.channels.sound,
         notificationPreview: settingsData.mobile.notificationPreview
     });
 
@@ -139,6 +147,19 @@ const SettingsNotificationsContent = React.memo(() => {
                     text="Sound"
                     onToggle={value => handleSave('communityChatSound', value)}
                     toggle={settings.communityChatSound}
+                />
+            </ZListGroup>
+
+            <ZListGroup header="Channels">
+                <ZListItem
+                    text="Show notifications"
+                    onToggle={value => handleSave('channelsShowNotification', value)}
+                    toggle={settings.channelsShowNotification}
+                />
+                <ZListItem
+                    text="Sound"
+                    onToggle={value => handleSave('channelsSound', value)}
+                    toggle={settings.channelsSound}
                 />
             </ZListGroup>
 

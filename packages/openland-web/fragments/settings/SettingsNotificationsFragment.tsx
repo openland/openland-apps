@@ -43,6 +43,16 @@ export const SettingsNotificationsFragment = React.memo(() => {
         settings.desktop.communityChat.sound,
         form,
     );
+    const channelsShowNotification = useField(
+        'input.desktop.channels.showNotification',
+        settings.desktop.channels.showNotification,
+        form,
+    );
+    const channelsSound = useField(
+        'input.desktop.channels.sound',
+        settings.desktop.channels.sound,
+        form,
+    );
     const commentsShowNotification = useField(
         'input.desktop.comments.showNotification',
         settings.desktop.comments.showNotification,
@@ -62,6 +72,7 @@ export const SettingsNotificationsFragment = React.memo(() => {
     const countUnreadChats = useField('input.countUnreadChats', settings.countUnreadChats, form);
 
     const doConfirm = (input: UpdateSettingsInput) => {
+        console.log(input, '[input]');
         client.mutateSettingsUpdate({ input });
     };
 
@@ -89,6 +100,10 @@ export const SettingsNotificationsFragment = React.memo(() => {
                             showNotification: communityChatShowNotification.value,
                             sound: communityChatSound.value,
                         },
+                        channels: {
+                            showNotification: channelsShowNotification.value,
+                            sound: channelsSound.value,
+                        },
                         comments: {
                             showNotification: commentsShowNotification.value,
                             sound: commentsSound.value,
@@ -109,6 +124,8 @@ export const SettingsNotificationsFragment = React.memo(() => {
             communityChatSound.value,
             commentsShowNotification.value,
             commentsSound.value,
+            channelsShowNotification.value,
+            channelsSound.value,
             notificationPreview.value,
         ],
     );
@@ -147,6 +164,20 @@ export const SettingsNotificationsFragment = React.memo(() => {
                         <UCheckboxFiled
                             label="Sound"
                             field={communityChatSound}
+                            asSwitcher={true}
+                        />
+                    </XView>
+                </FormSection>
+                <FormSection title="Channels">
+                    <XView marginHorizontal={-16}>
+                        <UCheckboxFiled
+                            label="Show notifications"
+                            field={channelsShowNotification}
+                            asSwitcher={true}
+                        />
+                        <UCheckboxFiled
+                            label="Sound"
+                            field={channelsSound}
                             asSwitcher={true}
                         />
                     </XView>

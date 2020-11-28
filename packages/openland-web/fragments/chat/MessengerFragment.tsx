@@ -57,14 +57,15 @@ export const MessengerFragment = React.memo<{ id: string }>((props) => {
             return null;
         }
     }
-    
+
     return (
         <>
             <UHeader
                 titleView={header}
                 documentTitle={chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title}
                 appearance="wide"
-                forceShowBack={chatSearchState.chatId !== chat.id}
+                forceShowBack={true}
+                forceHideBack={chatSearchState.chatId === chat.id}
             />
             <Deferred>
                 <XView
