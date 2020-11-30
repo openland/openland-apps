@@ -145,7 +145,7 @@ const getMenuContent = (
         });
     }
 
-    if ((group.role === 'OWNER' || group.role === 'ADMIN' || AppConfig.isSuperAdmin()) && user.id !== engine.user.id) {
+    if ((group.role === 'OWNER' || group.role === 'ADMIN' || AppConfig.isSuperAdmin()) && user.id !== engine.user.id && member.role !== 'OWNER' ) {
         res.push({
             title: member.role === 'ADMIN' ? 'Revoke admin status' : 'Make admin',
             icon: <CrownIcon />,
