@@ -293,7 +293,7 @@ export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') =
 
     React.useEffect(() => {
         if (window.location.search === '?q=store') {
-            window.location.replace(iosStore);
+            window.location.replace(os === 'iOS' ? iosStore : androidStore);
         }
     }, []);
 
@@ -301,8 +301,8 @@ export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') =
         const location = window.location;
         location.replace('openland://deep' + location.pathname);
         setTimeout(() => {
-            location.replace(androidStore);
-        }, 2000);
+            location.replace(location.origin + location.pathname + '?q=store');
+        }, 1500);
     };
 
     const onIosClick = () => {
