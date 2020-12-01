@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { View, ScrollView, Text, TouchableWithoutFeedback, Animated, Image } from 'react-native';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
-import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { usePressableView } from './usePressableView';
 import { ZButton } from 'openland-mobile/components/ZButton';
@@ -17,7 +16,6 @@ interface CreateItemProps {
 }
 
 const CreateItem = (props: CreateItemProps) => {
-    const theme = useTheme();
     const { title, description, buttonText, image, bgColor, onPress } = props;
     const { styles, delayPressIn, handlePressIn, handlePressOut } = usePressableView();
 
@@ -26,8 +24,8 @@ const CreateItem = (props: CreateItemProps) => {
             <TouchableWithoutFeedback delayPressIn={delayPressIn} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut}>
                 <View flexDirection="row" borderRadius={RadiusStyles.Large} padding={24} backgroundColor={bgColor}>
                     <View marginRight={8} flexGrow={1} flexShrink={1} flexDirection="column">
-                        <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginBottom: 8 }} allowFontScaling={false}>{title}</Text>
-                        <Text style={{ ...TextStyles.Body, color: theme.foregroundPrimary, opacity: 0.75, marginBottom: 24, }} allowFontScaling={false}>
+                        <Text style={{ ...TextStyles.Title2, color: '#000', marginBottom: 8 }} allowFontScaling={false}>{title}</Text>
+                        <Text style={{ ...TextStyles.Body, color: '#000', opacity: 0.75, marginBottom: 24, }} allowFontScaling={false}>
                             {description}
                         </Text>
                         <ZButton title={buttonText} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut} />
@@ -51,7 +49,7 @@ export const DiscoverCreateList = () => {
                     buttonText="New community"
                     image={require('assets/art-create-community.png')}
                     bgColor="#F4ECF5"
-                    onPress={() => router.push('NewOrganization')}
+                    onPress={() => router.push('NewOrganization', { isCommunity: true })}
                 />
                 <CreateItem
                     title="Chat"
