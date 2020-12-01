@@ -44,14 +44,6 @@ export const DiscoverCreateList = () => {
         <ZListGroup header="Create">
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} paddingLeft={16} paddingBottom={8} pagingEnabled={true} decelerationRate="fast" snapToInterval={351}>
                 <CreateItem
-                    title="Community"
-                    description="A hub for your chats and channels"
-                    buttonText="New community"
-                    image={require('assets/art-create-community.png')}
-                    bgColor="#F4ECF5"
-                    onPress={() => router.push('NewOrganization', { isCommunity: true })}
-                />
-                <CreateItem
                     title="Chat"
                     description="Public, secret, or paid group chat"
                     buttonText="New chat"
@@ -66,6 +58,14 @@ export const DiscoverCreateList = () => {
                     image={require('assets/art-create-channel.png')}
                     bgColor="#E1EEF8"
                     onPress={() => router.push('CreateGroupAttrs', { isChannel: true })}
+                />
+                <CreateItem
+                    title="Community"
+                    description="A hub for your chats and channels"
+                    buttonText="New community"
+                    image={require('assets/art-create-community.png')}
+                    bgColor="#F4ECF5"
+                    onPress={() => router.push('NewOrganization', { isCommunity: true })}
                 />
                 <View width={24} />
             </ScrollView>
