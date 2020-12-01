@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-export const useWithWidth = () => {
+export const useWithWidth = (): [number | null, React.Dispatch<React.SetStateAction<number>>] => {
     if (!canUseDOM) {
-        return [null];
+        return [null, () => { /**/ }];
     }
     const [width, setWidth] = React.useState(window.innerWidth);
     React.useEffect(() => {

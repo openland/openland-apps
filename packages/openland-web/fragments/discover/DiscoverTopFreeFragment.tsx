@@ -36,11 +36,11 @@ export const DiscoverTopFreeFragment = React.memo((props: DiscoverNoLoginProps) 
 
     return (
         <>
-            {!props.noLogin && <UHeader title="Top free" />}
+            {!props.noLogin && <UHeader title="Top groups" />}
             <UFlatList
                 gap={16}
                 track="discover_top_free"
-                title={props.noLogin ? undefined : 'Top free'}
+                title={props.noLogin ? undefined : 'Top groups'}
                 loading={loading}
                 loadMore={handleLoadMore}
                 items={displayItems}
@@ -52,8 +52,8 @@ export const DiscoverTopFreeFragment = React.memo((props: DiscoverNoLoginProps) 
                                 props.noLogin ? (
                                     <JoinButtonSimple group={item as DiscoverSharedRoom} />
                                 ) : (
-                                    <JoinButton group={item as DiscoverSharedRoom} />
-                                )
+                                        <JoinButton group={item as DiscoverSharedRoom} />
+                                    )
                             }
                         />
                     </XView>

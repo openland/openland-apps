@@ -11,6 +11,7 @@ import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabConte
 import { EditorsChoiceItem } from './components/EditorsChoiceItem';
 import { getRandomSeed } from './utils/getRandomSeed';
 import { normalizePopularItems, normalizePopularOrgItems } from 'openland-y-utils/discover/normalizePopularItems';
+import { CreateEntitySlider } from './components/CreateEntitySlider';
 
 export const editorsChoiceItem = css`
     width: calc(100% + 16px);
@@ -65,22 +66,13 @@ export const DiscoverHomeFragment = React.memo(() => {
     return (
         <Page track="discover_home">
             <UHeader title="Home" />
-
-            <XView maxWidth={560} marginTop={25}>
-                {isTabVisible && (
-                    <USlider title="Featured" childrenCount={editorsChoiceItems.length}>
-                        {editorsChoiceItems.map(i => (
-                            <div className={editorsChoiceItem} key={i.id}>
-                                <EditorsChoiceItem {...i} />
-                            </div>
-                        ))}
-                    </USlider>
-                )}
+            <XView maxWidth={560}>
+                <CreateEntitySlider />
 
                 <XView marginTop={10} marginBottom={24}>
                     <div className={listingsContainer}>
                         <ListingCompact title="Popular now" items={normalizePopularItems(rooms.discoverPopularNow.items)} path="/discover/popular" />
-                        <ListingCompact title="New and growing" items={rooms.discoverNewAndGrowing.items || []} path="/discover/new" />
+                        <OrgsListingCompact title="Top communities" items={normalizePopularOrgItems(rooms.discoverTopOrganizations.items)} path="/discover/top-communities" />
                     </div>
                 </XView>
 
@@ -94,17 +86,27 @@ export const DiscoverHomeFragment = React.memo(() => {
                     </USlider>
                 )}
 
-                <XView marginTop={20}>
+                <XView marginTop={20} marginBottom={25}>
                     <div className={listingsContainer}>
-                        <ListingCompact title="Top premium" items={rooms.discoverTopPremium.items || []} path="/discover/premium" />
-                        <ListingCompact title="Top free" items={rooms.discoverTopFree.items || []} path="/discover/free" />
+                        <ListingCompact title="New groups" items={rooms.discoverNewAndGrowing.items || []} path="/discover/new" />
+                        <ListingCompact title="Top groups" items={rooms.discoverTopFree.items || []} path="/discover/free" />
                     </div>
                 </XView>
 
+                {isTabVisible && (
+                    <USlider title="Featured" childrenCount={editorsChoiceItems.length}>
+                        {editorsChoiceItems.map(i => (
+                            <div className={editorsChoiceItem} key={i.id}>
+                                <EditorsChoiceItem {...i} />
+                            </div>
+                        ))}
+                    </USlider>
+                )}
+
                 <XView marginBottom={40} marginTop={20}>
                     <div className={listingsContainer}>
-                        <OrgsListingCompact title="Top communities" items={normalizePopularOrgItems(rooms.discoverTopOrganizations.items)} path="/discover/top-communities" />
                         <OrgsListingCompact title="New communities" items={rooms.discoverNewAndGrowingOrganizations.items || []} path="/discover/new-communities" />
+                        <ListingCompact title="Top premium" items={rooms.discoverTopPremium.items || []} path="/discover/premium" />
                     </div>
                 </XView>
             </XView>

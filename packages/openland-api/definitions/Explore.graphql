@@ -85,25 +85,25 @@ query ExploreRooms($seed: Int!) {
     suggestedRooms: betaSuggestedRooms {
         ...DiscoverSharedRoom
     }
-    discoverTopPremium(first: 5) {
+    discoverTopPremium(first: 3) {
         items {
             ...DiscoverSharedRoom
         }
         cursor
     }
-    discoverTopFree(first: 5) {
+    discoverTopFree(first: 3) {
         items {
             ...DiscoverSharedRoom
         }
         cursor
     }
-    discoverTopOrganizations(first: 5) {
+    discoverTopOrganizations(first: 3) {
         items {
             ...DiscoverOrganization
         }
         cursor
     }
-    discoverNewAndGrowingOrganizations(first: 5, seed: $seed) {
+    discoverNewAndGrowingOrganizations(first: 3, seed: $seed) {
         items {
             ...DiscoverOrganization
         }
@@ -128,13 +128,13 @@ query DiscoverNoAuth($seed: Int!) {
         }
         cursor
     }
-    discoverTopPremium(first: 5) {
+    discoverTopPremium(first: 3) {
         items {
             ...DiscoverSharedRoom
         }
         cursor
     }
-    discoverTopFree(first: 5) {
+    discoverTopFree(first: 3) {
         items {
             ...DiscoverSharedRoom
         }
@@ -164,13 +164,13 @@ query DiscoverNoAuth($seed: Int!) {
         }
     }
 
-    discoverTopOrganizations(first: 5) {
+    discoverTopOrganizations(first: 3) {
         items {
             ...DiscoverOrganization
         }
         cursor
     }
-    discoverNewAndGrowingOrganizations(first: 5, seed: $seed) {
+    discoverNewAndGrowingOrganizations(first: 3, seed: $seed) {
         items {
             ...DiscoverOrganization
         }

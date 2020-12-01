@@ -57,7 +57,7 @@ export const DiscoverFragment = React.memo(() => {
                 marginHorizontal={16}
                 marginBottom={16}
                 ref={refInput}
-                placeholder="Groups, people and more"
+                placeholder="Groups, communities, and more"
             />
             <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>
                 <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
@@ -74,9 +74,14 @@ export const DiscoverFragment = React.memo(() => {
                                 icon={<IcPopular />}
                             />
                             <UListItem
-                                title="New and growing"
-                                path="/discover/new"
-                                icon={<IcNew />}
+                                title="Top groups"
+                                path="/discover/free"
+                                icon={<IcFree />}
+                            />
+                            <UListItem
+                                title="Top communities"
+                                path="/discover/top-communities"
+                                icon={<IcGlob />}
                             />
                             <UListItem
                                 title="Collections"
@@ -84,20 +89,19 @@ export const DiscoverFragment = React.memo(() => {
                                 icon={<IcCollections />}
                             />
                             <UListItem
-                                title="Top premium"
-                                path="/discover/premium"
-                                icon={<IcPremium />}
-                            />
-                            <UListItem title="Top free" path="/discover/free" icon={<IcFree />} />
-                            <UListItem
-                                title="Top communities"
-                                path="/discover/top-communities"
-                                icon={<IcGlob />}
+                                title="New groups"
+                                path="/discover/new"
+                                icon={<IcNew />}
                             />
                             <UListItem
                                 title="New communities"
                                 path="/discover/new-communities"
                                 icon={<IcNewGlobStar />}
+                            />
+                            <UListItem
+                                title="Top premium"
+                                path="/discover/premium"
+                                icon={<IcPremium />}
                             />
                             <UListItem
                                 title="Recommendations"

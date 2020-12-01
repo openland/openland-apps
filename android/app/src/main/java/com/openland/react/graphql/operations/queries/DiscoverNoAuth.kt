@@ -25,7 +25,7 @@ internal val DiscoverNoAuthSelector = obj(
                         ))))),
                     field("cursor", "cursor", scalar("String"))
                 ))),
-            field("discoverTopPremium", "discoverTopPremium", arguments(fieldValue("first", intValue(5))), notNull(obj(
+            field("discoverTopPremium", "discoverTopPremium", arguments(fieldValue("first", intValue(3))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
@@ -33,7 +33,7 @@ internal val DiscoverNoAuthSelector = obj(
                         ))))),
                     field("cursor", "cursor", scalar("String"))
                 ))),
-            field("discoverTopFree", "discoverTopFree", arguments(fieldValue("first", intValue(5))), notNull(obj(
+            field("discoverTopFree", "discoverTopFree", arguments(fieldValue("first", intValue(3))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
@@ -68,7 +68,7 @@ internal val DiscoverNoAuthSelector = obj(
                             fragment("SharedRoom", DiscoverSharedRoomSelector)
                         )))
                 ))))),
-            field("discoverTopOrganizations", "discoverTopOrganizations", arguments(fieldValue("first", intValue(5))), notNull(obj(
+            field("discoverTopOrganizations", "discoverTopOrganizations", arguments(fieldValue("first", intValue(3))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
@@ -76,7 +76,7 @@ internal val DiscoverNoAuthSelector = obj(
                         ))))),
                     field("cursor", "cursor", scalar("String"))
                 ))),
-            field("discoverNewAndGrowingOrganizations", "discoverNewAndGrowingOrganizations", arguments(fieldValue("first", intValue(5)), fieldValue("seed", refValue("seed"))), notNull(obj(
+            field("discoverNewAndGrowingOrganizations", "discoverNewAndGrowingOrganizations", arguments(fieldValue("first", intValue(3)), fieldValue("seed", refValue("seed"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
@@ -88,6 +88,6 @@ internal val DiscoverNoAuthSelector = obj(
 val DiscoverNoAuth = object: OperationDefinition {
     override val name = "DiscoverNoAuth"
     override val kind = OperationKind.QUERY
-    override val body = "query DiscoverNoAuth(\$seed:Int!){discoverNewAndGrowing(first:3,seed:\$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverCollections(first:20){__typename items{__typename ...DiscoverChatsCollectionShort}cursor}discoverEditorsChoice{__typename id image{__typename uuid crop{__typename x y w h}}chat{__typename ...DiscoverSharedRoom}}discoverTopOrganizations(first:5){__typename items{__typename ...DiscoverOrganization}cursor}discoverNewAndGrowingOrganizations(first:5,seed:\$seed){__typename items{__typename ...DiscoverOrganization}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive featured}fragment DiscoverChatsCollectionShort on DiscoverChatsCollection{__typename id title shortname chatsCount description image{__typename uuid crop{__typename x y w h}}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname featured:alphaFeatured}"
+    override val body = "query DiscoverNoAuth(\$seed:Int!){discoverNewAndGrowing(first:3,seed:\$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}discoverTopPremium(first:3){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:3){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverCollections(first:20){__typename items{__typename ...DiscoverChatsCollectionShort}cursor}discoverEditorsChoice{__typename id image{__typename uuid crop{__typename x y w h}}chat{__typename ...DiscoverSharedRoom}}discoverTopOrganizations(first:3){__typename items{__typename ...DiscoverOrganization}cursor}discoverNewAndGrowingOrganizations(first:3,seed:\$seed){__typename items{__typename ...DiscoverOrganization}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive featured}fragment DiscoverChatsCollectionShort on DiscoverChatsCollection{__typename id title shortname chatsCount description image{__typename uuid crop{__typename x y w h}}}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname featured:alphaFeatured}"
     override val selector = DiscoverNoAuthSelector
 }
