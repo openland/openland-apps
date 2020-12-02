@@ -79,6 +79,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryConferenceMedia(variables: Types.ConferenceMediaVariables, params?: QueryParameters): Promise<Types.ConferenceMedia> {
         return this.query('ConferenceMedia', variables, params);
     }
+    queryCreatedStickerPacks(params?: QueryParameters): Promise<Types.CreatedStickerPacks> {
+        return this.query('CreatedStickerPacks', undefined, params);
+    }
     queryDebugGqlTrace(variables: Types.DebugGqlTraceVariables, params?: QueryParameters): Promise<Types.DebugGqlTrace> {
         return this.query('DebugGqlTrace', variables, params);
     }
@@ -367,6 +370,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     querySuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, params?: QueryParameters): Promise<Types.SuperBadgeInRoom> {
         return this.query('SuperBadgeInRoom', variables, params);
     }
+    querySuperStickerPack(variables: Types.SuperStickerPackVariables, params?: QueryParameters): Promise<Types.SuperStickerPack> {
+        return this.query('SuperStickerPack', variables, params);
+    }
+    querySuperStickerPackCatalog(params?: QueryParameters): Promise<Types.SuperStickerPackCatalog> {
+        return this.query('SuperStickerPackCatalog', undefined, params);
+    }
     queryTransactionsHistory(variables: Types.TransactionsHistoryVariables, params?: QueryParameters): Promise<Types.TransactionsHistory> {
         return this.query('TransactionsHistory', variables, params);
     }
@@ -462,6 +471,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchConferenceMedia(variables: Types.ConferenceMediaVariables, params?: QueryParameters): Promise<Types.ConferenceMedia> {
         return this.refetch('ConferenceMedia', variables, params);
+    }
+    refetchCreatedStickerPacks(params?: QueryParameters): Promise<Types.CreatedStickerPacks> {
+        return this.refetch('CreatedStickerPacks', undefined, params);
     }
     refetchDebugGqlTrace(variables: Types.DebugGqlTraceVariables, params?: QueryParameters): Promise<Types.DebugGqlTrace> {
         return this.refetch('DebugGqlTrace', variables, params);
@@ -751,6 +763,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, params?: QueryParameters): Promise<Types.SuperBadgeInRoom> {
         return this.refetch('SuperBadgeInRoom', variables, params);
     }
+    refetchSuperStickerPack(variables: Types.SuperStickerPackVariables, params?: QueryParameters): Promise<Types.SuperStickerPack> {
+        return this.refetch('SuperStickerPack', variables, params);
+    }
+    refetchSuperStickerPackCatalog(params?: QueryParameters): Promise<Types.SuperStickerPackCatalog> {
+        return this.refetch('SuperStickerPackCatalog', undefined, params);
+    }
     refetchTransactionsHistory(variables: Types.TransactionsHistoryVariables, params?: QueryParameters): Promise<Types.TransactionsHistory> {
         return this.refetch('TransactionsHistory', variables, params);
     }
@@ -846,6 +864,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateConferenceMedia(variables: Types.ConferenceMediaVariables, updater: (data: Types.ConferenceMedia) => Types.ConferenceMedia | null): Promise<boolean> {
         return this.updateQuery(updater, 'ConferenceMedia', variables);
+    }
+    updateCreatedStickerPacks(updater: (data: Types.CreatedStickerPacks) => Types.CreatedStickerPacks | null): Promise<boolean> {
+        return this.updateQuery(updater, 'CreatedStickerPacks', undefined);
     }
     updateDebugGqlTrace(variables: Types.DebugGqlTraceVariables, updater: (data: Types.DebugGqlTrace) => Types.DebugGqlTrace | null): Promise<boolean> {
         return this.updateQuery(updater, 'DebugGqlTrace', variables);
@@ -1135,6 +1156,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, updater: (data: Types.SuperBadgeInRoom) => Types.SuperBadgeInRoom | null): Promise<boolean> {
         return this.updateQuery(updater, 'SuperBadgeInRoom', variables);
     }
+    updateSuperStickerPack(variables: Types.SuperStickerPackVariables, updater: (data: Types.SuperStickerPack) => Types.SuperStickerPack | null): Promise<boolean> {
+        return this.updateQuery(updater, 'SuperStickerPack', variables);
+    }
+    updateSuperStickerPackCatalog(updater: (data: Types.SuperStickerPackCatalog) => Types.SuperStickerPackCatalog | null): Promise<boolean> {
+        return this.updateQuery(updater, 'SuperStickerPackCatalog', undefined);
+    }
     updateTransactionsHistory(variables: Types.TransactionsHistoryVariables, updater: (data: Types.TransactionsHistory) => Types.TransactionsHistory | null): Promise<boolean> {
         return this.updateQuery(updater, 'TransactionsHistory', variables);
     }
@@ -1276,6 +1303,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useConferenceMedia(variables: Types.ConferenceMediaVariables, params?: SpaceQueryWatchParameters): Types.ConferenceMedia;
     useConferenceMedia(variables: Types.ConferenceMediaVariables, params?: SpaceQueryWatchParameters): Types.ConferenceMedia | null {
         return this.useQuery('ConferenceMedia', variables, params);
+    }
+    useCreatedStickerPacks(params: SpaceQueryWatchParameters & { suspense: false }): Types.CreatedStickerPacks | null;
+    useCreatedStickerPacks(params?: SpaceQueryWatchParameters): Types.CreatedStickerPacks;
+    useCreatedStickerPacks(params?: SpaceQueryWatchParameters): Types.CreatedStickerPacks | null {
+        return this.useQuery('CreatedStickerPacks', undefined, params);
     }
     useDebugGqlTrace(variables: Types.DebugGqlTraceVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DebugGqlTrace | null;
     useDebugGqlTrace(variables: Types.DebugGqlTraceVariables, params?: SpaceQueryWatchParameters): Types.DebugGqlTrace;
@@ -1757,6 +1789,16 @@ export class OpenlandClient extends BaseSpaceXClient {
     useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, params?: SpaceQueryWatchParameters): Types.SuperBadgeInRoom | null {
         return this.useQuery('SuperBadgeInRoom', variables, params);
     }
+    useSuperStickerPack(variables: Types.SuperStickerPackVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.SuperStickerPack | null;
+    useSuperStickerPack(variables: Types.SuperStickerPackVariables, params?: SpaceQueryWatchParameters): Types.SuperStickerPack;
+    useSuperStickerPack(variables: Types.SuperStickerPackVariables, params?: SpaceQueryWatchParameters): Types.SuperStickerPack | null {
+        return this.useQuery('SuperStickerPack', variables, params);
+    }
+    useSuperStickerPackCatalog(params: SpaceQueryWatchParameters & { suspense: false }): Types.SuperStickerPackCatalog | null;
+    useSuperStickerPackCatalog(params?: SpaceQueryWatchParameters): Types.SuperStickerPackCatalog;
+    useSuperStickerPackCatalog(params?: SpaceQueryWatchParameters): Types.SuperStickerPackCatalog | null {
+        return this.useQuery('SuperStickerPackCatalog', undefined, params);
+    }
     useTransactionsHistory(variables: Types.TransactionsHistoryVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.TransactionsHistory | null;
     useTransactionsHistory(variables: Types.TransactionsHistoryVariables, params?: SpaceQueryWatchParameters): Types.TransactionsHistory;
     useTransactionsHistory(variables: Types.TransactionsHistoryVariables, params?: SpaceQueryWatchParameters): Types.TransactionsHistory | null {
@@ -1810,6 +1852,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateAddComment(variables: Types.AddCommentVariables, params?: MutationParameters): Promise<Types.AddComment> {
         return this.mutate('AddComment', variables, params);
+    }
+    mutateAddSticker(variables: Types.AddStickerVariables, params?: MutationParameters): Promise<Types.AddSticker> {
+        return this.mutate('AddSticker', variables, params);
     }
     mutateAddStickerComment(variables: Types.AddStickerCommentVariables, params?: MutationParameters): Promise<Types.AddStickerComment> {
         return this.mutate('AddStickerComment', variables, params);
@@ -2015,6 +2060,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateRemoveFromContacts(variables: Types.RemoveFromContactsVariables, params?: MutationParameters): Promise<Types.RemoveFromContacts> {
         return this.mutate('RemoveFromContacts', variables, params);
     }
+    mutateRemoveSticker(variables: Types.RemoveStickerVariables, params?: MutationParameters): Promise<Types.RemoveSticker> {
+        return this.mutate('RemoveSticker', variables, params);
+    }
     mutateReportContent(variables: Types.ReportContentVariables, params?: MutationParameters): Promise<Types.ReportContent> {
         return this.mutate('ReportContent', variables, params);
     }
@@ -2111,8 +2159,14 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateStickerPackAddToCollection(variables: Types.StickerPackAddToCollectionVariables, params?: MutationParameters): Promise<Types.StickerPackAddToCollection> {
         return this.mutate('StickerPackAddToCollection', variables, params);
     }
+    mutateStickerPackCreate(variables: Types.StickerPackCreateVariables, params?: MutationParameters): Promise<Types.StickerPackCreate> {
+        return this.mutate('StickerPackCreate', variables, params);
+    }
     mutateStickerPackRemoveFromCollection(variables: Types.StickerPackRemoveFromCollectionVariables, params?: MutationParameters): Promise<Types.StickerPackRemoveFromCollection> {
         return this.mutate('StickerPackRemoveFromCollection', variables, params);
+    }
+    mutateStickerPackUpdate(variables: Types.StickerPackUpdateVariables, params?: MutationParameters): Promise<Types.StickerPackUpdate> {
+        return this.mutate('StickerPackUpdate', variables, params);
     }
     mutateSubscribeToComments(variables: Types.SubscribeToCommentsVariables, params?: MutationParameters): Promise<Types.SubscribeToComments> {
         return this.mutate('SubscribeToComments', variables, params);

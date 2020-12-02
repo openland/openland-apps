@@ -19,6 +19,26 @@ fragment StickerPackFragment on StickerPack {
     }
 }
 
+fragment SuperStickerPackFragment on StickerPack {
+    id
+    title
+    published
+    added
+    author {
+        id
+        name
+    }
+    stickers {
+        ...on ImageSticker {
+            id
+            emoji
+            image {
+                uuid
+            }
+        }
+    }
+}
+
 query MyStickers {
     stickers: myStickers {
         packs {
@@ -46,6 +66,22 @@ query StickerPack($id: ID!) {
         ...StickerPackFragment
     }
 }
+query SuperStickerPackCatalog {
+    stickers: stickerPackCatalog {
+        ...SuperStickerPackFragment
+    }
+}
+query CreatedStickerPacks {
+    createdStickerPacks {
+        ...SuperStickerPackFragment
+    }
+}
+query SuperStickerPack($id: ID!) {
+    stickerPack(id: $id) {
+        ...SuperStickerPackFragment
+    }
+}
+
 mutation StickerPackAddToCollection($id: ID!) {
     stickerPackAddToCollection: stickerPackAddToCollection(id: $id)
 }
@@ -69,4 +105,28 @@ mutation AddStickerComment($peerId: ID!, $stickerId: ID!, $replyComment: ID, $re
     ) {
         id
     }
+}
+
+mutation StickerPackCreate($title: String!, $stickers: [StickerInput!]) {
+    stickerPackCreate(title: $title, stickers: $stickers) {
+        id
+    }
+}
+
+mutation StickerPackUpdate($id: ID!, $input: StickerPackInput!) {
+    stickerPackUpdate(id: $id, input: $input) {
+        id
+    }
+}
+
+mutation AddSticker($packId: ID!, $input: StickerInput!) {
+    stickerPackAddSticker(id: $packId, input: $input) {
+        ... on ImageSticker {
+            id
+        }
+    }
+}
+
+mutation RemoveSticker($id: ID!) {
+    stickerPackRemoveSticker(id: $id)
 }

@@ -30,6 +30,7 @@ object Operations {
         if (name == "CommonChatsWithUser") return CommonChatsWithUser
         if (name == "Conference") return Conference
         if (name == "ConferenceMedia") return ConferenceMedia
+        if (name == "CreatedStickerPacks") return CreatedStickerPacks
         if (name == "DebugGqlTrace") return DebugGqlTrace
         if (name == "DebugGqlTraces") return DebugGqlTraces
         if (name == "Dialogs") return Dialogs
@@ -126,6 +127,8 @@ object Operations {
         if (name == "SuperAccounts") return SuperAccounts
         if (name == "SuperAdmins") return SuperAdmins
         if (name == "SuperBadgeInRoom") return SuperBadgeInRoom
+        if (name == "SuperStickerPack") return SuperStickerPack
+        if (name == "SuperStickerPackCatalog") return SuperStickerPackCatalog
         if (name == "TransactionsHistory") return TransactionsHistory
         if (name == "User") return User
         if (name == "UserAvailableRooms") return UserAvailableRooms
@@ -138,6 +141,7 @@ object Operations {
         if (name == "AccountInviteJoin") return AccountInviteJoin
         if (name == "AddAppToChat") return AddAppToChat
         if (name == "AddComment") return AddComment
+        if (name == "AddSticker") return AddSticker
         if (name == "AddStickerComment") return AddStickerComment
         if (name == "AddToContacts") return AddToContacts
         if (name == "BanUser") return BanUser
@@ -206,6 +210,7 @@ object Operations {
         if (name == "RegisterWebPush") return RegisterWebPush
         if (name == "RemoveCard") return RemoveCard
         if (name == "RemoveFromContacts") return RemoveFromContacts
+        if (name == "RemoveSticker") return RemoveSticker
         if (name == "ReportContent") return ReportContent
         if (name == "ReportOnline") return ReportOnline
         if (name == "RoomAddMembers") return RoomAddMembers
@@ -238,7 +243,9 @@ object Operations {
         if (name == "SetUserShortname") return SetUserShortname
         if (name == "SettingsUpdate") return SettingsUpdate
         if (name == "StickerPackAddToCollection") return StickerPackAddToCollection
+        if (name == "StickerPackCreate") return StickerPackCreate
         if (name == "StickerPackRemoveFromCollection") return StickerPackRemoveFromCollection
+        if (name == "StickerPackUpdate") return StickerPackUpdate
         if (name == "SubscribeToComments") return SubscribeToComments
         if (name == "SuperAccountActivate") return SuperAccountActivate
         if (name == "SuperAccountAdd") return SuperAccountAdd
