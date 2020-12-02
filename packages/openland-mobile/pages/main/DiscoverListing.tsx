@@ -216,7 +216,7 @@ const DiscoverNewListing = (props: DiscoverListingPageProps) => {
 
     return (
         <DiscoverListingContent
-            title="New and growing"
+            title="New groups"
             rooms={rooms}
             loading={loading}
             onEndReached={loadMore}
@@ -296,7 +296,7 @@ const DiscoverTopFreeListing = (props: DiscoverListingPageProps) => {
 
     return (
         <DiscoverListingContent
-            title="Top free"
+            title="Top groups"
             rooms={rooms}
             loading={loading}
             onEndReached={loadMore}

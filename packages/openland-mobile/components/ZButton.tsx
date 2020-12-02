@@ -63,6 +63,8 @@ export interface ZButtonProps {
     style?: ZButtonStyle;
     enabled?: boolean;
     loading?: boolean;
+    onPressIn?: () => void;
+    onPressOut?: () => void;
 }
 
 const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) => {
@@ -161,6 +163,18 @@ const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) 
 
         SAnimated.commitTransaction();
     };
+    const handlePressIn = React.useCallback(() => {
+        triggerAnimation('down');
+        if (props.onPressIn) {
+            props.onPressIn();
+        }
+    }, []);
+    const handlePressOut = React.useCallback(() => {
+        triggerAnimation('down');
+        if (props.onPressOut) {
+            props.onPressOut();
+        }
+    }, []);
 
     return (
         <View style={{ borderRadius, backgroundColor: staticViewColor, opacity: staticViewOpacity, overflow: 'hidden' }}>
@@ -171,8 +185,8 @@ const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) 
 
             <TouchableWithoutFeedback
                 onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined}
-                onPressIn={() => triggerAnimation('down')}
-                onPressOut={() => triggerAnimation('up')}
+                onPressIn={handlePressIn}
+                onPressOut={handlePressOut}
                 disabled={actionInProgress || props.enabled === false}
                 delayPressIn={0}
             >

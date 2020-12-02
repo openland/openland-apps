@@ -94,7 +94,7 @@ const DiscoverResolver = React.memo((props: { path: string }) => {
         );
     } else if (props.path.startsWith('/discover/new')) {
         return (
-            <AuthDiscoverContainer title="New and growing">
+            <AuthDiscoverContainer title="New groups">
                 <DiscoverNewAndGrowingFragment noLogin={true} />
             </AuthDiscoverContainer>
         );
@@ -106,7 +106,7 @@ const DiscoverResolver = React.memo((props: { path: string }) => {
         );
     } else if (props.path.startsWith('/discover/free')) {
         return (
-            <AuthDiscoverContainer title="Top free">
+            <AuthDiscoverContainer title="Top groups">
                 <DiscoverTopFreeFragment noLogin={true} />
             </AuthDiscoverContainer>
         );

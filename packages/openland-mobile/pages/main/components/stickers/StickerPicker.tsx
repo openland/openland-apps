@@ -125,7 +125,6 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
     const { stickerSize, stickersPerRow } = stickerLayout;
 
     const [recentStickers, setRecentStickers] = React.useState<StickerFragment[]>([]);
-    const [selected, setSelected] = React.useState(RECENT_ID);
 
     const stickerPackListRef = React.createRef<FlatList<StickerPackFragment>>();
     const stickerPackButtonListRef = React.createRef<FlatList<StickerPackFragment>>();
@@ -139,6 +138,7 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
         { id: RECENT_ID, title: 'Recent', stickers: recentStickers.slice(0, stickersPerRow * 2), isRecent: true },
         ...clientStickers
     ] : clientStickers;
+    const [selected, setSelected] = React.useState(stickers[0]?.id);
 
     React.useEffect(() => {
         (async () => {

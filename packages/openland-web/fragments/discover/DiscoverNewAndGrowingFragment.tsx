@@ -38,11 +38,11 @@ export const DiscoverNewAndGrowingFragment = React.memo((props: DiscoverNoLoginP
 
     return (
         <>
-            {!props.noLogin && <UHeader title="New and growing" />}
+            {!props.noLogin && <UHeader title="New groups" />}
             <UFlatList
                 gap={16}
                 track="discover_new_and_growing"
-                title={props.noLogin ? undefined : 'New and growing'}
+                title={props.noLogin ? undefined : 'New groups'}
                 loading={loading}
                 loadMore={handleLoadMore}
                 items={displayItems}
@@ -54,8 +54,8 @@ export const DiscoverNewAndGrowingFragment = React.memo((props: DiscoverNoLoginP
                                 props.noLogin ? (
                                     <JoinButtonSimple group={item as DiscoverSharedRoom} />
                                 ) : (
-                                    <JoinButton group={item as DiscoverSharedRoom} />
-                                )
+                                        <JoinButton group={item as DiscoverSharedRoom} />
+                                    )
                             }
                         />
                     </XView>

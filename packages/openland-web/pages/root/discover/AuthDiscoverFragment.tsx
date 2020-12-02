@@ -50,7 +50,7 @@ const AuthDiscoverInner = React.memo((props: { seed: number }) => {
                         <XView marginTop={10} marginBottom={24}>
                             <div className={listingsContainer}>
                                 <ListingCompact title="Popular now" items={normalizePopularItems(discoverPopularNow.items)} path="/discover/popular" />
-                                <ListingCompact title="New and growing" items={discoverNewAndGrowing.items || []} path="/discover/new" />
+                                <OrgsListingCompact title="Top communities" items={normalizePopularOrgItems(discoverTopOrganizations.items)} path="/discover/top-communities" />
                             </div>
                         </XView>
 
@@ -64,15 +64,15 @@ const AuthDiscoverInner = React.memo((props: { seed: number }) => {
 
                         <XView marginTop={20}>
                             <div className={listingsContainer}>
-                                <ListingCompact title="Top premium" items={discoverTopPremium.items || []} path="/discover/premium" />
-                                <ListingCompact title="Top free" items={discoverTopFree.items || []} path="/discover/free" />
+                                <ListingCompact title="New groups" items={discoverNewAndGrowing.items || []} path="/discover/new" />
+                                <ListingCompact title="Top groups" items={discoverTopFree.items || []} path="/discover/free" />
                             </div>
                         </XView>
 
                         <XView marginBottom={40} marginTop={20}>
                             <div className={listingsContainer}>
-                                <OrgsListingCompact title="Top communities" items={normalizePopularOrgItems(discoverTopOrganizations.items)} path="/discover/top-communities" />
                                 <OrgsListingCompact title="New communities" items={discoverNewAndGrowingOrganizations.items || []} path="/discover/new-communities" />
+                                <ListingCompact title="Top premium" items={discoverTopPremium.items || []} path="/discover/premium" />
                             </div>
                         </XView>
                     </XView>

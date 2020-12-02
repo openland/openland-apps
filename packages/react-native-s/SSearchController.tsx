@@ -18,6 +18,7 @@ export interface SSearchControlerProps {
     children?: any;
     openOnMount?: boolean;
     onSearchClose?: () => void;
+    searchPlaceholder?: string;
 }
 
 export class SSearchControlerComponent extends React.PureComponent<SSearchControlerProps & { theme: ThemeGlobal }, { search: boolean, searchMounted: boolean, query: string }> {
@@ -134,7 +135,8 @@ export class SSearchControlerComponent extends React.PureComponent<SSearchContro
                         searchPress: this.handleSearchStart,
                         searchUnderlay: this.containerShadowView,
                         searchContainer: this.searchShadowView,
-                        searchContext: this.searchContext
+                        searchContext: this.searchContext,
+                        searchPlaceholder: this.props.searchPlaceholder
                     }}
                 />
                 {content}
