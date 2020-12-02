@@ -14,7 +14,7 @@ const membersListClass = css`
 const showSearchClass = css`
     animation-name: showSearch;
     animation-duration: 250ms;
-    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    animation-timing-function: ease-out;
     animation-fill-mode: forwards;
     @keyframes showSearch {
         from {
@@ -29,7 +29,7 @@ const showSearchClass = css`
 const hideSearchClass = css`
     animation-name: hideSearch;
     animation-duration: 250ms;
-    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    animation-timing-function: ease-out;
     animation-fill-mode: forwards;
     @keyframes hideSearch {
         from {
