@@ -54,7 +54,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
             </ZListGroup>
             <ZListGroup
                 header="Top communities"
-                actionRight={popularOrgs.length === 5 ? {
+                actionRight={popularOrgs.length === 3 ? {
                     title: 'See all', onPress: () => props.router.push('DiscoverListing', {
                         initialOrgs: popularOrgs,
                         type: 'top-orgs',
@@ -66,7 +66,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
             </ZListGroup>
             <ZListGroup
                 header="Top groups"
-                actionRight={topFreeRooms.length === 5 ? {
+                actionRight={topFreeRooms.length === 3 ? {
                     title: 'See all', onPress: () => props.router.push('DiscoverListing', {
                         initialRooms: topFreeRooms,
                         type: 'top-free',
@@ -79,7 +79,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
             <DiscoverCollectionsList />
             <ZListGroup
                 header="New communities"
-                actionRight={newOrgs.length === 5 ? {
+                actionRight={newOrgs.length === 3 ? {
                     title: 'See all', onPress: () => props.router.push('DiscoverListing', {
                         initialOrgs: newOrgs,
                         type: 'new-orgs',
@@ -104,7 +104,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
             <EditorsChoiceList />
             <ZListGroup
                 header="Top premium"
-                actionRight={topPremiumRooms.length === 5 ? {
+                actionRight={topPremiumRooms.length === 3 ? {
                     title: 'See all', onPress: () => props.router.push('DiscoverListing', {
                         initialRooms: topPremiumRooms,
                         type: 'top-premium',
