@@ -276,43 +276,43 @@ const showEditStickersModal = (stickerPack?: SuperStickerPackFragment) => {
     ));
 };
 
-const DeleteStickerPack = ({ hide, id }: { hide: () => void; id: string }) => {
-    const client = useClient();
+// const DeleteStickerPack = ({ hide, id }: { hide: () => void; id: string }) => {
+//     const client = useClient();
 
-    const remove = async () => {
-        await client.mutateStickerPackRemoveFromCollection({
-            id: id,
-        });
-        await Promise.all([
-            client.refetchCreatedStickerPacks(),
-            client.refetchStickerPackCatalog(),
-        ]);
-        hide();
-    };
+//     const remove = async () => {
+//         await client.mutateStickerPackRemoveFromCollection({
+//             id: id,
+//         });
+//         await Promise.all([
+//             client.refetchCreatedStickerPacks(),
+//             client.refetchStickerPackCatalog(),
+//         ]);
+//         hide();
+//     };
 
-    return (
-        <XView borderRadius={8}>
-            <XModalContent>Are you sure?</XModalContent>
-            <XModalFooter>
-                <XView marginRight={12}>
-                    <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
-                </XView>
-                <UButton text="Delete" style="danger" size="large" onClick={remove} />
-            </XModalFooter>
-        </XView>
-    );
-};
+//     return (
+//         <XView borderRadius={8}>
+//             <XModalContent>Are you sure?</XModalContent>
+//             <XModalFooter>
+//                 <XView marginRight={12}>
+//                     <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
+//                 </XView>
+//                 <UButton text="Delete" style="danger" size="large" onClick={remove} />
+//             </XModalFooter>
+//         </XView>
+//     );
+// };
 
-export const showDeleteStickerPackModal = (id: string) => {
-    showModalBox(
-        {
-            title: 'Remove sticker pack from collection',
-        },
-        ctx => <DeleteStickerPack hide={ctx.hide} id={id} />,
-    );
-};
+// export const showDeleteStickerPackModal = (id: string) => {
+//     showModalBox(
+//         {
+//             title: 'Remove sticker pack from collection',
+//         },
+//         ctx => <DeleteStickerPack hide={ctx.hide} id={id} />,
+//     );
+// };
 
-const StickerPack = (props: { stickerPack: SuperStickerPackFragment, isCollection?: boolean }) => {
+const StickerPack = (props: { stickerPack: SuperStickerPackFragment, isCatalog?: boolean }) => {
     const { stickerPack } = props;
     return (
         <UListItem
@@ -324,7 +324,7 @@ const StickerPack = (props: { stickerPack: SuperStickerPackFragment, isCollectio
             onClick={() => null}
             rightElement={
                 <XView flexDirection="row" marginLeft={20}>
-                    {props.isCollection && (
+                    {/* {props.isCatalog && (
                         <UButton
                             marginRight={10}
                             text="Remove"
@@ -332,7 +332,7 @@ const StickerPack = (props: { stickerPack: SuperStickerPackFragment, isCollectio
                             size="small"
                             onClick={() => showDeleteStickerPackModal(stickerPack.id)}
                         />
-                    )}
+                    )} */}
                     <UButton
                         text="Edit"
                         size="small"
@@ -361,7 +361,7 @@ const StickersFragment = React.memo(() => {
                 Catalog
             </XView>
             {catalogStickers.length > 0 ? catalogStickers.map(pack => (
-                <StickerPack stickerPack={pack} isCollection={true} />
+                <StickerPack stickerPack={pack} isCatalog={true} />
             )) : <XView>No stickers</XView>}
         </XView>
     );
