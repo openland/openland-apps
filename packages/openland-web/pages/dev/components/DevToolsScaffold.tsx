@@ -29,6 +29,7 @@ export function DevToolsScaffold(props: {
                             <UListItem title="Back to mail" path="/mail" icon={<IcBack />} />
                             <UListItem title="Edit collections" path="/super/collections" />
                             <UListItem title="Edit choice" path="/super/choice" />
+                            <UListItem title="Edit stickers" path="/super/stickers" />
                             <UListItem title="Users" path="/super/users" />
                             <UListItem title="Mails" path="/super/mails" />
                             <UListItem title="Admins" path="/super/admins" />

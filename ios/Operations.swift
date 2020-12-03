@@ -1645,6 +1645,31 @@ private let StickerPackFragmentSelector = obj(
                 )))))
         )
 
+private let SuperStickerPackFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("published", "published", notNull(scalar("Boolean"))),
+            field("added", "added", notNull(scalar("Boolean"))),
+            field("author", "author", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String")))
+                ))),
+            field("stickers", "stickers", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    inline("ImageSticker", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("emoji", "emoji", notNull(scalar("String"))),
+                        field("image", "image", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("uuid", "uuid", notNull(scalar("String")))
+                            )))
+                    ))
+                )))))
+        )
+
 private let UserForMentionSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -2519,6 +2544,12 @@ private let ConferenceMediaSelector = obj(
                             field("credential", "credential", scalar("String"))
                         )))))
                 )))
+        )
+private let CreatedStickerPacksSelector = obj(
+            field("createdStickerPacks", "createdStickerPacks", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("StickerPack", SuperStickerPackFragmentSelector)
+                )))))
         )
 private let DebugGqlTraceSelector = obj(
             field("debugGqlTrace", "debugGqlTrace", arguments(fieldValue("id", refValue("id"))), notNull(obj(
@@ -4362,6 +4393,18 @@ private let SuperBadgeInRoomSelector = obj(
                     fragment("UserBadge", UserBadgeSelector)
                 ))
         )
+private let SuperStickerPackSelector = obj(
+            field("stickerPack", "stickerPack", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("StickerPack", SuperStickerPackFragmentSelector)
+                ))
+        )
+private let SuperStickerPackCatalogSelector = obj(
+            field("stickerPackCatalog", "stickers", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("StickerPack", SuperStickerPackFragmentSelector)
+                )))))
+        )
 private let TransactionsHistorySelector = obj(
             field("transactionsHistory", "transactionsHistory", arguments(fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -4514,6 +4557,15 @@ private let AddCommentSelector = obj(
             field("betaAddComment", "betaAddComment", arguments(fieldValue("repeatKey", refValue("repeatKey")), fieldValue("peerId", refValue("peerId")), fieldValue("message", refValue("message")), fieldValue("replyComment", refValue("replyComment")), fieldValue("mentions", refValue("mentions")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("spans", refValue("spans"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID")))
+                )))
+        )
+private let AddStickerSelector = obj(
+            field("stickerPackAddSticker", "stickerPackAddSticker", arguments(fieldValue("id", refValue("packId")), fieldValue("input", refValue("input"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    inline("ImageSticker", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
+                    ))
                 )))
         )
 private let AddStickerCommentSelector = obj(
@@ -4955,6 +5007,9 @@ private let RemoveCardSelector = obj(
 private let RemoveFromContactsSelector = obj(
             field("removeFromContacts", "removeFromContacts", arguments(fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
         )
+private let RemoveStickerSelector = obj(
+            field("stickerPackRemoveSticker", "stickerPackRemoveSticker", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+        )
 private let ReportContentSelector = obj(
             field("reportContent", "reportContent", arguments(fieldValue("contentId", refValue("contentId")), fieldValue("type", refValue("type")), fieldValue("message", refValue("message"))), scalar("Boolean"))
         )
@@ -5149,8 +5204,20 @@ private let SettingsUpdateSelector = obj(
 private let StickerPackAddToCollectionSelector = obj(
             field("stickerPackAddToCollection", "stickerPackAddToCollection", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
+private let StickerPackCreateSelector = obj(
+            field("stickerPackCreate", "stickerPackCreate", arguments(fieldValue("title", refValue("title")), fieldValue("stickers", refValue("stickers"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
+                )))
+        )
 private let StickerPackRemoveFromCollectionSelector = obj(
             field("stickerPackRemoveFromCollection", "stickerPackRemoveFromCollection", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+        )
+private let StickerPackUpdateSelector = obj(
+            field("stickerPackUpdate", "stickerPackUpdate", arguments(fieldValue("id", refValue("id")), fieldValue("input", refValue("input"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
+                )))
         )
 private let SubscribeToCommentsSelector = obj(
             field("subscribeToComments", "subscribeToComments", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("type", refValue("type"))), notNull(scalar("Boolean")))
@@ -5715,6 +5782,12 @@ class Operations {
         .query, 
         "query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}iceServers{__typename urls username credential}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}",
         ConferenceMediaSelector
+    )
+    let CreatedStickerPacks = OperationDefinition(
+        "CreatedStickerPacks",
+        .query, 
+        "query CreatedStickerPacks{createdStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
+        CreatedStickerPacksSelector
     )
     let DebugGqlTrace = OperationDefinition(
         "DebugGqlTrace",
@@ -6292,6 +6365,18 @@ class Operations {
         "query SuperBadgeInRoom($roomId:ID!,$userId:ID!){superBadgeInRoom(roomId:$roomId,userId:$userId){__typename ...UserBadge}}fragment UserBadge on UserBadge{__typename id name verified}",
         SuperBadgeInRoomSelector
     )
+    let SuperStickerPack = OperationDefinition(
+        "SuperStickerPack",
+        .query, 
+        "query SuperStickerPack($id:ID!){stickerPack(id:$id){__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
+        SuperStickerPackSelector
+    )
+    let SuperStickerPackCatalog = OperationDefinition(
+        "SuperStickerPackCatalog",
+        .query, 
+        "query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
+        SuperStickerPackCatalogSelector
+    )
     let TransactionsHistory = OperationDefinition(
         "TransactionsHistory",
         .query, 
@@ -6363,6 +6448,12 @@ class Operations {
         .mutation, 
         "mutation AddComment($repeatKey:String,$peerId:ID!,$message:String,$replyComment:ID,$mentions:[MentionInput!],$fileAttachments:[FileAttachmentInput!],$spans:[MessageSpanInput!]){betaAddComment(repeatKey:$repeatKey,peerId:$peerId,message:$message,replyComment:$replyComment,mentions:$mentions,fileAttachments:$fileAttachments,spans:$spans){__typename id}}",
         AddCommentSelector
+    )
+    let AddSticker = OperationDefinition(
+        "AddSticker",
+        .mutation, 
+        "mutation AddSticker($packId:ID!,$input:StickerInput!){stickerPackAddSticker(id:$packId,input:$input){__typename ... on ImageSticker{__typename id}}}",
+        AddStickerSelector
     )
     let AddStickerComment = OperationDefinition(
         "AddStickerComment",
@@ -6772,6 +6863,12 @@ class Operations {
         "mutation RemoveFromContacts($userId:ID!){removeFromContacts(userId:$userId)}",
         RemoveFromContactsSelector
     )
+    let RemoveSticker = OperationDefinition(
+        "RemoveSticker",
+        .mutation, 
+        "mutation RemoveSticker($id:ID!){stickerPackRemoveSticker(id:$id)}",
+        RemoveStickerSelector
+    )
     let ReportContent = OperationDefinition(
         "ReportContent",
         .mutation, 
@@ -6964,11 +7061,23 @@ class Operations {
         "mutation StickerPackAddToCollection($id:ID!){stickerPackAddToCollection:stickerPackAddToCollection(id:$id)}",
         StickerPackAddToCollectionSelector
     )
+    let StickerPackCreate = OperationDefinition(
+        "StickerPackCreate",
+        .mutation, 
+        "mutation StickerPackCreate($title:String!,$stickers:[StickerInput!]){stickerPackCreate(title:$title,stickers:$stickers){__typename id}}",
+        StickerPackCreateSelector
+    )
     let StickerPackRemoveFromCollection = OperationDefinition(
         "StickerPackRemoveFromCollection",
         .mutation, 
         "mutation StickerPackRemoveFromCollection($id:ID!){stickerPackRemoveFromCollection:stickerPackRemoveFromCollection(id:$id)}",
         StickerPackRemoveFromCollectionSelector
+    )
+    let StickerPackUpdate = OperationDefinition(
+        "StickerPackUpdate",
+        .mutation, 
+        "mutation StickerPackUpdate($id:ID!,$input:StickerPackInput!){stickerPackUpdate(id:$id,input:$input){__typename id}}",
+        StickerPackUpdateSelector
     )
     let SubscribeToComments = OperationDefinition(
         "SubscribeToComments",
@@ -7235,6 +7344,7 @@ class Operations {
         if name == "CommonChatsWithUser" { return CommonChatsWithUser }
         if name == "Conference" { return Conference }
         if name == "ConferenceMedia" { return ConferenceMedia }
+        if name == "CreatedStickerPacks" { return CreatedStickerPacks }
         if name == "DebugGqlTrace" { return DebugGqlTrace }
         if name == "DebugGqlTraces" { return DebugGqlTraces }
         if name == "Dialogs" { return Dialogs }
@@ -7331,6 +7441,8 @@ class Operations {
         if name == "SuperAccounts" { return SuperAccounts }
         if name == "SuperAdmins" { return SuperAdmins }
         if name == "SuperBadgeInRoom" { return SuperBadgeInRoom }
+        if name == "SuperStickerPack" { return SuperStickerPack }
+        if name == "SuperStickerPackCatalog" { return SuperStickerPackCatalog }
         if name == "TransactionsHistory" { return TransactionsHistory }
         if name == "User" { return User }
         if name == "UserAvailableRooms" { return UserAvailableRooms }
@@ -7343,6 +7455,7 @@ class Operations {
         if name == "AccountInviteJoin" { return AccountInviteJoin }
         if name == "AddAppToChat" { return AddAppToChat }
         if name == "AddComment" { return AddComment }
+        if name == "AddSticker" { return AddSticker }
         if name == "AddStickerComment" { return AddStickerComment }
         if name == "AddToContacts" { return AddToContacts }
         if name == "BanUser" { return BanUser }
@@ -7411,6 +7524,7 @@ class Operations {
         if name == "RegisterWebPush" { return RegisterWebPush }
         if name == "RemoveCard" { return RemoveCard }
         if name == "RemoveFromContacts" { return RemoveFromContacts }
+        if name == "RemoveSticker" { return RemoveSticker }
         if name == "ReportContent" { return ReportContent }
         if name == "ReportOnline" { return ReportOnline }
         if name == "RoomAddMembers" { return RoomAddMembers }
@@ -7443,7 +7557,9 @@ class Operations {
         if name == "SetUserShortname" { return SetUserShortname }
         if name == "SettingsUpdate" { return SettingsUpdate }
         if name == "StickerPackAddToCollection" { return StickerPackAddToCollection }
+        if name == "StickerPackCreate" { return StickerPackCreate }
         if name == "StickerPackRemoveFromCollection" { return StickerPackRemoveFromCollection }
+        if name == "StickerPackUpdate" { return StickerPackUpdate }
         if name == "SubscribeToComments" { return SubscribeToComments }
         if name == "SuperAccountActivate" { return SuperAccountActivate }
         if name == "SuperAccountAdd" { return SuperAccountAdd }

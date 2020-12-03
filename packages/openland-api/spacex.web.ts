@@ -1652,6 +1652,31 @@ const StickerPackFragmentSelector = obj(
                 )))))
         );
 
+const SuperStickerPackFragmentSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('title', 'title', args(), notNull(scalar('String'))),
+            field('published', 'published', args(), notNull(scalar('Boolean'))),
+            field('added', 'added', args(), notNull(scalar('Boolean'))),
+            field('author', 'author', args(), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('name', 'name', args(), notNull(scalar('String')))
+                ))),
+            field('stickers', 'stickers', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    inline('ImageSticker', obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('id', 'id', args(), notNull(scalar('ID'))),
+                        field('emoji', 'emoji', args(), notNull(scalar('String'))),
+                        field('image', 'image', args(), notNull(obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('uuid', 'uuid', args(), notNull(scalar('String')))
+                            )))
+                    ))
+                )))))
+        );
+
 const UserForMentionSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -2526,6 +2551,12 @@ const ConferenceMediaSelector = obj(
                             field('credential', 'credential', args(), scalar('String'))
                         )))))
                 )))
+        );
+const CreatedStickerPacksSelector = obj(
+            field('createdStickerPacks', 'createdStickerPacks', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('StickerPack', SuperStickerPackFragmentSelector)
+                )))))
         );
 const DebugGqlTraceSelector = obj(
             field('debugGqlTrace', 'debugGqlTrace', args(fieldValue("id", refValue('id'))), notNull(obj(
@@ -4369,6 +4400,18 @@ const SuperBadgeInRoomSelector = obj(
                     fragment('UserBadge', UserBadgeSelector)
                 ))
         );
+const SuperStickerPackSelector = obj(
+            field('stickerPack', 'stickerPack', args(fieldValue("id", refValue('id'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('StickerPack', SuperStickerPackFragmentSelector)
+                ))
+        );
+const SuperStickerPackCatalogSelector = obj(
+            field('stickerPackCatalog', 'stickers', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('StickerPack', SuperStickerPackFragmentSelector)
+                )))))
+        );
 const TransactionsHistorySelector = obj(
             field('transactionsHistory', 'transactionsHistory', args(fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -4521,6 +4564,15 @@ const AddCommentSelector = obj(
             field('betaAddComment', 'betaAddComment', args(fieldValue("repeatKey", refValue('repeatKey')), fieldValue("peerId", refValue('peerId')), fieldValue("message", refValue('message')), fieldValue("replyComment", refValue('replyComment')), fieldValue("mentions", refValue('mentions')), fieldValue("fileAttachments", refValue('fileAttachments')), fieldValue("spans", refValue('spans'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('id', 'id', args(), notNull(scalar('ID')))
+                )))
+        );
+const AddStickerSelector = obj(
+            field('stickerPackAddSticker', 'stickerPackAddSticker', args(fieldValue("id", refValue('packId')), fieldValue("input", refValue('input'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    inline('ImageSticker', obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('id', 'id', args(), notNull(scalar('ID')))
+                    ))
                 )))
         );
 const AddStickerCommentSelector = obj(
@@ -4962,6 +5014,9 @@ const RemoveCardSelector = obj(
 const RemoveFromContactsSelector = obj(
             field('removeFromContacts', 'removeFromContacts', args(fieldValue("userId", refValue('userId'))), notNull(scalar('Boolean')))
         );
+const RemoveStickerSelector = obj(
+            field('stickerPackRemoveSticker', 'stickerPackRemoveSticker', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
+        );
 const ReportContentSelector = obj(
             field('reportContent', 'reportContent', args(fieldValue("contentId", refValue('contentId')), fieldValue("type", refValue('type')), fieldValue("message", refValue('message'))), scalar('Boolean'))
         );
@@ -5156,8 +5211,20 @@ const SettingsUpdateSelector = obj(
 const StickerPackAddToCollectionSelector = obj(
             field('stickerPackAddToCollection', 'stickerPackAddToCollection', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
         );
+const StickerPackCreateSelector = obj(
+            field('stickerPackCreate', 'stickerPackCreate', args(fieldValue("title", refValue('title')), fieldValue("stickers", refValue('stickers'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID')))
+                )))
+        );
 const StickerPackRemoveFromCollectionSelector = obj(
             field('stickerPackRemoveFromCollection', 'stickerPackRemoveFromCollection', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
+        );
+const StickerPackUpdateSelector = obj(
+            field('stickerPackUpdate', 'stickerPackUpdate', args(fieldValue("id", refValue('id')), fieldValue("input", refValue('input'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID')))
+                )))
         );
 const SubscribeToCommentsSelector = obj(
             field('subscribeToComments', 'subscribeToComments', args(fieldValue("peerId", refValue('peerId')), fieldValue("type", refValue('type'))), notNull(scalar('Boolean')))
@@ -5718,6 +5785,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'ConferenceMedia',
         body: 'query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}iceServers{__typename urls username credential}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}',
         selector: ConferenceMediaSelector
+    },
+    CreatedStickerPacks: {
+        kind: 'query',
+        name: 'CreatedStickerPacks',
+        body: 'query CreatedStickerPacks{createdStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
+        selector: CreatedStickerPacksSelector
     },
     DebugGqlTrace: {
         kind: 'query',
@@ -6295,6 +6368,18 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query SuperBadgeInRoom($roomId:ID!,$userId:ID!){superBadgeInRoom(roomId:$roomId,userId:$userId){__typename ...UserBadge}}fragment UserBadge on UserBadge{__typename id name verified}',
         selector: SuperBadgeInRoomSelector
     },
+    SuperStickerPack: {
+        kind: 'query',
+        name: 'SuperStickerPack',
+        body: 'query SuperStickerPack($id:ID!){stickerPack(id:$id){__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
+        selector: SuperStickerPackSelector
+    },
+    SuperStickerPackCatalog: {
+        kind: 'query',
+        name: 'SuperStickerPackCatalog',
+        body: 'query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
+        selector: SuperStickerPackCatalogSelector
+    },
     TransactionsHistory: {
         kind: 'query',
         name: 'TransactionsHistory',
@@ -6366,6 +6451,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'AddComment',
         body: 'mutation AddComment($repeatKey:String,$peerId:ID!,$message:String,$replyComment:ID,$mentions:[MentionInput!],$fileAttachments:[FileAttachmentInput!],$spans:[MessageSpanInput!]){betaAddComment(repeatKey:$repeatKey,peerId:$peerId,message:$message,replyComment:$replyComment,mentions:$mentions,fileAttachments:$fileAttachments,spans:$spans){__typename id}}',
         selector: AddCommentSelector
+    },
+    AddSticker: {
+        kind: 'mutation',
+        name: 'AddSticker',
+        body: 'mutation AddSticker($packId:ID!,$input:StickerInput!){stickerPackAddSticker(id:$packId,input:$input){__typename ... on ImageSticker{__typename id}}}',
+        selector: AddStickerSelector
     },
     AddStickerComment: {
         kind: 'mutation',
@@ -6775,6 +6866,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'mutation RemoveFromContacts($userId:ID!){removeFromContacts(userId:$userId)}',
         selector: RemoveFromContactsSelector
     },
+    RemoveSticker: {
+        kind: 'mutation',
+        name: 'RemoveSticker',
+        body: 'mutation RemoveSticker($id:ID!){stickerPackRemoveSticker(id:$id)}',
+        selector: RemoveStickerSelector
+    },
     ReportContent: {
         kind: 'mutation',
         name: 'ReportContent',
@@ -6967,11 +7064,23 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'mutation StickerPackAddToCollection($id:ID!){stickerPackAddToCollection:stickerPackAddToCollection(id:$id)}',
         selector: StickerPackAddToCollectionSelector
     },
+    StickerPackCreate: {
+        kind: 'mutation',
+        name: 'StickerPackCreate',
+        body: 'mutation StickerPackCreate($title:String!,$stickers:[StickerInput!]){stickerPackCreate(title:$title,stickers:$stickers){__typename id}}',
+        selector: StickerPackCreateSelector
+    },
     StickerPackRemoveFromCollection: {
         kind: 'mutation',
         name: 'StickerPackRemoveFromCollection',
         body: 'mutation StickerPackRemoveFromCollection($id:ID!){stickerPackRemoveFromCollection:stickerPackRemoveFromCollection(id:$id)}',
         selector: StickerPackRemoveFromCollectionSelector
+    },
+    StickerPackUpdate: {
+        kind: 'mutation',
+        name: 'StickerPackUpdate',
+        body: 'mutation StickerPackUpdate($id:ID!,$input:StickerPackInput!){stickerPackUpdate(id:$id,input:$input){__typename id}}',
+        selector: StickerPackUpdateSelector
     },
     SubscribeToComments: {
         kind: 'mutation',

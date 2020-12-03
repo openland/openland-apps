@@ -1651,6 +1651,31 @@ internal val StickerPackFragmentSelector = obj(
                 )))))
         )
 
+internal val SuperStickerPackFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("published", "published", notNull(scalar("Boolean"))),
+            field("added", "added", notNull(scalar("Boolean"))),
+            field("author", "author", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String")))
+                ))),
+            field("stickers", "stickers", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    inline("ImageSticker", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("emoji", "emoji", notNull(scalar("String"))),
+                        field("image", "image", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("uuid", "uuid", notNull(scalar("String")))
+                            )))
+                    ))
+                )))))
+        )
+
 internal val UserForMentionSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
