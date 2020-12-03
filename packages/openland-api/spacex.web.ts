@@ -1671,7 +1671,14 @@ const SuperStickerPackFragmentSelector = obj(
                         field('emoji', 'emoji', args(), notNull(scalar('String'))),
                         field('image', 'image', args(), notNull(obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                field('uuid', 'uuid', args(), notNull(scalar('String')))
+                                field('uuid', 'uuid', args(), notNull(scalar('String'))),
+                                field('crop', 'crop', args(), obj(
+                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                        field('x', 'x', args(), notNull(scalar('Int'))),
+                                        field('y', 'y', args(), notNull(scalar('Int'))),
+                                        field('w', 'w', args(), notNull(scalar('Int'))),
+                                        field('h', 'h', args(), notNull(scalar('Int')))
+                                    ))
                             )))
                     ))
                 )))))
@@ -5789,7 +5796,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     CreatedStickerPacks: {
         kind: 'query',
         name: 'CreatedStickerPacks',
-        body: 'query CreatedStickerPacks{createdStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
+        body: 'query CreatedStickerPacks{createdStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid crop{__typename x y w h}}}}}',
         selector: CreatedStickerPacksSelector
     },
     DebugGqlTrace: {
@@ -6371,13 +6378,13 @@ export const Operations: { [key: string]: OperationDefinition } = {
     SuperStickerPack: {
         kind: 'query',
         name: 'SuperStickerPack',
-        body: 'query SuperStickerPack($id:ID!){stickerPack(id:$id){__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
+        body: 'query SuperStickerPack($id:ID!){stickerPack(id:$id){__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid crop{__typename x y w h}}}}}',
         selector: SuperStickerPackSelector
     },
     SuperStickerPackCatalog: {
         kind: 'query',
         name: 'SuperStickerPackCatalog',
-        body: 'query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
+        body: 'query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid crop{__typename x y w h}}}}}',
         selector: SuperStickerPackCatalogSelector
     },
     TransactionsHistory: {

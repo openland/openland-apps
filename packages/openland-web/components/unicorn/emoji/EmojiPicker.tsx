@@ -384,7 +384,6 @@ interface EmojiPickerProps {
     onStickerSent?: (sticker: StickerFragment) => void;
     onShow?: (stickers: boolean) => void;
     onHide?: () => void;
-    hideOnPicked?: boolean;
 }
 
 interface EmojiPickerBodyProps {
@@ -662,7 +661,7 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
             placement: 'top-end',
             hideOnLeave: true,
             hideOnClick: false,
-            hideOnChildClick: props.hideOnPicked,
+            hideOnChildClick: false,
             wrapperClassName: wrapperClassName,
         },
         () => (
