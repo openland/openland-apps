@@ -12,6 +12,7 @@ import com.openland.react.async.AsyncDataViewManager
 import com.openland.react.async.AsyncListViewManager
 import com.openland.react.async.AsyncViewManager
 import com.openland.react.graphql.RNGraphQL
+import com.openland.react.keyboard.KeyboardModule
 import com.openland.react.stripe.StripeCardViewManager
 import com.openland.react.stripe.StripeModule
 import com.openland.react.window.BottomSafeAreaProvider
@@ -33,7 +34,8 @@ class RNSPackage : ReactPackage {
                 BottomSafeAreaProvider(reactContext),
                 BenchmarkModule(reactContext),
                 RNGraphQL(reactContext),
-                StripeModule(reactContext)
+                StripeModule(reactContext),
+                KeyboardModule(reactContext)
         )
     }
 

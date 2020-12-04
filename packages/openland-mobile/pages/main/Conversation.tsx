@@ -50,6 +50,7 @@ import { useChatMessagesActionsState, useChatMessagesActionsMethods } from 'open
 import { matchLinks } from 'openland-y-utils/TextProcessor';
 import { StickerPicker } from './components/stickers/StickerPicker';
 import { SDevice } from 'react-native-s/SDevice';
+import { getCachedKeyboardHeight } from 'react-native-s/navigation/containers/PageKeyboard';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -88,6 +89,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     shouldHideStickerKeyboard = true;
     stickerKeyboardHeight = 0;
     openKeyboardHeight = 0;
+    cachedKeyboardHeight = 0;
     stickerButtonPressedCount = 0;
     prevScrollY = Infinity;
 
@@ -121,6 +123,9 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     componentDidMount() {
         this.handleMessagesActions(this.props.messagesActionsState);
+        (async () => {
+            this.cachedKeyboardHeight = await getCachedKeyboardHeight();
+        })();
     }
 
     componentDidUpdate(prevProps: ConversationRootProps) {
@@ -334,7 +339,17 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 this.inputRef.current?.focus();
                 this.inputRef.current?.blur();
             } else {
-                this.inputRef.current?.focus();
+                if (this.cachedKeyboardHeight > 0) {
+                    this.stickerKeyboardHeight = this.cachedKeyboardHeight;
+                    this.waitingForKeyboard = false;
+                    this.setState({ keyboardHeight: 0, stickerKeyboardShown: true, isStickersOpaque: true, hasStickerTranslation: false }, () => {
+                        if (this.inputRef.current && this.inputRef.current.isFocused()) {
+                            this.inputRef.current.blur();
+                        }
+                    });
+                } else {
+                    this.inputRef.current?.focus();
+                }
             }
             return;
         }
