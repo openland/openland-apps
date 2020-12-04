@@ -75,7 +75,7 @@ const getChatLink = (
     if (chat.__typename === 'SharedRoom') {
         return (
             <>
-                {'Message from '}
+                From{' '}
                 <ULink
                     path={`/mail/${chat.id}`}
                     className={cx(TextLabel1, messageSourceEntityClass, defaultHover)}
@@ -87,7 +87,7 @@ const getChatLink = (
     } else {
         return (
             <>
-                {'Message from chat with '}
+                From chat with{' '}
                 <ULink
                     path={`/mail/${chat.id}`}
                     className={cx(TextLabel1, messageSourceEntityClass, defaultHover)}
