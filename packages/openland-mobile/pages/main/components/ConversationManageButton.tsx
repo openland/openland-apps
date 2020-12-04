@@ -156,9 +156,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
 
         builder.action('Media, files, links', onSharedPress, false, require('assets/ic-attach-24.png'));
 
-        if (SUPER_ADMIN) {
-            builder.action('Search messages', onSearchPress, false, require('assets/ic-search-24.png'));
-        }
+        builder.action('Search messages', onSearchPress, false, require('assets/ic-search-24.png'));
 
         if (sharedRoom) {
             if ((room as RoomTiny_room_SharedRoom).canEdit) {

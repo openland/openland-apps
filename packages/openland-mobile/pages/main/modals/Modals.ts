@@ -1,4 +1,5 @@
 import { SRouter } from 'react-native-s/SRouter';
+import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { UserShort } from 'openland-api/spacex.types';
 import { RoomMemberType, OrgMemberType, RoomLongPressHanlder, OrgLongPressHanlder } from './MembersSearch';
 
@@ -21,7 +22,7 @@ export const Modals = {
         }
     },
     showUserMuptiplePicker(
-        router: SRouter,
+        router: SRouter | NavigationManager,
         action: {
             title: string,
             action: (users: UserShort[]) => any,

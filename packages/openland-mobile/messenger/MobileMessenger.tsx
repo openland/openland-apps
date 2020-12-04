@@ -3,7 +3,15 @@ import ShareFile from 'react-native-share';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ASDataView } from 'react-native-async-view/ASDataView';
-import { DataSourceMessageItem, DataSourceDateItem, ConversationEngine, DataSourceNewDividerItem, convertPartialMessage, convertMessage } from 'openland-engines/messenger/ConversationEngine';
+import {
+    DataSourceMessageItem,
+    DataSourceDateItem,
+    ConversationEngine,
+    DataSourceNewDividerItem,
+    convertPartialMessage,
+    convertMessage,
+    DataSourceInvitePeopleItem,
+} from 'openland-engines/messenger/ConversationEngine';
 import { AsyncDateSeparator } from './components/AsyncDateSeparator';
 import { showPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
@@ -41,6 +49,7 @@ import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { ReactionsPicker } from './components/ReactionsPicker';
 import { NotificationCenterHandlers } from 'openland-mobile/notificationCenter/NotificationCenterHandlers';
 import { DataSource } from 'openland-y-utils/DataSource';
+import { AsyncInvitePeopleBlock } from './components/AsyncInvitePeopleBlock';
 
 export const useForward = (sourceId: string, disableSource?: boolean) => {
     const messenger = getMessenger().engine;
@@ -89,7 +98,7 @@ export class MobileMessenger {
 
     private dialogs?: ASDataView<DialogDataSourceItem>;
     private prevDialogsCb: (index: number) => void = () => {/* noop */ };
-    private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>>();
+    private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem | DataSourceInvitePeopleItem>>();
     private readonly sharedMedias = new Map<string, Map<string, ASDataView<SharedMediaDataSourceItem>>>();
     private customHistory: SRouting | null = null;
 
@@ -135,6 +144,7 @@ export class MobileMessenger {
     getConversation(id: string) {
         if (!this.conversations.has(id)) {
             let eng = this.engine.getConversation(id);
+
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
                     if (item.isService) {
@@ -144,6 +154,8 @@ export class MobileMessenger {
                     }
                 } else if (item.type === 'date') {
                     return <AsyncDateSeparator year={item.year} month={item.month} date={item.date} />;
+                } else if (item.type === 'invite_people') {
+                    return <AsyncInvitePeopleBlock room={item.room} client={this.engine.client} router={this.routerSuitable}/>;
                 } else {
                     return <AsyncNewMessageDivider />;
                 }
