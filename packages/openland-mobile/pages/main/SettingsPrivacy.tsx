@@ -15,7 +15,7 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import ActionSheet from 'openland-mobile/components/ActionSheet';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { PrivacyWhoCanSee, UpdateSettingsInput } from 'openland-api/spacex.types';
+import { PrivacyWhoCanAddToGroups, PrivacyWhoCanSee, UpdateSettingsInput } from 'openland-api/spacex.types';
 import { formatPhone } from 'openland-y-utils/auth/formatPhone';
 
 const ChangeLoginMethodComponent = React.memo((props: PageProps) => {
@@ -104,11 +104,17 @@ export const ChangeLoginMethodCode = withApp(ChangeLoginMethodCodeComponent, {
     navigationAppearance: 'small-hidden',
 });
 
-type SettingLabel = 'Everyone' | 'Nobody';
+type SettingLabel = 'Everyone' | 'Nobody' | 'Correspondents';
 
-const labelBySetting: { [setting in PrivacyWhoCanSee]: SettingLabel } = {
+const labelBySettingWhoCanSee: { [setting in PrivacyWhoCanSee]: SettingLabel } = {
     [PrivacyWhoCanSee.EVERYONE]: 'Everyone',
     [PrivacyWhoCanSee.NOBODY]: 'Nobody',
+};
+
+const labelBySettingWhoCanAdd: { [setting in PrivacyWhoCanAddToGroups]: SettingLabel } = {
+    [PrivacyWhoCanAddToGroups.EVERYONE]: 'Everyone',
+    [PrivacyWhoCanAddToGroups.NOBODY]: 'Nobody',
+    [PrivacyWhoCanAddToGroups.CORRESPONDENTS]: 'Correspondents',
 };
 
 type BooleanSetting = 'Allowed' | 'Disallowed';
@@ -118,12 +124,13 @@ const SettingsPrivacyContent = (props: PageProps) => {
     const client = useClient();
     const form = useForm({ disableAppLoader: true });
     const { phone, email } = client.useAuthPoints({ fetchPolicy: 'cache-and-network' }).authPoints;
-    const { whoCanSeeEmail, whoCanSeePhone, communityAdminsCanSeeContactInfo } = client.useSettings({ fetchPolicy: 'cache-and-network' }).settings;
+    const { whoCanSeeEmail, whoCanSeePhone, whoCanAddToGroups, communityAdminsCanSeeContactInfo } = client.useSettings({ fetchPolicy: 'cache-and-network' }).settings;
     const countryCode = client.useIpLocation({ fetchPolicy: 'cache-and-network' })?.ipLocation?.countryCode;
     const emailStr = email || 'Not paired';
     const phoneStr = phone ? formatPhone(phone) : 'Not paired';
-    const phonePrivacyField = useField<SettingLabel>('phone-privacy', labelBySetting[whoCanSeePhone], form);
-    const emailPrivacyField = useField<SettingLabel>('email-privacy', labelBySetting[whoCanSeeEmail], form);
+    const phonePrivacyField = useField<SettingLabel>('phone-privacy', labelBySettingWhoCanSee[whoCanSeePhone], form);
+    const emailPrivacyField = useField<SettingLabel>('email-privacy', labelBySettingWhoCanSee[whoCanSeeEmail], form);
+    const addToGroupsPrivacyField = useField<SettingLabel>('add-to-groups-privacy', labelBySettingWhoCanAdd[whoCanAddToGroups], form);
     const communityAdminsContactsPrivacyField = useField<BooleanSetting>('community-admins-contacts-privacy', communityAdminsCanSeeContactInfo ? 'Allowed' : 'Disallowed', form);
 
     const initiateEmailPair = React.useCallback(() => {
@@ -220,6 +227,20 @@ const SettingsPrivacyContent = (props: PageProps) => {
                             { label: 'Nobody', newSettings: { whoCanSeeEmail: PrivacyWhoCanSee.NOBODY } }
                         ],
                         emailPrivacyField
+                    )}
+                />
+                <ZListItem
+                    text="Who can add me to groups"
+                    small={true}
+                    description={addToGroupsPrivacyField.value}
+                    onPress={() => showEditFieldModal(
+                        'Who can add me to groups',
+                        [
+                            { label: 'Everyone', newSettings: { whoCanAddToGroups: PrivacyWhoCanAddToGroups.EVERYONE } },
+                            { label: 'Correspondents', newSettings: { whoCanAddToGroups: PrivacyWhoCanAddToGroups.CORRESPONDENTS } },
+                            { label: 'Nobody', newSettings: { whoCanAddToGroups: PrivacyWhoCanAddToGroups.NOBODY } }
+                        ],
+                        addToGroupsPrivacyField
                     )}
                 />
                 <ZListItem
