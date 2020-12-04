@@ -86,6 +86,7 @@ const AddStickerForm = ({ id, onChange, onRemove }: {
                         key={imageField.value?.uuid}
                         field={imageField}
                         className={imageUploadStyle}
+                        cropParams={false}
                     />
                 </XView>
                 {imageField.input.errorText && (

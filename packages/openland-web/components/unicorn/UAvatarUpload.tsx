@@ -19,7 +19,7 @@ export interface UAvatarUploadBasicProps {
     value?: UploadedFile | null;
     onChange?: (file: UploadedFile | null) => void;
     initialUrl?: string | null;
-    cropParams?: string;
+    cropParams?: string | false;
     className?: string;
     hideImageIndicator?: boolean;
     clearable?: boolean;
@@ -273,7 +273,7 @@ export const UAvatarUploadBasic = React.memo<UAvatarUploadBasicProps>((props) =>
     <UFileUpload
         {...props}
         initialUrl={props.initialUrl}
-        cropParams={props.cropParams || '1:1'}
+        cropParams={props.cropParams === undefined ? '1:1' : props.cropParams}
         component={(rp) => {
             return <AvatarRender {...rp} />;
         }}
