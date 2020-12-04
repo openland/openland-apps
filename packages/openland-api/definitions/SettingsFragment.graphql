@@ -31,6 +31,7 @@ fragment SettingsFull on Settings {
     countUnreadChats
     whoCanSeeEmail
     whoCanSeePhone
+    whoCanAddToGroups
     communityAdminsCanSeeContactInfo
 
     desktop {

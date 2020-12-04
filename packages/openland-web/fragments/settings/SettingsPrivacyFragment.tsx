@@ -33,6 +33,7 @@ import { WhoCanSee } from './components/WhoCanSee';
 import { Selector } from './components/Selector';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { validateEmail } from 'openland-y-utils/validateEmail';
+import { WhoCanAddToGroups } from './components/WhoCanAddToGroups';
 
 const modalSubtitle = css`
     color: var(--foregroundPrimary);
@@ -525,7 +526,7 @@ const EntityItem = React.memo((props: EntityItemProps) => {
 export const SettingsPrivacyFragment = React.memo(() => {
     const client = useClient();
     const { phone, email } = client.useAuthPoints({ fetchPolicy: 'network-only' }).authPoints;
-    const { whoCanSeeEmail, whoCanSeePhone, communityAdminsCanSeeContactInfo } = client.useSettings({ fetchPolicy: 'network-only' }).settings;
+    const { whoCanSeeEmail, whoCanSeePhone, whoCanAddToGroups, communityAdminsCanSeeContactInfo } = client.useSettings({ fetchPolicy: 'network-only' }).settings;
 
     const handleChangeSettings = React.useCallback(async (input: UpdateSettingsInput) => {
         await client.mutateSettingsUpdate({ input });
@@ -573,6 +574,7 @@ export const SettingsPrivacyFragment = React.memo(() => {
             <UListGroup header="Privacy" padded={false}>
                 <WhoCanSee key={'phone-' + whoCanSeePhone} text="Who can see my phone" value={whoCanSeePhone} onClick={v => handleChangeSettings({ whoCanSeePhone: v })} />
                 <WhoCanSee key={'email-' + whoCanSeeEmail} text="Who can see my email" value={whoCanSeeEmail} onClick={v => handleChangeSettings({ whoCanSeeEmail: v })} />
+                <WhoCanAddToGroups key={'add-to-groups-' + whoCanAddToGroups} text="Who can add me to groups" value={whoCanAddToGroups} onClick={v => handleChangeSettings({ whoCanAddToGroups: v })} />
                 <Selector text="Admins can see my contacts" items={['Allowed', 'Disallowed']} selectedIndex={communityAdminsCanSeeContactInfo ? 0 : 1} onClick={i => handleChangeSettings({ communityAdminsCanSeeContactInfo: i === 0 })} />
             </UListGroup>
         </Page>
