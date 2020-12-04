@@ -21,7 +21,7 @@ const WhoCanAddToGroupsLabel: { [key in PrivacyWhoCanAddToGroups]: string } = {
     NOBODY: 'Nobody'
 };
 
-const WhoCanAddToGroupsLabelOrder: PrivacyWhoCanAddToGroups[] = [PrivacyWhoCanAddToGroups.EVERYONE, PrivacyWhoCanAddToGroups.NOBODY, PrivacyWhoCanAddToGroups.CORRESPONDENTS];
+const WhoCanAddToGroupsLabelOrder: PrivacyWhoCanAddToGroups[] = [PrivacyWhoCanAddToGroups.EVERYONE, PrivacyWhoCanAddToGroups.CORRESPONDENTS, PrivacyWhoCanAddToGroups.NOBODY];
 
 const boxClass = css`
     user-select: none;
@@ -48,7 +48,7 @@ const MenuComponent = React.memo((props: WhoCanAddToGroupsProps & { ctx: UPopper
         });
     });
 
-    return builder.build(ctx, 160, wrapperClass);
+    return builder.build(ctx, 170, wrapperClass);
 });
 
 export const WhoCanAddToGroups = React.memo((props: WhoCanAddToGroupsProps) => {
