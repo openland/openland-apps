@@ -54,7 +54,7 @@ export const AsyncInvitePeopleBlock = React.memo((props: AsyncInvitePeopleBlockP
     return (
         <ASFlex flexDirection="column" alignItems="center" marginBottom={32}>
             <ASImage source={require('assets/art-add-people.png')} width={140} height={140} />
-            <ASText {...TextStylesAsync.Title2} marginBottom={6} marginTop={22}>
+            <ASText {...TextStylesAsync.Title2} color={theme.foregroundPrimary} marginBottom={6} marginTop={22}>
                 Add people
             </ASText>
             <ASText {...TextStylesAsync.Body} color={theme.foregroundSecondary} marginBottom={24}>
