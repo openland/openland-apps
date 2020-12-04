@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { DataSourceMessageItem, DataSourceDateItem, DataSourceNewDividerItem } from 'openland-engines/messenger/ConversationEngine';
+import {
+    DataSourceMessageItem,
+    DataSourceDateItem,
+    DataSourceNewDividerItem,
+    DataSourceInvitePeopleItem,
+} from 'openland-engines/messenger/ConversationEngine';
 import { XView, XViewRouterContext, XViewRouteContext } from 'react-mental';
 import { cx, css } from 'linaria';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
@@ -203,7 +208,7 @@ const heightBySpan = {
     [SpanType.emoji]: 84,
 };
 
-type IncomingMessage = DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem;
+type IncomingMessage = DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem | DataSourceInvitePeopleItem;
 
 type MessageHandlersRef = { slideDown: (height: number) => void };
 

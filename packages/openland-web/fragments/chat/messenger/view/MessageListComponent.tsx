@@ -4,6 +4,7 @@ import { ServiceMessage } from '../message/ServiceMessage';
 import {
     ConversationEngine,
     DataSourceDateItem,
+    DataSourceInvitePeopleItem,
     DataSourceNewDividerItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/spacex.types';
@@ -21,6 +22,7 @@ import { NewMessageDividerComponent } from './NewMessageDividerComponent';
 import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
 import { XScrollViewAnchored } from 'openland-x/XScrollViewAnchored';
 import { ChatEmptyComponent } from '../../components/ChatEmptyComponent';
+import { InvitePeopleBlock } from './InvitePeopleBlock';
 
 const messagesWrapperClassName = css`
     padding-top: 96px;
@@ -97,7 +99,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
     }
 
     renderMessage = React.memo(
-        (data: { item: DataSourceWebMessageItem | DataSourceDateItem | DataSourceNewDividerItem }) => {
+        (data: { item: DataSourceWebMessageItem | DataSourceDateItem | DataSourceNewDividerItem | DataSourceInvitePeopleItem }) => {
             if (data.item.type === 'message' && data.item.isService) {
                 return <ServiceMessage message={data.item} />;
             } else if (data.item.type === 'message') {
@@ -106,6 +108,8 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
                 return <DateComponent item={data.item} />;
             } else if (data.item.type === 'new_divider') {
                 return <NewMessageDividerComponent dividerKey={(data.item as any).dataKey} />;
+            } else if (data.item.type === 'invite_people') {
+                return <InvitePeopleBlock room={data.item.room} />;
             }
             return <div />;
         },

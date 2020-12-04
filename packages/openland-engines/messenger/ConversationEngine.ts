@@ -85,6 +85,13 @@ export interface DataSourceNewDividerItem {
     date: undefined;
 }
 
+export interface DataSourceInvitePeopleItem {
+    key: string;
+    type: 'invite_people';
+    date: undefined;
+    room: Types.ChatInit_room_SharedRoom;
+}
+
 export const getReplies = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined, chaId: string, engine: MessengerEngine) => {
     return src && src.quotedMessages ? src.quotedMessages.sort((a, b) => a.date - b.date).map(m => convertMessage(m as Types.FullMessage, chaId, engine)) : undefined;
 };
@@ -214,6 +221,15 @@ export const createDateDataSourceItem = (date: Date): DataSourceDateItem => {
     };
 };
 
+const createInvitePeopleBlock = (room: Types.ChatInit_room_SharedRoom): DataSourceInvitePeopleItem => {
+    return {
+        type: 'invite_people',
+        date: undefined,
+        key: 'invite_people',
+        room,
+    };
+};
+
 const createNewMessageDividerSourceItem = (messageId: string): DataSourceNewDividerItem => {
     return {
         type: 'new_divider',
@@ -231,7 +247,7 @@ export const isPendingAttach = (message: DataSourceMessageItem) => message.attac
 export class ConversationEngine implements MessageSendHandler {
     readonly engine: MessengerEngine;
     readonly conversationId: string;
-    readonly dataSource: DataSource<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>;
+    readonly dataSource: DataSource<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem | DataSourceInvitePeopleItem>;
     // private readonly dataSourceLogger: DataSourceLogger<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>;
     historyFullyLoaded?: boolean;
     forwardFullyLoaded?: boolean;
@@ -243,6 +259,7 @@ export class ConversationEngine implements MessageSendHandler {
     private watcher: GraphqlActiveSubscription<Types.ChatWatch> | null = null;
     private updateQueue = createFifoQueue<Types.ChatWatch_event_ChatUpdateBatch_updates>();
     private isOpen = false;
+    private room:  Types.ChatInit_room_PrivateRoom | Types.ChatInit_room_SharedRoom | null = null;
     private messages: ModelMessage[] = [];
     private state: ConversationState;
     private lastTopMessageRead: string | null = null;
@@ -337,6 +354,7 @@ export class ConversationEngine implements MessageSendHandler {
         let messages = [...(initialChat).messages];
         messages.reverse();
         this.messages = messages;
+        this.room = initialChat.room;
         this.pinId = (initialChat.room && initialChat.room.pinnedMessage) ? initialChat.room.pinnedMessage.id : undefined;
         this.role = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.role || null;
         this.badge = initialChat.room && initialChat.room.myBadge || undefined;
@@ -362,13 +380,12 @@ export class ConversationEngine implements MessageSendHandler {
         this.onMessagesUpdated();
 
         // Update Data Source
-        let dsItems: (DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem)[] = [];
+        let dsItems: (DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem | DataSourceInvitePeopleItem)[] = [];
         let sourceFragments = messages as Types.FullMessage[];
         let prevDate: string | undefined;
         let newMessagesDivider: DataSourceNewDividerItem | undefined;
         let anchor;
         for (let i = sourceFragments.length - 1; i >= 0; i--) {
-
             if (this.loadFrom === 'unread') {
                 // append unread mark
                 if ((initialChat.lastReadedMessage && initialChat.lastReadedMessage.id) && sourceFragments[i].id === (initialChat.lastReadedMessage && initialChat.lastReadedMessage.id) && i !== sourceFragments.length - 1) {
@@ -393,6 +410,10 @@ export class ConversationEngine implements MessageSendHandler {
         if (this.historyFullyLoaded && prevDate) {
             let d = new Date(parseInt(prevDate, 10));
             dsItems.push(createDateDataSourceItem(d));
+        }
+
+        if (sourceFragments[0].seq === 1 && this.room?.__typename === 'SharedRoom' && this.role === 'OWNER') {
+            dsItems.push(createInvitePeopleBlock(this.room));
         }
 
         this.dataSource.initialize(dsItems, !!this.historyFullyLoaded, !!this.forwardFullyLoaded, anchor, reset);
@@ -514,7 +535,7 @@ export class ConversationEngine implements MessageSendHandler {
         }
 
         // Data Source
-        let dsItems: (DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem)[] = [];
+        let dsItems: (DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem | DataSourceInvitePeopleItem)[] = [];
         let prevDate: string | undefined;
         if (this.dataSource.getSize() > 0 && direction === 'backward') {
             prevDate = (this.dataSource.getAt(this.dataSource.getSize() - 1) as DataSourceMessageItem).date + '';
@@ -540,6 +561,10 @@ export class ConversationEngine implements MessageSendHandler {
             if (this.historyFullyLoaded && prevDate) {
                 let d = new Date(parseInt(prevDate, 10));
                 dsItems.push(createDateDataSourceItem(d));
+            }
+
+            if (sourceFragments[sourceFragments.length - 1].seq === 1 && this.room?.__typename === 'SharedRoom' && this.role === 'OWNER') {
+                dsItems.push(createInvitePeopleBlock(this.room));
             }
             this.dataSource.loadedMore(dsItems, !!this.historyFullyLoaded);
         } else {
@@ -1025,7 +1050,7 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     private appendMessage = (src: ModelMessage) => {
-        let prev: DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem | undefined;
+        let prev: DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem | DataSourceInvitePeopleItem |undefined;
         if (this.dataSource.getSize() > 0) {
             prev = this.dataSource.getAt(0);
         }
