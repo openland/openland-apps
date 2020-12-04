@@ -10,7 +10,6 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
 import Toast from 'openland-mobile/components/Toast';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
-import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 
 interface ConversationManageButtonProps {
     muted: boolean;
