@@ -724,6 +724,7 @@ query Message($messageId: ID!) {
                         user {
                             id
                             isBot
+                            name
                         }
                         pinnedMessage {
                             id
