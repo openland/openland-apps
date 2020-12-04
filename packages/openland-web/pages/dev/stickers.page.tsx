@@ -86,6 +86,7 @@ const AddStickerForm = ({ id, onChange, onRemove }: {
                         key={imageField.value?.uuid}
                         field={imageField}
                         className={imageUploadStyle}
+                        cropParams={false}
                     />
                 </XView>
                 {imageField.input.errorText && (
@@ -314,6 +315,19 @@ const showEditStickersModal = (stickerPack?: SuperStickerPackFragment) => {
 
 const StickerPack = (props: { stickerPack: SuperStickerPackFragment, isCatalog?: boolean }) => {
     const { stickerPack } = props;
+    const client = useClient();
+    const remove = async () => {
+        await client.mutateStickerPackRemoveFromCollection({
+            id: stickerPack.id,
+        });
+        await client.refetchStickerPack({ id: stickerPack.id });
+    };
+    const add = async () => {
+        await client.mutateStickerPackAddToCollection({
+            id: stickerPack.id,
+        });
+        await client.refetchStickerPack({ id: stickerPack.id });
+    };
     return (
         <UListItem
             key={stickerPack.id}
@@ -324,15 +338,27 @@ const StickerPack = (props: { stickerPack: SuperStickerPackFragment, isCatalog?:
             onClick={() => null}
             rightElement={
                 <XView flexDirection="row" marginLeft={20}>
-                    {/* {props.isCatalog && (
-                        <UButton
-                            marginRight={10}
-                            text="Remove"
-                            style="danger"
-                            size="small"
-                            onClick={() => showDeleteStickerPackModal(stickerPack.id)}
-                        />
-                    )} */}
+                    {!props.isCatalog && (
+                        <>
+                            {stickerPack.added ? (
+                                <UButton
+                                    marginRight={10}
+                                    text="Remove from me"
+                                    style="danger"
+                                    size="small"
+                                    action={remove}
+                                />
+                            ) : (
+                                    <UButton
+                                        marginRight={10}
+                                        text="Add to me"
+                                        style="success"
+                                        size="small"
+                                        action={add}
+                                    />
+                                )}
+                        </>
+                    )}
                     <UButton
                         text="Edit"
                         size="small"

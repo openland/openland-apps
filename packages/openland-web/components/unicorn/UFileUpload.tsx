@@ -30,7 +30,7 @@ export interface UUploadCareImageCrop {
 export interface UFileUploadProps {
     dataTestId?: string;
     component: React.ComponentType<UFileUploadRenderProps>;
-    cropParams?: string;
+    cropParams?: string | false;
     value?: UploadedFile | null;
     onChange?: (file: UploadedFile | null) => void;
     initialUrl?: string | null;
@@ -97,15 +97,14 @@ export const UFileUpload = (props: UFileUploadProps) => {
         // so we only need real images and their URLs start with ucarecdn address
         let uploaded = file && file.uuid.includes('https://ucarecdn.com/')
             ? UploadCare.fileFrom(
-                  'uploaded',
-                  file.crop
-                      ? 'https://ucarecdn.com/' +
-                        file.uuid +
-                        `/-/crop/${file.crop.width}x${file.crop.height}/${file.crop.left},${
-                            file.crop.top
-                        }/`
-                      : file.uuid,
-              )
+                'uploaded',
+                file.crop
+                    ? 'https://ucarecdn.com/' +
+                    file.uuid +
+                    `/-/crop/${file.crop.width}x${file.crop.height}/${file.crop.left},${file.crop.top
+                    }/`
+                    : file.uuid,
+            )
             : null;
 
         let dialog = UploadCare.openDialog(uploaded, {

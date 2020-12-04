@@ -11,7 +11,11 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupWindow
 import com.openland.app.R
-import kotlin.reflect.full.functions
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.ReactContextBaseJavaModule
+import com.facebook.react.bridge.ReactMethod
+import android.content.res.Resources
+import com.facebook.react.bridge.Promise
 
 /**
  * Created by Cristian Holdunu on 12/01/2019.
@@ -32,6 +36,22 @@ object KeyboardInfo {
      * Real time keyboard state
      */
     var keyboardState = STATE_UNKNOWN
+}
+
+class KeyboardModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+    override fun getName(): String {
+        return "RNKeyboard"
+    }
+
+    @ReactMethod
+    fun getCachedKeyboardHeight(promise: Promise) {
+        val r: Double = if (KeyboardInfo.keyboardHeight == -1) {
+            -1.00
+        } else {
+            KeyboardInfo.keyboardHeight / Resources.getSystem().displayMetrics.density.toDouble()
+        }
+        promise.resolve(r)
+    }
 }
 
 /**
@@ -61,6 +81,7 @@ class KeyboardHeightProvider(val activity: Activity) : PopupWindow(activity) {
 
     private fun getGlobalLayoutListener() = ViewTreeObserver.OnGlobalLayoutListener {
         computeKeyboardState()
+        print("@@OnGlobalLayoutListener")
     }
 
     private fun computeKeyboardState() {

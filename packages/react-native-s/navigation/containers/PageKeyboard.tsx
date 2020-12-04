@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ASKeyboardContext, ASKeyboardAcessoryViewContext } from 'react-native-async-view/ASKeyboardContext';
-import { NativeSyntheticEvent, Platform, View, DeviceEventEmitter } from 'react-native';
+import { NativeSyntheticEvent, Platform, View, DeviceEventEmitter, NativeModules } from 'react-native';
 import { SDevice } from '../../SDevice';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 
@@ -19,6 +19,13 @@ function throttleWithLastCall(callback: Function, limit: number) {
         }
     };
 }
+
+export const getCachedKeyboardHeight = async () => {
+    if (Platform.OS === 'android') {
+        return await NativeModules.RNKeyboard.getCachedKeyboardHeight();
+    }
+    return Promise.resolve(0);
+};
 
 export interface PageKeyboardProps {
     contextKey: string;
