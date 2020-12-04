@@ -9,7 +9,11 @@ import { ReactionsView } from 'openland-mobile/components/message/content/Reacti
 import { SHeaderView } from 'react-native-s/SHeaderView';
 import { EntityHeader } from './components/EntityHeader';
 import { formatDateAtTime } from 'openland-y-utils/formatTime';
-import { Message_message } from 'openland-api/spacex.types';
+import {
+    Message_message,
+    Message_message_GeneralMessage_source_MessageSourceChat_chat_PrivateRoom,
+    Message_message_GeneralMessage_source_MessageSourceChat_chat_SharedRoom,
+} from 'openland-api/spacex.types';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -18,13 +22,43 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 // remove after adding isDeleted flag in API
 const isMessageDeleted = (message: Message_message) => {
-    if (message.sender.name === 'Deleted' && message.sender.isBot && message.message === 'This message has been deleted') {
+    if (
+        message.sender.name === 'Deleted' &&
+        message.sender.isBot &&
+        message.message === 'This message has been deleted'
+    ) {
         return true;
     }
     return false;
 };
 
-const MessageMenu = React.memo((props: { message: Message_message, isSubscribed: boolean }) => {
+const getChatLink = (
+    chat:
+        | Message_message_GeneralMessage_source_MessageSourceChat_chat_PrivateRoom
+        | Message_message_GeneralMessage_source_MessageSourceChat_chat_SharedRoom,
+) => {
+    if (chat.__typename === 'SharedRoom') {
+        return (
+            <>
+                Message from{' '}
+                <Text style={{ ...TextStyles.Label2 }} allowFontScaling={false}>
+                    {chat.title}
+                </Text>
+            </>
+        );
+    } else {
+        return (
+            <>
+                Message from chat with{' '}
+                <Text style={{ ...TextStyles.Label2 }} allowFontScaling={false}>
+                    {chat.user.name}
+                </Text>
+            </>
+        );
+    }
+};
+
+const MessageMenu = React.memo((props: { message: Message_message; isSubscribed: boolean }) => {
     const messenger = getMessenger();
     const { source } = props.message;
 
@@ -32,7 +66,11 @@ const MessageMenu = React.memo((props: { message: Message_message, isSubscribed:
         return null;
     }
 
-    return <ZManageButton onPress={() => messenger.handleMessagePageMenuPress(props.message, props.isSubscribed)} />;
+    return (
+        <ZManageButton
+            onPress={() => messenger.handleMessagePageMenuPress(props.message, props.isSubscribed)}
+        />
+    );
 });
 
 const MessageComponent = React.memo((props: PageProps) => {
@@ -54,14 +92,17 @@ const MessageComponent = React.memo((props: PageProps) => {
         <View paddingHorizontal={16} paddingTop={8} paddingBottom={16}>
             <ZMessageView message={message} />
 
-            {source && source.__typename === 'MessageSourceChat' && source.chat.__typename === 'SharedRoom' && (
-                <TouchableOpacity onPress={() => messenger.handleMessageSourcePress(source.chat.id)} activeOpacity={HighlightAlpha}>
+            {source && source.__typename === 'MessageSourceChat' && (
+                <TouchableOpacity
+                    onPress={() => messenger.handleMessageSourcePress(source.chat.id)}
+                    activeOpacity={HighlightAlpha}
+                >
                     <View paddingTop={8}>
-                        <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }} allowFontScaling={false}>
-                            Message from{' '}
-                            <Text style={{ ...TextStyles.Label2 }} allowFontScaling={false}>
-                                {source.chat.title}
-                            </Text>
+                        <Text
+                            style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}
+                            allowFontScaling={false}
+                        >
+                            {getChatLink(source.chat)}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -80,7 +121,7 @@ const MessageComponent = React.memo((props: PageProps) => {
                     avatar={{
                         photo: sender.photo,
                         id: sender.id,
-                        title: sender.name
+                        title: sender.name,
                     }}
                     title={sender.name}
                     subtitle={formatDateAtTime(parseInt(date, 10))}
@@ -88,7 +129,9 @@ const MessageComponent = React.memo((props: PageProps) => {
                 />
             </SHeaderView>
 
-            {!isDeleted && <MessageMenu message={message} isSubscribed={!!messageData.comments.subscription} />}
+            {!isDeleted && (
+                <MessageMenu message={message} isSubscribed={!!messageData.comments.subscription} />
+            )}
 
             <CommentsWrapper
                 peerView={peerView}
