@@ -20,7 +20,9 @@ import { TextStyles } from 'openland-web/utils/TextStyles';
 import { EmojiPicker } from 'openland-web/components/unicorn/emoji/EmojiPicker';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import DeleteIcon from 'openland-icons/s/ic-close-16.svg';
+import AddIcon from 'openland-icons/s/ic-plus-24.svg';
 import { isEmoji } from 'openland-y-utils/isEmoji';
+import { randomKey } from 'openland-unicorn/components/utils/randomKey';
 
 const imageUploadStyle = css`
     & > .avatar-container {
@@ -30,20 +32,25 @@ const imageUploadStyle = css`
     }
 `;
 
-const getAvatar = (uuid: string) => {
-    return `https://ucarecdn.com/${uuid}/-/format/auto/-/scale_crop/96x96/center/`;
+const getAvatar = (uuid: string, crop?: { x: number, y: number, w: number, h: number } | null) => {
+    let res = `https://ucarecdn.com/${uuid}/`;
+    if (crop) {
+        res += `-/crop/${crop.w}x${crop.h}/${crop.x},${crop.y}/`;
+    }
+    return res + `-/format/jpeg/`;
 };
 
-const EditStickerPackModalInner = React.memo((props: {
-    hide: () => void;
-    stickerPack: SuperStickerPackFragment;
+type StickerToAdd = {
+    image: { value?: StoredFileT | undefined | null, errorText?: string },
+    emoji: { value?: string, errorText?: string }
+};
+
+const AddStickerForm = ({ id, onChange, onRemove }: {
+    id?: string,
+    onChange: (sticker: StickerToAdd) => void,
+    onRemove: () => void,
 }) => {
-    const { hide } = props;
-    const client = useClient();
-    const { stickerPack } = client.useSuperStickerPack({ id: props.stickerPack.id });
     const form = useForm();
-    const titleField = useField('stickers.title', stickerPack?.title || 'New StickerPack', form);
-    const publishedField = useField('stickers.published', !!stickerPack?.published, form);
     const imageField = useField<StoredFileT | undefined | null>(
         'sticker.image',
         null,
@@ -62,40 +69,70 @@ const EditStickerPackModalInner = React.memo((props: {
         }
     ]);
 
+    React.useEffect(() => {
+        onChange({
+            image: { value: imageField.value, errorText: imageField.input.errorText },
+            emoji: { value: emojiField.value, errorText: emojiField.input.errorText }
+        });
+    }, [emojiField.value, imageField.value]);
+    return (
+        <XView justifyContent="center" marginBottom={10} marginRight={10}>
+            <XView>
+                <XView flexDirection="row">
+                    <XView {...TextStyles.Body} marginRight={10}>
+                        Image:
+                            </XView>
+                    <UAvatarUploadField
+                        key={imageField.value?.uuid}
+                        field={imageField}
+                        className={imageUploadStyle}
+                    />
+                </XView>
+                {imageField.input.errorText && (
+                    <UInputErrorText text={imageField.input.errorText} />
+                )}
+            </XView>
+            <XView>
+                <XView flexDirection="row">
+                    <XView {...TextStyles.Body}>
+                        Emoji:
+                            </XView>
+                    <XView width={96} height={40} {...TextStyles.Title3} justifyContent="center" alignItems="center">
+                        {emojiField.value}
+                        <EmojiPicker
+                            onEmojiPicked={emojiField.input.onChange}
+                        />
+                    </XView>
+                </XView>
+                {emojiField.input.errorText && (
+                    <UInputErrorText text={emojiField.input.errorText} />
+                )}
+            </XView>
+            <XView position="absolute" top={0} right={0} zIndex={2}>
+                <UIconButton size="small" icon={<DeleteIcon />} onClick={() => onRemove()} />
+            </XView>
+        </XView>
+    );
+};
+
+const EditStickerPackModalInner = React.memo((props: {
+    hide: () => void;
+    stickerPack: SuperStickerPackFragment;
+}) => {
+    const { hide } = props;
+    const client = useClient();
+    const { stickerPack } = client.useSuperStickerPack({ id: props.stickerPack.id }, { fetchPolicy: 'cache-and-network' });
+    const form = useForm();
+    const titleField = useField('stickers.title', stickerPack?.title || 'New StickerPack', form);
+    const publishedField = useField('stickers.published', !!stickerPack?.published, form);
+    const [stickersToAdd, setStickersToAdd] = React.useState<(StickerToAdd & { key: string })[]>([]);
+
     if (!stickerPack) {
         return null;
     }
-    const clearInputs = () => {
-        emojiField.input.onChange('');
-        imageField.input.onChange(null);
-    };
-    const items = stickerPack.stickers;
-    const addSticker = async () => {
-        let id = stickerPack?.id;
-        if (!id || !imageField.value || emojiField.input.invalid || imageField.input.invalid) {
-            return;
-        }
 
-        await client.mutateAddSticker({
-            packId: stickerPack.id,
-            input: {
-                emoji: emojiField.value,
-                image: {
-                    uuid: imageField.value.uuid,
-                    crop: imageField.value.crop
-                        ? {
-                            x: imageField.value.crop.x,
-                            y: imageField.value.crop.y,
-                            w: imageField.value.crop.w,
-                            h: imageField.value.crop.h,
-                        }
-                        : null,
-                }
-            }
-        });
-        await client.refetchSuperStickerPack({ id });
-        clearInputs();
-    };
+    const items = stickerPack.stickers;
+
     const removeSticker = async (id: string) => {
         await client.mutateRemoveSticker({ id });
         await client.refetchSuperStickerPack({ id: stickerPack.id });
@@ -113,59 +150,80 @@ const EditStickerPackModalInner = React.memo((props: {
         ]);
         props.hide();
     };
+    const addStickerForm = () => {
+        setStickersToAdd(prev => prev.concat({ image: {}, emoji: {}, key: randomKey() }));
+    };
+    const handleAddStickerChange = (index: number, sticker: StickerToAdd) => {
+        setStickersToAdd(prev =>
+            prev.slice(0, index)
+                .concat({ ...sticker, key: prev[index].key })
+                .concat(...prev.slice(index + 1)
+                ));
+    };
+    const handleRemoveStickerChange = (key: string) => {
+        setStickersToAdd(prev => prev.filter((x) => x.key !== key));
+    };
+    const addStickers = async () => {
+        let id = stickerPack.id;
+        let hasErrorText = stickersToAdd.some(x => x.emoji.errorText || x.image.errorText);
+        if (!id || hasErrorText) {
+            return;
+        }
+        let promises = stickersToAdd.filter(s => s.image.value?.uuid).map(s => client.mutateAddSticker({
+            packId: id,
+            input: {
+                emoji: s.emoji.value || '',
+                image: {
+                    uuid: s.image.value!.uuid,
+                    crop: s.image.value!.crop
+                        ? {
+                            x: s.image.value!.crop.x,
+                            y: s.image.value!.crop.y,
+                            w: s.image.value!.crop.w,
+                            h: s.image.value!.crop.h,
+                        }
+                        : null,
+                }
+            }
+        }));
+        await Promise.all(promises);
+        await client.refetchSuperStickerPack({ id });
+        setStickersToAdd([]);
+    };
 
     return (
         <XView borderRadius={8} flexGrow={1} flexShrink={1}>
             <XModalContent flexGrow={1} flexShrink={1}>
-                <UInputField field={titleField} label="Title" />
-                <XView width={140}>
-                    <UCheckboxFiled field={publishedField} label="Published" />
-                    <UButton
-                        text="Update"
-                        size="large"
-                        action={updatePack}
-                    />
-                </XView>
-                <XView {...TextStyles.Title2} marginTop={20}>Add Sticker</XView>
-                <XView justifyContent="center" marginBottom={40}>
-                    <XView>
-                        <XView flexDirection="row">
-                            <XView {...TextStyles.Body} marginRight={10}>
-                                Image:
-                            </XView>
-                            <UAvatarUploadField
-                                key={imageField.value?.uuid}
-                                field={imageField}
-                                className={imageUploadStyle}
-                            />
-                        </XView>
-                        {imageField.input.errorText && (
-                            <UInputErrorText text={imageField.input.errorText} />
-                        )}
-                    </XView>
-                    <XView>
-                        <XView flexDirection="row">
-                            <XView {...TextStyles.Body}>
-                                Emoji:
-                            </XView>
-                            <XView width={96} height={40} {...TextStyles.Title3} justifyContent="center" alignItems="center">
-                                {emojiField.value}
-                                <EmojiPicker
-                                    hideOnPicked={true}
-                                    onEmojiPicked={emojiField.input.onChange}
-                                />
-                            </XView>
-                        </XView>
-                        {emojiField.input.errorText && (
-                            <UInputErrorText text={emojiField.input.errorText} />
-                        )}
-                    </XView>
-                    <XView width={140}>
-                        <UButton text="Add Sticker" size="large" action={addSticker} />
-                    </XView>
-                </XView>
-                <XView {...TextStyles.Title2} marginTop={20} marginBottom={20}>Stickers</XView>
                 <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
+                    <UInputField field={titleField} label="Title" />
+                    <XView width={140}>
+                        <UCheckboxFiled field={publishedField} label="Published" />
+                        <UButton
+                            text="Update"
+                            size="large"
+                            action={updatePack}
+                        />
+                    </XView>
+                    <XView {...TextStyles.Title2} marginTop={20}>Add Sticker</XView>
+                    <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
+                        <XView flexDirection="row" flexWrap="wrap">
+                            {stickersToAdd.map((s, i) => (
+                                <AddStickerForm
+                                    key={s.key}
+                                    onChange={sticker => handleAddStickerChange(i, sticker)}
+                                    onRemove={() => handleRemoveStickerChange(s.key)}
+                                />
+                            ))}
+                        </XView>
+                    </XScrollView3>
+                    <XView>
+                        <UIconButton icon={<AddIcon />} onClick={() => addStickerForm()} />
+                    </XView>
+                    <XView width={140} marginTop={20}>
+                        <UButton text="Add Stickers" size="large" action={addStickers} />
+                    </XView>
+                    <XView {...TextStyles.Title2} marginTop={20} marginBottom={20}>Stickers</XView>
+
                     <XView flexDirection="row" flexWrap="wrap" paddingTop={20}>
                         {items.map(item => (
                             <XView key={item.id} alignItems="center" justifyContent="center" padding={10}>
@@ -173,7 +231,7 @@ const EditStickerPackModalInner = React.memo((props: {
                                     <UIconButton size="small" icon={<DeleteIcon />} onClick={() => removeSticker(item.id)} />
                                 </XView>
                                 <XImage
-                                    src={getAvatar(item.image.uuid)}
+                                    src={getAvatar(item.image.uuid, item.image.crop)}
                                     width={76}
                                     height={76}
                                     borderRadius={8}
@@ -189,7 +247,7 @@ const EditStickerPackModalInner = React.memo((props: {
                     <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
                 </XView>
             </XModalFooter>
-        </XView>
+        </XView >
     );
 });
 
@@ -218,61 +276,63 @@ const showEditStickersModal = (stickerPack?: SuperStickerPackFragment) => {
     ));
 };
 
-const DeleteStickerPack = ({ hide, id }: { hide: () => void; id: string }) => {
-    const client = useClient();
+// const DeleteStickerPack = ({ hide, id }: { hide: () => void; id: string }) => {
+//     const client = useClient();
 
-    const remove = async () => {
-        await client.mutateStickerPackRemoveFromCollection({
-            id: id,
-        });
-        await Promise.all([
-            client.refetchCreatedStickerPacks(),
-            client.refetchStickerPackCatalog(),
-        ]);
-        hide();
-    };
+//     const remove = async () => {
+//         await client.mutateStickerPackRemoveFromCollection({
+//             id: id,
+//         });
+//         await Promise.all([
+//             client.refetchCreatedStickerPacks(),
+//             client.refetchStickerPackCatalog(),
+//         ]);
+//         hide();
+//     };
 
-    return (
-        <XView borderRadius={8}>
-            <XModalContent>Are you sure?</XModalContent>
-            <XModalFooter>
-                <XView marginRight={12}>
-                    <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
-                </XView>
-                <UButton text="Delete" style="danger" size="large" onClick={remove} />
-            </XModalFooter>
-        </XView>
-    );
-};
+//     return (
+//         <XView borderRadius={8}>
+//             <XModalContent>Are you sure?</XModalContent>
+//             <XModalFooter>
+//                 <XView marginRight={12}>
+//                     <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
+//                 </XView>
+//                 <UButton text="Delete" style="danger" size="large" onClick={remove} />
+//             </XModalFooter>
+//         </XView>
+//     );
+// };
 
-export const showDeleteStickerPackModal = (id: string) => {
-    showModalBox(
-        {
-            title: 'Remove sticker pack from collection',
-        },
-        ctx => <DeleteStickerPack hide={ctx.hide} id={id} />,
-    );
-};
+// export const showDeleteStickerPackModal = (id: string) => {
+//     showModalBox(
+//         {
+//             title: 'Remove sticker pack from collection',
+//         },
+//         ctx => <DeleteStickerPack hide={ctx.hide} id={id} />,
+//     );
+// };
 
-const StickerPack = (props: { stickerPack: SuperStickerPackFragment, isCollection?: boolean }) => {
+const StickerPack = (props: { stickerPack: SuperStickerPackFragment, isCatalog?: boolean }) => {
     const { stickerPack } = props;
     return (
         <UListItem
             key={stickerPack.id}
             title={stickerPack.title}
             description={stickerPack.author.name}
+            textRight={stickerPack.published ? 'Published' : undefined}
             avatar={{ photo: stickerPack.stickers[0] && getAvatar(stickerPack.stickers[0].image.uuid), title: stickerPack.title, id: stickerPack.id }}
             onClick={() => null}
             rightElement={
-                <XView flexDirection="row">
-                    {props.isCollection && (
+                <XView flexDirection="row" marginLeft={20}>
+                    {/* {props.isCatalog && (
                         <UButton
+                            marginRight={10}
                             text="Remove"
                             style="danger"
                             size="small"
                             onClick={() => showDeleteStickerPackModal(stickerPack.id)}
                         />
-                    )}
+                    )} */}
                     <UButton
                         text="Edit"
                         size="small"
@@ -301,7 +361,7 @@ const StickersFragment = React.memo(() => {
                 Catalog
             </XView>
             {catalogStickers.length > 0 ? catalogStickers.map(pack => (
-                <StickerPack stickerPack={pack} isCollection={true} />
+                <StickerPack stickerPack={pack} isCatalog={true} />
             )) : <XView>No stickers</XView>}
         </XView>
     );
