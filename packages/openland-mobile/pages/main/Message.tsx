@@ -40,7 +40,7 @@ const getChatLink = (
     if (chat.__typename === 'SharedRoom') {
         return (
             <>
-                Message from{' '}
+                From{' '}
                 <Text style={{ ...TextStyles.Label2 }} allowFontScaling={false}>
                     {chat.title}
                 </Text>
@@ -49,7 +49,7 @@ const getChatLink = (
     } else {
         return (
             <>
-                Message from chat with{' '}
+                From chat with{' '}
                 <Text style={{ ...TextStyles.Label2 }} allowFontScaling={false}>
                     {chat.user.name}
                 </Text>
