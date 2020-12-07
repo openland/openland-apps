@@ -45,7 +45,6 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     const toastHandlers = useToast();
     const roomId = props.id || unicorn.id;
     const group = client.useRoomChat({ id: roomId }, { fetchPolicy: 'cache-and-network' }).room;
-
     if (!group || group.__typename === 'PrivateRoom') {
         return <NotFound />;
     }
@@ -62,6 +61,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         premiumSettings,
         featured,
         isChannel,
+        membership,
     } = group;
 
     const onCopyLinkClick = React.useCallback(() => {
@@ -87,7 +87,10 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
             titleRightIcon={
                 featured ? (
                     <div className={featuredIcon}>
-                        <UIcon icon={<IcFeatured />} color={'#3DA7F2' /* special: verified/featured color */} />
+                        <UIcon
+                            icon={<IcFeatured />}
+                            color={'#3DA7F2' /* special: verified/featured color */}
+                        />
                     </div>
                 ) : undefined
             }
@@ -140,7 +143,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                     <UOrganizationView organization={organization} />
                 </UListGroup>
             )}
-            <ProfileTabsFragment chatId={roomId} group={group} />
+            <ProfileTabsFragment chatId={roomId} group={group} member={membership === 'MEMBER'} />
         </>
     );
 
