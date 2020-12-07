@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { View, Image, Text, Platform, Linking } from 'react-native';
-import Rate from 'react-native-rate';
+import { View, Image, Text, Platform } from 'react-native';
+import Rate, { IConfig } from 'react-native-rate';
 import { ModalProps } from 'react-native-fast-modal';
 import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
@@ -36,29 +36,21 @@ export const setRateAppInfo = async (value: Partial<RateAppInfo> | ((value: Rate
     });
 };
 
-const rateOptions = {
-    AppleAppID: '1435537685',
-    GooglePackageName: 'com.openland.app',
-    preferInApp: true,
-    openAppStoreIfInAppFails: false,
+export const rateApp = (options: IConfig = {}, cb: (success: boolean) => void = () => { /**/ }) => {
+    Rate.rate({
+        AppleAppID: '1435537685',
+        GooglePackageName: 'com.openland.app',
+        preferInApp: true,
+        openAppStoreIfInAppFails: true,
+        ...options
+    }, cb);
 };
 
 const RateApp = (props: { ctx: ModalProps }) => {
     const theme = useTheme();
     const handleRatePress = React.useCallback(() => {
-        props.ctx.hide();
         setRateAppInfo({ stopShowingRating: true });
-        if (Platform.OS === 'ios') {
-            Rate.rate({ ...rateOptions, openAppStoreIfInAppFails: true }, () => props.ctx.hide());
-            return;
-        } else if (Platform.OS === 'android') {
-            let url = `http://play.google.com/store/apps/details?id=${rateOptions.GooglePackageName}`;
-            Linking.canOpenURL(url).then((supported) => {
-                if (supported) {
-                    Linking.openURL(url);
-                }
-            });
-        }
+        Rate.rate({}, () => props.ctx.hide());
     }, []);
     return (
         <View>
@@ -104,19 +96,6 @@ const RateApp = (props: { ctx: ModalProps }) => {
     );
 };
 
-const showRateAppModal = () => {
+export const showRateAppModal = () => {
     showBottomSheet({ view: (ctx) => <RateApp ctx={ctx} /> });
-};
-
-export const rateApp = async () => {
-    try {
-        Rate.rate(rateOptions, (didNativeRatingOpen) => {
-            if (!didNativeRatingOpen) {
-                showRateAppModal();
-            }
-        });
-        return;
-    } catch (e) {
-        showRateAppModal();
-    }
 };
