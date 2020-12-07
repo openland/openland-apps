@@ -646,45 +646,51 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                                 textRight={welcomeMessage.isOn ? 'On' : 'Off'}
                             />
                         )}
-                        <UListItem
-                            title="Replies"
-                            icon={<IcReply />}
-                            paddingHorizontal={24}
-                            onClick={() => showEnableRepliesModal(room.id, repliesEnabled)}
-                            textRight={repliesEnabled ? 'On' : 'Off'}
-                        />
                         {!room.isChannel && (
-                            <UListItem
-                                title="Service messages"
-                                icon={<IcChannel />}
-                                paddingHorizontal={24}
-                                onClick={() =>
-                                    showServiceMessagesModal(room.id, {
-                                        joinsMessageEnabled:
-                                            serviceMessageSettings.joinsMessageEnabled,
-                                        leavesMessageEnabled:
-                                            serviceMessageSettings.leavesMessageEnabled,
-                                    })
-                                }
-                                textRight={getServiceMessagesSettingsShortLabel(
-                                    serviceMessageSettings,
-                                )}
-                            />
+                            <>
+                                <UListItem
+                                    title="Replies"
+                                    icon={<IcReply />}
+                                    paddingHorizontal={24}
+                                    onClick={() => showEnableRepliesModal(room.id, repliesEnabled)}
+                                    textRight={repliesEnabled ? 'On' : 'Off'}
+                                />
+                                <UListItem
+                                    title="Service messages"
+                                    icon={<IcChannel />}
+                                    paddingHorizontal={24}
+                                    onClick={() =>
+                                        showServiceMessagesModal(room.id, {
+                                            joinsMessageEnabled:
+                                                serviceMessageSettings.joinsMessageEnabled,
+                                            leavesMessageEnabled:
+                                                serviceMessageSettings.leavesMessageEnabled,
+                                        })
+                                    }
+                                    textRight={getServiceMessagesSettingsShortLabel(
+                                        serviceMessageSettings,
+                                    )}
+                                />
+                                <UListItem
+                                    title="Group calls"
+                                    icon={<IcCall />}
+                                    paddingHorizontal={24}
+                                    onClick={() =>
+                                        showGroupCallsModal(room.id, {
+                                            mode: callSettings.mode,
+                                            callLink: callSettings.callLink || '',
+                                        })
+                                    }
+                                    textRight={getCallSettingsShortLabel(callSettings)}
+                                />
+                            </>
                         )}
-                        <UListItem
-                            title="Group calls"
-                            icon={<IcCall />}
-                            paddingHorizontal={24}
-                            onClick={() =>
-                                showGroupCallsModal(room.id, {
-                                    mode: callSettings.mode,
-                                    callLink: callSettings.callLink || '',
-                                })
-                            }
-                            textRight={getCallSettingsShortLabel(callSettings)}
-                        />
                         <XWithRole role="super-admin">
-                            <RoomEditModalSuperAdminTile kind={kind} roomId={room.id} isChannel={room.isChannel} />
+                            <RoomEditModalSuperAdminTile
+                                kind={kind}
+                                roomId={room.id}
+                                isChannel={room.isChannel}
+                            />
                         </XWithRole>
                     </XView>
                 </XModalContent>
