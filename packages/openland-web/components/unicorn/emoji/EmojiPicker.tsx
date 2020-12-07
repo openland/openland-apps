@@ -10,7 +10,7 @@ import { onEmojiSent, getRecent } from './Recent';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
-import IcSticker from 'openland-icons/s/ic-sticker-24.svg';
+import IcSticker from 'openland-icons/s/ic-sticker-2-24.svg';
 import { StickerComponent } from '../stickers/StickerPicker';
 import { XLoader } from 'openland-x/XLoader';
 import { StickerFragment } from 'openland-api/spacex.types';
@@ -424,15 +424,6 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
     return (
         <div className={popperContainerClass}>
             <XView flexDirection="row">
-                <div
-                    className={cx(TextTitle3, sectionTitle, !stickers && sectionActiveTitle)}
-                    onClick={() => {
-                        setStickers(false);
-                        props.onStickerTabLeave();
-                    }}
-                >
-                    Emoji
-                </div>
                 {props.onStickerSent && (
                     <div
                         className={cx(TextTitle3, sectionTitle, stickers && sectionActiveTitle)}
@@ -444,6 +435,15 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                         Stickers
                     </div>
                 )}
+                <div
+                    className={cx(TextTitle3, sectionTitle, !stickers && sectionActiveTitle)}
+                    onClick={() => {
+                        setStickers(false);
+                        props.onStickerTabLeave();
+                    }}
+                >
+                    Emoji
+                </div>
             </XView>
             {!stickers && (
                 <>

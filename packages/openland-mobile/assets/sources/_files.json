@@ -742,6 +742,13 @@
             ]
         },
         {
+            "name": "ic-sticker-2",
+            "src": "ic-sticker-2-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-sport-filled",
             "src": "ic-sport-filled-24.svg",
             "sizes": [

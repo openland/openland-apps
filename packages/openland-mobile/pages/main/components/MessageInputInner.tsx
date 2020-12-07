@@ -30,7 +30,7 @@ const iconAttach = require('assets/ic-attach-24.png');
 const icon = require('assets/ic-send-24.png');
 const iconFilled = require('assets/ic-send-filled-24.png');
 const iconKeyboard = require('assets/ic-keyboard-24.png');
-const iconSticker = require('assets/ic-sticker-24.png');
+const iconSticker = require('assets/ic-sticker-2-24.png');
 
 export const MessageInputInner = React.forwardRef((props: MessageInputBarProps & { theme: ThemeGlobal }, ref: React.RefObject<TextInput>) => {
     const { theme, stickerKeyboardShown, onStickerKeyboardButtonPress } = props;
