@@ -67,9 +67,14 @@ const EditGroupComponent = React.memo((props: PageProps) => {
     const currentPhoto = group.photo.startsWith('ph://') ? undefined : group.photo;
     const defaultPhotoValue = group.photo.startsWith('ph://') ? null : { uuid: group.photo };
     const photoField = useField('photoRef', defaultPhotoValue, form);
-    const serviceMessageLabel = group.serviceMessageSettings.joinsMessageEnabled && group.serviceMessageSettings.leavesMessageEnabled
-        ? 'On' : group.serviceMessageSettings.joinsMessageEnabled || group.serviceMessageSettings.leavesMessageEnabled
-            ? 'Custom' : 'Off';
+    const serviceMessageLabel =
+        group.serviceMessageSettings.joinsMessageEnabled &&
+        group.serviceMessageSettings.leavesMessageEnabled
+            ? 'On'
+            : group.serviceMessageSettings.joinsMessageEnabled ||
+              group.serviceMessageSettings.leavesMessageEnabled
+            ? 'Custom'
+            : 'Off';
     const callSettingsLabel = callSettingsLabels[group.callSettings.mode];
 
     const handleSave = () =>
@@ -82,8 +87,8 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                         description: descriptionField.value,
                         ...(photoField.value &&
                             photoField.value.uuid !== currentPhoto && {
-                            photoRef: photoField.value,
-                        }),
+                                photoRef: photoField.value,
+                            }),
                     },
                 };
 
@@ -131,9 +136,9 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                             description={
                                 group.premiumSettings
                                     ? formatMoneyInterval(
-                                        group.premiumSettings.price,
-                                        group.premiumSettings.interval,
-                                    )
+                                          group.premiumSettings.price,
+                                          group.premiumSettings.interval,
+                                      )
                                     : 'Free'
                             }
                         />
@@ -155,28 +160,34 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                         />
                     )}
                     {!group.isChannel && (
-                        <ZListItem
-                            leftIcon={require('assets/ic-megaphone-24.png')}
-                            text="Service messages"
-                            small={true}
-                            description={serviceMessageLabel}
-                            onPress={() => router.push('EditGroupServiceMessages', { id: group.id })}
-                        />
+                        <>
+                            <ZListItem
+                                leftIcon={require('assets/ic-megaphone-24.png')}
+                                text="Service messages"
+                                small={true}
+                                description={serviceMessageLabel}
+                                onPress={() =>
+                                    router.push('EditGroupServiceMessages', { id: group.id })
+                                }
+                            />
+                            <ZListItem
+                                leftIcon={require('assets/ic-call-24.png')}
+                                text="Group calls"
+                                small={true}
+                                description={callSettingsLabel}
+                                onPress={() => router.push('EditGroupCalls', { id: group.id })}
+                            />
+                        </>
                     )}
-                    <ZListItem
-                        leftIcon={require('assets/ic-call-24.png')}
-                        text="Group calls"
-                        small={true}
-                        description={callSettingsLabel}
-                        onPress={() => router.push('EditGroupCalls', { id: group.id })}
-                    />
                     {SUPER_ADMIN && (
                         <ZListItem
                             leftIcon={require('assets/ic-lock-24.png')}
                             text="Superadmin settings"
                             small={true}
                             description="Custom"
-                            onPress={() => props.router.push('EditGroupSuperadmin', { id: group.id })}
+                            onPress={() =>
+                                props.router.push('EditGroupSuperadmin', { id: group.id })
+                            }
                         />
                     )}
                 </ZListGroup>
