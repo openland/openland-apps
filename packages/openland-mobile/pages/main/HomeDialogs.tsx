@@ -68,30 +68,32 @@ const DialogsComponent = React.memo((props: PageProps) => {
 
     React.useEffect(() => {
         (async () => {
-            let rateAppMeta = await getRateAppInfo();
+            try {
+                let rateAppMeta = await getRateAppInfo();
 
-            if (rateAppMeta.stopShowingRating) {
-                return;
-            }
+                if (rateAppMeta.stopShowingRating) {
+                    return;
+                }
 
-            if (rateAppMeta.appOpenedCount === 2) {
-                setTimeout(() => {
-                    showRateAppModal();
-                    setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, firstSeenTimestamp: Date.now() }));
-                }, 5000);
-                return;
-            }
+                if (rateAppMeta.appOpenedCount === 2) {
+                    setTimeout(() => {
+                        showRateAppModal();
+                        setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, firstSeenTimestamp: Date.now() }));
+                    }, 5000);
+                    return;
+                }
 
-            let twoDaysInMs = 48 * 3.6e6;
-            if (rateAppMeta.firstSeenTimestamp && (Date.now() - rateAppMeta.firstSeenTimestamp > twoDaysInMs)) {
-                setTimeout(() => {
-                    showRateAppModal();
-                    setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, stopShowingRating: true }));
-                }, 5000);
-                return;
-            }
+                let twoDaysInMs = 48 * 3.6e6;
+                if (rateAppMeta.firstSeenTimestamp && (Date.now() - rateAppMeta.firstSeenTimestamp > twoDaysInMs)) {
+                    setTimeout(() => {
+                        showRateAppModal();
+                        setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, stopShowingRating: true }));
+                    }, 5000);
+                    return;
+                }
 
-            setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1 }));
+                setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1 }));
+            } catch (e) { /**/ }
         })();
     }, []);
 
