@@ -17,6 +17,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { GlobalSearchEntryKind } from 'openland-api/spacex.types';
 import { SetTabContext } from './Home';
 import { getRateAppInfo, showRateAppModal, setRateAppInfo } from './modals/RateApp';
+import { SUPER_ADMIN } from '../Init';
 
 const DialogsComponent = React.memo((props: PageProps) => {
     const messenger = getMessenger();
@@ -68,30 +69,35 @@ const DialogsComponent = React.memo((props: PageProps) => {
 
     React.useEffect(() => {
         (async () => {
-            let rateAppMeta = await getRateAppInfo();
-
-            if (rateAppMeta.stopShowingRating) {
+            if (!SUPER_ADMIN) {
                 return;
             }
+            try {
+                let rateAppMeta = await getRateAppInfo();
 
-            if (rateAppMeta.appOpenedCount === 2) {
-                setTimeout(() => {
-                    showRateAppModal();
-                    setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, firstSeenTimestamp: Date.now() }));
-                }, 5000);
-                return;
-            }
+                if (rateAppMeta.stopShowingRating) {
+                    return;
+                }
 
-            let twoDaysInMs = 48 * 3.6e6;
-            if (rateAppMeta.firstSeenTimestamp && (Date.now() - rateAppMeta.firstSeenTimestamp > twoDaysInMs)) {
-                setTimeout(() => {
-                    showRateAppModal();
-                    setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, stopShowingRating: true }));
-                }, 5000);
-                return;
-            }
+                if (rateAppMeta.appOpenedCount === 2) {
+                    setTimeout(() => {
+                        showRateAppModal();
+                        setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, firstSeenTimestamp: Date.now() }));
+                    }, 5000);
+                    return;
+                }
 
-            setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1 }));
+                let twoDaysInMs = 48 * 3.6e6;
+                if (rateAppMeta.firstSeenTimestamp && (Date.now() - rateAppMeta.firstSeenTimestamp > twoDaysInMs)) {
+                    setTimeout(() => {
+                        showRateAppModal();
+                        setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, stopShowingRating: true }));
+                    }, 5000);
+                    return;
+                }
+
+                setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1 }));
+            } catch (e) { /**/ }
         })();
     }, []);
 
