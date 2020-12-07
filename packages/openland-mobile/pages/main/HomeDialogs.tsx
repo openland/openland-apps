@@ -16,7 +16,7 @@ import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { GlobalSearchEntryKind } from 'openland-api/spacex.types';
 import { SetTabContext } from './Home';
-import { getRateAppInfo, rateApp, setRateAppInfo } from './modals/RateApp';
+import { getRateAppInfo, showRateAppModal, setRateAppInfo } from './modals/RateApp';
 
 const DialogsComponent = React.memo((props: PageProps) => {
     const messenger = getMessenger();
@@ -75,15 +75,19 @@ const DialogsComponent = React.memo((props: PageProps) => {
             }
 
             if (rateAppMeta.appOpenedCount === 2) {
-                rateApp();
-                setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, firstSeenTimestamp: Date.now() }));
+                setTimeout(() => {
+                    showRateAppModal();
+                    setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, firstSeenTimestamp: Date.now() }));
+                }, 5000);
                 return;
             }
 
             let twoDaysInMs = 48 * 3.6e6;
             if (rateAppMeta.firstSeenTimestamp && (Date.now() - rateAppMeta.firstSeenTimestamp > twoDaysInMs)) {
-                rateApp();
-                setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, stopShowingRating: true }));
+                setTimeout(() => {
+                    showRateAppModal();
+                    setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, stopShowingRating: true }));
+                }, 5000);
                 return;
             }
 

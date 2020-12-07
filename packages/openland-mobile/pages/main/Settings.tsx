@@ -141,7 +141,7 @@ let SettingsContent = ((props: PageProps) => {
                     leftIconColor={theme.tintOrange}
                     leftIcon={require('assets/ic-star-glyph-24.png')}
                     text="Rate the app"
-                    onPress={() => rateApp()}
+                    onPress={() => rateApp({ preferInApp: false })}
                 />
                 <ZListItem
                     leftIconColor={theme.tintGreen}
