@@ -34,12 +34,6 @@ fragment SuperStickerPackFragment on StickerPack {
             emoji
             image {
                 uuid
-                crop {
-                    x
-                    y
-                    w
-                    h
-                }
             }
         }
     }
@@ -79,6 +73,11 @@ query SuperStickerPackCatalog {
 }
 query CreatedStickerPacks {
     createdStickerPacks {
+        ...SuperStickerPackFragment
+    }
+}
+query SuperAllStickerPacks {
+    superAllStickerPacks {
         ...SuperStickerPackFragment
     }
 }

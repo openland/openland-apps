@@ -261,7 +261,7 @@ const OptionRender = (option: OptionType) => {
 
 const OptionComponent = React.memo((
     props: OptionProps<OptionType> & {
-        customChild?: (option: OptionType) => React.ReactElement;
+        customChild?: (option: OptionType, isSelected: boolean) => React.ReactElement;
     },
 ) => {
     const { data, customChild } = props;
@@ -269,7 +269,7 @@ const OptionComponent = React.memo((
     const isSelected = props.isSelected;
     return (
         <components.Option {...props}>
-            {customChild ? customChild(option) : <OptionRender {...option} />}
+            {customChild ? customChild(option, isSelected) : <OptionRender {...option} />}
             {isSelected && (
                 <div className={selectedIcon}>
                     <UIcon icon={<IcCheck />} color="var(--foregroundTertiary)" size={16} />
@@ -285,7 +285,7 @@ interface USelectBasicProps extends XViewProps {
     size?: USelectSize;
     disabled?: boolean;
     hideSelector?: boolean;
-    optionRender?: (option: OptionType) => React.ReactElement;
+    optionRender?: (option: OptionType, selected: boolean) => React.ReactElement;
     clearable?: boolean;
     searchable?: boolean;
     label?: string;

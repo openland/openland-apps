@@ -175,6 +175,7 @@ query RoomSuper($id: ID!) {
     roomSuper(id: $id) {
         id
         featured
+        giftStickerPackId
     }
 }
 

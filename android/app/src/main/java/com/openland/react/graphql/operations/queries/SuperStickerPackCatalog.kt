@@ -13,6 +13,6 @@ internal val SuperStickerPackCatalogSelector = obj(
 val SuperStickerPackCatalog = object: OperationDefinition {
     override val name = "SuperStickerPackCatalog"
     override val kind = OperationKind.QUERY
-    override val body = "query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid crop{__typename x y w h}}}}}"
+    override val body = "query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}"
     override val selector = SuperStickerPackCatalogSelector
 }

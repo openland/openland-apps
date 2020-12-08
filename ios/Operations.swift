@@ -1665,14 +1665,7 @@ private let SuperStickerPackFragmentSelector = obj(
                         field("emoji", "emoji", notNull(scalar("String"))),
                         field("image", "image", notNull(obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
-                                field("uuid", "uuid", notNull(scalar("String"))),
-                                field("crop", "crop", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("x", "x", notNull(scalar("Int"))),
-                                        field("y", "y", notNull(scalar("Int"))),
-                                        field("w", "w", notNull(scalar("Int"))),
-                                        field("h", "h", notNull(scalar("Int")))
-                                    ))
+                                field("uuid", "uuid", notNull(scalar("String")))
                             )))
                     ))
                 )))))
@@ -4190,7 +4183,8 @@ private let RoomSuperSelector = obj(
             field("roomSuper", "roomSuper", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
-                    field("featured", "featured", notNull(scalar("Boolean")))
+                    field("featured", "featured", notNull(scalar("Boolean"))),
+                    field("giftStickerPackId", "giftStickerPackId", scalar("ID"))
                 ))
         )
 private let RoomTinySelector = obj(
@@ -4394,6 +4388,12 @@ private let SuperAdminsSelector = obj(
                             fragment("User", UserShortSelector)
                         ))),
                     field("email", "email", scalar("String"))
+                )))))
+        )
+private let SuperAllStickerPacksSelector = obj(
+            field("superAllStickerPacks", "superAllStickerPacks", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("StickerPack", SuperStickerPackFragmentSelector)
                 )))))
         )
 private let SuperBadgeInRoomSelector = obj(
@@ -5795,7 +5795,7 @@ class Operations {
     let CreatedStickerPacks = OperationDefinition(
         "CreatedStickerPacks",
         .query, 
-        "query CreatedStickerPacks{createdStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid crop{__typename x y w h}}}}}",
+        "query CreatedStickerPacks{createdStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
         CreatedStickerPacksSelector
     )
     let DebugGqlTrace = OperationDefinition(
@@ -6293,7 +6293,7 @@ class Operations {
     let RoomSuper = OperationDefinition(
         "RoomSuper",
         .query, 
-        "query RoomSuper($id:ID!){roomSuper(id:$id){__typename id featured}}",
+        "query RoomSuper($id:ID!){roomSuper(id:$id){__typename id featured giftStickerPackId}}",
         RoomSuperSelector
     )
     let RoomTiny = OperationDefinition(
@@ -6368,6 +6368,12 @@ class Operations {
         "query SuperAdmins{superAdmins{__typename role user{__typename ...UserShort}email}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
         SuperAdminsSelector
     )
+    let SuperAllStickerPacks = OperationDefinition(
+        "SuperAllStickerPacks",
+        .query, 
+        "query SuperAllStickerPacks{superAllStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
+        SuperAllStickerPacksSelector
+    )
     let SuperBadgeInRoom = OperationDefinition(
         "SuperBadgeInRoom",
         .query, 
@@ -6377,13 +6383,13 @@ class Operations {
     let SuperStickerPack = OperationDefinition(
         "SuperStickerPack",
         .query, 
-        "query SuperStickerPack($id:ID!){stickerPack(id:$id){__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid crop{__typename x y w h}}}}}",
+        "query SuperStickerPack($id:ID!){stickerPack(id:$id){__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
         SuperStickerPackSelector
     )
     let SuperStickerPackCatalog = OperationDefinition(
         "SuperStickerPackCatalog",
         .query, 
-        "query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid crop{__typename x y w h}}}}}",
+        "query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
         SuperStickerPackCatalogSelector
     )
     let TransactionsHistory = OperationDefinition(
@@ -7449,6 +7455,7 @@ class Operations {
         if name == "SuperAccount" { return SuperAccount }
         if name == "SuperAccounts" { return SuperAccounts }
         if name == "SuperAdmins" { return SuperAdmins }
+        if name == "SuperAllStickerPacks" { return SuperAllStickerPacks }
         if name == "SuperBadgeInRoom" { return SuperBadgeInRoom }
         if name == "SuperStickerPack" { return SuperStickerPack }
         if name == "SuperStickerPackCatalog" { return SuperStickerPackCatalog }

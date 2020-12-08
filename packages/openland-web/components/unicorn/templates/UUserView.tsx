@@ -23,7 +23,8 @@ const AdminIconClass = css`
 const TooltipContent: { [key in RoomMemberRole | OrganizationMemberRole]: string } = {
     ADMIN: 'Admin',
     OWNER: 'Owner',
-    MEMBER: 'Member'
+    MEMBER: 'Member',
+    NONE: 'Member'
 };
 
 const AdminIcon = (props: { role: RoomMemberRole | OrganizationMemberRole }) => {
@@ -57,7 +58,7 @@ export const UUserView = React.memo((props: UUserViewProps & Partial<UListItemPr
             title={name}
             titleIcon={role ? <AdminIcon role={role} /> : undefined}
             subtitle={!savedMessages && primaryOrganization ? primaryOrganization.name : undefined}
-            description={savedMessages ?  undefined : <UPresence suffix={badgeNameEmojify} user={props.user} />}
+            description={savedMessages ? undefined : <UPresence suffix={badgeNameEmojify} user={props.user} />}
             avatar={{ photo, id, title: name, online }}
             path={!onClick ? `/${shortname || id}` : undefined}
             onClick={onClick}

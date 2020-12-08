@@ -32,12 +32,8 @@ const imageUploadStyle = css`
     }
 `;
 
-const getAvatar = (uuid: string, crop?: { x: number, y: number, w: number, h: number } | null) => {
-    let res = `https://ucarecdn.com/${uuid}/`;
-    if (crop) {
-        res += `-/crop/${crop.w}x${crop.h}/${crop.x},${crop.y}/`;
-    }
-    return res + `-/format/jpeg/`;
+const getAvatar = (uuid: string) => {
+    return `https://ucarecdn.com/${uuid}/-/format/jpeg/`;
 };
 
 type StickerToAdd = {
@@ -146,7 +142,7 @@ const EditStickerPackModalInner = React.memo((props: {
             }
         });
         await Promise.all([
-            client.refetchCreatedStickerPacks(),
+            client.refetchSuperAllStickerPacks(),
             client.refetchSuperStickerPackCatalog()
         ]);
         props.hide();
@@ -232,7 +228,7 @@ const EditStickerPackModalInner = React.memo((props: {
                                     <UIconButton size="small" icon={<DeleteIcon />} onClick={() => removeSticker(item.id)} />
                                 </XView>
                                 <XImage
-                                    src={getAvatar(item.image.uuid, item.image.crop)}
+                                    src={getAvatar(item.image.uuid)}
                                     width={76}
                                     height={76}
                                     borderRadius={8}
@@ -261,7 +257,7 @@ const EditStickerPackModal = (props: { hide: () => void, stickerPack?: SuperStic
                 let { id } = (await client.mutateStickerPackCreate({ title: 'New Sticker Pack' })).stickerPackCreate;
                 let pack = (await client.querySuperStickerPack({ id })).stickerPack!;
                 setStickerPack(pack);
-                client.refetchCreatedStickerPacks();
+                client.refetchSuperAllStickerPacks();
             })();
         }
     }, []);
@@ -372,6 +368,7 @@ const StickerPack = (props: { stickerPack: SuperStickerPackFragment, isCatalog?:
 
 const StickersFragment = React.memo(() => {
     const client = useClient();
+    const allStickers = client.useSuperAllStickerPacks().superAllStickerPacks;
     const createdStickers = client.useCreatedStickerPacks().createdStickerPacks;
     const catalogStickers = client.useSuperStickerPackCatalog().stickers;
 
@@ -388,6 +385,12 @@ const StickersFragment = React.memo(() => {
             </XView>
             {catalogStickers.length > 0 ? catalogStickers.map(pack => (
                 <StickerPack stickerPack={pack} isCatalog={true} />
+            )) : <XView>No stickers</XView>}
+            <XView {...TextStyles.Title2} color="var(--foregroundColor)">
+                All
+            </XView>
+            {allStickers.length > 0 ? allStickers.map(pack => (
+                <StickerPack stickerPack={pack} />
             )) : <XView>No stickers</XView>}
         </XView>
     );

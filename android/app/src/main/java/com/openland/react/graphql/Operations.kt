@@ -126,6 +126,7 @@ object Operations {
         if (name == "SuperAccount") return SuperAccount
         if (name == "SuperAccounts") return SuperAccounts
         if (name == "SuperAdmins") return SuperAdmins
+        if (name == "SuperAllStickerPacks") return SuperAllStickerPacks
         if (name == "SuperBadgeInRoom") return SuperBadgeInRoom
         if (name == "SuperStickerPack") return SuperStickerPack
         if (name == "SuperStickerPackCatalog") return SuperStickerPackCatalog

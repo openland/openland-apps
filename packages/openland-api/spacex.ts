@@ -367,6 +367,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     querySuperAdmins(params?: QueryParameters): Promise<Types.SuperAdmins> {
         return this.query('SuperAdmins', undefined, params);
     }
+    querySuperAllStickerPacks(params?: QueryParameters): Promise<Types.SuperAllStickerPacks> {
+        return this.query('SuperAllStickerPacks', undefined, params);
+    }
     querySuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, params?: QueryParameters): Promise<Types.SuperBadgeInRoom> {
         return this.query('SuperBadgeInRoom', variables, params);
     }
@@ -760,6 +763,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchSuperAdmins(params?: QueryParameters): Promise<Types.SuperAdmins> {
         return this.refetch('SuperAdmins', undefined, params);
     }
+    refetchSuperAllStickerPacks(params?: QueryParameters): Promise<Types.SuperAllStickerPacks> {
+        return this.refetch('SuperAllStickerPacks', undefined, params);
+    }
     refetchSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, params?: QueryParameters): Promise<Types.SuperBadgeInRoom> {
         return this.refetch('SuperBadgeInRoom', variables, params);
     }
@@ -1152,6 +1158,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateSuperAdmins(updater: (data: Types.SuperAdmins) => Types.SuperAdmins | null): Promise<boolean> {
         return this.updateQuery(updater, 'SuperAdmins', undefined);
+    }
+    updateSuperAllStickerPacks(updater: (data: Types.SuperAllStickerPacks) => Types.SuperAllStickerPacks | null): Promise<boolean> {
+        return this.updateQuery(updater, 'SuperAllStickerPacks', undefined);
     }
     updateSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, updater: (data: Types.SuperBadgeInRoom) => Types.SuperBadgeInRoom | null): Promise<boolean> {
         return this.updateQuery(updater, 'SuperBadgeInRoom', variables);
@@ -1783,6 +1792,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useSuperAdmins(params?: SpaceQueryWatchParameters): Types.SuperAdmins;
     useSuperAdmins(params?: SpaceQueryWatchParameters): Types.SuperAdmins | null {
         return this.useQuery('SuperAdmins', undefined, params);
+    }
+    useSuperAllStickerPacks(params: SpaceQueryWatchParameters & { suspense: false }): Types.SuperAllStickerPacks | null;
+    useSuperAllStickerPacks(params?: SpaceQueryWatchParameters): Types.SuperAllStickerPacks;
+    useSuperAllStickerPacks(params?: SpaceQueryWatchParameters): Types.SuperAllStickerPacks | null {
+        return this.useQuery('SuperAllStickerPacks', undefined, params);
     }
     useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.SuperBadgeInRoom | null;
     useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, params?: SpaceQueryWatchParameters): Types.SuperBadgeInRoom;

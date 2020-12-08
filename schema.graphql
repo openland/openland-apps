@@ -60,6 +60,14 @@ type AuthPoint {
   phone: String
 }
 
+type BadgeStatus {
+  badge: ModernBadge!
+}
+
+input BadgeStatusInput {
+  id: ID!
+}
+
 type BlackListAdded {
   bannedBy: User!
   bannedUser: User!
@@ -434,22 +442,6 @@ input CreateOrganizationInput {
   autosubscribeRooms: [ID!]
 }
 
-"""Deprecated"""
-input CreateProfileInput {
-  firstName: String!
-  lastName: String
-  photoRef: ImageRefInput
-  phone: String
-  email: String
-  about: String
-  location: String
-  website: String
-  linkedin: String
-  twitter: String
-  facebook: String
-  primaryOrganization: ID
-}
-
 type CreditCard {
   id: ID!
   pmid: ID!
@@ -459,6 +451,16 @@ type CreditCard {
   expYear: Int!
   deleted: Boolean!
   isDefault: Boolean!
+}
+
+type CustomStatus {
+  emoji: String
+  text: String!
+}
+
+input CustomStatusInput {
+  emoji: String
+  text: String
 }
 
 """Date type format, serialized as UNIX-time in string"""
@@ -1566,6 +1568,23 @@ type MessageWithChat {
 
 union MessageWithMention = FeedPost
 
+type ModernBadge {
+  id: ID!
+  emoji: String!
+  text: String!
+  global: Boolean!
+}
+
+type ModernBadgeAdditionResult {
+  badge: ModernBadge!
+  added: Boolean!
+}
+
+input ModernBadgeInput {
+  emoji: String!
+  text: String!
+}
+
 interface ModernMessage {
   """State"""
   id: ID!
@@ -1750,6 +1769,8 @@ type Mutation {
   debugPaymentCancel(id: ID!): Boolean!
   debugInvalidateAllSocialImages: Boolean!
   debugChangeChatPrice(cid: ID!, price: Int!): Boolean!
+  debugCopyChatMembers(fromCid: ID!, toCid: ID!): Boolean!
+  debugCopyOrgMembers(fromOrg: ID!, toOrg: ID!): Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -1777,13 +1798,6 @@ type Mutation {
   alphaOrganizationCreatePublicInvite(expirationDays: Int, organizationId: ID): Invite!
   alphaOrganizationRemoveMember(memberId: ID!, organizationId: ID!): String!
   alphaOrganizationDeletePublicInvite(organizationId: ID): String!
-  profileCreate(input: ProfileInput!, inviteKey: String): Profile!
-  profileUpdate(input: ProfileInput!, uid: ID, inviteKey: String): Profile!
-
-  """Deprecated"""
-  createProfile(input: CreateProfileInput!): Profile!
-  updateProfile(input: UpdateProfileInput!, uid: ID): Profile!
-  alphaCreateUserProfileAndOrganization(user: ProfileInput!, organization: CreateOrganizationInput!): AlphaSignupData!
   superAccountAdd(title: String!): SuperAccount!
   superAccountRename(id: ID!, title: String!): SuperAccount!
   superAccountActivate(id: ID!): SuperAccount!
@@ -1836,6 +1850,8 @@ type Mutation {
   mediaStreamFailed(id: ID!, peerId: ID!): ConferenceMedia!
   addToContacts(userId: ID!): Boolean!
   removeFromContacts(userId: ID!): Boolean!
+  profileCreate(input: ProfileInput!, inviteKey: String): Profile!
+  profileUpdate(input: ProfileInput!, uid: ID, inviteKey: String): Profile!
   conversationDraftUpdate(id: ID!, message: String): Draft!
   setEnvVar(name: String!, value: String!): Boolean!
   setEnvVarString(name: String!, value: String!): Boolean!
@@ -1856,6 +1872,17 @@ type Mutation {
   betaMessageDelete(mid: ID, mids: [ID!]): Boolean!
   betaReactionSet(mid: ID!, reaction: String!): Boolean!
   betaReactionRemove(mid: ID!, reaction: String!): Boolean!
+
+  """
+  Adds badge to user, creates it if id not specified
+  Replaces duplicates with existing badges to easy ban some words
+  """
+  modernBadgeAdd(input: ModernBadgeInput, id: ID): ModernBadgeAdditionResult!
+  modernBadgeRemove(id: ID!): Boolean!
+
+  """Super"""
+  globalBadgeCreate(input: ModernBadgeInput!): ModernBadge!
+  superModernBadgeBan(id: ID!): Boolean!
   readNotification(notificationId: ID!): NotificationCenter!
   deleteNotification(notificationId: ID!): Boolean!
   notificationCenterMarkSeqRead(toSeq: Int!): Boolean!
@@ -2524,9 +2551,8 @@ type Profile {
   twitter: String
   facebook: String
   authEmail: String
-  badge: ProfileBadge
   birthDay: Date
-  status: String
+  status: Status
 
   """Deprecated"""
   alphaLinkedin: String
@@ -2540,19 +2566,11 @@ type Profile {
   """Deprecated"""
   alphaPrimaryOrganizationId: ID
   alphaPrimaryOrganization: Organization
+  modernBadges: [ModernBadge!]!
 
   """deprecated"""
   primaryBadge: UserBadge
   shortname: String
-}
-
-type ProfileBadge {
-  type: ProfileBadgeType!
-  text: String!
-}
-
-enum ProfileBadgeType {
-  ORGANIZATION
 }
 
 input ProfileInput {
@@ -2570,7 +2588,7 @@ input ProfileInput {
   facebook: String
   primaryOrganization: ID
   birthDay: Date
-  status: String
+  status: StatusInput
 }
 
 type ProfilePrefill {
@@ -2661,7 +2679,6 @@ type Query {
 
   """deprecated"""
   alphaOrganizationPublicInvite(organizationId: ID): Invite
-  myProfile: Profile
   superAccounts: [SuperAccount!]!
   superAccount(id: ID!, viaOrgId: Boolean): SuperAccount!
   superAdmins: [SuperAdmin!]!
@@ -2686,6 +2703,7 @@ type Query {
   myContactsSearch(query: String, first: Int!, after: String, page: Int): UserConnection!
   myContactsState: ContactsState!
   alphaNotificationCounter: NotificationCounter!
+  myProfile: Profile
   dialogsState: DialogUpdateState!
   envVars: [EnvVar!]
   envVar(name: String!): EnvVar
@@ -2695,6 +2713,9 @@ type Query {
   stickersByEmoji(emoji: String!): [Sticker!]!
   stickerPack(id: ID!): StickerPack
   stickerPackCatalog: [StickerPack!]!
+  superAllStickerPacks: [StickerPack!]!
+  modernBadgeSearch(search: String, first: Int!, after: ID): [ModernBadge!]!
+  modernBadgeUsers(bid: ID!, first: Int!, after: ID): UserConnection
   myNotificationCenter: NotificationCenter!
   myNotifications(first: Int!, before: ID): NotificationConnection!
   myOrganization: Organization
@@ -2885,6 +2906,7 @@ enum RoomMemberRole {
   OWNER
   ADMIN
   MEMBER
+  NONE
 }
 
 type RoomServiceMessageSettings {
@@ -2902,6 +2924,7 @@ type RoomSuper {
   featured: Boolean!
   listed: Boolean!
   autosubscribeRooms: [Room!]!
+  giftStickerPackId: ID
 }
 
 input RoomUpdateInput {
@@ -2913,6 +2936,7 @@ input RoomUpdateInput {
   repliesEnabled: Boolean
   serviceMessageSettings: RoomServiceMessageSettingsInput
   callSettings: RoomCallSettingsInput
+  giftStickerPackId: ID
 }
 
 type RoomUserNotificaionSettings {
@@ -3148,6 +3172,13 @@ input SlideInput {
 
 enum SlideType {
   Text
+}
+
+union Status = BadgeStatus | CustomStatus
+
+input StatusInput {
+  custom: CustomStatusInput
+  badge: BadgeStatusInput
 }
 
 union Sticker = ImageSticker
@@ -3413,28 +3444,6 @@ type UpdateProfileChanged {
   user: User!
 }
 
-"""Deprecated"""
-input UpdateProfileInput {
-  firstName: String
-  lastName: String
-  photoRef: ImageRefInput
-  phone: String
-  email: String
-  website: String
-  about: String
-  location: String
-  linkedin: String
-  instagram: String
-  twitter: String
-  facebook: String
-  primaryOrganization: ID
-  alphaRole: String
-  alphaLocations: [String!]
-  alphaLinkedin: String
-  alphaTwitter: String
-  alphaPrimaryOrganizationId: ID
-}
-
 type UpdatesDifference {
   seq: Int!
   state: String!
@@ -3553,10 +3562,9 @@ type User {
   twitter: String
   facebook: String
   audienceSize: Int!
-  badge: ProfileBadge
   joinDate: Date!
   birthDay: Date
-  status: String
+  status: Status
 
   """TODO: Refactor"""
   channelsJoined: [ChannelConversation!]!
@@ -3582,6 +3590,7 @@ type User {
   """Deprecated"""
   alphaPrimaryOrganization: Organization
   inContacts: Boolean!
+  modernBadges: [ModernBadge!]!
 
   """deprecated"""
   badges: [UserBadge!]!
@@ -3615,6 +3624,7 @@ type UserEventBusMessage {
 }
 
 type UserStickers {
+  unviewedCount: Int!
   packs: [StickerPack!]!
   favorites: [Sticker!]!
 }

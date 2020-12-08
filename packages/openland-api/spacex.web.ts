@@ -1672,14 +1672,7 @@ const SuperStickerPackFragmentSelector = obj(
                         field('emoji', 'emoji', args(), notNull(scalar('String'))),
                         field('image', 'image', args(), notNull(obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                field('uuid', 'uuid', args(), notNull(scalar('String'))),
-                                field('crop', 'crop', args(), obj(
-                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                        field('x', 'x', args(), notNull(scalar('Int'))),
-                                        field('y', 'y', args(), notNull(scalar('Int'))),
-                                        field('w', 'w', args(), notNull(scalar('Int'))),
-                                        field('h', 'h', args(), notNull(scalar('Int')))
-                                    ))
+                                field('uuid', 'uuid', args(), notNull(scalar('String')))
                             )))
                     ))
                 )))))
@@ -4197,7 +4190,8 @@ const RoomSuperSelector = obj(
             field('roomSuper', 'roomSuper', args(fieldValue("id", refValue('id'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('id', 'id', args(), notNull(scalar('ID'))),
-                    field('featured', 'featured', args(), notNull(scalar('Boolean')))
+                    field('featured', 'featured', args(), notNull(scalar('Boolean'))),
+                    field('giftStickerPackId', 'giftStickerPackId', args(), scalar('ID'))
                 ))
         );
 const RoomTinySelector = obj(
@@ -4401,6 +4395,12 @@ const SuperAdminsSelector = obj(
                             fragment('User', UserShortSelector)
                         ))),
                     field('email', 'email', args(), scalar('String'))
+                )))))
+        );
+const SuperAllStickerPacksSelector = obj(
+            field('superAllStickerPacks', 'superAllStickerPacks', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('StickerPack', SuperStickerPackFragmentSelector)
                 )))))
         );
 const SuperBadgeInRoomSelector = obj(
@@ -5798,7 +5798,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     CreatedStickerPacks: {
         kind: 'query',
         name: 'CreatedStickerPacks',
-        body: 'query CreatedStickerPacks{createdStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid crop{__typename x y w h}}}}}',
+        body: 'query CreatedStickerPacks{createdStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
         selector: CreatedStickerPacksSelector
     },
     DebugGqlTrace: {
@@ -6296,7 +6296,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     RoomSuper: {
         kind: 'query',
         name: 'RoomSuper',
-        body: 'query RoomSuper($id:ID!){roomSuper(id:$id){__typename id featured}}',
+        body: 'query RoomSuper($id:ID!){roomSuper(id:$id){__typename id featured giftStickerPackId}}',
         selector: RoomSuperSelector
     },
     RoomTiny: {
@@ -6371,6 +6371,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query SuperAdmins{superAdmins{__typename role user{__typename ...UserShort}email}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
         selector: SuperAdminsSelector
     },
+    SuperAllStickerPacks: {
+        kind: 'query',
+        name: 'SuperAllStickerPacks',
+        body: 'query SuperAllStickerPacks{superAllStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
+        selector: SuperAllStickerPacksSelector
+    },
     SuperBadgeInRoom: {
         kind: 'query',
         name: 'SuperBadgeInRoom',
@@ -6380,13 +6386,13 @@ export const Operations: { [key: string]: OperationDefinition } = {
     SuperStickerPack: {
         kind: 'query',
         name: 'SuperStickerPack',
-        body: 'query SuperStickerPack($id:ID!){stickerPack(id:$id){__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid crop{__typename x y w h}}}}}',
+        body: 'query SuperStickerPack($id:ID!){stickerPack(id:$id){__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
         selector: SuperStickerPackSelector
     },
     SuperStickerPackCatalog: {
         kind: 'query',
         name: 'SuperStickerPackCatalog',
-        body: 'query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid crop{__typename x y w h}}}}}',
+        body: 'query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
         selector: SuperStickerPackCatalogSelector
     },
     TransactionsHistory: {
