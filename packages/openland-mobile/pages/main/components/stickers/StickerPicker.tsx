@@ -89,15 +89,31 @@ interface StickerPackButtonProps {
     source?: NodeRequire;
     theme: ThemeGlobal;
     selected?: boolean;
+    newCounter?: number;
     onPress: () => void;
 }
 
 const StickerPackButton = React.memo((props: StickerPackButtonProps) => {
     const { cover, theme, onPress, source, selected } = props;
+    const newCounter = props.newCounter || 0;
+    const counterSize = newCounter < 10 ? 18 : 6;
+    const borderWidth = newCounter < 10 ? 2 : 0;
+    const top = newCounter < 10 ? 0 : 3;
+    const right = newCounter < 10 ? 0 : 3;
 
     return (
         <TouchableOpacity activeOpacity={HighlightAlpha} style={{ paddingHorizontal: 6 }} onPress={onPress}>
-            <View style={{ width: 36, height: 36, borderRadius: 100, justifyContent: 'center', alignItems: 'center', backgroundColor: selected ? theme.backgroundTertiaryTrans : theme.backgroundPrimary }}>
+            <View
+                style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: selected ? theme.backgroundTertiaryTrans : theme.backgroundPrimary,
+                    position: 'relative',
+                }}
+            >
                 {source && (
                     <Image source={source} style={{ width: 24, height: 24, tintColor: theme.foregroundSecondary }} />
                 )}
@@ -108,6 +124,34 @@ const StickerPackButton = React.memo((props: StickerPackButtonProps) => {
                         width={24}
                         height={24}
                     />
+                )}
+                {newCounter > 0 && (
+                    <View
+                        position="absolute"
+                        top={top}
+                        right={right}
+                        width={counterSize}
+                        height={counterSize}
+                        borderRadius={100}
+                        borderWidth={borderWidth}
+                        borderColor={theme.backgroundPrimary}
+                        backgroundColor={theme.accentNegative}
+                        justifyContent="center"
+                        alignItems="center"
+                        overflow="hidden"
+                    >
+                        {newCounter < 10 && (
+                            <Text
+                                style={{
+                                    color: theme.foregroundContrast,
+                                    ...TextStyles.Detail,
+                                    textAlign: 'center'
+                                }}
+                            >
+                                {newCounter}
+                            </Text>
+                        )}
+                    </View>
                 )}
             </View>
         </TouchableOpacity>

@@ -37,7 +37,7 @@ const StickerRows = React.memo((props: { stickers: StickerFragment[], stickerLay
                     ))}
                 </View>
             )}
-            style={{ maxHeight: 200, marginBottom: 16 }}
+            style={{ maxHeight: 200, }}
         />
     );
 });
@@ -64,8 +64,10 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
             } else {
                 await client.mutateStickerPackAddToCollection({ id });
             }
-            await client.refetchStickerPack({ id });
-            await client.refetchMyStickers();
+            await Promise.all([
+                client.refetchStickerPack({ id }),
+                client.refetchMyStickers(),
+            ]);
             // Toast.success({ duration: 1000, text: `Stickers ${haveIt ? 'deleted' : 'added'}` }).show();
         } catch (e) {
             // Toast.failure({ duration: 1000 }).show();
@@ -77,6 +79,8 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
         hide();
         return null;
     }
+
+    const isPrivate = false;
 
     return (
         <View onLayout={handleLayoutChange} style={{ paddingHorizontal: 8, minHeight: 217 }}>
@@ -105,15 +109,29 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
                     <LoaderSpinner />
                 </View>
             )}
-            <View style={{ paddingHorizontal: 8 }}>
-                <ZButton
-                    size='large'
-                    title={`${haveIt ? 'Delete' : 'Add'} ${stickerPack.stickers.length} stickers`}
-                    onPress={handleButtonPressed}
-                    style={haveIt ? 'secondary' : 'primary'}
-                    loading={loading}
-                />
-            </View>
+            {isPrivate ? (
+                <View
+                    paddingHorizontal={32}
+                    paddingVertical={24}
+                    marginHorizontal={-8}
+                    marginBottom={-16}
+                    justifyContent="center"
+                    alignContent="center"
+                    backgroundColor={theme.backgroundTertiary}
+                >
+                    <Text style={{ textAlign: 'center', color: theme.foregroundSecondary, ...TextStyles.Body }}>To get this sticker pack, join its group</Text>
+                </View>
+            ) : (
+                    <View style={{ paddingHorizontal: 8, marginTop: 16 }}>
+                        <ZButton
+                            size='large'
+                            title={`${haveIt ? 'Delete' : 'Add'} ${stickerPack.stickers.length} stickers`}
+                            onPress={handleButtonPressed}
+                            style={haveIt ? 'secondary' : 'primary'}
+                            loading={loading}
+                        />
+                    </View>
+                )}
         </View>
     );
 });

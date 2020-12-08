@@ -31,6 +31,7 @@ const StickerCatalog = React.memo((props: StickerCatalogProps) => {
     const client = useClient();
 
     const [buttonLoading, setButtonLoading] = React.useState(false);
+    const isNew = false;
 
     const handleButtonPress = async () => {
         if (haveIt) {
@@ -42,9 +43,11 @@ const StickerCatalog = React.memo((props: StickerCatalogProps) => {
                         setButtonLoading(true);
                         try {
                             await client.mutateStickerPackRemoveFromCollection({ id: pack.id });
-                            await client.refetchStickerPack({ id: pack.id });
-                            await client.refetchStickerPackCatalog();
-                            await client.refetchMyStickers();
+                            await Promise.all([
+                                client.refetchStickerPack({ id: pack.id }),
+                                client.refetchStickerPackCatalog(),
+                                client.refetchMyStickers(),
+                            ]);
                         } catch (e) {
                             Toast.failure({ duration: 1000 }).show();
                         }
@@ -56,9 +59,11 @@ const StickerCatalog = React.memo((props: StickerCatalogProps) => {
             setButtonLoading(true);
             try {
                 await client.mutateStickerPackAddToCollection({ id: pack.id });
-                await client.refetchStickerPack({ id: pack.id });
-                await client.refetchStickerPackCatalog();
-                await client.refetchMyStickers();
+                await Promise.all([
+                    client.refetchStickerPack({ id: pack.id }),
+                    client.refetchStickerPackCatalog(),
+                    client.refetchMyStickers(),
+                ]);
             } catch (e) {
                 Toast.failure({ duration: 1000 }).show();
             }
@@ -72,7 +77,27 @@ const StickerCatalog = React.memo((props: StickerCatalogProps) => {
         <View style={{ padding: 8 }}>
             <View style={{ paddingHorizontal: 8, paddingVertical: 6, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 56 }}>
                 <View style={{ justifyContent: 'space-between' }}>
-                    <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>{pack.title}</Text>
+                    <View flexDirection="row" >
+                        <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, flexGrow: 1, flexShrink: 1 }} numberOfLines={1}>{pack.title}</Text>
+                        {isNew && (
+                            <View
+                                borderRadius={4}
+                                backgroundColor={theme.accentNegative}
+                                flexShrink={0}
+                                marginLeft={8}
+                                height={16}
+                                justifyContent="center"
+                                alignItems="center"
+                                alignSelf="center"
+                                paddingHorizontal={4}
+                                paddingVertical={2}
+                            >
+                                <Text style={{ ...TextStyles.Detail, color: theme.foregroundContrast }}>
+                                    NEW
+                            </Text>
+                            </View>
+                        )}
+                    </View>
                     <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>{pack.stickers.length} {pack.stickers.length === 1 ? 'sticker' : 'stickers'}</Text>
                 </View>
                 <TouchableOpacity
