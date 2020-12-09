@@ -13,7 +13,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XLoader } from 'openland-x/XLoader';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { showStickerStickerPackModal } from 'openland-web/fragments/chat/messenger/message/content/StickerContent';
-import { TextLabel1, TextTitle3, TextBody, TextDensed } from 'openland-web/utils/TextStyles';
+import { TextLabel1, TextTitle3, TextBody, TextDensed, TextDetail } from 'openland-web/utils/TextStyles';
 import AlertBlanket from 'openland-x/AlertBlanket';
 import IcDelete from 'openland-icons/s/ic-close-16.svg';
 import IcAdd from 'openland-icons/s/ic-add-24.svg';
@@ -178,6 +178,36 @@ const categoryButton = css`
     cursor: pointer;
 `;
 
+const categoryButtonDot = css`
+    position: absolute;
+    top: 13px;
+    right: 9px;
+    width: 8px;
+    height: 8px;
+    border: 2px solid var(--backgroundSecondary);
+    background-color: var(--accentNegative);
+    border-radius: 100px;
+`;
+
+const categoryButtonCounter = css`
+    position: absolute;
+    top: 10px;
+    right: 6px;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--backgroundSecondary);
+    background-color: var(--accentNegative);
+    color: var(--foregroundContrast);
+    border-radius: 100px;
+    font-size: 8px;
+    line-height: 6px;
+    letter-spacing: 0.1px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
 interface CatalogRowProps {
     stickerPack: StickerPackCatalog_stickers;
     haveIt: boolean;
@@ -210,8 +240,31 @@ const catalogTitlesContainer = css`
     }
 `;
 
+const catalogTitleWrapper = css`
+    display: flex;
+    flex-direction: row;
+`;
+
 const catalogTitle = css`
+    flex-shrink: 1;
     color: var(--foregroundPrimary);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+`;
+
+const catalogNewBadge = css`
+    margin: 0 8px;
+    width: 33px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    background-color: var(--accentNegative);
+    color: var(--foregroundContrast);
+    border-radius: 4px;
+    flex-shrink: 0;
 `;
 
 const catalogSubtitle = css`
@@ -279,6 +332,7 @@ const CatalogRow = (props: CatalogRowProps) => {
         await client.refetchMyStickers();
         setLoading(false);
     };
+    const isNew = false;
 
     return (
         <div className={catalogRowContainer}>
@@ -287,7 +341,10 @@ const CatalogRow = (props: CatalogRowProps) => {
                     className={catalogTitlesContainer}
                     onClick={() => showStickerStickerPackModal(stickerPack.id, stickerPack.title)}
                 >
-                    <div className={cx(TextLabel1, catalogTitle)}>{stickerPack.title}</div>
+                    <div className={catalogTitleWrapper}>
+                        <div className={cx(TextLabel1, catalogTitle)}>{stickerPack.title}</div>
+                        {isNew && <div className={cx(TextDetail, catalogNewBadge)}>NEW</div>}
+                    </div>
                     <div className={cx(TextDensed, catalogSubtitle)}>
                         {stickers.length} {stickers.length === 1 ? 'sticker' : 'stickers'}
                     </div>
@@ -537,6 +594,7 @@ export const StickerComponent = React.memo<{
             </div>
         );
     }
+    const newCounter = 0;
 
     return (
         <div className={container}>
@@ -624,6 +682,11 @@ export const StickerComponent = React.memo<{
                     }}
                 >
                     {showCatalog ? <IcCatalogActive /> : <IcCatalog />}
+                    {newCounter > 0 && (
+                        <div className={newCounter < 10 ? categoryButtonCounter : categoryButtonDot}>
+                            {newCounter < 10 ? newCounter : null}
+                        </div>
+                    )}
                 </div>
                 {stickersPack.map((i, j) => {
                     const stickerCover = i.stickers[0];

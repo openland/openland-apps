@@ -137,6 +137,20 @@ const emojiPickerIconOpen = css`
     opacity: 0.5;
 `;
 
+const emojiPickerDot = css`
+    &::after {
+        content: '';
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        width: 6px;
+        height: 6px;
+        border: 2px solid var(--backgroundTertiary);
+        background-color: var(--accentNegative);
+        border-radius: 100px;
+    }
+`;
+
 const titleContainerStyle = css`
     position: sticky !important;
     position: -webkit-sticky !important;
@@ -698,10 +712,16 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
             props.onShow(false);
         }
     };
+    const hasNewStickers = false;
 
     return (
         <div
-            className={cx(emojiPickerIcon, visible && emojiPickerIconOpen, 'emojiPickerIcon')}
+            className={cx(
+                emojiPickerIcon,
+                visible && emojiPickerIconOpen,
+                hasNewStickers && emojiPickerDot,
+                'emojiPickerIcon'
+            )}
             onMouseEnter={showWithEvent}
         >
             <UIcon icon={<IcSticker />} size={20} />

@@ -9,6 +9,7 @@ import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 
 const stickerPackViewerContainer = css`
     display: flex;
@@ -53,6 +54,7 @@ const StickerPackModalInner = React.memo((props: { packId: string; hide: () => v
         await client.refetchMyStickers();
         props.hide();
     };
+    const isPrivate = false;
 
     return (
         <XView flexGrow={1} flexShrink={1}>
@@ -76,35 +78,51 @@ const StickerPackModalInner = React.memo((props: { packId: string; hide: () => v
                     })}
                 </div>
             </XScrollView3>
-            <XModalFooter>
-                <UButton
-                    text="Cancel"
-                    style="tertiary"
-                    size="large"
-                    onClick={props.hide}
-                />
-                <UButton
-                    text={iHaveThisPack ? 'Delete' : 'Add'}
-                    style={iHaveThisPack ? 'danger' : 'primary'}
-                    size="large"
-                    loading={loading}
-                    onClick={async () => {
-                        setLoading(true);
-                        if (iHaveThisPack) {
-                            await removePack();
-                        } else {
-                            await addPack();
-                        }
-                    }}
-                />
-            </XModalFooter>
+            {isPrivate ? (
+                <XModalFooter
+                    padding={24}
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <XView {...TextStyles.Body} color="var(--foregroundSecondary)">To get this sticker pack, join its group</XView>
+                </XModalFooter>
+            ) : (
+                    <XModalFooter>
+                        <UButton
+                            text="Cancel"
+                            style="tertiary"
+                            size="large"
+                            onClick={props.hide}
+                        />
+                        <UButton
+                            text={iHaveThisPack ? 'Delete' : 'Add'}
+                            style={iHaveThisPack ? 'danger' : 'primary'}
+                            size="large"
+                            loading={loading}
+                            onClick={async () => {
+                                setLoading(true);
+                                if (iHaveThisPack) {
+                                    await removePack();
+                                } else {
+                                    await addPack();
+                                }
+                            }}
+                        />
+                    </XModalFooter>
+                )}
         </XView>
     );
 });
 
 export const showStickerStickerPackModal = (packId: string, name: string) => {
     showModalBox({ title: name, useTopCloser: true, width: 464 }, ctx => (
-        <React.Suspense fallback={<XLoader loading={true} transparentBackground={true} />}>
+        <React.Suspense
+            fallback={(
+                <XView minHeight={200}>
+                    <XLoader loading={true} transparentBackground={true} />
+                </XView>
+            )}
+        >
             <StickerPackModalInner packId={packId} hide={ctx.hide} />
         </React.Suspense>
     ));
