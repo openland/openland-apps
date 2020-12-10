@@ -35,12 +35,12 @@ interface CommentsWrapperProps {
     autofocus?: boolean;
 }
 
-const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentEntryFragment[], role: RoomMemberRole | undefined }) => {
+const CommentsWrapperInner = (props: CommentsWrapperProps & { hasNewStickers: boolean; comments: CommentEntryFragment[], role: RoomMemberRole | undefined }) => {
     const inputRef = React.createRef<TextInput>();
     const scrollRef = React.createRef<ScrollView>();
     const area = React.useContext(ASSafeAreaContext);
 
-    const { peerView, peerId, comments, chat, highlightId, isDeleted, autofocus } = props;
+    const { peerView, peerId, comments, chat, highlightId, isDeleted, autofocus, hasNewStickers } = props;
 
     // state
     const [replied, setReplied] = React.useState<CommentEntryFragment_comment | undefined>(undefined);
@@ -305,6 +305,7 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
                         showLoader={sending}
                         ref={inputRef}
                         canSubmit={inputText.trim().length > 0}
+                        hasNewStickers={hasNewStickers}
                     />
                 )}
             </View>
@@ -322,6 +323,7 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
     const role = peerRoot.__typename === 'CommentPeerRootMessage' && peerRoot.chat.__typename === 'SharedRoom'
         ? peerRoot.chat.role
         : undefined;
+    const hasNewStickers = !!client.useUnviewedStickers({ suspense: false })?.stickers.unviewedCount;
 
     const deleteCommentIfNeeded = (comment: CommentEntryFragment) => {
         if (comment.deleted && comment.childComments.length === 0) {
@@ -382,5 +384,5 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
         });
     }, [peerId]);
 
-    return <CommentsWrapperInner {...props} comments={comments} role={role} />;
+    return <CommentsWrapperInner {...props} hasNewStickers={hasNewStickers} comments={comments} role={role} />;
 });
