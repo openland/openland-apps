@@ -131,6 +131,7 @@ object Operations {
         if (name == "SuperStickerPack") return SuperStickerPack
         if (name == "SuperStickerPackCatalog") return SuperStickerPackCatalog
         if (name == "TransactionsHistory") return TransactionsHistory
+        if (name == "UnviewedStickers") return UnviewedStickers
         if (name == "User") return User
         if (name == "UserAvailableRooms") return UserAvailableRooms
         if (name == "UserNano") return UserNano

@@ -61,6 +61,7 @@ interface ConversationRootProps extends PageProps {
     messagesActionsState: ConversationActionsState;
     messagesActionsMethods: ChatMessagesActionsMethods;
     banInfo: { isBanned: boolean; isMeBanned: boolean } | undefined;
+    hasNewStickers: boolean;
 }
 
 interface ConversationRootState {
@@ -598,6 +599,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     onStickerKeyboardButtonPress={this.handleStickerKeyboardButtonPress}
                                     stickerKeyboardShown={this.state.stickerKeyboardShown}
                                     overrideTransform={this.state.stickerKeyboardShown ? (this.stickerKeyboardHeight + 0) : (this.state.keyboardHeight > 0 ? 0 : -1)}
+                                    hasNewStickers={this.props.hasNewStickers}
                                     bottomView={
                                         Platform.OS === 'ios' && (
                                             <View
@@ -682,6 +684,7 @@ const ConversationComponent = React.memo((props: PageProps) => {
     let theme = React.useContext(ThemeContext);
     let messenger = getMessenger();
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id }, { fetchPolicy: 'cache-and-network' }).room;
+    let hasNewStickers = !!getClient().useUnviewedStickers({ suspense: false })?.stickers.unviewedCount;
     let mountedRef = React.useContext(SRouterMountedContext);
     let showCallModal = useCallModal({ id: room?.id! });
     let userId = room?.__typename === 'PrivateRoom' ? room.user.id : undefined;
@@ -727,6 +730,7 @@ const ConversationComponent = React.memo((props: PageProps) => {
                 messagesActionsState={messagesActionsState}
                 messagesActionsMethods={messagesActionsMethods}
                 banInfo={banInfo}
+                hasNewStickers={hasNewStickers}
             />
             <ASSafeAreaContext.Consumer>
                 {safe => (

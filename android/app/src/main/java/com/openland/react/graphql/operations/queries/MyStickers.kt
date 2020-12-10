@@ -7,6 +7,7 @@ import org.json.*
 internal val MyStickersSelector = obj(
             field("myStickers", "stickers", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
+                    field("unviewedCount", "unviewedCount", notNull(scalar("Int"))),
                     field("packs", "packs", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("id", "id", notNull(scalar("ID"))),
@@ -21,6 +22,6 @@ internal val MyStickersSelector = obj(
 val MyStickers = object: OperationDefinition {
     override val name = "MyStickers"
     override val kind = OperationKind.QUERY
-    override val body = "query MyStickers{stickers:myStickers{__typename packs{__typename id title stickers{__typename ...StickerFragment}}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}"
+    override val body = "query MyStickers{stickers:myStickers{__typename unviewedCount packs{__typename id title stickers{__typename ...StickerFragment}}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}"
     override val selector = MyStickersSelector
 }

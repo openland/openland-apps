@@ -21,6 +21,7 @@ export interface MessageInputBarProps {
     suggestions?: any;
     topView?: any;
     showLoader?: boolean;
+    hasNewStickers?: boolean;
 
     stickerKeyboardShown?: boolean;
     onStickerKeyboardButtonPress?: () => void;
@@ -49,7 +50,6 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
         allowFontScaling: false,
         keyboardAppearance: theme.keyboardAppearance,
     };
-    const hasNewStickers = false;
 
     return (
         <View style={{ flexDirection: 'row', alignItems: 'flex-end', backgroundColor: Platform.OS === 'android' ? theme.backgroundPrimary : undefined, position: 'relative' }}>
@@ -116,7 +116,7 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
                     <TouchableOpacity onPress={onStickerKeyboardButtonPress} activeOpacity={HighlightAlpha}>
                         <View width={40} height={44} alignItems="center" justifyContent="center">
                             <Image source={stickerKeyboardShown ? iconKeyboard : iconSticker} style={{ width: 24, height: 24, tintColor: theme.foregroundSecondary }} />
-                            {!stickerKeyboardShown && hasNewStickers && (
+                            {!stickerKeyboardShown && props.hasNewStickers && (
                                 <>
                                     <View
                                         position="absolute"

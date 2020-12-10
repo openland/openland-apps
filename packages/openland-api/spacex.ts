@@ -382,6 +382,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryTransactionsHistory(variables: Types.TransactionsHistoryVariables, params?: QueryParameters): Promise<Types.TransactionsHistory> {
         return this.query('TransactionsHistory', variables, params);
     }
+    queryUnviewedStickers(params?: QueryParameters): Promise<Types.UnviewedStickers> {
+        return this.query('UnviewedStickers', undefined, params);
+    }
     queryUser(variables: Types.UserVariables, params?: QueryParameters): Promise<Types.User> {
         return this.query('User', variables, params);
     }
@@ -778,6 +781,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchTransactionsHistory(variables: Types.TransactionsHistoryVariables, params?: QueryParameters): Promise<Types.TransactionsHistory> {
         return this.refetch('TransactionsHistory', variables, params);
     }
+    refetchUnviewedStickers(params?: QueryParameters): Promise<Types.UnviewedStickers> {
+        return this.refetch('UnviewedStickers', undefined, params);
+    }
     refetchUser(variables: Types.UserVariables, params?: QueryParameters): Promise<Types.User> {
         return this.refetch('User', variables, params);
     }
@@ -1173,6 +1179,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateTransactionsHistory(variables: Types.TransactionsHistoryVariables, updater: (data: Types.TransactionsHistory) => Types.TransactionsHistory | null): Promise<boolean> {
         return this.updateQuery(updater, 'TransactionsHistory', variables);
+    }
+    updateUnviewedStickers(updater: (data: Types.UnviewedStickers) => Types.UnviewedStickers | null): Promise<boolean> {
+        return this.updateQuery(updater, 'UnviewedStickers', undefined);
     }
     updateUser(variables: Types.UserVariables, updater: (data: Types.User) => Types.User | null): Promise<boolean> {
         return this.updateQuery(updater, 'User', variables);
@@ -1817,6 +1826,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useTransactionsHistory(variables: Types.TransactionsHistoryVariables, params?: SpaceQueryWatchParameters): Types.TransactionsHistory;
     useTransactionsHistory(variables: Types.TransactionsHistoryVariables, params?: SpaceQueryWatchParameters): Types.TransactionsHistory | null {
         return this.useQuery('TransactionsHistory', variables, params);
+    }
+    useUnviewedStickers(params: SpaceQueryWatchParameters & { suspense: false }): Types.UnviewedStickers | null;
+    useUnviewedStickers(params?: SpaceQueryWatchParameters): Types.UnviewedStickers;
+    useUnviewedStickers(params?: SpaceQueryWatchParameters): Types.UnviewedStickers | null {
+        return this.useQuery('UnviewedStickers', undefined, params);
     }
     useUser(variables: Types.UserVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.User | null;
     useUser(variables: Types.UserVariables, params?: SpaceQueryWatchParameters): Types.User;

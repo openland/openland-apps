@@ -39,8 +39,15 @@ fragment SuperStickerPackFragment on StickerPack {
     }
 }
 
+query UnviewedStickers {
+    stickers: myStickers {
+        unviewedCount
+    }
+}
+
 query MyStickers {
     stickers: myStickers {
+        unviewedCount
         packs {
             id
             title

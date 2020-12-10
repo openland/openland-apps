@@ -177,7 +177,8 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
 
     const router = React.useContext(SRouterContext);
     const client = useClient();
-    const clientStickers = client.useMyStickers({ fetchPolicy: 'cache-and-network' }).stickers.packs;
+    const myStickers = client.useMyStickers({ fetchPolicy: 'cache-and-network' }).stickers;
+    const { unviewedCount, packs: clientStickers } = myStickers;
     const stickers: StickerPackFragment[] = recentStickers.length > 0 && stickersPerRow > 0 ? [
         { id: RECENT_ID, title: 'Recent', stickers: recentStickers.slice(0, stickersPerRow * 2), isRecent: true },
         ...clientStickers
@@ -309,6 +310,7 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
                         source={require('assets/ic-new-24.png')}
                         key={`sticker-pack-button-catalog`}
                         theme={theme}
+                        newCounter={unviewedCount}
                     />
                 }
                 extraData={selected}
