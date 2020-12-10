@@ -74,6 +74,7 @@ interface MessagesComponentProps {
     messagesActionsMethods: ChatMessagesActionsMethods;
     isAttachModalOpen: boolean;
     banInfo: { isBanned: boolean; isMeBanned: boolean } | undefined;
+    hasNewStickers: boolean;
 }
 
 interface MessagesComponentState {
@@ -568,6 +569,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                         hideDonation={!canDonate}
                                         onEmojiPickerShow={this.startStickerPicking}
                                         onEmojiPickerHide={this.finishStickerPicking}
+                                        hasNewStickers={props.hasNewStickers}
                                     />
                                 </div>
                             </div>
@@ -612,6 +614,7 @@ export const MessengerRootComponent = React.memo((props: MessengerRootComponentP
     const userId = props.room.__typename === 'PrivateRoom' ? props.room.user.id : undefined;
     const messagesActionsState = useChatMessagesActionsState(props.conversationId);
     const messagesActionsMethods = useChatMessagesActionsMethods(props.conversationId);
+    const hasNewStickers = !!messenger.client.useUnviewedStickers({ suspense: false })?.stickers.unviewedCount;
 
     React.useEffect(() => {
         if (userId && props.conversationId) {
@@ -634,6 +637,7 @@ export const MessengerRootComponent = React.memo((props: MessengerRootComponentP
             messagesActionsMethods={messagesActionsMethods}
             isAttachModalOpen={isAttachModalOpen}
             banInfo={props.banInfo}
+            hasNewStickers={hasNewStickers}
         />
     );
 });

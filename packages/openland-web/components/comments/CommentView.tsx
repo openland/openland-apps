@@ -55,6 +55,7 @@ interface CommentViewProps {
     isReplying: boolean;
     groupId?: string;
     generation?: number;
+    hasNewStickers: boolean;
     role: RoomMemberRole | undefined;
     onReplyClick: (id: string) => void;
     onDeleteClick: (id: string) => void;
@@ -84,6 +85,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
         onStickerSent,
         generation,
         role,
+        hasNewStickers,
     } = props;
     const { id, sender, message, spans, fallback, date } = comment;
     const [maxCommentDepth, setMaxCommentDepth] = React.useState(4);
@@ -226,6 +228,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                                 groupId={groupId}
                                 compact={true}
                                 forceAutofocus={true}
+                                hasNewStickers={hasNewStickers}
                             />
                         )}
                     </>

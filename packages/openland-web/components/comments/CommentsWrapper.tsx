@@ -45,6 +45,7 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
     const [replyingId, setReplyingId] = React.useState<string | undefined>(noDefaultReply ? undefined : commentId);
     const [attachOpen, setAttachOpen] = React.useState(false);
     const inputRef = React.useRef<CommentInputRef>(null);
+    const hasNewStickers = !!client.useUnviewedStickers({ suspense: false })?.stickers.unviewedCount;
 
     const handleReplyClick = React.useCallback((id: string) => {
         setReplyingId(current => id === current ? undefined : id);
@@ -166,6 +167,7 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                 onStickerSent={sticker => handleStickerSent(sticker, true)}
                 groupId={groupId}
                 forceAutofocus={!replyingId}
+                hasNewStickers={hasNewStickers}
             />
             <DropZone
                 isHidden={attachOpen}

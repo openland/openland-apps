@@ -611,6 +611,7 @@ interface SendMessageComponentProps {
     ownerName?: string;
     isEditing?: boolean;
     hideDonation: boolean;
+    hasNewStickers?: boolean;
 }
 
 const sendMessageContainer = css`
@@ -795,6 +796,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     placeholder={props.placeholder || 'Write a message...'}
                     onFilesPaste={handleAttach}
                     className={(isWindows || isLinux) ? hideScrollStyle : undefined}
+                    hasNewStickers={props.hasNewStickers}
                     onEmojiPickerShow={props.onEmojiPickerShow}
                     onEmojiPickerHide={props.onEmojiPickerHide}
                 />

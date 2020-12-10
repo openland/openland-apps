@@ -29,9 +29,9 @@ interface CommentsListProps {
     onStickerSent: (sticker: StickerFragment) => void;
 }
 
-const CommentsListInner = React.memo((props: CommentsListProps & { comments: CommentEntryFragment[], role: RoomMemberRole | undefined }) => {
+const CommentsListInner = React.memo((props: CommentsListProps & { comments: CommentEntryFragment[], role: RoomMemberRole | undefined, hasNewStickers: boolean }) => {
     const client = useClient();
-    const { groupId, comments, highlightId, replyingId, onSent, onSentAttach, onReply, onStickerSent } = props;
+    const { groupId, comments, highlightId, replyingId, onSent, onSentAttach, onReply, onStickerSent, hasNewStickers } = props;
     const commnetsUpdatedCounter = React.useRef(0);
     React.useEffect(() => {
         commnetsUpdatedCounter.current++;
@@ -99,6 +99,7 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Com
                     onSent={onSent}
                     onSentAttach={onSentAttach}
                     onStickerSent={onStickerSent}
+                    hasNewStickers={hasNewStickers}
                 />
             ))}
         </div>
@@ -112,6 +113,7 @@ export const CommentsList = React.memo((props: CommentsListProps) => {
     log.log(`render peerId: ${peerId}`);
 
     const data = client.useComments({ peerId }, { fetchPolicy: 'cache-and-network' }).comments;
+    const hasNewStickers = !!client.useUnviewedStickers({ suspense: false })?.stickers.unviewedCount;
 
     log.log(`data count: ${data.count} | state: ${data.state}`);
 
@@ -142,6 +144,6 @@ export const CommentsList = React.memo((props: CommentsListProps) => {
         : undefined;
 
     return (
-        <CommentsListInner {...props} comments={data.comments} role={role} />
+        <CommentsListInner {...props} comments={data.comments} role={role} hasNewStickers={hasNewStickers} />
     );
 });

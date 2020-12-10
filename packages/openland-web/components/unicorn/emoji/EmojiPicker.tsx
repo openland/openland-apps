@@ -398,6 +398,7 @@ interface EmojiPickerProps {
     onStickerSent?: (sticker: StickerFragment) => void;
     onShow?: (stickers: boolean) => void;
     onHide?: () => void;
+    hasNewStickers?: boolean;
 }
 
 interface EmojiPickerBodyProps {
@@ -712,7 +713,7 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
             props.onShow(false);
         }
     };
-    const hasNewStickers = false;
+    const hasNewStickers = props.hasNewStickers;
 
     return (
         <div

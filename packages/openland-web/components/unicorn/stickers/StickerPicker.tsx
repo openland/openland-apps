@@ -594,7 +594,7 @@ export const StickerComponent = React.memo<{
             </div>
         );
     }
-    const newCounter = 0;
+    const newCounter = stickers.unviewedCount;
 
     return (
         <div className={container}>

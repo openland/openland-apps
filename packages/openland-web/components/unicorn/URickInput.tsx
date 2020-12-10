@@ -92,6 +92,7 @@ export interface URickInputProps {
     onFilesPaste?: (files: File[]) => void;
     className?: string;
     hideEmoji?: boolean;
+    hasNewStickers?: boolean;
 }
 
 function extractActiveWord(quill: QuillType.Quill) {
@@ -375,6 +376,7 @@ export const URickInput = React.memo(
                             onStickerSent={props.onStickerSent}
                             onShow={props.onEmojiPickerShow}
                             onHide={props.onEmojiPickerHide}
+                            hasNewStickers={props.hasNewStickers}
                         />
                     )}
                 </div>

@@ -23,12 +23,13 @@ interface CommentInputProps {
     groupId?: string;
     compact?: boolean;
     forceAutofocus?: boolean;
+    hasNewStickers: boolean;
 }
 
 export type CommentInputRef = Pick<URickInputInstance, 'getText' | 'clear'>;
 
 export const CommentInput = React.memo(React.forwardRef<CommentInputRef, CommentInputProps>((props, forwardedRef) => {
-    const { onSent, onSentAttach, onStickerSent, groupId, compact } = props;
+    const { onSent, onSentAttach, onStickerSent, groupId, compact, hasNewStickers } = props;
     const ref = React.useRef<URickInputInstance>(null);
 
     React.useImperativeHandle(forwardedRef, () => ({
@@ -60,6 +61,7 @@ export const CommentInput = React.memo(React.forwardRef<CommentInputRef, Comment
                 rickRef={ref}
                 hideDonation={true}
                 placeholder="Write a comment..."
+                hasNewStickers={hasNewStickers}
             />
         </div>
     );
