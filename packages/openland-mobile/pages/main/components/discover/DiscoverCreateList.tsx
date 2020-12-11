@@ -5,6 +5,8 @@ import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { usePressableView } from './usePressableView';
 import { ZButton } from 'openland-mobile/components/ZButton';
+import { useTheme } from 'openland-mobile/themes/ThemeContext';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface CreateItemProps {
     title: string;
@@ -12,11 +14,12 @@ interface CreateItemProps {
     image: NodeRequire;
     buttonText: string;
     bgColor: string;
+    theme: ThemeGlobal;
     onPress: () => void;
 }
 
 const CreateItem = (props: CreateItemProps) => {
-    const { title, description, buttonText, image, bgColor, onPress } = props;
+    const { title, description, buttonText, image, bgColor, theme, onPress } = props;
     const { styles, delayPressIn, handlePressIn, handlePressOut } = usePressableView();
 
     return (
@@ -24,11 +27,13 @@ const CreateItem = (props: CreateItemProps) => {
             <TouchableWithoutFeedback delayPressIn={delayPressIn} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut}>
                 <View flexDirection="row" borderRadius={RadiusStyles.Large} padding={24} backgroundColor={bgColor}>
                     <View marginRight={8} flexGrow={1} flexShrink={1} flexDirection="column">
-                        <Text style={{ ...TextStyles.Title2, color: '#000', marginBottom: 8 }} allowFontScaling={false}>{title}</Text>
-                        <Text style={{ ...TextStyles.Body, color: '#000', opacity: 0.75, marginBottom: 24, }} allowFontScaling={false}>
+                        <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginBottom: 8 }} allowFontScaling={false}>{title}</Text>
+                        <Text style={{ ...TextStyles.Body, color: theme.foregroundPrimary, opacity: 0.72, marginBottom: 24, }} allowFontScaling={false}>
                             {description}
                         </Text>
-                        <ZButton title={buttonText} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut} />
+                        <View alignSelf="flex-start">
+                            <ZButton title={buttonText} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut} />
+                        </View>
                     </View>
                     <Image source={image} style={{ width: 108, height: 108, alignSelf: 'flex-end' }} />
                 </View>
@@ -39,16 +44,18 @@ const CreateItem = (props: CreateItemProps) => {
 
 export const DiscoverCreateList = () => {
     const router = React.useContext(SRouterContext)!;
+    const theme = useTheme();
 
     return (
         <ZListGroup header="Create">
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} paddingLeft={16} paddingBottom={8} pagingEnabled={true} decelerationRate="fast" snapToInterval={351}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} paddingLeft={16} paddingVertical={8} pagingEnabled={true} decelerationRate="fast" snapToInterval={351}>
                 <CreateItem
                     title="Chat"
                     description="Public, secret, or paid group chat"
                     buttonText="New chat"
                     image={require('assets/art-create-chat.png')}
-                    bgColor="#F8F2E1"
+                    bgColor={theme.type === 'Light' ? '#F8F2E1' : '#594151'}
+                    theme={theme}
                     onPress={() => router.push('CreateGroupAttrs')}
                 />
                 <CreateItem
@@ -56,7 +63,8 @@ export const DiscoverCreateList = () => {
                     description="Only admins write, others comment"
                     buttonText="New channel"
                     image={require('assets/art-create-channel.png')}
-                    bgColor="#E1EEF8"
+                    bgColor={theme.type === 'Light' ? '#E1EEF8' : '#594E4A'}
+                    theme={theme}
                     onPress={() => router.push('CreateGroupAttrs', { isChannel: true })}
                 />
                 <CreateItem
@@ -64,7 +72,8 @@ export const DiscoverCreateList = () => {
                     description="A hub for your chats and channels"
                     buttonText="New community"
                     image={require('assets/art-create-community.png')}
-                    bgColor="#F4ECF5"
+                    bgColor={theme.type === 'Light' ? '#F4ECF5' : '#414659'}
+                    theme={theme}
                     onPress={() => router.push('NewOrganization', { isCommunity: true })}
                 />
                 <View width={24} />
