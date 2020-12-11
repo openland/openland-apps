@@ -18,11 +18,12 @@ import { useUserPopper } from 'openland-web/components/EntityPoppers';
 import { defaultHover } from 'openland-web/utils/Styles';
 import { isPendingAttach } from 'openland-engines/messenger/ConversationEngine';
 import { buildBaseImageUrl } from 'openland-y-utils/photoRefUtils';
+import { useChatMessagesSelected } from 'openland-y-utils/MessagesActionsState';
+import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
 import { emoji } from 'openland-y-utils/emoji';
 import StarIcon from 'openland-icons/s/ic-star-16.svg';
 import IcPending from 'openland-icons/s/ic-pending-16.svg';
 import IcSuccess from 'openland-icons/s/ic-success-16.svg';
-import { useChatMessagesSelected } from 'openland-y-utils/MessagesActionsState';
 
 const senderContainer = css`
     display: flex;
@@ -184,12 +185,12 @@ export const MessageTime = React.memo(
                 onClick={
                     props.dateFormat === 'time'
                         ? (e) => {
-                            e.stopPropagation();
-                            instantHide();
-                            if (router && props.mId) {
-                                router.navigate(`/message/${props.mId}`);
-                            }
-                        }
+                              e.stopPropagation();
+                              instantHide();
+                              if (router && props.mId) {
+                                  router.navigate(`/message/${props.mId}`);
+                              }
+                          }
                         : undefined
                 }
             >
@@ -423,6 +424,14 @@ interface MessageComponentProps {
 
 export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const { engine, message } = props;
+    const banInfo = props.engine.user
+        ? useUserBanInfo(
+              props.engine.user.id,
+              props.engine.user.isBanned,
+              props.engine.user.isMeBanned,
+          )
+        : undefined;
+    const isBanned = banInfo ? banInfo.isBanned || banInfo.isMeBanned : false;
     const containerRef = React.useRef<HTMLDivElement>(null);
     const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
     const layout = useLayout();
@@ -570,12 +579,13 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                                 {sendingIndicator === 'sent' && <IcSuccess />}
                             </div>
                         </div>
-                        {(message.commentsCount > 0 ||
-                            engine.isChannel ||
-                            message.reactionCounters.length > 0) &&
+                        {!isBanned &&
+                            (message.commentsCount > 0 ||
+                                engine.isChannel ||
+                                message.reactionCounters.length > 0) &&
                             buttons}
                     </div>
-                    {layout !== 'mobile' && <HoverMenu message={message} engine={engine} />}
+                    {layout !== 'mobile' && <HoverMenu message={message} engine={engine} isBanned={isBanned} />}
                 </div>
             </div>
         </div>

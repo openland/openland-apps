@@ -29,7 +29,7 @@ import { useToast } from 'openland-web/components/unicorn/UToast';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 import { RoomCallsMode, RoomChat_room } from 'openland-api/spacex.types';
 import { ChatSearchContext } from 'openland-web/pages/root/AppContainer';
-
+import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
 import ExternalCallIcon from 'openland-icons/s/ic-call-external-24.svg';
 import InviteIcon from 'openland-icons/s/ic-invite-24.svg';
@@ -146,7 +146,7 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
     );
 };
 
-const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
+const MenuComponent = (props: { ctx: UPopperController; id: string; isBanned: boolean }) => {
     const layout = useLayout();
     const client = useClient();
     const tabRouter = useTabRouter();
@@ -182,6 +182,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
 
     if (
         layout === 'mobile' &&
+        !props.isBanned &&
         (privateRoom
             ? !privateRoom.user.isBot
             : sharedRoom
@@ -292,6 +293,15 @@ export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
     const privateRoom = chat.__typename === 'PrivateRoom' ? chat : undefined;
     const sharedRoom = chat.__typename === 'SharedRoom' ? chat : undefined;
 
+    const banInfo = privateRoom
+        ? useUserBanInfo(
+              privateRoom.user.id,
+              privateRoom.user.isBanned,
+              privateRoom.user.isMeBanned,
+          )
+        : undefined;
+    const isBanned = banInfo ? banInfo.isBanned || banInfo.isMeBanned : false;
+
     const isSavedMessages = privateRoom && messenger.user.id === privateRoom.user.id;
     const title = privateRoom ? privateRoom.user.name : sharedRoom!.title;
     const photo = privateRoom ? privateRoom.user.photo : sharedRoom!.photo;
@@ -301,6 +311,7 @@ export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
         ? `/${privateRoom.user.shortname || privateRoom.user.id}`
         : `/group/${chat.id}`;
     const showCallButton =
+        !isBanned &&
         !isSavedMessages &&
         layout === 'desktop' &&
         (privateRoom
@@ -441,14 +452,14 @@ export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
                     <UMoreButton
                         menu={(ctx) => (
                             <React.Suspense fallback={<div style={{ width: 240, height: 100 }} />}>
-                                <MenuComponent ctx={ctx} id={chat.id} />
+                                <MenuComponent ctx={ctx} id={chat.id} isBanned={isBanned} />
                             </React.Suspense>
                         )}
                         size="large-densed"
                     />
                 )}
             </XView>
-            <MessagesActionsHeader chat={chat} />
+            <MessagesActionsHeader chat={chat} isBanned={isBanned} />
         </XView>
     );
 });

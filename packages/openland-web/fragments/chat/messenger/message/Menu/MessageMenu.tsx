@@ -13,14 +13,14 @@ import { showDeleteMessageModal } from 'openland-web/fragments/chat/components/M
 import { useForward } from '../actions/forward';
 import { useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 
-export const useBuildMessageMenu = (engine: ConversationEngine) => {
+export const useBuildMessageMenu = (engine: ConversationEngine, isBanned: boolean) => {
     const forward = useForward(engine.conversationId, !engine.canReply);
     const { toggleSelect, reply, edit } = useChatMessagesActionsMethods(engine.conversationId);
     return (ctx: UPopperController, message: DataSourceWebMessageItem) => {
         let menu = new UPopperMenuBuilder();
         const role = engine.role;
         menu.item({ title: 'Select', icon: <SelectIcon />, onClick: () => toggleSelect(message) });
-        if (engine.canSendMessage && engine.canReply) {
+        if (engine.canSendMessage && engine.canReply && !isBanned) {
             menu.item({
                 title: 'Reply', icon: <ReplyIcon />, onClick: () => {
                     reply(message);
@@ -32,11 +32,11 @@ export const useBuildMessageMenu = (engine: ConversationEngine) => {
                 forward([message]);
             }
         });
-        if (engine.canPin && message.id && ((engine.pinId && engine.pinId !== message.id) || !engine.pinId)) {
+        if (engine.canPin && message.id && !isBanned && ((engine.pinId && engine.pinId !== message.id) || !engine.pinId)) {
             menu.item({ title: 'Pin', icon: <PinIcon />, action: () => engine.engine.client.mutatePinMessage({ messageId: message.id!, chatId: engine.conversationId }) });
         }
         let hasPurchase = message.attachments && message.attachments.some(a => a.__typename === 'MessageAttachmentPurchase');
-        if (message.sender.id === engine.engine.user.id && message.text && !hasPurchase) {
+        if (message.sender.id === engine.engine.user.id && message.text && !hasPurchase && !isBanned) {
             menu.item({ title: 'Edit', icon: <EditIcon />, onClick: () => edit(message) });
         }
         if (message.sender.id === engine.engine.user.id || role === 'ADMIN' || role === 'OWNER') {

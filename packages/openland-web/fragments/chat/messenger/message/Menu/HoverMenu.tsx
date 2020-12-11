@@ -46,6 +46,7 @@ const forceInvisible = css`
 interface HoverMenuProps {
     message: DataSourceWebMessageItem;
     engine: ConversationEngine;
+    isBanned: boolean;
 }
 
 export const HoverMenu = React.memo((props: HoverMenuProps) => {
@@ -66,9 +67,9 @@ export const HoverMenu = React.memo((props: HoverMenuProps) => {
     }, [width]);
 
     messageRef.current = message;
-    const buildMessageMenu = useBuildMessageMenu(props.engine);
+    const buildMessageMenu = useBuildMessageMenu(props.engine, props.isBanned);
     const [menuVisible, menuShow] = usePopper(
-        { placement: menuPlacement, hideOnClick: true },
+        { placement: menuPlacement, hideOnClick: true, updatedDeps: props.isBanned },
         (ctx) => buildMessageMenu(ctx, messageRef.current),
     );
     const handleCommentClick = React.useCallback(
@@ -202,23 +203,27 @@ export const HoverMenu = React.memo((props: HoverMenuProps) => {
                 message.isSending && forceInvisible,
             )}
         >
-            <UIconButton
-                icon={<LikeIcon />}
-                color="var(--foregroundTertiary)"
-                size="small"
-                active={reactionsVisible}
-                onMouseEnter={reactionsShow}
-                onClick={(e) => {
-                    e.stopPropagation();
-                    handleReactionClick(MessageReactionType.LIKE);
-                }}
-            />
-            <UIconButton
-                icon={<CommentIcon />}
-                color="var(--foregroundTertiary)"
-                size="small"
-                onClick={handleCommentClick}
-            />
+            {!props.isBanned && (
+                <>
+                    <UIconButton
+                        icon={<LikeIcon />}
+                        color="var(--foregroundTertiary)"
+                        size="small"
+                        active={reactionsVisible}
+                        onMouseEnter={reactionsShow}
+                        onClick={async (e) => {
+                            e.stopPropagation();
+                            await handleReactionClick(MessageReactionType.LIKE);
+                        }}
+                    />
+                    <UIconButton
+                        icon={<CommentIcon />}
+                        color="var(--foregroundTertiary)"
+                        size="small"
+                        onClick={handleCommentClick}
+                    />
+                </>
+            )}
             <UIconButton
                 icon={<MoreIcon />}
                 color="var(--foregroundTertiary)"

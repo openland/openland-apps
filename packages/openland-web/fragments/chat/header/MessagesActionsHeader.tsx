@@ -142,6 +142,7 @@ const Buttons = (props: {
     conversation: ConversationEngine;
     messenger: MessengerEngine;
     chat: RoomChat_room;
+    isBanned: boolean;
 }) => {
     let state = useChatMessagesActionsState(props.conversation.conversationId);
     let { clear, reply } = useChatMessagesActionsMethods(props.conversation.conversationId);
@@ -173,13 +174,13 @@ const Buttons = (props: {
                     <UButton onClick={deleteCallback} text="Delete" style="secondary" />
                 </div>
             )}
-            {canReply && <UButton onClick={replyCallback} text="Reply" marginLeft={8} />}
+            {canReply && !props.isBanned && <UButton onClick={replyCallback} text="Reply" marginLeft={8} />}
             <UButton onClick={forwardCallback} text="Forward" marginLeft={8} />
         </XView>
     );
 };
 
-export const MessagesActionsHeader = (props: { chat: RoomChat_room }) => {
+export const MessagesActionsHeader = (props: { chat: RoomChat_room, isBanned: boolean }) => {
     let state = useChatMessagesActionsState(props.chat.id);
     let { clear } = useChatMessagesActionsMethods(props.chat.id);
     let containerRef = React.useRef<HTMLDivElement>(null);
@@ -219,6 +220,7 @@ export const MessagesActionsHeader = (props: { chat: RoomChat_room }) => {
                     conversation={conversation}
                     messenger={messenger}
                     chat={props.chat}
+                    isBanned={props.isBanned}
                 />
             </XView>
         </div>
