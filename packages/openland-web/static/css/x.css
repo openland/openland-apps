@@ -54,6 +54,10 @@ html {
 
     --boxShadowPopper: 0px 8px 24px rgba(0, 0, 0, 0.08), 0px 0px 48px rgba(0, 0, 0, 0.04);
 
+    --backgroundLightPink: #F4ECF5;
+    --backgroundLightYellow: #F8F2E1;
+    --backgroundLightBlue: #E1EEF8;
+
     /* end interactive colors */
     --boxShadowModal: 0px 8px 48px rgba(0, 0, 0, 0.16), 0px 0px 96px rgba(0, 0, 0, 0.08);
 
@@ -155,6 +159,10 @@ html {
         --backgroundBlurSecondary: rgba(35, 39, 41, 0.92);
 
         --boxShadowPopper: 0px 8px 24px rgba(0, 0, 0, 0.4), 0px 0px 48px rgba(0, 0, 0, 0.3);
+
+        --backgroundLightPink: #594151;
+        --backgroundLightYellow: #594E4A;
+        --backgroundLightBlue: #414659;
     }
 }
 
@@ -195,6 +203,10 @@ html.light {
     --backgroundBlurSecondary: rgba(255, 255, 255, 0.92);
 
     --boxShadowPopper: 0px 8px 24px rgba(0, 0, 0, 0.08), 0px 0px 48px rgba(0, 0, 0, 0.04);
+
+    --backgroundLightPink: #F4ECF5;
+    --backgroundLightYellow: #F8F2E1;
+    --backgroundLightBlue: #E1EEF8;
 }
 
 html.dark {
@@ -235,6 +247,10 @@ html.dark {
     --backgroundBlurSecondary: rgba(35, 39, 41, 0.92);
 
     --boxShadowPopper: 0px 8px 24px rgba(0, 0, 0, 0.4), 0px 0px 48px rgba(0, 0, 0, 0.3);
+
+    --backgroundLightPink: #594151;
+    --backgroundLightYellow: #594E4A;
+    --backgroundLightBlue: #414659;
 }
 
 html.red:not(.landing) {

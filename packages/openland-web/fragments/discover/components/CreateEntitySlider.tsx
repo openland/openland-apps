@@ -61,24 +61,20 @@ const CreateEntityItem = React.memo(
         } else if (width <= 472) {
             size = 'medium';
         }
-        const btnWidth = {
-            large: 164,
-            medium: 140,
-            small: 140,
-        };
+
         return (
             <div className={cx(container, size === 'small' && containerSmall)} style={{ '--bg-color': props.bgColor } as React.CSSProperties} onClick={props.onClick}>
                 <XView flexDirection="column" flexShrink={1}>
-                    <XView {...TextStyles.Title2} marginBottom={8} color="#171A1F">
+                    <XView {...TextStyles.Title2} marginBottom={8} color="var(--foregroundPrimary)">
                         {props.title}
                     </XView>
-                    <XView {...TextStyles.Body} marginBottom={size === 'large' ? 32 : 16} color="var(--foregroundSecondary)">
+                    <XView {...TextStyles.Body} marginBottom={size === 'large' ? 32 : 16} color="var(--foregroundPrimary)" opacity={0.72}>
                         {props.description}
                     </XView>
                     <UButton
                         text={props.buttonText}
                         size={size === 'large' ? 'large' : 'medium'}
-                        width={btnWidth[size]}
+                        alignSelf="flex-start"
                     />
                 </XView>
                 <ImgWithRetry
@@ -110,7 +106,7 @@ export const CreateEntitySlider = React.memo(() => {
             <CreateEntityItem
                 title="Chat"
                 description={`Public, secret, or${noBreakSpace}paid group chat`}
-                bgColor="#F8F2E1"
+                bgColor="var(--backgroundLightPink)"
                 imgSrc="//cdn.openland.com/shared/art/art-create-chat.png"
                 imgSrcSet="//cdn.openland.com/shared/art/art-create-chat@2x.png 2x, //cdn.openland.com/shared/art/art-create-chat@3x.png 3x"
                 buttonText="New chat"
@@ -120,7 +116,7 @@ export const CreateEntitySlider = React.memo(() => {
             <CreateEntityItem
                 title="Channel"
                 description={`Only admins write, others${noBreakSpace}comment`}
-                bgColor="#E1EEF8"
+                bgColor="var(--backgroundLightYellow)"
                 imgSrc="//cdn.openland.com/shared/art/art-create-channel.png"
                 imgSrcSet="//cdn.openland.com/shared/art/art-create-channel@2x.png 2x, //cdn.openland.com/shared/art/art-create-channel@3x.png 3x"
                 buttonText="New channel"
@@ -130,7 +126,7 @@ export const CreateEntitySlider = React.memo(() => {
             <CreateEntityItem
                 title="Community"
                 description={`A hub for your chats and${noBreakSpace}channels`}
-                bgColor="#F4ECF5"
+                bgColor="var(--backgroundLightBlue)"
                 imgSrc="//cdn.openland.com/shared/art/art-create-community.png"
                 imgSrcSet="//cdn.openland.com/shared/art/art-create-community@2x.png 2x, //cdn.openland.com/shared/art/art-create-community@3x.png 3x"
                 buttonText="New community"
