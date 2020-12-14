@@ -22,7 +22,7 @@ import { plural } from 'openland-y-utils/plural';
 interface SuperAdminSettingsValue {
     visibility: SharedRoomKind;
     featured: boolean;
-    giftStickerPackId: string | null;
+    stickerPackId: string | undefined | null;
 }
 
 const SuperAdminSettingsModalBody = React.memo(
@@ -43,12 +43,12 @@ const SuperAdminSettingsModalBody = React.memo(
 
         const visibilityField = useField('visibility.input', initialValue.visibility, form);
         const featuredField = useField('featured.input', initialFeatured, form);
-        const stickerField = useField('sticker.input', initialValue.giftStickerPackId, form);
+        const stickerField = useField('sticker.input', initialValue.stickerPackId, form);
 
         const onSave = async () => {
             form.doAction(async () => {
                 let input: RoomUpdateVariables['input'] = { kind: visibilityField.input.value };
-                if (stickerField.value !== null) {
+                if (stickerField.value) {
                     input.giftStickerPackId = stickerField.value;
                 }
                 await Promise.all([
@@ -195,9 +195,9 @@ interface RoomEditModalSuperAdminTileProps {
 export const RoomEditModalSuperAdminTile = React.memo(
     ({ roomId, kind, isChannel }: RoomEditModalSuperAdminTileProps) => {
         const client = useClient();
-        const { roomSuper } = client.useRoomSuper({ id: roomId });
+        const { roomSuper, room } = client.useRoomSuper({ id: roomId });
 
-        if (!roomSuper) {
+        if (!roomSuper || !room) {
             return null;
         }
 
@@ -212,7 +212,7 @@ export const RoomEditModalSuperAdminTile = React.memo(
                         {
                             visibility: kind,
                             featured: roomSuper.featured,
-                            giftStickerPackId: roomSuper.giftStickerPackId
+                            stickerPackId: room.__typename === 'SharedRoom' ? room.stickerPack?.id : undefined,
                         },
                     )
                 }

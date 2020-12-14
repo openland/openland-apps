@@ -4198,6 +4198,17 @@ const RoomSuperSelector = obj(
                     field('id', 'id', args(), notNull(scalar('ID'))),
                     field('featured', 'featured', args(), notNull(scalar('Boolean'))),
                     field('giftStickerPackId', 'giftStickerPackId', args(), scalar('ID'))
+                )),
+            field('room', 'room', args(fieldValue("id", refValue('id'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    inline('SharedRoom', obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('id', 'id', args(), notNull(scalar('ID'))),
+                        field('stickerPack', 'stickerPack', args(), obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('id', 'id', args(), notNull(scalar('ID')))
+                            ))
+                    ))
                 ))
         );
 const RoomTinySelector = obj(
@@ -6318,7 +6329,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     RoomSuper: {
         kind: 'query',
         name: 'RoomSuper',
-        body: 'query RoomSuper($id:ID!){roomSuper(id:$id){__typename id featured giftStickerPackId}}',
+        body: 'query RoomSuper($id:ID!){roomSuper(id:$id){__typename id featured giftStickerPackId}room(id:$id){__typename ... on SharedRoom{__typename id stickerPack{__typename id}}}}',
         selector: RoomSuperSelector
     },
     RoomTiny: {

@@ -4191,6 +4191,17 @@ private let RoomSuperSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("featured", "featured", notNull(scalar("Boolean"))),
                     field("giftStickerPackId", "giftStickerPackId", scalar("ID"))
+                )),
+            field("room", "room", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    inline("SharedRoom", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("stickerPack", "stickerPack", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID")))
+                            ))
+                    ))
                 ))
         )
 private let RoomTinySelector = obj(
@@ -6315,7 +6326,7 @@ class Operations {
     let RoomSuper = OperationDefinition(
         "RoomSuper",
         .query, 
-        "query RoomSuper($id:ID!){roomSuper(id:$id){__typename id featured giftStickerPackId}}",
+        "query RoomSuper($id:ID!){roomSuper(id:$id){__typename id featured giftStickerPackId}room(id:$id){__typename ... on SharedRoom{__typename id stickerPack{__typename id}}}}",
         RoomSuperSelector
     )
     let RoomTiny = OperationDefinition(
