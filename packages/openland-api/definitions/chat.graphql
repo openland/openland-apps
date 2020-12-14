@@ -940,6 +940,7 @@ query UserSearchForChat($chatId: ID!, $query: String, $first: Int!,$after: Strin
             }
             isMember
             cursor
+            inviteRestricted
         }
         pageInfo {
             hasNextPage

@@ -4507,7 +4507,8 @@ private let UserSearchForChatSelector = obj(
                                     fragment("User", UserShortSelector)
                                 ))),
                             field("isMember", "isMember", notNull(scalar("Boolean"))),
-                            field("cursor", "cursor", notNull(scalar("String")))
+                            field("cursor", "cursor", notNull(scalar("String"))),
+                            field("inviteRestricted", "inviteRestricted", notNull(scalar("Boolean")))
                         ))))),
                     field("pageInfo", "pageInfo", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
@@ -6438,7 +6439,7 @@ class Operations {
     let UserSearchForChat = OperationDefinition(
         "UserSearchForChat",
         .query, 
-        "query UserSearchForChat($chatId:ID!,$query:String,$first:Int!,$after:String,$sort:String){userSearchForChat(chatId:$chatId,query:$query,first:$first,after:$after,sort:$sort){__typename edges{__typename node{__typename ...UserShort}isMember cursor}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
+        "query UserSearchForChat($chatId:ID!,$query:String,$first:Int!,$after:String,$sort:String){userSearchForChat(chatId:$chatId,query:$query,first:$first,after:$after,sort:$sort){__typename edges{__typename node{__typename ...UserShort}isMember cursor inviteRestricted}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
         UserSearchForChatSelector
     )
     let UserSearchForOrganization = OperationDefinition(

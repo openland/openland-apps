@@ -25,6 +25,7 @@ const LOADING_HEIGHT = 200;
 interface UserSearchData {
     node: UserShort;
     isMember: boolean;
+    inviteRestricted?: boolean;
     cursor: string;
 }
 
@@ -121,7 +122,7 @@ export const UserSearch = (props: UserSearchForChatProps) => {
             useDefaultScroll={true}
         >
             <XView marginTop={12} flexDirection="column" paddingHorizontal={12}>
-                {data && data.map(({ node, isMember }) => {
+                {data && data.map(({ node, isMember, inviteRestricted }) => {
                     if (props.excludeMe && myId === node.id) {
                         return null;
                     }
@@ -136,7 +137,7 @@ export const UserSearch = (props: UserSearchForChatProps) => {
                                     <CheckComponent squared={true} checked={selected} />
                                 </XView>
                             }
-                            disabled={isMember}
+                            disabled={isMember || inviteRestricted}
                         />
                     );
                 })}
