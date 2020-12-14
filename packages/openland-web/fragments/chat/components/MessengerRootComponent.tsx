@@ -123,6 +123,7 @@ const messagesListContainer = css`
     flex-grow: 1;
     flex-shrink: 1;
     overflow: hidden;
+    background-color: var(--backgroundPrimary);
 `;
 
 const blockContainer = css`
