@@ -18,6 +18,10 @@ const findFriendsImgSrc = css`
     background-image: -webkit-image-set(url(https://cdn.openland.com/shared/art/art-add-people.png) 1x, url(https://cdn.openland.com/shared/art/art-add-people@2x.png) 2x, url(https://cdn.openland.com/shared/art/art-add-people@3x.png) 3x);
 `;
 
+const titleClassName = css`
+  color: var(--foregroundPrimary);
+`;
+
 const textClassName = css`
     margin-top: 8px;
     margin-bottom: 32px;
@@ -46,7 +50,7 @@ export const InvitePeopleBlock = React.memo((props: InvitePeopleBlockProps) => {
     return (
         <XView alignItems="center" marginBottom={48}>
             <div className={findFriendsImgSrc} />
-            <div className={TextTitle1}>Add people</div>
+            <div className={cx(TextTitle1, titleClassName)}>Add people</div>
             <div className={cx(TextBody, textClassName)}>
                 Invite people to join {isChannel ? 'channel' : 'conversation'}
             </div>

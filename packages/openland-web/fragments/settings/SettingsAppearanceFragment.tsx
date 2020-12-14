@@ -185,7 +185,7 @@ export const SettingsAppearanceFragment = React.memo(() => {
             <UHeader title="Appearance" />
             <FormWrapper>
                 <FormSection title="Theme">
-                    <XView marginHorizontal={-16}>
+                    <XView marginHorizontal={-16} color="var(--foregroundPrimary)">
                         <ThemeSelect
                             {...themeField.input}
                             selectOptions={[
