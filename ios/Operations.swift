@@ -1654,6 +1654,7 @@ private let StickerPackFragmentSelector = obj(
             field("id", "id", notNull(scalar("ID"))),
             field("title", "title", notNull(scalar("String"))),
             field("added", "added", notNull(scalar("Boolean"))),
+            field("private", "private", notNull(scalar("Boolean"))),
             field("stickers", "stickers", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Sticker", StickerFragmentSelector)
@@ -1665,6 +1666,7 @@ private let SuperStickerPackFragmentSelector = obj(
             field("id", "id", notNull(scalar("ID"))),
             field("title", "title", notNull(scalar("String"))),
             field("published", "published", notNull(scalar("Boolean"))),
+            field("private", "private", notNull(scalar("Boolean"))),
             field("added", "added", notNull(scalar("Boolean"))),
             field("author", "author", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5828,7 +5830,7 @@ class Operations {
     let CreatedStickerPacks = OperationDefinition(
         "CreatedStickerPacks",
         .query, 
-        "query CreatedStickerPacks{createdStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
+        "query CreatedStickerPacks{createdStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
         CreatedStickerPacksSelector
     )
     let DebugGqlTrace = OperationDefinition(
@@ -6356,7 +6358,7 @@ class Operations {
     let StickerPack = OperationDefinition(
         "StickerPack",
         .query, 
-        "query StickerPack($id:ID!){stickerPack(id:$id){__typename ...StickerPackFragment}}fragment StickerPackFragment on StickerPack{__typename id title added stickers{__typename ...StickerFragment}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}",
+        "query StickerPack($id:ID!){stickerPack(id:$id){__typename ...StickerPackFragment}}fragment StickerPackFragment on StickerPack{__typename id title added private stickers{__typename ...StickerFragment}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}",
         StickerPackSelector
     )
     let StickerPackCatalog = OperationDefinition(
@@ -6404,7 +6406,7 @@ class Operations {
     let SuperAllStickerPacks = OperationDefinition(
         "SuperAllStickerPacks",
         .query, 
-        "query SuperAllStickerPacks{superAllStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
+        "query SuperAllStickerPacks{superAllStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
         SuperAllStickerPacksSelector
     )
     let SuperBadgeInRoom = OperationDefinition(
@@ -6416,13 +6418,13 @@ class Operations {
     let SuperStickerPack = OperationDefinition(
         "SuperStickerPack",
         .query, 
-        "query SuperStickerPack($id:ID!){stickerPack(id:$id){__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
+        "query SuperStickerPack($id:ID!){stickerPack(id:$id){__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
         SuperStickerPackSelector
     )
     let SuperStickerPackCatalog = OperationDefinition(
         "SuperStickerPackCatalog",
         .query, 
-        "query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
+        "query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
         SuperStickerPackCatalogSelector
     )
     let TransactionsHistory = OperationDefinition(

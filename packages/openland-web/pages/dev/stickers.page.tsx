@@ -122,6 +122,7 @@ const EditStickerPackModalInner = React.memo((props: {
     const form = useForm();
     const titleField = useField('stickers.title', stickerPack?.title || 'New StickerPack', form);
     const publishedField = useField('stickers.published', !!stickerPack?.published, form);
+    const privateField = useField('stickers.private', !!stickerPack?.private, form);
     const [stickersToAdd, setStickersToAdd] = React.useState<(StickerToAdd & { key: string })[]>([]);
 
     if (!stickerPack) {
@@ -139,6 +140,7 @@ const EditStickerPackModalInner = React.memo((props: {
             id: stickerPack.id, input: {
                 title: titleField.value,
                 published: publishedField.value,
+                private: privateField.value
             }
         });
         await Promise.all([
@@ -195,6 +197,7 @@ const EditStickerPackModalInner = React.memo((props: {
                     <UInputField field={titleField} label="Title" />
                     <XView width={140}>
                         <UCheckboxFiled field={publishedField} label="Published" />
+                        <UCheckboxFiled field={privateField} label="Private" />
                         <UButton
                             text="Update"
                             size="large"

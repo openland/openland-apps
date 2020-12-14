@@ -54,7 +54,7 @@ const StickerPackModalInner = React.memo((props: { packId: string; hide: () => v
         await client.refetchMyStickers();
         props.hide();
     };
-    const isPrivate = false;
+    const isPrivate = !iHaveThisPack && stickerPack.private;
 
     return (
         <XView flexGrow={1} flexShrink={1}>

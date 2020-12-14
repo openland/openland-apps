@@ -9,6 +9,7 @@ import { ZButton } from 'openland-mobile/components/ZButton';
 import { StickerFragment } from 'openland-api/spacex.types';
 import { ZImage } from 'openland-mobile/components/ZImage';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
+import { plural } from 'openland-y-utils/plural';
 
 const StickerRows = React.memo((props: { stickers: StickerFragment[], stickerLayout: StickerLayout }) => {
     const { stickers, stickerLayout } = props;
@@ -80,7 +81,7 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
         return null;
     }
 
-    const isPrivate = false;
+    const isPrivate = !haveIt && stickerPack.private;
 
     return (
         <View onLayout={handleLayoutChange} style={{ paddingHorizontal: 8, minHeight: 217 }}>
@@ -125,7 +126,7 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
                     <View style={{ paddingHorizontal: 8, marginTop: 16 }}>
                         <ZButton
                             size='large'
-                            title={`${haveIt ? 'Delete' : 'Add'} ${stickerPack.stickers.length} stickers`}
+                            title={`${haveIt ? 'Delete' : 'Add'} ${plural(stickerPack.stickers.length, ['sticker', 'stickers'])}`}
                             onPress={handleButtonPressed}
                             style={haveIt ? 'secondary' : 'primary'}
                             loading={loading}
@@ -141,7 +142,7 @@ export const showStickerPackModal = (id: string) => {
         view: (ctx) => (
             <StickerPackModalContent id={id} hide={ctx.hide} />
         ),
-        containerStyle: { borderBottomLeftRadius: 0, borderBottomRightRadius: 0, borderTopLeftRadius: 18, borderTopRightRadius: 18 },
+        containerStyle: { borderBottomLeftRadius: 0, borderBottomRightRadius: 0, borderTopLeftRadius: 18, borderTopRightRadius: 18, minHeight: 217 },
         disableMargins: true
     });
 };
