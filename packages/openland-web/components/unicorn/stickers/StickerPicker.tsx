@@ -570,9 +570,12 @@ export const StickerComponent = React.memo<{
     React.useLayoutEffect(() => categoriesScrolling(), [currentSection]);
 
     React.useEffect(() => {
-        if (newCounter > 0) {
-            client.mutateMarkStickersViewed();
-        }
+        (async () => {
+            if (newCounter > 0) {
+                await client.mutateMarkStickersViewed();
+                client.refetchUnviewedStickers();
+            }
+        })();
     }, [newCounter]);
 
     const onCategoryClick = React.useCallback(
@@ -591,6 +594,7 @@ export const StickerComponent = React.memo<{
             props.onStickerSent(item);
         }
     };
+    const showCatalogCounter = false;
 
     React.useEffect(() => {
         sequenceWatcher<StickersWatch>(null, (state, handler) => client.subscribeStickersWatch(handler), (update) => {
@@ -698,7 +702,7 @@ export const StickerComponent = React.memo<{
                     }}
                 >
                     {showCatalog ? <IcCatalogActive /> : <IcCatalog />}
-                    {newCounter > 0 && (
+                    {newCounter > 0 && !showCatalogCounter && (
                         <div className={newCounter < 10 ? categoryButtonCounter : categoryButtonDot}>
                             {newCounter < 10 ? newCounter : null}
                         </div>

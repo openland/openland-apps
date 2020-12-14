@@ -129,7 +129,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         })();
     }
 
-    componentDidUpdate(prevProps: ConversationRootProps) {
+    componentDidUpdate(prevProps: ConversationRootProps, prevState: ConversationRootState) {
         if (prevProps.chat.settings.mute !== this.props.chat.settings.mute) {
             this.setState({
                 muted: !!this.props.chat.settings.mute
@@ -137,6 +137,14 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         }
         if (prevProps.messagesActionsState !== this.props.messagesActionsState) {
             this.handleMessagesActions(this.props.messagesActionsState);
+        }
+        if (!prevState.stickerKeyboardShown && this.state.stickerKeyboardShown) {
+            (async () => {
+                if (this.props.hasNewStickers) {
+                    await getClient().mutateMarkStickersViewed();
+                    getClient().refetchUnviewedStickers();
+                }
+            })();
         }
     }
 
