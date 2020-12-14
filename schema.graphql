@@ -466,6 +466,25 @@ input CustomStatusInput {
 """Date type format, serialized as UNIX-time in string"""
 scalar Date
 
+type DebugChatCounter {
+  all: Int!
+  mentions: Int!
+  totalMessages: Int!
+  allMentions: Int!
+  totalSent: Int!
+  sentAllMentions: Int!
+  personalMentions: Int!
+  personalMessages: Int!
+}
+
+type DebugChatState {
+  seq: Int!
+  muted: Boolean!
+  async: Boolean!
+  counter: Int!
+  mentions: Int!
+}
+
 enum DebugEmailType {
   WELCOME
   ACCOUNT_ACTIVATED
@@ -494,11 +513,9 @@ type DebugEventsState {
   state: String
 }
 
-type DebugGlobalCounters {
-  allUnreadMessages: Int!
-  unreadMessagesWithoutMuted: Int!
-  allUnreadChats: Int!
-  unreadChatsWithoutMuted: Int!
+type DebugGlobalCounter {
+  all: Int!
+  mentions: Int!
 }
 
 type DebugID {
@@ -1756,14 +1773,11 @@ type Mutation {
   debugFreeUnusedShortnames: Boolean!
   debugFreeShortname(shortname: String!): Boolean!
   debugRemoveKickedUsersFromOrgChats: Boolean!
-  debugMigrateToNewCounters: Boolean!
   debugMigrateToNewLastRead: Boolean!
   debugFixReadSeqs: Boolean!
   debugExportUsers: Boolean!
   debugMigrateUserStatus: Boolean!
-  debugMigrateToExperimentalCounters: Boolean!
-  debugFixCompactMessages: Boolean!
-  debugMigrateToNewerCounters: Boolean!
+  debugFixMessages: Boolean!
   debugUserAuth(id: ID!): Boolean!
   debugCreateOrganizationMailing(oid: ID!, uid: ID!, message: String!, spans: [MessageSpanInput!]): Boolean!
   debugPaymentCancel(id: ID!): Boolean!
@@ -1861,6 +1875,7 @@ type Mutation {
   stickerPackUpdate(id: ID!, input: StickerPackInput!): StickerPack!
   stickerPackAddSticker(id: ID!, input: StickerInput!): Sticker!
   stickerPackRemoveSticker(id: ID!): Boolean!
+  myStickersMarkAsViewed: Boolean!
   stickerPackAddToCollection(id: ID!): Boolean!
   stickerPackRemoveFromCollection(id: ID!): Boolean!
   stickerAddToFavorites(id: ID!): Boolean!
@@ -2655,7 +2670,6 @@ type Query {
   debugCheckTasksIndex: String!
   debug2WayDirectChatsCounter: Int!
   debugUserMetrics(id: ID!): DebugUserMetrics!
-  debugGlobalCounters(uid: ID): DebugGlobalCounters!
   debugServerId: String!
   debugGqlTraces(first: Int!, after: ID): GqlTraceConnection!
   debugGqlTrace(id: ID!): GqlTrace!
@@ -2669,6 +2683,11 @@ type Query {
   debugExperimentalCounter(cid: ID!): String!
   debugFindUser(email: String, phone: String): User
   debugSocialSharingImage(template: String!, title: String!, image: String!, subTitle: String!): String!
+  debugChatCounter(id: ID!): DebugChatCounter!
+  debugChatState(id: ID!): DebugChatState
+  debugGlobalCounter: DebugGlobalCounter!
+  debugChatTree(id: ID!): String!
+  debugChatMessages(id: ID!): [ModernMessage!]!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!
@@ -2762,6 +2781,7 @@ type Query {
   me: User
   user(id: ID!): User!
   mySuccessfulInvitesCount: Int!
+  shouldAskForAppReview: Boolean!
   superBadgeInRoom(roomId: ID!, userId: ID!): UserBadge
 
   """deprecated"""
@@ -3090,6 +3110,7 @@ type SharedRoom {
   pinnedMessage: ModernMessage
   canUnpinMessage: Boolean!
   welcomeMessage: WelcomeMessage
+  stickerPack: StickerPack
   organization: Organization
   membersCount: Int!
   onlineMembersCount: Int!
@@ -3221,11 +3242,14 @@ type StickerPack {
   usesCount: Int!
   added: Boolean!
   published: Boolean!
+  private: Boolean!
 }
 
 input StickerPackInput {
   title: String
   published: Boolean
+  stickers: [ID!]
+  private: Boolean
 }
 
 type Subscription {
@@ -3251,6 +3275,7 @@ type Subscription {
   myContactsUpdates(fromState: String!): ContactsUpdateContainer!
   dialogsUpdates(fromState: String): DialogUpdateContainer!
   homeFeedUpdates(fromState: String): FeedUpdateContainer!
+  myStickersUpdates: UserStickers!
   notificationCenterUpdates(fromState: String): NotificationCenterUpdateContainer
   alphaSubscribeOnline(users: [ID!]!): OnlineEvent!
   chatOnlinesCount(chatId: ID!): ChatOnlineEvent!

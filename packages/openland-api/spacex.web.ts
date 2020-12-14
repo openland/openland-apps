@@ -1088,6 +1088,20 @@ const MessageUsersReactionsSelector = obj(
             field('reaction', 'reaction', args(), notNull(scalar('String')))
         );
 
+const MyStickersFragmentSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('unviewedCount', 'unviewedCount', args(), notNull(scalar('Int'))),
+            field('packs', 'packs', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('title', 'title', args(), notNull(scalar('String'))),
+                    field('stickers', 'stickers', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('Sticker', StickerFragmentSelector)
+                        )))))
+                )))))
+        );
+
 const RoomSharedNanoSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -3460,16 +3474,7 @@ const MyPostDraftsSelector = obj(
 const MyStickersSelector = obj(
             field('myStickers', 'stickers', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('unviewedCount', 'unviewedCount', args(), notNull(scalar('Int'))),
-                    field('packs', 'packs', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('title', 'title', args(), notNull(scalar('String'))),
-                            field('stickers', 'stickers', args(), notNull(list(notNull(obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    fragment('Sticker', StickerFragmentSelector)
-                                )))))
-                        )))))
+                    fragment('UserStickers', MyStickersFragmentSelector)
                 )))
         );
 const MySuccessfulInvitesCountSelector = obj(
@@ -4814,6 +4819,9 @@ const MakeCardDefaultSelector = obj(
                     field('isDefault', 'isDefault', args(), notNull(scalar('Boolean')))
                 )))
         );
+const MarkStickersViewedSelector = obj(
+            field('myStickersMarkAsViewed', 'myStickersMarkAsViewed', args(), notNull(scalar('Boolean')))
+        );
 const MediaAnswerSelector = obj(
             field('mediaStreamAnswer', 'mediaStreamAnswer', args(fieldValue("id", refValue('id')), fieldValue("peerId", refValue('peerId')), fieldValue("answer", refValue('answer')), fieldValue("seq", refValue('seq'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5591,6 +5599,12 @@ const SettingsWatchSelector = obj(
                     fragment('Settings', SettingsFullSelector)
                 )))
         );
+const StickersWatchSelector = obj(
+            field('myStickersUpdates', 'event', args(), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('UserStickers', MyStickersFragmentSelector)
+                )))
+        );
 const TypingsWatchSelector = obj(
             field('typings', 'typings', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -6094,7 +6108,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     MyStickers: {
         kind: 'query',
         name: 'MyStickers',
-        body: 'query MyStickers{stickers:myStickers{__typename unviewedCount packs{__typename id title stickers{__typename ...StickerFragment}}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}',
+        body: 'query MyStickers{stickers:myStickers{__typename ...MyStickersFragment}}fragment MyStickersFragment on UserStickers{__typename unviewedCount packs{__typename id title stickers{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}',
         selector: MyStickersSelector
     },
     MySuccessfulInvitesCount: {
@@ -6702,6 +6716,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'MakeCardDefault',
         body: 'mutation MakeCardDefault($id:ID!){cardMakeDefault(id:$id){__typename id isDefault}}',
         selector: MakeCardDefaultSelector
+    },
+    MarkStickersViewed: {
+        kind: 'mutation',
+        name: 'MarkStickersViewed',
+        body: 'mutation MarkStickersViewed{myStickersMarkAsViewed}',
+        selector: MarkStickersViewedSelector
     },
     MediaAnswer: {
         kind: 'mutation',
@@ -7332,6 +7352,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'SettingsWatch',
         body: 'subscription SettingsWatch{watchSettings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename id version primaryEmail emailFrequency excludeMutedChats countUnreadChats whoCanSeeEmail whoCanSeePhone whoCanAddToGroups communityAdminsCanSeeContactInfo desktop{__typename ...PlatformNotificationSettingsFull}mobile{__typename ...PlatformNotificationSettingsFull}}fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename direct{__typename showNotification sound}secretChat{__typename showNotification sound}communityChat{__typename showNotification sound}comments{__typename showNotification sound}channels{__typename showNotification sound}notificationPreview}',
         selector: SettingsWatchSelector
+    },
+    StickersWatch: {
+        kind: 'subscription',
+        name: 'StickersWatch',
+        body: 'subscription StickersWatch{event:myStickersUpdates{__typename ...MyStickersFragment}}fragment MyStickersFragment on UserStickers{__typename unviewedCount packs{__typename id title stickers{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}',
+        selector: StickersWatchSelector
     },
     TypingsWatch: {
         kind: 'subscription',

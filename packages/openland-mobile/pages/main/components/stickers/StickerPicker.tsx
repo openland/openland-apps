@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, LayoutChangeEvent, TouchableOpacity, Image, FlatList, AsyncStorage, Platform } from 'react-native';
 import { useClient } from 'openland-api/useClient';
 import { ZImage } from 'openland-mobile/components/ZImage';
-import { MyStickers_stickers_packs, StickerFragment } from 'openland-api/spacex.types';
+import { MyStickers_stickers_packs, StickerFragment, StickersWatch } from 'openland-api/spacex.types';
 import { TextStyles, HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import Alert from 'openland-mobile/components/AlertBlanket';
@@ -11,6 +11,7 @@ import { SRouterContext } from 'react-native-s/SRouterContext';
 import { StickerLayout, useStickerLayout } from './stickerLayout';
 import FastImage from 'react-native-fast-image';
 import { ZButton } from 'openland-mobile/components/ZButton';
+import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
 const RECENT_ID = 'recent';
 
@@ -196,6 +197,20 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
             FastImage.preload(clientStickers.flatMap(pack => pack.stickers.map(s => ({ uri: getStickerUrl(s) }))));
         }
     }, [clientStickers]);
+
+    React.useEffect(() => {
+        if (unviewedCount > 0) {
+            client.mutateMarkStickersViewed();
+        }
+    }, [unviewedCount]);
+
+    React.useEffect(() => {
+        sequenceWatcher<StickersWatch>(null, (state, handler) => client.subscribeStickersWatch(handler), (update) => {
+            client.updateMyStickers(data => ({ stickers: { ...data.stickers, ...update.event } }));
+
+            return '';
+        });
+    }, []);
 
     const handleDeletePackPressed = React.useCallback((pack: MyStickers_stickers_packs | 'recent') => {
         Alert.builder()

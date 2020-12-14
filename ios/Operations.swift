@@ -1081,6 +1081,20 @@ private let MessageUsersReactionsSelector = obj(
             field("reaction", "reaction", notNull(scalar("String")))
         )
 
+private let MyStickersFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("unviewedCount", "unviewedCount", notNull(scalar("Int"))),
+            field("packs", "packs", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("title", "title", notNull(scalar("String"))),
+                    field("stickers", "stickers", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("Sticker", StickerFragmentSelector)
+                        )))))
+                )))))
+        )
+
 private let RoomSharedNanoSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -3453,16 +3467,7 @@ private let MyPostDraftsSelector = obj(
 private let MyStickersSelector = obj(
             field("myStickers", "stickers", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    field("unviewedCount", "unviewedCount", notNull(scalar("Int"))),
-                    field("packs", "packs", notNull(list(notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("title", "title", notNull(scalar("String"))),
-                            field("stickers", "stickers", notNull(list(notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    fragment("Sticker", StickerFragmentSelector)
-                                )))))
-                        )))))
+                    fragment("UserStickers", MyStickersFragmentSelector)
                 )))
         )
 private let MySuccessfulInvitesCountSelector = obj(
@@ -4807,6 +4812,9 @@ private let MakeCardDefaultSelector = obj(
                     field("isDefault", "isDefault", notNull(scalar("Boolean")))
                 )))
         )
+private let MarkStickersViewedSelector = obj(
+            field("myStickersMarkAsViewed", "myStickersMarkAsViewed", notNull(scalar("Boolean")))
+        )
 private let MediaAnswerSelector = obj(
             field("mediaStreamAnswer", "mediaStreamAnswer", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId")), fieldValue("answer", refValue("answer")), fieldValue("seq", refValue("seq"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5584,6 +5592,12 @@ private let SettingsWatchSelector = obj(
                     fragment("Settings", SettingsFullSelector)
                 )))
         )
+private let StickersWatchSelector = obj(
+            field("myStickersUpdates", "event", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("UserStickers", MyStickersFragmentSelector)
+                )))
+        )
 private let TypingsWatchSelector = obj(
             field("typings", "typings", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -6091,7 +6105,7 @@ class Operations {
     let MyStickers = OperationDefinition(
         "MyStickers",
         .query, 
-        "query MyStickers{stickers:myStickers{__typename unviewedCount packs{__typename id title stickers{__typename ...StickerFragment}}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}",
+        "query MyStickers{stickers:myStickers{__typename ...MyStickersFragment}}fragment MyStickersFragment on UserStickers{__typename unviewedCount packs{__typename id title stickers{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}",
         MyStickersSelector
     )
     let MySuccessfulInvitesCount = OperationDefinition(
@@ -6699,6 +6713,12 @@ class Operations {
         .mutation, 
         "mutation MakeCardDefault($id:ID!){cardMakeDefault(id:$id){__typename id isDefault}}",
         MakeCardDefaultSelector
+    )
+    let MarkStickersViewed = OperationDefinition(
+        "MarkStickersViewed",
+        .mutation, 
+        "mutation MarkStickersViewed{myStickersMarkAsViewed}",
+        MarkStickersViewedSelector
     )
     let MediaAnswer = OperationDefinition(
         "MediaAnswer",
@@ -7330,6 +7350,12 @@ class Operations {
         "subscription SettingsWatch{watchSettings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename id version primaryEmail emailFrequency excludeMutedChats countUnreadChats whoCanSeeEmail whoCanSeePhone whoCanAddToGroups communityAdminsCanSeeContactInfo desktop{__typename ...PlatformNotificationSettingsFull}mobile{__typename ...PlatformNotificationSettingsFull}}fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename direct{__typename showNotification sound}secretChat{__typename showNotification sound}communityChat{__typename showNotification sound}comments{__typename showNotification sound}channels{__typename showNotification sound}notificationPreview}",
         SettingsWatchSelector
     )
+    let StickersWatch = OperationDefinition(
+        "StickersWatch",
+        .subscription, 
+        "subscription StickersWatch{event:myStickersUpdates{__typename ...MyStickersFragment}}fragment MyStickersFragment on UserStickers{__typename unviewedCount packs{__typename id title stickers{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}",
+        StickersWatchSelector
+    )
     let TypingsWatch = OperationDefinition(
         "TypingsWatch",
         .subscription, 
@@ -7523,6 +7549,7 @@ class Operations {
         if name == "EditMessage" { return EditMessage }
         if name == "GlobalEventBusPublish" { return GlobalEventBusPublish }
         if name == "MakeCardDefault" { return MakeCardDefault }
+        if name == "MarkStickersViewed" { return MarkStickersViewed }
         if name == "MediaAnswer" { return MediaAnswer }
         if name == "MediaCandidate" { return MediaCandidate }
         if name == "MediaFailed" { return MediaFailed }
@@ -7628,6 +7655,7 @@ class Operations {
         if name == "MyNotificationsCenter" { return MyNotificationsCenter }
         if name == "OnlineWatch" { return OnlineWatch }
         if name == "SettingsWatch" { return SettingsWatch }
+        if name == "StickersWatch" { return StickersWatch }
         if name == "TypingsWatch" { return TypingsWatch }
         if name == "WalletUpdates" { return WalletUpdates }
         if name == "WatchUpdates" { return WatchUpdates }

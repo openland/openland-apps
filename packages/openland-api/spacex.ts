@@ -1992,6 +1992,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateMakeCardDefault(variables: Types.MakeCardDefaultVariables, params?: MutationParameters): Promise<Types.MakeCardDefault> {
         return this.mutate('MakeCardDefault', variables, params);
     }
+    mutateMarkStickersViewed(params?: MutationParameters): Promise<Types.MarkStickersViewed> {
+        return this.mutate('MarkStickersViewed', undefined, params);
+    }
     mutateMediaAnswer(variables: Types.MediaAnswerVariables, params?: MutationParameters): Promise<Types.MediaAnswer> {
         return this.mutate('MediaAnswer', variables, params);
     }
@@ -2306,6 +2309,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     subscribeSettingsWatch(handler: GraphqlSubscriptionHandler<Types.SettingsWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.SettingsWatch> {
         return this.subscribe(handler, 'SettingsWatch', undefined, params);
+    }
+    subscribeStickersWatch(handler: GraphqlSubscriptionHandler<Types.StickersWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.StickersWatch> {
+        return this.subscribe(handler, 'StickersWatch', undefined, params);
     }
     subscribeTypingsWatch(handler: GraphqlSubscriptionHandler<Types.TypingsWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.TypingsWatch> {
         return this.subscribe(handler, 'TypingsWatch', undefined, params);

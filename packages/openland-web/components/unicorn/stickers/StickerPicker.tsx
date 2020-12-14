@@ -6,6 +6,7 @@ import {
     MyStickers_stickers_packs,
     StickerFragment,
     StickerPackCatalog_stickers,
+    StickersWatch,
 } from 'openland-api/spacex.types';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -20,6 +21,7 @@ import IcAdd from 'openland-icons/s/ic-add-24.svg';
 import IcDone from 'openland-icons/s/ic-done-24.svg';
 import IcCatalog from './ic-catalog.svg';
 import IcCatalogActive from './ic-catalog-active.svg';
+import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
 type StickerPack = MyStickers_stickers_packs & {
     start: number;
@@ -515,6 +517,7 @@ export const StickerComponent = React.memo<{
     const [stickersCount, setStickersCount] = React.useState(0);
     const [stickersPack, setStickersPack] = React.useState<StickerPack[]>([]);
     const [currentSection, setCurrentSection] = React.useState(1);
+    const newCounter = stickers.unviewedCount;
 
     const categoriesScrolling = () => {
         if (categoriesRef.current) {
@@ -566,6 +569,12 @@ export const StickerComponent = React.memo<{
 
     React.useLayoutEffect(() => categoriesScrolling(), [currentSection]);
 
+    React.useEffect(() => {
+        if (newCounter > 0) {
+            client.mutateMarkStickersViewed();
+        }
+    }, [newCounter]);
+
     const onCategoryClick = React.useCallback(
         (src: number) => {
             setShowCatalog(false);
@@ -583,6 +592,14 @@ export const StickerComponent = React.memo<{
         }
     };
 
+    React.useEffect(() => {
+        sequenceWatcher<StickersWatch>(null, (state, handler) => client.subscribeStickersWatch(handler), (update) => {
+            client.updateMyStickers(data => ({ stickers: { ...data.stickers, ...update.event } }));
+
+            return '';
+        });
+    }, []);
+
     if (!stickers.packs.length && !showCatalog) {
         return (
             <div className={stubContainer}>
@@ -594,7 +611,6 @@ export const StickerComponent = React.memo<{
             </div>
         );
     }
-    const newCounter = stickers.unviewedCount;
 
     return (
         <div className={container}>

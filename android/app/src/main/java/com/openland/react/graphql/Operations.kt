@@ -180,6 +180,7 @@ object Operations {
         if (name == "EditMessage") return EditMessage
         if (name == "GlobalEventBusPublish") return GlobalEventBusPublish
         if (name == "MakeCardDefault") return MakeCardDefault
+        if (name == "MarkStickersViewed") return MarkStickersViewed
         if (name == "MediaAnswer") return MediaAnswer
         if (name == "MediaCandidate") return MediaCandidate
         if (name == "MediaFailed") return MediaFailed
@@ -285,6 +286,7 @@ object Operations {
         if (name == "MyNotificationsCenter") return MyNotificationsCenter
         if (name == "OnlineWatch") return OnlineWatch
         if (name == "SettingsWatch") return SettingsWatch
+        if (name == "StickersWatch") return StickersWatch
         if (name == "TypingsWatch") return TypingsWatch
         if (name == "WalletUpdates") return WalletUpdates
         if (name == "WatchUpdates") return WatchUpdates

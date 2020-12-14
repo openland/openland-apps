@@ -39,6 +39,17 @@ fragment SuperStickerPackFragment on StickerPack {
     }
 }
 
+fragment MyStickersFragment on UserStickers {
+    unviewedCount
+    packs {
+        id
+        title
+        stickers {
+            ...StickerFragment
+        }
+    }
+}
+
 query UnviewedStickers {
     stickers: myStickers {
         unviewedCount
@@ -47,14 +58,7 @@ query UnviewedStickers {
 
 query MyStickers {
     stickers: myStickers {
-        unviewedCount
-        packs {
-            id
-            title
-            stickers {
-                ...StickerFragment
-            }
-        }
+        ...MyStickersFragment
     }
 }
 query StickerPackCatalog {
@@ -141,4 +145,14 @@ mutation AddSticker($packId: ID!, $input: StickerInput!) {
 
 mutation RemoveSticker($id: ID!) {
     stickerPackRemoveSticker(id: $id)
+}
+
+mutation MarkStickersViewed {
+    myStickersMarkAsViewed
+}
+
+subscription StickersWatch {
+    event: myStickersUpdates {
+        ...MyStickersFragment
+    }
 }

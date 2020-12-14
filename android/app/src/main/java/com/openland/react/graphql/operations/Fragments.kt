@@ -1087,6 +1087,20 @@ internal val MessageUsersReactionsSelector = obj(
             field("reaction", "reaction", notNull(scalar("String")))
         )
 
+internal val MyStickersFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("unviewedCount", "unviewedCount", notNull(scalar("Int"))),
+            field("packs", "packs", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("title", "title", notNull(scalar("String"))),
+                    field("stickers", "stickers", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("Sticker", StickerFragmentSelector)
+                        )))))
+                )))))
+        )
+
 internal val RoomSharedNanoSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
