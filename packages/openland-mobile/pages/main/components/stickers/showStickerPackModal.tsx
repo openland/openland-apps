@@ -120,7 +120,7 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
                     alignContent="center"
                     backgroundColor={theme.backgroundTertiary}
                 >
-                    <Text style={{ textAlign: 'center', color: theme.foregroundSecondary, ...TextStyles.Body }}>To get this sticker pack, join its group</Text>
+                    <Text style={{ textAlign: 'center', color: theme.foregroundSecondary, ...TextStyles.Body }}>This sticker pack is private</Text>
                 </View>
             ) : (
                     <View style={{ paddingHorizontal: 8, marginTop: 16 }}>

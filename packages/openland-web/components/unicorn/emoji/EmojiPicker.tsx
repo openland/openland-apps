@@ -710,7 +710,7 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
     const showWithEvent = (e: any) => {
         show(e);
         if (props.onShow) {
-            props.onShow(false);
+            props.onShow(true);
         }
     };
     const hasNewStickers = props.hasNewStickers;
@@ -725,7 +725,7 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
             )}
             onMouseEnter={showWithEvent}
         >
-            <UIcon icon={<IcSticker />} size={20} />
+            <UIcon icon={<IcSticker />} size={24} />
         </div>
     );
 });
