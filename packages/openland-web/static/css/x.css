@@ -160,9 +160,9 @@ html {
 
         --boxShadowPopper: 0px 8px 24px rgba(0, 0, 0, 0.4), 0px 0px 48px rgba(0, 0, 0, 0.3);
 
-        --backgroundLightPink: #594151;
-        --backgroundLightYellow: #594E4A;
-        --backgroundLightBlue: #414659;
+        --backgroundLightPink: #453440;
+        --backgroundLightYellow: #453D3B;
+        --backgroundLightBlue: #343746;
     }
 }
 
@@ -248,9 +248,9 @@ html.dark {
 
     --boxShadowPopper: 0px 8px 24px rgba(0, 0, 0, 0.4), 0px 0px 48px rgba(0, 0, 0, 0.3);
 
-    --backgroundLightPink: #594151;
-    --backgroundLightYellow: #594E4A;
-    --backgroundLightBlue: #414659;
+    --backgroundLightPink: #453440;
+    --backgroundLightYellow: #453D3B;
+    --backgroundLightBlue: #343746;
 }
 
 html.red:not(.landing) {

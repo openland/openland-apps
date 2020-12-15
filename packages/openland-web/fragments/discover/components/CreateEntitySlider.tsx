@@ -106,7 +106,7 @@ export const CreateEntitySlider = React.memo(() => {
             <CreateEntityItem
                 title="Chat"
                 description={`Public, secret, or${noBreakSpace}paid group chat`}
-                bgColor="var(--backgroundLightPink)"
+                bgColor="var(--backgroundLightYellow)"
                 imgSrc="//cdn.openland.com/shared/art/art-create-chat.png"
                 imgSrcSet="//cdn.openland.com/shared/art/art-create-chat@2x.png 2x, //cdn.openland.com/shared/art/art-create-chat@3x.png 3x"
                 buttonText="New chat"
@@ -116,7 +116,7 @@ export const CreateEntitySlider = React.memo(() => {
             <CreateEntityItem
                 title="Channel"
                 description={`Only admins write, others${noBreakSpace}comment`}
-                bgColor="var(--backgroundLightYellow)"
+                bgColor="var(--backgroundLightBlue)"
                 imgSrc="//cdn.openland.com/shared/art/art-create-channel.png"
                 imgSrcSet="//cdn.openland.com/shared/art/art-create-channel@2x.png 2x, //cdn.openland.com/shared/art/art-create-channel@3x.png 3x"
                 buttonText="New channel"
@@ -126,7 +126,7 @@ export const CreateEntitySlider = React.memo(() => {
             <CreateEntityItem
                 title="Community"
                 description={`A hub for your chats and${noBreakSpace}channels`}
-                bgColor="var(--backgroundLightBlue)"
+                bgColor="var(--backgroundLightPink)"
                 imgSrc="//cdn.openland.com/shared/art/art-create-community.png"
                 imgSrcSet="//cdn.openland.com/shared/art/art-create-community@2x.png 2x, //cdn.openland.com/shared/art/art-create-community@3x.png 3x"
                 buttonText="New community"
