@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
+import { OpenlandClient } from 'openland-api/spacex';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 
 export default function BlockUserModal(
     id: string,
-    client: any,
+    client: OpenlandClient,
     deleted: boolean,
     setDelete: (i: boolean) => void,
 ) {

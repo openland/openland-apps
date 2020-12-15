@@ -282,6 +282,7 @@ export class ConversationEngine implements MessageSendHandler {
     user?: Types.ChatInit_room_PrivateRoom_user;
     badge?: Types.UserBadge;
     isSavedMessage?: boolean;
+    isBanned?: boolean;
 
     constructor(engine: MessengerEngine, conversationId: string, onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void) {
         this.engine = engine;
@@ -353,22 +354,23 @@ export class ConversationEngine implements MessageSendHandler {
         }
         let messages = [...(initialChat).messages];
         messages.reverse();
+        const sharedRoom = initialChat && initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room;
+        const privateRoom = initialChat && initialChat.room && initialChat.room.__typename === 'PrivateRoom' && initialChat.room;
         this.messages = messages;
         this.room = initialChat.room;
         this.pinId = (initialChat.room && initialChat.room.pinnedMessage) ? initialChat.room.pinnedMessage.id : undefined;
-        this.role = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.role || null;
+        this.role = sharedRoom ? sharedRoom.role : null;
         this.badge = initialChat.room && initialChat.room.myBadge || undefined;
-        this.canEdit = ((initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.canEdit) || AppConfig.isSuperAdmin()) || false;
-        this.canPin = this.canEdit || (initialChat.room && initialChat.room.__typename === 'PrivateRoom') || false;
+        this.canEdit = ((sharedRoom && sharedRoom.canEdit) || AppConfig.isSuperAdmin()) || false;
+        this.canPin = this.canEdit || !!privateRoom || false;
         this.canReply = getCanReply(initialChat.room);
-        this.canSendMessage = (initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.kind !== 'INTERNAL') ? initialChat.room.canSendMessage :
-            (initialChat.room && initialChat.room.__typename === 'PrivateRoom') ? !initialChat.room.user.isBot :
-                true;
-        this.isChannel = initialChat.room && initialChat.room.__typename === 'SharedRoom' ? initialChat.room.isChannel : false;
-        this.isPrivate = initialChat.room && initialChat.room.__typename === 'PrivateRoom' ? true : false;
-        if (initialChat.room && initialChat.room.__typename === 'PrivateRoom') {
-            this.user = initialChat.room.user;
-            this.isSavedMessage = initialChat.room.user.id === this.engine.user.id;
+        this.canSendMessage = (sharedRoom && sharedRoom.kind !== 'INTERNAL') ? sharedRoom.canSendMessage : privateRoom ? !privateRoom.user.isBot : true;
+        this.isBanned = privateRoom ? privateRoom.user.isBanned || privateRoom.user.isMeBanned : false;
+        this.isChannel = sharedRoom ? sharedRoom.isChannel : false;
+        this.isPrivate = !!privateRoom;
+        if (privateRoom) {
+            this.user = privateRoom.user;
+            this.isSavedMessage = privateRoom.user.id === this.engine.user.id;
         }
 
         this.state = new ConversationState(false, messages, this.groupMessages(messages), this.state.typing, this.state.loadingHistory, !!this.historyFullyLoaded, this.state.loadingForward, !!this.forwardFullyLoaded);
@@ -412,8 +414,8 @@ export class ConversationEngine implements MessageSendHandler {
             dsItems.push(createDateDataSourceItem(d));
         }
 
-        if (sourceFragments[0].seq === 1 && this.room?.__typename === 'SharedRoom' && this.role === 'OWNER') {
-            dsItems.push(createInvitePeopleBlock(this.room));
+        if (sourceFragments[0].seq === 1 && sharedRoom && sharedRoom.role === 'OWNER') {
+            dsItems.push(createInvitePeopleBlock(sharedRoom));
         }
 
         this.dataSource.initialize(dsItems, !!this.historyFullyLoaded, !!this.forwardFullyLoaded, anchor, reset);
@@ -865,6 +867,10 @@ export class ConversationEngine implements MessageSendHandler {
             };
             this.dataSource.updateItem(updated);
         }
+    }
+
+    updateBanInfo = (isBanned: boolean) => {
+        this.isBanned = isBanned;
     }
 
     subscribe = (listener: ConversationStateHandler) => {

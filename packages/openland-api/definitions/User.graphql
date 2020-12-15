@@ -8,15 +8,6 @@ query Users($query: String!) {
 query User($userId: ID!) {
     user: user(id: $userId) {
         ...UserFull
-
-        chatsWithBadge {
-            chat {
-                ...RoomShort
-            }
-            badge {
-                ...UserBadge
-            }
-        }
     }
     conversation: room(id: $userId) {
         ... on PrivateRoom {
@@ -44,6 +35,8 @@ query UserNano($id: ID!) {
         shortname
         isBot
         inContacts
+        isBanned
+        isMeBanned
     }
 }
 query Online($userId: ID!) {

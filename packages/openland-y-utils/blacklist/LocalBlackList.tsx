@@ -1,27 +1,34 @@
 import * as React from 'react';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
-import { BlackListUpdates } from 'openland-api/spacex.types';
+import { BlackListUpdates, UserShort } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 
-type LocalBlackListContextState = {
-    meBanned: Set<string>;
-    myBans: Set<string>;
+export type LocalBlackListContextState = {
+    meBanned: Map<string, UserShort>;
+    myBans: Map<string, UserShort>;
 };
 
 const LocalBlackListContext = React.createContext<LocalBlackListContextState>({
-    meBanned: new Set<string>(),
-    myBans: new Set<string>(),
+    meBanned: new Map(),
+    myBans: new Map(),
 });
 
 export const LocalBlackListProvider = React.memo((props: { children: any }) => {
-    const [meBanned, setMeBanned] = React.useState<Set<string>>(new Set());
-    const [myBans, setMyBans] = React.useState<Set<string>>(new Set());
+    const [meBanned, setMeBanned] = React.useState<Map<string, UserShort>>(new Map());
+    const [myBans, setMyBans] = React.useState<Map<string, UserShort>>(new Map());
 
     const client = useClient();
     const subscribeRef = React.useRef<any>();
 
     const subscribe = async () => {
         const me = (await client.queryAccount()).me;
+        const { myBlackList: initialBlackList } = (await client.queryMyBlackList());
+        const initialMyBans = new Map();
+        const initialMeBanned = new Map();
+        initialBlackList.filter(i => i.isBanned).map(i => initialMyBans.set(i.id, i));
+        initialBlackList.filter(i => i.isMeBanned).map(i => initialMeBanned.set(i.id, i));
+        setMyBans(initialMyBans);
+        setMeBanned(initialMeBanned);
         const { state: initialState } = (
             await client.queryBlackListUpdatesState({ fetchPolicy: 'network-only' })
         ).blackListUpdatesState;
@@ -33,14 +40,14 @@ export const LocalBlackListProvider = React.memo((props: { children: any }) => {
                     if (i.__typename === 'BlackListAdded') {
                         if (i.bannedBy.id === me?.id) {
                             setMyBans((prev) => {
-                                const newState = new Set(prev);
-                                newState.add(i.bannedUser.id);
+                                const newState = new Map(prev);
+                                newState.set(i.bannedUser.id, i.bannedUser);
                                 return newState;
                             });
                         } else {
                             setMeBanned((prev) => {
-                                const newState = new Set(prev);
-                                newState.add(i.bannedBy.id);
+                                const newState = new Map(prev);
+                                newState.set(i.bannedBy.id, i.bannedUser);
                                 return newState;
                             });
                         }
@@ -48,13 +55,13 @@ export const LocalBlackListProvider = React.memo((props: { children: any }) => {
                     if (i.__typename === 'BlackListRemoved') {
                         if (i.bannedBy.id === me?.id) {
                             setMyBans((prev) => {
-                                const newState = new Set(prev);
+                                const newState = new Map(prev);
                                 newState.delete(i.bannedUser.id);
                                 return newState;
                             });
                         } else {
                             setMeBanned((prev) => {
-                                const newState = new Set(prev);
+                                const newState = new Map(prev);
                                 newState.delete(i.bannedBy.id);
                                 return newState;
                             });
@@ -86,12 +93,12 @@ export const useBlackList = () => {
 
 export const useUserBanInfo = (
     uId: string,
-    initialIsBanned: boolean,
-    initialIsMeBanned: boolean,
+    initialIsBanned?: boolean,
+    initialIsMeBanned?: boolean,
 ) => {
     const { meBanned, myBans } = useBlackList();
-    const isBanned = myBans.has(uId) ? true : initialIsBanned;
-    const isMeBanned = meBanned.has(uId) ? true : initialIsMeBanned;
+    const isBanned = myBans.has(uId) ? true : !!initialIsBanned;
+    const isMeBanned = meBanned.has(uId) ? true : !!initialIsMeBanned;
 
     return { isBanned, isMeBanned };
 };

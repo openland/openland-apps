@@ -6,6 +6,7 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
+import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import Toast from 'openland-mobile/components/Toast';
 import { View } from 'react-native';
@@ -21,6 +22,8 @@ const DialogMenuPrivate = React.memo((props: DialogMenuProps) => {
     const messenger = getMessenger();
     const client = messenger.engine.client;
     const user = client.useUserNano({ id: item.flexibleId }, { fetchPolicy: 'cache-and-network' }).user;
+    const banInfo = useUserBanInfo(user.id, user.isBanned, user.isMeBanned);
+    const isBanned = banInfo.isBanned || banInfo.isMeBanned;
     const { isContact } = useLocalContact(user.id, user.inContacts);
     const isSavedMessages = item.flexibleId === messenger.engine.user.id;
     const muted = item.isMuted;
@@ -38,9 +41,11 @@ const DialogMenuPrivate = React.memo((props: DialogMenuProps) => {
         }, false, muted ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-off-24.png'));
     }
 
-    builder.action('Media, files, links', () => {
-        messenger.history.navigationManager.push('SharedMedia', { chatId: item.key });
-    }, false, require('assets/ic-attach-24.png'));
+    if (!isBanned) {
+        builder.action('Media, files, links', () => {
+            messenger.history.navigationManager.push('SharedMedia', { chatId: item.key });
+        }, false, require('assets/ic-attach-24.png'));
+    }
 
     if (!isSavedMessages) {
         builder.action(

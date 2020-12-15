@@ -2688,6 +2688,7 @@ type Query {
   debugGlobalCounter: DebugGlobalCounter!
   debugChatTree(id: ID!): String!
   debugChatMessages(id: ID!): [ModernMessage!]!
+  debugUnreadChats: [String!]!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!
@@ -3243,6 +3244,7 @@ type StickerPack {
   added: Boolean!
   published: Boolean!
   private: Boolean!
+  listed: Boolean!
 }
 
 input StickerPackInput {

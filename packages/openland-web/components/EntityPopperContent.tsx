@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XView, XViewRouterContext } from 'react-mental';
-import { UserNano_user } from 'openland-api/spacex.types';
+import { MessageSender, UserNano_user } from 'openland-api/spacex.types';
 import { XDate } from 'openland-x/XDate';
 import { UAvatar } from './unicorn/UAvatar';
 import { emoji } from 'openland-y-utils/emoji';
@@ -90,7 +90,7 @@ export const UserPopperContent = React.memo(
         user,
         hidePopper,
     }: {
-        user: UserNano_user;
+        user: MessageSender | UserNano_user;
         isMe: boolean;
         noCardOnMe?: boolean;
         hidePopper: Function;

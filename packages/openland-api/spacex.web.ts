@@ -4459,17 +4459,6 @@ const UnviewedStickersSelector = obj(
 const UserSelector = obj(
             field('user', 'user', args(fieldValue("id", refValue('userId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('chatsWithBadge', 'chatsWithBadge', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('chat', 'chat', args(), notNull(obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    fragment('Room', RoomShortSelector)
-                                ))),
-                            field('badge', 'badge', args(), notNull(obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    fragment('UserBadge', UserBadgeSelector)
-                                )))
-                        ))))),
                     fragment('User', UserFullSelector)
                 ))),
             field('room', 'conversation', args(fieldValue("id", refValue('userId'))), obj(
@@ -4510,7 +4499,9 @@ const UserNanoSelector = obj(
                     field('photo', 'photo', args(), scalar('String')),
                     field('shortname', 'shortname', args(), scalar('String')),
                     field('isBot', 'isBot', args(), notNull(scalar('Boolean'))),
-                    field('inContacts', 'inContacts', args(), notNull(scalar('Boolean')))
+                    field('inContacts', 'inContacts', args(), notNull(scalar('Boolean'))),
+                    field('isBanned', 'isBanned', args(), notNull(scalar('Boolean'))),
+                    field('isMeBanned', 'isMeBanned', args(), notNull(scalar('Boolean')))
                 )))
         );
 const UserPicoSelector = obj(
@@ -6445,7 +6436,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     User: {
         kind: 'query',
         name: 'User',
-        body: 'query User($userId:ID!){user:user(id:$userId){__typename ...UserFull chatsWithBadge{__typename chat{__typename ...RoomShort}badge{__typename ...UserBadge}}}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}fragment RoomShort on Room{__typename ... on PrivateRoom{__typename id user{__typename ...UserShort}settings{__typename id mute}pinnedMessage{__typename ...FullMessage}myBadge{__typename ...UserBadge}}... on SharedRoom{__typename id kind isChannel isPremium title photo membership featured role canEdit canSendMessage membersCount canUnpinMessage pinnedMessage{__typename ...FullMessage}organization{__typename ...OrganizationShort}settings{__typename id mute}myBadge{__typename ...UserBadge}owner{__typename id firstName isYou}callSettings{__typename mode callLink}repliesEnabled}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment FullMessage on ModernMessage{__typename id seq date sender{__typename ...MessageSender}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id user{__typename id}}... on SharedRoom{__typename id title isChannel membersCount}}}}spans{__typename ...MessageSpan}... on GeneralMessage{__typename id edited commentsCount attachments{__typename ...MessageAttachments}quotedMessages{__typename ...QuotedMessage}reactionCounters{__typename ...MessageReactionCounter}overrideAvatar{__typename uuid crop{__typename x y w h}}overrideName}... on StickerMessage{__typename id commentsCount quotedMessages{__typename ...QuotedMessage}sticker{__typename ...StickerFragment}reactionCounters{__typename ...MessageReactionCounter}overrideAvatar{__typename uuid crop{__typename x y w h}}overrideName}... on ServiceMessage{__typename id serviceMetadata{__typename ...ServiceMessageMetadata}}}fragment MessageSender on User{__typename id name photo isBot shortname inContacts primaryOrganization{__typename id name shortname}}fragment UserBadge on UserBadge{__typename id name verified}fragment MessageSpan on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename id name}}... on MessageSpanMultiUserMention{__typename offset length}... on MessageSpanOrganizationMention{__typename organization{__typename id name}}... on MessageSpanRoomMention{__typename room{__typename ... on PrivateRoom{__typename id user{__typename id name}}... on SharedRoom{__typename id title isPremium}}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment MessageAttachments on ModernMessageAttachment{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}socialImage{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id title style url}}fallback}... on MessageAttachmentPurchase{__typename id purchase{__typename id state amount}fallback}}fragment QuotedMessage on ModernMessage{__typename id date message sender{__typename ...MessageSender}senderBadge{__typename ...UserBadge}fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}spans{__typename ...MessageSpan}... on GeneralMessage{__typename id edited commentsCount attachments{__typename ...MessageAttachments}}... on StickerMessage{__typename id sticker{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}fragment MessageReactionCounter on ReactionCounter{__typename reaction count setByMe}fragment ServiceMessageMetadata on ServiceMetadata{__typename ... on InviteServiceMetadata{__typename users{__typename id}invitedBy{__typename id}}... on KickServiceMetadata{__typename user{__typename id}kickedBy{__typename id}}... on TitleChangeServiceMetadata{__typename title}... on PhotoChangeServiceMetadata{__typename photo}... on PostRespondServiceMetadata{__typename respondType}}',
+        body: 'query User($userId:ID!){user:user(id:$userId){__typename ...UserFull}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
         selector: UserSelector
     },
     UserAvailableRooms: {
@@ -6457,7 +6448,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     UserNano: {
         kind: 'query',
         name: 'UserNano',
-        body: 'query UserNano($id:ID!){user(id:$id){__typename id name photo shortname isBot inContacts}}',
+        body: 'query UserNano($id:ID!){user(id:$id){__typename id name photo shortname isBot inContacts isBanned isMeBanned}}',
         selector: UserNanoSelector
     },
     UserPico: {
