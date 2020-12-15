@@ -4310,6 +4310,9 @@ const SharedMediaCountersSelector = obj(
                     field('videos', 'videos', args(), notNull(scalar('Int')))
                 )))
         );
+const ShouldAskForAppReviewSelector = obj(
+            field('shouldAskForAppReview', 'shouldAskForAppReview', args(), notNull(scalar('Boolean')))
+        );
 const StickerPackSelector = obj(
             field('stickerPack', 'stickerPack', args(fieldValue("id", refValue('id'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -6348,6 +6351,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'SharedMediaCounters',
         body: 'query SharedMediaCounters($chatId:ID!){counters:chatSharedMediaCounters(chatId:$chatId){__typename links images documents videos}}',
         selector: SharedMediaCountersSelector
+    },
+    ShouldAskForAppReview: {
+        kind: 'query',
+        name: 'ShouldAskForAppReview',
+        body: 'query ShouldAskForAppReview{shouldAskForAppReview}',
+        selector: ShouldAskForAppReviewSelector
     },
     StickerPack: {
         kind: 'query',

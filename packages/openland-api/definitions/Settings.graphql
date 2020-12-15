@@ -103,3 +103,7 @@ mutation SettingsUpdate($input: UpdateSettingsInput) {
         ...SettingsFull
     }
 }
+
+query ShouldAskForAppReview {
+    shouldAskForAppReview
+}

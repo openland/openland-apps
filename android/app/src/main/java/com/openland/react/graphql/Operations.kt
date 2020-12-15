@@ -118,6 +118,7 @@ object Operations {
         if (name == "Settings") return Settings
         if (name == "SharedMedia") return SharedMedia
         if (name == "SharedMediaCounters") return SharedMediaCounters
+        if (name == "ShouldAskForAppReview") return ShouldAskForAppReview
         if (name == "StickerPack") return StickerPack
         if (name == "StickerPackCatalog") return StickerPackCatalog
         if (name == "StripeToken") return StripeToken

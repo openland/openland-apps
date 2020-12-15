@@ -73,9 +73,12 @@ const DialogsComponent = React.memo((props: PageProps) => {
                 return;
             }
             try {
-                let rateAppMeta = await getRateAppInfo();
+                let [rateAppMeta, { shouldAskForAppReview }] = await Promise.all([
+                    getRateAppInfo(),
+                    messenger.engine.client.queryShouldAskForAppReview({ fetchPolicy: 'network-only' })
+                ]);
 
-                if (rateAppMeta.stopShowingRating) {
+                if (rateAppMeta.stopShowingRating || !shouldAskForAppReview) {
                     return;
                 }
 

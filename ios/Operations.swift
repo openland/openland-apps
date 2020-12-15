@@ -4303,6 +4303,9 @@ private let SharedMediaCountersSelector = obj(
                     field("videos", "videos", notNull(scalar("Int")))
                 )))
         )
+private let ShouldAskForAppReviewSelector = obj(
+            field("shouldAskForAppReview", "shouldAskForAppReview", notNull(scalar("Boolean")))
+        )
 private let StickerPackSelector = obj(
             field("stickerPack", "stickerPack", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -6346,6 +6349,12 @@ class Operations {
         "query SharedMediaCounters($chatId:ID!){counters:chatSharedMediaCounters(chatId:$chatId){__typename links images documents videos}}",
         SharedMediaCountersSelector
     )
+    let ShouldAskForAppReview = OperationDefinition(
+        "ShouldAskForAppReview",
+        .query, 
+        "query ShouldAskForAppReview{shouldAskForAppReview}",
+        ShouldAskForAppReviewSelector
+    )
     let StickerPack = OperationDefinition(
         "StickerPack",
         .query, 
@@ -7491,6 +7500,7 @@ class Operations {
         if name == "Settings" { return Settings }
         if name == "SharedMedia" { return SharedMedia }
         if name == "SharedMediaCounters" { return SharedMediaCounters }
+        if name == "ShouldAskForAppReview" { return ShouldAskForAppReview }
         if name == "StickerPack" { return StickerPack }
         if name == "StickerPackCatalog" { return StickerPackCatalog }
         if name == "StripeToken" { return StripeToken }
