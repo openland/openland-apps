@@ -130,16 +130,12 @@ const USliderRaw = React.memo((props: USliderProps) => {
 
     const enableClick = React.useCallback(
         () => {
-            if (!canClick) {
-                return;
-            }
-            let timer: any;
-            timer = setTimeout(() => {
+            let timer = setTimeout(() => {
                 setCanClick(true);
             }, 300);
             return () => clearTimeout(timer);
         },
-        [canClick],
+        [],
     );
 
     window.addEventListener('resize', reinitSlider);
