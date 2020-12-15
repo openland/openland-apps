@@ -180,35 +180,35 @@ const categoryButton = css`
     cursor: pointer;
 `;
 
-const categoryButtonDot = css`
-    position: absolute;
-    top: 13px;
-    right: 9px;
-    width: 8px;
-    height: 8px;
-    border: 2px solid var(--backgroundSecondary);
-    background-color: var(--accentNegative);
-    border-radius: 100px;
-`;
+// const categoryButtonDot = css`
+//     position: absolute;
+//     top: 13px;
+//     right: 9px;
+//     width: 8px;
+//     height: 8px;
+//     border: 2px solid var(--backgroundSecondary);
+//     background-color: var(--accentNegative);
+//     border-radius: 100px;
+// `;
 
-const categoryButtonCounter = css`
-    position: absolute;
-    top: 10px;
-    right: 6px;
-    width: 14px;
-    height: 14px;
-    border: 2px solid var(--backgroundSecondary);
-    background-color: var(--accentNegative);
-    color: var(--foregroundContrast);
-    border-radius: 100px;
-    font-size: 8px;
-    line-height: 6px;
-    letter-spacing: 0.1px;
-    font-weight: 700;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
+// const categoryButtonCounter = css`
+//     position: absolute;
+//     top: 10px;
+//     right: 6px;
+//     width: 14px;
+//     height: 14px;
+//     border: 2px solid var(--backgroundSecondary);
+//     background-color: var(--accentNegative);
+//     color: var(--foregroundContrast);
+//     border-radius: 100px;
+//     font-size: 8px;
+//     line-height: 6px;
+//     letter-spacing: 0.1px;
+//     font-weight: 700;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+// `;
 
 interface CatalogRowProps {
     stickerPack: StickerPackCatalog_stickers;
@@ -594,7 +594,6 @@ export const StickerComponent = React.memo<{
             props.onStickerSent(item);
         }
     };
-    const showCatalogCounter = false;
 
     React.useEffect(() => {
         sequenceWatcher<StickersWatch>(null, (state, handler) => client.subscribeStickersWatch(handler), (update) => {
@@ -702,11 +701,11 @@ export const StickerComponent = React.memo<{
                     }}
                 >
                     {showCatalog ? <IcCatalogActive /> : <IcCatalog />}
-                    {newCounter > 0 && !showCatalogCounter && (
+                    {/* {newCounter > 0 && (
                         <div className={newCounter < 10 ? categoryButtonCounter : categoryButtonDot}>
                             {newCounter < 10 ? newCounter : null}
                         </div>
-                    )}
+                    )} */}
                 </div>
                 {stickersPack.map((i, j) => {
                     const stickerCover = i.stickers[0];

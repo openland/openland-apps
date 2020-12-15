@@ -96,11 +96,11 @@ interface StickerPackButtonProps {
 
 const StickerPackButton = React.memo((props: StickerPackButtonProps) => {
     const { cover, theme, onPress, source, selected } = props;
-    const newCounter = props.newCounter || 0;
-    const counterSize = newCounter < 10 ? 18 : 6;
-    const borderWidth = newCounter < 10 ? 2 : 0;
-    const top = newCounter < 10 ? 0 : 3;
-    const right = newCounter < 10 ? 0 : 3;
+    // const newCounter = props.newCounter || 0;
+    // const counterSize = newCounter < 10 ? 18 : 6;
+    // const borderWidth = newCounter < 10 ? 2 : 0;
+    // const top = newCounter < 10 ? 0 : 3;
+    // const right = newCounter < 10 ? 0 : 3;
 
     return (
         <TouchableOpacity activeOpacity={HighlightAlpha} style={{ paddingHorizontal: 6 }} onPress={onPress}>
@@ -126,7 +126,7 @@ const StickerPackButton = React.memo((props: StickerPackButtonProps) => {
                         height={24}
                     />
                 )}
-                {newCounter > 0 && (
+                {/* {newCounter > 0 && (
                     <View
                         position="absolute"
                         top={top}
@@ -153,7 +153,7 @@ const StickerPackButton = React.memo((props: StickerPackButtonProps) => {
                             </Text>
                         )}
                     </View>
-                )}
+                )} */}
             </View>
         </TouchableOpacity>
     );

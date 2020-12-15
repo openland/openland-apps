@@ -710,7 +710,7 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
     const showWithEvent = (e: any) => {
         show(e);
         if (props.onShow) {
-            props.onShow(false);
+            props.onShow(true);
         }
     };
     const hasNewStickers = props.hasNewStickers;
