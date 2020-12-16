@@ -66,7 +66,7 @@ export const DiscoverHomeFragment = React.memo(() => {
     return (
         <Page track="discover_home">
             <UHeader title="Home" />
-            <XView maxWidth={560}>
+            <XView maxWidth={560} paddingTop={24}>
                 <CreateEntitySlider />
 
                 <XView marginTop={10} marginBottom={24}>

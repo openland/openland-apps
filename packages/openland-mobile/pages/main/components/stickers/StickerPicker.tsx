@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, LayoutChangeEvent, TouchableOpacity, Image, FlatList, AsyncStorage, Platform } from 'react-native';
 import { useClient } from 'openland-api/useClient';
 import { ZImage } from 'openland-mobile/components/ZImage';
-import { MyStickers_stickers_packs, StickerFragment } from 'openland-api/spacex.types';
+import { MyStickers_stickers_packs, StickerFragment, StickersWatch } from 'openland-api/spacex.types';
 import { TextStyles, HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import Alert from 'openland-mobile/components/AlertBlanket';
@@ -11,6 +11,7 @@ import { SRouterContext } from 'react-native-s/SRouterContext';
 import { StickerLayout, useStickerLayout } from './stickerLayout';
 import FastImage from 'react-native-fast-image';
 import { ZButton } from 'openland-mobile/components/ZButton';
+import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
 const RECENT_ID = 'recent';
 
@@ -95,11 +96,11 @@ interface StickerPackButtonProps {
 
 const StickerPackButton = React.memo((props: StickerPackButtonProps) => {
     const { cover, theme, onPress, source, selected } = props;
-    const newCounter = props.newCounter || 0;
-    const counterSize = newCounter < 10 ? 18 : 6;
-    const borderWidth = newCounter < 10 ? 2 : 0;
-    const top = newCounter < 10 ? 0 : 3;
-    const right = newCounter < 10 ? 0 : 3;
+    // const newCounter = props.newCounter || 0;
+    // const counterSize = newCounter < 10 ? 18 : 6;
+    // const borderWidth = newCounter < 10 ? 2 : 0;
+    // const top = newCounter < 10 ? 0 : 3;
+    // const right = newCounter < 10 ? 0 : 3;
 
     return (
         <TouchableOpacity activeOpacity={HighlightAlpha} style={{ paddingHorizontal: 6 }} onPress={onPress}>
@@ -125,7 +126,7 @@ const StickerPackButton = React.memo((props: StickerPackButtonProps) => {
                         height={24}
                     />
                 )}
-                {newCounter > 0 && (
+                {/* {newCounter > 0 && (
                     <View
                         position="absolute"
                         top={top}
@@ -152,7 +153,7 @@ const StickerPackButton = React.memo((props: StickerPackButtonProps) => {
                             </Text>
                         )}
                     </View>
-                )}
+                )} */}
             </View>
         </TouchableOpacity>
     );
@@ -178,7 +179,7 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
     const router = React.useContext(SRouterContext);
     const client = useClient();
     const myStickers = client.useMyStickers({ fetchPolicy: 'cache-and-network' }).stickers;
-    const { unviewedCount, packs: clientStickers } = myStickers;
+    const { packs: clientStickers } = myStickers;
     const stickers: StickerPackFragment[] = recentStickers.length > 0 && stickersPerRow > 0 ? [
         { id: RECENT_ID, title: 'Recent', stickers: recentStickers.slice(0, stickersPerRow * 2), isRecent: true },
         ...clientStickers
@@ -196,6 +197,14 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
             FastImage.preload(clientStickers.flatMap(pack => pack.stickers.map(s => ({ uri: getStickerUrl(s) }))));
         }
     }, [clientStickers]);
+
+    React.useEffect(() => {
+        sequenceWatcher<StickersWatch>(null, (state, handler) => client.subscribeStickersWatch(handler), (update) => {
+            client.updateMyStickers(data => ({ stickers: { ...data.stickers, ...update.event } }));
+
+            return '';
+        });
+    }, []);
 
     const handleDeletePackPressed = React.useCallback((pack: MyStickers_stickers_packs | 'recent') => {
         Alert.builder()
@@ -310,7 +319,7 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
                         source={require('assets/ic-new-24.png')}
                         key={`sticker-pack-button-catalog`}
                         theme={theme}
-                        newCounter={unviewedCount}
+                    // newCounter={unviewedCount}
                     />
                 }
                 extraData={selected}

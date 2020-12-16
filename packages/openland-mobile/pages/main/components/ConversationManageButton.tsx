@@ -16,6 +16,7 @@ interface ConversationManageButtonProps {
     onMutedChange: () => void;
     router: SRouter;
     room: RoomTiny_room;
+    isBanned: boolean;
 }
 
 const useSharedHandlers = (room: RoomTiny_room_SharedRoom, router: SRouter) => {
@@ -82,7 +83,7 @@ const useSharedHandlers = (room: RoomTiny_room_SharedRoom, router: SRouter) => {
 };
 
 export const ConversationManageButton = React.memo((props: ConversationManageButtonProps) => {
-    const { muted, onMutedChange, room, router } = props;
+    const { muted, onMutedChange, room, router, isBanned } = props;
     const client = useClient();
     const myID = getMessenger().engine.user.id;
 
@@ -153,7 +154,9 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
             builder.action(notificationsTitle, onNotificationsPress, false, notificationsIcon);
         }
 
-        builder.action('Media, files, links', onSharedPress, false, require('assets/ic-attach-24.png'));
+        if (!isBanned) {
+            builder.action('Media, files, links', onSharedPress, false, require('assets/ic-attach-24.png'));
+        }
 
         builder.action('Search messages', onSearchPress, false, require('assets/ic-search-24.png'));
 
@@ -193,7 +196,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         }
 
         builder.show();
-    }, [muted, onNotificationsPress, onInvitePress, onLeavePress, isContact]);
+    }, [muted, onNotificationsPress, onInvitePress, onLeavePress, isContact, isBanned]);
 
     return <ZManageButton onPress={onPress} />;
 });

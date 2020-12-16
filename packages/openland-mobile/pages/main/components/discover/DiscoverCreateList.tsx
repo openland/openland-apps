@@ -54,7 +54,7 @@ export const DiscoverCreateList = () => {
                     description="Public, secret, or paid group chat"
                     buttonText="New chat"
                     image={require('assets/art-create-chat.png')}
-                    bgColor={theme.type === 'Light' ? '#F8F2E1' : '#594151'}
+                    bgColor={theme.type === 'Light' ? '#E1EEF8' : '#453D3B'}
                     theme={theme}
                     onPress={() => router.push('CreateGroupAttrs')}
                 />
@@ -63,7 +63,7 @@ export const DiscoverCreateList = () => {
                     description="Only admins write, others comment"
                     buttonText="New channel"
                     image={require('assets/art-create-channel.png')}
-                    bgColor={theme.type === 'Light' ? '#E1EEF8' : '#594E4A'}
+                    bgColor={theme.type === 'Light' ? '#F4ECF5' : '#343746'}
                     theme={theme}
                     onPress={() => router.push('CreateGroupAttrs', { isChannel: true })}
                 />
@@ -72,7 +72,7 @@ export const DiscoverCreateList = () => {
                     description="A hub for your chats and channels"
                     buttonText="New community"
                     image={require('assets/art-create-community.png')}
-                    bgColor={theme.type === 'Light' ? '#F4ECF5' : '#414659'}
+                    bgColor={theme.type === 'Light' ? '#F8F2E1' : '#453440'}
                     theme={theme}
                     onPress={() => router.push('NewOrganization', { isCommunity: true })}
                 />

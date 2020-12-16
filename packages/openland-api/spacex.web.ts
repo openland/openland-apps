@@ -1088,6 +1088,20 @@ const MessageUsersReactionsSelector = obj(
             field('reaction', 'reaction', args(), notNull(scalar('String')))
         );
 
+const MyStickersFragmentSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('unviewedCount', 'unviewedCount', args(), notNull(scalar('Int'))),
+            field('packs', 'packs', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('title', 'title', args(), notNull(scalar('String'))),
+                    field('stickers', 'stickers', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('Sticker', StickerFragmentSelector)
+                        )))))
+                )))))
+        );
+
 const RoomSharedNanoSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -1647,6 +1661,8 @@ const StickerPackFragmentSelector = obj(
             field('id', 'id', args(), notNull(scalar('ID'))),
             field('title', 'title', args(), notNull(scalar('String'))),
             field('added', 'added', args(), notNull(scalar('Boolean'))),
+            field('private', 'private', args(), notNull(scalar('Boolean'))),
+            field('canAdd', 'canAdd', args(), notNull(scalar('Boolean'))),
             field('stickers', 'stickers', args(), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('Sticker', StickerFragmentSelector)
@@ -1658,6 +1674,7 @@ const SuperStickerPackFragmentSelector = obj(
             field('id', 'id', args(), notNull(scalar('ID'))),
             field('title', 'title', args(), notNull(scalar('String'))),
             field('published', 'published', args(), notNull(scalar('Boolean'))),
+            field('private', 'private', args(), notNull(scalar('Boolean'))),
             field('added', 'added', args(), notNull(scalar('Boolean'))),
             field('author', 'author', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -3460,16 +3477,7 @@ const MyPostDraftsSelector = obj(
 const MyStickersSelector = obj(
             field('myStickers', 'stickers', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('unviewedCount', 'unviewedCount', args(), notNull(scalar('Int'))),
-                    field('packs', 'packs', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('title', 'title', args(), notNull(scalar('String'))),
-                            field('stickers', 'stickers', args(), notNull(list(notNull(obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    fragment('Sticker', StickerFragmentSelector)
-                                )))))
-                        )))))
+                    fragment('UserStickers', MyStickersFragmentSelector)
                 )))
         );
 const MySuccessfulInvitesCountSelector = obj(
@@ -4193,6 +4201,17 @@ const RoomSuperSelector = obj(
                     field('id', 'id', args(), notNull(scalar('ID'))),
                     field('featured', 'featured', args(), notNull(scalar('Boolean'))),
                     field('giftStickerPackId', 'giftStickerPackId', args(), scalar('ID'))
+                )),
+            field('room', 'room', args(fieldValue("id", refValue('id'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    inline('SharedRoom', obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('id', 'id', args(), notNull(scalar('ID'))),
+                        field('stickerPack', 'stickerPack', args(), obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('id', 'id', args(), notNull(scalar('ID')))
+                            ))
+                    ))
                 ))
         );
 const RoomTinySelector = obj(
@@ -4291,6 +4310,9 @@ const SharedMediaCountersSelector = obj(
                     field('documents', 'documents', args(), notNull(scalar('Int'))),
                     field('videos', 'videos', args(), notNull(scalar('Int')))
                 )))
+        );
+const ShouldAskForAppReviewSelector = obj(
+            field('shouldAskForAppReview', 'shouldAskForAppReview', args(), notNull(scalar('Boolean')))
         );
 const StickerPackSelector = obj(
             field('stickerPack', 'stickerPack', args(fieldValue("id", refValue('id'))), obj(
@@ -4441,17 +4463,6 @@ const UnviewedStickersSelector = obj(
 const UserSelector = obj(
             field('user', 'user', args(fieldValue("id", refValue('userId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('chatsWithBadge', 'chatsWithBadge', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('chat', 'chat', args(), notNull(obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    fragment('Room', RoomShortSelector)
-                                ))),
-                            field('badge', 'badge', args(), notNull(obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    fragment('UserBadge', UserBadgeSelector)
-                                )))
-                        ))))),
                     fragment('User', UserFullSelector)
                 ))),
             field('room', 'conversation', args(fieldValue("id", refValue('userId'))), obj(
@@ -4492,7 +4503,9 @@ const UserNanoSelector = obj(
                     field('photo', 'photo', args(), scalar('String')),
                     field('shortname', 'shortname', args(), scalar('String')),
                     field('isBot', 'isBot', args(), notNull(scalar('Boolean'))),
-                    field('inContacts', 'inContacts', args(), notNull(scalar('Boolean')))
+                    field('inContacts', 'inContacts', args(), notNull(scalar('Boolean'))),
+                    field('isBanned', 'isBanned', args(), notNull(scalar('Boolean'))),
+                    field('isMeBanned', 'isMeBanned', args(), notNull(scalar('Boolean')))
                 )))
         );
 const UserPicoSelector = obj(
@@ -4813,6 +4826,9 @@ const MakeCardDefaultSelector = obj(
                     field('id', 'id', args(), notNull(scalar('ID'))),
                     field('isDefault', 'isDefault', args(), notNull(scalar('Boolean')))
                 )))
+        );
+const MarkStickersViewedSelector = obj(
+            field('myStickersMarkAsViewed', 'myStickersMarkAsViewed', args(), notNull(scalar('Boolean')))
         );
 const MediaAnswerSelector = obj(
             field('mediaStreamAnswer', 'mediaStreamAnswer', args(fieldValue("id", refValue('id')), fieldValue("peerId", refValue('peerId')), fieldValue("answer", refValue('answer')), fieldValue("seq", refValue('seq'))), notNull(obj(
@@ -5591,6 +5607,12 @@ const SettingsWatchSelector = obj(
                     fragment('Settings', SettingsFullSelector)
                 )))
         );
+const StickersWatchSelector = obj(
+            field('myStickersUpdates', 'event', args(), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('UserStickers', MyStickersFragmentSelector)
+                )))
+        );
 const TypingsWatchSelector = obj(
             field('typings', 'typings', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5806,7 +5828,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     CreatedStickerPacks: {
         kind: 'query',
         name: 'CreatedStickerPacks',
-        body: 'query CreatedStickerPacks{createdStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
+        body: 'query CreatedStickerPacks{createdStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
         selector: CreatedStickerPacksSelector
     },
     DebugGqlTrace: {
@@ -6094,7 +6116,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     MyStickers: {
         kind: 'query',
         name: 'MyStickers',
-        body: 'query MyStickers{stickers:myStickers{__typename unviewedCount packs{__typename id title stickers{__typename ...StickerFragment}}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}',
+        body: 'query MyStickers{stickers:myStickers{__typename ...MyStickersFragment}}fragment MyStickersFragment on UserStickers{__typename unviewedCount packs{__typename id title stickers{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}',
         selector: MyStickersSelector
     },
     MySuccessfulInvitesCount: {
@@ -6304,7 +6326,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     RoomSuper: {
         kind: 'query',
         name: 'RoomSuper',
-        body: 'query RoomSuper($id:ID!){roomSuper(id:$id){__typename id featured giftStickerPackId}}',
+        body: 'query RoomSuper($id:ID!){roomSuper(id:$id){__typename id featured giftStickerPackId}room(id:$id){__typename ... on SharedRoom{__typename id stickerPack{__typename id}}}}',
         selector: RoomSuperSelector
     },
     RoomTiny: {
@@ -6331,10 +6353,16 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query SharedMediaCounters($chatId:ID!){counters:chatSharedMediaCounters(chatId:$chatId){__typename links images documents videos}}',
         selector: SharedMediaCountersSelector
     },
+    ShouldAskForAppReview: {
+        kind: 'query',
+        name: 'ShouldAskForAppReview',
+        body: 'query ShouldAskForAppReview{shouldAskForAppReview}',
+        selector: ShouldAskForAppReviewSelector
+    },
     StickerPack: {
         kind: 'query',
         name: 'StickerPack',
-        body: 'query StickerPack($id:ID!){stickerPack(id:$id){__typename ...StickerPackFragment}}fragment StickerPackFragment on StickerPack{__typename id title added stickers{__typename ...StickerFragment}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}',
+        body: 'query StickerPack($id:ID!){stickerPack(id:$id){__typename ...StickerPackFragment}}fragment StickerPackFragment on StickerPack{__typename id title added private canAdd stickers{__typename ...StickerFragment}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}',
         selector: StickerPackSelector
     },
     StickerPackCatalog: {
@@ -6382,7 +6410,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     SuperAllStickerPacks: {
         kind: 'query',
         name: 'SuperAllStickerPacks',
-        body: 'query SuperAllStickerPacks{superAllStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
+        body: 'query SuperAllStickerPacks{superAllStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
         selector: SuperAllStickerPacksSelector
     },
     SuperBadgeInRoom: {
@@ -6394,13 +6422,13 @@ export const Operations: { [key: string]: OperationDefinition } = {
     SuperStickerPack: {
         kind: 'query',
         name: 'SuperStickerPack',
-        body: 'query SuperStickerPack($id:ID!){stickerPack(id:$id){__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
+        body: 'query SuperStickerPack($id:ID!){stickerPack(id:$id){__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
         selector: SuperStickerPackSelector
     },
     SuperStickerPackCatalog: {
         kind: 'query',
         name: 'SuperStickerPackCatalog',
-        body: 'query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
+        body: 'query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
         selector: SuperStickerPackCatalogSelector
     },
     TransactionsHistory: {
@@ -6418,7 +6446,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     User: {
         kind: 'query',
         name: 'User',
-        body: 'query User($userId:ID!){user:user(id:$userId){__typename ...UserFull chatsWithBadge{__typename chat{__typename ...RoomShort}badge{__typename ...UserBadge}}}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}fragment RoomShort on Room{__typename ... on PrivateRoom{__typename id user{__typename ...UserShort}settings{__typename id mute}pinnedMessage{__typename ...FullMessage}myBadge{__typename ...UserBadge}}... on SharedRoom{__typename id kind isChannel isPremium title photo membership featured role canEdit canSendMessage membersCount canUnpinMessage pinnedMessage{__typename ...FullMessage}organization{__typename ...OrganizationShort}settings{__typename id mute}myBadge{__typename ...UserBadge}owner{__typename id firstName isYou}callSettings{__typename mode callLink}repliesEnabled}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment FullMessage on ModernMessage{__typename id seq date sender{__typename ...MessageSender}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id user{__typename id}}... on SharedRoom{__typename id title isChannel membersCount}}}}spans{__typename ...MessageSpan}... on GeneralMessage{__typename id edited commentsCount attachments{__typename ...MessageAttachments}quotedMessages{__typename ...QuotedMessage}reactionCounters{__typename ...MessageReactionCounter}overrideAvatar{__typename uuid crop{__typename x y w h}}overrideName}... on StickerMessage{__typename id commentsCount quotedMessages{__typename ...QuotedMessage}sticker{__typename ...StickerFragment}reactionCounters{__typename ...MessageReactionCounter}overrideAvatar{__typename uuid crop{__typename x y w h}}overrideName}... on ServiceMessage{__typename id serviceMetadata{__typename ...ServiceMessageMetadata}}}fragment MessageSender on User{__typename id name photo isBot shortname inContacts primaryOrganization{__typename id name shortname}}fragment UserBadge on UserBadge{__typename id name verified}fragment MessageSpan on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename id name}}... on MessageSpanMultiUserMention{__typename offset length}... on MessageSpanOrganizationMention{__typename organization{__typename id name}}... on MessageSpanRoomMention{__typename room{__typename ... on PrivateRoom{__typename id user{__typename id name}}... on SharedRoom{__typename id title isPremium}}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment MessageAttachments on ModernMessageAttachment{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}socialImage{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id title style url}}fallback}... on MessageAttachmentPurchase{__typename id purchase{__typename id state amount}fallback}}fragment QuotedMessage on ModernMessage{__typename id date message sender{__typename ...MessageSender}senderBadge{__typename ...UserBadge}fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}spans{__typename ...MessageSpan}... on GeneralMessage{__typename id edited commentsCount attachments{__typename ...MessageAttachments}}... on StickerMessage{__typename id sticker{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}fragment MessageReactionCounter on ReactionCounter{__typename reaction count setByMe}fragment ServiceMessageMetadata on ServiceMetadata{__typename ... on InviteServiceMetadata{__typename users{__typename id}invitedBy{__typename id}}... on KickServiceMetadata{__typename user{__typename id}kickedBy{__typename id}}... on TitleChangeServiceMetadata{__typename title}... on PhotoChangeServiceMetadata{__typename photo}... on PostRespondServiceMetadata{__typename respondType}}',
+        body: 'query User($userId:ID!){user:user(id:$userId){__typename ...UserFull}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
         selector: UserSelector
     },
     UserAvailableRooms: {
@@ -6430,7 +6458,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     UserNano: {
         kind: 'query',
         name: 'UserNano',
-        body: 'query UserNano($id:ID!){user(id:$id){__typename id name photo shortname isBot inContacts}}',
+        body: 'query UserNano($id:ID!){user(id:$id){__typename id name photo shortname isBot inContacts isBanned isMeBanned}}',
         selector: UserNanoSelector
     },
     UserPico: {
@@ -6702,6 +6730,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'MakeCardDefault',
         body: 'mutation MakeCardDefault($id:ID!){cardMakeDefault(id:$id){__typename id isDefault}}',
         selector: MakeCardDefaultSelector
+    },
+    MarkStickersViewed: {
+        kind: 'mutation',
+        name: 'MarkStickersViewed',
+        body: 'mutation MarkStickersViewed{myStickersMarkAsViewed}',
+        selector: MarkStickersViewedSelector
     },
     MediaAnswer: {
         kind: 'mutation',
@@ -7332,6 +7366,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'SettingsWatch',
         body: 'subscription SettingsWatch{watchSettings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename id version primaryEmail emailFrequency excludeMutedChats countUnreadChats whoCanSeeEmail whoCanSeePhone whoCanAddToGroups communityAdminsCanSeeContactInfo desktop{__typename ...PlatformNotificationSettingsFull}mobile{__typename ...PlatformNotificationSettingsFull}}fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename direct{__typename showNotification sound}secretChat{__typename showNotification sound}communityChat{__typename showNotification sound}comments{__typename showNotification sound}channels{__typename showNotification sound}notificationPreview}',
         selector: SettingsWatchSelector
+    },
+    StickersWatch: {
+        kind: 'subscription',
+        name: 'StickersWatch',
+        body: 'subscription StickersWatch{event:myStickersUpdates{__typename ...MyStickersFragment}}fragment MyStickersFragment on UserStickers{__typename unviewedCount packs{__typename id title stickers{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}',
+        selector: StickersWatchSelector
     },
     TypingsWatch: {
         kind: 'subscription',

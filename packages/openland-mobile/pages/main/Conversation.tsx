@@ -129,7 +129,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         })();
     }
 
-    componentDidUpdate(prevProps: ConversationRootProps) {
+    componentDidUpdate(prevProps: ConversationRootProps, prevState: ConversationRootState) {
+        if (this.props.banInfo) {
+            this.engine.updateBanInfo(this.props.banInfo.isBanned || this.props.banInfo.isMeBanned);
+        }
         if (prevProps.chat.settings.mute !== this.props.chat.settings.mute) {
             this.setState({
                 muted: !!this.props.chat.settings.mute
@@ -137,6 +140,14 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         }
         if (prevProps.messagesActionsState !== this.props.messagesActionsState) {
             this.handleMessagesActions(this.props.messagesActionsState);
+        }
+        if (!prevState.stickerKeyboardShown && this.state.stickerKeyboardShown) {
+            (async () => {
+                if (this.props.hasNewStickers) {
+                    await getClient().mutateMarkStickersViewed();
+                    getClient().refetchUnviewedStickers();
+                }
+            })();
         }
     }
 
@@ -503,8 +514,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         let sharedRoom = this.props.chat.__typename === 'SharedRoom' ? this.props.chat : undefined;
         let privateRoom = this.props.chat.__typename === 'PrivateRoom' ? this.props.chat : undefined;
-        let showInputBar = (sharedRoom ? (sharedRoom.kind === SharedRoomKind.INTERNAL || sharedRoom.canSendMessage) : true) && (privateRoom ? !privateRoom.user.isBot && !this.props.banInfo?.isBanned && !this.props.banInfo?.isMeBanned : true);
-
+        const isBanned = this.props.banInfo ? this.props.banInfo.isBanned || this.props.banInfo.isMeBanned : false;
+        let showInputBar = (sharedRoom ? (sharedRoom.kind === SharedRoomKind.INTERNAL || sharedRoom.canSendMessage) : true) && (privateRoom ? !privateRoom.user.isBot && !isBanned : true);
         let showPinAuthor = sharedRoom && (sharedRoom!.kind !== SharedRoomKind.PUBLIC);
 
         let showSelectedMessagesActions = messagesActionsState.action === 'selected';
@@ -531,7 +542,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                         {header}
                     </SHeaderView>
                 )}
-                {showCallButton && callMode === RoomCallsMode.STANDARD && (
+                {!isBanned && showCallButton && callMode === RoomCallsMode.STANDARD && (
                     <SHeaderButton
                         title="Call"
                         priority={1}
@@ -539,7 +550,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                         onPress={this.props.showCallModal}
                     />
                 )}
-                {showCallButton && callMode === RoomCallsMode.LINK && (
+                {!isBanned && showCallButton && callMode === RoomCallsMode.LINK && (
                     <SHeaderButton
                         title="Call"
                         priority={1}
@@ -553,6 +564,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                         onMutedChange={this.onMutedChange}
                         router={this.props.router}
                         room={this.props.chat}
+                        isBanned={isBanned}
                     />
                 )}
                 <SDeferred>
@@ -570,7 +582,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 })
                             }}
                         >
-                            <ConversationView inverted={true} engine={this.engine} onScroll={this.handleScroll} />
+                            <ConversationView inverted={true} engine={this.engine} onScroll={this.handleScroll} isBanned={isBanned} />
                             {pinnedMessage && (
                                 <PinnedMessage
                                     message={pinnedMessage}

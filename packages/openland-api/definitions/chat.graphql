@@ -177,6 +177,15 @@ query RoomSuper($id: ID!) {
         featured
         giftStickerPackId
     }
+
+    room(id: $id) {
+        ...on SharedRoom {
+            id
+            stickerPack {
+                id
+            }
+        }
+    }
 }
 
 mutation PinMessage($chatId: ID!, $messageId: ID!) {

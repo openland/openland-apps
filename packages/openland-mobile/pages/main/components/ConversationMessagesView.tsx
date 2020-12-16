@@ -13,14 +13,20 @@ export interface ConversationMessagesViewProps {
     paddingBottom?: number;
     inverted: boolean;
     selectionMode: boolean;
+    isBanned: boolean;
     onScroll?: (event?: NativeSyntheticEvent<any>) => void;
 }
 
 export const ConversationMessagesView = React.memo<ConversationMessagesViewProps>((props) => {
-
     let safeArea = React.useContext(ASSafeAreaContext);
     let theme = React.useContext(ThemeContext);
-
+    const applyModes = [];
+    if (props.isBanned) {
+        applyModes.push('banned');
+    }
+    if (props.selectionMode) {
+        applyModes.push('selection');
+    }
     return (
         <View marginTop={Platform.OS === 'ios' ? -1000 : 0} justifyContent="flex-start" alignItems="stretch" flexGrow={1}>
             <ASListView
@@ -32,7 +38,7 @@ export const ConversationMessagesView = React.memo<ConversationMessagesViewProps
                 style={{ flexGrow: 1 }}
                 headerPadding={Platform.select({ ios: 0, android: androidMessageInputListOverlap }) + 6}
                 overflowColor={theme.backgroundPrimary}
-                applyModes={props.selectionMode ? ['selection'] : undefined}
+                applyModes={applyModes}
             />
         </View>
     );

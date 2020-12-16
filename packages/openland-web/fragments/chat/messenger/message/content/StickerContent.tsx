@@ -54,7 +54,7 @@ const StickerPackModalInner = React.memo((props: { packId: string; hide: () => v
         await client.refetchMyStickers();
         props.hide();
     };
-    const isPrivate = false;
+    const isPrivate = !iHaveThisPack && stickerPack.canAdd;
 
     return (
         <XView flexGrow={1} flexShrink={1}>
@@ -84,7 +84,7 @@ const StickerPackModalInner = React.memo((props: { packId: string; hide: () => v
                     justifyContent="center"
                     alignItems="center"
                 >
-                    <XView {...TextStyles.Body} color="var(--foregroundSecondary)">To get this sticker pack, join its group</XView>
+                    <XView {...TextStyles.Body} color="var(--foregroundSecondary)">This sticker pack is private</XView>
                 </XModalFooter>
             ) : (
                     <XModalFooter>

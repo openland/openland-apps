@@ -6,6 +6,7 @@ import {
     MyStickers_stickers_packs,
     StickerFragment,
     StickerPackCatalog_stickers,
+    StickersWatch,
 } from 'openland-api/spacex.types';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -20,6 +21,7 @@ import IcAdd from 'openland-icons/s/ic-add-24.svg';
 import IcDone from 'openland-icons/s/ic-done-24.svg';
 import IcCatalog from './ic-catalog.svg';
 import IcCatalogActive from './ic-catalog-active.svg';
+import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
 type StickerPack = MyStickers_stickers_packs & {
     start: number;
@@ -178,35 +180,35 @@ const categoryButton = css`
     cursor: pointer;
 `;
 
-const categoryButtonDot = css`
-    position: absolute;
-    top: 13px;
-    right: 9px;
-    width: 8px;
-    height: 8px;
-    border: 2px solid var(--backgroundSecondary);
-    background-color: var(--accentNegative);
-    border-radius: 100px;
-`;
+// const categoryButtonDot = css`
+//     position: absolute;
+//     top: 13px;
+//     right: 9px;
+//     width: 8px;
+//     height: 8px;
+//     border: 2px solid var(--backgroundSecondary);
+//     background-color: var(--accentNegative);
+//     border-radius: 100px;
+// `;
 
-const categoryButtonCounter = css`
-    position: absolute;
-    top: 10px;
-    right: 6px;
-    width: 14px;
-    height: 14px;
-    border: 2px solid var(--backgroundSecondary);
-    background-color: var(--accentNegative);
-    color: var(--foregroundContrast);
-    border-radius: 100px;
-    font-size: 8px;
-    line-height: 6px;
-    letter-spacing: 0.1px;
-    font-weight: 700;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
+// const categoryButtonCounter = css`
+//     position: absolute;
+//     top: 10px;
+//     right: 6px;
+//     width: 14px;
+//     height: 14px;
+//     border: 2px solid var(--backgroundSecondary);
+//     background-color: var(--accentNegative);
+//     color: var(--foregroundContrast);
+//     border-radius: 100px;
+//     font-size: 8px;
+//     line-height: 6px;
+//     letter-spacing: 0.1px;
+//     font-weight: 700;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+// `;
 
 interface CatalogRowProps {
     stickerPack: StickerPackCatalog_stickers;
@@ -515,6 +517,7 @@ export const StickerComponent = React.memo<{
     const [stickersCount, setStickersCount] = React.useState(0);
     const [stickersPack, setStickersPack] = React.useState<StickerPack[]>([]);
     const [currentSection, setCurrentSection] = React.useState(1);
+    const newCounter = stickers.unviewedCount;
 
     const categoriesScrolling = () => {
         if (categoriesRef.current) {
@@ -566,6 +569,15 @@ export const StickerComponent = React.memo<{
 
     React.useLayoutEffect(() => categoriesScrolling(), [currentSection]);
 
+    React.useEffect(() => {
+        (async () => {
+            if (newCounter > 0) {
+                await client.mutateMarkStickersViewed();
+                client.refetchUnviewedStickers();
+            }
+        })();
+    }, [newCounter]);
+
     const onCategoryClick = React.useCallback(
         (src: number) => {
             setShowCatalog(false);
@@ -583,6 +595,14 @@ export const StickerComponent = React.memo<{
         }
     };
 
+    React.useEffect(() => {
+        sequenceWatcher<StickersWatch>(null, (state, handler) => client.subscribeStickersWatch(handler), (update) => {
+            client.updateMyStickers(data => ({ stickers: { ...data.stickers, ...update.event } }));
+
+            return '';
+        });
+    }, []);
+
     if (!stickers.packs.length && !showCatalog) {
         return (
             <div className={stubContainer}>
@@ -594,7 +614,6 @@ export const StickerComponent = React.memo<{
             </div>
         );
     }
-    const newCounter = stickers.unviewedCount;
 
     return (
         <div className={container}>
@@ -682,11 +701,11 @@ export const StickerComponent = React.memo<{
                     }}
                 >
                     {showCatalog ? <IcCatalogActive /> : <IcCatalog />}
-                    {newCounter > 0 && (
+                    {/* {newCounter > 0 && (
                         <div className={newCounter < 10 ? categoryButtonCounter : categoryButtonDot}>
                             {newCounter < 10 ? newCounter : null}
                         </div>
-                    )}
+                    )} */}
                 </div>
                 {stickersPack.map((i, j) => {
                     const stickerCover = i.stickers[0];

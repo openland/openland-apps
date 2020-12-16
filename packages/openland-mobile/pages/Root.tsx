@@ -10,6 +10,9 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { hexToRgba } from 'openland-y-utils/hexToRgba';
 import { HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { SUPER_ADMIN } from './Init';
+import { getRateAppInfo, setRateAppInfo, showRateAppModal } from './main/modals/RateApp';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 
 export interface RootProps {
     width: number;
@@ -128,6 +131,43 @@ export const Root = React.memo<RootProps>((props) => {
     // ErrorUtils.setGlobalHandler((error: Error, isFatal) => {
     //     AlertBlanket.alert([error.name, error.message, isFatal] + '\n\n' + JSON.stringify(error.stack));
     // });
+
+    React.useEffect(() => {
+        (async () => {
+            if (!SUPER_ADMIN) {
+                return;
+            }
+            try {
+                let [rateAppMeta, { shouldAskForAppReview }] = await Promise.all([
+                    getRateAppInfo(),
+                    getClient().queryShouldAskForAppReview({ fetchPolicy: 'network-only' })
+                ]);
+
+                if (rateAppMeta.stopShowingRating || !shouldAskForAppReview) {
+                    return;
+                }
+
+                if (rateAppMeta.appOpenedCount === 2) {
+                    setTimeout(() => {
+                        showRateAppModal();
+                        setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, firstSeenTimestamp: Date.now() }));
+                    }, 5000);
+                    return;
+                }
+
+                let twoDaysInMs = 48 * 3.6e6;
+                if (rateAppMeta.firstSeenTimestamp && (Date.now() - rateAppMeta.firstSeenTimestamp > twoDaysInMs)) {
+                    setTimeout(() => {
+                        showRateAppModal();
+                        setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, stopShowingRating: true }));
+                    }, 5000);
+                    return;
+                }
+
+                setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1 }));
+            } catch (e) { /**/ }
+        })();
+    }, []);
 
     return (
         <RootContainer {...props} theme={theme} />

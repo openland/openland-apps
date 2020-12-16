@@ -368,7 +368,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                     </ZListGroup>
                 )}
 
-                {profileType === 'user' && (
+                {profileType === 'user' && !isBanned && (
                     <ZListGroup useSpacer={true}>
                         <ZListItem
                             leftIcon={require('assets/ic-attach-glyph-24.png')}

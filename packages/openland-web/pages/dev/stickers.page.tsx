@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { withApp } from 'openland-web/components/withApp';
 import { UAvatarUploadField, StoredFileT } from 'openland-web/components/unicorn/UAvatarUpload';
-import { SuperStickerPackFragment } from 'openland-api/spacex.types';
+import { SuperStickerPackFragment, SuperStickerPack_stickerPack_stickers } from 'openland-api/spacex.types';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInputErrorText, UInputField } from 'openland-web/components/unicorn/UInput';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
@@ -23,6 +23,8 @@ import DeleteIcon from 'openland-icons/s/ic-close-16.svg';
 import AddIcon from 'openland-icons/s/ic-plus-24.svg';
 import { isEmoji } from 'openland-y-utils/isEmoji';
 import { randomKey } from 'openland-unicorn/components/utils/randomKey';
+import ArrowRight from 'openland-icons/s/ic-arrow-right-16.svg';
+import ArrowLeft from 'openland-icons/s/ic-arrow-left-16.svg';
 
 const imageUploadStyle = css`
     & > .avatar-container {
@@ -112,6 +114,40 @@ const AddStickerForm = ({ id, onChange, onRemove }: {
     );
 };
 
+const AddedSticker = (props: {
+    item: SuperStickerPack_stickerPack_stickers,
+    packId: string,
+    onPrevClick: (id: string) => void,
+    onNextClick: (id: string) => void,
+}) => {
+    const client = useClient();
+    const { item, packId, onNextClick, onPrevClick } = props;
+
+    const removeSticker = async (id: string) => {
+        await client.mutateRemoveSticker({ id });
+        await client.refetchSuperStickerPack({ id: packId });
+    };
+
+    return (
+        <div className="x" style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}>
+            <XView position="absolute" top={-16} right={-16} zIndex={2}>
+                <UIconButton size="small" icon={<DeleteIcon />} onClick={() => removeSticker(item.id)} />
+            </XView>
+            <XImage
+                src={getAvatar(item.image.uuid)}
+                width={76}
+                height={76}
+                borderRadius={8}
+            />
+            <XView {...TextStyles.Title3} marginTop={10} marginBottom={30} flexDirection="row">
+                <UIconButton size="xsmall" icon={<ArrowLeft />} onClick={() => onPrevClick(item.id)} color="var(--foregroundTertiary)" />
+                {item.emoji}
+                <UIconButton size="xsmall" icon={<ArrowRight />} onClick={() => onNextClick(item.id)} color="var(--foregroundTertiary)" />
+            </XView>
+        </div>
+    );
+};
+
 const EditStickerPackModalInner = React.memo((props: {
     hide: () => void;
     stickerPack: SuperStickerPackFragment;
@@ -122,28 +158,31 @@ const EditStickerPackModalInner = React.memo((props: {
     const form = useForm();
     const titleField = useField('stickers.title', stickerPack?.title || 'New StickerPack', form);
     const publishedField = useField('stickers.published', !!stickerPack?.published, form);
+    const privateField = useField('stickers.private', !!stickerPack?.private, form);
     const [stickersToAdd, setStickersToAdd] = React.useState<(StickerToAdd & { key: string })[]>([]);
 
     if (!stickerPack) {
         return null;
     }
 
-    const items = stickerPack.stickers;
+    const [items, setItems] = React.useState(stickerPack.stickers);
+    const listRef = React.useRef<HTMLDivElement>(null);
+    React.useEffect(() => {
+        setItems(stickerPack.stickers);
+    }, [stickerPack.stickers]);
 
-    const removeSticker = async (id: string) => {
-        await client.mutateRemoveSticker({ id });
-        await client.refetchSuperStickerPack({ id: stickerPack.id });
-    };
     const updatePack = async () => {
         await client.mutateStickerPackUpdate({
             id: stickerPack.id, input: {
                 title: titleField.value,
                 published: publishedField.value,
+                private: privateField.value
             }
         });
         await Promise.all([
             client.refetchSuperAllStickerPacks(),
-            client.refetchSuperStickerPackCatalog()
+            client.refetchSuperStickerPackCatalog(),
+            client.refetchSuperStickerPack({ id: props.stickerPack.id }),
         ]);
         props.hide();
     };
@@ -187,6 +226,16 @@ const EditStickerPackModalInner = React.memo((props: {
         await client.refetchSuperStickerPack({ id });
         setStickersToAdd([]);
     };
+    const saveOrder = async () => {
+        await client.mutateStickerPackUpdate({
+            id: stickerPack.id, input: { stickers: items.map(x => x.id) }
+        });
+        await Promise.all([
+            client.refetchSuperAllStickerPacks(),
+            client.refetchSuperStickerPackCatalog(),
+            client.refetchSuperStickerPack({ id: props.stickerPack.id }),
+        ]);
+    };
 
     return (
         <XView borderRadius={8} flexGrow={1} flexShrink={1}>
@@ -195,6 +244,7 @@ const EditStickerPackModalInner = React.memo((props: {
                     <UInputField field={titleField} label="Title" />
                     <XView width={140}>
                         <UCheckboxFiled field={publishedField} label="Published" />
+                        <UCheckboxFiled field={privateField} label="Private" />
                         <UButton
                             text="Update"
                             size="large"
@@ -221,23 +271,39 @@ const EditStickerPackModalInner = React.memo((props: {
                     </XView>
                     <XView {...TextStyles.Title2} marginTop={20} marginBottom={20}>Stickers</XView>
 
-                    <XView flexDirection="row" flexWrap="wrap" paddingTop={20}>
-                        {items.map(item => (
-                            <XView key={item.id} alignItems="center" justifyContent="center" padding={10}>
-                                <XView position="absolute" top={-16} right={-16} zIndex={2}>
-                                    <UIconButton size="small" icon={<DeleteIcon />} onClick={() => removeSticker(item.id)} />
-                                </XView>
-                                <XImage
-                                    src={getAvatar(item.image.uuid)}
-                                    width={76}
-                                    height={76}
-                                    borderRadius={8}
-                                />
-                                <XView {...TextStyles.Title3} marginTop={10} marginBottom={30}>{item.emoji}</XView>
-                            </XView>
+                    <div className="x" ref={listRef} style={{ flexDirection: 'row', flexWrap: 'wrap', paddingTop: 20 }}>
+                        {items.map((item, index) => (
+                            <AddedSticker
+                                key={item.id + index}
+                                item={item}
+                                packId={stickerPack.id}
+                                onNextClick={(id) => {
+                                    setItems(prev => prev.map((x, i, arr) => {
+                                        if (x.id === id && i !== arr.length - 1) {
+                                            return arr[i + 1];
+                                        } else if (arr[i - 1] && (arr[i - 1].id === id)) {
+                                            return arr[i - 1];
+                                        }
+                                        return x;
+                                    }));
+                                }}
+                                onPrevClick={(id) => {
+                                    setItems(prev => prev.map((x, i, arr) => {
+                                        if (x.id === id && i !== 0) {
+                                            return arr[i - 1];
+                                        } else if (arr[i + 1] && (arr[i + 1].id === id)) {
+                                            return arr[i + 1];
+                                        }
+                                        return x;
+                                    }));
+                                }}
+                            />
                         ))}
-                    </XView>
+                    </div>
                 </XScrollView3>
+                <XView width={140} marginTop={20}>
+                    <UButton text="Save order" size="large" action={saveOrder} />
+                </XView>
             </XModalContent>
             <XModalFooter flexShrink={0}>
                 <XView marginRight={12}>
@@ -268,7 +334,7 @@ const EditStickerPackModal = (props: { hide: () => void, stickerPack?: SuperStic
 };
 
 const showEditStickersModal = (stickerPack?: SuperStickerPackFragment) => {
-    showModalBox({ title: 'Edit stickers' }, ctx => (
+    showModalBox({ title: 'Edit stickers', width: 600 }, ctx => (
         <EditStickerPackModal hide={ctx.hide} stickerPack={stickerPack} />
     ));
 };

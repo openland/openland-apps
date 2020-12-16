@@ -12,12 +12,14 @@ internal val UserNanoSelector = obj(
                     field("photo", "photo", scalar("String")),
                     field("shortname", "shortname", scalar("String")),
                     field("isBot", "isBot", notNull(scalar("Boolean"))),
-                    field("inContacts", "inContacts", notNull(scalar("Boolean")))
+                    field("inContacts", "inContacts", notNull(scalar("Boolean"))),
+                    field("isBanned", "isBanned", notNull(scalar("Boolean"))),
+                    field("isMeBanned", "isMeBanned", notNull(scalar("Boolean")))
                 )))
         )
 val UserNano = object: OperationDefinition {
     override val name = "UserNano"
     override val kind = OperationKind.QUERY
-    override val body = "query UserNano(\$id:ID!){user(id:\$id){__typename id name photo shortname isBot inContacts}}"
+    override val body = "query UserNano(\$id:ID!){user(id:\$id){__typename id name photo shortname isBot inContacts isBanned isMeBanned}}"
     override val selector = UserNanoSelector
 }

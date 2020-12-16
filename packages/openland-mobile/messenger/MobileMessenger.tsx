@@ -546,22 +546,24 @@ export class MobileMessenger {
         }
         const role = conversation.role;
 
-        builder.view((ctx: ZModalController) => (
-            <ReactionsPicker
-                reactionCounters={message.reactionCounters}
-                onPress={(reaction) => {
-                    ctx.hide();
-                    this.handleReactionSetUnset(message, reaction);
-                }}
-            />
-        ));
+        if (!conversation.isBanned) {
+            builder.view((ctx: ZModalController) => (
+                <ReactionsPicker
+                    reactionCounters={message.reactionCounters}
+                    onPress={(reaction) => {
+                        ctx.hide();
+                        this.handleReactionSetUnset(message, reaction);
+                    }}
+                />
+            ));
+        }
 
         const hideSelect = action === 'reply' || action === 'forward';
         if (!hideSelect) {
             builder.action('Select', () => toggleSelect(message), false, require('assets/ic-select-24.png'));
         }
 
-        if (conversation.canSendMessage && conversation.canReply) {
+        if (conversation.canSendMessage && conversation.canReply && !conversation.isBanned) {
             builder.action('Reply', () => reply(message), false, require('assets/ic-reply-24.png'));
         }
 
@@ -571,9 +573,11 @@ export class MobileMessenger {
             builder.action('Save', () => this.handleSaveMessages([message.id!]), false, require('assets/ic-bookmark-24.png'));
         }
 
-        builder.action('Comment', () => {
-            this.routerSuitable.push('Message', { messageId: message.id });
-        }, false, require('assets/ic-message-24.png'));
+        if (!conversation.isBanned) {
+            builder.action('Comment', () => {
+                this.routerSuitable.push('Message', { messageId: message.id });
+            }, false, require('assets/ic-message-24.png'));
+        }
 
         if (message.text) {
             builder.action('Copy', () => {
@@ -582,7 +586,7 @@ export class MobileMessenger {
             }, false, require('assets/ic-copy-24.png'));
         }
 
-        if (conversation.canPin && message.id) {
+        if (conversation.canPin && message.id && !conversation.isBanned) {
             const toUnpin = conversation.pinId && conversation.pinId === message.id;
 
             builder.action(toUnpin ? 'Unpin' : 'Pin', async () => {
@@ -602,7 +606,7 @@ export class MobileMessenger {
 
         if (message.text) {
             let hasPurchase = message.attachments && message.attachments.some(a => a.__typename === 'MessageAttachmentPurchase');
-            if (message.sender.id === this.engine.user.id && !hasPurchase) {
+            if (message.sender.id === this.engine.user.id && !hasPurchase && !conversation.isBanned) {
                 builder.action('Edit', () => {
                     edit(message);
                 }, false, require('assets/ic-edit-24.png'));

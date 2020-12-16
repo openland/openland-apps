@@ -40,7 +40,7 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
     const otherLikes = !!reactionCounters.find((r) => (r.setByMe && r.count !== 1) || (!r.setByMe));
 
     return (
-        <ASFlex alignItems="stretch" flexDirection="row" maxHeight={33}>
+        <ASFlex alignItems="stretch" flexDirection="row" maxHeight={33} renderModes={rm({ 'banned': { opacity: 0, width: 0, height: 0 } })}>
             <ASFlex
                 renderModes={isOut ? undefined : rm({ 'selection': { marginLeft: 60 + 30 } })}
                 flexGrow={1}

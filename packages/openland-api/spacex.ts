@@ -343,6 +343,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     querySharedMediaCounters(variables: Types.SharedMediaCountersVariables, params?: QueryParameters): Promise<Types.SharedMediaCounters> {
         return this.query('SharedMediaCounters', variables, params);
     }
+    queryShouldAskForAppReview(params?: QueryParameters): Promise<Types.ShouldAskForAppReview> {
+        return this.query('ShouldAskForAppReview', undefined, params);
+    }
     queryStickerPack(variables: Types.StickerPackVariables, params?: QueryParameters): Promise<Types.StickerPack> {
         return this.query('StickerPack', variables, params);
     }
@@ -742,6 +745,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchSharedMediaCounters(variables: Types.SharedMediaCountersVariables, params?: QueryParameters): Promise<Types.SharedMediaCounters> {
         return this.refetch('SharedMediaCounters', variables, params);
     }
+    refetchShouldAskForAppReview(params?: QueryParameters): Promise<Types.ShouldAskForAppReview> {
+        return this.refetch('ShouldAskForAppReview', undefined, params);
+    }
     refetchStickerPack(variables: Types.StickerPackVariables, params?: QueryParameters): Promise<Types.StickerPack> {
         return this.refetch('StickerPack', variables, params);
     }
@@ -1140,6 +1146,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateSharedMediaCounters(variables: Types.SharedMediaCountersVariables, updater: (data: Types.SharedMediaCounters) => Types.SharedMediaCounters | null): Promise<boolean> {
         return this.updateQuery(updater, 'SharedMediaCounters', variables);
+    }
+    updateShouldAskForAppReview(updater: (data: Types.ShouldAskForAppReview) => Types.ShouldAskForAppReview | null): Promise<boolean> {
+        return this.updateQuery(updater, 'ShouldAskForAppReview', undefined);
     }
     updateStickerPack(variables: Types.StickerPackVariables, updater: (data: Types.StickerPack) => Types.StickerPack | null): Promise<boolean> {
         return this.updateQuery(updater, 'StickerPack', variables);
@@ -1762,6 +1771,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useSharedMediaCounters(variables: Types.SharedMediaCountersVariables, params?: SpaceQueryWatchParameters): Types.SharedMediaCounters | null {
         return this.useQuery('SharedMediaCounters', variables, params);
     }
+    useShouldAskForAppReview(params: SpaceQueryWatchParameters & { suspense: false }): Types.ShouldAskForAppReview | null;
+    useShouldAskForAppReview(params?: SpaceQueryWatchParameters): Types.ShouldAskForAppReview;
+    useShouldAskForAppReview(params?: SpaceQueryWatchParameters): Types.ShouldAskForAppReview | null {
+        return this.useQuery('ShouldAskForAppReview', undefined, params);
+    }
     useStickerPack(variables: Types.StickerPackVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.StickerPack | null;
     useStickerPack(variables: Types.StickerPackVariables, params?: SpaceQueryWatchParameters): Types.StickerPack;
     useStickerPack(variables: Types.StickerPackVariables, params?: SpaceQueryWatchParameters): Types.StickerPack | null {
@@ -1991,6 +2005,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateMakeCardDefault(variables: Types.MakeCardDefaultVariables, params?: MutationParameters): Promise<Types.MakeCardDefault> {
         return this.mutate('MakeCardDefault', variables, params);
+    }
+    mutateMarkStickersViewed(params?: MutationParameters): Promise<Types.MarkStickersViewed> {
+        return this.mutate('MarkStickersViewed', undefined, params);
     }
     mutateMediaAnswer(variables: Types.MediaAnswerVariables, params?: MutationParameters): Promise<Types.MediaAnswer> {
         return this.mutate('MediaAnswer', variables, params);
@@ -2306,6 +2323,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     subscribeSettingsWatch(handler: GraphqlSubscriptionHandler<Types.SettingsWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.SettingsWatch> {
         return this.subscribe(handler, 'SettingsWatch', undefined, params);
+    }
+    subscribeStickersWatch(handler: GraphqlSubscriptionHandler<Types.StickersWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.StickersWatch> {
+        return this.subscribe(handler, 'StickersWatch', undefined, params);
     }
     subscribeTypingsWatch(handler: GraphqlSubscriptionHandler<Types.TypingsWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.TypingsWatch> {
         return this.subscribe(handler, 'TypingsWatch', undefined, params);

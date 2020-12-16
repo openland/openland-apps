@@ -17,6 +17,7 @@ export interface MessagesListProps {
     messagesPaddingBottom?: number;
     inverted: boolean;
     onScroll?: (event?: NativeSyntheticEvent<any>) => void;
+    isBanned: boolean;
 }
 export const androidMessageInputListOverlap = 52;
 
@@ -39,13 +40,13 @@ const styles = StyleSheet.create({
     } as TextStyle
 });
 
-class ConversationViewComponent extends React.PureComponent<MessagesListProps & { theme: ThemeGlobal, selectionMode: boolean }, { conversation: ConversationState }> implements ConversationStateHandler {
+class ConversationViewComponent extends React.PureComponent<MessagesListProps & { theme: ThemeGlobal, selectionMode: boolean, isBanned: boolean }, { conversation: ConversationState }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
     // private listRef = React.createRef<ConversationMessagesView>();
     private rotation = new Animated.Value(0);
 
-    constructor(props: MessagesListProps & { theme: ThemeGlobal, selectionMode: boolean }) {
+    constructor(props: MessagesListProps & { theme: ThemeGlobal, selectionMode: boolean, isBanned: boolean }) {
         super(props);
         let initialState = props.engine.getState();
 
@@ -118,6 +119,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                     loaded={this.state.conversation.historyFullyLoaded}
                     engine={this.props.engine}
                     selectionMode={this.props.selectionMode}
+                    isBanned={this.props.isBanned}
                     onScroll={this.props.onScroll}
                 />
                 {
@@ -170,6 +172,6 @@ export const ConversationView = (props: MessagesListProps) => {
     let theme = React.useContext(ThemeContext);
     let selectionMode = useChatMessagesSelectionMode(props.engine.conversationId);
     return (
-        <ConversationViewComponent {...props} theme={theme} selectionMode={selectionMode} />
+        <ConversationViewComponent {...props} theme={theme} selectionMode={selectionMode} isBanned={props.isBanned} />
     );
 };

@@ -1081,6 +1081,20 @@ private let MessageUsersReactionsSelector = obj(
             field("reaction", "reaction", notNull(scalar("String")))
         )
 
+private let MyStickersFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("unviewedCount", "unviewedCount", notNull(scalar("Int"))),
+            field("packs", "packs", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("title", "title", notNull(scalar("String"))),
+                    field("stickers", "stickers", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("Sticker", StickerFragmentSelector)
+                        )))))
+                )))))
+        )
+
 private let RoomSharedNanoSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -1640,6 +1654,8 @@ private let StickerPackFragmentSelector = obj(
             field("id", "id", notNull(scalar("ID"))),
             field("title", "title", notNull(scalar("String"))),
             field("added", "added", notNull(scalar("Boolean"))),
+            field("private", "private", notNull(scalar("Boolean"))),
+            field("canAdd", "canAdd", notNull(scalar("Boolean"))),
             field("stickers", "stickers", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Sticker", StickerFragmentSelector)
@@ -1651,6 +1667,7 @@ private let SuperStickerPackFragmentSelector = obj(
             field("id", "id", notNull(scalar("ID"))),
             field("title", "title", notNull(scalar("String"))),
             field("published", "published", notNull(scalar("Boolean"))),
+            field("private", "private", notNull(scalar("Boolean"))),
             field("added", "added", notNull(scalar("Boolean"))),
             field("author", "author", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -3453,16 +3470,7 @@ private let MyPostDraftsSelector = obj(
 private let MyStickersSelector = obj(
             field("myStickers", "stickers", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    field("unviewedCount", "unviewedCount", notNull(scalar("Int"))),
-                    field("packs", "packs", notNull(list(notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("title", "title", notNull(scalar("String"))),
-                            field("stickers", "stickers", notNull(list(notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    fragment("Sticker", StickerFragmentSelector)
-                                )))))
-                        )))))
+                    fragment("UserStickers", MyStickersFragmentSelector)
                 )))
         )
 private let MySuccessfulInvitesCountSelector = obj(
@@ -4186,6 +4194,17 @@ private let RoomSuperSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("featured", "featured", notNull(scalar("Boolean"))),
                     field("giftStickerPackId", "giftStickerPackId", scalar("ID"))
+                )),
+            field("room", "room", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    inline("SharedRoom", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("stickerPack", "stickerPack", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID")))
+                            ))
+                    ))
                 ))
         )
 private let RoomTinySelector = obj(
@@ -4284,6 +4303,9 @@ private let SharedMediaCountersSelector = obj(
                     field("documents", "documents", notNull(scalar("Int"))),
                     field("videos", "videos", notNull(scalar("Int")))
                 )))
+        )
+private let ShouldAskForAppReviewSelector = obj(
+            field("shouldAskForAppReview", "shouldAskForAppReview", notNull(scalar("Boolean")))
         )
 private let StickerPackSelector = obj(
             field("stickerPack", "stickerPack", arguments(fieldValue("id", refValue("id"))), obj(
@@ -4434,17 +4456,6 @@ private let UnviewedStickersSelector = obj(
 private let UserSelector = obj(
             field("user", "user", arguments(fieldValue("id", refValue("userId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    field("chatsWithBadge", "chatsWithBadge", notNull(list(notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("chat", "chat", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    fragment("Room", RoomShortSelector)
-                                ))),
-                            field("badge", "badge", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    fragment("UserBadge", UserBadgeSelector)
-                                )))
-                        ))))),
                     fragment("User", UserFullSelector)
                 ))),
             field("room", "conversation", arguments(fieldValue("id", refValue("userId"))), obj(
@@ -4485,7 +4496,9 @@ private let UserNanoSelector = obj(
                     field("photo", "photo", scalar("String")),
                     field("shortname", "shortname", scalar("String")),
                     field("isBot", "isBot", notNull(scalar("Boolean"))),
-                    field("inContacts", "inContacts", notNull(scalar("Boolean")))
+                    field("inContacts", "inContacts", notNull(scalar("Boolean"))),
+                    field("isBanned", "isBanned", notNull(scalar("Boolean"))),
+                    field("isMeBanned", "isMeBanned", notNull(scalar("Boolean")))
                 )))
         )
 private let UserPicoSelector = obj(
@@ -4806,6 +4819,9 @@ private let MakeCardDefaultSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("isDefault", "isDefault", notNull(scalar("Boolean")))
                 )))
+        )
+private let MarkStickersViewedSelector = obj(
+            field("myStickersMarkAsViewed", "myStickersMarkAsViewed", notNull(scalar("Boolean")))
         )
 private let MediaAnswerSelector = obj(
             field("mediaStreamAnswer", "mediaStreamAnswer", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId")), fieldValue("answer", refValue("answer")), fieldValue("seq", refValue("seq"))), notNull(obj(
@@ -5584,6 +5600,12 @@ private let SettingsWatchSelector = obj(
                     fragment("Settings", SettingsFullSelector)
                 )))
         )
+private let StickersWatchSelector = obj(
+            field("myStickersUpdates", "event", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("UserStickers", MyStickersFragmentSelector)
+                )))
+        )
 private let TypingsWatchSelector = obj(
             field("typings", "typings", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5803,7 +5825,7 @@ class Operations {
     let CreatedStickerPacks = OperationDefinition(
         "CreatedStickerPacks",
         .query, 
-        "query CreatedStickerPacks{createdStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
+        "query CreatedStickerPacks{createdStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
         CreatedStickerPacksSelector
     )
     let DebugGqlTrace = OperationDefinition(
@@ -6091,7 +6113,7 @@ class Operations {
     let MyStickers = OperationDefinition(
         "MyStickers",
         .query, 
-        "query MyStickers{stickers:myStickers{__typename unviewedCount packs{__typename id title stickers{__typename ...StickerFragment}}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}",
+        "query MyStickers{stickers:myStickers{__typename ...MyStickersFragment}}fragment MyStickersFragment on UserStickers{__typename unviewedCount packs{__typename id title stickers{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}",
         MyStickersSelector
     )
     let MySuccessfulInvitesCount = OperationDefinition(
@@ -6301,7 +6323,7 @@ class Operations {
     let RoomSuper = OperationDefinition(
         "RoomSuper",
         .query, 
-        "query RoomSuper($id:ID!){roomSuper(id:$id){__typename id featured giftStickerPackId}}",
+        "query RoomSuper($id:ID!){roomSuper(id:$id){__typename id featured giftStickerPackId}room(id:$id){__typename ... on SharedRoom{__typename id stickerPack{__typename id}}}}",
         RoomSuperSelector
     )
     let RoomTiny = OperationDefinition(
@@ -6328,10 +6350,16 @@ class Operations {
         "query SharedMediaCounters($chatId:ID!){counters:chatSharedMediaCounters(chatId:$chatId){__typename links images documents videos}}",
         SharedMediaCountersSelector
     )
+    let ShouldAskForAppReview = OperationDefinition(
+        "ShouldAskForAppReview",
+        .query, 
+        "query ShouldAskForAppReview{shouldAskForAppReview}",
+        ShouldAskForAppReviewSelector
+    )
     let StickerPack = OperationDefinition(
         "StickerPack",
         .query, 
-        "query StickerPack($id:ID!){stickerPack(id:$id){__typename ...StickerPackFragment}}fragment StickerPackFragment on StickerPack{__typename id title added stickers{__typename ...StickerFragment}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}",
+        "query StickerPack($id:ID!){stickerPack(id:$id){__typename ...StickerPackFragment}}fragment StickerPackFragment on StickerPack{__typename id title added private canAdd stickers{__typename ...StickerFragment}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}",
         StickerPackSelector
     )
     let StickerPackCatalog = OperationDefinition(
@@ -6379,7 +6407,7 @@ class Operations {
     let SuperAllStickerPacks = OperationDefinition(
         "SuperAllStickerPacks",
         .query, 
-        "query SuperAllStickerPacks{superAllStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
+        "query SuperAllStickerPacks{superAllStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
         SuperAllStickerPacksSelector
     )
     let SuperBadgeInRoom = OperationDefinition(
@@ -6391,13 +6419,13 @@ class Operations {
     let SuperStickerPack = OperationDefinition(
         "SuperStickerPack",
         .query, 
-        "query SuperStickerPack($id:ID!){stickerPack(id:$id){__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
+        "query SuperStickerPack($id:ID!){stickerPack(id:$id){__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
         SuperStickerPackSelector
     )
     let SuperStickerPackCatalog = OperationDefinition(
         "SuperStickerPackCatalog",
         .query, 
-        "query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
+        "query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}",
         SuperStickerPackCatalogSelector
     )
     let TransactionsHistory = OperationDefinition(
@@ -6415,7 +6443,7 @@ class Operations {
     let User = OperationDefinition(
         "User",
         .query, 
-        "query User($userId:ID!){user:user(id:$userId){__typename ...UserFull chatsWithBadge{__typename chat{__typename ...RoomShort}badge{__typename ...UserBadge}}}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}fragment RoomShort on Room{__typename ... on PrivateRoom{__typename id user{__typename ...UserShort}settings{__typename id mute}pinnedMessage{__typename ...FullMessage}myBadge{__typename ...UserBadge}}... on SharedRoom{__typename id kind isChannel isPremium title photo membership featured role canEdit canSendMessage membersCount canUnpinMessage pinnedMessage{__typename ...FullMessage}organization{__typename ...OrganizationShort}settings{__typename id mute}myBadge{__typename ...UserBadge}owner{__typename id firstName isYou}callSettings{__typename mode callLink}repliesEnabled}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment FullMessage on ModernMessage{__typename id seq date sender{__typename ...MessageSender}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id user{__typename id}}... on SharedRoom{__typename id title isChannel membersCount}}}}spans{__typename ...MessageSpan}... on GeneralMessage{__typename id edited commentsCount attachments{__typename ...MessageAttachments}quotedMessages{__typename ...QuotedMessage}reactionCounters{__typename ...MessageReactionCounter}overrideAvatar{__typename uuid crop{__typename x y w h}}overrideName}... on StickerMessage{__typename id commentsCount quotedMessages{__typename ...QuotedMessage}sticker{__typename ...StickerFragment}reactionCounters{__typename ...MessageReactionCounter}overrideAvatar{__typename uuid crop{__typename x y w h}}overrideName}... on ServiceMessage{__typename id serviceMetadata{__typename ...ServiceMessageMetadata}}}fragment MessageSender on User{__typename id name photo isBot shortname inContacts primaryOrganization{__typename id name shortname}}fragment UserBadge on UserBadge{__typename id name verified}fragment MessageSpan on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename id name}}... on MessageSpanMultiUserMention{__typename offset length}... on MessageSpanOrganizationMention{__typename organization{__typename id name}}... on MessageSpanRoomMention{__typename room{__typename ... on PrivateRoom{__typename id user{__typename id name}}... on SharedRoom{__typename id title isPremium}}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment MessageAttachments on ModernMessageAttachment{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}socialImage{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id title style url}}fallback}... on MessageAttachmentPurchase{__typename id purchase{__typename id state amount}fallback}}fragment QuotedMessage on ModernMessage{__typename id date message sender{__typename ...MessageSender}senderBadge{__typename ...UserBadge}fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}spans{__typename ...MessageSpan}... on GeneralMessage{__typename id edited commentsCount attachments{__typename ...MessageAttachments}}... on StickerMessage{__typename id sticker{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}fragment MessageReactionCounter on ReactionCounter{__typename reaction count setByMe}fragment ServiceMessageMetadata on ServiceMetadata{__typename ... on InviteServiceMetadata{__typename users{__typename id}invitedBy{__typename id}}... on KickServiceMetadata{__typename user{__typename id}kickedBy{__typename id}}... on TitleChangeServiceMetadata{__typename title}... on PhotoChangeServiceMetadata{__typename photo}... on PostRespondServiceMetadata{__typename respondType}}",
+        "query User($userId:ID!){user:user(id:$userId){__typename ...UserFull}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
         UserSelector
     )
     let UserAvailableRooms = OperationDefinition(
@@ -6427,7 +6455,7 @@ class Operations {
     let UserNano = OperationDefinition(
         "UserNano",
         .query, 
-        "query UserNano($id:ID!){user(id:$id){__typename id name photo shortname isBot inContacts}}",
+        "query UserNano($id:ID!){user(id:$id){__typename id name photo shortname isBot inContacts isBanned isMeBanned}}",
         UserNanoSelector
     )
     let UserPico = OperationDefinition(
@@ -6699,6 +6727,12 @@ class Operations {
         .mutation, 
         "mutation MakeCardDefault($id:ID!){cardMakeDefault(id:$id){__typename id isDefault}}",
         MakeCardDefaultSelector
+    )
+    let MarkStickersViewed = OperationDefinition(
+        "MarkStickersViewed",
+        .mutation, 
+        "mutation MarkStickersViewed{myStickersMarkAsViewed}",
+        MarkStickersViewedSelector
     )
     let MediaAnswer = OperationDefinition(
         "MediaAnswer",
@@ -7330,6 +7364,12 @@ class Operations {
         "subscription SettingsWatch{watchSettings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename id version primaryEmail emailFrequency excludeMutedChats countUnreadChats whoCanSeeEmail whoCanSeePhone whoCanAddToGroups communityAdminsCanSeeContactInfo desktop{__typename ...PlatformNotificationSettingsFull}mobile{__typename ...PlatformNotificationSettingsFull}}fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename direct{__typename showNotification sound}secretChat{__typename showNotification sound}communityChat{__typename showNotification sound}comments{__typename showNotification sound}channels{__typename showNotification sound}notificationPreview}",
         SettingsWatchSelector
     )
+    let StickersWatch = OperationDefinition(
+        "StickersWatch",
+        .subscription, 
+        "subscription StickersWatch{event:myStickersUpdates{__typename ...MyStickersFragment}}fragment MyStickersFragment on UserStickers{__typename unviewedCount packs{__typename id title stickers{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}",
+        StickersWatchSelector
+    )
     let TypingsWatch = OperationDefinition(
         "TypingsWatch",
         .subscription, 
@@ -7461,6 +7501,7 @@ class Operations {
         if name == "Settings" { return Settings }
         if name == "SharedMedia" { return SharedMedia }
         if name == "SharedMediaCounters" { return SharedMediaCounters }
+        if name == "ShouldAskForAppReview" { return ShouldAskForAppReview }
         if name == "StickerPack" { return StickerPack }
         if name == "StickerPackCatalog" { return StickerPackCatalog }
         if name == "StripeToken" { return StripeToken }
@@ -7523,6 +7564,7 @@ class Operations {
         if name == "EditMessage" { return EditMessage }
         if name == "GlobalEventBusPublish" { return GlobalEventBusPublish }
         if name == "MakeCardDefault" { return MakeCardDefault }
+        if name == "MarkStickersViewed" { return MarkStickersViewed }
         if name == "MediaAnswer" { return MediaAnswer }
         if name == "MediaCandidate" { return MediaCandidate }
         if name == "MediaFailed" { return MediaFailed }
@@ -7628,6 +7670,7 @@ class Operations {
         if name == "MyNotificationsCenter" { return MyNotificationsCenter }
         if name == "OnlineWatch" { return OnlineWatch }
         if name == "SettingsWatch" { return SettingsWatch }
+        if name == "StickersWatch" { return StickersWatch }
         if name == "TypingsWatch" { return TypingsWatch }
         if name == "WalletUpdates" { return WalletUpdates }
         if name == "WatchUpdates" { return WatchUpdates }
