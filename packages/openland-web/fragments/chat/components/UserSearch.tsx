@@ -137,7 +137,7 @@ export const UserSearch = (props: UserSearchForChatProps) => {
                                     <CheckComponent squared={true} checked={selected} />
                                 </XView>
                             }
-                            disabled={isMember || inviteRestricted}
+                            disabled={(isMember || inviteRestricted) || (node.isBanned || node.isMeBanned)}
                         />
                     );
                 })}
