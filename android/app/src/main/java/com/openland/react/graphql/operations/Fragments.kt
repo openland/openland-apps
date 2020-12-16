@@ -1661,6 +1661,7 @@ internal val StickerPackFragmentSelector = obj(
             field("title", "title", notNull(scalar("String"))),
             field("added", "added", notNull(scalar("Boolean"))),
             field("private", "private", notNull(scalar("Boolean"))),
+            field("canAdd", "canAdd", notNull(scalar("Boolean"))),
             field("stickers", "stickers", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Sticker", StickerFragmentSelector)

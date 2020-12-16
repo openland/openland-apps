@@ -1655,6 +1655,7 @@ private let StickerPackFragmentSelector = obj(
             field("title", "title", notNull(scalar("String"))),
             field("added", "added", notNull(scalar("Boolean"))),
             field("private", "private", notNull(scalar("Boolean"))),
+            field("canAdd", "canAdd", notNull(scalar("Boolean"))),
             field("stickers", "stickers", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Sticker", StickerFragmentSelector)
@@ -6358,7 +6359,7 @@ class Operations {
     let StickerPack = OperationDefinition(
         "StickerPack",
         .query, 
-        "query StickerPack($id:ID!){stickerPack(id:$id){__typename ...StickerPackFragment}}fragment StickerPackFragment on StickerPack{__typename id title added private stickers{__typename ...StickerFragment}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}",
+        "query StickerPack($id:ID!){stickerPack(id:$id){__typename ...StickerPackFragment}}fragment StickerPackFragment on StickerPack{__typename id title added private canAdd stickers{__typename ...StickerFragment}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}",
         StickerPackSelector
     )
     let StickerPackCatalog = OperationDefinition(

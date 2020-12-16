@@ -15,6 +15,7 @@ fragment StickerPackFragment on StickerPack {
     title
     added
     private
+    canAdd
     stickers {
         ...StickerFragment
     }

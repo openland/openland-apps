@@ -81,7 +81,7 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
         return null;
     }
 
-    const isPrivate = !haveIt && stickerPack.private;
+    const isPrivate = !haveIt && stickerPack.canAdd;
 
     return (
         <View onLayout={handleLayoutChange} style={{ paddingHorizontal: 8, minHeight: 217 }}>

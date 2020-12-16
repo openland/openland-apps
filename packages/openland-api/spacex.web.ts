@@ -1662,6 +1662,7 @@ const StickerPackFragmentSelector = obj(
             field('title', 'title', args(), notNull(scalar('String'))),
             field('added', 'added', args(), notNull(scalar('Boolean'))),
             field('private', 'private', args(), notNull(scalar('Boolean'))),
+            field('canAdd', 'canAdd', args(), notNull(scalar('Boolean'))),
             field('stickers', 'stickers', args(), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('Sticker', StickerFragmentSelector)
@@ -6361,7 +6362,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     StickerPack: {
         kind: 'query',
         name: 'StickerPack',
-        body: 'query StickerPack($id:ID!){stickerPack(id:$id){__typename ...StickerPackFragment}}fragment StickerPackFragment on StickerPack{__typename id title added private stickers{__typename ...StickerFragment}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}',
+        body: 'query StickerPack($id:ID!){stickerPack(id:$id){__typename ...StickerPackFragment}}fragment StickerPackFragment on StickerPack{__typename id title added private canAdd stickers{__typename ...StickerFragment}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}',
         selector: StickerPackSelector
     },
     StickerPackCatalog: {
