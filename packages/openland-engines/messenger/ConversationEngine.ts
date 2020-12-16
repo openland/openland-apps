@@ -412,7 +412,7 @@ export class ConversationEngine implements MessageSendHandler {
             dsItems.push(createDateDataSourceItem(d));
         }
 
-        if (sourceFragments[0].seq === 1 && this.room?.__typename === 'SharedRoom' && this.role === 'OWNER') {
+        if (sourceFragments.length > 0 && sourceFragments[0].seq === 1 && this.room?.__typename === 'SharedRoom' && this.role === 'OWNER') {
             dsItems.push(createInvitePeopleBlock(this.room));
         }
 
