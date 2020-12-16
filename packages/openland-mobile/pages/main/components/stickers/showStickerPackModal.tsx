@@ -77,8 +77,13 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
     }, [haveIt, id]);
 
     if (!stickerPack) {
-        hide();
-        return null;
+        return (
+            <View alignItems="center" justifyContent="center" paddingHorizontal={32} paddingVertical={16} marginTop={16}>
+                <Image source={require('assets/art-error.png')} style={{ width: 240, height: 150, marginBottom: 16 }} />
+                <Text style={{ ...TextStyles.Title2, textAlign: 'center', color: theme.foregroundPrimary, marginBottom: 6, }} allowFontScaling={false}>Sticker pack is unavailable</Text>
+                <Text style={{ ...TextStyles.Body, textAlign: 'center', color: theme.foregroundSecondary }} allowFontScaling={false}>Sticker pack removed or temporary unavailable</Text>
+            </View>
+        );
     }
 
     const isPrivate = !haveIt && !stickerPack.canAdd;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { XView } from 'react-mental';
+import { XImage, XView } from 'react-mental';
 import { StickerFragment } from 'openland-api/spacex.types';
 import { showModalBox } from 'openland-x/showModalBox';
 import { useClient } from 'openland-api/useClient';
@@ -9,7 +9,7 @@ import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
-import { TextStyles } from 'openland-web/utils/TextStyles';
+import { TextBody, TextStyles, TextTitle1 } from 'openland-web/utils/TextStyles';
 
 const stickerPackViewerContainer = css`
     display: flex;
@@ -35,7 +35,27 @@ const StickerPackModalInner = React.memo((props: { packId: string; hide: () => v
     const myStickerPaks = client.useMyStickers();
     const stickerPack = client.useStickerPack({ id: props.packId }).stickerPack;
     if (!stickerPack) {
-        return null;
+        return (
+            <XView justifyContent="center" alignItems="center" height="100%" width="100%">
+                <XImage
+                    marginBottom={16}
+                    width={320}
+                    height={200}
+                    src="/static/X/illustration-error.png"
+                    srcSet="/static/X/illustration-error@2x.png 2x"
+                />
+                <XView marginBottom={8} color="var(--foregroundPrimary)">
+                    <span className={TextTitle1}>
+                        Sticker pack is unavailable
+                </span>
+                </XView>
+                <XView color="var(--foregroundSecondary)" marginBottom={32}>
+                    <p className={TextBody}>
+                        Sticker pack removed or temporary unavailable
+                    </p>
+                </XView>
+            </XView>
+        );
     }
     const iHaveThisPack = !!myStickerPaks.stickers.packs.find(i => i.id === stickerPack.id);
 
