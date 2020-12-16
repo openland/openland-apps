@@ -43,13 +43,18 @@ const SuperAdminSettingsModalBody = React.memo(
 
         const visibilityField = useField('visibility.input', initialValue.visibility, form);
         const featuredField = useField('featured.input', initialFeatured, form);
-        const stickerField = useField('sticker.input', initialValue.stickerPackId, form);
+        const noStickerOption = { label: 'None', value: 'none' };
+        const stickerField = useField('sticker.input', initialValue.stickerPackId || noStickerOption.value, form);
 
         const onSave = async () => {
             form.doAction(async () => {
                 let input: RoomUpdateVariables['input'] = { kind: visibilityField.input.value };
                 if (stickerField.value) {
-                    input.giftStickerPackId = stickerField.value;
+                    if (stickerField.value === 'none') {
+                        input.giftStickerPackId = null;
+                    } else {
+                        input.giftStickerPackId = stickerField.value;
+                    }
                 }
                 await Promise.all([
                     client.mutateRoomUpdate({
@@ -109,7 +114,10 @@ const SuperAdminSettingsModalBody = React.memo(
 
                                 <USelectField
                                     label="Sticker pack"
-                                    options={stickerPacks}
+                                    options={[
+                                        noStickerOption,
+                                        ...stickerPacks
+                                    ]}
                                     field={stickerField}
                                     optionRender={(item) => (
                                         <XView
@@ -118,14 +126,21 @@ const SuperAdminSettingsModalBody = React.memo(
                                             paddingHorizontal={16}
                                             paddingVertical={8}
                                         >
-                                            <XImage
-                                                src={`https://ucarecdn.com/${item.imageId}/-/format/png/`}
-                                                width={40}
-                                                height={40}
-                                            />
+                                            {item.imageId ? (
+                                                <XImage
+                                                    src={`https://ucarecdn.com/${item.imageId}/-/format/png/`}
+                                                    width={40}
+                                                    height={40}
+                                                />
+                                            ) : (
+                                                    <XView
+                                                        width={40}
+                                                        height={40}
+                                                    />
+                                                )}
                                             <XView marginLeft={16}>
                                                 <XView {...TextStyles.Body} color="var(--foregroundPrimary)">{item.label}</XView>
-                                                <XView {...TextStyles.Subhead} color="var(--foregroundSecondary)">{plural(item.count, ['sticker', 'stickers'])}</XView>
+                                                {item.count && <XView {...TextStyles.Subhead} color="var(--foregroundSecondary)">{plural(item.count, ['sticker', 'stickers'])}</XView>}
                                             </XView>
                                         </XView>
                                     )}
