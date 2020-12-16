@@ -23,6 +23,8 @@ export const AsyncInvitePeopleBlock = React.memo((props: AsyncInvitePeopleBlockP
     const userId = getMessenger().engine.user.id;
     const { router, room, client } = props;
 
+    const imageSource = theme.type === 'Light' ? require('assets/art-add-people.png') : require('assets/art-add-people-dark.png');
+
     const onInvitePress = React.useCallback(() => {
         Modals.showUserMuptiplePicker(
             router,
@@ -53,7 +55,7 @@ export const AsyncInvitePeopleBlock = React.memo((props: AsyncInvitePeopleBlockP
 
     return (
         <ASFlex flexDirection="column" alignItems="center" marginBottom={32}>
-            <ASImage source={require('assets/art-add-people.png')} width={140} height={140} />
+            <ASImage source={imageSource} width={140} height={140} />
             <ASText {...TextStylesAsync.Title2} color={theme.foregroundPrimary} marginBottom={6} marginTop={22}>
                 Add people
             </ASText>
