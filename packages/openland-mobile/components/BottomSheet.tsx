@@ -9,6 +9,7 @@ import { showModal, ModalProps, ModalConfiguration } from 'react-native-fast-mod
 import { ThemeController } from '../themes/ThemeControler';
 import { resolveTheme, ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SAnimated } from 'react-native-fast-animations';
+import { QueryCacheProvider } from '@openland/spacex';
 
 export interface BottomSheetConfig {
     view: (ctx: ModalProps) => React.ReactElement;
@@ -36,9 +37,11 @@ export function showBottomSheet(config: BottomSheetConfig) {
                 )}
                 {!config.title && !config.containerStyle && <View marginTop={16} />}
                 <GQLClientContext.Provider value={getClient()}>
-                    <React.Suspense fallback={<ZLoader />}>
-                        {config.view(ctx)}
-                    </React.Suspense>
+                    <QueryCacheProvider>
+                        <React.Suspense fallback={<ZLoader />}>
+                            {config.view(ctx)}
+                        </React.Suspense>
+                    </QueryCacheProvider>
                 </GQLClientContext.Provider>
                 {config.cancelable ? (
                     <View padding={16} >
@@ -59,7 +62,7 @@ export function showBottomSheet(config: BottomSheetConfig) {
         containerStyle: {
             backgroundColor: theme.backgroundSecondary,
             padding: 0,
-            ...(config.disableMargins ? {} : {marginHorizontal: 8, marginBottom: Platform.OS === 'android' ? 8 : undefined}),
+            ...(config.disableMargins ? {} : { marginHorizontal: 8, marginBottom: Platform.OS === 'android' ? 8 : undefined }),
             ...config.containerStyle
         },
         showAnimation: (contentHeight, views) => {
