@@ -9,7 +9,6 @@ import { TextStylesAsync } from 'openland-mobile/styles/AppStyles';
 import { Modals } from 'openland-mobile/pages/main/modals/Modals';
 import { ChatInit_room_SharedRoom, RoomMemberRole } from 'openland-api/spacex.types';
 import Alert from 'openland-mobile/components/AlertBlanket';
-import { getMessenger } from 'openland-mobile/utils/messenger';
 import { OpenlandClient } from 'openland-api/spacex';
 
 interface AsyncInvitePeopleBlockProps {
@@ -20,7 +19,6 @@ interface AsyncInvitePeopleBlockProps {
 
 export const AsyncInvitePeopleBlock = React.memo((props: AsyncInvitePeopleBlockProps) => {
     const theme = useThemeGlobal();
-    const userId = getMessenger().engine.user.id;
     const { router, room, client } = props;
 
     const imageSource = theme.type === 'Light' ? require('assets/art-add-people.png') : require('assets/art-add-people-dark.png');
@@ -46,9 +44,9 @@ export const AsyncInvitePeopleBlock = React.memo((props: AsyncInvitePeopleBlockP
                     router.pop();
                 },
             },
+            room.id,
+            true,
             room.isPremium ? 'Add people for free' : 'Add people',
-            [],
-            [userId],
             { path: 'ProfileGroupLink', pathParams: { room } },
         );
     }, []);

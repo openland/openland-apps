@@ -268,6 +268,9 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     }
 
     componentDidUpdate(prevProps: MessagesComponentProps) {
+        if (this.props.banInfo && this.conversation) {
+            this.conversation.updateBanInfo(this.props.banInfo.isBanned || this.props.banInfo.isMeBanned);
+        }
         let state = this.props.messagesActionsState;
         if (prevProps.messagesActionsState.action !== state.action) {
             this.handleMessagesActions(state);

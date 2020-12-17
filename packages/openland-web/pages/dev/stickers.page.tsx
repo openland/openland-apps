@@ -242,9 +242,10 @@ const EditStickerPackModalInner = React.memo((props: {
             <XModalContent flexGrow={1} flexShrink={1}>
                 <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
                     <UInputField field={titleField} label="Title" />
+                    ID: {stickerPack.id}
                     <XView width={140}>
-                        <UCheckboxFiled field={publishedField} label="Published" />
-                        <UCheckboxFiled field={privateField} label="Private" />
+                        <UCheckboxFiled field={publishedField} label="Published" squared={true} />
+                        <UCheckboxFiled field={privateField} label="Private" squared={true} />
                         <UButton
                             text="Update"
                             size="large"

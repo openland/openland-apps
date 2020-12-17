@@ -16,7 +16,6 @@ import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import Toast from 'openland-mobile/components/Toast';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
-import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ZSelect } from 'openland-mobile/components/ZSelect';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
@@ -54,9 +53,11 @@ const showMembersModal = (router: SRouter, res: RoomCreate) => {
                 router.pushAndReset('Conversation', { id: res.room.id });
             },
         },
+        res.room.id,
+        true,
         'Add people',
-        [],
-        [getMessenger().engine.user.id],
+        // [],
+        // [getMessenger().engine.user.id],
         {
             path: 'ProfileGroupLink',
             pathParams: { id: res.room.id },
