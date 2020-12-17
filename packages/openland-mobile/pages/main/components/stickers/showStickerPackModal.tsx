@@ -47,7 +47,7 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
     const { id, hide } = props;
 
     const client = useClient();
-    const stickerPack = client.useStickerPack({ id }).stickerPack;
+    const stickerPack = client.useStickerPack({ id }, { fetchPolicy: 'cache-and-network' }).stickerPack;
 
     const theme = React.useContext(ThemeContext);
     const [stickerLayout, handleWidthChange] = useStickerLayout();
