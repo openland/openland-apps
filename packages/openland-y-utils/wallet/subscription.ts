@@ -5,7 +5,7 @@ import {
     Subscriptions_subscriptions_product,
 } from 'openland-api/spacex.types';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
-import { formatAbsoluteDate } from 'openland-mobile/utils/formatDate';
+import { formatAbsoluteDate } from 'openland-y-utils/wallet/dateTime';
 
 export interface SubscriptionConverted {
     product: Subscriptions_subscriptions_product;
