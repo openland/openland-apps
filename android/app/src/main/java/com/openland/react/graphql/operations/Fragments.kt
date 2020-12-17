@@ -1601,6 +1601,13 @@ internal val ShortSequenceChatSelector = obj(
                     field("version", "version", notNull(scalar("Int"))),
                     field("message", "message", scalar("String")),
                     field("date", "date", notNull(scalar("Date")))
+                )),
+            field("states", "states", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("counter", "counter", notNull(scalar("Int"))),
+                    field("mentions", "mentions", notNull(scalar("Int"))),
+                    field("total", "total", notNull(scalar("Int"))),
+                    field("seq", "seq", notNull(scalar("Int")))
                 ))
         )
 
@@ -1652,6 +1659,30 @@ internal val ShortUpdateSelector = obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("Settings", SettingsFullSelector)
                     )))
+            )),
+            inline("UpdateChatMessage", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("cid", "cid", notNull(scalar("ID"))),
+                field("message", "message", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("seq", "seq", scalar("Int")),
+                        field("sender", "sender", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID")))
+                            )))
+                    )))
+            )),
+            inline("UpdateChatMessageDeleted", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("cid", "cid", notNull(scalar("ID"))),
+                field("mid", "mid", notNull(scalar("ID"))),
+                field("seq", "seq", notNull(scalar("Int")))
+            )),
+            inline("UpdateChatRead", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("cid", "cid", notNull(scalar("ID"))),
+                field("seq", "seq", notNull(scalar("Int")))
             ))
         )
 

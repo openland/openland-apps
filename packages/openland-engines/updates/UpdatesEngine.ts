@@ -19,11 +19,13 @@ export class UpdatesEngine {
     private main: MainUpdatesSubscription<UpdateEvent, UpdateSequenceState, UpdateSequenceDiff>;
     private sequences = new Map<string, SequenceHolder>();
     private chats: ChatsEngine;
+    private me: string;
 
-    constructor(client: OpenlandClient, persistence: Persistence) {
+    constructor(me: string, client: OpenlandClient, persistence: Persistence) {
         this.client = client;
         this.persistence = persistence;
-        this.chats = new ChatsEngine(client, persistence);
+        this.me = me;
+        this.chats = new ChatsEngine(this.me, client, persistence);
         this.api = new UpdatesApiClient(this.client);
         this.main = new MainUpdatesSubscription(null,
             new UpdatesApiClient(this.client),
@@ -137,6 +139,8 @@ export class UpdatesEngine {
             if (event.sequence.__typename === 'SequenceChat') {
                 await this.chats.onSequenceStart(tx, event.sequence);
             }
+        } else if (event.type === 'event') {
+            await this.chats.onUpdate(tx, event.event);
         }
         console.log('updates: sequence: ', event);
     }

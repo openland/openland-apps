@@ -12,9 +12,10 @@ import { InMemoryKeyValueStore } from 'openland-y-utils/InMemoryKeyValueStore';
 export default withApp('Pegasus', ['super-admin', 'software-developer'], props => {
 
     let client = useClient();
+    let me = client.useAccount().me!.id;
     React.useEffect(() => {
         let persistence = new Persistence(new InMemoryKeyValueStore());
-        let engine = new UpdatesEngine(client, persistence);
+        let engine = new UpdatesEngine(me, client, persistence);
         engine.start();
         return () => engine.close();
     }, []);

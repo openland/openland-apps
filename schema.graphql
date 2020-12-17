@@ -469,12 +469,6 @@ scalar Date
 type DebugChatCounter {
   all: Int!
   mentions: Int!
-  totalMessages: Int!
-  allMentions: Int!
-  totalSent: Int!
-  sentAllMentions: Int!
-  personalMentions: Int!
-  personalMessages: Int!
 }
 
 type DebugChatState {
@@ -1452,6 +1446,7 @@ type MessageRichAttachment implements ModernMessageAttachment {
   socialImage: Image
   socialImagePreview: String
   keyboard: MessageKeyboard
+  featuredIcon: Boolean
   fallback: String!
 }
 
@@ -2985,7 +2980,15 @@ interface Sequence {
 type SequenceChat implements Sequence {
   id: ID!
   cid: ID!
+  states: SequenceChatStates
   draft: Draft
+}
+
+type SequenceChatStates {
+  counter: Int!
+  mentions: Int!
+  total: Int!
+  seq: Int!
 }
 
 type SequenceCommon implements Sequence {

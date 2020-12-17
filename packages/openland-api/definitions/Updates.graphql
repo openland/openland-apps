@@ -21,6 +21,25 @@ fragment ShortUpdate on UpdateEvent {
             ...SettingsFull
         }
     }
+    ... on UpdateChatMessage {
+        cid
+        message {
+            id
+            seq
+            sender {
+                id
+            }
+        }
+    }
+    ... on UpdateChatMessageDeleted {
+        cid
+        mid
+        seq
+    }
+    ... on UpdateChatRead {
+        cid
+        seq
+    }
 }
 
 #
@@ -34,6 +53,12 @@ fragment ShortSequenceChat on SequenceChat {
         version
         message
         date
+    }
+    states {
+        counter
+        mentions
+        total
+        seq
     }
 }
 
