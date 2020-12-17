@@ -24,7 +24,7 @@ import { UserPhotoUploader } from './components/UserPhotoUploader';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 import { useLastSeenShort } from 'openland-y-utils/LastSeen';
 import { ProfileDeleted } from './components/ProfileDeleted';
-import { formatAbsoluteDate, formatBirthDay } from 'openland-mobile/utils/formatDate';
+import { formatAbsoluteDate, formatBirthDay } from 'openland-y-utils/wallet/dateTime';
 import { openMapsApp } from 'openland-mobile/utils/openMapsApp';
 import { openCalendar } from 'openland-mobile/utils/openCalendar';
 import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';

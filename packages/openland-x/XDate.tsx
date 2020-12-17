@@ -1,8 +1,9 @@
 import * as React from 'react';
 import * as humanize from 'humanize';
+import moment from 'moment-timezone';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XStorageContext } from 'openland-x-routing/XStorageContext';
-import moment from 'moment-timezone';
+import { formatBirthDay } from 'openland-y-utils/wallet/dateTime';
 
 let months = [
     'Jan',
@@ -21,7 +22,7 @@ let months = [
 
 interface XDateProps {
     value: string;
-    format?: 'date' | 'time' | 'datetime_short' | 'humanize' | 'humanize_large' | 'humanize_cute';
+    format?: 'date' | 'time' | 'datetime_short' | 'humanize' | 'humanize_large' | 'humanize_cute' | 'birthDay';
 }
 
 export function XDate(props: XDateProps) {
@@ -121,6 +122,8 @@ export function XDate(props: XDateProps) {
             );
         }
 
+    } else if (format === 'birthDay') {
+        return <span>{formatBirthDay(date)}</span>;
     } else {
         let dt = new Date(date);
         let year = dt.getFullYear().toString();

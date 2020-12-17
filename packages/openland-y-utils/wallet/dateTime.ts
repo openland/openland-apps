@@ -1,5 +1,6 @@
 import { formatTime } from 'openland-y-utils/formatTime';
-import { formatAbsoluteDate } from 'openland-mobile/utils/formatDate';
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const monthsFull = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 export const EMPTY_YEAR = 10000;
 
@@ -38,3 +39,30 @@ export const extractDateTime = (
 
     return { date: localDate, time: localTime, isToday };
 };
+
+export function formatAbsoluteDate(date: number, withYear?: boolean) {
+    const dt = new Date(date);
+    const month = months[dt.getMonth()];
+    const day = dt.getDate();
+
+    if (withYear) {
+        const now = new Date();
+
+        return month + ' ' + day + (now.getFullYear() !== dt.getFullYear() ? (', ' + dt.getFullYear()) : '');
+    }
+
+    return month + ' ' + day;
+}
+
+export function formatBirthDay(date: number | string) {
+    const bd = new Date(typeof date === 'string' ? parseInt(date, 10) : date);
+    const now = new Date();
+    const year = bd.getFullYear();
+    const age = (now.getTime() - bd.getTime()) / (365 * 24 * 60 * 60 * 1000);
+
+    if (year === 10000) {
+        return `${bd.getDate()}  ${monthsFull[bd.getMonth()]}`;
+    }
+
+    return `${bd.getDate()} ${months[bd.getMonth()]} ${bd.getFullYear()}, ${Math.floor(age)} y. o.`;
+}
