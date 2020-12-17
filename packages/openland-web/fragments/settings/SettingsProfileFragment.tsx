@@ -89,7 +89,7 @@ export const SettingsProfileFragment = React.memo(() => {
     const birthDayField = useField('input.birthDay', birthDay || null, form, [
         {
             checkIsValid: (value) => !value || isValidDate(value),
-            text: 'Please enter valid date',
+            text: '',
         },
     ]);
     const websiteField = useField('input.website', profile.website || '', form);

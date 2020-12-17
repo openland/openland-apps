@@ -1,6 +1,8 @@
 import { formatTime } from 'openland-y-utils/formatTime';
 import { formatAbsoluteDate } from 'openland-mobile/utils/formatDate';
 
+export const EMPTY_YEAR = 10000;
+
 const dateToday = new Date();
 const date1900 = new Date('1900-01-01');
 
@@ -20,7 +22,8 @@ export const getValidatedDate = (day: number, month: number, year: number) => {
 };
 
 export const isValidDate = (date: Date) =>
-    !isNaN(date.getTime()) && date > date1900 && date <= dateToday;
+    !isNaN(date.getTime())
+    && (date >= date1900 && date <= dateToday || date.getFullYear() === EMPTY_YEAR);
 
 export const extractDateTime = (
     unixTime: string,
