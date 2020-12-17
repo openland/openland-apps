@@ -50,9 +50,11 @@ const useSharedHandlers = (room: RoomTiny_room_SharedRoom, router: SRouter) => {
                         router.back();
                     },
                 },
+                room.id,
+                true,
                 room.isPremium ? 'Add people for free' : 'Add people',
-                [],
-                [userId],
+                // [],
+                // [userId],
                 hideOwnerLink ? undefined : { path: 'ProfileGroupLink', pathParams: { room } },
             );
         } else {

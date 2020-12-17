@@ -253,9 +253,9 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                     props.router.back();
                 },
             },
+            group.id,
+            true,
             group.isPremium ? 'Add people for free' : 'Add people',
-            members.map((m) => m.user.id),
-            [getMessenger().engine.user.id],
             canGetInviteLink ? { path: 'ProfileGroupLink', pathParams: { room: group } } : undefined,
         );
     }, [members]);

@@ -133,9 +133,9 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                     props.router.back();
                 },
             },
+            organization.id,
+            false,
             'Add people',
-            members.map((u) => u.user.id),
-            [getMessenger().engine.user.id],
             { path: 'OrganizationInviteLinkModal', pathParams: { organization } },
         );
     }, [organization, members]);

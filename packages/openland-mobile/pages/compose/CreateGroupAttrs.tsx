@@ -54,9 +54,11 @@ const showMembersModal = (router: SRouter, res: RoomCreate) => {
                 router.pushAndReset('Conversation', { id: res.room.id });
             },
         },
+        res.room.id,
+        true,
         'Add people',
-        [],
-        [getMessenger().engine.user.id],
+        // [],
+        // [getMessenger().engine.user.id],
         {
             path: 'ProfileGroupLink',
             pathParams: { id: res.room.id },

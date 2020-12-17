@@ -16,6 +16,7 @@ import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { showMembersWarning } from 'openland-mobile/messenger/components/showMembersWarning';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 export const CheckListBoxWraper = React.memo(
     (props: { checked?: boolean; isRadio?: boolean; children: any }) => {
@@ -41,41 +42,57 @@ export const CheckListBoxWraper = React.memo(
                         }}
                     />
                 ) : (
-                        <View
-                            position="absolute"
-                            pointerEvents="none"
-                            alignSelf="center"
-                            alignItems="center"
-                            justifyContent="center"
-                            right={17}
-                            backgroundColor={
-                                props.checked ? theme.accentPrimary : theme.backgroundPrimary
-                            }
-                            borderColor={props.checked ? theme.accentPrimary : theme.foregroundQuaternary}
-                            borderWidth={2}
-                            borderRadius={RadiusStyles.Medium}
-                            width={22}
-                            height={22}
-                        >
-                            {props.checked && (
-                                <Image
-                                    marginRight={1}
-                                    source={require('assets/ic-checkmark-11.png')}
-                                    style={{ tintColor: theme.foregroundInverted }}
-                                />
-                            )}
-                        </View>
-                    )}
+                    <View
+                        position="absolute"
+                        pointerEvents="none"
+                        alignSelf="center"
+                        alignItems="center"
+                        justifyContent="center"
+                        right={17}
+                        backgroundColor={
+                            props.checked ? theme.accentPrimary : theme.backgroundPrimary
+                        }
+                        borderColor={
+                            props.checked ? theme.accentPrimary : theme.foregroundQuaternary
+                        }
+                        borderWidth={2}
+                        borderRadius={RadiusStyles.Medium}
+                        width={22}
+                        height={22}
+                    >
+                        {props.checked && (
+                            <Image
+                                marginRight={1}
+                                source={require('assets/ic-checkmark-11.png')}
+                                style={{ tintColor: theme.foregroundInverted }}
+                            />
+                        )}
+                    </View>
+                )}
             </View>
         );
     },
 );
 
+interface UserSearchData {
+    node: UserShort;
+    isMember: boolean;
+    inviteRestricted?: boolean;
+    cursor: string;
+}
+
 const UsersList = React.memo(
     (props: PageProps & { query: string; users: any; onAdd: (user: UserShort) => void }) => {
-        const users = getClient().useExplorePeople({ query: props.query });
-        const disableUsers = props.router.params.disableUsers || [];
-        const excludeUsers = props.router.params.excludeUsers || [];
+        const inGroup = props.router.params.inGroup;
+        const entityId = props.router.params.entityId;
+
+        const client = getClient();
+
+        const users: UserSearchData[] = inGroup
+            ? client.useUserSearchForChat({ chatId: entityId, first: 25, query: props.query }, { fetchPolicy: 'cache-and-network' }).userSearchForChat.edges
+            : client.useUserSearchForOrganization({ orgId: entityId, first: 25, query: props.query }, { fetchPolicy: 'cache-and-network' }).userSearchForOrg.edges;
+
+        const meId = getMessenger().engine.user.id;
 
         return (
             <>
@@ -88,26 +105,26 @@ const UsersList = React.memo(
                                 props.router.params.inviteLinkButton.onPress
                                     ? props.router.params.inviteLinkButton.onPress
                                     : () => {
-                                        props.router.push(
-                                            props.router.params.inviteLinkButton.path,
-                                            props.router.params.inviteLinkButton.pathParams,
-                                        );
-                                    }
+                                          props.router.push(
+                                              props.router.params.inviteLinkButton.path,
+                                              props.router.params.inviteLinkButton.pathParams,
+                                          );
+                                      }
                             }
                         />
                     </View>
                 )}
-                {users.items.edges
-                    .filter((v) => excludeUsers.indexOf(v.node.id) === -1)
-                    .map((v) => (
+                {users
+                    .filter((v) => [meId].indexOf(v.node.id) === -1)
+                    .map(({ node, isMember, inviteRestricted }) => (
                         <CheckListBoxWraper
-                            checked={!!props.users.find((u: any) => u.id === v.node.id)}
+                            checked={!!props.users.find((u: any) => u.id === node.id)}
                         >
                             <UserView
-                                key={v.node.id}
-                                user={v.node}
-                                enabled={!(disableUsers.indexOf(v.node.id) > -1)}
-                                onPress={() => props.onAdd(v.node)}
+                                key={node.id}
+                                user={node}
+                                enabled={!(isMember || inviteRestricted) || (node.isBanned || node.isMeBanned)}
+                                onPress={() => props.onAdd(node)}
                                 showOrganization={false}
                                 paddingRight={56}
                             />
@@ -160,8 +177,8 @@ const UserMultiplePickerComponent = React.memo((props: PageProps) => {
     let buttonTitle = isEmpty
         ? paramsAction.titleEmpty
         : users.length > 0
-            ? paramsAction.title + ' (' + users.length + ')'
-            : paramsAction.title;
+        ? paramsAction.title + ' (' + users.length + ')'
+        : paramsAction.title;
 
     const scrollRef = React.createRef<ScrollView>();
 
@@ -183,8 +200,8 @@ const UserMultiplePickerComponent = React.memo((props: PageProps) => {
                     isEmpty
                         ? () => props.router.params.action.actionEmpty()
                         : async () => {
-                            await props.router.params.action.action(users);
-                        }
+                              await props.router.params.action.action(users);
+                          }
                 }
             />
             <View style={{ flexDirection: 'column', width: '100%', height: '100%' }}>
