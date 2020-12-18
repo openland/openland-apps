@@ -283,6 +283,29 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             require('assets/ic-leave-24.png'),
         );
 
+        if (SUPER_ADMIN || group.owner) {
+            builder.action(
+                `Delete ${typeString}`,
+                () => {
+                    Alert.builder()
+                        .title(`Delete ${typeString}?`)
+                        .message(`This cannot be undone`)
+                        .button('Cancel', 'cancel')
+                        .action('Delete', 'destructive', async () => {
+                            await client.mutateRoomDelete({
+                                chatId: roomId,
+                            });
+                            setTimeout(() => {
+                                props.router.pushAndReset('Home');
+                            }, 200);
+                        })
+                        .show();
+                },
+                false,
+                require('assets/ic-delete-24.png'),
+            );
+        }
+
         builder.show();
     }, [group]);
 
