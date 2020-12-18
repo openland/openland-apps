@@ -63,7 +63,6 @@ type SelectedMonth = { value: number; label: string };
 interface UDateInputProps {
     value: Date | null;
     invalid?: boolean;
-    errorText?: string | null;
     onChange: (newValue: Date | null) => void;
 }
 
@@ -71,7 +70,7 @@ export const UDateInputErrorText = React.memo((props: { text: string }) => (
     <div className={cx(inputErrorStyle, TextCaption)}>{props.text}</div>
 ));
 
-export const UDateInput = React.memo(({ value, errorText, invalid, onChange }: UDateInputProps) => {
+export const UDateInput = React.memo(({ value, invalid, onChange }: UDateInputProps) => {
     const [day, setDay] = React.useState<string>();
     const [month, setMonth] = React.useState<SelectedMonth | null>();
     const [year, setYear] = React.useState<string>();
@@ -116,7 +115,7 @@ export const UDateInput = React.memo(({ value, errorText, invalid, onChange }: U
         }
     }, [invalid, day, month, year]);
 
-    const getErrorText = React.useCallback(() => {
+    const errorText = React.useMemo(() => {
         if (!day && month) {
             return 'Please enter day';
         }
@@ -167,7 +166,7 @@ export const UDateInput = React.memo(({ value, errorText, invalid, onChange }: U
                     Clear
                 </div>
             )}
-            {!!invalid && <UDateInputErrorText text={getErrorText()} />}
+            {!!invalid && <UDateInputErrorText text={errorText} />}
         </>
     );
 });
@@ -181,7 +180,6 @@ export const UDateInputField = React.memo(({ field, ...other }: UDateInputFieldP
         {...other}
         invalid={field.input.invalid}
         onChange={field.input.onChange}
-        errorText={field.input.errorText}
         value={field.value}
     />
 ));
