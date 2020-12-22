@@ -20,15 +20,21 @@ export const LocalBlackListProvider = React.memo((props: { children: any }) => {
     const client = useClient();
     const subscribeRef = React.useRef<any>();
 
-    const subscribe = async () => {
-        const me = (await client.queryAccount()).me;
-        const { myBlackList: initialBlackList } = (await client.queryMyBlackList());
+    const init = async () => {
+        const { myBlackList: initialBlackList } = await client.queryMyBlackList({
+            fetchPolicy: 'network-only',
+        });
         const initialMyBans = new Map();
         const initialMeBanned = new Map();
-        initialBlackList.filter(i => i.isBanned).map(i => initialMyBans.set(i.id, i));
-        initialBlackList.filter(i => i.isMeBanned).map(i => initialMeBanned.set(i.id, i));
+        initialBlackList.filter((i) => i.isBanned).map((i) => initialMyBans.set(i.id, i));
+        initialBlackList.filter((i) => i.isMeBanned).map((i) => initialMeBanned.set(i.id, i));
         setMyBans(initialMyBans);
         setMeBanned(initialMeBanned);
+    };
+
+    const subscribe = async () => {
+        await init();
+        const me = (await client.queryAccount()).me;
         const { state: initialState } = (
             await client.queryBlackListUpdatesState({ fetchPolicy: 'network-only' })
         ).blackListUpdatesState;
@@ -74,7 +80,9 @@ export const LocalBlackListProvider = React.memo((props: { children: any }) => {
     };
 
     React.useEffect(() => {
-        subscribe();
+        (async () => {
+            await subscribe();
+        })();
         return () => {
             subscribeRef.current?.();
         };
