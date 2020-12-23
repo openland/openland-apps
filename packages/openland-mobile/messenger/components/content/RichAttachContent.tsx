@@ -145,6 +145,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
             compactImageSource = isOut ? require('assets/ing-thn-out.png') : require('assets/img-thn-in.png');
         }
         let isInternal = !!(titleLink && isInternalLink(titleLink));
+        let hasFeaturedIcon = this.props.attach.featuredIcon && theme.displayFeaturedIcon;
 
         let maxWidth = this.props.maxWidth || ((this.props.imageLayout && !imgCompact) ? (this.props.imageLayout.width - contentInsetsHorizontal * 2) : (isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming));
 
@@ -232,7 +233,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                         flexDirection="column"
                         maxWidth={maxWidth - (imgCompact ? 90 : 0)}
                     >
-                        {!!this.props.attach.title && <ASText
+                        {!hasFeaturedIcon && !!this.props.attach.title && <ASText
                             maxWidth={maxWidth - 36}
                             color={bubbleForegroundPrimary}
                             numberOfLines={imgCompact ? 1 : 3}
@@ -241,6 +242,26 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             {this.props.attach.title}
                             {this.props.padded && !subTitle && paddedText(message.isEdited)}
                         </ASText>}
+                        {hasFeaturedIcon && !!this.props.attach.title && (
+                            <ASFlex alignItems="center">
+                                <ASText
+                                    maxWidth={maxWidth - 106}
+                                    color={bubbleForegroundPrimary}
+                                    numberOfLines={1}
+                                    {...TextStylesAsync.Label2}
+                                >
+                                    {this.props.attach.title}
+                                </ASText>
+                                <ASImage
+                                    source={require('assets/ic-verified-16.png')}
+                                    width={16}
+                                    height={16}
+                                    tintColor={isOut ? theme.foregroundContrast : '#3DA7F2'}
+                                    marginLeft={4}
+                                    marginRight={20}
+                                />
+                            </ASFlex>
+                        )}
                         {!!subTitle && <ASText
                             marginTop={1}
                             maxWidth={maxWidth - 36}
