@@ -401,7 +401,12 @@ internal val FullMessageSelector = obj(
                 field("commentsCount", "commentsCount", notNull(scalar("Int"))),
                 field("attachments", "attachments", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("ModernMessageAttachment", MessageAttachmentsSelector)
+                        fragment("ModernMessageAttachment", MessageAttachmentsSelector),
+                        inline("MessageRichAttachment", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("featuredIcon", "featuredIcon", scalar("Boolean"))
+                        ))
                     ))))),
                 field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),

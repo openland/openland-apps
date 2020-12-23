@@ -308,6 +308,10 @@ fragment FullMessage on ModernMessage {
         commentsCount
         attachments {
             ...MessageAttachments
+            ...on MessageRichAttachment {
+                id
+                featuredIcon
+            }
         }
         quotedMessages {
             ...QuotedMessage
