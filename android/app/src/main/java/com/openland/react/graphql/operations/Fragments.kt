@@ -160,6 +160,7 @@ internal val MessageAttachmentsSelector = obj(
                 field("titleLink", "titleLink", scalar("String")),
                 field("titleLinkHostname", "titleLinkHostname", scalar("String")),
                 field("text", "text", scalar("String")),
+                field("featuredIcon", "featuredIcon", scalar("Boolean")),
                 field("icon", "icon", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("url", "url", notNull(scalar("String"))),
@@ -401,12 +402,7 @@ internal val FullMessageSelector = obj(
                 field("commentsCount", "commentsCount", notNull(scalar("Int"))),
                 field("attachments", "attachments", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("ModernMessageAttachment", MessageAttachmentsSelector),
-                        inline("MessageRichAttachment", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("featuredIcon", "featuredIcon", scalar("Boolean"))
-                        ))
+                        fragment("ModernMessageAttachment", MessageAttachmentsSelector)
                     ))))),
                 field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),

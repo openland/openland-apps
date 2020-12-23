@@ -130,6 +130,7 @@ fragment MessageAttachments on ModernMessageAttachment {
         titleLink
         titleLinkHostname
         text
+        featuredIcon
         icon {
             url
             metadata {
@@ -308,10 +309,6 @@ fragment FullMessage on ModernMessage {
         commentsCount
         attachments {
             ...MessageAttachments
-            ...on MessageRichAttachment {
-                id
-                featuredIcon
-            }
         }
         quotedMessages {
             ...QuotedMessage
