@@ -78,7 +78,7 @@ export const MentionView = React.memo((props: MentionViewProps) => {
                         <SuggestionsItemName
                             theme={theme}
                             name={mention.room.title}
-                            description="Group"
+                            description={mention.room.isChannel ? 'Channel' : 'Group'}
                             featured={mention.room.featured}
                         />
                     )}
