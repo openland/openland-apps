@@ -589,7 +589,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                             }}
                         >
                             <ConversationView inverted={true} engine={this.engine} onScroll={this.handleScroll} isBanned={isBanned} />
-                            {pinnedMessage && (
+                            {pinnedMessage && !isBanned && (
                                 <PinnedMessage
                                     message={pinnedMessage}
                                     onPress={this.handlePinnedMessagePress}

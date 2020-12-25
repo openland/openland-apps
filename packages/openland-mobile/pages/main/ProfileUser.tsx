@@ -114,14 +114,12 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                 require('assets/ic-group-24.png'),
             );
         }
-        if (SUPER_ADMIN) {
-            builder.action(
-                isBanned ? 'Unblock person' : 'Block person',
-                onBannedClick,
-                false,
-                isBanned ? require('assets/ic-unblock-24.png') : require('assets/ic-block-24.png'),
-            );
-        }
+        builder.action(
+            isBanned ? 'Unblock person' : 'Block person',
+            onBannedClick,
+            false,
+            isBanned ? require('assets/ic-unblock-24.png') : require('assets/ic-block-24.png'),
+        );
         builder.action(
             'Report spam',
             () => Modals.showReportSpam({ router, userId }),
