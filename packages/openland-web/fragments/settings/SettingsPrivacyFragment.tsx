@@ -5,6 +5,9 @@ import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { TextDensed, TextLabel1, TextBody } from 'openland-web/utils/TextStyles';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
+import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
+import { UPopperMenuBuilder, MenuItem } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { UInput, UInputField, UInputErrorText } from 'openland-web/components/unicorn/UInput';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { showModalBox } from 'openland-x/showModalBox';
@@ -27,13 +30,16 @@ import {
     INVALID_CODE_LABEL,
     removeSpace,
 } from 'openland-web/pages/auth/ask-auth-data.page';
-import { UpdateSettingsInput } from 'openland-api/spacex.types';
+import { UpdateSettingsInput, UserShort } from 'openland-api/spacex.types';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { WhoCanSee } from './components/WhoCanSee';
 import { Selector } from './components/Selector';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { validateEmail } from 'openland-y-utils/validateEmail';
+import { useBlackList } from 'openland-y-utils/blacklist/LocalBlackList';
 import { WhoCanAddToGroups } from './components/WhoCanAddToGroups';
+import { UPopperController } from '../../components/unicorn/UPopper';
+import UnBlockIcon from 'openland-icons/s/ic-unblock-24.svg';
 
 const modalSubtitle = css`
     color: var(--foregroundPrimary);
@@ -107,10 +113,13 @@ const EnterCodeModalContent = React.memo((props: EnterCodeModalContentProps) => 
         <>
             <XModalContent>
                 <ResendSubtitle sendTo={props.parseValue} onResend={handleResend} />
-                <UInputField label="Code" hasPlaceholder={true} field={confirmField} autofocus={true} />
-                {!!form.error && (
-                    <UInputErrorText text={form.error} />
-                )}
+                <UInputField
+                    label="Code"
+                    hasPlaceholder={true}
+                    field={confirmField}
+                    autofocus={true}
+                />
+                {!!form.error && <UInputErrorText text={form.error} />}
             </XModalContent>
             <XModalFooter>
                 <UButton text="Cancel" style="tertiary" size="large" onClick={() => props.hide()} />
@@ -185,220 +194,239 @@ const showConfirmPhoneModal = (phone: string, value: string, onConfirm: () => vo
     );
 };
 
-const PairPhoneModalContent = React.memo((props: { hide: () => void, initialValue?: string | null }) => {
-    const client = useClient();
-    const initial = props.initialValue ? parsePhoneNumberFromString(props.initialValue) : undefined;
-    const formatedPhone = initial ? initial.formatInternational().replace('+' + initial.countryCallingCode, '').trim() : undefined;
-    const countryCode = initial ? initial.country : client.useIpLocation().ipLocation?.countryCode;
-    const initialCountry = countriesMeta.find((x) => x.shortname === countryCode) || {
-        label: 'United States',
-        value: '+1',
-        shortname: 'US',
-    };
+const PairPhoneModalContent = React.memo(
+    (props: { hide: () => void; initialValue?: string | null }) => {
+        const client = useClient();
+        const initial = props.initialValue
+            ? parsePhoneNumberFromString(props.initialValue)
+            : undefined;
+        const formatedPhone = initial
+            ? initial
+                  .formatInternational()
+                  .replace('+' + initial.countryCallingCode, '')
+                  .trim()
+            : undefined;
+        const countryCode = initial
+            ? initial.country
+            : client.useIpLocation().ipLocation?.countryCode;
+        const initialCountry = countriesMeta.find((x) => x.shortname === countryCode) || {
+            label: 'United States',
+            value: '+1',
+            shortname: 'US',
+        };
 
-    const countryMenuOpen = React.useRef(false);
-    const codeRef = React.useRef<HTMLInputElement>(null);
-    const inputRef = React.useRef<HTMLInputElement>(null);
+        const countryMenuOpen = React.useRef(false);
+        const codeRef = React.useRef<HTMLInputElement>(null);
+        const inputRef = React.useRef<HTMLInputElement>(null);
 
-    const form = useForm();
-    const codeField = useField('input.code', initialCountry, form);
-    const dataField = useField('input.data', formatedPhone || '', form);
+        const form = useForm();
+        const codeField = useField('input.code', initialCountry, form);
+        const dataField = useField('input.data', formatedPhone || '', form);
 
-    const [codeWidth, setCodeWidth] = React.useState<string>(
-        `calc(${codeField.input.value.value.length}ch + 32px)`,
-    );
+        const [codeWidth, setCodeWidth] = React.useState<string>(
+            `calc(${codeField.input.value.value.length}ch + 32px)`,
+        );
 
-    function getVal() {
-        const code = codeField.value.value.split(' ').join('');
-        let value = dataField.value.trim();
-        const phonePrs = code + ' ' + value;
-        let phone = new AsYouType(codeField.value.shortname as CountryCode);
-        phone.input(code + value);
-        let phoneNumber = phone.getNumber();
+        function getVal() {
+            const code = codeField.value.value.split(' ').join('');
+            let value = dataField.value.trim();
+            const phonePrs = code + ' ' + value;
+            let phone = new AsYouType(codeField.value.shortname as CountryCode);
+            phone.input(code + value);
+            let phoneNumber = phone.getNumber();
 
-        if (phoneNumber) {
-            value = phoneNumber.number as string;
+            if (phoneNumber) {
+                value = phoneNumber.number as string;
+            }
+            return [value, phonePrs];
         }
-        return [value, phonePrs];
-    }
 
-    const handleConfirm = () => {
-        const [val, prs] = getVal();
+        const handleConfirm = () => {
+            const [val, prs] = getVal();
 
-        form.doAction(async () => {
-            const data = await client.mutateSendPhonePairCode({ phone: val });
-            showEnterCodeModal(true, val, prs, data.sendPhonePairCode);
-            props.hide();
-        });
-    };
+            form.doAction(async () => {
+                const data = await client.mutateSendPhonePairCode({ phone: val });
+                showEnterCodeModal(true, val, prs, data.sendPhonePairCode);
+                props.hide();
+            });
+        };
 
-    const handleNext = () => {
-        const [val, prs] = getVal();
-        showConfirmPhoneModal(prs, val, handleConfirm);
-    };
+        const handleNext = () => {
+            const [val, prs] = getVal();
+            showConfirmPhoneModal(prs, val, handleConfirm);
+        };
 
-    const handleCountryCodeChange = React.useCallback(
-        (str: string) => {
-            let v = '+' + removeSpace(str).replace(/\+/g, '');
-            if (!/^\+(\d|-|\(|\))*$/.test(v)) {
-                return true;
-            }
-            let existing;
-            if (v.length >= 5) {
-                let parsed = parsePhoneNumberFromString(v);
-                if (parsed) {
-                    existing = findCode('+' + parsed.countryCallingCode);
+        const handleCountryCodeChange = React.useCallback(
+            (str: string) => {
+                let v = '+' + removeSpace(str).replace(/\+/g, '');
+                if (!/^\+(\d|-|\(|\))*$/.test(v)) {
+                    return true;
                 }
-            } else {
-                existing = findCode(v);
-            }
-            if (existing) {
-                codeField.input.onChange(existing);
-                let parsed =
-                    parsePhoneNumberFromString(v) ||
-                    parsePhoneNumberFromString(v + dataField.value);
-                if (parsed) {
-                    let formatted = formatIncompletePhoneNumber(
-                        existing.value + parsed.nationalNumber,
-                        codeField.value.shortname as CountryCode,
-                    );
-                    dataField.input.onChange(formatted.replace(existing.value, '').trim());
-                    if (inputRef.current) {
-                        inputRef.current.focus();
+                let existing;
+                if (v.length >= 5) {
+                    let parsed = parsePhoneNumberFromString(v);
+                    if (parsed) {
+                        existing = findCode('+' + parsed.countryCallingCode);
+                    }
+                } else {
+                    existing = findCode(v);
+                }
+                if (existing) {
+                    codeField.input.onChange(existing);
+                    let parsed =
+                        parsePhoneNumberFromString(v) ||
+                        parsePhoneNumberFromString(v + dataField.value);
+                    if (parsed) {
+                        let formatted = formatIncompletePhoneNumber(
+                            existing.value + parsed.nationalNumber,
+                            codeField.value.shortname as CountryCode,
+                        );
+                        dataField.input.onChange(formatted.replace(existing.value, '').trim());
+                        if (inputRef.current) {
+                            inputRef.current.focus();
+                        }
+                    }
+                } else {
+                    codeField.input.onChange({
+                        value: v,
+                        label: INVALID_CODE_LABEL,
+                        shortname: '',
+                    });
+                }
+                setCodeWidth(`calc(${existing?.value.length || v.length}ch + 34px)`);
+                return true;
+            },
+            [countriesMeta, dataField.value],
+        );
+
+        const handlePhoneKeyDown = React.useCallback(
+            (e: React.KeyboardEvent) => {
+                if (e.keyCode === 8 && inputRef.current?.value === '') {
+                    if (codeRef.current) {
+                        e.preventDefault();
+                        codeRef.current.focus();
                     }
                 }
-            } else {
-                codeField.input.onChange({ value: v, label: INVALID_CODE_LABEL, shortname: '' });
-            }
-            setCodeWidth(`calc(${existing?.value.length || v.length}ch + 34px)`);
-            return true;
-        },
-        [countriesMeta, dataField.value],
-    );
+            },
+            [dataField.input.value],
+        );
 
-    const handlePhoneKeyDown = React.useCallback(
-        (e: React.KeyboardEvent) => {
-            if (e.keyCode === 8 && inputRef.current?.value === '') {
-                if (codeRef.current) {
-                    e.preventDefault();
-                    codeRef.current.focus();
+        const handlePhoneChange = React.useCallback(
+            (value: string) => {
+                let code = codeField.value.value.split(' ').join('');
+                if (value === '') {
+                    dataField.input.onChange('');
+                    return true;
                 }
-            }
-        },
-        [dataField.input.value],
-    );
+                let parsed = parsePhoneNumberFromString(value);
+                if (parsed && parsed.isPossible()) {
+                    let codeString = `+${parsed.countryCallingCode}`;
+                    let codeValue = findCode(codeString);
+                    if (codeValue) {
+                        codeField.input.onChange(codeValue);
+                        code = codeString;
+                        value = parsed.nationalNumber as string;
+                    }
+                }
 
-    const handlePhoneChange = React.useCallback(
-        (value: string) => {
-            let code = codeField.value.value.split(' ').join('');
-            if (value === '') {
-                dataField.input.onChange('');
+                let formatted = formatIncompletePhoneNumber(
+                    code + value,
+                    codeField.value.shortname as CountryCode,
+                );
+                dataField.input.onChange(formatted.replace(code, '').trim());
                 return true;
-            }
-            let parsed = parsePhoneNumberFromString(value);
-            if (parsed && parsed.isPossible()) {
-                let codeString = `+${parsed.countryCallingCode}`;
-                let codeValue = findCode(codeString);
-                if (codeValue) {
-                    codeField.input.onChange(codeValue);
-                    code = codeString;
-                    value = parsed.nationalNumber as string;
+            },
+            [codeField.value, dataField.value],
+        );
+
+        const handleMenuOpen = React.useCallback(() => {
+            countryMenuOpen.current = true;
+        }, []);
+
+        const handleMenuClose = React.useCallback(() => {
+            setTimeout(() => {
+                if (inputRef.current) {
+                    inputRef.current.focus();
                 }
+                countryMenuOpen.current = false;
+            }, 200);
+        }, []);
+
+        let parsedPhone = parsePhoneNumberFromString(codeField.value.value + dataField.value);
+        let changed =
+            initial && parsedPhone ? parsedPhone.nationalNumber !== initial.nationalNumber : true;
+        let isPhoneValid = !!(parsedPhone && parsedPhone.isPossible()) && changed;
+
+        React.useLayoutEffect(() => {
+            if (!!props.initialValue && inputRef.current) {
+                inputRef.current.select();
             }
+        }, []);
 
-            let formatted = formatIncompletePhoneNumber(
-                code + value,
-                codeField.value.shortname as CountryCode,
-            );
-            dataField.input.onChange(formatted.replace(code, '').trim());
-            return true;
-        },
-        [codeField.value, dataField.value],
-    );
-
-    const handleMenuOpen = React.useCallback(() => {
-        countryMenuOpen.current = true;
-    }, []);
-
-    const handleMenuClose = React.useCallback(() => {
-        setTimeout(() => {
-            if (inputRef.current) {
-                inputRef.current.focus();
-            }
-            countryMenuOpen.current = false;
-        }, 200);
-    }, []);
-
-    let parsedPhone = parsePhoneNumberFromString(codeField.value.value + dataField.value);
-    let changed = initial && parsedPhone ? parsedPhone.nationalNumber !== initial.nationalNumber : true;
-    let isPhoneValid = !!(parsedPhone && parsedPhone.isPossible()) && changed;
-
-    React.useLayoutEffect(() => {
-        if (!!props.initialValue && inputRef.current) {
-            inputRef.current.select();
-        }
-    }, []);
-
-    return (
-        <>
-            <XModalContent>
-                <div className={cx(modalSubtitle, TextBody)}>
-                    You can pair your account to any phone number and use it for login
-                </div>
-                <XView marginTop={-32}>
-                    <CountryPicker
-                        value={codeField.input.value}
-                        onOpen={handleMenuOpen}
-                        onClose={handleMenuClose}
-                        onChange={(s) => {
-                            codeField.input.onChange(s);
-                            dataField.input.onChange('');
-                        }}
-                    />
-                    <XView flexDirection="row">
-                        <UInput
-                            ref={codeRef}
-                            marginRight={8}
-                            flexShrink={1}
-                            marginTop={16}
-                            minWidth={72}
-                            type="tel"
-                            value={codeField.input.value.value}
-                            hasPlaceholder={true}
-                            width={codeWidth}
-                            onChange={handleCountryCodeChange}
+        return (
+            <>
+                <XModalContent>
+                    <div className={cx(modalSubtitle, TextBody)}>
+                        You can pair your account to any phone number and use it for login
+                    </div>
+                    <XView marginTop={-32}>
+                        <CountryPicker
+                            value={codeField.input.value}
+                            onOpen={handleMenuOpen}
+                            onClose={handleMenuClose}
+                            onChange={(s) => {
+                                codeField.input.onChange(s);
+                                dataField.input.onChange('');
+                            }}
                         />
-                        <UInput
-                            label="Phone number"
-                            type="tel"
-                            ref={inputRef}
-                            hasPlaceholder={true}
-                            flexGrow={1}
-                            flexShrink={1}
-                            marginTop={16}
-                            value={dataField.value}
-                            onChange={handlePhoneChange}
-                            onKeyDown={handlePhoneKeyDown}
-                        />
+                        <XView flexDirection="row">
+                            <UInput
+                                ref={codeRef}
+                                marginRight={8}
+                                flexShrink={1}
+                                marginTop={16}
+                                minWidth={72}
+                                type="tel"
+                                value={codeField.input.value.value}
+                                hasPlaceholder={true}
+                                width={codeWidth}
+                                onChange={handleCountryCodeChange}
+                            />
+                            <UInput
+                                label="Phone number"
+                                type="tel"
+                                ref={inputRef}
+                                hasPlaceholder={true}
+                                flexGrow={1}
+                                flexShrink={1}
+                                marginTop={16}
+                                value={dataField.value}
+                                onChange={handlePhoneChange}
+                                onKeyDown={handlePhoneKeyDown}
+                            />
+                        </XView>
                     </XView>
-                </XView>
-                {!!form.error && (
-                    <UInputErrorText text={form.error} />
-                )}
-            </XModalContent>
-            <XModalFooter>
-                <UButton text="Cancel" style="tertiary" size="large" onClick={() => props.hide()} />
-                <UButton
-                    disable={!isPhoneValid}
-                    text="Next"
-                    style="primary"
-                    size="large"
-                    onClick={handleNext}
-                />
-            </XModalFooter>
-        </>
-    );
-});
+                    {!!form.error && <UInputErrorText text={form.error} />}
+                </XModalContent>
+                <XModalFooter>
+                    <UButton
+                        text="Cancel"
+                        style="tertiary"
+                        size="large"
+                        onClick={() => props.hide()}
+                    />
+                    <UButton
+                        disable={!isPhoneValid}
+                        text="Next"
+                        style="primary"
+                        size="large"
+                        onClick={handleNext}
+                    />
+                </XModalFooter>
+            </>
+        );
+    },
+);
 
 const showPairPhoneModal = (initialValue?: string | null) => {
     showModalBox(
@@ -411,62 +439,82 @@ const showPairPhoneModal = (initialValue?: string | null) => {
     );
 };
 
-const PairMailModalContent = React.memo((props: { hide: () => void, initialValue?: string | null }) => {
-    const client = useClient();
-    const form = useForm();
-    const dataField = useField('input.data', props.initialValue || '', form);
-    const inputRef = React.useRef<HTMLInputElement>(null);
-    const [localError, setLocalError] = React.useState('');
+const PairMailModalContent = React.memo(
+    (props: { hide: () => void; initialValue?: string | null }) => {
+        const client = useClient();
+        const form = useForm();
+        const dataField = useField('input.data', props.initialValue || '', form);
+        const inputRef = React.useRef<HTMLInputElement>(null);
+        const [localError, setLocalError] = React.useState('');
 
-    const handleNext = () => {
-        const val = dataField.value.trim();
-        if (!val) {
-            return;
-        }
+        const handleNext = () => {
+            const val = dataField.value.trim();
+            if (!val) {
+                return;
+            }
 
-        if (!validateEmail(val)) {
-            setLocalError(InitTexts.auth.emailInvalid);
-            return;
-        }
+            if (!validateEmail(val)) {
+                setLocalError(InitTexts.auth.emailInvalid);
+                return;
+            }
 
-        form.doAction(async () => {
-            const data = await client.mutateSendEmailPairCode({ email: val });
-            showEnterCodeModal(false, val, val, data.sendEmailPairCode);
-            props.hide();
-        });
-    };
+            form.doAction(async () => {
+                const data = await client.mutateSendEmailPairCode({ email: val });
+                showEnterCodeModal(false, val, val, data.sendEmailPairCode);
+                props.hide();
+            });
+        };
 
-    React.useEffect(() => {
-        setLocalError('');
-    }, [dataField.value]);
+        React.useEffect(() => {
+            setLocalError('');
+        }, [dataField.value]);
 
-    React.useLayoutEffect(() => {
-        if (!!props.initialValue && inputRef.current) {
-            inputRef.current.select();
-        }
-    }, []);
+        React.useLayoutEffect(() => {
+            if (!!props.initialValue && inputRef.current) {
+                inputRef.current.select();
+            }
+        }, []);
 
-    const canSubmit = !!dataField.value && (dataField.value !== props.initialValue);
+        const canSubmit = !!dataField.value && dataField.value !== props.initialValue;
 
-    return (
-        <>
-            <XModalContent>
-                <div className={cx(modalSubtitle, TextBody)}>
-                    You can pair your account to any email address<br />
-                    and use it for login
-                </div>
-                <UInputField ref={inputRef} label="Email address" hasPlaceholder={true} field={dataField} autofocus={true} />
-                {!!(form.error || localError) && (
-                    <UInputErrorText text={form.error || localError} />
-                )}
-            </XModalContent>
-            <XModalFooter>
-                <UButton text="Cancel" style="tertiary" size="large" onClick={() => props.hide()} />
-                <UButton text="Next" style="primary" size="large" onClick={handleNext} disable={!canSubmit} />
-            </XModalFooter>
-        </>
-    );
-});
+        return (
+            <>
+                <XModalContent>
+                    <div className={cx(modalSubtitle, TextBody)}>
+                        You can pair your account to any email address
+                        <br />
+                        and use it for login
+                    </div>
+                    <UInputField
+                        ref={inputRef}
+                        label="Email address"
+                        hasPlaceholder={true}
+                        field={dataField}
+                        autofocus={true}
+                    />
+                    {!!(form.error || localError) && (
+                        <UInputErrorText text={form.error || localError} />
+                    )}
+                </XModalContent>
+                <XModalFooter>
+                    <UButton
+                        text="Cancel"
+                        style="tertiary"
+                        size="large"
+                        onClick={() => props.hide()}
+                    />
+                    <UButton
+                        text="Next"
+                        style="primary"
+                        size="large"
+                        onClick={handleNext}
+                        disable={!canSubmit}
+                    />
+                </XModalFooter>
+            </>
+        );
+    },
+);
 
 const showPairMailModal = (initialValue?: string | null) => {
     showModalBox(
@@ -486,7 +534,11 @@ const entityItemContainer = css`
     padding: 10px 16px;
     height: 64px;
     border-radius: 8px;
-    background: linear-gradient(180deg, var(--backgroundTertiaryTrans) 0%, var(--backgroundTertiary) 100%);
+    background: linear-gradient(
+        180deg,
+        var(--backgroundTertiaryTrans) 0%,
+        var(--backgroundTertiary) 100%
+    );
 `;
 
 const ellipsesText = css`
@@ -523,10 +575,44 @@ const EntityItem = React.memo((props: EntityItemProps) => {
     );
 });
 
+const MenuComponent = React.memo((props: { ctx: UPopperController; items: MenuItem[] }) =>
+    new UPopperMenuBuilder().items(props.items).build(props.ctx),
+);
+
+const BlockedUserMenu = React.memo((props: { user: UserShort }) => {
+    const client = useClient();
+    const onBannedClick = React.useCallback(async (id: string) => {
+        await client.mutateUnBanUser({ id: id });
+    }, []);
+    return (
+        <UMoreButton
+            menu={(ctx) => (
+                <MenuComponent
+                    ctx={ctx}
+                    items={[
+                        {
+                            title: 'Unblock person',
+                            icon: <UnBlockIcon />,
+                            action: async () => await onBannedClick(props.user.id),
+                        },
+                    ]}
+                />
+            )}
+        />
+    );
+});
+
 export const SettingsPrivacyFragment = React.memo(() => {
     const client = useClient();
+    const blackListInfo = useBlackList();
+    const blackList = Array.from(blackListInfo.myBans.values());
     const { phone, email } = client.useAuthPoints({ fetchPolicy: 'network-only' }).authPoints;
-    const { whoCanSeeEmail, whoCanSeePhone, whoCanAddToGroups, communityAdminsCanSeeContactInfo } = client.useSettings({ fetchPolicy: 'network-only' }).settings;
+    const {
+        whoCanSeeEmail,
+        whoCanSeePhone,
+        whoCanAddToGroups,
+        communityAdminsCanSeeContactInfo,
+    } = client.useSettings({ fetchPolicy: 'network-only' }).settings;
 
     const handleChangeSettings = React.useCallback(async (input: UpdateSettingsInput) => {
         await client.mutateSettingsUpdate({ input });
@@ -572,11 +658,45 @@ export const SettingsPrivacyFragment = React.memo(() => {
                 </XView>
             </UListGroup>
             <UListGroup header="Privacy" padded={false}>
-                <WhoCanSee key={'phone-' + whoCanSeePhone} text="Who can see my phone" value={whoCanSeePhone} onClick={v => handleChangeSettings({ whoCanSeePhone: v })} />
-                <WhoCanSee key={'email-' + whoCanSeeEmail} text="Who can see my email" value={whoCanSeeEmail} onClick={v => handleChangeSettings({ whoCanSeeEmail: v })} />
-                <WhoCanAddToGroups key={'add-to-groups-' + whoCanAddToGroups} text="Who can add me to groups" value={whoCanAddToGroups} onClick={v => handleChangeSettings({ whoCanAddToGroups: v })} />
-                <Selector text="Admins can see my contacts" items={['Allowed', 'Disallowed']} selectedIndex={communityAdminsCanSeeContactInfo ? 0 : 1} onClick={i => handleChangeSettings({ communityAdminsCanSeeContactInfo: i === 0 })} />
+                <WhoCanSee
+                    key={'phone-' + whoCanSeePhone}
+                    text="Who can see my phone"
+                    value={whoCanSeePhone}
+                    onClick={(v) => handleChangeSettings({ whoCanSeePhone: v })}
+                />
+                <WhoCanSee
+                    key={'email-' + whoCanSeeEmail}
+                    text="Who can see my email"
+                    value={whoCanSeeEmail}
+                    onClick={(v) => handleChangeSettings({ whoCanSeeEmail: v })}
+                />
+                <WhoCanAddToGroups
+                    key={'add-to-groups-' + whoCanAddToGroups}
+                    text="Who can add me to groups"
+                    value={whoCanAddToGroups}
+                    onClick={(v) => handleChangeSettings({ whoCanAddToGroups: v })}
+                />
+                <Selector
+                    text="Admins can see my contacts"
+                    items={['Allowed', 'Disallowed']}
+                    selectedIndex={communityAdminsCanSeeContactInfo ? 0 : 1}
+                    onClick={(i) =>
+                        handleChangeSettings({ communityAdminsCanSeeContactInfo: i === 0 })
+                    }
+                />
             </UListGroup>
+            {!!blackList.length && (
+                <UListGroup header="Blocked" padded={false}>
+                    {blackList.map((u) => (
+                        <UUserView
+                            key={u.id}
+                            user={u}
+                            marginHorizontal={-16}
+                            rightElement={<BlockedUserMenu user={u} />}
+                        />
+                    ))}
+                </UListGroup>
+            )}
         </Page>
     );
 });

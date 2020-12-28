@@ -495,10 +495,12 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
 
         const pin = props.pinMessage;
 
+        const isBanned = props.banInfo ? props.banInfo.isMeBanned || props.banInfo.isBanned : false;
+
         const showInput =
             props.room.__typename === 'SharedRoom'
                 ? this.conversation.canSendMessage
-                : !props.banInfo?.isBanned && !props.banInfo?.isMeBanned;
+                : !isBanned;
 
         const membersCount =
             props.room.__typename === 'SharedRoom' ? props.room.membersCount : undefined;
@@ -514,7 +516,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 {this.state.loading && <XLoader loading={true} />}
                 {!this.state.loading && (
                     <>
-                        {pin && (
+                        {pin && !isBanned && (
                             <PinMessageComponent
                                 canUnpin={
                                     this.props.room.__typename === 'PrivateRoom' ||
@@ -612,8 +614,8 @@ interface MessengerRootComponentProps {
 }
 
 export const MessengerRootComponent = React.memo((props: MessengerRootComponentProps) => {
-    let messenger = React.useContext(MessengerContext);
-    let [isAttachModalOpen, setAttachModalOpen] = React.useState(false);
+    const messenger = React.useContext(MessengerContext);
+    const [isAttachModalOpen, setAttachModalOpen] = React.useState(false);
     const onAttach = useAttachHandler({ conversationId: props.conversationId, onOpen: () => setAttachModalOpen(true), onClose: () => setAttachModalOpen(false) });
     const userId = props.room.__typename === 'PrivateRoom' ? props.room.user.id : undefined;
     const messagesActionsState = useChatMessagesActionsState(props.conversationId);

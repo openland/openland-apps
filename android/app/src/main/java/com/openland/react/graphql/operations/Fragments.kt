@@ -160,6 +160,7 @@ internal val MessageAttachmentsSelector = obj(
                 field("titleLink", "titleLink", scalar("String")),
                 field("titleLinkHostname", "titleLinkHostname", scalar("String")),
                 field("text", "text", scalar("String")),
+                field("featuredIcon", "featuredIcon", scalar("Boolean")),
                 field("icon", "icon", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("url", "url", notNull(scalar("String"))),

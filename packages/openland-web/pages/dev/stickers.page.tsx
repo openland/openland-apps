@@ -273,9 +273,9 @@ const EditStickerPackModalInner = React.memo((props: {
                     <XView {...TextStyles.Title2} marginTop={20} marginBottom={20}>Stickers</XView>
 
                     <div className="x" ref={listRef} style={{ flexDirection: 'row', flexWrap: 'wrap', paddingTop: 20 }}>
-                        {items.map((item, index) => (
+                        {items.map((item) => (
                             <AddedSticker
-                                key={item.id + index}
+                                key={item.id}
                                 item={item}
                                 packId={stickerPack.id}
                                 onNextClick={(id) => {

@@ -10,7 +10,6 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { hexToRgba } from 'openland-y-utils/hexToRgba';
 import { HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { SUPER_ADMIN } from './Init';
 import { getRateAppInfo, setRateAppInfo, showRateAppModal } from './main/modals/RateApp';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 
@@ -134,9 +133,6 @@ export const Root = React.memo<RootProps>((props) => {
 
     React.useEffect(() => {
         (async () => {
-            if (!SUPER_ADMIN) {
-                return;
-            }
             try {
                 let [rateAppMeta, { shouldAskForAppReview }] = await Promise.all([
                     getRateAppInfo(),

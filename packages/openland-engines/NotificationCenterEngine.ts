@@ -42,49 +42,49 @@ const convertCommentNotification = (id: string, peer: Types.NotificationFragment
     };
 };
 
-const notificationUnsupported = (id: string): NotificationsDataSourceItem => {
-    const date = Date.now();
+// const notificationUnsupported = (id: string): NotificationsDataSourceItem => {
+//     const date = Date.now();
+//
+//     return {
+//         ...convertMessage({
+//             __typename: 'GeneralMessage',
+//             id: id,
+//             seq: null,
+//             date: date,
+//             sender: {
+//                 __typename: 'User' as 'User',
+//                 id: 'mJMk3EkbzBs7dyPBPp9Bck0pxn',
+//                 name: 'Openland Support',
+//                 photo: 'https://ucarecdn.com/db12b7df-6005-42d9-87d6-46f15dd5b880/',
+//                 isBot: false,
+//                 shortname: null,
+//                 inContacts: false,
+//                 primaryOrganization: null,
+//             },
+//             source: null,
+//             senderBadge: null,
+//             message: '*Notification type not supported*\nNotification is not supported on your version of Openland. Please update the app to view it.',
+//             fallback: '*Notification type not supported*\nNotification is not supported on your version of Openland. Please update the app to view it.',
+//             edited: false,
+//             commentsCount: 0,
+//             attachments: [],
+//             quotedMessages: [],
+//             reactionCounters: [],
+//             spans: [{ __typename: 'MessageSpanBold', offset: 0, length: 33 }],
+//             overrideAvatar: null,
+//             overrideName: null
+//         }),
+//
+//         notificationId: id,
+//         notificationType: 'unsupported',
+//
+//         // rewrite results from convertMessage
+//         key: id,
+//         isOut: false
+//     };
+// };
 
-    return {
-        ...convertMessage({
-            __typename: 'GeneralMessage',
-            id: id,
-            seq: null,
-            date: date,
-            sender: {
-                __typename: 'User' as 'User',
-                id: 'mJMk3EkbzBs7dyPBPp9Bck0pxn',
-                name: 'Openland Support',
-                photo: 'https://ucarecdn.com/db12b7df-6005-42d9-87d6-46f15dd5b880/',
-                isBot: false,
-                shortname: null,
-                inContacts: false,
-                primaryOrganization: null,
-            },
-            source: null,
-            senderBadge: null,
-            message: '*Notification type not supported*\nNotification is not supported on your version of Openland. Please update the app to view it.',
-            fallback: '*Notification type not supported*\nNotification is not supported on your version of Openland. Please update the app to view it.',
-            edited: false,
-            commentsCount: 0,
-            attachments: [],
-            quotedMessages: [],
-            reactionCounters: [],
-            spans: [{ __typename: 'MessageSpanBold', offset: 0, length: 33 }],
-            overrideAvatar: null,
-            overrideName: null
-        }),
-
-        notificationId: id,
-        notificationType: 'unsupported',
-
-        // rewrite results from convertMessage
-        key: id,
-        isOut: false
-    };
-};
-
-export const convertNotification = (notification: Types.NotificationFragment): NotificationsDataSourceItem => {
+export const convertNotification = (notification: Types.NotificationFragment): NotificationsDataSourceItem | null => {
     const content = notification.content;
 
     if (content && content.length && content[0].__typename === 'NewCommentNotification') {
@@ -94,7 +94,8 @@ export const convertNotification = (notification: Types.NotificationFragment): N
 
         return convertCommentNotification(notification.id, peer, comment);
     } else {
-        return notificationUnsupported(notification.id);
+        return null;
+        // return notificationUnsupported(notification.id);
     }
 };
 
@@ -133,8 +134,9 @@ export class NotificationCenterEngine {
 
                 for (let notification of notifications) {
                     const converted = convertNotification(notification);
-
-                    items.push(converted);
+                    if (converted) {
+                        items.push(converted);
+                    }
                 }
 
                 this.onNotificationsUpdated();
@@ -252,10 +254,12 @@ export class NotificationCenterEngine {
             }
 
             const converted = convertNotification(event.notification);
-            await this._dataSourceStored.addItem(converted, 0);
+            if (converted) {
+                await this._dataSourceStored.addItem(converted, 0);
 
-            if (converted.notificationType === 'new_comment') {
-                await this.engine.notifications.handleIncomingNotification(converted);
+                if (converted.notificationType === 'new_comment') {
+                    await this.engine.notifications.handleIncomingNotification(converted);
+                }
             }
             this.onNotificationsUpdated();
         } else if (event.__typename === 'NotificationDeleted') {
@@ -270,7 +274,7 @@ export class NotificationCenterEngine {
             const id = event.notification.id;
             const converted = convertNotification(event.notification);
 
-            if (await this._dataSourceStored.hasItem(id)) {
+            if (converted && await this._dataSourceStored.hasItem(id)) {
                 await this._dataSourceStored.updateItem(converted);
                 this.onNotificationsUpdated();
             }

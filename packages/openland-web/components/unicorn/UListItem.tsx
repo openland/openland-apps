@@ -58,6 +58,7 @@ export interface UListItemProps {
     hovered?: boolean;
     disabled?: boolean;
     paddingHorizontal?: number;
+    marginHorizontal?: number;
     interactive?: boolean;
     linkSelectable?: boolean;
     disableHover?: boolean;
@@ -92,6 +93,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
         hovered,
         disabled,
         paddingHorizontal = 16,
+        marginHorizontal,
         interactive = true,
         linkSelectable = true,
         href,
@@ -241,6 +243,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
             <XView
                 height={height}
                 paddingHorizontal={paddingHorizontal}
+                marginHorizontal={marginHorizontal}
                 alignItems="center"
                 flexDirection="row"
                 backgroundColor={hovered && !selected ? 'var(--backgroundPrimaryHover)' : undefined}

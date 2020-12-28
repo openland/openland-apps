@@ -40,7 +40,7 @@ interface UserMenuProps {
 
 export const UserActions = React.memo(({ user, chat }: UserMenuProps) => {
     const { compactView } = React.useContext(ProfileLayoutContext);
-
+    const engine = React.useContext(MessengerContext);
     const { isBanned } = useUserBanInfo(user.id, user.isBanned, user.isMeBanned);
 
     if (compactView) {
@@ -48,7 +48,6 @@ export const UserActions = React.memo(({ user, chat }: UserMenuProps) => {
     }
 
     const toastHandlers = useToast();
-    const engine = React.useContext(MessengerContext);
     const client = useClient();
     const [deleted, setDelete] = React.useState(false);
     const { id, shortname, inContacts } = user;
@@ -142,14 +141,12 @@ export const UserActions = React.memo(({ user, chat }: UserMenuProps) => {
                     onClick={onCopyLinkClick}
                 />
                 {!isMe && (
-                    <XWithRole role="super-admin">
-                        <UListItem
-                            title={isBanned ? 'Unblock person' : 'Block person'}
-                            useRadius={true}
-                            onClick={onBannedClick}
-                            icon={isBanned ? <UnBlockIcon /> : <BlockIcon />}
-                        />
-                    </XWithRole>
+                    <UListItem
+                        title={isBanned ? 'Unblock person' : 'Block person'}
+                        useRadius={true}
+                        onClick={onBannedClick}
+                        icon={isBanned ? <UnBlockIcon /> : <BlockIcon />}
+                    />
                 )}
                 {!isMe && (
                     <UListItem

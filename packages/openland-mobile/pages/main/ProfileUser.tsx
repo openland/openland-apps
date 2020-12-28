@@ -114,20 +114,39 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                 require('assets/ic-group-24.png'),
             );
         }
-        if (SUPER_ADMIN) {
-            builder.action(
-                isBanned ? 'Unblock person' : 'Block person',
-                onBannedClick,
-                false,
-                isBanned ? require('assets/ic-unblock-24.png') : require('assets/ic-block-24.png'),
-            );
-        }
+        builder.action(
+            isBanned ? 'Unblock person' : 'Block person',
+            onBannedClick,
+            false,
+            isBanned ? require('assets/ic-unblock-24.png') : require('assets/ic-block-24.png'),
+        );
         builder.action(
             'Report spam',
             () => Modals.showReportSpam({ router, userId }),
             false,
             require('assets/ic-flag-24.png'),
         );
+        if (SUPER_ADMIN) {
+            builder.action(
+                'Delete person',
+                () => {
+                    Alert.builder()
+                        .title(`Delete user?`)
+                        .message(`This cannot be undone`)
+                        .button('Cancel', 'cancel')
+                        .action('Delete', 'destructive', async () => {
+                            await client.mutateDeleteUser({ id: userId });
+                            await client.refetchUser({ userId });
+                            setTimeout(() => {
+                                props.router.pushAndReset('Home');
+                            }, 200);
+                        })
+                        .show();
+                },
+                false,
+                require('assets/ic-delete-24.png'),
+            );
+        }
 
         builder.show();
     }, [user.id, isBanned]);
@@ -173,8 +192,8 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                             profileType === 'my'
                                 ? 'Edit profile'
                                 : profileType === 'bot'
-                                ? 'View messages'
-                                : 'Message',
+                                    ? 'View messages'
+                                    : 'Message',
                         style: profileType === 'my' ? 'secondary' : 'primary',
                         onPress: () => {
                             if (profileType === 'my') {
@@ -348,9 +367,9 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                         actionRight={
                             mutualGroups.count > 3
                                 ? {
-                                      title: 'See all',
-                                      onPress: () => router.push('UserMutualGroups', { userId }),
-                                  }
+                                    title: 'See all',
+                                    onPress: () => router.push('UserMutualGroups', { userId }),
+                                }
                                 : undefined
                         }
                         useSpacer={true}
