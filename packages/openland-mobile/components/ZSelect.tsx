@@ -57,7 +57,7 @@ export const ZSelectBasic = (props: ZSelectBasicProps) => {
 
             actionSheet.show();
         },
-        [props.options],
+        [props.options, props.value],
     );
 
     return (

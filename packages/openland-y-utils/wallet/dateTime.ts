@@ -56,13 +56,12 @@ export function formatAbsoluteDate(date: number, withYear?: boolean) {
 
 export function formatBirthDay(date: number | string) {
     const bd = new Date(typeof date === 'string' ? parseInt(date, 10) : date);
-    const now = new Date();
     const year = bd.getFullYear();
-    const age = (now.getTime() - bd.getTime()) / (365 * 24 * 60 * 60 * 1000);
+    const age = new Date(Date.now() - bd.getTime()).getUTCFullYear() - 1970;
 
     if (year === 10000) {
         return `${bd.getDate()}  ${monthsFull[bd.getMonth()]}`;
     }
 
-    return `${bd.getDate()} ${months[bd.getMonth()]} ${bd.getFullYear()}, ${Math.floor(age)} y. o.`;
+    return `${bd.getDate()} ${months[bd.getMonth()]} ${bd.getFullYear()}, ${Math.abs(age)} y. o.`;
 }

@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         height: 68,
         flexDirection: 'row',
         position: 'absolute',
-        top: -113,
+        top: -57,
         right: 8,
         alignItems: 'center',
         justifyContent: 'center'
@@ -154,13 +154,11 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
                 </View>
             </View>
             {value && (
-                <TouchableOpacity onPress={onClear} activeOpacity={HighlightAlpha}>
-                    <View style={styles.box}>
-                        <Image source={require('assets/ic-delete-16.png')} style={{ tintColor: theme.foregroundTertiary, marginRight: 8 }} />
-                        <Text style={[{ color: theme.foregroundTertiary }, styles.title]} allowFontScaling={false}>
-                            Clear
-                        </Text>
-                    </View>
+                <TouchableOpacity onPress={onClear} activeOpacity={HighlightAlpha} style={styles.box}>
+                    <Image source={require('assets/ic-delete-16.png')} style={{ tintColor: theme.foregroundTertiary, marginRight: 8 }} />
+                    <Text style={[{ color: theme.foregroundTertiary }, styles.title]} allowFontScaling={false}>
+                        Clear
+                    </Text>
                 </TouchableOpacity>
             )}
             {!!invalid && (
