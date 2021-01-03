@@ -120,7 +120,7 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
 
             // Update optimistic counter
             if (action.readSeq >= readSeq) {
-                let optimisticRead = serverUnreadMessages.filter((v) => serverReadSeq < v && v <= readSeq).length;
+                let optimisticRead = serverUnreadMessages.filter((v) => action.readSeq < v && v <= readSeq).length;
                 readSeq = action.readSeq;
                 counter = action.counter - optimisticRead;
             }

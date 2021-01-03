@@ -129,5 +129,41 @@ describe('ChatCounterState', () => {
             serverUnreadMessages: [1, 2, 3, 4, 5, 6],
             serverCounter: 6
         });
+
+        state = counterReducer(state, { type: 'server-state', seq: 6, counter: 3, readSeq: 3 });
+        expectToMatch(state, {
+            type: 'generic',
+            readSeq: 3,
+            counter: 3,
+
+            serverMaxSeq: 6,
+            serverReadSeq: 3,
+            serverUnreadMessages: [4, 5, 6],
+            serverCounter: 3
+        });
+
+        state = counterReducer(state, { type: 'optimistic-read', readSeq: 4 });
+        expectToMatch(state, {
+            type: 'generic',
+            readSeq: 4,
+            counter: 2,
+
+            serverMaxSeq: 6,
+            serverReadSeq: 3,
+            serverUnreadMessages: [4, 5, 6],
+            serverCounter: 3
+        });
+
+        state = counterReducer(state, { type: 'server-state', seq: 6, counter: 1, readSeq: 5 });
+        expectToMatch(state, {
+            type: 'generic',
+            readSeq: 5,
+            counter: 1,
+
+            serverMaxSeq: 6,
+            serverReadSeq: 5,
+            serverUnreadMessages: [6],
+            serverCounter: 1
+        });
     });
 });
