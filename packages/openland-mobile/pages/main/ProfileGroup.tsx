@@ -253,9 +253,9 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                     props.router.back();
                 },
             },
+            group.id,
+            true,
             group.isPremium ? 'Add people for free' : 'Add people',
-            members.map((m) => m.user.id),
-            [getMessenger().engine.user.id],
             canGetInviteLink ? { path: 'ProfileGroupLink', pathParams: { room: group } } : undefined,
         );
     }, [members]);
@@ -282,6 +282,29 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             false,
             require('assets/ic-leave-24.png'),
         );
+
+        if (SUPER_ADMIN || group.owner) {
+            builder.action(
+                `Delete ${typeString}`,
+                () => {
+                    Alert.builder()
+                        .title(`Delete ${typeString}?`)
+                        .message(`This cannot be undone`)
+                        .button('Cancel', 'cancel')
+                        .action('Delete', 'destructive', async () => {
+                            await client.mutateRoomDelete({
+                                chatId: roomId,
+                            });
+                            setTimeout(() => {
+                                props.router.pushAndReset('Home');
+                            }, 200);
+                        })
+                        .show();
+                },
+                false,
+                require('assets/ic-delete-24.png'),
+            );
+        }
 
         builder.show();
     }, [group]);

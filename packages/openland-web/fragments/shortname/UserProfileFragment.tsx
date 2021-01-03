@@ -96,7 +96,7 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
                     {!!parsedInstagram && <UListItem title={parsedInstagram.name} icon={<InstagramIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={parsedInstagram.url} />}
                     {!!parsedLinkedIn && <UListItem title={parsedLinkedIn.name} icon={<LinkedInIcon />} useRadius={true} wrapperClassName={listItemWrapper} href={parsedLinkedIn.url} />}
                     {!!joinDate && <UListItem title={joinedTitle} icon={<FlagIcon />} useRadius={true} wrapperClassName={listItemWrapper} interactive={false} />}
-                    {!!birthDay && <UListItem title={<XDate value={birthDay} />} icon={<BirthDayIcon />} useRadius={true} wrapperClassName={listItemWrapper} interactive={false} />}
+                    {!!birthDay && <UListItem title={<XDate value={birthDay} format="birthDay" />} icon={<BirthDayIcon />} useRadius={true} wrapperClassName={listItemWrapper} interactive={false} />}
                 </XView>
             </UListGroup>
             {!isMe && <UserGroups id={id} />}

@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { Image, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
-import { getValidatedDate, isValidDate } from 'openland-y-utils/wallet/dateTime';
+import { EMPTY_YEAR, getValidatedDate, isValidDate } from 'openland-y-utils/wallet/dateTime';
 import { FormField } from 'openland-form/useField';
 
 import { ZInput } from './ZInput';
-import { ZSelect } from './ZSelect';
-import { TextStyles } from '../styles/AppStyles';
+import { ZSelectBasic } from './ZSelect';
+import { HighlightAlpha, TextStyles } from '../styles/AppStyles';
 import { ThemeContext } from '../themes/ThemeContext';
 
 const styles = StyleSheet.create({
@@ -16,6 +16,19 @@ const styles = StyleSheet.create({
     } as ViewStyle,
     error: {
         ...TextStyles.Caption,
+    } as TextStyle,
+    box: {
+        width: 80,
+        height: 68,
+        flexDirection: 'row',
+        position: 'absolute',
+        top: -57,
+        right: 8,
+        alignItems: 'center',
+        justifyContent: 'center'
+    } as ViewStyle,
+    title: {
+        ...TextStyles.Body,
     } as TextStyle,
 });
 
@@ -42,16 +55,15 @@ export interface ZDateInputProps {
     value: Date | null;
     invalid?: boolean;
     noWrapper?: boolean;
-    errorText?: string | null;
     onChange: (newValue: Date | null) => void;
 }
 
 export const ZDateInput = React.memo((props: ZDateInputProps) => {
     const theme = React.useContext(ThemeContext);
     const [day, setDay] = React.useState<string>();
-    const [month, setMonth] = React.useState<SelectedMonth>();
+    const [month, setMonth] = React.useState<SelectedMonth | null>();
     const [year, setYear] = React.useState<string>();
-    const { value, noWrapper, errorText, invalid, onChange } = props;
+    const { value, noWrapper, invalid, onChange } = props;
 
     React.useEffect(() => {
         if (!day && !month && !year) {
@@ -59,21 +71,51 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
             return;
         }
 
-        if (!day || !month || !year || year.length !== 4) {
+        if (!day || !month || (year && year.length < 4)) {
             onChange(new Date('Invalid Date'));
             return;
         }
 
-        onChange(getValidatedDate(Number(day), month.value, Number(year)));
+        onChange(getValidatedDate(Number(day), month.value, Number(year || EMPTY_YEAR)));
     }, [day, month, year]);
 
     React.useEffect(() => {
         if (value && isValidDate(value)) {
-            setDay(String(value!.getDate()));
-            setMonth(OPTIONS[value!.getMonth()]);
-            setYear(String(value!.getFullYear()));
+            const fullYear = value.getFullYear() === EMPTY_YEAR ? undefined : String(value.getFullYear());
+
+            setDay(String(value.getDate()));
+            setMonth(OPTIONS[value.getMonth()]);
+            setYear(fullYear);
         }
     }, [value]);
+
+    const onClear = React.useCallback(() => {
+        setDay('');
+        setMonth(null);
+        setYear('');
+    }, []);
+
+    const getInvalid = React.useCallback((field: 'day' | 'month' | 'year'): boolean => {
+        if (field === 'day') {
+            return Boolean(invalid && (month || Number(day) > 31));
+        } else if (field === 'month') {
+            return Boolean(invalid && day);
+        } else {
+            return Boolean(invalid && year);
+        }
+    }, [invalid, day, month, year]);
+
+    const errorText = React.useMemo(() => {
+        if (!day && month) {
+            return 'Please enter day';
+        }
+
+        if (!month && day) {
+            return 'Please select month';
+        }
+
+        return 'Please enter valid date';
+    }, [day, month, year]);
 
     return (
         <React.Suspense fallback={null}>
@@ -83,20 +125,20 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
                         placeholder="Day"
                         keyboardType="numeric"
                         value={day}
-                        invalid={invalid}
+                        invalid={getInvalid('day')}
                         maxLength={2}
                         noWrapper={true}
                         onChangeText={setDay}
                     />
                 </View>
                 <View flexGrow={1}>
-                    <ZSelect
+                    <ZSelectBasic
                         label="Month"
                         options={OPTIONS}
                         value={month?.value}
-                        invalid={invalid}
+                        invalid={getInvalid('month')}
                         noWrapper={true}
-                        onChange={(val) => setMonth(val as SelectedMonth)}
+                        onChange={(val: SelectedMonth) => setMonth(val)}
                     />
                 </View>
                 <View flexShrink={0} marginLeft={16} minWidth={90}>
@@ -104,14 +146,22 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
                         placeholder="Year"
                         keyboardType="decimal-pad"
                         value={year}
-                        invalid={invalid}
+                        invalid={getInvalid('year')}
                         noWrapper={true}
                         maxLength={4}
                         onChangeText={setYear}
                     />
                 </View>
             </View>
-            {!!errorText && (
+            {value && (
+                <TouchableOpacity onPress={onClear} activeOpacity={HighlightAlpha} style={styles.box}>
+                    <Image source={require('assets/ic-delete-16.png')} style={{ tintColor: theme.foregroundTertiary, marginRight: 8 }} />
+                    <Text style={[{ color: theme.foregroundTertiary }, styles.title]} allowFontScaling={false}>
+                        Clear
+                    </Text>
+                </TouchableOpacity>
+            )}
+            {!!invalid && (
                 <View style={styles.errorContainer}>
                     <Text
                         style={[
@@ -138,6 +188,5 @@ export const ZDateInputField = React.memo(({ field, ...other }: ZDateInputFieldP
         value={field.input.value}
         invalid={field.input.invalid}
         onChange={field.input.onChange}
-        errorText={field.input.errorText}
     />
 ));

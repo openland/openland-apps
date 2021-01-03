@@ -29,20 +29,37 @@ export const Modals = {
             titleEmpty?: string,
             actionEmpty?: () => void,
         },
+        entityId: string,
+        inGroup: boolean,
         title?: string,
-        disableUsers?: string[],
-        excludeUsers?: string[],
         inviteLinkButton?: {
             path: String,
             pathParams: any,
             onPress?: () => void,
         },
-        pushAndReset?: boolean
+        pushAndReset?: boolean,
     ) {
         if (pushAndReset) {
-            router.pushAndReset('UserMultiplePicker', { action, title, disableUsers, excludeUsers, inviteLinkButton });
+            router.pushAndReset(
+                'UserMultiplePicker',
+                {
+                    action,
+                    title,
+                    entityId,
+                    inGroup,
+                    inviteLinkButton
+                }
+            );
         } else {
-            router.push('UserMultiplePicker', { action, title, disableUsers, excludeUsers, inviteLinkButton });
+            router.push('UserMultiplePicker',
+                {
+                    action,
+                    title,
+                    entityId,
+                    inGroup,
+                    inviteLinkButton
+                }
+            );
         }
     },
     showUserPicker(

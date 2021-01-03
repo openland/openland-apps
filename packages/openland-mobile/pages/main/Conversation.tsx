@@ -438,7 +438,13 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     handleScroll = (event: NativeSyntheticEvent<any>) => {
-        if (this.stickerKeyboardHeight > 0 && event.nativeEvent.touchPositionY > 0 && this.state.stickerKeyboardShown && this.prevScrollY !== event.nativeEvent.touchPositionY) {
+        if (
+            this.stickerKeyboardHeight > 0
+            && event.nativeEvent.touchPositionY > 0
+            && this.state.stickerKeyboardShown
+            && this.prevScrollY !== Infinity
+            && this.prevScrollY !== event.nativeEvent.touchPositionY
+        ) {
             let height = this.stickerKeyboardHeight;
             let newHeight = event.nativeEvent.touchPositionY - SDevice.safeArea.bottom;
             if (newHeight + 20 < height) {
@@ -583,7 +589,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                             }}
                         >
                             <ConversationView inverted={true} engine={this.engine} onScroll={this.handleScroll} isBanned={isBanned} />
-                            {pinnedMessage && (
+                            {pinnedMessage && !isBanned && (
                                 <PinnedMessage
                                     message={pinnedMessage}
                                     onPress={this.handlePinnedMessagePress}

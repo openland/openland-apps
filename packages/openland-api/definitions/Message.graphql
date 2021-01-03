@@ -130,6 +130,7 @@ fragment MessageAttachments on ModernMessageAttachment {
         titleLink
         titleLinkHostname
         text
+        featuredIcon
         icon {
             url
             metadata {

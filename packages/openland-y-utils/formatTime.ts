@@ -1,10 +1,10 @@
 import * as humanize from 'humanize';
 import {
     formatDate,
-    formatAbsoluteDate,
     formatDateFull,
     formatDateShort,
 } from '../openland-mobile/utils/formatDate';
+import { formatAbsoluteDate } from './wallet/dateTime';
 
 const addLeadingZero = (time: number) => {
     return ('0' + time).substr(-2);

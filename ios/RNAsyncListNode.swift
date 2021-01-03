@@ -129,6 +129,9 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       self.keyboardHeight = kbHeight + acHeight
       self.keyboardAcHeight = acHeight
       print("keyboardWillShow")
+      if (self.stickersKeyboardOpen) {
+        return
+      }
       UIView.animate(withDuration: duration, delay: 0.0, options: UIView.AnimationOptions(rawValue: UInt(curve)), animations: {
         self.fixContentInset(interactive: false)
       }, completion: nil)
@@ -141,6 +144,9 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       self.keyboardHeight = kbHeight + acHeight
       self.keyboardAcHeight = acHeight
       print("keyboardWillHide")
+      if (self.stickersKeyboardOpen) {
+        return
+      }
       UIView.animate(withDuration: duration, delay: 0.0, options: [UIView.AnimationOptions(rawValue: UInt(curve)), UIView.AnimationOptions.beginFromCurrentState], animations: {
         self.fixContentInset(interactive: false)
       }, completion: nil)
@@ -148,9 +154,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   }
   
   private func fixContentInset(interactive: Bool) {
-    if (self.stickersKeyboardOpen) {
-      return
-    }
     let currentInset = self.node.inverted ? self.node.contentInset.top : self.node.contentInset.bottom
     let newInset = max(self.keyboardHeight, CGFloat(self.bottomInset))
     let insetsDiff = currentInset - newInset

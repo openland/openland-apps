@@ -29,7 +29,7 @@ interface ZSelectProps extends ZSelectBasicProps {
     defaultValue?: ZSelectValue;
 }
 
-const ZSelectBasic = (props: ZSelectBasicProps) => {
+export const ZSelectBasic = (props: ZSelectBasicProps) => {
     const handleActionPress = React.useCallback(option => {
         if (props.onChange) {
             props.onChange(option);
@@ -57,7 +57,7 @@ const ZSelectBasic = (props: ZSelectBasicProps) => {
 
             actionSheet.show();
         },
-        [props.options],
+        [props.options, props.value],
     );
 
     return (

@@ -15,6 +15,8 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { OpenlandClient } from 'openland-api/spacex';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
 
 const root = css`
     background-color: var(--backgroundTertiary);
@@ -84,8 +86,23 @@ const avatarContainer = css`
     flex-shrink: 0;
 `;
 
-const titleStyle = css`
+const titleWrapperStyle = css`
+    display: flex;
     color: var(--foregroundPrimary);
+`;
+
+const titleStyle = css`
+    flex-shrink: 1;
+`;
+
+const featuredIconWrapperStyle = css`
+    margin-left: 4px;
+    align-self: center;
+    flex-shrink: 0;
+`;
+
+const featuredIconStyle = css`
+    display: var(--featured-icon-display);
 `;
 
 const textStyle = css`
@@ -192,7 +209,7 @@ const handleInviteClick = (e: React.MouseEvent, path: string | null, router: XVi
     if (!path) {
         return;
     }
-    
+
     return resolveInvite(path, client, router!, () => {
         const link = makeInternalLinkRelative(path || '');
         if (link) {
@@ -228,7 +245,7 @@ const MessageButton = (props: UButtonProps & { url: string | null, btnStyle: Mod
 };
 
 export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment }) => {
-    const { title, subTitle, keyboard, image, imageFallback, socialImage, id, titleLink } = props.attach;
+    const { title, subTitle, keyboard, image, imageFallback, socialImage, id, titleLink, featuredIcon } = props.attach;
     const layout = useLayout();
 
     if (!title && !subTitle && keyboard) {
@@ -302,8 +319,18 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
                     {avatarWrapper}
                     <div className={dataContent}>
                         {title && (
-                            <div className={cx(titleStyle, ellipsisStyle, TextTitle3)}>
-                                {title}
+                            <div className={cx(titleWrapperStyle, ellipsisStyle)}>
+                                <div className={cx(TextTitle3, titleStyle, ellipsisStyle)}>{title}</div>
+                                {featuredIcon && (
+                                    <div className={featuredIconWrapperStyle}>
+                                        <UIcon
+                                            className={featuredIconStyle}
+                                            size={16}
+                                            icon={<IcFeatured />}
+                                            color="#3DA7F2"
+                                        />
+                                    </div>
+                                )}
                             </div>
                         )}
                         {subTitle && (

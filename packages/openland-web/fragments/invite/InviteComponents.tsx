@@ -218,7 +218,7 @@ export const resolveRoomButton = (room: SharedRoomT, inviteKey?: string) => {
             <UButton
                 style="primary"
                 size="large"
-                text={'Open ' + room.isChannel ? 'channel' : 'group'}
+                text={'Open ' + (room.isChannel ? 'channel' : 'group')}
                 alignSelf="center"
                 flexShrink={0}
                 loading={loading}

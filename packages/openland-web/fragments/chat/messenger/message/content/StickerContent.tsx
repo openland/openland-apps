@@ -32,8 +32,7 @@ const stickerContainer = css`
 const StickerPackModalInner = React.memo((props: { packId: string; hide: () => void }) => {
     const [loading, setLoading] = React.useState(false);
     const client = useClient();
-    const myStickerPaks = client.useMyStickers();
-    const stickerPack = client.useStickerPack({ id: props.packId }).stickerPack;
+    const stickerPack = client.useStickerPack({ id: props.packId }, { fetchPolicy: 'network-only' }).stickerPack;
     if (!stickerPack) {
         return (
             <XView justifyContent="center" alignItems="center" height="100%" width="100%">
@@ -57,7 +56,7 @@ const StickerPackModalInner = React.memo((props: { packId: string; hide: () => v
             </XView>
         );
     }
-    const iHaveThisPack = !!myStickerPaks.stickers.packs.find(i => i.id === stickerPack.id);
+    const iHaveThisPack = !!stickerPack.added;
 
     const addPack = async () => {
         await client.mutateStickerPackAddToCollection({

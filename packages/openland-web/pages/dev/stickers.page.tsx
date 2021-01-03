@@ -242,6 +242,7 @@ const EditStickerPackModalInner = React.memo((props: {
             <XModalContent flexGrow={1} flexShrink={1}>
                 <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
                     <UInputField field={titleField} label="Title" />
+                    ID: {stickerPack.id}
                     <XView width={140}>
                         <UCheckboxFiled field={publishedField} label="Published" squared={true} />
                         <UCheckboxFiled field={privateField} label="Private" squared={true} />
@@ -272,9 +273,9 @@ const EditStickerPackModalInner = React.memo((props: {
                     <XView {...TextStyles.Title2} marginTop={20} marginBottom={20}>Stickers</XView>
 
                     <div className="x" ref={listRef} style={{ flexDirection: 'row', flexWrap: 'wrap', paddingTop: 20 }}>
-                        {items.map((item, index) => (
+                        {items.map((item) => (
                             <AddedSticker
-                                key={item.id + index}
+                                key={item.id}
                                 item={item}
                                 packId={stickerPack.id}
                                 onNextClick={(id) => {

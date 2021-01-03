@@ -116,6 +116,19 @@ export const ZInputBasic = React.forwardRef((props: ZInputBasicProps, ref: React
             }).start();
             setFilled(true);
         }
+
+        if (!props.value) {
+            setFilled(false);
+
+            if (!focused) {
+                Animated.timing(animation, {
+                    toValue: 0,
+                    duration: DURATION_PLACEHOLDER_ANIMATION,
+                    easing: Easing.linear,
+                    useNativeDriver: true
+                }).start();
+            }
+        }
     }, [props.value]);
 
     const placeholderAimatedStyle = {

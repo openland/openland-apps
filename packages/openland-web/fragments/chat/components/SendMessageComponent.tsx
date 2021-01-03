@@ -372,7 +372,7 @@ export const AutoCompleteComponent = React.memo(
                                 id={v.room.id}
                                 photo={v.room.photo}
                                 title={v.room.title}
-                                subtitle="Group"
+                                subtitle={v.room.isChannel ? 'Channel' : 'Group'}
                                 featured={v.room.featured}
                             />
                         );
