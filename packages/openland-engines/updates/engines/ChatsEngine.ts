@@ -1,13 +1,7 @@
+import { ChatCounterState, counterReducer } from './../counters/ChatCounterState';
 import { OpenlandClient } from 'openland-api/spacex';
 import { Persistence, Transaction } from 'openland-engines/persistence/Persistence';
 import { ShortSequenceChat, ShortUpdate } from 'openland-api/spacex.types';
-
-type ChatState = {
-    unread: number,
-    mentions: number,
-    seq: number,
-    total: number
-};
 
 export class ChatsEngine {
     readonly client: OpenlandClient;
@@ -21,12 +15,7 @@ export class ChatsEngine {
     };
 
     private chats = new Map<string, {
-        state: ChatState | null,
-        draft: {
-            version: number,
-            date: number,
-            message: string | null
-        } | null
+        counters: ChatCounterState
     }>();
 
     constructor(me: string, client: OpenlandClient, persistence: Persistence) {
@@ -37,17 +26,16 @@ export class ChatsEngine {
 
     async onSequenceStart(tx: Transaction, state: ShortSequenceChat) {
         this.chats.set(state.cid, {
-            state: state.states ? {
-                unread: state.states.counter,
-                mentions: state.states.mentions,
-                seq: state.states.seq,
-                total: state.states.total
-            } : null,
-            draft: state.draft ? {
-                version: state.draft.version,
-                date: parseInt(state.draft.date, 10),
-                message: state.draft.message
-            } : null
+            counters: state.states && state.states.seq ? {
+                type: 'generic',
+                counter: state.states.counter,
+                readSeq: state.states.readSeq,
+
+                serverCounter: state.states.counter,
+                serverMaxSeq: state.states.seq,
+                serverReadSeq: state.states.readSeq,
+                serverUnreadMessages: []
+            } : { type: 'empty' }
         });
 
         if (state.states) {
@@ -63,66 +51,33 @@ export class ChatsEngine {
     }
 
     async onUpdate(tx: Transaction, update: ShortUpdate) {
-        if (update.__typename === 'UpdateChatDraftChanged') {
-            let ex = this.chats.get(update.cid);
-            if (!ex) {
-                return; // Should not happen
-            }
-            if (!ex.draft || ex.draft.version < update.version) {
-                ex.draft = {
-                    version: update.version,
-                    date: parseInt(update.date, 10),
-                    message: update.draft
-                };
-            }
-            console.log('[engine] draft update: ' + JSON.stringify(update));
-        } else if (update.__typename === 'UpdateChatRead') {
+        if (update.__typename === 'UpdateChatRead') {
             // TODO: Handle
             console.log('[engine] chat read: ' + JSON.stringify(update));
-        } else if (update.__typename === 'UpdateChatMessage') {
-            let state = this.chats.get(update.cid)!.state;
+
+            let state = this.chats.get(update.cid)!;
             if (!state) {
                 return;
             }
 
-            if (update.message.sender.id === this.me) {
-                // If outgoing message
-                let updated: ChatState = {
-                    seq: state.seq,
-                    total: state.total + 1,
-                    mentions: state.mentions,
-                    unread: state.unread
-                };
-                this.chats.get(update.cid)!.state = updated;
-            } else {
-
-                // Increment counter
-                if (update.message.seq! > state.seq) {
-                    let updated: ChatState = {
-                        seq: state.seq,
-                        total: state.total + 1,
-                        mentions: state.mentions,
-                        unread: state.unread + 1
-                    };
-                    this.chats.get(update.cid)!.state = updated;
-                    this.counters.messagesUnread++;
-                    if (state.unread === 0) {
-                        this.counters.chatUnread++;
-                    }
-                    console.log('[engine] unread: ' + JSON.stringify(this.counters));
-                } else {
-                    let updated: ChatState = {
-                        seq: state.seq,
-                        total: state.total + 1,
-                        mentions: state.mentions,
-                        unread: state.unread
-                    };
-                    this.chats.get(update.cid)!.state = updated;
-                }
+            state.counters = counterReducer(state.counters, { type: 'optimistic-read', readSeq: update.seq });
+            console.warn(state);
+        } else if (update.__typename === 'UpdateChatMessage') {
+            let state = this.chats.get(update.cid)!;
+            if (!state) {
+                return;
+            }
+            if (update.message.sender.id !== this.me) {
+                state.counters = counterReducer(state.counters, { type: 'message-add', seq: update.message.seq! });
+                console.warn(state);
             }
         } else if (update.__typename === 'UpdateChatMessageDeleted') {
-            // TODO: Handle
-            console.log('[engine] deleted: ' + JSON.stringify(update));
+            let state = this.chats.get(update.cid)!;
+            if (!state) {
+                return;
+            }
+            state.counters = counterReducer(state.counters, { type: 'message-remove', seq: update.seq });
+            console.warn(state);
         }
     }
 

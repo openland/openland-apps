@@ -23,6 +23,7 @@ export type ChatCounterState =
 export type ChatCounterAction =
     | { type: 'message-add', seq: number }
     | { type: 'message-remove', seq: number }
+    | { type: 'message-load', seqs: number[] }
     | { type: 'server-state', seq: number, readSeq: number, counter: number }
     | { type: 'optimistic-read', readSeq: number }
     ;
@@ -57,6 +58,8 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
                 serverReadSeq: action.readSeq,
                 serverUnreadMessages: []
             };
+        } else if (action.type === 'message-load') {
+            return src; // Throw error?
         } else {
             throw Error('Unknown action');
         }
@@ -92,6 +95,25 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
             // Decrement optimistic counter
             if (action.seq > readSeq) {
                 counter--;
+            }
+        }
+    }
+
+    // Message load
+    if (action.type === 'message-load') {
+        for (let s of action.seqs) {
+            serverMaxSeq = Math.max(serverMaxSeq, s);
+
+            if (s > serverReadSeq && sortedArrayFind(src.serverUnreadMessages, s) >= 0) {
+                serverUnreadMessages = sortedArrayAdd(serverUnreadMessages, s);
+
+                // NOTE: Not updating counter since it is simply history loading
+                // serverCounter++;
+
+                // Decrement optimistic counter if we inserted new message before readSeq
+                if (s <= readSeq) {
+                    counter--;
+                }
             }
         }
     }

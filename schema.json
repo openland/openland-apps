@@ -48584,7 +48584,7 @@
             "deprecationReason": null
           },
           {
-            "name": "seq",
+            "name": "readSeq",
             "description": "",
             "args": [],
             "type": {
@@ -48595,6 +48595,18 @@
                 "name": "Int",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "seq",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null

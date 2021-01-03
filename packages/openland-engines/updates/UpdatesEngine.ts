@@ -1,3 +1,4 @@
+import { DraftsEngine } from './engines/DraftsEngine';
 import { ShortSequence, ShortUpdate } from 'openland-api/spacex.types';
 import { ChatsEngine } from './engines/ChatsEngine';
 import { Transaction } from './../persistence/Persistence';
@@ -19,6 +20,7 @@ export class UpdatesEngine {
     private main: MainUpdatesSubscription<UpdateEvent, UpdateSequenceState, UpdateSequenceDiff>;
     private sequences = new Map<string, SequenceHolder>();
     private chats: ChatsEngine;
+    private drafts: DraftsEngine;
     private me: string;
 
     constructor(me: string, client: OpenlandClient, persistence: Persistence) {
@@ -26,6 +28,7 @@ export class UpdatesEngine {
         this.persistence = persistence;
         this.me = me;
         this.chats = new ChatsEngine(this.me, client, persistence);
+        this.drafts = new DraftsEngine(client, persistence);
         this.api = new UpdatesApiClient(this.client);
         this.main = new MainUpdatesSubscription(null,
             new UpdatesApiClient(this.client),
@@ -137,10 +140,12 @@ export class UpdatesEngine {
     private handleSequenceEvent = async (tx: Transaction, event: SequenceHolderEvent) => {
         if (event.type === 'start') {
             if (event.sequence.__typename === 'SequenceChat') {
+                await this.drafts.onSequenceStart(tx, event.sequence);
                 await this.chats.onSequenceStart(tx, event.sequence);
             }
         } else if (event.type === 'event') {
             await this.chats.onUpdate(tx, event.event);
+            await this.drafts.onUpdate(tx, event.event);
         }
         console.log('updates: sequence: ', event);
     }

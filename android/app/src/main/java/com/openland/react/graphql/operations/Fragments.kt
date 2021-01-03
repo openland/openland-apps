@@ -1608,7 +1608,8 @@ internal val ShortSequenceChatSelector = obj(
                     field("counter", "counter", notNull(scalar("Int"))),
                     field("mentions", "mentions", notNull(scalar("Int"))),
                     field("total", "total", notNull(scalar("Int"))),
-                    field("seq", "seq", notNull(scalar("Int")))
+                    field("seq", "seq", scalar("Int")),
+                    field("readSeq", "readSeq", notNull(scalar("Int")))
                 ))
         )
 

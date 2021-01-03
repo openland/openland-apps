@@ -59,6 +59,7 @@ fragment ShortSequenceChat on SequenceChat {
         mentions
         total
         seq
+        readSeq
     }
 }
 
