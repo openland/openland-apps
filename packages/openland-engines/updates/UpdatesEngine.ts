@@ -143,6 +143,10 @@ export class UpdatesEngine {
                 await this.drafts.onSequenceStart(tx, event.sequence);
                 await this.chats.onSequenceStart(tx, event.sequence);
             }
+        } else if (event.type === 'restart') {
+            if (event.sequence.__typename === 'SequenceChat') {
+                await this.drafts.onSequenceStart(tx, event.sequence);
+            }
         } else if (event.type === 'event') {
             await this.chats.onUpdate(tx, event.event);
             await this.drafts.onUpdate(tx, event.event);
