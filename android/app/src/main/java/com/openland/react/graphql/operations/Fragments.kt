@@ -1610,6 +1610,10 @@ internal val ShortSequenceChatSelector = obj(
                     field("total", "total", notNull(scalar("Int"))),
                     field("seq", "seq", scalar("Int")),
                     field("readSeq", "readSeq", notNull(scalar("Int")))
+                )),
+            field("room", "room", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Room", RoomNanoSelector)
                 ))
         )
 

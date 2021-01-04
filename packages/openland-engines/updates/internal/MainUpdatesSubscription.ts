@@ -28,20 +28,19 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
     private _state: MainUpdatesState = 'inited';
 
     constructor(
-        vt: string | null,
         api: UpdatesApi<T, STATE, DIFF>,
         subscription: UpdatesSubscription<T>
     ) {
-        if (vt) {
-            this._vt = vt;
-        }
         this.api = api;
         this.subscription = subscription;
     }
 
-    start = (handler: MainUpdatesSubscriptionHandler<T, STATE, DIFF>) => {
+    start = (vt: string | null, handler: MainUpdatesSubscriptionHandler<T, STATE, DIFF>) => {
         if (this._launched) {
             throw Error('Already launched');
+        }
+        if (vt) {
+            this._vt = vt;
         }
         this._launched = true;
 

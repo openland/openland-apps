@@ -61,6 +61,9 @@ fragment ShortSequenceChat on SequenceChat {
         seq
         readSeq
     }
+    room {
+        ...RoomNano
+    }
 }
 
 fragment ShortSequenceCommon on SequenceCommon {

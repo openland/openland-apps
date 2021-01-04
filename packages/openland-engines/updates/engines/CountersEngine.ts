@@ -1,14 +1,13 @@
-import { HistoryTracker, historyTrackerReducer, historyTrackerIsWithinKnown } from './../counters/HistoryTracker';
+import { DialogsEngine } from './DialogsEngine';
+import { HistoryTracker, historyTrackerReducer, historyTrackerIsWithinKnown } from './counters/HistoryTracker';
 import { UpdatesEngine } from '../UpdatesEngine';
-import { ChatCounterState, counterReducer } from '../counters/ChatCounterState';
-import { OpenlandClient } from 'openland-api/spacex';
-import { Persistence, Transaction } from 'openland-engines/persistence/Persistence';
+import { ChatCounterState, counterReducer } from './counters/ChatCounterState';
+import { Transaction } from 'openland-engines/persistence/Persistence';
 import { ShortSequenceChat, ShortUpdate } from 'openland-api/spacex.types';
 
 export class CountersEngine {
-    readonly client: OpenlandClient;
-    readonly persistence: Persistence;
-    readonly engine: UpdatesEngine;
+    readonly updates: UpdatesEngine;
+    readonly dialogs: DialogsEngine;
     readonly me: string;
 
     private chats = new Map<string, {
@@ -17,11 +16,10 @@ export class CountersEngine {
         history: HistoryTracker
     }>();
 
-    constructor(me: string, client: OpenlandClient, persistence: Persistence, engine: UpdatesEngine) {
-        this.client = client;
-        this.persistence = persistence;
+    constructor(me: string, updates: UpdatesEngine, dialogs: DialogsEngine) {
         this.me = me;
-        this.engine = engine;
+        this.updates = updates;
+        this.dialogs = dialogs;
     }
 
     async onSequenceRestart(tx: Transaction, pts: number, state: ShortSequenceChat) {
@@ -46,13 +44,17 @@ export class CountersEngine {
                             pts, lastMessagesSeq: 0, lastMessages: []
                         }
             });
+            if (state.states && state.states.seq) {
+                this.dialogs.onCounterUpdate(tx, state.cid, { unread: state.states.counter, mentions: state.states.mentions });
+            }
         } else {
-            console.warn(state);
             let st = this.chats.get(state.cid)!;
             if (state.states && state.states.seq) {
                 st.counters = counterReducer(st.counters, { type: 'server-state', seq: state.states.seq, readSeq: state.states.readSeq, counter: state.states.counter });
                 st.history = historyTrackerReducer(st.history, { type: 'reset', seq: state.states.seq, pts: pts });
-                console.warn(st);
+                if (st.counters.type === 'generic') {
+                    this.dialogs.onCounterUpdate(tx, state.cid, { unread: st.counters.counter, mentions: 0 });
+                }
             }
         }
     }
@@ -69,15 +71,15 @@ export class CountersEngine {
 
             // Invalidate sequence
             if (state.counters.type === 'empty') {
-                console.warn('invalidate:empty');
-                await this.engine.invalidateSequence(tx, state.sequence);
+                await this.updates.invalidate(tx, state.sequence);
             } else {
                 if (historyTrackerIsWithinKnown(state.history, { from: state.counters.serverReadSeq, to: update.seq })) {
                     state.counters = counterReducer(state.counters, { type: 'read', readSeq: update.seq });
-                    console.warn(state);
+                    if (state.counters.type === 'generic') {
+                        this.dialogs.onCounterUpdate(tx, update.cid, { unread: state.counters.counter, mentions: 0 });
+                    }
                 } else {
-                    console.warn('invalidate:not-within-known:' + (state.counters.serverReadSeq) + ':' + update.seq + '/' + state.history.lastMessagesSeq);
-                    await this.engine.invalidateSequence(tx, state.sequence);
+                    await this.updates.invalidate(tx, state.sequence);
                 }
             }
         } else if (update.__typename === 'UpdateChatMessage') {
@@ -88,7 +90,9 @@ export class CountersEngine {
             if (update.message.sender.id !== this.me) {
                 state.counters = counterReducer(state.counters, { type: 'message-add', seq: update.message.seq! });
                 state.history = historyTrackerReducer(state.history, { type: 'message-add', seq: update.message.seq!, pts });
-                console.warn(state);
+                if (state.counters.type === 'generic') {
+                    this.dialogs.onCounterUpdate(tx, update.cid, { unread: state.counters.counter, mentions: 0 });
+                }
             }
         } else if (update.__typename === 'UpdateChatMessageDeleted') {
             let state = this.chats.get(update.cid)!;
@@ -97,11 +101,9 @@ export class CountersEngine {
             }
             state.counters = counterReducer(state.counters, { type: 'message-remove', seq: update.seq });
             state.history = historyTrackerReducer(state.history, { type: 'message-remove', seq: update.seq, pts });
-            console.warn(state);
+            if (state.counters.type === 'generic') {
+                this.dialogs.onCounterUpdate(tx, update.cid, { unread: state.counters.counter, mentions: 0 });
+            }
         }
-    }
-
-    async onDialogsLoaded() {
-        // console.log('[engine] loaded unread: ' + JSON.stringify(this.counters));
     }
 }

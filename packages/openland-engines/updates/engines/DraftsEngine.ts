@@ -1,11 +1,7 @@
-import { OpenlandClient } from 'openland-api/spacex';
-import { Persistence, Transaction } from 'openland-engines/persistence/Persistence';
+import { Transaction } from 'openland-engines/persistence/Persistence';
 import { ShortSequenceChat, ShortUpdate } from 'openland-api/spacex.types';
 
 export class DraftsEngine {
-    readonly client: OpenlandClient;
-    readonly persistence: Persistence;
-
     private drafts = new Map<string, {
         draft: {
             version: number,
@@ -13,11 +9,6 @@ export class DraftsEngine {
             message: string | null
         }
     }>();
-
-    constructor(client: OpenlandClient, persistence: Persistence) {
-        this.client = client;
-        this.persistence = persistence;
-    }
 
     async onSequenceRestart(tx: Transaction, state: ShortSequenceChat) {
         if (state.draft) {

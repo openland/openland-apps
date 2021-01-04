@@ -2981,6 +2981,7 @@ type SequenceChat implements Sequence {
   id: ID!
   cid: ID!
   states: SequenceChatStates
+  room: Room
   draft: Draft
 }
 
