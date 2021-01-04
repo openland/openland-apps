@@ -1,3 +1,4 @@
+import { UpdatesEngine } from './../UpdatesEngine';
 import { ChatCounterState, counterReducer } from './../counters/ChatCounterState';
 import { OpenlandClient } from 'openland-api/spacex';
 import { Persistence, Transaction } from 'openland-engines/persistence/Persistence';
@@ -6,46 +7,42 @@ import { ShortSequenceChat, ShortUpdate } from 'openland-api/spacex.types';
 export class ChatsEngine {
     readonly client: OpenlandClient;
     readonly persistence: Persistence;
-    private me: string;
-    private counters = {
-        messagesUnread: 0,
-        messagesMentions: 0,
-        chatUnread: 0,
-        chatMentions: 0
-    };
+    readonly engine: UpdatesEngine;
+    readonly me: string;
 
     private chats = new Map<string, {
+        sequence: string,
         counters: ChatCounterState
     }>();
 
-    constructor(me: string, client: OpenlandClient, persistence: Persistence) {
+    constructor(me: string, client: OpenlandClient, persistence: Persistence, engine: UpdatesEngine) {
         this.client = client;
         this.persistence = persistence;
         this.me = me;
+        this.engine = engine;
     }
 
-    async onSequenceStart(tx: Transaction, state: ShortSequenceChat) {
-        this.chats.set(state.cid, {
-            counters: state.states && state.states.seq ? {
-                type: 'generic',
-                counter: state.states.counter,
-                readSeq: state.states.readSeq,
+    async onSequenceRestart(tx: Transaction, state: ShortSequenceChat) {
+        if (!this.chats.has(state.cid)) {
+            this.chats.set(state.cid, {
+                sequence: state.id,
+                counters: state.states && state.states.seq ? {
+                    type: 'generic',
+                    counter: state.states.counter,
+                    readSeq: state.states.readSeq,
 
-                serverCounter: state.states.counter,
-                serverMaxSeq: state.states.seq,
-                serverReadSeq: state.states.readSeq,
-                serverUnreadMessages: []
-            } : { type: 'empty' }
-        });
-
-        if (state.states) {
-            if (state.states.counter > 0) {
-                this.counters.messagesUnread += state.states.counter;
-                this.counters.chatUnread++;
-            }
-            if (state.states.mentions > 0) {
-                this.counters.messagesMentions += state.states.mentions;
-                this.counters.chatMentions++;
+                    serverCounter: state.states.counter,
+                    serverMaxSeq: state.states.seq,
+                    serverReadSeq: state.states.readSeq,
+                    serverUnreadMessages: []
+                } : { type: 'empty' }
+            });
+        } else {
+            console.warn(state);
+            let st = this.chats.get(state.cid)!;
+            if (state.states && state.states.seq) {
+                st.counters = counterReducer(st.counters, { type: 'server-state', seq: state.states.seq, readSeq: state.states.readSeq, counter: state.states.counter });
+                console.warn(st);
             }
         }
     }
@@ -60,8 +57,8 @@ export class ChatsEngine {
                 return;
             }
 
-            state.counters = counterReducer(state.counters, { type: 'optimistic-read', readSeq: update.seq });
-            console.warn(state);
+            // Invalidate sequence
+            await this.engine.invalidateSequence(tx, state.sequence);
         } else if (update.__typename === 'UpdateChatMessage') {
             let state = this.chats.get(update.cid)!;
             if (!state) {
@@ -82,6 +79,6 @@ export class ChatsEngine {
     }
 
     async onDialogsLoaded() {
-        console.log('[engine] loaded unread: ' + JSON.stringify(this.counters));
+        // console.log('[engine] loaded unread: ' + JSON.stringify(this.counters));
     }
 }

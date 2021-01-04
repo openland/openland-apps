@@ -27,7 +27,7 @@ export class UpdatesEngine {
         this.client = client;
         this.persistence = persistence;
         this.me = me;
-        this.chats = new ChatsEngine(this.me, client, persistence);
+        this.chats = new ChatsEngine(this.me, client, persistence, this);
         this.drafts = new DraftsEngine(client, persistence);
         this.api = new UpdatesApiClient(this.client);
         this.main = new MainUpdatesSubscription(null,
@@ -95,6 +95,13 @@ export class UpdatesEngine {
         }
     }
 
+    async invalidateSequence(tx: Transaction, id: string) {
+        let sequence = this.sequences.get(id);
+        if (sequence) {
+            await sequence.invalidate(tx);
+        }
+    }
+
     private onInited = async (initTx: Transaction) => {
 
         //
@@ -138,14 +145,10 @@ export class UpdatesEngine {
     }
 
     private handleSequenceEvent = async (tx: Transaction, event: SequenceHolderEvent) => {
-        if (event.type === 'start') {
+        if (event.type === 'start' || event.type === 'restart') {
             if (event.sequence.__typename === 'SequenceChat') {
-                await this.drafts.onSequenceStart(tx, event.sequence);
-                await this.chats.onSequenceStart(tx, event.sequence);
-            }
-        } else if (event.type === 'restart') {
-            if (event.sequence.__typename === 'SequenceChat') {
-                await this.drafts.onSequenceStart(tx, event.sequence);
+                await this.drafts.onSequenceRestart(tx, event.sequence);
+                await this.chats.onSequenceRestart(tx, event.sequence);
             }
         } else if (event.type === 'event') {
             await this.chats.onUpdate(tx, event.event);

@@ -11,7 +11,7 @@ export class DraftsEngine {
             version: number,
             date: number,
             message: string | null
-        } | null
+        }
     }>();
 
     constructor(client: OpenlandClient, persistence: Persistence) {
@@ -19,30 +19,37 @@ export class DraftsEngine {
         this.persistence = persistence;
     }
 
-    async onSequenceStart(tx: Transaction, state: ShortSequenceChat) {
-        this.drafts.set(state.cid, {
-            draft: state.draft ? {
-                version: state.draft.version,
-                date: parseInt(state.draft.date, 10),
-                message: state.draft.message
-            } : null
-        });
+    async onSequenceRestart(tx: Transaction, state: ShortSequenceChat) {
+        if (state.draft) {
+            await this.applyDraft(tx, state.cid, parseInt(state.draft.date, 10), state.draft.version, state.draft.message);
+        }
     }
 
     async onUpdate(tx: Transaction, update: ShortUpdate) {
         if (update.__typename === 'UpdateChatDraftChanged') {
-            let ex = this.drafts.get(update.cid);
-            if (!ex) {
-                return; // Should not happen
-            }
-            if (!ex.draft || ex.draft.version < update.version) {
+            await this.applyDraft(tx, update.cid, parseInt(update.date, 10), update.version, update.draft);
+            console.log('[engine] draft update: ' + JSON.stringify(update));
+        }
+    }
+
+    private async applyDraft(tx: Transaction, cid: string, date: number, version: number, message: string | null) {
+        let ex = this.drafts.get(cid);
+        if (!ex) {
+            this.drafts.set(cid, {
+                draft: {
+                    version,
+                    date,
+                    message
+                }
+            });
+        } else {
+            if (ex.draft.version < version) {
                 ex.draft = {
-                    version: update.version,
-                    date: parseInt(update.date, 10),
-                    message: update.draft
+                    version,
+                    date,
+                    message
                 };
             }
-            console.log('[engine] draft update: ' + JSON.stringify(update));
         }
     }
 }

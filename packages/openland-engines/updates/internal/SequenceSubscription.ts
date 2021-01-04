@@ -41,7 +41,7 @@ export class SequenceSubscription {
         // Invalidate if needed
         if (startInvalidated) {
             this._invalidationNeeded = true;
-            this.invalidate();
+            this.doInvalidate();
         }
     }
 
@@ -112,6 +112,15 @@ export class SequenceSubscription {
         await this.updateInvalidatedState(tx);
     }
 
+    async invalidate(tx: Transaction) {
+        if (this._invalidated) {
+            return;
+        }
+        this.doInvalidate();
+
+        await this.updateInvalidatedState(tx);
+    }
+
     //
     // Invalidation
     //
@@ -141,13 +150,13 @@ export class SequenceSubscription {
         if (!this._invalidationTimer) {
             this._invalidationTimer = setTimeout(() => {
                 this._persistence.inTx(async (tx) => { // TODO: Avoid transaction
-                    this.invalidate();
+                    this.doInvalidate();
                 });
             }, 5000);
         }
     }
 
-    private invalidate() {
+    private doInvalidate() {
         if (this._invalidated) {
             return;
         }
@@ -197,6 +206,9 @@ export class SequenceSubscription {
                     if (!hasMore) {
                         this._invalidated = false;
                         await this.updateInvalidatedState(tx);
+
+                        // Notify restart
+                        await this._handler!(tx, { type: 'restart', pts: diff.pts, sequence: diff.state });
 
                         // Start invalidation timer if there are some empty updates
                         if (!this._pending.empty) {

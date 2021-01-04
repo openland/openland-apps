@@ -30,9 +30,9 @@ function persistPts(tx: Transaction, id: string, pts: number) {
 }
 
 export type SequenceHolderEvent =
-    | { type: 'start', sequence: UpdateSequenceState }
-    | { type: 'restart', sequence: UpdateSequenceDiff }
-    | { type: 'event', id: string, event: UpdateEvent };
+    | { type: 'start', pts: number, sequence: UpdateSequenceState }
+    | { type: 'restart', pts: number, sequence: UpdateSequenceDiff }
+    | { type: 'event', pts: number, id: string, event: UpdateEvent };
 export type SequenceHolderHandler = (tx: Transaction, event: SequenceHolderEvent) => Promise<void>;
 
 export class SequenceHolder {
@@ -128,7 +128,7 @@ export class SequenceHolder {
         if (this.loading) {
 
             // Call Handler
-            this.handler(tx, { type: 'start', sequence: state.sequence });
+            this.handler(tx, { type: 'start', pts: state.pts, sequence: state.sequence });
 
             // Save pts and enforce invalidated flag
             this.startPts = state.pts;
@@ -197,7 +197,7 @@ export class SequenceHolder {
     private async onSequenceRestart(tx: Transaction, pts: number, sequence: UpdateSequenceDiff) {
 
         // Handle event
-        this.handler(tx, { type: 'restart', sequence: sequence });
+        await this.handler(tx, { type: 'restart', pts, sequence });
 
         // Persist pts
         persistPts(tx, this.id, pts);
@@ -206,7 +206,7 @@ export class SequenceHolder {
     private async onSequenceUpdate(tx: Transaction, pts: number, update: UpdateEvent) {
 
         // Handle event
-        this.handler(tx, { type: 'event', id: this.id, event: update });
+        await this.handler(tx, { type: 'event', id: this.id, pts, event: update });
 
         // Persist pts
         persistPts(tx, this.id, pts);
@@ -239,6 +239,13 @@ export class SequenceHolder {
             });
         } else {
             await this.subscription!.onEvent(tx, pts, update);
+        }
+    }
+
+    async invalidate(tx: Transaction) {
+        if (!this.loading) {
+            await updateInvalidated(tx, this.id, true);
+            await this.subscription!.invalidate(tx);
         }
     }
 }
