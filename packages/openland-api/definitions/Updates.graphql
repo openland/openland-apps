@@ -92,10 +92,6 @@ subscription WatchUpdates {
             seq
             state
         }
-        ... on UpdateSubscriptionCheckpoint {
-            seq
-            state
-        }
         ... on UpdateSubscriptionEvent {
             seq
             pts

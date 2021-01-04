@@ -6,7 +6,6 @@ export type MainUpdatesSubscriptionEvent<T, STATE, DIFF> =
     | { type: 'start', vt: string, state: STATE, pts: number }
     | { type: 'event', vt: string, id: string, pts: number, event: T }
     | { type: 'diff', vt: string, state: DIFF, fromPts: number, events: { pts: number, event: T }[] }
-    | { type: 'checkpoint', vt: string }
     | { type: 'state', state: MainUpdatesState };
 export type MainUpdatesSubscriptionHandler<T, STATE, DIFF> = (event: MainUpdatesSubscriptionEvent<T, STATE, DIFF>) => void;
 
@@ -19,7 +18,6 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
     private _currentSeq!: number;
     private _subscribedFrom: number | null = null;
     private _vt!: string;
-    private _vtSeq!: number;
     private _launched = false;
     private _started = false;
     private _stopped = false;
@@ -81,7 +79,6 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
             // Load Initial State
             let state = await this.api.getState();
             this._vt = state.vt;
-            this._vtSeq = state.seq;
             this._currentSeq = state.seq;
 
             // Call handler
@@ -97,7 +94,6 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
             // Load Difference
             let difference = await this.api.getDifference(this._vt);
             this._vt = difference.vt;
-            this._vtSeq = difference.seq;
             this._currentSeq = difference.seq;
 
             // Call handler
@@ -192,20 +188,6 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
             }
         } else if (event.type === 'stopped') {
             this._subscribedFrom = null;
-
-        } else if (event.type === 'checkpoint') {
-
-            // Return not started or invalidated
-            if (!this._started || this._invalidated) {
-                return;
-            }
-
-            // Handle vt
-            if (event.seq <= this._currentSeq && this._vtSeq < event.seq) {
-                this._vt = event.checkpoint;
-                this._vtSeq = event.seq;
-                this._handler!({ type: 'checkpoint', vt: this._vt });
-            }
         }
     }
 
@@ -230,7 +212,6 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
                 let difference = await this.api.getDifference(this._vt);
                 this._currentSeq = difference.seq;
                 this._vt = difference.vt;
-                this._vtSeq = difference.seq;
 
                 // Call handler
                 for (let sequence of difference.sequences) {

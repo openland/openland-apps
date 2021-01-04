@@ -3541,12 +3541,7 @@ type UpdatesState {
   sequences: [UpdatesSequenceState!]!
 }
 
-union UpdateSubscription = UpdateSubscriptionStarted | UpdateSubscriptionCheckpoint | UpdateSubscriptionEvent | UpdateSubscriptionEphemeralEvent
-
-type UpdateSubscriptionCheckpoint {
-  seq: Int!
-  state: String!
-}
+union UpdateSubscription = UpdateSubscriptionStarted | UpdateSubscriptionEvent | UpdateSubscriptionEphemeralEvent
 
 type UpdateSubscriptionEphemeralEvent {
   seq: Int!

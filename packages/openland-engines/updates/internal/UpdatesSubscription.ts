@@ -1,8 +1,7 @@
 export type UpdatesSubscriptionEvent<T> =
     | { type: 'stopped' }
     | { type: 'started', seq: number }
-    | { type: 'event', seq: number, sequence: string, pts: number, event: T }
-    | { type: 'checkpoint', seq: number, checkpoint: string };
+    | { type: 'event', seq: number, sequence: string, pts: number, event: T };
 
 export type UpdatesSubscriptionHandler<T> = (event: UpdatesSubscriptionEvent<T>) => void;
 

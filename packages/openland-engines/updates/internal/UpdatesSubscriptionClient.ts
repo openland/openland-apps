@@ -52,9 +52,6 @@ export class UpdatesSubscriptionClient implements UpdatesSubscription<UpdateEven
                 } else if (e.message.watchUpdates.__typename === 'UpdateSubscriptionEvent') {
                     const update = e.message.watchUpdates;
                     this.handler!({ type: 'event', seq: update.seq, event: update.event, pts: update.pts, sequence: update.sequence.id });
-                } else if (e.message.watchUpdates.__typename === 'UpdateSubscriptionCheckpoint') {
-                    const update = e.message.watchUpdates;
-                    this.handler!({ type: 'checkpoint', seq: update.seq, checkpoint: update.state });
                 }
             }
         });
