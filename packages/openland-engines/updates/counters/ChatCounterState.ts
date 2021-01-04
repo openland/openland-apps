@@ -25,7 +25,8 @@ export type ChatCounterAction =
     | { type: 'message-remove', seq: number }
     | { type: 'message-load', seqs: number[] }
     | { type: 'server-state', seq: number, readSeq: number, counter: number }
-    | { type: 'optimistic-read', readSeq: number }
+    | { type: 'read-optimistic', readSeq: number }
+    | { type: 'read', readSeq: number }
     ;
 
 export function counterReducer(src: ChatCounterState, action: ChatCounterAction): ChatCounterState {
@@ -45,7 +46,9 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
             };
         } else if (action.type === 'message-remove') {
             return src; // Throw error?
-        } else if (action.type === 'optimistic-read') {
+        } else if (action.type === 'read-optimistic') {
+            return src; // Throw error?
+        } else if (action.type === 'read') {
             return src; // Throw error?
         } else if (action.type === 'server-state') {
             return {
@@ -119,7 +122,7 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
     }
 
     // Optimistic update
-    if (action.type === 'optimistic-read') {
+    if (action.type === 'read-optimistic') {
         if (action.readSeq > readSeq) {
             if (action.readSeq === serverMaxSeq) {
                 // Reset counter on end reached
@@ -129,6 +132,26 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
                 // Update optimistic
                 let coounterDelta = serverUnreadMessages.filter((v) => readSeq < v && v <= action.readSeq).length;
                 readSeq = action.readSeq;
+                counter -= coounterDelta;
+            }
+        }
+    }
+
+    // Read
+    if (action.type === 'read') {
+        if (action.readSeq > readSeq) {
+            if (action.readSeq === serverMaxSeq) {
+                // Reset counter on end reached
+                counter = 0;
+                readSeq = action.readSeq;
+                serverReadSeq = action.readSeq;
+                serverUnreadMessages = [];
+            } else {
+                // Update optimistic
+                let coounterDelta = serverUnreadMessages.filter((v) => readSeq < v && v <= action.readSeq).length;
+                readSeq = action.readSeq;
+                serverReadSeq = action.readSeq;
+                serverUnreadMessages = serverUnreadMessages.filter((v) => readSeq < v);
                 counter -= coounterDelta;
             }
         }

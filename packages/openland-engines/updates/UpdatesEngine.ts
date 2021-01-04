@@ -148,10 +148,10 @@ export class UpdatesEngine {
         if (event.type === 'start' || event.type === 'restart') {
             if (event.sequence.__typename === 'SequenceChat') {
                 await this.drafts.onSequenceRestart(tx, event.sequence);
-                await this.counters.onSequenceRestart(tx, event.sequence);
+                await this.counters.onSequenceRestart(tx, event.pts, event.sequence);
             }
         } else if (event.type === 'event') {
-            await this.counters.onUpdate(tx, event.event);
+            await this.counters.onUpdate(tx, event.pts, event.event);
             await this.drafts.onUpdate(tx, event.event);
         }
         console.log('updates: sequence: ', event);
