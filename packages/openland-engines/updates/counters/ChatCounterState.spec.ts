@@ -106,7 +106,7 @@ describe('ChatCounterState', () => {
             serverCounter: 6
         });
 
-        state = counterReducer(state, { type: 'optimistic-read', readSeq: 1 });
+        state = counterReducer(state, { type: 'read-optimistic', readSeq: 1 });
         expectToMatch(state, {
             type: 'generic',
             readSeq: 1,
@@ -118,7 +118,7 @@ describe('ChatCounterState', () => {
             serverCounter: 6
         });
 
-        state = counterReducer(state, { type: 'optimistic-read', readSeq: 3 });
+        state = counterReducer(state, { type: 'read-optimistic', readSeq: 3 });
         expectToMatch(state, {
             type: 'generic',
             readSeq: 3,
@@ -142,7 +142,7 @@ describe('ChatCounterState', () => {
             serverCounter: 3
         });
 
-        state = counterReducer(state, { type: 'optimistic-read', readSeq: 4 });
+        state = counterReducer(state, { type: 'read-optimistic', readSeq: 4 });
         expectToMatch(state, {
             type: 'generic',
             readSeq: 4,
