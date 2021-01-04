@@ -1,6 +1,6 @@
 import { DraftsEngine } from './engines/DraftsEngine';
 import { ShortSequence, ShortUpdate } from 'openland-api/spacex.types';
-import { ChatsEngine } from './engines/ChatsEngine';
+import { CountersEngine } from './engines/CountersEngine';
 import { Transaction } from './../persistence/Persistence';
 import { SequenceHolder, SequenceHolderEvent } from './internal/SequenceHolder';
 import { UpdateEvent, UpdateSequenceState, UpdateSequenceDiff } from './Types';
@@ -19,7 +19,7 @@ export class UpdatesEngine {
     private closed = false;
     private main: MainUpdatesSubscription<UpdateEvent, UpdateSequenceState, UpdateSequenceDiff>;
     private sequences = new Map<string, SequenceHolder>();
-    private chats: ChatsEngine;
+    private counters: CountersEngine;
     private drafts: DraftsEngine;
     private me: string;
 
@@ -27,7 +27,7 @@ export class UpdatesEngine {
         this.client = client;
         this.persistence = persistence;
         this.me = me;
-        this.chats = new ChatsEngine(this.me, client, persistence, this);
+        this.counters = new CountersEngine(this.me, client, persistence, this);
         this.drafts = new DraftsEngine(client, persistence);
         this.api = new UpdatesApiClient(this.client);
         this.main = new MainUpdatesSubscription(null,
@@ -111,7 +111,7 @@ export class UpdatesEngine {
         let completed = await initTx.readBoolean('dialogs.sync.completed');
         let cursor = await initTx.read('dialogs.sync.cursor');
         if (completed) {
-            await this.chats.onDialogsLoaded();
+            await this.counters.onDialogsLoaded();
             return;
         }
 
@@ -139,7 +139,7 @@ export class UpdatesEngine {
                 });
             }
 
-            await this.chats.onDialogsLoaded();
+            await this.counters.onDialogsLoaded();
             console.info('Dialogs loaded in ' + (Date.now() - start) + ' ms');
         })();
     }
@@ -148,10 +148,10 @@ export class UpdatesEngine {
         if (event.type === 'start' || event.type === 'restart') {
             if (event.sequence.__typename === 'SequenceChat') {
                 await this.drafts.onSequenceRestart(tx, event.sequence);
-                await this.chats.onSequenceRestart(tx, event.sequence);
+                await this.counters.onSequenceRestart(tx, event.sequence);
             }
         } else if (event.type === 'event') {
-            await this.chats.onUpdate(tx, event.event);
+            await this.counters.onUpdate(tx, event.event);
             await this.drafts.onUpdate(tx, event.event);
         }
         console.log('updates: sequence: ', event);

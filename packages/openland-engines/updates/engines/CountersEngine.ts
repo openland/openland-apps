@@ -1,10 +1,10 @@
-import { UpdatesEngine } from './../UpdatesEngine';
-import { ChatCounterState, counterReducer } from './../counters/ChatCounterState';
+import { UpdatesEngine } from '../UpdatesEngine';
+import { ChatCounterState, counterReducer } from '../counters/ChatCounterState';
 import { OpenlandClient } from 'openland-api/spacex';
 import { Persistence, Transaction } from 'openland-engines/persistence/Persistence';
 import { ShortSequenceChat, ShortUpdate } from 'openland-api/spacex.types';
 
-export class ChatsEngine {
+export class CountersEngine {
     readonly client: OpenlandClient;
     readonly persistence: Persistence;
     readonly engine: UpdatesEngine;
