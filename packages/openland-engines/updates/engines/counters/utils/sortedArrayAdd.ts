@@ -1,6 +1,4 @@
-let numberComparator = (a: number, b: number) => a - b;
-
-function sortedArrayAddRaw<T>(src: T[], value: T, comparator: (a: T, b: T) => number): T[] {
+export function sortedArrayAdd<T>(src: T[], value: T, comparator: (a: T, b: T) => number): T[] {
     // Handle empty
     if (src.length === 0) {
         return [value];
@@ -24,8 +22,4 @@ function sortedArrayAddRaw<T>(src: T[], value: T, comparator: (a: T, b: T) => nu
 
     // Insert new element
     return [...src.slice(0, mid), value, ...src.slice(mid)];
-}
-
-export function sortedArrayAdd(src: number[], value: number): number[] {
-    return sortedArrayAddRaw(src, value, numberComparator);
 }

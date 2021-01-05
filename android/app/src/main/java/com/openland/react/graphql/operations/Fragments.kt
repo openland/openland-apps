@@ -1614,6 +1614,10 @@ internal val ShortSequenceChatSelector = obj(
             field("room", "room", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomNanoSelector)
+                )),
+            field("topMessage", "topMessage", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("ModernMessage", FullMessageSelector)
                 ))
         )
 
@@ -1671,12 +1675,7 @@ internal val ShortUpdateSelector = obj(
                 field("cid", "cid", notNull(scalar("ID"))),
                 field("message", "message", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("seq", "seq", scalar("Int")),
-                        field("sender", "sender", notNull(obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("id", "id", notNull(scalar("ID")))
-                            )))
+                        fragment("ModernMessage", FullMessageSelector)
                     )))
             )),
             inline("UpdateChatMessageDeleted", obj(

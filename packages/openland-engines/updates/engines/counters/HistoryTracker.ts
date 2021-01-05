@@ -1,16 +1,11 @@
-import { sortedArrayFind } from './utils/sortedArrayFind';
-import { sortedArrayAdd } from './utils/sortedArrayAdd';
-
 export type HistoryTracker = {
     pts: number;
     lastMessagesSeq: number;
-    lastMessages: number[];
 };
 
 export type HistoryTrackerAction =
     | { type: 'reset', pts: number, seq: number }
-    | { type: 'message-add', pts: number, seq: number }
-    | { type: 'message-remove', pts: number, seq: number };
+    | { type: 'update', pts: number };
 
 export function historyTrackerReducer(src: HistoryTracker, action: HistoryTrackerAction): HistoryTracker {
     if (action.type === 'reset') {
@@ -21,47 +16,13 @@ export function historyTrackerReducer(src: HistoryTracker, action: HistoryTracke
 
         return {
             pts: action.pts,
-            lastMessagesSeq: action.seq,
-            lastMessages: []
+            lastMessagesSeq: action.seq
         };
-    } else if (action.type === 'message-add') {
-        if (action.seq > src.lastMessagesSeq) {
-            if (sortedArrayFind(src.lastMessages, action.seq) >= 0) {
-                return {
-                    ...src,
-                    pts: action.pts
-                };
-            }
-            return {
-                pts: action.pts,
-                lastMessagesSeq: src.lastMessagesSeq,
-                lastMessages: sortedArrayAdd(src.lastMessages, action.seq)
-            };
-        } else {
-            return {
-                ...src,
-                pts: action.pts
-            };
-        }
-    } else if (action.type === 'message-remove') {
-        if (action.seq > src.lastMessagesSeq) {
-            if (sortedArrayFind(src.lastMessages, action.seq) < 0) {
-                return {
-                    ...src,
-                    pts: action.pts
-                };
-            }
-            return {
-                pts: action.pts,
-                lastMessagesSeq: src.lastMessagesSeq,
-                lastMessages: src.lastMessages.filter((v) => v !== action.seq)
-            };
-        } else {
-            return {
-                ...src,
-                pts: action.pts
-            };
-        }
+    } else if (action.type === 'update') {
+        return {
+            ...src,
+            pts: action.pts
+        };
     }
 
     throw Error('Unknwon');

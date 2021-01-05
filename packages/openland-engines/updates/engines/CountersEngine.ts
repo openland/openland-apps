@@ -39,9 +39,9 @@ export class CountersEngine {
                 history:
                     (state.states && state.states.seq)
                         ? {
-                            pts, lastMessagesSeq: state.states.seq, lastMessages: []
+                            pts, lastMessagesSeq: state.states.seq
                         } : {
-                            pts, lastMessagesSeq: 0, lastMessages: []
+                            pts, lastMessagesSeq: 0
                         }
             });
             if (state.states && state.states.seq) {
@@ -89,7 +89,7 @@ export class CountersEngine {
             }
             if (update.message.sender.id !== this.me) {
                 state.counters = counterReducer(state.counters, { type: 'message-add', seq: update.message.seq! });
-                state.history = historyTrackerReducer(state.history, { type: 'message-add', seq: update.message.seq!, pts });
+                state.history = historyTrackerReducer(state.history, { type: 'update', pts });
                 if (state.counters.type === 'generic') {
                     this.dialogs.onCounterUpdate(tx, update.cid, { unread: state.counters.counter, mentions: 0 });
                 }
@@ -100,7 +100,7 @@ export class CountersEngine {
                 return;
             }
             state.counters = counterReducer(state.counters, { type: 'message-remove', seq: update.seq });
-            state.history = historyTrackerReducer(state.history, { type: 'message-remove', seq: update.seq, pts });
+            state.history = historyTrackerReducer(state.history, { type: 'update', pts });
             if (state.counters.type === 'generic') {
                 this.dialogs.onCounterUpdate(tx, update.cid, { unread: state.counters.counter, mentions: 0 });
             }

@@ -1,5 +1,4 @@
-import { sortedArrayAdd } from './utils/sortedArrayAdd';
-import { sortedArrayFind } from './utils/sortedArrayFind';
+import { SortedArray } from './utils/SortedArray';
 
 export type ChatCounterStateGeneric = {
     type: 'generic',
@@ -76,8 +75,8 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
         serverMaxSeq = Math.max(action.seq, serverMaxSeq);
 
         // Increment counters
-        if (action.seq > serverReadSeq && sortedArrayFind(src.serverUnreadMessages, action.seq) < 0) {
-            serverUnreadMessages = sortedArrayAdd(serverUnreadMessages, action.seq);
+        if (action.seq > serverReadSeq && SortedArray.numbers.find(src.serverUnreadMessages, action.seq) < 0) {
+            serverUnreadMessages = SortedArray.numbers.add(serverUnreadMessages, action.seq);
             serverCounter++;
 
             // Increment optimistic counter
@@ -91,7 +90,7 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
     if (action.type === 'message-remove') {
         serverMaxSeq = Math.max(action.seq, serverMaxSeq);
 
-        if (action.seq > serverReadSeq && sortedArrayFind(src.serverUnreadMessages, action.seq) >= 0) {
+        if (action.seq > serverReadSeq && SortedArray.numbers.find(src.serverUnreadMessages, action.seq) >= 0) {
             serverUnreadMessages = src.serverUnreadMessages.filter((v) => v !== action.seq); // TODO: Speedup?
             serverCounter--;
 
@@ -107,8 +106,8 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
         for (let s of action.seqs) {
             serverMaxSeq = Math.max(serverMaxSeq, s);
 
-            if (s > serverReadSeq && sortedArrayFind(src.serverUnreadMessages, s) >= 0) {
-                serverUnreadMessages = sortedArrayAdd(serverUnreadMessages, s);
+            if (s > serverReadSeq && SortedArray.numbers.find(src.serverUnreadMessages, s) >= 0) {
+                serverUnreadMessages = SortedArray.numbers.add(serverUnreadMessages, s);
 
                 // NOTE: Not updating counter since it is simply history loading
                 // serverCounter++;

@@ -48631,6 +48631,18 @@
             "deprecationReason": null
           },
           {
+            "name": "topMessage",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "INTERFACE",
+              "name": "ModernMessage",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "draft",
             "description": "",
             "args": [],

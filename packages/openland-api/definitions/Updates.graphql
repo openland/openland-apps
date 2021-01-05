@@ -24,11 +24,7 @@ fragment ShortUpdate on UpdateEvent {
     ... on UpdateChatMessage {
         cid
         message {
-            id
-            seq
-            sender {
-                id
-            }
+            ...FullMessage
         }
     }
     ... on UpdateChatMessageDeleted {
@@ -63,6 +59,9 @@ fragment ShortSequenceChat on SequenceChat {
     }
     room {
         ...RoomNano
+    }
+    topMessage {
+        ...FullMessage
     }
 }
 

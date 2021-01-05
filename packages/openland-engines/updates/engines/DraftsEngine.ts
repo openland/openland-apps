@@ -1,7 +1,11 @@
+import { DialogsEngine } from './DialogsEngine';
 import { Transaction } from 'openland-engines/persistence/Persistence';
 import { ShortSequenceChat, ShortUpdate } from 'openland-api/spacex.types';
 
 export class DraftsEngine {
+
+    readonly dialogs: DialogsEngine;
+
     private drafts = new Map<string, {
         draft: {
             version: number,
@@ -9,6 +13,10 @@ export class DraftsEngine {
             message: string | null
         }
     }>();
+
+    constructor(dialogs: DialogsEngine) {
+        this.dialogs = dialogs;
+    }
 
     async onSequenceRestart(tx: Transaction, state: ShortSequenceChat) {
         if (state.draft) {

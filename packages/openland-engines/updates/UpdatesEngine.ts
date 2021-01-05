@@ -1,3 +1,4 @@
+import { HistoryEngine } from './engines/HistoryEngine';
 import { DialogsEngine } from './engines/DialogsEngine';
 import { SequencesEngine } from './sequences/SequencesEngine';
 import { DraftsEngine } from './engines/DraftsEngine';
@@ -18,6 +19,7 @@ export class UpdatesEngine {
     readonly counters: CountersEngine;
     readonly drafts: DraftsEngine;
     readonly dialogs: DialogsEngine;
+    readonly history: HistoryEngine;
 
     constructor(me: string, client: OpenlandClient, persistence: Persistence) {
         this.client = client;
@@ -26,7 +28,8 @@ export class UpdatesEngine {
         this.sequences = new SequencesEngine(client, persistence);
         this.dialogs = new DialogsEngine();
         this.counters = new CountersEngine(this.me, this, this.dialogs);
-        this.drafts = new DraftsEngine();
+        this.drafts = new DraftsEngine(this.dialogs);
+        this.history = new HistoryEngine(this.dialogs, this);
     }
 
     start() {
@@ -55,17 +58,23 @@ export class UpdatesEngine {
     private handleEvent = async (tx: Transaction, event: SequenceHolderEvent | { type: 'loaded' }) => {
         if (event.type === 'loaded') {
             await this.dialogs.onDialogsLoaded(tx);
+            console.log('updates: sequence: ', event);
         } else if (event.type === 'start' || event.type === 'restart') {
             if (event.sequence.__typename === 'SequenceChat') {
+                // NOTE: Dialogs MUST be the first since it could miss some dialogs
                 await this.dialogs.onSequenceRestart(tx, event.sequence);
-                await this.drafts.onSequenceRestart(tx, event.sequence);
                 await this.counters.onSequenceRestart(tx, event.pts, event.sequence);
+                await this.drafts.onSequenceRestart(tx, event.sequence);
+                await this.history.onSequenceRestart(tx, event.sequence);
             }
         } else if (event.type === 'event') {
-            await this.dialogs.onUpdate(tx, event.event);
+            // NOTE: Dialogs MUST be the first since it could miss some dialogs
+            await this.dialogs.onUpdate(tx, event.pts, event.event);
             await this.counters.onUpdate(tx, event.pts, event.event);
             await this.drafts.onUpdate(tx, event.event);
+            await this.history.onUpdate(tx, event.pts, event.event);
+
+            console.log('updates: sequence: ', event);
         }
-        console.log('updates: sequence: ', event);
     }
 }
