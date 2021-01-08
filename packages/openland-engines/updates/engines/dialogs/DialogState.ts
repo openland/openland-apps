@@ -1,7 +1,7 @@
 import { FullMessage } from 'openland-api/spacex.types';
 
 export interface DialogState {
-    id: string;
+    key: string;
     title: string;
     photo: string | null;
     muted: boolean;

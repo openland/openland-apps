@@ -1,5 +1,5 @@
 import { DialogState } from './../../dialogs/DialogState';
-import { sortedArrayAdd } from './sortedArrayAdd';
+import { sortedArrayAdd, sortedArrayAddIndex } from './sortedArrayAdd';
 import { sortedArrayFind } from './sortedArrayFind';
 
 export class SortedArray<T> {
@@ -16,7 +16,7 @@ export class SortedArray<T> {
         } else if (a.sortKey! > b.sortKey!) {
             return -1;
         } else {
-            return a.id.localeCompare(b.id);
+            return a.key.localeCompare(b.key);
         }
     });
 
@@ -32,6 +32,10 @@ export class SortedArray<T> {
 
     add(src: T[], value: T): T[] {
         return sortedArrayAdd(src, value, this.comparator);
+    }
+
+    addIndex(src: T[], value: T): number {
+        return sortedArrayAddIndex(src, value, this.comparator);
     }
 
     find(src: T[], value: T): number {

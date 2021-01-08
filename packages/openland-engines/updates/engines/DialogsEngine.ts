@@ -59,7 +59,7 @@ export class DialogsEngine {
                 this.dialogs.set(state.room.id, updated);
             } else {
                 let added: DialogState = {
-                    id: state.room.id,
+                    key: state.room.id,
                     title,
                     photo,
                     muted,
@@ -138,5 +138,9 @@ export class DialogsEngine {
 
     async onDialogsLoaded(tx: Transaction) {
         console.warn(this.dialogsUnread.state);
+
+        for (let d of this.allDialogs) {
+            d.onDialogsLoaded();
+        }
     }
 }

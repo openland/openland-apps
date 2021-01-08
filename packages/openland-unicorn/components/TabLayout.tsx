@@ -107,7 +107,7 @@ interface GlobalSearchContextProps {
 }
 
 const GlobalSearchContext = React.createContext<GlobalSearchContextProps | null>(null);
-export const useGlobalSearch = () => React.useContext(GlobalSearchContext)!;
+export const useGlobalSearch = () => React.useContext(GlobalSearchContext);
 
 const StackContent = React.memo((props: {
     layout: 'mobile' | 'desktop',

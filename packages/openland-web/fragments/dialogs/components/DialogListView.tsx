@@ -9,7 +9,7 @@ import { DialogView } from './DialogView';
 import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useGlobalSearch } from 'openland-unicorn/components/TabLayout';
-import { dialogListWebDataSource, DialogListWebItem } from './DialogListWebDataSource';
+import { DialogListWebItem } from './DialogListWebDataSource';
 import { XLoader } from 'openland-x/XLoader';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
@@ -29,20 +29,16 @@ const containerStyle = css`
 `;
 
 export interface DialogListViewProps {
+    source: DataSource<DialogListWebItem>;
     onDialogClick?: (id: string) => void;
     onSearchItemPress?: (a: string) => void;
-    onSearchItemSelected: (a: GlobalSearch_items | null) => void;
+    onSearchItemSelected?: (a: GlobalSearch_items | null) => void;
 }
-
-let ds: DataSource<DialogListWebItem> | undefined;
 
 export const DialogListView = React.memo((props: DialogListViewProps) => {
     const ref = React.useRef<USearchInputRef>(null);
     let messenger = React.useContext(MessengerContext);
-    if (!ds) {
-        ds = dialogListWebDataSource(messenger.dialogList.dataSource);
-    }
-    const dataSource = React.useMemo(() => new DataSourceWindow(ds!, 20), [ds]);
+    const dataSource = React.useMemo(() => new DataSourceWindow(props.source, 20), [props.source]);
     const globalSearch = useGlobalSearch();
     const router = React.useContext(XViewRouterContext);
     const route = React.useContext(XViewRouteContext);
@@ -50,11 +46,11 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
 
     const [focused, setFocused] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
-    const isSearching = focused || globalSearch.value.trim().length > 0;
+    const isSearching = focused || (globalSearch && globalSearch.value.trim().length > 0);
 
     React.useEffect(
         () => {
-            if (isSearching === false) {
+            if (isSearching === false && props.onSearchItemSelected) {
                 props.onSearchItemSelected(null);
             }
         },
@@ -84,7 +80,7 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
                 >
                     <XLoader
                         loading={true}
-                        size={ds && ds.isInited() ? 'medium' : 'large'}
+                        size={props.source && props.source.isInited() ? 'medium' : 'large'}
                         transparentBackground={true}
                     />
                 </XView>
@@ -115,7 +111,7 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
     };
 
     const handleEscape = () => {
-        if (ref.current && globalSearch.value) {
+        if (ref.current && globalSearch && globalSearch.value) {
             globalSearch.onChange('');
             return true;
         } else if (ref.current && focused) {
@@ -149,7 +145,7 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
         [],
     );
 
-    const query = globalSearch.value;
+    const query = globalSearch && globalSearch.value || '';
 
     React.useEffect(() => {
         if (listRef.current) {
@@ -175,8 +171,8 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
     return (
         <div className={containerStyle}>
             <USearchInput
-                value={globalSearch.value}
-                onChange={globalSearch.onChange}
+                value={globalSearch && globalSearch.value || ''}
+                onChange={(globalSearch && globalSearch.onChange) || (() => {/* */ })}
                 onFocus={onInputFocus}
                 ref={ref}
                 placeholder="Chats, messages, and more"

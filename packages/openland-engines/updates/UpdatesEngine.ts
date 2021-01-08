@@ -65,7 +65,7 @@ export class UpdatesEngine {
                 await this.dialogs.onSequenceRestart(tx, event.sequence);
                 await this.counters.onSequenceRestart(tx, event.pts, event.sequence);
                 await this.drafts.onSequenceRestart(tx, event.sequence);
-                await this.history.onSequenceRestart(tx, event.sequence);
+                await this.history.onSequenceRestart(tx, event.pts, event.sequence);
             }
         } else if (event.type === 'event') {
             // NOTE: Dialogs MUST be the first since it could miss some dialogs
