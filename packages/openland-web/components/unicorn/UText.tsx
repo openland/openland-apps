@@ -24,7 +24,9 @@ const HashtagView = React.memo((props: { text: string }) => {
 
     const handleClick = () => {
         tabRouter.setTab(isSuperAdmin ? 3 : 2);
-        globalSearch.onChange(props.text);
+        if (globalSearch) {
+            globalSearch.onChange(props.text);
+        }
     };
 
     return <ULink onClick={handleClick}>{props.text}</ULink>;
