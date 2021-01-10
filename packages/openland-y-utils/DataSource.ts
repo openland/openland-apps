@@ -10,10 +10,13 @@ async function throttle() {
 
 async function throttledMap<T, V>(src: T[], map: (item: T) => V): Promise<V[]> {
     let res: V[] = [];
-    await throttle();
+    let counter = 0;
     for (let s of src) {
         res.push(map(s));
-        await throttle();
+        if (counter++ > 10) {
+            await throttle();
+            counter = 0;
+        }
     }
     return res;
 }

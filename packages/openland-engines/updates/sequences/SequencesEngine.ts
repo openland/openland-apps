@@ -114,14 +114,20 @@ export class SequencesEngine {
             }
             return;
         }
+        let next = this.client.queryGetInitialDialogs({ after: cursor });
 
         (async () => {
             completed = false;
             while (!completed) {
                 console.info('Loading dialogs...');
                 let dstart = Date.now();
-                let dialogs = await this.client.queryGetInitialDialogs({ after: cursor });
+                let dialogs = await next;
                 console.info('Dialogs read in ' + (Date.now() - dstart) + ' ms');
+                // Start next loading ASAP
+                if (dialogs.syncUserChats.cursor) {
+                    next = this.client.queryGetInitialDialogs({ after: dialogs.syncUserChats.cursor });
+                }
+
                 await this.preprocessor(dialogs);
 
                 await this.persistence.inTx(async (tx) => {
