@@ -1,5 +1,4 @@
 import { AsyncLock } from '@openland/patterns';
-import { createFifoQueue } from './../../../openland-y-utils/Queue';
 import { UpdatesSubscription, UpdatesSubscriptionEvent } from './UpdatesSubscription';
 import { UpdatesApi } from './UpdatesApi';
 

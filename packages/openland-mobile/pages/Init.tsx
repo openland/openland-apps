@@ -53,6 +53,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { LocalContactsProvider } from 'openland-y-utils/contacts/LocalContacts';
 import { LocalBlackListProvider } from 'openland-y-utils/blacklist/LocalBlackList';
 import { MessagesActionsStateProvider } from 'openland-y-runtime/MessagesActionsState';
+import { PersistenceVersion } from 'openland-engines/PersitenceVersion';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(
@@ -274,7 +275,7 @@ export class Init extends React.Component<
                     let authenticated = false;
                     if (AppStorage.token) {
                         this.setState({ state: 'loading' });
-                        let client = createClientNative(AppStorage.storage, AppStorage.token);
+                        let client = createClientNative(AppStorage.storage + '-' + PersistenceVersion, AppStorage.token);
                         saveClient(client);
                         res = await (useAccountReefetchNeeded
                             ? client.refetchAccount()
@@ -313,7 +314,7 @@ export class Init extends React.Component<
                             authenticated = true;
                         }
                     } else {
-                        let client = createClientNative(AppStorage.storage, undefined);
+                        let client = createClientNative(AppStorage.storage + '-' + PersistenceVersion, undefined);
                         Track.setClient(client);
                     }
 

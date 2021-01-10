@@ -26,32 +26,32 @@ export class CountersEngine {
         if (!this.chats.has(state.cid)) {
             this.chats.set(state.cid, {
                 sequence: state.id,
-                counters: state.states && state.states.seq ? {
+                counters: state.topMessage && state.states ? {
                     type: 'generic',
                     counter: state.states.counter,
                     readSeq: state.states.readSeq,
 
                     serverCounter: state.states.counter,
-                    serverMaxSeq: state.states.seq,
+                    serverMaxSeq: state.topMessage.seq!,
                     serverReadSeq: state.states.readSeq,
                     serverUnreadMessages: []
                 } : { type: 'empty' },
                 history:
-                    (state.states && state.states.seq)
+                    (state.topMessage && state.states)
                         ? {
-                            pts, lastMessagesSeq: state.states.seq
+                            pts, lastMessagesSeq: state.topMessage.seq!
                         } : {
                             pts, lastMessagesSeq: 0
                         }
             });
-            if (state.states && state.states.seq) {
+            if (state.topMessage && state.states) {
                 this.dialogs.onCounterUpdate(tx, state.cid, { unread: state.states.counter, mentions: state.states.mentions });
             }
         } else {
             let st = this.chats.get(state.cid)!;
-            if (state.states && state.states.seq) {
-                st.counters = counterReducer(st.counters, { type: 'server-state', seq: state.states.seq, readSeq: state.states.readSeq, counter: state.states.counter });
-                st.history = historyTrackerReducer(st.history, { type: 'reset', seq: state.states.seq, pts: pts });
+            if (state.topMessage && state.states) {
+                st.counters = counterReducer(st.counters, { type: 'server-state', seq: state.topMessage.seq!, readSeq: state.states.readSeq, counter: state.states.counter });
+                st.history = historyTrackerReducer(st.history, { type: 'reset', seq: state.topMessage.seq!, pts: pts });
                 if (st.counters.type === 'generic') {
                     this.dialogs.onCounterUpdate(tx, state.cid, { unread: st.counters.counter, mentions: 0 });
                 }

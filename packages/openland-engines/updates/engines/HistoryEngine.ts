@@ -1,13 +1,14 @@
+import { UpdateMessage } from './../../../openland-api/spacex.types';
 import { LatestMessagesHistory, messagesHistoryReducer } from './history/LatestMessagesHistory';
 import { UpdatesEngine } from 'openland-engines/updates/UpdatesEngine';
 import { Transaction } from 'openland-engines/persistence/Persistence';
 import { DialogsEngine } from './DialogsEngine';
-import { ShortSequenceChat, ShortUpdate, FullMessage } from 'openland-api/spacex.types';
+import { ShortSequenceChat, ShortUpdate } from 'openland-api/spacex.types';
 
 export class HistoryEngine {
     readonly dialogs: DialogsEngine;
     readonly updates: UpdatesEngine;
-    readonly messages = new Map<string, FullMessage | null>();
+    readonly messages = new Map<string, UpdateMessage | null>();
     readonly latestMessages = new Map<string, LatestMessagesHistory>();
 
     constructor(dialogs: DialogsEngine, updates: UpdatesEngine) {
@@ -27,7 +28,10 @@ export class HistoryEngine {
         if (!msg) {
             msg = { type: 'empty', pts: pts - 1 };
         }
-        msg = messagesHistoryReducer(msg, { type: 'reset', seq: state.states!.seq!, pts, topMessage: state.topMessage ? state.topMessage.id : null });
+
+        if (state.topMessage) {
+            msg = messagesHistoryReducer(msg, { type: 'reset', seq: state.topMessage.seq!, pts, topMessage: state.topMessage ? state.topMessage.id : null });
+        }
         this.latestMessages.set(state.cid, msg);
         await this.notifyTopMessage(tx, state.cid, msg);
     }
@@ -81,7 +85,7 @@ export class HistoryEngine {
         }
     }
 
-    private applyMessage = async (tx: Transaction, message: FullMessage) => {
+    private applyMessage = async (tx: Transaction, message: UpdateMessage) => {
         this.messages.set(message.id, message);
     }
 

@@ -53,8 +53,6 @@ fragment ShortSequenceChat on SequenceChat {
     states {
         counter
         mentions
-        total
-        seq
         readSeq
     }
     room {

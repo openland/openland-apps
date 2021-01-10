@@ -1,10 +1,11 @@
+import { UpdateMessage } from './../../../openland-api/spacex.types';
 import { DialogState } from './dialogs/DialogState';
 import { DialogCollection } from './dialogs/DialogCollection';
 import { defaultQualifier, unreadQualifier, groupQualifier, privateQualifier } from './dialogs/qualifiers';
 import { Transaction } from '../../persistence/Persistence';
-import { ShortSequenceChat, FullMessage, SharedRoomKind, ShortUpdate } from 'openland-api/spacex.types';
+import { ShortSequenceChat, SharedRoomKind, ShortUpdate } from 'openland-api/spacex.types';
 
-function resolveSortKey(src: FullMessage | null, draft: { message: string, date: number } | null): number | null {
+function resolveSortKey(src: UpdateMessage | null, draft: { message: string, date: number } | null): number | null {
     if (src && !draft) {
         return parseInt(src.date, 10);
     } else if (!src && draft) {
@@ -95,7 +96,7 @@ export class DialogsEngine {
     // External updates
     //
 
-    async onTopMessageUpdate(tx: Transaction, cid: string, message: FullMessage | null) {
+    async onTopMessageUpdate(tx: Transaction, cid: string, message: UpdateMessage | null) {
         if (this.dialogs.has(cid)) {
             let ex = this.dialogs.get(cid)!;
             let updated: DialogState = {

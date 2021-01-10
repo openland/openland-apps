@@ -1,4 +1,4 @@
-import { FullMessage } from 'openland-api/spacex.types';
+import { UpdateMessage } from './../../../../openland-api/spacex.types';
 
 export interface DialogState {
     key: string;
@@ -8,7 +8,7 @@ export interface DialogState {
     kind: 'private' | 'group-secret' | 'group-shared';
 
     sortKey: number | null;
-    topMessage: FullMessage | null;
+    topMessage: UpdateMessage | null;
     draft: { message: string, date: number } | null;
 
     counter: number;
