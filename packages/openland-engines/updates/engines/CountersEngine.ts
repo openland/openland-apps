@@ -61,7 +61,6 @@ export class CountersEngine {
 
     async onUpdate(tx: Transaction, pts: number, update: ShortUpdate) {
         if (update.__typename === 'UpdateChatRead') {
-            // TODO: Handle
             console.log('[engine] chat read: ' + JSON.stringify(update));
 
             let state = this.chats.get(update.cid)!;

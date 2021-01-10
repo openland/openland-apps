@@ -24,7 +24,7 @@ fragment ShortUpdate on UpdateEvent {
     ... on UpdateChatMessage {
         cid
         message {
-            ...FullMessage
+            ...UpdateMessage
         }
     }
     ... on UpdateChatMessageDeleted {
@@ -61,7 +61,7 @@ fragment ShortSequenceChat on SequenceChat {
         ...RoomNano
     }
     topMessage {
-        ...FullMessage
+        ...UpdateMessage
     }
 }
 
@@ -180,5 +180,95 @@ query GetInitialDialogs($after: String) {
             pts
         }
         cursor
+    }
+}
+
+#
+# Entities
+#
+
+fragment UpdateUser on User {
+    id
+    name
+    photo
+}
+
+query UpdateUsers($ids: [ID!]!) {
+    users(ids: $ids) {
+        ...UpdateUser
+    }
+}
+
+fragment UpdateMessage on ModernMessage {
+    id
+    seq
+    date
+    sender {
+        id
+    }
+
+    #
+    # Content
+    #
+
+    message
+    fallback
+    spans {
+        ...MessageSpan
+    }
+    ... on GeneralMessage {
+        id
+        edited
+        commentsCount
+        attachments {
+            ...MessageAttachments
+        }
+        quotedMessages {
+            ...QuotedMessage
+        }
+        reactionCounters {
+            ...MessageReactionCounter
+        }
+        overrideAvatar {
+            uuid
+            crop {
+                x
+                y
+                w
+                h
+            }
+        }
+        overrideName
+    }
+
+    ... on StickerMessage {
+        id
+        commentsCount
+        quotedMessages {
+            ...QuotedMessage
+        }
+        sticker {
+            ...StickerFragment
+        }
+        reactionCounters {
+            ...MessageReactionCounter
+        }
+        overrideAvatar {
+            uuid
+            crop {
+                x
+                y
+                w
+                h
+            }
+        }
+        overrideName
+    }
+
+    ... on ServiceMessage {
+        id
+        serviceMetadata {
+            ...ServiceMessageMetadata
+        }
     }
 }

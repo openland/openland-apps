@@ -388,6 +388,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryUnviewedStickers(params?: QueryParameters): Promise<Types.UnviewedStickers> {
         return this.query('UnviewedStickers', undefined, params);
     }
+    queryUpdateUsers(variables: Types.UpdateUsersVariables, params?: QueryParameters): Promise<Types.UpdateUsers> {
+        return this.query('UpdateUsers', variables, params);
+    }
     queryUser(variables: Types.UserVariables, params?: QueryParameters): Promise<Types.User> {
         return this.query('User', variables, params);
     }
@@ -790,6 +793,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchUnviewedStickers(params?: QueryParameters): Promise<Types.UnviewedStickers> {
         return this.refetch('UnviewedStickers', undefined, params);
     }
+    refetchUpdateUsers(variables: Types.UpdateUsersVariables, params?: QueryParameters): Promise<Types.UpdateUsers> {
+        return this.refetch('UpdateUsers', variables, params);
+    }
     refetchUser(variables: Types.UserVariables, params?: QueryParameters): Promise<Types.User> {
         return this.refetch('User', variables, params);
     }
@@ -1191,6 +1197,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateUnviewedStickers(updater: (data: Types.UnviewedStickers) => Types.UnviewedStickers | null): Promise<boolean> {
         return this.updateQuery(updater, 'UnviewedStickers', undefined);
+    }
+    updateUpdateUsers(variables: Types.UpdateUsersVariables, updater: (data: Types.UpdateUsers) => Types.UpdateUsers | null): Promise<boolean> {
+        return this.updateQuery(updater, 'UpdateUsers', variables);
     }
     updateUser(variables: Types.UserVariables, updater: (data: Types.User) => Types.User | null): Promise<boolean> {
         return this.updateQuery(updater, 'User', variables);
@@ -1845,6 +1854,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useUnviewedStickers(params?: SpaceQueryWatchParameters): Types.UnviewedStickers;
     useUnviewedStickers(params?: SpaceQueryWatchParameters): Types.UnviewedStickers | null {
         return this.useQuery('UnviewedStickers', undefined, params);
+    }
+    useUpdateUsers(variables: Types.UpdateUsersVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.UpdateUsers | null;
+    useUpdateUsers(variables: Types.UpdateUsersVariables, params?: SpaceQueryWatchParameters): Types.UpdateUsers;
+    useUpdateUsers(variables: Types.UpdateUsersVariables, params?: SpaceQueryWatchParameters): Types.UpdateUsers | null {
+        return this.useQuery('UpdateUsers', variables, params);
     }
     useUser(variables: Types.UserVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.User | null;
     useUser(variables: Types.UserVariables, params?: SpaceQueryWatchParameters): Types.User;

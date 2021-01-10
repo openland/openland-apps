@@ -1,3 +1,5 @@
+import { AsyncLock } from '@openland/patterns';
+import { createFifoQueue } from './../../../openland-y-utils/Queue';
 import { UpdatesSubscription, UpdatesSubscriptionEvent } from './UpdatesSubscription';
 import { UpdatesApi } from './UpdatesApi';
 
@@ -15,6 +17,7 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
 
     private readonly api: UpdatesApi<T, STATE, DIFF>;
     private readonly subscription: UpdatesSubscription<T>;
+    private readonly queue = new AsyncLock();
     private _currentSeq!: number;
     private _subscribedFrom: number | null = null;
     private _vt!: string;
@@ -26,11 +29,14 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
     private _pending = new Map<number, { sequence: string, pts: number, event: T }>();
     private _handler: MainUpdatesSubscriptionHandler<T, STATE, DIFF> | null = null;
     private _state: MainUpdatesState = 'inited';
+    private _preprocessor: (src: any) => Promise<void>;
 
     constructor(
         api: UpdatesApi<T, STATE, DIFF>,
-        subscription: UpdatesSubscription<T>
+        subscription: UpdatesSubscription<T>,
+        preprocessor: (src: any) => Promise<void>
     ) {
+        this._preprocessor = preprocessor;
         this.api = api;
         this.subscription = subscription;
     }
@@ -70,13 +76,18 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
     }
 
     private init = async () => {
-        this.subscription.start(this.onReceive);
+        this.subscription.start((e) => {
+            this.queue.inLock(async () => {
+                await this.onReceive(e);
+            });
+        });
         this.setState('connecting');
 
         // Load initial state
         if (!this._vt) {
             // Load Initial State
             let state = await this.api.getState();
+
             this._vt = state.vt;
             this._currentSeq = state.seq;
 
@@ -92,6 +103,7 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
 
             // Load Difference
             let difference = await this.api.getDifference(this._vt);
+
             this._vt = difference.vt;
             this._currentSeq = difference.seq;
 
@@ -131,7 +143,9 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
         this.checkSubsciptionGap();
     }
 
-    private onReceive = (event: UpdatesSubscriptionEvent<T>) => {
+    private onReceive = async (event: UpdatesSubscriptionEvent<T>) => {
+        await this._preprocessor(event);
+
         if (event.type === 'event') {
 
             // Ignore too old updates

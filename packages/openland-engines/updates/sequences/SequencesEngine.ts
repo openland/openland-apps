@@ -1,3 +1,5 @@
+import { backoff } from 'openland-y-utils/timer';
+import { UsersEngine } from './../engines/UsersEngine';
 import { SequenceHolderEvent } from './../internal/SequenceHolder';
 import { UpdatesSubscriptionClient } from './../internal/UpdatesSubscriptionClient';
 import { UpdatesApiClient } from './../internal/UpdatesApiClient';
@@ -14,6 +16,7 @@ export type SequencesHandler = (tx: Transaction, event: SequenceHolderEvent | { 
 export class SequencesEngine {
     readonly client: OpenlandClient;
     readonly persistence: Persistence;
+    readonly users: UsersEngine;
     handler: SequencesHandler | null = null;
 
     private api: UpdatesApi<UpdateEvent, UpdateSequenceState, UpdateSequenceDiff>;
@@ -22,11 +25,12 @@ export class SequencesEngine {
     private main: MainUpdatesSubscription<UpdateEvent, UpdateSequenceState, UpdateSequenceDiff>;
     private sequences = new Map<string, SequenceHolder>();
 
-    constructor(client: OpenlandClient, persistence: Persistence) {
+    constructor(client: OpenlandClient, persistence: Persistence, users: UsersEngine) {
         this.client = client;
         this.persistence = persistence;
-        this.api = new UpdatesApiClient(this.client);
-        this.main = new MainUpdatesSubscription(this.api, new UpdatesSubscriptionClient(this.client));
+        this.users = users;
+        this.api = new UpdatesApiClient(this.client, this.preprocessor);
+        this.main = new MainUpdatesSubscription(this.api, new UpdatesSubscriptionClient(this.client), this.preprocessor);
     }
 
     start() {
@@ -115,7 +119,11 @@ export class SequencesEngine {
             completed = false;
             while (!completed) {
                 console.info('Loading dialogs...');
+                let dstart = Date.now();
                 let dialogs = await this.client.queryGetInitialDialogs({ after: cursor });
+                console.info('Dialogs read in ' + (Date.now() - dstart) + ' ms');
+                await this.preprocessor(dialogs);
+
                 await this.persistence.inTx(async (tx) => {
 
                     // Apply sequences
@@ -150,6 +158,20 @@ export class SequencesEngine {
     private handleSequenceEvent = async (tx: Transaction, event: SequenceHolderEvent) => {
         if (this.handler) {
             await this.handler(tx, event);
+        }
+    }
+
+    private preprocessor = async (src: any) => {
+        let missing = await this.users.loadMissingUsers(src);
+        if (missing.length > 0) {
+            let start = Date.now();
+            let loadedUsers = (await backoff(async () => {
+                return await this.client.queryUpdateUsers({ ids: missing });
+            })).users;
+            console.info('users loaded in ' + (Date.now() - start) + ' ms');
+            await this.persistence.inTx(async (tx) => {
+                await this.users.persistUsers(tx, loadedUsers.map((u) => ({ id: u.id, name: u.name, photo: u.photo })));
+            });
         }
     }
 }

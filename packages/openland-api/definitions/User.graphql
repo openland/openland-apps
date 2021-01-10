@@ -1,8 +1,6 @@
-query Users($query: String!) {
-    items: users(query: $query) {
-        id
-        title: name
-        subtitle: email
+query Users($ids: [ID!]!) {
+    users(ids: $ids) {
+        ...UserFull
     }
 }
 query User($userId: ID!) {

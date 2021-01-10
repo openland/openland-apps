@@ -5,13 +5,16 @@ import { UpdatesApi } from './UpdatesApi';
 export class UpdatesApiClient implements UpdatesApi<UpdateEvent, UpdateSequenceState, UpdateSequenceDiff> {
 
     private client: OpenlandClient;
+    private preprocessor: (src: any) => Promise<void>;
 
-    constructor(client: OpenlandClient) {
+    constructor(client: OpenlandClient, preprocessor: (src: any) => Promise<void>) {
         this.client = client;
+        this.preprocessor = preprocessor;
     }
 
     async getState(): Promise<{ seq: number, vt: string, sequences: { pts: number, state: UpdateSequenceState }[] }> {
         let res = await this.client.queryGetState({ fetchPolicy: 'network-only' });
+        await this.preprocessor(res);
         return {
             seq: res.updatesState.seq,
             vt: res.updatesState.state,
@@ -29,6 +32,8 @@ export class UpdatesApiClient implements UpdatesApi<UpdateEvent, UpdateSequenceS
         sequences: { state: UpdateSequenceDiff, fromPts: number, events: { pts: number, event: UpdateEvent }[] }[]
     }> {
         let difference = (await this.client.queryGetDifference({ state: vt }, { fetchPolicy: 'network-only' })).updatesDifference;
+        await this.preprocessor(difference);
+
         return {
             seq: difference.seq,
             vt: difference.state,
@@ -44,6 +49,8 @@ export class UpdatesApiClient implements UpdatesApi<UpdateEvent, UpdateSequenceS
 
     async getSequenceState(id: string): Promise<{ pts: number, state: UpdateSequenceState }> {
         let res = await this.client.queryGetSequenceState({ id }, { fetchPolicy: 'network-only' });
+        await this.preprocessor(res);
+
         return {
             pts: res.sequenceState.pts,
             state: res.sequenceState.sequence
@@ -52,6 +59,8 @@ export class UpdatesApiClient implements UpdatesApi<UpdateEvent, UpdateSequenceS
 
     async getSequenceDifference(id: string, pts: number): Promise<{ state: UpdateSequenceDiff, hasMore: boolean, pts: number, events: { pts: number, event: UpdateEvent }[] }> {
         let res = await this.client.queryGetSequenceDifference({ id, pts }, { fetchPolicy: 'network-only' });
+        await this.preprocessor(res);
+        
         return {
             state: res.sequenceDifference.sequence,
             events: res.sequenceDifference.events,

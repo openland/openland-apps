@@ -23,6 +23,7 @@ function resolveSortKey(src: FullMessage | null, draft: { message: string, date:
 export class DialogsEngine {
 
     private dialogs = new Map<string, DialogState>();
+    private userDialogs = new Map<string, string>();
     readonly dialogsAll = new DialogCollection(defaultQualifier);
     readonly dialogsUnread = new DialogCollection(unreadQualifier);
     readonly dialogsGroups = new DialogCollection(groupQualifier);
@@ -74,6 +75,9 @@ export class DialogsEngine {
                     d.onDialogAdded(added);
                 }
                 this.dialogs.set(state.room.id, added);
+                if (state.room.__typename === 'PrivateRoom') {
+                    this.userDialogs.set(state.room.user.id, state.cid);
+                }
             }
         } else {
             for (let d of this.allDialogs) {

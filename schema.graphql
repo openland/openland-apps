@@ -2753,9 +2753,6 @@ type Query {
   alphaOrganizationByPrefix(query: String): Organization
   alphaComunityPrefixSearch(query: String, sort: String, first: Int!, after: String, page: Int, featuredIfEmptyQuery: Boolean): OrganizationsConnection!
   myPermissions: Permissions!
-
-  """Deprecated"""
-  users(query: String!): [User!]!
   discoverNewAndGrowing(first: Int!, seed: Int!, after: String): SharedRoomConnection!
   discoverPopularNow(first: Int!, after: String): PopularNowRoomConnection!
   discoverNewAndGrowingOrganizations(first: Int!, seed: Int!, after: String): NewAndGrowingOrganizationConnection!
@@ -2785,6 +2782,7 @@ type Query {
   groupScreenViews(id: ID!, from: Date, to: Date): Int!
   me: User
   user(id: ID!): User!
+  users(ids: [ID!]!): [User!]!
   mySuccessfulInvitesCount: Int!
   shouldAskForAppReview: Boolean!
   superBadgeInRoom(roomId: ID!, userId: ID!): UserBadge
@@ -3453,7 +3451,7 @@ type UpdatedNotificationContentComment {
   comment: CommentEntry
 }
 
-union UpdateEvent = UpdateChatRead | UpdateProfileChanged | UpdateMyProfileChanged | UpdateChatMessage | UpdateChatMessageDeleted | UpdateChatDraftChanged | UpdateSettingsChanged
+union UpdateEvent = UpdateChatRead | UpdateProfileChanged | UpdateMyProfileChanged | UpdateChatMessage | UpdateChatMessageDeleted | UpdateChatDraftChanged | UpdateSettingsChanged | UpdateRoomChanged
 
 type UpdateMyProfileChanged {
   user: User!
@@ -3485,6 +3483,10 @@ input UpdateOrganizationProfileInput {
 
 type UpdateProfileChanged {
   user: User!
+}
+
+type UpdateRoomChanged {
+  room: Room!
 }
 
 type UpdatesDifference {
