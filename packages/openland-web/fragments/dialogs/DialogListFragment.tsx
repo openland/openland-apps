@@ -14,7 +14,10 @@ interface DialogListFragmentProps {
 
 let enableExperiemental = true;
 
-function convertExperimentalItem(src: DialogState): DialogDataSourceItem {
+function convertExperimentalItem(me: string, src: DialogState): DialogDataSourceItem {
+    const isOut = src.topMessage ? src.topMessage.sender.id === me : false;
+    const isService = src.topMessage ? src.topMessage.__typename === 'ServiceMessage' : false;
+    const sender: string | undefined = isOut ? 'You' : undefined; // TODO: Fix me
     return {
         key: src.key,
         flexibleId: src.key,
@@ -29,6 +32,11 @@ function convertExperimentalItem(src: DialogState): DialogDataSourceItem {
         fallback: src.topMessage ? src.topMessage.fallback : '',
         message: src.topMessage ? src.topMessage.message ? src.topMessage.message : undefined : undefined,
         date: src.topMessage ? parseInt(src.topMessage.date, 10) : undefined,
+        isOut,
+        isService,
+        forward: src.topMessage ? src.topMessage.__typename === 'GeneralMessage' && !!src.topMessage.quotedMessages.length && !src.topMessage.message : false,
+        sender,
+        showSenderName: !!(src.topMessage && (isOut || src.kind !== 'private') && sender) && !isService,
 
         // Counters
         unread: src.counter,
@@ -41,7 +49,7 @@ function convertExperimentalItem(src: DialogState): DialogDataSourceItem {
 
 export const DialogListFragment = React.memo((props: DialogListFragmentProps) => {
     let messenger = React.useContext(MessengerContext);
-    const source = React.useMemo(() => dialogListWebDataSource(messenger.experimentalUpdates && enableExperiemental ? messenger.experimentalUpdates.dialogs.dialogsAll.source.map(convertExperimentalItem) : messenger.dialogList.dataSource), []);
+    const source = React.useMemo(() => dialogListWebDataSource(messenger.experimentalUpdates && enableExperiemental ? messenger.experimentalUpdates.dialogs.dialogsAll.source.map((src) => convertExperimentalItem(messenger.user.id, src)) : messenger.dialogList.dataSource), []);
     return (
         <XView flexGrow={1} flexBasis={0} backgroundColor="var(--backgroundPrimary)" contain="content">
             <DialogListView
