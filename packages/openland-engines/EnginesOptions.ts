@@ -4,4 +4,5 @@ export interface EngineOptions {
     conversationBatchSize: number;
     feedBatchSize: number;
     store: KeyValueStore;
+    experimental: boolean;
 }

@@ -18,12 +18,19 @@ function convertItem(src: DialogState): DialogDataSourceItem {
         key: src.key,
         flexibleId: src.key,
         title: src.title,
-        photo: src.photo || '',
-        kind: 'PRIVATE',
+        photo: src.photo ? src.photo : undefined,
+        kind: src.kind === 'private' ? 'PRIVATE' : 'GROUP',
 
-        unread: src.counter,
+        // Content
         fallback: src.topMessage ? src.topMessage.fallback : '',
+        message: src.topMessage ? src.topMessage.message ? src.topMessage.message : undefined : undefined,
+        date: src.topMessage ? parseInt(src.topMessage.date, 10) : undefined,
 
+        // Counters
+        unread: src.counter,
+        haveMention: src.mentions > 0,
+
+        // Compatibility
         membership: 'NONE'
     };
 }

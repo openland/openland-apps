@@ -1,3 +1,4 @@
+import { UpdatesEngine } from './updates/UpdatesEngine';
 import * as React from 'react';
 import { MessageSender } from './messenger/MessageSender';
 import { ConversationEngine } from './messenger/ConversationEngine';
@@ -18,6 +19,7 @@ import { UserStorageEngine } from './UserStorageEngine';
 import { EngineOptions } from './EnginesOptions';
 import { InMemoryKeyValueStore } from 'openland-y-utils/InMemoryKeyValueStore';
 import { WalletEngine } from './wallet/WalletEngine';
+import { Persistence } from './persistence/Persistence';
 
 const log = createLogger('Engine');
 
@@ -35,6 +37,8 @@ export class MessengerEngine {
     readonly options: EngineOptions;
     readonly activeConversations = new Map<string, ConversationEngine>();
     readonly wallet: WalletEngine;
+    readonly experimentalUpdates: UpdatesEngine | null;
+
     private readonly createEntityState: CreateEntityEngine;
     private readonly activeUserConversations = new Map<string, ConversationEngine>();
     private readonly mountedConversations = new Map<string, { count: number; unread: number }>();
@@ -52,7 +56,8 @@ export class MessengerEngine {
         this.options = {
             conversationBatchSize: options && options.conversationBatchSize ? options.conversationBatchSize : 15,
             feedBatchSize: options && options.feedBatchSize ? options.feedBatchSize : 15,
-            store: options && options.store ? options.store : new InMemoryKeyValueStore()
+            store: options && options.store ? options.store : new InMemoryKeyValueStore(),
+            experimental: options && options.experimental ? true : false
         };
         this.client = client;
         this.user = user;
@@ -87,12 +92,25 @@ export class MessengerEngine {
         // Wallet
         this.wallet = new WalletEngine(this);
 
+        // New engine
+        if (this.options.experimental) {
+            this.experimentalUpdates = new UpdatesEngine(user.id, this.client, new Persistence(this.options.store));
+        } else {
+            this.experimentalUpdates = null;
+        }
+
         // Starting
         this.loadingPromise = this.loadingSequence();
         log.log('MessengerEngine started');
     }
 
     private loadingSequence = async () => {
+        // Experintal
+        if (this.experimentalUpdates) {
+            this.experimentalUpdates.start();
+        }
+
+        // Legacy
         await this.dialogSequence.start();
 
         // After sequence
