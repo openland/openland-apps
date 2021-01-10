@@ -217,6 +217,7 @@ fragment UpdateMessage on ModernMessage {
     ... on GeneralMessage {
         id
         edited
+        isMentioned
         commentsCount
         attachments {
             ...MessageAttachments
@@ -265,6 +266,7 @@ fragment UpdateMessage on ModernMessage {
 
     ... on ServiceMessage {
         id
+        isMentioned
         serviceMetadata {
             ...ServiceMessageMetadata
         }

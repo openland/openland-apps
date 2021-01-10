@@ -39,6 +39,7 @@ export interface DialogDataSourceItemStored {
 
     // Chat State
     unread: number;
+    haveMention?: boolean;
     isMuted?: boolean;
     hasActiveCall?: boolean;
     featured?: boolean;
@@ -50,7 +51,6 @@ export interface DialogDataSourceItemStored {
 
     // Chat Top Message Flags
     forward?: boolean;
-    haveMention?: boolean;
     isService?: boolean;
     isOut?: boolean;
 
@@ -60,7 +60,6 @@ export interface DialogDataSourceItemStored {
 
     // Internal State
     messageId?: string;
-
     membership: 'MEMBER' | 'REQUESTED' | 'LEFT' | 'KICKED' | 'NONE';
 }
 

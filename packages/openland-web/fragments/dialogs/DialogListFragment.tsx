@@ -4,15 +4,44 @@ import { DialogListView } from './components/DialogListView';
 import { GlobalSearch_items } from 'openland-api/spacex.types';
 import { dialogListWebDataSource } from './components/DialogListWebDataSource';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { DialogState } from 'openland-engines/updates/engines/dialogs/DialogState';
+import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 
 interface DialogListFragmentProps {
     onSearchItemSelected: (a: GlobalSearch_items) => void;
     onDialogPress: (id: string) => void;
 }
 
+let enableExperiemental = true;
+
+function convertExperimentalItem(src: DialogState): DialogDataSourceItem {
+    return {
+        key: src.key,
+        flexibleId: src.key,
+        title: src.title,
+        photo: src.photo ? src.photo : undefined,
+        kind: src.kind === 'private' ? 'PRIVATE' : src.kind === 'group-secret' ? 'GROUP' : 'PUBLIC',
+        isPremium: src.premium,
+        isChannel: src.channel,
+        featured: src.featured,
+
+        // Content
+        fallback: src.topMessage ? src.topMessage.fallback : '',
+        message: src.topMessage ? src.topMessage.message ? src.topMessage.message : undefined : undefined,
+        date: src.topMessage ? parseInt(src.topMessage.date, 10) : undefined,
+
+        // Counters
+        unread: src.counter,
+        haveMention: src.mentions > 0,
+
+        // Compatibility
+        membership: 'NONE'
+    };
+}
+
 export const DialogListFragment = React.memo((props: DialogListFragmentProps) => {
     let messenger = React.useContext(MessengerContext);
-    const source = React.useMemo(() => dialogListWebDataSource(messenger.dialogList.dataSource), []);
+    const source = React.useMemo(() => dialogListWebDataSource(messenger.experimentalUpdates && enableExperiemental ? messenger.experimentalUpdates.dialogs.dialogsAll.source.map(convertExperimentalItem) : messenger.dialogList.dataSource), []);
     return (
         <XView flexGrow={1} flexBasis={0} backgroundColor="var(--backgroundPrimary)" contain="content">
             <DialogListView

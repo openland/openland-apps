@@ -8,7 +8,7 @@ describe('MainUpdatesSubscription', () => {
         let handler = jest.fn<MainUpdatesSubscriptionHandler<number, { id: string }, { id: string }>>();
         let mockApi = new UpdatesApiMock<number, { id: string }, { id: string }>();
         let mockSubscription = new UpdatesSubscriptionMock<number>();
-        let subscription = new MainUpdatesSubscription<number, { id: string }, { id: string }>(mockApi, mockSubscription);
+        let subscription = new MainUpdatesSubscription<number, { id: string }, { id: string }>(mockApi, mockSubscription, async () => { /* */ });
         mockApi.setState({ seq: 1, vt: 'vt1', sequences: [] });
         subscription.start(null, handler);
 

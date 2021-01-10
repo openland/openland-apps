@@ -6,6 +6,9 @@ export interface DialogState {
     photo: string | null;
     muted: boolean;
     kind: 'private' | 'group-secret' | 'group-shared';
+    channel: boolean;
+    premium: boolean;
+    featured: boolean;
 
     sortKey: number | null;
     topMessage: UpdateMessage | null;

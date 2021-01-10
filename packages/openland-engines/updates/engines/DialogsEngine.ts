@@ -44,6 +44,7 @@ export class DialogsEngine {
             let muted = state.room.settings.mute || false;
             let title = state.room.__typename === 'PrivateRoom' ? state.room.user.name : state.room.title;
             let photo = state.room.__typename === 'PrivateRoom' ? state.room.user.photo : state.room.photo;
+            let featured = state.room.__typename === 'SharedRoom' && state.room.featured;
 
             if (this.dialogs.has(state.room.id)) {
                 let ex = this.dialogs.get(state.room.id)!;
@@ -65,8 +66,12 @@ export class DialogsEngine {
                     title,
                     photo,
                     muted,
+                    featured,
+                    // NOTE: Coutners are set from CountersEngine within same transaction
                     counter: 0,
                     mentions: 0,
+                    premium: state.room.__typename === 'SharedRoom' && state.room.isPremium,
+                    channel: state.room.__typename === 'SharedRoom' && state.room.isChannel,
                     kind: state.room.__typename === 'PrivateRoom' ? 'private' : (state.room.kind === SharedRoomKind.GROUP ? 'group-secret' : 'group-shared'),
                     draft: null,
                     topMessage: null,
@@ -142,8 +147,6 @@ export class DialogsEngine {
     }
 
     async onDialogsLoaded(tx: Transaction) {
-        console.warn(this.dialogsUnread.state);
-
         for (let d of this.allDialogs) {
             d.onDialogsLoaded();
         }

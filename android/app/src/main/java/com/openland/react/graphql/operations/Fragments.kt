@@ -1612,6 +1612,7 @@ internal val UpdateMessageSelector = obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("id", "id", notNull(scalar("ID"))),
                 field("edited", "edited", notNull(scalar("Boolean"))),
+                field("isMentioned", "isMentioned", notNull(scalar("Boolean"))),
                 field("commentsCount", "commentsCount", notNull(scalar("Int"))),
                 field("attachments", "attachments", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -1670,6 +1671,7 @@ internal val UpdateMessageSelector = obj(
             inline("ServiceMessage", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("id", "id", notNull(scalar("ID"))),
+                field("isMentioned", "isMentioned", notNull(scalar("Boolean"))),
                 field("serviceMetadata", "serviceMetadata", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ServiceMetadata", ServiceMessageMetadataSelector)

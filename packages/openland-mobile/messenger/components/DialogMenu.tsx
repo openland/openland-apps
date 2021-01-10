@@ -28,12 +28,6 @@ const DialogMenuPrivate = React.memo((props: DialogMenuProps) => {
     const isSavedMessages = item.flexibleId === messenger.engine.user.id;
     const muted = item.isMuted;
 
-    if (item.messageId && item.unread > 0) {
-        builder.action('Mark as read', () => {
-            client.mutateRoomRead({ id: item.key, mid: item.messageId! });
-        }, false, require('assets/ic-unread-off-24.png'));
-    }
-
     if (!isSavedMessages) {
         builder.action(`${muted ? 'Unmute' : 'Mute'} notifications`, () => {
             client.mutateRoomSettingsUpdate({ roomId: item.key, settings: { mute: !muted } });
@@ -79,12 +73,6 @@ export const showDialogMenu = (item: DialogDataSourceItem) => {
 
     if (item.kind !== 'PRIVATE') {
         const muted = item.isMuted;
-
-        if (item.messageId && item.unread > 0) {
-            builder.action('Mark as read', () => {
-                client.mutateRoomRead({ id: item.key, mid: item.messageId! });
-            }, false, require('assets/ic-unread-off-24.png'));
-        }
 
         builder.action(`${muted ? 'Unmute' : 'Mute'} notifications`, () => {
             client.mutateRoomSettingsUpdate({ roomId: item.key, settings: { mute: !muted } });

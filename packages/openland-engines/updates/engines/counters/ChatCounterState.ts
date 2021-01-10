@@ -4,11 +4,14 @@ export type ChatCounterStateGeneric = {
     type: 'generic',
     readSeq: number;
     counter: number;
+    mentions: number;
 
     serverMaxSeq: number;
     serverCounter: number;
+    serverMentions: number;
     serverReadSeq: number;
     serverUnreadMessages: number[];
+    serverUnreadMentions: number[];
 };
 
 export type ChatCounterStateEmpty = {
@@ -20,10 +23,10 @@ export type ChatCounterState =
     | ChatCounterStateEmpty;
 
 export type ChatCounterAction =
-    | { type: 'message-add', seq: number }
+    | { type: 'message-add', seq: number, hasMention: boolean }
     | { type: 'message-remove', seq: number }
     | { type: 'message-load', seqs: number[] }
-    | { type: 'server-state', seq: number, readSeq: number, counter: number }
+    | { type: 'server-state', seq: number, readSeq: number, counter: number, mentions: number }
     | { type: 'read-optimistic', readSeq: number }
     | { type: 'read', readSeq: number }
     ;
@@ -38,10 +41,13 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
                 readSeq: 0,
                 serverMaxSeq: action.seq,
                 counter: 1,
+                mentions: action.hasMention ? 1 : 0,
 
                 serverCounter: 1,
+                serverMentions: action.hasMention ? 1 : 0,
                 serverReadSeq: 0,
-                serverUnreadMessages: [action.seq]
+                serverUnreadMessages: [action.seq],
+                serverUnreadMentions: action.hasMention ? [action.seq] : []
             };
         } else if (action.type === 'message-remove') {
             return src; // Throw error?
@@ -54,11 +60,14 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
                 type: 'generic',
                 readSeq: action.readSeq,
                 counter: action.counter,
+                mentions: action.mentions,
 
                 serverMaxSeq: action.seq,
                 serverCounter: action.counter,
+                serverMentions: action.mentions,
                 serverReadSeq: action.readSeq,
-                serverUnreadMessages: []
+                serverUnreadMessages: [],
+                serverUnreadMentions: []
             };
         } else if (action.type === 'message-load') {
             return src; // Throw error?
@@ -68,7 +77,7 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
     }
 
     // Handle generic
-    let { readSeq, counter, serverMaxSeq, serverCounter, serverReadSeq, serverUnreadMessages } = src;
+    let { readSeq, counter, mentions, serverMaxSeq, serverCounter, serverMentions, serverReadSeq, serverUnreadMessages, serverUnreadMentions } = src;
 
     // Message add
     if (action.type === 'message-add') {
@@ -82,6 +91,17 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
             // Increment optimistic counter
             if (action.seq > readSeq) {
                 counter++;
+            }
+
+            // Update mentions
+            if (action.hasMention && SortedArray.numbers.find(src.serverUnreadMentions, action.seq) < 0) {
+                serverUnreadMentions = SortedArray.numbers.add(serverUnreadMentions, action.seq);
+                serverMentions++;
+
+                // Increment optimistic counter
+                if (action.seq > readSeq) {
+                    mentions++;
+                }
             }
         }
     }
@@ -97,6 +117,17 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
             // Decrement optimistic counter
             if (action.seq > readSeq) {
                 counter--;
+            }
+
+            // Update mentions
+            if (SortedArray.numbers.find(src.serverUnreadMentions, action.seq) >= 0) {
+                serverUnreadMentions = src.serverUnreadMentions.filter((v) => v !== action.seq); // TODO: Speedup?
+                serverMentions--;
+
+                // Decrement optimistic counter
+                if (action.seq > readSeq) {
+                    mentions--;
+                }
             }
         }
     }
@@ -116,6 +147,13 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
                 if (s <= readSeq) {
                     counter--;
                 }
+
+                // Update mentions
+                if (SortedArray.numbers.find(src.serverUnreadMentions, s) >= 0) {
+                    if (s <= readSeq) {
+                        mentions--;
+                    }
+                }
             }
         }
     }
@@ -126,12 +164,15 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
             if (action.readSeq === serverMaxSeq) {
                 // Reset counter on end reached
                 counter = 0;
+                mentions = 0;
                 readSeq = action.readSeq;
             } else {
                 // Update optimistic
-                let coounterDelta = serverUnreadMessages.filter((v) => readSeq < v && v <= action.readSeq).length;
+                let counterDelta = serverUnreadMessages.filter((v) => readSeq < v && v <= action.readSeq).length;
+                let mentionsDelta = serverUnreadMentions.filter((v) => readSeq < v && v <= action.readSeq).length;
                 readSeq = action.readSeq;
-                counter -= coounterDelta;
+                counter -= counterDelta;
+                mentions -= mentionsDelta;
             }
         }
     }
@@ -142,16 +183,21 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
             if (action.readSeq === serverMaxSeq) {
                 // Reset counter on end reached
                 counter = 0;
+                mentions = 0;
                 readSeq = action.readSeq;
                 serverReadSeq = action.readSeq;
                 serverUnreadMessages = [];
+                serverUnreadMentions = [];
             } else {
                 // Update optimistic
-                let coounterDelta = serverUnreadMessages.filter((v) => readSeq < v && v <= action.readSeq).length;
+                let counterDelta = serverUnreadMessages.filter((v) => readSeq < v && v <= action.readSeq).length;
+                let mentionsDelta = serverUnreadMentions.filter((v) => readSeq < v && v <= action.readSeq).length;
                 readSeq = action.readSeq;
                 serverReadSeq = action.readSeq;
                 serverUnreadMessages = serverUnreadMessages.filter((v) => readSeq < v);
-                counter -= coounterDelta;
+                serverUnreadMentions = serverUnreadMentions.filter((v) => readSeq < v);
+                counter -= counterDelta;
+                mentions -= mentionsDelta;
             }
         }
     }
@@ -165,24 +211,31 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
             // Update optimistic counter
             if (action.readSeq >= readSeq) {
                 let optimisticRead = serverUnreadMessages.filter((v) => action.readSeq < v && v <= readSeq).length;
+                let optimisticMentionsRead = serverUnreadMentions.filter((v) => action.readSeq < v && v <= readSeq).length;
                 readSeq = action.readSeq;
                 counter = action.counter - optimisticRead;
+                mentions = action.mentions - optimisticMentionsRead;
             }
 
             // Update server state
             serverReadSeq = action.readSeq;
             serverUnreadMessages = serverUnreadMessages.filter((v) => serverReadSeq < v);
+            serverUnreadMentions = serverUnreadMentions.filter((v) => serverReadSeq < v);
             serverCounter = action.counter;
+            serverMentions = action.mentions;
         }
     }
 
     return {
         type: 'generic',
         counter,
+        mentions,
         readSeq,
         serverMaxSeq,
         serverCounter,
+        serverMentions,
         serverReadSeq,
-        serverUnreadMessages
+        serverUnreadMessages,
+        serverUnreadMentions
     };
 }
