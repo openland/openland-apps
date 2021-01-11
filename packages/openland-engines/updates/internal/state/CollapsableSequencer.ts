@@ -38,7 +38,9 @@ export class CollapsableSequencer<T> {
             if (e.pts > toPts) {
                 throw Error('Invalid pts');
             }
-            updated = updated || this.put(e.pts, e.event);
+            if (this.put(e.pts, e.event)) {
+                updated = true;
+            }
         }
 
         // Put region
