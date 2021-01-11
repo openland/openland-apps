@@ -1593,6 +1593,43 @@ internal val SharedRoomViewSelector = obj(
             field("featured", "featured", notNull(scalar("Boolean")))
         )
 
+internal val UpdateRoomSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("PrivateRoom", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("hasActiveCall", "hasActiveCall", notNull(scalar("Boolean"))),
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("name", "name", notNull(scalar("String"))),
+                        field("photo", "photo", scalar("String"))
+                    ))),
+                field("settings", "settings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("mute", "mute", scalar("Boolean"))
+                    )))
+            )),
+            inline("SharedRoom", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("kind", "kind", notNull(scalar("String"))),
+                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                field("isPremium", "isPremium", notNull(scalar("Boolean"))),
+                field("title", "title", notNull(scalar("String"))),
+                field("photo", "photo", notNull(scalar("String"))),
+                field("membersCount", "membersCount", notNull(scalar("Int"))),
+                field("featured", "featured", notNull(scalar("Boolean"))),
+                field("hasActiveCall", "hasActiveCall", notNull(scalar("Boolean"))),
+                field("settings", "settings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("mute", "mute", scalar("Boolean"))
+                    )))
+            ))
+        )
+
 internal val UpdateMessageSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -1697,7 +1734,7 @@ internal val ShortSequenceChatSelector = obj(
                 )),
             field("room", "room", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Room", RoomNanoSelector)
+                    fragment("Room", UpdateRoomSelector)
                 )),
             field("topMessage", "topMessage", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -1777,7 +1814,7 @@ internal val ShortUpdateSelector = obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("room", "room", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("Room", RoomNanoSelector)
+                        fragment("Room", UpdateRoomSelector)
                     )))
             ))
         )

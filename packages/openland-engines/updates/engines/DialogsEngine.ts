@@ -1,3 +1,4 @@
+import { DialogDataSourceItem } from './../../messenger/DialogListEngine';
 import { UpdateMessage } from './../../../openland-api/spacex.types';
 import { DialogState } from './dialogs/DialogState';
 import { DialogCollection } from './dialogs/DialogCollection';
@@ -25,14 +26,18 @@ export class DialogsEngine {
 
     private dialogs = new Map<string, DialogState>();
     private userDialogs = new Map<string, string>();
-    readonly dialogsAll = new DialogCollection(defaultQualifier);
-    readonly dialogsUnread = new DialogCollection(unreadQualifier);
-    readonly dialogsGroups = new DialogCollection(groupQualifier);
-    readonly dialogsPrivate = new DialogCollection(privateQualifier);
-    private allDialogs = [this.dialogsAll, this.dialogsUnread, this.dialogsGroups, this.dialogsPrivate];
+    readonly dialogsAll: DialogCollection;
+    readonly dialogsUnread: DialogCollection;
+    readonly dialogsGroups: DialogCollection;
+    readonly dialogsPrivate: DialogCollection;
+    private allDialogs: DialogCollection[];
 
-    constructor() {
-        //
+    constructor(me: string) {
+        this.dialogsAll = new DialogCollection(me, defaultQualifier);
+        this.dialogsUnread = new DialogCollection(me, unreadQualifier);
+        this.dialogsGroups = new DialogCollection(me, groupQualifier);
+        this.dialogsPrivate = new DialogCollection(me, privateQualifier);
+        this.allDialogs = [this.dialogsAll, this.dialogsUnread, this.dialogsGroups, this.dialogsPrivate];
     }
 
     //
@@ -45,6 +50,7 @@ export class DialogsEngine {
             let title = state.room.__typename === 'PrivateRoom' ? state.room.user.name : state.room.title;
             let photo = state.room.__typename === 'PrivateRoom' ? state.room.user.photo : state.room.photo;
             let featured = state.room.__typename === 'SharedRoom' && state.room.featured;
+            let activeCall = state.room.hasActiveCall;
 
             if (this.dialogs.has(state.room.id)) {
                 let ex = this.dialogs.get(state.room.id)!;
@@ -53,7 +59,8 @@ export class DialogsEngine {
                     title,
                     photo,
                     muted,
-                    featured
+                    featured,
+                    activeCall
                 };
 
                 for (let d of this.allDialogs) {
@@ -68,6 +75,7 @@ export class DialogsEngine {
                     photo,
                     muted,
                     featured,
+                    activeCall,
                     // NOTE: Coutners are set from CountersEngine within same transaction
                     counter: 0,
                     mentions: 0,
@@ -100,6 +108,7 @@ export class DialogsEngine {
             let title = update.room.__typename === 'PrivateRoom' ? update.room.user.name : update.room.title;
             let photo = update.room.__typename === 'PrivateRoom' ? update.room.user.photo : update.room.photo;
             let featured = update.room.__typename === 'SharedRoom' && update.room.featured;
+            let activeCall = update.room.hasActiveCall;
 
             if (this.dialogs.has(update.room.id)) {
                 let ex = this.dialogs.get(update.room.id)!;
@@ -108,7 +117,8 @@ export class DialogsEngine {
                     title,
                     photo,
                     muted,
-                    featured
+                    featured,
+                    activeCall
                 };
                 for (let d of this.allDialogs) {
                     d.onDialogUpdated(ex, updated);

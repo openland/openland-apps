@@ -1,18 +1,57 @@
+import { DialogDataSourceItem } from './../../../messenger/DialogListEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { SortedArray } from './../counters/utils/SortedArray';
 import { defaultQualifier } from './qualifiers';
 import { DialogState } from './DialogState';
 import { DialogQualifier } from './DialogQualifier';
 
+function convertToLegacy(me: string, src: DialogState): DialogDataSourceItem {
+    const isOut = src.topMessage ? src.topMessage.sender.id === me : false;
+    const isService = src.topMessage ? src.topMessage.__typename === 'ServiceMessage' : false;
+    const sender: string | undefined = isOut ? 'You' : undefined; // TODO: Fix me
+    return {
+        key: src.key,
+        flexibleId: src.key,
+        title: src.title,
+        photo: src.photo ? src.photo : undefined,
+        kind: src.kind === 'private' ? 'PRIVATE' : src.kind === 'group-secret' ? 'GROUP' : 'PUBLIC',
+        isPremium: src.premium,
+        isChannel: src.channel,
+        featured: src.featured,
+        isMuted: src.muted,
+        hasActiveCall: src.activeCall,
+
+        // Content
+        fallback: src.topMessage ? src.topMessage.fallback : '',
+        message: src.topMessage ? src.topMessage.message ? src.topMessage.message : undefined : undefined,
+        date: src.topMessage ? parseInt(src.topMessage.date, 10) : undefined,
+        isOut,
+        isService,
+        forward: src.topMessage ? src.topMessage.__typename === 'GeneralMessage' && !!src.topMessage.quotedMessages.length && !src.topMessage.message : false,
+        sender,
+        showSenderName: !!(src.topMessage && (isOut || src.kind !== 'private') && sender) && !isService,
+
+        // Counters
+        unread: src.counter,
+        haveMention: src.mentions > 0,
+
+        // Compatibility
+        membership: 'NONE'
+    };
+}
+
 export class DialogCollection {
     readonly qualifier: DialogQualifier;
 
     state: DialogState[] = [];
     source: DataSource<DialogState> = new DataSource(() => {/* Nothing to do */ });
+    legacy: DataSource<DialogDataSourceItem>;
+
     private inited = false;
 
-    constructor(qualifier: DialogQualifier) {
+    constructor(me: string, qualifier: DialogQualifier) {
         this.qualifier = (src) => defaultQualifier(src) && qualifier(src);
+        this.legacy = this.source.map((s) => convertToLegacy(me, s));
     }
 
     onDialogAdded(src: DialogState) {

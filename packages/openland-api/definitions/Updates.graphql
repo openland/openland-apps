@@ -38,7 +38,7 @@ fragment ShortUpdate on UpdateEvent {
     }
     ... on UpdateRoomChanged {
         room {
-            ...RoomNano
+            ...UpdateRoom
         }
     }
 }
@@ -61,7 +61,7 @@ fragment ShortSequenceChat on SequenceChat {
         readSeq
     }
     room {
-        ...RoomNano
+        ...UpdateRoom
     }
     topMessage {
         ...UpdateMessage
@@ -274,6 +274,37 @@ fragment UpdateMessage on ModernMessage {
         isMentioned
         serviceMetadata {
             ...ServiceMessageMetadata
+        }
+    }
+}
+
+fragment UpdateRoom on Room {
+    ... on PrivateRoom {
+        id
+        hasActiveCall
+        user {
+            id
+            name
+            photo
+        }
+        settings {
+            id
+            mute
+        }
+    }
+    ... on SharedRoom {
+        id
+        kind
+        isChannel
+        isPremium
+        title
+        photo
+        membersCount
+        featured
+        hasActiveCall
+        settings {
+            id
+            mute
         }
     }
 }

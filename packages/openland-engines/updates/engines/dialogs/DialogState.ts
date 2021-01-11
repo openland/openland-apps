@@ -9,6 +9,7 @@ export interface DialogState {
     channel: boolean;
     premium: boolean;
     featured: boolean;
+    activeCall: boolean;
 
     sortKey: number | null;
     topMessage: UpdateMessage | null;
