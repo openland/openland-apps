@@ -50,7 +50,7 @@ const RateApp = (props: { ctx: ModalProps }) => {
     const theme = useTheme();
     const handleRatePress = React.useCallback(() => {
         setRateAppInfo({ stopShowingRating: true });
-        Rate.rate({}, () => props.ctx.hide());
+        rateApp({}, () => props.ctx.hide());
     }, []);
     return (
         <View>
