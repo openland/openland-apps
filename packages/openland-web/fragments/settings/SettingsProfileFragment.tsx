@@ -21,7 +21,6 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { UDateInputField } from 'openland-web/components/unicorn/UDateInput';
 import { isValidDate } from 'openland-y-utils/wallet/dateTime';
-import { XWithRole } from '../../../openland-x-permissions/XWithRole';
 
 const privacyText = css`
     margin-bottom: 24px;
@@ -187,11 +186,9 @@ export const SettingsProfileFragment = React.memo(() => {
                                 errorText={form.error}
                             />
                         </FormSection>
-                        <XWithRole role="super-admin">
-                            <FormSection title="Birthday">
-                                <UDateInputField field={birthDayField} />
-                            </FormSection>
-                        </XWithRole>
+                        <FormSection title="Birthday">
+                            <UDateInputField field={birthDayField} />
+                        </FormSection>
                         <FormSection title="Contacts">
                             <XView
                                 marginBottom={16}
