@@ -27,6 +27,7 @@ function convertExperimentalItem(me: string, src: DialogState): DialogDataSource
         isPremium: src.premium,
         isChannel: src.channel,
         featured: src.featured,
+        isMuted: src.muted,
 
         // Content
         fallback: src.topMessage ? src.topMessage.fallback : '',

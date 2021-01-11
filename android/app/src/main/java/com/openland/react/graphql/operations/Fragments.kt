@@ -1772,6 +1772,13 @@ internal val ShortUpdateSelector = obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("cid", "cid", notNull(scalar("ID"))),
                 field("seq", "seq", notNull(scalar("Int")))
+            )),
+            inline("UpdateRoomChanged", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("room", "room", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("Room", RoomNanoSelector)
+                    )))
             ))
         )
 

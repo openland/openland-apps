@@ -52,7 +52,8 @@ export class DialogsEngine {
                     ...ex,
                     title,
                     photo,
-                    muted
+                    muted,
+                    featured
                 };
 
                 for (let d of this.allDialogs) {
@@ -94,7 +95,27 @@ export class DialogsEngine {
     }
 
     async onUpdate(tx: Transaction, pts: number, update: ShortUpdate) {
-        // TODO: Handle
+        if (update.__typename === 'UpdateRoomChanged') {
+            let muted = update.room.settings.mute || false;
+            let title = update.room.__typename === 'PrivateRoom' ? update.room.user.name : update.room.title;
+            let photo = update.room.__typename === 'PrivateRoom' ? update.room.user.photo : update.room.photo;
+            let featured = update.room.__typename === 'SharedRoom' && update.room.featured;
+
+            if (this.dialogs.has(update.room.id)) {
+                let ex = this.dialogs.get(update.room.id)!;
+                let updated: DialogState = {
+                    ...ex,
+                    title,
+                    photo,
+                    muted,
+                    featured
+                };
+                for (let d of this.allDialogs) {
+                    d.onDialogUpdated(ex, updated);
+                }
+                this.dialogs.set(update.room.id, updated);
+            }
+        }
     }
 
     //

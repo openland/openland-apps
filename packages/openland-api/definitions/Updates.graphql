@@ -36,6 +36,11 @@ fragment ShortUpdate on UpdateEvent {
         cid
         seq
     }
+    ... on UpdateRoomChanged {
+        room {
+            ...RoomNano
+        }
+    }
 }
 
 #
