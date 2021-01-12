@@ -1,3 +1,4 @@
+import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { DialogDataSourceItem } from './../../messenger/DialogListEngine';
 import { UpdateMessage } from './../../../openland-api/spacex.types';
 import { DialogState } from './dialogs/DialogState';
@@ -32,12 +33,34 @@ export class DialogsEngine {
     readonly dialogsPrivate: DialogCollection;
     private allDialogs: DialogCollection[];
 
-    constructor(me: string) {
+    constructor(me: string, messenger: MessengerEngine) {
         this.dialogsAll = new DialogCollection(me, defaultQualifier);
         this.dialogsUnread = new DialogCollection(me, unreadQualifier);
         this.dialogsGroups = new DialogCollection(me, groupQualifier);
         this.dialogsPrivate = new DialogCollection(me, privateQualifier);
         this.allDialogs = [this.dialogsAll, this.dialogsUnread, this.dialogsGroups, this.dialogsPrivate];
+
+        // Augment online
+        messenger.getOnlines().onSingleChange((user, online) => {
+            let conversationId = this.userDialogs.get(user);
+            if (!conversationId) {
+                return;
+            }
+            for (let d of this.allDialogs) {
+                d.onlineAugmentator.setAugmentation(conversationId, { online });
+            }
+        });
+
+        // Augment typings
+        messenger.getTypings().subcribe((typing, users, typingType, conversationId) => {
+            for (let d of this.allDialogs) {
+                if (typing) {
+                    d.typingsAugmentator.setAugmentation(conversationId, { typing, typingType });
+                } else {
+                    d.typingsAugmentator.removeAugmentation(conversationId);
+                }
+            }
+        });
     }
 
     //

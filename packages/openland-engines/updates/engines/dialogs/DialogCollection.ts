@@ -1,9 +1,11 @@
-import { DialogDataSourceItem } from './../../../messenger/DialogListEngine';
+import { DataSourceAugmentor } from 'openland-y-utils/DataSourceAugmentor';
+import { DialogDataSourceItem, DialogDataSourceItemStored } from './../../../messenger/DialogListEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { SortedArray } from './../counters/utils/SortedArray';
 import { defaultQualifier } from './qualifiers';
 import { DialogState } from './DialogState';
 import { DialogQualifier } from './DialogQualifier';
+import { TypingType } from 'openland-api/spacex.types';
 
 function convertToLegacy(me: string, src: DialogState): DialogDataSourceItem {
     const isOut = src.topMessage ? src.topMessage.sender.id === me : false;
@@ -45,13 +47,19 @@ export class DialogCollection {
 
     state: DialogState[] = [];
     source: DataSource<DialogState> = new DataSource(() => {/* Nothing to do */ });
-    legacy: DataSource<DialogDataSourceItem>;
+    legacyConverted: DataSource<DialogDataSourceItem>;
+    typingsAugmentator: DataSourceAugmentor<DialogDataSourceItem, { typing: string, typingType?: TypingType }>;
+    onlineAugmentator: DataSourceAugmentor<DialogDataSourceItem & { typing?: string, typingType?: TypingType }, { online: boolean }>;
+    legacy: DataSource<DialogDataSourceItemStored>;
 
     private inited = false;
 
     constructor(me: string, qualifier: DialogQualifier) {
         this.qualifier = (src) => defaultQualifier(src) && qualifier(src);
-        this.legacy = this.source.map((s) => convertToLegacy(me, s));
+        this.legacyConverted = this.source.map((s) => convertToLegacy(me, s));
+        this.typingsAugmentator = new DataSourceAugmentor<DialogDataSourceItem, { typing: string, typingType?: TypingType }>(this.legacyConverted);
+        this.onlineAugmentator = new DataSourceAugmentor<DialogDataSourceItem & { typing?: string, typingType?: TypingType }, { online: boolean }>(this.typingsAugmentator.dataSource);
+        this.legacy = this.onlineAugmentator.dataSource;
     }
 
     onDialogAdded(src: DialogState) {

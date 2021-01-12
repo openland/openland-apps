@@ -134,7 +134,7 @@ export class DialogListEngine {
         };
         this._dataSourceStored = new DataSourceStored('dialogs', engine.options.store, 20, provider);
         let typingsAugmentator = new DataSourceAugmentor<DialogDataSourceItemStored, { typing: string, typingType?: TypingType }>(this._dataSourceStored.dataSource);
-        let onlineAugmentator = new DataSourceAugmentor<DialogDataSourceItemStored & { typing?: string }, { online: boolean }>(typingsAugmentator.dataSource);
+        let onlineAugmentator = new DataSourceAugmentor<DialogDataSourceItemStored & { typing?: string, typingType?: TypingType }, { online: boolean }>(typingsAugmentator.dataSource);
         this.dataSource = onlineAugmentator.dataSource;
 
         //

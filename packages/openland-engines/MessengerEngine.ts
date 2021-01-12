@@ -94,7 +94,7 @@ export class MessengerEngine {
 
         // New engine
         if (this.options.experimental) {
-            this.experimentalUpdates = new UpdatesEngine(user.id, this.client, new Persistence(this.options.store));
+            this.experimentalUpdates = new UpdatesEngine(user.id, this.client, new Persistence(this.options.store), this);
         } else {
             this.experimentalUpdates = null;
         }

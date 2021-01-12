@@ -1,3 +1,4 @@
+import { MessengerEngine } from './../MessengerEngine';
 import { UsersEngine } from './engines/UsersEngine';
 import { HistoryEngine } from './engines/HistoryEngine';
 import { DialogsEngine } from './engines/DialogsEngine';
@@ -17,19 +18,21 @@ export class UpdatesEngine {
     private closed = false;
 
     readonly me: string;
+    readonly messenger: MessengerEngine;
     readonly counters: CountersEngine;
     readonly drafts: DraftsEngine;
     readonly dialogs: DialogsEngine;
     readonly history: HistoryEngine;
     readonly users: UsersEngine;
 
-    constructor(me: string, client: OpenlandClient, persistence: Persistence) {
+    constructor(me: string, client: OpenlandClient, persistence: Persistence, messenger: MessengerEngine) {
         this.client = client;
         this.persistence = persistence;
         this.me = me;
+        this.messenger = messenger;
         this.users = new UsersEngine(persistence);
         this.sequences = new SequencesEngine(client, persistence, this.users);
-        this.dialogs = new DialogsEngine();
+        this.dialogs = new DialogsEngine(this.me, this.messenger);
         this.counters = new CountersEngine(this.me, this, this.dialogs);
         this.drafts = new DraftsEngine(this.dialogs);
         this.history = new HistoryEngine(this.dialogs, this);
