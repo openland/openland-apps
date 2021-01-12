@@ -12,8 +12,15 @@ import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { showImageModal } from './ImageContent';
 import DeleteIcon from 'openland-icons/s/ic-close-16.svg';
 import ZoomIcon from 'openland-icons/s/ic-zoom-16.svg';
+import PlayIcon from 'openland-icons/s/ic-play-glyph-24.svg';
 
 type messageRichAttach = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
+
+const isYoutubeLink = (link: string | null | undefined) => {
+    const regEx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    const match = link && link.match(regEx);
+    return match && match[7].length >= 11;
+};
 
 const richWrapper = css`
     display: flex;
@@ -214,6 +221,20 @@ const zoomButton = css`
     }
 `;
 
+const playButton = css`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--overlayMedium);
+    width: 48px;
+    height: 48px;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
 interface RichAttachContentProps {
     attach: messageRichAttach;
     canDelete: boolean;
@@ -238,6 +259,7 @@ export const RichAttachContent = React.memo((props: RichAttachContentProps) => {
     const isShortView =
         !attach.title || !attach.text || attach.title.length < 80 || attach.text.length < 105;
     const isXShortView = !attach.title || !attach.text || attach.title.length < 55;
+    const isYtbLink = isYoutubeLink(attach.titleLink);
 
     const handleDeleteClick = React.useCallback(
         (e: React.MouseEvent) => {
@@ -298,6 +320,15 @@ export const RichAttachContent = React.memo((props: RichAttachContentProps) => {
                     src={attach.image.url + ops}
                     srcSet={attach.image.url + opsRetina}
                 />
+                {isYtbLink && (
+                    <div className={playButton}>
+                        <UIcon
+                            icon={<PlayIcon />}
+                            size={24}
+                            color="var(--foregroundContrast)"
+                        />
+                    </div>
+                )}
             </div>
         );
     }
@@ -337,7 +368,7 @@ export const RichAttachContent = React.memo((props: RichAttachContentProps) => {
                 </div>
             </a>
 
-            {img && (
+            {img && !isYtbLink && (
                 <button
                     className={cx(zoomButton, 'message-rich-zoom')}
                     onClick={(e: React.MouseEvent) => {
