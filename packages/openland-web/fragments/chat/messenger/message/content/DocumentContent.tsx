@@ -21,6 +21,7 @@ import IcYellow from 'openland-icons/files/yellow.svg';
 import { isElectron } from 'openland-y-utils/isElectron';
 import { electronBus } from 'openland-web/utils/electronBus';
 import { MediaLoader } from './MediaLoader';
+import { layoutMedia } from 'openland-y-utils/MediaLayout';
 
 const modalContainer = css`
     position: relative;
@@ -276,24 +277,66 @@ const videoContainer = css`
     flex-direction: column;
     flex-shrink: 0;
     flex-grow: 1;
-    min-width: 250px;
-    max-width: 550px;
-    min-height: 300px;
-    max-height: 300px;
-    height: 300px;
+    opacity: 0;
+    max-width: 552px;
+    min-height: 302px;
+    max-height: 302px;
+    padding: 1px;
+    position: relative;
+    justify-content: center;
+    align-items: center;
 `;
 
 const videoStyle = css`
-    height: 100%;
+    border-radius: 8px;
+    width: 100%;
+    object-fit: contain;
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 8px;
+        border: 1px solid var(--borderLight);
+        pointer-events: none;
+    }
 `;
 
 const VideoContent = React.memo(
     (props: {
         file: { fileId?: string; fileMetadata: { name: string; size: number }; uri?: string };
     }) => {
+        const videoRef = React.useRef<HTMLVideoElement>(null);
+        const wrapperRef = React.useRef<HTMLDivElement>(null);
+        const onLoadedMetadata = React.useCallback(() => {
+            if (videoRef.current) {
+                const minWidth = 252;
+                const maxWidth = 552;
+                const minMaxHeight = 302;
+                const w = videoRef.current.videoWidth;
+                const h = videoRef.current.videoHeight;
+                const layout = layoutMedia(w, h, maxWidth, minMaxHeight, minWidth, minMaxHeight);
+                const newW = Math.max(layout.width, 200);
+                const newH = Math.max(layout.height, 300);
+                wrapperRef.current!.style.maxWidth = `${newW}px`;
+                wrapperRef.current!.style.maxHeight = `${newH}px`;
+                wrapperRef.current!.style.opacity = '1';
+            }
+        }, []);
+
         return (
-            <div className={videoContainer} onClick={(e) => e.stopPropagation()}>
-                <video controls={true} className={videoStyle}>
+            <div className={videoContainer} ref={wrapperRef}>
+                <video
+                    controls={true}
+                    className={videoStyle}
+                    ref={videoRef}
+                    onClick={(e) => e.stopPropagation()}
+                    onLoadedMetadata={onLoadedMetadata}
+                >
                     <source src={`https://ucarecdn.com/${props.file.fileId}/`} type="video/mp4" />
                 </video>
             </div>
