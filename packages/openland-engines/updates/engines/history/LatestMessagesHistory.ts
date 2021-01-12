@@ -119,11 +119,18 @@ export function messagesHistoryReducer(src: LatestMessagesHistory, action: Lates
                     pts: action.pts
                 };
             } else {
+                let lastMessages = src.lastMessages.filter((v) => v !== action.message);
+                if (lastMessages.length === 0) {
+                    return {
+                        type: 'empty',
+                        pts: action.pts
+                    };
+                }
                 return {
                     ...src,
                     pts: action.pts,
                     seqTo: Math.max(action.seq, src.seqTo),
-                    lastMessages: src.lastMessages.filter((v) => v !== action.message)
+                    lastMessages
                 };
             }
         } else {

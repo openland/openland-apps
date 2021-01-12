@@ -10,6 +10,7 @@ export class HistoryEngine {
     readonly updates: UpdatesEngine;
     readonly messages = new Map<string, UpdateMessage | null>();
     readonly latestMessages = new Map<string, LatestMessagesHistory>();
+    readonly sequences = new Map<string, string>();
 
     constructor(dialogs: DialogsEngine, updates: UpdatesEngine) {
         this.dialogs = dialogs;
@@ -17,6 +18,7 @@ export class HistoryEngine {
     }
 
     async onSequenceRestart(tx: Transaction, pts: number, state: ShortSequenceChat) {
+        this.sequences.set(state.cid, state.id);
 
         // Persist message
         if (state.topMessage) {
@@ -80,6 +82,12 @@ export class HistoryEngine {
                 exTop2 = msg.lastMessages[msg.lastMessages.length - 1];
             }
             if (exTop !== exTop2) {
+                if (!exTop2) {
+                    if (this.sequences.has(update.cid)) {
+                        await this.updates.invalidate(tx, this.sequences.get(update.cid)!);
+                        return;
+                    }
+                }
                 await this.notifyTopMessage(tx, update.cid, msg);
             }
         }

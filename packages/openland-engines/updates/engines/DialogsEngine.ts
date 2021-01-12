@@ -106,6 +106,7 @@ export class DialogsEngine {
                     channel: state.room.__typename === 'SharedRoom' && state.room.isChannel,
                     kind: state.room.__typename === 'PrivateRoom' ? 'private' : (state.room.kind === SharedRoomKind.GROUP ? 'group-secret' : 'group-shared'),
                     draft: null,
+                    // NOTE: Top Message is set from HistoryEngine within same transaction
                     topMessage: null,
                     sortKey: null
                 };
