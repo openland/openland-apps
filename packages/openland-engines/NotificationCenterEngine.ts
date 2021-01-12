@@ -42,49 +42,7 @@ const convertCommentNotification = (id: string, peer: Types.NotificationFragment
     };
 };
 
-// const notificationUnsupported = (id: string): NotificationsDataSourceItem => {
-//     const date = Date.now();
-//
-//     return {
-//         ...convertMessage({
-//             __typename: 'GeneralMessage',
-//             id: id,
-//             seq: null,
-//             date: date,
-//             sender: {
-//                 __typename: 'User' as 'User',
-//                 id: 'mJMk3EkbzBs7dyPBPp9Bck0pxn',
-//                 name: 'Openland Support',
-//                 photo: 'https://ucarecdn.com/db12b7df-6005-42d9-87d6-46f15dd5b880/',
-//                 isBot: false,
-//                 shortname: null,
-//                 inContacts: false,
-//                 primaryOrganization: null,
-//             },
-//             source: null,
-//             senderBadge: null,
-//             message: '*Notification type not supported*\nNotification is not supported on your version of Openland. Please update the app to view it.',
-//             fallback: '*Notification type not supported*\nNotification is not supported on your version of Openland. Please update the app to view it.',
-//             edited: false,
-//             commentsCount: 0,
-//             attachments: [],
-//             quotedMessages: [],
-//             reactionCounters: [],
-//             spans: [{ __typename: 'MessageSpanBold', offset: 0, length: 33 }],
-//             overrideAvatar: null,
-//             overrideName: null
-//         }),
-//
-//         notificationId: id,
-//         notificationType: 'unsupported',
-//
-//         // rewrite results from convertMessage
-//         key: id,
-//         isOut: false
-//     };
-// };
-
-export const convertNotification = (notification: Types.NotificationFragment): NotificationsDataSourceItem | null => {
+const convertNotification = (notification: Types.NotificationFragment): NotificationsDataSourceItem | null => {
     const content = notification.content;
 
     if (content && content.length && content[0].__typename === 'NewCommentNotification') {
@@ -95,7 +53,6 @@ export const convertNotification = (notification: Types.NotificationFragment): N
         return convertCommentNotification(notification.id, peer, comment);
     } else {
         return null;
-        // return notificationUnsupported(notification.id);
     }
 };
 
@@ -109,6 +66,7 @@ export class NotificationCenterEngine {
     private maxSeq = 0;
     private lastReportedSeq = 0;
     private listenersCount = 0;
+    private notifications: Types.MyNotifications_myNotifications_items[] = [];
 
     constructor(engine: MessengerEngine) {
         this.engine = engine;
@@ -130,8 +88,8 @@ export class NotificationCenterEngine {
                 const notificationCenterQuery = await notificationCenterQueryPromise;
 
                 const notifications = notificationsQuery.myNotifications.items;
+                this.notifications = [...this.notifications, ...notifications];
                 const items = [];
-
                 for (let notification of notifications) {
                     const converted = convertNotification(notification);
                     if (converted) {
@@ -219,8 +177,8 @@ export class NotificationCenterEngine {
     }
 
     private markReadIfNeeded = () => {
-        if (this.isVisible && this.dataSource.getSize() > 0 && this.listenersCount > 0) {
-            const id = this.dataSource.getAt(0).key;
+        if (this.isVisible && this.notifications.length > 0 && this.listenersCount > 0) {
+            const id = this.notifications[0].id;
 
             if (id !== this.lastNotificationRead) {
                 this.lastNotificationRead = id;
@@ -254,6 +212,7 @@ export class NotificationCenterEngine {
             }
 
             const converted = convertNotification(event.notification);
+            this.notifications = [event.notification, ...this.notifications];
             if (converted) {
                 await this._dataSourceStored.addItem(converted, 0);
 
@@ -264,7 +223,7 @@ export class NotificationCenterEngine {
             this.onNotificationsUpdated();
         } else if (event.__typename === 'NotificationDeleted') {
             const id = event.notification.id;
-
+            this.notifications = this.notifications.filter(i => i.id !== id);
             if (await this._dataSourceStored.hasItem(id)) {
                 await this._dataSourceStored.removeItem(id);
 
