@@ -236,6 +236,7 @@ const ExplorePeopleFragment = React.memo((props: ExplorePeopleFragmentProps) => 
                         onPick={onSelectUser}
                         selectedUsers={selectedUsers}
                         paddingBottom={128}
+                        disabledBlocking={true}
                     />
                 </div>
             </React.Suspense>
