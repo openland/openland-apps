@@ -32,7 +32,7 @@ export class UpdatesEngine {
         this.messenger = messenger;
         this.users = new UsersEngine(persistence);
         this.sequences = new SequencesEngine(client, persistence, this.users);
-        this.dialogs = new DialogsEngine(this.me, this.messenger);
+        this.dialogs = new DialogsEngine(this.me, this.messenger, this.users);
         this.counters = new CountersEngine(this.me, this, this.dialogs);
         this.drafts = new DraftsEngine(this.dialogs);
         this.history = new HistoryEngine(this.dialogs, this);

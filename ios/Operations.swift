@@ -1856,6 +1856,8 @@ private let UpdateUserSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             field("name", "name", notNull(scalar("String"))),
+            field("firstName", "firstName", notNull(scalar("String"))),
+            field("lastName", "lastName", scalar("String")),
             field("photo", "photo", scalar("String"))
         )
 
@@ -6613,7 +6615,7 @@ class Operations {
     let UpdateUsers = OperationDefinition(
         "UpdateUsers",
         .query, 
-        "query UpdateUsers($ids:[ID!]!){users(ids:$ids){__typename ...UpdateUser}}fragment UpdateUser on User{__typename id name photo}",
+        "query UpdateUsers($ids:[ID!]!){users(ids:$ids){__typename ...UpdateUser}}fragment UpdateUser on User{__typename id name firstName lastName photo}",
         UpdateUsersSelector
     )
     let User = OperationDefinition(

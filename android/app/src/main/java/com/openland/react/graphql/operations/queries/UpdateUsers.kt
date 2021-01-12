@@ -13,6 +13,6 @@ internal val UpdateUsersSelector = obj(
 val UpdateUsers = object: OperationDefinition {
     override val name = "UpdateUsers"
     override val kind = OperationKind.QUERY
-    override val body = "query UpdateUsers(\$ids:[ID!]!){users(ids:\$ids){__typename ...UpdateUser}}fragment UpdateUser on User{__typename id name photo}"
+    override val body = "query UpdateUsers(\$ids:[ID!]!){users(ids:\$ids){__typename ...UpdateUser}}fragment UpdateUser on User{__typename id name firstName lastName photo}"
     override val selector = UpdateUsersSelector
 }

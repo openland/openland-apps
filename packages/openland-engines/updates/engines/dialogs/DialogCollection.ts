@@ -1,3 +1,4 @@
+import { UsersEngine } from './../UsersEngine';
 import { DataSourceAugmentor } from 'openland-y-utils/DataSourceAugmentor';
 import { DialogDataSourceItem, DialogDataSourceItemStored } from './../../../messenger/DialogListEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
@@ -7,10 +8,10 @@ import { DialogState } from './DialogState';
 import { DialogQualifier } from './DialogQualifier';
 import { TypingType } from 'openland-api/spacex.types';
 
-function convertToLegacy(me: string, src: DialogState): DialogDataSourceItem {
+function convertToLegacy(me: string, src: DialogState, users: UsersEngine): DialogDataSourceItem {
     const isOut = src.topMessage ? src.topMessage.sender.id === me : false;
     const isService = src.topMessage ? src.topMessage.__typename === 'ServiceMessage' : false;
-    const sender: string | undefined = isOut ? 'You' : undefined; // TODO: Fix me
+    const sender: string | undefined = isOut ? 'You' : src.topMessage ? users.getUser(src.topMessage.sender.id).firstName : undefined;
     return {
         key: src.key,
         flexibleId: src.key,
@@ -54,9 +55,9 @@ export class DialogCollection {
 
     private inited = false;
 
-    constructor(me: string, qualifier: DialogQualifier) {
+    constructor(me: string, qualifier: DialogQualifier, users: UsersEngine) {
         this.qualifier = (src) => defaultQualifier(src) && qualifier(src);
-        this.legacyConverted = this.source.map((s) => convertToLegacy(me, s));
+        this.legacyConverted = this.source.map((s) => convertToLegacy(me, s, users));
         this.typingsAugmentator = new DataSourceAugmentor<DialogDataSourceItem, { typing: string, typingType?: TypingType }>(this.legacyConverted);
         this.onlineAugmentator = new DataSourceAugmentor<DialogDataSourceItem & { typing?: string, typingType?: TypingType }, { online: boolean }>(this.typingsAugmentator.dataSource);
         this.legacy = this.onlineAugmentator.dataSource;

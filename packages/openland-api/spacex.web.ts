@@ -1863,6 +1863,8 @@ const UpdateUserSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
             field('name', 'name', args(), notNull(scalar('String'))),
+            field('firstName', 'firstName', args(), notNull(scalar('String'))),
+            field('lastName', 'lastName', args(), scalar('String')),
             field('photo', 'photo', args(), scalar('String'))
         );
 
@@ -6616,7 +6618,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     UpdateUsers: {
         kind: 'query',
         name: 'UpdateUsers',
-        body: 'query UpdateUsers($ids:[ID!]!){users(ids:$ids){__typename ...UpdateUser}}fragment UpdateUser on User{__typename id name photo}',
+        body: 'query UpdateUsers($ids:[ID!]!){users(ids:$ids){__typename ...UpdateUser}}fragment UpdateUser on User{__typename id name firstName lastName photo}',
         selector: UpdateUsersSelector
     },
     User: {

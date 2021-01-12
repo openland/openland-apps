@@ -1,5 +1,5 @@
+import { UsersEngine } from './UsersEngine';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
-import { DialogDataSourceItem } from './../../messenger/DialogListEngine';
 import { UpdateMessage } from './../../../openland-api/spacex.types';
 import { DialogState } from './dialogs/DialogState';
 import { DialogCollection } from './dialogs/DialogCollection';
@@ -33,11 +33,11 @@ export class DialogsEngine {
     readonly dialogsPrivate: DialogCollection;
     private allDialogs: DialogCollection[];
 
-    constructor(me: string, messenger: MessengerEngine) {
-        this.dialogsAll = new DialogCollection(me, defaultQualifier);
-        this.dialogsUnread = new DialogCollection(me, unreadQualifier);
-        this.dialogsGroups = new DialogCollection(me, groupQualifier);
-        this.dialogsPrivate = new DialogCollection(me, privateQualifier);
+    constructor(me: string, messenger: MessengerEngine, users: UsersEngine) {
+        this.dialogsAll = new DialogCollection(me, defaultQualifier, users);
+        this.dialogsUnread = new DialogCollection(me, unreadQualifier, users);
+        this.dialogsGroups = new DialogCollection(me, groupQualifier, users);
+        this.dialogsPrivate = new DialogCollection(me, privateQualifier, users);
         this.allDialogs = [this.dialogsAll, this.dialogsUnread, this.dialogsGroups, this.dialogsPrivate];
 
         // Augment online
@@ -52,7 +52,7 @@ export class DialogsEngine {
         });
 
         // Augment typings
-        messenger.getTypings().subcribe((typing, users, typingType, conversationId) => {
+        messenger.getTypings().subcribe((typing, uids, typingType, conversationId) => {
             for (let d of this.allDialogs) {
                 if (typing) {
                     d.typingsAugmentator.setAugmentation(conversationId, { typing, typingType });

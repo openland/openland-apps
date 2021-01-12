@@ -176,7 +176,7 @@ export class SequencesEngine {
             })).users;
             console.info('users loaded in ' + (Date.now() - start) + ' ms');
             await this.persistence.inTx(async (tx) => {
-                await this.users.persistUsers(tx, loadedUsers.map((u) => ({ id: u.id, name: u.name, photo: u.photo })));
+                await this.users.persistUsers(tx, loadedUsers.map((u) => ({ id: u.id, name: u.name, firstName: u.firstName, lastName: u.lastName, photo: u.photo })));
             });
         }
     }

@@ -16,11 +16,11 @@ export class UsersEngine {
         }
     }
 
-    async hasUser(tx: Transaction, id: string) {
+    hasUser(id: string) {
         return this.users.has(id);
     }
 
-    async getUser(tx: Transaction, id: string): Promise<ShortUser> {
+    getUser(id: string): ShortUser {
         if (this.users.has(id)) {
             return this.users.get(id)!;
         }
@@ -37,7 +37,7 @@ export class UsersEngine {
             return await this.persistence.inTx(async (tx) => {
                 let missing: string[] = [];
                 for (let id of extractedIds) {
-                    if (!(await this.hasUser(tx, id))) {
+                    if (!(this.hasUser(id))) {
                         missing.push(id);
                     }
                 }

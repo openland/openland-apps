@@ -7,5 +7,7 @@ export type UpdateSequenceDiff = ShortSequence;
 export type ShortUser = {
     id: string;
     name: string;
+    firstName: string;
+    lastName: string | null;
     photo: string | null;
 };
