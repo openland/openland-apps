@@ -63,7 +63,7 @@ export class HistoryEngine {
             if (msg.type === 'generic') {
                 exTop2 = msg.lastMessages[msg.lastMessages.length - 1];
             }
-            if (exTop !== exTop2) {
+            if (exTop !== exTop2 || exTop === update.message.id) {
                 await this.notifyTopMessage(tx, update.cid, msg);
             }
         } else if (update.__typename === 'UpdateChatMessageDeleted') {
