@@ -247,16 +247,18 @@ const SettingsPrivacyContent = (props: PageProps) => {
     return (
         <SScrollView>
             <ZListGroup header="Sign-in methods">
-                <View marginVertical={8} paddingHorizontal={16}>
+                <View style={{ marginVertical: 8, paddingHorizontal: 16 }}>
                     <View
-                        paddingHorizontal={16}
-                        paddingVertical={14}
-                        flexDirection="row"
-                        alignItems="center"
-                        backgroundColor={theme.backgroundTertiaryTrans}
-                        borderRadius={12}
+                        style={{
+                            paddingHorizontal: 16,
+                            paddingVertical: 14,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            backgroundColor: theme.backgroundTertiaryTrans,
+                            borderRadius: 12
+                        }}
                     >
-                        <View flex={1}>
+                        <View style={{ flex: 1 }}>
                             <Text
                                 style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}
                                 allowFontScaling={false}
@@ -271,7 +273,7 @@ const SettingsPrivacyContent = (props: PageProps) => {
                                 {phoneStr}
                             </Text>
                         </View>
-                        <View marginLeft={8}>
+                        <View style={{ marginLeft: 8 }}>
                             {phone ? (
                                 <ZButton
                                     style="secondary"
@@ -279,20 +281,22 @@ const SettingsPrivacyContent = (props: PageProps) => {
                                     onPress={initiatePhonePair}
                                 />
                             ) : (
-                                <ZButton style="primary" title="Add" onPress={initiatePhonePair} />
-                            )}
+                                    <ZButton style="primary" title="Add" onPress={initiatePhonePair} />
+                                )}
                         </View>
                     </View>
                     <View
-                        paddingHorizontal={16}
-                        paddingVertical={14}
-                        flexDirection="row"
-                        alignItems="center"
-                        backgroundColor={theme.backgroundTertiaryTrans}
-                        borderRadius={12}
-                        marginTop={16}
+                        style={{
+                            paddingHorizontal: 16,
+                            paddingVertical: 14,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            backgroundColor: theme.backgroundTertiaryTrans,
+                            borderRadius: 12,
+                            marginTop: 16
+                        }}
                     >
-                        <View flex={1}>
+                        <View style={{ flex: 1 }}>
                             <Text
                                 style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}
                                 allowFontScaling={false}
@@ -307,7 +311,7 @@ const SettingsPrivacyContent = (props: PageProps) => {
                                 {emailStr}
                             </Text>
                         </View>
-                        <View marginLeft={8}>
+                        <View style={{ marginLeft: 8 }}>
                             {email ? (
                                 <ZButton
                                     style="secondary"
@@ -315,8 +319,8 @@ const SettingsPrivacyContent = (props: PageProps) => {
                                     onPress={initiateEmailPair}
                                 />
                             ) : (
-                                <ZButton style="primary" title="Add" onPress={initiateEmailPair} />
-                            )}
+                                    <ZButton style="primary" title="Add" onPress={initiateEmailPair} />
+                                )}
                         </View>
                     </View>
                 </View>

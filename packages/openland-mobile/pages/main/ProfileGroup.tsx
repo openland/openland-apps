@@ -314,7 +314,8 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
         Share.share(
             Platform.select({
                 ios: { url: link },
-                android: { message: link }
+                android: { message: link },
+                default: { message: link }
             })
         );
     }, [group.shortname, group.id]);
@@ -336,9 +337,11 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 titleIconElement={
                     group.isPremium ? (
                         <View
-                            marginRight={8}
-                            marginTop={Platform.OS === 'ios' ? 2 : 4}
-                            alignSelf="center"
+                            style={{
+                                marginRight: 8,
+                                marginTop: Platform.OS === 'ios' ? 2 : 4,
+                                alignSelf: 'center'
+                            }}
                         >
                             <PremiumBadge />
                         </View>
@@ -377,7 +380,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
 
             <ZListGroup header="About" useSpacer={true}>
                 {!!group.description && <ZListItem multiline={true} text={group.description} copy={true} />}
-                {!!group.description && <View height={8} />}
+                {!!group.description && <View style={{ height: 8 }} />}
                 {!!group.shortname && (
                     <ZListItem
                         text={group.shortname}

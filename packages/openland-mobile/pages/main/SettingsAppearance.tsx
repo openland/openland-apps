@@ -36,7 +36,7 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                 <ThemePreview />
 
                 <ZListGroup header="Theme">
-                    <View flexDirection="row" paddingHorizontal={16} paddingVertical={8}>
+                    <View style={{ flexDirection: 'row', paddingHorizontal: 16, paddingVertical: 8 }}>
                         <ZTab selected={currentTheme === 'System'} onPress={() => handleChange({ theme: 'System' })}>System</ZTab>
                         <ZTab selected={currentTheme === 'Light'} onPress={() => handleChange({ theme: 'Light' })}>Light</ZTab>
                         <ZTab selected={currentTheme === 'Dark'} onPress={() => handleChange({ theme: 'Dark' })}>Dark</ZTab>
@@ -46,7 +46,7 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                 </ZListGroup>
 
                 <ZListGroup header="Accent">
-                    <View flexDirection="row" justifyContent="flex-start" flexWrap="wrap" paddingHorizontal={8}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-start', flexWrap: 'wrap', paddingHorizontal: 8 }}>
                         {theme.supportedAccents.map(accent => (
                             <AccentCircle
                                 key={accent}
@@ -77,7 +77,7 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                     />
                 </ZListGroup>
 
-                <View height={16} />
+                <View style={{ height: 16 }} />
             </SScrollView>
         </>
     );

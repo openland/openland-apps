@@ -73,7 +73,7 @@ const TagButton = React.memo((props: TagButtonProps) => {
                 backgroundColor: props.selected ? theme.accentPrimary : theme.backgroundTertiary,
             }}
         >
-            <View flexDirection="row" alignItems="center">
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Animated.Image
                     style={{
                         width: 16,
@@ -122,7 +122,7 @@ const TagsCloud = React.memo((props: TagsCloudProps) => {
     };
 
     return (
-        <View flexDirection="row" flexWrap="wrap" justifyContent="center">
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
             {props.tagsGroup.tags.map(tag => (
                 <TagButton
                     tag={tag}
@@ -180,8 +180,8 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
 
     return (
         <>
-            {isIos && <SHeader title={subtitle || ''}/>}
-            <SScrollView flex={1} paddingTop={16}>
+            {isIos && <SHeader title={subtitle || ''} />}
+            <SScrollView style={{ flex: 1, paddingTop: 16 }}>
                 {subtitle && (
                     <Text
                         allowFontScaling={false}
@@ -197,9 +197,11 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
                     </Text>
                 )}
                 <View
-                    paddingHorizontal={8}
-                    flexDirection="column"
-                    paddingBottom={isXGen ? 216 : 140}
+                    style={{
+                        paddingHorizontal: 8,
+                        flexDirection: 'column',
+                        paddingBottom: isXGen ? 216 : 140
+                    }}
                 >
                     <TagsCloud
                         tagsGroup={props.group}
@@ -209,12 +211,14 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
                 </View>
             </SScrollView>
             <ZBlurredView
-                position="absolute"
-                bottom={0}
-                left={0}
-                right={0}
-                padding={16}
-                paddingBottom={isIos ? defaultIosPadding : area.bottom + 16}
+                style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    padding: 16,
+                    paddingBottom: isIos ? defaultIosPadding : area.bottom + 16
+                }}
                 intensity="normal"
             >
                 <ZButton size="large" title="Next" enabled={enabled} onPress={next} />

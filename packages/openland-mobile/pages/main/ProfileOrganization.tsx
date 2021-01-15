@@ -407,7 +407,8 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
         Share.share(
             Platform.select({
                 ios: { url: link },
-                android: { message: link }
+                android: { message: link },
+                default: { message: link }
             })
         );
     }, [organization.shortname, organization.id]);
@@ -483,7 +484,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 {!!organization.about && (
                     <ZListItem multiline={true} text={organization.about} copy={true} />
                 )}
-                {!!organization.about && <View height={8} />}
+                {!!organization.about && <View style={{ height: 8 }} />}
                 {!!organization.shortname && (
                     <ZListItem
                         text={organization.shortname}

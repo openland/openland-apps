@@ -70,7 +70,7 @@ const EditOrganizationComponent = React.memo((props: PageProps) => {
                         description="Publicly describe this organization for all to see"
                     />
                 </ZListGroup>
-                <View height={15} />
+                <View style={{ height: 15 }} />
                 <ZListGroup header="Shortname" headerMarginTop={0}>
                     <ZPickField
                         label="Shortname"

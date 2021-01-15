@@ -178,7 +178,7 @@ let SettingsContent = ((props: PageProps) => {
                 </ZListGroup>
             )}
 
-            <View height={32} />
+            <View style={{ height: 32 }} />
         </SScrollView>
     );
 });

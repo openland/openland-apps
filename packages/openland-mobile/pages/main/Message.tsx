@@ -89,7 +89,7 @@ const MessageComponent = React.memo((props: PageProps) => {
     const isDeleted = isMessageDeleted(message);
     const { date, sender, source } = message;
     const peerView = (
-        <View paddingHorizontal={16} paddingTop={8} paddingBottom={16}>
+        <View style={{ paddingHorizontal: 16, paddingTop: 8, paddingBottom: 16 }}>
             <ZMessageView message={message} />
 
             {source && source.__typename === 'MessageSourceChat' && (
@@ -97,7 +97,7 @@ const MessageComponent = React.memo((props: PageProps) => {
                     onPress={() => messenger.handleMessageSourcePress(source.chat.id)}
                     activeOpacity={HighlightAlpha}
                 >
-                    <View paddingTop={8}>
+                    <View style={{ paddingTop: 8 }}>
                         <Text
                             style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}
                             allowFontScaling={false}

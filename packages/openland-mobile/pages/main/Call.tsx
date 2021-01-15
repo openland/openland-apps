@@ -25,7 +25,6 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { showCallControls } from './components/conference/CallControls';
-import { Space } from './Space';
 
 const PeerInfoGradient = (props: { children: any }) => {
     let theme = React.useContext(ThemeContext);
@@ -253,13 +252,11 @@ let Content = React.memo((props: { id: string, speaker: boolean, setSpeaker: (fn
         });
     }, []);
 
-    let [mode] = React.useState<'grid' | 'space'>('grid');
-
     return (
         <>
             {Platform.OS === 'ios' && <StatusBar hidden={true} />}
             <View flexDirection="row" alignItems="flex-start" width={w} height="100%">
-                {mode === 'grid' && slices.map((s, i) =>
+                {slices.map((s, i) =>
                     <View key={i} flexDirection="column" justifyContent="flex-start" flexGrow={1}>
 
                         {s.map((p, peerIndex) => {
@@ -287,7 +284,6 @@ let Content = React.memo((props: { id: string, speaker: boolean, setSpeaker: (fn
                         })}
                     </View>
                 )}
-                {mode === 'space' && <Space mediaSession={mediaSession!} peers={conference?.conference.peers || []} />}
             </View>
             <View
                 position="absolute"

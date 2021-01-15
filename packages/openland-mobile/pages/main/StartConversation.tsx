@@ -21,7 +21,7 @@ const Chat = (props: { item: DialogDataSourceItem, onPress: (key: string) => voi
         onPress={onPress}
         separator={false}
     >
-        <View width={72} height={56} alignItems="center" justifyContent="center">
+        <View style={{ width: 72, height: 56, alignItems: 'center', justifyContent: 'center' }}>
             <ZAvatar
                 photo={props.item.photo}
                 size="medium"
@@ -29,7 +29,7 @@ const Chat = (props: { item: DialogDataSourceItem, onPress: (key: string) => voi
                 title={props.item.title}
             />
         </View>
-        <View marginRight={10} marginTop={10} marginBottom={10} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch" justifyContent="center">
+        <View style={{ marginRight: 10, marginTop: 10, marginBottom: 10, flexDirection: 'column', flexGrow: 1, flexBasis: 0, alignItems: 'stretch', justifyContent: 'center' }}>
             <Text
                 numberOfLines={1}
                 style={{
@@ -82,13 +82,13 @@ const StartConversationComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SScrollView justifyContent="flex-start" alignContent="center">
+            <SScrollView style={{ justifyContent: 'flex-start', alignContent: 'center' }}>
                 <Text style={{ fontSize: 34, marginHorizontal: 16, fontWeight: FontStyles.Weight.Bold, color: theme.foregroundPrimary, marginBottom: 8 }} >Get help from Openland community</Text>
                 <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.foregroundPrimary, marginTop: theme.type === 'Light' ? 0 : 8 }}>Choose a chat and share your challenges</Text>
                 {items.map((item) => (
                     <Chat key={item.key} item={item} onPress={goToChat} />
                 ))}
-                <View height={120} />
+                <View style={{ height: 120 }} />
             </SScrollView>
         </>
     );

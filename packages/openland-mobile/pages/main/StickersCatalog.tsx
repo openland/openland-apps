@@ -77,20 +77,22 @@ const StickerCatalog = React.memo((props: StickerCatalogProps) => {
         <View style={{ padding: 8 }}>
             <View style={{ paddingHorizontal: 8, paddingVertical: 6, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 56 }}>
                 <View style={{ justifyContent: 'space-between' }}>
-                    <View flexDirection="row" >
+                    <View style={{ flexDirection: 'row' }}>
                         <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, flexGrow: 1, flexShrink: 1 }} numberOfLines={1}>{pack.title}</Text>
                         {isNew && (
                             <View
-                                borderRadius={4}
-                                backgroundColor={theme.accentNegative}
-                                flexShrink={0}
-                                marginLeft={8}
-                                height={16}
-                                justifyContent="center"
-                                alignItems="center"
-                                alignSelf="center"
-                                paddingHorizontal={4}
-                                paddingVertical={2}
+                                style={{
+                                    borderRadius: 4,
+                                    backgroundColor: theme.accentNegative,
+                                    flexShrink: 0,
+                                    marginLeft: 8,
+                                    height: 16,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    alignSelf: 'center',
+                                    paddingHorizontal: 4,
+                                    paddingVertical: 2
+                                }}
                             >
                                 <Text style={{ ...TextStyles.Detail, color: theme.foregroundContrast }}>
                                     NEW

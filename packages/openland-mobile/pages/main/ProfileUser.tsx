@@ -78,6 +78,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
             Platform.select({
                 ios: { url: link },
                 android: { message: link },
+                default: { message: link },
             }),
         );
     }, [user.shortname, user.id]);
@@ -256,7 +257,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
 
                 <ZListGroup header="About" useSpacer={true}>
                     {!!user.about && <ZListItem multiline={true} text={user.about} copy={true} />}
-                    {!!user.about && <View height={8} />}
+                    {!!user.about && <View style={{ height: 8 }} />}
                     {!!user.shortname && (
                         <ZListItem
                             text={user.shortname}

@@ -91,18 +91,22 @@ const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
             <KeyboardAvoidingScrollView>
                 <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]}>
                     <View
-                        alignItems="center"
-                        justifyContent="center"
-                        paddingTop={16}
-                        paddingBottom={32}
+                        style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            paddingTop: 16,
+                            paddingBottom: 32
+                        }}
                     >
                         <View
-                            width={80}
-                            height={80}
-                            alignItems="center"
-                            justifyContent="center"
-                            borderRadius={80}
-                            backgroundColor={theme.tintBlue}
+                            style={{
+                                width: 80,
+                                height: 80,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderRadius: 80,
+                                backgroundColor: theme.tintBlue
+                            }}
                         >
                             <Image
                                 source={require('assets/ic-at-glyph-48.png')}
@@ -138,16 +142,16 @@ const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
                                 props.isChannel
                                     ? 'channel'
                                     : props.isGroup
-                                    ? 'group'
-                                    : props.isCommunity
-                                    ? 'community'
-                                    : 'organization'
-                            }`}
+                                        ? 'group'
+                                        : props.isCommunity
+                                            ? 'community'
+                                            : 'organization'
+                                }`}
                         </Text>
                     </View>
                 </LinearGradient>
                 <ZListGroup header={null}>
-                    <View paddingHorizontal={16}>
+                    <View style={{ paddingHorizontal: 16 }}>
                         <ZInput
                             placeholder="Shortname"
                             prefix="@"

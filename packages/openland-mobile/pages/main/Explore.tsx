@@ -128,17 +128,19 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                     >
                         {suggestedRooms.slice(0, 5).map(v => <DiscoverListItem key={v.id} item={v} />)}
                     </ZListGroup>
-                    <View height={32} />
+                    <View style={{ height: 32 }} />
                 </>
             ) : (
                     <>
                         <LinearGradient
                             colors={[theme.gradient0to100End, theme.gradient0to100Start]}
-                            paddingVertical={16}
-                            paddingHorizontal={32}
-                            flexDirection="column"
-                            alignItems="center"
-                            justifyContent="center"
+                            style={{
+                                paddingVertical: 16,
+                                paddingHorizontal: 32,
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
                         >
                             <Image
                                 source={require('assets/art-discover.png')}
@@ -148,7 +150,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                             <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, marginBottom: 16 }}>Find the right chats for you</Text>
                             <ZButton title="Start" onPress={() => { props.router.push('Discover'); }} />
                         </LinearGradient>
-                        <View height={16} />
+                        <View style={{ height: 16 }} />
                     </>
                 )}
         </>
@@ -174,7 +176,7 @@ const ExplorePage = (props: PageProps) => {
                 )}
             >
                 <React.Suspense fallback={<ZLoader />}>
-                    <SScrollView marginTop={-16} scrollRef={scrollRef}>
+                    <SScrollView style={{ marginTop: -16 }} scrollRef={scrollRef}>
                         <SDeferred>
                             <RoomsList router={props.router} isDiscoverDone={discoverDone.betaIsDiscoverDone} />
                         </SDeferred>

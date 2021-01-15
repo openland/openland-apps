@@ -16,7 +16,7 @@ const SelectPrimaryOrganizationComponent = (props: PageProps) => {
         <>
             <SHeader title="Primary organization" />
             <SScrollView>
-                <View marginTop={Platform.OS === 'ios' ? 5 : undefined} />
+                <View style={{ marginTop: Platform.OS === 'ios' ? 5 : undefined }} />
 
                 <ZListGroup footer="Choose organization that people will see in your profile.">
                     {organizations.filter(org => !org.isCommunity).map(org => (

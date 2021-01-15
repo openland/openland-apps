@@ -38,7 +38,7 @@ const SettingsCommunitiesContent = React.memo(() => {
 
     return (
         <SScrollView>
-            <View height={16} />
+            <View style={{ height: 16 }} />
 
             <ZListItem
                 leftIcon={require('assets/ic-add-glyph-24.png')}
@@ -55,7 +55,7 @@ const SettingsCommunitiesContent = React.memo(() => {
                 {memberCommunities.map(c => <Item key={c.id} community={c} router={router} theme={theme} />)}
             </ZListGroup>
 
-            <View height={32} />
+            <View style={{ height: 32 }} />
         </SScrollView>
     );
 });

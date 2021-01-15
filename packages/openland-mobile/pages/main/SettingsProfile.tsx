@@ -149,7 +149,7 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                     <ZInput placeholder="Twitter" field={twitterField} />
                     <ZInput placeholder="Facebook" field={facebookField} />
                     <ZInput placeholder="LinkedIn" field={linkedinField} />
-                    {isIos && theme.type !== 'Light' && <View height={88} />}
+                    {isIos && theme.type !== 'Light' && <View style={{ height: 88 }} />}
                 </ZListGroup>
             </KeyboardAvoidingScrollView>
         </>

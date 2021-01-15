@@ -120,7 +120,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         };
 
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
-        AsyncStorage.getItem('compose_draft_mentions_v2_' + this.props.chat.id).then(s =>  s && this.setState({ mentions: JSON.parse(s) || [] }));
+        AsyncStorage.getItem('compose_draft_mentions_v2_' + this.props.chat.id).then(s => s && this.setState({ mentions: JSON.parse(s) || [] }));
     }
 
     componentDidMount() {
@@ -465,7 +465,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let path = resolveConversationProfilePath(this.props.chat);
         let header = (
             <TouchableOpacity disabled={!path.path} onPress={() => this.props.router.push(path.path!, path.pathArgs)}>
-                <View flexDirection="row" flexShrink={1} marginLeft={Platform.OS === 'android' ? -12 : 0}>
+                <View style={{ flexDirection: 'row', flexShrink: 1, marginLeft: Platform.OS === 'android' ? -12 : 0 }}>
                     <ChatHeaderAvatar conversationId={this.engine.conversationId} router={this.props.router} />
                     <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} muted={this.state.muted} />
                 </View>
@@ -631,8 +631,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                                     left: 0,
                                                     right: 0,
                                                     opacity: this.state.isStickersOpaque ? 1 : 0,
+                                                    transform: this.state.hasStickerTranslation ? [{ translateY: SDevice.safeArea.bottom }] : undefined
                                                 }}
-                                                transform={this.state.hasStickerTranslation ? [{ translateY: SDevice.safeArea.bottom }] : undefined}
                                             >
                                                 <StickerPicker
                                                     onStickerSent={(sticker: StickerFragment) => this.engine.sendSticker(sticker, undefined)}
@@ -737,7 +737,7 @@ const ConversationComponent = React.memo((props: PageProps) => {
     }
 
     return (
-        <View flexDirection="column" height="100%" width="100%">
+        <View style={{ flexDirection: 'column', height: '100%', width: '100%' }}>
             <ConversationRoot
                 key={(sharedRoom || privateRoom)!.id}
                 router={props.router}
@@ -754,10 +754,12 @@ const ConversationComponent = React.memo((props: PageProps) => {
             <ASSafeAreaContext.Consumer>
                 {safe => (
                     <View
-                        position="absolute"
-                        top={hasPinnedMessage ? safe.top + PINNED_MESSAGE_HEIGHT : safe.top + 10}
-                        right={0}
-                        left={0}
+                        style={{
+                            position: 'absolute',
+                            top: hasPinnedMessage ? safe.top + PINNED_MESSAGE_HEIGHT : safe.top + 10,
+                            right: 0,
+                            left: 0
+                        }}
                     >
                         <CallBarComponent id={(sharedRoom || privateRoom)!.id} showCallModal={showCallModal} />
                     </View>

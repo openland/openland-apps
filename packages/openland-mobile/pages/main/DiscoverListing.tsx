@@ -414,7 +414,7 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
             <View style={{ paddingHorizontal: 16, paddingBottom: 24 }} onLayout={() => setLayoutCover(layoutCollectionCover())}>
                 {!!description && <Text style={[TextStyles.Body, { color: theme.foregroundPrimary }]}>{description}</Text>}
                 {showCover &&
-                    <View marginTop={16}>
+                    <View style={{ marginTop: 16 }}>
                         <DiscoverCover width={layoutCover.width} height={layoutCover.height} path={path} />
                     </View>
                 }

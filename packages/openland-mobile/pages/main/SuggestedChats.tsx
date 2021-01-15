@@ -33,7 +33,7 @@ const Chat = React.memo((props: ChatProps) => {
     );
     return (
         <ZListItemBase height={56} onPress={onPress} separator={false}>
-            <View width={72} height={56} alignItems="center" justifyContent="center">
+            <View style={{ width: 72, height: 56, alignItems: 'center', justifyContent: 'center' }}>
                 <ZAvatar
                     photo={props.item.photo}
                     size="medium"
@@ -42,13 +42,15 @@ const Chat = React.memo((props: ChatProps) => {
                 />
             </View>
             <View
-                marginRight={10}
-                marginTop={10}
-                marginBottom={10}
-                flexDirection="column"
-                flexGrow={1}
-                flexBasis={0}
-                alignItems="stretch"
+                style={{
+                    marginRight: 10,
+                    marginTop: 10,
+                    marginBottom: 10,
+                    flexDirection: 'column',
+                    flexGrow: 1,
+                    flexBasis: 0,
+                    alignItems: 'stretch'
+                }}
             >
                 <Text
                     numberOfLines={1}
@@ -78,24 +80,24 @@ const Chat = React.memo((props: ChatProps) => {
             </View>
 
             <View
-                position="absolute"
+                style={{
+                    position: 'absolute',
+                    alignSelf: 'center',
+                    right: 16,
+                    backgroundColor: props.selected ? theme.accentPrimary : theme.backgroundPrimary,
+                    opacity: props.selected ? 1 : 0.8,
+                    borderColor: props.selected ? theme.accentPrimary : theme.foregroundTertiary,
+                    borderWidth: 2,
+                    borderRadius: RadiusStyles.Medium,
+                    width: 22,
+                    height: 22
+                }}
                 pointerEvents="none"
-                alignSelf="center"
-                right={16}
-                backgroundColor={props.selected ? theme.accentPrimary : theme.backgroundPrimary}
-                opacity={props.selected ? 1 : 0.8}
-                borderColor={props.selected ? theme.accentPrimary : theme.foregroundTertiary}
-                borderWidth={2}
-                borderRadius={RadiusStyles.Medium}
-                width={22}
-                height={22}
             >
                 {props.selected && (
                     <Image
-                        marginLeft={2}
-                        marginTop={2}
                         source={require('assets/ic-checkmark.png')}
-                        style={{ tintColor: theme.foregroundInverted }}
+                        style={{ marginLeft: 2, marginTop: 2, tintColor: theme.foregroundInverted }}
                     />
                 )}
             </View>
@@ -170,9 +172,9 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
 
     return (
         <>
-            {isIos && <SHeader title="What to join"/>}
+            {isIos && <SHeader title="What to join" />}
             <SHeaderButton title="Skip" onPress={skip} />
-            <SScrollView flex={1} paddingTop={16}>
+            <SScrollView style={{ flex: 1, paddingTop: 16 }}>
                 <Text
                     allowFontScaling={false}
                     style={{
@@ -208,16 +210,16 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
                             />
                         ),
                 )}
-                <View height={120} />
+                <View style={{ height: 120 }} />
             </SScrollView>
-            <View padding={16} paddingBottom={isIos ? defaultIosPadding : area.bottom + 16}>
+            <View style={{ padding: 16, paddingBottom: isIos ? defaultIosPadding : area.bottom + 16 }}>
                 <ZButton
                     size="large"
                     title={`   ${
                         selected.size === 0
                             ? 'Skip'
                             : 'Join' + (selected.size === props.chats.length ? ' all' : '')
-                    }   `}
+                        }   `}
                     onPress={onAdd}
                 />
             </View>

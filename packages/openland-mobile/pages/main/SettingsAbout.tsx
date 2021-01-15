@@ -49,7 +49,7 @@ const SettingsAboutComponent = React.memo((props: PageProps) => {
                     <Text style={[styles.subtitle, { color: theme.foregroundTertiary }]} allowFontScaling={false}>Version {buildNumber}</Text>
                 </View>
             </LinearGradient>
-            <View marginTop={16}>
+            <View style={{ marginTop: 16 }}>
                 <ZListItem
                     leftIcon={require('assets/ic-info-24.png')}
                     text='About Openland'
