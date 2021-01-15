@@ -15,8 +15,6 @@ import com.reactnativecommunity.cameraroll.CameraRollPackage;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
 import com.reactcommunity.rnlocalize.RNLocalizePackage;
 
-import co.apptailor.googlesignin.RNGoogleSigninPackage;
-
 import com.brentvatne.react.ReactVideoPackage;
 
 import org.wonday.pdf.RCTPdfView;
@@ -79,7 +77,7 @@ public class MainApplication extends Application implements ShareApplication, Re
                     new RNLocationPackage(),
                     new RNVersionNumberPackage(),
                     new CameraRollPackage(),
-                    new RNGoogleSigninPackage(),
+                    new RNGooglegPackage(),
                     new ReactVideoPackage(),
                     new RCTPdfView(),
                     new BackgroundTimerPackage(),

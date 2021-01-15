@@ -15,7 +15,7 @@ import {
     useShake,
 } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
-import { completeAuth } from './complete.page';
+import { completeAuth } from './completeAuth';
 import { XImage } from 'react-mental';
 import { AuthHeaderConfig } from './root.page';
 import { ULink } from 'openland-web/components/unicorn/ULink';

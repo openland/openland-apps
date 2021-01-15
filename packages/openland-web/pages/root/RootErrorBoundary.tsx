@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { trackError } from 'openland-x-analytics';
 import { ErrorPage } from './ErrorPage';
-import { WHITE_LISTED_ERROR_NAME } from 'openland-x-graphql/throwErrors';
+const WHITE_LISTED_ERROR_NAME = 'WHITE_LISTED_ERROR_NAME';
 
 export class RootErrorBoundary extends React.Component<
     {},
