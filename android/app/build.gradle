@@ -239,7 +239,6 @@ dependencies {
     implementation project(':react-native-push-notification')
     implementation project(':react-native-sqlite-storage')
     implementation project(':react-native-dark-mode')
-    implementation project(":@react-native-community_google-signin")
     implementation project(':lottie-react-native')
     implementation project(':react-native-contacts')
     implementation project(':react-native-localize')
