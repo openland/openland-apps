@@ -29,7 +29,7 @@ const ReportSpamComponent = React.memo((props: PageProps) => {
     const otherMessageField = useField('otherMessage', '', form, [
         {
             text: 'Your description should be less than 120 characters',
-            checkIsValid: (value) =>  value?.length < 120
+            checkIsValid: (value) => value?.length < 120
         },
     ]);
 
@@ -66,7 +66,7 @@ const ReportSpamComponent = React.memo((props: PageProps) => {
                         <ZListItem text={option} onPress={() => setSelected(option)} />
                     </CheckListBoxWraper>
                 ))}
-                <ZInput placeholder="Add details (optional)" field={otherMessageField} marginTop={16} />
+                <ZInput placeholder="Add details (optional)" field={otherMessageField} style={{ marginTop: 16 }} />
             </KeyboardAvoidingScrollView>
         </>
     );

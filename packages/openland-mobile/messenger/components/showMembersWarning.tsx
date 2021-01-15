@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image } from 'react-native';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 
-export const showMembersWarning = async ()  => {
+export const showMembersWarning = async () => {
     return new Promise((resolve, reject) => {
         const builder = new AlertBlanketBuilder();
 
@@ -10,7 +10,7 @@ export const showMembersWarning = async ()  => {
         builder.message(`Please, only add people whom you know will be interested in your group`);
 
         builder.view(
-            <View marginBottom={24} paddingTop={8}>
+            <View style={{ marginBottom: 24, paddingTop: 8 }}>
                 <Image
                     source={require('assets/art-crowd.png')}
                     style={{

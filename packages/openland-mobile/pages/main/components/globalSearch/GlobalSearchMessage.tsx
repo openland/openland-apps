@@ -26,11 +26,8 @@ export const GlobalSearchMessage = React.memo<GlobalSearchMessageProps>((props) 
 
     return (
         <TouchableHighlight activeOpacity={1} underlayColor={theme.backgroundPrimaryActive} onPress={props.onPress}>
-            <View
-                flexGrow={1}
-                flexDirection="row"
-            >
-                <View marginLeft={16} marginTop={12} width={56} height={56}>
+            <View style={{ flexGrow: 1, flexDirection: 'row' }}>
+                <View style={{ marginLeft: 16, marginTop: 12, width: 56, height: 56 }}>
                     <ZAvatar
                         size="large"
                         photo={photo}
@@ -39,11 +36,11 @@ export const GlobalSearchMessage = React.memo<GlobalSearchMessageProps>((props) 
                         savedMessages={isSavedMessages}
                     />
                 </View>
-                <View marginLeft={16} marginRight={16} marginTop={8} marginBottom={8} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
-                    <View height={24} flexDirection="row">
-                        {highlightGroup && <View alignItems="center" marginRight={4} marginTop={4}><Image style={{ opacity: CompensationAlpha, tintColor: theme.accentPositive, width: 16, height: 16 }} source={require('assets/ic-lock-16.png')} /></View>}
+                <View style={{ marginLeft: 16, marginRight: 16, marginTop: 8, marginBottom: 8, flexDirection: 'column', flexGrow: 1, flexBasis: 0, alignItems: 'stretch' }}>
+                    <View style={{ height: 24, flexDirection: 'row' }}>
+                        {highlightGroup && <View style={{ alignItems: 'center', marginRight: 4, marginTop: 4 }}><Image style={{ opacity: CompensationAlpha, tintColor: theme.accentPositive, width: 16, height: 16 }} source={require('assets/ic-lock-16.png')} /></View>}
 
-                        <View flexDirection="row" flexGrow={1} flexShrink={1}>
+                        <View style={{ flexDirection: 'row', flexGrow: 1, flexShrink: 1 }}>
                             <Text numberOfLines={1} allowFontScaling={false} ellipsizeMode="tail" style={{ ...TextStyles.Label1, color: highlightGroup ? theme.accentPositive : theme.foregroundPrimary }}>
                                 {title}
                             </Text>
@@ -54,13 +51,13 @@ export const GlobalSearchMessage = React.memo<GlobalSearchMessageProps>((props) 
                                 />
                             )}
                         </View>
-                        <View marginLeft={10} marginTop={3}>
+                        <View style={{ marginLeft: 10, marginTop: 3 }}>
                             <Text style={{ ...TextStyles.Caption, color: theme.foregroundTertiary }} allowFontScaling={false}>{formatDate(date)}</Text>
                         </View>
                     </View>
-                    <View flexDirection="row" alignItems="stretch" height={40}>
-                        <View flexGrow={1}>
-                            <View flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
+                    <View style={{ flexDirection: 'row', alignItems: 'stretch', height: 40 }}>
+                        <View style={{ flexGrow: 1 }}>
+                            <View style={{ flexDirection: 'column', alignItems: 'stretch', flexGrow: 1, flexBasis: 0 }}>
                                 <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} numberOfLines={2} allowFontScaling={false} ellipsizeMode="tail">
                                     {sender}{message.fallback}
                                 </Text>

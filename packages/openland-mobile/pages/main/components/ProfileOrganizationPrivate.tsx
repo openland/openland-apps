@@ -31,11 +31,13 @@ export const ProfileOrganizationPrivate = React.memo((props: ProfileOrganization
         <>
             <SScrollView>
                 <View
-                    minHeight={Dimensions.get('window').height - area.top - area.bottom}
-                    justifyContent="center"
-                    alignItems="center"
-                    paddingHorizontal={32}
-                    paddingBottom={134} // button box height
+                    style={{
+                        minHeight: Dimensions.get('window').height - area.top - area.bottom,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        paddingHorizontal: 32,
+                        paddingBottom: 134
+                    }}
                 >
                     <ZAvatar
                         size="xx-large"
@@ -44,8 +46,7 @@ export const ProfileOrganizationPrivate = React.memo((props: ProfileOrganization
                         title={name}
                     />
                     <View
-                        flexDirection="row"
-                        marginTop={32}
+                        style={{ flexDirection: 'row', marginTop: 32 }}
                     >
                         <Text
                             style={{
@@ -90,12 +91,14 @@ export const ProfileOrganizationPrivate = React.memo((props: ProfileOrganization
                 </View>
             </SScrollView>
             <ZBlurredView
-                position="absolute"
-                bottom={0}
-                left={0}
-                right={0}
-                padding={16}
-                paddingBottom={isIos ? defaultIosPadding : area.bottom + 16}
+                style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    padding: 16,
+                    paddingBottom: isIos ? defaultIosPadding : area.bottom + 16
+                }}
                 intensity="normal"
             >
                 {canApply && (
@@ -113,7 +116,7 @@ export const ProfileOrganizationPrivate = React.memo((props: ProfileOrganization
                             pathParams={{ flexibleId: owner.id }}
                             size="large"
                         />
-                        <View marginTop={16} flexDirection="row" justifyContent="center" alignItems="center">
+                        <View style={{ marginTop: 16, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <Image
                                 source={require('assets/ic-lock-16.png')}
                                 style={{ width: 16, height: 16, tintColor: theme.foregroundTertiary, opacity: 0.84, marginRight: 10 }}

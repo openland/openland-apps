@@ -65,7 +65,7 @@ const EditCommunityApplyLinkComponent = React.memo((props: PageProps) => {
                         onToggle={applyLinkEnabledField.input.onChange}
                         small={true}
                     />
-                    <View height={16} />
+                    <View style={{ height: 16 }} />
                     {applyLinkEnabledField.value && (
                         <ZInput
                             placeholder="Apply link"

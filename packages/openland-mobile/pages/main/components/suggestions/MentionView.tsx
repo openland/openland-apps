@@ -26,8 +26,8 @@ export const MentionView = React.memo((props: MentionViewProps) => {
             height={40}
             underlayColor={theme.backgroundTertiaryTrans}
         >
-            <View style={{ flexGrow: 1, flexDirection: 'row' }} alignItems="center">
-                <View paddingHorizontal={16} height={40} alignItems="center" justifyContent="center">
+            <View style={{ flexGrow: 1, flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ paddingHorizontal: 15, height: 40, alignItems: 'center', justifyContent: 'center' }}>
                     {mention.__typename === 'MentionSearchUser' && (
                         <ZAvatar
                             photo={mention.user.photo}
@@ -53,12 +53,12 @@ export const MentionView = React.memo((props: MentionViewProps) => {
                         />
                     )}
                     {mention.__typename === 'AllMention' && (
-                        <View alignItems="center" justifyContent="center" width={24} height={24}>
+                        <View style={{ alignItems: 'center', justifyContent: 'center', width: 24, height: 24 }}>
                             <Image source={require('assets/ic-channel-24.png')} style={{ tintColor: theme.foregroundSecondary, width: 24, height: 24 }} />
                         </View>
                     )}
                 </View>
-                <View flexGrow={1}>
+                <View style={{ flexGrow: 1 }}>
                     {mention.__typename === 'MentionSearchUser' && (
                         <SuggestionsItemName
                             theme={theme}

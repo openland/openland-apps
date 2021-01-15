@@ -38,7 +38,7 @@ const EditorsChoiceItem = (props: EditorsChoiceItemProps) => {
         };
         return DownloadManagerInstance.watch(image.uuid, size, state => {
             if (state.path) {
-                let newPath = Platform.select({ ios: state.path, android: 'file://' + state.path });
+                let newPath = Platform.select({ ios: state.path, default: 'file://' + state.path });
                 setPath(newPath);
             }
         });
@@ -46,14 +46,14 @@ const EditorsChoiceItem = (props: EditorsChoiceItemProps) => {
     return (
         <Animated.View style={{ width: 343, height: 264, marginRight: 8, ...styles }}>
             <TouchableWithoutFeedback delayPressIn={delayPressIn} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut}>
-                <View flexDirection="column" borderRadius={RadiusStyles.Large} paddingTop={8} paddingBottom={6}>
+                <View style={{ flexDirection: 'column', borderRadius: RadiusStyles.Large, paddingTop: 8, paddingBottom: 6 }}>
                     <DiscoverCover path={path} width={343} height={192} marginBottom={14} />
-                    <View flexDirection="row">
-                        <View paddingTop={2}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{ paddingTop: 2 }}>
                             <ZAvatar size="medium" photo={photo} id={id} title={title} />
                         </View>
-                        <View marginHorizontal={16} flexGrow={1} flexShrink={1} flexDirection="column">
-                            <View flexDirection="row">
+                        <View style={{ marginHorizontal: 16, flexGrow: 1, flexShrink: 1, flexDirection: 'column' }}>
+                            <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
                                 {featured && theme.displayFeaturedIcon && (
                                     <Image
@@ -79,9 +79,9 @@ export const EditorsChoiceList = () => {
 
     return (
         <ZListGroup header="Featured">
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} paddingLeft={16} pagingEnabled={true} decelerationRate="fast" snapToInterval={351}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{ paddingLeft: 16 }} pagingEnabled={true} decelerationRate="fast" snapToInterval={351}>
                 {discoverEditorsChoice.map((item, i) => <EditorsChoiceItem key={i} item={item} />)}
-                <View width={24} />
+                <View style={{ width: 24 }} />
             </ScrollView>
         </ZListGroup>
     );

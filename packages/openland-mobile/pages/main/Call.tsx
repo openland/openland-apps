@@ -63,11 +63,13 @@ const AvatarVideoView = (props: { user: Conference_conference_peers_user }) => {
         <>
             {!props.user.photo && (
                 <View
-                    position="absolute"
-                    top={0}
-                    bottom={0}
-                    left={0}
-                    right={0}
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        bottom: 0,
+                        left: 0,
+                        right: 0
+                    }}
                 >
                     <PlaceholderGradient id={props.user.id} />
                 </View>
@@ -87,14 +89,16 @@ const AvatarVideoView = (props: { user: Conference_conference_peers_user }) => {
                 />
             )}
             <View
-                position="absolute"
-                top={0}
-                bottom={0}
-                left={0}
-                right={0}
-                backgroundColor={theme.overlayMedium}
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    backgroundColor: theme.overlayMedium
+                }}
             />
-            <View alignSelf="stretch" flexGrow={1} justifyContent="center" alignItems="center">
+            <View style={{ alignSelf: 'stretch', flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <ZAvatar size="x-large" id={props.user.id} title={props.user.name} photo={props.user.photo} />
             </View>
         </>
@@ -136,23 +140,27 @@ const VideoView = React.memo((props: VideoViewProps) => {
     let infoPaddingBottom = props.isLast ? Math.max(area.bottom, 30) : 14;
 
     return (
-        <View flexGrow={1} flexBasis={0} backgroundColor="gray" position="relative">
+        <View style={{ flexGrow: 1, flexBasis: 0, backgroundColor: 'gray', position: 'relative' }}>
             {stream && <RTCView streamURL={stream.toURL()} style={{ flexGrow: 1 }} objectFit="cover" mirror={props.mirror} />}
             {!stream && <AvatarVideoView user={props.peer.user} />}
             <View
-                position="absolute"
-                bottom={0}
-                left={0}
-                right={0}
+                style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0
+                }}
             >
                 <InfoWrapper>
                     <View
-                        flexGrow={1}
-                        paddingTop={14}
-                        paddingBottom={infoPaddingBottom}
-                        paddingHorizontal={16}
-                        flexDirection="row"
-                        alignItems="center"
+                        style={{
+                            flexGrow: 1,
+                            paddingTop: 14,
+                            paddingBottom: infoPaddingBottom,
+                            paddingHorizontal: 16,
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                        }}
                     >
                         <Text
                             style={{
@@ -164,7 +172,7 @@ const VideoView = React.memo((props: VideoViewProps) => {
                         >
                             {props.peer.user.name}
                         </Text>
-                        {icon && <View alignItems="center" marginLeft={8}>{icon}</View>}
+                        {icon && <View style={{ alignItems: 'center', marginLeft: 8 }}>{icon}</View>}
                     </View>
                 </InfoWrapper>
             </View>
@@ -255,9 +263,9 @@ let Content = React.memo((props: { id: string, speaker: boolean, setSpeaker: (fn
     return (
         <>
             {Platform.OS === 'ios' && <StatusBar hidden={true} />}
-            <View flexDirection="row" alignItems="flex-start" width={w} height="100%">
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', width: w, height: '100%' }}>
                 {slices.map((s, i) =>
-                    <View key={i} flexDirection="column" justifyContent="flex-start" flexGrow={1}>
+                    <View key={i} style={{ flexDirection: 'column', justifyContent: 'flex-start', flexGrow: 1 }}>
 
                         {s.map((p, peerIndex) => {
                             let media: PeerMedia = { videoTrack: null, audioTrack: null, screencastTrack: null };
@@ -286,14 +294,16 @@ let Content = React.memo((props: { id: string, speaker: boolean, setSpeaker: (fn
                 )}
             </View>
             <View
-                position="absolute"
-                top={area.top + 14}
-                left={0}
-                right={0}
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="center"
-                paddingLeft={8}
+                style={{
+                    position: 'absolute',
+                    top: area.top + 14,
+                    left: 0,
+                    right: 0,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingLeft: 8
+                }}
             >
                 <TouchableOpacity onPress={props.hide}>
                     <Image source={require('assets/logo-watermark.png')} style={{ tintColor: theme.foregroundContrast }} />
@@ -303,22 +313,24 @@ let Content = React.memo((props: { id: string, speaker: boolean, setSpeaker: (fn
                     onPress={props.hide}
                     style={{ width: 72, height: 72, justifyContent: 'center', alignItems: 'center' }}
                 >
-                    <View backgroundColor="rgba(255, 255, 255, 0.08)" width={40} height={40} borderRadius={28} alignItems="center" justifyContent="center">
+                    <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)', width: 40, height: 40, borderRadius: 28, alignItems: 'center', justifyContent: 'center' }}>
                         <Image source={require('assets/ic-size-down-glyph-24.png')} style={{ tintColor: theme.foregroundContrast }} />
                     </View>
                 </TouchableOpacity>
             </View>
             <View
-                position="absolute"
-                bottom={Math.max(area.bottom, 30) - 16}
-                right={0}
+                style={{
+                    position: 'absolute',
+                    bottom: Math.max(area.bottom, 30) - 16,
+                    right: 0
+                }}
             >
                 <TouchableOpacity
                     activeOpacity={0.6}
                     onPress={showControls}
                     style={{ width: 72, height: 72, justifyContent: 'center', alignItems: 'center' }}
                 >
-                    <View backgroundColor="rgba(255, 255, 255, 0.08)" width={40} height={40} borderRadius={28} alignItems="center" justifyContent="center">
+                    <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)', width: 40, height: 40, borderRadius: 28, alignItems: 'center', justifyContent: 'center' }}>
                         <Image source={require('assets/ic-burger-glyph-24.png')} style={{ tintColor: theme.foregroundContrast }} />
                     </View>
                 </TouchableOpacity>

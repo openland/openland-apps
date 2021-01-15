@@ -151,7 +151,7 @@ const BuyPaidChatPassButton = (props: {
                 size="large"
             />
             {props.ownerId && (
-                <View marginTop={16}>
+                <View style={{ marginTop: 16 }}>
                     <ZButton
                         title="Get help"
                         onPress={() => props.router.push('Conversation', { id: props.ownerId })}
@@ -223,19 +223,21 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
 
     const membersContent = (
         <>
-            <View flexDirection="row" justifyContent="center" marginTop={32}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 32 }}>
                 {avatars.map((src) => (
                     <View
-                        marginLeft={-8}
-                        borderRadius={100}
-                        borderColor={theme.backgroundPrimary}
-                        borderWidth={2}
+                        style={{
+                            marginLeft: -8,
+                            borderRadius: 100,
+                            borderColor: theme.backgroundPrimary,
+                            borderWidth: 2
+                        }}
                     >
                         <ZAvatar photo={src} size="small" />
                     </View>
                 ))}
             </View>
-            <View marginTop={8}>
+            <View style={{ marginTop: 8 }}>
                 <Text
                     style={[styles.members, { color: theme.foregroundSecondary }]}
                     allowFontScaling={false}
@@ -304,7 +306,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
         <View style={{ flexGrow: 1, paddingTop: area.top, paddingBottom }}>
             <View style={styles.container}>
                 {joinAvatars}
-                <View flexDirection="row" marginTop={32}>
+                <View style={{ flexDirection: 'row', marginTop: 32 }}>
                     <Text
                         style={[styles.title, { color: theme.foregroundPrimary, }]}
                         numberOfLines={3}
@@ -329,7 +331,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                 )}
                 {showMembers && membersContent}
                 {!showMembers && !description && (
-                    <View marginTop={4}>
+                    <View style={{ marginTop: 4 }}>
                         <Text
                             style={[styles.members, { color: theme.foregroundSecondary }]}
                             allowFontScaling={false}

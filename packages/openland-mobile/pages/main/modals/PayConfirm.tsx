@@ -31,9 +31,9 @@ const ConfirmPaymentComponent = React.memo((props: PaymentProps & { ctx: ModalPr
     }, []);
 
     return (
-        <View flexDirection="column" paddingHorizontal={16}>
-            {props.productTitle && <View flexDirection="row" alignItems="center">
-                <View flexDirection="column" flexGrow={1} flexShrink={1}>
+        <View style={{ flexDirection: 'column', paddingHorizontal: 16 }}>
+            {props.productTitle && <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flexDirection: 'column', flexGrow: 1, flexShrink: 1 }}>
                     <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginBottom: 4 }}>{props.productTitle}</Text>
                     {props.productDescription && <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>{props.productDescription}</Text>}
                 </View>
@@ -44,9 +44,9 @@ const ConfirmPaymentComponent = React.memo((props: PaymentProps & { ctx: ModalPr
             {props.productDescription && <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>Amount</Text>}
 
             {(cards.length === 0) && (
-                <View marginTop={24}>
+                <View style={{ marginTop: 24 }}>
                     <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginBottom: 8 }}>Payment method</Text>
-                    <View marginHorizontal={-16}>
+                    <View style={{ marginHorizontal: -16 }}>
                         <AddCardItem
                             onPress={() => {
                                 props.ctx.hide();
@@ -56,7 +56,7 @@ const ConfirmPaymentComponent = React.memo((props: PaymentProps & { ctx: ModalPr
                     </View>
                 </View>
             )}
-            <View marginTop={cards.length === 0 ? 16 : 32}>
+            <View style={{ marginTop: cards.length === 0 ? 16 : 32 }}>
                 <ZButton enabled={cards.length !== 0} title="Confirm" action={onSubmit} style="primary" size="large" loading={loading} />
             </View>
         </View >
@@ -70,7 +70,7 @@ export const showCheckLock = (props: { onSuccess: () => void }) => {
     builder.message('Update payment method to complete previously failed transactions and enable new purchases');
 
     builder.view(
-        <View marginBottom={16} marginHorizontal={-24} overflow="hidden">
+        <View style={{ marginBottom: 16, marginHorizontal: -24, overflow: 'hidden' }}>
             <Image
                 source={require('assets/art-transactions-failing.png')}
                 style={{

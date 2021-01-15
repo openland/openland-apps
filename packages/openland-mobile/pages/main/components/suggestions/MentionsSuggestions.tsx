@@ -147,27 +147,39 @@ export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) 
                                     : `${index}-${item.organization.id}`}
                 alwaysBounceVertical={false}
                 keyboardShouldPersistTaps="always"
-                maxHeight={188}
+                style={{ maxHeight: 188 }}
                 legacyImplementation={true}
                 ListHeaderComponent={
                     <>
-                        {mergedItems.length > 0 && <View height={8} />}
+                        {mergedItems.length > 0 && <View style={{ height: 8 }} />}
                     </>
                 }
                 ListFooterComponent={
                     <>
                         {loadingPagination && (
-                            <View alignItems="center" justifyContent="center" height={40}>
+                            <View style={{ alignItems: 'center', justifyContent: 'center', height: 40 }}>
                                 <ZLoader size="small" />
                             </View>
                         )}
-                        {mergedItems.length > 0 && <View height={8} />}
+                        {mergedItems.length > 0 && <View style={{ height: 8 }} />}
                     </>
                 }
                 onEndReached={() => handleLoadMore()}
             />
             {loadingQuery && mergedItems.length > 0 && mergedItems[0].__typename !== 'MentionsPlaceholder' && (
-                <View position="absolute" top={16} right={16} alignItems="center" justifyContent="center" width={24} height={24} borderRadius={RadiusStyles.Medium} backgroundColor={theme.backgroundPrimary}>
+                <View
+                    style={{
+                        position: 'absolute',
+                        top: 16,
+                        right: 16,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: 24,
+                        height: 24,
+                        borderRadius: RadiusStyles.Medium,
+                        backgroundColor: theme.backgroundPrimary
+                    }}
+                >
                     <ZLoader size="small" />
                 </View>
             )}

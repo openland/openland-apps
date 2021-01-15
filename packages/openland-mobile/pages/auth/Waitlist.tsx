@@ -55,8 +55,8 @@ class WaitlistComponentThemed extends React.PureComponent<PageProps & { theme: T
             <ZTrack event="waitlist_view">
                 <SHeader />
                 <SHeaderButton title="Sign out" onPress={this.handleLogout} />
-                <ASSafeAreaView flexGrow={1}>
-                    <View padding={16}>
+                <ASSafeAreaView style={{ flexGrow: 1 }}>
+                    <View style={{ padding: 16 }}>
                         <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
                             You have joined the waitlist
                         </Text>
@@ -71,7 +71,7 @@ class WaitlistComponentThemed extends React.PureComponent<PageProps & { theme: T
                             You can bypass the waitlist if you have invitation link. Use your link now, or request one from Openland team: <ZText linkify={true} text="hello@openland.com" />
                         </Text>
                     </View>
-                    <View flexGrow={1} alignItems="center" justifyContent="center" paddingHorizontal={16}>
+                    <View style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 16 }}>
                         <Image
                             source={require('assets/img-waitlist.png')}
                             style={{

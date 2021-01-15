@@ -79,7 +79,7 @@ export const CommentsList = (props: CommentsListProps) => {
 
     return (
         <>
-            <View height={48} justifyContent="center" paddingHorizontal={16}>
+            <View style={{ height: 48, justifyContent: 'center', paddingHorizontal: 16 }}>
                 <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
                     Comments{'  '}
                     <Text style={{ ...TextStyles.Label1, color: theme.foregroundTertiary }} allowFontScaling={false}>

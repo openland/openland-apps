@@ -284,10 +284,9 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
                     }}
                 />
             ) : (
-                    <View justifyContent="center" alignItems="center" flexGrow={1} flexDirection="column">
+                    <View style={{ justifyContent: 'center', alignItems: 'center', flexGrow: 1, flexDirection: 'column' }}>
                         <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, marginBottom: 16 }}>Your stickers will be displayed here</Text>
                         <ZButton title="Discover stickers" style="secondary" onPress={() => router?.push('StickersCatalog')} />
-
                     </View>
                 )}
             <FlatList

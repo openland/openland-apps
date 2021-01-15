@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { View } from 'react-native';
+// import { View } from 'react-native';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
-import { ZButton } from 'openland-mobile/components/ZButton';
-import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
+// import { ZButton } from 'openland-mobile/components/ZButton';
+// import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 
 export const BottomSheet = (props: PageProps) => (
     <SScrollView>
         <SHeader title={'Bottom Sheet'} />
-        <View alignItems={'center'}>
+        {/* <View alignItems={'center'}>
             <View marginVertical={20}>
                 <ZButton
                     title={'Open bottom sheet'}
@@ -25,7 +25,7 @@ export const BottomSheet = (props: PageProps) => (
                     }}
                 />
             </View>
-        </View>
+        </View> */}
     </SScrollView>
 );
 

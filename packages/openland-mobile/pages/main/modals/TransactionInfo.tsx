@@ -21,9 +21,9 @@ const InfoItem = React.memo<{ name: string, secondary?: boolean, value?: string,
     const iconStyle = { tintColor: valueColor, marginRight: 8, width: 16, height: 16 };
     const value = !!props.status ? props.status.charAt(0).toUpperCase() + props.status.slice(1) : props.value;
     return (
-        <View paddingLeft={props.secondary ? 32 : 16} paddingRight={16} paddingVertical={12} flexDirection="row" justifyContent="space-between">
+        <View style={{ paddingLeft: props.secondary ? 32 : 16, paddingRight: 16, paddingVertical: 12, flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={{ ...TextStyles.Body, color: props.secondary ? theme.foregroundTertiary : theme.foregroundPrimary }}>{props.name}</Text>
-            <View flexDirection="row" alignItems="center">
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {props.status === 'success' ? (
                     <Image source={require('assets/ic-success-16.png')} style={iconStyle} />
                 ) : props.status === 'failing' ? (
@@ -57,14 +57,16 @@ const TransactionInfo = React.memo<TransactionInfoProps & { ctx: ModalProps }>((
         <View>
             <LinearGradient
                 colors={[theme.gradient0to100Start, theme.gradient0to100End]}
-                paddingTop={16}
-                paddingBottom={32}
-                paddingHorizontal={32}
-                alignItems="center"
-                marginBottom={16}
+                style={{
+                    paddingTop: 16,
+                    paddingBottom: 32,
+                    paddingHorizontal: 32,
+                    alignItems: 'center',
+                    marginBottom: 16
+                }}
             >
                 <TouchableOpacity onPress={productPress} >
-                    <View alignItems="center">
+                    <View style={{ alignItems: 'center' }}>
                         {avatar && <ZAvatar size="xx-large" {...avatar} />}
                         {!avatar && <Image source={require('assets/ic-top-up-40.png')} style={{ width: 96, height: 96 }} />}
                         <Text style={{ ...TextStyles.Title2, textAlign: 'center', color: theme.foregroundPrimary, marginTop: 16, marginBottom: 4 }} allowFontScaling={false}>{title}</Text>

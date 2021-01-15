@@ -20,7 +20,7 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & {
 
             <View style={{ flexDirection: 'column', alignItems: 'stretch', position: 'relative' }}>
                 {!!props.topView && (
-                    <View marginBottom={-8}>
+                    <View style={{ marginBottom: -8 }}>
                         {props.topView}
                     </View>
                 )}

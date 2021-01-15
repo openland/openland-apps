@@ -11,7 +11,7 @@ export const showDonationReactionWarning = async () => {
         builder.message(`Express your support with a\u00a0donation\u00a0to\u00a0the\u00a0author`);
 
         builder.view(
-            <View marginBottom={24} paddingTop={8}>
+            <View style={{ marginBottom: 24, paddingTop: 8 }}>
                 <Image
                     source={require('assets/ic-donations-96.png')}
                     style={{

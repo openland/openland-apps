@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+// import { View, Text } from 'react-native';
 import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
@@ -57,7 +57,7 @@ const ColorsComponent = (props: PageProps) => {
         <>
             <SHeader title="Colors" />
             <SScrollView>
-                {rows.map(row => (
+                {/* {rows.map(row => (
                     <View marginTop={15}>
                         <Text style={{ paddingHorizontal: 10, color: theme.foregroundPrimary }}>{row.key}</Text>
                         <View flexDirection="row">
@@ -73,7 +73,7 @@ const ColorsComponent = (props: PageProps) => {
                             </View>
                         </View>
                     </View>
-                ))}
+                ))} */}
             </SScrollView>
         </>
     );

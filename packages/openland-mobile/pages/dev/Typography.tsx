@@ -14,7 +14,7 @@ export const TypographyComponent = (props: PageProps) => {
         const variant = TextStyles[style];
 
         variants.push(
-            <View marginVertical={10} marginHorizontal={16}>
+            <View style={{ marginVertical: 10, marginHorizontal: 16 }}>
                 <Text style={[variant, { color: theme.foregroundPrimary }]} allowFontScaling={false}>{style}: {variant.fontSize}/{variant.lineHeight} ∙ {variant.fontWeight}</Text>
             </View>
         );

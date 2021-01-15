@@ -18,7 +18,7 @@ class MediaSessionTrackAnalyzer {
             audioTrack: AppMediaStreamTrack | null;
         }
     >();
-    private interval?: NodeJS.Timeout;
+    private interval?: any;
     private running = false;
 
     setSessionState = (state: MediaSessionState) => {

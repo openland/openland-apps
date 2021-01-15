@@ -45,7 +45,18 @@ export const ReplyContent = (props: ReplyContentProps) => {
                     });
 
                     return (
-                        <View key={'quote-' + quote.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} borderLeftWidth={2} borderLeftColor={theme.foregroundQuaternary} paddingLeft={8}>
+                        <View
+                            key={'quote-' + quote.id}
+                            style={{
+                                flexDirection: 'column',
+                                marginTop: 5,
+                                marginLeft: 1,
+                                marginBottom: 6,
+                                borderLeftWidth: 2,
+                                borderLeftColor: theme.foregroundQuaternary,
+                                paddingLeft: 8
+                            }}
+                        >
                             <Text
                                 style={{
                                     marginTop: -2,
@@ -69,7 +80,18 @@ export const ReplyContent = (props: ReplyContentProps) => {
                     );
                 } else {
                     return (
-                        <View key={'quote-' + quote.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} borderLeftWidth={2} borderLeftColor="#0084fe" paddingLeft={8}>
+                        <View
+                            key={'quote-' + quote.id}
+                            style={{
+                                flexDirection: 'column',
+                                marginTop: 5,
+                                marginLeft: 1,
+                                marginBottom: 6,
+                                borderLeftWidth: 2,
+                                borderLeftColor: '#0084fe',
+                                paddingLeft: 8
+                            }}
+                        >
                             <TextContent message={quote} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} onOrganizationPress={props.onOrganizationPress} onHashtagPress={props.onHashtagPress} theme={theme} />
                         </View>
                     );

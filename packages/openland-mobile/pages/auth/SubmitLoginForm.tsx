@@ -62,7 +62,14 @@ const AuthInput = React.forwardRef((props: AuthInputProps, ref: React.RefObject<
     const { style, width, ...other } = props;
     const theme = useTheme();
     return (
-        <View height={48} width={width} borderRadius={12} backgroundColor={theme.backgroundTertiaryTrans} >
+        <View
+            style={{
+                height: 45,
+                width,
+                borderRadius: 12,
+                backgroundColor: theme.backgroundTertiaryTrans
+            }}
+        >
             <TextInput
                 style={[{
                     ...TextStyles.Densed,
@@ -295,14 +302,16 @@ export const SubmitLoginForm = React.memo((props: SubmitLoginFormProps) => {
                         />
                     )}
                     <View
-                        flexDirection="row"
-                        justifyContent="space-between"
-                        flexGrow={1}
-                        flexShrink={0}
-                        marginHorizontal={16}
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            flexGrow: 1,
+                            flexShrink: 0,
+                            marginHorizontal: 16
+                        }}
                     >
                         {isPhone && (
-                            <View marginRight={16}>
+                            <View style={{ marginRight: 16 }}>
                                 <AuthInput
                                     ref={inputCodeRef}
                                     width={96}
@@ -320,7 +329,7 @@ export const SubmitLoginForm = React.memo((props: SubmitLoginFormProps) => {
                                 />
                             </View>
                         )}
-                        <View flexGrow={2} flexBasis={0}>
+                        <View style={{ flexGrow: 2, flexBasis: 0 }}>
                             <AuthInput
                                 ref={inputDataRef}
                                 value={userDataField.value}

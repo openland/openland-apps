@@ -99,14 +99,14 @@ const CompletePaymentComponent = React.memo((props: { id: string, clientSecret: 
     }, [props.router, props.ctx]);
 
     return (
-        <View flexDirection="column">
+        <View style={{ flexDirection: 'column' }}>
             <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 7, marginBottom: 11, textAlign: 'center', paddingHorizontal: 32 }}>Update payment method</Text>
             <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', paddingHorizontal: 32, marginBottom: 16 }}>
                 Choose correct payment method or add a new one to complete transaction
             </Text>
             {cards.map(card => <CardView key={card.id} item={card} selected={selected === card.pmid} onPress={() => setSelected(card.pmid)} />)}
             <AddCardItem onPress={handleAdd} />
-            <View marginTop={16} paddingHorizontal={16}>
+            <View style={{ marginTop: 16, paddingHorizontal: 16 }}>
                 <ZButton enabled={!!selected} title="Complete" action={onSubmit} style="primary" size="large" loading={loading} />
             </View>
         </View>

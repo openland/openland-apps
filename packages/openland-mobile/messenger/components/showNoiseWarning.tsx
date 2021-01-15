@@ -10,7 +10,7 @@ export const showNoiseWarning = async (title: string, message: string) => {
         builder.message(message);
 
         builder.view(
-            <View marginBottom={16} marginHorizontal={-24} overflow="hidden">
+            <View style={{ marginBottom: 16, marginHorizontal: -24, overflow: 'hidden' }}>
                 <Image
                     source={require('assets/art-noise.png')}
                     style={{

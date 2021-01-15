@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { View } from 'react-native';
+// import { View } from 'react-native';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
-import { ZButton } from 'openland-mobile/components/ZButton';
+// import { ZButton } from 'openland-mobile/components/ZButton';
 
 export const ButtonsComponent = (props: PageProps) => (
     <SScrollView>
-        <View paddingHorizontal={16}>
+        {/* <View paddingHorizontal={16}>
             <View marginVertical={16} flexDirection="row">
                 <View marginRight={10}>
                     <ZButton title="Label" />
@@ -78,7 +78,7 @@ export const ButtonsComponent = (props: PageProps) => (
                     <ZButton title="Label" size="large" style="pay" enabled={false} />
                 </View>
             </View>
-        </View>
+        </View> */}
     </SScrollView>
 );
 

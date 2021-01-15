@@ -23,8 +23,8 @@ export const CheckListBoxWraper = React.memo(
         const theme = React.useContext(ThemeContext);
 
         return (
-            <View flexDirection="row">
-                <View flexGrow={1}>{props.children}</View>
+            <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexGrow: 1 }}>{props.children}</View>
                 {props.isRadio ? (
                     <View
                         pointerEvents="none"
@@ -42,33 +42,30 @@ export const CheckListBoxWraper = React.memo(
                         }}
                     />
                 ) : (
-                    <View
-                        position="absolute"
-                        pointerEvents="none"
-                        alignSelf="center"
-                        alignItems="center"
-                        justifyContent="center"
-                        right={17}
-                        backgroundColor={
-                            props.checked ? theme.accentPrimary : theme.backgroundPrimary
-                        }
-                        borderColor={
-                            props.checked ? theme.accentPrimary : theme.foregroundQuaternary
-                        }
-                        borderWidth={2}
-                        borderRadius={RadiusStyles.Medium}
-                        width={22}
-                        height={22}
-                    >
-                        {props.checked && (
-                            <Image
-                                marginRight={1}
-                                source={require('assets/ic-checkmark-11.png')}
-                                style={{ tintColor: theme.foregroundInverted }}
-                            />
-                        )}
-                    </View>
-                )}
+                        <View
+                            style={{
+                                position: 'absolute',
+                                alignSelf: 'center',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                right: 17,
+                                backgroundColor: props.checked ? theme.accentPrimary : theme.backgroundPrimary,
+                                borderColor: props.checked ? theme.accentPrimary : theme.foregroundQuaternary,
+                                borderWidth: 2,
+                                borderRadius: RadiusStyles.Medium,
+                                width: 22,
+                                height: 22
+                            }}
+                            pointerEvents="none"
+                        >
+                            {props.checked && (
+                                <Image
+                                    source={require('assets/ic-checkmark-11.png')}
+                                    style={{ marginRight: 1, tintColor: theme.foregroundInverted }}
+                                />
+                            )}
+                        </View>
+                    )}
             </View>
         );
     },
@@ -105,11 +102,11 @@ const UsersList = React.memo(
                                 props.router.params.inviteLinkButton.onPress
                                     ? props.router.params.inviteLinkButton.onPress
                                     : () => {
-                                          props.router.push(
-                                              props.router.params.inviteLinkButton.path,
-                                              props.router.params.inviteLinkButton.pathParams,
-                                          );
-                                      }
+                                        props.router.push(
+                                            props.router.params.inviteLinkButton.path,
+                                            props.router.params.inviteLinkButton.pathParams,
+                                        );
+                                    }
                             }
                         />
                     </View>
@@ -177,8 +174,8 @@ const UserMultiplePickerComponent = React.memo((props: PageProps) => {
     let buttonTitle = isEmpty
         ? paramsAction.titleEmpty
         : users.length > 0
-        ? paramsAction.title + ' (' + users.length + ')'
-        : paramsAction.title;
+            ? paramsAction.title + ' (' + users.length + ')'
+            : paramsAction.title;
 
     const scrollRef = React.createRef<ScrollView>();
 
@@ -200,8 +197,8 @@ const UserMultiplePickerComponent = React.memo((props: PageProps) => {
                     isEmpty
                         ? () => props.router.params.action.actionEmpty()
                         : async () => {
-                              await props.router.params.action.action(users);
-                          }
+                            await props.router.params.action.action(users);
+                        }
                 }
             />
             <View style={{ flexDirection: 'column', width: '100%', height: '100%' }}>
@@ -211,8 +208,10 @@ const UserMultiplePickerComponent = React.memo((props: PageProps) => {
                     keyboardShouldPersistTaps="always"
                 >
                     <View
-                        paddingTop={searchHeight}
-                        minHeight={Dimensions.get('screen').height - searchHeight}
+                        style={{
+                            paddingTop: searchHeight,
+                            minHeight: Dimensions.get('screen').height - searchHeight
+                        }}
                     >
                         <React.Suspense fallback={<ZLoader />}>
                             <UsersList

@@ -47,30 +47,39 @@ const SharedChatHeaderContent = React.memo((props: { room: RoomTiny_room_SharedR
     const highlightGroup = room.kind === 'GROUP' && !room.isPremium;
 
     return (
-        <View flexDirection="column" alignItems="flex-start" alignSelf="center" justifyContent="center" pointerEvents="box-none" height={44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
-            <View flexDirection="row">
+        <View
+            style={{
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                alignSelf: 'center',
+                justifyContent: 'center',
+                height: 44,
+                minWidth: 0,
+                flexBasis: 0,
+                flexShrink: 1,
+                flexGrow: 1
+            }}
+            pointerEvents="box-none"
+        >
+            <View style={{ flexDirection: 'row' }}>
                 {highlightGroup && (
                     <Image
-                        alignSelf="center"
-                        opacity={CompensationAlpha}
                         source={require('assets/ic-lock-16.png')}
-                        style={{ tintColor: theme.accentPositive, marginRight: 4, width: 16, height: 16 }}
+                        style={{ alignSelf: 'center', opacity: CompensationAlpha, tintColor: theme.accentPositive, marginRight: 4, width: 16, height: 16 }}
                     />
                 )}
-                {room.isPremium && <View marginRight={8} marginTop={Platform.OS === 'ios' ? 0 : 1} marginBottom={Platform.OS === 'ios' ? 0 : -1} alignSelf="center"><PremiumBadge /></View>}
+                {room.isPremium && <View style={{ marginRight: 8, marginTop: Platform.OS === 'ios' ? 0 : 1, marginBottom: Platform.OS === 'ios' ? 0 : -1, alignSelf: 'center' }}><PremiumBadge /></View>}
                 <Text style={[styles.title, { color: highlightGroup ? theme.accentPositive : theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
                 {room.featured && theme.displayFeaturedIcon && (
                     <Image
-                        alignSelf="center"
                         source={require('assets/ic-verified-16.png')}
-                        style={{ tintColor: '#3DA7F2' /* special: verified/featured color */, marginLeft: 4, width: 16, height: 16 }}
+                        style={{ alignSelf: 'center', tintColor: '#3DA7F2' /* special: verified/featured color */, marginLeft: 4, width: 16, height: 16 }}
                     />
                 )}
                 {props.muted && (
                     <Image
-                        alignSelf="center"
                         source={require('assets/ic-muted-16.png')}
-                        style={{ tintColor: theme.foregroundQuaternary, marginLeft: 4, width: 16, height: 16 }}
+                        style={{ alignSelf: 'center', tintColor: theme.foregroundQuaternary, marginLeft: 4, width: 16, height: 16 }}
                     />
                 )}
             </View>
@@ -105,20 +114,32 @@ const PrivateChatHeaderContent = React.memo((props: { room: RoomTiny_room_Privat
     const isSavedMessages = room.user.id === getMessenger().engine.user.id;
 
     return (
-        <View flexDirection="column" alignItems="flex-start" alignSelf="center" justifyContent="center" pointerEvents="box-none" height={44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
-            <View flexDirection="row">
+        <View
+            style={{
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                alignSelf: 'center',
+                justifyContent: 'center',
+                height: 44,
+                minWidth: 0,
+                flexBasis: 0,
+                flexShrink: 1,
+                flexGrow: 1
+            }}
+            pointerEvents="box-none"
+        >
+            <View style={{ flexDirection: 'row' }}>
                 <Text style={[styles.title, { color: theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{isSavedMessages ? 'Saved messages' : title}</Text>
                 {props.muted && (
                     <Image
-                        alignSelf="center"
                         source={require('assets/ic-muted-16.png')}
-                        style={{ tintColor: theme.foregroundQuaternary, marginLeft: 4, width: 16, height: 16 }}
+                        style={{ alignSelf: 'center', tintColor: theme.foregroundQuaternary, marginLeft: 4, width: 16, height: 16 }}
                     />
                 )}
             </View>
 
             {!isSavedMessages && (
-                <View flexDirection="row" alignItems="center">
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
                     {/* default typing */}
                     {typing && typingType === TypingType.TEXT && (

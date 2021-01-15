@@ -14,14 +14,14 @@ const CallControlItem = (props: { label: string, icon: NodeRequire, backgroundCo
     let theme = React.useContext(ThemeContext);
 
     return (
-        <View alignItems="center" opacity={props.disabled ? 0.56 : 1} pointerEvents={props.disabled ? 'none' : undefined}>
+        <View style={{ alignItems: 'center', opacity: props.disabled ? 0.56 : 1 }} pointerEvents={props.disabled ? 'none' : undefined}>
             <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={props.onPress}
                 onLongPress={props.onLongPress}
                 style={{ width: 56, height: 56 }}
             >
-                <View backgroundColor={props.backgroundColor || 'rgba(255, 255, 255, 0.08)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
+                <View style={{ backgroundColor: props.backgroundColor || 'rgba(255, 255, 255, 0.08)', width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center' }}>
                     <Image source={props.icon} style={{ tintColor: theme.foregroundContrast }} />
                 </View>
             </TouchableOpacity>
@@ -81,7 +81,7 @@ export const CallControls = (props: CallControlsProps) => {
     const subtitle = room?.__typename === 'SharedRoom' ? `${plural(peers.length, ['member', 'members'])} on call` : 'On call';
 
     return (
-        <View borderRadius={18} overflow="hidden">
+        <View style={{ borderRadius: 18, overflow: 'hidden' }}>
             <View
                 style={{
                     flexDirection: 'row',
@@ -91,14 +91,14 @@ export const CallControls = (props: CallControlsProps) => {
                     backgroundColor: theme.overlayHeavy,
                 }}
             >
-                <View flexDirection="column" flexGrow={1}>
+                <View style={{ flexDirection: 'column', flexGrow: 1 }}>
                     <Text style={{ paddingTop: 15, ...TextStyles.Title2, color: theme.foregroundContrast }}>
                         {title}
                     </Text>
                     <Text style={{ marginTop: 4, ...TextStyles.Subhead, color: 'rgba(255, 255, 255, 0.56)' }}>
                         {subtitle}
                     </Text>
-                    <View flexGrow={1} marginTop={15} flexDirection="row" justifyContent="space-between">
+                    <View style={{ flexGrow: 1, marginTop: 15, flexDirection: 'row', justifyContent: 'space-between' }}>
                         <CallControlItem
                             onPress={props.onCallEnd}
                             icon={require('assets/ic-call-end-glyph-24.png')}

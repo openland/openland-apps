@@ -20,8 +20,8 @@ export const SenderView = React.memo<SenderViewProps>((props) => {
 
     return (
         <TouchableWithoutFeedback onPress={() => router.push('ProfileUser', { id: sender.id })}>
-            <View alignItems="stretch" marginTop={15} marginBottom={8} flexDirection="row">
-                <View marginRight={12}>
+            <View style={{ alignItems: 'stretch', marginTop: 15, marginBottom: 8, flexDirection: 'row' }}>
+                <View style={{ marginRight: 12 }}>
                     <ZAvatar
                         size="medium"
                         photo={sender.photo}
@@ -29,7 +29,7 @@ export const SenderView = React.memo<SenderViewProps>((props) => {
                         title={sender.name}
                     />
                 </View>
-                <View flexDirection="column" flexGrow={1} flexShrink={1}>
+                <View style={{ flexDirection: 'column', flexGrow: 1, flexShrink: 1 }}>
                     <Text style={{ fontSize: 15, fontWeight: FontStyles.Weight.Medium, color: theme.foregroundPrimary }} allowFontScaling={false} numberOfLines={1}>{sender.name}
                         {sender.primaryOrganization &&
                             <Text style={{ fontSize: 13, fontWeight: FontStyles.Weight.Medium, color: '#99a2b0' }} allowFontScaling={false}>

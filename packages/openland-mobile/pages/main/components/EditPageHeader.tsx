@@ -17,18 +17,22 @@ export const EditPageHeader = React.memo((props: EditPageHeaderProps) => {
     return (
         <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]}>
             <View
-                alignItems="center"
-                justifyContent="center"
-                paddingTop={16}
-                paddingBottom={32}
+                style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    paddingTop: 16,
+                    paddingBottom: 32
+                }}
             >
                 <View
-                    width={80}
-                    height={80}
-                    alignItems="center"
-                    justifyContent="center"
-                    borderRadius={80}
-                    backgroundColor={props.tint}
+                    style={{
+                        width: 80,
+                        height: 80,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 80,
+                        backgroundColor: props.tint
+                    }}
                 >
                     <Image
                         source={props.icon}

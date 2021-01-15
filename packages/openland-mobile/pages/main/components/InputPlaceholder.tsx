@@ -51,7 +51,7 @@ export const ChannelMuteButton = React.memo((props: ChannelMuteButtonProps) => {
     }
 
     return (
-        <View marginBottom={SDevice.safeArea.bottom} backgroundColor={theme.backgroundPrimary}>
+        <View style={{ marginBottom: SDevice.safeArea.bottom, backgroundColor: theme.backgroundPrimary }}>
             <TouchableOpacity onPress={handleNotifications}>
                 <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
                     <Text
@@ -94,7 +94,7 @@ export const ChatInputPlaceholder = React.memo((props: { onPress?: () => void; t
     }
 
     return (
-        <View marginBottom={SDevice.safeArea.bottom} backgroundColor={theme.backgroundPrimary}>
+        <View style={{ marginBottom: SDevice.safeArea.bottom, backgroundColor: theme.backgroundPrimary }}>
             <TouchableOpacity onPress={props.onPress}>
                 <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
                     <Text
@@ -148,7 +148,7 @@ export const ChatInputBlockPlaceholder = React.memo(
         }
 
         return (
-            <View marginBottom={SDevice.safeArea.bottom} backgroundColor={theme.backgroundPrimary}>
+            <View style={{ marginBottom: SDevice.safeArea.bottom, backgroundColor: theme.backgroundPrimary }}>
                 <View
                     style={{
                         height: 44,

@@ -16,14 +16,14 @@ export const ChatAccessDenied = React.memo((props: ChatAccessDeniedProps) => (
     <>
         <SHeader title="Access Denied" />
         <SHeaderButton />
-        <ASSafeAreaView flexGrow={1} paddingHorizontal={16}>
-            <View height="73%" alignItems="center" justifyContent="center">
+        <ASSafeAreaView style={{ flexGrow: 1, paddingHorizontal: 16 }}>
+            <View style={{ height: '73%', alignItems: 'center', justifyContent: 'center' }}>
                 <Image source={props.theme.type === 'Light' ? require('assets/img-empty.png') : require('assets/img-empty-dark.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
                 <Text style={{ textAlign: 'center', fontSize: 22, lineHeight: 28, color: props.theme.foregroundPrimary, marginBottom: 10, fontWeight: FontStyles.Weight.Medium }} allowFontScaling={false}>Cannot view group</Text>
                 <Text style={{ textAlign: 'center', fontSize: 16, lineHeight: 24, color: props.theme.foregroundPrimary, opacity: 0.6 }} allowFontScaling={false}>This group doesn't exist or you don't have permission to view it</Text>
             </View>
-            <View height="27%" alignItems="center" justifyContent="center">
-                <View width={118}>
+            <View style={{ height: '27%', alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{width: 118}}>
                     <ZButton
                         size="large"
                         title="Go back"

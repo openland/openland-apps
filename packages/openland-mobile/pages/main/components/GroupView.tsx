@@ -25,7 +25,7 @@ export const GroupView = React.memo<GroupViewProps>((props) => {
 
     return (
         <ZListItemBase height={52} onPress={handlePress} onLongPress={onLongPress} separator={false}>
-            <View marginHorizontal={16} height={52} alignItems="center" justifyContent="center">
+            <View style={{ marginHorizontal: 16, height: 52, alignItems: 'center', justifyContent: 'center' }}>
                 <ZAvatar
                     photo={photo}
                     size="medium"
@@ -33,8 +33,8 @@ export const GroupView = React.memo<GroupViewProps>((props) => {
                     title={item.title}
                 />
             </View>
-            <View paddingRight={paddingRight || 10} flexDirection="column" flexGrow={1} flexBasis={0} justifyContent="center">
-                <View flexDirection="row">
+            <View style={{ paddingRight: paddingRight || 10, flexDirection: 'column', flexGrow: 1, flexBasis: 0, justifyContent: 'center' }}>
+                <View style={{ flexDirection: 'row' }}>
                     <Text
                         numberOfLines={1}
                         style={{

@@ -57,10 +57,12 @@ const ChatSearchDataList = React.memo(({ engine, chatId }: { engine: ChatSearchE
 
     return (
         <View
-            marginTop={Platform.OS === 'ios' ? -1000 : 0}
-            justifyContent="flex-start"
-            alignItems="stretch"
-            flexGrow={1}
+            style={{
+                marginTop: Platform.OS === 'ios' ? -1000 : 0,
+                justifyContent: 'flex-start',
+                alignItems: 'stretch',
+                flexGrow: 1
+            }}
         >
             <ASListView
                 dataView={dataView}
@@ -69,7 +71,7 @@ const ChatSearchDataList = React.memo(({ engine, chatId }: { engine: ChatSearchE
                 contentPaddingTop={safeArea.top + (Platform.OS === 'ios' ? 1000 : 0)}
                 style={{ flexGrow: 1 }}
                 headerPadding={
-                    Platform.select({ ios: 0, android: androidMessageInputListOverlap }) + 6
+                    Platform.select({ default: 0, android: androidMessageInputListOverlap }) + 6
                 }
                 overflowColor={theme.backgroundPrimary}
             />

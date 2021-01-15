@@ -148,7 +148,9 @@ const RoomMembersSearch = (props: RoomMembersSearchProps) => {
             onEndReachedThreshold={1}
             refreshing={loading}
             onEndReached={handleLoadMore}
-            backgroundColor={theme.backgroundPrimary}
+            style={{
+                backgroundColor: theme.backgroundPrimary
+            }}
             scrollIndicatorInsets={{
                 top: area.top - DeviceConfig.statusBarHeight,
                 bottom: area.bottom - SDevice.safeArea.bottom,
@@ -245,7 +247,9 @@ const OrgMembersSearch = (props: OrgMembersSearchProps) => {
             onEndReachedThreshold={1}
             refreshing={loading}
             onEndReached={handleLoadMore}
-            backgroundColor={theme.backgroundPrimary}
+            style={{
+                backgroundColor: theme.backgroundPrimary
+            }}
             scrollIndicatorInsets={{
                 top: area.top - DeviceConfig.statusBarHeight,
                 bottom: area.bottom - SDevice.safeArea.bottom,

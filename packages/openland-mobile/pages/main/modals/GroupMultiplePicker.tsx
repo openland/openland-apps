@@ -112,7 +112,7 @@ const GroupMultiplePickerComponent = React.memo((props: PageProps) => {
             />
             <View style={{ flexDirection: 'column', width: '100%', height: '100%' }}>
                 <SScrollView>
-                    <View paddingTop={searchHeight} minHeight={Dimensions.get('screen').height - searchHeight}>
+                    <View style={{ paddingTop: searchHeight, minHeight: Dimensions.get('screen').height - searchHeight }}>
                         <React.Suspense fallback={<ZLoader />}>
                             {query.length === 0 && <GroupsList groups={groups} query={query} onAdd={handleAddGroup} />}
                             {query.length > 0 && <GroupsSearchList groups={groups} query={query} onAdd={handleAddGroup} />}

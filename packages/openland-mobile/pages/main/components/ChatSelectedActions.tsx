@@ -26,14 +26,16 @@ export const ChatSelectedActionsHeader = (props: { messagesCount: number; cancel
 
     return (
         <View
-            alignItems="center"
-            justifyContent="center"
-            height={height}
-            flexDirection="row"
-            flexGrow={1}
-            position="relative"
+            style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                height,
+                flexDirection: 'row',
+                flexGrow: 1,
+                position: 'relative'
+            }}
         >
-            <View position="absolute" left={0}>
+            <View style={{ position: 'absolute', left: 0 }}>
                 <SCloseButton onPress={props.cancel} tintColor={theme.foregroundSecondary} />
             </View>
             <Text
@@ -110,8 +112,8 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
     const isForwardDisabled = !hasSelectedMessages;
 
     let res = (
-        <View flexGrow={1} flexDirection="row" alignItems="center">
-            <View flexGrow={1} justifyContent="center" alignItems="center">
+        <View style={{ flexGrow: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <TouchableOpacity onPress={del} disabled={isDeleteDisabled}>
                     <View
                         style={{
@@ -129,7 +131,7 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
                 </TouchableOpacity>
             </View>
             {!props.conversation.isSavedMessage && (
-                <View flexGrow={1}>
+                <View style={{ flexGrow: 1 }}>
                     <TouchableOpacity onPress={save} disabled={isForwardDisabled}>
                         <View
                             style={{
@@ -146,7 +148,7 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
                     </TouchableOpacity>
                 </View>
             )}
-            <View flexGrow={1}>
+            <View style={{ flexGrow: 1 }}>
                 <TouchableOpacity onPress={() => forward()} disabled={isForwardDisabled}>
                     <View
                         style={{
@@ -190,7 +192,7 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
                     cancel={clear}
                 />
             </SHeaderView>
-            <View marginBottom={SDevice.safeArea.bottom} backgroundColor={theme.backgroundPrimary}>
+            <View style={{ marginBottom: SDevice.safeArea.bottom, backgroundColor: theme.backgroundPrimary }}>
                 {res}
             </View>
         </>

@@ -25,13 +25,13 @@ const CreateItem = (props: CreateItemProps) => {
     return (
         <Animated.View style={{ width: 343, marginRight: 8, ...styles }}>
             <TouchableWithoutFeedback delayPressIn={delayPressIn} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut}>
-                <View flexDirection="row" borderRadius={RadiusStyles.Large} padding={24} backgroundColor={bgColor}>
-                    <View marginRight={8} flexGrow={1} flexShrink={1} flexDirection="column">
+                <View style={{ flexDirection: 'row', borderRadius: RadiusStyles.Large, padding: 24, backgroundColor: bgColor }}>
+                    <View style={{ marginRight: 8, flexGrow: 1, flexShrink: 1, flexDirection: 'column' }}>
                         <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginBottom: 8 }} allowFontScaling={false}>{title}</Text>
                         <Text style={{ ...TextStyles.Body, color: theme.foregroundPrimary, opacity: 0.72, marginBottom: 24, }} allowFontScaling={false}>
                             {description}
                         </Text>
-                        <View alignSelf="flex-start">
+                        <View style={{ alignSelf: 'flex-start' }}>
                             <ZButton title={buttonText} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut} />
                         </View>
                     </View>
@@ -48,7 +48,7 @@ export const DiscoverCreateList = () => {
 
     return (
         <ZListGroup header="Create">
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} paddingLeft={16} paddingVertical={8} pagingEnabled={true} decelerationRate="fast" snapToInterval={351}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{ paddingLeft: 16, paddingVertical: 8 }} pagingEnabled={true} decelerationRate="fast" snapToInterval={351}>
                 <CreateItem
                     title="Chat"
                     description="Public, secret, or paid group chat"
@@ -76,7 +76,7 @@ export const DiscoverCreateList = () => {
                     theme={theme}
                     onPress={() => router.push('NewOrganization', { isCommunity: true })}
                 />
-                <View width={24} />
+                <View style={{ width: 24 }} />
             </ScrollView>
         </ZListGroup>
     );

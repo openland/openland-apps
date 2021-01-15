@@ -37,14 +37,14 @@ export const PinnedMessage = React.memo((props: PinnedMessageProps) => {
     return (
         <ASSafeAreaContext.Consumer>
             {area => (
-                <ZBlurredView position="absolute" top={area.top} left={0} right={0} zIndex={2} flexDirection="row">
+                <ZBlurredView style={{ position: 'absolute', top: area.top, left: 0, right: 0, zIndex: 2, flexDirection: 'row' }}>
                     <TouchableWithoutFeedback onPress={() => onPress(message.id)}>
-                        <View flexGrow={1} flexShrink={1} height={PINNED_MESSAGE_HEIGHT} flexDirection="row" paddingLeft={16} paddingRight={canUnpin ? 0 : 16} alignItems="center">
-                            <View width={24} height={24} marginRight={16} >
+                        <View style={{ flexGrow: 1, flexShrink: 1, height: PINNED_MESSAGE_HEIGHT, flexDirection: 'row', paddingLeft: 16, paddingRight: canUnpin ? 0 : 16, alignItems: 'center' }}>
+                            <View style={{ width: 24, height: 24, marginRight: 16 }} >
                                 <Image style={{ width: 24, height: 24, tintColor: theme.foregroundSecondary }} source={require('assets/ic-pin-24.png')} />
                             </View>
 
-                            <View flexGrow={1} flexShrink={1}>
+                            <View style={{ flexGrow: 1, flexShrink: 1 }}>
                                 {showAuthor && (
                                     <Text style={{ ...TextStyles.Label2, color: theme.foregroundPrimary }} numberOfLines={1} allowFontScaling={false}>
                                         {message.sender.name}
@@ -60,8 +60,8 @@ export const PinnedMessage = React.memo((props: PinnedMessageProps) => {
 
                     {canUnpin && (
                         <TouchableWithoutFeedback onPress={handleUnpinPress}>
-                            <View width={50} height={56} paddingRight={6} alignItems="center" justifyContent="center">
-                                <View width={24} height={24} borderRadius={RadiusStyles.Medium} backgroundColor={theme.backgroundTertiaryTrans} alignItems="center" justifyContent="center">
+                            <View style={{ width: 50, height: 56, paddingRight: 6, alignItems: 'center', justifyContent: 'center' }}>
+                                <View style={{ width: 24, height: 24, borderRadius: RadiusStyles.Medium, backgroundColor: theme.backgroundTertiaryTrans, alignItems: 'center', justifyContent: 'center' }}>
                                     <Image source={require('assets/ic-close-16.png')} style={{ tintColor: theme.foregroundSecondary, width: 16, height: 16 }} />
                                 </View>
                             </View>

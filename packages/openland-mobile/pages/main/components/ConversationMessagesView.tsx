@@ -28,7 +28,7 @@ export const ConversationMessagesView = React.memo<ConversationMessagesViewProps
         applyModes.push('selection');
     }
     return (
-        <View marginTop={Platform.OS === 'ios' ? -1000 : 0} justifyContent="flex-start" alignItems="stretch" flexGrow={1}>
+        <View style={{ marginTop: Platform.OS === 'ios' ? -1000 : 0, justifyContent: 'flex-start', alignItems: 'stretch', flexGrow: 1 }}>
             <ASListView
                 onScroll={props.onScroll}
                 dataView={getMessenger().getConversation(props.engine.conversationId)}
@@ -36,7 +36,7 @@ export const ConversationMessagesView = React.memo<ConversationMessagesViewProps
                 contentPaddingTop={safeArea.top + (Platform.OS === 'ios' ? 1000 : 0)}
                 contentPaddingBottom={props.paddingBottom || 0}
                 style={{ flexGrow: 1 }}
-                headerPadding={Platform.select({ ios: 0, android: androidMessageInputListOverlap }) + 6}
+                headerPadding={Platform.select({ default: 0, android: androidMessageInputListOverlap }) + 6}
                 overflowColor={theme.backgroundPrimary}
                 applyModes={applyModes}
             />

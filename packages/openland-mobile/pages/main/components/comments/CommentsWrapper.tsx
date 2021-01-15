@@ -261,7 +261,7 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { hasNewStickers: bo
     }
 
     let content = (
-        <View paddingBottom={Platform.OS === 'ios' ? 68 : undefined}>
+        <View style={{ paddingBottom: Platform.OS === 'ios' ? 68 : undefined }}>
             {peerView}
 
             <CommentsList
@@ -278,18 +278,18 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { hasNewStickers: bo
     return (
         <>
             {Platform.OS === 'ios' && (
-                <ScrollView ref={scrollRef} flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always" contentContainerStyle={{ paddingTop: area.top, paddingBottom: (area.bottom - SDevice.safeArea.bottom <= 0) ? 80 : area.bottom - SDevice.safeArea.bottom }} scrollIndicatorInsets={{ top: area.top, bottom: (area.bottom - SDevice.safeArea.bottom <= 0) ? 80 : area.bottom - SDevice.safeArea.bottom }}>
+                <ScrollView ref={scrollRef} style={{ flexGrow: 1, flexShrink: 1 }} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always" contentContainerStyle={{ paddingTop: area.top, paddingBottom: (area.bottom - SDevice.safeArea.bottom <= 0) ? 80 : area.bottom - SDevice.safeArea.bottom }} scrollIndicatorInsets={{ top: area.top, bottom: (area.bottom - SDevice.safeArea.bottom <= 0) ? 80 : area.bottom - SDevice.safeArea.bottom }}>
                     {content}
                 </ScrollView>
             )}
 
             {Platform.OS === 'android' && (
-                <ScrollView ref={scrollRef} flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always">
+                <ScrollView ref={scrollRef} style={{ flexGrow: 1, flexShrink: 1 }} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always">
                     {content}
                 </ScrollView>
             )}
 
-            <View paddingBottom={Platform.OS === 'android' ? area.keyboardHeight : undefined}>
+            <View style={{ paddingBottom: Platform.OS === 'android' ? area.keyboardHeight : undefined }}>
                 {(!isDeleted || edited) && (
                     <MessageInputBar
                         onAttachPress={handleAttach}

@@ -40,12 +40,14 @@ const CodeInput = React.forwardRef((props: CodeInputProps, ref: React.RefObject<
 
     return (
         <View
-            height={56}
-            maxWidth={50}
-            flexGrow={1}
-            borderRadius={12}
-            backgroundColor={focused ? theme.backgroundTertiaryActiveTrans : theme.backgroundTertiaryTrans}
             {...wrapperProps}
+            style={[wrapperProps && wrapperProps.style, {
+                height: 56,
+                maxWidth: 50,
+                flexGrow: 1,
+                borderRadius: 12,
+                backgroundColor: focused ? theme.backgroundTertiaryActiveTrans : theme.backgroundTertiaryTrans
+            }]}
         >
             <TextInput
                 style={[{
@@ -89,11 +91,11 @@ const AuthCodeHeader = React.memo((props: { resendCode: () => void; formData: st
     ] as TextStyle;
     const [seconds, handleResend] = useResendTimer({ onResend: props.resendCode });
     return (
-        <View marginBottom={32}>
+        <View style={{ marginBottom: 32 }}>
             <Text style={[textStyle, { paddingHorizontal: 16 }]} allowFontScaling={false}>
                 We just sent it to {props.formData}.
             </Text>
-            <View flexDirection="row" justifyContent="center" alignItems="center">
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={textStyle} allowFontScaling={false}>
                     Haven’t received?{' '}{seconds > 0 && `Wait for ${seconds} sec`}
                 </Text>
@@ -235,20 +237,22 @@ export const SubmitCodeForm = React.memo((props: SubmitCodeFormProps) => {
             >
                 {avatarSrc && (
                     <View
-                        marginTop={-8}
-                        marginBottom={32}
-                        flexDirection="row"
-                        justifyContent="center"
+                        style={{
+                            marginTop: -8,
+                            marginBottom: 32,
+                            flexDirection: 'row',
+                            justifyContent: 'center'
+                        }}
                     >
                         <ZAvatar size="x-large" photo={avatarSrc} />
                     </View>
                 )}
                 <View>
                     <ZShaker ref={shakerRef}>
-                        <View flexDirection="row" justifyContent="center" width="100%">
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
                             {codeField.value.map((value, i) => (
                                 <CodeInput
-                                    wrapperProps={{ marginRight: i !== codeField.value.length - 1 ? 8 : 0 }}
+                                    wrapperProps={{ style: { marginRight: i !== codeField.value.length - 1 ? 8 : 0 } }}
                                     ref={codeRefs.current[i]}
                                     key={i}
                                     autoFocus={i === 0}
@@ -268,7 +272,7 @@ export const SubmitCodeForm = React.memo((props: SubmitCodeFormProps) => {
                         </View>
                     </ZShaker>
                 </View>
-                <View height={compensationHeight} />
+                <View style={{ height: compensationHeight }} />
             </RegistrationContainer>
         </ZTrack>
     );

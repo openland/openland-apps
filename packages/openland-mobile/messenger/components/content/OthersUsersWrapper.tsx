@@ -44,7 +44,7 @@ const OtherUsersContent = React.memo((props: OtherUsersContentProps) => {
             {findSpans &&
                 findSpans.__typename === 'MessageSpanMultiUserMention' &&
                 findSpans.users && (
-                    <View flexGrow={1}>
+                    <View style={{ flexGrow: 1 }}>
                         {findSpans.users.map((u) => (
                             <ZUserView
                                 key={'user-' + u.id}
@@ -68,7 +68,7 @@ export const OthersUsersWrapper = React.memo((props: OthersUsersWrapperProps) =>
         builder.view((ctx: ZModalController) => (
             <React.Suspense
                 fallback={
-                    <View height={40}>
+                    <View style={{ height: 40 }}>
                         <ZLoader />
                     </View>
                 }

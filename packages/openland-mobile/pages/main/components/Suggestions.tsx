@@ -6,12 +6,12 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 
 export const SuggestionsWrapper = (props: { children: any }) => (
-    <ScrollView alwaysBounceVertical={false} keyboardShouldPersistTaps="always" maxHeight={188}>
-        <View height={8} />
+    <ScrollView alwaysBounceVertical={false} keyboardShouldPersistTaps="always" style={{ maxHeight: 188 }}>
+        <View style={{ height: 8 }} />
 
         {props.children}
 
-        <View height={8} />
+        <View style={{ height: 8 }} />
     </ScrollView>
 );
 
@@ -19,7 +19,7 @@ export const SuggestionsItemName = (props: { theme: ThemeGlobal, name: string; d
     const theme = useTheme();
     const hasFeaturedIcon = props.featured && theme.displayFeaturedIcon;
     return (
-        <View flexDirection="row" width={Dimensions.get('window').width - (hasFeaturedIcon ? 78 : 72)}>
+        <View style={{ flexDirection: 'row', width: Dimensions.get('window').width - (hasFeaturedIcon ? 78 : 72) }}>
             <Text
                 style={{
                     ...TextStyles.Label2,

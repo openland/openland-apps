@@ -19,9 +19,9 @@ export const AccentCircle = React.memo((props: AccentCircleProps) => {
     }, []);
 
     return (
-        <View width={isPad ? '12.5%' : '25%'} padding={8} onLayout={onLayout}>
+        <View style={{ width: isPad ? '12.5%' : '25%', padding: 8 }} onLayout={onLayout}>
             <TouchableOpacity onPress={onPress} activeOpacity={0.64}>
-                <View height={height} borderRadius={height / 2} backgroundColor={color} alignItems="center" justifyContent="center">
+                <View style={{ height, borderRadius: height / 2, backgroundColor: color, alignItems: 'center', justifyContent: 'center' }}>
                     {checked && (
                         <Image
                             source={require('assets/ic-done-24.png')}

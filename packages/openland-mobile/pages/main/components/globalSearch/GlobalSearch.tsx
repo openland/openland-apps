@@ -69,7 +69,7 @@ export const EmptyView = React.memo((props: { theme: ThemeGlobal }) => (
         >
             Didn’t find your friends at Openland? Let’s invite them to stay in touch
         </Text>
-        <View alignItems="center">
+        <View style={{ alignItems: 'center' }}>
             <ZButton title="Invite friends" onPress={handleGlobalInvitePress} />
         </View>
     </View>
@@ -81,7 +81,7 @@ const GlobalSearchInner = (props: GlobalSearchProps) => {
     const isHashtag = props.query.startsWith('#');
 
     return (
-        <SScrollView keyboardDismissMode="on-drag" backgroundColor={theme.backgroundPrimary}>
+        <SScrollView keyboardDismissMode="on-drag" style={{ backgroundColor: theme.backgroundPrimary }}>
             {items.length === 0 && <EmptyView theme={theme} />}
             {items.map((item, index) => (
                 <GlobalSearchItem key={`search-item-${index}-${item.id}`} item={item} renderSavedMessages={!isHashtag} {...props} />
@@ -129,7 +129,7 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
             return;
         }
         setLoadingMessages(true);
-        const {messagesSearch} = await client.queryMessagesSearch(constructVariables(query), { fetchPolicy: 'network-only' });
+        const { messagesSearch } = await client.queryMessagesSearch(constructVariables(query), { fetchPolicy: 'network-only' });
 
         setAfter(getCursor(messagesSearch));
         setMessages(messagesSearch.edges);
@@ -176,7 +176,7 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
             ))}
             {
                 loadingMessages ?
-                    <View height={56} alignItems="center" justifyContent="center">
+                    <View style={{ height: 56, alignItems: 'center', justifyContent: 'center' }}>
                         <LoaderSpinner />
                     </View> :
                     <>
@@ -195,14 +195,16 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
             scrollEventThrottle={1}
             legacyImplementation={true}
             onEndReachedThreshold={1}
-            backgroundColor={theme.backgroundPrimary}
+            style={{
+                backgroundColor: theme.backgroundPrimary
+            }}
             ListHeaderComponent={content()}
             onEndReached={handleNeedMore}
             keyExtractor={(item, index) => index.toString()}
             refreshing={loadingMore}
             scrollIndicatorInsets={{ top: area.top - DeviceConfig.statusBarHeight, bottom: area.bottom - SDevice.safeArea.bottom }}
             ListFooterComponent={loadingMore ? (
-                <View height={56} alignItems="center" justifyContent="center">
+                <View style={{ height: 56, alignItems: 'center', justifyContent: 'center' }}>
                     <LoaderSpinner />
                 </View>
             ) : undefined}
@@ -215,10 +217,12 @@ export const Loader = React.memo((props: { theme: ThemeGlobal }) => {
         <ASSafeAreaContext.Consumer>
             {area => (
                 <View
-                    minHeight={Dimensions.get('screen').height}
-                    paddingTop={area.top}
-                    paddingBottom={area.bottom}
-                    backgroundColor={props.theme.backgroundPrimary}
+                    style={{
+                        minHeight: Dimensions.get('screen').height,
+                        paddingTop: area.top,
+                        paddingBottom: area.bottom,
+                        backgroundColor: props.theme.backgroundPrimary
+                    }}
                 >
                     {SNativeConfig.loader}
                 </View>

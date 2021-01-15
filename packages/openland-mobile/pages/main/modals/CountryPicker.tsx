@@ -79,31 +79,36 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
     return (
         <>
             <SHeader title="Country" />
-            <ASSafeAreaView marginBottom={sortCountries && sortCountries.length === 0 ? 0 : 20} flexGrow={1} flexDirection="column">
-                <View alignItems="center" marginHorizontal={16} marginTop={8} marginBottom={16}>
+            <ASSafeAreaView style={{ marginBottom: sortCountries && sortCountries.length === 0 ? 0 : 20, flexGrow: 1, flexDirection: 'column' }}>
+                <View style={{ alignItems: 'center', marginHorizontal: 16, marginTop: 8, marginBottom: 16 }}>
                     <View
-                        position="relative"
-                        flexDirection="row"
-                        maxWidth={600}
-                        backgroundColor={theme.backgroundTertiaryTrans}
-                        borderRadius={100}
-                        height={36}
+                        style={{
+                            position: 'relative',
+                            flexDirection: 'row',
+                            maxWidth: 600,
+                            backgroundColor: theme.backgroundTertiaryTrans,
+                            borderRadius: 100,
+                            height: 36
+                        }}
                     >
                         <TextInput
                             value={query}
                             onChangeText={setQuery}
-                            height={36}
-                            borderRadius={100}
-                            paddingLeft={36}
-                            paddingRight={12}
-                            paddingBottom={Platform.OS === 'ios' ? undefined : 0}
-                            paddingTop={Platform.OS === 'ios' ? undefined : 0}
                             placeholder="Search"
                             allowFontScaling={false}
                             autoFocus={true}
                             keyboardAppearance={theme.keyboardAppearance}
                             placeholderTextColor={theme.foregroundTertiary}
-                            style={{ fontSize: 17, flexGrow: 1 }}
+                            style={{
+                                height: 36,
+                                borderRadius: 100,
+                                paddingLeft: 36,
+                                paddingRight: 12,
+                                paddingBottom: Platform.OS === 'ios' ? undefined : 0,
+                                paddingTop: Platform.OS === 'ios' ? undefined : 0,
+                                fontSize: 17,
+                                flexGrow: 1
+                            }}
                         />
                         <Image
                             source={require('assets/ic-search-16.png')}
@@ -116,8 +121,8 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                         />
                     </View>
                 </View>
-                <View flexGrow={1} flexShrink={1} alignItems="center">
-                    <View maxWidth={600} width="100%" justifyContent="center" flexGrow={1}>
+                <View style={{ flexGrow: 1, flexShrink: 1, alignItems: 'center' }}>
+                    <View style={{ maxWidth: 600, width: '100%', justifyContent: 'center', flexGrow: 1 }}>
                         {!sortCountries && (
                             <SectionList
                                 keyboardDismissMode="on-drag"
@@ -133,7 +138,7 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                                                 onPress={() => action(item)}
                                                 small={true}
                                             />
-                                            <View height={16} />
+                                            <View style={{ height: 16 }} />
                                         </>
                                     ) : (
                                             <ZListItem
@@ -146,11 +151,13 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                                 )}
                                 renderSectionHeader={({ section: { title } }) => (
                                     <View
-                                        height={48}
-                                        paddingHorizontal={16}
-                                        alignItems="center"
-                                        flexDirection="row"
-                                        backgroundColor={theme.backgroundPrimary}
+                                        style={{
+                                            height: 48,
+                                            paddingHorizontal: 16,
+                                            alignItems: 'center',
+                                            flexDirection: 'row',
+                                            backgroundColor: theme.backgroundPrimary
+                                        }}
                                     >
                                         <Text
                                             style={[
@@ -187,7 +194,14 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                             />
                         )}
                         {sortCountries && sortCountries.length === 0 && (
-                            <View flexGrow={1} marginTop={1} position="relative" marginBottom={keyboardHeight - (Platform.OS === 'ios' ? safeArea.bottom : 0)}>
+                            <View
+                                style={{
+                                    flexGrow: 1,
+                                    marginTop: 1,
+                                    position: 'relative',
+                                    marginBottom: keyboardHeight - (Platform.OS === 'ios' ? safeArea.bottom : 0)
+                                }}
+                            >
                                 <View
                                     style={{
                                         flexGrow: 1,

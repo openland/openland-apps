@@ -104,7 +104,7 @@ const EditGroupCallsComponent = React.memo((props: PageProps) => {
                         </CheckListBoxWraper>
                     </ZListGroup>
                     {mode === RoomCallsMode.LINK && (
-                        <View marginTop={16} paddingHorizontal={16}>
+                        <View style={{ marginTop: 16, paddingHorizontal: 16 }}>
                             <ZInput
                                 placeholder="Call link"
                                 field={customLinkField}

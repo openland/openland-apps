@@ -12,7 +12,7 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & {
     return (
         <>
             {reloadButton}
-            <View marginBottom={SDevice.safeArea.bottom}>
+            <View style={{ marginBottom: SDevice.safeArea.bottom }}>
                 <View style={{ flexDirection: 'column', alignItems: 'stretch', position: 'relative' }}>
                     {suggestions && (
                         <View style={{ backgroundColor: theme.backgroundPrimary, position: 'absolute', bottom: '100%', left: 0, right: 0 }}>
@@ -21,7 +21,7 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps & {
                     )}
 
                     {topView && (
-                        <View backgroundColor={theme.backgroundPrimary}>
+                        <View style={{ backgroundColor: theme.backgroundPrimary }}>
                             {topView}
                         </View>
                     )}

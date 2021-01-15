@@ -22,8 +22,8 @@ import { SUPER_ADMIN } from '../../../Init';
 const SecretLabel = React.memo((props: { isChannel: boolean }) => {
     const theme = React.useContext(ThemeContext);
     return (
-        <View flexDirection="row" alignItems="center" marginLeft={16} marginBottom={16}>
-            <View flexDirection="row" alignItems="center" marginRight={8}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 16, marginBottom: 16 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 8 }}>
                 <Image
                     source={require('assets/ic-lock-16.png')}
                     style={{ tintColor: theme.foregroundTertiary }}
@@ -69,12 +69,12 @@ const EditGroupComponent = React.memo((props: PageProps) => {
     const photoField = useField('photoRef', defaultPhotoValue, form);
     const serviceMessageLabel =
         group.serviceMessageSettings.joinsMessageEnabled &&
-        group.serviceMessageSettings.leavesMessageEnabled
+            group.serviceMessageSettings.leavesMessageEnabled
             ? 'On'
             : group.serviceMessageSettings.joinsMessageEnabled ||
-              group.serviceMessageSettings.leavesMessageEnabled
-            ? 'Custom'
-            : 'Off';
+                group.serviceMessageSettings.leavesMessageEnabled
+                ? 'Custom'
+                : 'Off';
     const callSettingsLabel = callSettingsLabels[group.callSettings.mode];
 
     const handleSave = () =>
@@ -87,8 +87,8 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                         description: descriptionField.value,
                         ...(photoField.value &&
                             photoField.value.uuid !== currentPhoto && {
-                                photoRef: photoField.value,
-                            }),
+                            photoRef: photoField.value,
+                        }),
                     },
                 };
 
@@ -136,9 +136,9 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                             description={
                                 group.premiumSettings
                                     ? formatMoneyInterval(
-                                          group.premiumSettings.price,
-                                          group.premiumSettings.interval,
-                                      )
+                                        group.premiumSettings.price,
+                                        group.premiumSettings.interval,
+                                    )
                                     : 'Free'
                             }
                         />

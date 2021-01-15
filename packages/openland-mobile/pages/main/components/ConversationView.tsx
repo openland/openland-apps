@@ -112,7 +112,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
         const isSavedMessages = this.props.engine.user && getMessenger().engine.user.id === this.props.engine.user.id;
 
         return (
-            <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -androidMessageInputListOverlap })}>
+            <View style={{ flexBasis: 0, flexGrow: 1, marginBottom: Platform.select({ default: 0, android: -androidMessageInputListOverlap }) }}>
                 <ConversationMessagesView
                     inverted={this.props.inverted}
                     paddingBottom={this.props.messagesPaddingBottom}
@@ -139,9 +139,9 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                                                 Start a conversation with&nbsp;{userName}
                                             </Text>
 
-                                            <View marginBottom={16} flexDirection="row">
+                                            <View style={{ marginBottom: 15, flexDirection: 'row' }}>
                                                 <ZButton style="secondary" title="👋" onPress={() => this.sendMessage('👋')} />
-                                                <View marginLeft={16}>
+                                                <View style={{ marginLeft: 16 }}>
                                                     <ZButton
                                                         style="secondary"
                                                         title={`Hello, ${userName}!`}

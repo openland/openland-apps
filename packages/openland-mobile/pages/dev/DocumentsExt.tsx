@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { View } from 'react-native';
+// import { View } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
-import { ZDocumentExt } from 'openland-mobile/components/file/ZDocumentExt';
+// import { ZDocumentExt } from 'openland-mobile/components/file/ZDocumentExt';
 
 const DocumentsExtComponent = React.memo(props => {
     return (
         <>
             <SHeader title="Document extensions" />
             <SScrollView>
-                <View paddingLeft={16} paddingRight={8} flexDirection="row">
+                {/* <View paddingLeft={16} paddingRight={8} flexDirection="row">
                     <View marginVertical={8} marginRight={8}>
                         <ZDocumentExt name="table.xlsx" />
                     </View>
@@ -93,7 +93,7 @@ const DocumentsExtComponent = React.memo(props => {
                     <View marginVertical={8} marginRight={8}>
                         <ZDocumentExt name="some_file" size="large" loading={true} />
                     </View>
-                </View>
+                </View> */}
             </SScrollView>
         </>
     );

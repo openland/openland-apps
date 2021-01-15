@@ -11,8 +11,8 @@ import { delay } from 'openland-y-utils/timer';
 export const LoadersComponent = (props: PageProps) => (
     <SScrollView>
         <SHeader title="Toast" />
-        <View alignItems={'center'}>
-            <View marginVertical={20}>
+        <View style={{ alignItems: 'center' }}>
+            <View style={{marginVertical: 20}}>
                 <ZButton
                     title={'Show success'}
                     onPress={() => {
@@ -20,7 +20,7 @@ export const LoadersComponent = (props: PageProps) => (
                     }}
                 />
             </View>
-            <View marginVertical={20}>
+            <View style={{marginVertical: 20}}>
                 <ZButton
                     title={'Show failure with custom text'}
                     onPress={() => {
@@ -28,7 +28,7 @@ export const LoadersComponent = (props: PageProps) => (
                     }}
                 />
             </View>
-            <View marginVertical={20}>
+            <View style={{marginVertical: 20}}>
                 <ZButton
                     title={'Show custom toast'}
                     onPress={() => {
@@ -40,7 +40,7 @@ export const LoadersComponent = (props: PageProps) => (
                     }}
                 />
             </View>
-            <View marginVertical={20}>
+            <View style={{marginVertical: 20}}>
                 <ZButton
                     title={'Handle error'}
                     onPress={() => {
@@ -57,7 +57,7 @@ export const LoadersComponent = (props: PageProps) => (
                     }}
                 />
             </View>
-            <View marginVertical={20}>
+            <View style={{marginVertical: 20}}>
                 <ZButton
                     title={'Handle success'}
                     onPress={() => {

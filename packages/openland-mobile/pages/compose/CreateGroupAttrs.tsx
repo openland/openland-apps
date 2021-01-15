@@ -136,15 +136,19 @@ export const GroupPriceSettings = React.memo((props: GroupPriceSettings) => {
                 // without this shit selector dont work!
                 <React.Suspense fallback={null}>
                     <View
-                        flexDirection={isSubscription ? 'row' : undefined}
-                        paddingHorizontal={16}
-                        marginBottom={16}
+                        style={{
+                            flexDirection: isSubscription ? 'row' : undefined,
+                            paddingHorizontal: 16,
+                            marginBottom: 16
+                        }}
                     >
                         <View
-                            flexGrow={1}
-                            flexShrink={0}
-                            flexBasis={0}
-                            marginRight={isSubscription ? 8 : undefined}
+                            style={{
+                                flexGrow: 1,
+                                flexShrink: 0,
+                                flexBasis: 0,
+                                marginRight: isSubscription ? 8 : undefined
+                            }}
                         >
                             <ZInput
                                 placeholder="Price"
@@ -155,7 +159,7 @@ export const GroupPriceSettings = React.memo((props: GroupPriceSettings) => {
                             />
                         </View>
                         {isSubscription && (
-                            <View flexGrow={1} flexShrink={0} flexBasis={0} marginLeft={8}>
+                            <View style={{ flexGrow: 1, flexShrink: 0, flexBasis: 0, marginLeft: 8 }}>
                                 <ZSelect
                                     noWrapper={true}
                                     label="Period"

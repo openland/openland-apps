@@ -112,9 +112,9 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     const likedByMe = (reactions.length > 0 && reactions[0].setByMe);
 
     let avatar = (
-        <View marginRight={16}>
+        <View style={{ marginRight: 16 }}>
             {deleted && (
-                <View width={24} height={24} borderRadius={12} backgroundColor={theme.backgroundTertiary} alignItems="center" justifyContent="center">
+                <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: theme.backgroundTertiary, alignItems: 'center', justifyContent: 'center' }}>
                     <Image
                         source={require('assets/ic-delete-12.png')}
                         style={{ width: 12, height: 12, tintColor: theme.foregroundTertiary }}
@@ -138,7 +138,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     );
 
     let tools = (
-        <View flexDirection="row" alignItems="center">
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <ZRelativeDate style={[styles.date, { color: theme.foregroundTertiary }]} date={date} />
 
             {!deleted && (
@@ -162,11 +162,11 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     return (
         <TouchableWithoutFeedback disabled={deleted} onPress={handleDoublePress} onLongPress={() => props.onLongPress(comment)}>
             <View onLayout={handleLayout} style={{ backgroundColor: highlighted ? theme.backgroundTertiary : undefined, paddingLeft: branchIndent, paddingTop: 8, paddingBottom: 6, paddingRight: 16 }}>
-                <View flexDirection="row">
+                <View style={{ flexDirection: 'row' }}>
                     {avatar}
 
-                    <View flexGrow={1} flexShrink={1}>
-                        <View flexDirection="row">
+                    <View style={{ flexGrow: 1, flexShrink: 1 }}>
+                        <View style={{ flexDirection: 'row' }}>
                             <TouchableOpacity activeOpacity={HighlightAlpha} disabled={deleted} onPress={() => router.push('ProfileUser', { id: sender.id })}>
                                 <Text style={[styles.senderName, { color: theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
                                     {sender.name}

@@ -78,7 +78,7 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
 
     if (!stickerPack) {
         return (
-            <View alignItems="center" justifyContent="center" paddingHorizontal={32} paddingVertical={16} marginTop={16}>
+            <View style={{ alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32, paddingVertical: 16, marginTop: 16 }}>
                 <Image source={require('assets/art-error.png')} style={{ width: 240, height: 150, marginBottom: 16 }} />
                 <Text style={{ ...TextStyles.Title2, textAlign: 'center', color: theme.foregroundPrimary, marginBottom: 6, }} allowFontScaling={false}>Sticker pack is unavailable</Text>
                 <Text style={{ ...TextStyles.Body, textAlign: 'center', color: theme.foregroundSecondary }} allowFontScaling={false}>Sticker pack removed or temporary unavailable</Text>
@@ -111,19 +111,21 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
                 <StickerRows stickers={stickerPack.stickers} stickerLayout={stickerLayout} />
             )}
             {(stickerLayout.stickerSize === 0 || stickerLayout.stickersPerRow === 0) && (
-                <View alignItems="center" justifyContent="center" flexGrow={1}>
+                <View style={{ alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
                     <LoaderSpinner />
                 </View>
             )}
             {isPrivate ? (
                 <View
-                    paddingHorizontal={32}
-                    paddingVertical={24}
-                    marginHorizontal={-8}
-                    marginBottom={-16}
-                    justifyContent="center"
-                    alignContent="center"
-                    backgroundColor={theme.backgroundTertiary}
+                    style={{
+                        paddingHorizontal: 32,
+                        paddingVertical: 24,
+                        marginHorizontal: -8,
+                        marginBottom: -16,
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                        backgroundColor: theme.backgroundTertiary
+                    }}
                 >
                     <Text style={{ textAlign: 'center', color: theme.foregroundSecondary, ...TextStyles.Body }}>This sticker pack is private</Text>
                 </View>

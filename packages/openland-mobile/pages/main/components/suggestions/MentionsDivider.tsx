@@ -7,12 +7,12 @@ export const MentionsDividerView = React.memo(() => {
     const theme = React.useContext(ThemeContext);
 
     return (
-        <View height={40} alignItems="center" justifyContent="center" flexDirection="row">
-            <View height={0.5} backgroundColor={theme.border} flexGrow={1} marginHorizontal={16} />
+        <View style={{ height: 40, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+            <View style={{ height: 0.5, backgroundColor: theme.border, flexGrow: 1, marginHorizontal: 16 }} />
             <Text style={[TextStyles.Caption, { color: theme.foregroundTertiary }]}>
                 Not in this group
             </Text>
-            <View height={0.5} backgroundColor={theme.border} flexGrow={1} marginHorizontal={16} />
+            <View style={{ height: 0.5, backgroundColor: theme.border, flexGrow: 1, marginHorizontal: 16 }} />
         </View>
     );
 });

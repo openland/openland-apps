@@ -19,7 +19,7 @@ if (Platform.OS !== 'ios') {
 
 export const ReactionsPicker = React.memo((props: { reactionCounters: MessageReactionCounter[], onPress: (reaction: MessageReactionType) => void }) => {
     return (
-        <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={52} paddingHorizontal={10}>
+        <View style={{ flexGrow: 1, justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'row', height: 52, paddingHorizontal: 10 }}>
             {SortedReactions.map(reaction => {
                 const remove = !!props.reactionCounters.find(r => r.reaction === reaction && r.setByMe);
                 const isDisabled = reaction === MessageReactionType.DONATE && remove;

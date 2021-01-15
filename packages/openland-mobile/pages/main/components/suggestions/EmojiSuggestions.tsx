@@ -72,8 +72,8 @@ export const EmojiSuggestions = (props: EmojiRenderProps) => {
                         height={40}
                         underlayColor={theme.backgroundTertiaryTrans}
                     >
-                        <View style={{ flexGrow: 1, flexDirection: 'row' }} alignItems="center">
-                            <View paddingHorizontal={16} height={40} alignItems="center" justifyContent="center">
+                        <View style={{ flexGrow: 1, flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ paddingHorizontal: 16, height: 40, alignItems: 'center', justifyContent: 'center' }}>
                                 <SuggestionsItemName theme={theme} name={item.unicode + '    ' + item.shortname} />
                             </View>
                         </View>
@@ -99,13 +99,13 @@ export const EmojiSuggestionsRow = (props: EmojiRenderRowProps) => {
     if (items.length > 0) {
         return (
             <SuggestionsWrapper>
-                <View height={40} width={Dimensions.get('screen').width} overflow="hidden" flexDirection="row" justifyContent="center">
+                <View style={{ height: 40, width: Dimensions.get('screen').width, overflow: 'hidden', flexDirection: 'row', justifyContent: 'center' }}>
                     {items.slice(0, 5).map(item => (
                         <TouchableOpacity
                             key={'emoji-' + item[2]}
                             onPress={() => onEmojiPress(activeWord, item[2])}
                         >
-                            <View width={50} height={40} alignItems="center" justifyContent="center">
+                            <View style={{ width: 50, height: 40, alignItems: 'center', justifyContent: 'center' }}>
                                 <Text style={{ fontSize: 26, color: theme.foregroundPrimary }} allowFontScaling={false}>
                                     {item[2]}
                                 </Text>

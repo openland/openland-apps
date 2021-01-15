@@ -53,10 +53,12 @@ export const UserView = (props: UserViewProps) => {
             enabled={enabled}
         >
             <View
-                paddingLeft={16}
-                paddingRight={16}
-                alignSelf="center"
-                opacity={enabled === false ? 0.5 : 1}
+                style={{
+                    paddingLeft: 16,
+                    paddingRight: 16,
+                    alignSelf: 'center',
+                    opacity: enabled === false ? 0.5 : 1
+                }}
             >
                 <ZAvatar
                     size="medium"
@@ -67,16 +69,18 @@ export const UserView = (props: UserViewProps) => {
                 />
             </View>
             <View
-                alignSelf="center"
-                flexGrow={1}
-                flexBasis={0}
-                alignItems="flex-start"
-                justifyContent="center"
-                flexDirection="column"
-                opacity={enabled === false ? 0.5 : 1}
-                paddingRight={paddingRight || 16}
+                style={{
+                    alignSelf: 'center',
+                    flexGrow: 1,
+                    flexBasis: 0,
+                    alignItems: 'flex-start',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    opacity: enabled === false ? 0.5 : 1,
+                    paddingRight: paddingRight || 16
+                }}
             >
-                <View flexDirection="row">
+                <View style={{ flexDirection: 'row' }}>
                     {showCrown && (
                         <Image
                             source={require('assets/ic-crown-16.png')}
@@ -130,18 +134,18 @@ export const UserView = (props: UserViewProps) => {
                         {subtitle}
                     </Text>
                 ) : (
-                    <PresenceComponent
-                        isBot={user.isBot}
-                        uid={user.id}
-                        lastSeen={user.lastSeen}
-                        online={user.online}
-                        style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}
-                        onlineStyle={{ color: theme.accentPrimary }}
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                        allowFontScaling={false}
-                    />
-                )}
+                        <PresenceComponent
+                            isBot={user.isBot}
+                            uid={user.id}
+                            lastSeen={user.lastSeen}
+                            online={user.online}
+                            style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}
+                            onlineStyle={{ color: theme.accentPrimary }}
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            allowFontScaling={false}
+                        />
+                    )}
             </View>
         </ZListItemBase>
     );

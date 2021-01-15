@@ -31,10 +31,12 @@ const ContactsWasImportStub = React.memo(() => {
     const theme = React.useContext(ThemeContext);
     return (
         <ASSafeAreaView
-            flexGrow={1}
-            paddingHorizontal={32}
-            alignItems="center"
-            justifyContent="center"
+            style={{
+                flexGrow: 1,
+                paddingHorizontal: 32,
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}
         >
             <Image
                 source={require('assets/art-empty.png')}
@@ -59,7 +61,7 @@ const ContactsWasImportStub = React.memo(() => {
                     textAlign: 'center',
                 }}
             >
-                Invite your contacts to Openland or add people manually from their profiles, and
+                Invite your contacts to Openland or add people manually from their profiles,and
                 they will appear here
             </Text>
         </ASSafeAreaView>
@@ -102,10 +104,12 @@ const ContactsNoImportStub = React.memo((props: { onImportPress: Function }) => 
     const theme = React.useContext(ThemeContext);
     return (
         <ASSafeAreaView
-            flexGrow={1}
-            paddingHorizontal={32}
-            alignItems="center"
-            justifyContent="center"
+            style={{
+                flexGrow: 1,
+                paddingHorizontal: 32,
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}
         >
             <Image
                 source={require('assets/art-crowd.png')}
@@ -131,8 +135,8 @@ const ContactsNoImportStub = React.memo((props: { onImportPress: Function }) => 
                 }}
                 allowFontScaling={false}
             >
-                Import contacts from your device to find people you know on Openland
-            </Text>
+                Import contacts from your deviceto find people you know on Openland
+                            </Text>
             <ZButton
                 title="Import contacts"
                 onPress={() => handleImportPress(props.onImportPress)}

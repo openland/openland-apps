@@ -54,26 +54,26 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
     return (
         <View style={{ flexDirection: 'row', alignItems: 'flex-end', backgroundColor: Platform.OS === 'android' ? theme.backgroundPrimary : undefined, position: 'relative' }}>
             {props.attachesEnabled !== false && (
-                <View width={56} height={52} alignItems="center" justifyContent="center">
+                <View style={{ width: 56, height: 52, alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity onPress={props.onAttachPress}>
-                        <View width={44} height={44} alignItems="center" justifyContent="center">
+                        <View style={{ width: 44, height: 44, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={iconAttach} style={{ width: 24, height: 24, tintColor: theme.foregroundSecondary }} />
                         </View>
                     </TouchableOpacity>
                 </View>
             )}
             {props.attachesEnabled === false && (
-                <View width={16} />
+                <View style={{ width: 16 }} />
             )}
             {Platform.OS === 'ios' && (
                 <View
-                    flexGrow={1}
-                    flexBasis={0}
                     style={{
                         backgroundColor: theme.backgroundTertiaryTrans,
                         borderRadius: RadiusStyles.Large,
                         marginVertical: 8,
                         overflow: 'hidden',
+                        flexGrow: 1,
+                        flexBasis: 0
                     }}
                 >
                     <TextInput
@@ -112,29 +112,33 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
                 />
             )}
             {props.text.length === 0 && onStickerKeyboardButtonPress && (
-                <View style={{ position: 'absolute', right: 56 }} width={40} height={52} alignItems="center" justifyContent="center">
+                <View style={{ position: 'absolute', right: 56, width: 40, height: 52, alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity onPress={onStickerKeyboardButtonPress} activeOpacity={HighlightAlpha}>
-                        <View width={40} height={44} alignItems="center" justifyContent="center">
+                        <View style={{ width: 40, height: 44, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={stickerKeyboardShown ? iconKeyboard : iconSticker} style={{ width: 24, height: 24, tintColor: theme.foregroundSecondary }} />
                             {!stickerKeyboardShown && props.hasNewStickers && (
                                 <>
                                     <View
-                                        position="absolute"
-                                        top={8}
-                                        right={6}
-                                        backgroundColor={theme.backgroundTertiary}
-                                        width={10}
-                                        height={10}
-                                        borderRadius={100}
+                                        style={{
+                                            position: 'absolute',
+                                            top: 8,
+                                            right: 6,
+                                            backgroundColor: theme.backgroundTertiary,
+                                            width: 10,
+                                            height: 10,
+                                            borderRadius: 100
+                                        }}
                                     />
                                     <View
-                                        position="absolute"
-                                        top={10}
-                                        right={8}
-                                        backgroundColor={theme.accentNegative}
-                                        width={6}
-                                        height={6}
-                                        borderRadius={100}
+                                        style={{
+                                            position: 'absolute',
+                                            top: 10,
+                                            right: 8,
+                                            backgroundColor: theme.accentNegative,
+                                            width: 6,
+                                            height: 6,
+                                            borderRadius: 100
+                                        }}
                                     />
                                 </>
                             )}
@@ -143,16 +147,16 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
                 </View>
             )}
             {!props.showLoader && (
-                <View width={56} height={52} alignItems="center" justifyContent="center">
+                <View style={{ width: 56, height: 52, alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity disabled={!props.canSubmit} onPress={props.onSubmitPress}>
-                        <View width={44} height={44} alignItems="center" justifyContent="center">
+                        <View style={{ width: 44, height: 44, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={props.canSubmit ? iconFilled : icon} style={{ width: 24, height: 24, tintColor: props.canSubmit && props.enabled !== false ? theme.accentPrimary : theme.foregroundSecondary }} />
                         </View>
                     </TouchableOpacity>
                 </View>
             )}
             {props.showLoader && (
-                <View width={56} height={52} alignItems="center" justifyContent="center">
+                <View style={{ width: 56, height: 52, alignItems: 'center', justifyContent: 'center' }}>
                     <LoaderSpinner />
                 </View>
             )}

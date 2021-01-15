@@ -86,7 +86,9 @@ const ContactsSearchInner = (props: ContactsSearchProps) => {
             onEndReachedThreshold={1}
             refreshing={loading}
             onEndReached={handleLoadMore}
-            backgroundColor={theme.backgroundPrimary}
+            style={{
+                backgroundColor: theme.backgroundPrimary
+            }}
             scrollIndicatorInsets={{
                 top: area.top - DeviceConfig.statusBarHeight,
                 bottom: area.bottom - SDevice.safeArea.bottom,

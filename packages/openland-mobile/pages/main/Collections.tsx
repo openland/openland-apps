@@ -41,7 +41,7 @@ const Collection = (props: CollectionProps) => {
     React.useEffect(() => {
         return DownloadManagerInstance.watch(image.uuid, layoutCollection(), state => {
             if (state.path) {
-                let newPath = Platform.select({ ios: state.path, android: 'file://' + state.path });
+                let newPath = Platform.select({ ios: state.path, android: 'file://' + state.path, default: 'file://' + state.path });
                 setPath(newPath);
             }
         });
@@ -49,9 +49,9 @@ const Collection = (props: CollectionProps) => {
     return (
         <Animated.View style={{ width: '100%', height: 264, padding: 16, alignSelf: 'center', ...styles }}>
             <TouchableWithoutFeedback delayPressIn={delayPressIn} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut}>
-                <View flexDirection="column" borderRadius={RadiusStyles.Large} paddingTop={8} paddingBottom={6}>
+                <View style={{ flexDirection: 'column', borderRadius: RadiusStyles.Large, paddingTop: 8, paddingBottom: 6 }}>
                     <DiscoverCover width="100%" height={192} path={path} marginBottom={16} />
-                    <View flexGrow={1} flexShrink={1} flexDirection="row" alignItems="center">
+                    <View style={{ flexGrow: 1, flexShrink: 1, flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, flexGrow: 1, flexShrink: 1 }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{props.item.title}</Text>
                         <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
                             {plural(props.item.chatsCount, ['group', 'groups'])}

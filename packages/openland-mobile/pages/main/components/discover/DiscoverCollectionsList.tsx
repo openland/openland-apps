@@ -33,7 +33,7 @@ const DiscoverCollectionsItem = (props: DiscoverCollectionsItem) => {
     React.useEffect(() => {
         return DownloadManagerInstance.watch(image.uuid, layoutCollection(), state => {
             if (state.path) {
-                let newPath = Platform.select({ ios: state.path, android: 'file://' + state.path });
+                let newPath = Platform.select({ ios: state.path, default: 'file://' + state.path });
                 setPath(newPath);
             }
         });
@@ -43,9 +43,9 @@ const DiscoverCollectionsItem = (props: DiscoverCollectionsItem) => {
     return (
         <Animated.View style={{ width: 167, height: 162, marginRight: 8, ...styles }}>
             <TouchableWithoutFeedback delayPressIn={delayPressIn} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut}>
-                <View flexDirection="column" borderRadius={RadiusStyles.Large} paddingVertical={8}>
+                <View style={{ flexDirection: 'column', borderRadius: RadiusStyles.Large, paddingVertical: 8 }}>
                     <DiscoverCover width={167} height={94} path={path} marginBottom={8} />
-                    <View flexGrow={1} flexShrink={1} flexDirection="column">
+                    <View style={{ flexGrow: 1, flexShrink: 1, flexDirection: 'column' }}>
                         <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{props.item.title}</Text>
                         <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
                             {plural(props.item.chatsCount, ['group', 'groups'])}
@@ -74,9 +74,9 @@ export const DiscoverCollectionsList = () => {
                 })
             } : undefined}
         >
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} paddingLeft={16} pagingEnabled={true} decelerationRate="fast" snapToInterval={175}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{ paddingLeft: 16 }} pagingEnabled={true} decelerationRate="fast" snapToInterval={175}>
                 {items.map((item, i) => <DiscoverCollectionsItem key={i} item={item} />)}
-                <View width={24} />
+                <View style={{ width: 24 }} />
             </ScrollView>
         </ZListGroup>
     );

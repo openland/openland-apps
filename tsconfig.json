@@ -21,6 +21,7 @@
         "outDir": "lib/",
         "baseUrl": "packages",
         "resolveJsonModule": true,
+        "skipLibCheck": true,
         "paths": {
             "openland-api": ["openland-api"],
             "openland-web": ["openland-web"],

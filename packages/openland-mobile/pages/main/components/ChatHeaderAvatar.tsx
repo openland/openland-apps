@@ -40,7 +40,7 @@ const ChatHeaderAvatarContent = React.memo((props: { conversationId: string, rou
 
     return (
         <TouchableOpacity disabled={!path.path} onPress={() => props.router.push(path.path!!, path.pathArgs)} style={{ marginLeft: 16, marginRight: 12 }}>
-            <View height={Platform.OS === 'android' ? 56 : 44} alignItems="center" justifyContent="center">
+            <View style={{ height: Platform.OS === 'android' ? 56 : 44, alignItems: 'center', justifyContent: 'center' }}>
                 <ZAvatar
                     photo={privateRoom ? privateRoom.user.photo : sharedRoom!.photo}
                     size="small"

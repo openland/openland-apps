@@ -66,7 +66,7 @@ const RateApp = (props: { ctx: ModalProps }) => {
                     alignSelf: 'center'
                 }}
             />
-            <View paddingHorizontal={32} marginTop={16}>
+            <View style={{ paddingHorizontal: 32, marginTop: 16 }}>
                 <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, textAlign: 'center' }}>
                     Enjoying Openland?
                 </Text>
@@ -74,8 +74,8 @@ const RateApp = (props: { ctx: ModalProps }) => {
                     Rate the app on {Platform.select({ ios: 'App Store', android: 'Google Play' })}
                 </Text>
             </View>
-            <View paddingHorizontal={16} marginTop={32} flexDirection="row">
-                <View flex={1}>
+            <View style={{ paddingHorizontal: 16, marginTop: 32, flexDirection: 'row' }}>
+                <View style={{ flex: 1 }}>
                     <ZButton
                         title="Maybe later"
                         style="secondary"
@@ -83,7 +83,7 @@ const RateApp = (props: { ctx: ModalProps }) => {
                         onPress={() => props.ctx.hide()}
                     />
                 </View>
-                <View flex={1} marginLeft={16}>
+                <View style={{ flex: 1, marginLeft: 16 }}>
                     <ZButton
                         title="Rate now"
                         style="primary"
