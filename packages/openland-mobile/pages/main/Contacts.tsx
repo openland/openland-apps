@@ -136,7 +136,7 @@ const ContactsNoImportStub = React.memo((props: { onImportPress: Function }) => 
                 allowFontScaling={false}
             >
                 Import contacts from your deviceto find people you know on Openland
-                            </Text>
+            </Text>
             <ZButton
                 title="Import contacts"
                 onPress={() => handleImportPress(props.onImportPress)}

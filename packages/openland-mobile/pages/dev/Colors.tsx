@@ -7,7 +7,7 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { isArray } from 'util';
 import { ThemeLight } from 'openland-y-utils/themes/light';
 import { ThemeDark } from 'openland-y-utils/themes/dark';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+// import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 interface ColorRow {
     key: string;
@@ -34,7 +34,7 @@ const getColorRowFromObject = (key: string, lightObject: any, darkObject: any): 
 };
 
 const ColorsComponent = (props: PageProps) => {
-    const theme = React.useContext(ThemeContext);
+    // const theme = React.useContext(ThemeContext);
     const light = ThemeLight;
     const dark = ThemeDark;
     const rows: ColorRow[] = [];

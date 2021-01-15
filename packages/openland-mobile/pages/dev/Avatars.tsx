@@ -4,7 +4,7 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
 // import { ZAvatar, avatarSizes, ZAvatarSize } from 'openland-mobile/components/ZAvatar';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+// import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 // const mock1 = {
 //     src: 'https://ucarecdn.com/ce2508ab-8048-4e28-a1aa-8c2d64fdf3c7/-/crop/708x708/89,0/-/format/jpeg/-/scale_crop/80x80/center/-/quality/lighter/-/progressive/yes/',
@@ -18,7 +18,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 // };
 
 export const AvatarsComponent = (props: PageProps) => {
-    const theme = React.useContext(ThemeContext);
+    // const theme = React.useContext(ThemeContext);
     const variants: JSX.Element[] = [];
 
     // Object.keys(avatarSizes).forEach((size: ZAvatarSize) => {
