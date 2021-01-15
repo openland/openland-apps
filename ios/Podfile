@@ -10,7 +10,7 @@ target 'openland' do
   pod 'React-RCTPushNotification', :path => '../node_modules/react-native/Libraries/PushNotificationIOS'
     
   # pod 'Texture', :git => 'https://github.com/openland/Texture.git', :branch => '2.7-fontfix'
-  pod 'Texture', '~> 3.0.0'
+  pod 'Texture', :git => 'https://github.com/TextureGroup/Texture.git', :commit => '823ac0a6f39296c2745032290f6734d1897e9ceb'
   pod 'SwiftyJSON', '~> 4.0'
   pod 'Starscream', '~> 3.0.2'
   pod 'ReachabilitySwift'

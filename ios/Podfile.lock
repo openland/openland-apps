@@ -459,7 +459,7 @@ DEPENDENCIES:
   - Starscream (~> 3.0.2)
   - Stripe
   - SwiftyJSON (~> 4.0)
-  - Texture (~> 3.0.0)
+  - Texture (from `https://github.com/TextureGroup/Texture.git`, commit `823ac0a6f39296c2745032290f6734d1897e9ceb`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -476,7 +476,6 @@ SPEC REPOS:
     - Starscream
     - Stripe
     - SwiftyJSON
-    - Texture
     - TOCropViewController
 
 EXTERNAL SOURCES:
@@ -594,8 +593,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-rate"
   RNShare:
     :path: "../node_modules/react-native-share"
+  Texture:
+    :commit: 823ac0a6f39296c2745032290f6734d1897e9ceb
+    :git: https://github.com/TextureGroup/Texture.git
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
+
+CHECKOUT OPTIONS:
+  Texture:
+    :commit: 823ac0a6f39296c2745032290f6734d1897e9ceb
+    :git: https://github.com/TextureGroup/Texture.git
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
@@ -667,10 +674,10 @@ SPEC CHECKSUMS:
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   Stripe: 37f742a4815882db4454188664a3aa61793a12b1
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
-  Texture: 2f109e937850d94d1d07232041c9c7313ccddb81
+  Texture: 41ce7d2fdff193a45cc8cfa3c254115cf776068a
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 328471dc60975938c2cdc676cf4291eef769d3c7
+PODFILE CHECKSUM: 4e631d7ec546bf3fbd36e5a6e2caeb6f9a8246ac
 
 COCOAPODS: 1.10.1
