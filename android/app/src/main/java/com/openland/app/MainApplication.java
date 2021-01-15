@@ -77,7 +77,6 @@ public class MainApplication extends Application implements ShareApplication, Re
                     new RNLocationPackage(),
                     new RNVersionNumberPackage(),
                     new CameraRollPackage(),
-                    new RNGooglegPackage(),
                     new ReactVideoPackage(),
                     new RCTPdfView(),
                     new BackgroundTimerPackage(),
