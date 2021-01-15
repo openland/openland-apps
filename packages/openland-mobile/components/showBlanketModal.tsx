@@ -147,7 +147,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
         }
 
         return (
-            <View width={420} alignSelf="center">
+            <View style={{ width: 420, alignSelf: 'center' }}>
                 {this.renderContents()}
             </View>
         );
@@ -155,9 +155,11 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
 
     renderContents = () => (
         <View
-            backgroundColor={this.props.theme.backgroundSecondary}
-            borderRadius={RadiusStyles.Large}
-            marginHorizontal={24}
+            style={{
+                backgroundColor: this.props.theme.backgroundSecondary,
+                borderRadius: RadiusStyles.Large,
+                marginHorizontal: 24
+            }}
             onLayout={this.onLayout}
         >
             {this.contents}
@@ -168,7 +170,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
         const { theme, withoutWrapper, overlayStyle, ignoreSafeArea } = this.props;
 
         return (
-            <View width="100%" height="100%" flexDirection="column" alignItems="stretch">
+            <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>
                 <TouchableWithoutFeedback
                     onPress={this.props.cancelable !== false ? this.hideCancel : undefined}
                 >
@@ -211,16 +213,18 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
                     pointerEvents="box-none"
                 >
                     <View
-                        flexGrow={1}
-                        flexBasis={0}
-                        minHeight={0}
-                        minWidth={0}
-                        alignItems="stretch"
-                        alignSelf="stretch"
-                        flexDirection="column"
-                        justifyContent="center"
-                        marginBottom={!ignoreSafeArea ? this.props.safe.bottom : undefined}
-                        marginTop={!ignoreSafeArea ? this.props.safe.top + 48 : undefined}
+                        style={{
+                            flexGrow: 1,
+                            flexBasis: 0,
+                            minHeight: 0,
+                            minWidth: 0,
+                            alignItems: 'stretch',
+                            alignSelf: 'stretch',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            marginBottom: !ignoreSafeArea ? this.props.safe.bottom : undefined,
+                            marginTop: !ignoreSafeArea ? this.props.safe.top + 48 : undefined
+                        }}
                         pointerEvents="box-none"
                     >
                         {!withoutWrapper ? (

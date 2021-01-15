@@ -64,7 +64,7 @@ const ZAvatarInner = React.memo((props: ZAvatarProps) => {
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
                 >
-                    <View alignItems="center" justifyContent="center" width={size} height={size}>
+                    <View style={{ alignItems: 'center', justifyContent: 'center', width: size, height: size }}>
                         <Image source={require('assets/ic-bookmark-filled-16.png')} style={{ tintColor: theme.foregroundContrast, width: iconSize, height: iconSize }} />
                     </View>
                 </ZLinearGradient>
@@ -80,8 +80,8 @@ const ZAvatarInner = React.memo((props: ZAvatarProps) => {
                     <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: size / 2, borderColor: theme.border, borderWidth: 0.5 }} />
                 </View>
                 {props.online && (
-                    <View position="absolute" width={dotSize} height={dotSize} bottom={dotPosition} right={dotPosition} borderRadius={dotSize / 2} padding={dotBorderWidth} backgroundColor={theme.backgroundPrimary}>
-                        <View flexGrow={1} borderRadius={(dotSize - (dotBorderWidth * 2)) / 2} backgroundColor={theme.accentPrimary} />
+                    <View style={{ position: 'absolute', width: dotSize, height: dotSize, bottom: dotPosition, right: dotPosition, borderRadius: dotSize / 2, padding: dotBorderWidth, backgroundColor: theme.backgroundPrimary }}>
+                        <View style={{ flexGrow: 1, borderRadius: (dotSize - (dotBorderWidth * 2)) / 2, backgroundColor: theme.accentPrimary }} />
                     </View>
                 )}
             </View>
@@ -104,13 +104,13 @@ const ZAvatarInner = React.memo((props: ZAvatarProps) => {
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
             >
-                <View alignItems="center" justifyContent="center" width={size} height={size}>
+                <View style={{ alignItems: 'center', justifyContent: 'center', width: size, height: size }}>
                     <Text style={[styles.placeholderText, { fontSize: textSize }]} allowFontScaling={false}>{placeholderText}</Text>
                 </View>
             </ZLinearGradient>
             {props.online && (
-                <View position="absolute" width={dotSize} height={dotSize} bottom={dotPosition} right={dotPosition} borderRadius={dotSize / 2} padding={dotBorderWidth} backgroundColor={theme.backgroundPrimary}>
-                    <View flexGrow={1} borderRadius={(dotSize - (dotBorderWidth * 2)) / 2} backgroundColor={theme.accentPrimary} />
+                <View style={{ position: 'absolute', width: dotSize, height: dotSize, bottom: dotPosition, right: dotPosition, borderRadius: dotSize / 2, padding: dotBorderWidth, backgroundColor: theme.backgroundPrimary }}>
+                    <View style={{ flexGrow: 1, borderRadius: (dotSize - (dotBorderWidth * 2)) / 2, backgroundColor: theme.accentPrimary }} />
                 </View>
             )}
         </View>

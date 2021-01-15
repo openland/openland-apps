@@ -87,7 +87,7 @@ export const ZListHero = React.memo<ZListHeroProps>((props) => {
             <View style={styles.avatar}>
                 <XPAvatarWithPreview size="x-large" photo={photo} id={id} title={title} />
                 {score && (
-                    <View position="absolute" bottom={-7} left={0} right={0} alignItems="center">
+                    <View style={{ position: 'absolute', bottom: -7, left: 0, right: 0, alignItems: 'center' }}>
                         <View style={{ borderWidth: 3, borderColor: theme.backgroundPrimary, borderRadius: RadiusStyles.Large }}>
                             <ZReach value={score.value} onPress={score.onPress} />
                         </View>
@@ -95,8 +95,8 @@ export const ZListHero = React.memo<ZListHeroProps>((props) => {
                 )}
             </View>
             <View style={styles.body}>
-                <View style={styles.header} justifyContent={!action ? 'center' : undefined}>
-                    <View flexDirection="row">
+                <View style={[styles.header, { justifyContent: !action ? 'center' : undefined }]}>
+                    <View style={{ flexDirection: 'row' }}>
                         {titleIcon && <Image source={titleIcon} style={{ width: 20, height: 20, marginRight: 4, alignSelf: 'center', tintColor: colorTitle }} />}
                         {titleIconElement}
                         <Text style={[styles.title, { color: colorTitle }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>

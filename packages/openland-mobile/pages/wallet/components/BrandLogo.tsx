@@ -22,9 +22,9 @@ export const BrandLogo = (props: BrandLogoProps) => {
                                         require('assets/wallet/ic-unknown-40.png');
 
     return (
-        <View width={40} height={28} borderRadius={4} backgroundColor={theme.backgroundPrimary} overflow="hidden">
+        <View style={{ width: 40, height: 28, borderRadius: 4, backgroundColor: theme.backgroundPrimary, overflow: 'hidden' }}>
             <Image source={logo} style={{ width: 40, height: 28 }} />
-            <View position="absolute" top={0} right={0} bottom={0} left={0} borderWidth={1} borderColor={theme.border} borderRadius={4} />
+            <View style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, borderWidth: 1, borderColor: theme.border, borderRadius: 4 }} />
         </View>
     );
 };

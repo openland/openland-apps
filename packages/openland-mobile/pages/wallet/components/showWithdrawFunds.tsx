@@ -10,7 +10,7 @@ export const showWithdrawFunds = async (router: SRouter) => {
     builder.message('To request funds withdrawal ($50 minimum) message Openland support for instructions');
 
     builder.view(
-        <View marginBottom={16} overflow="hidden">
+        <View style={{ marginBottom: 16, overflow: 'hidden' }}>
             <Image
                 source={require('assets/art-balance.png')}
                 style={{
@@ -24,6 +24,6 @@ export const showWithdrawFunds = async (router: SRouter) => {
     );
 
     builder.button('Cancel', 'cancel');
-    builder.button('Continue', 'default', () => router.push('Conversation', {id: 'LOaDEWDj9zsVv999DDpJiEj05K'}));
+    builder.button('Continue', 'default', () => router.push('Conversation', { id: 'LOaDEWDj9zsVv999DDpJiEj05K' }));
     builder.show();
 };

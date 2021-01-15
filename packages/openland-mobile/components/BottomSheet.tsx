@@ -29,13 +29,13 @@ export function showBottomSheet(config: BottomSheetConfig) {
         return (
             <ThemeContext.Provider value={theme}>
                 {!!config.title && (
-                    <View paddingTop={16} paddingLeft={16} paddingRight={16} paddingBottom={10} alignItems={config.titleAlign ? undefined : 'center'}>
+                    <View style={{ paddingTop: 16, paddingLeft: 16, paddingRight: 16, paddingBottom: 10, alignItems: config.titleAlign ? undefined : 'center' }}>
                         <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
                             {config.title}
                         </Text>
                     </View>
                 )}
-                {!config.title && !config.containerStyle && <View marginTop={16} />}
+                {!config.title && !config.containerStyle && <View style={{ marginTop: 16 }} />}
                 <GQLClientContext.Provider value={getClient()}>
                     <QueryCacheProvider>
                         <React.Suspense fallback={<ZLoader />}>
@@ -44,7 +44,7 @@ export function showBottomSheet(config: BottomSheetConfig) {
                     </QueryCacheProvider>
                 </GQLClientContext.Provider>
                 {config.cancelable ? (
-                    <View padding={16} >
+                    <View style={{ padding: 16 }} >
                         <ZButton
                             title={config.buttonTitle ? config.buttonTitle : 'Cancel'}
                             size="large"
@@ -53,7 +53,7 @@ export function showBottomSheet(config: BottomSheetConfig) {
                         />
                     </View>
                 ) : (
-                        <View height={16} />
+                        <View style={{ height: 16 }} />
                     )
                 }
             </ThemeContext.Provider >

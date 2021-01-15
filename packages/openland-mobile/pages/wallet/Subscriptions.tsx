@@ -53,19 +53,19 @@ const SubscriptionView = React.memo((props: SubscriptionConverted & { router?: S
                             }
                         }}
                     >
-                        <View alignItems="center">
+                        <View style={{ alignItems: 'center' }}>
                             <ZAvatar
                                 photo={props.photo}
                                 title={props.title}
                                 id={props.id}
                                 size='xx-large'
                             />
-                            <View marginTop={16}>
+                            <View style={{ marginTop: 16 }}>
                                 <Text allowFontScaling={false} style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>
                                     {props.title}
                                 </Text>
                             </View>
-                            <View marginTop={4}>
+                            <View style={{ marginTop: 4 }}>
                                 <Text
                                     allowFontScaling={false}
                                     style={{
@@ -83,13 +83,15 @@ const SubscriptionView = React.memo((props: SubscriptionConverted & { router?: S
                 </WrapComponent>
                 {cancelable && (
                     <View
-                        paddingTop={32}
-                        paddingBottom={16}
-                        paddingLeft={32}
-                        paddingRight={32}
-                        flexDirection="column"
-                        justifyContent="center"
-                        alignItems="center"
+                        style={{
+                            paddingTop: 32,
+                            paddingBottom: 16,
+                            paddingLeft: 32,
+                            paddingRight: 32,
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
                     >
                         <ZButton
                             title="Cancel subscription"
@@ -101,7 +103,7 @@ const SubscriptionView = React.memo((props: SubscriptionConverted & { router?: S
                                 ctx.hide();
                             }}
                         />
-                        <View marginTop={16}>
+                        <View style={{ marginTop: 16 }}>
                             <Text allowFontScaling={false} style={{ ...TextStyles.Caption, color: theme.foregroundSecondary, textAlign: 'center' }}>
                                 If you cancel now, you can still access {"\n"} the group until {displaySubscriptionDate(props.expires)}
                             </Text>
@@ -157,18 +159,20 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
     ).length > 0;
 
     return (
-        <View flexGrow={1}>
+        <View style={{ flexGrow: 1 }}>
 
             <SHeader title="Subscriptions" />
 
             {activeSubscriptions.length === 0 && expiredSubscriptions.length === 0 && (
-                <ASSafeAreaView flexGrow={1} alignItems="center" justifyContent="center" flexDirection="column">
+                <ASSafeAreaView style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
                     <View
-                        paddingLeft={32}
-                        paddingRight={32}
-                        alignItems="center"
-                        justifyContent="center"
-                        flexDirection="column"
+                        style={{
+                            paddingLeft: 32,
+                            paddingRight: 32,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexDirection: 'column'
+                        }}
                     >
                         <Image
                             source={require('assets/art-empty.png')}
@@ -177,17 +181,17 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
                                 height: 150,
                             }}
                         />
-                        <View marginTop={4}>
+                        <View style={{ marginTop: 4 }}>
                             <Text allowFontScaling={false} style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>
                                 No subscriptions yet
                             </Text>
                         </View>
-                        <View marginTop={4}>
+                        <View style={{ marginTop: 4 }}>
                             <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center' }}>
                                 Join any premium groups, and they will appear here
                             </Text>
                         </View>
-                        <View marginTop={16}>
+                        <View style={{ marginTop: 16 }}>
                             <ZButton title='Discover groups' path="Explore" />
                         </View>
                     </View>
@@ -199,13 +203,15 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
                     {haveBillingProblems && (
                         <LinearGradient
                             colors={[theme.gradient0to100Start, theme.gradient0to100End]}
-                            paddingTop={16}
-                            paddingLeft={32}
-                            paddingRight={32}
-                            paddingBottom={32}
-                            alignItems="center"
-                            justifyContent="center"
-                            flexDirection="column"
+                            style={{
+                                paddingTop: 16,
+                                paddingLeft: 32,
+                                paddingRight: 32,
+                                paddingBottom: 32,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexDirection: 'column'
+                            }}
                         >
                             <Image
                                 source={require('assets/art-error.png')}
@@ -214,17 +220,17 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
                                     height: 150,
                                 }}
                             />
-                            <View marginTop={4}>
+                            <View style={{ marginTop: 4 }}>
                                 <Text allowFontScaling={false} style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>
                                     Billing problem
                             </Text>
                             </View>
-                            <View marginTop={4}>
+                            <View style={{ marginTop: 4 }}>
                                 <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center' }}>
                                     A payment for some of your recent purchases or subscriptions has recently failed. Please update your payment method to keep your paid group memberships.
                             </Text>
                             </View>
-                            <View marginTop={16}>
+                            <View style={{ marginTop: 16 }}>
                                 <ZButton title='Update payment method' path="Wallet" />
                             </View>
                         </LinearGradient>

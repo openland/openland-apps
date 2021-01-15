@@ -89,14 +89,16 @@ export const TextContent = (props: TextContentProps) => {
                         {type === 'code_block' && (
                             <View
                                 key={type + '-' + i}
-                                backgroundColor={theme.incomingBackgroundSecondary}
-                                marginTop={i === 0 && inReply ? 4 : undefined}
-                                marginLeft={codeMarginLeft}
-                                marginRight={codeMarginRight}
-                                marginBottom={(!(content[i + 1] && content[i + 1].type === 'padded')) ? 8 : undefined}
-                                paddingLeft={codePaddingLeft}
-                                paddingRight={codePaddingRight}
-                                paddingVertical={6}
+                                style={{
+                                    backgroundColor: theme.incomingBackgroundSecondary,
+                                    marginTop: i === 0 && inReply ? 4 : undefined,
+                                    marginLeft: codeMarginLeft,
+                                    marginRight: codeMarginRight,
+                                    marginBottom: (!(content[i + 1] && content[i + 1].type === 'padded')) ? 8 : undefined,
+                                    paddingLeft: codePaddingLeft,
+                                    paddingRight: codePaddingRight,
+                                    paddingVertical: 6
+                                }}
                             >
                                 <TextWrapper
                                     style={{

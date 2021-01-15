@@ -24,7 +24,7 @@ export interface ChatSearchControllerProps {
 export class ChatSearchControllerComponent extends React.PureComponent<
     ChatSearchControllerProps & { theme: ThemeGlobal },
     { search: boolean; searchMounted: boolean; query: string }
-> {
+    > {
     private containerShadowView = new SAnimatedShadowView(UUID());
     private searchShadowView = new SAnimatedShadowView(UUID());
     private searchContext: SearchContext;
@@ -93,7 +93,7 @@ export class ChatSearchControllerComponent extends React.PureComponent<
                         {this.state.searchMounted && (
                             <HeaderContextNone>
                                 <ASSafeAreaProvider top={-SDevice.navigationBarHeight}>
-                                    <View width="100%" height="100%">
+                                    <View style={{ width: '100%', height: '100%' }}>
                                         <React.Suspense fallback={SNativeConfig.loader}>
                                             {this.props.searchRender({ query: this.state.query })}
                                         </React.Suspense>
@@ -104,35 +104,35 @@ export class ChatSearchControllerComponent extends React.PureComponent<
                     </SAnimatedView>
                 </>
             ) : (
-                <View style={{ flexGrow: 1, flexBasis: 0, width: '100%' }}>
-                    {this.props.children}
-                    {this.state.searchMounted && (
-                        <SAnimatedView
-                            name={this.searchShadowView.name}
-                            style={{
-                                position: 'absolute',
-                                top: -56,
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                backgroundColor: !this.state.query
-                                    ? this.props.theme.overlayMedium
-                                    : this.props.theme.backgroundPrimary,
-                            }}
-                        >
-                            <HeaderContextNone>
-                                <ASSafeAreaProvider top={-56}>
-                                    <View width="100%" height="100%">
-                                        <React.Suspense fallback={SNativeConfig.loader}>
-                                            {this.props.searchRender({ query: this.state.query })}
-                                        </React.Suspense>
-                                    </View>
-                                </ASSafeAreaProvider>
-                            </HeaderContextNone>
-                        </SAnimatedView>
-                    )}
-                </View>
-            );
+                    <View style={{ flexGrow: 1, flexBasis: 0, width: '100%' }}>
+                        {this.props.children}
+                        {this.state.searchMounted && (
+                            <SAnimatedView
+                                name={this.searchShadowView.name}
+                                style={{
+                                    position: 'absolute',
+                                    top: -56,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+                                    backgroundColor: !this.state.query
+                                        ? this.props.theme.overlayMedium
+                                        : this.props.theme.backgroundPrimary,
+                                }}
+                            >
+                                <HeaderContextNone>
+                                    <ASSafeAreaProvider top={-56}>
+                                        <View style={{ width: '100%', height: '100%' }}>
+                                            <React.Suspense fallback={SNativeConfig.loader}>
+                                                {this.props.searchRender({ query: this.state.query })}
+                                            </React.Suspense>
+                                        </View>
+                                    </ASSafeAreaProvider>
+                                </HeaderContextNone>
+                            </SAnimatedView>
+                        )}
+                    </View>
+                );
 
         return (
             <>

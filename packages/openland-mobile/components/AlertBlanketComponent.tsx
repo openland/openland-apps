@@ -63,10 +63,12 @@ export const AlertBlanketComponent = React.memo((props: { builder: AlertBlanketB
     }, []);
     return (
         <View
-            flexDirection="column"
-            justifyContent="center"
-            backgroundColor={state === 'error' ? theme.accentNegative : theme.backgroundSecondary}
-            borderRadius={RadiusStyles.Large}
+            style={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+                backgroundColor: state === 'error' ? theme.accentNegative : theme.backgroundSecondary,
+                borderRadius: RadiusStyles.Large
+            }}
         >
             <SAnimated.View
                 name={key + '--ctns'}
@@ -79,7 +81,7 @@ export const AlertBlanketComponent = React.memo((props: { builder: AlertBlanketB
                 {props.builder._title && <Text style={{ ...TextStyles.Title2, marginBottom: props.builder._message ? 4 : 16, color: theme.foregroundPrimary }} allowFontScaling={false}>{props.builder._title}</Text>}
                 {props.builder._message && <Text style={{ ...TextStyles.Body, marginBottom: 16, color: theme.foregroundPrimary }} allowFontScaling={false}>{props.builder._message}</Text>}
                 {props.builder._view}
-                <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
+                <View style={{ flexDirection: 'row', alignItems: 'flex-end', alignSelf: 'flex-end' }}>
                     {props.builder._cancelAction && !props.builder._actions.find(a => a.name.toLowerCase() === 'cancel' || a.style?.toLowerCase() === 'cancel') && (
                         <>
                             <View style={{ width: 8 }} />
@@ -122,13 +124,13 @@ export const AlertBlanketComponent = React.memo((props: { builder: AlertBlanketB
                     ))}
                 </View>
             </SAnimated.View>
-            <View position="absolute" alignSelf="center" pointerEvents="none">
+            <View style={{ position: 'absolute', alignSelf: 'center' }} pointerEvents="none">
                 <SAnimated.View
                     name={key + '--overlay'}
                     style={{ opacity: 0 }}
                 >
-                    <View borderRadius={40} width={40} height={40} backgroundColor="white" justifyContent="center" alignItems="center">
-                        <View borderRadius={36} width={36} height={36} backgroundColor="#69d06d" justifyContent="center" alignItems="center">
+                    <View style={{ borderRadius: 40, width: 40, height: 40, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={{ borderRadius: 36, width: 36, height: 36, backgroundColor: '#69d06d', justifyContent: 'center', alignItems: 'center' }}>
                             <Image source={require('assets/ic-checkmark.png')} />
                         </View>
                     </View>

@@ -38,13 +38,13 @@ export const ZListGroup = React.memo<ZListGroupProps>((props) => {
     }
 
     return (
-        <View paddingBottom={useSpacer ? 8 : undefined}>
-            {useSpacer && <View backgroundColor={theme.backgroundTertiary} height={16} marginBottom={4} />}
+        <View style={{ paddingBottom: useSpacer ? 8 : undefined }}>
+            {useSpacer && <View style={{ backgroundColor: theme.backgroundTertiary, height: 16, marginBottom: 4 }} />}
             {header !== null && header !== undefined &&
                 <ZListHeader text={header} counter={counter} marginTop={useSpacer ? 0 : headerMarginTop} action={actionRight} />
             }
-            {header === null && <View height={16} />}
-            <View alignItems={alignItems}>
+            {header === null && <View style={{ height: 16 }} />}
+            <View style={{ alignItems }}>
                 {components}
             </View>
             {footer !== undefined && (

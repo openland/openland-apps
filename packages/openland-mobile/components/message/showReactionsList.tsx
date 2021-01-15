@@ -70,7 +70,7 @@ const ReactionsList = (props: ReactionsListProps) => {
 
     if (!message || loading) {
         return (
-            <View height={40}>
+            <View style={{ height: 40 }}>
                 <ZLoader />
             </View>
         );
@@ -99,24 +99,26 @@ const ReactionsList = (props: ReactionsListProps) => {
     });
 
     return (
-        <View flexGrow={1}>
+        <View style={{ flexGrow: 1 }}>
             {Object.keys(reactionList).map((r, i, arr) => {
                 const users = reactionList[r];
 
                 return (
-                    <View key={'reaction-' + i} paddingBottom={i === arr.length - 1 ? 0 : 16}>
+                    <View key={'reaction-' + i} style={{ paddingBottom: i === arr.length - 1 ? 0 : 16 }}>
                         <View
-                            height={48}
-                            paddingHorizontal={16}
-                            alignItems="center"
-                            flexDirection="row"
+                            style={{
+                                height: 48,
+                                paddingHorizontal: 16,
+                                alignItems: 'center',
+                                flexDirection: 'row'
+                            }}
                         >
                             <Image
                                 source={reactionsImagesMap[r]}
                                 style={{ width: 24, height: 24 }}
                             />
 
-                            <View flexGrow={1} flexShrink={1} paddingLeft={16}>
+                            <View style={{ flexGrow: 1, flexShrink: 1, paddingLeft: 16 }}>
                                 <Text
                                     style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}
                                     allowFontScaling={false}

@@ -41,27 +41,27 @@ export const CardView = (props: CardViewProps) => {
         const builder = new ActionSheetBuilder();
 
         builder.view(ctx => (
-            <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} paddingTop={16} paddingBottom={16} alignItems="center" marginBottom={16}>
-                <View width={263} height={166} backgroundColor={theme.backgroundTertiaryTrans} borderRadius={RadiusStyles.Medium} paddingTop={20} paddingHorizontal={24}>
+            <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} style={{ paddingTop: 16, paddingBottom: 16, alignItems: 'center', marginBottom: 16 }}>
+                <View style={{ width: 263, height: 166, backgroundColor: theme.backgroundTertiaryTrans, borderRadius: RadiusStyles.Medium, paddingTop: 20, paddingHorizontal: 24 }}>
                     <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
                         {getPaymentMethodName(brand)}
                     </Text>
 
                     {isDefault && (
-                        <View position="absolute" top={50} left={24}>
+                        <View style={{ position: 'absolute', top: 50, left: 24 }}>
                             <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} allowFontScaling={false}>
                                 Primary
                             </Text>
                         </View>
                     )}
 
-                    <View position="absolute" bottom={20} left={24}>
+                    <View style={{ position: 'absolute', bottom: 20, left: 24 }}>
                         <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} allowFontScaling={false}>
                             •• {last4}, {monthYear}
                         </Text>
                     </View>
 
-                    <View position="absolute" bottom={24} right={24}>
+                    <View style={{ position: 'absolute', bottom: 25, right: 24 }}>
                         <BrandLogo brand={brand} />
                     </View>
                 </View>

@@ -53,9 +53,9 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
         const content = (
             <View style={{ height: height ? (height + (this.props.separator !== false ? 1 : 0)) : undefined, flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>
                 <View style={{ height: height, flexDirection: 'row' }}>
-                    <View flexBasis={0} flexGrow={1} flexDirection="row" height={height}>{this.props.children}</View>
+                    <View style={{ flexBasis: 0, flexGrow: 1, flexDirection: 'row', height }}>{this.props.children}</View>
                     {(!isAndroid && this.props.navigationIcon) && (
-                        <Image source={require('assets/ic-arrow-cell.png')} alignSelf="center" marginRight={15} style={{ tintColor: this.props.theme.foregroundTertiary }} />
+                        <Image source={require('assets/ic-arrow-cell.png')} style={{ alignSelf: 'center', marginRight: 15, tintColor: this.props.theme.foregroundTertiary }} />
                     )}
                 </View>
                 {this.props.separator !== false && <View style={{ backgroundColor: this.props.separatorColor || this.props.theme.border, height: 1, marginLeft: this.props.separatorPaddingStart }} />}

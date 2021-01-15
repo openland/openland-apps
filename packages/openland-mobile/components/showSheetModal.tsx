@@ -137,7 +137,7 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
         const maxScrollHeight = Dimensions.get('screen').height - safe.top - safe.bottom - 100;
 
         return (
-            <View width="100%" height="100%" flexDirection="column" alignItems="stretch" justifyContent={isPad ? 'center' : 'flex-end'}>
+            <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch', justifyContent: isPad ? 'center' : 'flex-end' }}>
                 <TouchableWithoutFeedback onPress={this.hide}>
                     <View
                         style={{
@@ -170,16 +170,18 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
                 >
                     {!isPad && (
                         <View
-                            backgroundColor={theme.backgroundSecondary}
-                            borderTopRightRadius={12}
-                            borderTopLeftRadius={12}
-                            paddingBottom={Platform.select({ ios: undefined, android: safe.bottom + 8 })}
+                            style={{
+                                backgroundColor: theme.backgroundSecondary,
+                                borderTopRightRadius: 12,
+                                borderTopLeftRadius: 12,
+                                paddingBottom: Platform.select({ ios: undefined, android: safe.bottom + 8 }),
+                                overflow: 'hidden'
+                            }}
                             onLayout={this.onLayout}
-                            overflow="hidden"
                         >
-                            <ScrollView alwaysBounceVertical={false} maxHeight={maxScrollHeight} contentContainerStyle={{ paddingTop: 20, paddingBottom: Platform.select({ ios: safe.bottom, android: undefined }) }}>
+                            <ScrollView alwaysBounceVertical={false} style={{ maxHeight: maxScrollHeight }} contentContainerStyle={{ paddingTop: 20, paddingBottom: Platform.select({ ios: safe.bottom, android: undefined }) }}>
                                 {!!title && (
-                                    <View paddingTop={4} paddingBottom={30} alignItems="center">
+                                    <View style={{ paddingTop: 4, paddingBottom: 30, alignItems: 'center' }}>
                                         <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
                                             {title}
                                         </Text>
@@ -193,17 +195,19 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
                     )}
                     {isPad && (
                         <View
-                            borderRadius={RadiusStyles.Medium}
-                            marginHorizontal={10}
-                            overflow="hidden"
-                            width={350}
-                            alignSelf="center"
-                            backgroundColor={theme.backgroundSecondary}
+                            style={{
+                                borderRadius: RadiusStyles.Medium,
+                                marginHorizontal: 10,
+                                overflow: 'hidden',
+                                width: 350,
+                                alignSelf: 'center',
+                                backgroundColor: theme.backgroundSecondary
+                            }}
                             onLayout={this.onLayout}
                         >
-                            <ScrollView alwaysBounceVertical={false} maxHeight={maxScrollHeight} contentContainerStyle={{ paddingTop: 10 }}>
+                            <ScrollView alwaysBounceVertical={false} style={{ maxHeight: maxScrollHeight }} contentContainerStyle={{ paddingTop: 10 }}>
                                 {!!title && (
-                                    <View paddingTop={4} paddingBottom={30} alignItems="center">
+                                    <View style={{ paddingTop: 4, paddingBottom: 30, alignItems: 'center' }}>
                                         <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
                                             {title}
                                         </Text>

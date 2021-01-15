@@ -21,7 +21,7 @@ export const StickerContent = React.memo<StickerContentProps>((props) => {
     }, [sticker]);
 
     return (
-        <View width={width} height={height}>
+        <View style={{ width, height }}>
             {downloadState && !!downloadState.path && downloadState.path.length > 0 && (
                 <FastImage
                     style={{ width: width, height: height, }}

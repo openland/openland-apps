@@ -52,17 +52,19 @@ const PriceInput = React.forwardRef((props: PriceInputProps, ref: React.RefObjec
     );
 });
 
-const MessageInput = (props: {value: string, onChange: (s: string) => void}) => {
+const MessageInput = (props: { value: string, onChange: (s: string) => void }) => {
     let theme = useTheme();
 
     return (
         <View
-            flex={1}
-            paddingHorizontal={16}
-            paddingVertical={8}
-            borderRadius={RadiusStyles.Medium}
-            backgroundColor={hexToRgba(theme.foregroundContrast, 0.08)}
-            minHeight={48}
+            style={{
+                flex: 1,
+                paddingHorizontal: 16,
+                paddingVertical: 8,
+                borderRadius: RadiusStyles.Medium,
+                backgroundColor: hexToRgba(theme.foregroundContrast, 0.08),
+                minHeight: 48
+            }}
         >
             <TextInput
                 placeholder="Your message"
@@ -152,19 +154,19 @@ const DonationComponent = (props: PageProps) => {
         form.doAction(async () => {
             let amount = parseInt(priceField.value, 10) * 100;
             try {
-                await client.mutateSendDonation({chatId, userId, amount, message: messageField.value });
-                Toast.success({ duration: 1000}).show();
+                await client.mutateSendDonation({ chatId, userId, amount, message: messageField.value });
+                Toast.success({ duration: 1000 }).show();
                 if (chatId) {
-                    props.router.push('Conversation', {id: chatId});
+                    props.router.push('Conversation', { id: chatId });
                     return;
                 }
                 if (userId) {
-                    props.router.push('Conversation', {flexibleId: userId});
+                    props.router.push('Conversation', { flexibleId: userId });
                     return;
                 }
 
             } catch (e) {
-                Toast.failure({ duration: 1000}).show();
+                Toast.failure({ duration: 1000 }).show();
             }
         });
     };
@@ -172,27 +174,29 @@ const DonationComponent = (props: PageProps) => {
     return (
         <>
             <SHeader title={name ? `Donate to ${name}` : 'Donate'} />
-            <SScrollView flexDirection="column" alignSelf="stretch" alignItems="stretch" padding={16}>
+            <SScrollView style={{ flexDirection: 'column', alignSelf: 'stretch', alignItems: 'stretch', padding: 16 }}>
                 <ZShaker ref={wrapperRef}>
-                    <View 
-                        paddingTop={32} 
-                        paddingBottom={4} 
-                        paddingHorizontal={16} 
-                        backgroundColor={theme.payBackgroundPrimary} 
-                        flexDirection="column"
-                        borderRadius={RadiusStyles.Large}
+                    <View
+                        style={{
+                            paddingTop: 32,
+                            paddingBottom: 4,
+                            paddingHorizontal: 16,
+                            backgroundColor: theme.payBackgroundPrimary,
+                            flexDirection: 'column',
+                            borderRadius: RadiusStyles.Large
+                        }}
                     >
-                        <View flexDirection="row">
+                        <View style={{ flexDirection: 'row' }}>
                             <ZIconAction source={require('assets/ic-minus-glyph-24.png')} onPress={() => updatePrice(-5)} style="pay" />
-                            <View marginHorizontal={16} flex={1} height={40} flexDirection="row" justifyContent="center">
+                            <View style={{ marginHorizontal: 16, flex: 1, height: 40, flexDirection: 'row', justifyContent: 'center' }}>
                                 <PriceInput value={price} autofocus={true} onChange={handlePriceChange} ref={priceRef} />
                             </View>
                             <ZIconAction source={require('assets/ic-add-glyph-24.png')} onPress={() => updatePrice(5)} style="pay" />
                         </View>
-                        <View marginTop={32} flexDirection="row">
+                        <View style={{ marginTop: 32, flexDirection: 'row' }}>
                             <MessageInput value={messageField.value} onChange={messageField.input.onChange} />
                         </View>
-                        <View marginTop={4}>
+                        <View style={{ marginTop: 4 }}>
                             <ZButton title="Donate" style="pay" size="large" onPress={handleSubmit} />
                         </View>
                     </View>

@@ -87,7 +87,19 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
         const titleMaxWidth = (imgCompact && imgLayout && imageSource) ? maxWidth - 26 - 36 - 9 : undefined;
 
         return (
-            <View flexDirection="column" alignItems="stretch" alignSelf="stretch" marginTop={!wrapped ? 10 : undefined} marginVertical={wrapped ? 5 : undefined} backgroundColor={theme.incomingBackgroundPrimary} borderRadius={8} paddingHorizontal={13} paddingVertical={10}>
+            <View
+                style={{
+                    flexDirection: 'column',
+                    alignItems: 'stretch',
+                    alignSelf: 'stretch',
+                    marginTop: !wrapped ? 10 : undefined,
+                    marginVertical: wrapped ? 5 : undefined,
+                    backgroundColor: theme.incomingBackgroundPrimary,
+                    borderRadius: 8,
+                    paddingHorizontal: 13,
+                    paddingVertical: 10
+                }}
+            >
                 {!!this.props.attach.titleLinkHostname && imgCompact && (
                     <Text
                         style={{
@@ -104,8 +116,17 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                 )}
 
                 {!imgCompact && this.props.attach.image && imgLayout && (
-                    <View justifyContent="center" borderRadius={8} marginTop={-10} marginHorizontal={-13} marginBottom={6} backgroundColor="rgba(0, 0, 0, 0.03)">
-                        <View width={imgLayout.width} height={imgLayout.height} alignSelf="center">
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            borderRadius: 8,
+                            marginTop: -10,
+                            marginHorizontal: -13,
+                            marginBottom: 6,
+                            backgroundColor: 'rgba(0, 0, 0, 0.03)'
+                        }}
+                    >
+                        <View style={{ width: imgLayout.width, height: imgLayout.height, alignSelf: 'center' }}>
                             <PreviewWrapper
                                 path={imagePath}
                                 width={this.props.attach.image.metadata?.imageWidth}
@@ -127,15 +148,17 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
 
                             {this.state && this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path &&
                                 <View
-                                    position="absolute"
-                                    top={0}
-                                    left={0}
-                                    right={0}
-                                    bottom={0}
-                                    justifyContent="center"
-                                    alignItems="center"
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        bottom: 0,
+                                        justifyContent: 'center',
+                                        alignItems: 'center'
+                                    }}
                                 >
-                                    <View backgroundColor="#0008" borderRadius={20}>
+                                    <View style={{ backgroundColor: '#0008', borderRadius: 20 }}>
                                         <Text style={{ color: '#fff', opacity: 0.8, marginLeft: 20, marginTop: 20, marginRight: 20, marginBottom: 20, textAlign: 'center' }} allowFontScaling={false}>{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</Text>
                                     </View>
                                 </View>
@@ -160,9 +183,9 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                     </Text>
                 )}
 
-                <View flexDirection="row" marginTop={5} zIndex={2}>
+                <View style={{ flexDirection: 'row', marginTop: 5, zIndex: 2 }}>
                     {imgCompact && imgLayout && imageSource && this.props.attach.image && (
-                        <View marginRight={9}>
+                        <View style={{ marginRight: 9 }}>
                             <PreviewWrapper
                                 path={imagePath}
                                 width={this.props.attach.image.metadata?.imageWidth}
@@ -185,7 +208,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                     )}
 
                     {imgCompact && imgLayout && imageSource && !this.props.attach.image && (
-                        <View marginRight={9}>
+                        <View style={{ marginRight: 9 }}>
                             <FastImage
                                 source={imageSource}
                                 style={{
@@ -197,7 +220,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                         </View>
                     )}
 
-                    <View flexDirection="column" width={titleMaxWidth}>
+                    <View style={{ flexDirection: 'column', width: titleMaxWidth }}>
                         {!!title && (
                             <Text
                                 style={{
@@ -255,19 +278,21 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                 )}
 
                 {!!keyboard && keyboard.buttons.map((line, i) =>
-                    <View key={'attch-btn-' + i} flexDirection="row" marginTop={6} alignSelf="stretch" marginBottom={i === keyboard!.buttons.length - 1 ? 4 : 0}>
+                    <View key={'attch-btn-' + i} style={{ flexDirection: 'row', marginTop: 6, alignSelf: 'stretch', marginBottom: i === keyboard!.buttons.length - 1 ? 4 : 0 }}>
                         {!!line && line.map((button, j) =>
                             <TouchableWithoutFeedback key={'button-' + i + '-' + j} onPress={resolveInternalLink(button.url!, () => Linking.openURL(button.url!))}>
                                 <View
-                                    marginTop={i !== 0 ? 4 : 0}
-                                    backgroundColor={theme.backgroundPrimary}
-                                    borderRadius={8}
-                                    marginLeft={j > 0 ? 4 : 0}
-                                    marginRight={j < line.length - 1 ? 4 : 0}
-                                    alignItems="center"
-                                    justifyContent="center"
-                                    height={30}
-                                    flexGrow={1}
+                                    style={{
+                                        marginTop: i !== 0 ? 4 : 0,
+                                        backgroundColor: theme.backgroundPrimary,
+                                        borderRadius: 8,
+                                        marginLeft: j > 0 ? 4 : 0,
+                                        marginRight: j < line.length - 1 ? 4 : 0,
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        height: 30,
+                                        flexGrow: 1
+                                    }}
                                 >
                                     <Text
                                         style={{

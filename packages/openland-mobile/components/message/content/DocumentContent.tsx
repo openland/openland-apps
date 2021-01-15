@@ -19,22 +19,26 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
     return (
         <TouchableOpacity onPress={() => onDocumentPress(attach)} activeOpacity={0.6}>
             <View
-                height={72}
-                flexDirection="row"
-                marginVertical={4}
-                padding={12}
-                borderRadius={RadiusStyles.Medium}
-                backgroundColor={theme.backgroundTertiary}
+                style={{
+                    height: 72,
+                    flexDirection: 'row',
+                    marginVertical: 4,
+                    padding: 12,
+                    borderRadius: RadiusStyles.Medium,
+                    backgroundColor: theme.backgroundTertiary
+                }}
             >
-                <View marginRight={12}>
+                <View style={{ marginRight: 12 }}>
                     <ZDocumentExt name={attach.fileMetadata.name} />
                 </View>
 
                 <View
-                    flexGrow={1}
-                    flexShrink={1}
-                    flexDirection="column"
-                    alignSelf="center"
+                    style={{
+                        flexGrow: 1,
+                        flexShrink: 1,
+                        flexDirection: 'column',
+                        alignSelf: 'center'
+                    }}
                 >
                     <Text
                         style={{

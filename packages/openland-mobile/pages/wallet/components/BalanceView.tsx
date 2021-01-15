@@ -18,8 +18,8 @@ export const BalanceView = (props: BalanceViewProps) => {
     const router = React.useContext(SRouterContext)!;
 
     return (
-        <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} paddingTop={16} paddingBottom={32} paddingHorizontal={16} flexDirection="row">
-            <View flexGrow={1} alignItems="flex-start">
+        <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} style={{ paddingTop: 16, paddingBottom: 32, paddingHorizontal: 16, flexDirection: 'row' }}>
+            <View style={{ flexGrow: 1, alignItems: 'flex-start' }}>
                 <Text style={{ ...TextStyles.Title1, textAlign: 'center', color: theme.foregroundPrimary, }} allowFontScaling={false}>
                     <Money amount={amount} />
                 </Text>
@@ -27,7 +27,7 @@ export const BalanceView = (props: BalanceViewProps) => {
                     Your balance
                 </Text>
             </View>
-            <View flexGrow={1} alignItems="flex-end" paddingTop={10}>
+            <View style={{ flexGrow: 1, alignItems: 'flex-end', paddingTop: 10 }}>
                 <ZIconAction source={require('assets/ic-arrow-down-glyph-24.png')} onPress={() => showWithdrawFunds(router)} />
             </View>
         </LinearGradient>

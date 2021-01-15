@@ -19,8 +19,8 @@ function PageError(props: { refresh: () => void }) {
         <>
             <HeaderConfigRegistrator config={{ appearance: 'small' }} />
             <SHeader title="Error" />
-            <ASSafeAreaView flexGrow={1} alignContent="center" justifyContent="center">
-                <View alignItems="center" justifyContent="center" paddingHorizontal={32} paddingVertical={16}>
+            <ASSafeAreaView style={{ flexGrow: 1, alignContent: 'center', justifyContent: 'center' }}>
+                <View style={{ alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32, paddingVertical: 16 }}>
                     <Image source={require('assets/art-error.png')} style={{ width: 240, height: 150, marginBottom: 4 }} />
                     <Text style={{ ...TextStyles.Title2, textAlign: 'center', color: theme.foregroundPrimary, marginBottom: 4, }} allowFontScaling={false}>Content is unavailable</Text>
                     <Text style={{ ...TextStyles.Body, textAlign: 'center', color: theme.foregroundSecondary, marginBottom: 16 }} allowFontScaling={false}>This content doesn’t exist or you don’t have an access</Text>
@@ -56,7 +56,7 @@ class PageErrorBoundary extends React.Component<{}, { isError: boolean, retry: n
                 <PageError refresh={this.refresh} />
             );
         }
-        return <View key={'try-' + this.state.retry} width="100%" height="100%">{this.props.children}</View>;
+        return <View key={'try-' + this.state.retry} style={{ width: '100%', height: '100%' }}>{this.props.children}</View>;
     }
 }
 

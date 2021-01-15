@@ -66,6 +66,7 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
             Animated.timing(floatPadding, {
                 duration: e.duration,
                 toValue: 16,
+                useNativeDriver: true
             }),
         ]).start();
     };
@@ -75,6 +76,7 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
             Animated.timing(floatPadding, {
                 duration: e.duration,
                 toValue: defaultIosPadding,
+                useNativeDriver: true
             }),
         ]).start();
     };
@@ -99,14 +101,22 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
         <>
             {props.header && props.header}
             {isIos && <SHeader title={props.title} />}
-            <KeyboardAvoidingView behavior="padding" alignItems="center" flex={1}>
+            <KeyboardAvoidingView
+                behavior="padding"
+                style={{
+                    alignItems: 'center',
+                    flex: 1
+                }}
+            >
                 <SScrollView
-                    flex={1}
-                    paddingTop={16}
+                    style={{
+                        flex: 1,
+                        paddingTop: 16,
+                        maxWidth: 600,
+                        width: '100%'
+                    }}
                     scrollRef={scrollRef}
                     keyboardShouldPersistTaps="handled"
-                    maxWidth={600}
-                    width="100%"
                 >
                     <Text
                         style={[titlesStyles.title, { color: theme.foregroundPrimary }]}
@@ -127,17 +137,19 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
                     {props.children}
                 </SScrollView>
                 {isAndroid && (
-                    <View maxWidth={424} width="100%" paddingHorizontal={16} paddingBottom={bottomOffset + 16} paddingTop={16}>
+                    <View style={{ maxWidth: 424, width: '100%', paddingHorizontal: 16, paddingBottom: bottomOffset + 16, paddingTop: 16 }}>
                         {props.floatContent}
                     </View>
                 )}
                 {isIos && (
                     <Animated.View
-                        paddingHorizontal={16}
-                        paddingBottom={floatPadding}
-                        paddingTop={16}
-                        maxWidth={424}
-                        width="100%"
+                        style={{
+                            paddingHorizontal: 16,
+                            paddingBottom: floatPadding,
+                            paddingTop: 16,
+                            maxWidth: 424,
+                            width: '100%'
+                        }}
                     >
                         {props.floatContent}
                     </Animated.View>

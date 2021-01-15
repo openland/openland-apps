@@ -11,7 +11,7 @@ interface ZRelativeDateState {
 }
 
 export class ZRelativeDate extends React.Component<ZRelativeDateProps, ZRelativeDateState> {
-    private interval: NodeJS.Timeout | undefined = undefined;
+    private interval: any | undefined = undefined;
 
     constructor(props: ZRelativeDateProps) {
         super(props);

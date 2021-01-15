@@ -50,7 +50,7 @@ export const LoaderSpinnerAndroid = ({ size = 'medium', color }: LoaderSpinnerPr
 export const LoaderSpinner = Platform.OS === 'ios' ? LoaderSpinnerIOS : LoaderSpinnerAndroid;
 
 export const LoaderSpinnerWrapped = React.memo(() => (
-    <View height={56} alignItems="center" justifyContent="center">
+    <View style={{ height: 56, alignItems: 'center', justifyContent: 'center' }}>
         <LoaderSpinner />
     </View>
 ));

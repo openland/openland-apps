@@ -19,15 +19,17 @@ export const ZSocialPickerRender = React.memo((props: ZAvatarPickerRenderProps) 
     }
 
     return (
-        <View position="relative">
+        <View style={{ position: 'relative' }}>
             <TouchableOpacity onPress={props.showPicker}>
                 <View
-                    width={width}
-                    height={height}
-                    borderRadius={radius}
-                    borderWidth={props.url ? 1 : undefined}
-                    borderColor={props.url ? 'rgba(0, 0 ,0, 0.04)' : undefined}
-                    overflow="hidden"
+                    style={{
+                        width,
+                        height,
+                        borderRadius: radius,
+                        borderWidth: props.url ? 1 : undefined,
+                        borderColor: props.url ? 'rgba(0, 0 ,0, 0.04)' : undefined,
+                        overflow: 'hidden'
+                    }}
                 >
                     {props.url && (
                         <ZImage
@@ -39,10 +41,10 @@ export const ZSocialPickerRender = React.memo((props: ZAvatarPickerRenderProps) 
                         />
                     )}
                     <View
-                        position="absolute"
-                        alignItems="center"
-                        justifyContent="center"
                         style={{
+                            position: 'absolute',
+                            alignItems: 'center',
+                            justifyContent: 'center',
                             width,
                             height,
                             borderRadius: radius,
@@ -77,11 +79,13 @@ export const ZSocialPickerRender = React.memo((props: ZAvatarPickerRenderProps) 
                     }}
                 >
                     <View
-                        justifyContent="center"
-                        alignItems="center"
-                        width={56}
-                        height={56}
-                        borderRadius={12}
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: 56,
+                            height: 56,
+                            borderRadius: 12
+                        }}
                     >
                         <Image
                             source={require('assets/ic-clear-24.png')}
@@ -94,15 +98,17 @@ export const ZSocialPickerRender = React.memo((props: ZAvatarPickerRenderProps) 
                             }}
                         />
                         <View
-                            position="absolute"
-                            width={24}
-                            height={24}
-                            backgroundColor="rgba(0,0,0,0.2)"
-                            borderRadius={100}
-                            zIndex={0}
-                            shadowColor="rgba(0, 0, 0, 0.5)"
-                            shadowRadius={8}
-                            shadowOpacity={1}
+                            style={{
+                                position: 'absolute',
+                                width: 24,
+                                height: 24,
+                                backgroundColor: 'rgba(0,0,0,0.2)',
+                                borderRadius: 100,
+                                zIndex: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)',
+                                shadowRadius: 8,
+                                shadowOpacity: 1
+                            }}
                         />
                     </View>
                 </TouchableOpacity>

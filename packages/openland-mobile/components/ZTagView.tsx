@@ -25,7 +25,7 @@ export interface ZTagViewProps {
 export class ZTagView extends React.PureComponent<
     ZTagViewProps,
     { focused?: string; query: string }
-> {
+    > {
     ref = React.createRef<TextInput>();
     constructor(props: ZTagViewProps) {
         super(props);
@@ -109,14 +109,16 @@ export class ZTagView extends React.PureComponent<
             <ScrollView keyboardShouldPersistTaps="always">
                 <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
                     <TouchableWithoutFeedback onPress={() => this.handleTouchOutside()}>
-                        <View flexWrap="wrap" flexDirection="row" marginLeft={-15} paddingLeft={8}>
+                        <View style={{ flexWrap: 'wrap', flexDirection: 'row', marginLeft: -15, paddingLeft: 8 }}>
                             {this.props.title && (
                                 <View
-                                    height={28}
-                                    paddingLeft={8}
-                                    paddingRight={8}
-                                    alignItems="center"
-                                    flexDirection="row"
+                                    style={{
+                                        height: 28,
+                                        paddingLeft: 8,
+                                        paddingRight: 8,
+                                        alignItems: 'center',
+                                        flexDirection: 'row'
+                                    }}
                                 >
                                     <Text
                                         style={{
@@ -134,18 +136,18 @@ export class ZTagView extends React.PureComponent<
                             {this.props.items.map((v) => (
                                 <TouchableWithoutFeedback onPress={() => this.handleFocus(v.id)}>
                                     <View
-                                        height={28}
-                                        paddingLeft={8}
-                                        paddingRight={5}
-                                        borderRadius={RadiusStyles.Large}
-                                        backgroundColor={
-                                            this.state.focused === v.id
+                                        style={{
+                                            height: 28,
+                                            paddingLeft: 8,
+                                            paddingRight: 5,
+                                            borderRadius: RadiusStyles.Large,
+                                            backgroundColor: this.state.focused === v.id
                                                 ? this.props.theme.accentPrimary
-                                                : undefined
-                                        }
-                                        flexDirection="row"
-                                        alignItems="center"
-                                        justifyContent="center"
+                                                : undefined,
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}
                                     >
                                         <Text
                                             style={{
@@ -168,9 +170,7 @@ export class ZTagView extends React.PureComponent<
                                 </TouchableWithoutFeedback>
                             ))}
                             <TextInput
-                                padding={Platform.OS === 'android' ? 0 : undefined}
                                 ref={this.ref}
-                                minHeight={28}
                                 onChangeText={this.handleChange}
                                 onKeyPress={this.handleKeyPress}
                                 selectionColor={this.props.theme.accentPrimary}
@@ -182,10 +182,12 @@ export class ZTagView extends React.PureComponent<
                                     marginLeft: 8,
                                     fontSize: 15,
                                     height: 28,
+                                    minHeight: 28,
                                     color: this.props.theme.foregroundPrimary,
+                                    padding: Platform.OS === 'android' ? 0 : undefined,
+                                    opacity: this.state.focused ? 0 : 1
                                 }}
                                 value={this.state.query}
-                                opacity={this.state.focused ? 0 : 1}
                                 spellCheck={false}
                                 autoFocus={this.props.autoFocus}
                             />

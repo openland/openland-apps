@@ -89,9 +89,9 @@ const Buttons = React.memo((props: ButtonProps) => {
     const defaultIosPadding = isXGen ? 0 : 16;
 
     return (
-        <View style={styles.buttons} paddingBottom={isIos && !isPad ? defaultIosPadding : 16}>
+        <View style={[styles.buttons, { paddingBottom: isIos && !isPad ? defaultIosPadding : 16 }]}>
             <ZButton title="Continue with phone" onPress={props.onPhonePress} loading={props.phoneLoading} size="large" />
-            <View height={16} />
+            <View style={{ height: 16 }} />
             <ZButton
                 title="Continue with email"
                 onPress={props.onMailPress}

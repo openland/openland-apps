@@ -61,13 +61,13 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
                             uuid: v.uuid!!,
                             ...(data.width && data.height
                                 ? {
-                                      crop: {
-                                          x: 0,
-                                          y: 0,
-                                          w: data!!.width!!,
-                                          h: data!!.height!!,
-                                      },
-                                  }
+                                    crop: {
+                                        x: 0,
+                                        y: 0,
+                                        w: data!!.width!!,
+                                        h: data!!.height!!,
+                                    },
+                                }
                                 : {}),
                         });
                     }
@@ -161,82 +161,82 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
             clearable={props.clearable}
         />
     ) : (
-        <TouchableOpacity onPress={handlePicker}>
-            <View
-                width={size}
-                height={size}
-                borderRadius={size / 2}
-                backgroundColor={theme.backgroundTertiaryTrans}
-            >
-                {!valueUrl && !loading && (
-                    <View
-                        position="absolute"
-                        alignItems="center"
-                        justifyContent="center"
-                        style={{ width: size, height: size, borderRadius: size / 2 }}
-                    >
-                        <Image
-                            source={require('assets/ic-camera-36.png')}
-                            style={{
-                                tintColor: theme.foregroundQuaternary,
-                                width: 36,
-                                height: 36,
-                            }}
-                        />
-                    </View>
-                )}
-                {!!valueUrl && props.hidePhotoIndicator !== true && (
-                    <View width={size} height={size}>
-                        <ZAvatar photo={valueUrl} size={props.size || 'x-large'} />
+            <TouchableOpacity onPress={handlePicker}>
+                <View
+                    style={{ width: size, height: size, borderRadius: size / 2, backgroundColor: theme.backgroundTertiaryTrans }}
+                >
+                    {!valueUrl && !loading && (
+                        <View
+                            style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', width: size, height: size, borderRadius: size / 2 }}
+                        >
+                            <Image
+                                source={require('assets/ic-camera-36.png')}
+                                style={{
+                                    tintColor: theme.foregroundQuaternary,
+                                    width: 36,
+                                    height: 36,
+                                }}
+                            />
+                        </View>
+                    )}
+                    {!!valueUrl && props.hidePhotoIndicator !== true && (
+                        <View style={{ width: size, height: size }}>
+                            <ZAvatar photo={valueUrl} size={props.size || 'x-large'} />
 
-                        {!loading && (
-                            <View
-                                position="absolute"
-                                bottom={2}
-                                right={2}
-                                width={28}
-                                height={28}
-                                padding={2}
-                                backgroundColor={theme.backgroundPrimary}
-                                borderRadius={14}
-                            >
+                            {!loading && (
                                 <View
-                                    width={24}
-                                    height={24}
-                                    backgroundColor={theme.accentPrimary}
-                                    borderRadius={12}
-                                    alignItems="center"
-                                    justifyContent="center"
+                                    style={{
+                                        position: 'absolute',
+                                        bottom: 2,
+                                        right: 2,
+                                        width: 28,
+                                        height: 28,
+                                        padding: 2,
+                                        backgroundColor: theme.backgroundPrimary,
+                                        borderRadius: 14
+                                    }}
                                 >
-                                    <Image
-                                        source={require('assets/ic-camera-16.png')}
+                                    <View
                                         style={{
-                                            tintColor: theme.foregroundInverted,
-                                            width: 16,
-                                            height: 16,
+                                            width: 24,
+                                            height: 24,
+                                            backgroundColor: theme.accentPrimary,
+                                            borderRadius: 12,
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
                                         }}
-                                    />
+                                    >
+                                        <Image
+                                            source={require('assets/ic-camera-16.png')}
+                                            style={{
+                                                tintColor: theme.foregroundInverted,
+                                                width: 16,
+                                                height: 16,
+                                            }}
+                                        />
+                                    </View>
                                 </View>
-                            </View>
-                        )}
-                    </View>
-                )}
-                {loading && (
-                    <View
-                        position="absolute"
-                        alignItems="center"
-                        justifyContent="center"
-                        width={size}
-                        height={size}
-                        borderRadius={size / 2}
-                        backgroundColor={theme.overlayLight}
-                    >
-                        <LoaderSpinner color={theme.foregroundContrast} />
-                    </View>
-                )}
-            </View>
-        </TouchableOpacity>
-    );
+                            )}
+                        </View>
+                    )}
+                    {loading && (
+                        <View
+                            style={{
+                                position: 'absolute',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: size,
+                                height: size,
+                                borderRadius: size / 2,
+                                backgroundColor: theme.overlayLight
+                            }}
+                        >
+                            <LoaderSpinner color={theme.foregroundContrast} />
+                        </View>
+                    )}
+                </View>
+            </TouchableOpacity>
+        );
 };
 
 export const ZAvatarPicker = React.memo((props: ZAvatarPickerProps) => {

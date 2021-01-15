@@ -27,7 +27,7 @@ const ZLabelButtonComponent = React.memo<ZLabelButtonProps & { router: SRouter }
 
     return (
         <TouchableOpacity onPress={handlePress} activeOpacity={HighlightAlpha}>
-            <View paddingVertical={2} paddingHorizontal={8} alignItems="center" justifyContent="center">
+            <View style={{ paddingVertical: 2, paddingHorizontal: 8, alignItems: 'center', justifyContent: 'center' }}>
                 <Text
                     style={{
                         ...TextStyles.Label2,

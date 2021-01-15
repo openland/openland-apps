@@ -21,11 +21,13 @@ const PrivacyText = React.memo(() => {
 
     return (
         <View
-            padding={16}
-            alignItems="center"
-            alignSelf="center"
-            justifyContent="center"
-            maxWidth={310}
+            style={{
+                padding: 16,
+                alignItems: 'center',
+                alignSelf: 'center',
+                justifyContent: 'center',
+                maxWidth: 310
+            }}
         >
             <Text
                 allowFontScaling={false}
@@ -129,14 +131,14 @@ const SignupUserComponent = React.memo((props: PageProps) => {
                     />
                 }
             >
-                <View flexDirection="row" justifyContent="center">
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                     <ZAvatarPicker
                         field={photoField}
                         initialUrl={(prefill && prefill.picture) || undefined}
                         size="xx-large"
                     />
                 </View>
-                <View marginTop={16}>
+                <View style={{ marginTop: 16 }}>
                     <ZShaker ref={ref}>
                         <ZInput field={firstNameField} placeholder="First name" />
                     </ZShaker>

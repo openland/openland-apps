@@ -43,7 +43,7 @@ class XPAvatarWithPreviewComponent extends React.PureComponent<ZAvatarProps> {
 
         return (
             <TouchableWithoutFeedback onPress={this.handlePress}>
-                <View onLayout={this.handleLayout} ref={this.ref} width={avatarSizes[this.props.size].size} height={avatarSizes[this.props.size].size}>
+                <View onLayout={this.handleLayout} ref={this.ref} style={{ width: avatarSizes[this.props.size].size, height: avatarSizes[this.props.size].size }}>
                     <ZAvatar {...other} />
                 </View>
             </TouchableWithoutFeedback>

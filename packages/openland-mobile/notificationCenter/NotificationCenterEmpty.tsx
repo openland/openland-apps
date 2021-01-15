@@ -8,7 +8,7 @@ export const NotificationCenterEmpty = React.memo(() => {
     let theme = React.useContext(ThemeContext);
 
     return (
-        <ASSafeAreaView flexGrow={1} paddingHorizontal={48} alignItems="center" justifyContent="center">
+        <ASSafeAreaView style={{ flexGrow: 1, paddingHorizontal: 48, alignItems: 'center', justifyContent: 'center' }}>
             <Image source={theme.type === 'Light' ? require('assets/img-empty.png') : require('assets/img-empty-dark.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
             <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center' }} allowFontScaling={false}>
                 Comments in threads you are involved in will be right here

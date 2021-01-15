@@ -87,15 +87,15 @@ class RootContainer extends React.PureComponent<RootProps & { theme: ThemeGlobal
             }
 
             return (
-                <View width="100%" height="100%" flexDirection="row" backgroundColor={this.props.theme.backgroundPrimary}>
+                <View style={{ width: '100%', height: '100%', flexDirection: 'row', backgroundColor: this.props.theme.backgroundPrimary }}>
                     <SNavigationView
                         width={sideWidth}
                         height={this.props.height}
                         routing={this.props.routing}
                         navigationBarStyle={style}
                     />
-                    <View height={'100%'} width={0.5} backgroundColor={this.props.theme.border} />
-                    <View width={this.props.width - sideWidth} height={'100%'} backgroundColor={this.props.theme.backgroundPrimary}>
+                    <View style={{ height: '100%', width: 0.5, backgroundColor: this.props.theme.border }} />
+                    <View style={{ width: this.props.width - sideWidth, height: '100%', backgroundColor: this.props.theme.backgroundPrimary }}>
                         {this.state.masterRouting && (
                             <SNavigationView
                                 key={this.state.masterKey!!}
@@ -111,7 +111,7 @@ class RootContainer extends React.PureComponent<RootProps & { theme: ThemeGlobal
         }
 
         return (
-            <View width="100%" height="100%" flexDirection="row">
+            <View style={{ width: '100%', height: '100%', flexDirection: 'row' }}>
                 <SNavigationView
                     width={this.props.width}
                     height={this.props.height}

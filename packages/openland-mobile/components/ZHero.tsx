@@ -94,7 +94,7 @@ export const ZHero = React.memo<ZHeroProps>((props) => {
     return (
         <View style={styles.box}>
             <View style={styles.avatar}>
-                <View position="relative">
+                <View style={{ position: 'relative' }}>
                     <XPAvatarWithPreview size="xxx-large" photo={photo} id={id} title={title} online={online} />
                     {!!badge && badge.length > 0 && (
                         <View style={[styles.badgeBox, { backgroundColor: theme.backgroundTertiary, borderColor: theme.backgroundPrimary }]}>

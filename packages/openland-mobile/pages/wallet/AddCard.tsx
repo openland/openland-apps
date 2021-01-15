@@ -56,7 +56,7 @@ const AddCardComponent = React.memo<PageProps>((props) => {
         <>
             <SHeader title="New card" />
             <SHeaderButton title="Add" onPress={submit} />
-            <SScrollView flexDirection="column" alignSelf="stretch" alignItems="stretch" padding={16}>
+            <SScrollView style={{ flexDirection: 'column', alignSelf: 'stretch', alignItems: 'stretch', padding: 16 }}>
                 <StripeInputView ref={ref} />
             </SScrollView>
         </>

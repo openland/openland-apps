@@ -30,7 +30,7 @@ function GlobalLoader() {
 
     return (
         <View style={styles.overlay}>
-            <View style={styles.loader} backgroundColor={theme.backgroundTertiaryTrans}>
+            <View style={[styles.loader, { backgroundColor: theme.backgroundTertiaryTrans }]}>
                 <LoaderSpinner size="large" color={theme.foregroundQuaternary} />
             </View>
         </View>

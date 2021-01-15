@@ -30,20 +30,22 @@ const Tabs = ({ activeTab, tabs }: TabsProps) => {
 
     return (
         <View
-            marginTop={safeArea.top}
-            flexDirection="row"
-            justifyContent="space-between"
-            paddingHorizontal={16}
-            paddingBottom={16}
-            position="relative"
-            backgroundColor={theme.backgroundPrimary}
-            zIndex={1}
+            style={{
+                marginTop: safeArea.top,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                paddingHorizontal: 16,
+                paddingBottom: 16,
+                position: 'relative',
+                backgroundColor: theme.backgroundPrimary,
+                zIndex: 1
+            }}
         >
             {tabs.map(({ name, count, type, onPress }) => {
                 const isActive = type === activeTab;
 
                 return (
-                    <View width="33.3%" key={name}>
+                    <View style={{ width: '33.3%' }} key={name}>
                         <ZTab selected={isActive} onPress={onPress}>
                             {name}
                             {count !== 0 && (
@@ -75,7 +77,7 @@ const SharedMediaInner = React.memo(({ chatId }: { chatId: string }) => {
     return (
         <>
             <Tabs tabs={tabs} activeTab={activeTab} />
-            <View flexGrow={1} onLayout={handleLayout}>
+            <View style={{ flexGrow: 1 }} onLayout={handleLayout}>
                 <React.Suspense fallback={<ZLoader />}>
                     <AsyncSharedMediaList currentCount={currentCount} mediaType={activeTab} chatId={chatId} wrapperWidth={wrapperWidth} />
                 </React.Suspense>

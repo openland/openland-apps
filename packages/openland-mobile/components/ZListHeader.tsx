@@ -20,7 +20,7 @@ export const ZListHeader = React.memo<ZListHeaderProps>((props) => {
 
     return (
         <View>
-            {useSpacer && <View backgroundColor={theme.backgroundTertiary} height={16} marginBottom={4} />}
+            {useSpacer && <View style={{ backgroundColor: theme.backgroundTertiary, height: 16, marginBottom: 4 }} />}
 
             <View
                 style={{
@@ -58,7 +58,7 @@ export const ZListHeader = React.memo<ZListHeaderProps>((props) => {
                     </Text>
                 )}
 
-                <View flexGrow={1} paddingRight={16} />
+                <View style={{ flexGrow: 1, paddingRight: 16 }} />
 
                 {action && (
                     <TouchableOpacity onPress={action.onPress} activeOpacity={HighlightAlpha}>

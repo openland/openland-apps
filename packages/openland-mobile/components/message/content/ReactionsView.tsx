@@ -24,20 +24,21 @@ export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
     const otherLikes = !!reactionCounters.find((r) => (r.setByMe && r.count !== 1) || (!r.setByMe));
 
     return (
-        <View marginBottom={-10}>
+        <View style={{ marginBottom: -10 }}>
             <TouchableWithoutFeedback onPress={() => showReactionsList(mId)}>
                 <View
-                    alignItems="stretch"
-                    justifyContent="flex-start"
-                    flexDirection="row"
-                    paddingVertical={10}
+                    style={{
+                        alignItems: 'stretch',
+                        justifyContent: 'flex-start',
+                        flexDirection: 'row',
+                        paddingVertical: 10
+                    }}
                 >
                     {reactionCounters.map((i) => (
                         <Image
                             key={'k' + i.reaction}
-                            marginRight={3}
                             source={reactionsImagesMap[i.reaction]}
-                            style={{ width: 20, height: 20 }}
+                            style={{ width: 20, height: 20, marginRight: 3 }}
                         />
                     ))}
                     {!!count && (

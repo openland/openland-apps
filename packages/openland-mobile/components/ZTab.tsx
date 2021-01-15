@@ -15,14 +15,16 @@ export const ZTab = React.memo((props: ZTabProps) => {
     const theme = React.useContext(ThemeContext);
 
     return (
-        <View flexGrow={1}>
+        <View style={{ flexGrow: 1 }}>
             <TouchableWithoutFeedback onPress={onPress}>
                 <View
-                    backgroundColor={selected ? theme.backgroundTertiary : theme.backgroundPrimary}
-                    alignItems="center"
-                    justifyContent="center"
-                    height={36}
-                    borderRadius={RadiusStyles.Large}
+                    style={{
+                        backgroundColor: selected ? theme.backgroundTertiary : theme.backgroundPrimary,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: 36,
+                        borderRadius: RadiusStyles.Large
+                    }}
                 >
                     <Text style={[TextStyles.Label1, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
                         {children}

@@ -95,9 +95,9 @@ const ZPickFieldComponent = (props: ZPickFieldProps & { router: SRouter }) => {
     );
 
     return (
-        <View marginHorizontal={noWrapper ? 0 : 16} marginBottom={noWrapper ? 0 : 16}>
+        <View style={{ marginHorizontal: noWrapper ? 0 : 16, marginBottom: noWrapper ? 0 : 16 }}>
             <TouchableOpacity onPress={handlePress} activeOpacity={0.6} disabled={disabled}>
-                <View style={styles.container} backgroundColor={theme.backgroundTertiaryTrans}>
+                <View style={[styles.container, { backgroundColor: theme.backgroundTertiaryTrans }]}>
                     <View style={[styles.labelContainer, hasValue && styles.labelContainerFocused]}>
                         <Text
                             style={[

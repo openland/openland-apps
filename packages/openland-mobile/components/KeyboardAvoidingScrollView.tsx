@@ -10,9 +10,9 @@ export const KeyboardAvoidingScrollView = React.memo((props) => {
             </SScrollView>
         );
     }
-    
+
     return (
-        <KeyboardAvoidingView flexGrow={1} behavior={'padding'}>
+        <KeyboardAvoidingView style={{ flexGrow: 1 }} behavior={'padding'}>
             <SScrollView>
                 {props.children}
             </SScrollView>

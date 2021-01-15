@@ -200,7 +200,7 @@ const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) 
                     </Text>
 
                     {actionInProgress && (
-                        <View width="100%" height="100%" justifyContent="center" alignItems="center" position="absolute">
+                        <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', position: 'absolute' }}>
                             <LoaderSpinner color={textColor} size={size === 'default' ? 'small' : 'medium'} />
                         </View>
                     )}

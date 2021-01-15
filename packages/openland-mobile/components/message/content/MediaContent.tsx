@@ -108,9 +108,11 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
             .map((column, columnIndex, row) => {
                 return (
                     <View
-                        flexDirection="column"
                         key={columnIndex}
-                        marginLeft={columnIndex === 1 ? 2 : 0}
+                        style={{
+                            flexDirection: 'column',
+                            marginLeft: columnIndex === 1 ? 2 : 0
+                        }}
                     >
                         {column.map(({ file, uri }, rowIndex) => {
                             let width = attachments.length === 1
@@ -122,7 +124,14 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                             let state = this.state.downloadStates[file.fileId];
 
                             return (
-                                <View key={file.id || file.fileId || file.key} width={width} height={height} marginTop={rowIndex === 1 ? 2 : 0}>
+                                <View
+                                    key={file.id || file.fileId || file.key}
+                                    style={{
+                                        width,
+                                        height,
+                                        marginTop: rowIndex === 1 ? 2 : 0
+                                    }}
+                                >
                                     <PreviewWrapper
                                         path={uri}
                                         width={file.fileMetadata.imageWidth}
@@ -140,15 +149,17 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
 
                                     {state && state.progress !== undefined && state.progress < 1 && !state.path && (
                                         <View
-                                            justifyContent="center"
-                                            alignItems="center"
-                                            backgroundColor="#0008"
-                                            borderRadius={8}
-                                            position="absolute"
-                                            top={0}
-                                            left={0}
-                                            right={0}
-                                            bottom={0}
+                                            style={{
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                backgroundColor: '#0008',
+                                                borderRadius: 8,
+                                                position: 'absolute',
+                                                top: 0,
+                                                left: 0,
+                                                right: 0,
+                                                bottom: 0
+                                            }}
                                         >
                                             <Text style={{ color: '#fff', opacity: 0.8, marginLeft: 20, marginTop: 20, marginRight: 20, marginBottom: 20, textAlign: 'center' }} allowFontScaling={false}>{'Loading ' + Math.round(state.progress * 100)}</Text>
                                         </View>
@@ -162,16 +173,18 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
 
         return (
             <View
-                backgroundColor={theme.incomingBackgroundPrimary}
-                borderRadius={18}
-                overflow="hidden"
-                marginVertical={5}
-                alignSelf="flex-start"
-                flexDirection="row"
-                height={wrapperHeight}
-                width={wrapperWidth}
-                alignItems="center"
-                justifyContent="center"
+                style={{
+                    backgroundColor: theme.incomingBackgroundPrimary,
+                    borderRadius: 18,
+                    overflow: 'hidden',
+                    marginVertical: 5,
+                    alignSelf: 'flex-start',
+                    flexDirection: 'row',
+                    height: wrapperHeight,
+                    width: wrapperWidth,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
             >
                 {content}
             </View>

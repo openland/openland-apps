@@ -7,7 +7,7 @@ export async function delayForewer() {
 }
 
 export function debounce<T extends (...args: any[]) => any>(f: T, ms: number, tailing: boolean = true, skipFirst: boolean = false): T {
-    let timer: NodeJS.Timeout | null = null;
+    let timer: any | null = null;
     let argsToUse: any = undefined;
     return ((...args: any[]) => {
         if (timer) {

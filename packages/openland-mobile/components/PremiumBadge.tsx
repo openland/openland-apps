@@ -11,7 +11,7 @@ export const PremiumBadge = React.memo(() => {
     const theme = React.useContext(ThemeContext);
 
     return (
-        <View paddingTop={1.5} paddingBottom={2.5} paddingHorizontal={4} backgroundColor={hexToRgba(theme.accentPay, CompensationAlpha)} borderRadius={RadiusStyles.XSmall}>
+        <View style={{ paddingTop: 1.5, paddingBottom: 2.5, paddingHorizontal: 4, backgroundColor: hexToRgba(theme.accentPay, CompensationAlpha), borderRadius: RadiusStyles.XSmall }}>
             <Text style={[TextStyles.Detail, { color: theme.foregroundContrast }]} allowFontScaling={false}>
                 PRO
             </Text>

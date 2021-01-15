@@ -12,14 +12,16 @@ export const PromptComponent = React.memo((props: { builder: PromptBuilder; moda
 
     return (
         <View
-            flexDirection="column"
-            justifyContent="flex-start"
-            paddingHorizontal={24}
-            paddingVertical={20}
+            style={{
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+                paddingHorizontal: 24,
+                paddingVertical: 20
+            }}
         >
             {builder._title && <Text style={{ marginBottom: 12, color: theme.foregroundPrimary, fontSize: 20, fontWeight: FontStyles.Weight.Medium as any }}>{builder._title}</Text>}
-            <TextInput defaultValue={builder._value} onChangeText={builder.onTextChange} autoFocus={true} multiline={true} maxHeight={100} marginBottom={15} style={{ color: theme.foregroundPrimary }} keyboardAppearance={theme.keyboardAppearance} />
-            <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
+            <TextInput defaultValue={builder._value} onChangeText={builder.onTextChange} autoFocus={true} multiline={true} style={{ color: theme.foregroundPrimary, maxHeight: 100, marginBottom: 15 }} keyboardAppearance={theme.keyboardAppearance} />
+            <View style={{ flexDirection: 'row', alignItems: 'flex-end', alignSelf: 'flex-end' }}>
                 {builder._actions.map((a, i) => (
                     <>
                         <View style={{ width: 4 }} />

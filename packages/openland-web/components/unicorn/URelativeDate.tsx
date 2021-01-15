@@ -11,7 +11,7 @@ interface URelativeDateState {
 }
 
 export class URelativeDate extends React.Component<URelativeDateProps, URelativeDateState> {
-    private interval: NodeJS.Timeout | undefined = undefined;
+    private interval: any | undefined = undefined;
 
     constructor(props: URelativeDateProps) {
         super(props);
