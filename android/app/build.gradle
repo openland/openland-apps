@@ -247,13 +247,6 @@ dependencies {
     // Google auth
     implementation "com.android.support:appcompat-v7:23.0.1"
 
-    // AppCenter
-    def appCenterSdkVersion = '1.11.0'
-    implementation "com.microsoft.appcenter:appcenter-distribute:${appCenterSdkVersion}"
-    implementation project(':appcenter-crashes')
-    implementation project(':appcenter-analytics')
-    implementation project(':appcenter')
-
     // Litho
     def lithoVersion = '0.31.0'
     implementation "com.facebook.litho:litho-core:${lithoVersion}"

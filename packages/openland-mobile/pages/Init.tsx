@@ -84,7 +84,7 @@ const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
                 }}
                 pointerEvents={props.loading ? 'box-none' : 'none'}
             >
-                <View width="100%" height="100%">
+                <View style={{ width: '100%', height: '100%' }}>
                     <AndroidSplashView
                         style={{ alignSelf: 'stretch', flexGrow: 1, flexShrink: 1 }}
                         splashVisible={props.loading}
@@ -208,7 +208,7 @@ export class Init extends React.Component<
         this.resolving = true;
         if (this.pendingDeepLink && state !== 'loading' && state !== 'start') {
             await AppStorage.prepare();
-            let userToken: string | undefined = AppStorage.token;
+            let userToken: string | null = AppStorage.token;
             let acc = userToken && (await backoff(async () => await getClient().queryAccount()));
             if (!acc || !acc.me || !acc.sessionState.isAccountExists) {
                 // unauthorized
@@ -236,7 +236,7 @@ export class Init extends React.Component<
     }
     componentDidMount() {
         Linking.addEventListener('url', this.handleOpenURL);
-        Linking.getInitialURL().then(async (url) => await this.handleOpenURL({ url: url }));
+        Linking.getInitialURL().then(async (url) => url && await this.handleOpenURL({ url: url }));
         if (getMessengerNullable()) {
             this.setState({ state: 'app' });
             return;

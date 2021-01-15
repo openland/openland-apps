@@ -1,33 +1,22 @@
-#import "AppDelegate.h"
-#import "AppCenterReactNative.h"
-#import "AppCenterReactNativeCrashes.h"
-#import "AppCenterReactNativeAnalytics.h"
 #import <UserNotifications/UserNotifications.h>
 #import <React/RCTLinkingManager.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <React/RCTPushNotificationManager.h>
-#import <Stripe/Stripe.h>
 
+@import Stripe;
+#import "AppDelegate.h"
 #import "openland-Swift.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  
-  /*
-   * Start App Center
-   */
-  
-  [AppCenterReactNative register];
-  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
-  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
-  
   /*
    * Stripe
    */
-  [Stripe setDefaultPublishableKey: @"pk_live_eLENsh8Ten2AoOcJhfxUkTfD"];
+  [StripeAPI setDefaultPublishableKey: @"pk_live_eLENsh8Ten2AoOcJhfxUkTfD"];
+  
   
   /*
    * Bundle location
@@ -78,7 +67,7 @@
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication annotation:    (id)annotation
 {
-   BOOL stripeHandled = [Stripe handleStripeURLCallbackWithURL:url];
+   BOOL stripeHandled = [StripeAPI handleStripeURLCallbackWithURL:url];
    if (stripeHandled) {
        return YES;
    } else {

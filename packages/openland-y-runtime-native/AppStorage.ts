@@ -1,5 +1,5 @@
 import { AppStorageApi } from "openland-y-runtime-api/AppStorageApi";
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class AppStorageImpl implements AppStorageApi {
     async readKey<T>(key: string) {

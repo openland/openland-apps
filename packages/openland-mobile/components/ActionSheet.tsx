@@ -121,10 +121,10 @@ export class ActionSheetBuilder {
         if (isPad) {
             showSheetModal((ctx) => {
                 return (
-                    <View flexDirection="column" alignItems="stretch">
+                    <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
                         {this.renderItems(ctx)}
                         {this._cancelable && (
-                            <View margin={16}>
+                            <View style={{ margin: 16 }}>
                                 <ZButton
                                     size="large"
                                     title={this._buttonTitle}

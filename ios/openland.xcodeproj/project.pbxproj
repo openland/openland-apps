@@ -7,17 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00F258EA97B8CF0182CF4BEA /* libPods-openlandTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 668DD3828F1EB73FBBFBECBD /* libPods-openlandTests.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		440BD442C9014A379447F506 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E35F176CD4E46009EB90F2E /* AppCenter-Config.plist */; };
-		58E91A6D5BCE372E82B34D6B /* Pods_openlandTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAE619037FA2C851ABAEAC81 /* Pods_openlandTests.framework */; };
-		7A78E95582A54B76A967E43B /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE573BB4274A4A7687D530D8 /* libRNDeviceInfo-tvOS.a */; };
+		66D707344F4B2F0C5E35DC83 /* libPods-openland.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE9CC75B7C859C9C76FE5744 /* libPods-openland.a */; };
 		A0153A96222426F400C026A4 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0153A95222426F400C026A4 /* ShareViewController.swift */; };
 		A0153A99222426F400C026A4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0153A97222426F400C026A4 /* MainInterface.storyboard */; };
 		A030D384236B074B005917D1 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A030D383236B074A005917D1 /* AddressBook.framework */; };
@@ -60,11 +56,6 @@
 		AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */; };
 		AAA47DC3212CB2BC00E71A74 /* RNAsyncColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC2212CB2BC00E71A74 /* RNAsyncColor.swift */; };
 		AAA47DC5212CC70000E71A74 /* RNAsyncListNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC4212CC70000E71A74 /* RNAsyncListNode.swift */; };
-		AAA4DA49221457DC00BB1781 /* AppCenterReactNative.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA48221457DC00BB1781 /* AppCenterReactNative.m */; };
-		AAA4DA502214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA4C2214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m */; };
-		AAA4DA512214585E00BB1781 /* AppCenterReactNativeCrashes.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA4E2214585E00BB1781 /* AppCenterReactNativeCrashes.m */; };
-		AAA4DA522214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA4F2214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m */; };
-		AAA4DA55221458CB00BB1781 /* AppCenterReactNativeAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA53221458CB00BB1781 /* AppCenterReactNativeAnalytics.m */; };
 		AAA942B5235E783800690F14 /* RNSWindowManager-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA942B4235E783800690F14 /* RNSWindowManager-Bridge.m */; };
 		AAA942B7235E786B00690F14 /* RNSWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA942B6235E786B00690F14 /* RNSWindowManager.swift */; };
 		AAAA1DAE2289E0C50023A28F /* TransportSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAA1DAD2289E0C50023A28F /* TransportSocket.swift */; };
@@ -88,9 +79,6 @@
 		AAB181762284EC06008D3603 /* NormalizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB181752284EC06008D3603 /* NormalizerTests.swift */; };
 		AAC113B2213EA154002E0D18 /* RNAsyncTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */; };
 		AAC1E0CA23F5CF9B00F25B7B /* WrappedWebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC1E0C923F5CF9B00F25B7B /* WrappedWebSocket.swift */; };
-		AAC60B57215AF2D3005E09BA /* Auth0.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAC60B56215AF2D3005E09BA /* Auth0.plist */; };
-		AACF26432260A90100C565E4 /* SwiftStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACF263922609C7400C565E4 /* SwiftStore.framework */; };
-		AACF26442260A90100C565E4 /* SwiftStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AACF263922609C7400C565E4 /* SwiftStore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AAD8F14A2208A5DF007C4FE3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F1492208A5DF007C4FE3 /* AVFoundation.framework */; };
 		AAD8F14C2208A5E5007C4FE3 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F14B2208A5E5007C4FE3 /* AudioToolbox.framework */; };
 		AAD8F14E2208A5EA007C4FE3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F14D2208A5EA007C4FE3 /* CoreGraphics.framework */; };
@@ -107,11 +95,9 @@
 		AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE5017B2145040B00BEAA04 /* RNAsyncKeyboardManager.swift */; };
 		AAE5017E2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE5017D2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift */; };
 		AAE501802145801600BEAA04 /* RNAsyncKeyboardContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE5017F2145801600BEAA04 /* RNAsyncKeyboardContext.swift */; };
-		AAE501842146079E00BEAA04 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC42129FA3C003706B3 /* Bridge.m */; };
 		AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC42129FA3C003706B3 /* Bridge.m */; };
 		AAE56DE4212A0CDC003706B3 /* Nuke.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; };
 		AAE56DE5212A0CDC003706B3 /* Nuke.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E3144D4C9716E37672BE02B8 /* Pods_openland.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE82206F925E2FC273DE568C /* Pods_openland.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,40 +108,12 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = openland;
 		};
-		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
-			remoteInfo = "openland-tvOS";
-		};
 		A0DDD9B72226BE8B00AA3061 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = A0153A92222426F400C026A4;
 			remoteInfo = "openland-share-ex";
-		};
-		AACF263822609C7400C565E4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 2EAADF261AF6F94600783BAD;
-			remoteInfo = SwiftStore;
-		};
-		AACF263A22609C7400C565E4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 2EAADF311AF6F94600783BAD;
-			remoteInfo = SwiftStoreTests;
-		};
-		AACF26452260A90100C565E4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 2EAADF251AF6F94600783BAD;
-			remoteInfo = SwiftStore;
 		};
 		AAE56DD2212A0CAC003706B3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -247,7 +205,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				AACF26442260A90100C565E4 /* SwiftStore.framework in Embed Frameworks */,
 				AAE56DE5212A0CDC003706B3 /* Nuke.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -271,13 +228,12 @@
 		18EC2FD3E40F4887822E0BE1 /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
 		2152CD4283A28E17F647273D /* Pods-openlandTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openlandTests.debug.xcconfig"; path = "Target Support Files/Pods-openlandTests/Pods-openlandTests.debug.xcconfig"; sourceTree = "<group>"; };
 		225A9B88E13940309EFA3D50 /* libAppCenterReactNativeCrashes.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNativeCrashes.a; sourceTree = "<group>"; };
-		2D02E47B1E0B4A5D006451C7 /* openland-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "openland-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D02E4901E0B4A5D006451C7 /* openland-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "openland-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BC04373DF80411497509133 /* libFastImage.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libFastImage.a; sourceTree = "<group>"; };
 		42DDC5D7B8BC46629B7918F3 /* libLottie.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libLottie.a; sourceTree = "<group>"; };
 		53F5AB72267448BA8CB99FDA /* libA0Auth0.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libA0Auth0.a; sourceTree = "<group>"; };
 		5DAD0C618B9F41E699CF1155 /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
+		668DD3828F1EB73FBBFBECBD /* libPods-openlandTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-openlandTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7023E2C8438941E08C21ED1F /* libRNShare.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNShare.a; sourceTree = "<group>"; };
 		7343F041C8954F498DB6F766 /* libAppCenterReactNativeAnalytics.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNativeAnalytics.a; sourceTree = "<group>"; };
 		7575E5B9294149ECB950973F /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
@@ -342,16 +298,6 @@
 		AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncGradient.swift; sourceTree = "<group>"; };
 		AAA47DC2212CB2BC00E71A74 /* RNAsyncColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncColor.swift; sourceTree = "<group>"; };
 		AAA47DC4212CC70000E71A74 /* RNAsyncListNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncListNode.swift; sourceTree = "<group>"; };
-		AAA4DA47221457DC00BB1781 /* AppCenterReactNative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNative.h; sourceTree = "<group>"; };
-		AAA4DA48221457DC00BB1781 /* AppCenterReactNative.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNative.m; sourceTree = "<group>"; };
-		AAA4DA4A2214585D00BB1781 /* AppCenterReactNativeCrashes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeCrashes.h; sourceTree = "<group>"; };
-		AAA4DA4B2214585D00BB1781 /* AppCenterReactNativeCrashesDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeCrashesDelegate.h; sourceTree = "<group>"; };
-		AAA4DA4C2214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeCrashesDelegate.m; sourceTree = "<group>"; };
-		AAA4DA4D2214585E00BB1781 /* AppCenterReactNativeCrashesUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeCrashesUtils.h; sourceTree = "<group>"; };
-		AAA4DA4E2214585E00BB1781 /* AppCenterReactNativeCrashes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeCrashes.m; sourceTree = "<group>"; };
-		AAA4DA4F2214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeCrashesUtils.m; sourceTree = "<group>"; };
-		AAA4DA53221458CB00BB1781 /* AppCenterReactNativeAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeAnalytics.m; sourceTree = "<group>"; };
-		AAA4DA54221458CB00BB1781 /* AppCenterReactNativeAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeAnalytics.h; sourceTree = "<group>"; };
 		AAA942B3235E74F000690F14 /* RNSWindowManager-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNSWindowManager-Bridge.h"; sourceTree = "<group>"; };
 		AAA942B4235E783800690F14 /* RNSWindowManager-Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNSWindowManager-Bridge.m"; sourceTree = "<group>"; };
 		AAA942B6235E786B00690F14 /* RNSWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSWindowManager.swift; sourceTree = "<group>"; };
@@ -378,8 +324,6 @@
 		AAB181772284EDE6008D3603 /* normalizeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = normalizeData.swift; sourceTree = "<group>"; };
 		AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncTextNode.swift; sourceTree = "<group>"; };
 		AAC1E0C923F5CF9B00F25B7B /* WrappedWebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedWebSocket.swift; sourceTree = "<group>"; };
-		AAC60B56215AF2D3005E09BA /* Auth0.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Auth0.plist; sourceTree = "<group>"; };
-		AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftStore.xcodeproj; path = Vendor/SwiftStore/SwiftStore.xcodeproj; sourceTree = "<group>"; };
 		AACFC575210778FE00225C86 /* openland.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = openland.entitlements; path = openland/openland.entitlements; sourceTree = "<group>"; };
 		AAD8F1492208A5DF007C4FE3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AAD8F14B2208A5E5007C4FE3 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -392,6 +336,7 @@
 		AAD8F1592208A60E007C4FE3 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		AAD8F15B2208A619007C4FE3 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		AAD8F15D2208A7C3007C4FE3 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = "../node_modules/react-native-webrtc/ios/WebRTC.framework"; sourceTree = "<group>"; };
+		AAE0B5E625B07D6E000036D6 /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAE10482212C29E30034DA0F /* RNAsyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncView.swift; sourceTree = "<group>"; };
 		AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncSpecs.swift; sourceTree = "<group>"; };
 		AAE5017B2145040B00BEAA04 /* RNAsyncKeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncKeyboardManager.swift; sourceTree = "<group>"; };
@@ -403,13 +348,12 @@
 		AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nuke.xcodeproj; path = Vendor/Nuke/Nuke.xcodeproj; sourceTree = "<group>"; };
 		AC7B88423845F8EAD8DCB734 /* Pods-openland.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openland.release.xcconfig"; path = "Target Support Files/Pods-openland/Pods-openland.release.xcconfig"; sourceTree = "<group>"; };
 		AE573BB4274A4A7687D530D8 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
-		AE82206F925E2FC273DE568C /* Pods_openland.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_openland.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54BAE5BF85F49A3AE452322 /* libimageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libimageCropPicker.a; sourceTree = "<group>"; };
+		BE9CC75B7C859C9C76FE5744 /* libPods-openland.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-openland.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD66E08746544FAC954BD413 /* libRCTRestart.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTRestart.a; sourceTree = "<group>"; };
 		D1364232686B4C9CBE4687ED /* libRNGestureHandler.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGestureHandler.a; sourceTree = "<group>"; };
 		D42AFEFF61464D6C82A4A5F5 /* libRNSearchBar.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSearchBar.a; sourceTree = "<group>"; };
 		E6F85E750CB349B7995263A8 /* libRNThread.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNThread.a; sourceTree = "<group>"; };
-		EAE619037FA2C851ABAEAC81 /* Pods_openlandTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_openlandTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEBC54265D15510450AF331F /* Pods-openlandTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openlandTests.release.xcconfig"; path = "Target Support Files/Pods-openlandTests/Pods-openlandTests.release.xcconfig"; sourceTree = "<group>"; };
 		F0129911A3402B0C232928E2 /* Pods-openland.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openland.debug.xcconfig"; path = "Target Support Files/Pods-openland/Pods-openland.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -419,7 +363,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				58E91A6D5BCE372E82B34D6B /* Pods_openlandTests.framework in Frameworks */,
+				00F258EA97B8CF0182CF4BEA /* libPods-openlandTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,30 +382,13 @@
 				AAD8F15E2208A7C3007C4FE3 /* WebRTC.framework in Frameworks */,
 				AAD8F1562208A601007C4FE3 /* VideoToolbox.framework in Frameworks */,
 				AAD8F1542208A5FC007C4FE3 /* CoreVideo.framework in Frameworks */,
-				AACF26432260A90100C565E4 /* SwiftStore.framework in Frameworks */,
 				AAD8F1522208A5F7007C4FE3 /* CoreAudio.framework in Frameworks */,
 				AAD8F1502208A5F2007C4FE3 /* GLKit.framework in Frameworks */,
 				AAD8F14E2208A5EA007C4FE3 /* CoreGraphics.framework in Frameworks */,
 				AAD8F14C2208A5E5007C4FE3 /* AudioToolbox.framework in Frameworks */,
 				AAD8F14A2208A5DF007C4FE3 /* AVFoundation.framework in Frameworks */,
 				AAE56DE4212A0CDC003706B3 /* Nuke.framework in Frameworks */,
-				E3144D4C9716E37672BE02B8 /* Pods_openland.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2D02E4781E0B4A5D006451C7 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */,
-				7A78E95582A54B76A967E43B /* libRNDeviceInfo-tvOS.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2D02E48D1E0B4A5D006451C7 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				66D707344F4B2F0C5E35DC83 /* libPods-openland.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,7 +432,6 @@
 				AA3DDA122284E76F0078A762 /* SpaceX */,
 				AA2365592244EBEE000AA3A7 /* RNGraphql */,
 				AA2FBA1E22247C61000915F7 /* RNSDevice */,
-				AAA4DA46221457BB00BB1781 /* appcenter */,
 				AAE104CF212C2A440034DA0F /* RNAsyncView */,
 				AAE56DBF2129F997003706B3 /* hacks */,
 				AAE56DC32129FA25003706B3 /* Bridge.h */,
@@ -522,7 +448,6 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				AAE56DC02129F9B8003706B3 /* openland-Bridging-Header.h */,
 				AA6281AA2151C8BC007C8200 /* VERSION */,
-				AAC60B56215AF2D3005E09BA /* Auth0.plist */,
 				AA3DDA042284E0AC0078A762 /* Operations.swift */,
 			);
 			name = openland;
@@ -531,6 +456,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AAE0B5E625B07D6E000036D6 /* libBVLinearGradient.a */,
 				A030D38B236B0807005917D1 /* RNGoogleSignin.framework */,
 				A030D389236B0785005917D1 /* libz.tbd */,
 				A030D387236B0778005917D1 /* SystemConfiguration.framework */,
@@ -556,8 +482,8 @@
 				AA904699210F2EDB00F989BC /* QBImagePicker.framework */,
 				AA90469B210F2EDB00F989BC /* RSKImageCropper.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				AE82206F925E2FC273DE568C /* Pods_openland.framework */,
-				EAE619037FA2C851ABAEAC81 /* Pods_openlandTests.framework */,
+				BE9CC75B7C859C9C76FE5744 /* libPods-openland.a */,
+				668DD3828F1EB73FBBFBECBD /* libPods-openlandTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -565,7 +491,6 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */,
 				AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */,
 			);
 			name = Libraries;
@@ -595,8 +520,6 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* openland.app */,
 				00E356EE1AD99517003FC87E /* openlandTests.xctest */,
-				2D02E47B1E0B4A5D006451C7 /* openland-tvOS.app */,
-				2D02E4901E0B4A5D006451C7 /* openland-tvOSTests.xctest */,
 				A0153A93222426F400C026A4 /* openland-share-ex.appex */,
 			);
 			name = Products;
@@ -723,23 +646,6 @@
 			name = Nodes;
 			sourceTree = "<group>";
 		};
-		AAA4DA46221457BB00BB1781 /* appcenter */ = {
-			isa = PBXGroup;
-			children = (
-				AAA4DA54221458CB00BB1781 /* AppCenterReactNativeAnalytics.h */,
-				AAA4DA53221458CB00BB1781 /* AppCenterReactNativeAnalytics.m */,
-				AAA4DA4A2214585D00BB1781 /* AppCenterReactNativeCrashes.h */,
-				AAA4DA4E2214585E00BB1781 /* AppCenterReactNativeCrashes.m */,
-				AAA4DA4B2214585D00BB1781 /* AppCenterReactNativeCrashesDelegate.h */,
-				AAA4DA4C2214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m */,
-				AAA4DA4D2214585E00BB1781 /* AppCenterReactNativeCrashesUtils.h */,
-				AAA4DA4F2214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m */,
-				AAA4DA47221457DC00BB1781 /* AppCenterReactNative.h */,
-				AAA4DA48221457DC00BB1781 /* AppCenterReactNative.m */,
-			);
-			name = appcenter;
-			sourceTree = "<group>";
-		};
 		AAA942AF235E747D00690F14 /* RNSWindowManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -776,15 +682,6 @@
 				AA2281C9228A4B7F00810848 /* collectMissingKeys.swift */,
 			);
 			name = Store;
-			sourceTree = "<group>";
-		};
-		AACF262B22609C7400C565E4 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				AACF263922609C7400C565E4 /* SwiftStore.framework */,
-				AACF263B22609C7400C565E4 /* SwiftStoreTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		AAE104CF212C2A440034DA0F /* RNAsyncView */ = {
@@ -860,7 +757,7 @@
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				EABBE90B3FB97F971B1517A5 /* [CP] Embed Pods Frameworks */,
+				96A41ECA9A2726BDB3C6AF16 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -891,48 +788,11 @@
 			dependencies = (
 				AAE56DE7212A0CDC003706B3 /* PBXTargetDependency */,
 				A0DDD9B82226BE8B00AA3061 /* PBXTargetDependency */,
-				AACF26462260A90100C565E4 /* PBXTargetDependency */,
 			);
 			name = openland;
 			productName = "Hello World";
 			productReference = 13B07F961A680F5B00A75B9A /* openland.app */;
 			productType = "com.apple.product-type.application";
-		};
-		2D02E47A1E0B4A5D006451C7 /* openland-tvOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "openland-tvOS" */;
-			buildPhases = (
-				2D02E4771E0B4A5D006451C7 /* Sources */,
-				2D02E4781E0B4A5D006451C7 /* Frameworks */,
-				2D02E4791E0B4A5D006451C7 /* Resources */,
-				2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "openland-tvOS";
-			productName = "openland-tvOS";
-			productReference = 2D02E47B1E0B4A5D006451C7 /* openland-tvOS.app */;
-			productType = "com.apple.product-type.application";
-		};
-		2D02E48F1E0B4A5D006451C7 /* openland-tvOSTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "openland-tvOSTests" */;
-			buildPhases = (
-				2D02E48C1E0B4A5D006451C7 /* Sources */,
-				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
-				2D02E48E1E0B4A5D006451C7 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */,
-			);
-			name = "openland-tvOSTests";
-			productName = "openland-tvOSTests";
-			productReference = 2D02E4901E0B4A5D006451C7 /* openland-tvOSTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		A0153A92222426F400C026A4 /* openland-share-ex */ = {
 			isa = PBXNativeTarget;
@@ -993,17 +853,6 @@
 							};
 						};
 					};
-					2D02E47A1E0B4A5D006451C7 = {
-						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = ATWUYU6747;
-						ProvisioningStyle = Automatic;
-					};
-					2D02E48F1E0B4A5D006451C7 = {
-						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = ATWUYU6747;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 2D02E47A1E0B4A5D006451C7;
-					};
 					A0153A92222426F400C026A4 = {
 						CreatedOnToolsVersion = 10.1;
 						DevelopmentTeam = ATWUYU6747;
@@ -1033,37 +882,17 @@
 					ProductGroup = AAE56DC7212A0CAC003706B3 /* Products */;
 					ProjectRef = AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */;
 				},
-				{
-					ProductGroup = AACF262B22609C7400C565E4 /* Products */;
-					ProjectRef = AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */;
-				},
 			);
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* openland */,
 				00E356ED1AD99517003FC87E /* openlandTests */,
-				2D02E47A1E0B4A5D006451C7 /* openland-tvOS */,
-				2D02E48F1E0B4A5D006451C7 /* openland-tvOSTests */,
 				A0153A92222426F400C026A4 /* openland-share-ex */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		AACF263922609C7400C565E4 /* SwiftStore.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SwiftStore.framework;
-			remoteRef = AACF263822609C7400C565E4 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		AACF263B22609C7400C565E4 /* SwiftStoreTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = SwiftStoreTests.xctest;
-			remoteRef = AACF263A22609C7400C565E4 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		AAE56DD3212A0CAC003706B3 /* Nuke.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1144,25 +973,9 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				AA6281AB2151C8BD007C8200 /* VERSION in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				AAC60B57215AF2D3005E09BA /* Auth0.plist in Resources */,
 				A0579EF42260D2BE00457B66 /* incallmanager_busytone.mp3 in Resources */,
 				440BD442C9014A379447F506 /* AppCenter-Config.plist in Resources */,
 				A030D38E236B0CE0005917D1 /* GoogleService-Info.plist in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2D02E4791E0B4A5D006451C7 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2D02E48E1E0B4A5D006451C7 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1190,20 +1003,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\nexport BUNDLE_COMMAND=\"ram-bundle\"\n../scripts/ios_prebuild.sh\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
-		};
-		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Bundle React Native Code And Images";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
 		32DFCC3987DF11A47097890C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1256,149 +1055,35 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-openland/Pods-openland-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework",
-				"${BUILT_PRODUCTS_DIR}/BVLinearGradient/BVLinearGradient.framework",
-				"${BUILT_PRODUCTS_DIR}/DoubleConversion/DoubleConversion.framework",
-				"${BUILT_PRODUCTS_DIR}/FBReactNativeSpec/FBReactNativeSpec.framework",
-				"${BUILT_PRODUCTS_DIR}/Folly/folly.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/ObjectiveRocks/ObjectiveRocks.framework",
-				"${BUILT_PRODUCTS_DIR}/PINCache/PINCache.framework",
-				"${BUILT_PRODUCTS_DIR}/PINOperation/PINOperation.framework",
-				"${BUILT_PRODUCTS_DIR}/PINRemoteImage/PINRemoteImage.framework",
-				"${BUILT_PRODUCTS_DIR}/RCTRestart/RCTRestart.framework",
-				"${BUILT_PRODUCTS_DIR}/RCTTypeSafety/RCTTypeSafety.framework",
-				"${BUILT_PRODUCTS_DIR}/RNDeviceInfo/RNDeviceInfo.framework",
-				"${BUILT_PRODUCTS_DIR}/RNFastImage/RNFastImage.framework",
-				"${BUILT_PRODUCTS_DIR}/RNGestureHandler/RNGestureHandler.framework",
-				"${BUILT_PRODUCTS_DIR}/RNImageCropPicker/RNImageCropPicker.framework",
-				"${BUILT_PRODUCTS_DIR}/RNLocalize/RNLocalize.framework",
-				"${BUILT_PRODUCTS_DIR}/RNRate/RNRate.framework",
-				"${BUILT_PRODUCTS_DIR}/RNShare/RNShare.framework",
-				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
-				"${BUILT_PRODUCTS_DIR}/React-Core/React.framework",
-				"${BUILT_PRODUCTS_DIR}/React-CoreModules/CoreModules.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTActionSheet/RCTActionSheet.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTAnimation/RCTAnimation.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTBlob/RCTBlob.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTImage/RCTImage.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTLinking/RCTLinking.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTNetwork/RCTNetwork.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTPushNotification/RCTPushNotification.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTSettings/RCTSettings.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTText/RCTText.framework",
-				"${BUILT_PRODUCTS_DIR}/React-RCTVibration/RCTVibration.framework",
-				"${BUILT_PRODUCTS_DIR}/React-cxxreact/cxxreact.framework",
-				"${BUILT_PRODUCTS_DIR}/React-jsi/jsi.framework",
-				"${BUILT_PRODUCTS_DIR}/React-jsiexecutor/jsireact.framework",
-				"${BUILT_PRODUCTS_DIR}/React-jsinspector/jsinspector.framework",
-				"${BUILT_PRODUCTS_DIR}/ReactCommon/ReactCommon.framework",
-				"${BUILT_PRODUCTS_DIR}/ReactNativeDarkMode/ReactNativeDarkMode.framework",
-				"${BUILT_PRODUCTS_DIR}/ReactNativeIncallManager/ReactNativeIncallManager.framework",
-				"${BUILT_PRODUCTS_DIR}/ReactNativePermissions/ReactNativePermissions.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImageWebPCoder/SDWebImageWebPCoder.framework",
-				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
-				"${BUILT_PRODUCTS_DIR}/Stripe/Stripe.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/TOCropViewController/TOCropViewController.framework",
-				"${BUILT_PRODUCTS_DIR}/Texture/AsyncDisplayKit.framework",
-				"${BUILT_PRODUCTS_DIR}/Yoga/yoga.framework",
-				"${BUILT_PRODUCTS_DIR}/glog/glog.framework",
-				"${BUILT_PRODUCTS_DIR}/libwebp/libwebp.framework",
-				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
-				"${BUILT_PRODUCTS_DIR}/lottie-react-native/lottie_react_native.framework",
-				"${BUILT_PRODUCTS_DIR}/react-native-background-timer/react_native_background_timer.framework",
-				"${BUILT_PRODUCTS_DIR}/react-native-blur/react_native_blur.framework",
-				"${BUILT_PRODUCTS_DIR}/react-native-contacts/react_native_contacts.framework",
-				"${BUILT_PRODUCTS_DIR}/react-native-document-picker/react_native_document_picker.framework",
-				"${BUILT_PRODUCTS_DIR}/react-native-fast-animations/react_native_fast_animations.framework",
-				"${BUILT_PRODUCTS_DIR}/react-native-haptic-feedback/react_native_haptic_feedback.framework",
-				"${BUILT_PRODUCTS_DIR}/react-native-image-picker/react_native_image_picker.framework",
-				"${BUILT_PRODUCTS_DIR}/react-native-location/react_native_location.framework",
-				"${BUILT_PRODUCTS_DIR}/react-native-pdf/react_native_pdf.framework",
-				"${BUILT_PRODUCTS_DIR}/react-native-safe-area-context/react_native_safe_area_context.framework",
-				"${BUILT_PRODUCTS_DIR}/react-native-sqlite-storage/react_native_sqlite_storage.framework",
-				"${BUILT_PRODUCTS_DIR}/react-native-version-number/react_native_version_number.framework",
 				"${PODS_ROOT}/../../node_modules/react-native-webrtc/ios/WebRTC.framework",
-				"${BUILT_PRODUCTS_DIR}/react-native-webrtc/react_native_webrtc.framework",
-				"${BUILT_PRODUCTS_DIR}/rn-fetch-blob/rn_fetch_blob.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AppAuth.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BVLinearGradient.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DoubleConversion.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBReactNativeSpec.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/folly.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMAppAuth.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectiveRocks.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINCache.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINOperation.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINRemoteImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTRestart.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTTypeSafety.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNDeviceInfo.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNFastImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNGestureHandler.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNImageCropPicker.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNLocalize.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNRate.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNShare.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CoreModules.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTActionSheet.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTAnimation.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTBlob.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTLinking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTNetwork.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTPushNotification.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTSettings.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTText.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RCTVibration.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/cxxreact.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/jsi.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/jsireact.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/jsinspector.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactCommon.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeDarkMode.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeIncallManager.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativePermissions.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageWebPCoder.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stripe.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TOCropViewController.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AsyncDisplayKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/yoga.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libwebp.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/lottie_react_native.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_background_timer.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_blur.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_contacts.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_document_picker.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_fast_animations.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_haptic_feedback.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_image_picker.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_location.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_pdf.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_safe_area_context.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_sqlite_storage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_version_number.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_webrtc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/rn_fetch_blob.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-openland/Pods-openland-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		96A41ECA9A2726BDB3C6AF16 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-openlandTests/Pods-openlandTests-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe3DS2.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe3DS2.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-openlandTests/Pods-openlandTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A093F55022293812003D370B /* Run Script */ = {
@@ -1422,35 +1107,23 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-openland/Pods-openland-resources.sh",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe3DS2.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe3DS2.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-openland/Pods-openland-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EABBE90B3FB97F971B1517A5 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-openlandTests/Pods-openlandTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ObjectiveRocks/ObjectiveRocks.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectiveRocks.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-openlandTests/Pods-openlandTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1474,7 +1147,6 @@
 				AAB0EF8B21371A5D00FBCB75 /* RNAsyncViewEventEmitter.swift in Sources */,
 				AAB0EF8F213D819C00FBCB75 /* RNImageNode.swift in Sources */,
 				AA92636E2132D7B5004BFD8D /* RNTouchableNode.swift in Sources */,
-				AAA4DA502214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m in Sources */,
 				AA23655B2244EBFF000AA3A7 /* RNGraphqlModule.swift in Sources */,
 				AAB0EEA321349F8000FBCB75 /* RNAsyncLoadingIndicator.swift in Sources */,
 				AAB0EF8D21371A8B00FBCB75 /* RNAsyncListView.swift in Sources */,
@@ -1490,7 +1162,6 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				AAB0EE57213438C500FBCB75 /* RNAsyncDataView.swift in Sources */,
 				AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */,
-				AAA4DA55221458CB00BB1781 /* AppCenterReactNativeAnalytics.m in Sources */,
 				AA2281CC228B3C9200810848 /* SpaceXUtils.swift in Sources */,
 				AA2281CE228B3EF600810848 /* NetworkingDelegate.swift in Sources */,
 				AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */,
@@ -1516,11 +1187,9 @@
 				AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */,
 				AAAA1DBA2289E2260023A28F /* SpaceXTransport.swift in Sources */,
 				AAB0219421429D8800927CF0 /* RNAsyncCell.swift in Sources */,
-				AAA4DA512214585E00BB1781 /* AppCenterReactNativeCrashes.m in Sources */,
 				AA23655D2244EE47000AA3A7 /* RNGraphqlClient.swift in Sources */,
 				AAAA1DC22289FD8A0023A28F /* selectorKey.swift in Sources */,
 				AAC1E0CA23F5CF9B00F25B7B /* WrappedWebSocket.swift in Sources */,
-				AAA4DA522214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m in Sources */,
 				AA2281C6228A37F900810848 /* SpaceXPersistence.swift in Sources */,
 				AA7B7BF822860CA6001AA400 /* RecordStore.swift in Sources */,
 				AAA942B5235E783800690F14 /* RNSWindowManager-Bridge.m in Sources */,
@@ -1531,26 +1200,8 @@
 				AA3DDA0F2284E0AD0078A762 /* Operations.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				AAAA1DAE2289E0C50023A28F /* TransportSocket.swift in Sources */,
-				AAA4DA49221457DC00BB1781 /* AppCenterReactNative.m in Sources */,
 				AAB0EF89213719DB00FBCB75 /* RNAsyncViewNode.swift in Sources */,
 				AA7B7BE022851C3F001AA400 /* normalizeData.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2D02E4771E0B4A5D006451C7 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */,
-				AAE501842146079E00BEAA04 /* Bridge.m in Sources */,
-				2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2D02E48C1E0B4A5D006451C7 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1570,20 +1221,10 @@
 			target = 13B07F861A680F5B00A75B9A /* openland */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
-		2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2D02E47A1E0B4A5D006451C7 /* openland-tvOS */;
-			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
-		};
 		A0DDD9B82226BE8B00AA3061 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A0153A92222426F400C026A4 /* openland-share-ex */;
 			targetProxy = A0DDD9B72226BE8B00AA3061 /* PBXContainerItemProxy */;
-		};
-		AACF26462260A90100C565E4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = SwiftStore;
-			targetProxy = AACF26452260A90100C565E4 /* PBXContainerItemProxy */;
 		};
 		AAE56DE7212A0CDC003706B3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1634,45 +1275,23 @@
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
-					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/react-native-super-ellipse-mask/ios",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
 					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 					"$(SRCROOT)/../node_modules/react-native-rate/ios",
 					"$(SRCROOT)/../node_modules/react-native-threads/ios",
 					"$(SRCROOT)/../node_modules/react-native-auth0/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-rate/ios",
 					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 					"$(SRCROOT)/../node_modules/react-native-threads/ios",
 					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
 					"$(SRCROOT)/../node_modules/react-native-rate/ios",
 					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 				);
 				INFOPLIST_FILE = openlandTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1711,45 +1330,23 @@
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
 					"$(SRCROOT)/../node_modules/react-native-blur/ios",
-					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/react-native-super-ellipse-mask/ios",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
 					"$(SRCROOT)/../node_modules/react-native-share/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
 					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 					"$(SRCROOT)/../node_modules/react-native-rate/ios",
 					"$(SRCROOT)/../node_modules/react-native-threads/ios",
 					"$(SRCROOT)/../node_modules/react-native-auth0/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-rate/ios",
 					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 					"$(SRCROOT)/../node_modules/react-native-threads/ios",
 					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
 					"$(SRCROOT)/../node_modules/react-native-rate/ios",
 					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 				);
 				INFOPLIST_FILE = openlandTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1787,31 +1384,26 @@
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Auth0\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/PINCache\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/PINOperation\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/PINRemoteImage\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/SimpleKeychain\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SwiftyJSON\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Texture\"",
-					"\"${PODS_ROOT}/AppCenter/AppCenter-SDK-Apple/iOS\"",
-					"\"${PODS_ROOT}/AppCenterReactNativeShared/AppCenterReactNativeShared\"",
 					"$(SRCROOT)/../node_modules/react-native-webrtc/ios/**",
-					"$(PROJECT_DIR)/Vendor/AppCenter",
 					"$(PROJECT_DIR)",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
 				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = openland/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../node_modules/react-native-webrtc/ios/**";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-webrtc/ios/**",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1823,7 +1415,7 @@
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
 				SWIFT_OBJC_BRIDGING_HEADER = "openland-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1847,32 +1439,26 @@
 				ENABLE_TESTABILITY = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Auth0\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/PINCache\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/PINOperation\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/PINRemoteImage\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/SimpleKeychain\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SwiftyJSON\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Texture\"",
-					"\"${PODS_ROOT}/AppCenter/AppCenter-SDK-Apple/iOS\"",
-					"\"${PODS_ROOT}/AppCenterReactNativeShared/AppCenterReactNativeShared\"",
 					"$(SRCROOT)/../node_modules/react-native-webrtc/ios/**",
-					"$(PROJECT_DIR)/Vendor/AppCenter",
-					"\"${PODS_ROOT}/AppCenter/AppCenter\"",
 					"$(PROJECT_DIR)",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
 				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = openland/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../node_modules/react-native-webrtc/ios/**";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native-webrtc/ios/**",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1883,327 +1469,9 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
 				SWIFT_OBJC_BRIDGING_HEADER = "openland-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = Release;
-		};
-		2D02E4971E0B4A5E006451C7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = ATWUYU6747;
-				ENABLE_TESTABILITY = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
-					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
-					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
-					"$(SRCROOT)/../node_modules/react-native-blur/ios",
-					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
-					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
-					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
-					"$(SRCROOT)/../node_modules/react-native-super-ellipse-mask/ios",
-					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
-					"$(SRCROOT)/../node_modules/react-native-share/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/react-native-rate/ios",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/react-native-auth0/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-rate/ios",
-					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/react-native-rate/ios",
-					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-				);
-				INFOPLIST_FILE = "openland-tvOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
-				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lc++",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.openland-tvOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = appletvos;
-				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
-			};
-			name = Debug;
-		};
-		2D02E4981E0B4A5E006451C7 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = ATWUYU6747;
-				GCC_NO_COMMON_BLOCKS = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
-					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
-					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
-					"$(SRCROOT)/../node_modules/react-native-blur/ios",
-					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
-					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
-					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
-					"$(SRCROOT)/../node_modules/react-native-super-ellipse-mask/ios",
-					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
-					"$(SRCROOT)/../node_modules/react-native-share/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/react-native-rate/ios",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/react-native-auth0/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-rate/ios",
-					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/react-native-rate/ios",
-					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-				);
-				INFOPLIST_FILE = "openland-tvOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
-				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lc++",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.openland-tvOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = appletvos;
-				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
-			};
-			name = Release;
-		};
-		2D02E4991E0B4A5E006451C7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = ATWUYU6747;
-				ENABLE_TESTABILITY = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
-					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
-					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
-					"$(SRCROOT)/../node_modules/react-native-blur/ios",
-					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
-					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
-					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
-					"$(SRCROOT)/../node_modules/react-native-super-ellipse-mask/ios",
-					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
-					"$(SRCROOT)/../node_modules/react-native-share/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/react-native-rate/ios",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/react-native-auth0/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-rate/ios",
-					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/react-native-rate/ios",
-					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-				);
-				INFOPLIST_FILE = "openland-tvOSTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
-				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lc++",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.openland-tvOSTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/openland-tvOS.app/openland-tvOS";
-				TVOS_DEPLOYMENT_TARGET = 10.1;
-			};
-			name = Debug;
-		};
-		2D02E49A1E0B4A5E006451C7 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = ATWUYU6747;
-				GCC_NO_COMMON_BLOCKS = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
-					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
-					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
-					"$(SRCROOT)/../node_modules/react-native-blur/ios",
-					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
-					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
-					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
-					"$(SRCROOT)/../node_modules/react-native-super-ellipse-mask/ios",
-					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
-					"$(SRCROOT)/../node_modules/react-native-share/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/react-native-rate/ios",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/react-native-auth0/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-rate/ios",
-					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/react-native-rate/ios",
-					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-				);
-				INFOPLIST_FILE = "openland-tvOSTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
-				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lc++",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.openland-tvOSTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/openland-tvOS.app/openland-tvOS";
-				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Release;
 		};
@@ -2392,24 +1660,6 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "openland-tvOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2D02E4971E0B4A5E006451C7 /* Debug */,
-				2D02E4981E0B4A5E006451C7 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "openland-tvOSTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2D02E4991E0B4A5E006451C7 /* Debug */,
-				2D02E49A1E0B4A5E006451C7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

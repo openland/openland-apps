@@ -100,7 +100,7 @@ export const showDialogMenu = (item: DialogDataSourceItem) => {
         }, false, require('assets/ic-leave-24.png'));
     } else {
         builder.view((ctx: ZModalController) => (
-            <React.Suspense fallback={<View height={48}><ZLoader /></View>}>
+            <React.Suspense fallback={<View style={{ height: 48 }}><ZLoader /></View>}>
                 <QueryCacheProvider>
                     <DialogMenuPrivate ctx={ctx} item={item} />
                 </QueryCacheProvider>

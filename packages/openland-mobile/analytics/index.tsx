@@ -1,5 +1,6 @@
 import { Track, TrackPlatform } from 'openland-engines/Tracking';
-import { Platform, AsyncStorage } from 'react-native';
+import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { EventPlatform } from 'openland-api/spacex.types';
 
 const platform: TrackPlatform = {

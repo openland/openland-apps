@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, PermissionsAndroid, AsyncStorage } from 'react-native';
+import { Platform, PermissionsAndroid } from 'react-native';
 import * as ContactsPermission from 'react-native-contacts';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
@@ -25,6 +25,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { GlobalSearchContacts } from './components/globalSearch/GlobalSearchContacth';
 import { ComponentRefContext } from './Home';
 import { contactsExporter } from '../../components/PhonebookExporter';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ContactsWasImportStub = React.memo(() => {
     const theme = React.useContext(ThemeContext);

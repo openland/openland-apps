@@ -41,10 +41,10 @@ const normalizeMedia = (data: ImageOrVideo[]) => {
 export const showAttachMenu = (fileCallback?: (filesMeta: ({ type: 'document' | 'photo' | 'video', name: string, path: string, size: number })[]) => void, donationCb?: () => void) => {
     let builder = new ActionSheetBuilder();
 
-    builder.action(Platform.select({ ios: 'Take photo or video', android: 'Take photo' }), async () => {
+    builder.action(Platform.select({ ios: 'Take photo or video', default: 'Take photo' }), async () => {
         if (await checkPermissions('camera')) {
             Picker.openCamera({
-                mediaType: Platform.select({ ios: 'any', android: 'photo' }),
+                mediaType: Platform.select({ ios: 'any', default: 'photo' }),
             }).then(response => {
                 let isPhoto = checkFileIsPhoto(response.path);
 
@@ -77,7 +77,7 @@ export const showAttachMenu = (fileCallback?: (filesMeta: ({ type: 'document' | 
         }, false, require('assets/ic-camera-video-24.png'));
     }
 
-    builder.action(Platform.select({ ios: 'Choose from library', android: 'Photo gallery' }), async () => {
+    builder.action(Platform.select({ ios: 'Choose from library', default: 'Photo gallery' }), async () => {
         if (await checkPermissions('gallery')) {
             Picker.openPicker({
                 multiple: true,
@@ -138,7 +138,7 @@ export const showAttachMenu = (fileCallback?: (filesMeta: ({ type: 'document' | 
         }, false, require('assets/ic-video-24.png'));
     }
 
-    builder.action(Platform.select({ ios: 'Send document', android: 'Document' }), () => {
+    builder.action(Platform.select({ ios: 'Send document', default: 'Document' }), () => {
         DocumentPicker.show({ filetype: [DocumentPickerUtil.allFiles()] },
             (error, response) => {
                 if (!response) {
@@ -153,7 +153,7 @@ export const showAttachMenu = (fileCallback?: (filesMeta: ({ type: 'document' | 
     }, false, require('assets/ic-document-24.png'));
 
     if (donationCb && Platform.OS !== 'ios') {
-        builder.action(Platform.select({ ios: 'Make donation', android: 'Donation' }), () => {
+        builder.action(Platform.select({ ios: 'Make donation', default: 'Donation' }), () => {
             donationCb();
         }, false, require('assets/ic-donation-24.png'));
     }

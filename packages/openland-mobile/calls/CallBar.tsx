@@ -12,20 +12,22 @@ export const CallBarComponent = React.memo((props: { id: string, showCallModal: 
     if (conference && conference.conference && conference.conference.peers.length > 0) {
         return (
             <View
-                alignSelf="stretch"
-                alignItems="center"
-                height={40}
-                marginHorizontal={10}
-                borderRadius={20}
-                backgroundColor="#0084fe"
-                flexDirection="row"
-                shadowOpacity={0.2}
-                shadowColor="black"
-                shadowRadius={6}
-                shadowOffset={{ width: 0, height: 4 }}
-                elevation={4}
+                style={{
+                    alignSelf: 'stretch',
+                    alignItems: 'center',
+                    height: 40,
+                    marginHorizontal: 10,
+                    borderRadius: 20,
+                    backgroundColor: '#0084fe',
+                    flexDirection: 'row',
+                    shadowOpacity: 0.2,
+                    shadowColor: 'black',
+                    shadowRadius: 6,
+                    shadowOffset: { width: 0, height: 4 },
+                    elevation: 4
+                }}
             >
-                <View flexGrow={1} marginLeft={16} height={20}>
+                <View style={{ flexGrow: 1, marginLeft: 16, height: 20 }}>
                     <Text style={{ fontSize: 16, fontWeight: Platform.OS === 'android' ? '500' : '600', color: '#fff' }} allowFontScaling={false}>Call in progress</Text>
                 </View>
                 <SRouterContext.Consumer>

@@ -26,7 +26,7 @@ export const ZVideoComponent = React.memo(
         }, [completed, path]);
 
         return (
-            <View flexGrow={1}>
+            <View style={{ flexGrow: 1 }}>
                 {path.length > 0 && completed && (
                     <Video
                         source={{ uri: path }}
@@ -37,7 +37,7 @@ export const ZVideoComponent = React.memo(
                     />
                 )}
                 {(path.length <= 0 || !completed) && (
-                    <View flexGrow={1} alignItems="center" justifyContent="center">
+                    <View style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
                         <LoaderSpinner />
                     </View>
                 )}

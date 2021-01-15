@@ -70,7 +70,7 @@ class RNStripe: RCTEventEmitter, STPAuthenticationContext {
     setupIntentParams.paymentMethodParams = paymentMethodParams
     
     let paymentHandler = STPPaymentHandler.shared()
-    paymentHandler.confirmSetupIntent(withParams: setupIntentParams, authenticationContext: self) { status, setupIntent, error in
+    paymentHandler.confirmSetupIntent(setupIntentParams, with: self) { status, setupIntent, error in
         switch (status) {
         case .failed:
           var dict:[String:Any] = [:]

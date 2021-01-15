@@ -23,7 +23,7 @@ class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updat
     render() {
         if (Platform.OS === 'ios') {
             return (
-                <View position="absolute" left={0} bottom={0} right={0}>
+                <View style={{ position: 'absolute', left: 0, bottom: 0, right: 0 }}>
                     <ASKeyboardTracker overrideTransform={this.props.overrideTransform}>
                         <View
                             onLayout={this.handleLayout}
@@ -32,7 +32,7 @@ class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updat
                                 alignItems: 'stretch',
                             }}
                         >
-                            <ZBlurredView intensity="normal" alignItems="stretch" flexDirection="column" paddingBottom={SDevice.safeArea.bottom}>
+                            <ZBlurredView intensity="normal" style={{ alignItems: 'stretch', flexDirection: 'column', paddingBottom: SDevice.safeArea.bottom }}>
                                 {this.props.children}
                             </ZBlurredView>
                         </View>
@@ -42,8 +42,8 @@ class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updat
         }
         return (
             <View>
-                <View flexDirection="column" alignItems="stretch" onLayout={this.handleLayout}>
-                    <ZBlurredView fallbackColor="transparent" intensity="high" alignItems="stretch" flexDirection="column" style={{ paddingBottom: SDevice.safeArea.bottom }}>
+                <View style={{ flexDirection: 'column', alignItems: 'stretch' }} onLayout={this.handleLayout}>
+                    <ZBlurredView fallbackColor="transparent" intensity="high" style={{ paddingBottom: SDevice.safeArea.bottom, alignItems: 'stretch', flexDirection: 'column' }}>
                         {this.props.children}
                     </ZBlurredView>
                 </View>

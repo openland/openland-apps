@@ -1,7 +1,7 @@
 import { getMessenger } from './messenger';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { randomEmptyPlaceholderEmoji } from './tolerance';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { next } from 'openland-mobile/pages/auth/signup';
 import UrlPattern from 'url-pattern';
@@ -367,14 +367,16 @@ export const joinInviteIfHave = async () => {
     let srcLink = await AsyncStorage.getItem('initial_invite_link');
 
     let link = srcLink;
-    if (link.includes('?')) {
-        link = link.split('?')[0];
-    }
-    if (link.endsWith('/')) {
-        link = link.substr(0, link.length - 1);
-    }
-    if (link.endsWith('.')) {
-        link = link.slice(0, link.length - 1);
+    if (link) {
+        if (link.includes('?')) {
+            link = link.split('?')[0];
+        }
+        if (link.endsWith('/')) {
+            link = link.substr(0, link.length - 1);
+        }
+        if (link.endsWith('.')) {
+            link = link.slice(0, link.length - 1);
+        }
     }
 
     let patternBase = '(http(s)\\://)(:subdomain.)openland.com/';
@@ -417,7 +419,7 @@ export const joinInviteIfHave = async () => {
     //
     let roomInvitePattern = new UrlPattern(patternBase + 'invite/:invite');
     let roomInvitePatternDeep = new UrlPattern(patternBaseDeep + 'invite/:invite');
-    let match = roomInvitePattern.match(link) || roomInvitePatternDeep.match(link);
+    let match = link && (roomInvitePattern.match(link) || roomInvitePatternDeep.match(link));
     if (match && match.invite) {
         loader.show();
         try {
@@ -434,7 +436,7 @@ export const joinInviteIfHave = async () => {
     //
     let orgInvitePattern = new UrlPattern(patternBase + 'join/:invite');
     let orgInvitePatternDeep = new UrlPattern(patternBaseDeep + 'join/:invite');
-    let matchOrg = orgInvitePattern.match(link) || orgInvitePatternDeep.match(link);
+    let matchOrg = link && (orgInvitePattern.match(link) || orgInvitePatternDeep.match(link));
     if (matchOrg && matchOrg.invite) {
         loader.show();
         try {

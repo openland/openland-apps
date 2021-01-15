@@ -11,7 +11,7 @@ export interface SFlatListProps<T> extends FlatListProps<T> {
 }
 
 export const RenderLoader = React.memo(() => (
-    <View height={56} alignItems="center" justifyContent="center">
+    <View style={{ height: 56, alignItems: 'center', justifyContent: 'center' }}>
         <LoaderSpinner />
     </View>
 ));
@@ -52,7 +52,7 @@ export class SFlatList<T> extends React.Component<SFlatListProps<T>> {
                                 legacyImplementation={true}
                                 onEndReachedThreshold={1}
                                 refreshing={refreshing}
-                                ListFooterComponent={refreshing ? <RenderLoader/> : ListFooterComponent}
+                                ListFooterComponent={refreshing ? <RenderLoader /> : ListFooterComponent}
                             />
                         );
                     }}

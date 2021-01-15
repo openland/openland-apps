@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeController } from './ThemeControler';
 import { AccentGlobalType, getThemeByType, ThemeVariants } from 'openland-y-utils/themes/ThemeGlobal';
 let prepared = false;

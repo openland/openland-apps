@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextInput, Linking } from 'react-native';
+import { View, FlatList, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextInput, Linking } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine, convertMessageBack } from 'openland-engines/messenger/ConversationEngine';
 import { MessageInputBar } from './components/MessageInputBar';
@@ -119,7 +120,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         };
 
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
-        AsyncStorage.getItem('compose_draft_mentions_v2_' + this.props.chat.id).then(s => this.setState({ mentions: JSON.parse(s) || [] }));
+        AsyncStorage.getItem('compose_draft_mentions_v2_' + this.props.chat.id).then(s =>  s && this.setState({ mentions: JSON.parse(s) || [] }));
     }
 
     componentDidMount() {

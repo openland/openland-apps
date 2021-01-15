@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { View, Text, LayoutChangeEvent, TouchableOpacity, Image, FlatList, AsyncStorage, Platform } from 'react-native';
+import { View, Text, LayoutChangeEvent, TouchableOpacity, Image, FlatList, Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useClient } from 'openland-api/useClient';
 import { ZImage } from 'openland-mobile/components/ZImage';
 import { MyStickers_stickers_packs, StickerFragment, StickersWatch } from 'openland-api/spacex.types';

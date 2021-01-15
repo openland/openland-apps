@@ -89,7 +89,7 @@ export class SSearchControlerComponent extends React.PureComponent<SSearchContro
                             //     <SContentContext>
                             <HeaderContextNone>
                                 <ASSafeAreaProvider top={-SDevice.navigationBarHeight}>
-                                    <View width="100%" height="100%">
+                                    <View style={{ width: '100%', height: '100%' }}>
                                         <React.Suspense fallback={SNativeConfig.loader}>
                                             {this.props.searchRender({ query: this.state.query })}
                                         </React.Suspense>
@@ -112,7 +112,7 @@ export class SSearchControlerComponent extends React.PureComponent<SSearchContro
                         >
                             <HeaderContextNone>
                                 <ASSafeAreaProvider top={-56}>
-                                    <View width="100%" height="100%">
+                                    <View style={{ width: '100%', height: '100%' }}>
                                         <React.Suspense fallback={SNativeConfig.loader}>
                                             {this.props.searchRender({ query: this.state.query })}
                                         </React.Suspense>

@@ -62,7 +62,7 @@ export class FastImageViewer extends React.PureComponent<FastImageViewerProps> {
         outputRange: [1, 0],
         extrapolate: 'clamp'
     });
-    
+
     private _transitionZoomMoverX = new Animated.Value(1);
     private _transitionZoomMoverY = new Animated.Value(1);
     private _transitionOffsetMoverX = new Animated.Value(0);
@@ -730,9 +730,9 @@ export class FastImageViewer extends React.PureComponent<FastImageViewerProps> {
         const backgroundOpacity = Animated.multiply(this._loadingOpacity, Animated.multiply(this._transitionOpacity, Animated.add(Animated.multiply(zoom, overscroll), Animated.add(1, Animated.multiply(zoom, -1)))));
 
         return (
-            <View width={this.props.width} height={this.props.height} alignItems="center" justifyContent="center">
+            <View style={{ width: this.props.width, height: this.props.height, alignItems: 'center', justifyContent: 'center' }}>
                 <Animated.View style={{ backgroundColor: '#000', position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, opacity: backgroundOpacity }} />
-                <View width="100%" height="100%" overflow="hidden">
+                <View style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
                     {platformContent}
                 </View>
             </View>

@@ -1,0 +1,15 @@
+diff --git a/node_modules/react-native-linear-gradient/index.d.ts b/node_modules/react-native-linear-gradient/index.d.ts
+index 6e02b25..c18dc24 100644
+--- a/node_modules/react-native-linear-gradient/index.d.ts
++++ b/node_modules/react-native-linear-gradient/index.d.ts
+@@ -1,8 +1,8 @@
+ declare module 'react-native-linear-gradient' {
+   import * as React from 'react';
+-  import * as ReactNative from 'react-native';
++  import { ViewProps } from "react-native";
+ 
+-  export interface LinearGradientProps extends ReactNative.ViewProps {
++  export interface LinearGradientProps extends Pick<ViewProps, Exclude<keyof ViewProps, "start" | "end">> {
+     colors: (string | number)[];
+     start?: { x: number; y: number };
+     end?: { x: number; y: number };

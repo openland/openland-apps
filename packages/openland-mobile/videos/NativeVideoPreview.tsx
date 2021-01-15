@@ -16,7 +16,7 @@ export const NativeVideoPreview = React.memo((props: { name: string }) => {
         return () => clearInterval(r);
     }, []);
     return (
-        <View width={360} height={360} key={'iter-' + iteration} overflow="hidden">
+        <View style={{ width: 360, height: 360, overflow: 'hidden' }} key={'iter-' + iteration}>
             <VideoRenderer.Provider value={NativeRenderer}>
                 <TimingDurationContext.Provider value={video.duration}>
                     <TimingShiftContext.Provider value={0}>

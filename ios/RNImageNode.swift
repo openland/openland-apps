@@ -48,10 +48,10 @@ class RNImageNode: ASDisplayNode {
         self.task = ImagePipeline.shared.loadImage(with: targetRequest, progress: nil) { (response, error) in
           if response != nil {
             if spec.tintColor != nil {
-              let modificationBlock = { (originalImage: UIImage) -> UIImage? in
-                  return ASImageNodeTintColorModificationBlock(spec.tintColor!)(originalImage)
-              }
-              self.node.imageModificationBlock = modificationBlock
+//              let modificationBlock = { (originalImage: UIImage, traitCollection: ASPrimitiveTraitCollection) -> UIImage? in
+//                  return ASImageNodeTintColorModificationBlock(spec.tintColor!)(originalImage, traitCollection)
+//              }
+              self.node.imageModificationBlock = ASImageNodeTintColorModificationBlock(spec.tintColor!)
             }
             self.node.image = response?.image
             

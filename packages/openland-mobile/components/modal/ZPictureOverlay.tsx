@@ -110,7 +110,7 @@ export const ZPictureOverlay = React.memo((props: { config: ZPictureTransitionCo
                 url: 'file://' + file
             }), false, require('assets/ic-share-24.png'));
 
-            builder.action(Platform.select({ ios: 'Save to camera roll', android: 'Save to gallery' }), async () => {
+            builder.action(Platform.select({ ios: 'Save to camera roll', default: 'Save to gallery' }), async () => {
                 if (await checkPermissions('gallery')) {
                     await CameraRoll.saveToCameraRoll('file://' + file!);
                     Toast.success({ duration: 1000 }).show();
@@ -235,7 +235,7 @@ export const ZPictureOverlay = React.memo((props: { config: ZPictureTransitionCo
                         right: 0
                     }}
                 >
-                    <View flexDirection="column" height={52} paddingHorizontal={56} justifyContent="center">
+                    <View style={{ flexDirection: 'column', height: 52, paddingHorizontal: 56, justifyContent: 'center' }}>
                         {!!props.config.title && <Text style={{ ...TextStyles.Label2, color: theme.foregroundContrast, textAlign: 'center' }} allowFontScaling={false} numberOfLines={1} ellipsizeMode="tail">{props.config.title}</Text>}
                         {!!props.config.subtitle && <Text style={{ ...TextStyles.Caption, color: theme.foregroundContrast, textAlign: 'center', opacity: SecondarinessAlpha }} allowFontScaling={false} numberOfLines={1} ellipsizeMode="tail">{props.config.subtitle}</Text>}
                     </View>

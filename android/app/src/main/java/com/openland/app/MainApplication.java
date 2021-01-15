@@ -33,17 +33,12 @@ import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
 import com.oney.WebRTCModule.WebRTCModulePackage;
 import com.levelasquez.androidopensettings.AndroidOpenSettingsPackage;
 import com.avishayil.rnrestart.ReactNativeRestartPackage;
-import com.microsoft.appcenter.AppCenter;
-import com.microsoft.appcenter.distribute.Distribute;
-import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
-import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
 
 import org.pgsqlite.SQLitePluginPackage;
 
 import cl.json.RNSharePackage;
 import cl.json.ShareApplication;
 
-import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 import com.openland.react.RNSPackage;
 
 import dk.madslee.imageCapInsets.RCTImageCapInsetPackage;
@@ -95,8 +90,6 @@ public class MainApplication extends Application implements ShareApplication, Re
                     new WebRTCModulePackage(),
                     new AndroidOpenSettingsPackage(),
                     new ReactNativeRestartPackage(),
-                    new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
-                    new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
                     new RNSharePackage(),
                     new RCTImageCapInsetPackage(),
                     new RNGestureHandlerPackage(),
@@ -145,10 +138,6 @@ public class MainApplication extends Application implements ShareApplication, Re
 
         // Hack Status Bar color
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-
-        // App Center
-        AppCenterReactNativeShared.configureAppCenter(this);
-        AppCenter.start(Distribute.class);
 
         // Stripe
         PaymentConfiguration.init(this, "pk_live_eLENsh8Ten2AoOcJhfxUkTfD");

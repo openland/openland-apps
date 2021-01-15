@@ -35,8 +35,8 @@ export const ASListView = React.memo((props: ASListViewProps) => {
                 inverted={props.inverted}
                 animated={props.animated}
                 onScroll={props.onScroll}
-                overflowColor={props.overflowColor ? processColor(props.overflowColor) : undefined}
-                loaderColor={processColor(props.loaderColor ? props.loaderColor : theme.foregroundSecondary)}
+                overflowColor={props.overflowColor ? processColor(props.overflowColor) as number : undefined}
+                loaderColor={processColor(props.loaderColor ? props.loaderColor : theme.foregroundSecondary) as number}
                 applyModes={props.applyModes || []}
             />
         </SDeferred>

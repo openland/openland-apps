@@ -35,7 +35,7 @@ export class SBlurView extends React.PureComponent<ViewProps & { intensity?: 'no
             );
         } else {
             return (
-                <View {...this.props} backgroundColor={this.props.color}>
+                <View {...this.props} style={[this.props.style, { backgroundColor: this.props.color }]}>
                     {this.props.children}
                 </View>
             );

@@ -24,26 +24,27 @@ export const InputTopView = (props: InputTopViewProps) => {
                 {
                     toValue: 0,
                     duration: 150,
+                    useNativeDriver: true
                 }
             ).start();
         }
     }, [isClosing]);
 
     return (
-        <Animated.View height={isClosing ? 0 : undefined} paddingVertical={8} paddingLeft={16} flexDirection="row" style={{ opacity: fadeAnim }}>
-            <View marginRight={16} alignItems="center" justifyContent="center">
+        <Animated.View style={{ opacity: fadeAnim, height: isClosing ? 0 : undefined, paddingVertical: 8, paddingLeft: 16, flexDirection: 'row' }}>
+            <View style={{ marginRight: 16, alignItems: 'center', justifyContent: 'center' }}>
                 <Image source={icon} style={{ tintColor: theme.foregroundSecondary, width: 24, height: 24 }} />
             </View>
-            <View flexDirection="row" flexGrow={1} flexShrink={1}>
+            <View style={{ flexDirection: 'row', flexGrow: 1, flexShrink: 1 }}>
                 {leftElement}
-                <View flexGrow={1} flexShrink={1}>
+                <View style={{ flexGrow: 1, flexShrink: 1 }}>
                     <Text style={{ ...TextStyles.Label2, color: theme.foregroundPrimary, height: 20 }} ellipsizeMode="tail" numberOfLines={1} allowFontScaling={false}>{title}</Text>
                     <Text style={{ ...TextStyles.Subhead, color: textColor || theme.foregroundSecondary, marginTop: 2, height: 20 }} ellipsizeMode="tail" numberOfLines={1} allowFontScaling={false}>{text}</Text>
                 </View>
             </View>
             <TouchableWithoutFeedback onPress={onClearPress}>
-                <View width={56} alignItems="center" justifyContent="center">
-                    <View width={24} height={24} borderRadius={RadiusStyles.Medium} backgroundColor={theme.backgroundTertiaryTrans} alignItems="center" justifyContent="center">
+                <View style={{ width: 56, alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{ width: 24, height: 24, borderRadius: RadiusStyles.Medium, backgroundColor: theme.backgroundTertiaryTrans, alignItems: 'center', justifyContent: 'center' }}>
                         <Image source={require('assets/ic-close-16.png')} style={{ tintColor: theme.foregroundSecondary, width: 16, height: 16 }} />
                     </View>
                 </View>

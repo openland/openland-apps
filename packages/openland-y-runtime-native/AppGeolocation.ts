@@ -1,6 +1,6 @@
 import { AppGeoilocationApi } from 'openland-y-runtime-api/AppGeolocationApi';
 import Geolocation from 'react-native-location';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 Geolocation.configure({ /* ? */ });
 

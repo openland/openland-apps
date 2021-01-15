@@ -74,12 +74,14 @@ export const ForwardReplyView = (props: ForwardReplyViewProps) => {
             } else {
                 leftElement = (
                     <View
-                        width={40}
-                        height={40}
-                        borderRadius={8}
-                        backgroundColor={theme.backgroundTertiaryTrans}
-                        justifyContent="center"
-                        alignItems="center"
+                        style={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: 8,
+                            backgroundColor: theme.backgroundTertiaryTrans,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
                     >
                         <Image
                             source={require('assets/ic-link-glyph-24.png')}
@@ -128,7 +130,7 @@ export const ForwardReplyView = (props: ForwardReplyViewProps) => {
             title={title}
             text={text}
             textColor={textColor}
-            leftElement={<View marginRight={8}>{leftElement}</View>}
+            leftElement={<View style={{ marginRight: 8 }}>{leftElement}</View>}
             icon={require('assets/ic-reply-24.png')}
             onClearPress={onClearPress}
         />

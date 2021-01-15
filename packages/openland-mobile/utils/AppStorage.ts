@@ -1,14 +1,14 @@
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'uuid/v4';
 
 class AppStorageStatic {
 
     private inited = false;
     private initPromise!: Promise<void>;
-    private _token?: string;
+    private _token: string | null = null;
     private _storage?: string;
 
-    get token(): string | undefined {
+    get token(): string | null {
         if (!this.inited) {
             throw Error('AppStorage not inited');
         }
@@ -34,7 +34,7 @@ class AppStorageStatic {
             throw Error('AppStorage not inited');
         }
         await AsyncStorage.multiRemove(['openland-token', 'openland-storage']);
-        this._token = undefined;
+        this._token = null;
         this._storage = undefined;
     }
 

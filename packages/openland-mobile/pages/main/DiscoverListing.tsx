@@ -396,7 +396,7 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
             },
             state => {
                 if (state.path) {
-                    let newPath = Platform.select({ ios: state.path, android: 'file://' + state.path });
+                    let newPath = Platform.select({ ios: state.path, default: 'file://' + state.path });
                     setPath(newPath);
                 }
             }) : () => { return; };
@@ -411,7 +411,7 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
         const showCover = preloadedContent || !loading;
 
         return (
-            <View paddingHorizontal={16} paddingBottom={24} onLayout={() => setLayoutCover(layoutCollectionCover())}>
+            <View style={{ paddingHorizontal: 16, paddingBottom: 24 }} onLayout={() => setLayoutCover(layoutCollectionCover())}>
                 {!!description && <Text style={[TextStyles.Body, { color: theme.foregroundPrimary }]}>{description}</Text>}
                 {showCover &&
                     <View marginTop={16}>

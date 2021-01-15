@@ -27,9 +27,6 @@ import { ProfileGroupLink } from './pages/main/ProfileGroupLink';
 import { ProfileOrganizationGroups } from './pages/main/ProfileOrganizationGroups';
 import { Developer } from './pages/dev/Developer';
 import { Worker } from './pages/dev/Worker';
-import { Benchmark } from './pages/dev/Benchmark';
-import { BenchmarkAsync } from './pages/dev/BenchmarkAsync';
-import { BenchmarkAsyncDirect } from './pages/dev/BenchmarkAsyncDirect';
 import { ToastPage } from './pages/dev/Toast';
 import { BottomSheetPage } from './pages/dev/BottomSheetPage';
 import { DiscoverListing } from './pages/main/DiscoverListing';
@@ -150,9 +147,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevTypography', Typography)
   .addRoute('DevComponents', Components)
   .addRoute('DevNavigation', Navigation)
-  .addRoute('DevBenchmarks', Benchmark)
-  .addRoute('DevBenchmarksAsync', BenchmarkAsync)
-  .addRoute('DevBenchmarksAsyncDirect', BenchmarkAsyncDirect)
   .addRoute('DevLoader', Loader)
   .addRoute('DevColors', Colors)
   .addRoute('DevToast', ToastPage)

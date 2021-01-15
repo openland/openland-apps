@@ -104,7 +104,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
     render() {
         let v = this.props.page;
         let title = <Text style={[styles.title, { color: this.props.style.textColor }, this.props.page.page.startIndex === 0 ? styles.rootFirst : {}]}>{this.props.page.config.title}</Text>;
-        title = (v.config.titleView && <View flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignItems="stretch">{v.config.titleView()}</View>) || title;
+        title = (v.config.titleView && <View style={{ flexGrow: 1, flexShrink: 1, minWidth: 0, flexBasis: 0, alignItems: 'stretch' }}>{v.config.titleView()}</View>) || title;
 
         let showCloseButton = !!this.props.manager.parent && this.props.page.page.startIndex === 0;
         let showBackButton = !showCloseButton && (this.props.page.page.startIndex !== 0 || v.config.searchActive);
@@ -117,15 +117,17 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                             left: 0,
                             top: 0,
                             right: 0,
+                            flexDirection: 'row',
+                            flexGrow: 1
                         }}
-                        flexDirection="row"
-                        flexGrow={1}
                     >
                         <View
-                            flexDirection="row"
-                            alignItems="center"
-                            flexGrow={1}
-                            height={SDevice.navigationBarHeight}
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                flexGrow: 1,
+                                height: SDevice.navigationBarHeight
+                            }}
                         >
                             {!v.config.hideIcon && (
                                 <>
@@ -158,7 +160,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                             )}
                             {!v.config.searchActive && title}
                         </View>
-                        <View flexDirection="row" alignItems="center" alignSelf="center" paddingRight={2}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', paddingRight: 2 }}>
                             {v.config.search && !v.config.searchActive && <SHeaderButton title={v.config.searchPlaceholder ? v.config.searchPlaceholder : 'Groups, people, and more'} icon={require('assets/ic-search-24.png')} onPress={v.config.searchPress} style={this.props.style} />}
                             {v.config.buttons && !v.config.searchActive && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
                         </View>

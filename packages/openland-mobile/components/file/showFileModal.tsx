@@ -96,7 +96,7 @@ class FileModalWithTransition extends React.PureComponent<{ config: ZFileModalCo
                     height: Dimensions.get('screen').height,
                 }}
             >
-                <View flexGrow={1} alignSelf="stretch">
+                <View style={{ flexGrow: 1, alignSelf: 'stretch' }}>
                     <ZFileModal
                         config={this.props.config}
                         onClose={this.hide}

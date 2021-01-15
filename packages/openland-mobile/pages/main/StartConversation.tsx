@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
-import { View, Text, AsyncStorage } from 'react-native';
+import { View, Text } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';

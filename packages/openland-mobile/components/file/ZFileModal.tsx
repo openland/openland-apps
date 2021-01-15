@@ -168,7 +168,7 @@ class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePr
 
         if (this.state.completed && this.state.path && this.content === 'pdf') {
             content = (
-                <View flexGrow={1} marginBottom={-paddingBottom}>
+                <View style={{ flexGrow: 1, marginBottom: -paddingBottom }}>
                     <PdfPreview path={this.state.path} />
                 </View>
             );
@@ -179,7 +179,7 @@ class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePr
         }
 
         return (
-            <View style={{ paddingTop, paddingBottom }} backgroundColor={backgroundColor} flexGrow={1}>
+            <View style={{ paddingTop, paddingBottom, backgroundColor, flexGrow: 1 }}>
                 {header}
                 {content}
             </View>

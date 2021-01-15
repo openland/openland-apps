@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { OpenlandClient } from 'openland-api/spacex';
-import { Platform, AsyncStorage, PermissionsAndroid } from 'react-native';
+import { Platform, PermissionsAndroid } from 'react-native';
 import * as Contacts from 'react-native-contacts';
 import { Priority } from 'openland-api/Priority';
 import { parsePhoneNumberFromString, CountryCode, isSupportedCountry } from 'libphonenumber-js';
 import * as Localize from "react-native-localize";
 import { backoff } from 'openland-y-utils/timer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /*
     TODO:

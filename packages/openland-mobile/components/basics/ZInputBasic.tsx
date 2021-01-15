@@ -155,8 +155,19 @@ export const ZInputBasic = React.forwardRef((props: ZInputBasicProps, ref: React
     };
 
     return (
-        <View marginHorizontal={noWrapper ? 0 : 16} marginBottom={noWrapper ? 0 : 16}>
-            <View style={styles.container} opacity={disabled ? 0.56 : 1} pointerEvents={disabled ? 'none' : undefined} backgroundColor={theme.backgroundTertiaryTrans}>
+        <View
+            style={{
+                marginHorizontal: noWrapper ? 0 : 16,
+                marginBottom: noWrapper ? 0 : 16
+            }}
+        >
+            <View
+                style={[styles.container, {
+                    opacity: disabled ? 0.56 : 1,
+                    backgroundColor: theme.backgroundTertiaryTrans
+                }]}
+                pointerEvents={disabled ? 'none' : undefined}
+            >
                 {!!placeholder && (
                     <View style={styles.placeholderContainer}>
                         <Animated.View style={placeholderAimatedStyle} onLayout={handlePlaceholderLayout}>
