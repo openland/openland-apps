@@ -50,7 +50,7 @@ class ShareDummyActivity : Activity() {
             (intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let {
                 val proj = arrayOf(MediaStore.Images.Media.DATA)
                 val cursor = applicationContext.contentResolver.query(it, proj, null, null, null)
-                val columnIndex = cursor.getColumnIndexOrThrow(proj[0])
+                val columnIndex = cursor!!.getColumnIndexOrThrow(proj[0])
                 if (cursor != null && cursor.moveToFirst()) {
                     do {
                         files.put(cursor.getString(columnIndex))

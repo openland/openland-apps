@@ -54,13 +54,10 @@ object LithoTextSpec {
                                     .emit("async_on_press", map)
                         }
 
-                        override fun updateDrawState(ds: TextPaint?) {
+                        override fun updateDrawState(ds: TextPaint) {
                             super.updateDrawState(ds)
-                            if (ds != null) {
-                                ds.isUnderlineText = s.underline
-                                ds.color = spec.color
-                            }
-
+                            ds.isUnderlineText = s.underline
+                            ds.color = spec.color
                         }
                     }
                     part.setSpan(span, 0, part.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -74,12 +71,9 @@ object LithoTextSpec {
                 if (s.fontWeight !== null || s.fontStyle !== null || s.fontType !== null) {
                     val span = object : TypefaceSpan(s.fontWeight) {
 
-                        override fun updateDrawState(ds: TextPaint?) {
+                        override fun updateDrawState(ds: TextPaint) {
                             super.updateDrawState(ds)
-                            if (ds != null) {
-                                ds.typeface = resolveFont(context, s.fontWeight, s.fontStyle, s.fontType)
-                            }
-
+                            ds.typeface = resolveFont(context, s.fontWeight, s.fontStyle, s.fontType)
                         }
                     }
 

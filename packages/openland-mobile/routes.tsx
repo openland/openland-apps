@@ -58,7 +58,6 @@ import { ProfileGroupFeatured } from './pages/main/ProfileGroupFeatured';
 import { Buttons } from './pages/dev/Buttons';
 import { Inputs } from './pages/dev/Inputs';
 import { Avatars } from './pages/dev/Avatars';
-import { Videos } from './pages/dev/Videos';
 import { DocumentsExt } from './pages/dev/DocumentsExt';
 import { SharedMedia } from './pages/shared-media/SharedMedia';
 import { PowerUps } from './pages/dev/PowerUps';
@@ -154,7 +153,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevButtons', Buttons)
   .addRoute('DevInputs', Inputs)
   .addRoute('DevAvatars', Avatars)
-  .addRoute('DevVideos', Videos)
   .addRoute('DevDocumentsExt', DocumentsExt)
   .addRoute('DevPowerUps', PowerUps)
 
