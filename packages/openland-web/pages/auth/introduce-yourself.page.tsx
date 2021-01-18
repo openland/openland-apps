@@ -1,4 +1,5 @@
 import * as React from 'react';
+import createHistory from 'history/createBrowserHistory';
 import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
@@ -123,9 +124,13 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
             ]);
             trackEvent('registration_complete');
             if (signupRedirect) {
-                window.location.href = signupRedirect;
+                createHistory({
+                    forceRefresh: true,
+                }).replace(signupRedirect);
             } else {
-                window.location.href = '/';
+                createHistory({
+                    forceRefresh: true,
+                }).replace('/');
             }
         });
     }, [firstName.value, lastName.value, photoRef.value]);
