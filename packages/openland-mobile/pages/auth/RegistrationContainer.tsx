@@ -64,7 +64,7 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
         }
 
         // Animate
-        if (isIos) {
+        if (isIos && e.duration > 0) {
             LayoutAnimation.configureNext(LayoutAnimation.create(
                 e.duration,
                 LayoutAnimation.Types[e.easing]
@@ -74,7 +74,7 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
     };
 
     const keyboardWillHide = (e: any) => {
-        if (isIos) {
+        if (isIos && e.duration > 0) {
             LayoutAnimation.configureNext(LayoutAnimation.create(
                 e.duration,
                 LayoutAnimation.Types[e.easing]
