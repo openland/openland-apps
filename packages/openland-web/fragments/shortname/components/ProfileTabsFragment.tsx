@@ -3,8 +3,7 @@ import { XView } from 'react-mental';
 
 import { useClient } from 'openland-api/useClient';
 import {
-    RoomChat_room_SharedRoom,
-    SharedMediaCounters,
+    RoomChat_room_SharedRoom, SharedMediaCounters,
     SharedMediaCounters_counters,
     SharedMediaType,
 } from 'openland-api/spacex.types';
@@ -32,7 +31,6 @@ interface Paginated {
 interface ProfileSharedMediaProps {
     chatId: string;
     group?: RoomChat_room_SharedRoom;
-    member?: boolean;
 }
 
 const MenuIcons = {
@@ -112,148 +110,98 @@ const TabsMenuMobileButton = (props: {
     );
 };
 
-export const ProfileTabsFragment = React.memo(
-    ({ chatId, group, member }: ProfileSharedMediaProps) => {
-        const client = useClient();
-        const { bottomReached } = React.useContext(ProfileLayoutContext);
-        const layout = useLayout();
+export const ProfileTabsFragment = React.memo(({ chatId, group }: ProfileSharedMediaProps) => {
+    const client = useClient();
+    const { bottomReached } = React.useContext(ProfileLayoutContext);
+    const layout = useLayout();
+    const counters = client.useSharedMediaCounters({ chatId }, { suspense: false });
+    const countersSum = getCountersSum(counters);
 
-        const counters = member
-            ? client.useSharedMediaCounters({ chatId }, { suspense: false })
-            : null;
-        const countersSum = member ? getCountersSum(counters) : 0;
+    const tabs: [string, number | null][] = [
+        ['Media', counters && counters.counters.images],
+        ['Files', counters && counters.counters.documents + counters.counters.videos],
+        ['Links', counters && counters.counters.links],
+    ];
 
-        const tabs: [string, number | null][] = member
-            ? [
-                  ['Media', counters && counters.counters.images],
-                  ['Files', counters && counters.counters.documents + counters.counters.videos],
-                  ['Links', counters && counters.counters.links],
-              ]
-            : [
-                  ['Media', 0],
-                  ['Files', 0],
-                  ['Links', 0],
-              ];
+    if (group) {
+        tabs.unshift(['Members', group.membersCount]);
+    }
 
-        if (group) {
-            tabs.unshift(['Members', group.membersCount]);
+    const [items, selected, setSelected] = useTabs(tabs);
+    const paginatedMedia = React.useRef<Paginated>(null);
+    const paginatedFiles = React.useRef<Paginated>(null);
+    const paginatedLinks = React.useRef<Paginated>(null);
+
+    let paginated: Paginated | null;
+    if (selected === 'Media') {
+        paginated = paginatedMedia.current;
+    } else if (selected === 'Files') {
+        paginated = paginatedFiles.current;
+    } else {
+        paginated = paginatedLinks.current;
+    }
+
+    React.useEffect(() => {
+        if (!group && counters) {
+            setSelected(getNotEmptyTab(counters.counters));
         }
-
-        const [items, selected, setSelected] = useTabs(tabs);
-        const paginatedMedia = React.useRef<Paginated>(null);
-        const paginatedFiles = React.useRef<Paginated>(null);
-        const paginatedLinks = React.useRef<Paginated>(null);
-
-        let paginated: Paginated | null;
-        if (selected === 'Media') {
-            paginated = paginatedMedia.current;
-        } else if (selected === 'Files') {
-            paginated = paginatedFiles.current;
-        } else {
-            paginated = paginatedLinks.current;
+    }, [counters]);
+    React.useEffect(() => {
+        if (bottomReached && paginated) {
+            paginated.loadMore();
         }
+    }, [bottomReached]);
 
-        React.useEffect(() => {
-            if (!group && counters) {
-                setSelected(getNotEmptyTab(counters.counters));
-            }
-        }, [counters]);
-        React.useEffect(() => {
-            if (bottomReached && paginated) {
-                paginated.loadMore();
-            }
-        }, [bottomReached]);
-
-        return (
-            <XView marginLeft={7} width="100%">
-                <XView flexDirection="row" height={56} flexGrow={1}>
-                    {layout === 'desktop' && (
-                        <Tabs
-                            tabs={items}
-                            setSelected={setSelected}
-                            justifyContent="flex-end"
-                            hideEmpty={true}
-                        />
-                    )}
-                    {!!(
-                        member &&
-                        counters &&
-                        countersSum &&
-                        countersSum > 0 &&
-                        layout === 'mobile'
-                    ) && (
-                        <TabsMenuMobileButton
-                            selected={selected}
-                            menu={(ctx) => (
-                                <TabsMenuMobile
-                                    selectTab={setSelected}
-                                    items={items.map((i) => ({
-                                        ...i,
-                                        icon: MenuIcons[i.title],
-                                    }))}
-                                    ctx={ctx}
-                                />
-                            )}
-                        />
-                    )}
-                    {!!(
-                        member &&
-                        counters &&
-                        !countersSum &&
-                        layout === 'mobile'
-                    ) && (
-                        <XView
-                            {...TextStyles.Label1}
-                            color="var(--foregroundSecondary)"
-                            flexDirection="row"
-                            marginLeft={8}
-                            paddingVertical={16}
-                            alignItems="center"
-                        >
-                            <XView marginRight={10}>Members</XView>
-                        </XView>
-                    )}
-                    {!member && layout === 'mobile' && (
-                        <XView
-                            {...TextStyles.Label1}
-                            color="var(--foregroundSecondary)"
-                            flexDirection="row"
-                            marginLeft={8}
-                            paddingVertical={16}
-                            alignItems="center"
-                        >
-                            <XView marginRight={10}>Members</XView>
-                        </XView>
-                    )}
-                </XView>
-                {selected === 'Members' && group && <GroupMembers group={group} />}
-                {member && (
-                    <>
-                        <SharedMedia
-                            active={selected === 'Media'}
-                            mediaTypes={[SharedMediaType.IMAGE]}
-                            ref={paginatedMedia}
-                            chatId={chatId}
-                            profileView={true}
-                        />
-                        {/* keep video in files until backend start sending video previews */}
-                        <SharedMedia
-                            active={selected === 'Files'}
-                            mediaTypes={[SharedMediaType.DOCUMENT, SharedMediaType.VIDEO]}
-                            ref={paginatedFiles}
-                            chatId={chatId}
-                            profileView={true}
-                        />
-                        <SharedMedia
-                            active={selected === 'Links'}
-                            mediaTypes={[SharedMediaType.LINK]}
-                            ref={paginatedLinks}
-                            chatId={chatId}
-                            profileView={true}
-                        />
-                    </>
+    return (
+        <XView marginLeft={7} width="100%">
+            <XView flexDirection="row" height={56} flexGrow={1}>
+                {layout === 'desktop' && (
+                    <Tabs
+                        tabs={items}
+                        setSelected={setSelected}
+                        justifyContent="flex-end"
+                        hideEmpty={true}
+                    />
+                )}
+                {counters && countersSum > 0 && layout === 'mobile' && (
+                    <TabsMenuMobileButton
+                        selected={selected}
+                        menu={(ctx) => (
+                            <TabsMenuMobile
+                                selectTab={setSelected}
+                                items={items.map((i) => ({
+                                    ...i,
+                                    icon: MenuIcons[i.title],
+                                }))}
+                                ctx={ctx}
+                            />
+                        )}
+                    />
                 )}
             </XView>
-        );
-    },
-);
+            {selected === 'Members' && group && <GroupMembers group={group} />}
+            <SharedMedia
+                active={selected === 'Media'}
+                mediaTypes={[SharedMediaType.IMAGE]}
+                ref={paginatedMedia}
+                chatId={chatId}
+                profileView={true}
+            />
+            {/* keep video in files until backend start sending video previews */}
+            <SharedMedia
+                active={selected === 'Files'}
+                mediaTypes={[SharedMediaType.DOCUMENT, SharedMediaType.VIDEO]}
+                ref={paginatedFiles}
+                chatId={chatId}
+                profileView={true}
+            />
+            <SharedMedia
+                active={selected === 'Links'}
+                mediaTypes={[SharedMediaType.LINK]}
+                ref={paginatedLinks}
+                chatId={chatId}
+                profileView={true}
+            />
+        </XView>
+    );
+});

@@ -38,7 +38,7 @@ export const GroupActions = React.memo(({ group }: GroupActions) => {
     const tabRouter = useTabRouter();
     const toastHandlers = useToast();
     const client = useClient();
-    const { id, isChannel, settings, canEdit } = group;
+    const { id, isChannel, settings, membership, canEdit } = group;
     const typeString = isChannel ? 'channel' : 'group';
 
     const onCopyLinkClick = React.useCallback(() => {
@@ -101,12 +101,14 @@ export const GroupActions = React.memo(({ group }: GroupActions) => {
                     icon={<CopyIcon />}
                     onClick={onCopyLinkClick}
                 />
-                <UListItem
-                    title={`Leave ${typeString}`}
-                    useRadius={true}
-                    icon={<LeaveIcon />}
-                    onClick={onLeaveClick}
-                />
+                {membership === 'MEMBER' && (
+                    <UListItem
+                        title={`Leave ${typeString}`}
+                        useRadius={true}
+                        icon={<LeaveIcon />}
+                        onClick={onLeaveClick}
+                    />
+                )}
                 <XWithRole role="super-admin">
                     <UListItem
                         title={`Delete ${typeString}`}

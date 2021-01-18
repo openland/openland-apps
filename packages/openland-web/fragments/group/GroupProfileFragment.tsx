@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import copy from 'copy-to-clipboard';
 
 import { useClient } from 'openland-api/useClient';
@@ -19,10 +19,12 @@ import { ShowMoreText } from 'openland-web/fragments/shortname/components/ShowMo
 import { ProfileTabsFragment } from 'openland-web/fragments/shortname/components/ProfileTabsFragment';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
+import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import AtIcon from 'openland-icons/s/ic-at-24.svg';
 import PriceIcon from 'openland-icons/s/ic-tag-price-24.svg';
 import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
+import { GroupMembers } from './components/GroupMembers';
 
 const listItemWrapper = css`
     width: 250px;
@@ -37,6 +39,19 @@ const featuredIcon = css`
     width: 16px;
     height: 16px;
     margin-left: 4px;
+`;
+
+const memberHeaderClass = css`
+    display: flex;
+    flex-direction: row;
+    padding: 16px 8px;
+    color: var(--foregroundPrimary);
+    user-select: none;    
+`;
+
+const membersCounterClass = css`
+  margin-left: 4px;
+  color: var(--foregroundTertiary);
 `;
 
 export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
@@ -73,6 +88,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         });
     }, [shortname, id]);
 
+    const isMember = membership === 'MEMBER';
     const descriptionHero = plural(membersCount || 0, ['member', 'members']);
 
     let price = '';
@@ -143,7 +159,15 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                     <UOrganizationView organization={organization} />
                 </UListGroup>
             )}
-            <ProfileTabsFragment chatId={roomId} group={group} member={membership === 'MEMBER'} />
+            {isMember && <ProfileTabsFragment chatId={roomId} group={group} />}
+            {!isMember && (
+                <>
+                    <div className={cx(TextTitle3, memberHeaderClass)}>
+                        Members <div className={membersCounterClass}>{membersCount}</div>
+                    </div>
+                    <GroupMembers group={group}/>
+                </>
+            )}
         </>
     );
 
