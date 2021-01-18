@@ -4,12 +4,12 @@ import {
     ScrollView,
     KeyboardAvoidingView,
     Dimensions,
-    Animated,
     Keyboard,
     View,
     StyleSheet,
     TextStyle,
     Text,
+    LayoutAnimation,
 } from 'react-native';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -53,7 +53,7 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
     const isXGen = isIos && Dimensions.get('window').height > 800;
     const defaultIosPadding = isXGen ? 34 : 16;
 
-    const [floatPadding] = React.useState(new Animated.Value(defaultIosPadding));
+    const [floatPadding, setFloatPadding] = React.useState(defaultIosPadding);
 
     const keyboardWillShow = (e: any) => {
         if (props.autoScrollToBottom && scrollRef.current) {
@@ -62,23 +62,25 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
         if (props.autoScrollToTop && scrollRef.current) {
             (scrollRef.current as any).getNode().scrollToTop({ animated: true });
         }
-        Animated.parallel([
-            Animated.timing(floatPadding, {
-                duration: e.duration,
-                toValue: 16,
-                useNativeDriver: true
-            }),
-        ]).start();
+
+        // Animate
+        if (isIos) {
+            LayoutAnimation.configureNext(LayoutAnimation.create(
+                e.duration,
+                LayoutAnimation.Types[e.easing]
+            ));
+            setFloatPadding(16);
+        }
     };
 
     const keyboardWillHide = (e: any) => {
-        Animated.parallel([
-            Animated.timing(floatPadding, {
-                duration: e.duration,
-                toValue: defaultIosPadding,
-                useNativeDriver: true
-            }),
-        ]).start();
+        if (isIos) {
+            LayoutAnimation.configureNext(LayoutAnimation.create(
+                e.duration,
+                LayoutAnimation.Types[e.easing]
+            ));
+            setFloatPadding(defaultIosPadding);
+        }
     };
 
     React.useEffect(
@@ -142,7 +144,7 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
                     </View>
                 )}
                 {isIos && (
-                    <Animated.View
+                    <View
                         style={{
                             paddingHorizontal: 16,
                             paddingBottom: floatPadding,
@@ -152,7 +154,7 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
                         }}
                     >
                         {props.floatContent}
-                    </Animated.View>
+                    </View>
                 )}
             </KeyboardAvoidingView>
         </>

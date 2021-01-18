@@ -237,7 +237,7 @@ PODS:
     - React
   - react-native-document-picker (2.2.0):
     - React
-  - react-native-fast-animations (0.0.2):
+  - react-native-fast-animations (0.0.3):
     - React
     - SwiftyJSON
   - react-native-haptic-feedback (1.7.1):
@@ -250,7 +250,7 @@ PODS:
     - React
   - react-native-safe-area-context (0.7.3):
     - React
-  - react-native-sqlite-storage (3.3.10):
+  - react-native-sqlite-storage (5.0.0):
     - React
   - react-native-version-number (0.3.6):
     - React
@@ -636,13 +636,13 @@ SPEC CHECKSUMS:
   react-native-cameraroll: d0193ddec45380cc3bd770c7011ddf702eed68e8
   react-native-contacts: 439dd9c7ea7e0d86190f8370898b82cfb7cf4ef4
   react-native-document-picker: da1c37bbc4ff0896986a70784808a2862d297887
-  react-native-fast-animations: e5711a1d27b1cb5bec2e4eeac5d5eb2157c0d9c9
+  react-native-fast-animations: 27180360c88a8eb51e3c26eca68e784002eecbdf
   react-native-haptic-feedback: 22c9dc85fd8059f83bf9edd9212ac4bd4ae6074d
   react-native-image-picker: 7a85cf7b0a53845f03ae52fb4592a2748ded069b
   react-native-location: 5a40ec1cc6abf2f6d94df979f98ec76c3a415681
   react-native-pdf: 8cc276fd8ab7dff6b602eb65fcf0f6c145c0f524
   react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
-  react-native-sqlite-storage: dba8e864e9a76f1aae6ddb5e7d0dc330d59f4bb3
+  react-native-sqlite-storage: 418ef4afc5e6df6ce3574c4617e5f0b65cffde55
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   react-native-video: 8c49eca5a6087de968a05b340933b10e3b58169a
   react-native-webrtc: 86d841823e66d68cc1f86712db1c2956056bf0c2
