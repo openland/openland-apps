@@ -457,6 +457,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         }
     }
 
+    handleStickerSend = (sticker: StickerFragment) => {
+        this.engine.sendSticker(sticker, undefined);
+    }
+
     render() {
         let { messagesActionsState } = this.props;
 
@@ -635,7 +639,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                                 }}
                                             >
                                                 <StickerPicker
-                                                    onStickerSent={(sticker: StickerFragment) => this.engine.sendSticker(sticker, undefined)}
+                                                    onStickerSent={this.handleStickerSend}
                                                     theme={this.props.theme}
                                                     height={this.stickerKeyboardHeight}
                                                 />
@@ -659,7 +663,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 }}
                             >
                                 <StickerPicker
-                                    onStickerSent={(sticker: StickerFragment) => this.engine.sendSticker(sticker, undefined)}
+                                    onStickerSent={this.handleStickerSend}
                                     theme={this.props.theme}
                                     height={this.stickerKeyboardHeight}
                                 />
