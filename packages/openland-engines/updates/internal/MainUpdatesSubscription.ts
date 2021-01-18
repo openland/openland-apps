@@ -1,6 +1,7 @@
 import { AsyncLock } from '@openland/patterns';
 import { UpdatesSubscription, UpdatesSubscriptionEvent } from './UpdatesSubscription';
 import { UpdatesApi } from './UpdatesApi';
+import { LOG } from './LOG';
 
 export type MainUpdatesSubscriptionEvent<T, STATE, DIFF> =
     | { type: 'inited', vt: string }
@@ -25,7 +26,7 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
     private _stopped = false;
     private _invalidated = false;
     private _invalidationTimer: any | null = null;
-    private _pending = new Map<number, { sequence: string, pts: number, event: T }>();
+    private _pending = new Map<number, { sequence: string, pts: number, vt: string, event: T }>();
     private _handler: MainUpdatesSubscriptionHandler<T, STATE, DIFF> | null = null;
     private _state: MainUpdatesState = 'inited';
     private _preprocessor: (src: any) => Promise<void>;
@@ -51,6 +52,9 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
 
         this._handler = handler;
         this.setState('starting');
+        if (LOG) {
+            console.log('[updates]: Start main updates...');
+        }
         this.init();
     }
 
@@ -113,7 +117,7 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
             for (let sequence of difference.sequences) {
                 this._handler!({
                     type: 'diff',
-                    vt: this._vt,
+                    vt: difference.vt,
                     state: sequence.state,
                     fromPts: sequence.fromPts,
                     events: sequence.events
@@ -127,7 +131,8 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
         // Drain received events
         let drained = this.drain();
         for (let d of drained) {
-            this._handler!({ type: 'event', vt: this._vt!, id: d.sequence, pts: d.pts, event: d.event });
+            this._vt = d.vt;
+            this._handler!({ type: 'event', vt: d.vt, id: d.sequence, pts: d.pts, event: d.event });
         }
 
         // Request invalidation timeout if there are already pending exists
@@ -147,26 +152,41 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
 
         if (event.type === 'event') {
 
+            if (LOG) {
+                console.log('[updates]: Received: ', event);
+            }
+
             // Ignore too old updates
             if (this._currentSeq !== undefined && event.seq <= this._currentSeq) {
+                if (LOG) {
+                    console.log('[updates]: Ignored: too old');
+                }
                 return;
             }
 
             // If not started or invalidated - put all to pending
             if (!this._started || this._invalidated) {
                 if (!this._pending.has(event.seq)) {
-                    this._pending.set(event.seq, { sequence: event.sequence, pts: event.pts, event: event.event });
+                    this._pending.set(event.seq, { sequence: event.sequence, vt: event.vt, pts: event.pts, event: event.event });
+                }
+                if (LOG) {
+                    console.log('[updates]: Pending: invalidated');
                 }
                 return;
             }
 
             if (this._currentSeq + 1 === event.seq) {
 
+                if (LOG) {
+                    console.log('[updates]: Processing');
+                }
+
                 // Handle update
                 this._currentSeq++;
+                this._vt = event.vt;
                 this._handler!({
                     type: 'event',
-                    vt: this._vt!,
+                    vt: event.vt,
                     id: event.sequence,
                     pts: event.pts,
                     event: event.event
@@ -175,7 +195,8 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
                 // Drain pending
                 let drained = this.drain();
                 for (let d of drained) {
-                    this._handler!({ type: 'event', vt: this._vt!, id: d.sequence, pts: d.pts, event: d.event });
+                    this._vt = event.vt;
+                    this._handler!({ type: 'event', vt: d.vt, id: d.sequence, pts: d.pts, event: d.event });
                 }
 
                 // Restart invalidation timer
@@ -184,9 +205,12 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
                     this.startInvalidationTimer();
                 }
             } else {
+                if (LOG) {
+                    console.log('[updates]: Pending: from the future');
+                }
                 if (!this._pending.has(event.seq)) {
                     // Persist to pending
-                    this._pending.set(event.seq, { sequence: event.sequence, pts: event.pts, event: event.event });
+                    this._pending.set(event.seq, { sequence: event.sequence, pts: event.pts, event: event.event, vt: event.vt });
 
                     // Start invalidation timer if not exist
                     this.startInvalidationTimer();
@@ -217,6 +241,9 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
         }
         this._invalidated = true;
         this.setState('updating');
+        if (LOG) {
+            console.log('[updates]: Invalidating...');
+        }
 
         (async () => {
             let hasMore = true;
@@ -229,7 +256,7 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
                 for (let sequence of difference.sequences) {
                     this._handler!({
                         type: 'diff',
-                        vt: this._vt,
+                        vt: difference.vt,
                         state: sequence.state,
                         fromPts: sequence.fromPts,
                         events: sequence.events
@@ -246,7 +273,7 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
             // Drain received events
             let drained = this.drain();
             for (let d of drained) {
-                this._handler!({ type: 'event', vt: this._vt!, id: d.sequence, pts: d.pts, event: d.event });
+                this._handler!({ type: 'event', vt: d.vt, id: d.sequence, pts: d.pts, event: d.event });
             }
 
             // Update state
@@ -254,6 +281,10 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
                 this.setState('connected');
             } else {
                 this.setState('connecting');
+            }
+
+            if (LOG) {
+                console.log('[updates]: Valid');
             }
 
             // Update invalidated flag
@@ -292,7 +323,7 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
         if (this._currentSeq === undefined) {
             throw Error('Invalid state');
         }
-        let res: { sequence: string, pts: number, event: T }[] = [];
+        let res: { sequence: string, pts: number, vt: string, event: T }[] = [];
         while (this._pending.has(this._currentSeq + 1)) {
             res.push(this._pending.get(this._currentSeq + 1)!);
             this._currentSeq++;

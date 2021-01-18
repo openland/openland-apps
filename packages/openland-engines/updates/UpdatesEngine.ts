@@ -64,7 +64,7 @@ export class UpdatesEngine {
     private handleEvent = async (tx: Transaction, event: SequenceHolderEvent | { type: 'loaded' }) => {
         if (event.type === 'loaded') {
             await this.dialogs.onDialogsLoaded(tx);
-            console.log('updates: sequence: ', event);
+            console.log('[updates]: sequence: ', event);
         } else if (event.type === 'start' || event.type === 'restart') {
             if (event.sequence.__typename === 'SequenceChat') {
                 // NOTE: Dialogs MUST be the first since it could miss some dialogs
@@ -80,7 +80,7 @@ export class UpdatesEngine {
             await this.drafts.onUpdate(tx, event.event);
             await this.history.onUpdate(tx, event.pts, event.event);
 
-            console.log('updates: sequence: ', event);
+            console.log('[updates]: sequence: ', event);
         }
     }
 }

@@ -2,6 +2,7 @@ import { Transaction, Persistence } from './../../persistence/Persistence';
 import { CollapsableSequencer } from './state/CollapsableSequencer';
 import { UpdateEvent, UpdateSequenceDiff, UpdateSequenceState } from './../Types';
 import { UpdatesApi } from './UpdatesApi';
+import { LOG } from './LOG';
 
 export type SequenceSubscriptionEvent =
     | { type: 'invalidated' }
@@ -49,9 +50,13 @@ export class SequenceSubscription {
         if (!this._started) {
             throw Error('Not started');
         }
+        if (LOG) {
+            console.log('[updates]: ' + this.id + ': event: ', { pts, event });
+        }
 
         // Put pending and call handler
         if (this._pending.put(pts, event)) /* if 'event was added' */ {
+            console.log('[updates]: ' + this.id + ': Added');
 
             let drained = this.drain();
             for (let d of drained) {
@@ -65,6 +70,8 @@ export class SequenceSubscription {
                     this.startInvalidationTimer();
                 }
             }
+        } else {
+            console.log('[updates]: ' + this.id + ': Ignored');
         }
 
         await this.updateInvalidatedState(tx);
@@ -73,6 +80,10 @@ export class SequenceSubscription {
     async onDiff(tx: Transaction, fromPts: number, toPts: number, events: { pts: number, event: UpdateEvent }[], state: UpdateSequenceDiff) {
         if (!this._started) {
             throw Error('Not started');
+        }
+
+        if (LOG) {
+            console.log('[updates]: ' + this.id + ': diff: ', { fromPts, toPts, events, state });
         }
 
         if (this._invalidated) {

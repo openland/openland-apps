@@ -2694,6 +2694,7 @@ type Query {
   debugChatTree(id: ID!): String!
   debugChatMessages(id: ID!): [ModernMessage!]!
   debugUnreadChats(user: ID): [String!]!
+  debugUserAuthPoints(id: ID!): AuthPoint
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!
@@ -3264,6 +3265,7 @@ type StickerPack {
 input StickerPackInput {
   title: String
   published: Boolean
+  listed: Boolean
   stickers: [ID!]
   private: Boolean
 }
@@ -3557,6 +3559,7 @@ type UpdateSubscriptionEvent {
   seq: Int!
   pts: Int!
   event: UpdateEvent!
+  state: String!
   sequence: Sequence!
 }
 
