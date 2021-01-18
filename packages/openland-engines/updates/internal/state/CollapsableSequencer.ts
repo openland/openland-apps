@@ -22,6 +22,10 @@ export class CollapsableSequencer<T> {
         return this._pending.length === 0;
     }
 
+    dump() {
+        return JSON.parse(JSON.stringify({ pending: this._pending, regions: this._regions, pts: this.currentPts }));
+    }
+
     reset(pts: number) {
         this._currentPts = pts;
         this._cleanup();
@@ -101,7 +105,7 @@ export class CollapsableSequencer<T> {
 
         // Check if in region
         for (let r of this._regions) {
-            if (r.from > min.pts && min.pts <= r.to) {
+            if (r.from <= min.pts && min.pts <= r.to) {
                 if (r.from <= this._currentPts) {
                     this._currentPts = min.pts;
                     this._pending.splice(minIndex, 1);

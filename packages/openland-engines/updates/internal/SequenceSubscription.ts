@@ -99,12 +99,20 @@ export class SequenceSubscription {
 
             // If not invalidated: try to apply updates if possible and handle stream restart if happens
             if (this._pending.currentPts < fromPts) {
+                if (LOG) {
+                    console.log('[updates]: ' + this.id + ':restart from ' + this._pending.currentPts + ' -> ' + toPts);
+                }
+
                 // Reset pending collection
                 this._pending.reset(toPts);
                 await this._handler!(tx, { type: 'restart', sequence: state, pts: toPts });
             } else {
                 // Put to pending collection (to be drained soon)
                 this._pending.putCollapsed(fromPts, toPts, events);
+            }
+
+            if (LOG) {
+                console.log('[updates]: ' + this.id + ':state: ', this._pending.dump());
             }
 
             // Drain pending updates

@@ -16,4 +16,11 @@ describe('CollapsableSequencer', () => {
         seq.putCollapsed(12, 14, [{ pts: 13, event: '5' }, { pts: 14, event: '6' }]);
         expect(seq.pick()).toMatchObject({ pts: 14, event: '6' });
     });
+
+    it('sequence regions', () => {
+        let seq = new CollapsableSequencer<string>();
+        seq.reset(1124);
+        seq.putCollapsed(1120, 1128, [{ pts: 1128, event: 'event!' }]);
+        expect(seq.pick()).toMatchObject({ pts: 1128, event: 'event!' });
+    });
 });
