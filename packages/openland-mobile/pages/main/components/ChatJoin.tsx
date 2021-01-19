@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Alert, StyleSheet, ViewStyle, TextStyle, Platform, Image } from 'react-native';
+import { View, Text, Alert, StyleSheet, ViewStyle, TextStyle, Platform, Image, ScrollView } from 'react-native';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { ZText } from 'openland-mobile/components/ZText';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
@@ -303,8 +303,8 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
     }
 
     return (
-        <View style={{ flexGrow: 1, paddingTop: area.top, paddingBottom }}>
-            <View style={styles.container}>
+        <View style={{ flexGrow: 1, maxHeight: '100%', paddingTop: area.top, paddingBottom }}>
+            <ScrollView contentContainerStyle={styles.container}>
                 {joinAvatars}
                 <View style={{ flexDirection: 'row', marginTop: 32 }}>
                     <Text
@@ -326,7 +326,6 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                         text={description}
                         linkify={true}
                         style={[styles.description, { color: theme.foregroundSecondary }]}
-                        numberOfLines={4}
                     />
                 )}
                 {showMembers && membersContent}
@@ -340,9 +339,9 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                         </Text>
                     </View>
                 )}
-            </View>
+            </ScrollView>
             {button}
-        </View>
+       </View>
     );
 });
 
