@@ -21,7 +21,7 @@ import com.openland.react.window.RNSWindowManager
 class RNSPackage : ReactPackage {
 
     init {
-        ComponentsConfiguration.incrementalMountWhenNotVisible = false
+        ComponentsConfiguration.incrementalVisibilityHandling = false
     }
 
     override fun createNativeModules(reactContext: ReactApplicationContext): MutableList<NativeModule> {

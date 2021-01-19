@@ -215,6 +215,7 @@
         "three": "^0.107.0",
         "tlds": "^1.203.1",
         "tmp": "^0.1.0",
+        "ts-essentials": "^7.0.1",
         "tslint-react-hooks": "^1.0.1",
         "uploadcare-widget": "^3.2.1",
         "url": "^0.11.0",

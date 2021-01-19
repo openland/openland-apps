@@ -215,7 +215,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:23.0.1"
 
     // Litho
-    def lithoVersion = '0.31.0'
+    def lithoVersion = '0.39.0'
     implementation "com.facebook.litho:litho-core:${lithoVersion}"
     implementation "com.facebook.litho:litho-widget:${lithoVersion}"
     implementation "com.facebook.litho:litho-fresco:${lithoVersion}"
