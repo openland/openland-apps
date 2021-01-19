@@ -5059,6 +5059,9 @@ const MessageUnsetReactionSelector = obj(
 const MyNotificationCenterMarkSeqReadSelector = obj(
             field('notificationCenterMarkSeqRead', 'notificationCenterMarkSeqRead', args(fieldValue("toSeq", refValue('seq'))), notNull(scalar('Boolean')))
         );
+const OnLogoutSelector = obj(
+            field('onLogOut', 'onLogOut', args(), notNull(scalar('Boolean')))
+        );
 const OrganizationActivateByInviteSelector = obj(
             field('joinAppInvite', 'joinAppInvite', args(fieldValue("key", refValue('inviteKey'))), notNull(scalar('ID')))
         );
@@ -6963,6 +6966,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'MyNotificationCenterMarkSeqRead',
         body: 'mutation MyNotificationCenterMarkSeqRead($seq:Int!){notificationCenterMarkSeqRead(toSeq:$seq)}',
         selector: MyNotificationCenterMarkSeqReadSelector
+    },
+    OnLogout: {
+        kind: 'mutation',
+        name: 'OnLogout',
+        body: 'mutation OnLogout{onLogOut}',
+        selector: OnLogoutSelector
     },
     OrganizationActivateByInvite: {
         kind: 'mutation',

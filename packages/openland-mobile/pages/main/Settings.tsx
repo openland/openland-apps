@@ -41,7 +41,8 @@ export const handleGlobalInvitePress = async () => {
 
 let SettingsContent = ((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
-    const resp = getClient().useAccountSettings({ fetchPolicy: 'cache-and-network' });
+    const client = getClient();
+    const resp = client.useAccountSettings({ fetchPolicy: 'cache-and-network' });
 
     if (resp.me === null) {
         return null;
@@ -54,7 +55,8 @@ let SettingsContent = ((props: PageProps) => {
             .message('Are you sure you want to sign out?')
             .button('Cancel', 'cancel')
             .action('Yes, I am sure', 'destructive', async () => {
-                logout();
+                await client.mutateOnLogout();
+                await logout();
             })
             .show();
     }, []);
