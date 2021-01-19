@@ -26,6 +26,7 @@ fragment SuperStickerPackFragment on StickerPack {
     title
     published
     private
+    listed
     added
     author {
         id
