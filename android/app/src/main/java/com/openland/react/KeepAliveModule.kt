@@ -3,6 +3,8 @@ package com.openland.react
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.jstasks.HeadlessJsTaskContext
+import com.facebook.react.modules.core.JavaTimerManager
+import com.facebook.react.modules.core.TimingModule
 //import com.facebook.react.modules.core.Timing
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -12,9 +14,9 @@ class KeepAliveModule(reactContext: ReactApplicationContext) : ReactContextBaseJ
     }
 
     override fun initialize() {
-        
-        // Hack Timers
         runOnUIThread {
+
+            // Hack HeadlessJsTaskContext
             val headlessContext = HeadlessJsTaskContext.getInstance(reactApplicationContext)
             try {
                 val mActiveTasks = HeadlessJsTaskContext::class.java.getDeclaredField("mActiveTasks")
@@ -27,17 +29,9 @@ class KeepAliveModule(reactContext: ReactApplicationContext) : ReactContextBaseJ
                 e.printStackTrace()
             }
 
-//            val module = reactApplicationContext.getNativeModule(Timing::class.java)
-//            try {
-//                val isRunningTasks = Timing::class.java.getDeclaredField("isRunningTasks")
-//                isRunningTasks.isAccessible = true
-//                val v = isRunningTasks.get(module) as AtomicBoolean
-//                v.set(true)
-//            } catch (e: NoSuchFieldException) {
-//                e.printStackTrace()
-//            } catch (e: IllegalAccessException) {
-//                e.printStackTrace()
-//            }
+            // Hack TimingModule
+            val module = reactApplicationContext.getNativeModule(TimingModule::class.java)
+            module.onHeadlessJsTaskStart(-1)
         }
     }
 }
