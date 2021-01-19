@@ -5052,6 +5052,9 @@ private let MessageUnsetReactionSelector = obj(
 private let MyNotificationCenterMarkSeqReadSelector = obj(
             field("notificationCenterMarkSeqRead", "notificationCenterMarkSeqRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("Boolean")))
         )
+private let OnLogoutSelector = obj(
+            field("onLogOut", "onLogOut", notNull(scalar("Boolean")))
+        )
 private let OrganizationActivateByInviteSelector = obj(
             field("joinAppInvite", "joinAppInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
         )
@@ -6961,6 +6964,12 @@ class Operations {
         "mutation MyNotificationCenterMarkSeqRead($seq:Int!){notificationCenterMarkSeqRead(toSeq:$seq)}",
         MyNotificationCenterMarkSeqReadSelector
     )
+    let OnLogout = OperationDefinition(
+        "OnLogout",
+        .mutation, 
+        "mutation OnLogout{onLogOut}",
+        OnLogoutSelector
+    )
     let OrganizationActivateByInvite = OperationDefinition(
         "OrganizationActivateByInvite",
         .mutation, 
@@ -7753,6 +7762,7 @@ class Operations {
         if name == "MessageSetReaction" { return MessageSetReaction }
         if name == "MessageUnsetReaction" { return MessageUnsetReaction }
         if name == "MyNotificationCenterMarkSeqRead" { return MyNotificationCenterMarkSeqRead }
+        if name == "OnLogout" { return OnLogout }
         if name == "OrganizationActivateByInvite" { return OrganizationActivateByInvite }
         if name == "OrganizationAddMember" { return OrganizationAddMember }
         if name == "OrganizationChangeMemberRole" { return OrganizationChangeMemberRole }
