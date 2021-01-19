@@ -1,11 +1,9 @@
+import { isElectron } from 'openland-y-utils/isElectron';
 import { delay } from 'openland-y-utils/timer';
 import { randomKey } from 'openland-y-utils/randomKey';
-import { InMemoryKeyValueStore } from 'openland-y-utils/InMemoryKeyValueStore';
 import { KeyValueStore } from 'openland-y-utils/KeyValueStore';
 import * as idb from 'idb';
-import { isUnaryExpression } from '@babel/types';
 
-const ENABLE_CUSTOM_STORAGE: boolean = true;
 const LOCK_TIMEOUT = 10000;
 
 interface Shema extends idb.DBSchema {
@@ -116,6 +114,14 @@ async function doOpenStore(name: string): Promise<KeyValueStore> {
             src.createObjectStore('store-meta');
         }
     });
+
+    //
+    // Simple store for Electron builds
+    //
+
+    if (isElectron) {
+        return new IndexedKeyValueStore('electron', db);
+    }
 
     console.log('[storage]: Trying to open store ' + name);
 
