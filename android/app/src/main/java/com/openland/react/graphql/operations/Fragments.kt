@@ -1838,6 +1838,7 @@ internal val SuperStickerPackFragmentSelector = obj(
             field("title", "title", notNull(scalar("String"))),
             field("published", "published", notNull(scalar("Boolean"))),
             field("private", "private", notNull(scalar("Boolean"))),
+            field("listed", "listed", notNull(scalar("Boolean"))),
             field("added", "added", notNull(scalar("Boolean"))),
             field("author", "author", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
