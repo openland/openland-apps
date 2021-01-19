@@ -179,6 +179,9 @@ const USliderRaw = React.memo((props: USliderProps) => {
             setCurrentSlide(currentSlide - 1);
             setCanClick(false);
             enableClick();
+        } else {
+            setCurrentSlide(numChildren - 1);
+            setOffset((1 - numChildren) * childWidth);
         }
     };
 
