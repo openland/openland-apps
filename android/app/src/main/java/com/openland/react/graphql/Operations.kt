@@ -191,6 +191,7 @@ object Operations {
         if (name == "MessageSetReaction") return MessageSetReaction
         if (name == "MessageUnsetReaction") return MessageUnsetReaction
         if (name == "MyNotificationCenterMarkSeqRead") return MyNotificationCenterMarkSeqRead
+        if (name == "OnLogout") return OnLogout
         if (name == "OrganizationActivateByInvite") return OrganizationActivateByInvite
         if (name == "OrganizationAddMember") return OrganizationAddMember
         if (name == "OrganizationChangeMemberRole") return OrganizationChangeMemberRole
