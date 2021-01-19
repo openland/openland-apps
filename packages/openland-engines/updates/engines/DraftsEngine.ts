@@ -1,3 +1,4 @@
+import { StoredMap } from './storage/StoredMap';
 import { DialogsEngine } from './DialogsEngine';
 import { Transaction } from 'openland-engines/persistence/Persistence';
 import { ShortSequenceChat, ShortUpdate } from 'openland-api/spacex.types';
@@ -6,13 +7,11 @@ export class DraftsEngine {
 
     readonly dialogs: DialogsEngine;
 
-    private drafts = new Map<string, {
-        draft: {
-            version: number,
-            date: number,
-            message: string | null
-        }
-    }>();
+    private drafts = new StoredMap<{
+        version: number,
+        date: number,
+        message: string | null
+    }>('drafts');
 
     constructor(dialogs: DialogsEngine) {
         this.dialogs = dialogs;
@@ -32,23 +31,13 @@ export class DraftsEngine {
     }
 
     private async applyDraft(tx: Transaction, cid: string, date: number, version: number, message: string | null) {
-        let ex = this.drafts.get(cid);
-        if (!ex) {
-            this.drafts.set(cid, {
-                draft: {
-                    version,
-                    date,
-                    message
-                }
+        let ex = await this.drafts.get(tx, cid);
+        if (!ex || ex.version < version) {
+            this.drafts.set(tx, cid, {
+                version,
+                date,
+                message
             });
-        } else {
-            if (ex.draft.version < version) {
-                ex.draft = {
-                    version,
-                    date,
-                    message
-                };
-            }
         }
     }
 }

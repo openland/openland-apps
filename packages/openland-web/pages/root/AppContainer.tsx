@@ -30,7 +30,6 @@ export const ChatSearchContext = React.createContext<ChatSearchContextProps | nu
 
 export const AppContainer = (props: { children: any }) => {
     const client = useClient();
-
     const data = client.useAccount({ suspense: false, fetchPolicy: 'network-only' });
     const [chatSearchState, setChatSearchState] = React.useState<ChatSearchState>({
         chatId: null,

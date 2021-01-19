@@ -128,7 +128,7 @@ export class SequenceHolder {
         if (this.loading) {
 
             // Call Handler
-            this.handler(tx, { type: 'start', pts: state.pts, sequence: state.sequence });
+            await this.handler(tx, { type: 'start', pts: state.pts, sequence: state.sequence });
 
             // Save pts and enforce invalidated flag
             this.startPts = state.pts;

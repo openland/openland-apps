@@ -41,21 +41,34 @@ export class SequencesEngine {
             return;
         }
         this.started = true;
-        this.main.start(null, (event) => {
-            console.log('updates: ', event);
+        (async () => {
 
-            this.persistence.inTx(async (tx) => {
-                if (event.type === 'inited') {
-                    await this.onInited(tx);
-                } else if (event.type === 'start') {
-                    await this.receiveSequence(tx, event.state, event.pts);
-                } else if (event.type === 'event') {
-                    await this.receiveEvent(tx, event.id, event.pts, event.event);
-                } else if (event.type === 'diff') {
-                    await this.receiveDiff(tx, event.fromPts, event.events, event.state);
-                }
+            // Read start state
+            let state = await this.persistence.inTx(async (tx) => {
+                return tx.read('updates.state');
             });
-        });
+
+            // Start sequence
+            this.main.start(state, (event) => {
+                console.log('updates: ', event);
+
+                this.persistence.inTx(async (tx) => {
+                    if (event.type === 'inited') {
+                        await this.onInited(tx);
+                        tx.write('updates.state', event.vt);
+                    } else if (event.type === 'start') {
+                        await this.receiveSequence(tx, event.state, event.pts);
+                        tx.write('updates.state', event.vt);
+                    } else if (event.type === 'event') {
+                        await this.receiveEvent(tx, event.id, event.pts, event.event);
+                        tx.write('updates.state', event.vt);
+                    } else if (event.type === 'diff') {
+                        await this.receiveDiff(tx, event.fromPts, event.events, event.state);
+                        tx.write('updates.state', event.vt);
+                    }
+                });
+            });
+        })();
     }
 
     stop() {

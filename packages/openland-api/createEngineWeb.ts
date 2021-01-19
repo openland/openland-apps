@@ -10,7 +10,7 @@ export const createEngineWeb = (endpoint: string, token?: string) => {
         return new WebEngine(Definitions, {
             endpoint: endpoint,
             connectionParams: { ['x-openland-token']: token },
-            protocol: 'openland'
+            protocol: 'openland',
         });
     }
 };

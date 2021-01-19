@@ -4,6 +4,7 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { View } from 'react-native';
 import { Deferred } from 'openland-unicorn/components/Deferred';
 import { XLoader } from 'openland-x/XLoader';
+import { openWebStorage } from 'openland-web/storage/openWebStorage';
 // import { useClient } from 'openland-api/useClient';
 // import { UpdatesEngine } from 'openland-engines/updates/UpdatesEngine';
 // import { Persistence } from 'openland-engines/persistence/Persistence';
@@ -52,6 +53,11 @@ export default withApp('Pegasus', ['super-admin', 'software-developer'], props =
     // let source = React.useMemo(() => {
     //     return dialogListWebDataSource(engine.dialogs.dialogsAll.source.map((s) => convertItem(s)));
     // }, []);
+
+    React.useMemo(() => {
+        let storage = openWebStorage('pegasus');
+        storage.writeKey('hello-' + Math.random(), 'world');
+    }, []);
 
     return (
         <DevDocsScaffold title="Pegasus">
