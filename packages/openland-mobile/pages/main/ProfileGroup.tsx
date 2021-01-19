@@ -43,10 +43,6 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     const [loading, setLoading] = React.useState(false);
     const [muted, setMuted] = React.useState(group.settings.mute);
 
-    if (group.membership !== SharedRoomMembershipStatus.MEMBER) {
-        return <ChatJoin room={group} theme={theme} router={props.router} />;
-    }
-
     // callbacks
     const handleAddMembers = React.useCallback(
         (addedMembers: GroupMember[]) => {
@@ -470,6 +466,10 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             )}
         </>
     );
+
+    if (group.membership !== SharedRoomMembershipStatus.MEMBER) {
+        return <ChatJoin room={group} theme={theme} router={props.router} />;
+    }
 
     return (
         <>
