@@ -8,7 +8,6 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { PushEngineComponent } from 'openland-web/modules/push/PushEngineComponent';
 import { useClient } from 'openland-api/useClient';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
-import { dropPersistenceCache } from 'openland-api/spacex.persistance.web';
 import { UnicornSplash } from 'openland-x/XLoader';
 import {
     highlightSecretOption,
@@ -42,7 +41,6 @@ export const AppContainer = (props: { children: any }) => {
                 callback: () => {
                     console.warn('reset-cache-and-reload');
                     (async () => {
-                        await dropPersistenceCache();
                         location.reload();
                     })();
                 },
