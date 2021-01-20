@@ -1,3 +1,5 @@
+import { Persistence } from 'openland-engines/persistence/Persistence';
+import { StoredMap } from './storage/StoredMap';
 import { UsersEngine } from './UsersEngine';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { UpdateMessage } from './../../../openland-api/spacex.types';
@@ -25,15 +27,18 @@ function resolveSortKey(src: UpdateMessage | null, draft: { message: string, dat
 
 export class DialogsEngine {
 
-    private dialogs = new Map<string, DialogState>();
-    private userDialogs = new Map<string, string>();
+    private persistence: Persistence;
+    private dialogs = new StoredMap<DialogState>('dialogs');
+    private userDialogs = new StoredMap<string>('userDialogs');
     readonly dialogsAll: DialogCollection;
     readonly dialogsUnread: DialogCollection;
     readonly dialogsGroups: DialogCollection;
     readonly dialogsPrivate: DialogCollection;
     private allDialogs: DialogCollection[];
 
-    constructor(me: string, messenger: MessengerEngine, users: UsersEngine) {
+    constructor(me: string, messenger: MessengerEngine, users: UsersEngine, persistence: Persistence) {
+        this.persistence = persistence;
+
         this.dialogsAll = new DialogCollection(me, defaultQualifier, users);
         this.dialogsUnread = new DialogCollection(me, unreadQualifier, users);
         this.dialogsGroups = new DialogCollection(me, groupQualifier, users);
@@ -42,13 +47,15 @@ export class DialogsEngine {
 
         // Augment online
         messenger.getOnlines().onSingleChange((user, online) => {
-            let conversationId = this.userDialogs.get(user);
-            if (!conversationId) {
-                return;
-            }
-            for (let d of this.allDialogs) {
-                d.onlineAugmentator.setAugmentation(conversationId, { online });
-            }
+            this.persistence.inTx(async (tx) => {
+                let conversationId = await this.userDialogs.get(tx, user);
+                if (!conversationId) {
+                    return;
+                }
+                for (let d of this.allDialogs) {
+                    d.onlineAugmentator.setAugmentation(conversationId, { online });
+                }
+            });
         });
 
         // Augment typings
@@ -68,15 +75,15 @@ export class DialogsEngine {
     //
 
     async onSequenceRestart(tx: Transaction, state: ShortSequenceChat) {
+        let ex = await this.dialogs.get(tx, state.cid);
+
         if (state.room) {
             let muted = state.room.settings.mute || false;
             let title = state.room.__typename === 'PrivateRoom' ? state.room.user.name : state.room.title;
             let photo = state.room.__typename === 'PrivateRoom' ? state.room.user.photo : state.room.photo;
             let featured = state.room.__typename === 'SharedRoom' && state.room.featured;
             let activeCall = state.room.hasActiveCall;
-
-            if (this.dialogs.has(state.room.id)) {
-                let ex = this.dialogs.get(state.room.id)!;
+            if (ex) {
                 let updated: DialogState = {
                     ...ex,
                     title,
@@ -85,12 +92,11 @@ export class DialogsEngine {
                     featured,
                     activeCall
                 };
+                this.dialogs.set(tx, state.room.id, updated);
 
                 for (let d of this.allDialogs) {
-                    d.onDialogUpdated(ex, updated);
+                    await d.onDialogUpdated(tx, ex, updated);
                 }
-
-                this.dialogs.set(state.room.id, updated);
             } else {
                 let added: DialogState = {
                     key: state.room.id,
@@ -110,19 +116,21 @@ export class DialogsEngine {
                     topMessage: null,
                     sortKey: null
                 };
-                for (let d of this.allDialogs) {
-                    d.onDialogAdded(added);
-                }
-                this.dialogs.set(state.room.id, added);
+                this.dialogs.set(tx, state.room.id, added);
                 if (state.room.__typename === 'PrivateRoom') {
-                    this.userDialogs.set(state.room.user.id, state.cid);
+                    this.userDialogs.set(tx, state.room.user.id, state.cid);
+                }
+                for (let d of this.allDialogs) {
+                    await d.onDialogAdded(tx, added);
                 }
             }
         } else {
-            for (let d of this.allDialogs) {
-                d.onDialogRemoved(this.dialogs.get(state.cid)!);
+            if (ex) {
+                this.dialogs.delete(tx, state.cid);
+                for (let d of this.allDialogs) {
+                    await d.onDialogRemoved(tx, ex);
+                }
             }
-            this.dialogs.delete(state.cid);
         }
     }
 
@@ -134,8 +142,8 @@ export class DialogsEngine {
             let featured = update.room.__typename === 'SharedRoom' && update.room.featured;
             let activeCall = update.room.hasActiveCall;
 
-            if (this.dialogs.has(update.room.id)) {
-                let ex = this.dialogs.get(update.room.id)!;
+            let ex = await this.dialogs.get(tx, update.room.id);
+            if (ex) {
                 let updated: DialogState = {
                     ...ex,
                     title,
@@ -144,10 +152,10 @@ export class DialogsEngine {
                     featured,
                     activeCall
                 };
+                this.dialogs.set(tx, update.room.id, updated);
                 for (let d of this.allDialogs) {
-                    d.onDialogUpdated(ex, updated);
+                    await d.onDialogUpdated(tx, ex, updated);
                 }
-                this.dialogs.set(update.room.id, updated);
             }
         }
     }
@@ -157,53 +165,53 @@ export class DialogsEngine {
     //
 
     async onTopMessageUpdate(tx: Transaction, cid: string, message: UpdateMessage | null) {
-        if (this.dialogs.has(cid)) {
-            let ex = this.dialogs.get(cid)!;
+        let ex = await this.dialogs.get(tx, cid);
+        if (ex) {
             let updated: DialogState = {
                 ...ex,
                 topMessage: message,
                 sortKey: resolveSortKey(message, ex.draft)
             };
+            this.dialogs.set(tx, cid, updated);
             for (let d of this.allDialogs) {
-                d.onDialogUpdated(ex, updated);
+                await d.onDialogUpdated(tx, ex, updated);
             }
-            this.dialogs.set(cid, updated);
         }
     }
 
     async onDraftUpdate(tx: Transaction, cid: string, draft: { message: string, date: number } | null) {
-        if (this.dialogs.has(cid)) {
-            let ex = this.dialogs.get(cid)!;
+        let ex = await this.dialogs.get(tx, cid);
+        if (ex) {
             let updated: DialogState = {
                 ...ex,
                 draft,
                 sortKey: resolveSortKey(ex.topMessage, draft)
             };
+            this.dialogs.set(tx, cid, updated);
             for (let d of this.allDialogs) {
-                d.onDialogUpdated(ex, updated);
+                await d.onDialogUpdated(tx, ex, updated);
             }
-            this.dialogs.set(cid, updated);
         }
     }
 
     async onCounterUpdate(tx: Transaction, cid: string, counters: { unread: number, mentions: number }) {
-        if (this.dialogs.has(cid)) {
-            let ex = this.dialogs.get(cid)!;
+        let ex = await this.dialogs.get(tx, cid);
+        if (ex) {
             let updated: DialogState = {
                 ...ex,
                 counter: counters.unread,
                 mentions: counters.mentions
             };
+            this.dialogs.set(tx, cid, updated);
             for (let d of this.allDialogs) {
-                d.onDialogUpdated(ex, updated);
+                await d.onDialogUpdated(tx, ex, updated);
             }
-            this.dialogs.set(cid, updated);
         }
     }
 
     async onDialogsLoaded(tx: Transaction) {
         for (let d of this.allDialogs) {
-            d.onDialogsLoaded();
+            await d.onDialogsLoaded(tx);
         }
     }
 }

@@ -7,6 +7,7 @@ import { defaultQualifier } from './qualifiers';
 import { DialogState } from './DialogState';
 import { DialogQualifier } from './DialogQualifier';
 import { TypingType } from 'openland-api/spacex.types';
+import { Transaction } from 'openland-engines/persistence/Persistence';
 
 function convertToLegacy(me: string, src: DialogState, users: UsersEngine): DialogDataSourceItem {
     const isOut = src.topMessage ? src.topMessage.sender.id === me : false;
@@ -63,31 +64,31 @@ export class DialogCollection {
         this.legacy = this.onlineAugmentator.dataSource;
     }
 
-    onDialogAdded(src: DialogState) {
+    async onDialogAdded(tx: Transaction, src: DialogState) {
         if (this.qualifier(src)) {
-            this._doAdd(src);
+            await this._doAdd(tx, src);
         }
     }
 
-    onDialogRemoved(src: DialogState) {
+    async onDialogRemoved(tx: Transaction, src: DialogState) {
         if (this.qualifier(src)) {
-            this._doRemove(src);
+            await this._doRemove(tx, src);
         }
     }
 
-    onDialogUpdated(old: DialogState, updated: DialogState) {
+    async onDialogUpdated(tx: Transaction, old: DialogState, updated: DialogState) {
         let oldQualified = this.qualifier(old);
         let updatedQualified = this.qualifier(updated);
         if (oldQualified && updatedQualified) {
-            this._doUpdate(old, updated);
+            await this._doUpdate(tx, old, updated);
         } else if (!oldQualified && updatedQualified) {
-            this._doAdd(updated);
+            await this._doAdd(tx, updated);
         } else if (oldQualified && !updatedQualified) {
-            this._doRemove(old);
+            await this._doRemove(tx, old);
         }
     }
 
-    onDialogsLoaded() {
+    async onDialogsLoaded(tx: Transaction) {
         this.inited = true;
         this.source.initialize(this.state, true, true);
     }
@@ -96,7 +97,7 @@ export class DialogCollection {
     // Handler
     //
 
-    private _doAdd(src: DialogState) {
+    private async _doAdd(tx: Transaction, src: DialogState) {
         let index = SortedArray.dialogs.addIndex(this.state, src);
 
         // Update state and source
@@ -106,7 +107,7 @@ export class DialogCollection {
         this.state = SortedArray.dialogs.add(this.state, src);
     }
 
-    private _doRemove(src: DialogState) {
+    private async  _doRemove(tx: Transaction, src: DialogState) {
         let index = SortedArray.dialogs.find(this.state, src);
 
         // Update state and source
@@ -116,7 +117,7 @@ export class DialogCollection {
         this.state = SortedArray.dialogs.remove(this.state, src);
     }
 
-    private _doUpdate(old: DialogState, updated: DialogState) {
+    private async _doUpdate(tx: Transaction, old: DialogState, updated: DialogState) {
         let oldIndex = SortedArray.dialogs.find(this.state, old);
         this.state = SortedArray.dialogs.add(SortedArray.dialogs.remove(this.state, old), updated);
         let toIndex = SortedArray.dialogs.find(this.state, updated);

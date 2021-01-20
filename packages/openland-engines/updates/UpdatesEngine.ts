@@ -1,3 +1,4 @@
+import { ChatsEngine } from './engines/ChatsEngine';
 import { MessengerEngine } from './../MessengerEngine';
 import { UsersEngine } from './engines/UsersEngine';
 import { HistoryEngine } from './engines/HistoryEngine';
@@ -24,6 +25,7 @@ export class UpdatesEngine {
     readonly dialogs: DialogsEngine;
     readonly history: HistoryEngine;
     readonly users: UsersEngine;
+    readonly chats: ChatsEngine;
 
     constructor(me: string, client: OpenlandClient, persistence: Persistence, messenger: MessengerEngine) {
         this.client = client;
@@ -32,9 +34,10 @@ export class UpdatesEngine {
         this.messenger = messenger;
         this.users = new UsersEngine(persistence);
         this.sequences = new SequencesEngine(client, persistence, this.users);
+        this.chats = new ChatsEngine(this.sequences);
         this.dialogs = new DialogsEngine(this.me, this.messenger, this.users);
         this.counters = new CountersEngine(this.me, this, this.dialogs);
-        this.drafts = new DraftsEngine(this.dialogs);
+        this.drafts = new DraftsEngine();
         this.history = new HistoryEngine(this.dialogs, this);
     }
 
@@ -48,10 +51,6 @@ export class UpdatesEngine {
         this.started = true;
         this.sequences.handler = this.handleEvent;
         this.sequences.start();
-    }
-
-    async invalidate(tx: Transaction, id: string) {
-        await this.sequences.invalidate(tx, id);
     }
 
     close() {
