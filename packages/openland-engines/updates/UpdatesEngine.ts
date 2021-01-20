@@ -35,7 +35,7 @@ export class UpdatesEngine {
         this.users = new UsersEngine(persistence);
         this.sequences = new SequencesEngine(client, persistence, this.users);
         this.chats = new ChatsEngine(this.sequences);
-        this.dialogs = new DialogsEngine(this.me, this.messenger, this.users);
+        this.dialogs = new DialogsEngine(this.me, this.messenger, this.users, persistence);
         this.counters = new CountersEngine(this.me, this, this.dialogs);
         this.drafts = new DraftsEngine();
         this.history = new HistoryEngine(this.dialogs, this);
