@@ -1,5 +1,4 @@
 import { StoredMap } from './storage/StoredMap';
-import { DialogsEngine } from './DialogsEngine';
 import { Transaction } from 'openland-engines/persistence/Persistence';
 import { ShortSequenceChat, ShortUpdate } from 'openland-api/spacex.types';
 
