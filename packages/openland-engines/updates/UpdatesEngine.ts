@@ -65,6 +65,7 @@ export class UpdatesEngine {
             await this.dialogs.onDialogsLoaded(tx);
             console.log('[updates]: sequence: ', event);
         } else if (event.type === 'start' || event.type === 'restart') {
+            await this.chats.onSequenceRestart(tx, event.sequence);
             if (event.sequence.__typename === 'SequenceChat') {
                 // NOTE: Dialogs MUST be the first since it could miss some dialogs
                 await this.dialogs.onSequenceRestart(tx, event.sequence);
