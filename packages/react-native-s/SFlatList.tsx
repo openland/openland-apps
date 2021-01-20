@@ -31,14 +31,13 @@ export class SFlatList<T> extends React.Component<SFlatListProps<T>> {
                             <AnimatedFlatList<T>
                                 keyboardShouldPersistTaps="always"
                                 keyboardDismissMode="interactive"
-                                {...other}
                                 ref={scrollRef}
                                 style={{
-                                    // backgroundColor: Platform.OS === 'ios' ? '#fff' : undefined,
                                     // Work-around for freezing navive animation driver
                                     opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset)),
                                     marginBottom: safeAreaViaMargin ? area.bottom : undefined
                                 }}
+                                {...other}
                                 onScroll={this.contentOffset.event}
                                 scrollEventThrottle={1}
                                 scrollIndicatorInsets={this.props.scrollIndicatorInsets || {
