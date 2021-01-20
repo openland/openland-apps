@@ -196,7 +196,7 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
                     <XListView
                         dataSource={dataSource}
                         itemHeight={72}
-                        loadingHeight={200}
+                        loadingHeight={1000}
                         renderItem={renderDialog}
                         renderLoading={renderLoading}
                         afterChildren={<DiscoverFooter />}

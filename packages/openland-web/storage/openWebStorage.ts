@@ -1,3 +1,4 @@
+import { PersistenceVersion } from 'openland-engines/PersitenceVersion';
 import { isElectron } from 'openland-y-utils/isElectron';
 import { delay } from 'openland-y-utils/timer';
 import { randomKey } from 'openland-y-utils/randomKey';
@@ -107,7 +108,7 @@ async function doOpenStore(name: string): Promise<KeyValueStore> {
     // Load IndexedDB
     //
 
-    let db = await idb.openDB<Shema>('storage-' + name, 1, {
+    let db = await idb.openDB<Shema>('storage-' + name + '-' + PersistenceVersion, 1, {
         upgrade: async (src) => {
             src.createObjectStore('store', { keyPath: ['ns', 'k'] });
             src.createObjectStore('store-latest');

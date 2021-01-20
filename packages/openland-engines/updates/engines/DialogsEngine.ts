@@ -27,22 +27,26 @@ function resolveSortKey(src: UpdateMessage | null, draft: { message: string, dat
 
 export class DialogsEngine {
 
-    private persistence: Persistence;
-    private dialogs = new StoredMap<DialogState>('dialogs');
-    private userDialogs = new StoredMap<string>('userDialogs');
+    readonly persistence: Persistence;
+    readonly me: string;
+    readonly users: UsersEngine;
+    readonly dialogs = new StoredMap<DialogState>('dialogs');
+    readonly dialogCollections = new StoredMap<{ completed: boolean, index: { key: string, sortKey: number }[] }>('dialogCollections');
+    readonly userDialogs = new StoredMap<string>('userDialogs');
     readonly dialogsAll: DialogCollection;
     readonly dialogsUnread: DialogCollection;
     readonly dialogsGroups: DialogCollection;
     readonly dialogsPrivate: DialogCollection;
-    private allDialogs: DialogCollection[];
+    readonly allDialogs: DialogCollection[];
 
     constructor(me: string, messenger: MessengerEngine, users: UsersEngine, persistence: Persistence) {
         this.persistence = persistence;
-
-        this.dialogsAll = new DialogCollection(me, defaultQualifier, users);
-        this.dialogsUnread = new DialogCollection(me, unreadQualifier, users);
-        this.dialogsGroups = new DialogCollection(me, groupQualifier, users);
-        this.dialogsPrivate = new DialogCollection(me, privateQualifier, users);
+        this.me = me;
+        this.users = users;
+        this.dialogsAll = new DialogCollection('generic-all', defaultQualifier, this);
+        this.dialogsUnread = new DialogCollection('generic-unread', unreadQualifier, this);
+        this.dialogsGroups = new DialogCollection('generic-groups', groupQualifier, this);
+        this.dialogsPrivate = new DialogCollection('generic-private', privateQualifier, this);
         this.allDialogs = [this.dialogsAll, this.dialogsUnread, this.dialogsGroups, this.dialogsPrivate];
 
         // Augment online
@@ -66,6 +70,13 @@ export class DialogsEngine {
                 } else {
                     d.typingsAugmentator.removeAugmentation(conversationId);
                 }
+            }
+        });
+
+        // Load collections
+        persistence.inTx(async (tx) => {
+            for (let d of this.allDialogs) {
+                await d.init(tx);
             }
         });
     }
