@@ -12,7 +12,6 @@ export class CountersEngine {
     readonly me: string;
 
     private chats = new StoredMap<{
-        readonly sequence: string,
         readonly counters: ChatCounterState,
         readonly history: HistoryTracker
     }>('counters');
@@ -27,7 +26,6 @@ export class CountersEngine {
         let current = await this.chats.get(tx, state.cid);
         if (!current) {
             this.chats.set(tx, state.cid, {
-                sequence: state.id,
                 counters: state.topMessage && state.states ? {
                     type: 'generic',
                     counter: state.states.counter,
@@ -75,7 +73,7 @@ export class CountersEngine {
 
             // Invalidate sequence
             if (state.counters.type === 'empty') {
-                await this.updates.invalidate(tx, state.sequence);
+                await this.updates.chats.invalidate(tx, update.cid);
             } else {
                 if (historyTrackerIsWithinKnown(state.history, { from: state.counters.serverReadSeq, to: update.seq })) {
                     let counters = counterReducer(state.counters, { type: 'read', readSeq: update.seq });
@@ -84,7 +82,7 @@ export class CountersEngine {
                         this.dialogs.onCounterUpdate(tx, update.cid, { unread: counters.counter, mentions: counters.mentions });
                     }
                 } else {
-                    await this.updates.invalidate(tx, state.sequence);
+                    await this.updates.chats.invalidate(tx, update.cid);
                 }
             }
         } else if (update.__typename === 'UpdateChatMessage') {

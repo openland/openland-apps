@@ -1,3 +1,4 @@
+import { ChatsEngine } from './engines/ChatsEngine';
 import { MessengerEngine } from './../MessengerEngine';
 import { UsersEngine } from './engines/UsersEngine';
 import { HistoryEngine } from './engines/HistoryEngine';
@@ -24,6 +25,7 @@ export class UpdatesEngine {
     readonly dialogs: DialogsEngine;
     readonly history: HistoryEngine;
     readonly users: UsersEngine;
+    readonly chats: ChatsEngine;
 
     constructor(me: string, client: OpenlandClient, persistence: Persistence, messenger: MessengerEngine) {
         this.client = client;
@@ -32,9 +34,10 @@ export class UpdatesEngine {
         this.messenger = messenger;
         this.users = new UsersEngine(persistence);
         this.sequences = new SequencesEngine(client, persistence, this.users);
-        this.dialogs = new DialogsEngine(this.me, this.messenger, this.users);
+        this.chats = new ChatsEngine(this.sequences);
+        this.dialogs = new DialogsEngine(this.me, this.messenger, this.users, persistence);
         this.counters = new CountersEngine(this.me, this, this.dialogs);
-        this.drafts = new DraftsEngine(this.dialogs);
+        this.drafts = new DraftsEngine();
         this.history = new HistoryEngine(this.dialogs, this);
     }
 
@@ -50,10 +53,6 @@ export class UpdatesEngine {
         this.sequences.start();
     }
 
-    async invalidate(tx: Transaction, id: string) {
-        await this.sequences.invalidate(tx, id);
-    }
-
     close() {
         if (!this.closed) {
             this.closed = true;
@@ -66,6 +65,7 @@ export class UpdatesEngine {
             await this.dialogs.onDialogsLoaded(tx);
             console.log('[updates]: sequence: ', event);
         } else if (event.type === 'start' || event.type === 'restart') {
+            await this.chats.onSequenceRestart(tx, event.sequence);
             if (event.sequence.__typename === 'SequenceChat') {
                 // NOTE: Dialogs MUST be the first since it could miss some dialogs
                 await this.dialogs.onSequenceRestart(tx, event.sequence);

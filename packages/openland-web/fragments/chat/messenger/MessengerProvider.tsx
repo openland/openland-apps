@@ -4,6 +4,7 @@ import { UserShort } from 'openland-api/spacex.types';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
+import { openWebStorage } from 'openland-web/storage/openWebStorage';
 
 let cachedMessenger: MessengerEngine | null = null;
 
@@ -13,9 +14,11 @@ const Messenger = (props: { currentUser: UserShort; children?: any }) => {
         let permissions = React.useContext(XRoleContext);
         if (!cachedMessenger) {
             let platform = 'web ' + location.hostname;
+            const experimental = permissions && permissions.roles.indexOf('super-admin') >= 0;
             cachedMessenger = new MessengerEngine(client, props.currentUser, platform, {
                 conversationBatchSize: 30,
-                experimental: permissions && permissions.roles.indexOf('super-admin') >= 0
+                experimental,
+                store: experimental ? openWebStorage('engines') : undefined
             });
         }
         return (

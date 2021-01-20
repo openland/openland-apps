@@ -17,12 +17,12 @@ export class UsersEngine {
         }
     }
 
-    getUser(id: string): ShortUser {
-        return this.users.getSyncOrFail(id);
+    getUserAsync(tx: Transaction, id: string) {
+        return this.users.get(tx, id);
     }
 
-    private async _preloadUser(tx: Transaction, id: string) {
-        return this.users.get(tx, id);
+    getUser(id: string): ShortUser {
+        return this.users.getSyncOrFail(id);
     }
 
     //
@@ -63,5 +63,9 @@ export class UsersEngine {
                 this._extractUsers(src[key], res);
             }
         }
+    }
+
+    private async _preloadUser(tx: Transaction, id: string) {
+        return this.users.get(tx, id);
     }
 }

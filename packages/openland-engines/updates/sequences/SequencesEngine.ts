@@ -127,7 +127,7 @@ export class SequencesEngine {
             }
             return;
         }
-        let next = this.client.queryGetInitialDialogs({ after: cursor });
+        let next = this.client.queryGetInitialDialogs({ after: cursor }, { fetchPolicy: 'network-only' });
 
         (async () => {
             completed = false;
@@ -138,7 +138,7 @@ export class SequencesEngine {
                 console.info('Dialogs read in ' + (Date.now() - dstart) + ' ms');
                 // Start next loading ASAP
                 if (dialogs.syncUserChats.cursor) {
-                    next = this.client.queryGetInitialDialogs({ after: dialogs.syncUserChats.cursor });
+                    next = this.client.queryGetInitialDialogs({ after: dialogs.syncUserChats.cursor }, { fetchPolicy: 'network-only' });
                 }
 
                 await this.preprocessor(dialogs);
@@ -185,7 +185,7 @@ export class SequencesEngine {
         if (missing.length > 0) {
             let start = Date.now();
             let loadedUsers = (await backoff(async () => {
-                return await this.client.queryUpdateUsers({ ids: missing });
+                return await this.client.queryUpdateUsers({ ids: missing }, { fetchPolicy: 'network-only' });
             })).users;
             console.info('users loaded in ' + (Date.now() - start) + ' ms');
             await this.persistence.inTx(async (tx) => {

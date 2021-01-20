@@ -50,4 +50,9 @@ export class StoredMap<T> {
         tx.writeJson(this.namespace + '.' + key, value);
         this.cache.set(key, value);
     }
+
+    delete(tx: Transaction, key: string) {
+        tx.write(this.namespace + '.' + key, null);
+        this.cache.set(key, null);
+    }
 }
