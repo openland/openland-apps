@@ -2047,6 +2047,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateMyNotificationCenterMarkSeqRead(variables: Types.MyNotificationCenterMarkSeqReadVariables, params?: MutationParameters): Promise<Types.MyNotificationCenterMarkSeqRead> {
         return this.mutate('MyNotificationCenterMarkSeqRead', variables, params);
     }
+    mutateOnLogout(params?: MutationParameters): Promise<Types.OnLogout> {
+        return this.mutate('OnLogout', undefined, params);
+    }
     mutateOrganizationActivateByInvite(variables: Types.OrganizationActivateByInviteVariables, params?: MutationParameters): Promise<Types.OrganizationActivateByInvite> {
         return this.mutate('OrganizationActivateByInvite', variables, params);
     }

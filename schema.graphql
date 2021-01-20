@@ -1788,6 +1788,7 @@ type Mutation {
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
   sendPhonePairCode(phone: String!): String!
   pairPhone(sessionId: String!, confirmationCode: String!): Boolean!
+  onLogOut: Boolean!
 
   """Deprecated"""
   updateSettings(settings: UpdateSettingsInput): Settings!
@@ -3533,6 +3534,7 @@ type UpdatesSequenceDifference {
   after: Int!
   sequence: Sequence!
   events: [UpdatesDifferenceEvent!]!
+  hasMore: Boolean!
 }
 
 type UpdatesSequenceState {

@@ -1839,6 +1839,7 @@ const SuperStickerPackFragmentSelector = obj(
             field('title', 'title', args(), notNull(scalar('String'))),
             field('published', 'published', args(), notNull(scalar('Boolean'))),
             field('private', 'private', args(), notNull(scalar('Boolean'))),
+            field('listed', 'listed', args(), notNull(scalar('Boolean'))),
             field('added', 'added', args(), notNull(scalar('Boolean'))),
             field('author', 'author', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5059,6 +5060,9 @@ const MessageUnsetReactionSelector = obj(
 const MyNotificationCenterMarkSeqReadSelector = obj(
             field('notificationCenterMarkSeqRead', 'notificationCenterMarkSeqRead', args(fieldValue("toSeq", refValue('seq'))), notNull(scalar('Boolean')))
         );
+const OnLogoutSelector = obj(
+            field('onLogOut', 'onLogOut', args(), notNull(scalar('Boolean')))
+        );
 const OrganizationActivateByInviteSelector = obj(
             field('joinAppInvite', 'joinAppInvite', args(fieldValue("key", refValue('inviteKey'))), notNull(scalar('ID')))
         );
@@ -6001,7 +6005,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     CreatedStickerPacks: {
         kind: 'query',
         name: 'CreatedStickerPacks',
-        body: 'query CreatedStickerPacks{createdStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
+        body: 'query CreatedStickerPacks{createdStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private listed added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
         selector: CreatedStickerPacksSelector
     },
     DebugGqlTrace: {
@@ -6583,7 +6587,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     SuperAllStickerPacks: {
         kind: 'query',
         name: 'SuperAllStickerPacks',
-        body: 'query SuperAllStickerPacks{superAllStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
+        body: 'query SuperAllStickerPacks{superAllStickerPacks{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private listed added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
         selector: SuperAllStickerPacksSelector
     },
     SuperBadgeInRoom: {
@@ -6595,13 +6599,13 @@ export const Operations: { [key: string]: OperationDefinition } = {
     SuperStickerPack: {
         kind: 'query',
         name: 'SuperStickerPack',
-        body: 'query SuperStickerPack($id:ID!){stickerPack(id:$id){__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
+        body: 'query SuperStickerPack($id:ID!){stickerPack(id:$id){__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private listed added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
         selector: SuperStickerPackSelector
     },
     SuperStickerPackCatalog: {
         kind: 'query',
         name: 'SuperStickerPackCatalog',
-        body: 'query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
+        body: 'query SuperStickerPackCatalog{stickers:stickerPackCatalog{__typename ...SuperStickerPackFragment}}fragment SuperStickerPackFragment on StickerPack{__typename id title published private listed added author{__typename id name}stickers{__typename ... on ImageSticker{__typename id emoji image{__typename uuid}}}}',
         selector: SuperStickerPackCatalogSelector
     },
     TransactionsHistory: {
@@ -6963,6 +6967,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'MyNotificationCenterMarkSeqRead',
         body: 'mutation MyNotificationCenterMarkSeqRead($seq:Int!){notificationCenterMarkSeqRead(toSeq:$seq)}',
         selector: MyNotificationCenterMarkSeqReadSelector
+    },
+    OnLogout: {
+        kind: 'mutation',
+        name: 'OnLogout',
+        body: 'mutation OnLogout{onLogOut}',
+        selector: OnLogoutSelector
     },
     OrganizationActivateByInvite: {
         kind: 'mutation',
