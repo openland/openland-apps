@@ -1,5 +1,4 @@
 import { DialogsEngine } from './../DialogsEngine';
-import { StoredMap } from './../storage/StoredMap';
 import { UsersEngine } from './../UsersEngine';
 import { DataSourceAugmentor } from 'openland-y-utils/DataSourceAugmentor';
 import { DialogDataSourceItem, DialogDataSourceItemStored } from './../../../messenger/DialogListEngine';
