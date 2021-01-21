@@ -1,1 +1,1 @@
-export const PersistenceVersion: number = 103;
+export const PersistenceVersion: number = 104;

@@ -47,8 +47,8 @@ export class CountersEngine {
                             pts, lastMessagesSeq: 0
                         }
             });
-            if (state.topMessage && state.states) {
-                this.dialogs.onCounterUpdate(tx, state.cid, { unread: state.states.counter, mentions: state.states.mentions });
+            if (state.states) {
+                await this.dialogs.onCounterUpdate(tx, state.cid, { unread: state.states.counter, mentions: state.states.mentions });
             }
         } else {
             if (state.topMessage && state.states) {
@@ -60,7 +60,9 @@ export class CountersEngine {
                     history
                 });
                 if (counters.type === 'generic') {
-                    this.dialogs.onCounterUpdate(tx, state.cid, { unread: counters.counter, mentions: counters.mentions });
+                    await this.dialogs.onCounterUpdate(tx, state.cid, { unread: counters.counter, mentions: counters.mentions });
+                } else {
+                    await this.dialogs.onCounterUpdate(tx, state.cid, { unread: 0, mentions: 0 });
                 }
             }
         }
@@ -79,7 +81,9 @@ export class CountersEngine {
                     let counters = counterReducer(state.counters, { type: 'read', readSeq: update.seq });
                     this.chats.set(tx, update.cid, { ...state, counters });
                     if (counters.type === 'generic') {
-                        this.dialogs.onCounterUpdate(tx, update.cid, { unread: counters.counter, mentions: counters.mentions });
+                        await this.dialogs.onCounterUpdate(tx, update.cid, { unread: counters.counter, mentions: counters.mentions });
+                    } else {
+                        await this.dialogs.onCounterUpdate(tx, update.cid, { unread: 0, mentions: 0 });
                     }
                 } else {
                     await this.updates.chats.invalidate(tx, update.cid);
@@ -99,7 +103,9 @@ export class CountersEngine {
                 let history = historyTrackerReducer(state.history, { type: 'update', pts });
                 this.chats.set(tx, update.cid, { ...state, counters, history });
                 if (counters.type === 'generic') {
-                    this.dialogs.onCounterUpdate(tx, update.cid, { unread: counters.counter, mentions: counters.mentions });
+                    await this.dialogs.onCounterUpdate(tx, update.cid, { unread: counters.counter, mentions: counters.mentions });
+                } else {
+                    await this.dialogs.onCounterUpdate(tx, update.cid, { unread: 0, mentions: 0 });
                 }
             }
         } else if (update.__typename === 'UpdateChatMessageDeleted') {
@@ -108,7 +114,9 @@ export class CountersEngine {
             let history = historyTrackerReducer(state.history, { type: 'update', pts });
             this.chats.set(tx, update.cid, { ...state, counters, history });
             if (counters.type === 'generic') {
-                this.dialogs.onCounterUpdate(tx, update.cid, { unread: counters.counter, mentions: counters.mentions });
+                await this.dialogs.onCounterUpdate(tx, update.cid, { unread: counters.counter, mentions: counters.mentions });
+            } else {
+                await this.dialogs.onCounterUpdate(tx, update.cid, { unread: 0, mentions: 0 });
             }
         }
     }
