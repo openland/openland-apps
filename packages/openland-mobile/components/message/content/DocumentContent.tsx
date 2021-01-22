@@ -6,10 +6,6 @@ import { formatBytes } from 'openland-mobile/utils/formatBytes';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ZDocumentExt } from 'openland-mobile/components/file/ZDocumentExt';
-import { layoutMedia } from 'openland-y-utils/MediaLayout';
-import MediaMeta from 'react-native-media-meta';
-import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
-import moment from 'moment';
 import { isVideo } from 'openland-mobile/utils/isVideo';
 
 interface DocumentContentProps {
@@ -20,62 +16,23 @@ interface DocumentContentProps {
 }
 
 export const DocumentContent = React.memo((props: DocumentContentProps) => {
-    const { theme, attach, maxWidth, onDocumentPress } = props;
-    const [preview, setPreview] = React.useState<{ path: string, width: number, height: number, duration: string } | undefined>();
-    const [path, setPath] = React.useState<any>();
-    const isFileVideo = isVideo(attach!!.fileMetadata.name) && attach?.filePreview;
+    const { theme, attach, onDocumentPress } = props;
+    const isFileVideo = isVideo(attach!!.fileMetadata.name);
+    const preview = attach?.filePreview;
 
-    React.useEffect(() => {
-        if (isFileVideo) {
-            return DownloadManagerInstance.watch(
-                attach!!.fileId!,
-                null,
-                (state) => {
-                    setPath(state.path);
-                });
-        }
-        return;
-    }, []);
-    React.useEffect(() => {
-        if (isFileVideo && path) {
-            (async () => {
-                const filePathWithExtension = await DownloadManagerInstance.getFilePathWithRealName(
-                    attach.fileId,
-                    null,
-                    `${attach.fileId}.mp4`,
-                );
-
-                if (!filePathWithExtension) {
-                    return;
-                }
-                const meta = await MediaMeta.get(filePathWithExtension);
-                setPreview({
-                    path: 'data:image/png;base64,' + meta.thumb,
-                    ...layoutMedia(meta.width, meta.height, maxWidth, maxWidth),
-                    duration: moment(Number.parseFloat(meta.duration)).format('m:ss')
-                });
-            })();
-        }
-    }, [path]);
-
-    if (isFileVideo) {
-        // if (false) {
-        if (!preview) {
-            return null;
-        }
-
+    if (isFileVideo && preview) {
         return (
             <TouchableOpacity onPress={() => onDocumentPress(attach)} activeOpacity={0.6}>
                 <>
                     <Image
-                        source={{ uri: preview.path }}
+                        source={{ uri: preview }}
                         style={{
-                            width: preview?.width,
-                            height: preview?.height,
+                            width: attach.fileMetadata.imageWidth!,
+                            height: attach.fileMetadata.imageHeight!,
                             borderRadius: RadiusStyles.Medium,
                         }}
                     />
-                    <View
+                    {/* <View
                         style={{
                             position: 'absolute',
                             top: 8,
@@ -87,8 +44,8 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
                             paddingHorizontal: 8,
                         }}
                     >
-                        <Text style={{ color: theme.foregroundContrast, ...TextStyles.Caption }}>{preview.duration}</Text>
-                    </View>
+                        <Text style={{ color: theme.foregroundContrast, ...TextStyles.Caption }}>{attach.duration}</Text>
+                    </View> */}
                     <View
                         style={{
                             position: 'absolute',
