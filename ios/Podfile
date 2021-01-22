@@ -59,8 +59,10 @@ target 'openland' do
   pod 'react-native-background-timer', :path => '../node_modules/react-native-background-timer'
 
   pod 'react-native-pdf', :path => '../node_modules/react-native-pdf'
-  pod 'ObjectiveRocks', '~> 0.11'
+pod 'ObjectiveRocks', '~> 0.11'
 #   pod 'react-native-video', :path => '../node_modules/react-native-video/react-native-video.podspec'
+  pod 'react-native-meta-media', :path => '../node_modules/react-native-media-meta'
+
   pod 'ReactNativeDarkMode', :path => '../node_modules/react-native-dark-mode'
 
   pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'

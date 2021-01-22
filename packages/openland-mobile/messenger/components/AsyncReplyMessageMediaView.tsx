@@ -10,6 +10,7 @@ import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { DownloadState } from '../../files/DownloadManagerInterface';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { isVideo } from 'openland-mobile/utils/isVideo';
 
 export interface AsyncMessageMediaViewProps {
     theme: ThemeGlobal;
@@ -46,6 +47,9 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
 
     componentWillMount() {
         this.props.attachments.forEach(attach => {
+            if (attach.filePreview && isVideo(attach.fileMetadata.name)) {
+                return;
+            }
             let optimalSize = layoutMedia(attach.fileMetadata.imageWidth || 0, attach.fileMetadata.imageHeight || 0, 1024, 1024);
             this.downloadManagerWatch = DownloadManagerInstance.watch(attach.fileId!, (attach.fileMetadata.mimeType !== 'gif') ? optimalSize : null, (state) => {
                 this.setState(prev => ({ downloadStates: { ...prev.downloadStates, [attach.fileId]: state } }));
@@ -81,6 +85,7 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
                 {attachments.map((attach, i) => {
                     let layout = isForward ? layoutMedia(attach!!.fileMetadata.imageWidth || 0, attach!!.fileMetadata.imageHeight || 0, 160, 160) : { width: 40, height: 40 };
                     let state = this.state.downloadStates[attach.fileId];
+                    let videoPreview = attach.filePreview && isVideo(attach.fileMetadata.name) ? attach.filePreview : undefined;
                     let sourceUri = state && state.path ? ('file://' + state.path) : undefined;
                     let sizes = { width: layout.width, height: layout.height };
 
@@ -95,7 +100,7 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
                         >
                             <ASImage
                                 onPress={(e) => this.handlePress(e, attach.fileId, 8)}
-                                source={{ uri: sourceUri }}
+                                source={{ uri: videoPreview || sourceUri }}
                                 borderRadius={8}
                                 backgroundColor={bgColor}
                                 isGif={attach!!.fileMetadata.imageFormat === 'GIF'}

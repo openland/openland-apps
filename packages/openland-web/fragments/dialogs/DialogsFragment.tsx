@@ -9,8 +9,15 @@ import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { trackEvent } from 'openland-x-analytics';
 import { showCreatingGroupFragment } from 'openland-web/fragments/create/CreateEntityFragment';
+import { usePopper } from 'openland-web/components/unicorn/usePopper';
+import { UPopperController } from 'openland-web/components/unicorn/UPopper';
+import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import NotificationIcon from 'openland-icons/s/ic-notifications-24.svg';
 import AddIcon from 'openland-icons/s/ic-add-24.svg';
+import IcMessage from 'openland-icons/s/ic-message-24.svg';
+import IcUnread from 'openland-icons/s/ic-unread-24.svg';
+import IcUser from 'openland-icons/s/ic-user-24.svg';
+import IcGroup from 'openland-icons/s/ic-group-24.svg';
 
 const dotClass = css`
     position: absolute;
@@ -58,23 +65,68 @@ const DialogsCounter = React.memo(() => {
     return null;
 });
 
+export type DialogType = 'all' | 'unread' | 'groups' | 'private';
+
+const FiltersMenu = (props: {
+    dialogFilter: DialogType;
+    setDialogFilter: (t: DialogType) => void;
+    ctx: UPopperController;
+}) => {
+    let res = new UPopperMenuBuilder();
+    res.item({
+        title: 'All chats',
+        icon: <IcMessage />,
+        action: () => props.setDialogFilter('all'),
+        selected: props.dialogFilter === 'all'
+    });
+    res.item({
+        title: 'Unread',
+        icon: <IcUnread />,
+        action: () => props.setDialogFilter('unread'),
+        selected: props.dialogFilter === 'unread'
+    });
+    res.item({
+        title: 'Direct',
+        icon: <IcUser />,
+        action: () => props.setDialogFilter('private'),
+        selected: props.dialogFilter === 'private'
+    });
+    res.item({
+        title: 'Groups',
+        icon: <IcGroup />,
+        action: () => props.setDialogFilter('groups'),
+        selected: props.dialogFilter === 'groups'
+    });
+    return res.build(props.ctx, 240);
+};
+
 export const DialogsFragment = React.memo(() => {
+    const [dialogFilter, setDialogFilter] = React.useState<DialogType>('all');
     const stackRouter = React.useContext(XViewRouterContext)!;
     const isVisible = useVisibleTab();
-    React.useEffect(
-        () => {
-            if (isVisible) {
-                trackEvent('navigate_chats');
-            }
-        },
-        [isVisible],
+
+    const [menuVisible, menuShow] = usePopper(
+        { placement: 'bottom-start', updatedDeps: dialogFilter },
+        (ctx) => <FiltersMenu ctx={ctx} setDialogFilter={setDialogFilter} dialogFilter={dialogFilter} />,
     );
+
+    React.useEffect(() => {
+        if (isVisible) {
+            trackEvent('navigate_chats');
+        }
+    }, [isVisible]);
 
     return (
         <>
             <DialogsCounter />
-            <XView width="100%" height="100%" flexDirection="column" alignItems="stretch" backgroundColor="var(--backgroundPrimary)">
-                <USideHeader title="Chats">
+            <XView
+                width="100%"
+                height="100%"
+                flexDirection="column"
+                alignItems="stretch"
+                backgroundColor="var(--backgroundPrimary)"
+            >
+                <USideHeader title={{ title: 'Chats', active: menuVisible, action: menuShow }}>
                     <NotificationsButton />
                     <div onClick={() => showCreatingGroupFragment({ entityType: 'group' })}>
                         <UIconButton icon={<AddIcon />} size="large" />
@@ -85,9 +137,10 @@ export const DialogsFragment = React.memo(() => {
                         onSearchItemSelected={() => {
                             /* */
                         }}
-                        onDialogPress={id => {
+                        onDialogPress={(id) => {
                             stackRouter.navigate(`/mail/${id}`);
                         }}
+                        selectedFilter={dialogFilter}
                     />
                 </XView>
             </XView>

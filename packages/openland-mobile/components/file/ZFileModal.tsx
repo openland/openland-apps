@@ -18,6 +18,7 @@ import { SDevice } from 'react-native-s/SDevice';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SShareButton } from 'react-native-s/SShareButton';
 import { SStatusBar } from 'react-native-s/SStatusBar';
+import { isVideo } from 'openland-mobile/utils/isVideo';
 
 export interface ZFileModalConfig {
     uuid: string;
@@ -56,8 +57,6 @@ interface FilePreviewInnerState {
     path?: string;
     downloadState?: DownloadState;
 }
-
-const isVideo = (name: string) => name.toLowerCase().endsWith('.mp4') || (Platform.OS === 'ios' && name.toLowerCase().endsWith('.mov'));
 
 class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePreviewInnerState> {
     subscription?: WatchSubscription;

@@ -1,4 +1,4 @@
-import { UploadingFile, FileMetadata, UploadStatus } from 'openland-engines/messenger/types';
+import { UploadingFile, FileMetadata, UploadStatus, VideoMeta } from 'openland-engines/messenger/types';
 import UploadCare from 'uploadcare-widget';
 
 export const isFileImage = (file: File) => ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'].some(t => file.type.includes(t));
@@ -8,6 +8,7 @@ export class UploadCareUploading implements UploadingFile {
     private sourceFile: File;
     private infoPromise: Promise<FileMetadata>;
     private origUrl: string;
+    private videoMeta?: VideoMeta;
     constructor(file: File) {
         this.file = UploadCare.fileFrom('object', file);
         this.sourceFile = file;
@@ -33,7 +34,7 @@ export class UploadCareUploading implements UploadingFile {
                 let name = v.incompleteFileInfo.name || 'image.jpg';
                 let isImage = v.incompleteFileInfo.isImage || isFileImage(file);
                 resolved = true;
-                resolver({ name, uri: this.origUrl, fileSize: parseInt(v.incompleteFileInfo.size || '0', 10), isImage });
+                resolver({ name, uri: this.origUrl, fileSize: parseInt(v.incompleteFileInfo.size || '0', 10), isImage, videoMeta: this.videoMeta });
             });
             this.file.done(v => {
                 if (resolved) {
@@ -42,13 +43,17 @@ export class UploadCareUploading implements UploadingFile {
                 let name = v.name || 'image.jpg';
                 let isImage = v.isImage || isFileImage(file);
                 resolved = true;
-                resolver({ name, uri: this.origUrl, fileSize: parseInt(v.size || '0', 10), isImage });
+                resolver({ name, uri: this.origUrl, fileSize: parseInt(v.size || '0', 10), isImage, videoMeta: this.videoMeta });
             });
         });
     }
 
     getSourceFile(): File {
         return this.sourceFile;
+    }
+
+    setVideoMeta(v: VideoMeta): void {
+        this.videoMeta = v;
     }
 
     fetchInfo() {

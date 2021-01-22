@@ -11,7 +11,7 @@ import { ReplyContent, shiftReplyMeta } from './content/ReplyContent';
 import { TextContent } from './content/TextContent';
 import { RichAttachContent, richAttachImageShouldBeCompact } from './content/RichAttachContent';
 import { MediaContent, layoutImage } from './content/MediaContent';
-import { DocumentContent } from './content/DocumentContent';
+import { DocumentContent, DocumentContentPreview } from './content/DocumentContent';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment, FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase } from 'openland-api/spacex.types';
 import { OthersUsersWrapper } from './content/OthersUsersWrapper';
 import { openCalendar } from 'openland-mobile/utils/openCalendar';
@@ -24,6 +24,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { MetaInfoIndicator } from './content/MetaInfoIndicator';
 import { SenderContent } from './content/SenderContent';
 import { DonationContent } from './content/DonationContent';
+import { isVideo } from 'openland-mobile/utils/isVideo';
 
 export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={17}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 20 : 16, ios: edited ? 17 : 14 }))}</ASText>;
 
@@ -128,6 +129,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     const augmenationAttach = attaches.filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
     const purchaseAttach = attaches.filter(a => a.__typename === 'MessageAttachmentPurchase')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase | undefined;
     const hasImage = !!(fileAttach && fileAttach.fileMetadata.isImage);
+    const hasVideo = !!(fileAttach && isVideo(fileAttach.fileMetadata.name) && fileAttach.filePreview);
     const hasReply = !!(message.reply && message.reply.length > 0);
     const hasForward = !!(hasReply && conversationId && message.reply![0].source && message.reply![0].source?.__typename === 'MessageSourceChat' && message.reply![0].source.chat.id !== conversationId);
     const hasText = !!(message.text);
@@ -151,6 +153,10 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         richAttachSocialImageLayout = layoutImage(augmenationAttach.socialImage.metadata, maxSize);
     }
     const richAttachIsCompact = richAttachImageShouldBeCompact(augmenationAttach);
+    let videoPreviewLayout;
+    if (hasVideo) {
+        videoPreviewLayout = layoutImage(fileAttach!.fileMetadata, maxSize);
+    }
 
     const hasDocument = !!(fileAttach && !hasImage);
     const imageOnly = hasImage && !(hasReply || hasText || hasUrlAug);
@@ -172,7 +178,34 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         topContent.push(<TextContent key="msg-text" compensateBubble={compensateBubble} width={textSize} emojiOnly={isEmojiOnly} hasPurchase={hasPurchase} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onHashtagPress={onHashtagPress} onMediaPress={onMediaPress} />);
     }
     if (hasDocument) {
-        topContent.push(<DocumentContent key="msg-document" theme={theme} compensateBubble={compensateBubble} attach={fileAttach!} message={message} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onLongPress={onLongPress} />);
+        if (fileAttach?.filePreview) {
+            topContent.push(
+                <DocumentContentPreview
+                    key="msg-document-preview"
+                    theme={theme}
+                    compensateBubble={compensateBubble}
+                    attach={fileAttach!}
+                    message={message}
+                    onDocumentPress={onDocumentPress}
+                    onLongPress={onLongPress}
+                    hasTopContent={hasReply && !hasForward}
+                    hasBottomContent={hasText || hasUrlAug || hasForward}
+                    layout={videoPreviewLayout}
+                />
+            );
+        } else {
+            topContent.push(
+                <DocumentContent
+                    key="msg-document"
+                    theme={theme}
+                    compensateBubble={compensateBubble}
+                    attach={fileAttach!}
+                    message={message}
+                    onDocumentPress={onDocumentPress}
+                    onLongPress={onLongPress}
+                />
+            );
+        }
     }
     if (hasReply) {
         let replyContent = <ReplyContent key="msg-reply" isForward={hasForward} compensateBubble={compensateBubble} width={textSize} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onHashtagPress={onHashtagPress} onMediaPress={onMediaPress} onContentPress={onPress} onPress={onReplyPress} onLongPress={onLongPress} />;
@@ -207,6 +240,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
 
     return {
         hasDocument,
+        hasVideo,
         hasImage,
         hasReply,
         hasForward,
@@ -228,8 +262,8 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
     const { theme, message } = props;
     const { isOut, attachTop, attachBottom } = message;
     const {
-        hasDocument,
         hasImage,
+        hasVideo,
         hasText,
         hasForward,
         hasPurchase,
@@ -251,7 +285,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
     }
 
     const fixedSize = !imageOnly && (imageLayout || richAttachImageLayout);
-    const isImageBottom = hasImage && !hasText && !hasDocument;
+    const isImageBottom = (hasImage || hasVideo) && !hasText;
     // sorry
     const shiftMeta = !!(!bottomContent.length && (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment' && a.keyboard).length)
         || shiftReplyMeta(message, hasForward);

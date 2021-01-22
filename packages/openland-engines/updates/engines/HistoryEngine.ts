@@ -21,7 +21,7 @@ export class HistoryEngine {
 
         // Persist message
         if (state.topMessage) {
-            await this.applyMessage(tx, state.topMessage);
+            this.applyMessage(tx, state.topMessage);
         }
 
         // Persist list
@@ -41,9 +41,9 @@ export class HistoryEngine {
 
         // Persist message
         if (update.__typename === 'UpdateChatMessage') {
-            await this.applyMessage(tx, update.message);
+            this.applyMessage(tx, update.message);
         } else if (update.__typename === 'UpdateChatMessageDeleted') {
-            await this.deleteMessage(tx, update.mid);
+            this.deleteMessage(tx, update.mid);
         }
 
         // Persist list

@@ -246,6 +246,8 @@ PODS:
     - React
   - react-native-location (2.5.0):
     - React
+  - react-native-meta-media (0.0.11):
+    - React-Core
   - react-native-pdf (5.1.0):
     - React
   - react-native-safe-area-context (0.7.3):
@@ -427,6 +429,7 @@ DEPENDENCIES:
   - react-native-haptic-feedback (from `../node_modules/react-native-haptic-feedback`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-location (from `../node_modules/react-native-location`)
+  - react-native-meta-media (from `../node_modules/react-native-media-meta`)
   - react-native-pdf (from `../node_modules/react-native-pdf`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
@@ -535,6 +538,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-location:
     :path: "../node_modules/react-native-location"
+  react-native-meta-media:
+    :path: "../node_modules/react-native-media-meta"
   react-native-pdf:
     :path: "../node_modules/react-native-pdf"
   react-native-safe-area-context:
@@ -640,6 +645,7 @@ SPEC CHECKSUMS:
   react-native-haptic-feedback: 22c9dc85fd8059f83bf9edd9212ac4bd4ae6074d
   react-native-image-picker: 7a85cf7b0a53845f03ae52fb4592a2748ded069b
   react-native-location: 5a40ec1cc6abf2f6d94df979f98ec76c3a415681
+  react-native-meta-media: ee837c99adfdc2d6f14bd129b97f9bd3e84434d8
   react-native-pdf: 8cc276fd8ab7dff6b602eb65fcf0f6c145c0f524
   react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
   react-native-sqlite-storage: 418ef4afc5e6df6ce3574c4617e5f0b65cffde55
@@ -678,6 +684,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: cd63466dba21c96d0c17672230369159df7b4fe7
+PODFILE CHECKSUM: 268dbafa81ffb7ef4e8a4864fb574b3b70ebb1cf
 
 COCOAPODS: 1.10.1

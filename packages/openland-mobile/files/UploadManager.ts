@@ -1,6 +1,6 @@
 import { Watcher } from 'openland-y-utils/Watcher';
 import { UploadCareDirectUploading } from '../utils/UploadCareDirectUploading';
-import { UploadStatus } from 'openland-engines/messenger/types';
+import { UploadStatus, VideoMeta } from 'openland-engines/messenger/types';
 import { getMessenger } from '../utils/messenger';
 import RNFetchBlob from 'rn-fetch-blob';
 import { Image } from 'react-native';
@@ -29,11 +29,12 @@ interface Callbacks {
     onFail: () => void;
 }
 
-interface FileMeta {
+export type FileMeta = {
     name: string;
     path: string;
     size?: number;
-}
+    videoMeta?: VideoMeta;
+};
 
 const MAX_FILE_SIZE = 1e+8;
 
@@ -64,7 +65,7 @@ export class UploadManager {
             return w;
         });
         let { filesKeys } = getMessenger().engine.getConversation(conversationId).sendFiles({
-            files: newFilesMeta.map(({ name, path, size }, i) => {
+            files: newFilesMeta.map(({ name, path, size, videoMeta }, i) => {
                 return {
                     file: {
                         fetchInfo: () => new Promise(async (resolver, onError) => {
@@ -76,9 +77,12 @@ export class UploadManager {
                                     Image.getSize(path, (width, height) => res({ width, height }), e => onError(e));
                                 });
                             }
-                            resolver({ name, uri: path, fileSize: size, isImage, imageSize });
+                            if (videoMeta) {
+                                imageSize = { width: videoMeta.preview.width, height: videoMeta.preview.height };
+                            }
+                            resolver({ name, uri: path, fileSize: size, isImage, imageSize, videoMeta });
                         }),
-                        watch: (handler: (state: UploadState) => void) => watchers[i].watch(handler)
+                        watch: (handler: (state: UploadState) => void) => watchers[i].watch(handler),
                     },
                     localImage: undefined,
                 };
@@ -104,7 +108,7 @@ export class UploadManager {
         return filesMeta.map((x, i) => ({ ...x, size: x.size || fallbackSizes[i] as (number | undefined) }));
     }
 
-    registerUploads = async (filesMeta: { name: string, path: string, size?: number }[], callbacks: Callbacks) => {
+    registerUploads = async (filesMeta: FileMeta[], callbacks: Callbacks) => {
         if (!(await checkPermissions('android-storage'))) {
             return;
         }

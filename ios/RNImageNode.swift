@@ -40,9 +40,15 @@ class RNImageNode: ASDisplayNode {
       self.task?.cancel()
       self.url = spec.url
       self.currentTintColor = spec.tintColor
-      if spec.url != "" {
+      if spec.url != "" && spec.url != nil {
         let targetSize = CGSize(width: CGFloat(spec.style.width!) * UIScreen.main.scale, height: CGFloat(spec.style.height!) * UIScreen.main.scale)
-        let targetUrl = URL(string: spec.url)!
+        
+        if spec.url.starts(with: "data:image/png;base64") {
+          let dataDecoded : Data = Data(base64Encoded: spec.url.replacingOccurrences(of: "data:image/png;base64", with: ""), options: .ignoreUnknownCharacters)!
+          let decodedimage = UIImage(data: dataDecoded)
+          self.node.image = decodedimage
+        } else {
+          let targetUrl = URL(string: spec.url)!
         let targetContentMode = ImageDecompressor.ContentMode.aspectFill
         let targetRequest = ImageRequest(url: targetUrl, targetSize: targetSize, contentMode: targetContentMode)
         self.task = ImagePipeline.shared.loadImage(with: targetRequest, progress: nil) { (response, error) in
@@ -52,11 +58,12 @@ class RNImageNode: ASDisplayNode {
 //                  return ASImageNodeTintColorModificationBlock(spec.tintColor!)(originalImage, traitCollection)
 //              }
               self.node.imageModificationBlock = ASImageNodeTintColorModificationBlock(spec.tintColor!)
+              }
+              self.node.image = response?.image
+              
+            } else {
+              print(error.debugDescription)
             }
-            self.node.image = response?.image
-            
-          } else {
-            print(error.debugDescription)
           }
         }
       }

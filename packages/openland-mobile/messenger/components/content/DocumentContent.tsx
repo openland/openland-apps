@@ -13,13 +13,15 @@ import { bubbleMaxWidth } from '../AsyncBubbleView';
 import { formatBytes } from 'openland-mobile/utils/formatBytes';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { contentInsetsHorizontal, contentInsetsBottom, contentInsetsTop } from '../AsyncBubbleView';
+import { AsyncBubbleMediaView } from '../AsyncBubbleMediaView';
+import { TextStylesAsync } from 'openland-mobile/styles/AppStyles';
+import { Platform } from 'react-native';
 
+const IMAGE_MIN_SIZE = 120;
 interface DocumentContentProps {
     message: DataSourceMessageItem;
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & PendingAttachProps;
-    onUserPress: (id: string) => void;
-    onGroupPress: (id: string) => void;
-    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onLongPress: (event: ASPressEvent) => void;
     compensateBubble?: boolean;
@@ -38,6 +40,9 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
     }
 
     componentWillMount() {
+        if (this.props.attach.filePreview) {
+            return;
+        }
         if (this.props.attach && this.props.attach.fileId) {
             this.downloadManagerWatch = DownloadManagerInstance.watch(
                 this.props.attach!!.fileId!,
@@ -59,6 +64,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
             this.downloadManagerWatch();
         }
     }
+
     render() {
         let { message, onLongPress } = this.props;
         let downloaded = !!(this.state.downloadState && this.state.downloadState.path);
@@ -73,7 +79,6 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                 marginBottom={1}
                 marginLeft={this.props.compensateBubble ? -2 : undefined}
             >
-
                 <ASFlex
                     width={40}
                     height={40}
@@ -136,3 +141,138 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
         );
     }
 }
+
+interface DocumentContentPreviewProps {
+    message: DataSourceMessageItem;
+    attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & PendingAttachProps;
+    onDocumentPress: (document: DataSourceMessageItem) => void;
+    onLongPress: (event: ASPressEvent) => void;
+    compensateBubble?: boolean;
+    theme: ThemeGlobal;
+    hasTopContent?: boolean;
+    hasBottomContent?: boolean;
+    layout?: { width: number, height: number };
+}
+
+export const DocumentContentPreview = React.memo((props: DocumentContentPreviewProps) => {
+    let {
+        message,
+        attach,
+        compensateBubble,
+        hasTopContent,
+        layout,
+        hasBottomContent,
+        theme,
+        onLongPress,
+        onDocumentPress
+    } = props;
+
+    let src = attach.filePreview;
+    let duration = attach.duration;
+    let viewWidth = layout ? Math.max(layout.width, IMAGE_MIN_SIZE) : undefined;
+    let viewHeight = layout ? Math.max(layout.height, IMAGE_MIN_SIZE) : undefined;
+    let handlePress = React.useCallback(() => {
+        onDocumentPress(message);
+    }, []);
+
+    return (
+        <ASFlex
+            flexDirection="column"
+            onPress={handlePress}
+            onLongPress={onLongPress}
+            width={viewWidth}
+            height={viewHeight}
+            alignItems="center"
+            justifyContent="center"
+            marginTop={compensateBubble ? (hasTopContent ? 0 : -contentInsetsTop) : undefined}
+            marginLeft={compensateBubble ? -contentInsetsHorizontal : undefined}
+            marginRight={compensateBubble ? -contentInsetsHorizontal : undefined}
+            marginBottom={compensateBubble ? (!hasBottomContent ? -contentInsetsBottom : 8) : undefined}
+        >
+            {src && (
+                <ASFlex
+                    width={viewWidth}
+                    height={viewHeight}
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <ASImage
+                        source={{ uri: src }}
+                        width={viewWidth}
+                        height={viewHeight}
+                    />
+                    <ASFlex
+                        overlay={true}
+                        flexGrow={1}
+                        flexDirection="column"
+                        alignItems="stretch"
+                    >
+                        <ASFlex
+                            marginTop={8}
+                            marginLeft={8}
+                        >
+                            <ASFlex
+                                backgroundColor={theme.overlayMedium}
+                                borderRadius={10}
+                            >
+                                <ASText
+                                    marginBottom={1}
+                                    marginLeft={8}
+                                    marginRight={8}
+                                    color={theme.foregroundContrast}
+                                    {...TextStylesAsync.Caption}
+                                >
+                                    {duration}
+                                </ASText>
+                            </ASFlex>
+                        </ASFlex>
+                        <ASFlex
+                            flexGrow={1}
+                            justifyContent="center"
+                            alignItems="center"
+                            marginBottom={28}
+                        >
+                            <ASFlex
+                                width={48}
+                                height={48}
+                                justifyContent="center"
+                                alignItems="center"
+                                backgroundColor={theme.overlayMedium}
+                                borderRadius={24}
+                            >
+                                <ASImage width={24} height={24} source={require('assets/ic-play-glyph-24.png')} tintColor={theme.foregroundContrast} />
+                            </ASFlex>
+                        </ASFlex>
+                    </ASFlex>
+                </ASFlex>
+            )}
+            {compensateBubble && (
+                <ASFlex
+                    overlay={true}
+                    width={viewWidth}
+                    height={viewHeight}
+                    alignItems="stretch"
+                    {...Platform.OS === 'ios' ? {
+                        marginTop: compensateBubble ? (hasTopContent ? 0 : -contentInsetsTop) : undefined,
+                        marginLeft: compensateBubble ? -contentInsetsHorizontal : undefined,
+                        marginRight: compensateBubble ? -contentInsetsHorizontal : undefined,
+                        marginBottom: compensateBubble ? (!hasBottomContent ? -contentInsetsBottom : 8) : undefined,
+                    } : {}}
+                >
+                    <AsyncBubbleMediaView
+                        isOut={message.isOut}
+                        attachTop={message.attachTop}
+                        attachBottom={message.attachBottom}
+                        hasTopContent={!!hasTopContent}
+                        hasBottomContent={!!hasBottomContent}
+                        maskColor={theme.backgroundPrimary}
+                        onPress={handlePress}
+                        onLongPress={onLongPress}
+                        borderColor={theme.border}
+                        useBorder={true}
+                    />
+                </ASFlex>
+            )}
+        </ASFlex>
+    );
+});

@@ -1,5 +1,5 @@
 import UUID from 'uuid/v4';
-import { UploadingFile, UploadStatus } from './types';
+import { FileMetadata, UploadingFile, UploadStatus } from './types';
 import {
     MentionInput,
     FileAttachmentInput,
@@ -40,7 +40,7 @@ type MessageBodyT = {
 
 export class MessageSender {
     private client: OpenlandClient;
-    private uploadedFiles = new Map<string, string>();
+    private uploadedFiles = new Map<string, { id: string, meta: FileMetadata }>();
     private pending = new Map<string, MessageBodyT>();
 
     constructor(client: OpenlandClient) {
@@ -55,27 +55,31 @@ export class MessageSender {
     ) {
         console.log('MessageSender sendFile');
         let key = UUID();
+
         (async () => {
             try {
                 if (!this.uploadedFiles.has(key)) {
-                    let res = await new Promise<string>((resolver, reject) => {
-                        file.watch(state => {
-                            if (state.status === UploadStatus.FAILED) {
-                                reject();
-                            } else if (state.status === UploadStatus.UPLOADING) {
-                                callback.onFileProgress(key, key, state.progress!!);
-                            } else if (state.status === UploadStatus.COMPLETED) {
-                                resolver(state.uuid!!);
-                            }
-                        });
-                    });
-                    this.uploadedFiles.set(key, res);
+                    let [id, meta] = await Promise.all([
+                        new Promise<string>((resolver, reject) => {
+                            file.watch(state => {
+                                if (state.status === UploadStatus.FAILED) {
+                                    reject();
+                                } else if (state.status === UploadStatus.UPLOADING) {
+                                    callback.onFileProgress(key, key, state.progress!!);
+                                } else if (state.status === UploadStatus.COMPLETED) {
+                                    resolver(state.uuid!!);
+                                }
+                            });
+                        }),
+                        file.fetchInfo()
+                    ]);
+                    this.uploadedFiles.set(key, { id, meta });
                 }
             } catch (e) {
                 callback.onFailed(key);
             }
             this.doSendMessage({
-                fileAttachments: [{ fileId: this.uploadedFiles.get(key)!! }],
+                fileAttachments: [{ fileId: this.uploadedFiles.get(key)!!.id }],
                 mentions: null,
                 replyMessages: quoted || null,
                 message: null,
@@ -112,20 +116,23 @@ export class MessageSender {
         let promises = files.slice(0, MAX_FILES_PER_MESSAGE).map(file => {
             let key = UUID();
             fileIds.push(key);
-            let p = new Promise<string>((resolver, reject) => {
-                file.watch(state => {
-                    if (state.status === UploadStatus.FAILED) {
-                        reject();
-                    } else if (state.status === UploadStatus.UPLOADING) {
-                        callback.onFileProgress(key, parentKey, state.progress!!);
-                    } else if (state.status === UploadStatus.COMPLETED) {
-                        resolver(state.uuid!!);
-                    }
-                });
-            });
-            return p.then(res => {
+            let p = Promise.all([
+                new Promise<string>((resolver, reject) => {
+                    file.watch(state => {
+                        if (state.status === UploadStatus.FAILED) {
+                            reject();
+                        } else if (state.status === UploadStatus.UPLOADING) {
+                            callback.onFileProgress(key, parentKey, state.progress!!);
+                        } else if (state.status === UploadStatus.COMPLETED) {
+                            resolver(state.uuid!!);
+                        }
+                    });
+                }),
+                file.fetchInfo()
+            ]);
+            return p.then(([id, meta]) => {
                 if (!this.uploadedFiles.has(key)) {
-                    this.uploadedFiles.set(key, res);
+                    this.uploadedFiles.set(key, { id, meta });
                 }
             }).catch(e => {
                 callback.onFailed(key);
@@ -133,7 +140,7 @@ export class MessageSender {
         });
         Promise.all(promises).then(() => {
             this.doSendMessage({
-                fileAttachments: fileIds.map(x => ({ fileId: this.uploadedFiles.get(x)!! })),
+                fileAttachments: fileIds.map(x => ({ fileId: this.uploadedFiles.get(x)!!.id })),
                 mentions: prepareLegacyMentionsForSend(message, mentions || []),
                 replyMessages: quoted || null,
                 message,
