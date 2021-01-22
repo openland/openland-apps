@@ -94,6 +94,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const router = React.useContext(XViewRouterContext)!;
     const [highlighted, setHighlighted] = React.useState(props.highlighted);
+    const attachments = comment.__typename === 'GeneralMessage' ? comment.attachments : undefined;
 
     React.useLayoutEffect(() => {
         setTimeout(() => {
@@ -134,12 +135,20 @@ export const CommentView = React.memo((props: CommentViewProps) => {
 
     const handleEditSave = React.useCallback(async (data: URickTextValue) => {
         const { text, mentions } = extractTextAndMentions(data);
+        const fileAttachments: { fileId: string }[] = [];
+
+        attachments?.forEach(attachment => {
+            if (attachment.__typename === 'MessageAttachmentFile') {
+                fileAttachments.push({ fileId: attachment.fileId });
+            }
+        });
 
         if (text.length > 0) {
             await client.mutateEditComment({
                 id,
                 message: text,
                 spans: findSpans(text),
+                fileAttachments,
                 mentions: prepareLegacyMentionsForSend(text, mentions),
             });
         }
@@ -151,7 +160,6 @@ export const CommentView = React.memo((props: CommentViewProps) => {
 
     const canEdit = sender.id === messenger.user.id && message && message.length;
     const canDelete = sender.id === messenger.user.id || role === RoomMemberRole.ADMIN || role === RoomMemberRole.OWNER || useRole('super-admin');
-    const attachments = comment.__typename === 'GeneralMessage' ? comment.attachments : undefined;
     const reactionCounters =
         comment.__typename === 'GeneralMessage' || comment.__typename === 'StickerMessage'
             ? comment.reactionCounters
