@@ -1272,59 +1272,63 @@ export class ConversationEngine implements MessageSendHandler {
     setReaction = (messageKey: string, reaction: Types.MessageReactionType) => {
         const oldMessage = this.dataSource.getItem(messageKey) as DataSourceMessageItem;
 
-        const existingReaction = !!oldMessage.reactionCounters.find(i => i.reaction === reaction);
+        if (oldMessage) {
+            const existingReaction = !!oldMessage.reactionCounters.find(i => i.reaction === reaction);
+            const newReactions = [] as Types.MessageReactionCounter[];
 
-        const newReactions = [] as Types.MessageReactionCounter[];
-        if (existingReaction) {
-            oldMessage.reactionCounters.map(r => {
-                if (r.reaction === reaction) {
-                    newReactions.push({
-                        reaction,
-                        setByMe: true,
-                        count: r.count + 1,
-                        __typename: "ReactionCounter",
-                    });
-                } else {
-                    newReactions.push(r);
-                }
-            });
-        } else {
-            newReactions.push(
-                ...oldMessage.reactionCounters,
-                { reaction, setByMe: true, count: 1, __typename: "ReactionCounter" }
-            );
+            if (existingReaction) {
+                oldMessage.reactionCounters.map(r => {
+                    if (r.reaction === reaction) {
+                        newReactions.push({
+                            reaction,
+                            setByMe: true,
+                            count: r.count + 1,
+                            __typename: "ReactionCounter",
+                        });
+                    } else {
+                        newReactions.push(r);
+                    }
+                });
+            } else {
+                newReactions.push(
+                    ...oldMessage.reactionCounters,
+                    { reaction, setByMe: true, count: 1, __typename: "ReactionCounter" }
+                );
+            }
+
+            const newMessage = {
+                ...oldMessage,
+                reactionCounters: newReactions,
+            };
+            this.dataSource.updateItem(newMessage);
         }
-
-        const newMessage = {
-            ...oldMessage,
-            reactionCounters: newReactions,
-        };
-        this.dataSource.updateItem(newMessage);
     }
 
     unsetReaction = (messageKey: string, reaction: Types.MessageReactionType) => {
         const oldMessage = this.dataSource.getItem(messageKey) as DataSourceMessageItem;
 
-        const newReactions = [] as Types.MessageReactionCounter[];
+        if (oldMessage) {
+            const newReactions = [] as Types.MessageReactionCounter[];
 
-        oldMessage.reactionCounters.map(r => {
-            if (r.reaction === reaction && r.count - 1 !== 0) {
-                newReactions.push({
-                    reaction,
-                    setByMe: false,
-                    count: r.count - 1,
-                    __typename: "ReactionCounter",
-                });
-            } else if (r.reaction !== reaction) {
-                newReactions.push(r);
-            }
-        });
+            oldMessage.reactionCounters.map(r => {
+                if (r.reaction === reaction && r.count - 1 !== 0) {
+                    newReactions.push({
+                        reaction,
+                        setByMe: false,
+                        count: r.count - 1,
+                        __typename: "ReactionCounter",
+                    });
+                } else if (r.reaction !== reaction) {
+                    newReactions.push(r);
+                }
+            });
 
-        const newMessage = {
-            ...oldMessage,
-            reactionCounters: newReactions,
-        };
-        this.dataSource.updateItem(newMessage);
+            const newMessage = {
+                ...oldMessage,
+                reactionCounters: newReactions,
+            };
+            this.dataSource.updateItem(newMessage);
+        }
     }
 
     getMessageKeyById = (id: string) => this.localMessagesMap.get(id) || id;
