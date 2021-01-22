@@ -40,7 +40,7 @@ export const ReplyContent = (props: ReplyContentProps) => {
                         let isImage = file.fileMetadata.isImage;
 
                         if (!isImage) {
-                            contentAttach.push(<DocumentContent key={'msg-reply-' + quote.id + '-document-' + index} attach={file} onDocumentPress={props.onDocumentPress} theme={theme} />);
+                            contentAttach.push(<DocumentContent key={'msg-reply-' + quote.id + '-document-' + index} attach={file} onDocumentPress={props.onDocumentPress} theme={theme} maxWidth={maxWidth} />);
                         }
                     });
 

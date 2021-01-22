@@ -18,6 +18,7 @@ export interface PendingMessage {
         progress: number;
         file: string | null;
         uri?: string;
+        duration?: number;
         isImage: boolean;
     }[];
     message: string | null;
@@ -38,12 +39,21 @@ export function isServerMessage(message: FullMessage | PendingMessage): message 
     return !!(message as any).__typename;
 }
 
+export interface VideoMeta {
+    preview: {
+        thumbnail: string,
+        width: number,
+        height: number,
+    };
+    duration: number;
+}
 export interface FileMetadata {
     name?: string;
     uri?: string;
     fileSize?: number;
     isImage?: boolean;
     imageSize?: { width: number; height: number };
+    videoMeta?: VideoMeta;
 }
 
 export enum UploadStatus {

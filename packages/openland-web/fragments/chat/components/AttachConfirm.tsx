@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { DocumentContent } from '../messenger/message/content/DocumentContent';
+import { DocumentContent, fileFormat } from '../messenger/message/content/DocumentContent';
 import { plural } from 'openland-y-utils/plural';
 import AlertBlanket from 'openland-x/AlertBlanket';
 import { css, cx } from 'linaria';
 import { XModalController } from 'openland-x/showModal';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { UploadCareUploading, isFileImage } from 'openland-web/utils/UploadCareUploading';
-import { LocalImage } from 'openland-engines/messenger/types';
+import { LocalImage, VideoMeta } from 'openland-engines/messenger/types';
 import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
@@ -226,6 +226,7 @@ const Body = (props: {
     files: File[];
     addFile: (f: File) => string | File;
     removeFile: (f: File) => void;
+    setVideoMeta: (f: File, m: VideoMeta) => void;
     onImageLoad: (file: File, img: LocalImage) => void;
     onTextChange: (text: URickTextValue | undefined) => void;
     onFileTypeChange: (hasImages: boolean) => void;
@@ -233,7 +234,7 @@ const Body = (props: {
     confirm: () => void;
     errorText?: string;
 }) => {
-    let { files, addFile, removeFile, isImage, text, onImageLoad, onTextChange, onFileTypeChange } = props;
+    let { files, addFile, removeFile, isImage, text, onImageLoad, onTextChange, onFileTypeChange, setVideoMeta } = props;
     let [bodyFiles, setFiles] = React.useState(files);
     let client = useClient();
     let [room, setRoom] = React.useState<RoomPico_room_PrivateRoom | RoomPico_room_SharedRoom | null>(null);
@@ -259,6 +260,25 @@ const Body = (props: {
         },
         [bodyFiles],
     );
+    let onVideoLoaded = (file: File, e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
+        const video = e.nativeEvent.target as HTMLVideoElement;
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx?.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+        const canvasImg = canvas.toDataURL("image/png");
+
+        setVideoMeta(file, {
+            preview: {
+                thumbnail: canvasImg,
+                width: video.videoWidth,
+                height: video.videoHeight,
+            },
+            duration: Math.floor(video.duration),
+        });
+        video.pause();
+    };
     let { documents, imageColumns } = bodyFiles.reduce((acc, f, i, { length }) => {
         if (isImage) {
             let el = <Img key={f.name + f.size + f.lastModified} file={f} onClick={onClick} index={i} imagesCount={bodyFiles.length} onLoad={onImageLoad} />;
@@ -272,6 +292,9 @@ const Body = (props: {
                 acc.imageColumns[1].push(el);
             }
         } else {
+            let isVideo = fileFormat(f.name) === 'VIDEO';
+            let src = URL.createObjectURL(f);
+
             acc.documents.push(
                 <div
                     key={f.name + f.size + f.lastModified}
@@ -281,6 +304,18 @@ const Body = (props: {
                         className={docStyle}
                         file={{ fileMetadata: { name: f.name, size: f.size, mimeType: null } }}
                     />
+
+                    {isVideo && (
+                        <video
+                            controls={true}
+                            src={src}
+                            muted={true}
+                            autoPlay={true}
+                            style={{ display: 'none' }}
+                            onLoadedData={e => onVideoLoaded(f, e)}
+                        />
+                    )}
+
                     <div className={docCloseStyle}>
                         <UIconButton icon={<CloseIcon />} color="var(--foregroundSecondary)" onClick={() => onClick(f)} />
                     </div>
@@ -472,6 +507,12 @@ export const showAttachConfirm = ({
     let setHasImages = (hasImages: boolean) => {
         messageInfo.hasImages = hasImages;
     };
+    let setVideoMeta = (file: File, meta: VideoMeta) => {
+        let f = uploading.find(x => x.getSourceFile() === file);
+        if (f) {
+            f.setVideoMeta(meta);
+        }
+    };
     let isUploading = false;
 
     if (filesRes.length > 0) {
@@ -485,6 +526,7 @@ export const showAttachConfirm = ({
                     files={filesRes.slice()}
                     addFile={addUpload}
                     removeFile={removeUpload}
+                    setVideoMeta={setVideoMeta}
                     onImageLoad={savePreview}
                     onTextChange={setInputText}
                     onFileTypeChange={setHasImages}
