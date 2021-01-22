@@ -138,6 +138,51 @@ interface ReplyMessageProps {
     isReplyAction?: boolean;
 }
 
+const attachFile = (title: string) => (
+    <div className={cx(attachTitleClass, ellipsisText, TextBody)}>{title}</div>
+);
+
+const attachText = (title: string) => (
+    <div className={cx(attachTextClass, ellipsisText, TextBody)}>{emoji(title)}</div>
+);
+
+const MiniImage = React.memo(({
+    src,
+    srcSet,
+    isReplyAction,
+    senderContent,
+    subtitle,
+    onReplyClick
+}: {
+    src: string,
+    srcSet?: string,
+    subtitle: string,
+    senderContent: JSX.Element,
+    isReplyAction?: boolean,
+    onReplyClick: (e: React.MouseEvent<HTMLDivElement>) => void,
+}) => {
+    return (
+        <div
+            className={isReplyAction ? replyBasicStyle : replyMessageGroupClass}
+            onClick={isReplyAction ? undefined : onReplyClick}
+        >
+            <div
+                className={cx(
+                    replyAttachPreviewClass,
+                    replyAttachPreviewBackgroundClass,
+                    replyAttachImageClass,
+                )}
+            >
+                <ImgWithRetry src={src} srcSet={srcSet} width={40} height={40} />
+            </div>
+            <div className={replyAttachContentClass}>
+                {senderContent}
+                {attachFile(subtitle)}
+            </div>
+        </div>
+    );
+});
+
 export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
     const router = React.useContext(XViewRouterContext)!;
 
@@ -169,44 +214,37 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
     const senderContent = isReplyAction ? (
         <ShortSenderName name={sender.name} overrideName={overrideName} />
     ) : (
-        <MessageSenderContent sender={sender} date={date} mId={message.id} />
-    );
-
-    const attachFile = (title: string) => (
-        <div className={cx(attachTitleClass, ellipsisText, TextBody)}>{title}</div>
-    );
-
-    const attachText = (title: string) => (
-        <div className={cx(attachTextClass, ellipsisText, TextBody)}>{emoji(title)}</div>
-    );
+            <MessageSenderContent sender={sender} date={date} mId={message.id} />
+        );
 
     if (imageAttach) {
         const url = `https://ucarecdn.com/${imageAttach.fileId}/-/format/auto/-/`;
         const ops = `scale_crop/40x40/`;
         const opsRetina = `scale_crop/80x80/center/ 2x`;
         return (
-            <div
-                className={isReplyAction ? replyBasicStyle : replyMessageGroupClass}
-                onClick={isReplyAction ? undefined : onReplyClick}
-            >
-                <div
-                    className={cx(
-                        replyAttachPreviewClass,
-                        replyAttachPreviewBackgroundClass,
-                        replyAttachImageClass,
-                    )}
-                >
-                    <ImgWithRetry src={url + ops} srcSet={url + opsRetina} width={40} height={40} />
-                </div>
-                <div className={replyAttachContentClass}>
-                    {senderContent}
-                    {attachFile('Photo')}
-                </div>
-            </div>
+            <MiniImage
+                src={url + ops}
+                srcSet={url + opsRetina}
+                senderContent={senderContent}
+                isReplyAction={isReplyAction}
+                subtitle={message.fallback}
+                onReplyClick={onReplyClick}
+            />
         );
     }
 
     if (documentAttach) {
+        if (documentAttach.filePreview) {
+            return (
+                <MiniImage
+                    src={documentAttach.filePreview}
+                    senderContent={senderContent}
+                    isReplyAction={isReplyAction}
+                    subtitle={message.fallback}
+                    onReplyClick={onReplyClick}
+                />
+            );
+        }
         return (
             <div
                 className={isReplyAction ? replyBasicStyle : replyMessageGroupClass}
@@ -248,10 +286,10 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
                         />
                     </div>
                 ) : (
-                    <div className={cx(replyAttachPreviewClass, replyAttachPreviewBackgroundClass)}>
-                        <UIcon color="var(--foregroundTertiary)" icon={<IcLink />} />
-                    </div>
-                )}
+                        <div className={cx(replyAttachPreviewClass, replyAttachPreviewBackgroundClass)}>
+                            <UIcon color="var(--foregroundTertiary)" icon={<IcLink />} />
+                        </div>
+                    )}
                 <div className={replyAttachContentClass}>
                     {senderContent}
                     {attachText(text || 'Link')}

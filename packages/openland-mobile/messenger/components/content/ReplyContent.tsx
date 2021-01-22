@@ -13,6 +13,7 @@ import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from 
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { StickerContent } from './StickerContent';
 import { AsyncReplyMessageRichAttach } from '../AsyncReplyMessageRichAttach';
+import { isVideo } from 'openland-mobile/utils/isVideo';
 
 const getAttachFile = (message: DataSourceMessageItem) => {
     return message.attachments && message.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
@@ -118,6 +119,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                             const sticker = m.sticker && m.sticker.__typename === 'ImageSticker' ? m.sticker : undefined;
                             const attachPurchase = getAttachPurchase(repliedMessage);
                             const imageFiles = attachFiles?.filter(x => x.fileMetadata.isImage);
+                            const videoFiles = attachFiles?.filter(x => isVideo(x.fileMetadata.name) && x.filePreview);
                             let miniContent = null;
                             let miniContentSubtitle = null;
                             let miniContentColor = bubbleForegroundSecondary;
@@ -130,6 +132,16 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                     <AsyncReplyMessageMediaView
                                         attachments={imageFiles}
                                         onPress={this.props.onMediaPress}
+                                        message={repliedMessage}
+                                        theme={theme}
+                                    />
+                                );
+                                miniContentSubtitle = repliedMessage.fallback;
+                            } else if (videoFiles && videoFiles.length > 0 && !isForward) {
+                                miniContent = (
+                                    <AsyncReplyMessageMediaView
+                                        attachments={videoFiles}
+                                        onPress={() => this.props.onDocumentPress(repliedMessage)}
                                         message={repliedMessage}
                                         theme={theme}
                                     />
@@ -221,6 +233,15 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         <AsyncReplyMessageMediaView
                                             attachments={imageFiles}
                                             onPress={this.props.onMediaPress}
+                                            message={repliedMessage}
+                                            theme={theme}
+                                            isForward={true}
+                                        />
+                                    )}
+                                    {videoFiles && videoFiles?.length > 0 && isForward && (
+                                        <AsyncReplyMessageMediaView
+                                            attachments={videoFiles}
+                                            onPress={() => this.props.onDocumentPress(repliedMessage)}
                                             message={repliedMessage}
                                             theme={theme}
                                             isForward={true}

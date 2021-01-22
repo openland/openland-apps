@@ -60,8 +60,18 @@ export const ForwardReplyView = (props: ForwardReplyViewProps) => {
                     isGif: attach.fileMetadata.mimeType === 'gif',
                 };
             } else {
-                leftElement = <ZDocumentExt name={attach.fileMetadata.name} />;
-                text = attach.fileMetadata.name;
+                if (attach.filePreview) {
+                    image = {
+                        id: attach.fileId,
+                        width: attach.fileMetadata.imageWidth || undefined,
+                        height: attach.fileMetadata.imageHeight || undefined,
+                        isGif: false,
+                    };
+                    text = message.fallback;
+                } else {
+                    leftElement = <ZDocumentExt name={attach.fileMetadata.name} />;
+                    text = attach.fileMetadata.name;
+                }
             }
         } else if (attach?.__typename === 'MessageRichAttachment') {
             if (attach.image) {
