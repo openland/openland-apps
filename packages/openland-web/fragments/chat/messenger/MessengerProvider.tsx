@@ -18,7 +18,7 @@ const Messenger = (props: { currentUser: UserShort; children?: any }) => {
             cachedMessenger = new MessengerEngine(client, props.currentUser, platform, {
                 conversationBatchSize: 30,
                 experimental,
-                store: experimental ? openWebStorage('engines') : undefined
+                store: experimental ? openWebStorage('engines-' + props.currentUser.id) : undefined
             });
         }
         return (
