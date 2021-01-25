@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { trackEvent } from 'openland-x-analytics';
 import { OpenlandClient } from 'openland-api/spacex';
 import { XViewRouter } from 'react-mental';
