@@ -149,13 +149,6 @@ const headerTitleStyle = cx(TextTitle1, css`
     color: var(--foregroundPrimary);
 `);
 
-const headerTitleFullscreenStyle = css`
-    flex-grow: 0;
-    flex-basis: auto;
-    text-align: center;
-    margin-bottom: 16px;
-`;
-
 const headerIconStyle = css`
     margin-right: 8px;
 `;
@@ -190,19 +183,6 @@ export const InviteFriendsContent = (props: XViewProps) => {
             </XView >
             <WritePostBlock inviteKey={openlandInvite} isMobile={isMobile} />
         </XView >
-    );
-};
-
-export const InviteFriendsFullscreen = () => {
-    return (
-        <XView flexGrow={1} flexShrink={1}>
-            <XView flexGrow={1} flexShrink={1} alignSelf="center" justifyContent="center" width="100%" maxWidth={600} paddingHorizontal={16}>
-                <div className={cx(headerTitleStyle, headerTitleFullscreenStyle)}>
-                    Invite friends
-                </div>
-                <InviteFriendsContent flexGrow={0} justifyContent="center" />
-            </XView>
-        </XView>
     );
 };
 

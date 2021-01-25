@@ -1,10 +1,4 @@
 import * as React from 'react';
-import { showModalBox } from 'openland-x/showModalBox';
-import { XScrollView3 } from 'openland-x/XScrollView3';
-import { DiscoverStart } from 'openland-web/fragments/onboarding/DiscoverStart';
-import { showWriteFirstMessageModal } from 'openland-web/fragments/onboarding/showWriteFirstMessageModal';
-import { InviteFriendsFullscreen } from 'openland-web/fragments/settings/SettingsInviteFriendsFragment';
-import { DownloadAppsComponent } from 'openland-web/fragments/settings/SettingsDownloadAppsFragment';
 import { trackEvent } from 'openland-x-analytics';
 import { OpenlandClient } from 'openland-api/spacex';
 import { XViewRouter } from 'react-mental';
@@ -60,32 +54,22 @@ export const resolveLinkAction = (url: string | null, client: OpenlandClient, ro
         trackEvent('billy_bot_button_action', {
             action_type: 'invite_friends'
         });
-        showModalBox({ fullScreen: true }, ctx => (
-            <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
-                <InviteFriendsFullscreen />
-            </XScrollView3>
-        ));
+        router.navigate('/settings/invites');
     } else if (url === '/onboarding_apps') {
         trackEvent('billy_bot_button_action', {
             action_type: 'install_apps'
         });
-        showModalBox({ fullScreen: true }, () => (
-            <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
-                <DownloadAppsComponent inModal={true} />
-            </XScrollView3>
-        ));
+        router.navigate('/settings/download');
     } else if (url === '/onboarding_discover') {
         trackEvent('billy_bot_button_action', {
             action_type: 'complete_chat_navigator'
         });
-        showModalBox({ fullScreen: true }, ctx => (
-            <DiscoverStart onJoinChats={ctx.hide} />
-        ));
+        router.navigate('/discover/recommendations');
     } else if (url === '/onboarding_send_first_message') {
         trackEvent('billy_bot_button_action', {
             action_type: 'write_first_message'
         });
-        showWriteFirstMessageModal();
+        router.navigate('/discover');
     } else if (url) {
         return resolveInvite(url, client, router, fallback);
     } else if (fallback) {

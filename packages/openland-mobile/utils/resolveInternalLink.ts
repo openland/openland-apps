@@ -14,12 +14,6 @@ import { isInternalLink } from 'openland-y-utils/isInternalLink';
 
 export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?: boolean) => {
     return async () => {
-        if (!srcLink.startsWith('openland://deep/') && !isInternalLink(srcLink)) {
-            if (fallback) {
-                await fallback();
-            }
-            return;
-        }
 
         const loader = Toast.loader();
         let link = srcLink;
@@ -334,11 +328,18 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
             return;
         }
         if (link === '/onboarding_send_first_message') {
-            navigate('StartConversation');
+            navigate('Explore');
             return;
         }
         if (link === '/onboarding_invite') {
             navigate('Invites');
+            return;
+        }
+
+        if (!srcLink.startsWith('openland://deep/') && !isInternalLink(srcLink)) {
+            if (fallback) {
+                await fallback();
+            }
             return;
         }
 
@@ -414,7 +415,7 @@ export const joinInviteIfHave = async () => {
         }
     };
 
-    // 
+    //
     // JOIN ROOMS
     //
     let roomInvitePattern = new UrlPattern(patternBase + 'invite/:invite');

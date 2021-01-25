@@ -54,23 +54,7 @@ const appsContainer = css`
     & > div:last-child {
         margin-left: 8px;
     }
-`;
-
-const appsContainerInSettings = css`
     @media (max-width: 1100px) {
-        flex-direction: column;
-        & > div:first-child {
-            margin-right: 0;
-            margin-bottom: 48px;
-        }
-        & > div:last-child {
-            margin-left: 0;
-        }
-    }
-`;
-
-const appsContainerInModal = css`
-    @media (max-width: 700px) {
         flex-direction: column;
         & > div:first-child {
             margin-right: 0;
@@ -171,7 +155,7 @@ const Button = React.memo((props: ButtonProps) => {
     );
 });
 
-export const DownloadAppsComponent = React.memo((props: { inModal?: boolean }) => {
+export const DownloadAppsComponent = React.memo(() => {
     const os = detectOS();
 
     // https://oplnd.com/ios
@@ -225,12 +209,7 @@ export const DownloadAppsComponent = React.memo((props: { inModal?: boolean }) =
                 <div className={cx(TextBody, subtitleClass)}>
                     Get our fastest experience and never miss a message
                 </div>
-                <div
-                    className={cx(
-                        appsContainer,
-                        props.inModal ? appsContainerInModal : appsContainerInSettings,
-                    )}
-                >
+                <div className={cx(appsContainer)}>
                     <div className={appsContent}>
                         <img
                             className={imgClass}
