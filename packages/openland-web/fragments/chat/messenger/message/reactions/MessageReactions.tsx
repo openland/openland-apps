@@ -7,6 +7,8 @@ import { trackEvent } from 'openland-x-analytics';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { showReactionsList } from './showReactionsList';
 
+import LikeIcon from 'openland-icons/s/ic-reaction-like-16.svg';
+
 export const reactionImage = (r: MessageReactionType) =>
     `https://cdn.openland.com/shared/reactions/${r}.png`;
 
@@ -77,12 +79,24 @@ const ReactionItem = React.memo((props: ReactionItemProps) => {
     );
 });
 
+const EmptyLike = React.memo((props: { onClick: (reaction: MessageReactionType) => void }) => {
+    return (
+        <div
+            className={cx(reactionsSetUnsetItem, reactionsItem)}
+            onClick={() => props.onClick(MessageReactionType.LIKE)}
+        >
+            <LikeIcon />
+        </div>
+    );
+});
+
 export interface MessageReactionsProps {
     message: {
         id?: string;
         key?: string;
         reactionCounters: MessageReactionCounter[];
     };
+    isChannel?: boolean;
     engine?: ConversationEngine;
 }
 
@@ -90,6 +104,8 @@ export const MessageReactions = React.memo<MessageReactionsProps>((props) => {
     const { engine } = props;
     const { id, key, reactionCounters } = props.message;
     const client = useClient();
+    const isChannel = props.isChannel || engine?.isChannel;
+
     const handleReactionClick = React.useCallback(
         async (reaction: MessageReactionType) => {
             if (id) {
@@ -118,13 +134,47 @@ export const MessageReactions = React.memo<MessageReactionsProps>((props) => {
         [id, reactionCounters],
     );
 
-    if (reactionCounters.length === 0) {
+    const handleReactionTextClick = React.useCallback(() => {
+        if (reactionCounters.length > 0) {
+            showReactionsList(props.message.id || '');
+        } else {
+            handleReactionClick(MessageReactionType.LIKE);
+        }
+    }, [reactionCounters.length]);
+
+    if (!isChannel && reactionCounters.length === 0) {
         return null;
     }
 
     const count = reactionCounters.reduce((sum, r) => sum + r.count, 0);
     const likedByMe = !!reactionCounters.find((r) => r.setByMe);
     const otherLikes = !!reactionCounters.find((r) => (r.setByMe && r.count !== 1) || (!r.setByMe));
+
+    let reactions;
+    if (isChannel && reactionCounters.length === 0) {
+        reactions = <EmptyLike onClick={handleReactionClick} />;
+    } else {
+        reactions = reactionCounters.map((r, i) => {
+            const canChange = r.reaction !== MessageReactionType.DONATE;
+            return (
+                <ReactionItem
+                    key={'reaction-' + r.reaction + '-' + i}
+                    value={r}
+                    onClick={handleReactionClick}
+                    canChange={canChange}
+                />
+            );
+        });
+    }
+
+    let text = 'Like';
+    if (likedByMe && !otherLikes) {
+        text = 'You';
+    } else if (likedByMe && otherLikes) {
+        text = `You + ${count - 1}`;
+    } else if (count > 0) {
+        text = String(count);
+    }
 
     return (
         <div
@@ -135,28 +185,14 @@ export const MessageReactions = React.memo<MessageReactionsProps>((props) => {
             }}
         >
             <div className={reactionsItems}>
-                {reactionCounters.map((r, i) => {
-                    const canChange = r.reaction !== MessageReactionType.DONATE;
-                    return (
-                        <ReactionItem
-                            key={'reaction-' + r.reaction + '-' + i}
-                            value={r}
-                            onClick={handleReactionClick}
-                            canChange={canChange}
-                        />
-                    );
-                })}
+                {reactions}
             </div>
 
             <div
                 className={cx(TextDensed, reactionsText)}
-                onClick={() => showReactionsList(props.message.id || '')}
+                onClick={handleReactionTextClick}
             >
-                {likedByMe && !otherLikes
-                    ? 'You'
-                    : likedByMe && otherLikes
-                    ? `You + ${count - 1}`
-                    : count}
+                {text}
             </div>
         </div>
     );

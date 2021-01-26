@@ -36,11 +36,22 @@ const iconWrapper = css`
     svg {
         width: 16px;
         height: 16px;
-        
+
         path {
             fill: var(--accentPrimary);
         }
     }
+`;
+
+const iconGrayedOut = css`
+  svg {
+    width: 16px;
+    height: 16px;
+
+    path {
+      fill: var(--foregroundTertiary);
+    }
+  }
 `;
 
 interface MessageCommentsButtonProps {
@@ -66,12 +77,12 @@ export const MessageCommentsButton = React.memo<MessageCommentsButtonProps>(prop
                     }
                 }}
             >
-                <div className={iconWrapper}>
+                <div className={cx(iconWrapper, commentsCount === 0 && iconGrayedOut)}>
                     <CommentsIcon />
                 </div>
                 <span>
                     {!!commentsCount && plural(commentsCount, ['comment', 'comments'])}
-                    {!commentsCount && 'Comments'}
+                    {!commentsCount && 'Comment'}
                 </span>
             </div>
         );
