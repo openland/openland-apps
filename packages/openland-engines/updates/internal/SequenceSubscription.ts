@@ -105,7 +105,7 @@ export class SequenceSubscription {
 
                 // Reset pending collection
                 this._pending.reset(toPts);
-                await this._handler!(tx, { type: 'restart', sequence: state, pts: toPts, lost: false });
+                await this._handler!(tx, { type: 'restart', sequence: state, pts: toPts, lost: true });
             } else {
                 // Put to pending collection (to be drained soon)
                 this._pending.putCollapsed(fromPts, toPts, events);
