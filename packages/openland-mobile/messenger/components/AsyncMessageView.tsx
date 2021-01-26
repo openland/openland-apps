@@ -264,7 +264,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     <ASFlex key="margin-right" width={12} />
                 </ASFlex>
 
-                {showReactions && <AsyncMessageReactionsView theme={theme} message={message} isChannel={engine.isChannel} onCommentsPress={handleCommentPress} onReactionsPress={() => onReactionsPress(message)} />}
+                {showReactions && <AsyncMessageReactionsView theme={theme} message={message} isChannel={engine.isChannel} onCommentsPress={handleCommentPress} onReactionsPress={() => onReactionsPress(message)} onLikePress={onMessageDoublePress} />}
             </ASFlex>
 
             <ASFlex key="margin-bottom" height={marginBottom} />

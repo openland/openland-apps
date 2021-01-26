@@ -23,12 +23,13 @@ interface AsyncMessageReactionsViewProps {
     message: DataSourceMessageItem;
     isChannel?: boolean;
 
+    onLikePress: (message: DataSourceMessageItem) => void;
     onCommentsPress: () => void;
     onReactionsPress: () => void;
 }
 
 export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewProps>((props) => {
-    const { theme, message, isChannel, onCommentsPress, onReactionsPress } = props;
+    const { theme, message, isChannel, onLikePress, onCommentsPress, onReactionsPress } = props;
     const {
         reactionCounters,
         commentsCount,
@@ -67,10 +68,16 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
                     </ASFlex>
                 )}
 
+                {isChannel && reactionCounters.length === 0 && (
+                    <ASFlex onPress={() => onLikePress(message)} height={28} marginLeft={8} marginTop={4} marginRight={8} alignItems="center" justifyContent="center">
+                        <ASImage source={require('assets/ic-like-24.png')} width={20} height={20} tintColor={theme.foregroundSecondary} />
+                    </ASFlex>
+                )}
+
                 {(isChannel || commentsCount > 0) && (
                     <ASFlex onPress={onCommentsPress}>
                         <ASFlex marginLeft={8} marginRight={8} height={28} marginTop={4} alignItems="center" justifyContent="center">
-                            {commentsCount <= 0 && <ASImage source={require('assets/ic-message-24.png')} tintColor={theme.accentPrimary} width={20} height={20} />}
+                            {commentsCount <= 0 && <ASImage source={require('assets/ic-message-24.png')} tintColor={theme.foregroundSecondary} width={20} height={20} />}
                             {commentsCount > 0 && <ASImage source={require('assets/ic-message-filled-24.png')} tintColor={theme.accentPrimary} width={20} height={20} />}
                             {commentsCount > 0 && <ASText fontSize={13} fontWeight={FontStyles.Weight.Medium} marginLeft={4} color={theme.foregroundTertiary}>{commentsCount}</ASText>}
                         </ASFlex>
