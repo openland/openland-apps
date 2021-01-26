@@ -142,6 +142,9 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
 
         // Start normal event processing
         this._started = true;
+        if (LOG) {
+            console.log('[updates]: Started');
+        }
 
         // Invalidate if subscribed with a gap
         this.checkSubsciptionGap();
