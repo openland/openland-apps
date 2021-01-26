@@ -15,7 +15,7 @@ export class ChatsEngine {
         return await this.chatSequences.get(tx, cid);
     }
 
-    async onSequenceRestart(tx: Transaction, state: ShortSequence) {
+    async onSequenceRestart(tx: Transaction, state: ShortSequence, lost: boolean) {
         if (state.__typename === 'SequenceChat') {
             let ex = await this.chatSequences.get(tx, state.cid);
             if (!ex) {

@@ -17,7 +17,7 @@ export class HistoryEngine {
         this.updates = updates;
     }
 
-    async onSequenceRestart(tx: Transaction, pts: number, state: ShortSequenceChat) {
+    async onSequenceRestart(tx: Transaction, pts: number, state: ShortSequenceChat, lost: boolean) {
 
         // Persist message
         if (state.topMessage) {

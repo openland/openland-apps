@@ -85,7 +85,7 @@ export class DialogsEngine {
     // Basic Updates
     //
 
-    async onSequenceRestart(tx: Transaction, state: ShortSequenceChat) {
+    async onSequenceRestart(tx: Transaction, state: ShortSequenceChat, lost: boolean) {
         let ex = await this.dialogs.get(tx, state.cid);
 
         if (state.room) {

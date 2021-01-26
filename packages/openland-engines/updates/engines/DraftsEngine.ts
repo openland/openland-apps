@@ -10,7 +10,7 @@ export class DraftsEngine {
         message: string | null
     }>('drafts');
 
-    async onSequenceRestart(tx: Transaction, state: ShortSequenceChat) {
+    async onSequenceRestart(tx: Transaction, state: ShortSequenceChat, lost: boolean) {
         if (state.draft) {
             await this.applyDraft(tx, state.cid, parseInt(state.draft.date, 10), state.draft.version, state.draft.message);
         }

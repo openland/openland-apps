@@ -30,8 +30,7 @@ function persistPts(tx: Transaction, id: string, pts: number) {
 }
 
 export type SequenceHolderEvent =
-    | { type: 'start', pts: number, sequence: UpdateSequenceState }
-    | { type: 'restart', pts: number, sequence: UpdateSequenceDiff }
+    | { type: 'restart', pts: number, sequence: UpdateSequenceDiff, lost: boolean }
     | { type: 'event', pts: number, id: string, event: UpdateEvent };
 export type SequenceHolderHandler = (tx: Transaction, event: SequenceHolderEvent) => Promise<void>;
 
@@ -128,7 +127,7 @@ export class SequenceHolder {
         if (this.loading) {
 
             // Call Handler
-            await this.handler(tx, { type: 'start', pts: state.pts, sequence: state.sequence });
+            await this.handler(tx, { type: 'restart', pts: state.pts, sequence: state.sequence, lost: true });
 
             // Save pts and enforce invalidated flag
             this.startPts = state.pts;
@@ -149,7 +148,7 @@ export class SequenceHolder {
             if (event.type === 'event') {
                 await this.onSequenceUpdate(tx2, event.pts, event.event);
             } else if (event.type === 'restart') {
-                await this.onSequenceRestart(tx2, event.pts, event.sequence);
+                await this.onSequenceRestart(tx2, event.pts, event.sequence, event.lost);
             } else if (event.type === 'invalidated') {
                 await this.onSequenceInvalidated(tx2);
             } else if (event.type === 'validated') {
@@ -194,10 +193,10 @@ export class SequenceHolder {
         await updateInvalidated(tx, this.id, true);
     }
 
-    private async onSequenceRestart(tx: Transaction, pts: number, sequence: UpdateSequenceDiff) {
+    private async onSequenceRestart(tx: Transaction, pts: number, sequence: UpdateSequenceDiff, lost: boolean) {
 
         // Handle event
-        await this.handler(tx, { type: 'restart', pts, sequence });
+        await this.handler(tx, { type: 'restart', pts, sequence, lost });
 
         // Persist pts
         persistPts(tx, this.id, pts);

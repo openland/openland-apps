@@ -64,14 +64,19 @@ export class UpdatesEngine {
         if (event.type === 'loaded') {
             await this.dialogs.onDialogsLoaded(tx);
             console.log('[updates]: sequence: ', event);
-        } else if (event.type === 'start' || event.type === 'restart') {
-            await this.chats.onSequenceRestart(tx, event.sequence);
+        } else if (event.type === 'restart') {
+            if (event.lost) {
+                console.log('[updates]: sequence lost: ', event.sequence.id);
+            } else {
+                console.log('[updates]: sequence restart: ', event.sequence.id);
+            }
+            await this.chats.onSequenceRestart(tx, event.sequence, event.lost);
             if (event.sequence.__typename === 'SequenceChat') {
                 // NOTE: Dialogs MUST be the first since it could miss some dialogs
-                await this.dialogs.onSequenceRestart(tx, event.sequence);
-                await this.counters.onSequenceRestart(tx, event.pts, event.sequence);
-                await this.drafts.onSequenceRestart(tx, event.sequence);
-                await this.history.onSequenceRestart(tx, event.pts, event.sequence);
+                await this.dialogs.onSequenceRestart(tx, event.sequence, event.lost);
+                await this.counters.onSequenceRestart(tx, event.pts, event.sequence, event.lost);
+                await this.drafts.onSequenceRestart(tx, event.sequence, event.lost);
+                await this.history.onSequenceRestart(tx, event.pts, event.sequence, event.lost);
             }
         } else if (event.type === 'event') {
             // NOTE: Dialogs MUST be the first since it could miss some dialogs

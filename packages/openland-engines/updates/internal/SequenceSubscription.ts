@@ -7,7 +7,7 @@ import { LOG } from './LOG';
 export type SequenceSubscriptionEvent =
     | { type: 'invalidated' }
     | { type: 'validated' }
-    | { type: 'restart', sequence: UpdateSequenceDiff, pts: number }
+    | { type: 'restart', sequence: UpdateSequenceDiff, pts: number, lost: boolean }
     | { type: 'event', event: UpdateEvent, pts: number };
 
 export type SequenceSubscriptionHandler = (tx: Transaction, event: SequenceSubscriptionEvent) => Promise<void>;
@@ -105,7 +105,7 @@ export class SequenceSubscription {
 
                 // Reset pending collection
                 this._pending.reset(toPts);
-                await this._handler!(tx, { type: 'restart', sequence: state, pts: toPts });
+                await this._handler!(tx, { type: 'restart', sequence: state, pts: toPts, lost: false });
             } else {
                 // Put to pending collection (to be drained soon)
                 this._pending.putCollapsed(fromPts, toPts, events);
@@ -208,7 +208,7 @@ export class SequenceSubscription {
                         if (this._pending.currentPts < diff.pts) {
                             // Reset stream
                             this._pending.reset(toPts);
-                            await this._handler!(tx, { type: 'restart', sequence: diff.state, pts: toPts });
+                            await this._handler!(tx, { type: 'restart', sequence: diff.state, pts: toPts, lost: true });
                         } else {
                             // Put to pending
                             this._pending.putCollapsed(diff.pts, toPts, diff.events);
@@ -227,7 +227,7 @@ export class SequenceSubscription {
                         await this.updateInvalidatedState(tx);
 
                         // Notify restart
-                        await this._handler!(tx, { type: 'restart', pts: diff.pts, sequence: diff.state });
+                        await this._handler!(tx, { type: 'restart', pts: diff.pts, sequence: diff.state, lost: false });
 
                         // Start invalidation timer if there are some empty updates
                         if (!this._pending.empty) {

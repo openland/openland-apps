@@ -22,7 +22,7 @@ export class CountersEngine {
         this.dialogs = dialogs;
     }
 
-    async onSequenceRestart(tx: Transaction, pts: number, state: ShortSequenceChat) {
+    async onSequenceRestart(tx: Transaction, pts: number, state: ShortSequenceChat, lost: boolean) {
         let current = await this.chats.get(tx, state.cid);
         if (!current) {
             this.chats.set(tx, state.cid, {
