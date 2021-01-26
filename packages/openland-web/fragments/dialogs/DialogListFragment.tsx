@@ -1,36 +1,33 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { DialogListView } from './components/DialogListView';
-import { GlobalSearch_items } from 'openland-api/spacex.types';
 import { dialogListWebDataSource } from './components/DialogListWebDataSource';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { DialogType } from './DialogsFragment';
 
 interface DialogListFragmentProps {
-    onSearchItemSelected: (a: GlobalSearch_items) => void;
     onDialogPress: (id: string) => void;
+    messenger: MessengerEngine;
+    experimental?: boolean;
     selectedFilter?: DialogType;
 }
 
-let enableExperiemental = true;
-
 export const DialogListFragment = React.memo((props: DialogListFragmentProps) => {
-    let messenger = React.useContext(MessengerContext);
     const source = React.useMemo(() => {
-        if (messenger.experimentalUpdates && enableExperiemental) {
+        if (props.messenger.experimentalUpdates && props.experimental) {
             if (props.selectedFilter === 'unread') {
-                return dialogListWebDataSource(messenger.experimentalUpdates.dialogs.dialogsUnread.legacy);
+                return dialogListWebDataSource(props.messenger.experimentalUpdates.dialogs.dialogsUnread.legacy);
             }
             if (props.selectedFilter === 'groups') {
-                return dialogListWebDataSource(messenger.experimentalUpdates.dialogs.dialogsGroups.legacy);
+                return dialogListWebDataSource(props.messenger.experimentalUpdates.dialogs.dialogsGroups.legacy);
             }
             if (props.selectedFilter === 'private') {
-                return dialogListWebDataSource(messenger.experimentalUpdates.dialogs.dialogsPrivate.legacy);
+                return dialogListWebDataSource(props.messenger.experimentalUpdates.dialogs.dialogsPrivate.legacy);
             } else {
-                return dialogListWebDataSource(messenger.experimentalUpdates.dialogs.dialogsAll.legacy);
+                return dialogListWebDataSource(props.messenger.experimentalUpdates.dialogs.dialogsAll.legacy);
             }
         } else {
-            return dialogListWebDataSource(messenger.dialogList.dataSource);
+            return dialogListWebDataSource(props.messenger.dialogList.dataSource);
         }
     }, [props.selectedFilter]);
     return (
@@ -42,7 +39,6 @@ export const DialogListFragment = React.memo((props: DialogListFragmentProps) =>
         >
             <DialogListView
                 source={source}
-                onSearchItemSelected={props.onSearchItemSelected}
                 onDialogClick={props.onDialogPress}
             />
         </XView>

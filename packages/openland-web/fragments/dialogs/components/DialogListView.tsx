@@ -32,7 +32,6 @@ export interface DialogListViewProps {
     source: DataSource<DialogListWebItem>;
     onDialogClick?: (id: string) => void;
     onSearchItemPress?: (a: string) => void;
-    onSearchItemSelected?: (a: GlobalSearch_items | null) => void;
 }
 
 export const DialogListView = React.memo((props: DialogListViewProps) => {
@@ -47,15 +46,6 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
     const [focused, setFocused] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
     const isSearching = focused || (globalSearch && globalSearch.value.trim().length > 0);
-
-    React.useEffect(
-        () => {
-            if (isSearching === false && props.onSearchItemSelected) {
-                props.onSearchItemSelected(null);
-            }
-        },
-        [isSearching],
-    );
 
     let conversationId: null | string = null;
     if (route) {
