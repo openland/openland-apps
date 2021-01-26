@@ -217,6 +217,9 @@ export class MainUpdatesSubscription<T, STATE extends { id: string }, DIFF exten
                 }
             }
         } else if (event.type === 'started') {
+            if (LOG) {
+                console.log('[updates]: connection started at ' + event.seq + ', was: ' + this._subscribedFrom);
+            }
             this._subscribedFrom = event.seq;
             this.checkSubsciptionGap();
             if (this._started && !this._invalidated) {
