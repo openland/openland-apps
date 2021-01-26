@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XViewRouterContext, XView } from 'react-mental';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DialogListFragment } from './DialogListFragment';
 import { UCounter } from 'openland-unicorn/UCounter';
 import { useClient } from 'openland-api/useClient';
@@ -77,37 +78,40 @@ const FiltersMenu = (props: {
         title: 'All chats',
         icon: <IcMessage />,
         action: () => props.setDialogFilter('all'),
-        selected: props.dialogFilter === 'all'
+        selected: props.dialogFilter === 'all',
     });
     res.item({
         title: 'Unread',
         icon: <IcUnread />,
         action: () => props.setDialogFilter('unread'),
-        selected: props.dialogFilter === 'unread'
+        selected: props.dialogFilter === 'unread',
     });
     res.item({
         title: 'Direct',
         icon: <IcUser />,
         action: () => props.setDialogFilter('private'),
-        selected: props.dialogFilter === 'private'
+        selected: props.dialogFilter === 'private',
     });
     res.item({
         title: 'Groups',
         icon: <IcGroup />,
         action: () => props.setDialogFilter('groups'),
-        selected: props.dialogFilter === 'groups'
+        selected: props.dialogFilter === 'groups',
     });
     return res.build(props.ctx, 240);
 };
 
 export const DialogsFragment = React.memo(() => {
+    const messenger = React.useContext(MessengerContext);
     const [dialogFilter, setDialogFilter] = React.useState<DialogType>('all');
     const stackRouter = React.useContext(XViewRouterContext)!;
     const isVisible = useVisibleTab();
 
     const [menuVisible, menuShow] = usePopper(
         { placement: 'bottom-start', updatedDeps: dialogFilter },
-        (ctx) => <FiltersMenu ctx={ctx} setDialogFilter={setDialogFilter} dialogFilter={dialogFilter} />,
+        (ctx) => (
+            <FiltersMenu ctx={ctx} setDialogFilter={setDialogFilter} dialogFilter={dialogFilter} />
+        ),
     );
 
     React.useEffect(() => {
@@ -126,7 +130,13 @@ export const DialogsFragment = React.memo(() => {
                 alignItems="stretch"
                 backgroundColor="var(--backgroundPrimary)"
             >
-                <USideHeader title={{ title: 'Chats', active: menuVisible, action: menuShow }}>
+                <USideHeader
+                    title={
+                        messenger.experimentalUpdates
+                            ? { title: 'Chats', active: menuVisible, action: menuShow }
+                            : 'Chats'
+                    }
+                >
                     <NotificationsButton />
                     <div onClick={() => showCreatingGroupFragment({ entityType: 'group' })}>
                         <UIconButton icon={<AddIcon />} size="large" />
@@ -134,9 +144,8 @@ export const DialogsFragment = React.memo(() => {
                 </USideHeader>
                 <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>
                     <DialogListFragment
-                        onSearchItemSelected={() => {
-                            /* */
-                        }}
+                        messenger={messenger}
+                        experimental={true}
                         onDialogPress={(id) => {
                             stackRouter.navigate(`/mail/${id}`);
                         }}
