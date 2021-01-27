@@ -1,4 +1,4 @@
-import { UploadingFile, UploadStatus, VideoMeta } from 'openland-engines/messenger/types';
+import { UploadingFile, UploadStatus } from 'openland-engines/messenger/types';
 import RNFetchBlob from 'rn-fetch-blob';
 export class UploadCareDirectUploading implements UploadingFile {
     private name: string;
@@ -6,14 +6,10 @@ export class UploadCareDirectUploading implements UploadingFile {
     private uri: string;
     private state: { status: UploadStatus, progress?: number, uuid?: string } = { status: UploadStatus.UPLOADING };
     private watchers: ((state: { status: UploadStatus, progress?: number, uuid?: string }) => void)[] = [];
-    private videoMeta?: VideoMeta;
 
-    constructor(name: string, uri: string, contentType?: string, videoMeta?: VideoMeta) {
+    constructor(name: string, uri: string, contentType?: string) {
         this.name = name;
         this.contentType = contentType;
-        if (videoMeta) {
-            this.videoMeta = videoMeta;
-        }
         if (uri.startsWith('file://')) {
             uri = uri.substring(8);
         }
@@ -77,7 +73,7 @@ export class UploadCareDirectUploading implements UploadingFile {
         });
     }
     async fetchInfo() {
-        return { name: this.name, videoMeta: this.videoMeta };
+        return { name: this.name };
     }
 
     watch(handler: (state: { status: UploadStatus, progress?: number, uuid?: string }) => void) {

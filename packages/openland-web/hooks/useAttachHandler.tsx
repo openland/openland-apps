@@ -57,7 +57,7 @@ export const useAttachHandler = (props: { conversationId: string, onOpen?: () =>
                     if (hasImages) {
                         keys = conversation!.sendFiles({ files: uploadingFiles, mentions, text, quotedMessages }).filesKeys;
                     } else {
-                        keys = uploadingFiles.map(({ file, localImage }) => conversation!.sendFile(file, localImage, undefined));
+                        keys = uploadingFiles.map(({ file, preview }) => conversation!.sendFile({ file, preview, quotedMessages: undefined }));
                         if (text) {
                             keys.push(conversation!.sendMessage(text, mentions || null, quotedMessages));
                         }

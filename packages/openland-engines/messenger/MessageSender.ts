@@ -1,5 +1,5 @@
 import UUID from 'uuid/v4';
-import { FileMetadata, UploadingFile, UploadStatus } from './types';
+import { UploadingFile, UploadStatus } from './types';
 import {
     MentionInput,
     FileAttachmentInput,
@@ -40,26 +40,34 @@ type MessageBodyT = {
 
 export class MessageSender {
     private client: OpenlandClient;
-    private uploadedFiles = new Map<string, { id: string, meta: FileMetadata }>();
+    private uploadedFiles = new Map<string, { id: string, previewFileId: string | undefined }>();
     private pending = new Map<string, MessageBodyT>();
 
     constructor(client: OpenlandClient) {
         this.client = client;
     }
 
-    sendFile(
+    sendFile({
+        conversationId,
+        file,
+        callback,
+        quoted,
+        previewFile,
+    }: {
         conversationId: string,
         file: UploadingFile,
         callback: MessageSendHandler,
+        previewFile?: UploadingFile | undefined,
         quoted?: string[],
-    ) {
+    }) {
         console.log('MessageSender sendFile');
         let key = UUID();
 
         (async () => {
             try {
                 if (!this.uploadedFiles.has(key)) {
-                    let [id, meta] = await Promise.all([
+                    let info = await file.fetchInfo();
+                    let [id, previewFileId] = await Promise.all([
                         new Promise<string>((resolver, reject) => {
                             file.watch(state => {
                                 if (state.status === UploadStatus.FAILED) {
@@ -71,15 +79,27 @@ export class MessageSender {
                                 }
                             });
                         }),
-                        file.fetchInfo()
+                        new Promise<string | undefined>((resolver) => {
+                            if (previewFile && !info.isImage) {
+                                previewFile.watch(state => {
+                                    if (state.status === UploadStatus.FAILED) {
+                                        resolver(undefined);
+                                    } else if (state.status === UploadStatus.COMPLETED) {
+                                        resolver(state.uuid!!);
+                                    }
+                                });
+                            } else {
+                                resolver(undefined);
+                            }
+                        }),
                     ]);
-                    this.uploadedFiles.set(key, { id, meta });
+                    this.uploadedFiles.set(key, { id: id!, previewFileId });
                 }
             } catch (e) {
                 callback.onFailed(key);
             }
             this.doSendMessage({
-                fileAttachments: [{ fileId: this.uploadedFiles.get(key)!!.id }],
+                fileAttachments: [{ fileId: this.uploadedFiles.get(key)!!.id, previewFileId: this.uploadedFiles.get(key)!!.previewFileId }],
                 mentions: null,
                 replyMessages: quoted || null,
                 message: null,
@@ -103,7 +123,7 @@ export class MessageSender {
         spans
     }: {
         conversationId: string,
-        files: UploadingFile[],
+        files: { file: UploadingFile, preview?: UploadingFile }[],
         message: string;
         mentions: MentionToSend[] | null;
         callback: MessageSendHandler;
@@ -113,34 +133,48 @@ export class MessageSender {
         console.log('MessageSender sendFiles');
         let fileIds: string[] = [];
         let parentKey = UUID();
-        let promises = files.slice(0, MAX_FILES_PER_MESSAGE).map(file => {
+        let promises = files.slice(0, MAX_FILES_PER_MESSAGE).map(async ({ file, preview }) => {
             let key = UUID();
             fileIds.push(key);
-            let p = Promise.all([
-                new Promise<string>((resolver, reject) => {
-                    file.watch(state => {
-                        if (state.status === UploadStatus.FAILED) {
-                            reject();
-                        } else if (state.status === UploadStatus.UPLOADING) {
-                            callback.onFileProgress(key, parentKey, state.progress!!);
-                        } else if (state.status === UploadStatus.COMPLETED) {
-                            resolver(state.uuid!!);
+            try {
+                const info = await file.fetchInfo();
+                const [id, previewFileId] = await Promise.all([
+                    new Promise<string>((resolver, reject) => {
+                        file.watch(state => {
+                            if (state.status === UploadStatus.FAILED) {
+                                reject();
+                            } else if (state.status === UploadStatus.UPLOADING) {
+                                callback.onFileProgress(key, parentKey, state.progress!!);
+                            } else if (state.status === UploadStatus.COMPLETED) {
+                                resolver(state.uuid!!);
+                            }
+                        });
+                    }),
+                    new Promise<string | undefined>((resolver) => {
+                        if (preview && !info.isImage) {
+                            preview.watch(state => {
+                                if (state.status === UploadStatus.FAILED) {
+                                    resolver(undefined);
+                                } else if (state.status === UploadStatus.COMPLETED) {
+                                    resolver(state.uuid!!);
+                                }
+                            });
+                        } else {
+                            resolver(undefined);
                         }
-                    });
-                }),
-                file.fetchInfo()
-            ]);
-            return p.then(([id, meta]) => {
+                    }),
+                ]);
+
                 if (!this.uploadedFiles.has(key)) {
-                    this.uploadedFiles.set(key, { id, meta });
+                    this.uploadedFiles.set(key, { id: id!, previewFileId });
                 }
-            }).catch(e => {
+            } catch (e) {
                 callback.onFailed(key);
-            });
+            }
         });
         Promise.all(promises).then(() => {
             this.doSendMessage({
-                fileAttachments: fileIds.map(x => ({ fileId: this.uploadedFiles.get(x)!!.id })),
+                fileAttachments: fileIds.map(x => ({ fileId: this.uploadedFiles.get(x)!!.id, previewFileId: this.uploadedFiles.get(x)!!.previewFileId })),
                 mentions: prepareLegacyMentionsForSend(message, mentions || []),
                 replyMessages: quoted || null,
                 message,

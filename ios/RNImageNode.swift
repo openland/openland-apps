@@ -40,11 +40,12 @@ class RNImageNode: ASDisplayNode {
       self.task?.cancel()
       self.url = spec.url
       self.currentTintColor = spec.tintColor
+      print("@@@ URL \(spec.url) \(spec.style.width) \(spec.style.height)")
       if spec.url != "" && spec.url != nil {
         let targetSize = CGSize(width: CGFloat(spec.style.width!) * UIScreen.main.scale, height: CGFloat(spec.style.height!) * UIScreen.main.scale)
         
-        if spec.url.starts(with: "data:image/png;base64") {
-          let dataDecoded : Data = Data(base64Encoded: spec.url.replacingOccurrences(of: "data:image/png;base64", with: ""), options: .ignoreUnknownCharacters)!
+        if spec.url.starts(with: "data:image/jpeg;base64,") {
+          let dataDecoded : Data = Data(base64Encoded: spec.url.replacingOccurrences(of: "data:image/jpeg;base64,", with: ""), options: .ignoreUnknownCharacters)!
           let decodedimage = UIImage(data: dataDecoded)
           self.node.image = decodedimage
         } else {

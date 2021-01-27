@@ -1,6 +1,6 @@
 import { Watcher } from 'openland-y-utils/Watcher';
 import { UploadCareDirectUploading } from '../utils/UploadCareDirectUploading';
-import { UploadStatus, VideoMeta } from 'openland-engines/messenger/types';
+import { UploadStatus } from 'openland-engines/messenger/types';
 import { getMessenger } from '../utils/messenger';
 import RNFetchBlob from 'rn-fetch-blob';
 import { Image } from 'react-native';
@@ -33,7 +33,7 @@ export type FileMeta = {
     name: string;
     path: string;
     size?: number;
-    videoMeta?: VideoMeta;
+    previewPath?: string | undefined;
 };
 
 const MAX_FILE_SIZE = 1e+8;
@@ -64,8 +64,19 @@ export class UploadManager {
             w.setState({ progress: 0, status: UploadStatus.UPLOADING });
             return w;
         });
+        const previews = await Promise.all(
+            filesMeta
+                .filter(x => x.previewPath)
+                .map(x => (
+                    new Promise<{ width: number, height: number, src: string }>((res) => {
+                        const src = x.previewPath!.startsWith('file://') ? x.previewPath! : 'file://' + x.previewPath!;
+                        Image.getSize(x.previewPath!, (width, height) => res({ width, height, src }));
+                    })
+                ))
+        );
+        const uploadingPreviews = previews.map(x => ({ ...x, file: this.uploadFile({ name: 'video-thumb.png', uri: x.src }) }));
         let { filesKeys } = getMessenger().engine.getConversation(conversationId).sendFiles({
-            files: newFilesMeta.map(({ name, path, size, videoMeta }, i) => {
+            files: newFilesMeta.map(({ name, path, size, previewPath }, i) => {
                 return {
                     file: {
                         fetchInfo: () => new Promise(async (resolver, onError) => {
@@ -77,14 +88,16 @@ export class UploadManager {
                                     Image.getSize(path, (width, height) => res({ width, height }), e => onError(e));
                                 });
                             }
-                            if (videoMeta) {
-                                imageSize = { width: videoMeta.preview.width, height: videoMeta.preview.height };
+                            if (previewPath) {
+                                imageSize = await new Promise<{ width: number, height: number }>((res) => {
+                                    Image.getSize(previewPath, (width, height) => res({ width, height }), () => res({ width: 0, height: 0 }));
+                                });
                             }
-                            resolver({ name, uri: path, fileSize: size, isImage, imageSize, videoMeta });
+                            resolver({ name, uri: path, fileSize: size, isImage, imageSize });
                         }),
                         watch: (handler: (state: UploadState) => void) => watchers[i].watch(handler),
                     },
-                    localImage: undefined,
+                    preview: uploadingPreviews[0],
                 };
             }),
             quotedMessages: quoted,
@@ -93,8 +106,13 @@ export class UploadManager {
         });
 
         filesKeys.forEach((key, i) => {
-            let { path, name } = newFilesMeta[i];
-
+            let { path, name, previewPath } = newFilesMeta[i];
+            if (previewPath) {
+                let w = new Watcher<UploadState>();
+                w.setState({ progress: 0, status: UploadStatus.UPLOADING });
+                this._watchers.set(key + '-thumb', w);
+                this._queue.push({ fileKey: key + '-thumb', name: 'video-thumb.png', uri: previewPath, retryCount: 0 });
+            }
             this._watchers.set(key, watchers[i]);
             this._queue.push({ fileKey: key, name, uri: path, retryCount: 0 });
         });
@@ -161,31 +179,33 @@ export class UploadManager {
 
     }
 
+    private uploadFile(file: { name: string, uri: string }) {
+        let contentType = file.name === 'video.mp4' ? 'video/mp4' : file.name.endsWith('.pdf') ? 'application/pdf' : undefined;
+        return new UploadCareDirectUploading(file.name, file.uri, contentType);
+    }
+
     slots = 4;
     private checkQueue() {
         console.warn('checkQueue', this.slots);
         for (let q of this._queue.splice(0, this.slots)) {
             this.slots--;
-            let contentType = q.name === 'video.mp4' ? 'video/mp4' : q.name.endsWith('.pdf') ? 'application/pdf' : undefined;
-            (async () => {
-                let upload = new UploadCareDirectUploading(q.name, q.uri, contentType);
-                upload.watch((s) => {
-                    if (s.status === UploadStatus.UPLOADING) {
-                        this.getWatcher(q.fileKey).setState({ progress: s.progress || 0, status: s.status });
-                    } else if (s.status === UploadStatus.FAILED) {
-                        this.slots++;
-                        if (q.retryCount++ < 3) {
-                            this._queue.push(q);
-                        }
-                        this.checkQueue();
-                    } else if (s.status === UploadStatus.COMPLETED) {
-                        this.slots++;
-                        RNFetchBlob.fs.cp(q.uri.replace('file://', ''), DownloadManagerInstance.resolvePath(s.uuid!, null, true));
-                        this.getWatcher(q.fileKey).setState({ progress: 1, status: s.status, uuid: s.uuid });
-                        this.checkQueue();
+            const upload = this.uploadFile(q);
+            upload.watch((s) => {
+                if (s.status === UploadStatus.UPLOADING) {
+                    this.getWatcher(q.fileKey).setState({ progress: s.progress || 0, status: s.status });
+                } else if (s.status === UploadStatus.FAILED) {
+                    this.slots++;
+                    if (q.retryCount++ < 3) {
+                        this._queue.push(q);
                     }
-                });
-            })();
+                    this.checkQueue();
+                } else if (s.status === UploadStatus.COMPLETED) {
+                    this.slots++;
+                    RNFetchBlob.fs.cp(q.uri.replace('file://', ''), DownloadManagerInstance.resolvePath(s.uuid!, null, true));
+                    this.getWatcher(q.fileKey).setState({ progress: 1, status: s.status, uuid: s.uuid });
+                    this.checkQueue();
+                }
+            });
         }
     }
 

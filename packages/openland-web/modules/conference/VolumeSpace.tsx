@@ -550,11 +550,11 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
         addedObjectsRef.current.push(coords);
     }, []);
 
-    let addImage = React.useCallback(({ file, localImage }: { file: UploadingFile | undefined, localImage?: LocalImage | undefined }) => {
-        if (!localImage || !containerRef.current) {
+    let addImage = React.useCallback(({ file, preview }: { file: UploadingFile | undefined, preview?: LocalImage | undefined }) => {
+        if (!preview || !containerRef.current) {
             return;
         }
-        let { width, height } = layoutMedia(localImage.width, localImage.height, 800, 800, 100, 100);
+        let { width, height } = layoutMedia(preview.width, preview.height, 800, 800, 100, 100);
         let coords = getObjCoords({ width, height });
         let image = new Image(undefined, coords, [width, height], [width, height]);
         props.mediaSession.space.addImage(file, image);

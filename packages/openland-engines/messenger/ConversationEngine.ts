@@ -30,7 +30,6 @@ const timeGroup = 1000 * 60 * 60;
 type DataSourceMessageSourceT = Types.FullMessage_GeneralMessage_source | Types.FullMessage_StickerMessage_source;
 
 export type PendingAttachProps = { uri?: string, key?: string, filePreview?: string | null, progress?: number, duration?: number };
-
 export interface DataSourceMessageItem {
     chatId: string;
     type: 'message';
@@ -650,10 +649,18 @@ export class ConversationEngine implements MessageSendHandler {
         return key;
     }
 
-    sendFile = (file: UploadingFile, localImage: LocalImage | undefined, quotedMessages: DataSourceMessageItem[] | undefined) => {
+    sendFile = ({
+        file,
+        quotedMessages,
+        preview,
+    }: {
+        file: UploadingFile,
+        preview?: LocalImage,
+        quotedMessages: DataSourceMessageItem[] | undefined,
+    }) => {
         let quoted = quotedMessages || [];
 
-        let key = this.engine.sender.sendFile(this.conversationId, file, this, quoted.map(q => q.id!));
+        let key = this.engine.sender.sendFile({ conversationId: this.conversationId, file, callback: this, previewFile: preview?.file, quoted: quoted.map(q => q.id!) });
         (async () => {
             let info = await file.fetchInfo();
             let name = info.name || 'image.jpg';
@@ -667,10 +674,10 @@ export class ConversationEngine implements MessageSendHandler {
                     progress: 0,
                     fileSize: info.fileSize,
                     uri: info.uri,
-                    imageSize: info.imageSize,
+                    imageSize: info.imageSize || (preview && { width: preview.width, height: preview.height }),
                     isImage: !!info.isImage,
-                    filePreview: localImage && localImage.src || info.videoMeta?.preview.thumbnail || '',
-                    duration: info.videoMeta?.duration || 0,
+                    filePreview: preview && preview.src || '',
+                    duration: 0,
                 }],
                 message: null,
                 failed: false,
@@ -686,7 +693,7 @@ export class ConversationEngine implements MessageSendHandler {
 
             // Notify
             for (let l of this.listeners) {
-                l.onMessageSend(file, localImage);
+                l.onMessageSend(file, preview);
             }
         })();
         return key;
@@ -698,7 +705,7 @@ export class ConversationEngine implements MessageSendHandler {
         mentions = [],
         quotedMessages,
     }: {
-        files: { file: UploadingFile, localImage?: LocalImage | undefined }[],
+        files: { file: UploadingFile, preview?: LocalImage | undefined }[],
         text: string | undefined,
         mentions: MentionToSend[] | undefined,
         quotedMessages: DataSourceMessageItem[] | undefined
@@ -707,10 +714,9 @@ export class ConversationEngine implements MessageSendHandler {
         let message = text.trim();
         let styledSpans = findSpans(message);
         let filesToSend = files.slice(0, MAX_FILES_PER_MESSAGE);
-
         let { key, filesKeys } = this.engine.sender.sendFiles({
             conversationId: this.conversationId,
-            files: filesToSend.map(x => x.file),
+            files: filesToSend.map(x => ({ file: x.file, preview: x.preview?.file })),
             callback: this,
             quoted: quoted.map(q => q.id!),
             message,
@@ -720,8 +726,8 @@ export class ConversationEngine implements MessageSendHandler {
         (async () => {
             let filesInfo = await Promise.all(filesToSend.map(x => x.file.fetchInfo()));
             let filesMeta: PendingMessage['filesMeta'] = filesInfo.map((info, i) => {
-                let width = filesToSend[i].localImage?.width;
-                let height = filesToSend[i].localImage?.height;
+                let width = filesToSend[i].preview?.width;
+                let height = filesToSend[i].preview?.height;
                 return {
                     key: filesKeys[i],
                     file: info.name || 'image.jpg',
@@ -730,8 +736,8 @@ export class ConversationEngine implements MessageSendHandler {
                     uri: info.uri,
                     imageSize: info.imageSize || ((width && height) ? { width, height } : undefined),
                     isImage: !!info.isImage,
-                    filePreview: filesToSend[i].localImage?.src || info.videoMeta?.preview.thumbnail || '',
-                    duration: info.videoMeta?.duration || 0,
+                    filePreview: filesToSend[i].preview?.src || '',
+                    duration: 0,
                 };
             });
 
@@ -758,7 +764,7 @@ export class ConversationEngine implements MessageSendHandler {
 
             // Notify
             for (let l of this.listeners) {
-                l.onMessageSend(filesToSend[0].file, filesToSend[0].localImage);
+                l.onMessageSend(filesToSend[0].file, filesToSend[0].preview);
             }
         })();
         return { key, filesKeys };
@@ -1105,6 +1111,17 @@ export class ConversationEngine implements MessageSendHandler {
                     fileId: '',
                     fallback: 'Document',
                     filePreview: fileInfo.filePreview || '',
+                    previewFileId: '',
+                    previewFileMetadata: {
+                        __typename: 'FileMetadata',
+                        mimeType: '',
+                        imageFormat: '',
+                        name: 'image.png',
+                        size: 0,
+                        isImage: true,
+                        imageWidth: fileInfo.imageSize && fileInfo.imageSize.width || 0,
+                        imageHeight: fileInfo.imageSize && fileInfo.imageSize.height || 0,
+                    },
                     fileMetadata: {
                         __typename: 'FileMetadata',
                         mimeType: '',

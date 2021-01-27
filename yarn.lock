@@ -13527,11 +13527,6 @@ react-native-location@^2.5.0:
   resolved "https://registry.yarnpkg.com/react-native-location/-/react-native-location-2.5.0.tgz#b6d2f7e9c3dbe13fbe87587f9533b8bf943b6a35"
   integrity sha512-myT54tZuFmN6d5RruMVfoa8eY+voJWkSd73xUVhjzJDnQr5uu5MFoH7hMg3trHF1CAkaY/2gIneOspUdGxv59Q==
 
-react-native-media-meta@^0.0.11:
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/react-native-media-meta/-/react-native-media-meta-0.0.11.tgz#d17fdbe43312d9a69fee862e91a1957d7b11726b"
-  integrity sha512-8pZA7wCoscLFJZRwd8GAYwsiuwc2XTYDcZm3cp9SN2wnKTnE2n1AW4AvBu0LGc1hyHYGLKPN4MJ6st0rY7H1vA==
-
 react-native-modal@^6.5.0:
   version "6.5.0"
   resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-6.5.0.tgz#46220b2289a41597d344c1db17454611b426a758"
@@ -13594,6 +13589,10 @@ react-native-sqlite-storage@5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/react-native-sqlite-storage/-/react-native-sqlite-storage-5.0.0.tgz#fb015c928b59d3000360fb0774a99545e7a695d6"
   integrity sha512-c1Joq3/tO1nmIcP8SkRZNolPSbfvY8uZg5lXse0TmjIPC0qHVbk96IMvWGyly1TmYCIpxpuDRc0/xCffDbYIvg==
+
+react-native-thumbnail@phuochau/react-native-thumbnail:
+  version "1.1.3"
+  resolved "https://codeload.github.com/phuochau/react-native-thumbnail/tar.gz/dc9af06fcee553dce561158cfb05e915655634bb"
 
 react-native-version-number@^0.3.6:
   version "0.3.6"

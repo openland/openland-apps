@@ -61,7 +61,8 @@ target 'openland' do
   pod 'react-native-pdf', :path => '../node_modules/react-native-pdf'
 pod 'ObjectiveRocks', '~> 0.11'
 #   pod 'react-native-video', :path => '../node_modules/react-native-video/react-native-video.podspec'
-  pod 'react-native-meta-media', :path => '../node_modules/react-native-media-meta'
+
+  pod 'RNThumbnail', :path => '../node_modules/react-native-thumbnail'
 
   pod 'ReactNativeDarkMode', :path => '../node_modules/react-native-dark-mode'
 

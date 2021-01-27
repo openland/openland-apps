@@ -154,8 +154,8 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     }
     const richAttachIsCompact = richAttachImageShouldBeCompact(augmenationAttach);
     let videoPreviewLayout;
-    if (hasVideo) {
-        videoPreviewLayout = layoutImage(fileAttach!.fileMetadata, maxSize);
+    if (hasVideo && fileAttach) {
+        videoPreviewLayout = layoutImage(fileAttach.previewFileMetadata, maxSize);
     }
 
     const hasDocument = !!(fileAttach && !hasImage);
@@ -178,7 +178,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         topContent.push(<TextContent key="msg-text" compensateBubble={compensateBubble} width={textSize} emojiOnly={isEmojiOnly} hasPurchase={hasPurchase} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onHashtagPress={onHashtagPress} onMediaPress={onMediaPress} />);
     }
     if (hasDocument) {
-        if (fileAttach?.filePreview) {
+        if ((fileAttach?.filePreview || fileAttach?.previewFileId) && videoPreviewLayout?.width && videoPreviewLayout?.height) {
             topContent.push(
                 <DocumentContentPreview
                     key="msg-document-preview"

@@ -155,7 +155,7 @@ export class MobileMessenger {
                 } else if (item.type === 'date') {
                     return <AsyncDateSeparator year={item.year} month={item.month} date={item.date} />;
                 } else if (item.type === 'invite_people') {
-                    return <AsyncInvitePeopleBlock room={item.room} client={this.engine.client} router={this.routerSuitable}/>;
+                    return <AsyncInvitePeopleBlock room={item.room} client={this.engine.client} router={this.routerSuitable} />;
                 } else {
                     return <AsyncNewMessageDivider />;
                 }
@@ -164,7 +164,7 @@ export class MobileMessenger {
         return this.conversations.get(id)!!;
     }
 
-    getSearchView(dataSource:  DataSource<DataSourceMessageItem | DataSourceDateItem>, chatId: string) {
+    getSearchView(dataSource: DataSource<DataSourceMessageItem | DataSourceDateItem>, chatId: string) {
         let eng = this.engine.getConversation(chatId);
 
         return new ASDataView(dataSource, (item) => {
@@ -172,7 +172,7 @@ export class MobileMessenger {
                 if (item.isService) {
                     return <AsyncServiceMessage message={item} onUserPress={this.handleUserPress} onGroupPress={this.handleGroupPress} onOrganizationPress={this.handleOrganizationPress} onHashtagPress={this.handleHashtagPress} />;
                 } else {
-                    return <AsyncMessageView conversationId={chatId} message={item} hideReactions={true} engine={eng} onUserPress={this.handleUserPress} onGroupPress={this.handleGroupPress} onOrganizationPress={this.handleOrganizationPress} onHashtagPress={this.handleHashtagPress} onDocumentPress={this.handleDocumentPress} onMediaPress={this.handleMediaPress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsPress} onReplyPress={this.handleReplyPress} onReactionsPress={this.handleReactionsPress} onMessagePress={this.handleMessagePress}/>;
+                    return <AsyncMessageView conversationId={chatId} message={item} hideReactions={true} engine={eng} onUserPress={this.handleUserPress} onGroupPress={this.handleGroupPress} onOrganizationPress={this.handleOrganizationPress} onHashtagPress={this.handleHashtagPress} onDocumentPress={this.handleDocumentPress} onMediaPress={this.handleMediaPress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsPress} onReplyPress={this.handleReplyPress} onReactionsPress={this.handleReactionsPress} onMessagePress={this.handleMessagePress} />;
                 }
             } else if (item.type === 'date') {
                 return <AsyncDateSeparator year={item.year} month={item.month} date={item.date} />;
@@ -274,11 +274,10 @@ export class MobileMessenger {
     }
 
     handleDocumentPress = (message: DataSourceMessageItem) => {
-        let attach = message.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
+        let attach = message.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as (FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string });
         // { config: { uuid, name, size }
         // this.history.navigationManager.push('FilePreview', { config: { uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size } });
-
-        showFileModal({ uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size });
+        showFileModal({ uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size, uri: attach.uri });
     }
 
     handleDialogPress = (id: string) => {

@@ -2,13 +2,12 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Platform } from 'react-native';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 import Picker, { ImageOrVideo } from 'react-native-image-crop-picker';
-import MediaMeta from 'react-native-media-meta';
+import RNThumbnail from 'react-native-thumbnail';
 
 import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
 import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import { FileMeta } from './UploadManager';
-import { VideoMeta } from 'openland-engines/messenger/types';
 import { isVideo } from 'openland-mobile/utils/isVideo';
 
 type PickerMedia = {
@@ -16,22 +15,11 @@ type PickerMedia = {
     name: string,
     path: string,
     size: number,
-    videoMeta?: VideoMeta,
+    duration?: number,
+    previewPath?: string | undefined,
 };
 
-type SourceVideoMeta = {
-    thumb: string;
-    height: number;
-    width: number;
-    duration: string;
-};
-
-const getMediaMeta = async (path: string) => MediaMeta.get(path.replace('file://', ''));
-
-const extractVideoMeta = (meta: SourceVideoMeta): VideoMeta => ({
-    duration: Math.floor(parseFloat(meta.duration) / 1000),
-    preview: { thumbnail: 'data:image/png;base64,' + meta.thumb, width: meta.width, height: meta.height }
-});
+const getMediaThumbnail = async (path: string): Promise<string> => RNThumbnail.get(path.replace('file://', '')).then((x) => x.path);
 
 const normalizeMedia = async (data: ImageOrVideo[]) => {
     let filesMeta = data.reduce((acc, response) => {
@@ -39,16 +27,16 @@ const normalizeMedia = async (data: ImageOrVideo[]) => {
         if (isPhoto) {
             acc.images.push({ type: 'photo', name: 'image.jpg', path: response.path, size: response.size });
         } else {
-            acc.videos.push({ type: 'video', name: 'video.mp4', path: response.path, size: response.size });
-            acc.videosMetas.push(getMediaMeta(response.path));
+            acc.videos.push({ type: 'video', name: 'video.mp4', path: response.path, size: response.size, duration: (response as any).duration });
+            acc.videosPreviews.push(getMediaThumbnail(response.path));
         }
         return acc;
-    }, { images: [] as PickerMedia[], videos: [] as PickerMedia[], videosMetas: [] as Promise<SourceVideoMeta>[] });
+    }, { images: [] as PickerMedia[], videos: [] as PickerMedia[], videosPreviews: [] as Promise<string>[] });
 
     let videos = filesMeta.videos;
-    if (filesMeta.videosMetas.length > 0) {
-        const metas = await Promise.all(filesMeta.videosMetas);
-        videos = videos.map((x, i) => ({ ...x, videoMeta: extractVideoMeta(metas[i]) }));
+    if (filesMeta.videosPreviews.length > 0) {
+        const previews = await Promise.all(filesMeta.videosPreviews);
+        videos = videos.map((x, i) => ({ ...x, previewPath: previews[i] }));
     }
 
     let imagesBatches = filesMeta.images.reduce((acc, image, i) => {
@@ -78,7 +66,7 @@ export const showAttachMenu = (fileCallback?: (
                     mediaType: Platform.select({ ios: 'any', default: 'photo' }),
                 });
                 let isPhoto = checkFileIsPhoto(response.path);
-                const meta = await getMediaMeta(response.path);
+                const preview = await getMediaThumbnail(response.path);
 
                 if (fileCallback) {
                     fileCallback([{
@@ -86,7 +74,7 @@ export const showAttachMenu = (fileCallback?: (
                         name: isPhoto ? 'image.jpg' : 'video.mp4',
                         path: response.path,
                         size: response.size,
-                        ...extractVideoMeta(meta),
+                        previewPath: isPhoto ? undefined : preview,
                     }]);
                 }
             } catch (e) {
@@ -104,14 +92,14 @@ export const showAttachMenu = (fileCallback?: (
                     const response = await Picker.openCamera({
                         mediaType: 'video',
                     });
-                    const meta = await getMediaMeta(response.path);
+                    const preview = await getMediaThumbnail(response.path);
                     if (fileCallback) {
                         fileCallback([{
                             type: 'video',
                             name: 'video.mp4',
                             path: response.path,
                             size: response.size,
-                            ...extractVideoMeta(meta),
+                            previewPath: preview,
                         }]);
                     }
                 } catch (e) {
@@ -197,14 +185,14 @@ export const showAttachMenu = (fileCallback?: (
                 }
                 const isVideoFile = isVideo(response.fileName);
                 if (isVideoFile) {
-                    getMediaMeta(response.uri).then(meta => {
+                    getMediaThumbnail(response.uri).then(preview => {
                         if (fileCallback) {
                             fileCallback([{
                                 type: 'video',
                                 name: response.fileName,
                                 path: response.uri,
                                 size: response.fileSize,
-                                ...extractVideoMeta(meta),
+                                previewPath: preview,
                             }]);
                         }
                     });

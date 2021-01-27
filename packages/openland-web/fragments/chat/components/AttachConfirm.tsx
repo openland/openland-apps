@@ -6,7 +6,7 @@ import { css, cx } from 'linaria';
 import { XModalController } from 'openland-x/showModal';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { UploadCareUploading, isFileImage } from 'openland-web/utils/UploadCareUploading';
-import { LocalImage, VideoMeta } from 'openland-engines/messenger/types';
+import { LocalImage } from 'openland-engines/messenger/types';
 import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
@@ -193,7 +193,7 @@ let Img = React.memo((props: {
             const layout = layoutMedia(image.width || 0, image.height || 0, 392, 392, 32, 32);
             if (ref.current) {
                 ref.current.style.backgroundImage = `url(${reader.result})`;
-                props.onLoad(props.file, { index: props.index, src: (reader.result as string), width: layout.width, height: layout.height });
+                props.onLoad(props.file, { src: (reader.result as string), width: layout.width, height: layout.height });
             }
         };
         reader.onloadend = () => {
@@ -226,15 +226,14 @@ const Body = (props: {
     files: File[];
     addFile: (f: File) => string | File;
     removeFile: (f: File) => void;
-    setVideoMeta: (f: File, m: VideoMeta) => void;
-    onImageLoad: (file: File, img: LocalImage) => void;
+    savePreview: (file: File, img: LocalImage) => void;
     onTextChange: (text: URickTextValue | undefined) => void;
     onFileTypeChange: (hasImages: boolean) => void;
     ctx: XModalController;
     confirm: () => void;
     errorText?: string;
 }) => {
-    let { files, addFile, removeFile, isImage, text, onImageLoad, onTextChange, onFileTypeChange, setVideoMeta } = props;
+    let { files, addFile, removeFile, isImage, text, savePreview, onTextChange, onFileTypeChange } = props;
     let [bodyFiles, setFiles] = React.useState(files);
     let client = useClient();
     let [room, setRoom] = React.useState<RoomPico_room_PrivateRoom | RoomPico_room_SharedRoom | null>(null);
@@ -267,21 +266,23 @@ const Body = (props: {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         ctx?.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-        const canvasImg = canvas.toDataURL("image/png");
-
-        setVideoMeta(file, {
-            preview: {
-                thumbnail: canvasImg,
-                width: video.videoWidth,
-                height: video.videoHeight,
-            },
-            duration: Math.floor(video.duration),
+        canvas.toBlob((blob) => {
+            if (blob) {
+                let previewFile = new File([blob], file.name + '-thumb', { lastModified: file.lastModified, type: blob.type });
+                let localImage: LocalImage = {
+                    src: canvas.toDataURL('image/png'),
+                    width: video.videoWidth,
+                    height: video.videoHeight,
+                    file: new UploadCareUploading(previewFile),
+                };
+                savePreview(file, localImage);
+            }
         });
         video.pause();
     };
     let { documents, imageColumns } = bodyFiles.reduce((acc, f, i, { length }) => {
         if (isImage) {
-            let el = <Img key={f.name + f.size + f.lastModified} file={f} onClick={onClick} index={i} imagesCount={bodyFiles.length} onLoad={onImageLoad} />;
+            let el = <Img key={f.name + f.size + f.lastModified} file={f} onClick={onClick} index={i} imagesCount={bodyFiles.length} onLoad={savePreview} />;
             if (acc.imageColumns.length < 2) {
                 acc.imageColumns.push([el]);
             } else if (i === 2) {
@@ -459,7 +460,7 @@ export const showAttachConfirm = ({
 }: {
     files: File[],
     text: URickTextValue | undefined;
-    onSubmit: (files: { file: UploadCareUploading, localImage?: LocalImage }[], text: string | undefined, mentions: MentionToSend[] | undefined, hasImages: boolean) => void,
+    onSubmit: (files: { file: UploadCareUploading, preview?: LocalImage }[], text: string | undefined, mentions: MentionToSend[] | undefined, hasImages: boolean) => void,
     chatId?: string,
     isImage?: boolean,
     onFileUploadingProgress?: (filename?: string) => void,
@@ -496,9 +497,9 @@ export const showAttachConfirm = ({
         filesRes = filesRes.filter(f => f !== file);
     };
 
-    let imagesPreviews: Map<File, LocalImage> = new Map();
+    let filePreviews: Map<File, LocalImage> = new Map();
     let savePreview = (file: File, img: LocalImage) => {
-        imagesPreviews.set(file, img);
+        filePreviews.set(file, img);
     };
     let messageInfo: { hasImages: boolean, inputValue: URickTextValue | undefined } = { hasImages: false, inputValue: undefined };
     let setInputText = (inputValue: URickTextValue | undefined) => {
@@ -506,12 +507,6 @@ export const showAttachConfirm = ({
     };
     let setHasImages = (hasImages: boolean) => {
         messageInfo.hasImages = hasImages;
-    };
-    let setVideoMeta = (file: File, meta: VideoMeta) => {
-        let f = uploading.find(x => x.getSourceFile() === file);
-        if (f) {
-            f.setVideoMeta(meta);
-        }
     };
     let isUploading = false;
 
@@ -526,8 +521,7 @@ export const showAttachConfirm = ({
                     files={filesRes.slice()}
                     addFile={addUpload}
                     removeFile={removeUpload}
-                    setVideoMeta={setVideoMeta}
-                    onImageLoad={savePreview}
+                    savePreview={savePreview}
                     onTextChange={setInputText}
                     onFileTypeChange={setHasImages}
                     ctx={ctx}
@@ -542,7 +536,7 @@ export const showAttachConfirm = ({
                     return;
                 }
                 isUploading = true;
-                let uploadedFiles = uploading.filter(file => filesRes.includes(file.getSourceFile())).map((u, i) => ({ file: u, localImage: imagesPreviews.get(filesRes[i]) }));
+                let uploadedFiles = uploading.filter(file => filesRes.includes(file.getSourceFile())).map((u, i) => ({ file: u, preview: filePreviews.get(filesRes[i]) }));
                 let { text: messageText, mentions } = messageInfo.inputValue ? extractTextAndMentions(messageInfo.inputValue) : { text: undefined, mentions: undefined };
                 await callback(uploadedFiles, messageText, mentions, isImage === undefined ? messageInfo.hasImages : isImage);
 

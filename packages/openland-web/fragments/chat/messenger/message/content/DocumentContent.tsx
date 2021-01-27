@@ -278,18 +278,22 @@ const videoContainer = css`
     flex-shrink: 0;
     flex-grow: 1;
     opacity: 0;
-    max-width: 552px;
-    min-height: 302px;
-    max-height: 302px;
     padding: 1px;
     position: relative;
     justify-content: center;
     align-items: center;
 `;
 
+const videoContainerSize = css`
+    max-width: 680px;
+    min-height: 302px;
+    max-height: 302px;
+`;
+
 const videoStyle = css`
     border-radius: 8px;
     width: 100%;
+    min-height: 200px;
     object-fit: contain;
     position: relative;
 
@@ -305,31 +309,46 @@ const videoStyle = css`
         pointer-events: none;
     }
 `;
+const minWidth = 252;
+const maxWidth = 680;
+const maxHeight = 360;
+const minHeight = 200;
+const getLayout = (w: number, h: number) => {
+    const layout = layoutMedia(w, h, maxWidth, maxHeight, minWidth, minHeight);
+    const width = Math.max(layout.width, minWidth);
+    const height = Math.max(layout.height, minHeight);
+    return { width, height };
+};
 
 const VideoContent = React.memo(
     (props: {
-        file: { fileId?: string; fileMetadata: { name: string; size: number }; uri?: string };
+        file: {
+            fileId?: string;
+            fileMetadata: { name: string; size: number };
+            previewFileMetadata?: { name: string; imageWidth: number | null; imageHeight: number | null; mimeType: string | null } | null;
+            uri?: string;
+        };
     }) => {
         const videoRef = React.useRef<HTMLVideoElement>(null);
         const wrapperRef = React.useRef<HTMLDivElement>(null);
+        const previewHeight = props.file.previewFileMetadata?.imageHeight;
+        const previewWidth = props.file.previewFileMetadata?.imageWidth;
+        const previewLayout = previewHeight && previewWidth ? getLayout(previewWidth, previewHeight) : undefined;
         const onLoadedMetadata = React.useCallback(() => {
             if (videoRef.current) {
-                const minWidth = 252;
-                const maxWidth = 552;
-                const minMaxHeight = 302;
-                const w = videoRef.current.videoWidth;
-                const h = videoRef.current.videoHeight;
-                const layout = layoutMedia(w, h, maxWidth, minMaxHeight, minWidth, minMaxHeight);
-                const newW = Math.max(layout.width, 200);
-                const newH = Math.max(layout.height, 300);
-                wrapperRef.current!.style.maxWidth = `${newW}px`;
-                wrapperRef.current!.style.maxHeight = `${newH}px`;
+                const { width, height } = getLayout(videoRef.current.videoWidth, videoRef.current.videoHeight);
+                wrapperRef.current!.style.maxWidth = `${width}px`;
+                wrapperRef.current!.style.height = `${height}px`;
                 wrapperRef.current!.style.opacity = '1';
             }
         }, []);
 
         return (
-            <div className={videoContainer} ref={wrapperRef}>
+            <div
+                className={cx(videoContainer, !previewLayout && videoContainerSize)}
+                ref={wrapperRef}
+                style={previewLayout ? { maxWidth: previewLayout.width, height: previewLayout.height } : {}}
+            >
                 <video
                     controls={true}
                     className={videoStyle}
@@ -432,6 +451,7 @@ interface DocumentContentProps {
         fileId?: string;
         fileMetadata: { name: string; size: number; mimeType: string | null };
         uri?: string;
+        previewFileMetadata?: { name: string; imageWidth: number | null; imageHeight: number | null; mimeType: string | null } | null;
     };
     sender?: { name: string };
     senderNameEmojify?: string | JSX.Element;

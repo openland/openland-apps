@@ -150,7 +150,18 @@ internal val MessageAttachmentsSelector = obj(
                         field("imageHeight", "imageHeight", scalar("Int")),
                         field("imageFormat", "imageFormat", scalar("String"))
                     ))),
-                field("filePreview", "filePreview", scalar("String"))
+                field("filePreview", "filePreview", scalar("String")),
+                field("previewFileId", "previewFileId", scalar("String")),
+                field("previewFileMetadata", "previewFileMetadata", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("name", "name", notNull(scalar("String"))),
+                        field("mimeType", "mimeType", scalar("String")),
+                        field("size", "size", notNull(scalar("Int"))),
+                        field("isImage", "isImage", notNull(scalar("Boolean"))),
+                        field("imageWidth", "imageWidth", scalar("Int")),
+                        field("imageHeight", "imageHeight", scalar("Int")),
+                        field("imageFormat", "imageFormat", scalar("String"))
+                    ))
             )),
             inline("MessageRichAttachment", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),

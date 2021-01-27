@@ -899,6 +899,7 @@ type FeedUpdateContainer {
 
 input FileAttachmentInput {
   fileId: String!
+  previewFileId: String
 }
 
 type FileMetadata {
@@ -1367,6 +1368,8 @@ type MessageAttachmentFile implements ModernMessageAttachment {
   fileId: String!
   fileMetadata: FileMetadata!
   filePreview: String
+  previewFileId: String
+  previewFileMetadata: FileMetadata
   fallback: String!
 }
 

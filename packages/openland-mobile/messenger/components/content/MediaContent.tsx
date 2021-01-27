@@ -33,7 +33,7 @@ interface MediaContentProps {
     hasBottomContent: boolean;
 }
 
-export let layoutImage = (fileMetadata?: { imageWidth: number | null, imageHeight: number | null }, maxSize?: number) => {
+export let layoutImage = (fileMetadata?: { imageWidth: number | null, imageHeight: number | null } | null, maxSize?: number) => {
     maxSize = maxSize || Platform.select({
         default: 400,
         ios: Math.min(Dimensions.get('window').width - 120, 400),

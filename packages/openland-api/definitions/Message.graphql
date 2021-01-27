@@ -121,6 +121,16 @@ fragment MessageAttachments on ModernMessageAttachment {
             imageFormat
         }
         filePreview
+        previewFileId
+        previewFileMetadata {
+            name
+            mimeType
+            size
+            isImage
+            imageWidth
+            imageHeight
+            imageFormat
+        }
     }
 
     ... on MessageRichAttachment {

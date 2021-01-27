@@ -39,21 +39,12 @@ export function isServerMessage(message: FullMessage | PendingMessage): message 
     return !!(message as any).__typename;
 }
 
-export interface VideoMeta {
-    preview: {
-        thumbnail: string,
-        width: number,
-        height: number,
-    };
-    duration: number;
-}
 export interface FileMetadata {
     name?: string;
     uri?: string;
     fileSize?: number;
     isImage?: boolean;
     imageSize?: { width: number; height: number };
-    videoMeta?: VideoMeta;
 }
 
 export enum UploadStatus {
@@ -73,5 +64,5 @@ export interface LocalImage {
     src: string | null;
     width: number;
     height: number;
-    index: number;
+    file?: UploadingFile;
 }

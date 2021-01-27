@@ -66,12 +66,12 @@ declare module 'react-native-dialogs' {
     export function prompt(title?: string | null, content?: string | null, options?: { content?: string | null }): Promise<{ action: string, text: string }>
 }
 
-declare module 'react-native-media-meta' {
-    const RNMediaMeta: {
-        get: (path: string) => Promise<{ thumb: string, height: number, width: number, duration: string }>;
+declare module 'react-native-thumbnail' {
+    const RNThumbnail: {
+        get: (path: string) => Promise<{ path: string }>;
     }
 
-    export default RNMediaMeta;
+    export default RNThumbnail;
 }
 
 

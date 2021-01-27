@@ -5,8 +5,8 @@ import Video from 'react-native-video';
 import { LoaderSpinner } from '../LoaderSpinner';
 
 export const ZVideoComponent = React.memo(
-    (props: { uuid: string; name: string; completed: boolean }) => {
-        const { uuid, completed } = props;
+    (props: { uuid: string; name: string; completed: boolean, uri?: string }) => {
+        const { uuid, completed, uri } = props;
         const [path, setPath] = React.useState('');
 
         React.useEffect(() => {
@@ -27,16 +27,16 @@ export const ZVideoComponent = React.memo(
 
         return (
             <View style={{ flexGrow: 1 }}>
-                {path.length > 0 && completed && (
+                {(path.length > 0 && completed || uri) && (
                     <Video
-                        source={{ uri: path }}
+                        source={{ uri: uri || path }}
                         style={{ flexGrow: 1 }}
                         controls={true}
                         playWhenInactive={true}
                         ignoreSilentSwitch="ignore"
                     />
                 )}
-                {(path.length <= 0 || !completed) && (
+                {(path.length <= 0 || !completed) && !uri && (
                     <View style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
                         <LoaderSpinner />
                     </View>
