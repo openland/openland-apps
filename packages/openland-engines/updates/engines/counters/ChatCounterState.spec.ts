@@ -157,7 +157,7 @@ describe('ChatCounterState', () => {
             serverMentions: 0
         });
 
-        state = counterReducer(state, { type: 'server-state', seq: 6, counter: 3, mentions: 0, readSeq: 3 });
+        state = counterReducer(state, { type: 'server-state', seq: 6, counter: 3, mentions: 0, readSeq: 3, lost: false });
         expectToMatch(state, {
             type: 'generic',
             readSeq: 3,
@@ -187,7 +187,7 @@ describe('ChatCounterState', () => {
             serverMentions: 0
         });
 
-        state = counterReducer(state, { type: 'server-state', seq: 6, counter: 1, mentions: 0, readSeq: 5 });
+        state = counterReducer(state, { type: 'server-state', seq: 6, counter: 1, mentions: 0, readSeq: 5, lost: false });
         expectToMatch(state, {
             type: 'generic',
             readSeq: 5,

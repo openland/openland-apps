@@ -26,7 +26,7 @@ export type ChatCounterAction =
     | { type: 'message-add', seq: number, hasMention: boolean }
     | { type: 'message-remove', seq: number }
     | { type: 'message-load', seqs: number[] }
-    | { type: 'server-state', seq: number, readSeq: number, counter: number, mentions: number }
+    | { type: 'server-state', seq: number, readSeq: number, counter: number, mentions: number, lost: boolean }
     | { type: 'read-optimistic', readSeq: number }
     | { type: 'read', readSeq: number }
     ;
@@ -208,21 +208,34 @@ export function counterReducer(src: ChatCounterState, action: ChatCounterAction)
 
         if (action.readSeq > serverReadSeq) {
 
-            // Update optimistic counter
-            if (action.readSeq >= readSeq) {
-                let optimisticRead = serverUnreadMessages.filter((v) => action.readSeq < v && v <= readSeq).length;
-                let optimisticMentionsRead = serverUnreadMentions.filter((v) => action.readSeq < v && v <= readSeq).length;
+            if (action.lost) {
+                // Reset state on lost
                 readSeq = action.readSeq;
-                counter = action.counter - optimisticRead;
-                mentions = action.mentions - optimisticMentionsRead;
-            }
+                serverReadSeq = action.readSeq;
+                counter = action.counter;
+                mentions = action.mentions;
+                serverUnreadMessages = [];
+                serverUnreadMentions = [];
+                serverCounter = action.counter;
+                serverMentions = action.mentions;
+            } else {
 
-            // Update server state
-            serverReadSeq = action.readSeq;
-            serverUnreadMessages = serverUnreadMessages.filter((v) => serverReadSeq < v);
-            serverUnreadMentions = serverUnreadMentions.filter((v) => serverReadSeq < v);
-            serverCounter = action.counter;
-            serverMentions = action.mentions;
+                // Update optimistic counter
+                if (action.readSeq >= readSeq) {
+                    let optimisticRead = serverUnreadMessages.filter((v) => action.readSeq < v && v <= readSeq).length;
+                    let optimisticMentionsRead = serverUnreadMentions.filter((v) => action.readSeq < v && v <= readSeq).length;
+                    readSeq = action.readSeq;
+                    counter = action.counter - optimisticRead;
+                    mentions = action.mentions - optimisticMentionsRead;
+                }
+
+                // Update server state
+                serverReadSeq = action.readSeq;
+                serverUnreadMessages = serverUnreadMessages.filter((v) => serverReadSeq < v);
+                serverUnreadMentions = serverUnreadMentions.filter((v) => serverReadSeq < v);
+                serverCounter = action.counter;
+                serverMentions = action.mentions;
+            }
         }
     }
 

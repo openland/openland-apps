@@ -2,7 +2,7 @@ import { StoredMap } from './storage/StoredMap';
 import { DialogsEngine } from './DialogsEngine';
 import { HistoryTracker, historyTrackerReducer, historyTrackerIsWithinKnown } from './counters/HistoryTracker';
 import { UpdatesEngine } from '../UpdatesEngine';
-import { ChatCounterState, counterReducer } from './counters/ChatCounterState';
+import { ChatCounterState, counterReducer, ChatCounterAction } from './counters/ChatCounterState';
 import { Transaction } from 'openland-engines/persistence/Persistence';
 import { ShortSequenceChat, ShortUpdate } from 'openland-api/spacex.types';
 
@@ -52,8 +52,9 @@ export class CountersEngine {
             }
         } else {
             if (state.topMessage && state.states) {
-                let counters = counterReducer(current.counters, { type: 'server-state', seq: state.topMessage.seq!, readSeq: state.states.readSeq, counter: state.states.counter, mentions: state.states.mentions });
-                console.log('[updates]: counters: reducer ', current.counters, counters);
+                let countersAction: ChatCounterAction = { type: 'server-state', seq: state.topMessage.seq!, readSeq: state.states.readSeq, counter: state.states.counter, mentions: state.states.mentions, lost };
+                let counters = counterReducer(current.counters, countersAction);
+                console.log('[updates]: counters: reducer ', current.counters, countersAction, counters);
                 let history = historyTrackerReducer(current.history, { type: 'reset', seq: state.topMessage.seq!, pts: pts });
                 this.chats.set(tx, state.cid, {
                     ...current,
@@ -81,8 +82,9 @@ export class CountersEngine {
             } else {
                 if (historyTrackerIsWithinKnown(state.history, { from: state.counters.serverReadSeq, to: update.seq })) {
                     console.log('[updates]: chat read: history is within known');
-                    let counters = counterReducer(state.counters, { type: 'read', readSeq: update.seq });
-                    console.log('[updates]: counters: reducer ', state.counters, counters);
+                    let countersAction: ChatCounterAction = { type: 'read', readSeq: update.seq };
+                    let counters = counterReducer(state.counters, countersAction);
+                    console.log('[updates]: counters: reducer ', state.counters, countersAction, counters);
                     this.chats.set(tx, update.cid, { ...state, counters });
                     if (counters.type === 'generic') {
                         await this.dialogs.onCounterUpdate(tx, update.cid, { unread: counters.counter, mentions: counters.mentions });
@@ -104,8 +106,9 @@ export class CountersEngine {
                 } else if (update.message.__typename === 'ServiceMessage') {
                     hasMention = update.message.isMentioned;
                 }
-                let counters = counterReducer(state.counters, { type: 'message-add', seq: update.message.seq!, hasMention });
-                console.log('[updates]: counters: reducer ', state.counters, counters);
+                let countersAction: ChatCounterAction = { type: 'message-add', seq: update.message.seq!, hasMention };
+                let counters = counterReducer(state.counters, countersAction);
+                console.log('[updates]: counters: reducer ', state.counters, countersAction, counters);
                 let history = historyTrackerReducer(state.history, { type: 'update', pts });
                 this.chats.set(tx, update.cid, { ...state, counters, history });
                 if (counters.type === 'generic') {
@@ -116,8 +119,9 @@ export class CountersEngine {
             }
         } else if (update.__typename === 'UpdateChatMessageDeleted') {
             let state = await this.chats.getOrFail(tx, update.cid);
-            let counters = counterReducer(state.counters, { type: 'message-remove', seq: update.seq });
-            console.log('[updates]: counters: reducer ', state.counters, counters);
+            let countersAction: ChatCounterAction = { type: 'message-remove', seq: update.seq };
+            let counters = counterReducer(state.counters, countersAction);
+            console.log('[updates]: counters: reducer ', state.counters, countersAction, counters);
             let history = historyTrackerReducer(state.history, { type: 'update', pts });
             this.chats.set(tx, update.cid, { ...state, counters, history });
             if (counters.type === 'generic') {
