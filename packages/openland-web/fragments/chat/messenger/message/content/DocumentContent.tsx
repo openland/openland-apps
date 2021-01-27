@@ -309,7 +309,7 @@ const videoStyle = css`
         pointer-events: none;
     }
 `;
-const minWidth = 252;
+const minWidth = 204;
 const maxWidth = 680;
 const maxHeight = 360;
 const minHeight = 200;
