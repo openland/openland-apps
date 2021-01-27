@@ -53,6 +53,7 @@ export class CountersEngine {
         } else {
             if (state.topMessage && state.states) {
                 let counters = counterReducer(current.counters, { type: 'server-state', seq: state.topMessage.seq!, readSeq: state.states.readSeq, counter: state.states.counter, mentions: state.states.mentions });
+                console.log('[updates]: counters: reducer ', current.counters, counters);
                 let history = historyTrackerReducer(current.history, { type: 'reset', seq: state.topMessage.seq!, pts: pts });
                 this.chats.set(tx, state.cid, {
                     ...current,
@@ -70,15 +71,18 @@ export class CountersEngine {
 
     async onUpdate(tx: Transaction, pts: number, update: ShortUpdate) {
         if (update.__typename === 'UpdateChatRead') {
-            console.log('[engine] chat read: ' + JSON.stringify(update));
+            console.log('[updates]: chat read: ', update);
             let state = await this.chats.getOrFail(tx, update.cid);
 
             // Invalidate sequence
             if (state.counters.type === 'empty') {
+                console.log('[updates]: chat read: invalidate since empty');
                 await this.updates.chats.invalidate(tx, update.cid);
             } else {
                 if (historyTrackerIsWithinKnown(state.history, { from: state.counters.serverReadSeq, to: update.seq })) {
+                    console.log('[updates]: chat read: history is within known');
                     let counters = counterReducer(state.counters, { type: 'read', readSeq: update.seq });
+                    console.log('[updates]: counters: reducer ', state.counters, counters);
                     this.chats.set(tx, update.cid, { ...state, counters });
                     if (counters.type === 'generic') {
                         await this.dialogs.onCounterUpdate(tx, update.cid, { unread: counters.counter, mentions: counters.mentions });
@@ -86,6 +90,7 @@ export class CountersEngine {
                         await this.dialogs.onCounterUpdate(tx, update.cid, { unread: 0, mentions: 0 });
                     }
                 } else {
+                    console.log('[updates]: chat read: invalidate since outside of known i');
                     await this.updates.chats.invalidate(tx, update.cid);
                 }
             }
@@ -100,6 +105,7 @@ export class CountersEngine {
                     hasMention = update.message.isMentioned;
                 }
                 let counters = counterReducer(state.counters, { type: 'message-add', seq: update.message.seq!, hasMention });
+                console.log('[updates]: counters: reducer ', state.counters, counters);
                 let history = historyTrackerReducer(state.history, { type: 'update', pts });
                 this.chats.set(tx, update.cid, { ...state, counters, history });
                 if (counters.type === 'generic') {
@@ -111,6 +117,7 @@ export class CountersEngine {
         } else if (update.__typename === 'UpdateChatMessageDeleted') {
             let state = await this.chats.getOrFail(tx, update.cid);
             let counters = counterReducer(state.counters, { type: 'message-remove', seq: update.seq });
+            console.log('[updates]: counters: reducer ', state.counters, counters);
             let history = historyTrackerReducer(state.history, { type: 'update', pts });
             this.chats.set(tx, update.cid, { ...state, counters, history });
             if (counters.type === 'generic') {

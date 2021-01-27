@@ -124,5 +124,10 @@ export class CollapsableSequencer<T> {
         if (this._regions.length > 0) {
             this._regions = this._regions.filter((r) => !(r.to <= this._currentPts));
         }
+
+        // Filter old pending
+        if (this._pending.length > 0) {
+            this._pending = this._pending.filter((v) => v.pts > this._currentPts);
+        }
     }
 }

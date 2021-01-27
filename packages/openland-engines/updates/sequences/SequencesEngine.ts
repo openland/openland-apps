@@ -50,7 +50,7 @@ export class SequencesEngine {
 
             // Start sequence
             this.main.start(state, (event) => {
-                console.log('updates: ', event);
+                console.log('[updates]: engine: ', event);
 
                 this.persistence.inTx(async (tx) => {
                     if (event.type === 'inited') {
@@ -132,7 +132,7 @@ export class SequencesEngine {
         (async () => {
             completed = false;
             while (!completed) {
-                console.info('Loading dialogs...');
+                console.info('[updates]: Loading dialogs...');
                 let dstart = Date.now();
                 let dialogs = await next;
                 console.info('Dialogs read in ' + (Date.now() - dstart) + ' ms');
@@ -146,7 +146,7 @@ export class SequencesEngine {
                 await this.persistence.inTx(async (tx) => {
 
                     // Apply sequences
-                    console.info('Apply dialogs...');
+                    console.info('[updates]: Apply dialogs...');
                     await Promise.all(dialogs.syncUserChats.items.map((d) => this.receiveSequence(tx, d.sequence, d.pts)));
 
                     if (dialogs.syncUserChats.cursor) {
@@ -170,7 +170,7 @@ export class SequencesEngine {
             }
 
             // await this.counters.onDialogsLoaded();
-            console.info('Dialogs loaded in ' + (Date.now() - start) + ' ms');
+            console.info('[updates]: Dialogs loaded in ' + (Date.now() - start) + ' ms');
         })();
     }
 
@@ -187,7 +187,7 @@ export class SequencesEngine {
             let loadedUsers = (await backoff(async () => {
                 return await this.client.queryUpdateUsers({ ids: missing }, { fetchPolicy: 'network-only' });
             })).users;
-            console.info('users loaded in ' + (Date.now() - start) + ' ms');
+            console.info('[updates]: users loaded in ' + (Date.now() - start) + ' ms');
             await this.persistence.inTx(async (tx) => {
                 await this.users.persistUsers(tx, loadedUsers.map((u) => ({ id: u.id, name: u.name, firstName: u.firstName, lastName: u.lastName, photo: u.photo })));
             });

@@ -181,6 +181,10 @@ export class SequenceSubscription {
         }
         this._invalidated = true;
 
+        if (LOG) {
+            console.log('[updates]: ' + this.id + ':do invalidate');
+        }
+
         // Stop timer
         this.stopInvalidationTimer();
 
@@ -223,6 +227,11 @@ export class SequenceSubscription {
 
                     // Complete invalidation
                     if (!hasMore) {
+
+                        if (LOG) {
+                            console.log('[updates]: ' + this.id + ':not has more');
+                        }
+
                         this._invalidated = false;
                         await this.updateInvalidatedState(tx);
 
@@ -231,6 +240,11 @@ export class SequenceSubscription {
 
                         // Start invalidation timer if there are some empty updates
                         if (!this._pending.empty) {
+
+                            if (LOG) {
+                                console.log('[updates]: ' + this.id + ':restart invalidation', this._pending);
+                            }
+
                             this.startInvalidationTimer();
                         }
                     }
