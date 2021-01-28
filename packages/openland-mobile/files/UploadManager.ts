@@ -25,7 +25,7 @@ interface Task {
 
 interface Callbacks {
     onProgress: (progress: number) => void;
-    onDone: (fileId: string) => void;
+    onDone: (fileId: string, previewFileId?: string | undefined) => void;
     onFail: () => void;
 }
 
@@ -42,7 +42,7 @@ export class UploadManager {
 
     private _watchers = new Map<string, Watcher<UploadState>>();
     private _queue: Task[] = [];
-    private uploadedFiles = new Map<string, string>();
+    private uploadedFiles = new Map<string, { fileId: string, previewFileId?: string | undefined }>();
 
     watch = (fileKey: string, handler: (state: UploadState) => void) => {
         return this.getWatcher(fileKey).watch(handler);
@@ -64,17 +64,7 @@ export class UploadManager {
             w.setState({ progress: 0, status: UploadStatus.UPLOADING });
             return w;
         });
-        const previews = await Promise.all(
-            filesMeta
-                .filter(x => x.previewPath)
-                .map(x => (
-                    new Promise<{ width: number, height: number, src: string }>((res) => {
-                        const src = x.previewPath!.startsWith('file://') ? x.previewPath! : 'file://' + x.previewPath!;
-                        Image.getSize(x.previewPath!, (width, height) => res({ width, height, src }));
-                    })
-                ))
-        );
-        const uploadingPreviews = previews.map(x => ({ ...x, file: this.uploadFile({ name: 'video-thumb.png', uri: x.src }) }));
+        const uploadingPreviews = await this.uploadPreviews(filesMeta);
         let { filesKeys } = getMessenger().engine.getConversation(conversationId).sendFiles({
             files: newFilesMeta.map(({ name, path, size, previewPath }, i) => {
                 return {
@@ -97,7 +87,7 @@ export class UploadManager {
                         }),
                         watch: (handler: (state: UploadState) => void) => watchers[i].watch(handler),
                     },
-                    preview: uploadingPreviews[0],
+                    preview: uploadingPreviews[i],
                 };
             }),
             quotedMessages: quoted,
@@ -126,6 +116,23 @@ export class UploadManager {
         return filesMeta.map((x, i) => ({ ...x, size: x.size || fallbackSizes[i] as (number | undefined) }));
     }
 
+    uploadPreviews = async (filesMeta: FileMeta[]) => {
+        const previews = await Promise.all(
+            filesMeta
+                .map(x => (
+                    new Promise<{ width: number, height: number, src: string } | undefined>((res) => {
+                        if (!x.previewPath) {
+                            res(undefined);
+                            return;
+                        }
+                        const src = x.previewPath!.startsWith('file://') ? x.previewPath! : 'file://' + x.previewPath!;
+                        Image.getSize(x.previewPath!, (width, height) => res({ width, height, src }));
+                    })
+                ))
+        );
+        return previews.map(x => x && ({ ...x, file: this.uploadFile({ name: 'video-thumb.png', uri: x.src }) }));
+    }
+
     registerUploads = async (filesMeta: FileMeta[], callbacks: Callbacks) => {
         if (!(await checkPermissions('android-storage'))) {
             return;
@@ -144,31 +151,49 @@ export class UploadManager {
             w.setState({ progress: 0, status: UploadStatus.UPLOADING });
             return w;
         });
+        const uploadingPreviews = await this.uploadPreviews(filesMeta);
+
         newFilesMeta.forEach((meta, i) => {
             let key = UUID();
             let w = watchers[i];
-
+            let previewFile = uploadingPreviews[i];
             (async () => {
                 try {
                     if (!this.uploadedFiles.has(key)) {
-                        let res = await new Promise<string>((resolver, reject) => {
-                            w.watch(state => {
-                                if (state.status === UploadStatus.FAILED) {
-                                    reject();
-                                } else if (state.status === UploadStatus.UPLOADING) {
-                                    callbacks.onProgress(state.progress!!);
-                                } else if (state.status === UploadStatus.COMPLETED) {
-                                    resolver(state.uuid!!);
+                        let [fileId, previewFileId] = await Promise.all([
+                            new Promise<string>((resolver, reject) => {
+                                w.watch(state => {
+                                    if (state.status === UploadStatus.FAILED) {
+                                        reject();
+                                    } else if (state.status === UploadStatus.UPLOADING) {
+                                        callbacks.onProgress(state.progress!!);
+                                    } else if (state.status === UploadStatus.COMPLETED) {
+                                        resolver(state.uuid!!);
+                                    }
+                                });
+                            }),
+                            new Promise<string | undefined>((resolver) => {
+                                if (previewFile && previewFile.file) {
+                                    previewFile.file.watch(state => {
+                                        if (state.status === UploadStatus.FAILED) {
+                                            resolver(undefined);
+                                        } else if (state.status === UploadStatus.COMPLETED) {
+                                            resolver(state.uuid!!);
+                                        }
+                                    });
+                                } else {
+                                    resolver(undefined);
                                 }
-                            });
-                        });
-                        this.uploadedFiles.set(key, res);
+
+                            }),
+                        ]);
+                        this.uploadedFiles.set(key, { fileId: fileId!, previewFileId });
                     }
                 } catch (e) {
                     callbacks.onFail();
                 }
 
-                callbacks.onDone(this.uploadedFiles.get(key)!!);
+                callbacks.onDone(this.uploadedFiles.get(key)!!.fileId, this.uploadedFiles.get(key)!!.previewFileId);
             })();
 
             this._watchers.set(key, w);

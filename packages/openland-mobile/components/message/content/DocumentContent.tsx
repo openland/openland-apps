@@ -7,6 +7,8 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ZDocumentExt } from 'openland-mobile/components/file/ZDocumentExt';
 import { isVideo } from 'openland-mobile/utils/isVideo';
+import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
+import { layoutMedia } from 'openland-y-utils/MediaLayout';
 
 interface DocumentContentProps {
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
@@ -16,19 +18,38 @@ interface DocumentContentProps {
 }
 
 export const DocumentContent = React.memo((props: DocumentContentProps) => {
-    const { theme, attach, onDocumentPress } = props;
+    const { theme, attach, maxWidth, onDocumentPress } = props;
     const isFileVideo = isVideo(attach!!.fileMetadata.name);
     const preview = attach?.filePreview;
+    const [path, setPath] = React.useState<string | null>(null);
 
-    if (isFileVideo && preview) {
+    React.useEffect(() => {
+        if (attach && attach.previewFileId) {
+            return DownloadManagerInstance.watch(
+                attach.previewFileId,
+                null,
+                (state) => {
+                    if (state.path) {
+                        setPath('file://' + state.path);
+                    }
+                });
+        }
+        return;
+    }, [attach.previewFileId]);
+    const src = path || preview;
+    const width = attach?.previewFileMetadata?.imageWidth;
+    const height = attach?.previewFileMetadata?.imageHeight;
+
+    if (isFileVideo && src && height && width) {
+        const layout = layoutMedia(width, height, maxWidth, maxWidth);
         return (
-            <TouchableOpacity onPress={() => onDocumentPress(attach)} activeOpacity={0.6}>
+            <TouchableOpacity onPress={() => onDocumentPress(attach)} activeOpacity={0.6} style={{ width: layout.width, height: layout.height, marginBottom: 8 }}>
                 <>
                     <Image
-                        source={{ uri: preview }}
+                        source={{ uri: src }}
                         style={{
-                            width: attach.fileMetadata.imageWidth!,
-                            height: attach.fileMetadata.imageHeight!,
+                            width: layout.width,
+                            height: layout.height,
                             borderRadius: RadiusStyles.Medium,
                         }}
                     />

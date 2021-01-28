@@ -14,6 +14,7 @@ import { DropZone } from 'openland-web/fragments/chat/components/DropZone';
 import { showNoiseWarning } from 'openland-web/fragments/chat/components/NoiseWarning';
 import { extractTextAndMentions } from 'openland-web/utils/convertTextAndMentions';
 import { isFileImage } from 'openland-web/utils/UploadCareUploading';
+import { UploadingFile, UploadStatus } from 'openland-engines/messenger/types';
 
 const wrapperClass = css`
     display: flex;
@@ -30,6 +31,20 @@ const contentClass = css`
     display: flex;
     flex-direction: column;
 `;
+
+type FileId = string | undefined;
+
+const loadFile = (file: UploadingFile) => new Promise<FileId>((resolve) => {
+    file.watch(state => {
+        if (state.uuid) {
+            resolve(state.uuid);
+        }
+
+        if (state.status === UploadStatus.FAILED) {
+            resolve(undefined);
+        }
+    });
+});
 
 interface CommentsWrapperProps {
     peerId: string;
@@ -107,35 +122,33 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                     files,
                     isImage,
                     text: initialText!!,
-                    onSubmit: (res, text, mentions) => new Promise(resolve => {
-                        const uploadedFiles: string[] = [];
-
-                        res.map(({ file }) => {
-                            file.watch((state) => {
-                                if (state.uuid && !uploadedFiles.includes(state.uuid)) {
-                                    uploadedFiles.push(state.uuid);
-                                }
-
-                                if (uploadedFiles.length === res.length) {
-                                    resolve();
-
-                                    client.mutateAddComment({
-                                        peerId,
-                                        repeatKey: UUID(),
-                                        fileAttachments: uploadedFiles.map(f => ({ fileId: f })),
-                                        replyComment: topLevel ? undefined : replyingId,
-                                        message: text,
-                                        spans: text ? findSpans(text) : null,
-                                        mentions: text && mentions ? prepareLegacyMentionsForSend(text, mentions) : null
-                                    });
-
-                                    if (!topLevel) {
-                                        setReplyingId(undefined);
-                                    }
-                                }
-                            });
+                    onSubmit: async (filesToUpload, text, mentions) => {
+                        const fs = (await Promise.all(
+                            filesToUpload.map(({ file, preview }) => new Promise<FileId[]>((resolve) => {
+                                (async () => {
+                                    const ids = await Promise.all([
+                                        loadFile(file),
+                                        preview?.file ? loadFile(preview.file) : undefined,
+                                    ]);
+                                    resolve(ids);
+                                })();
+                            }))
+                        ));
+                        const uploadedFiles = fs.filter(([fileId]) => !!fileId);
+                        client.mutateAddComment({
+                            peerId,
+                            repeatKey: UUID(),
+                            fileAttachments: uploadedFiles.map(([fileId, previewId]) => ({ fileId: fileId!, previewFileId: previewId })),
+                            replyComment: topLevel ? undefined : replyingId,
+                            message: text,
+                            spans: text ? findSpans(text) : null,
+                            mentions: text && mentions ? prepareLegacyMentionsForSend(text, mentions) : null
                         });
-                    }),
+
+                        if (!topLevel) {
+                            setReplyingId(undefined);
+                        }
+                    },
                     onCancel: () => setAttachOpen(false),
                     chatId: groupId
                 });

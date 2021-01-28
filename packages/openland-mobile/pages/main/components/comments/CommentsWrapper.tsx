@@ -154,8 +154,8 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { hasNewStickers: bo
                     onProgress: (progress: number) => {
                         // temp ignore
                     },
-                    onDone: (fileId: string) => {
-                        handleSubmit({ fileId });
+                    onDone: (fileId: string, previewFileId: string | undefined) => {
+                        handleSubmit({ fileId, previewFileId });
                     },
                     onFail: () => {
                         setSending(false);
