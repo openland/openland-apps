@@ -147,20 +147,27 @@ const attachText = (title: string) => (
 );
 
 const MiniImage = React.memo(({
-    src,
-    srcSet,
+    fileId,
+    filePreview,
     isReplyAction,
     senderContent,
     subtitle,
     onReplyClick
 }: {
-    src: string,
-    srcSet?: string,
+    fileId?: string | null,
+    filePreview?: string | null,
     subtitle: string,
     senderContent: JSX.Element,
     isReplyAction?: boolean,
     onReplyClick: (e: React.MouseEvent<HTMLDivElement>) => void,
 }) => {
+    const { src, srcSet } = fileId ? {
+        src: `https://ucarecdn.com/${fileId}/-/format/auto/-/scale_crop/40x40/`,
+        srcSet: `https://ucarecdn.com/${fileId}/-/format/auto/-/scale_crop/80x80/center/ 2x`,
+    } : {
+            src: filePreview || undefined,
+            srcSet: filePreview || undefined,
+        };
     return (
         <div
             className={isReplyAction ? replyBasicStyle : replyMessageGroupClass}
@@ -218,13 +225,10 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
         );
 
     if (imageAttach) {
-        const url = `https://ucarecdn.com/${imageAttach.fileId}/-/format/auto/-/`;
-        const ops = `scale_crop/40x40/`;
-        const opsRetina = `scale_crop/80x80/center/ 2x`;
         return (
             <MiniImage
-                src={url + ops}
-                srcSet={url + opsRetina}
+                fileId={imageAttach.fileId}
+                filePreview={imageAttach.filePreview}
                 senderContent={senderContent}
                 isReplyAction={isReplyAction}
                 subtitle={message.fallback}
@@ -237,7 +241,8 @@ export const ReplyMessage = React.memo((props: ReplyMessageProps) => {
         if (documentAttach.filePreview) {
             return (
                 <MiniImage
-                    src={documentAttach.filePreview}
+                    fileId={documentAttach.previewFileId}
+                    filePreview={documentAttach.filePreview}
                     senderContent={senderContent}
                     isReplyAction={isReplyAction}
                     subtitle={message.fallback}
