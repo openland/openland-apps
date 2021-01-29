@@ -14,7 +14,7 @@ import { DropZone } from 'openland-web/fragments/chat/components/DropZone';
 import { showNoiseWarning } from 'openland-web/fragments/chat/components/NoiseWarning';
 import { extractTextAndMentions } from 'openland-web/utils/convertTextAndMentions';
 import { isFileImage } from 'openland-web/utils/UploadCareUploading';
-import { UploadingFile, UploadStatus } from 'openland-engines/messenger/types';
+import { FileMetadata, UploadingFile, UploadStatus } from 'openland-engines/messenger/types';
 
 const wrapperClass = css`
     display: flex;
@@ -124,21 +124,29 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                     text: initialText!!,
                     onSubmit: async (filesToUpload, text, mentions) => {
                         const fs = (await Promise.all(
-                            filesToUpload.map(({ file, preview }) => new Promise<FileId[]>((resolve) => {
+                            filesToUpload.map(({ file, preview }) => new Promise<[FileId, FileId, FileMetadata]>((resolve) => {
                                 (async () => {
-                                    const ids = await Promise.all([
+                                    const [fileId, previewFileId, info] = await Promise.all([
                                         loadFile(file),
                                         preview?.file ? loadFile(preview.file) : undefined,
+                                        file.fetchInfo()
                                     ]);
-                                    resolve(ids);
+                                    resolve([fileId, previewFileId, info!]);
                                 })();
                             }))
                         ));
                         const uploadedFiles = fs.filter(([fileId]) => !!fileId);
+                        const fileAttachments = uploadedFiles.map(([fileId, previewId, info], i) => {
+                            return {
+                                fileId: fileId!,
+                                previewFileId: previewId,
+                                ...info.duration && { videoMetadata: { duration: info.duration } }
+                            };
+                        });
                         client.mutateAddComment({
                             peerId,
                             repeatKey: UUID(),
-                            fileAttachments: uploadedFiles.map(([fileId, previewId]) => ({ fileId: fileId!, previewFileId: previewId })),
+                            fileAttachments,
                             replyComment: topLevel ? undefined : replyingId,
                             message: text,
                             spans: text ? findSpans(text) : null,

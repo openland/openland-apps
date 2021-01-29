@@ -40778,6 +40778,41 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "videoMetadata",
+            "description": "",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "VideoMetadataInput",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "VideoMetadataInput",
+        "description": "",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "duration",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -49480,6 +49515,33 @@
       },
       {
         "kind": "OBJECT",
+        "name": "VideoMetadata",
+        "description": "",
+        "fields": [
+          {
+            "name": "duration",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "AlphaSignupData",
         "description": "",
         "fields": [
@@ -50861,6 +50923,18 @@
             "type": {
               "kind": "OBJECT",
               "name": "FileMetadata",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "videoMetadata",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "VideoMetadata",
               "ofType": null
             },
             "isDeprecated": false,

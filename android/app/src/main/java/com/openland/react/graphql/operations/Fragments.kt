@@ -161,6 +161,10 @@ internal val MessageAttachmentsSelector = obj(
                         field("imageWidth", "imageWidth", scalar("Int")),
                         field("imageHeight", "imageHeight", scalar("Int")),
                         field("imageFormat", "imageFormat", scalar("String"))
+                    )),
+                field("videoMetadata", "videoMetadata", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("duration", "duration", notNull(scalar("Int")))
                     ))
             )),
             inline("MessageRichAttachment", obj(

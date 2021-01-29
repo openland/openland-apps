@@ -9,6 +9,7 @@ import { ZDocumentExt } from 'openland-mobile/components/file/ZDocumentExt';
 import { isVideo } from 'openland-mobile/utils/isVideo';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
+import { formatDuration } from 'openland-mobile/utils/formatDuration';
 
 interface DocumentContentProps {
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
@@ -39,6 +40,7 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
     const src = path || preview;
     const width = attach?.previewFileMetadata?.imageWidth;
     const height = attach?.previewFileMetadata?.imageHeight;
+    const duration = attach.videoMetadata?.duration;
 
     if (isFileVideo && src && height && width) {
         const layout = layoutMedia(width, height, maxWidth, maxWidth);
@@ -53,20 +55,22 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
                             borderRadius: RadiusStyles.Medium,
                         }}
                     />
-                    {/* <View
-                        style={{
-                            position: 'absolute',
-                            top: 8,
-                            left: 8,
-                            backgroundColor: theme.overlayMedium,
-                            borderRadius: 100,
-                            zIndex: 2,
-                            paddingVertical: 1,
-                            paddingHorizontal: 8,
-                        }}
-                    >
-                        <Text style={{ color: theme.foregroundContrast, ...TextStyles.Caption }}>{attach.duration}</Text>
-                    </View> */}
+                    {duration && (
+                        <View
+                            style={{
+                                position: 'absolute',
+                                top: 8,
+                                left: 8,
+                                backgroundColor: theme.overlayMedium,
+                                borderRadius: 100,
+                                zIndex: 2,
+                                paddingVertical: 1,
+                                paddingHorizontal: 8,
+                            }}
+                        >
+                            <Text style={{ color: theme.foregroundContrast, ...TextStyles.Caption }}>{formatDuration(duration)}</Text>
+                        </View>
+                    )}
                     <View
                         style={{
                             position: 'absolute',

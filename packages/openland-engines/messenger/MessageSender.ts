@@ -40,7 +40,7 @@ type MessageBodyT = {
 
 export class MessageSender {
     private client: OpenlandClient;
-    private uploadedFiles = new Map<string, { id: string, previewFileId: string | undefined }>();
+    private uploadedFiles = new Map<string, { id: string, previewFileId: string | undefined, duration: number | undefined }>();
     private pending = new Map<string, MessageBodyT>();
 
     constructor(client: OpenlandClient) {
@@ -93,13 +93,18 @@ export class MessageSender {
                             }
                         }),
                     ]);
-                    this.uploadedFiles.set(key, { id: id!, previewFileId });
+                    this.uploadedFiles.set(key, { id: id!, previewFileId, duration: info.duration });
                 }
             } catch (e) {
                 callback.onFailed(key);
             }
+            let uploadedFile = this.uploadedFiles.get(key)!!;
             this.doSendMessage({
-                fileAttachments: [{ fileId: this.uploadedFiles.get(key)!!.id, previewFileId: this.uploadedFiles.get(key)!!.previewFileId }],
+                fileAttachments: [{
+                    fileId: uploadedFile.id,
+                    previewFileId: uploadedFile.previewFileId,
+                    ...uploadedFile.duration && { videoMetadata: { duration: uploadedFile.duration } },
+                }],
                 mentions: null,
                 replyMessages: quoted || null,
                 message: null,
@@ -166,15 +171,24 @@ export class MessageSender {
                 ]);
 
                 if (!this.uploadedFiles.has(key)) {
-                    this.uploadedFiles.set(key, { id: id!, previewFileId });
+                    this.uploadedFiles.set(key, { id: id!, previewFileId, duration: info.duration });
                 }
             } catch (e) {
                 callback.onFailed(key);
             }
         });
         Promise.all(promises).then(() => {
+            let fileAttachments = fileIds.map(x => {
+                let f = this.uploadedFiles.get(x)!!;
+
+                return {
+                    fileId: f.id,
+                    previewFileId: f.previewFileId,
+                    ...f.duration && { videoMetadata: { duration: f.duration } },
+                };
+            });
             this.doSendMessage({
-                fileAttachments: fileIds.map(x => ({ fileId: this.uploadedFiles.get(x)!!.id, previewFileId: this.uploadedFiles.get(x)!!.previewFileId })),
+                fileAttachments,
                 mentions: prepareLegacyMentionsForSend(message, mentions || []),
                 replyMessages: quoted || null,
                 message,

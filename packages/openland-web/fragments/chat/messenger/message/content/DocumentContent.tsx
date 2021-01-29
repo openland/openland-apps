@@ -473,8 +473,7 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
 
     if (
         props.inlineVideo &&
-        file.fileMetadata.mimeType &&
-        (!!file.fileMetadata.mimeType.match('video') || fileFormat(name) === 'VIDEO')
+        (!!file.fileMetadata.mimeType?.match('video') || fileFormat(name) === 'VIDEO')
     ) {
         return <VideoContent file={props.file} />;
     }

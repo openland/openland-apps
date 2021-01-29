@@ -677,7 +677,7 @@ export class ConversationEngine implements MessageSendHandler {
                     imageSize: info.imageSize || (preview && { width: preview.width, height: preview.height }),
                     isImage: !!info.isImage,
                     filePreview: preview && preview.src || '',
-                    duration: 0,
+                    duration: info.duration || 0,
                 }],
                 message: null,
                 failed: false,
@@ -737,7 +737,7 @@ export class ConversationEngine implements MessageSendHandler {
                     imageSize: info.imageSize || ((width && height) ? { width, height } : undefined),
                     isImage: !!info.isImage,
                     filePreview: filesToSend[i].preview?.src || '',
-                    duration: 0,
+                    duration: info.duration || 0,
                 };
             });
 
@@ -1131,6 +1131,10 @@ export class ConversationEngine implements MessageSendHandler {
                         isImage: !!fileInfo.isImage,
                         imageWidth: fileInfo.imageSize && fileInfo.imageSize.width || 0,
                         imageHeight: fileInfo.imageSize && fileInfo.imageSize.height || 0,
+                    },
+                    videoMetadata: {
+                        __typename: 'VideoMetadata',
+                        duration: fileInfo.duration || 0,
                     }
                 })) : undefined,
                 reply,

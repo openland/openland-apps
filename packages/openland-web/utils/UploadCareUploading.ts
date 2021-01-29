@@ -8,6 +8,7 @@ export class UploadCareUploading implements UploadingFile {
     private sourceFile: File;
     private infoPromise: Promise<FileMetadata>;
     private origUrl: string;
+    private videoMetadata?: { duration: number };
     constructor(file: File) {
         this.file = UploadCare.fileFrom('object', file);
         this.sourceFile = file;
@@ -51,8 +52,13 @@ export class UploadCareUploading implements UploadingFile {
         return this.sourceFile;
     }
 
-    fetchInfo() {
-        return this.infoPromise;
+    async fetchInfo() {
+        const info = await this.infoPromise;
+        return this.videoMetadata ? { ...info, duration: this.videoMetadata.duration } : info;
+    }
+
+    setVideoMetadata(data: { duration: number }) {
+        this.videoMetadata = data;
     }
 
     watch(handler: (state: { status: UploadStatus; progress?: number; uuid?: string }) => void) {

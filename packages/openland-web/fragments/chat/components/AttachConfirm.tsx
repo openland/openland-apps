@@ -227,13 +227,14 @@ const Body = (props: {
     addFile: (f: File) => string | File;
     removeFile: (f: File) => void;
     savePreview: (file: File, img: LocalImage) => void;
+    saveDuration: (file: File, duraiton: number) => void;
     onTextChange: (text: URickTextValue | undefined) => void;
     onFileTypeChange: (hasImages: boolean) => void;
     ctx: XModalController;
     confirm: () => void;
     errorText?: string;
 }) => {
-    let { files, addFile, removeFile, isImage, text, savePreview, onTextChange, onFileTypeChange } = props;
+    let { files, addFile, removeFile, isImage, text, savePreview, saveDuration, onTextChange, onFileTypeChange } = props;
     let [bodyFiles, setFiles] = React.useState(files);
     let client = useClient();
     let [room, setRoom] = React.useState<RoomPico_room_PrivateRoom | RoomPico_room_SharedRoom | null>(null);
@@ -276,6 +277,7 @@ const Body = (props: {
                     file: new UploadCareUploading(previewFile),
                 };
                 savePreview(file, localImage);
+                saveDuration(file, Math.floor(video.duration * 1000));
             }
         });
         video.pause();
@@ -304,6 +306,7 @@ const Body = (props: {
                     <DocumentContent
                         className={docStyle}
                         file={{ fileMetadata: { name: f.name, size: f.size, mimeType: null } }}
+                    // inlineVideo={true}
                     />
 
                     {isVideo && (
@@ -501,6 +504,12 @@ export const showAttachConfirm = ({
     let savePreview = (file: File, img: LocalImage) => {
         filePreviews.set(file, img);
     };
+    let saveDuration = (file: File, duration: number) => {
+        let uploadingFile = uploading.find(f => f.getSourceFile() === file);
+        if (uploadingFile) {
+            uploadingFile.setVideoMetadata({ duration });
+        }
+    };
     let messageInfo: { hasImages: boolean, inputValue: URickTextValue | undefined } = { hasImages: false, inputValue: undefined };
     let setInputText = (inputValue: URickTextValue | undefined) => {
         messageInfo.inputValue = inputValue;
@@ -522,6 +531,7 @@ export const showAttachConfirm = ({
                     addFile={addUpload}
                     removeFile={removeUpload}
                     savePreview={savePreview}
+                    saveDuration={saveDuration}
                     onTextChange={setInputText}
                     onFileTypeChange={setHasImages}
                     ctx={ctx}

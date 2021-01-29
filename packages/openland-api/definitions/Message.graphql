@@ -131,6 +131,9 @@ fragment MessageAttachments on ModernMessageAttachment {
             imageHeight
             imageFormat
         }
+        videoMetadata {
+            duration
+        }
     }
 
     ... on MessageRichAttachment {

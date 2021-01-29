@@ -154,8 +154,8 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { hasNewStickers: bo
                     onProgress: (progress: number) => {
                         // temp ignore
                     },
-                    onDone: (fileId: string, previewFileId: string | undefined) => {
-                        handleSubmit({ fileId, previewFileId });
+                    onDone: (fileId: string, { previewFileId, duration }: { previewFileId: string | undefined, duration: number | undefined }) => {
+                        handleSubmit({ fileId, previewFileId, ...duration && { videoMetadata: { duration } } });
                     },
                     onFail: () => {
                         setSending(false);

@@ -45,6 +45,7 @@ export interface FileMetadata {
     fileSize?: number;
     isImage?: boolean;
     imageSize?: { width: number; height: number };
+    duration?: number | undefined;
 }
 
 export enum UploadStatus {

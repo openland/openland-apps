@@ -17,6 +17,7 @@ import { contentInsetsHorizontal, contentInsetsBottom, contentInsetsTop } from '
 import { AsyncBubbleMediaView } from '../AsyncBubbleMediaView';
 import { TextStylesAsync } from 'openland-mobile/styles/AppStyles';
 import { Platform } from 'react-native';
+import { formatDuration } from 'openland-mobile/utils/formatDuration';
 
 const IMAGE_MIN_SIZE = 120;
 interface DocumentContentProps {
@@ -167,7 +168,6 @@ export const DocumentContentPreview = React.memo((props: DocumentContentPreviewP
         onDocumentPress
     } = props;
 
-    let duration = attach.duration;
     let viewWidth = layout ? Math.max(layout.width, IMAGE_MIN_SIZE) : undefined;
     let viewHeight = layout ? Math.max(layout.height, IMAGE_MIN_SIZE) : undefined;
     let handlePress = React.useCallback(() => {
@@ -175,6 +175,8 @@ export const DocumentContentPreview = React.memo((props: DocumentContentPreviewP
     }, []);
     const [path, setPath] = React.useState<string | undefined>();
     let src = path || attach.filePreview;
+    let duration = attach.videoMetadata?.duration;
+
     React.useEffect(() => {
         if (attach && attach.previewFileId) {
             return DownloadManagerInstance.watch(
@@ -237,7 +239,7 @@ export const DocumentContentPreview = React.memo((props: DocumentContentPreviewP
                                         color={theme.foregroundContrast}
                                         {...TextStylesAsync.Caption}
                                     >
-                                        {duration}
+                                        {formatDuration(duration)}
                                     </ASText>
                                 </ASFlex>
                             )}

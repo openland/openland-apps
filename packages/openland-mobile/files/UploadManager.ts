@@ -25,7 +25,7 @@ interface Task {
 
 interface Callbacks {
     onProgress: (progress: number) => void;
-    onDone: (fileId: string, previewFileId?: string | undefined) => void;
+    onDone: (fileId: string, meta: { previewFileId?: string | undefined, duration?: number | undefined }) => void;
     onFail: () => void;
 }
 
@@ -34,6 +34,7 @@ export type FileMeta = {
     path: string;
     size?: number;
     previewPath?: string | undefined;
+    duration?: number | undefined;
 };
 
 const MAX_FILE_SIZE = 1e+8;
@@ -42,7 +43,7 @@ export class UploadManager {
 
     private _watchers = new Map<string, Watcher<UploadState>>();
     private _queue: Task[] = [];
-    private uploadedFiles = new Map<string, { fileId: string, previewFileId?: string | undefined }>();
+    private uploadedFiles = new Map<string, { fileId: string, previewFileId?: string | undefined, duration: number | undefined }>();
 
     watch = (fileKey: string, handler: (state: UploadState) => void) => {
         return this.getWatcher(fileKey).watch(handler);
@@ -66,7 +67,7 @@ export class UploadManager {
         });
         const uploadingPreviews = await this.uploadPreviews(filesMeta);
         let { filesKeys } = getMessenger().engine.getConversation(conversationId).sendFiles({
-            files: newFilesMeta.map(({ name, path, size, previewPath }, i) => {
+            files: newFilesMeta.map(({ name, path, size, previewPath, duration }, i) => {
                 return {
                     file: {
                         fetchInfo: () => new Promise(async (resolver, onError) => {
@@ -83,7 +84,7 @@ export class UploadManager {
                                     Image.getSize(previewPath, (width, height) => res({ width, height }), () => res({ width: 0, height: 0 }));
                                 });
                             }
-                            resolver({ name, uri: path, fileSize: size, isImage, imageSize });
+                            resolver({ name, uri: path, fileSize: size, isImage, imageSize, duration });
                         }),
                         watch: (handler: (state: UploadState) => void) => watchers[i].watch(handler),
                     },
@@ -110,7 +111,7 @@ export class UploadManager {
         this.checkQueue();
     }
 
-    prepareMeta = async (filesMeta: FileMeta[]) => {
+    prepareMeta = async (filesMeta: FileMeta[]): Promise<FileMeta[]> => {
         let fallbackSizes = await Promise.all(filesMeta.map(({ size, path }) => size === undefined ? RNFetchBlob.fs.stat(path.replace('file://', '')) : undefined));
 
         return filesMeta.map((x, i) => ({ ...x, size: x.size || fallbackSizes[i] as (number | undefined) }));
@@ -187,13 +188,19 @@ export class UploadManager {
 
                             }),
                         ]);
-                        this.uploadedFiles.set(key, { fileId: fileId!, previewFileId });
+                        this.uploadedFiles.set(key, { fileId: fileId!, previewFileId, duration: meta.duration });
                     }
                 } catch (e) {
                     callbacks.onFail();
                 }
 
-                callbacks.onDone(this.uploadedFiles.get(key)!!.fileId, this.uploadedFiles.get(key)!!.previewFileId);
+                callbacks.onDone(
+                    this.uploadedFiles.get(key)!!.fileId,
+                    {
+                        previewFileId: this.uploadedFiles.get(key)!!.previewFileId,
+                        duration: this.uploadedFiles.get(key)!!.duration,
+                    }
+                );
             })();
 
             this._watchers.set(key, w);

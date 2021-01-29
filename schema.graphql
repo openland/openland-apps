@@ -900,6 +900,7 @@ type FeedUpdateContainer {
 input FileAttachmentInput {
   fileId: String!
   previewFileId: String
+  videoMetadata: VideoMetadataInput
 }
 
 type FileMetadata {
@@ -1370,6 +1371,7 @@ type MessageAttachmentFile implements ModernMessageAttachment {
   filePreview: String
   previewFileId: String
   previewFileMetadata: FileMetadata
+  videoMetadata: VideoMetadata
   fallback: String!
 }
 
@@ -3675,6 +3677,14 @@ type UserStickers {
   unviewedCount: Int!
   packs: [StickerPack!]!
   favorites: [Sticker!]!
+}
+
+type VideoMetadata {
+  duration: Int!
+}
+
+input VideoMetadataInput {
+  duration: Int!
 }
 
 enum VideoSource {
