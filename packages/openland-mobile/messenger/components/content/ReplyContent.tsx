@@ -34,15 +34,15 @@ export const shiftReplyMeta = (message: DataSourceMessageItem, isForward: boolea
         return false;
     }
     let attachFile = getAttachFile(lastReply);
-    let isImage = attachFile && attachFile.fileMetadata.isImage;
     let isMessageImage = !!getAttachFile(message)?.fileMetadata.isImage;
     let isSticker = !!lastReply.sticker;
     let isRichAttach = !!getAttachRich(lastReply);
     let isPurchaseAttach = getAttachPurchase(lastReply);
 
-    return isForward && (isImage || isSticker)
+    return (isForward && isSticker)
         || !isForward && !message.text && (isRichAttach && !isMessageImage || isSticker)
-        || (isPurchaseAttach && isForward);
+        || (isPurchaseAttach && isForward)
+        || (isForward && attachFile);
 };
 
 interface ReplyContentProps {
@@ -119,7 +119,8 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                             const sticker = m.sticker && m.sticker.__typename === 'ImageSticker' ? m.sticker : undefined;
                             const attachPurchase = getAttachPurchase(repliedMessage);
                             const imageFiles = attachFiles?.filter(x => x.fileMetadata.isImage);
-                            const videoFiles = attachFiles?.filter(x => isVideo(x.fileMetadata.name) && x.filePreview);
+                            const videoFiles = attachFiles?.filter(x => isVideo(x.fileMetadata.name) && (x.filePreview || x.previewFileId));
+                            let hasVideoFiles = videoFiles && videoFiles.length > 0;
                             let miniContent = null;
                             let miniContentSubtitle = null;
                             let miniContentColor = bubbleForegroundSecondary;
@@ -137,17 +138,17 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                     />
                                 );
                                 miniContentSubtitle = repliedMessage.fallback;
-                            } else if (videoFiles && videoFiles.length > 0 && !isForward) {
+                            } else if (hasVideoFiles && !isForward) {
                                 miniContent = (
                                     <AsyncReplyMessageMediaView
-                                        attachments={videoFiles}
+                                        attachments={videoFiles!}
                                         onPress={() => this.props.onDocumentPress(repliedMessage)}
                                         message={repliedMessage}
                                         theme={theme}
                                     />
                                 );
                                 miniContentSubtitle = repliedMessage.fallback;
-                            } else if (attachFiles && attachFiles.some(x => !x.fileMetadata.isImage)) {
+                            } else if (!hasVideoFiles && attachFiles && attachFiles.some(x => !x.fileMetadata.isImage)) {
                                 miniContent = (
                                     <AsyncReplyMessageDocumentView
                                         attach={attachFiles[0]}
@@ -238,9 +239,9 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                             isForward={true}
                                         />
                                     )}
-                                    {videoFiles && videoFiles?.length > 0 && isForward && (
+                                    {hasVideoFiles && isForward && (
                                         <AsyncReplyMessageMediaView
-                                            attachments={videoFiles}
+                                            attachments={videoFiles!}
                                             onPress={() => this.props.onDocumentPress(repliedMessage)}
                                             message={repliedMessage}
                                             theme={theme}

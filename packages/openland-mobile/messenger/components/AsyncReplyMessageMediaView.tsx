@@ -36,18 +36,25 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
         if (!attach) {
             return;
         }
-        let state = this.state.downloadStates[attach.fileId];
+        let state = this.state.downloadStates[attach.previewFileId || attach.fileId];
+        let w = attach.previewFileMetadata?.imageWidth || attach.fileMetadata.imageWidth;
+        let h = attach.previewFileMetadata?.imageHeight || attach.fileMetadata.imageHeight;
         // Ignore clicks for not-downloaded files
-        if (state && state.path && attach.fileMetadata.imageHeight && attach.fileMetadata.imageWidth) {
-            let w = attach.fileMetadata.imageWidth;
-            let h = attach.fileMetadata.imageHeight;
+        if (state && state.path && w && h) {
             this.props.onPress({ imageHeight: h, imageWidth: w }, { path: state.path, ...event }, radius, this.props.message.sender.name, this.props.message.date);
         }
     }
 
     componentWillMount() {
         this.props.attachments.forEach(attach => {
-            if (attach.filePreview && isVideo(attach.fileMetadata.name)) {
+            if (isVideo(attach.fileMetadata.name) && attach.previewFileId) {
+                let size = attach.previewFileMetadata ?
+                    layoutMedia(attach.previewFileMetadata.imageWidth || 0, attach.previewFileMetadata.imageHeight || 0, 1024, 1024)
+                    : null;
+
+                this.downloadManagerWatch = DownloadManagerInstance.watch(attach.previewFileId!, size, (state) => {
+                    this.setState(prev => ({ downloadStates: { ...prev.downloadStates, [attach.previewFileId!]: state } }));
+                });
                 return;
             }
             let optimalSize = layoutMedia(attach.fileMetadata.imageWidth || 0, attach.fileMetadata.imageHeight || 0, 1024, 1024);
@@ -84,8 +91,7 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
             >
                 {attachments.map((attach, i) => {
                     let layout = isForward ? layoutMedia(attach!!.fileMetadata.imageWidth || 0, attach!!.fileMetadata.imageHeight || 0, 160, 160) : { width: 40, height: 40 };
-                    let state = this.state.downloadStates[attach.fileId];
-                    let videoPreview = attach.filePreview && isVideo(attach.fileMetadata.name) ? attach.filePreview : undefined;
+                    let state = this.state.downloadStates[attach.previewFileId || attach.fileId];
                     let sourceUri = state && state.path ? ('file://' + state.path) : undefined;
                     let sizes = { width: layout.width, height: layout.height };
 
@@ -100,7 +106,7 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
                         >
                             <ASImage
                                 onPress={(e) => this.handlePress(e, attach.fileId, 8)}
-                                source={{ uri: videoPreview || sourceUri }}
+                                source={{ uri: sourceUri || attach.filePreview }}
                                 borderRadius={8}
                                 backgroundColor={bgColor}
                                 isGif={attach!!.fileMetadata.imageFormat === 'GIF'}

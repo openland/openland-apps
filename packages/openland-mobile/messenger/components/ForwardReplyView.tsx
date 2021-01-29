@@ -60,11 +60,11 @@ export const ForwardReplyView = (props: ForwardReplyViewProps) => {
                     isGif: attach.fileMetadata.mimeType === 'gif',
                 };
             } else {
-                if (attach.filePreview) {
+                if (attach.previewFileId) {
                     image = {
-                        id: attach.fileId,
-                        width: attach.fileMetadata.imageWidth || undefined,
-                        height: attach.fileMetadata.imageHeight || undefined,
+                        id: attach.previewFileId,
+                        width: undefined,
+                        height: undefined,
                         isGif: false,
                     };
                     text = message.fallback;
@@ -103,21 +103,28 @@ export const ForwardReplyView = (props: ForwardReplyViewProps) => {
         }
 
         if (image) {
+            let renderedImage = (
+                <Image
+                    source={{ uri: imageState?.path }}
+                    style={{ width: 40, height: 40, borderRadius: 8, backgroundColor: theme.backgroundTertiaryTrans }}
+                />
+            );
             leftElement = imageState?.path ? (
-                <PreviewWrapper
-                    path={imageState?.path}
-                    width={image.width}
-                    height={image.height}
-                    isGif={image.isGif}
-                    senderName={message.sender.name}
-                    date={message.date}
-                    radius={8}
-                >
-                    <Image
-                        source={{ uri: imageState.path }}
-                        style={{ width: 40, height: 40, borderRadius: 8, backgroundColor: theme.backgroundTertiaryTrans }}
-                    />
-                </PreviewWrapper>
+                image.width && image.height ? (
+                    <PreviewWrapper
+                        path={imageState?.path}
+                        width={image.width}
+                        height={image.height}
+                        isGif={image.isGif}
+                        senderName={message.sender.name}
+                        date={message.date}
+                        radius={8}
+                    >
+                        {renderedImage}
+                    </PreviewWrapper>
+                ) : (
+                        renderedImage
+                    )
             ) : (
                     <View style={{ width: 40, height: 40, borderRadius: 8, backgroundColor: theme.backgroundTertiaryTrans }} />
                 );
