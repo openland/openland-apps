@@ -58,7 +58,7 @@ const modalInfoContainer = css`
 `;
 
 const modalSecondaryText = css`
-    color: var(--backgroundPrimary);
+    color: var(--foregroundContrast);
     margin-right: 12px;
 `;
 
@@ -125,7 +125,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void; url?: s
                 )}
                 <div className={modalButtonsContainer} onClick={(e) => e.stopPropagation()}>
                     <a className={modalButtonStyle} href={`https://ucarecdn.com/${props.fileId}/`}>
-                        <UIcon icon={<IcDownloadModal />} color="var(--backgroundPrimary)" />
+                        <UIcon icon={<IcDownloadModal />} color="var(--foregroundContrast)" />
                     </a>
                     <div
                         className={modalButtonStyle}
@@ -134,10 +134,10 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void; url?: s
                             forwardCallback();
                         }}
                     >
-                        <UIcon icon={<IcForward />} color="var(--backgroundPrimary)" />
+                        <UIcon icon={<IcForward />} color="var(--foregroundContrast)" />
                     </div>
                     <div className={modalButtonStyle} onClick={props.hide}>
-                        <UIcon icon={<IcClose />} color="var(--backgroundPrimary)" />
+                        <UIcon icon={<IcClose />} color="var(--foregroundContrast)" />
                     </div>
                 </div>
             </div>
