@@ -19,7 +19,6 @@ import IcRed from 'openland-icons/files/red.svg';
 import IcViolet from 'openland-icons/files/violet.svg';
 import IcYellow from 'openland-icons/files/yellow.svg';
 import { isElectron } from 'openland-y-utils/isElectron';
-import { electronBus } from 'openland-web/utils/electronBus';
 import { MediaLoader } from './MediaLoader';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 
@@ -110,16 +109,6 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void; url?: s
             messenger.sender.shareFile(id, props.fileId);
         });
     }, []);
-
-    React.useEffect(() => {
-        return electronBus('download-complete', (e, arg) => {
-            if (arg === props.url) {
-                setTimeout(() => {
-                    props.hide();
-                }, 1000);
-            }
-        });
-    });
 
     return (
         <div className={modalContainer} onClick={props.hide}>
@@ -485,7 +474,7 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
             props.onClick(ev);
         } else {
             ev.stopPropagation();
-            if (applyShowPdfModal) {
+            if (applyShowPdfModal && !isElectron) {
                 showPdfModal(
                     {
                         fileId: file.fileId || '',
@@ -536,7 +525,7 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
                     ) : (
                             <div className={cx(iconInfo, 'icon-info')}>
                                 <UIcon
-                                    icon={applyShowPdfModal ? <IcSearch /> : <IcDownload />}
+                                    icon={applyShowPdfModal && !isElectron ? <IcSearch /> : <IcDownload />}
                                     color="#fff"
                                     size={16}
                                     className="download-icon"
