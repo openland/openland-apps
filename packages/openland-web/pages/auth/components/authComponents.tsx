@@ -7,6 +7,9 @@ import { UButton, UButtonProps } from 'openland-web/components/unicorn/UButton';
 import { UInput, UInputProps } from 'openland-web/components/unicorn/UInput';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import { UToast, UToastProps } from 'openland-web/components/unicorn/UToast';
+import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
+
+import BackIcon from 'openland-icons/s/ic-back-24.svg';
 
 const wrapperClassName = css`
     display: flex;
@@ -164,12 +167,21 @@ export const AuthInput = React.forwardRef(
     },
 );
 
-export const FormLayout = (props: { children: any } & XViewProps) => {
+export const FormLayout = (props: { children: any, onBackClick?: () => void } & XViewProps) => {
     const isMobile = useIsMobile();
-    const { children, ...other } = props;
+    const { children, onBackClick, ...other } = props;
 
     return (
         <XView justifyContent="center" alignItems="center" flexGrow={1} minWidth={320} {...other}>
+            {onBackClick && (
+                <UIconButton
+                    position="absolute"
+                    top={10}
+                    left={10}
+                    icon={<BackIcon />}
+                    onClick={onBackClick}
+                />
+            )}
             <XView
                 alignItems={isMobile ? 'stretch' : 'center'}
                 width="100%"

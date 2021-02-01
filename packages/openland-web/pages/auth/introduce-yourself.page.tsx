@@ -153,8 +153,13 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
         }
     }, [shakeClassName]);
 
+    const onBackClick = React.useCallback(async () => {
+        client.mutateOnLogout().catch(e => console.error(e));
+        window.location.href = '/';
+    }, [client]);
+
     return (
-        <FormLayout>
+        <FormLayout onBackClick={onBackClick}>
             <Title text="New account" />
             <Subtitle text="Introduce yourself" maxWidth={isMobile ? 230 : undefined} />
             <XView marginTop={32} marginBottom={16} alignSelf="center">
