@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { XLoader } from 'openland-x/XLoader';
 import { showModalBox } from 'openland-x/showModalBox';
 import { formatBytes } from 'openland-y-utils/formatBytes';
 import { formatDateTime } from 'openland-y-utils/formatTime';
