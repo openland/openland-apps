@@ -142,16 +142,12 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void; url?: s
                 </div>
             </div>
             <div className={modalContent} onClick={(e) => e.stopPropagation()}>
-                {isElectron ? (
-                    <XLoader loading={true} transparentBackground={true} contrast={true} />
-                ) : (
-                        <embed
-                            src={`https://ucarecdn.com/${props.fileId}/-/inline/yes/${props.fileName}`}
-                            width="100%"
-                            height="100%"
-                            type="application/pdf"
-                        />
-                    )}
+                <embed
+                    src={`https://ucarecdn.com/${props.fileId}/-/inline/yes/${props.fileName}`}
+                    width="100%"
+                    height="100%"
+                    type="application/pdf"
+                />
             </div>
         </div>
     );
