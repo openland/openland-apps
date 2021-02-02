@@ -12,7 +12,7 @@ export class UploadCareUploading implements UploadingFile {
     constructor(file: File) {
         this.file = UploadCare.fileFrom('object', file);
         this.sourceFile = file;
-        this.origUrl = file.name;
+        this.origUrl = URL.createObjectURL(file);
         let isFirst = true;
         let resolved = false;
         this.infoPromise = new Promise((resolver, reject) => {

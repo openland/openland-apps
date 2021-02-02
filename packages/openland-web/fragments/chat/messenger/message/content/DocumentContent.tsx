@@ -294,53 +294,71 @@ const videoStyle = css`
     }
 `;
 const minWidth = 204;
-const maxWidth = 680;
-const maxHeight = 360;
 const minHeight = 200;
-const getLayout = (w: number, h: number) => {
-    const layout = layoutMedia(w, h, maxWidth, maxHeight, minWidth, minHeight);
+const getLayout = (w: number, h: number, maxW: number = 680, maxH: number = 360) => {
+    const layout = layoutMedia(w, h, maxW, maxH, minWidth, minHeight);
     const width = Math.max(layout.width, minWidth);
     const height = Math.max(layout.height, minHeight);
     return { width, height };
 };
+
+type VideoProps = React.VideoHTMLAttributes<HTMLVideoElement> & { src?: string, maxWidth?: number, maxHeight?: number };
 
 const VideoContent = React.memo(
     (props: {
         file: {
             fileId?: string;
             fileMetadata: { name: string; size: number };
-            previewFileMetadata?: { name: string; imageWidth: number | null; imageHeight: number | null; mimeType: string | null } | null;
             uri?: string;
+            previewFileId?: string | null;
+            previewFileMetadata?: { name: string; imageWidth: number | null; imageHeight: number | null; mimeType: string | null } | null;
+            filePreview?: string;
         };
+        videoProps?: VideoProps;
     }) => {
+        const { src, onClick, onLoadedMetadata, maxWidth, maxHeight, ...otherVideoProps } = props.videoProps || {};
         const videoRef = React.useRef<HTMLVideoElement>(null);
         const wrapperRef = React.useRef<HTMLDivElement>(null);
         const previewHeight = props.file.previewFileMetadata?.imageHeight;
         const previewWidth = props.file.previewFileMetadata?.imageWidth;
-        const previewLayout = previewHeight && previewWidth ? getLayout(previewWidth, previewHeight) : undefined;
-        const onLoadedMetadata = React.useCallback(() => {
+        const previewLayout = previewHeight && previewWidth
+            ? getLayout(previewWidth, previewHeight, maxWidth, maxHeight)
+            : undefined;
+        const videoSrc = props.file.fileId ? `https://ucarecdn.com/${props.file.fileId}/` : (props.file.uri || src);
+
+        const handleLoadedMetadata = React.useCallback((e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
             if (videoRef.current) {
-                const { width, height } = getLayout(videoRef.current.videoWidth, videoRef.current.videoHeight);
+                const { width, height } = getLayout(videoRef.current.videoWidth, videoRef.current.videoHeight, maxWidth, maxHeight);
                 wrapperRef.current!.style.maxWidth = `${width}px`;
                 wrapperRef.current!.style.height = `${height}px`;
                 wrapperRef.current!.style.opacity = '1';
+            }
+            if (onLoadedMetadata) {
+                onLoadedMetadata(e);
+            }
+        }, []);
+        const handleClick = React.useCallback((e: React.MouseEvent<HTMLVideoElement>) => {
+            e.stopPropagation();
+            if (onClick) {
+                onClick(e);
             }
         }, []);
 
         return (
             <div
-                className={cx(videoContainer, !previewLayout && videoContainerSize)}
+                className={cx(videoContainer, !previewLayout && !maxWidth && !maxHeight && videoContainerSize)}
                 ref={wrapperRef}
                 style={previewLayout ? { maxWidth: previewLayout.width, height: previewLayout.height } : {}}
             >
                 <video
+                    {...otherVideoProps}
                     controls={true}
                     className={videoStyle}
                     ref={videoRef}
-                    onClick={(e) => e.stopPropagation()}
-                    onLoadedMetadata={onLoadedMetadata}
+                    onClick={handleClick}
+                    onLoadedMetadata={handleLoadedMetadata}
                 >
-                    <source src={`https://ucarecdn.com/${props.file.fileId}/`} type="video/mp4" />
+                    <source src={videoSrc} type="video/mp4" />
                 </video>
             </div>
         );
@@ -444,10 +462,11 @@ interface DocumentContentProps {
     progress?: number;
     className?: string;
     inlineVideo?: boolean;
+    videoProps?: VideoProps;
 }
 
 export const DocumentContent = React.memo((props: DocumentContentProps) => {
-    const { file, progress } = props;
+    const { file, progress, videoProps } = props;
     const { name, size } = file.fileMetadata;
     const isSafari = (window as any).safari !== undefined;
 
@@ -459,17 +478,18 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
         props.inlineVideo &&
         (!!file.fileMetadata.mimeType?.match('video') || fileFormat(name) === 'VIDEO')
     ) {
-        return <VideoContent file={props.file} />;
+        return <VideoContent file={props.file} videoProps={videoProps} />;
     }
 
     let fileSrc: undefined | string = `https://ucarecdn.com/${file.fileId}/`;
+    const isUpload = !!progress && (progress >= 0 && progress < 1);
 
     const onClick = React.useCallback((ev: React.MouseEvent) => {
         if (props.onClick) {
             props.onClick(ev);
         } else {
             ev.stopPropagation();
-            if (applyShowPdfModal && !isElectron) {
+            if (applyShowPdfModal && !isElectron && !isUpload) {
                 showPdfModal(
                     {
                         fileId: file.fileId || '',
@@ -482,7 +502,7 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
                 );
             }
         }
-    }, []);
+    }, [applyShowPdfModal, isUpload]);
 
     if (applyShowPdfModal && !isElectron) {
         fileSrc = undefined;
@@ -494,7 +514,6 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
             ? props.sender.name
             : '';
 
-    const isUpload = !!progress && (progress >= 0 && progress < 1);
     const uploadStyles = {
         borderRadius: '8px',
         backgroundColor: fileColor[fileFormat(name)],

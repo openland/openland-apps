@@ -30,6 +30,7 @@ import { MAX_FILES_PER_MESSAGE, MentionToSend } from 'openland-engines/messenger
 import { UToast } from 'openland-web/components/unicorn/UToast';
 import { useClient } from 'openland-api/useClient';
 import { RoomPico_room_PrivateRoom, RoomPico_room_SharedRoom } from 'openland-api/spacex.types';
+import { XScrollView3 } from 'openland-x/XScrollView3';
 
 const MAX_FILE_SIZE = 1e8;
 
@@ -109,6 +110,10 @@ const docCloseStyle = css`
     top: 50%;
     right: 16px;
     transform: translateY(-50%);
+`;
+
+const videoCloseStyle = css`
+    top: 16px;
 `;
 
 const mentionsStyle = css`
@@ -306,21 +311,18 @@ const Body = (props: {
                     <DocumentContent
                         className={docStyle}
                         file={{ fileMetadata: { name: f.name, size: f.size, mimeType: null } }}
-                    // inlineVideo={true}
+                        inlineVideo={true}
+                        videoProps={{
+                            src,
+                            muted: true,
+                            autoPlay: true,
+                            maxWidth: 480,
+                            maxHeight: 300,
+                            onLoadedData: (e) => onVideoLoaded(f, e),
+                        }}
                     />
 
-                    {isVideo && (
-                        <video
-                            controls={true}
-                            src={src}
-                            muted={true}
-                            autoPlay={true}
-                            style={{ display: 'none' }}
-                            onLoadedData={e => onVideoLoaded(f, e)}
-                        />
-                    )}
-
-                    <div className={docCloseStyle}>
+                    <div className={cx(docCloseStyle, isVideo && src && videoCloseStyle)}>
                         <UIconButton icon={<CloseIcon />} color="var(--foregroundSecondary)" onClick={() => onClick(f)} />
                     </div>
                 </div>
@@ -403,7 +405,12 @@ const Body = (props: {
                     closeCb={() => setErrorText('')}
                 />
             </span>
-            <XView paddingHorizontal={24}>
+            <XScrollView3
+                flexGrow={1}
+                flexShrink={1}
+                paddingHorizontal={24}
+                maxHeight={400}
+            >
                 {imageColumns.length > 0 ? (
                     <XView flexDirection="row">
                         {imageColumns.map((column, i) => (
@@ -413,7 +420,7 @@ const Body = (props: {
                         ))}
                     </XView>
                 ) : documents}
-            </XView>
+            </XScrollView3>
             <XView flexDirection="row" paddingVertical={16} paddingHorizontal={24}>
                 <XView flexShrink={0} marginRight={16}>
                     {inputElements}
