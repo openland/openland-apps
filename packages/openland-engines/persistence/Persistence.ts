@@ -21,7 +21,6 @@ class TransactionHolder {
     readonly cache: PersistenceCache;
     private completed = false;
     private writes = new Map<string, any | null>();
-    private prewarmedKeys = new Set<string>();
     private doRead: (key: string) => Promise<any | null>;
 
     constructor(persistence: Persistence, cache: PersistenceCache, read: (key: string) => Promise<any | null>) {

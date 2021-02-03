@@ -139,27 +139,30 @@ export class SequencesEngine {
         (async () => {
             completed = false;
             while (!completed) {
-                console.info('[updates]: Start batch processing');
+                console.info('[updates]: init: Start batch processing');
                 let dstart = Date.now();
                 let dialogs = await next;
-                console.info('[updates]: Dialogs awaited in ' + (Date.now() - dstart) + ' ms');
+                console.info('[updates]: init: Dialogs awaited in ' + (Date.now() - dstart) + ' ms');
                 // Start next loading ASAP
                 if (dialogs.syncUserChats.cursor) {
                     next = (async () => {
-                        console.info('[updates]: Loading dialogs...');
+                        console.info('[updates]: init: Loading dialogs...');
                         let qs = Date.now();
                         let res = await this.client.queryGetInitialDialogs({ after: dialogs.syncUserChats.cursor }, { fetchPolicy: 'network-only' });
-                        console.info('[updates]: Batch loaded in ' + (Date.now() - qs) + ' ms');
+                        console.info('[updates]: init: Batch loaded in ' + (Date.now() - qs) + ' ms');
                         return res;
                     })();
                 }
 
+                dstart = Date.now();
                 await this.preprocessor(dialogs);
+                console.info('[updates]: init: batch preprocessed in ' + (Date.now() - dstart) + ' ms');
 
+                dstart = Date.now();
                 await this.persistence.inTx(async (tx) => {
 
                     // Apply sequences
-                    console.info('[updates]: Apply dialogs...');
+                    console.info('[updates]: init: Apply dialogs...');
                     await Promise.all(dialogs.syncUserChats.items.map((d) => this.receiveSequence(tx, d.sequence, d.pts)));
 
                     if (dialogs.syncUserChats.cursor) {
@@ -180,10 +183,11 @@ export class SequencesEngine {
                         }
                     }
                 });
+                console.info('[updates]: init: applied in ' + (Date.now() - dstart) + ' ms');
             }
 
             // await this.counters.onDialogsLoaded();
-            console.info('[updates]: Dialogs loaded in ' + (Date.now() - start) + ' ms');
+            console.info('[updates]: init: Completed in ' + (Date.now() - start) + ' ms');
         })();
     }
 
