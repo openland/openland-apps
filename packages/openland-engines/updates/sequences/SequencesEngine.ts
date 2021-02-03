@@ -127,18 +127,31 @@ export class SequencesEngine {
             }
             return;
         }
-        let next = this.client.queryGetInitialDialogs({ after: cursor }, { fetchPolicy: 'network-only' });
+
+        let next = (async () => {
+            console.info('[updates]: Loading dialogs...');
+            let qs = Date.now();
+            let res = await this.client.queryGetInitialDialogs({ after: cursor }, { fetchPolicy: 'network-only' });
+            console.info('[updates]: Batch loaded in ' + (Date.now() - qs) + ' ms');
+            return res;
+        })();
 
         (async () => {
             completed = false;
             while (!completed) {
-                console.info('[updates]: Loading dialogs...');
+                console.info('[updates]: Start batch processing');
                 let dstart = Date.now();
                 let dialogs = await next;
-                console.info('Dialogs read in ' + (Date.now() - dstart) + ' ms');
+                console.info('[updates]: Dialogs awaited in ' + (Date.now() - dstart) + ' ms');
                 // Start next loading ASAP
                 if (dialogs.syncUserChats.cursor) {
-                    next = this.client.queryGetInitialDialogs({ after: dialogs.syncUserChats.cursor }, { fetchPolicy: 'network-only' });
+                    next = (async () => {
+                        console.info('[updates]: Loading dialogs...');
+                        let qs = Date.now();
+                        let res = await this.client.queryGetInitialDialogs({ after: dialogs.syncUserChats.cursor }, { fetchPolicy: 'network-only' });
+                        console.info('[updates]: Batch loaded in ' + (Date.now() - qs) + ' ms');
+                        return res;
+                    })();
                 }
 
                 await this.preprocessor(dialogs);
