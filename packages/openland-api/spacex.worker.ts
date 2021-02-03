@@ -29,7 +29,7 @@ const initHandler = (ev: MessageEvent) => {
         setHandler: handler => ctx.addEventListener('message', (src: any) => handler(src.data)),
     };
 
-    let engine = createEngineWeb(msg.endpoint, msg.token);
+    let engine = createEngineWeb(msg.endpoint, msg.generation, msg.token);
 
     // if (msg.token && isElectronWorker()) {
     //     (engine as any).store.persistence.persistence = buildSpaceXPersistenceProvider(sha256(msg.token).toString());

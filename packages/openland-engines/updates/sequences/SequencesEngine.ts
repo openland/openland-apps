@@ -45,7 +45,7 @@ export class SequencesEngine {
 
             // Read start state
             let state = await this.persistence.inTx(async (tx) => {
-                return tx.read('updates.state');
+                return tx.readString('updates.state');
             });
 
             // Start sequence
@@ -55,16 +55,16 @@ export class SequencesEngine {
                 this.persistence.inTx(async (tx) => {
                     if (event.type === 'inited') {
                         await this.onInited(tx);
-                        tx.write('updates.state', event.vt);
+                        tx.writeString('updates.state', event.vt);
                     } else if (event.type === 'start') {
                         await this.receiveSequence(tx, event.state, event.pts);
-                        tx.write('updates.state', event.vt);
+                        tx.writeString('updates.state', event.vt);
                     } else if (event.type === 'event') {
                         await this.receiveEvent(tx, event.id, event.pts, event.event);
-                        tx.write('updates.state', event.vt);
+                        tx.writeString('updates.state', event.vt);
                     } else if (event.type === 'diff') {
                         await this.receiveDiff(tx, event.fromPts, event.events, event.state);
-                        tx.write('updates.state', event.vt);
+                        tx.writeString('updates.state', event.vt);
                     }
                 });
             });
@@ -120,7 +120,7 @@ export class SequencesEngine {
         // 
         let start = Date.now();
         let completed = await initTx.readBoolean('dialogs.sync.completed');
-        let cursor = await initTx.read('dialogs.sync.cursor');
+        let cursor = await initTx.readString('dialogs.sync.cursor');
         if (completed) {
             if (this.handler) {
                 await this.handler(initTx, { type: 'loaded' });
@@ -150,12 +150,12 @@ export class SequencesEngine {
                     await Promise.all(dialogs.syncUserChats.items.map((d) => this.receiveSequence(tx, d.sequence, d.pts)));
 
                     if (dialogs.syncUserChats.cursor) {
-                        tx.write('dialogs.sync.cursor', cursor);
+                        tx.writeString('dialogs.sync.cursor', cursor);
                         tx.writeBoolean('dialogs.sync.completed', false);
                         completed = false;
                         cursor = dialogs.syncUserChats.cursor;
                     } else {
-                        tx.write('dialogs.sync.cursor', null);
+                        tx.writeString('dialogs.sync.cursor', null);
                         tx.writeBoolean('dialogs.sync.completed', true);
                         completed = true;
                     }

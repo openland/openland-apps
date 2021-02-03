@@ -1,3 +1,4 @@
+import { LOG } from './LOG';
 import { ChatsEngine } from './engines/ChatsEngine';
 import { MessengerEngine } from './../MessengerEngine';
 import { UsersEngine } from './engines/UsersEngine';
@@ -63,12 +64,17 @@ export class UpdatesEngine {
     private handleEvent = async (tx: Transaction, event: SequenceHolderEvent | { type: 'loaded' }) => {
         if (event.type === 'loaded') {
             await this.dialogs.onDialogsLoaded(tx);
-            console.log('[updates]: sequence: ', event);
+            if (LOG) {
+                console.log('[updates]: sequence: ', event);
+            }
         } else if (event.type === 'restart') {
-            if (event.lost) {
-                console.log('[updates]: sequence lost: ', event.sequence.id);
-            } else {
-                console.log('[updates]: sequence restart: ', event.sequence.id);
+            if (LOG) {
+                if (event.lost) {
+                    console.log('[updates]: sequence lost: ', event.sequence.id);
+
+                } else {
+                    console.log('[updates]: sequence restart: ', event.sequence.id);
+                }
             }
             await this.chats.onSequenceRestart(tx, event.sequence, event.lost);
             if (event.sequence.__typename === 'SequenceChat') {
@@ -84,8 +90,9 @@ export class UpdatesEngine {
             await this.counters.onUpdate(tx, event.pts, event.event);
             await this.drafts.onUpdate(tx, event.event);
             await this.history.onUpdate(tx, event.pts, event.event);
-
-            console.log('[updates]: sequence: ', event);
+            if (LOG) {
+                console.log('[updates]: sequence: ', event);
+            }
         }
     }
 }

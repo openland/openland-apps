@@ -35,6 +35,7 @@ import { DiscussionEditorFragment } from 'openland-web/fragments/discussions/Dis
 import { SettingsCommunitiesFragment } from 'openland-web/fragments/settings/SettingsCommunitiesFragment';
 import { DiscoverPopularOrgsFragment } from 'openland-web/fragments/discover/DiscoverPopularOrgsFragment';
 import { DiscoverNewOrgsFragment } from 'openland-web/fragments/discover/DiscoverNewOrgsFragment';
+import { SettingsCacheFragment } from 'openland-web/fragments/settings/SettingsCacheFragment';
 
 // temporary stub for /mail/ -> not found bug
 const TemporaryStubMail = React.memo(() => {
@@ -126,6 +127,7 @@ routing.addRoute('/settings/invites', () => InviteFriendsFragment);
 routing.addRoute('/settings/about', () => SettingsAboutFragment);
 routing.addRoute('/settings/licenses', () => SettingsLicensesFragment);
 routing.addRoute('/settings/communities', () => SettingsCommunitiesFragment);
+routing.addRoute('/settings/cache', () => SettingsCacheFragment);
 
 // Wallet
 routing.addRoute('/wallet', () => WalletFragment);

@@ -52,7 +52,7 @@ export class StoredMap<T> {
     }
 
     delete(tx: Transaction, key: string) {
-        tx.write(this.namespace + '.' + key, null);
+        tx.clear(this.namespace + '.' + key);
         this.cache.set(key, null);
     }
 }

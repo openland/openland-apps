@@ -7,17 +7,17 @@ import { createPersistenceProvider } from './createPersistenceProvider';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { isWebWorker } from 'openland-y-utils/isWebWorker';
 
-export const createEngineWeb = (endpoint: string, token?: string) => {
+export const createEngineWeb = (endpoint: string, generation: number, token?: string) => {
     let persistence: PersistenceProvider | undefined = undefined;
 
     // Enable experimental persistence
     if (token && (canUseDOM || isWebWorker)) {
         if (isElectron) {
-            let storage = openWebStorage('graphql');
+            let storage = openWebStorage('graphql', generation);
             persistence = createPersistenceProvider(storage);
         } else {
             let hashedToken = sha256(token).toString();
-            let storage = openWebStorage('graphql-' + hashedToken);
+            let storage = openWebStorage('graphql-' + hashedToken, generation);
             persistence = createPersistenceProvider(storage);
         }
     }

@@ -1,7 +1,7 @@
 import { AsyncLock } from '@openland/patterns';
 import { UpdatesSubscription, UpdatesSubscriptionEvent } from './UpdatesSubscription';
 import { UpdatesApi } from './UpdatesApi';
-import { LOG } from './LOG';
+import { LOG } from '../LOG';
 
 export type MainUpdatesSubscriptionEvent<T, STATE, DIFF> =
     | { type: 'inited', vt: string }
