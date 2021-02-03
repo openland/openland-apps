@@ -216,7 +216,7 @@ export const SubmitCodeForm = React.memo((props: SubmitCodeFormProps) => {
 
     const avatarSrc =
         photoSrc && photoCrop
-            ? `https://ucarecdn.com/${photoSrc}/-/crop/${photoCrop.w}x${photoCrop.h}/${photoCrop.x},${photoCrop.y}/-/scale_crop/72x72/center/`
+            ? `https://ucarecdn.com/${photoSrc}/-/crop/${photoCrop.w}x${photoCrop.h}/${photoCrop.x},${photoCrop.y}/-/scale_crop/256x256/center/`
             : null;
 
     const compensationHeight = Dimensions.get('screen').height <= 667 ? 44 : 0;
