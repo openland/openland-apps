@@ -34,6 +34,7 @@ export const ZVideoComponent = React.memo(
                         controls={true}
                         playWhenInactive={true}
                         ignoreSilentSwitch="ignore"
+                        resizeMode="contain"
                     />
                 )}
                 {(path.length <= 0 || !completed) && !uri && (
