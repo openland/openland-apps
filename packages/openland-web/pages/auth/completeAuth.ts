@@ -1,4 +1,5 @@
 import * as Cookie from 'js-cookie';
+import { advanceGeneration } from '../../storage/generation';
 import createHistory from 'history/createBrowserHistory';
 
 export const completeAuth = (token: string) => {
@@ -22,6 +23,8 @@ export const completeAuth = (token: string) => {
         expires: 180,
     });
     localStorage.removeItem('authSession');
+    advanceGeneration();
+
     createHistory({
         forceRefresh: true,
     }).replace(path);

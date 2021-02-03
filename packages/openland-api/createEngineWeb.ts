@@ -1,7 +1,5 @@
-import { isElectron } from 'openland-y-utils/isElectron';
 import { openWebStorage } from 'openland-web/storage/openWebStorage';
 import { WebEngine, PersistenceProvider } from '@openland/spacex';
-import sha256 from 'crypto-js/sha256';
 import { Definitions } from './spacex.web';
 import { createPersistenceProvider } from './createPersistenceProvider';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
@@ -12,14 +10,8 @@ export const createEngineWeb = (endpoint: string, generation: number, token?: st
 
     // Enable experimental persistence
     if (token && (canUseDOM || isWebWorker)) {
-        if (isElectron) {
-            let storage = openWebStorage('graphql', generation);
-            persistence = createPersistenceProvider(storage);
-        } else {
-            let hashedToken = sha256(token).toString();
-            let storage = openWebStorage('graphql-' + hashedToken, generation);
-            persistence = createPersistenceProvider(storage);
-        }
+        let storage = openWebStorage('graphql', generation);
+        persistence = createPersistenceProvider(storage);
     }
 
     return new WebEngine(Definitions, {
