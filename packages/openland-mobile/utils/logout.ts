@@ -4,7 +4,12 @@ import RNRestart from 'react-native-restart';
 import { getMessenger } from './messenger';
 
 export const logout = async () => {
-    getMessenger().engine.destroy();
+    try {
+        getMessenger().engine.destroy();
+    } catch (e) {
+        console.log(e);
+    }
+
     resetClient();
     await AppStorage.clear();
     RNRestart.Restart();
