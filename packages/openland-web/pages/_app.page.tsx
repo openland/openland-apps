@@ -34,17 +34,24 @@ import { getConfig } from 'openland-web/config';
 import { CrashReporting } from 'openland-engines/CrashReporting';
 import { VERSION } from 'openland-web/version';
 let config = getConfig();
-const bugsnagClient = bugsnag({
-    apiKey: 'face7f06bcc3b1b0d5d60ed0fe912a88',
-    releaseStage: config.env,
-    notifyReleaseStages: ['production', 'next'],
-    appVersion: VERSION
-});
-bugsnagClient.use(bugsnagReact, React);
-CrashReporting.setReporter({
-    notify: (src) => bugsnagClient.notify(src),
-    setUserId: (src) => bugsnagClient.user = { id: src }
-});
+
+let ErrorBoundary: any;
+if (config.env === 'production' || config.env === 'next') {
+    const bugsnagClient = bugsnag({
+        apiKey: 'face7f06bcc3b1b0d5d60ed0fe912a88',
+        releaseStage: config.env,
+        notifyReleaseStages: ['production', 'next'],
+        appVersion: VERSION
+    });
+    bugsnagClient.use(bugsnagReact, React);
+    CrashReporting.setReporter({
+        notify: (src) => bugsnagClient.notify(src),
+        setUserId: (src) => bugsnagClient.user = { id: src }
+    });
+    ErrorBoundary = bugsnagClient.getPlugin('react');
+} else {
+    ErrorBoundary = (props: { children?: any }) => <>{props.children}</>;
+}
 
 import './init';
 import '../globals';
@@ -68,8 +75,7 @@ import { OpenlandClient } from 'openland-api/spacex';
 import { GQLClientContext } from 'openland-api/useClient';
 import { QueryCacheProvider } from '@openland/spacex';
 import { HomePage as LandingHomePage } from 'openland-landing/home.page';
-
-const ErrorBoundary = bugsnagClient.getPlugin('react');
+import { iosEnableNotesUsage } from 'react-native-contacts';
 
 const Page = (props: AppProps & DefaultAppIProps & { client: OpenlandClient | null, token?: string }) => {
     const { Component, pageProps, client, token, router } = props;

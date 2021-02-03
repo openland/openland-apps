@@ -205,9 +205,11 @@ export class SequencesEngine {
                 return await this.client.queryUpdateUsers({ ids: missing }, { fetchPolicy: 'network-only' });
             })).users;
             console.info('[updates]: users loaded in ' + (Date.now() - start) + ' ms');
+            start = Date.now();
             await this.persistence.inTx(async (tx) => {
                 await this.users.persistUsers(tx, loadedUsers.map((u) => ({ id: u.id, name: u.name, firstName: u.firstName, lastName: u.lastName, photo: u.photo })));
             });
+            console.info('[updates]: users persisted in ' + (Date.now() - start) + ' ms');
         }
     }
 }
