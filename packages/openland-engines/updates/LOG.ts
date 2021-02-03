@@ -1,1 +1,1 @@
-export const LOG: boolean = false;
+export const LOG: boolean = true;

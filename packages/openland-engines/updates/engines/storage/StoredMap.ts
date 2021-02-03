@@ -35,7 +35,7 @@ export class StoredMap<T> {
         if (cached !== undefined) {
             return cached;
         }
-        throw Error('Value is not in cache');
+        throw Error('Value is not in cache: ' + this.namespace + '.' + key);
     }
 
     getSyncOrFail(key: string): T {

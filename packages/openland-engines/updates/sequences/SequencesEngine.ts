@@ -198,6 +198,7 @@ export class SequencesEngine {
     }
 
     private preprocessor = async (src: any) => {
+        console.info('[updates]: Preprocess: ', src);
         let missing = await this.users.loadMissingUsers(src);
         if (missing.length > 0) {
             let start = Date.now();
