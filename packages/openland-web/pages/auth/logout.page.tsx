@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as Cookie from 'js-cookie';
 import { isElectron } from 'openland-y-utils/isElectron';
+import { advanceGeneration } from 'openland-web/storage/generation';
 
 export default class LogoutHandler extends React.Component<{}, {}> {
     constructor(props: {}) {
@@ -25,6 +26,8 @@ export default class LogoutHandler extends React.Component<{}, {}> {
         Cookie.remove('x-openland-user-photo');
         Cookie.defaults.domain = keepDomain;
         Cookie.defaults.path = keepPath;
+
+        advanceGeneration();
 
         window.location.href = isElectron ? '/signin' : '/';
     }

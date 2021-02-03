@@ -5,6 +5,7 @@ import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEng
 import { useClient } from 'openland-api/useClient';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 import { openWebStorage } from 'openland-web/storage/openWebStorage';
+import { readGeneration } from 'openland-web/storage/generation';
 
 let cachedMessenger: MessengerEngine | null = null;
 
@@ -15,10 +16,11 @@ const Messenger = (props: { currentUser: UserShort; children?: any }) => {
         if (!cachedMessenger) {
             let platform = 'web ' + location.hostname;
             const experimental = permissions && permissions.roles.indexOf('super-admin') >= 0 && props.currentUser.id !== 'ej97zq4pP1srkX17oe65CEdexQ';
+            
             cachedMessenger = new MessengerEngine(client, props.currentUser, platform, {
                 conversationBatchSize: 30,
                 experimental,
-                store: experimental ? openWebStorage('engines-' + props.currentUser.id) : undefined
+                store: experimental ? openWebStorage('engines', readGeneration()) : undefined
             });
         }
         return (

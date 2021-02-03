@@ -55,7 +55,7 @@ export default withApp('Pegasus', ['super-admin', 'software-developer'], props =
     // }, []);
 
     React.useMemo(() => {
-        let storage = openWebStorage('pegasus');
+        let storage = openWebStorage('pegasus', 1);
         storage.writeKey('hello-' + Math.random(), 'world');
     }, []);
 

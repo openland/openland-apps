@@ -1,3 +1,4 @@
+import { DialogCollectionCounter } from './DialogCollectionCounter';
 import { DialogsEngine } from './../DialogsEngine';
 import { UsersEngine } from './../UsersEngine';
 import { DataSourceAugmentor } from 'openland-y-utils/DataSourceAugmentor';
@@ -9,6 +10,7 @@ import { DialogState } from './DialogState';
 import { DialogQualifier } from './DialogQualifier';
 import { TypingType } from 'openland-api/spacex.types';
 import { Transaction } from 'openland-engines/persistence/Persistence';
+import { createCounterQualifier } from './DialogCounterQualifier';
 
 function convertToLegacy(me: string, src: DialogState, users: UsersEngine): DialogDataSourceItem {
     const isOut = src.topMessage ? src.topMessage.sender.id === me : false;
@@ -60,6 +62,14 @@ export class DialogCollection {
     private sourceLoaded = false;
     private sourceLoadingNext = false;
 
+    // Counters
+    readonly all: DialogCollectionCounter;
+    readonly unread: DialogCollectionCounter;
+    readonly unreadDistinct: DialogCollectionCounter;
+    readonly mentions: DialogCollectionCounter;
+    readonly mentionsDistinct: DialogCollectionCounter;
+    private counters: DialogCollectionCounter[] = [];
+
     // Convert legacy
     legacyBase: DataSource<DialogDataSourceItem>;
     typingsAugmentator: DataSourceAugmentor<DialogDataSourceItem, { typing: string, typingType?: TypingType }>;
@@ -76,10 +86,20 @@ export class DialogCollection {
         this.typingsAugmentator = new DataSourceAugmentor<DialogDataSourceItem, { typing: string, typingType?: TypingType }>(this.legacyBase);
         this.onlineAugmentator = new DataSourceAugmentor<DialogDataSourceItem & { typing?: string, typingType?: TypingType }, { online: boolean }>(this.typingsAugmentator.dataSource);
         this.legacy = this.onlineAugmentator.dataSource;
+
+        this.all = new DialogCollectionCounter(key + '.all', createCounterQualifier('all', this.qualifier));
+        this.unread = new DialogCollectionCounter(key + '.unread', createCounterQualifier('unread', this.qualifier));
+        this.unreadDistinct = new DialogCollectionCounter(key + '.unread-distinct', createCounterQualifier('unread-distinct', this.qualifier));
+        this.mentions = new DialogCollectionCounter(key + '.mentions', createCounterQualifier('mentions', this.qualifier));
+        this.mentionsDistinct = new DialogCollectionCounter(key + '.mentions-distinct', createCounterQualifier('mentions-distinct', this.qualifier));
+        this.counters = [this.all, this.unread, this.unreadDistinct, this.mentions, this.mentionsDistinct];
     }
 
     async init(tx: Transaction) {
         await this._loadIfNeeded(tx);
+        for (let c of this.counters) {
+            await c.init(tx);
+        }
     }
 
     async onDialogAdded(tx: Transaction, src: DialogState) {
@@ -88,6 +108,10 @@ export class DialogCollection {
         if (this.qualifier(src)) {
             await this._doAdd(tx, src);
         }
+
+        for (let c of this.counters) {
+            await c.onDialogAdded(tx, src);
+        }
     }
 
     async onDialogRemoved(tx: Transaction, src: DialogState) {
@@ -95,6 +119,10 @@ export class DialogCollection {
 
         if (this.qualifier(src)) {
             await this._doRemove(tx, src);
+        }
+
+        for (let c of this.counters) {
+            await c.onDialogRemoved(tx, src);
         }
     }
 
@@ -109,6 +137,10 @@ export class DialogCollection {
             await this._doAdd(tx, updated);
         } else if (oldQualified && !updatedQualified) {
             await this._doRemove(tx, old);
+        }
+
+        for (let c of this.counters) {
+            await c.onDialogUpdated(tx, old, updated);
         }
     }
 

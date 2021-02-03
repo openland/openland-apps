@@ -45,7 +45,7 @@ export class SequencesEngine {
 
             // Read start state
             let state = await this.persistence.inTx(async (tx) => {
-                return tx.read('updates.state');
+                return tx.readString('updates.state');
             });
 
             // Start sequence
@@ -55,16 +55,16 @@ export class SequencesEngine {
                 this.persistence.inTx(async (tx) => {
                     if (event.type === 'inited') {
                         await this.onInited(tx);
-                        tx.write('updates.state', event.vt);
+                        tx.writeString('updates.state', event.vt);
                     } else if (event.type === 'start') {
                         await this.receiveSequence(tx, event.state, event.pts);
-                        tx.write('updates.state', event.vt);
+                        tx.writeString('updates.state', event.vt);
                     } else if (event.type === 'event') {
                         await this.receiveEvent(tx, event.id, event.pts, event.event);
-                        tx.write('updates.state', event.vt);
+                        tx.writeString('updates.state', event.vt);
                     } else if (event.type === 'diff') {
                         await this.receiveDiff(tx, event.fromPts, event.events, event.state);
-                        tx.write('updates.state', event.vt);
+                        tx.writeString('updates.state', event.vt);
                     }
                 });
             });
@@ -120,42 +120,58 @@ export class SequencesEngine {
         // 
         let start = Date.now();
         let completed = await initTx.readBoolean('dialogs.sync.completed');
-        let cursor = await initTx.read('dialogs.sync.cursor');
+        let cursor = await initTx.readString('dialogs.sync.cursor');
         if (completed) {
             if (this.handler) {
                 await this.handler(initTx, { type: 'loaded' });
             }
             return;
         }
-        let next = this.client.queryGetInitialDialogs({ after: cursor }, { fetchPolicy: 'network-only' });
+
+        let next = (async () => {
+            console.info('[updates]: Loading dialogs...');
+            let qs = Date.now();
+            let res = await this.client.queryGetInitialDialogs({ after: cursor }, { fetchPolicy: 'network-only' });
+            console.info('[updates]: Batch loaded in ' + (Date.now() - qs) + ' ms');
+            return res;
+        })();
 
         (async () => {
             completed = false;
             while (!completed) {
-                console.info('[updates]: Loading dialogs...');
+                console.info('[updates]: init: Start batch processing');
                 let dstart = Date.now();
                 let dialogs = await next;
-                console.info('Dialogs read in ' + (Date.now() - dstart) + ' ms');
+                console.info('[updates]: init: Dialogs awaited in ' + (Date.now() - dstart) + ' ms');
                 // Start next loading ASAP
                 if (dialogs.syncUserChats.cursor) {
-                    next = this.client.queryGetInitialDialogs({ after: dialogs.syncUserChats.cursor }, { fetchPolicy: 'network-only' });
+                    next = (async () => {
+                        console.info('[updates]: init: Loading dialogs...');
+                        let qs = Date.now();
+                        let res = await this.client.queryGetInitialDialogs({ after: dialogs.syncUserChats.cursor }, { fetchPolicy: 'network-only' });
+                        console.info('[updates]: init: Batch loaded in ' + (Date.now() - qs) + ' ms');
+                        return res;
+                    })();
                 }
 
+                dstart = Date.now();
                 await this.preprocessor(dialogs);
+                console.info('[updates]: init: batch preprocessed in ' + (Date.now() - dstart) + ' ms');
 
+                dstart = Date.now();
                 await this.persistence.inTx(async (tx) => {
 
                     // Apply sequences
-                    console.info('[updates]: Apply dialogs...');
+                    console.info('[updates]: init: Apply dialogs...');
                     await Promise.all(dialogs.syncUserChats.items.map((d) => this.receiveSequence(tx, d.sequence, d.pts)));
 
                     if (dialogs.syncUserChats.cursor) {
-                        tx.write('dialogs.sync.cursor', cursor);
+                        tx.writeString('dialogs.sync.cursor', cursor);
                         tx.writeBoolean('dialogs.sync.completed', false);
                         completed = false;
                         cursor = dialogs.syncUserChats.cursor;
                     } else {
-                        tx.write('dialogs.sync.cursor', null);
+                        tx.writeString('dialogs.sync.cursor', null);
                         tx.writeBoolean('dialogs.sync.completed', true);
                         completed = true;
                     }
@@ -167,10 +183,11 @@ export class SequencesEngine {
                         }
                     }
                 });
+                console.info('[updates]: init: applied in ' + (Date.now() - dstart) + ' ms');
             }
 
             // await this.counters.onDialogsLoaded();
-            console.info('[updates]: Dialogs loaded in ' + (Date.now() - start) + ' ms');
+            console.info('[updates]: init: Completed in ' + (Date.now() - start) + ' ms');
         })();
     }
 
@@ -181,6 +198,7 @@ export class SequencesEngine {
     }
 
     private preprocessor = async (src: any) => {
+        console.info('[updates]: Preprocess: ', src);
         let missing = await this.users.loadMissingUsers(src);
         if (missing.length > 0) {
             let start = Date.now();
@@ -188,9 +206,11 @@ export class SequencesEngine {
                 return await this.client.queryUpdateUsers({ ids: missing }, { fetchPolicy: 'network-only' });
             })).users;
             console.info('[updates]: users loaded in ' + (Date.now() - start) + ' ms');
+            start = Date.now();
             await this.persistence.inTx(async (tx) => {
                 await this.users.persistUsers(tx, loadedUsers.map((u) => ({ id: u.id, name: u.name, firstName: u.firstName, lastName: u.lastName, photo: u.photo })));
             });
+            console.info('[updates]: users persisted in ' + (Date.now() - start) + ' ms');
         }
     }
 }

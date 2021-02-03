@@ -35,7 +35,7 @@ export class StoredMap<T> {
         if (cached !== undefined) {
             return cached;
         }
-        throw Error('Value is not in cache');
+        throw Error('Value is not in cache: ' + this.namespace + '.' + key);
     }
 
     getSyncOrFail(key: string): T {
@@ -52,7 +52,7 @@ export class StoredMap<T> {
     }
 
     delete(tx: Transaction, key: string) {
-        tx.write(this.namespace + '.' + key, null);
+        tx.clear(this.namespace + '.' + key);
         this.cache.set(key, null);
     }
 }

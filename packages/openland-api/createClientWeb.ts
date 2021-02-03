@@ -1,3 +1,4 @@
+import { readGeneration } from 'openland-web/storage/generation';
 import { createEngineWeb } from './createEngineWeb';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { loadConfig } from 'openland-x-config';
@@ -11,8 +12,9 @@ let cachedClient: OpenlandClient | undefined = undefined;
 export const createClientWeb = (token?: string) => {
     if (canUseDOM) {
         if (!cachedClient) {
+            let generation = readGeneration();
             let endpoint = loadConfig().webSocketEndpoint!;
-            cachedClient = createClient(createEngineWebWorker(endpoint, token));
+            cachedClient = createClient(createEngineWebWorker(endpoint, generation, token));
             Track.setClient(cachedClient);
         }
         return cachedClient!!;
@@ -25,6 +27,6 @@ export const createClientWeb = (token?: string) => {
                 ? process.env.API_WS_ENDPOINT
                 : 'ws://localhost:9000/api';
         }
-        return createClient(createEngineWeb(endpoint, token));
+        return createClient(createEngineWeb(endpoint, 1, token));
     }
 };

@@ -17,6 +17,10 @@ export class HistoryEngine {
         this.updates = updates;
     }
 
+    beforeSequenceRestart(tx: Transaction, pts: number, state: ShortSequenceChat, lost: boolean) {
+        // TODO: Implement
+    }
+
     async onSequenceRestart(tx: Transaction, pts: number, state: ShortSequenceChat, lost: boolean) {
 
         // Persist message

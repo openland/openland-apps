@@ -2,7 +2,7 @@ import { Transaction, Persistence } from './../../persistence/Persistence';
 import { CollapsableSequencer } from './state/CollapsableSequencer';
 import { UpdateEvent, UpdateSequenceDiff, UpdateSequenceState } from './../Types';
 import { UpdatesApi } from './UpdatesApi';
-import { LOG } from './LOG';
+import { LOG } from '../LOG';
 
 export type SequenceSubscriptionEvent =
     | { type: 'invalidated' }

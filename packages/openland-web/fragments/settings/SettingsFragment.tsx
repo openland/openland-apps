@@ -29,6 +29,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UCounter } from 'openland-unicorn/UCounter';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { css } from 'linaria';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const ellipsisText = css`
     white-space: nowrap;
@@ -144,6 +145,13 @@ export const SettingsFragment = React.memo(() => {
                                 icon={<AppearanceIcon />}
                                 path="/settings/appearance"
                             />
+                            <XWithRole role="super-admin">
+                                <UListItem
+                                    title="Cache"
+                                    icon={<AppearanceIcon />}
+                                    path="/settings/cache"
+                                />
+                            </XWithRole>
                         </UListGroup>
                         <UListGroup header="Billing">
                             <UListItem

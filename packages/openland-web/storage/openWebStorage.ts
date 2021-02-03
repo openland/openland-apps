@@ -50,22 +50,38 @@ class LoadableKeyValueStore implements KeyValueStore {
 class IndexedKeyValueStore implements KeyValueStore {
     private db: idb.IDBPDatabase<Shema>;
     private ns: string;
-    constructor(ns: string, db: idb.IDBPDatabase<Shema>) {
+    private values: Map<string, string>;
+
+    constructor(ns: string, db: idb.IDBPDatabase<Shema>, initialValues: Map<string, string>) {
         this.db = db;
         this.ns = ns;
+        this.values = initialValues;
     }
 
     async writeKey(key: string, value: string | null): Promise<void> {
+        if (value !== null) {
+            this.values.set(key, value);
+        } else {
+            this.values.delete(key);
+        }
+
         let txw = this.db.transaction('store', 'readwrite');
         if (value !== null) {
             txw.objectStore('store').put({ ns: this.ns, k: key, v: value });
         } else {
             txw.objectStore('store').delete([this.ns, key]);
         }
-        await txw.done;
     }
 
     async writeKeys(items: { key: string, value: string | null }[]): Promise<void> {
+        for (let i of items) {
+            if (i.value !== null) {
+                this.values.set(i.key, i.value);
+            } else {
+                this.values.delete(i.key);
+            }
+        }
+
         let txw = this.db.transaction('store', 'readwrite');
         for (let i of items) {
             if (i.value !== null) {
@@ -74,26 +90,21 @@ class IndexedKeyValueStore implements KeyValueStore {
                 txw.objectStore('store').delete([this.ns, i.key]);
             }
         }
-        await txw.done;
     }
 
     async readKey(key: string): Promise<string | null> {
-        let tx = this.db.transaction('store', 'readonly');
-        let res = await tx.objectStore('store').get([this.ns, key]);
-        if (res) {
-            return res.v;
+        if (this.values.has(key)) {
+            return this.values.get(key)!;
         } else {
             return null;
         }
     }
 
     async readKeys(keys: string[]): Promise<{ key: string, value: string | null }[]> {
-        let tx = this.db.transaction('store', 'readonly');
-        let loaded = await Promise.all(keys.map((k) => tx.objectStore('store').get([this.ns, k])));
         let res: { key: string, value: string | null }[] = [];
         for (let i = 0; i < keys.length; i++) {
-            if (loaded[i]) {
-                res.push({ key: keys[i], value: loaded[i]!.v });
+            if (this.values.has(keys[i])) {
+                res.push({ key: keys[i], value: this.values.get(keys[i])! });
             } else {
                 res.push({ key: keys[i], value: null });
             }
@@ -102,13 +113,15 @@ class IndexedKeyValueStore implements KeyValueStore {
     }
 }
 
-async function doOpenStore(name: string): Promise<KeyValueStore> {
+async function doOpenStore(name: string, generation: number): Promise<KeyValueStore> {
+
+    let suffix = '-' + PersistenceVersion + '-' + generation;
 
     //
     // Load IndexedDB
     //
 
-    let db = await idb.openDB<Shema>('storage-' + name + '-' + PersistenceVersion, 1, {
+    let db = await idb.openDB<Shema>('storage-' + name + suffix, 1, {
         upgrade: async (src) => {
             src.createObjectStore('store', { keyPath: ['ns', 'k'] });
             src.createObjectStore('store-latest');
@@ -121,7 +134,17 @@ async function doOpenStore(name: string): Promise<KeyValueStore> {
     //
 
     if (isElectron) {
-        return new IndexedKeyValueStore('electron', db);
+
+        // Load storage into memory
+        let rtx = db.transaction(['store', 'store-latest'], 'readonly');
+        let allkeys = await rtx.objectStore('store').getAll(IDBKeyRange.bound(['electron'], ['electron', []]));
+        let data = new Map<string, string>();
+        for (let k of allkeys) {
+            data.set(k.k, k.v);
+        }
+
+        // Create KV store
+        return new IndexedKeyValueStore('electron', db, data);
     }
 
     console.log('[storage]: Trying to open store ' + name);
@@ -155,7 +178,7 @@ async function doOpenStore(name: string): Promise<KeyValueStore> {
                 }
 
                 // Copy all records
-                console.log('[storage]: Loaded records', allKeys);
+                console.log('[storage]: Loaded records:', allKeys!.length);
                 let key = randomKey();
                 let wtx = db.transaction(['store', 'store-latest', 'store-meta'], 'readwrite');
                 let timeout = now + LOCK_TIMEOUT;
@@ -202,9 +225,16 @@ async function doOpenStore(name: string): Promise<KeyValueStore> {
         }
     })();
 
-    return new IndexedKeyValueStore(storeId, db);
+    // Load storage into memory
+    let dtx = db.transaction(['store', 'store-latest'], 'readonly');
+    let allExistingkeys = await dtx.objectStore('store').getAll(IDBKeyRange.bound([storeId], [storeId, []]));
+    let existingData = new Map<string, string>();
+    for (let k of allExistingkeys) {
+        existingData.set(k.k, k.v);
+    }
+    return new IndexedKeyValueStore(storeId, db, existingData);
 }
 
-export function openWebStorage(name: string): KeyValueStore {
-    return new LoadableKeyValueStore(doOpenStore(name));
+export function openWebStorage(name: string, generation: number): KeyValueStore {
+    return new LoadableKeyValueStore(doOpenStore(name, generation));
 }
