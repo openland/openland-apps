@@ -75,7 +75,6 @@ import { OpenlandClient } from 'openland-api/spacex';
 import { GQLClientContext } from 'openland-api/useClient';
 import { QueryCacheProvider } from '@openland/spacex';
 import { HomePage as LandingHomePage } from 'openland-landing/home.page';
-import { iosEnableNotesUsage } from 'react-native-contacts';
 
 const Page = (props: AppProps & DefaultAppIProps & { client: OpenlandClient | null, token?: string }) => {
     const { Component, pageProps, client, token, router } = props;
