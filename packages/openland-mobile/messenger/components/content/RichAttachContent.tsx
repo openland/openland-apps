@@ -15,6 +15,7 @@ import { resolveInternalLink } from 'openland-mobile/utils/resolveInternalLink';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/spacex.types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { isInternalLink } from 'openland-y-utils/isInternalLink';
+import { isYoutubeLink } from 'openland-y-utils/isYoutubeLink';
 
 interface UrlAugmentationContentProps {
     message: DataSourceMessageItem;
@@ -91,6 +92,14 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
     }
 
     onMediaPress = (event: ASPressEvent) => {
+        if (isYoutubeLink(this.props.attach.titleLink)) {
+            (async () => {
+                if (this.props.attach.titleLink && (await Linking.canOpenURL(this.props.attach.titleLink))) {
+                    Linking.openURL(this.props.attach.titleLink);
+                }
+            })();
+            return;
+        }
         let imageSize = this.props.attach.image && this.props.attach.image.metadata && this.props.attach.image.metadata.imageHeight && this.props.attach.image.metadata.imageWidth && {
             imageWidth: this.props.attach.image.metadata.imageWidth,
             imageHeight: this.props.attach.image.metadata.imageHeight,
@@ -159,6 +168,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
             loadingBackground = theme.payBackgroundSecondary;
             loadingForeground = theme.payForegroundSecondary;
         }
+        const isYtbLink = isYoutubeLink(this.props.attach.titleLink);
 
         const textWrapperMarginTop = !!this.props.attach.titleLinkHostname && !imgCompact ? 0
             : imgCompact && this.imageLarge ? 12
@@ -190,19 +200,38 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             width={largeImageLayout.width}
                             height={largeImageLayout.height}
                         />
-                        {this.state && this.state.largeDownloadState && this.state.largeDownloadState.progress !== undefined && this.state.largeDownloadState.progress < 1 && !this.state.largeDownloadState.path &&
-                            <ASFlex
-                                overlay={true}
-                                width={largeImageLayout.width}
-                                height={largeImageLayout.height}
-                                justifyContent="center"
-                                alignItems="center"
-                            >
-                                <ASFlex backgroundColor={loadingBackground} borderRadius={20}>
-                                    <ASText color={loadingForeground} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.largeDownloadState.progress * 100)}</ASText>
+                        {this.state && this.state.largeDownloadState && this.state.largeDownloadState.progress !== undefined && this.state.largeDownloadState.progress < 1 && !this.state.largeDownloadState.path
+                            ? (
+                                <ASFlex
+                                    overlay={true}
+                                    width={largeImageLayout.width}
+                                    height={largeImageLayout.height}
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <ASFlex backgroundColor={loadingBackground} borderRadius={20}>
+                                        <ASText color={loadingForeground} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.largeDownloadState.progress * 100)}</ASText>
+                                    </ASFlex>
                                 </ASFlex>
-                            </ASFlex>
-                        }
+                            ) : isYtbLink ? (
+                                <ASFlex
+                                    flexGrow={1}
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    overlay={true}
+                                >
+                                    <ASFlex
+                                        width={48}
+                                        height={48}
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        backgroundColor={theme.overlayMedium}
+                                        borderRadius={24}
+                                    >
+                                        <ASImage width={24} height={24} source={require('assets/ic-play-glyph-24.png')} tintColor={theme.foregroundContrast} />
+                                    </ASFlex>
+                                </ASFlex>
+                            ) : null}
                     </ASFlex>
                 )}
 

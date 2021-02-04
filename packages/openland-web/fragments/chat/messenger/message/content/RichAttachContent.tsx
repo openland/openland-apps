@@ -13,14 +13,9 @@ import { showImageModal } from './ImageContent';
 import DeleteIcon from 'openland-icons/s/ic-close-16.svg';
 import ZoomIcon from 'openland-icons/s/ic-zoom-16.svg';
 import PlayIcon from 'openland-icons/s/ic-play-glyph-24.svg';
+import { isYoutubeLink } from 'openland-y-utils/isYoutubeLink';
 
 type messageRichAttach = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
-
-const isYoutubeLink = (link: string | null | undefined) => {
-    const regEx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-    const match = link && link.match(regEx);
-    return match && match[7].length >= 11;
-};
 
 const richWrapper = css`
     display: flex;
