@@ -33,7 +33,9 @@ const normalizeMedia = async (data: ImageOrVideo[]) => {
                 name: 'video.mp4',
                 path: response.path,
                 size: response.size,
-                duration: duration === 0 ? 1000 : Math.floor((response as any).duration),
+                duration: duration
+                    ? (duration < 1000) ? 1000 : Math.floor((response as any).duration)
+                    : undefined,
             });
             acc.videosPreviews.push(getMediaThumbnail(response.path));
         }
