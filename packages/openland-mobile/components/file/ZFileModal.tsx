@@ -24,7 +24,6 @@ export interface ZFileModalConfig {
     uuid: string;
     name: string;
     size: number;
-    uri?: string;
 }
 
 const styles = StyleSheet.create({
@@ -175,7 +174,7 @@ class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePr
         }
 
         if (this.content === 'video') {
-            content = <ZVideoComponent uuid={config.uuid} uri={config.uri} name={config.name} completed={this.state.completed} />;
+            content = <ZVideoComponent uuid={config.uuid} name={config.name} completed={this.state.completed} />;
         }
 
         return (

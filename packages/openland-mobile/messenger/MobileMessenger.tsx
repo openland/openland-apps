@@ -277,7 +277,7 @@ export class MobileMessenger {
         let attach = message.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as (FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string });
         // { config: { uuid, name, size }
         // this.history.navigationManager.push('FilePreview', { config: { uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size } });
-        showFileModal({ uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size, uri: attach.uri });
+        showFileModal({ uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size });
     }
 
     handleDialogPress = (id: string) => {

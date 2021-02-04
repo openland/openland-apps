@@ -171,8 +171,11 @@ export const DocumentContentPreview = React.memo((props: DocumentContentPreviewP
     let viewWidth = layout ? Math.max(layout.width, IMAGE_MIN_SIZE) : undefined;
     let viewHeight = layout ? Math.max(layout.height, IMAGE_MIN_SIZE) : undefined;
     let handlePress = React.useCallback(() => {
+        if (!attach.fileId) {
+            return;
+        }
         onDocumentPress(message);
-    }, []);
+    }, [attach.fileId]);
     const [path, setPath] = React.useState<string | undefined>();
     let src = path || attach.filePreview;
     let duration = attach.videoMetadata?.duration;
@@ -227,7 +230,7 @@ export const DocumentContentPreview = React.memo((props: DocumentContentPreviewP
                             marginTop={8}
                             marginLeft={8}
                         >
-                            {duration && (
+                            {duration ? (
                                 <ASFlex
                                     backgroundColor={theme.overlayMedium}
                                     borderRadius={10}
@@ -242,7 +245,7 @@ export const DocumentContentPreview = React.memo((props: DocumentContentPreviewP
                                         {formatDuration(duration)}
                                     </ASText>
                                 </ASFlex>
-                            )}
+                            ) : null}
                         </ASFlex>
                         <ASFlex
                             flexGrow={1}

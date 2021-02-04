@@ -27,7 +27,14 @@ const normalizeMedia = async (data: ImageOrVideo[]) => {
         if (isPhoto) {
             acc.images.push({ type: 'photo', name: 'image.jpg', path: response.path, size: response.size });
         } else {
-            acc.videos.push({ type: 'video', name: 'video.mp4', path: response.path, size: response.size, duration: Math.floor((response as any).duration) });
+            let duration = (response as any).duration;
+            acc.videos.push({
+                type: 'video',
+                name: 'video.mp4',
+                path: response.path,
+                size: response.size,
+                duration: duration === 0 ? 1000 : Math.floor((response as any).duration),
+            });
             acc.videosPreviews.push(getMediaThumbnail(response.path));
         }
         return acc;
