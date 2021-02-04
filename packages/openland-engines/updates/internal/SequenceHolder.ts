@@ -245,6 +245,11 @@ export class SequenceHolder {
         if (!this.loading) {
             await updateInvalidated(tx, this.id, true);
             await this.subscription!.invalidate(tx);
+        } else {
+            this.loadingPending.push(async (tx2) => {
+                await updateInvalidated(tx2, this.id, true);
+                await this.subscription!.invalidate(tx2);
+            });
         }
     }
 }
