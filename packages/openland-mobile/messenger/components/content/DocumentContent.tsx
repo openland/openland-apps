@@ -234,9 +234,10 @@ export const DocumentContentPreview = React.memo((props: DocumentContentPreviewP
                                 <ASFlex
                                     backgroundColor={theme.overlayMedium}
                                     borderRadius={10}
+                                    height={21}
+                                    flexDirection="column"
                                 >
                                     <ASText
-                                        marginBottom={1}
                                         marginLeft={8}
                                         marginRight={8}
                                         color={theme.foregroundContrast}

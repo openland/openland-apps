@@ -253,9 +253,9 @@ export class MediaContent extends React.PureComponent<
                                         <ASFlex
                                             backgroundColor={theme.overlayMedium}
                                             borderRadius={10}
+                                            height={21}
                                         >
                                             <ASText
-                                                marginBottom={1}
                                                 marginLeft={8}
                                                 marginRight={8}
                                                 color={theme.foregroundContrast}
