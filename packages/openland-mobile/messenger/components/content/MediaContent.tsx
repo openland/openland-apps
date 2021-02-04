@@ -15,6 +15,7 @@ import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'op
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { AsyncBubbleMediaView, getPilePosition } from '../AsyncBubbleMediaView';
 import { MAX_FILES_PER_MESSAGE } from 'openland-engines/messenger/MessageSender';
+import { TextStylesAsync } from 'openland-mobile/styles/AppStyles';
 
 type AttachType = FullMessage_GeneralMessage_attachments_MessageAttachmentFile & PendingAttachProps;
 
@@ -221,6 +222,68 @@ export class MediaContent extends React.PureComponent<
                             let hasNoRadius = hasTopContent && position && ['tl', 'tr'].includes(position)
                                 || hasBottomContent && position && ['bl', 'br'].includes(position)
                                 || hasTopContent && hasBottomContent;
+                            let isGif = file.fileMetadata.imageFormat === 'GIF';
+                            const loadingOverlay = state && state.progress !== undefined && state.progress < 1 && !state.path ? (
+                                <ASFlex
+                                    overlay={true}
+                                    width={width}
+                                    height={height}
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <ASFlex
+                                        backgroundColor={theme.backgroundPrimary}
+                                        borderRadius={20}
+                                    >
+                                        <ASText color={theme.foregroundPrimary} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(state.progress * 100)}</ASText>
+                                    </ASFlex>
+                                </ASFlex>
+                            ) : null;
+                            let gifOverlay = isGif ? (
+                                <ASFlex
+                                    overlay={true}
+                                    flexGrow={1}
+                                    flexDirection="column"
+                                    alignItems="stretch"
+                                >
+                                    <ASFlex
+                                        marginTop={8}
+                                        marginLeft={8}
+                                    >
+                                        <ASFlex
+                                            backgroundColor={theme.overlayMedium}
+                                            borderRadius={10}
+                                        >
+                                            <ASText
+                                                marginBottom={1}
+                                                marginLeft={8}
+                                                marginRight={8}
+                                                color={theme.foregroundContrast}
+                                                {...TextStylesAsync.Caption}
+                                            >
+                                                GIF
+                                            </ASText>
+                                        </ASFlex>
+                                    </ASFlex>
+                                    <ASFlex
+                                        flexGrow={1}
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        marginBottom={28}
+                                    >
+                                        <ASFlex
+                                            width={48}
+                                            height={48}
+                                            justifyContent="center"
+                                            alignItems="center"
+                                            backgroundColor={theme.overlayMedium}
+                                            borderRadius={24}
+                                        >
+                                            <ASImage width={24} height={24} source={require('assets/ic-play-glyph-24.png')} tintColor={theme.foregroundContrast} />
+                                        </ASFlex>
+                                    </ASFlex>
+                                </ASFlex>
+                            ) : null;
 
                             return (
                                 <ASFlex
@@ -245,28 +308,17 @@ export class MediaContent extends React.PureComponent<
                                             width={width}
                                             height={height}
                                         />
-                                        <ASFlex
-                                            overlay={true}
-                                            alignItems="flex-end"
-                                            justifyContent="flex-end"
-                                        >
-                                            {
-                                                state && state.progress !== undefined && state.progress < 1 && !state.path && <ASFlex
-                                                    overlay={true}
-                                                    width={width}
-                                                    height={height}
-                                                    justifyContent="center"
-                                                    alignItems="center"
-                                                >
-                                                    <ASFlex
-                                                        backgroundColor={theme.backgroundPrimary}
-                                                        borderRadius={20}
-                                                    >
-                                                        <ASText color={theme.foregroundPrimary} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(state.progress * 100)}</ASText>
-                                                    </ASFlex>
-                                                </ASFlex>
-                                            }
-                                        </ASFlex>
+                                        {loadingOverlay ? (
+                                            <ASFlex
+                                                overlay={true}
+                                                alignItems="flex-end"
+                                                justifyContent="flex-end"
+                                            >
+                                                {loadingOverlay}
+                                            </ASFlex>
+                                        ) : isGif ? (
+                                            gifOverlay
+                                        ) : null}
                                     </ASFlex>
                                     {compensateBubble && !hasEmptySpace && (
                                         <ASFlex

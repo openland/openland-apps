@@ -67,7 +67,7 @@ export const showAttachMenu = (fileCallback?: (
 ) => {
     let builder = new ActionSheetBuilder();
 
-    builder.action(Platform.select({ ios: 'Take photo or video', default: 'Take photo' }), async () => {
+    builder.action('Take photo', async () => {
         if (await checkPermissions('camera')) {
 
             try {
@@ -128,7 +128,7 @@ export const showAttachMenu = (fileCallback?: (
                     width: 1024,
                     height: 1024,
                     compressImageQuality: 1,
-                    compressVideoPreset: 'MediumQuality',
+                    compressVideoPreset: '1280x720',
                     cropping: false,
                     maxFiles: Platform.select({ ios: 20, android: undefined }),
                     mediaType: Platform.select({ ios: 'any', android: 'photo', default: 'photo' })
