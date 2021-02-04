@@ -4,8 +4,12 @@ import { Platform, Dimensions, PixelRatio, StatusBar, NativeModules } from 'reac
 const { height: D_HEIGHT, width: D_WIDTH } = Dimensions.get('window');
 const X_WIDTH = 375;
 const X_HEIGHT = 812;
-const XSMAX_WIDTH = 414;
-const XSMAX_HEIGHT = 896;
+const XR_WIDTH = 414;
+const XR_HEIGHT = 896;
+const X12PRO_WIDTH = 390;
+const X12PRO_HEIGHT = 844;
+const X12PROMAX_WIDTH = 428;
+const X12PROMAX_HEIGHT = 926;
 
 const IPADPRO11_WIDTH = 834;
 const IPADPRO11_HEIGHT = 1194;
@@ -23,14 +27,16 @@ const isNewIPadPro = (() => {
 })();
 
 const isIphoneX = Platform.OS === 'ios' && D_WIDTH === X_WIDTH && D_HEIGHT === X_HEIGHT;
-const isIphoneXSMAX = Platform.OS === 'ios' && D_WIDTH === XSMAX_WIDTH && D_HEIGHT === XSMAX_HEIGHT;
+const isIphoneXSMAX = Platform.OS === 'ios' && D_WIDTH === XR_WIDTH && D_HEIGHT === XR_HEIGHT;
+const isIphone12PRO = Platform.OS === 'ios' && D_WIDTH === X12PRO_WIDTH && D_HEIGHT === X12PRO_HEIGHT;
+const isIphone12PROMAX = Platform.OS === 'ios' && D_WIDTH === X12PROMAX_WIDTH && D_HEIGHT === X12PROMAX_HEIGHT;
 
 //
 // Library supports safe area, status bar height only for iOS since there are no reliable way to detect them on Android.
 // Eventually we will add support for safe area api for androids.
 //
-const safeAreaTop = Platform.OS === 'ios' ? ((isIphoneX || isIphoneXSMAX) ? 22 : 0) : 0;
-let safeAreaBottom = Platform.OS === 'ios' ? ((isIphoneX || isIphoneXSMAX) ? 34 : (isNewIPadPro ? 20 : 0)) : NativeModules.RNSWindowManager.NAVIGATION_BAR; // DimensionsAndroid.get('SOFT_MENU_BAR_HEIGHT'); // - (Platform.Version < 28 ? 0 : DimensionsAndroid.get('STATUS_BAR_HEIGHT'));
+const safeAreaTop = Platform.OS === 'ios' ? ((isIphoneX || isIphoneXSMAX || isIphone12PRO || isIphone12PROMAX) ? 22 : 0) : 0;
+const safeAreaBottom = Platform.OS === 'ios' ? ((isIphoneX || isIphoneXSMAX || isIphone12PRO || isIphone12PROMAX) ? 34 : (isNewIPadPro ? 20 : 0)) : NativeModules.RNSWindowManager.NAVIGATION_BAR; // DimensionsAndroid.get('SOFT_MENU_BAR_HEIGHT'); // - (Platform.Version < 28 ? 0 : DimensionsAndroid.get('STATUS_BAR_HEIGHT'));
 // console.log('SOFT: ' + DimensionsAndroid.get('SOFT_MENU_BAR_HEIGHT'));
 
 //
