@@ -209,7 +209,7 @@ html.light {
     --backgroundLightBlue: #E1EEF8;
 }
 
-html.dark {
+html.dark:not(.landing) {
     --transparent: rgba(0, 0, 0, 0);
 
     --foregroundPrimary: #FFFFFF;
