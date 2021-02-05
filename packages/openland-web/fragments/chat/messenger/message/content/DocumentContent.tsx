@@ -243,6 +243,7 @@ const metadataContainer = css`
     display: flex;
     flex-direction: column;
     margin-bottom: 2px;
+    padding-right: 24px;
 `;
 
 const title = css`
