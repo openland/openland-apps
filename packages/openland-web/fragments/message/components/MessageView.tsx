@@ -110,7 +110,6 @@ export const MessageView = React.memo((props: MessageViewProps) => {
     const [reply, setReply] = React.useState<DataSourceWebMessageItem[]>([]);
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
     const router = React.useContext(XViewRouterContext)!;
-    const isChannel = message.source?.__typename === 'MessageSourceChat' && message.source.chat.__typename === 'SharedRoom' && message.source.chat.isChannel;
 
     React.useEffect(() => {
         setReply(
@@ -172,7 +171,6 @@ export const MessageView = React.memo((props: MessageViewProps) => {
                         message={{
                             ...message,
                         }}
-                        isChannel={isChannel}
                     />
                 </div>
             </div>

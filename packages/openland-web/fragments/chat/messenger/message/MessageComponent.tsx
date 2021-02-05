@@ -24,6 +24,7 @@ import { emoji } from 'openland-y-utils/emoji';
 import StarIcon from 'openland-icons/s/ic-star-16.svg';
 import IcPending from 'openland-icons/s/ic-pending-16.svg';
 import IcSuccess from 'openland-icons/s/ic-success-16.svg';
+import { MessageLikeButton } from './reactions/MessageLikeButton';
 
 const senderContainer = css`
     display: flex;
@@ -493,6 +494,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
 
     const buttons = (
         <div className={buttonsClass}>
+            <MessageLikeButton message={message} />
             <MessageReactions message={message} engine={engine} />
             <MessageCommentsButton message={message} isChannel={engine.isChannel || false} />
         </div>
