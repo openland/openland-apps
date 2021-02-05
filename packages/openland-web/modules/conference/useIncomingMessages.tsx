@@ -179,6 +179,7 @@ const textContentWrapper = css`
     overflow: hidden;
     text-overflow: ellipsis;
     max-height: var(--text-max-height);
+    max-width: 232px;
 `;
 
 const senderNameStyle = css`
