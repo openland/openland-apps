@@ -279,7 +279,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             require('assets/ic-leave-24.png'),
         );
 
-        if (SUPER_ADMIN || group.owner) {
+        if (SUPER_ADMIN) {
             builder.action(
                 `Delete ${typeString}`,
                 () => {
