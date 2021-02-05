@@ -20,6 +20,7 @@ import IcYellow from 'openland-icons/files/yellow.svg';
 import { isElectron } from 'openland-y-utils/isElectron';
 import { MediaLoader } from './MediaLoader';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
+import { isChrome } from 'openland-y-utils/isChrome';
 
 const modalContainer = css`
     position: relative;
@@ -358,6 +359,7 @@ const VideoContent = React.memo(
                     ref={videoRef}
                     onClick={handleClick}
                     onLoadedMetadata={handleLoadedMetadata}
+                    {...isChrome && { disablePictureInPicture: true, controlsList: 'nodownload' }}
                 >
                     <source src={videoSrc} type="video/mp4" />
                 </video>
