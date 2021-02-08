@@ -150,6 +150,7 @@ export const showStickerPackModal = (id: string) => {
             <StickerPackModalContent id={id} hide={ctx.hide} />
         ),
         containerStyle: { borderBottomLeftRadius: 0, borderBottomRightRadius: 0, borderTopLeftRadius: 18, borderTopRightRadius: 18, minHeight: 217 },
-        disableMargins: true
+        disableMargins: true,
+        disableBottomSafeArea: true,
     });
 };
