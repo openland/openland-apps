@@ -38,13 +38,13 @@ const emptyScreenSubtitle = cx(
 );
 
 const findFriendsImgSrc = css`
-    background: url(https://cdn.openland.com/shared/art/art-crowd.png) center center no-repeat;
-    background-image: -webkit-image-set(url(https://cdn.openland.com/shared/art/art-crowd.png) 1x, url(https://cdn.openland.com/shared/art/art-crowd@2x.png) 2x, url(https://cdn.openland.com/shared/art/art-crowd@3x.png) 3x);
+    background: url('https://cdn.openland.com/shared/art/art-crowd.png') center center no-repeat;
+    background-image: -webkit-image-set(url('https://cdn.openland.com/shared/art/art-crowd.png') 1x, url('https://cdn.openland.com/shared/art/art-crowd@2x.png') 2x, url('https://cdn.openland.com/shared/art/art-crowd@3x.png') 3x);
 `;
 
 const noContactsImgSrc = css`
-    background: url(https://cdn.openland.com/shared/art/art-shared.png) center center no-repeat;
-    background-image: -webkit-image-set(url(https://cdn.openland.com/shared/art/art-shared.png) 1x, url(https://cdn.openland.com/shared/art/art-shared@2x.png) 2x, url(https://cdn.openland.com/shared/art/art-shared@3x.png) 3x);
+    background: url('https://cdn.openland.com/shared/art/art-shared.png') center center no-repeat;
+    background-image: -webkit-image-set(url('https://cdn.openland.com/shared/art/art-shared.png') 1x, url('https://cdn.openland.com/shared/art/art-shared@2x.png') 2x, url('https://cdn.openland.com/shared/art/art-shared@3x.png') 3x);
 `;
 
 const MobileAppButton = (props: { isIOS: boolean } & XViewProps) => {
@@ -254,27 +254,27 @@ export const ContactsFragment = React.memo(() => {
             imgSrcStyle={noContactsImgSrc}
         />
     ) : (
-        <EmptyScreen
-            title="Find your friends"
-            subtitle="Import contacts from your phone to find people you know on Openland. Install a mobile app and tap “Import contacts”"
-            imgSrcStyle={findFriendsImgSrc}
-        >
-            <XView marginTop={16} flexWrap="wrap" flexDirection="row" justifyContent="center">
-                <MobileAppButton
-                    href="https://oplnd.com/ios"
-                    isIOS={true}
-                    marginTop={16}
-                    marginHorizontal={8}
-                />
-                <MobileAppButton
-                    href="https://oplnd.com/android"
-                    isIOS={false}
-                    marginTop={16}
-                    marginHorizontal={8}
-                />
-            </XView>
-        </EmptyScreen>
-    );
+            <EmptyScreen
+                title="Find your friends"
+                subtitle="Import contacts from your phone to find people you know on Openland. Install a mobile app and tap “Import contacts”"
+                imgSrcStyle={findFriendsImgSrc}
+            >
+                <XView marginTop={16} flexWrap="wrap" flexDirection="row" justifyContent="center">
+                    <MobileAppButton
+                        href="https://oplnd.com/ios"
+                        isIOS={true}
+                        marginTop={16}
+                        marginHorizontal={8}
+                    />
+                    <MobileAppButton
+                        href="https://oplnd.com/android"
+                        isIOS={false}
+                        marginTop={16}
+                        marginHorizontal={8}
+                    />
+                </XView>
+            </EmptyScreen>
+        );
 
     const content = hasContacts ? (
         <>
@@ -297,28 +297,28 @@ export const ContactsFragment = React.memo(() => {
                         onItemsCountChange={setSearchItemsCount}
                     />
                 ) : (
-                    <UFlatList
-                        loadingHeight={56}
-                        padded={false}
-                        renderItem={(x, i) => (
-                            <ContactsSearchItemRender
-                                item={x}
-                                index={i}
-                                selectedIndex={selectedIndex}
-                                onPick={onPick}
-                                onMessagePick={onMessagePick}
-                            />
-                        )}
-                        loading={loading}
-                        items={items}
-                        loadMore={handleLoadMore}
-                    />
-                )}
+                        <UFlatList
+                            loadingHeight={56}
+                            padded={false}
+                            renderItem={(x, i) => (
+                                <ContactsSearchItemRender
+                                    item={x}
+                                    index={i}
+                                    selectedIndex={selectedIndex}
+                                    onPick={onPick}
+                                    onMessagePick={onMessagePick}
+                                />
+                            )}
+                            loading={loading}
+                            items={items}
+                            loadMore={handleLoadMore}
+                        />
+                    )}
             </XView>
         </>
     ) : (
-        noContactsContent
-    );
+            noContactsContent
+        );
 
     return (
         <XView

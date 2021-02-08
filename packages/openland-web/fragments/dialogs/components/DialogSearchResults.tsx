@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
@@ -10,23 +10,9 @@ import { useGlobalSearch } from './useGlobalSearch';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-
-const noResultContainer = css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 34px;
-`;
-
-const imageStyle = css`
-    width: 178px;
-    height: 155px;
-    background-image: url("/static/X/messenger/channels-search-empty.svg");
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-    margin-bottom: 20px;
-`;
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import { TextBody, TextTitle3 } from 'openland-web/utils/TextStyles';
+import { showCreatingGroupFragment } from 'openland-web/fragments/create/CreateEntityFragment';
 
 const titleFeaturedStyle = css`
     white-space: nowrap;
@@ -45,6 +31,41 @@ const featuredIcon = css`
     margin-left: 4px;
 `;
 
+const emptyTitle = css`
+    text-align: center;
+    margin-bottom: 4px;
+    color: var(--foregroundPrimary);
+`;
+
+const emptyText = css`
+    text-align: center;
+    margin-bottom: 16px;
+    color: var(--foregroundSecondary);
+`;
+
+export const DialogSearchEmptyView = React.memo(() => {
+    const handleGroupClick = React.useCallback(() => {
+        showCreatingGroupFragment({ entityType: 'group' });
+    }, []);
+
+    return (
+        <XView
+            flexGrow={1}
+            justifyContent="center"
+            padding={32}
+        >
+            <div className={cx(TextTitle3, emptyTitle)}>Nothing found</div>
+            <div className={cx(TextBody, emptyText)}>
+                Didn't find the right group at Openland?<br />
+                Create your own
+            </div>
+            <XView alignItems="center">
+                <UButton text="Create group" onClick={handleGroupClick} />
+            </XView>
+        </XView>
+    );
+});
+
 export interface DialogSearchResults {
     variables: GlobalSearchVariables;
     onPick: (item: GlobalSearch_items) => void;
@@ -52,14 +73,6 @@ export interface DialogSearchResults {
     isForwarding?: boolean;
     hideChats?: string[];
 }
-
-export const DialogSearchEmptyView = React.memo(() => (
-    <div className={noResultContainer}>
-        <div className={imageStyle} />
-        <XView color="var(--foregroundSecondary)">No results</XView>
-    </div>
-));
-
 interface DialogSearchItemRenderProps {
     item: GlobalSearch_items;
     index: number;
