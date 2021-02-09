@@ -690,6 +690,8 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
             hideOnLeave: true,
             hideOnClick: false,
             hideOnChildClick: false,
+            scope: 'emoji-picker',
+            showTimeout: 200,
             wrapperClassName: wrapperClassName,
         },
         () => (
