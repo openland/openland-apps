@@ -303,6 +303,7 @@ export class Init extends React.Component<
 
                             let messenger = buildMessenger(getClient(), res.me, {
                                 store: new NativeKeyValue('engines'),
+                                experimental: SUPER_ADMIN && res.me.id !== 'ej97zq4pP1srkX17oe65CEdexQ',
                             });
                             setMessenger(new MobileMessenger(messenger, this.history));
                             await messenger.awaitLoading();

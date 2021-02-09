@@ -91,12 +91,16 @@ export const useForward = (sourceId: string, disableSource?: boolean) => {
     };
 };
 
+type DialogType = 'all' | 'unread' | 'groups' | 'private';
+
 export class MobileMessenger {
     readonly engine: MessengerEngine;
     readonly history: SRouting;
     readonly notifications: ASDataView<NotificationsDataSourceItem>;
 
     private dialogs?: ASDataView<DialogDataSourceItem>;
+    private dialogFilter?: DialogType;
+    private experimentalDialogs?: ASDataView<DialogDataSourceItem>;
     private prevDialogsCb: (index: number) => void = () => {/* noop */ };
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem | DataSourceInvitePeopleItem>>();
     private readonly sharedMedias = new Map<string, Map<string, ASDataView<SharedMediaDataSourceItem>>>();
@@ -119,6 +123,74 @@ export class MobileMessenger {
 
     setRouterSuitable = (r: SRouting | null) => {
         this.customHistory = r;
+    }
+
+    scrollDialogsToTop = () => {
+        if (this.engine.experimentalUpdates && this.experimentalDialogs) {
+            this.experimentalDialogs.onDataSourceScrollToTop();
+        } else if (this.dialogs) {
+            this.dialogs.onDataSourceScrollToTop();
+        }
+    }
+
+    scrollNotificationsToTop = () => {
+        if (this.notifications) {
+            this.notifications.onDataSourceScrollToTop();
+        }
+    }
+
+    getExperimentalDialog = (filter: DialogType) => {
+        if (this.engine.experimentalUpdates && this.dialogFilter !== filter) {
+            this.dialogFilter = filter;
+            if (filter === 'unread') {
+                this.experimentalDialogs = new ASDataView(
+                    this.engine.experimentalUpdates.dialogs.dialogsUnread.legacy,
+                    (item) => (
+                        <DialogItemViewAsync
+                            item={item}
+                            onPress={this.handleDialogPress}
+                            showDiscover={() => false}
+                        />
+                    ),
+                );
+            }
+            if (filter === 'groups') {
+                this.experimentalDialogs = new ASDataView(
+                    this.engine.experimentalUpdates.dialogs.dialogsGroups.legacy,
+                    (item) => (
+                        <DialogItemViewAsync
+                            item={item}
+                            onPress={this.handleDialogPress}
+                            showDiscover={() => false}
+                        />
+                    ),
+                );
+            }
+            if (filter === 'private') {
+                this.experimentalDialogs = new ASDataView(
+                    this.engine.experimentalUpdates.dialogs.dialogsPrivate.legacy,
+                    (item) => (
+                        <DialogItemViewAsync
+                            item={item}
+                            onPress={this.handleDialogPress}
+                            showDiscover={() => false}
+                        />
+                    ),
+                );
+            } else {
+                this.experimentalDialogs = new ASDataView(
+                    this.engine.experimentalUpdates.dialogs.dialogsAll.legacy,
+                    (item) => (
+                        <DialogItemViewAsync
+                            item={item}
+                            onPress={this.handleDialogPress}
+                            showDiscover={() => false}
+                        />
+                    ),
+                );
+            }
+        }
+        return this.experimentalDialogs;
     }
 
     getDialogs = (setTab: (index: number) => void) => {

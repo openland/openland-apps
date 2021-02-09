@@ -10,6 +10,7 @@ import { SBackButton } from 'react-native-s/SBackButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { HeaderTitleViewProps } from './HeaderTitleView.ios';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const styles = StyleSheet.create({
     root: {
@@ -103,8 +104,20 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
 
     render() {
         let v = this.props.page;
-        let title = <Text style={[styles.title, { color: this.props.style.textColor }, this.props.page.page.startIndex === 0 ? styles.rootFirst : {}]}>{this.props.page.config.title}</Text>;
+        let title = <Text style={[styles.title, { color: this.props.style.textColor }, this.props.page.page.startIndex === 0 ? styles.rootFirst : {}]}>{v.config.title}</Text>;
         title = (v.config.titleView && <View style={{ flexGrow: 1, flexShrink: 1, minWidth: 0, flexBasis: 0, alignItems: 'stretch' }}>{v.config.titleView()}</View>) || title;
+        if (v.config.titleAction) {
+            title = (
+                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={v.config.titleAction.action}>
+                    <Text style={[styles.title, { color: this.props.style.textColor }, this.props.page.page.startIndex === 0 ? styles.rootFirst : {}]}>{v.config.titleAction.title}</Text>
+                    <ThemeContext.Consumer>
+                        {theme => (
+                            <Image source={require('assets/ic-dropdown-16.png')} style={{ marginLeft: 8, marginTop: 5, tintColor: theme.foregroundTertiary }}/>
+                        )}
+                    </ThemeContext.Consumer>
+                </TouchableOpacity>
+            );
+        }
 
         let showCloseButton = !!this.props.manager.parent && this.props.page.page.startIndex === 0;
         let showBackButton = !showCloseButton && (this.props.page.page.startIndex !== 0 || v.config.searchActive);

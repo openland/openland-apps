@@ -29,6 +29,11 @@ const styles = StyleSheet.create({
         paddingLeft: 16,
         paddingRight: 16
     } as TextStyle,
+    titleAction: {
+        ...TextStyles.Large,
+        textAlign: 'left',
+        textAlignVertical: 'center',
+    } as TextStyle,
     passiveSearchInput: {
         flex: 1,
         borderRadius: RadiusStyles.Large
@@ -115,10 +120,24 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                     <SAnimated.View name={'header-small--' + v.page.key} style={{ width: '100%' }}>
                         {content}
                     </SAnimated.View>
-                    {(v.config.appearance === 'large' || !v.config.appearance) && (
+                    {(v.config.appearance === 'large' || !v.config.appearance) && !v.config.titleAction && (
                         <View style={{ position: 'absolute', top: SDevice.navigationBarHeight, left: 0, right: 0, height: MAX_SIZE, paddingTop: 5, paddingBottom: 12, overflow: 'hidden' }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                             <SAnimated.View name={'header-large--' + v.page.key} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                                 <Text numberOfLines={1} style={[styles.titleLarge, { color: this.props.style.textColor }]} allowFontScaling={false}>{v.config.title}</Text>
+                            </SAnimated.View>
+                        </View>
+                    )}
+                    {(v.config.appearance === 'large' || !v.config.appearance) && v.config.titleAction && (
+                        <View style={{ position: 'absolute', top: SDevice.navigationBarHeight, left: 0, right: 0, height: MAX_SIZE, paddingTop: 5, paddingBottom: 12, overflow: 'hidden', paddingLeft: 16, paddingRight: 16 }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
+                            <SAnimated.View name={'header-large--' + v.page.key} pointerEvents={this.props.current ? 'box-none' : 'none'}>
+                                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={v.config.titleAction.action}>
+                                    <Text numberOfLines={1} style={[styles.titleAction, { color: this.props.style.textColor }]} allowFontScaling={false}>{v.config.titleAction.title}</Text>
+                                    <ThemeContext.Consumer>
+                                        {theme => (
+                                            <Image source={require('assets/ic-dropdown-16.png')} style={{ marginLeft: 8, marginTop: 5, tintColor: theme.foregroundTertiary }}/>
+                                        )}
+                                    </ThemeContext.Consumer>
+                                </TouchableOpacity>
                             </SAnimated.View>
                         </View>
                     )}

@@ -33,12 +33,10 @@ export const Home = React.memo((props: PageProps) => {
     const failingPaymentsCount = wallet && wallet.myWallet.failingPaymentsCount || undefined;
     const [exploreSeen, setExploreSeen] = React.useState<boolean | null>(null);
 
-    const messengerEngine = getMessenger().engine;
+    const messenger = getMessenger();
     const exploreRef = React.createRef<any>();
     const contactsRef = React.createRef<any>();
-    const dialogsDataSource = messengerEngine.dialogList.dataSource;
     const dialogsSearchController = React.createRef<SSearchControlerComponent>();
-    const notificationsDataSource = messengerEngine.notificationCenter.dataSource;
     const settingsRef = React.createRef<any>();
 
     const readExploreSeen = async () => {
@@ -56,12 +54,12 @@ export const Home = React.memo((props: PageProps) => {
             } else if (tab === 1 && contactsRef.current) {
                 contactsRef.current.getNode().scrollToOffset({ animated: true, offset: 0 });
             } else if (tab === 2) {
-                dialogsDataSource.requestScrollToTop();
+                messenger.scrollDialogsToTop();
                 if (dialogsSearchController.current) {
                     dialogsSearchController.current.handleSearchStopCompleted();
                 }
             } else if (tab === 3) {
-                notificationsDataSource.requestScrollToTop();
+                messenger.scrollNotificationsToTop();
             } else if (tab === 4 && settingsRef.current) {
                 settingsRef.current.getNode().scrollTo({ y: 0 });
             }
