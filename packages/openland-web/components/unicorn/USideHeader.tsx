@@ -19,6 +19,7 @@ const titleIcon = css`
     align-items: center;
     justify-content: center;
     margin-left: 8px;
+    margin-top: 5px;
 `;
 
 const titleActive = css`
