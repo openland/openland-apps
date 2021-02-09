@@ -67,7 +67,8 @@ const EmptyView = React.memo(() => {
                 Nothing found
             </div>
             <div className={cx(TextBody, emptyText)}>
-                Didn’t find your friends at Openland? Let’s invite them to stay in touch
+                Don’t see your friends on Openland? <br />
+                Invite them to stay in touch
             </div>
             <XView alignItems="center">
                 <UButton path="/settings/invites" text="Invite friends" />
