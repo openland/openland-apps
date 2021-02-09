@@ -8,7 +8,7 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { showReactionsList } from './showReactionsList';
 
 export const reactionImage = (r: MessageReactionType) =>
-    `https://cdn.openland.com/shared/reactions/${r}.png`;
+    `https://cdn.openland.com/shared/reactions-2/${r}.png`;
 
 const reactionsWrapper = css`
   display: flex;
