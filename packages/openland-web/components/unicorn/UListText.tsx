@@ -20,12 +20,12 @@ export const UListText = (props: UListTextProps) => {
 
     return (
         <XView
-            {...other}
             {...TextStyles.Body}
             paddingHorizontal={16}
             color="var(--foregroundPrimary)"
             flexGrow={1}
             flexShrink={1}
+            {...other}
         >
             <div className={wrapper}>
                 {typeof value === 'string' && <UText text={value} proccessText={emoji} />}

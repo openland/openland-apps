@@ -4,9 +4,12 @@ import { css } from 'linaria';
 
 import { emoji } from 'openland-y-utils/emoji';
 import { UText } from 'openland-web/components/unicorn/UText';
+import { XViewProps } from 'react-mental';
 
-interface ShowMoreProps {
+interface ShowMoreProps extends XViewProps {
     text: string;
+    maxCharacters?: number;
+    maxLineBreaks?: number;
 }
 
 const showMoreLink = css`
@@ -24,32 +27,33 @@ const MAX_LINE_BREAKS = 10;
 
 const getLineBreaksNumber = (text: string) => text.split(/\r\n|\r|\n/).length;
 
-const getShortText = (text: string) => {
-    if (text.length > MAX_CHARACTERS) {
-        return `${text.substr(0, MAX_CHARACTERS)}... `;
+const getShortText = (text: string, maxCharacters: number, maxLineBreaks: number) => {
+    if (text.length > maxCharacters) {
+        return `${text.substr(0, maxCharacters)}... `;
     } else {
-        const shortTextLength = text.split(/\r\n|\r|\n/).slice(0, MAX_LINE_BREAKS).join('\n').length;
+        const shortTextLength = text.split(/\r\n|\r|\n/).slice(0, maxLineBreaks).join('\n').length;
         return `${text.substr(0, shortTextLength)}... `;
     }
 };
 
-export const ShowMoreText = React.memo<ShowMoreProps>(({ text }) => {
+export const isSmallText = (text: string, maxCharacters: number, maxLineBreaks: number) => text.length < maxCharacters && getLineBreaksNumber(text) < maxLineBreaks;
+
+export const ShowMoreText = React.memo<ShowMoreProps>((props) => {
+    const { text, maxCharacters = MAX_CHARACTERS, maxLineBreaks = MAX_LINE_BREAKS, ...other } = props;
     const [fullLength, setFullLength] = React.useState(false);
 
-    const isSmallText = text.length < MAX_CHARACTERS && getLineBreaksNumber(text) < MAX_LINE_BREAKS;
-
-    if (fullLength || isSmallText) {
-        return <UListText value={text}/>;
+    if (fullLength || isSmallText(text, maxCharacters, maxLineBreaks)) {
+        return <UListText value={text} {...other}/>;
     }
 
     const compactView = (
         <>
-            <UText text={getShortText(text)} proccessText={emoji} />
+            <UText text={getShortText(text, maxCharacters, maxLineBreaks)} proccessText={emoji} />
             <span className={showMoreLink} onClick={() => setFullLength(true)}>Show more</span>
         </>
     );
 
     return (
-        <UListText value={compactView}/>
+        <UListText value={compactView} {...other}/>
     );
 });

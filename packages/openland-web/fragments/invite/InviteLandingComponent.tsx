@@ -26,6 +26,7 @@ import {
 } from './InviteComponents';
 import { detectOS } from 'openland-x-utils/detectOS';
 import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
+import { isSmallText, ShowMoreText } from '../shortname/components/ShowMoreText';
 
 type SharedRoomT = ResolvedInvite_shortnameItem_SharedRoom | ResolvedInvite_invite_RoomInvite_room;
 type OrgT = ResolvedInvite_invite_InviteInfo_organization;
@@ -90,7 +91,7 @@ const smallAvatarWrapper = css`
 
 const titleWrapperStyle = css`
     margin-top: 32px;
-    max-width: 320px;
+    max-width: 480px;
     align-self: center;
     flex-shrink: 0;
     display: flex;
@@ -118,9 +119,13 @@ const descriptionStyle = css`
     text-align: center;
     color: var(--foregroundSecondary);
     margin-top: 8px;
-    max-width: 320px;
+    max-width: 480px;
     align-self: center;
     flex-shrink: 0;
+`;
+
+const longDescriptionStyle = css`
+  text-align: left;
 `;
 
 const membersContainer = css`
@@ -142,10 +147,15 @@ const buttonContainer = css`
     margin: auto;
     margin-top: 20px;
     margin-bottom: 20px;
+    width: 240px;
     flex-shrink: 0;
     z-index: 2;
     align-self: center;
+    box-shadow: 0px 220px 40px 200px var(--backgroundPrimary);
 `;
+
+const MAX_DESCRIPTION_CHARACTERS = 280;
+const MAX_DESCRIPTION_LINE_BREAKS = 5;
 
 interface InviteLandingComponentLayoutProps {
     whereToInvite: 'channel' | 'group' | 'organization' | 'community' | 'Openland';
@@ -168,7 +178,6 @@ export const InviteLandingComponentLayout = React.memo(
         const isMobile = os === 'iOS' || os === 'Android';
 
         const contentRef = React.useRef<HTMLDivElement>(null);
-        const [showShadow, setShowShadow] = React.useState(false);
 
         const {
             whereToInvite,
@@ -203,21 +212,9 @@ export const InviteLandingComponentLayout = React.memo(
         }
 
         const showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
-
-        React.useEffect(() => {
-            const handler = () => {
-                if (contentRef && contentRef.current) {
-                    if (contentRef.current.clientHeight > window.innerHeight) {
-                        setShowShadow(true);
-                    } else {
-                        setShowShadow(false);
-                    }
-                }
-            };
-            handler();
-            document.addEventListener('resize', handler);
-            return () => document.removeEventListener('resize', handler);
-        }, [contentRef]);
+        const isSmallDescription = React.useMemo(() => {
+           return description && isSmallText(description, MAX_DESCRIPTION_CHARACTERS, MAX_DESCRIPTION_LINE_BREAKS);
+        }, [description]);
 
         return (
             <Page padded={false} flexGrow={1}>
@@ -240,9 +237,19 @@ export const InviteLandingComponentLayout = React.memo(
                             )}
                         </div>
                     </div>
-                    {!!description && (
+                    {!!description && isSmallDescription && (
                         <div className={cx(TextBody, descriptionStyle)}>
                             <UText text={description} />
+                        </div>
+                    )}
+                    {!!description && !isSmallDescription && (
+                        <div className={cx(TextBody, descriptionStyle, longDescriptionStyle)}>
+                            <ShowMoreText
+                                text={description}
+                                color="var(--foregroundSecondary)"
+                                maxCharacters={MAX_DESCRIPTION_CHARACTERS}
+                                maxLineBreaks={MAX_DESCRIPTION_LINE_BREAKS}
+                            />
                         </div>
                     )}
                     {showMembers && room && (
@@ -273,7 +280,6 @@ export const InviteLandingComponentLayout = React.memo(
                     <div className={stickyContainer}>
                         <div className={stickyContent}>
                             {button && <div className={buttonContainer}>{button}</div>}
-                            {showShadow && <div className={shadowClassName} />}
                         </div>
                     </div>
                 </div>
