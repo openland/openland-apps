@@ -15,6 +15,7 @@ import { SRouterContext } from 'react-native-s/SRouterContext';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { SSearchControlerComponent } from 'react-native-s/SSearchController';
 import { AppStorage } from 'openland-y-runtime/AppStorage';
+// import { RoomsFeed } from './RoomsFeed';
 
 export const ActiveTabContext = React.createContext(false);
 export const SetTabContext = React.createContext<(index: number) => void>(() => {/* noop */ });
@@ -79,6 +80,7 @@ export const Home = React.memo((props: PageProps) => {
                             {tab === 0 && <ZTrack event={'navigate_discover'} />}
                             <ComponentRefContext.Provider value={exploreRef}>
                                 <Explore {...props} />
+                                {/* <RoomsFeed {...props} /> */}
                             </ComponentRefContext.Provider>
                         </HeaderContextChild>
                     </View>
@@ -127,6 +129,12 @@ export const Home = React.memo((props: PageProps) => {
                         selected={tab === 0}
                         onPress={() => handleChangeTab(0)}
                     />
+                    {/* <AppBarBottomItem
+                        icon={require('assets/ic-flashlight-24.png')}
+                        iconSelected={require('assets/ic-flashlight-filled-24.png')}
+                        selected={tab === 0}
+                        onPress={() => handleChangeTab(0)}
+                    /> */}
                     <AppBarBottomItem
                         icon={require('assets/ic-user-24.png')}
                         iconSelected={require('assets/ic-user-filled-24.png')}

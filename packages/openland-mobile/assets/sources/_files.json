@@ -8,6 +8,34 @@
             ]
         },
         {
+            "name": "ic-microphone",
+            "src": "ic-microphone-16.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
+            "name": "ic-headphones",
+            "src": "ic-headphones-16.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
+            "name": "ic-flashlight",
+            "src": "ic-flashlight-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-flashlight-filled",
+            "src": "ic-flashlight-filled-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-block",
             "src": "ic-block-24.svg",
             "sizes": [
