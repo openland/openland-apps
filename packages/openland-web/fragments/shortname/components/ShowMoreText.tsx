@@ -5,6 +5,7 @@ import { css } from 'linaria';
 import { emoji } from 'openland-y-utils/emoji';
 import { UText } from 'openland-web/components/unicorn/UText';
 import { XViewProps } from 'react-mental';
+import { isSmallText } from 'openland-y-utils/isSmallText';
 
 interface ShowMoreProps extends XViewProps {
     text: string;
@@ -25,8 +26,6 @@ const showMoreLink = css`
 const MAX_CHARACTERS = 400;
 const MAX_LINE_BREAKS = 10;
 
-const getLineBreaksNumber = (text: string) => text.split(/\r\n|\r|\n/).length;
-
 const getShortText = (text: string, maxCharacters: number, maxLineBreaks: number) => {
     if (text.length > maxCharacters) {
         return `${text.substr(0, maxCharacters)}... `;
@@ -35,8 +34,6 @@ const getShortText = (text: string, maxCharacters: number, maxLineBreaks: number
         return `${text.substr(0, shortTextLength)}... `;
     }
 };
-
-export const isSmallText = (text: string, maxCharacters: number, maxLineBreaks: number) => text.length < maxCharacters && getLineBreaksNumber(text) < maxLineBreaks;
 
 export const ShowMoreText = React.memo<ShowMoreProps>((props) => {
     const { text, maxCharacters = MAX_CHARACTERS, maxLineBreaks = MAX_LINE_BREAKS, ...other } = props;

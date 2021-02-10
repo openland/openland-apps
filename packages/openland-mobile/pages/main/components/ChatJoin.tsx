@@ -1,5 +1,15 @@
 import * as React from 'react';
-import { View, Text, Alert, StyleSheet, ViewStyle, TextStyle, Platform, Image, ScrollView } from 'react-native';
+import {
+    View,
+    Text,
+    Alert,
+    StyleSheet,
+    ViewStyle,
+    TextStyle,
+    Platform,
+    Image,
+    ScrollView,
+} from 'react-native';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { ZText } from 'openland-mobile/components/ZText';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
@@ -19,6 +29,7 @@ import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import { showPayConfirm } from '../modals/PayConfirm';
 import { SRouter } from 'react-native-s/SRouter';
 import { OpenlandClient } from 'openland-api/spacex';
+import { isSmallText } from 'openland-y-utils/isSmallText';
 
 const styles = StyleSheet.create({
     container: {
@@ -34,8 +45,8 @@ const styles = StyleSheet.create({
     } as TextStyle,
     description: {
         ...TextStyles.Body,
-        marginTop: 4,
-        textAlign: 'center',
+        marginTop: 12,
+        textAlign: 'left',
     } as TextStyle,
     members: {
         ...TextStyles.Body,
@@ -230,7 +241,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                             marginLeft: -8,
                             borderRadius: 100,
                             borderColor: theme.backgroundPrimary,
-                            borderWidth: 2
+                            borderWidth: 2,
                         }}
                     >
                         <ZAvatar photo={src} size="small" />
@@ -308,7 +319,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                 {joinAvatars}
                 <View style={{ flexDirection: 'row', marginTop: 32 }}>
                     <Text
-                        style={[styles.title, { color: theme.foregroundPrimary, }]}
+                        style={[styles.title, { color: theme.foregroundPrimary }]}
                         numberOfLines={3}
                         allowFontScaling={false}
                     >
@@ -317,7 +328,15 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                     {featured && theme.displayFeaturedIcon && (
                         <Image
                             source={require('assets/ic-verified-16.png')}
-                            style={{ tintColor: '#3DA7F2', width: 16, height: 16, flexShrink: 0, marginLeft: 4, marginTop: 2, alignSelf: 'center' }}
+                            style={{
+                                tintColor: '#3DA7F2',
+                                width: 16,
+                                height: 16,
+                                flexShrink: 0,
+                                marginLeft: 4,
+                                marginTop: 2,
+                                alignSelf: 'center',
+                            }}
                         />
                     )}
                 </View>
@@ -325,7 +344,13 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                     <ZText
                         text={description}
                         linkify={true}
-                        style={[styles.description, { color: theme.foregroundSecondary }]}
+                        style={[
+                            styles.description,
+                            {
+                                color: theme.foregroundSecondary,
+                                textAlign: isSmallText(description, 150, 3) ? 'center' : 'left',
+                            },
+                        ]}
                     />
                 )}
                 {showMembers && membersContent}
@@ -341,7 +366,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                 )}
             </ScrollView>
             {button}
-       </View>
+        </View>
     );
 });
 

@@ -18,6 +18,8 @@ import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
 import { UText } from 'openland-web/components/unicorn/UText';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { XDialogProviderComponent } from 'openland-x/XDialogProvider';
+import { ShowMoreText } from 'openland-web/fragments/shortname/components/ShowMoreText';
+import { isSmallText } from 'openland-y-utils/isSmallText';
 import {
     resolveRoomButton,
     resolveOrgButton,
@@ -26,7 +28,6 @@ import {
 } from './InviteComponents';
 import { detectOS } from 'openland-x-utils/detectOS';
 import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
-import { isSmallText, ShowMoreText } from '../shortname/components/ShowMoreText';
 
 type SharedRoomT = ResolvedInvite_shortnameItem_SharedRoom | ResolvedInvite_invite_RoomInvite_room;
 type OrgT = ResolvedInvite_invite_InviteInfo_organization;
