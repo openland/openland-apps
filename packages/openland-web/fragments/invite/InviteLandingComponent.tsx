@@ -107,7 +107,7 @@ const featuredIconStyle = css`
 const descriptionStyle = css`
     text-align: center;
     color: var(--foregroundSecondary);
-    margin-top: 8px;
+    margin-top: 12px;
     max-width: 480px;
     align-self: center;
     flex-shrink: 0;
