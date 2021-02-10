@@ -120,6 +120,15 @@ export const DialogsFragment = React.memo(() => {
         }
     }, [isVisible]);
 
+    const title =
+        dialogFilter === 'unread'
+            ? 'Unread'
+            : dialogFilter === 'groups'
+            ? 'Groups'
+            : dialogFilter === 'private'
+            ? 'Direct'
+            : 'Chats';
+
     return (
         <>
             <DialogsCounter />
@@ -133,8 +142,8 @@ export const DialogsFragment = React.memo(() => {
                 <USideHeader
                     title={
                         messenger.experimentalUpdates
-                            ? { title: 'Chats', active: menuVisible, action: menuShow }
-                            : 'Chats'
+                            ? { title: title, active: menuVisible, action: menuShow }
+                            : title
                     }
                 >
                     <NotificationsButton />

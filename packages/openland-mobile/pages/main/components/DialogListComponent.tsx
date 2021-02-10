@@ -9,6 +9,7 @@ import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngin
 
 interface DialogListComponentProps {
     dialogs: ASDataView<DialogDataSourceItem>;
+    applyModes?: string[];
 }
 
 export class DialogListComponent extends React.PureComponent<DialogListComponentProps> {
@@ -22,6 +23,7 @@ export class DialogListComponent extends React.PureComponent<DialogListComponent
                         <>
                             <HeaderConfigRegistrator config={{ contentOffset: this.contentOffset }} />
                             <ASListView
+                                applyModes={this.props.applyModes}
                                 overscrollCompensation={true}
                                 contentPaddingTop={area.top}
                                 contentPaddingBottom={area.bottom}

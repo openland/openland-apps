@@ -408,10 +408,15 @@ interface EmojiPickerBodyProps {
     onStickerTabLeave: () => void;
 }
 
+type EmojiPickerState = 'emoji' | 'sticker' | undefined;
+const emojiPickerStateKey = 'openland-emoji-picker-state';
+
 const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
     const ref = React.useRef<VariableSizeList>(null);
     const [currentSection, setCurrentSection] = React.useState(0);
-    const [stickers, setStickers] = React.useState(!!props.onStickerSent);
+    const [stickers, setStickers] = React.useState(() => {
+        return !!props.onStickerSent && (localStorage.getItem(emojiPickerStateKey) as EmojiPickerState) !== 'emoji';
+    });
     const [searchInput, setSearchInput] = React.useState<string>('');
     const [foundEmoji, setFoundEmoji] = React.useState<Emoji[]>([]);
     const onSearch = (e: string) => {
@@ -435,6 +440,14 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
             // ref.current.scrollToItem(src, 'start');
         }
     }, []);
+
+    React.useEffect(() => {
+        if (!props.onStickerSent) {
+            return;
+        }
+        let pickerState: EmojiPickerState = stickers ? 'sticker' : 'emoji';
+        localStorage.setItem(emojiPickerStateKey, pickerState);
+    }, [stickers]);
 
     return (
         <div className={popperContainerClass}>
@@ -677,6 +690,8 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
             hideOnLeave: true,
             hideOnClick: false,
             hideOnChildClick: false,
+            scope: 'emoji-picker',
+            showTimeout: 200,
             wrapperClassName: wrapperClassName,
         },
         () => (

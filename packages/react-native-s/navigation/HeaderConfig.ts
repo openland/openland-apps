@@ -13,6 +13,11 @@ export interface HeaderButtonDescription {
 export interface HeaderConfig {
     headerHidden?: boolean;
     title?: string;
+    titleAction?: {
+        title: string;
+        active: boolean;
+        action: () => void;
+    };
     titleView?: any;
     counter?: number;
 
@@ -44,6 +49,11 @@ export interface HeaderConfig {
 
 export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let title: string | undefined;
+    let titleAction: {
+        title: string;
+        active: boolean;
+        action: () => void;
+    } | undefined;
     let accentColor: string | undefined;
     let iconColor: string | undefined;
     let backgroundColor: string | undefined;
@@ -69,6 +79,9 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     for (let c of configs) {
         if (c.title) {
             title = c.title;
+        }
+        if (c.titleAction) {
+            titleAction = c.titleAction;
         }
         if (c.titleView) {
             titleView = c.titleView;
@@ -148,7 +161,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
             searchContext = c.searchContext;
         }
     }
-    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchPlaceholder, searchActive, searchClosed, searchPress, searchContainer, searchClosingCompleted, searchChanged, searchContext, headerHidden, accentColor, iconColor, hideBackText, hideIcon, backgroundColor, backButtonRootFallback };
+    return { title, titleAction, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchPlaceholder, searchActive, searchClosed, searchPress, searchContainer, searchClosingCompleted, searchChanged, searchContext, headerHidden, accentColor, iconColor, hideBackText, hideIcon, backgroundColor, backButtonRootFallback };
 }
 
 export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
@@ -180,6 +193,9 @@ export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
         return false;
     }
     if (a.title !== b.title) {
+        return false;
+    }
+    if (a.titleAction !== b.titleAction) {
         return false;
     }
     if (!!a.buttons !== !!b.buttons) {

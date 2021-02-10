@@ -10,23 +10,8 @@ import { useClient } from 'openland-api/useClient';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { InvalidateSync } from '@openland/patterns';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
-
-const noResultContainer = css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 34px;
-`;
-
-const imageStyle = css`
-    width: 178px;
-    height: 155px;
-    background-image: url("/static/X/messenger/channels-search-empty.svg");
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-    margin-bottom: 20px;
-`;
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import { TextBody, TextTitle3 } from 'openland-web/utils/TextStyles';
 
 const messageBtnWrapper = css`
     width: 48px;
@@ -49,11 +34,33 @@ const messageBtnWrapperSelected = css`
     display: flex;
 `;
 
+const emptyTitle = css`
+    text-align: center;
+    margin-bottom: 4px;
+    color: var(--foregroundPrimary);
+`;
+
+const emptyText = css`
+    text-align: center;
+    margin-bottom: 16px;
+    color: var(--foregroundSecondary);
+`;
+
 export const ContactsSearchEmptyView = React.memo(() => (
-    <div className={noResultContainer}>
-        <div className={imageStyle} />
-        <XView color="var(--foregroundSecondary)">No results</XView>
-    </div>
+    <XView
+        flexGrow={1}
+        justifyContent="center"
+        padding={32}
+    >
+        <div className={cx(TextTitle3, emptyTitle)}>Nothing found</div>
+        <div className={cx(TextBody, emptyText)}>
+            Don’t see your friends on Openland? <br />
+            Invite them to stay in touch
+        </div>
+        <XView alignItems="center">
+            <UButton path="/settings/invites" text="Invite friends" />
+        </XView>
+    </XView>
 ));
 
 interface ListNavigationProps {
