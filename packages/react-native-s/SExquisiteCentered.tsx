@@ -33,10 +33,10 @@ export class SEquisiteCentered extends React.PureComponent<SEquisiteCenteredProp
             let right = inited ? this.state.rightWidth! : 0;
             return (
                 <View style={[this.props.style, { flexDirection: 'row', justifyContent: 'space-between' }]}>
-                    <View style={{ flexDirection: 'row', flexShrink: 0, maxWidth: 100 }} onLayout={this.handleLeftLayout}>
+                    <View style={{ flexDirection: 'row', flexShrink: 0, maxWidth: 120 }} onLayout={this.handleLeftLayout}>
                         {child[0]}
                     </View>
-                    <View style={{ flexDirection: 'row', flexShrink: 0, maxWidth: 100 }} onLayout={this.handleRightLayout}>
+                    <View style={{ flexDirection: 'row', flexShrink: 0, maxWidth: 120 }} onLayout={this.handleRightLayout}>
                         {child[2]}
                     </View>
                     <View style={{ position: 'absolute', left: left, right: right, top: 0, flexDirection: 'row', opacity: inited ? 1 : 0 }}>
@@ -48,10 +48,10 @@ export class SEquisiteCentered extends React.PureComponent<SEquisiteCenteredProp
             let padding = inited ? Math.max(this.state.leftWidth!, this.state.rightWidth!) : 0;
             return (
                 <View style={[this.props.style, { flexDirection: 'row', justifyContent: 'space-between' }]}>
-                    <View style={{ flexDirection: 'row', flexShrink: 0, maxWidth: 100 }} onLayout={this.handleLeftLayout}>
+                    <View style={{ flexDirection: 'row', flexShrink: 0, maxWidth: 120 }} onLayout={this.handleLeftLayout}>
                         {child[0]}
                     </View>
-                    <View style={{ flexDirection: 'row', flexShrink: 0, maxWidth: 100 }} onLayout={this.handleRightLayout}>
+                    <View style={{ flexDirection: 'row', flexShrink: 0, maxWidth: 120 }} onLayout={this.handleRightLayout}>
                         {child[2]}
                     </View>
                     <View style={{ position: 'absolute', left: padding, right: padding, top: 0, flexDirection: 'row', opacity: inited ? 1 : 0 }}>
