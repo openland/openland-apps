@@ -36,6 +36,20 @@
             ]
         },
         {
+            "name": "ic-door-leave",
+            "src": "ic-door-leave-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-close-bold",
+            "src": "ic-close-bold-16.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
             "name": "ic-block",
             "src": "ic-block-24.svg",
             "sizes": [
@@ -321,7 +335,8 @@
             "name": "ic-mute-glyph",
             "src": "ic-mute-glyph-24.svg",
             "sizes": [
-                24
+                24,
+                36
             ]
         },
         {

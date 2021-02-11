@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { View, Text, Platform, Keyboard, ViewStyle } from 'react-native';
-import { ZButton } from 'openland-mobile/components/ZButton';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { View, Text, Platform, Keyboard, ViewStyle, TouchableOpacity, Image } from 'react-native';
+import { HighlightAlpha, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { GQLClientContext } from 'openland-api/useClient';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZLoader } from './ZLoader';
@@ -30,11 +29,40 @@ export function showBottomSheet(config: BottomSheetConfig) {
         return (
             <ThemeContext.Provider value={theme}>
                 {!!config.title && (
-                    <View style={{ paddingTop: 16, paddingLeft: 16, paddingRight: 16, paddingBottom: 10, alignItems: config.titleAlign ? undefined : 'center' }}>
-                        <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
-                            {config.title}
-                        </Text>
-                    </View>
+                    <>
+                        <View
+                            style={{
+                                paddingLeft: 16,
+                                paddingRight: config.cancelable ? 0 : 16,
+                                paddingVertical: config.cancelable ? 0 : 15,
+                                flexDirection: 'row',
+                                justifyContent: config.cancelable ? 'space-between' : (config.titleAlign ? 'flex-start' : 'center'),
+                                alignItems: 'center'
+                            }}
+                        >
+                            <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>{config.title}</Text>
+                            {config.cancelable && (
+                                <TouchableOpacity
+                                    activeOpacity={HighlightAlpha}
+                                    style={{ justifyContent: 'center', alignItems: 'center', width: 56, height: 56 }}
+                                    onPress={ctx.hide}
+                                >
+                                    <View
+                                        style={{
+                                            backgroundColor: theme.backgroundTertiaryTrans,
+                                            borderRadius: 100,
+                                            width: 28,
+                                            height: 28,
+                                            justifyContent: 'center',
+                                            alignItems: 'center'
+                                        }}
+                                    >
+                                        <Image style={{ width: 16, height: 16, tintColor: theme.foregroundTertiary }} source={require('assets/ic-close-bold-16.png')} />
+                                    </View>
+                                </TouchableOpacity>
+                            )}
+                        </View>
+                    </>
                 )}
                 {!config.title && !config.containerStyle && <View style={{ marginTop: 16 }} />}
                 <GQLClientContext.Provider value={getClient()}>
@@ -44,19 +72,7 @@ export function showBottomSheet(config: BottomSheetConfig) {
                         </React.Suspense>
                     </QueryCacheProvider>
                 </GQLClientContext.Provider>
-                {config.cancelable ? (
-                    <View style={{ padding: 16 }} >
-                        <ZButton
-                            title={config.buttonTitle ? config.buttonTitle : 'Cancel'}
-                            size="large"
-                            style="secondary"
-                            onPress={() => ctx.hide()}
-                        />
-                    </View>
-                ) : (
-                        <View style={{ height: 16 }} />
-                    )
-                }
+                <View style={{ height: 16 }} />
             </ThemeContext.Provider >
         );
     }, {
