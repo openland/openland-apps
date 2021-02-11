@@ -104,7 +104,7 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
                     }}
                     onPress={hide}
                 >
-                    <Image style={{ width: 16, height: 16, tintColor: theme.foregroundTertiary }} source={require('assets/ic-close-16.png')} />
+                    <Image style={{ width: 16, height: 16, tintColor: theme.foregroundTertiary }} source={require('assets/ic-close-bold-16.png')} />
                 </TouchableOpacity>
             </View>
             {stickerLayout.stickerSize > 0 && stickerLayout.stickersPerRow > 0 && (

@@ -4,8 +4,6 @@ import { SHeader } from 'react-native-s/SHeader';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { SScrollView } from 'react-native-s/SScrollView';
-import { ComponentRefContext } from './Home';
 import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
@@ -13,6 +11,8 @@ import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZButton } from 'openland-mobile/components/ZButton';
+import { SFlatList } from 'react-native-s/SFlatList';
+import { SRouterContext } from 'react-native-s/SRouterContext';
 
 type VoiceChat = {
     id: string;
@@ -60,8 +60,12 @@ let RoomView = React.memo((props: { room: VoiceChat, theme: ThemeGlobal }) => {
 });
 
 let RoomsFeedPage = React.memo((props: PageProps) => {
-    let scrollRef = React.useContext(ComponentRefContext);
     let theme = useTheme();
+    let router = React.useContext(SRouterContext)!;
+    let pushRoom = React.useCallback(() => {
+        router.push('CreateRoom');
+    }, [router]);
+
     let roomsList: VoiceChat[] = [
         {
             id: '1',
@@ -96,22 +100,29 @@ let RoomsFeedPage = React.memo((props: PageProps) => {
     return (
         <>
             <SHeader title="Rooms" />
-            <SHeaderButton title="New room" />
+            <SHeaderButton title="New room" onPress={pushRoom} />
 
             <React.Suspense fallback={<ZLoader />}>
-                <SScrollView style={{ marginTop: -16 }} scrollRef={scrollRef}>
-                    <SDeferred>
-                        <View style={{ backgroundColor: theme.backgroundTertiary, paddingTop: 32 }}>
-                            {roomsList.map(room => <RoomView key={room.id} room={room} theme={theme} />)}
-                        </View>
-                        <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginBottom: 16, alignItems: 'center' }}>
-                            <Image source={require('assets/art-crowd.png')} style={{ width: 240, height: 150 }} />
-                            <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginVertical: 4 }}>Talk about anything!</Text>
-                            <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 16 }}>Create a new room and invite friends!</Text>
-                            <ZButton title="Start room" onPress={() => {/*create room*/ }} />
-                        </View>
-                    </SDeferred>
-                </SScrollView>
+                <SDeferred>
+                    <SFlatList
+                        data={roomsList}
+                        renderItem={({ item }) => <RoomView room={item} theme={theme} />}
+                        keyExtractor={(item) => item.id}
+                        ItemSeparatorComponent={() => <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} />}
+                        ListHeaderComponent={<View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} />}
+                        ListFooterComponent={(
+                            <>
+                                <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} />
+                                <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginBottom: 16, alignItems: 'center' }}>
+                                    <Image source={require('assets/art-crowd.png')} style={{ width: 240, height: 150 }} />
+                                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginVertical: 4 }}>Talk about anything!</Text>
+                                    <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 16 }}>Create a new room and invite friends!</Text>
+                                    <ZButton title="Start room" path="CreateRoom" />
+                                </View>
+                            </>
+                        )}
+                    />
+                </SDeferred>
             </React.Suspense>
         </>
     );

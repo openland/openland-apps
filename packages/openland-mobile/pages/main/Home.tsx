@@ -15,7 +15,7 @@ import { SRouterContext } from 'react-native-s/SRouterContext';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { SSearchControlerComponent } from 'react-native-s/SSearchController';
 import { AppStorage } from 'openland-y-runtime/AppStorage';
-// import { RoomsFeed } from './RoomsFeed';
+// import { RoomsFeed } from '../rooms/RoomsFeed';
 
 export const ActiveTabContext = React.createContext(false);
 export const SetTabContext = React.createContext<(index: number) => void>(() => {/* noop */ });
