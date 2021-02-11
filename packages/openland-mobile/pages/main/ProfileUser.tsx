@@ -28,6 +28,7 @@ import { formatAbsoluteDate, formatBirthDay } from 'openland-y-utils/wallet/date
 import { openMapsApp } from 'openland-mobile/utils/openMapsApp';
 import { openCalendar } from 'openland-mobile/utils/openCalendar';
 import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
+import { ZShowMoreText } from 'openland-mobile/components/ZShowMoreText';
 
 const ProfileUserComponent = React.memo((props: PageProps) => {
     const client = getClient();
@@ -256,7 +257,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                 </ZHero>
 
                 <ZListGroup header="About" useSpacer={true}>
-                    {!!user.about && <ZListItem multiline={true} text={user.about} copy={true} />}
+                    {!!user.about && <ZShowMoreText text={user.about} />}
                     {!!user.about && <View style={{ height: 8 }} />}
                     {!!user.shortname && (
                         <ZListItem

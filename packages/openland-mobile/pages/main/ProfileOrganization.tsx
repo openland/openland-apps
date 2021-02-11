@@ -37,6 +37,7 @@ import { ProfileDeleted } from './components/ProfileDeleted';
 import { ProfileOrganizationPrivate } from './components/ProfileOrganizationPrivate';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { ZShowMoreText } from 'openland-mobile/components/ZShowMoreText';
 
 const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
@@ -481,9 +482,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
             />
 
             <ZListGroup header="About" useSpacer={true}>
-                {!!organization.about && (
-                    <ZListItem multiline={true} text={organization.about} copy={true} />
-                )}
+                {!!organization.about && <ZShowMoreText text={organization.about} />}
                 {!!organization.about && <View style={{ height: 8 }} />}
                 {!!organization.shortname && (
                     <ZListItem

@@ -28,6 +28,7 @@ import { plural } from 'openland-y-utils/plural';
 import { SHeader } from 'react-native-s/SHeader';
 import { ChatJoin } from './components/ChatJoin';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
+import { ZShowMoreText } from 'openland-mobile/components/ZShowMoreText';
 
 const ProfileGroupComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
@@ -375,7 +376,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             </ZHero>
 
             <ZListGroup header="About" useSpacer={true}>
-                {!!group.description && <ZListItem multiline={true} text={group.description} copy={true} />}
+                {!!group.description && <ZShowMoreText text={group.description} />}
                 {!!group.description && <View style={{ height: 8 }} />}
                 {!!group.shortname && (
                     <ZListItem
