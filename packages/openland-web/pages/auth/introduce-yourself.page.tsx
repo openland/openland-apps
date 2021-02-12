@@ -1,7 +1,6 @@
 import * as React from 'react';
 import createHistory from 'history/createBrowserHistory';
 import { XView } from 'react-mental';
-import { css, cx } from 'linaria';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
@@ -18,14 +17,11 @@ import {
     AuthActionButton,
     AuthInputWrapper,
     useShake,
-    textClassName,
 } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import { AuthHeaderConfig } from './root.page';
-import { ULink } from 'openland-web/components/unicorn/ULink';
-import { TextCaption } from 'openland-web/utils/TextStyles';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { trackEvent } from 'openland-x-analytics';
 
