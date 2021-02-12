@@ -13,6 +13,7 @@ import {
     AuthInputWrapper,
     AuthToastWrapper,
     useShake,
+    textClassName,
 } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { completeAuth } from './completeAuth';
@@ -20,10 +21,12 @@ import { XImage } from 'react-mental';
 import { AuthHeaderConfig } from './root.page';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { checkCode, AuthError, trackError } from './utils/checkCode';
-import { TextTitle1 } from 'openland-web/utils/TextStyles';
+import { TextCaption, TextTitle1 } from 'openland-web/utils/TextStyles';
 import { usePreviousState } from 'openland-y-utils/usePreviousState';
 import { css, cx } from 'linaria';
 import { useResendTimer } from 'openland-y-utils/auth/useResendTimer';
+import { AvatarPlaceholder, AvatarSizes } from 'openland-web/components/unicorn/UAvatar';
+import { PlaceholderColors } from 'openland-y-utils/themes/placeholders';
 
 const codeWrapperStyle = css`
     margin-top: 32px;
@@ -52,6 +55,21 @@ const codeInputStyle = cx(TextTitle1, css`
     caret-color: transparent;
 `);
 
+const captionText = css`
+    color: var(--foregroundTertiary);
+    text-align: center;
+    margin-top: 32px;
+`;
+
+const captionLink = css`
+    font-weight: 600;
+    color: var(--foregroundTertiary);
+
+    &:hover {
+        color: var(--foregroundTertiary);
+    }
+`;
+
 const ResendSubtitle = React.memo((props: { onResend: () => void }) => {
     const [seconds, handleResend] = useResendTimer({ onResend: props.onResend });
 
@@ -72,6 +90,7 @@ type ActivationCodeProps = {
     setAuthWasResend: (flag: boolean) => void;
     isExistingUser: boolean;
     avatarId: string | null;
+    avatarPlaceholder: { hash: number, initials: string } | null;
 };
 
 const WebSignUpActivationCode = (
@@ -97,6 +116,7 @@ const WebSignUpActivationCode = (
         loginCodeStart,
         isExistingUser,
         avatarId,
+        avatarPlaceholder,
     } = props;
 
     const form = useForm();
@@ -207,11 +227,24 @@ const WebSignUpActivationCode = (
                 type="success"
             />
             <FormLayout>
-                <Title text="Enter sign-in code" />
+                <Title text={`Enter sign-${isExistingUser ? 'in' : 'up'} code`} />
                 <Subtitle>
                     We just sent it to {sendToText}.<br />
                     {<ResendSubtitle onResend={handleResend} />}
                 </Subtitle>
+                {isExistingUser && !avatarId && avatarPlaceholder && (
+                    <AvatarPlaceholder
+                        id={avatarPlaceholder.initials}
+                        alignSelf="center"
+                        marginTop={16}
+                        width={72}
+                        height={72}
+                        borderRadius="100%"
+                        title={avatarPlaceholder.initials}
+                        fontSize={AvatarSizes['x-large'].placeholder}
+                        index={Math.abs(avatarPlaceholder.hash) % PlaceholderColors.length}
+                    />
+                )}
                 {!!avatarId && (
                     <XImage
                         alignSelf="center"
@@ -241,11 +274,23 @@ const WebSignUpActivationCode = (
                     ))}
                 </AuthInputWrapper>
                 <AuthActionButton
-                    text={isExistingUser ? InitTexts.auth.done : InitTexts.auth.next}
+                    text={isExistingUser ? InitTexts.auth.done : InitTexts.auth.createAccount}
                     loading={codeSending}
                     onClick={handleNext}
                     marginTop={32}
                 />
+                {!isExistingUser && (
+                    <p className={cx(TextCaption, captionText, textClassName)}>
+                        By creating an account you are accepting our{' '}
+                        <ULink path="/terms" className={captionLink}>
+                            Terms&nbsp;of&nbsp;service
+                        </ULink>{' '}
+                        and{' '}
+                        <ULink path="/privacy" className={captionLink}>
+                            Privacy&nbsp;policy
+                        </ULink>
+                    </p>
+                )}
             </FormLayout>
         </>
     );

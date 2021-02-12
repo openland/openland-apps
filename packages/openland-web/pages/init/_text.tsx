@@ -8,6 +8,7 @@ export const InitTexts = {
     auth: {
         signin: 'Sign in',
         signup: 'Sign up',
+        createAccount: 'Create account',
         resend: 'Resend.',
         haveNotReceiveCode: "Haven’t received?",
         emailInvalid:

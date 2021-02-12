@@ -227,6 +227,7 @@ const Root = (props: { countryCode?: string }) => {
     const [fromOutside, setFromOutside] = React.useState(false);
     const [isExistingUser, setExistingUser] = React.useState(false);
     const [avatarId, setAvatarId] = React.useState(null);
+    const [avatarPlaceholder, setAvatarPlaceholder] = React.useState<{ hash: number, initials: string } | null>(null);
     const prevDataFired = React.useRef<string>();
 
     const fireAuth = React.useCallback(async (dataToFire: string, isPhoneFire: boolean) => {
@@ -249,6 +250,7 @@ const Root = (props: { countryCode?: string }) => {
             setAuthSending(false);
             setExistingUser(!!res.profileExists);
             setAvatarId(res.pictureId);
+            setAvatarPlaceholder({ hash: res.pictureHash, initials: res.initials });
         } catch (e) {
             throw new Error('Something went wrong');
         }
@@ -321,6 +323,7 @@ const Root = (props: { countryCode?: string }) => {
                         setAuthWasResend={setAuthWasResend}
                         isExistingUser={isExistingUser}
                         avatarId={avatarId}
+                        avatarPlaceholder={avatarPlaceholder}
                         backButtonClick={() => {
                             setFromOutside(false);
                         }}

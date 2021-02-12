@@ -63,7 +63,7 @@ const avatarPlaceholderStyle = css`
 `;
 
 export const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: number, fontSize: number }) => {
-    const { title, titleEmoji, index, fontSize, squared } = props;
+    const { title, titleEmoji, index, squared, ...other } = props;
     const ph = extractPlaceholder(title);
 
     return (
@@ -75,9 +75,9 @@ export const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: numb
             borderRadius={squared ? 0 : 50}
             backgroundImage={getPlaceholderColorByIndex(index)}
             color="white"
-            fontSize={fontSize}
             overflow="hidden"
             hoverTextDecoration="none"
+            {...other}
         >
             <span className={avatarPlaceholderStyle}>
                 {titleEmoji || emoji(ph)}

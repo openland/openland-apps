@@ -29,21 +29,6 @@ import { TextCaption } from 'openland-web/utils/TextStyles';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { trackEvent } from 'openland-x-analytics';
 
-const captionText = css`
-    color: var(--foregroundTertiary);
-    text-align: center;
-    margin-top: 32px;
-`;
-
-const captionLink = css`
-    font-weight: 600;
-    color: var(--foregroundTertiary);
-
-    &:hover {
-        color: var(--foregroundTertiary);
-    }
-`;
-
 type ProfileFormData = {
     firstName: string | null;
     lastName: string | null;
@@ -194,16 +179,6 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
                 text={InitTexts.auth.next}
                 onClick={handleNext}
             />
-            <p className={cx(TextCaption, captionText, textClassName)}>
-                By creating an account you are accepting our{' '}
-                <ULink path="/terms" className={captionLink}>
-                    Terms&nbsp;of&nbsp;service
-                </ULink>{' '}
-                and{' '}
-                <ULink path="/privacy" className={captionLink}>
-                    Privacy&nbsp;policy
-                </ULink>
-            </p>
         </FormLayout>
     );
 };
