@@ -39,6 +39,14 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
 
     return (
         <>
+            {/* <ZListGroup
+                header="Rooms"
+                actionRight={{
+                    title: 'See all', onPress: () => props.router.push('RoomsFeed')
+                }}
+            >
+                {popularRooms.map(v => <DiscoverListItem key={v.id} item={v} />)}
+            </ZListGroup> */}
             <DiscoverCreateList />
             <ZListGroup
                 header="Popular now"

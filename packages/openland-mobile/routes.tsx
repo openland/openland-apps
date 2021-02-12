@@ -82,6 +82,7 @@ import { ChatSearch } from './pages/main/ChatSearch';
 import { EditCommunitySuperAdmin } from './pages/main/components/edit-community/EditCommunitySuperAdmin';
 import { ReportSpam } from './pages/main/components/ReportSpam';
 import { CreateRoom } from './pages/rooms/CreateRoom';
+import { RoomsFeed } from './pages/rooms/RoomsFeed';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -180,5 +181,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('Donation', Donation)
 
   .addRoute('CreateRoom', CreateRoom)
+  .addRoute('RoomsFeed', RoomsFeed)
 
   .build();
