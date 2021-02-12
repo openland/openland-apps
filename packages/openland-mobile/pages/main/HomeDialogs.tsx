@@ -164,10 +164,10 @@ const DialogsComponent = React.memo((props: PageProps) => {
             ? 'Direct'
             : 'Chats';
 
-    const enableExperimental =
-        !props.router.params.title ||
-        !props.router.params.share ||
-        messenger.engine.experimentalUpdates;
+    const enableExperimental = false;
+        // !props.router.params.title ||
+        // !props.router.params.share ||
+        // messenger.engine.experimentalUpdates;
 
     return (
         <ZTrack event="mail_view">
