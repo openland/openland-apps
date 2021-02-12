@@ -11,7 +11,15 @@
             "name": "ic-microphone",
             "src": "ic-microphone-16.svg",
             "sizes": [
-                16
+                16,
+                36
+            ]
+        },
+        {
+            "name": "ic-hand",
+            "src": "ic-hand-24.svg",
+            "sizes": [
+                24
             ]
         },
         {
