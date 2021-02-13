@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Clipboard, Text } from 'react-native';
+import { Clipboard, Platform, Text, TouchableHighlight, TouchableNativeFeedback } from 'react-native';
 
 import { getShortText, isSmallText } from 'openland-y-utils/isSmallText';
 import { ZText } from './ZText';
@@ -31,25 +31,53 @@ export const ZShowMoreText = React.memo<ZShowMoreProps>((props) => {
             .show(true);
     }, [text]);
 
+    let content;
     if (fullLength || isSmallText(text, maxCharacters, maxLineBreaks)) {
-        return (
+        content = (
             <ZText
                 text={text}
                 linkify={true}
-                style={{ ...TextStyles.Body, paddingHorizontal: 16 }}
+                style={{ ...TextStyles.Body, paddingHorizontal: 16, color: theme.foregroundPrimary }}
             />
+        );
+    } else {
+        content = (
+            <Text
+                style={{ ...TextStyles.Body, paddingHorizontal: 16, color: theme.foregroundPrimary }}
+            >
+                <ZText text={getShortText(text, maxCharacters, maxLineBreaks)} linkify={true} />
+                    <Text
+                        allowFontScaling={false}
+                        onPress={() => setFullLength(true)}
+                        style={{ ...TextStyles.Label1, color: theme.accentPrimary }}
+                    >
+                        Show more
+                    </Text>
+            </Text>
         );
     }
 
-    return (
-        <Text style={{ ...TextStyles.Body, paddingHorizontal: 16 }} onLongPress={handleLongPress}>
-            <ZText text={getShortText(text, maxCharacters, maxLineBreaks)} linkify={true} />
-            <Text
-                style={{ ...TextStyles.Label1, color: theme.accentPrimary }}
-                onPress={() => setFullLength(true)}
+    if (Platform.OS === 'android') {
+        return (
+            <TouchableNativeFeedback
+                onLongPress={handleLongPress}
+                style={{ backgroundColor: theme.backgroundPrimary, paddingVertical: 16 }}
+                background={TouchableNativeFeedback.Ripple(theme.backgroundPrimaryActive, false)}
+                delayPressIn={20}
             >
-                Show more
-            </Text>
-        </Text>
-    );
+                {content}
+            </TouchableNativeFeedback>
+        );
+    } else {
+        return (
+            <TouchableHighlight
+                activeOpacity={1}
+                underlayColor={theme.backgroundPrimaryActive}
+                onLongPress={handleLongPress}
+                style={{ backgroundColor: theme.backgroundPrimary, paddingVertical: 16 }}
+            >
+                {content}
+            </TouchableHighlight>
+        );
+    }
 });
