@@ -12,8 +12,10 @@ import { SubmitCodeForm } from './SubmitCodeForm';
 let userAuthData = '';
 let userPhoneData = '';
 let session = '';
+let profileExists = false;
 let photoSrc: string | null = null;
 let photoCrop: { w: number; h: number; x: number; y: number } | null = null;
+let avatarPlaceholder: { hash: number, initials: string };
 
 const http = async (params: { url: string; body?: any; method: 'POST' | 'GET' }) => {
     let res = await fetch(params.url, {
@@ -49,6 +51,8 @@ const requestActivationCode = async (isPhone: boolean) => {
     session = res.session;
     photoSrc = res.pictureId ? res.pictureId : null;
     photoCrop = res.pictureCrop ? res.pictureCrop : null;
+    profileExists = res.profileExists;
+    avatarPlaceholder = { hash: res.pictureHash, initials: res.initials };
 };
 
 const AuthStartComponent = React.memo((props: PageProps) => {
@@ -119,10 +123,13 @@ const AuthCodeComponent = React.memo((props: PageProps) => {
 
     return (
         <SubmitCodeForm
-            title="Enter sign-in code"
+            title={`Enter sign-${profileExists ? 'in' : 'up'} code`}
             formData={isPhoneAuth ? userPhoneData : userAuthData}
             photoSrc={photoSrc}
             photoCrop={photoCrop}
+            buttonTitle={profileExists ? 'Next' : 'Create account'}
+            avatarPlaceholder={avatarPlaceholder}
+            profileExists={profileExists}
             onSubmit={handleSubmit}
             onResend={handleResend}
         />

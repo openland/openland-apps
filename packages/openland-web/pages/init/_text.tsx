@@ -18,6 +18,7 @@ export const InitTexts = {
             'Incorrect code.\nPlease check it and try again',
         next: 'Next',
         done: 'Done',
+        save: 'Save',
     },
 
     suspended: {

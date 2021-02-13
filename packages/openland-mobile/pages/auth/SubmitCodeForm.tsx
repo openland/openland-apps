@@ -26,6 +26,7 @@ import { RegistrationContainer } from './RegistrationContainer';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZShaker } from 'openland-mobile/components/ZShaker';
 import { useResendTimer } from 'openland-y-utils/auth/useResendTimer';
+import { PrivacyText } from '../../components/PrivacyText';
 
 interface CodeInputProps extends TextInputProps {
     initialFocused?: boolean;
@@ -119,13 +120,15 @@ interface SubmitCodeFormProps {
     formData: string;
     buttonTitle?: string;
     photoSrc?: string | null;
+    avatarPlaceholder?: { hash: number, initials: string };
+    profileExists?: boolean;
     photoCrop?: { w: number; h: number; x: number; y: number } | null;
     onSubmit: (code: string) => Promise<any>;
     onResend: () => Promise<any>;
 }
 
 export const SubmitCodeForm = React.memo((props: SubmitCodeFormProps) => {
-    const { photoSrc, photoCrop, title, buttonTitle, formData, onSubmit, onResend } = props;
+    const { photoSrc, photoCrop, title, buttonTitle, formData, profileExists, avatarPlaceholder, onSubmit, onResend } = props;
     const shakerRef = React.useRef<{ shake: () => void }>(null);
     const codeRefs = React.useRef<React.RefObject<TextInput>[]>(
         new Array(6).fill(undefined).map(() => React.createRef())
@@ -235,6 +238,18 @@ export const SubmitCodeForm = React.memo((props: SubmitCodeFormProps) => {
                     />
                 }
             >
+                {profileExists && !avatarSrc && avatarPlaceholder && (
+                    <View
+                        style={{
+                            marginTop: -8,
+                            marginBottom: 32,
+                            flexDirection: 'row',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        <ZAvatar size="x-large" title={avatarPlaceholder.initials} pictureHash={avatarPlaceholder.hash}/>
+                    </View>
+                )}
                 {avatarSrc && (
                     <View
                         style={{
@@ -273,6 +288,7 @@ export const SubmitCodeForm = React.memo((props: SubmitCodeFormProps) => {
                     </ZShaker>
                 </View>
                 <View style={{ height: compensationHeight }} />
+                {!profileExists && <PrivacyText />}
             </RegistrationContainer>
         </ZTrack>
     );

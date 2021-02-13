@@ -141,8 +141,8 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
 
     return (
         <FormLayout onBackClick={onBackClick}>
-            <Title text="New account" />
-            <Subtitle text="Introduce yourself" maxWidth={isMobile ? 230 : undefined} />
+            <Title text="Introduce yourself" />
+            <Subtitle text="Help others recognize you" maxWidth={isMobile ? 230 : undefined} />
             <XView marginTop={32} marginBottom={16} alignSelf="center">
                 <UAvatarUploadField field={photoRef} />
             </XView>
@@ -172,7 +172,7 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
             </XView>
             <AuthActionButton
                 loading={sending}
-                text={InitTexts.auth.next}
+                text={InitTexts.auth.save}
                 onClick={handleNext}
             />
         </FormLayout>

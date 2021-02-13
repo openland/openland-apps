@@ -23,6 +23,7 @@ export interface ZAvatarProps {
     size: ZAvatarSize;
     photo?: string | null;
     id?: string | null;
+    pictureHash?: number;
     title?: string | null;
     online?: boolean;
     savedMessages?: boolean;
@@ -47,6 +48,8 @@ export const getPlaceholderColors = (id: string) => {
     }
     return ZStyles.avatars[placeholderIndex % ZStyles.avatars.length];
 };
+
+export const getPlaceholderColorsByHash = (hash: number) => ZStyles.avatars[hash % ZStyles.avatars.length];
 
 const ZAvatarInner = React.memo((props: ZAvatarProps) => {
     const theme = React.useContext(ThemeContext);
@@ -92,7 +95,14 @@ const ZAvatarInner = React.memo((props: ZAvatarProps) => {
     if (props.title) {
         placeholderText = extractPlaceholder(props.title);
     }
-    let placeholderColors = getPlaceholderColors(props.id || '');
+
+    let placeholderColors;
+    if (props.pictureHash) {
+        placeholderColors = getPlaceholderColorsByHash(props.pictureHash);
+    } else {
+        placeholderColors = getPlaceholderColors(props.id || '');
+    }
+
     return (
         <View>
             <ZLinearGradient
