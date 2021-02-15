@@ -9,8 +9,8 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { VoiceChat } from './RoomsFeed';
-import { RoomControls } from './CreateRoom';
 import { useSafeArea } from 'react-native-safe-area-context';
+import { RoomControls } from './RoomControls';
 
 interface RoomViewProps {
     room: VoiceChat;
