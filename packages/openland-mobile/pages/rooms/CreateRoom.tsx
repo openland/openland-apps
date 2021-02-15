@@ -1,6 +1,9 @@
+import * as React from 'react';
+import { ModalProps } from 'react-native-fast-modal';
 import { useClient } from 'openland-api/useClient';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
+import { SRouter } from 'react-native-s/SRouter';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
@@ -11,11 +14,9 @@ import { ZInput } from 'openland-mobile/components/ZInput';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import * as React from 'react';
-import { View, Text, TouchableOpacity, Image, Share, Platform, Clipboard } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Share, Platform, Clipboard, LayoutChangeEvent } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { SRouterContext } from 'react-native-s/SRouterContext';
 
 const showRoomInvite = ({ link, theme }: { link: string, theme: ThemeGlobal }) => {
     const handleShare = () => {
@@ -209,12 +210,19 @@ const ControlRaiseHand = React.memo((props: { theme: ThemeGlobal }) => {
     );
 });
 
-const ControlRaisedHandsCount = React.memo((props: { theme: ThemeGlobal, raisedCount?: number }) => {
+interface ControlRaisedHandsCountProps {
+    theme: ThemeGlobal;
+    raisedCount?: number;
+    router: SRouter;
+    modalCtx: ModalProps;
+}
+
+const ControlRaisedHandsCount = React.memo((props: ControlRaisedHandsCountProps) => {
     const { theme, raisedCount } = props;
-    const router = React.useContext(SRouterContext)!;
     const handlePress = React.useCallback(() => {
-        router.push('RaisedHands');
-    }, [router]);
+        props.router.push('RaisedHands');
+        props.modalCtx.hide();
+    }, [props.router]);
 
     return (
         <ControlItem
@@ -229,21 +237,29 @@ const ControlRaisedHandsCount = React.memo((props: { theme: ThemeGlobal, raisedC
     );
 });
 
-const RoomControls = React.memo((props: { theme: ThemeGlobal, role?: 'member' | 'admin' | 'speaker' }) => {
-    const { theme, role } = props;
+interface RoomControlsProps {
+    theme: ThemeGlobal;
+    role?: 'member' | 'admin' | 'speaker';
+    onLayout: (e: LayoutChangeEvent) => void;
+    router: SRouter;
+    modalCtx: ModalProps;
+}
+
+export const RoomControls = React.memo((props: RoomControlsProps) => {
+    const { theme, role, router, modalCtx, onLayout } = props;
     const client = useClient();
     const user = client.useProfile({ suspense: false })?.user;
 
     const roleButtons = role === 'admin' ? (
         <>
-            <ControlRaisedHandsCount theme={theme} raisedCount={124} />
+            <ControlRaisedHandsCount theme={theme} raisedCount={124} router={router} modalCtx={modalCtx} />
             <ControlMute theme={theme} />
         </>
     ) : role === 'speaker' ? <ControlMute theme={theme} />
             : <ControlRaiseHand theme={theme} />;
 
     return (
-        <View style={{ marginTop: 20, paddingHorizontal: 38, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{ paddingTop: 16, paddingHorizontal: 38, flexDirection: 'row', justifyContent: 'space-between' }} onLayout={onLayout}>
             <ControlItem
                 theme={theme}
                 text="Leave"
@@ -280,7 +296,6 @@ const CreateRoomComponent = React.memo(() => {
                         Tell everyone about the topic of conversation
                     </Text>
                 </View>
-                <RoomControls theme={theme} role="admin" />
             </KeyboardAvoidingScrollView>
         </>
     );

@@ -69,5 +69,7 @@ export let SDevice = {
     navigationBarHeightExpanded,
 
     renderBlurSupported: renderBlurSupported,
-    pixel: pixel
+    pixel: pixel,
+    wWidth: D_WIDTH,
+    wHeight: D_HEIGHT,
 };

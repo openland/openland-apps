@@ -16,6 +16,15 @@
             ]
         },
         {
+            "name": "ic-mute-glyph",
+            "src": "ic-mute-glyph-24.svg",
+            "sizes": [
+                16,
+                24,
+                36
+            ]
+        },
+        {
             "name": "ic-hand",
             "src": "ic-hand-24.svg",
             "sizes": [
@@ -337,14 +346,6 @@
             "src": "ic-grid-glyph-24.svg",
             "sizes": [
                 24
-            ]
-        },
-        {
-            "name": "ic-mute-glyph",
-            "src": "ic-mute-glyph-24.svg",
-            "sizes": [
-                24,
-                36
             ]
         },
         {

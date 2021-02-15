@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { SDeferred } from 'react-native-s/SDeferred';
+import { SRouter } from 'react-native-s/SRouter';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
@@ -13,8 +14,9 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { SRouterContext } from 'react-native-s/SRouterContext';
+import { showRoomView } from './RoomView';
 
-type VoiceChat = {
+export type VoiceChat = {
     id: string;
     title: string;
     members: { name: string, avatar: string, id: string }[];
@@ -22,10 +24,10 @@ type VoiceChat = {
     listenersCount: number;
 };
 
-let RoomView = React.memo((props: { room: VoiceChat, theme: ThemeGlobal }) => {
+let RoomView = React.memo((props: { room: VoiceChat, theme: ThemeGlobal, router: SRouter }) => {
     let { room, theme } = props;
     return (
-        <TouchableOpacity style={{ paddingHorizontal: 16, paddingVertical: 12, marginBottom: 16, backgroundColor: theme.backgroundPrimary }} activeOpacity={0.6}>
+        <TouchableOpacity style={{ paddingHorizontal: 16, paddingVertical: 12, marginBottom: 16, backgroundColor: theme.backgroundPrimary }} activeOpacity={0.6} onPress={() => showRoomView(props.room, props.router)}>
             <Text
                 style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, marginBottom: 8, }}
                 numberOfLines={2}
@@ -79,14 +81,14 @@ let RoomsFeedPage = React.memo((props: PageProps) => {
             title: 'Voice chat',
             speakersCount: 2,
             listenersCount: 128,
-            members: [{ id: '1', name: 'Jeff Bezos', avatar: '' }, { id: '2', name: 'Pavel Durov', avatar: '' }, { id: '1', name: 'Jeff Bezos', avatar: '' }],
+            members: [{ id: '1', name: 'Jeff Bezos', avatar: '' }, { id: '2', name: 'Pavel Durov', avatar: '' }, { id: '3', name: 'Jeff Bezos', avatar: '' }],
         },
         {
             id: '3',
             title: '🚀 The 2-Minute Drill: The Week’s Top Tech Stories (Ep. 17)',
             speakersCount: 2,
             listenersCount: 128,
-            members: [{ id: '1', name: 'Jeff Bezos', avatar: '' }, { id: '2', name: 'Pavel Durov', avatar: '' }, { id: '1', name: 'Jeff Bezos', avatar: '' }, { id: '2', name: 'Pavel Durov', avatar: '' }],
+            members: [{ id: '1', name: 'Jeff Bezos', avatar: '' }, { id: '2', name: 'Pavel Durov', avatar: '' }, { id: '3', name: 'Jeff Bezos', avatar: '' }, { id: '4', name: 'Pavel Durov', avatar: '' }],
         },
         {
             id: '4',
@@ -106,7 +108,7 @@ let RoomsFeedPage = React.memo((props: PageProps) => {
                 <SDeferred>
                     <SFlatList
                         data={roomsList}
-                        renderItem={({ item }) => <RoomView room={item} theme={theme} />}
+                        renderItem={({ item }) => <RoomView room={item} theme={theme} router={router} />}
                         keyExtractor={(item) => item.id}
                         ItemSeparatorComponent={() => <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} />}
                         ListHeaderComponent={<View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} />}
