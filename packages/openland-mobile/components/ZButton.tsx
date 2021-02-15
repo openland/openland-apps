@@ -10,7 +10,7 @@ import { LoaderSpinner } from './LoaderSpinner';
 import { SAnimatedView, SAnimated, SAnimatedShadowView } from 'react-native-fast-animations';
 import UUID from 'uuid/v4';
 
-export type ZButtonStyle = 'primary' | 'secondary' | 'danger' | 'pay';
+export type ZButtonStyle = 'primary' | 'secondary' | 'danger' | 'pay' | 'positive';
 type ZButtonSize = 'default' | 'large';
 
 const stylesDefault = StyleSheet.create({
@@ -48,6 +48,8 @@ const resolveRadiusBySize = {
     default: RadiusStyles.Large,
     large: RadiusStyles.Medium,
 };
+
+type StyleBasedMap = { [key in ZButtonStyle]: string | undefined };
 
 export interface ZButtonProps {
     title: string;
@@ -113,25 +115,32 @@ const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) 
     const styles = resolveStylesBySize[size];
     const borderRadius = resolveRadiusBySize[size];
 
-    const backgroundColor = ({
-        'primary': theme.accentPrimary,
-        'secondary': theme.backgroundTertiaryTrans,
-        'danger': theme.accentNegative,
-        'pay': theme.payBackgroundPrimary,
-    })[style];
+    const backgroundColors: StyleBasedMap = {
+        primary: theme.accentPrimary,
+        secondary: theme.backgroundTertiaryTrans,
+        danger: theme.accentNegative,
+        pay: theme.payBackgroundPrimary,
+        positive: theme.accentPositive,
+    };
+    const backgroundColor = backgroundColors[style];
 
-    const textColor = ({
-        'primary': theme.foregroundInverted,
-        'secondary': theme.foregroundSecondary,
-        'danger': theme.foregroundContrast,
-        'pay': theme.foregroundContrast,
-    })[style];
+    const textColors: StyleBasedMap = {
+        primary: theme.foregroundInverted,
+        secondary: theme.foregroundSecondary,
+        danger: theme.foregroundContrast,
+        pay: theme.foregroundContrast,
+        positive: theme.foregroundContrast,
+    };
+    const textColor = textColors[style];
 
-    const underlayColor = ({
-        'primary': theme.accentPrimaryActive,
-        'secondary': theme.backgroundTertiaryActive,
-        'danger': theme.accentNegativeActive,
-    })[style];
+    const underlayColors: StyleBasedMap = {
+        primary: theme.accentPrimaryActive,
+        secondary: theme.backgroundTertiaryActive,
+        danger: theme.accentNegativeActive,
+        pay: undefined,
+        positive: theme.accentPositiveActive,
+    };
+    const underlayColor = underlayColors[style];
 
     const animateView = React.useMemo(() => new SAnimatedShadowView(UUID()), []);
     const inverted = style === 'secondary';

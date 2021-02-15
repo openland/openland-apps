@@ -2,9 +2,11 @@ import { useClient } from 'openland-api/useClient';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
+import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 import Toast from 'openland-mobile/components/Toast';
 import { withApp } from 'openland-mobile/components/withApp';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
@@ -13,6 +15,7 @@ import * as React from 'react';
 import { View, Text, TouchableOpacity, Image, Share, Platform, Clipboard } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
+import { SRouterContext } from 'react-native-s/SRouterContext';
 
 const showRoomInvite = ({ link, theme }: { link: string, theme: ThemeGlobal }) => {
     const handleShare = () => {
@@ -35,7 +38,7 @@ const showRoomInvite = ({ link, theme }: { link: string, theme: ThemeGlobal }) =
             <View
                 style={{
                     borderRadius: 12,
-                    backgroundColor: theme.backgroundTertiary,
+                    backgroundColor: theme.backgroundTertiaryTrans,
                     paddingHorizontal: 16,
                     paddingVertical: 13,
                     marginHorizontal: 16,
@@ -57,9 +60,10 @@ const ControlItem = React.memo((props: {
     iconColor?: string,
     bgColor: string,
     counter?: number,
+    disabled?: boolean,
     onPress?: () => void
 }) => {
-    const { theme, text, icon, iconColor, bgColor, counter, onPress } = props;
+    const { theme, text, icon, iconColor, bgColor, counter, disabled, onPress } = props;
     const size = text ? 56 : 78;
     const iconSize = text ? 24 : 36;
     return (
@@ -67,6 +71,7 @@ const ControlItem = React.memo((props: {
             <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={onPress}
+                disabled={disabled}
                 style={{ width: size, height: size, marginBottom: 8, position: 'relative' }}
             >
                 <View style={{ backgroundColor: bgColor, width: size, height: size, borderRadius: 100, alignItems: 'center', justifyContent: 'center' }}>
@@ -129,23 +134,87 @@ const ControlMute = React.memo((props: { theme: ThemeGlobal }) => {
     );
 });
 
+const RaiseModalView = React.memo(({ onCancel, onConfirm }: { onCancel: () => void, onConfirm: () => void }) => {
+    const theme = useTheme();
+
+    return (
+        <>
+            <View
+                style={{
+                    backgroundColor: theme.backgroundTertiaryTrans,
+                    width: 96,
+                    height: 96,
+                    borderRadius: 100,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    alignSelf: 'center',
+                    marginBottom: 16,
+                }}
+            >
+                <Text style={{ fontSize: 42 }}>🤚</Text>
+            </View>
+            <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, textAlign: 'center', marginBottom: 6 }}>Raise hand?</Text>
+            <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginHorizontal: 32, marginBottom: 32 }}>
+                Room admins will see that{'\u00A0'}you{'\u00A0'}want{'\u00A0'}to{'\u00A0'}speak
+            </Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 16 }}>
+                <ZButton style="secondary" size="large" title="Maybe later" onPress={onCancel} />
+                <ZButton style="positive" size="large" title="Raise hand 🖐" onPress={onConfirm} />
+            </View>
+        </>
+    );
+});
+
+const showRaiseHandModal = () => new Promise<void>((resolve, reject) => {
+    showBottomSheet({
+        cancelable: true,
+        view: ({ hide }) => {
+            return (
+                <RaiseModalView
+                    onCancel={() => {
+                        reject();
+                        hide();
+                    }}
+                    onConfirm={() => {
+                        resolve();
+                        hide();
+                    }}
+                />
+            );
+        }
+    });
+});
+
 const ControlRaiseHand = React.memo((props: { theme: ThemeGlobal }) => {
     const { theme } = props;
     const [raised, setRaised] = React.useState(false);
-    const toggleRaised = React.useCallback(() => setRaised(x => !x), []);
+    const handlePress = React.useCallback(async () => {
+        if (raised) {
+            return;
+        }
+        try {
+            await showRaiseHandModal();
+            setRaised(true);
+        } catch (e) { /**/ }
+    }, [raised]);
 
     return (
         <ControlItem
             theme={theme}
             icon={raised ? '🖐' : '🤚'}
             bgColor={raised ? theme.accentPositive : theme.incomingBackgroundPrimary}
-            onPress={toggleRaised}
+            disabled={raised}
+            onPress={handlePress}
         />
     );
 });
 
 const ControlRaisedHandsCount = React.memo((props: { theme: ThemeGlobal, raisedCount?: number }) => {
     const { theme, raisedCount } = props;
+    const router = React.useContext(SRouterContext)!;
+    const handlePress = React.useCallback(() => {
+        router.push('RaisedHands');
+    }, [router]);
 
     return (
         <ControlItem
@@ -155,6 +224,7 @@ const ControlRaisedHandsCount = React.memo((props: { theme: ThemeGlobal, raisedC
             text="Raised"
             bgColor={theme.incomingBackgroundPrimary}
             counter={raisedCount}
+            onPress={handlePress}
         />
     );
 });
@@ -210,7 +280,7 @@ const CreateRoomComponent = React.memo(() => {
                         Tell everyone about the topic of conversation
                     </Text>
                 </View>
-                <RoomControls theme={theme} />
+                <RoomControls theme={theme} role="admin" />
             </KeyboardAvoidingScrollView>
         </>
     );

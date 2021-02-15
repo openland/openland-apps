@@ -32,37 +32,36 @@ export function showBottomSheet(config: BottomSheetConfig) {
                     <>
                         <View
                             style={{
-                                paddingLeft: 16,
-                                paddingRight: config.cancelable ? 0 : 16,
-                                paddingVertical: config.cancelable ? 0 : 15,
+                                paddingHorizontal: 16,
+                                paddingVertical: 15,
                                 flexDirection: 'row',
-                                justifyContent: config.cancelable ? 'space-between' : (config.titleAlign ? 'flex-start' : 'center'),
+                                justifyContent: (config.titleAlign === 'left' || config.cancelable) ? 'flex-start' : 'center',
                                 alignItems: 'center'
                             }}
                         >
                             <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>{config.title}</Text>
-                            {config.cancelable && (
-                                <TouchableOpacity
-                                    activeOpacity={HighlightAlpha}
-                                    style={{ justifyContent: 'center', alignItems: 'center', width: 56, height: 56 }}
-                                    onPress={ctx.hide}
-                                >
-                                    <View
-                                        style={{
-                                            backgroundColor: theme.backgroundTertiaryTrans,
-                                            borderRadius: 100,
-                                            width: 28,
-                                            height: 28,
-                                            justifyContent: 'center',
-                                            alignItems: 'center'
-                                        }}
-                                    >
-                                        <Image style={{ width: 16, height: 16, tintColor: theme.foregroundTertiary }} source={require('assets/ic-close-bold-16.png')} />
-                                    </View>
-                                </TouchableOpacity>
-                            )}
                         </View>
                     </>
+                )}
+                {config.cancelable && (
+                    <TouchableOpacity
+                        activeOpacity={HighlightAlpha}
+                        style={{ position: 'absolute', top: 0, right: 0, justifyContent: 'center', alignItems: 'center', width: 56, height: 56 }}
+                        onPress={ctx.hide}
+                    >
+                        <View
+                            style={{
+                                backgroundColor: theme.backgroundTertiaryTrans,
+                                borderRadius: 100,
+                                width: 28,
+                                height: 28,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}
+                        >
+                            <Image style={{ width: 16, height: 16, tintColor: theme.foregroundTertiary }} source={require('assets/ic-close-bold-16.png')} />
+                        </View>
+                    </TouchableOpacity>
                 )}
                 {!config.title && !config.containerStyle && <View style={{ marginTop: 16 }} />}
                 <GQLClientContext.Provider value={getClient()}>
