@@ -6,10 +6,9 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { useTheme, ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { TouchableHighlight, View, Image, StyleSheet, ViewStyle, Text, Share, Platform, Dimensions, PixelRatio } from 'react-native';
-import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
-import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { View, Text, Share, Platform, Dimensions, PixelRatio } from 'react-native';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { joinPaidGroup } from './components/ChatJoin';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { normalizePopularItems, DiscoverRoom, DiscoverOrganization, normalizePopularOrgItems } from 'openland-y-utils/discover/normalizePopularItems';
@@ -19,28 +18,15 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { DiscoverCover } from './components/discover/DiscoverCover';
 import { isPad } from '../Root';
-
-const styles = StyleSheet.create({
-    btn: {
-        width: 56,
-        height: 36,
-        borderRadius: RadiusStyles.Large,
-        alignItems: 'center',
-        justifyContent: 'center'
-    } as ViewStyle
-});
-
-type FollowButtonState = 'initial' | 'loading' | 'done';
-interface FollowButtonProps {
+import { ZFollowButton } from 'openland-mobile/components/ZFollowButton';
+interface DiscoverFollowButtonProps {
     isFollowing: boolean;
     room: DiscoverRoom;
 }
 
-const FollowButton = React.memo((props: FollowButtonProps) => {
+const DiscoverFollowButton = React.memo((props: DiscoverFollowButtonProps) => {
     let router = React.useContext(SRouterContext)!;
-    const theme = useTheme();
-    let [state, setState] = React.useState<FollowButtonState>(props.isFollowing ? 'done' : 'initial');
-    let handleBtnPress = React.useCallback(async () => {
+    let handleBtnPress = React.useCallback(async () => new Promise<void>((resolve, reject) => {
         if (props.room.isPremium && !props.room.premiumPassIsActive && props.room.premiumSettings) {
             joinPaidGroup({
                 id: props.room.id,
@@ -48,47 +34,21 @@ const FollowButton = React.memo((props: FollowButtonProps) => {
                 premiumSettings: props.room.premiumSettings,
                 router,
                 client: getClient(),
-                onSuccess: () => { setState('done'); },
+                onSuccess: () => resolve(),
             });
         } else {
-            setState('loading');
-            await getClient().mutateRoomJoin({ roomId: props.room.id });
-            setState('done');
+            getClient().mutateRoomJoin({ roomId: props.room.id })
+                .then(() => resolve())
+                .catch(() => reject());
         }
-
-    }, [props.room]);
-
-    React.useEffect(() => {
-        setState(props.isFollowing ? 'done' : 'initial');
-    }, [props.isFollowing]);
-
-    const tintColor = state === 'done'
-        ? theme.foregroundTertiary
-        : theme.foregroundInverted;
-    const backgroundColor = state === 'done'
-        ? theme.backgroundTertiaryTrans
-        : props.room.isPremium
-            ? theme.accentPay
-            : theme.accentPrimary;
-    const underlayColor = state === 'done'
-        ? theme.backgroundTertiaryActive
-        : props.room.isPremium
-            ? theme.accentPayActive
-            : theme.accentPrimaryActive;
+    }), [props.room]);
 
     return (
-        <TouchableHighlight
-            style={[styles.btn, { backgroundColor }]}
+        <ZFollowButton
+            isFollowing={props.isFollowing}
+            isPremium={props.room.isPremium}
             onPress={handleBtnPress}
-            disabled={state === 'loading' || state === 'done'}
-            underlayColor={underlayColor}
-        >
-            <View>
-                {state === 'initial' && <Image source={require('assets/ic-add-24.png')} style={{ tintColor }} />}
-                {state === 'loading' && <LoaderSpinner size="small" color={tintColor} />}
-                {state === 'done' && <Image source={require('assets/ic-done-24.png')} style={{ tintColor }} />}
-            </View>
-        </TouchableHighlight>
+        />
     );
 });
 
@@ -117,7 +77,7 @@ const DiscoverListingContent = React.memo((props: DiscoverListingContentProps) =
                         <DiscoverListItem
                             item={item}
                             onJoin={onJoin}
-                            rightElement={<FollowButton
+                            rightElement={<DiscoverFollowButton
                                 isFollowing={
                                     item.membership === Types.SharedRoomMembershipStatus.MEMBER || joinedChats.has(item.id)
                                 }
