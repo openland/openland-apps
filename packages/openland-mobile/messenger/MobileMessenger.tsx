@@ -603,6 +603,8 @@ export class MobileMessenger {
         let builder = new ActionSheetBuilder();
         let { action, reply, edit, toggleSelect, forward } = actions;
 
+        builder.cancelable(false);
+
         if (message.isSending) {
             if (message.text) {
                 builder.action('Copy', () => {
