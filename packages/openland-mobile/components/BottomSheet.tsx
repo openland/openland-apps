@@ -32,14 +32,15 @@ export function showBottomSheet(config: BottomSheetConfig) {
                     <>
                         <View
                             style={{
-                                paddingHorizontal: 16,
+                                paddingLeft: 16,
                                 paddingVertical: 15,
+                                paddingRight: config.cancelable ? 56 : 16,
                                 flexDirection: 'row',
                                 justifyContent: (config.titleAlign === 'left' || config.cancelable) ? 'flex-start' : 'center',
                                 alignItems: 'center'
                             }}
                         >
-                            <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>{config.title}</Text>
+                            <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} numberOfLines={2}>{config.title}</Text>
                         </View>
                     </>
                 )}
