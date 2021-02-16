@@ -10,12 +10,13 @@ import { ZButton } from 'openland-mobile/components/ZButton';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { VoiceChat } from './RoomsFeed';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { RoomControls } from './RoomControls';
+import { VoiceChat, VoiceChatParticipantStatus } from 'openland-api/spacex.types';
+import { useClient } from 'openland-api/useClient';
 
 interface RoomUserViewProps {
-    user: { name: string; avatar: string; id: string };
+    user: { name: string; photo: string | null; id: string };
     theme: ThemeGlobal;
 }
 
@@ -40,7 +41,7 @@ const UserModalContent = React.memo((props: RoomUserViewProps) => {
             >
                 <ZAvatar
                     size="xx-large"
-                    photo={props.user.avatar}
+                    photo={props.user.photo}
                     title={props.user.name}
                     id={props.user.id}
                 />
@@ -206,7 +207,7 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
             >
                 <ZAvatar
                     size="xx-large"
-                    photo={props.user.avatar}
+                    photo={props.user.photo}
                     title={props.user.name}
                     id={props.user.id}
                 />
@@ -238,8 +239,8 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
     return (
         <View style={{ flexGrow: 1, height: sHeight }}>
             <FlatList
-                data={room.members}
-                renderItem={({ item }) => <RoomUserView user={item} theme={theme} />}
+                data={room.speakers}
+                renderItem={({ item }) => <RoomUserView user={item.user} theme={theme} />}
                 keyExtractor={(item, index) => index.toString() + item.id}
                 numColumns={3}
                 style={{ flex: 1 }}
@@ -250,6 +251,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
 
 const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: SRouter }) => {
     const theme = useTheme();
+    const client = useClient();
     const { room } = props;
     const [headerHeight, setHeaderHeight] = React.useState(0);
     const [controlsHeight, setControlsHeight] = React.useState(0);
@@ -268,6 +270,15 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         [controlsHeight],
     );
 
+    const handleLeave = React.useCallback(() => {
+        let admins = room.speakers.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
+        if (admins.length <= 1) {
+            client.mutateVoiceChatEnd({ id: room.id });
+        } else {
+            client.mutateVoiceChatLeave({ id: room.id });
+        }
+    }, [room]);
+
     return (
         <View>
             <RoomHeader room={room} theme={theme} onLayout={onHeaderLayout} />
@@ -278,9 +289,11 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
                 controlsHeight={controlsHeight}
             />
             <RoomControls
+                id={room.id}
                 theme={theme}
                 role="admin"
                 onLayout={onControlsLayout}
+                onLeave={handleLeave}
                 router={props.router}
                 modalCtx={props.ctx}
             />

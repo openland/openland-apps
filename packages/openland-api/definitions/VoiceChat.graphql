@@ -1,0 +1,43 @@
+fragment VoiceChat on VoiceChat {
+    id
+    title
+    # adminsCount
+    listenersCount
+    speakersCount
+    speakers {
+        id
+        user {
+            id
+            name
+            photo
+        }
+        status
+    }
+}
+
+query ActiveVoiceChats($first: Int!, $after: String) {
+    activeVoiceChats(first: $first, after: $after) {
+        cursor
+        items {
+            ...VoiceChat
+        }
+    }
+}
+
+mutation VoiceChatCreate($input: VoiceChatInput!) {
+    voiceChatCreate(input: $input) {
+        ...VoiceChat
+    }
+}
+
+mutation VoiceChatEnd($id: ID!) {
+    voiceChatEnd(id: $id) {
+        id
+    }
+}
+
+mutation VoiceChatLeave($id: ID!) {
+    voiceChatLeave(id: $id) {
+        id
+    }
+}

@@ -25,6 +25,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryAccountSettings(params?: QueryParameters): Promise<Types.AccountSettings> {
         return this.query('AccountSettings', undefined, params);
     }
+    queryActiveVoiceChats(variables: Types.ActiveVoiceChatsVariables, params?: QueryParameters): Promise<Types.ActiveVoiceChats> {
+        return this.query('ActiveVoiceChats', variables, params);
+    }
     queryAuthPoints(params?: QueryParameters): Promise<Types.AuthPoints> {
         return this.query('AuthPoints', undefined, params);
     }
@@ -430,6 +433,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchAccountSettings(params?: QueryParameters): Promise<Types.AccountSettings> {
         return this.refetch('AccountSettings', undefined, params);
     }
+    refetchActiveVoiceChats(variables: Types.ActiveVoiceChatsVariables, params?: QueryParameters): Promise<Types.ActiveVoiceChats> {
+        return this.refetch('ActiveVoiceChats', variables, params);
+    }
     refetchAuthPoints(params?: QueryParameters): Promise<Types.AuthPoints> {
         return this.refetch('AuthPoints', undefined, params);
     }
@@ -834,6 +840,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateAccountSettings(updater: (data: Types.AccountSettings) => Types.AccountSettings | null): Promise<boolean> {
         return this.updateQuery(updater, 'AccountSettings', undefined);
+    }
+    updateActiveVoiceChats(variables: Types.ActiveVoiceChatsVariables, updater: (data: Types.ActiveVoiceChats) => Types.ActiveVoiceChats | null): Promise<boolean> {
+        return this.updateQuery(updater, 'ActiveVoiceChats', variables);
     }
     updateAuthPoints(updater: (data: Types.AuthPoints) => Types.AuthPoints | null): Promise<boolean> {
         return this.updateQuery(updater, 'AuthPoints', undefined);
@@ -1249,6 +1258,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useAccountSettings(params?: SpaceQueryWatchParameters): Types.AccountSettings;
     useAccountSettings(params?: SpaceQueryWatchParameters): Types.AccountSettings | null {
         return this.useQuery('AccountSettings', undefined, params);
+    }
+    useActiveVoiceChats(variables: Types.ActiveVoiceChatsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ActiveVoiceChats | null;
+    useActiveVoiceChats(variables: Types.ActiveVoiceChatsVariables, params?: SpaceQueryWatchParameters): Types.ActiveVoiceChats;
+    useActiveVoiceChats(variables: Types.ActiveVoiceChatsVariables, params?: SpaceQueryWatchParameters): Types.ActiveVoiceChats | null {
+        return this.useQuery('ActiveVoiceChats', variables, params);
     }
     useAuthPoints(params: SpaceQueryWatchParameters & { suspense: false }): Types.AuthPoints | null;
     useAuthPoints(params?: SpaceQueryWatchParameters): Types.AuthPoints;
@@ -2289,6 +2303,15 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateUserStorageSet(variables: Types.UserStorageSetVariables, params?: MutationParameters): Promise<Types.UserStorageSet> {
         return this.mutate('UserStorageSet', variables, params);
+    }
+    mutateVoiceChatCreate(variables: Types.VoiceChatCreateVariables, params?: MutationParameters): Promise<Types.VoiceChatCreate> {
+        return this.mutate('VoiceChatCreate', variables, params);
+    }
+    mutateVoiceChatEnd(variables: Types.VoiceChatEndVariables, params?: MutationParameters): Promise<Types.VoiceChatEnd> {
+        return this.mutate('VoiceChatEnd', variables, params);
+    }
+    mutateVoiceChatLeave(variables: Types.VoiceChatLeaveVariables, params?: MutationParameters): Promise<Types.VoiceChatLeave> {
+        return this.mutate('VoiceChatLeave', variables, params);
     }
     mutateconferenceAddScreenShare(variables: Types.conferenceAddScreenShareVariables, params?: MutationParameters): Promise<Types.conferenceAddScreenShare> {
         return this.mutate('conferenceAddScreenShare', variables, params);

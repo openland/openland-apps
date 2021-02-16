@@ -1932,6 +1932,25 @@ const UserFullSelector = obj(
                 ))
         );
 
+const VoiceChatSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('title', 'title', args(), scalar('String')),
+            field('listenersCount', 'listenersCount', args(), notNull(scalar('Int'))),
+            field('speakersCount', 'speakersCount', args(), notNull(scalar('Int'))),
+            field('speakers', 'speakers', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('user', 'user', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('name', 'name', args(), notNull(scalar('String'))),
+                            field('photo', 'photo', args(), scalar('String'))
+                        ))),
+                    field('status', 'status', args(), notNull(scalar('String')))
+                )))))
+        );
+
 const WalletTransactionFragmentSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -2461,6 +2480,16 @@ const AccountSettingsSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('Organization', OrganizationShortSelector)
                 )))))
+        );
+const ActiveVoiceChatsSelector = obj(
+            field('activeVoiceChats', 'activeVoiceChats', args(fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('cursor', 'cursor', args(), scalar('String')),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('VoiceChat', VoiceChatSelector)
+                        )))))
+                )))
         );
 const AuthPointsSelector = obj(
             field('authPoints', 'authPoints', args(), notNull(obj(
@@ -3097,6 +3126,14 @@ const ExplorePeopleSelector = obj(
                 )))
         );
 const ExploreRoomsSelector = obj(
+            field('activeVoiceChats', 'activeVoiceChats', args(fieldValue("first", intValue(3))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('cursor', 'cursor', args(), scalar('String')),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('VoiceChat', VoiceChatSelector)
+                        )))))
+                ))),
             field('discoverNewAndGrowing', 'discoverNewAndGrowing', args(fieldValue("first", intValue(3)), fieldValue("seed", refValue('seed'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('items', 'items', args(), notNull(list(notNull(obj(
@@ -5565,6 +5602,21 @@ const UserStorageSetSelector = obj(
                     field('value', 'value', args(), scalar('String'))
                 )))))
         );
+const VoiceChatCreateSelector = obj(
+            field('voiceChatCreate', 'voiceChatCreate', args(fieldValue("input", refValue('input'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('VoiceChat', VoiceChatSelector)
+                )))
+        );
+const VoiceChatEndSelector = obj(
+            field('voiceChatEnd', 'voiceChatEnd', args(fieldValue("id", refValue('id'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID')))
+                )))
+        );
+const VoiceChatLeaveSelector = obj(
+            field('voiceChatLeave', 'voiceChatLeave', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
+        );
 const conferenceAddScreenShareSelector = obj(
             field('conferenceAddScreenShare', 'conferenceAddScreenShare', args(fieldValue("id", refValue('id'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5909,6 +5961,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query AccountSettings{me:me{__typename ...UserShort audienceSize}myProfile{__typename id authEmail}organizations:myOrganizations{__typename ...OrganizationShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
         selector: AccountSettingsSelector
     },
+    ActiveVoiceChats: {
+        kind: 'query',
+        name: 'ActiveVoiceChats',
+        body: 'query ActiveVoiceChats($first:Int!,$after:String){activeVoiceChats(first:$first,after:$after){__typename cursor items{__typename ...VoiceChat}}}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name photo}status}}',
+        selector: ActiveVoiceChatsSelector
+    },
     AuthPoints: {
         kind: 'query',
         name: 'AuthPoints',
@@ -6146,7 +6204,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ExploreRooms: {
         kind: 'query',
         name: 'ExploreRooms',
-        body: 'query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:3){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:3){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopOrganizations(first:3){__typename items{__typename ...DiscoverOrganization}cursor}discoverNewAndGrowingOrganizations(first:3,seed:$seed){__typename items{__typename ...DiscoverOrganization}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive featured}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname featured:alphaFeatured}',
+        body: 'query ExploreRooms($seed:Int!){activeVoiceChats(first:3){__typename cursor items{__typename ...VoiceChat}}discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:3){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:3){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopOrganizations(first:3){__typename items{__typename ...DiscoverOrganization}cursor}discoverNewAndGrowingOrganizations(first:3,seed:$seed){__typename items{__typename ...DiscoverOrganization}cursor}isDiscoverDone:betaIsDiscoverDone}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name photo}status}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive featured}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname featured:alphaFeatured}',
         selector: ExploreRoomsSelector
     },
     FetchPushSettings: {
@@ -7468,6 +7526,24 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'UserStorageSet',
         body: 'mutation UserStorageSet($namespace:String!,$data:[AppStorageValueInput!]!){userStorageSet(namespace:$namespace,data:$data){__typename id key value}}',
         selector: UserStorageSetSelector
+    },
+    VoiceChatCreate: {
+        kind: 'mutation',
+        name: 'VoiceChatCreate',
+        body: 'mutation VoiceChatCreate($input:VoiceChatInput!){voiceChatCreate(input:$input){__typename ...VoiceChat}}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name photo}status}}',
+        selector: VoiceChatCreateSelector
+    },
+    VoiceChatEnd: {
+        kind: 'mutation',
+        name: 'VoiceChatEnd',
+        body: 'mutation VoiceChatEnd($id:ID!){voiceChatEnd(id:$id){__typename id}}',
+        selector: VoiceChatEndSelector
+    },
+    VoiceChatLeave: {
+        kind: 'mutation',
+        name: 'VoiceChatLeave',
+        body: 'mutation VoiceChatLeave($id:ID!){voiceChatLeave(id:$id){__typename id}}',
+        selector: VoiceChatLeaveSelector
     },
     conferenceAddScreenShare: {
         kind: 'mutation',

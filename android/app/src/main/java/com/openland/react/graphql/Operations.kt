@@ -12,6 +12,7 @@ object Operations {
         if (name == "AccountAppInviteInfo") return AccountAppInviteInfo
         if (name == "AccountInviteInfo") return AccountInviteInfo
         if (name == "AccountSettings") return AccountSettings
+        if (name == "ActiveVoiceChats") return ActiveVoiceChats
         if (name == "AuthPoints") return AuthPoints
         if (name == "AuthResolveShortName") return AuthResolveShortName
         if (name == "BlackListUpdatesState") return BlackListUpdatesState
@@ -272,6 +273,9 @@ object Operations {
         if (name == "UpdateOrganization") return UpdateOrganization
         if (name == "UpdateWelcomeMessage") return UpdateWelcomeMessage
         if (name == "UserStorageSet") return UserStorageSet
+        if (name == "VoiceChatCreate") return VoiceChatCreate
+        if (name == "VoiceChatEnd") return VoiceChatEnd
+        if (name == "VoiceChatLeave") return VoiceChatLeave
         if (name == "conferenceAddScreenShare") return conferenceAddScreenShare
         if (name == "conferenceAlterMediaState") return conferenceAlterMediaState
         if (name == "conferenceRemoveScreenShare") return conferenceRemoveScreenShare

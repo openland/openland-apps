@@ -589,6 +589,10 @@ enum DialogKind {
   GROUP
 }
 
+type DialogListSettings {
+  pinnedChats: [Room!]!
+}
+
 type DialogLostAccess {
   cid: ID!
 }
@@ -911,6 +915,11 @@ type FileMetadata {
   imageWidth: Int
   imageHeight: Int
   imageFormat: String
+}
+
+type FollowerConnection {
+  items: [User!]!
+  cursor: String
 }
 
 type GammaMessagesBatch {
@@ -1788,6 +1797,7 @@ type Mutation {
   debugChangeChatPrice(cid: ID!, price: Int!): Boolean!
   debugCopyChatMembers(fromCid: ID!, toCid: ID!): Boolean!
   debugCopyOrgMembers(fromOrg: ID!, toOrg: ID!): Boolean!
+  debugMigratePrivateChatMessages: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -1827,6 +1837,17 @@ type Mutation {
   superDeleteUser(id: ID!): Boolean!
   superAdminAdd(userId: ID!, role: SuperAdminRole!): String!
   superAdminRemove(userId: ID!): String!
+
+  """Listener actions"""
+  voiceChatJoin(id: ID!): VoiceChat!
+  voiceChatLeave(id: ID!): Boolean!
+  voiceChatRaiseHand(id: ID!, raised: Boolean!): Boolean!
+
+  """Admin actions"""
+  voiceChatPromote(id: ID!, uid: ID!): Boolean!
+  voiceChatDemote(id: ID!, uid: ID!): Boolean!
+  voiceChatUpdateAdmin(id: ID!, uid: ID!, admin: Boolean!): Boolean!
+  voiceChatKick(id: ID!, uid: ID!): Boolean!
   alphaAlterPublished(id: ID!, published: Boolean!): Organization!
   betaFixCounter(uid: ID!): Boolean!
   betaFixCountersForAll: Boolean!
@@ -1870,11 +1891,16 @@ type Mutation {
   removeFromContacts(userId: ID!): Boolean!
   profileCreate(input: ProfileInput!, inviteKey: String): Profile!
   profileUpdate(input: ProfileInput!, uid: ID, inviteKey: String): Profile!
+  dialogListPin(id: ID!): Boolean
+  dialogListUnpin(id: ID!): Boolean
+  dialogListUpdatePinned(pinned: [ID!]!): Boolean!
   conversationDraftUpdate(id: ID!, message: String): Draft!
   setEnvVar(name: String!, value: String!): Boolean!
   setEnvVarString(name: String!, value: String!): Boolean!
   setEnvVarNumber(name: String!, value: Int!): Boolean!
   setEnvVarBoolean(name: String!, value: Boolean!): Boolean!
+  socialFollow(uid: ID!): Boolean!
+  socialUnfollow(uid: ID!): Boolean!
   stickerPackCreate(title: String!, stickers: [StickerInput!]): StickerPack!
   stickerPackUpdate(id: ID!, input: StickerPackInput!): StickerPack!
   stickerPackAddSticker(id: ID!, input: StickerInput!): Sticker!
@@ -1888,7 +1914,7 @@ type Mutation {
   betaMessageSend(message: String, file: String, repeatKey: String, replyMessages: [ID!], mentions: [ID!], room: ID!): Boolean!
   betaMessageEdit(mid: ID!, message: String, file: String, replyMessages: [ID!], mentions: [ID!]): Boolean!
   betaMessageDeleteAugmentation(mid: ID!): Boolean!
-  betaMessageDelete(mid: ID, mids: [ID!]): Boolean!
+  betaMessageDelete(mid: ID, mids: [ID!], forMeOnly: Boolean): Boolean!
   betaReactionSet(mid: ID!, reaction: String!): Boolean!
   betaReactionRemove(mid: ID!, reaction: String!): Boolean!
 
@@ -1952,6 +1978,9 @@ type Mutation {
   superBadgeDelete(badgeId: ID!, userId: ID!): User!
   superBadgeVerify(badgeId: ID!, userId: ID!): User!
   superBadgeUnverify(badgeId: ID!, userId: ID!): User!
+  voiceChatCreate(input: VoiceChatInput!): VoiceChat!
+  voiceChatUpdate(id: ID!, input: VoiceChatInput!): VoiceChat!
+  voiceChatEnd(id: ID!): VoiceChat!
   alphaCreateFeedPost(channel: ID!, message: String, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!], slides: [SlideInput!], repeatKey: String): FeedItem!
   alphaEditFeedPost(feedItemId: ID!, message: String, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!], slides: [SlideInput!]): FeedItem!
   alphaDeleteFeedPost(feedItemId: ID!): Boolean!
@@ -1980,7 +2009,7 @@ type Mutation {
   messageReactionAdd(messageId: ID!, reaction: MessageReactionType!): Boolean!
   messageDonationReactionAdd(messageId: ID!): Boolean!
   messageReactionRemove(messageId: ID!, reaction: MessageReactionType!): Boolean!
-  deleteChat(chatId: ID!): Boolean!
+  deleteChat(chatId: ID!, oneSide: Boolean): Boolean!
   archiveChat(chatId: ID!): Boolean!
 
   """Room mgmt"""
@@ -2700,6 +2729,8 @@ type Query {
   debugChatTree(id: ID!): String!
   debugChatMessages(id: ID!): [ModernMessage!]!
   debugUnreadChats(user: ID): [String!]!
+  debugUnreadChatsAsync(user: ID): [String!]!
+  debugUnreadChatsDirect(user: ID): [String!]!
   debugUserAuthPoints(id: ID!): AuthPoint
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
@@ -2714,6 +2745,7 @@ type Query {
   superAccounts: [SuperAccount!]!
   superAccount(id: ID!, viaOrgId: Boolean): SuperAccount!
   superAdmins: [SuperAdmin!]!
+  voiceChatListeners(id: ID!, first: Int!, after: String): VoiceChatParticipantConnection!
   myBlackList: [User!]!
   discoverCollections(first: Int!, after: String): DiscoverChatsCollectionConnection
   discoverCollection(id: ID!): DiscoverChatsCollection
@@ -2736,9 +2768,12 @@ type Query {
   myContactsState: ContactsState!
   alphaNotificationCounter: NotificationCounter!
   myProfile: Profile
+  dialogListSettings: DialogListSettings!
   dialogsState: DialogUpdateState!
   envVars: [EnvVar!]
   envVar(name: String!): EnvVar
+  socialUserFollowers(uid: ID!, first: Int!, after: String): FollowerConnection!
+  socialUserFollowing(uid: ID!, first: Int!, after: String): FollowerConnection!
   ipLocation: IpLocation
   myStickers: UserStickers!
   createdStickerPacks: [StickerPack!]!
@@ -2803,6 +2838,8 @@ type Query {
 
   """Deprecated"""
   alphaProfiles(query: String, first: Int!, after: String, page: Int, sort: String): UserConnection!
+  voiceChat(id: ID!): VoiceChat!
+  activeVoiceChats(first: Int!, after: String): VoiceChatConnection!
   alphaHomeFeed(first: Int!, after: String): FeedItemConnection!
   alphaFeedItem(id: ID!): FeedItem
   alphaFeedChannel(id: ID!): FeedChannel!
@@ -3452,6 +3489,10 @@ type UpdateChatRead {
   seq: Int!
 }
 
+type UpdateDialogListSettingsChanged {
+  settings: DialogListSettings!
+}
+
 union UpdatedNotificationContent = UpdatedNotificationContentComment
 
 type UpdatedNotificationContentComment {
@@ -3459,7 +3500,7 @@ type UpdatedNotificationContentComment {
   comment: CommentEntry
 }
 
-union UpdateEvent = UpdateChatRead | UpdateProfileChanged | UpdateMyProfileChanged | UpdateChatMessage | UpdateChatMessageDeleted | UpdateChatDraftChanged | UpdateSettingsChanged | UpdateRoomChanged
+union UpdateEvent = UpdateChatRead | UpdateProfileChanged | UpdateMyProfileChanged | UpdateChatMessage | UpdateChatMessageDeleted | UpdateChatDraftChanged | UpdateSettingsChanged | UpdateRoomChanged | UpdateDialogListSettingsChanged
 
 type UpdateMyProfileChanged {
   user: User!
@@ -3640,6 +3681,9 @@ type User {
   """Deprecated"""
   alphaPrimaryOrganization: Organization
   inContacts: Boolean!
+  followingCount: Int!
+  followersCount: Int!
+  followedByMe: Boolean!
   modernBadges: [ModernBadge!]!
 
   """deprecated"""
@@ -3690,6 +3734,48 @@ input VideoMetadataInput {
 enum VideoSource {
   CAMERA
   SCREEN
+}
+
+type VoiceChat {
+  id: ID!
+  title: String
+  adminsCount: Int!
+  listenersCount: Int!
+  speakersCount: Int!
+  active: Boolean!
+  speakers: [VoiceChatParticipant!]!
+}
+
+type VoiceChatConnection {
+  items: [VoiceChat!]!
+  cursor: String
+}
+
+input VoiceChatInput {
+  title: String!
+}
+
+type VoiceChatParticipant {
+  id: ID!
+  user: User!
+  status: VoiceChatParticipantStatus!
+
+  """viewed only by admins"""
+  handRaised: Boolean
+}
+
+type VoiceChatParticipantConnection {
+  items: [VoiceChatParticipant!]!
+  cursor: String
+  haveMore: Boolean!
+}
+
+enum VoiceChatParticipantStatus {
+  LISTENER
+  SPEAKER
+  ADMIN
+  LEFT
+  KICKED
 }
 
 type WalletAccount {

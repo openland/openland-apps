@@ -3,11 +3,11 @@ import { ModalProps } from 'react-native-fast-modal';
 import { useClient } from 'openland-api/useClient';
 import { SRouter } from 'react-native-s/SRouter';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
-import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
+// import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import Toast from 'openland-mobile/components/Toast';
-import { ZButton } from 'openland-mobile/components/ZButton';
+// import { ZButton } from 'openland-mobile/components/ZButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { useTheme } from 'openland-mobile/themes/ThemeContext';
+// import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { View, Text, TouchableOpacity, Image, Share, Platform, Clipboard, LayoutChangeEvent } from 'react-native';
 
@@ -128,137 +128,146 @@ const ControlMute = React.memo((props: { theme: ThemeGlobal }) => {
     );
 });
 
-const RaiseModalView = React.memo(({ onCancel, onConfirm }: { onCancel: () => void, onConfirm: () => void }) => {
-    const theme = useTheme();
+// const RaiseModalView = React.memo(({ onCancel, onConfirm }: { onCancel: () => void, onConfirm: () => void }) => {
+//     const theme = useTheme();
 
-    return (
-        <>
-            <View
-                style={{
-                    backgroundColor: theme.backgroundTertiaryTrans,
-                    width: 96,
-                    height: 96,
-                    borderRadius: 100,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    alignSelf: 'center',
-                    marginBottom: 16,
-                }}
-            >
-                <Text style={{ fontSize: 42 }}>🤚</Text>
-            </View>
-            <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, textAlign: 'center', marginBottom: 6 }}>Raise hand?</Text>
-            <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginHorizontal: 32, marginBottom: 32 }}>
-                Room admins will see that{'\u00A0'}you{'\u00A0'}want{'\u00A0'}to{'\u00A0'}speak
-            </Text>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 16 }}>
-                <ZButton style="secondary" size="large" title="Maybe later" onPress={onCancel} />
-                <ZButton style="positive" size="large" title="Raise hand 🖐" onPress={onConfirm} />
-            </View>
-        </>
-    );
-});
+//     return (
+//         <>
+//             <View
+//                 style={{
+//                     backgroundColor: theme.backgroundTertiaryTrans,
+//                     width: 96,
+//                     height: 96,
+//                     borderRadius: 100,
+//                     alignItems: 'center',
+//                     justifyContent: 'center',
+//                     alignSelf: 'center',
+//                     marginBottom: 16,
+//                 }}
+//             >
+//                 <Text style={{ fontSize: 42 }}>🤚</Text>
+//             </View>
+//             <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, textAlign: 'center', marginBottom: 6 }}>Raise hand?</Text>
+//             <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginHorizontal: 32, marginBottom: 32 }}>
+//                 Room admins will see that{'\u00A0'}you{'\u00A0'}want{'\u00A0'}to{'\u00A0'}speak
+//             </Text>
+//             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 16 }}>
+//                 <ZButton style="secondary" size="large" title="Maybe later" onPress={onCancel} />
+//                 <ZButton style="positive" size="large" title="Raise hand 🖐" onPress={onConfirm} />
+//             </View>
+//         </>
+//     );
+// });
 
-const showRaiseHandModal = () => new Promise<void>((resolve, reject) => {
-    showBottomSheet({
-        cancelable: true,
-        view: ({ hide }) => {
-            return (
-                <RaiseModalView
-                    onCancel={() => {
-                        reject();
-                        hide();
-                    }}
-                    onConfirm={() => {
-                        resolve();
-                        hide();
-                    }}
-                />
-            );
-        }
-    });
-});
+// const showRaiseHandModal = () => new Promise<void>((resolve, reject) => {
+//     showBottomSheet({
+//         cancelable: true,
+//         view: ({ hide }) => {
+//             return (
+//                 <RaiseModalView
+//                     onCancel={() => {
+//                         reject();
+//                         hide();
+//                     }}
+//                     onConfirm={() => {
+//                         resolve();
+//                         hide();
+//                     }}
+//                 />
+//             );
+//         }
+//     });
+// });
 
-const ControlRaiseHand = React.memo((props: { theme: ThemeGlobal }) => {
-    const { theme } = props;
-    const [raised, setRaised] = React.useState(false);
-    const handlePress = React.useCallback(async () => {
-        if (raised) {
-            return;
-        }
-        try {
-            await showRaiseHandModal();
-            setRaised(true);
-        } catch (e) { /**/ }
-    }, [raised]);
+// const ControlRaiseHand = React.memo((props: { theme: ThemeGlobal }) => {
+//     const { theme } = props;
+//     const [raised, setRaised] = React.useState(false);
+//     const handlePress = React.useCallback(async () => {
+//         if (raised) {
+//             return;
+//         }
+//         try {
+//             await showRaiseHandModal();
+//             setRaised(true);
+//         } catch (e) { /**/ }
+//     }, [raised]);
 
-    return (
-        <ControlItem
-            theme={theme}
-            icon={raised ? '🖐' : '🤚'}
-            bgColor={raised ? theme.accentPositive : theme.incomingBackgroundPrimary}
-            disabled={raised}
-            onPress={handlePress}
-        />
-    );
-});
+//     return (
+//         <ControlItem
+//             theme={theme}
+//             icon={raised ? '🖐' : '🤚'}
+//             bgColor={raised ? theme.accentPositive : theme.incomingBackgroundPrimary}
+//             disabled={raised}
+//             onPress={handlePress}
+//         />
+//     );
+// });
 
-interface ControlRaisedHandsCountProps {
-    theme: ThemeGlobal;
-    raisedCount?: number;
-    router: SRouter;
-    modalCtx: ModalProps;
-}
+// interface ControlRaisedHandsCountProps {
+//     theme: ThemeGlobal;
+//     raisedCount?: number;
+//     router: SRouter;
+//     modalCtx: ModalProps;
+// }
 
-const ControlRaisedHandsCount = React.memo((props: ControlRaisedHandsCountProps) => {
-    const { theme, raisedCount } = props;
-    const handlePress = React.useCallback(() => {
-        props.router.push('RaisedHands');
-        props.modalCtx.hide();
-    }, [props.router]);
+// const ControlRaisedHandsCount = React.memo((props: ControlRaisedHandsCountProps) => {
+//     const { theme, raisedCount } = props;
+//     const handlePress = React.useCallback(() => {
+//         props.router.push('RaisedHands');
+//         props.modalCtx.hide();
+//     }, [props.router]);
 
-    return (
-        <ControlItem
-            theme={theme}
-            icon={require('assets/ic-hand-24.png')}
-            iconColor={theme.foregroundSecondary}
-            text="Raised"
-            bgColor={theme.incomingBackgroundPrimary}
-            counter={raisedCount}
-            onPress={handlePress}
-        />
-    );
-});
+//     return (
+//         <ControlItem
+//             theme={theme}
+//             icon={require('assets/ic-hand-24.png')}
+//             iconColor={theme.foregroundSecondary}
+//             text="Raised"
+//             bgColor={theme.incomingBackgroundPrimary}
+//             counter={raisedCount}
+//             onPress={handlePress}
+//         />
+//     );
+// });
 
 interface RoomControlsProps {
+    id: string;
     theme: ThemeGlobal;
     role?: 'member' | 'admin' | 'speaker';
+    onLeave: () => void;
     onLayout: (e: LayoutChangeEvent) => void;
     router: SRouter;
     modalCtx: ModalProps;
 }
 
 export const RoomControls = React.memo((props: RoomControlsProps) => {
-    const { theme, role, router, modalCtx, onLayout } = props;
+    const { theme, role, modalCtx, onLeave, onLayout } = props;
     const client = useClient();
     const user = client.useProfile({ suspense: false })?.user;
 
-    const roleButtons = role === 'admin' ? (
-        <>
-            <ControlRaisedHandsCount theme={theme} raisedCount={124} router={router} modalCtx={modalCtx} />
-            <ControlMute theme={theme} />
-        </>
-    ) : role === 'speaker' ? <ControlMute theme={theme} />
-            : <ControlRaiseHand theme={theme} />;
+    // const roleButtons = role === 'admin' ? (
+    //     <>
+    //         <ControlRaisedHandsCount theme={theme} raisedCount={124} router={router} modalCtx={modalCtx} />
+    //         <ControlMute theme={theme} />
+    //     </>
+    // ) : role === 'speaker' ? <ControlMute theme={theme} />
+    //         : <ControlRaiseHand theme={theme} />;
+    const roleButtons = role === 'member' ? null : <ControlMute theme={theme} />;
+
+    const handleLeave = React.useCallback(() => {
+        onLeave();
+        modalCtx.hide();
+    }, [onLeave]);
 
     return (
         <View style={{ paddingTop: 16, paddingHorizontal: 38, flexDirection: 'row', justifyContent: 'space-between' }} onLayout={onLayout}>
             <ControlItem
                 theme={theme}
-                text="Leave"
+                text={role === 'admin' ? 'End' : 'Leave'}
                 icon={require('assets/ic-door-leave-24.png')}
                 iconColor={theme.accentNegative}
                 bgColor="rgba(242, 48, 81, 0.12)"
+                onPress={handleLeave}
             />
             <ControlItem
                 theme={theme}

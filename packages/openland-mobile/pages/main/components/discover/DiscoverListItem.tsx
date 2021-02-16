@@ -5,8 +5,10 @@ import {
     DiscoverOrganization,
 } from 'openland-y-utils/discover/normalizePopularItems';
 import { plural } from 'openland-y-utils/plural';
-import { RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
+import { RoomChat_room_SharedRoom, VoiceChat, VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
+import { showRoomView } from 'openland-mobile/pages/rooms/RoomView';
+import { SRouterContext } from 'react-native-s/SRouterContext';
 
 interface DiscoverListItemProps {
     item: DiscoverRoom;
@@ -63,6 +65,31 @@ export const DiscoverListItemOrg = ({ item, rightElement }: DiscoverListItemOrgP
             path="ProfileOrganization"
             pathParams={{ id: item.id }}
             {...item.featured && theme.displayFeaturedIcon ? { descriptionIcon: require('assets/ic-verified-16.png'), descriptionColor: '#3DA7F2' } : {}}
+        />
+    );
+};
+
+interface DiscoverListItemVoiceProps {
+    item: VoiceChat;
+}
+
+export const DiscoverListItemVoice = ({ item }: DiscoverListItemVoiceProps) => {
+    const admin = item.speakers.find(x => x.status === VoiceChatParticipantStatus.ADMIN);
+    const router = React.useContext(SRouterContext)!;
+    const handlePress = React.useCallback(() => {
+        showRoomView(item, router);
+    }, [router]);
+    return (
+        <ZListItem
+            key={item.id}
+            text={item.title}
+            leftAvatar={{
+                photo: admin?.user.photo,
+                id: admin?.user.id || item.id,
+                title: item.title || undefined,
+            }}
+            subTitle={plural(item.speakersCount + item.listenersCount, ['member', 'members'])}
+            onPress={handlePress}
         />
     );
 };
