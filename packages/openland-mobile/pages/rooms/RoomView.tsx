@@ -88,14 +88,24 @@ const UserModalContent = React.memo((props: RoomUserViewProps) => {
                     text="Follow"
                 />
                 <ZListItem
-                    leftIcon={require('assets/ic-leave-24.png')}
+                    leftIcon={require('assets/ic-listener-24.png')}
                     small={true}
-                    text="Remove"
+                    text="Make listener"
                 />
                 <ZListItem
                     leftIcon={require('assets/ic-pro-24.png')}
                     small={true}
                     text="Make admin"
+                />
+                <ZListItem
+                    leftIcon={require('assets/ic-pro-off-24.png')}
+                    small={true}
+                    text="Remove admin"
+                />
+                <ZListItem
+                    leftIcon={require('assets/ic-leave-24.png')}
+                    small={true}
+                    text="Remove"
                 />
                 <View style={{ marginTop: 16, paddingHorizontal: 16 }}>
                     <ZButton size="large" title="View profile" style="secondary" />

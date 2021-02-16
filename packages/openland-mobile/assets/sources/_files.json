@@ -1,6 +1,27 @@
 {
     "icons": [
         {
+            "name": "ic-pro",
+            "src": "ic-pro-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-pro-off",
+            "src": "ic-pro-off-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-listener",
+            "src": "ic-listener-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-warning",
             "src": "ic-warning-16.svg",
             "sizes": [
@@ -1654,13 +1675,6 @@
             "src": "ic-speaking-bold-16.svg",
             "sizes": [
                 16
-            ]
-        },
-        {
-            "name": "ic-pro",
-            "src": "ic-pro-24.svg",
-            "sizes": [
-                24
             ]
         },
         {
