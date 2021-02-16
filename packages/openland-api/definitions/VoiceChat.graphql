@@ -24,6 +24,15 @@ query ActiveVoiceChats($first: Int!, $after: String) {
     }
 }
 
+query VoiceChatUser($uid: ID!) {
+    user(id: $uid) {
+        id
+        followingCount
+        followersCount
+        followedByMe
+    }
+}
+
 mutation VoiceChatCreate($input: VoiceChatInput!) {
     voiceChatCreate(input: $input) {
         ...VoiceChat

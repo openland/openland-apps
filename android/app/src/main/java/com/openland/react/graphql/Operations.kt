@@ -143,6 +143,7 @@ object Operations {
         if (name == "UserSearchForOrganization") return UserSearchForOrganization
         if (name == "UserStorage") return UserStorage
         if (name == "Users") return Users
+        if (name == "VoiceChatUser") return VoiceChatUser
         if (name == "AccountInviteJoin") return AccountInviteJoin
         if (name == "AddAppToChat") return AddAppToChat
         if (name == "AddComment") return AddComment
@@ -249,6 +250,8 @@ object Operations {
         if (name == "SetTyping") return SetTyping
         if (name == "SetUserShortname") return SetUserShortname
         if (name == "SettingsUpdate") return SettingsUpdate
+        if (name == "SocialFollow") return SocialFollow
+        if (name == "SocialUnfollow") return SocialUnfollow
         if (name == "StickerPackAddToCollection") return StickerPackAddToCollection
         if (name == "StickerPackCreate") return StickerPackCreate
         if (name == "StickerPackRemoveFromCollection") return StickerPackRemoveFromCollection

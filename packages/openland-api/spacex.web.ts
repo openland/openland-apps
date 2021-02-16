@@ -4801,6 +4801,15 @@ const UsersSelector = obj(
                     fragment('User', UserFullSelector)
                 )))))
         );
+const VoiceChatUserSelector = obj(
+            field('user', 'user', args(fieldValue("id", refValue('uid'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('followingCount', 'followingCount', args(), notNull(scalar('Int'))),
+                    field('followersCount', 'followersCount', args(), notNull(scalar('Int'))),
+                    field('followedByMe', 'followedByMe', args(), notNull(scalar('Boolean')))
+                )))
+        );
 const AccountInviteJoinSelector = obj(
             field('alphaJoinInvite', 'alphaJoinInvite', args(fieldValue("key", refValue('inviteKey'))), notNull(scalar('ID')))
         );
@@ -5474,6 +5483,12 @@ const SettingsUpdateSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('Settings', SettingsFullSelector)
                 )))
+        );
+const SocialFollowSelector = obj(
+            field('socialFollow', 'socialFollow', args(fieldValue("uid", refValue('uid'))), notNull(scalar('Boolean')))
+        );
+const SocialUnfollowSelector = obj(
+            field('socialUnfollow', 'socialUnfollow', args(fieldValue("uid", refValue('uid'))), notNull(scalar('Boolean')))
         );
 const StickerPackAddToCollectionSelector = obj(
             field('stickerPackAddToCollection', 'stickerPackAddToCollection', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
@@ -6760,6 +6775,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query Users($ids:[ID!]!){users(ids:$ids){__typename ...UserFull}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
         selector: UsersSelector
     },
+    VoiceChatUser: {
+        kind: 'query',
+        name: 'VoiceChatUser',
+        body: 'query VoiceChatUser($uid:ID!){user(id:$uid){__typename id followingCount followersCount followedByMe}}',
+        selector: VoiceChatUserSelector
+    },
     AccountInviteJoin: {
         kind: 'mutation',
         name: 'AccountInviteJoin',
@@ -7395,6 +7416,18 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'SettingsUpdate',
         body: 'mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename id version primaryEmail emailFrequency excludeMutedChats countUnreadChats whoCanSeeEmail whoCanSeePhone whoCanAddToGroups communityAdminsCanSeeContactInfo desktop{__typename ...PlatformNotificationSettingsFull}mobile{__typename ...PlatformNotificationSettingsFull}}fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename direct{__typename showNotification sound}secretChat{__typename showNotification sound}communityChat{__typename showNotification sound}comments{__typename showNotification sound}channels{__typename showNotification sound}notificationPreview}',
         selector: SettingsUpdateSelector
+    },
+    SocialFollow: {
+        kind: 'mutation',
+        name: 'SocialFollow',
+        body: 'mutation SocialFollow($uid:ID!){socialFollow(uid:$uid)}',
+        selector: SocialFollowSelector
+    },
+    SocialUnfollow: {
+        kind: 'mutation',
+        name: 'SocialUnfollow',
+        body: 'mutation SocialUnfollow($uid:ID!){socialUnfollow(uid:$uid)}',
+        selector: SocialUnfollowSelector
     },
     StickerPackAddToCollection: {
         kind: 'mutation',

@@ -67,7 +67,7 @@ export function showBottomSheet(config: BottomSheetConfig) {
                 {!config.title && !config.containerStyle && <View style={{ marginTop: 16 }} />}
                 <GQLClientContext.Provider value={getClient()}>
                     <QueryCacheProvider>
-                        <React.Suspense fallback={<ZLoader />}>
+                        <React.Suspense fallback={<View style={{ flexGrow: 1, minHeight: 200, justifyContent: 'center', alignItems: 'center' }}><ZLoader /></View>}>
                             {config.view(ctx)}
                         </React.Suspense>
                     </QueryCacheProvider>

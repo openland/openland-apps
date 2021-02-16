@@ -4794,6 +4794,15 @@ private let UsersSelector = obj(
                     fragment("User", UserFullSelector)
                 )))))
         )
+private let VoiceChatUserSelector = obj(
+            field("user", "user", arguments(fieldValue("id", refValue("uid"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("followingCount", "followingCount", notNull(scalar("Int"))),
+                    field("followersCount", "followersCount", notNull(scalar("Int"))),
+                    field("followedByMe", "followedByMe", notNull(scalar("Boolean")))
+                )))
+        )
 private let AccountInviteJoinSelector = obj(
             field("alphaJoinInvite", "alphaJoinInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
         )
@@ -5467,6 +5476,12 @@ private let SettingsUpdateSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Settings", SettingsFullSelector)
                 )))
+        )
+private let SocialFollowSelector = obj(
+            field("socialFollow", "socialFollow", arguments(fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
+        )
+private let SocialUnfollowSelector = obj(
+            field("socialUnfollow", "socialUnfollow", arguments(fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
         )
 private let StickerPackAddToCollectionSelector = obj(
             field("stickerPackAddToCollection", "stickerPackAddToCollection", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
@@ -6757,6 +6772,12 @@ class Operations {
         "query Users($ids:[ID!]!){users(ids:$ids){__typename ...UserFull}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
         UsersSelector
     )
+    let VoiceChatUser = OperationDefinition(
+        "VoiceChatUser",
+        .query, 
+        "query VoiceChatUser($uid:ID!){user(id:$uid){__typename id followingCount followersCount followedByMe}}",
+        VoiceChatUserSelector
+    )
     let AccountInviteJoin = OperationDefinition(
         "AccountInviteJoin",
         .mutation, 
@@ -7393,6 +7414,18 @@ class Operations {
         "mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename id version primaryEmail emailFrequency excludeMutedChats countUnreadChats whoCanSeeEmail whoCanSeePhone whoCanAddToGroups communityAdminsCanSeeContactInfo desktop{__typename ...PlatformNotificationSettingsFull}mobile{__typename ...PlatformNotificationSettingsFull}}fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename direct{__typename showNotification sound}secretChat{__typename showNotification sound}communityChat{__typename showNotification sound}comments{__typename showNotification sound}channels{__typename showNotification sound}notificationPreview}",
         SettingsUpdateSelector
     )
+    let SocialFollow = OperationDefinition(
+        "SocialFollow",
+        .mutation, 
+        "mutation SocialFollow($uid:ID!){socialFollow(uid:$uid)}",
+        SocialFollowSelector
+    )
+    let SocialUnfollow = OperationDefinition(
+        "SocialUnfollow",
+        .mutation, 
+        "mutation SocialUnfollow($uid:ID!){socialUnfollow(uid:$uid)}",
+        SocialUnfollowSelector
+    )
     let StickerPackAddToCollection = OperationDefinition(
         "StickerPackAddToCollection",
         .mutation, 
@@ -7843,6 +7876,7 @@ class Operations {
         if name == "UserSearchForOrganization" { return UserSearchForOrganization }
         if name == "UserStorage" { return UserStorage }
         if name == "Users" { return Users }
+        if name == "VoiceChatUser" { return VoiceChatUser }
         if name == "AccountInviteJoin" { return AccountInviteJoin }
         if name == "AddAppToChat" { return AddAppToChat }
         if name == "AddComment" { return AddComment }
@@ -7949,6 +7983,8 @@ class Operations {
         if name == "SetTyping" { return SetTyping }
         if name == "SetUserShortname" { return SetUserShortname }
         if name == "SettingsUpdate" { return SettingsUpdate }
+        if name == "SocialFollow" { return SocialFollow }
+        if name == "SocialUnfollow" { return SocialUnfollow }
         if name == "StickerPackAddToCollection" { return StickerPackAddToCollection }
         if name == "StickerPackCreate" { return StickerPackCreate }
         if name == "StickerPackRemoveFromCollection" { return StickerPackRemoveFromCollection }
