@@ -15,10 +15,11 @@ import { RoomControls } from './RoomControls';
 import { VoiceChat, VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { SUPER_ADMIN } from '../Init';
+import { TintBlue } from 'openland-y-utils/themes/tints';
 
 interface RoomUserViewProps {
     roomId: string;
-    user: { name: string; photo: string | null; id: string };
+    user: { name: string; firstName: string; photo: string | null; id: string };
     userStatus: VoiceChatParticipantStatus;
     theme: ThemeGlobal;
     selfStatus: VoiceChatParticipantStatus;
@@ -219,6 +220,7 @@ const RoomHeader = React.memo(
 );
 
 const RoomUserView = React.memo((props: RoomUserViewProps) => {
+    const isTalking = false;
     return (
         <View
             style={{
@@ -226,7 +228,7 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginBottom: 24,
+                marginBottom: 20,
             }}
         >
             <TouchableOpacity
@@ -238,12 +240,21 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                 }}
                 onPress={() => showUserInfo(props)}
             >
-                <ZAvatar
-                    size="xx-large"
-                    photo={props.user.photo}
-                    title={props.user.name}
-                    id={props.user.id}
-                />
+                <View
+                    style={{
+                        padding: 4,
+                        borderColor: isTalking ? TintBlue.primary : 'transparent',
+                        borderWidth: 2,
+                        borderRadius: 100,
+                    }}
+                >
+                    <ZAvatar
+                        size="xx-large"
+                        photo={props.user.photo}
+                        title={props.user.name}
+                        id={props.user.id}
+                    />
+                </View>
                 <Text
                     numberOfLines={1}
                     style={{
@@ -252,7 +263,7 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                         marginTop: 12,
                     }}
                 >
-                    {props.user.name}
+                    {props.user.firstName}
                 </Text>
             </TouchableOpacity>
         </View>

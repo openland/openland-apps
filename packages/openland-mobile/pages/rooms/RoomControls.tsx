@@ -11,6 +11,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { View, Text, TouchableOpacity, Image, Share, Platform, Clipboard, LayoutChangeEvent } from 'react-native';
 import { VoiceChatParticipantStatus } from 'openland-api/spacex.types';
+import { TintBlue, TintOrange } from 'openland-y-utils/themes/tints';
 
 const showRoomInvite = ({ link, theme }: { link: string, theme: ThemeGlobal }) => {
     const handleShare = () => {
@@ -123,7 +124,7 @@ const ControlMute = React.memo((props: { theme: ThemeGlobal }) => {
             theme={theme}
             icon={muted ? require('assets/ic-mute-glyph-36.png') : require('assets/ic-microphone-36.png')}
             iconColor={theme.foregroundContrast}
-            bgColor={muted ? theme.tintOrange : theme.tintBlue}
+            bgColor={muted ? TintOrange.primary : TintBlue.primary}
             onPress={toggleMute}
         />
     );
@@ -274,8 +275,8 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
                 theme={theme}
                 text="Invite"
                 icon={require('assets/ic-add-glyph-24.png')}
-                iconColor={theme.foregroundSecondary}
-                bgColor={theme.incomingBackgroundPrimary}
+                iconColor={theme.type === 'Light' ? theme.foregroundSecondary : theme.foregroundContrast}
+                bgColor={theme.backgroundTertiaryTrans}
                 onPress={() => showRoomInvite({ theme, link: user ? `https://openland.com/${user.shortname || user.id}` : 'Try again' })}
             />
             {roleButtons}

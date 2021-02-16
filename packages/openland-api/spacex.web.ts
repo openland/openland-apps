@@ -1945,6 +1945,7 @@ const VoiceChatSelector = obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             field('id', 'id', args(), notNull(scalar('ID'))),
                             field('name', 'name', args(), notNull(scalar('String'))),
+                            field('firstName', 'firstName', args(), notNull(scalar('String'))),
                             field('photo', 'photo', args(), scalar('String'))
                         ))),
                     field('status', 'status', args(), notNull(scalar('String')))
@@ -5976,7 +5977,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ActiveVoiceChats: {
         kind: 'query',
         name: 'ActiveVoiceChats',
-        body: 'query ActiveVoiceChats($first:Int!,$after:String){activeVoiceChats(first:$first,after:$after){__typename cursor items{__typename ...VoiceChat}}}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name photo}status}}',
+        body: 'query ActiveVoiceChats($first:Int!,$after:String){activeVoiceChats(first:$first,after:$after){__typename cursor items{__typename ...VoiceChat}}}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name firstName photo}status}}',
         selector: ActiveVoiceChatsSelector
     },
     AuthPoints: {
@@ -6216,7 +6217,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ExploreRooms: {
         kind: 'query',
         name: 'ExploreRooms',
-        body: 'query ExploreRooms($seed:Int!){activeVoiceChats(first:3){__typename cursor items{__typename ...VoiceChat}}discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:3){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:3){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopOrganizations(first:3){__typename items{__typename ...DiscoverOrganization}cursor}discoverNewAndGrowingOrganizations(first:3,seed:$seed){__typename items{__typename ...DiscoverOrganization}cursor}isDiscoverDone:betaIsDiscoverDone}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name photo}status}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive featured}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname featured:alphaFeatured}',
+        body: 'query ExploreRooms($seed:Int!){activeVoiceChats(first:3){__typename cursor items{__typename ...VoiceChat}}discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:3){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:3){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopOrganizations(first:3){__typename items{__typename ...DiscoverOrganization}cursor}discoverNewAndGrowingOrganizations(first:3,seed:$seed){__typename items{__typename ...DiscoverOrganization}cursor}isDiscoverDone:betaIsDiscoverDone}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name firstName photo}status}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive featured}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname featured:alphaFeatured}',
         selector: ExploreRoomsSelector
     },
     FetchPushSettings: {
@@ -7542,7 +7543,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     VoiceChatCreate: {
         kind: 'mutation',
         name: 'VoiceChatCreate',
-        body: 'mutation VoiceChatCreate($input:VoiceChatInput!){voiceChatCreate(input:$input){__typename ...VoiceChat}}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name photo}status}}',
+        body: 'mutation VoiceChatCreate($input:VoiceChatInput!){voiceChatCreate(input:$input){__typename ...VoiceChat}}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name firstName photo}status}}',
         selector: VoiceChatCreateSelector
     },
     VoiceChatDemote: {

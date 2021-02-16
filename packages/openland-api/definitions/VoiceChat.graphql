@@ -1,7 +1,6 @@
 fragment VoiceChat on VoiceChat {
     id
     title
-    # adminsCount
     listenersCount
     speakersCount
     speakers {
@@ -9,6 +8,7 @@ fragment VoiceChat on VoiceChat {
         user {
             id
             name
+            firstName
             photo
         }
         status

@@ -17,6 +17,6 @@ internal val ActiveVoiceChatsSelector = obj(
 val ActiveVoiceChats = object: OperationDefinition {
     override val name = "ActiveVoiceChats"
     override val kind = OperationKind.QUERY
-    override val body = "query ActiveVoiceChats(\$first:Int!,\$after:String){activeVoiceChats(first:\$first,after:\$after){__typename cursor items{__typename ...VoiceChat}}}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name photo}status}}"
+    override val body = "query ActiveVoiceChats(\$first:Int!,\$after:String){activeVoiceChats(first:\$first,after:\$after){__typename cursor items{__typename ...VoiceChat}}}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name firstName photo}status}}"
     override val selector = ActiveVoiceChatsSelector
 }

@@ -13,6 +13,6 @@ internal val VoiceChatCreateSelector = obj(
 val VoiceChatCreate = object: OperationDefinition {
     override val name = "VoiceChatCreate"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation VoiceChatCreate(\$input:VoiceChatInput!){voiceChatCreate(input:\$input){__typename ...VoiceChat}}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name photo}status}}"
+    override val body = "mutation VoiceChatCreate(\$input:VoiceChatInput!){voiceChatCreate(input:\$input){__typename ...VoiceChat}}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name firstName photo}status}}"
     override val selector = VoiceChatCreateSelector
 }
