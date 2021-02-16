@@ -10,6 +10,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 // import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { View, Text, TouchableOpacity, Image, Share, Platform, Clipboard, LayoutChangeEvent } from 'react-native';
+import { VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 
 const showRoomInvite = ({ link, theme }: { link: string, theme: ThemeGlobal }) => {
     const handleShare = () => {
@@ -233,7 +234,7 @@ const ControlMute = React.memo((props: { theme: ThemeGlobal }) => {
 interface RoomControlsProps {
     id: string;
     theme: ThemeGlobal;
-    role?: 'member' | 'admin' | 'speaker';
+    role?: VoiceChatParticipantStatus;
     onLeave: () => void;
     onLayout: (e: LayoutChangeEvent) => void;
     router: SRouter;
@@ -252,7 +253,7 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
     //     </>
     // ) : role === 'speaker' ? <ControlMute theme={theme} />
     //         : <ControlRaiseHand theme={theme} />;
-    const roleButtons = role === 'member' ? null : <ControlMute theme={theme} />;
+    const roleButtons = role === VoiceChatParticipantStatus.LISTENER ? null : <ControlMute theme={theme} />;
 
     const handleLeave = React.useCallback(() => {
         onLeave();
@@ -263,7 +264,7 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
         <View style={{ paddingTop: 16, paddingHorizontal: 38, flexDirection: 'row', justifyContent: 'space-between' }} onLayout={onLayout}>
             <ControlItem
                 theme={theme}
-                text={role === 'admin' ? 'End' : 'Leave'}
+                text="Leave"
                 icon={require('assets/ic-door-leave-24.png')}
                 iconColor={theme.accentNegative}
                 bgColor="rgba(242, 48, 81, 0.12)"

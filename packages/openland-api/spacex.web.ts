@@ -5608,14 +5608,26 @@ const VoiceChatCreateSelector = obj(
                     fragment('VoiceChat', VoiceChatSelector)
                 )))
         );
+const VoiceChatDemoteSelector = obj(
+            field('voiceChatDemote', 'voiceChatDemote', args(fieldValue("id", refValue('id')), fieldValue("uid", refValue('uid'))), notNull(scalar('Boolean')))
+        );
 const VoiceChatEndSelector = obj(
             field('voiceChatEnd', 'voiceChatEnd', args(fieldValue("id", refValue('id'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('id', 'id', args(), notNull(scalar('ID')))
                 )))
         );
+const VoiceChatKickSelector = obj(
+            field('voiceChatKick', 'voiceChatKick', args(fieldValue("id", refValue('id')), fieldValue("uid", refValue('uid'))), notNull(scalar('Boolean')))
+        );
 const VoiceChatLeaveSelector = obj(
             field('voiceChatLeave', 'voiceChatLeave', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
+        );
+const VoiceChatPromoteSelector = obj(
+            field('voiceChatPromote', 'voiceChatPromote', args(fieldValue("id", refValue('id')), fieldValue("uid", refValue('uid'))), notNull(scalar('Boolean')))
+        );
+const VoiceChatUpdateAdminSelector = obj(
+            field('voiceChatUpdateAdmin', 'voiceChatUpdateAdmin', args(fieldValue("id", refValue('id')), fieldValue("uid", refValue('uid')), fieldValue("admin", refValue('admin'))), notNull(scalar('Boolean')))
         );
 const conferenceAddScreenShareSelector = obj(
             field('conferenceAddScreenShare', 'conferenceAddScreenShare', args(fieldValue("id", refValue('id'))), notNull(obj(
@@ -7533,17 +7545,41 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'mutation VoiceChatCreate($input:VoiceChatInput!){voiceChatCreate(input:$input){__typename ...VoiceChat}}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name photo}status}}',
         selector: VoiceChatCreateSelector
     },
+    VoiceChatDemote: {
+        kind: 'mutation',
+        name: 'VoiceChatDemote',
+        body: 'mutation VoiceChatDemote($id:ID!,$uid:ID!){voiceChatDemote(id:$id,uid:$uid)}',
+        selector: VoiceChatDemoteSelector
+    },
     VoiceChatEnd: {
         kind: 'mutation',
         name: 'VoiceChatEnd',
         body: 'mutation VoiceChatEnd($id:ID!){voiceChatEnd(id:$id){__typename id}}',
         selector: VoiceChatEndSelector
     },
+    VoiceChatKick: {
+        kind: 'mutation',
+        name: 'VoiceChatKick',
+        body: 'mutation VoiceChatKick($id:ID!,$uid:ID!){voiceChatKick(id:$id,uid:$uid)}',
+        selector: VoiceChatKickSelector
+    },
     VoiceChatLeave: {
         kind: 'mutation',
         name: 'VoiceChatLeave',
-        body: 'mutation VoiceChatLeave($id:ID!){voiceChatLeave(id:$id){__typename id}}',
+        body: 'mutation VoiceChatLeave($id:ID!){voiceChatLeave(id:$id)}',
         selector: VoiceChatLeaveSelector
+    },
+    VoiceChatPromote: {
+        kind: 'mutation',
+        name: 'VoiceChatPromote',
+        body: 'mutation VoiceChatPromote($id:ID!,$uid:ID!){voiceChatPromote(id:$id,uid:$uid)}',
+        selector: VoiceChatPromoteSelector
+    },
+    VoiceChatUpdateAdmin: {
+        kind: 'mutation',
+        name: 'VoiceChatUpdateAdmin',
+        body: 'mutation VoiceChatUpdateAdmin($id:ID!,$uid:ID!,$admin:Boolean!){voiceChatUpdateAdmin(id:$id,uid:$uid,admin:$admin)}',
+        selector: VoiceChatUpdateAdminSelector
     },
     conferenceAddScreenShare: {
         kind: 'mutation',

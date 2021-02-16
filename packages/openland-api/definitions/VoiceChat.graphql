@@ -37,7 +37,21 @@ mutation VoiceChatEnd($id: ID!) {
 }
 
 mutation VoiceChatLeave($id: ID!) {
-    voiceChatLeave(id: $id) {
-        id
-    }
+    voiceChatLeave(id: $id)
+}
+
+mutation VoiceChatUpdateAdmin($id: ID!, $uid: ID!, $admin: Boolean!) {
+    voiceChatUpdateAdmin(id: $id, uid: $uid, admin: $admin)
+}
+
+mutation VoiceChatKick($id: ID!, $uid: ID!) {
+    voiceChatKick(id: $id, uid: $uid)
+}
+
+mutation VoiceChatPromote($id: ID!, $uid: ID!) {
+    voiceChatPromote(id: $id, uid: $uid)
+}
+
+mutation VoiceChatDemote($id: ID!, $uid: ID!) {
+    voiceChatDemote(id: $id, uid: $uid)
 }

@@ -10,6 +10,6 @@ internal val VoiceChatLeaveSelector = obj(
 val VoiceChatLeave = object: OperationDefinition {
     override val name = "VoiceChatLeave"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation VoiceChatLeave(\$id:ID!){voiceChatLeave(id:\$id){__typename id}}"
+    override val body = "mutation VoiceChatLeave(\$id:ID!){voiceChatLeave(id:\$id)}"
     override val selector = VoiceChatLeaveSelector
 }

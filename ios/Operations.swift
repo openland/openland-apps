@@ -5601,14 +5601,26 @@ private let VoiceChatCreateSelector = obj(
                     fragment("VoiceChat", VoiceChatSelector)
                 )))
         )
+private let VoiceChatDemoteSelector = obj(
+            field("voiceChatDemote", "voiceChatDemote", arguments(fieldValue("id", refValue("id")), fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
+        )
 private let VoiceChatEndSelector = obj(
             field("voiceChatEnd", "voiceChatEnd", arguments(fieldValue("id", refValue("id"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID")))
                 )))
         )
+private let VoiceChatKickSelector = obj(
+            field("voiceChatKick", "voiceChatKick", arguments(fieldValue("id", refValue("id")), fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
+        )
 private let VoiceChatLeaveSelector = obj(
             field("voiceChatLeave", "voiceChatLeave", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+        )
+private let VoiceChatPromoteSelector = obj(
+            field("voiceChatPromote", "voiceChatPromote", arguments(fieldValue("id", refValue("id")), fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
+        )
+private let VoiceChatUpdateAdminSelector = obj(
+            field("voiceChatUpdateAdmin", "voiceChatUpdateAdmin", arguments(fieldValue("id", refValue("id")), fieldValue("uid", refValue("uid")), fieldValue("admin", refValue("admin"))), notNull(scalar("Boolean")))
         )
 private let conferenceAddScreenShareSelector = obj(
             field("conferenceAddScreenShare", "conferenceAddScreenShare", arguments(fieldValue("id", refValue("id"))), notNull(obj(
@@ -7530,17 +7542,41 @@ class Operations {
         "mutation VoiceChatCreate($input:VoiceChatInput!){voiceChatCreate(input:$input){__typename ...VoiceChat}}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name photo}status}}",
         VoiceChatCreateSelector
     )
+    let VoiceChatDemote = OperationDefinition(
+        "VoiceChatDemote",
+        .mutation, 
+        "mutation VoiceChatDemote($id:ID!,$uid:ID!){voiceChatDemote(id:$id,uid:$uid)}",
+        VoiceChatDemoteSelector
+    )
     let VoiceChatEnd = OperationDefinition(
         "VoiceChatEnd",
         .mutation, 
         "mutation VoiceChatEnd($id:ID!){voiceChatEnd(id:$id){__typename id}}",
         VoiceChatEndSelector
     )
+    let VoiceChatKick = OperationDefinition(
+        "VoiceChatKick",
+        .mutation, 
+        "mutation VoiceChatKick($id:ID!,$uid:ID!){voiceChatKick(id:$id,uid:$uid)}",
+        VoiceChatKickSelector
+    )
     let VoiceChatLeave = OperationDefinition(
         "VoiceChatLeave",
         .mutation, 
-        "mutation VoiceChatLeave($id:ID!){voiceChatLeave(id:$id){__typename id}}",
+        "mutation VoiceChatLeave($id:ID!){voiceChatLeave(id:$id)}",
         VoiceChatLeaveSelector
+    )
+    let VoiceChatPromote = OperationDefinition(
+        "VoiceChatPromote",
+        .mutation, 
+        "mutation VoiceChatPromote($id:ID!,$uid:ID!){voiceChatPromote(id:$id,uid:$uid)}",
+        VoiceChatPromoteSelector
+    )
+    let VoiceChatUpdateAdmin = OperationDefinition(
+        "VoiceChatUpdateAdmin",
+        .mutation, 
+        "mutation VoiceChatUpdateAdmin($id:ID!,$uid:ID!,$admin:Boolean!){voiceChatUpdateAdmin(id:$id,uid:$uid,admin:$admin)}",
+        VoiceChatUpdateAdminSelector
     )
     let conferenceAddScreenShare = OperationDefinition(
         "conferenceAddScreenShare",
@@ -7937,8 +7973,12 @@ class Operations {
         if name == "UpdateWelcomeMessage" { return UpdateWelcomeMessage }
         if name == "UserStorageSet" { return UserStorageSet }
         if name == "VoiceChatCreate" { return VoiceChatCreate }
+        if name == "VoiceChatDemote" { return VoiceChatDemote }
         if name == "VoiceChatEnd" { return VoiceChatEnd }
+        if name == "VoiceChatKick" { return VoiceChatKick }
         if name == "VoiceChatLeave" { return VoiceChatLeave }
+        if name == "VoiceChatPromote" { return VoiceChatPromote }
+        if name == "VoiceChatUpdateAdmin" { return VoiceChatUpdateAdmin }
         if name == "conferenceAddScreenShare" { return conferenceAddScreenShare }
         if name == "conferenceAlterMediaState" { return conferenceAlterMediaState }
         if name == "conferenceRemoveScreenShare" { return conferenceRemoveScreenShare }

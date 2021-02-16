@@ -14,13 +14,33 @@ import { useSafeArea } from 'react-native-safe-area-context';
 import { RoomControls } from './RoomControls';
 import { VoiceChat, VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
+import { SUPER_ADMIN } from '../Init';
 
 interface RoomUserViewProps {
+    roomId: string;
     user: { name: string; photo: string | null; id: string };
+    userStatus: VoiceChatParticipantStatus;
     theme: ThemeGlobal;
+    selfStatus: VoiceChatParticipantStatus;
 }
 
 const UserModalContent = React.memo((props: RoomUserViewProps) => {
+    const { roomId, user, theme, selfStatus, userStatus } = props;
+    const client = useClient();
+    const isSelfAdmin = selfStatus === VoiceChatParticipantStatus.ADMIN || SUPER_ADMIN;
+
+    const removeAdmin = React.useCallback(() => {
+        client.mutateVoiceChatUpdateAdmin({ id: roomId, uid: user.id, admin: false });
+    }, [roomId, user.id]);
+    const makeAdmin = React.useCallback(() => {
+        client.mutateVoiceChatUpdateAdmin({ id: roomId, uid: user.id, admin: true });
+    }, [roomId, user.id]);
+    const removeUser = React.useCallback(() => {
+        client.mutateVoiceChatKick({ id: roomId, uid: user.id });
+    }, [roomId, user.id]);
+    const demoteUser = React.useCallback(() => {
+        client.mutateVoiceChatDemote({ id: roomId, uid: user.id });
+    }, [roomId, user.id]);
     return (
         <View
             style={{
@@ -41,19 +61,19 @@ const UserModalContent = React.memo((props: RoomUserViewProps) => {
             >
                 <ZAvatar
                     size="xx-large"
-                    photo={props.user.photo}
-                    title={props.user.name}
-                    id={props.user.id}
+                    photo={user.photo}
+                    title={user.name}
+                    id={user.id}
                 />
                 <Text
                     numberOfLines={1}
                     style={{
                         ...TextStyles.Label2,
-                        color: props.theme.foregroundPrimary,
+                        color: theme.foregroundPrimary,
                         marginTop: 16,
                     }}
                 >
-                    {props.user.name}
+                    {user.name}
                 </Text>
             </View>
             <View
@@ -66,7 +86,7 @@ const UserModalContent = React.memo((props: RoomUserViewProps) => {
                     marginBottom: 16,
                 }}
             >
-                <Text style={{ ...TextStyles.Subhead, color: props.theme.foregroundTertiary }}>
+                <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>
                     25 following
                 </Text>
                 <View
@@ -74,11 +94,11 @@ const UserModalContent = React.memo((props: RoomUserViewProps) => {
                         width: 3,
                         height: 3,
                         borderRadius: 3,
-                        backgroundColor: props.theme.foregroundTertiary,
+                        backgroundColor: theme.foregroundTertiary,
                         marginHorizontal: 8,
                     }}
                 />
-                <Text style={{ ...TextStyles.Subhead, color: props.theme.foregroundTertiary }}>
+                <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>
                     3879 followers
                 </Text>
             </View>
@@ -88,26 +108,39 @@ const UserModalContent = React.memo((props: RoomUserViewProps) => {
                     small={true}
                     text="Follow"
                 />
-                <ZListItem
-                    leftIcon={require('assets/ic-listener-24.png')}
-                    small={true}
-                    text="Make listener"
-                />
-                <ZListItem
-                    leftIcon={require('assets/ic-pro-24.png')}
-                    small={true}
-                    text="Make admin"
-                />
-                <ZListItem
-                    leftIcon={require('assets/ic-pro-off-24.png')}
-                    small={true}
-                    text="Remove admin"
-                />
-                <ZListItem
-                    leftIcon={require('assets/ic-leave-24.png')}
-                    small={true}
-                    text="Remove"
-                />
+                {isSelfAdmin && (
+                    <>
+                        {userStatus === VoiceChatParticipantStatus.SPEAKER && (
+                            <ZListItem
+                                leftIcon={require('assets/ic-listener-24.png')}
+                                small={true}
+                                text="Make listener"
+                                onPress={demoteUser}
+                            />
+                        )}
+                        {userStatus === VoiceChatParticipantStatus.ADMIN ? (
+                            <ZListItem
+                                leftIcon={require('assets/ic-pro-off-24.png')}
+                                small={true}
+                                text="Remove admin"
+                                onPress={removeAdmin}
+                            />
+                        ) : (
+                                <ZListItem
+                                    leftIcon={require('assets/ic-pro-24.png')}
+                                    small={true}
+                                    text="Make admin"
+                                    onPress={makeAdmin}
+                                />
+                            )}
+                        <ZListItem
+                            leftIcon={require('assets/ic-leave-24.png')}
+                            small={true}
+                            text="Remove"
+                            onPress={removeUser}
+                        />
+                    </>
+                )}
                 <View style={{ marginTop: 16, paddingHorizontal: 16 }}>
                     <ZButton size="large" title="View profile" style="secondary" />
                 </View>
@@ -116,9 +149,9 @@ const UserModalContent = React.memo((props: RoomUserViewProps) => {
     );
 });
 
-const showUserInfo = (d: RoomUserViewProps) => {
+const showUserInfo = (props: RoomUserViewProps) => {
     showBottomSheet({
-        view: () => <UserModalContent user={d.user} theme={d.theme} />,
+        view: () => <UserModalContent {...props} />,
         cancelable: true,
     });
 };
@@ -236,11 +269,21 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
     const { headerHeight, controlsHeight, theme, room } = props;
     const sa = useSafeArea();
     const sHeight = SDevice.wHeight - (sa.top + sa.bottom + headerHeight + controlsHeight + 16);
+    // TODO: Don't open modal on self
+
     return (
         <View style={{ flexGrow: 1, height: sHeight }}>
             <FlatList
                 data={room.speakers}
-                renderItem={({ item }) => <RoomUserView user={item.user} theme={theme} />}
+                renderItem={({ item }) => (
+                    <RoomUserView
+                        roomId={room.id}
+                        user={item.user}
+                        userStatus={item.status}
+                        selfStatus={VoiceChatParticipantStatus.ADMIN}
+                        theme={theme}
+                    />
+                )}
                 keyExtractor={(item, index) => index.toString() + item.id}
                 numColumns={3}
                 style={{ flex: 1 }}
@@ -291,7 +334,7 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
             <RoomControls
                 id={room.id}
                 theme={theme}
-                role="admin"
+                role={VoiceChatParticipantStatus.ADMIN}
                 onLayout={onControlsLayout}
                 onLeave={handleLeave}
                 router={props.router}

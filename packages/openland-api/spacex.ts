@@ -2307,11 +2307,23 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateVoiceChatCreate(variables: Types.VoiceChatCreateVariables, params?: MutationParameters): Promise<Types.VoiceChatCreate> {
         return this.mutate('VoiceChatCreate', variables, params);
     }
+    mutateVoiceChatDemote(variables: Types.VoiceChatDemoteVariables, params?: MutationParameters): Promise<Types.VoiceChatDemote> {
+        return this.mutate('VoiceChatDemote', variables, params);
+    }
     mutateVoiceChatEnd(variables: Types.VoiceChatEndVariables, params?: MutationParameters): Promise<Types.VoiceChatEnd> {
         return this.mutate('VoiceChatEnd', variables, params);
     }
+    mutateVoiceChatKick(variables: Types.VoiceChatKickVariables, params?: MutationParameters): Promise<Types.VoiceChatKick> {
+        return this.mutate('VoiceChatKick', variables, params);
+    }
     mutateVoiceChatLeave(variables: Types.VoiceChatLeaveVariables, params?: MutationParameters): Promise<Types.VoiceChatLeave> {
         return this.mutate('VoiceChatLeave', variables, params);
+    }
+    mutateVoiceChatPromote(variables: Types.VoiceChatPromoteVariables, params?: MutationParameters): Promise<Types.VoiceChatPromote> {
+        return this.mutate('VoiceChatPromote', variables, params);
+    }
+    mutateVoiceChatUpdateAdmin(variables: Types.VoiceChatUpdateAdminVariables, params?: MutationParameters): Promise<Types.VoiceChatUpdateAdmin> {
+        return this.mutate('VoiceChatUpdateAdmin', variables, params);
     }
     mutateconferenceAddScreenShare(variables: Types.conferenceAddScreenShareVariables, params?: MutationParameters): Promise<Types.conferenceAddScreenShare> {
         return this.mutate('conferenceAddScreenShare', variables, params);
