@@ -72,7 +72,6 @@ let RoomsFeedPage = React.memo((props: PageProps) => {
     }, [router]);
     // TODO: Change fetch-policy when updates are ready
     let initialRoomsList = client.useActiveVoiceChats({ first: 5 }, { fetchPolicy: 'network-only' }).activeVoiceChats;
-    // @ts-ignore
     let [{ cursor, rooms, loading }, dispatch] = React.useReducer<React.Reducer<State, Action>>(
         (oldState, action) => {
             if (action.type === 'start') {
@@ -86,36 +85,16 @@ let RoomsFeedPage = React.memo((props: PageProps) => {
         { loading: false, cursor: initialRoomsList.cursor, rooms: initialRoomsList.items || [] }
     );
 
-    // let roomsList: VoiceChat[] = [
-    //     {
-    //         id: '1',
-    //         title: '🎨 Visual artists and Creatives talk and more!',
-    //         speakersCount: 2,
-    //         listenersCount: 128,
-    //         members: [{ id: '1', name: 'Jeff Bezos', avatar: '' }, { id: '2', name: 'Pavel Durov', avatar: '' }],
-    //     },
-    //     {
-    //         id: '2',
-    //         title: 'Voice chat',
-    //         speakersCount: 2,
-    //         listenersCount: 128,
-    //         members: [{ id: '1', name: 'Jeff Bezos', avatar: '' }, { id: '2', name: 'Pavel Durov', avatar: '' }, { id: '3', name: 'Jeff Bezos', avatar: '' }],
-    //     },
-    //     {
-    //         id: '3',
-    //         title: '🚀 The 2-Minute Drill: The Week’s Top Tech Stories (Ep. 17)',
-    //         speakersCount: 2,
-    //         listenersCount: 128,
-    //         members: [{ id: '1', name: 'Jeff Bezos', avatar: '' }, { id: '2', name: 'Pavel Durov', avatar: '' }, { id: '3', name: 'Jeff Bezos', avatar: '' }, { id: '4', name: 'Pavel Durov', avatar: '' }],
-    //     },
-    //     {
-    //         id: '4',
-    //         title: 'THE MASTERCLASS – Marketing Strategies, Trends & Traffic THE MASTERCLASS – Marketing Strategies, Trends & Traffic THE MASTERCLASS – Marketing Strategies, Trends & Traffic',
-    //         speakersCount: 2,
-    //         listenersCount: 0,
-    //         members: [{ id: '1', name: 'Jeff Bezos', avatar: '' }],
-    //     },
-    // ];
+    const loadMore = async () => {
+        if (loading || (!cursor && rooms.length > 0)) {
+            return;
+        }
+        dispatch({ type: 'start' });
+
+        let { items, cursor: newCursor } = (await client.queryActiveVoiceChats({ after: cursor, first: 5 }, { fetchPolicy: 'network-only' })).activeVoiceChats;
+
+        dispatch({ type: 'success', rooms: items || [], cursor: newCursor });
+    };
 
     return (
         <>
@@ -141,6 +120,8 @@ let RoomsFeedPage = React.memo((props: PageProps) => {
                                 </View>
                             </>
                         )}
+                        refreshing={loading}
+                        onEndReached={loadMore}
                     />
                 </SDeferred>
             </React.Suspense>

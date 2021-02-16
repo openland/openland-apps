@@ -47,7 +47,7 @@ export function showBottomSheet(config: BottomSheetConfig) {
                 {config.cancelable && (
                     <TouchableOpacity
                         activeOpacity={HighlightAlpha}
-                        style={{ position: 'absolute', top: 0, right: 0, justifyContent: 'center', alignItems: 'center', width: 56, height: 56 }}
+                        style={{ position: 'absolute', top: 0, right: 0, zIndex: 5, justifyContent: 'center', alignItems: 'center', width: 56, height: 56 }}
                         onPress={ctx.hide}
                     >
                         <View

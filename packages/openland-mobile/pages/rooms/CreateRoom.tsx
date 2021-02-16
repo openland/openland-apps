@@ -21,7 +21,6 @@ const CreateRoomComponent = React.memo(() => {
     const theme = useTheme();
     const client = useClient();
     const router = React.useContext(SRouterContext)!;
-    // TODO add title validation
     const createRoom = React.useCallback(async () => {
         let name = nameField.value.trim();
         if (name.length <= 0) {
