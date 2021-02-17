@@ -268,14 +268,14 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
                 text="Leave"
                 icon={require('assets/ic-door-leave-24.png')}
                 iconColor={theme.accentNegative}
-                bgColor="rgba(242, 48, 81, 0.12)"
+                bgColor={theme.type === 'Light' ? 'rgba(242, 48, 81, 0.12)' : 'rgba(242, 48, 81, 0.16)'}
                 onPress={handleLeave}
             />
             <ControlItem
                 theme={theme}
                 text="Invite"
                 icon={require('assets/ic-add-glyph-24.png')}
-                iconColor={theme.type === 'Light' ? theme.foregroundSecondary : theme.foregroundContrast}
+                iconColor={theme.foregroundSecondary}
                 bgColor={theme.backgroundTertiaryTrans}
                 onPress={() => showRoomInvite({ theme, link: user ? `https://openland.com/${user.shortname || user.id}` : 'Try again' })}
             />

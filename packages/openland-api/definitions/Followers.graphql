@@ -1,7 +1,0 @@
-mutation SocialFollow($uid: ID!) {
-    socialFollow(uid: $uid)
-}
-
-mutation SocialUnfollow($uid: ID!) {
-    socialUnfollow(uid: $uid)
-}
