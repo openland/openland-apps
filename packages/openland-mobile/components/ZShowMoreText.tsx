@@ -61,7 +61,7 @@ export const ZShowMoreText = React.memo<ZShowMoreProps>((props) => {
         return (
             <TouchableNativeFeedback
                 onLongPress={handleLongPress}
-                style={{ backgroundColor: theme.backgroundPrimary, paddingVertical: 16 }}
+                style={{ backgroundColor: theme.backgroundPrimary, paddingVertical: 6 }}
                 background={TouchableNativeFeedback.Ripple(theme.backgroundPrimaryActive, false)}
                 delayPressIn={20}
             >
@@ -74,7 +74,7 @@ export const ZShowMoreText = React.memo<ZShowMoreProps>((props) => {
                 activeOpacity={1}
                 underlayColor={theme.backgroundPrimaryActive}
                 onLongPress={handleLongPress}
-                style={{ backgroundColor: theme.backgroundPrimary, paddingVertical: 16 }}
+                style={{ backgroundColor: theme.backgroundPrimary, paddingVertical: 6 }}
             >
                 {content}
             </TouchableHighlight>

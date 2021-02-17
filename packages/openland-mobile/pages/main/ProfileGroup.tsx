@@ -377,7 +377,6 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
 
             <ZListGroup header="About" useSpacer={true}>
                 {!!group.description && <ZShowMoreText text={group.description} />}
-                {!!group.description && <View style={{ height: 8 }} />}
                 {!!group.shortname && (
                     <ZListItem
                         text={group.shortname}

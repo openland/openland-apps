@@ -4,7 +4,7 @@ import { ZListGroup } from '../../components/ZListGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { View, Linking, Share, Platform } from 'react-native';
+import { Linking, Share, Platform } from 'react-native';
 import { User_conversation_PrivateRoom } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { getMessenger } from 'openland-mobile/utils/messenger';
@@ -29,6 +29,7 @@ import { openMapsApp } from 'openland-mobile/utils/openMapsApp';
 import { openCalendar } from 'openland-mobile/utils/openCalendar';
 import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
 import { ZShowMoreText } from 'openland-mobile/components/ZShowMoreText';
+import { ProfileUserNew } from './ProfileUserNew';
 
 const ProfileUserComponent = React.memo((props: PageProps) => {
     const client = getClient();
@@ -258,7 +259,6 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
 
                 <ZListGroup header="About" useSpacer={true}>
                     {!!user.about && <ZShowMoreText text={user.about} />}
-                    {!!user.about && <View style={{ height: 8 }} />}
                     {!!user.shortname && (
                         <ZListItem
                             text={user.shortname}
@@ -404,4 +404,4 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
     );
 });
 
-export const ProfileUser = withApp(ProfileUserComponent, { navigationAppearance: 'small-hidden' });
+export const ProfileUser = SUPER_ADMIN ? withApp(ProfileUserComponent, { navigationAppearance: 'small-hidden' }) : ProfileUserNew;

@@ -20,7 +20,7 @@ export class SFlatList<T> extends React.Component<SFlatListProps<T>> {
     private contentOffset = new STrackedValue();
 
     render() {
-        let { safeAreaViaMargin, legacyImplementation, onEndReachedThreshold, refreshing, ListFooterComponent, scrollRef, ...other } = this.props;
+        let { safeAreaViaMargin, contentContainerStyle, legacyImplementation, onEndReachedThreshold, scrollIndicatorInsets, refreshing, ListFooterComponent, scrollRef, ...other } = this.props;
         let AnimatedFlatList = (Animated as any).FlatList;
         return (
             <>
@@ -40,11 +40,11 @@ export class SFlatList<T> extends React.Component<SFlatListProps<T>> {
                                 {...other}
                                 onScroll={this.contentOffset.event}
                                 scrollEventThrottle={1}
-                                scrollIndicatorInsets={this.props.scrollIndicatorInsets || {
+                                scrollIndicatorInsets={scrollIndicatorInsets || {
                                     bottom: area.bottom,
                                     top: area.top
                                 }}
-                                contentContainerStyle={{
+                                contentContainerStyle={contentContainerStyle || {
                                     paddingTop: area.top,
                                     paddingBottom: !safeAreaViaMargin ? area.bottom : undefined
                                 }}

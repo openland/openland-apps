@@ -1919,6 +1919,9 @@ private let UserFullSelector = obj(
             field("inContacts", "inContacts", notNull(scalar("Boolean"))),
             field("isBanned", "isBanned", notNull(scalar("Boolean"))),
             field("isMeBanned", "isMeBanned", notNull(scalar("Boolean"))),
+            field("followedByMe", "followedByMe", notNull(scalar("Boolean"))),
+            field("followersCount", "followersCount", notNull(scalar("Int"))),
+            field("followingCount", "followingCount", notNull(scalar("Int"))),
             field("primaryOrganization", "primaryOrganization", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationShortSelector)
@@ -4534,6 +4537,36 @@ private let SharedMediaCountersSelector = obj(
 private let ShouldAskForAppReviewSelector = obj(
             field("shouldAskForAppReview", "shouldAskForAppReview", notNull(scalar("Boolean")))
         )
+private let SocialUserFollowersSelector = obj(
+            field("socialUserFollowers", "socialUserFollowers", arguments(fieldValue("uid", refValue("uid")), fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String"))),
+                            field("about", "about", scalar("String")),
+                            field("followersCount", "followersCount", notNull(scalar("Int"))),
+                            field("followedByMe", "followedByMe", notNull(scalar("Boolean"))),
+                            field("photo", "photo", scalar("String"))
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                )))
+        )
+private let SocialUserFollowingSelector = obj(
+            field("socialUserFollowing", "socialUserFollowing", arguments(fieldValue("uid", refValue("uid")), fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String"))),
+                            field("about", "about", scalar("String")),
+                            field("followersCount", "followersCount", notNull(scalar("Int"))),
+                            field("followedByMe", "followedByMe", notNull(scalar("Boolean"))),
+                            field("photo", "photo", scalar("String"))
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                )))
+        )
 private let StickerPackSelector = obj(
             field("stickerPack", "stickerPack", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -4719,6 +4752,15 @@ private let UserAvailableRoomsSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("hasNextPage", "hasNextPage", notNull(scalar("Boolean")))
                         )))
+                )))
+        )
+private let UserFollowersSelector = obj(
+            field("user", "user", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("followersCount", "followersCount", notNull(scalar("Int"))),
+                    field("followingCount", "followingCount", notNull(scalar("Int")))
                 )))
         )
 private let UserNanoSelector = obj(
@@ -5467,6 +5509,12 @@ private let SettingsUpdateSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Settings", SettingsFullSelector)
                 )))
+        )
+private let SocialFollowSelector = obj(
+            field("socialFollow", "socialFollow", arguments(fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
+        )
+private let SocialUnfollowSelector = obj(
+            field("socialUnfollow", "socialUnfollow", arguments(fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
         )
 private let StickerPackAddToCollectionSelector = obj(
             field("stickerPackAddToCollection", "stickerPackAddToCollection", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
@@ -6619,6 +6667,18 @@ class Operations {
         "query ShouldAskForAppReview{shouldAskForAppReview}",
         ShouldAskForAppReviewSelector
     )
+    let SocialUserFollowers = OperationDefinition(
+        "SocialUserFollowers",
+        .query, 
+        "query SocialUserFollowers($uid:ID!,$first:Int!,$after:String){socialUserFollowers(uid:$uid,first:$first,after:$after){__typename items{__typename id name about followersCount followedByMe photo}cursor}}",
+        SocialUserFollowersSelector
+    )
+    let SocialUserFollowing = OperationDefinition(
+        "SocialUserFollowing",
+        .query, 
+        "query SocialUserFollowing($uid:ID!,$first:Int!,$after:String){socialUserFollowing(uid:$uid,first:$first,after:$after){__typename items{__typename id name about followersCount followedByMe photo}cursor}}",
+        SocialUserFollowingSelector
+    )
     let StickerPack = OperationDefinition(
         "StickerPack",
         .query, 
@@ -6712,7 +6772,7 @@ class Operations {
     let User = OperationDefinition(
         "User",
         .query, 
-        "query User($userId:ID!){user:user(id:$userId){__typename ...UserFull}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
+        "query User($userId:ID!){user:user(id:$userId){__typename ...UserFull}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
         UserSelector
     )
     let UserAvailableRooms = OperationDefinition(
@@ -6720,6 +6780,12 @@ class Operations {
         .query, 
         "query UserAvailableRooms($first:Int!,$after:String,$query:String){alphaUserAvailableRooms(first:$first,after:$after,query:$query){__typename edges{__typename node{__typename ...DiscoverSharedRoom}cursor}pageInfo{__typename hasNextPage}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive featured}",
         UserAvailableRoomsSelector
+    )
+    let UserFollowers = OperationDefinition(
+        "UserFollowers",
+        .query, 
+        "query UserFollowers($id:ID!){user(id:$id){__typename id name followersCount followingCount}}",
+        UserFollowersSelector
     )
     let UserNano = OperationDefinition(
         "UserNano",
@@ -6754,7 +6820,7 @@ class Operations {
     let Users = OperationDefinition(
         "Users",
         .query, 
-        "query Users($ids:[ID!]!){users(ids:$ids){__typename ...UserFull}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
+        "query Users($ids:[ID!]!){users(ids:$ids){__typename ...UserFull}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
         UsersSelector
     )
     let AccountInviteJoin = OperationDefinition(
@@ -7393,6 +7459,18 @@ class Operations {
         "mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename id version primaryEmail emailFrequency excludeMutedChats countUnreadChats whoCanSeeEmail whoCanSeePhone whoCanAddToGroups communityAdminsCanSeeContactInfo desktop{__typename ...PlatformNotificationSettingsFull}mobile{__typename ...PlatformNotificationSettingsFull}}fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename direct{__typename showNotification sound}secretChat{__typename showNotification sound}communityChat{__typename showNotification sound}comments{__typename showNotification sound}channels{__typename showNotification sound}notificationPreview}",
         SettingsUpdateSelector
     )
+    let SocialFollow = OperationDefinition(
+        "SocialFollow",
+        .mutation, 
+        "mutation SocialFollow($uid:ID!){socialFollow(uid:$uid)}",
+        SocialFollowSelector
+    )
+    let SocialUnfollow = OperationDefinition(
+        "SocialUnfollow",
+        .mutation, 
+        "mutation SocialUnfollow($uid:ID!){socialUnfollow(uid:$uid)}",
+        SocialUnfollowSelector
+    )
     let StickerPackAddToCollection = OperationDefinition(
         "StickerPackAddToCollection",
         .mutation, 
@@ -7820,6 +7898,8 @@ class Operations {
         if name == "SharedMedia" { return SharedMedia }
         if name == "SharedMediaCounters" { return SharedMediaCounters }
         if name == "ShouldAskForAppReview" { return ShouldAskForAppReview }
+        if name == "SocialUserFollowers" { return SocialUserFollowers }
+        if name == "SocialUserFollowing" { return SocialUserFollowing }
         if name == "StickerPack" { return StickerPack }
         if name == "StickerPackCatalog" { return StickerPackCatalog }
         if name == "StripeToken" { return StripeToken }
@@ -7837,6 +7917,7 @@ class Operations {
         if name == "UpdateUsers" { return UpdateUsers }
         if name == "User" { return User }
         if name == "UserAvailableRooms" { return UserAvailableRooms }
+        if name == "UserFollowers" { return UserFollowers }
         if name == "UserNano" { return UserNano }
         if name == "UserPico" { return UserPico }
         if name == "UserSearchForChat" { return UserSearchForChat }
@@ -7949,6 +8030,8 @@ class Operations {
         if name == "SetTyping" { return SetTyping }
         if name == "SetUserShortname" { return SetUserShortname }
         if name == "SettingsUpdate" { return SettingsUpdate }
+        if name == "SocialFollow" { return SocialFollow }
+        if name == "SocialUnfollow" { return SocialUnfollow }
         if name == "StickerPackAddToCollection" { return StickerPackAddToCollection }
         if name == "StickerPackCreate" { return StickerPackCreate }
         if name == "StickerPackRemoveFromCollection" { return StickerPackRemoveFromCollection }

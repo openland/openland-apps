@@ -21,7 +21,7 @@ type FollowButtonState = 'initial' | 'loading' | 'done';
 export const ZFollowButton = React.memo((props: {
     isFollowing: boolean,
     isPremium?: boolean,
-    onPress: () => Promise<void>
+    onPress: () => Promise<any>
 }) => {
     const theme = useTheme();
     let [state, setState] = React.useState<FollowButtonState>(props.isFollowing ? 'done' : 'initial');

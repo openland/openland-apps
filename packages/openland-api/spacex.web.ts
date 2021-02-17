@@ -1926,6 +1926,9 @@ const UserFullSelector = obj(
             field('inContacts', 'inContacts', args(), notNull(scalar('Boolean'))),
             field('isBanned', 'isBanned', args(), notNull(scalar('Boolean'))),
             field('isMeBanned', 'isMeBanned', args(), notNull(scalar('Boolean'))),
+            field('followedByMe', 'followedByMe', args(), notNull(scalar('Boolean'))),
+            field('followersCount', 'followersCount', args(), notNull(scalar('Int'))),
+            field('followingCount', 'followingCount', args(), notNull(scalar('Int'))),
             field('primaryOrganization', 'primaryOrganization', args(), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('Organization', OrganizationShortSelector)
@@ -4541,6 +4544,36 @@ const SharedMediaCountersSelector = obj(
 const ShouldAskForAppReviewSelector = obj(
             field('shouldAskForAppReview', 'shouldAskForAppReview', args(), notNull(scalar('Boolean')))
         );
+const SocialUserFollowersSelector = obj(
+            field('socialUserFollowers', 'socialUserFollowers', args(fieldValue("uid", refValue('uid')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('name', 'name', args(), notNull(scalar('String'))),
+                            field('about', 'about', args(), scalar('String')),
+                            field('followersCount', 'followersCount', args(), notNull(scalar('Int'))),
+                            field('followedByMe', 'followedByMe', args(), notNull(scalar('Boolean'))),
+                            field('photo', 'photo', args(), scalar('String'))
+                        ))))),
+                    field('cursor', 'cursor', args(), scalar('String'))
+                )))
+        );
+const SocialUserFollowingSelector = obj(
+            field('socialUserFollowing', 'socialUserFollowing', args(fieldValue("uid", refValue('uid')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('name', 'name', args(), notNull(scalar('String'))),
+                            field('about', 'about', args(), scalar('String')),
+                            field('followersCount', 'followersCount', args(), notNull(scalar('Int'))),
+                            field('followedByMe', 'followedByMe', args(), notNull(scalar('Boolean'))),
+                            field('photo', 'photo', args(), scalar('String'))
+                        ))))),
+                    field('cursor', 'cursor', args(), scalar('String'))
+                )))
+        );
 const StickerPackSelector = obj(
             field('stickerPack', 'stickerPack', args(fieldValue("id", refValue('id'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -4726,6 +4759,15 @@ const UserAvailableRoomsSelector = obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             field('hasNextPage', 'hasNextPage', args(), notNull(scalar('Boolean')))
                         )))
+                )))
+        );
+const UserFollowersSelector = obj(
+            field('user', 'user', args(fieldValue("id", refValue('id'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('name', 'name', args(), notNull(scalar('String'))),
+                    field('followersCount', 'followersCount', args(), notNull(scalar('Int'))),
+                    field('followingCount', 'followingCount', args(), notNull(scalar('Int')))
                 )))
         );
 const UserNanoSelector = obj(
@@ -5474,6 +5516,12 @@ const SettingsUpdateSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('Settings', SettingsFullSelector)
                 )))
+        );
+const SocialFollowSelector = obj(
+            field('socialFollow', 'socialFollow', args(fieldValue("uid", refValue('uid'))), notNull(scalar('Boolean')))
+        );
+const SocialUnfollowSelector = obj(
+            field('socialUnfollow', 'socialUnfollow', args(fieldValue("uid", refValue('uid'))), notNull(scalar('Boolean')))
         );
 const StickerPackAddToCollectionSelector = obj(
             field('stickerPackAddToCollection', 'stickerPackAddToCollection', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
@@ -6622,6 +6670,18 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query ShouldAskForAppReview{shouldAskForAppReview}',
         selector: ShouldAskForAppReviewSelector
     },
+    SocialUserFollowers: {
+        kind: 'query',
+        name: 'SocialUserFollowers',
+        body: 'query SocialUserFollowers($uid:ID!,$first:Int!,$after:String){socialUserFollowers(uid:$uid,first:$first,after:$after){__typename items{__typename id name about followersCount followedByMe photo}cursor}}',
+        selector: SocialUserFollowersSelector
+    },
+    SocialUserFollowing: {
+        kind: 'query',
+        name: 'SocialUserFollowing',
+        body: 'query SocialUserFollowing($uid:ID!,$first:Int!,$after:String){socialUserFollowing(uid:$uid,first:$first,after:$after){__typename items{__typename id name about followersCount followedByMe photo}cursor}}',
+        selector: SocialUserFollowingSelector
+    },
     StickerPack: {
         kind: 'query',
         name: 'StickerPack',
@@ -6715,7 +6775,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     User: {
         kind: 'query',
         name: 'User',
-        body: 'query User($userId:ID!){user:user(id:$userId){__typename ...UserFull}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
+        body: 'query User($userId:ID!){user:user(id:$userId){__typename ...UserFull}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
         selector: UserSelector
     },
     UserAvailableRooms: {
@@ -6723,6 +6783,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'UserAvailableRooms',
         body: 'query UserAvailableRooms($first:Int!,$after:String,$query:String){alphaUserAvailableRooms(first:$first,after:$after,query:$query){__typename edges{__typename node{__typename ...DiscoverSharedRoom}cursor}pageInfo{__typename hasNextPage}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive featured}',
         selector: UserAvailableRoomsSelector
+    },
+    UserFollowers: {
+        kind: 'query',
+        name: 'UserFollowers',
+        body: 'query UserFollowers($id:ID!){user(id:$id){__typename id name followersCount followingCount}}',
+        selector: UserFollowersSelector
     },
     UserNano: {
         kind: 'query',
@@ -6757,7 +6823,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     Users: {
         kind: 'query',
         name: 'Users',
-        body: 'query Users($ids:[ID!]!){users(ids:$ids){__typename ...UserFull}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
+        body: 'query Users($ids:[ID!]!){users(ids:$ids){__typename ...UserFull}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
         selector: UsersSelector
     },
     AccountInviteJoin: {
@@ -7395,6 +7461,18 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'SettingsUpdate',
         body: 'mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename id version primaryEmail emailFrequency excludeMutedChats countUnreadChats whoCanSeeEmail whoCanSeePhone whoCanAddToGroups communityAdminsCanSeeContactInfo desktop{__typename ...PlatformNotificationSettingsFull}mobile{__typename ...PlatformNotificationSettingsFull}}fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename direct{__typename showNotification sound}secretChat{__typename showNotification sound}communityChat{__typename showNotification sound}comments{__typename showNotification sound}channels{__typename showNotification sound}notificationPreview}',
         selector: SettingsUpdateSelector
+    },
+    SocialFollow: {
+        kind: 'mutation',
+        name: 'SocialFollow',
+        body: 'mutation SocialFollow($uid:ID!){socialFollow(uid:$uid)}',
+        selector: SocialFollowSelector
+    },
+    SocialUnfollow: {
+        kind: 'mutation',
+        name: 'SocialUnfollow',
+        body: 'mutation SocialUnfollow($uid:ID!){socialUnfollow(uid:$uid)}',
+        selector: SocialUnfollowSelector
     },
     StickerPackAddToCollection: {
         kind: 'mutation',

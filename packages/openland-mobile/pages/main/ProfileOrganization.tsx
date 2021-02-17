@@ -11,7 +11,7 @@ import { Modals } from './modals/Modals';
 import { formatError } from 'openland-y-forms/errorHandling';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
-import { View, Platform, Linking, Share } from 'react-native';
+import { Platform, Linking, Share } from 'react-native';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import {
     OrganizationMemberRole,
@@ -483,7 +483,6 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
 
             <ZListGroup header="About" useSpacer={true}>
                 {!!organization.about && <ZShowMoreText text={organization.about} />}
-                {!!organization.about && <View style={{ height: 8 }} />}
                 {!!organization.shortname && (
                     <ZListItem
                         text={organization.shortname}

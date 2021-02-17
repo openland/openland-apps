@@ -349,6 +349,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryShouldAskForAppReview(params?: QueryParameters): Promise<Types.ShouldAskForAppReview> {
         return this.query('ShouldAskForAppReview', undefined, params);
     }
+    querySocialUserFollowers(variables: Types.SocialUserFollowersVariables, params?: QueryParameters): Promise<Types.SocialUserFollowers> {
+        return this.query('SocialUserFollowers', variables, params);
+    }
+    querySocialUserFollowing(variables: Types.SocialUserFollowingVariables, params?: QueryParameters): Promise<Types.SocialUserFollowing> {
+        return this.query('SocialUserFollowing', variables, params);
+    }
     queryStickerPack(variables: Types.StickerPackVariables, params?: QueryParameters): Promise<Types.StickerPack> {
         return this.query('StickerPack', variables, params);
     }
@@ -399,6 +405,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, params?: QueryParameters): Promise<Types.UserAvailableRooms> {
         return this.query('UserAvailableRooms', variables, params);
+    }
+    queryUserFollowers(variables: Types.UserFollowersVariables, params?: QueryParameters): Promise<Types.UserFollowers> {
+        return this.query('UserFollowers', variables, params);
     }
     queryUserNano(variables: Types.UserNanoVariables, params?: QueryParameters): Promise<Types.UserNano> {
         return this.query('UserNano', variables, params);
@@ -757,6 +766,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchShouldAskForAppReview(params?: QueryParameters): Promise<Types.ShouldAskForAppReview> {
         return this.refetch('ShouldAskForAppReview', undefined, params);
     }
+    refetchSocialUserFollowers(variables: Types.SocialUserFollowersVariables, params?: QueryParameters): Promise<Types.SocialUserFollowers> {
+        return this.refetch('SocialUserFollowers', variables, params);
+    }
+    refetchSocialUserFollowing(variables: Types.SocialUserFollowingVariables, params?: QueryParameters): Promise<Types.SocialUserFollowing> {
+        return this.refetch('SocialUserFollowing', variables, params);
+    }
     refetchStickerPack(variables: Types.StickerPackVariables, params?: QueryParameters): Promise<Types.StickerPack> {
         return this.refetch('StickerPack', variables, params);
     }
@@ -807,6 +822,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, params?: QueryParameters): Promise<Types.UserAvailableRooms> {
         return this.refetch('UserAvailableRooms', variables, params);
+    }
+    refetchUserFollowers(variables: Types.UserFollowersVariables, params?: QueryParameters): Promise<Types.UserFollowers> {
+        return this.refetch('UserFollowers', variables, params);
     }
     refetchUserNano(variables: Types.UserNanoVariables, params?: QueryParameters): Promise<Types.UserNano> {
         return this.refetch('UserNano', variables, params);
@@ -1165,6 +1183,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateShouldAskForAppReview(updater: (data: Types.ShouldAskForAppReview) => Types.ShouldAskForAppReview | null): Promise<boolean> {
         return this.updateQuery(updater, 'ShouldAskForAppReview', undefined);
     }
+    updateSocialUserFollowers(variables: Types.SocialUserFollowersVariables, updater: (data: Types.SocialUserFollowers) => Types.SocialUserFollowers | null): Promise<boolean> {
+        return this.updateQuery(updater, 'SocialUserFollowers', variables);
+    }
+    updateSocialUserFollowing(variables: Types.SocialUserFollowingVariables, updater: (data: Types.SocialUserFollowing) => Types.SocialUserFollowing | null): Promise<boolean> {
+        return this.updateQuery(updater, 'SocialUserFollowing', variables);
+    }
     updateStickerPack(variables: Types.StickerPackVariables, updater: (data: Types.StickerPack) => Types.StickerPack | null): Promise<boolean> {
         return this.updateQuery(updater, 'StickerPack', variables);
     }
@@ -1215,6 +1239,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, updater: (data: Types.UserAvailableRooms) => Types.UserAvailableRooms | null): Promise<boolean> {
         return this.updateQuery(updater, 'UserAvailableRooms', variables);
+    }
+    updateUserFollowers(variables: Types.UserFollowersVariables, updater: (data: Types.UserFollowers) => Types.UserFollowers | null): Promise<boolean> {
+        return this.updateQuery(updater, 'UserFollowers', variables);
     }
     updateUserNano(variables: Types.UserNanoVariables, updater: (data: Types.UserNano) => Types.UserNano | null): Promise<boolean> {
         return this.updateQuery(updater, 'UserNano', variables);
@@ -1799,6 +1826,16 @@ export class OpenlandClient extends BaseSpaceXClient {
     useShouldAskForAppReview(params?: SpaceQueryWatchParameters): Types.ShouldAskForAppReview | null {
         return this.useQuery('ShouldAskForAppReview', undefined, params);
     }
+    useSocialUserFollowers(variables: Types.SocialUserFollowersVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.SocialUserFollowers | null;
+    useSocialUserFollowers(variables: Types.SocialUserFollowersVariables, params?: SpaceQueryWatchParameters): Types.SocialUserFollowers;
+    useSocialUserFollowers(variables: Types.SocialUserFollowersVariables, params?: SpaceQueryWatchParameters): Types.SocialUserFollowers | null {
+        return this.useQuery('SocialUserFollowers', variables, params);
+    }
+    useSocialUserFollowing(variables: Types.SocialUserFollowingVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.SocialUserFollowing | null;
+    useSocialUserFollowing(variables: Types.SocialUserFollowingVariables, params?: SpaceQueryWatchParameters): Types.SocialUserFollowing;
+    useSocialUserFollowing(variables: Types.SocialUserFollowingVariables, params?: SpaceQueryWatchParameters): Types.SocialUserFollowing | null {
+        return this.useQuery('SocialUserFollowing', variables, params);
+    }
     useStickerPack(variables: Types.StickerPackVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.StickerPack | null;
     useStickerPack(variables: Types.StickerPackVariables, params?: SpaceQueryWatchParameters): Types.StickerPack;
     useStickerPack(variables: Types.StickerPackVariables, params?: SpaceQueryWatchParameters): Types.StickerPack | null {
@@ -1883,6 +1920,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, params?: SpaceQueryWatchParameters): Types.UserAvailableRooms;
     useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, params?: SpaceQueryWatchParameters): Types.UserAvailableRooms | null {
         return this.useQuery('UserAvailableRooms', variables, params);
+    }
+    useUserFollowers(variables: Types.UserFollowersVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.UserFollowers | null;
+    useUserFollowers(variables: Types.UserFollowersVariables, params?: SpaceQueryWatchParameters): Types.UserFollowers;
+    useUserFollowers(variables: Types.UserFollowersVariables, params?: SpaceQueryWatchParameters): Types.UserFollowers | null {
+        return this.useQuery('UserFollowers', variables, params);
     }
     useUserNano(variables: Types.UserNanoVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.UserNano | null;
     useUserNano(variables: Types.UserNanoVariables, params?: SpaceQueryWatchParameters): Types.UserNano;
@@ -2231,6 +2273,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateSettingsUpdate(variables: Types.SettingsUpdateVariables, params?: MutationParameters): Promise<Types.SettingsUpdate> {
         return this.mutate('SettingsUpdate', variables, params);
+    }
+    mutateSocialFollow(variables: Types.SocialFollowVariables, params?: MutationParameters): Promise<Types.SocialFollow> {
+        return this.mutate('SocialFollow', variables, params);
+    }
+    mutateSocialUnfollow(variables: Types.SocialUnfollowVariables, params?: MutationParameters): Promise<Types.SocialUnfollow> {
+        return this.mutate('SocialUnfollow', variables, params);
     }
     mutateStickerPackAddToCollection(variables: Types.StickerPackAddToCollectionVariables, params?: MutationParameters): Promise<Types.StickerPackAddToCollection> {
         return this.mutate('StickerPackAddToCollection', variables, params);

@@ -120,6 +120,8 @@ object Operations {
         if (name == "SharedMedia") return SharedMedia
         if (name == "SharedMediaCounters") return SharedMediaCounters
         if (name == "ShouldAskForAppReview") return ShouldAskForAppReview
+        if (name == "SocialUserFollowers") return SocialUserFollowers
+        if (name == "SocialUserFollowing") return SocialUserFollowing
         if (name == "StickerPack") return StickerPack
         if (name == "StickerPackCatalog") return StickerPackCatalog
         if (name == "StripeToken") return StripeToken
@@ -137,6 +139,7 @@ object Operations {
         if (name == "UpdateUsers") return UpdateUsers
         if (name == "User") return User
         if (name == "UserAvailableRooms") return UserAvailableRooms
+        if (name == "UserFollowers") return UserFollowers
         if (name == "UserNano") return UserNano
         if (name == "UserPico") return UserPico
         if (name == "UserSearchForChat") return UserSearchForChat
@@ -249,6 +252,8 @@ object Operations {
         if (name == "SetTyping") return SetTyping
         if (name == "SetUserShortname") return SetUserShortname
         if (name == "SettingsUpdate") return SettingsUpdate
+        if (name == "SocialFollow") return SocialFollow
+        if (name == "SocialUnfollow") return SocialUnfollow
         if (name == "StickerPackAddToCollection") return StickerPackAddToCollection
         if (name == "StickerPackCreate") return StickerPackCreate
         if (name == "StickerPackRemoveFromCollection") return StickerPackRemoveFromCollection

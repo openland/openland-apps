@@ -25,6 +25,9 @@ fragment UserFull on User {
     inContacts
     isBanned
     isMeBanned
+    followedByMe
+    followersCount
+    followingCount
     primaryOrganization {
         ...OrganizationShort
     }

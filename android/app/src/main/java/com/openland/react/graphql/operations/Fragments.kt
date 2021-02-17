@@ -1925,6 +1925,9 @@ internal val UserFullSelector = obj(
             field("inContacts", "inContacts", notNull(scalar("Boolean"))),
             field("isBanned", "isBanned", notNull(scalar("Boolean"))),
             field("isMeBanned", "isMeBanned", notNull(scalar("Boolean"))),
+            field("followedByMe", "followedByMe", notNull(scalar("Boolean"))),
+            field("followersCount", "followersCount", notNull(scalar("Int"))),
+            field("followingCount", "followingCount", notNull(scalar("Int"))),
             field("primaryOrganization", "primaryOrganization", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationShortSelector)

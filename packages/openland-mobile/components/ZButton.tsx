@@ -11,9 +11,12 @@ import { SAnimatedView, SAnimated, SAnimatedShadowView } from 'react-native-fast
 import UUID from 'uuid/v4';
 
 export type ZButtonStyle = 'primary' | 'secondary' | 'danger' | 'pay' | 'positive';
-type ZButtonSize = 'default' | 'large';
+type ZButtonSize = 'default' | 'large' | 'xlarge';
 
 const stylesDefault = StyleSheet.create({
+    wrapper: {
+        overflow: 'hidden'
+    },
     container: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -27,6 +30,27 @@ const stylesDefault = StyleSheet.create({
 });
 
 const stylesLarge = StyleSheet.create({
+    wrapper: {
+        overflow: 'hidden'
+    },
+    container: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 48,
+        paddingHorizontal: 24,
+    } as ViewStyle,
+    title: {
+        ...TextStyles.Label1,
+        textAlignVertical: 'center',
+    } as TextStyle
+});
+
+const stylesXLarge = StyleSheet.create({
+    wrapper: {
+        width: '100%',
+        flexShrink: 1,
+        overflow: 'hidden',
+    },
     container: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -42,16 +66,18 @@ const stylesLarge = StyleSheet.create({
 const resolveStylesBySize = {
     default: stylesDefault,
     large: stylesLarge,
+    xlarge: stylesXLarge,
 };
 
 const resolveRadiusBySize = {
     default: RadiusStyles.Large,
     large: RadiusStyles.Medium,
+    xlarge: RadiusStyles.Medium,
 };
 
 type StyleBasedMap = { [key in ZButtonStyle]: string | undefined };
 
-export interface ZButtonProps {
+export interface ZButtonProps extends ViewStyle {
     title: string;
     onPress?: () => void;
     action?: () => void;
@@ -186,7 +212,7 @@ const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) 
     }, []);
 
     return (
-        <View style={{ borderRadius, backgroundColor: staticViewColor, opacity: staticViewOpacity, overflow: 'hidden' }}>
+        <View style={[styles.wrapper, { borderRadius, backgroundColor: staticViewColor, opacity: staticViewOpacity, ...props }]}>
             <SAnimatedView
                 name={animateView.name}
                 style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: dynamicViewColor, opacity: dynamicViewOpacity, borderRadius }}

@@ -37,6 +37,14 @@ query UserNano($id: ID!) {
         isMeBanned
     }
 }
+query UserFollowers($id: ID!) {
+    user(id: $id) {
+        id
+        name
+        followersCount
+        followingCount
+    }
+}
 query Online($userId: ID!) {
     user: user(id: $userId) {
         id
@@ -82,4 +90,40 @@ mutation BetaNextDiscoverReset {
 }
 query MySuccessfulInvitesCount {
     mySuccessfulInvitesCount
+}
+
+query SocialUserFollowers($uid: ID!, $first: Int!, $after: String) {
+    socialUserFollowers(uid: $uid, first: $first, after: $after) {
+        items {
+            id
+            name
+            about
+            followersCount
+            followedByMe
+            photo
+        }
+        cursor
+    }
+}
+
+query SocialUserFollowing($uid: ID!, $first: Int!, $after: String) {
+    socialUserFollowing(uid: $uid, first: $first, after: $after) {
+        items {
+            id
+            name
+            about
+            followersCount
+            followedByMe
+            photo
+        }
+        cursor
+    }
+}
+
+mutation SocialFollow($uid: ID!) {
+    socialFollow(uid: $uid)
+}
+
+mutation SocialUnfollow($uid: ID!) {
+    socialUnfollow(uid: $uid)
 }
