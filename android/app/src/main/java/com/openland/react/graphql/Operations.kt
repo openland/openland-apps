@@ -146,6 +146,7 @@ object Operations {
         if (name == "UserSearchForOrganization") return UserSearchForOrganization
         if (name == "UserStorage") return UserStorage
         if (name == "Users") return Users
+        if (name == "VoiceChatUser") return VoiceChatUser
         if (name == "AccountInviteJoin") return AccountInviteJoin
         if (name == "AddAppToChat") return AddAppToChat
         if (name == "AddComment") return AddComment

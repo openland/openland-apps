@@ -4836,6 +4836,15 @@ private let UsersSelector = obj(
                     fragment("User", UserFullSelector)
                 )))))
         )
+private let VoiceChatUserSelector = obj(
+            field("user", "user", arguments(fieldValue("id", refValue("uid"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("followingCount", "followingCount", notNull(scalar("Int"))),
+                    field("followersCount", "followersCount", notNull(scalar("Int"))),
+                    field("followedByMe", "followedByMe", notNull(scalar("Boolean")))
+                )))
+        )
 private let AccountInviteJoinSelector = obj(
             field("alphaJoinInvite", "alphaJoinInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
         )
@@ -6823,6 +6832,12 @@ class Operations {
         "query Users($ids:[ID!]!){users(ids:$ids){__typename ...UserFull}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
         UsersSelector
     )
+    let VoiceChatUser = OperationDefinition(
+        "VoiceChatUser",
+        .query, 
+        "query VoiceChatUser($uid:ID!){user(id:$uid){__typename id followingCount followersCount followedByMe}}",
+        VoiceChatUserSelector
+    )
     let AccountInviteJoin = OperationDefinition(
         "AccountInviteJoin",
         .mutation, 
@@ -7924,6 +7939,7 @@ class Operations {
         if name == "UserSearchForOrganization" { return UserSearchForOrganization }
         if name == "UserStorage" { return UserStorage }
         if name == "Users" { return Users }
+        if name == "VoiceChatUser" { return VoiceChatUser }
         if name == "AccountInviteJoin" { return AccountInviteJoin }
         if name == "AddAppToChat" { return AddAppToChat }
         if name == "AddComment" { return AddComment }

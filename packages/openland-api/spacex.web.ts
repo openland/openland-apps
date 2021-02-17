@@ -4843,6 +4843,15 @@ const UsersSelector = obj(
                     fragment('User', UserFullSelector)
                 )))))
         );
+const VoiceChatUserSelector = obj(
+            field('user', 'user', args(fieldValue("id", refValue('uid'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('followingCount', 'followingCount', args(), notNull(scalar('Int'))),
+                    field('followersCount', 'followersCount', args(), notNull(scalar('Int'))),
+                    field('followedByMe', 'followedByMe', args(), notNull(scalar('Boolean')))
+                )))
+        );
 const AccountInviteJoinSelector = obj(
             field('alphaJoinInvite', 'alphaJoinInvite', args(fieldValue("key", refValue('inviteKey'))), notNull(scalar('ID')))
         );
@@ -6825,6 +6834,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'Users',
         body: 'query Users($ids:[ID!]!){users(ids:$ids){__typename ...UserFull}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
         selector: UsersSelector
+    },
+    VoiceChatUser: {
+        kind: 'query',
+        name: 'VoiceChatUser',
+        body: 'query VoiceChatUser($uid:ID!){user(id:$uid){__typename id followingCount followersCount followedByMe}}',
+        selector: VoiceChatUserSelector
     },
     AccountInviteJoin: {
         kind: 'mutation',
