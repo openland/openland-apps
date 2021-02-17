@@ -37,7 +37,7 @@ export const UserFollowersItem = React.memo<UserFollowerItemProps>((props) => {
             <View style={{ flexDirection: 'row', paddingVertical: 6, alignItems: 'center' }}>
                 <ZAvatar id={id} title={name} photo={photo} size={'small'} />
                 <View style={{ marginLeft: 16, width: '100%', flexShrink: 1, paddingLeft: 5 }}>
-                    <Text style={TextStyles.Label1}>{name}</Text>
+                    <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>{name}</Text>
                     <Text
                         style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}
                         numberOfLines={1}
