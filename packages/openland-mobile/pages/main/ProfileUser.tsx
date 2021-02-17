@@ -404,4 +404,9 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
     );
 });
 
-export const ProfileUser = SUPER_ADMIN ? withApp(ProfileUserComponent, { navigationAppearance: 'small-hidden' }) : ProfileUserNew;
+const ProfileUserOld = withApp(ProfileUserComponent, { navigationAppearance: 'small-hidden' });
+
+export const ProfileUser = () => {
+    // @ts-ignore
+  return SUPER_ADMIN ? <ProfileUserNew /> : <ProfileUserOld />;
+};
