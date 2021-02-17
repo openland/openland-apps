@@ -63,6 +63,10 @@ const UserModalBody = React.memo(({
         client.mutateVoiceChatDemote({ id: roomId, uid: user.id });
         hide();
     }, [roomId, user.id]);
+    const promoteUser = React.useCallback(() => {
+        client.mutateVoiceChatPromote({ id: roomId, uid: user.id });
+        hide();
+    }, [roomId, user.id]);
     const followUser = React.useCallback(() => {
         client.mutateSocialFollow({ uid: user.id });
         hide();
@@ -129,6 +133,14 @@ const UserModalBody = React.memo(({
                                 small={true}
                                 text="Make listener"
                                 onPress={demoteUser}
+                            />
+                        )}
+                        {userStatus === VoiceChatParticipantStatus.LISTENER && (
+                            <ZListItem
+                                leftIcon={require('assets/ic-mic-24.png')}
+                                small={true}
+                                text="Make speaker"
+                                onPress={promoteUser}
                             />
                         )}
                         {userStatus === VoiceChatParticipantStatus.ADMIN ? (
