@@ -280,6 +280,8 @@ const RoomHeader = React.memo(
 
 const RoomUserView = React.memo((props: RoomUserViewProps) => {
     const isTalking = false;
+    const isMuted = false;
+    const isAdmin = false;
     return (
         <View
             style={{
@@ -313,17 +315,38 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                         title={props.user.name}
                         id={props.user.id}
                     />
+                    {isMuted && (
+                        <View
+                            style={{
+                                position: 'absolute',
+                                right: 8,
+                                bottom: 8,
+                                width: 24,
+                                height: 24,
+                                borderRadius: 100,
+                                backgroundColor: props.theme.backgroundSecondary,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}
+                        >
+                            <Image source={require('assets/ic-mute-glyph-16.png')} style={{ width: 16, height: 16, tintColor: props.theme.foregroundSecondary }} />
+                        </View>
+                    )}
                 </View>
-                <Text
-                    numberOfLines={1}
-                    style={{
-                        ...TextStyles.Label2,
-                        color: props.theme.foregroundPrimary,
-                        marginTop: 12,
-                    }}
-                >
-                    {props.user.firstName}
-                </Text>
+                <View style={{ marginTop: 12, flexDirection: 'row', alignItems: 'center' }}>
+                    {isAdmin && (
+                        <Image source={require('assets/ic-crown-16.png')} style={{ tintColor: '#e8ac3c', marginRight: 6 }} />
+                    )}
+                    <Text
+                        numberOfLines={1}
+                        style={{
+                            ...TextStyles.Label2,
+                            color: props.theme.foregroundPrimary,
+                        }}
+                    >
+                        {props.user.firstName}
+                    </Text>
+                </View>
             </TouchableOpacity>
         </View>
     );
