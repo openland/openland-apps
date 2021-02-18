@@ -617,7 +617,6 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
             <RoomControls
                 id={room.id}
                 theme={theme}
-                role={room.me?.status}
                 muted={muted}
                 onLayout={onControlsLayout}
                 onLeave={handleLeave}

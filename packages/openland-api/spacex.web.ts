@@ -4858,6 +4858,23 @@ const VoiceChatSelector = obj(
                     fragment('VoiceChat', VoiceChatWithSpeakersSelector)
                 )))
         );
+const VoiceChatControlsSelector = obj(
+            field('voiceChat', 'voiceChat', args(fieldValue("id", refValue('id'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('me', 'me', args(), obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('user', 'user', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    field('id', 'id', args(), notNull(scalar('ID'))),
+                                    field('shortname', 'shortname', args(), scalar('String'))
+                                ))),
+                            field('status', 'status', args(), notNull(scalar('String'))),
+                            field('handRaised', 'handRaised', args(), scalar('Boolean'))
+                        ))
+                )))
+        );
 const VoiceChatListenersSelector = obj(
             field('voiceChatListeners', 'voiceChatListeners', args(fieldValue("id", refValue('id')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5714,6 +5731,9 @@ const VoiceChatLeaveSelector = obj(
         );
 const VoiceChatPromoteSelector = obj(
             field('voiceChatPromote', 'voiceChatPromote', args(fieldValue("id", refValue('id')), fieldValue("uid", refValue('uid'))), notNull(scalar('Boolean')))
+        );
+const VoiceChatRaiseHandSelector = obj(
+            field('voiceChatRaiseHand', 'voiceChatRaiseHand', args(fieldValue("id", refValue('id')), fieldValue("raised", refValue('raised'))), notNull(scalar('Boolean')))
         );
 const VoiceChatUpdateSelector = obj(
             field('voiceChatUpdate', 'voiceChatUpdate', args(fieldValue("id", refValue('id')), fieldValue("input", refValue('input'))), notNull(obj(
@@ -6878,6 +6898,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query VoiceChat($id:ID!){voiceChat(id:$id){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title listenersCount speakersCount me{__typename ...VoiceChatParticipant}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status}',
         selector: VoiceChatSelector
     },
+    VoiceChatControls: {
+        kind: 'query',
+        name: 'VoiceChatControls',
+        body: 'query VoiceChatControls($id:ID!){voiceChat(id:$id){__typename id me{__typename id user{__typename id shortname}status handRaised}}}',
+        selector: VoiceChatControlsSelector
+    },
     VoiceChatListeners: {
         kind: 'query',
         name: 'VoiceChatListeners',
@@ -7723,6 +7749,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'VoiceChatPromote',
         body: 'mutation VoiceChatPromote($id:ID!,$uid:ID!){voiceChatPromote(id:$id,uid:$uid)}',
         selector: VoiceChatPromoteSelector
+    },
+    VoiceChatRaiseHand: {
+        kind: 'mutation',
+        name: 'VoiceChatRaiseHand',
+        body: 'mutation VoiceChatRaiseHand($id:ID!,$raised:Boolean!){voiceChatRaiseHand(id:$id,raised:$raised)}',
+        selector: VoiceChatRaiseHandSelector
     },
     VoiceChatUpdate: {
         kind: 'mutation',

@@ -4851,6 +4851,23 @@ private let VoiceChatSelector = obj(
                     fragment("VoiceChat", VoiceChatWithSpeakersSelector)
                 )))
         )
+private let VoiceChatControlsSelector = obj(
+            field("voiceChat", "voiceChat", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("me", "me", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("user", "user", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("shortname", "shortname", scalar("String"))
+                                ))),
+                            field("status", "status", notNull(scalar("String"))),
+                            field("handRaised", "handRaised", scalar("Boolean"))
+                        ))
+                )))
+        )
 private let VoiceChatListenersSelector = obj(
             field("voiceChatListeners", "voiceChatListeners", arguments(fieldValue("id", refValue("id")), fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5707,6 +5724,9 @@ private let VoiceChatLeaveSelector = obj(
         )
 private let VoiceChatPromoteSelector = obj(
             field("voiceChatPromote", "voiceChatPromote", arguments(fieldValue("id", refValue("id")), fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
+        )
+private let VoiceChatRaiseHandSelector = obj(
+            field("voiceChatRaiseHand", "voiceChatRaiseHand", arguments(fieldValue("id", refValue("id")), fieldValue("raised", refValue("raised"))), notNull(scalar("Boolean")))
         )
 private let VoiceChatUpdateSelector = obj(
             field("voiceChatUpdate", "voiceChatUpdate", arguments(fieldValue("id", refValue("id")), fieldValue("input", refValue("input"))), notNull(obj(
@@ -6875,6 +6895,12 @@ class Operations {
         "query VoiceChat($id:ID!){voiceChat(id:$id){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title listenersCount speakersCount me{__typename ...VoiceChatParticipant}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status}",
         VoiceChatSelector
     )
+    let VoiceChatControls = OperationDefinition(
+        "VoiceChatControls",
+        .query, 
+        "query VoiceChatControls($id:ID!){voiceChat(id:$id){__typename id me{__typename id user{__typename id shortname}status handRaised}}}",
+        VoiceChatControlsSelector
+    )
     let VoiceChatListeners = OperationDefinition(
         "VoiceChatListeners",
         .query, 
@@ -7721,6 +7747,12 @@ class Operations {
         "mutation VoiceChatPromote($id:ID!,$uid:ID!){voiceChatPromote(id:$id,uid:$uid)}",
         VoiceChatPromoteSelector
     )
+    let VoiceChatRaiseHand = OperationDefinition(
+        "VoiceChatRaiseHand",
+        .mutation, 
+        "mutation VoiceChatRaiseHand($id:ID!,$raised:Boolean!){voiceChatRaiseHand(id:$id,raised:$raised)}",
+        VoiceChatRaiseHandSelector
+    )
     let VoiceChatUpdate = OperationDefinition(
         "VoiceChatUpdate",
         .mutation, 
@@ -8001,6 +8033,7 @@ class Operations {
         if name == "UserStorage" { return UserStorage }
         if name == "Users" { return Users }
         if name == "VoiceChat" { return VoiceChat }
+        if name == "VoiceChatControls" { return VoiceChatControls }
         if name == "VoiceChatListeners" { return VoiceChatListeners }
         if name == "VoiceChatUser" { return VoiceChatUser }
         if name == "AccountInviteJoin" { return AccountInviteJoin }
@@ -8142,6 +8175,7 @@ class Operations {
         if name == "VoiceChatKick" { return VoiceChatKick }
         if name == "VoiceChatLeave" { return VoiceChatLeave }
         if name == "VoiceChatPromote" { return VoiceChatPromote }
+        if name == "VoiceChatRaiseHand" { return VoiceChatRaiseHand }
         if name == "VoiceChatUpdate" { return VoiceChatUpdate }
         if name == "VoiceChatUpdateAdmin" { return VoiceChatUpdateAdmin }
         if name == "conferenceAddScreenShare" { return conferenceAddScreenShare }

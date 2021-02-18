@@ -430,6 +430,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryVoiceChat(variables: Types.VoiceChatVariables, params?: QueryParameters): Promise<Types.VoiceChat> {
         return this.query('VoiceChat', variables, params);
     }
+    queryVoiceChatControls(variables: Types.VoiceChatControlsVariables, params?: QueryParameters): Promise<Types.VoiceChatControls> {
+        return this.query('VoiceChatControls', variables, params);
+    }
     queryVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params?: QueryParameters): Promise<Types.VoiceChatListeners> {
         return this.query('VoiceChatListeners', variables, params);
     }
@@ -856,6 +859,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchVoiceChat(variables: Types.VoiceChatVariables, params?: QueryParameters): Promise<Types.VoiceChat> {
         return this.refetch('VoiceChat', variables, params);
     }
+    refetchVoiceChatControls(variables: Types.VoiceChatControlsVariables, params?: QueryParameters): Promise<Types.VoiceChatControls> {
+        return this.refetch('VoiceChatControls', variables, params);
+    }
     refetchVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params?: QueryParameters): Promise<Types.VoiceChatListeners> {
         return this.refetch('VoiceChatListeners', variables, params);
     }
@@ -1281,6 +1287,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateVoiceChat(variables: Types.VoiceChatVariables, updater: (data: Types.VoiceChat) => Types.VoiceChat | null): Promise<boolean> {
         return this.updateQuery(updater, 'VoiceChat', variables);
+    }
+    updateVoiceChatControls(variables: Types.VoiceChatControlsVariables, updater: (data: Types.VoiceChatControls) => Types.VoiceChatControls | null): Promise<boolean> {
+        return this.updateQuery(updater, 'VoiceChatControls', variables);
     }
     updateVoiceChatListeners(variables: Types.VoiceChatListenersVariables, updater: (data: Types.VoiceChatListeners) => Types.VoiceChatListeners | null): Promise<boolean> {
         return this.updateQuery(updater, 'VoiceChatListeners', variables);
@@ -1988,6 +1997,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useVoiceChat(variables: Types.VoiceChatVariables, params?: SpaceQueryWatchParameters): Types.VoiceChat | null {
         return this.useQuery('VoiceChat', variables, params);
     }
+    useVoiceChatControls(variables: Types.VoiceChatControlsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.VoiceChatControls | null;
+    useVoiceChatControls(variables: Types.VoiceChatControlsVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatControls;
+    useVoiceChatControls(variables: Types.VoiceChatControlsVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatControls | null {
+        return this.useQuery('VoiceChatControls', variables, params);
+    }
     useVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.VoiceChatListeners | null;
     useVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatListeners;
     useVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatListeners | null {
@@ -2414,6 +2428,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateVoiceChatPromote(variables: Types.VoiceChatPromoteVariables, params?: MutationParameters): Promise<Types.VoiceChatPromote> {
         return this.mutate('VoiceChatPromote', variables, params);
+    }
+    mutateVoiceChatRaiseHand(variables: Types.VoiceChatRaiseHandVariables, params?: MutationParameters): Promise<Types.VoiceChatRaiseHand> {
+        return this.mutate('VoiceChatRaiseHand', variables, params);
     }
     mutateVoiceChatUpdate(variables: Types.VoiceChatUpdateVariables, params?: MutationParameters): Promise<Types.VoiceChatUpdate> {
         return this.mutate('VoiceChatUpdate', variables, params);

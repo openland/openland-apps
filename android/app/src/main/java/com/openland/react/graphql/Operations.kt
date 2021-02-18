@@ -147,6 +147,7 @@ object Operations {
         if (name == "UserStorage") return UserStorage
         if (name == "Users") return Users
         if (name == "VoiceChat") return VoiceChat
+        if (name == "VoiceChatControls") return VoiceChatControls
         if (name == "VoiceChatListeners") return VoiceChatListeners
         if (name == "VoiceChatUser") return VoiceChatUser
         if (name == "AccountInviteJoin") return AccountInviteJoin
@@ -288,6 +289,7 @@ object Operations {
         if (name == "VoiceChatKick") return VoiceChatKick
         if (name == "VoiceChatLeave") return VoiceChatLeave
         if (name == "VoiceChatPromote") return VoiceChatPromote
+        if (name == "VoiceChatRaiseHand") return VoiceChatRaiseHand
         if (name == "VoiceChatUpdate") return VoiceChatUpdate
         if (name == "VoiceChatUpdateAdmin") return VoiceChatUpdateAdmin
         if (name == "conferenceAddScreenShare") return conferenceAddScreenShare

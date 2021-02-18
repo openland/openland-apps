@@ -55,6 +55,21 @@ query VoiceChatUser($uid: ID!) {
     }
 }
 
+query VoiceChatControls($id: ID!) {
+    voiceChat(id: $id) {
+        id
+        me {
+            id
+            user {
+                id
+                shortname
+            }
+            status
+            handRaised
+        }
+    }
+}
+
 mutation VoiceChatCreate($input: VoiceChatInput!) {
     voiceChatCreate(input: $input) {
         ...VoiceChatWithSpeakers
@@ -97,4 +112,8 @@ mutation VoiceChatPromote($id: ID!, $uid: ID!) {
 
 mutation VoiceChatDemote($id: ID!, $uid: ID!) {
     voiceChatDemote(id: $id, uid: $uid)
+}
+
+mutation VoiceChatRaiseHand($id: ID!, $raised: Boolean!) {
+    voiceChatRaiseHand(id: $id, raised: $raised)
 }
