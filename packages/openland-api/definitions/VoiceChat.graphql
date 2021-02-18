@@ -1,17 +1,36 @@
-fragment VoiceChat on VoiceChat {
+fragment VoiceChatParticipant on VoiceChatParticipant {
+    id
+    user {
+        id
+        name
+        firstName
+        photo
+    }
+    status
+}
+
+fragment VoiceChatWithSpeakers on VoiceChat {
     id
     title
     listenersCount
     speakersCount
     speakers {
-        id
-        user {
-            id
-            name
-            firstName
-            photo
+        ...VoiceChatParticipant
+    }
+}
+
+query VoiceChat($id: ID!) {
+    voiceChat(id: $id) {
+        ...VoiceChatWithSpeakers
+    }
+}
+
+query VoiceChatListeners($id: ID!, $first: Int!, $after: String) {
+    voiceChatListeners(id: $id, first: $first, after: $after) {
+        items {
+            ...VoiceChatParticipant
         }
-        status
+        cursor
     }
 }
 
@@ -19,7 +38,7 @@ query ActiveVoiceChats($first: Int!, $after: String) {
     activeVoiceChats(first: $first, after: $after) {
         cursor
         items {
-            ...VoiceChat
+            ...VoiceChatWithSpeakers
         }
     }
 }
@@ -35,7 +54,19 @@ query VoiceChatUser($uid: ID!) {
 
 mutation VoiceChatCreate($input: VoiceChatInput!) {
     voiceChatCreate(input: $input) {
-        ...VoiceChat
+        ...VoiceChatWithSpeakers
+    }
+}
+
+mutation VoiceChatJoin($id: ID!) {
+    voiceChatJoin(id: $id) {
+        ...VoiceChatWithSpeakers
+    }
+}
+
+mutation VoiceChatUpdate($id: ID!, $input: VoiceChatInput!) {
+    voiceChatUpdate(id: $id, input: $input) {
+        id
     }
 }
 

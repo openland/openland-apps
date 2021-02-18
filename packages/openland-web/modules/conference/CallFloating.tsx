@@ -174,8 +174,7 @@ export const useJsDrag = (
                     onMove(positionShift);
                 }
                 if (container) {
-                    container.style.transform = `translate(${positionShift[0]}px, ${
-                        positionShift[1]
+                    container.style.transform = `translate(${positionShift[0]}px, ${positionShift[1]
                         }px)`;
                 }
             }
@@ -457,7 +456,7 @@ const CallFloatingInner = React.memo((props: { id: string }) => {
 export const CallFloating = React.memo(() => {
     let calls = React.useContext(MessengerContext).calls;
     let currentMediaSession = calls.useCurrentSession();
-    if (!currentMediaSession) {
+    if (!currentMediaSession?.conversationId) {
         return null;
     }
     return <CallFloatingInner id={currentMediaSession.conversationId} />;

@@ -146,6 +146,8 @@ object Operations {
         if (name == "UserSearchForOrganization") return UserSearchForOrganization
         if (name == "UserStorage") return UserStorage
         if (name == "Users") return Users
+        if (name == "VoiceChat") return VoiceChat
+        if (name == "VoiceChatListeners") return VoiceChatListeners
         if (name == "VoiceChatUser") return VoiceChatUser
         if (name == "AccountInviteJoin") return AccountInviteJoin
         if (name == "AddAppToChat") return AddAppToChat
@@ -282,9 +284,11 @@ object Operations {
         if (name == "VoiceChatCreate") return VoiceChatCreate
         if (name == "VoiceChatDemote") return VoiceChatDemote
         if (name == "VoiceChatEnd") return VoiceChatEnd
+        if (name == "VoiceChatJoin") return VoiceChatJoin
         if (name == "VoiceChatKick") return VoiceChatKick
         if (name == "VoiceChatLeave") return VoiceChatLeave
         if (name == "VoiceChatPromote") return VoiceChatPromote
+        if (name == "VoiceChatUpdate") return VoiceChatUpdate
         if (name == "VoiceChatUpdateAdmin") return VoiceChatUpdateAdmin
         if (name == "conferenceAddScreenShare") return conferenceAddScreenShare
         if (name == "conferenceAlterMediaState") return conferenceAlterMediaState

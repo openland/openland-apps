@@ -1934,7 +1934,20 @@ internal val UserFullSelector = obj(
                 ))
         )
 
-internal val VoiceChatSelector = obj(
+internal val VoiceChatParticipantSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("user", "user", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("firstName", "firstName", notNull(scalar("String"))),
+                    field("photo", "photo", scalar("String"))
+                ))),
+            field("status", "status", notNull(scalar("String")))
+        )
+
+internal val VoiceChatWithSpeakersSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             field("title", "title", scalar("String")),
@@ -1942,15 +1955,7 @@ internal val VoiceChatSelector = obj(
             field("speakersCount", "speakersCount", notNull(scalar("Int"))),
             field("speakers", "speakers", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("user", "user", notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("name", "name", notNull(scalar("String"))),
-                            field("firstName", "firstName", notNull(scalar("String"))),
-                            field("photo", "photo", scalar("String"))
-                        ))),
-                    field("status", "status", notNull(scalar("String")))
+                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
                 )))))
         )
 

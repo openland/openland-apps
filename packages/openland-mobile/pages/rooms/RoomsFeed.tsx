@@ -14,14 +14,16 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { SRouterContext } from 'react-native-s/SRouterContext';
-import { showRoomView } from './RoomView';
 import { useClient } from 'openland-api/useClient';
-import { VoiceChat } from 'openland-api/spacex.types';
+import { VoiceChatWithSpeakers } from 'openland-api/spacex.types';
+import { useJoinRoom } from './joinRoom';
+import { useListReducer } from 'openland-mobile/utils/listReducer';
 
-let RoomView = React.memo((props: { room: VoiceChat, theme: ThemeGlobal, router: SRouter }) => {
+let RoomFeedItem = React.memo((props: { room: VoiceChatWithSpeakers, theme: ThemeGlobal, router: SRouter }) => {
     let { room, theme } = props;
+    let joinRoom = useJoinRoom();
     return (
-        <TouchableOpacity style={{ paddingHorizontal: 16, paddingVertical: 12, marginBottom: 16, backgroundColor: theme.backgroundPrimary }} activeOpacity={0.6} onPress={() => showRoomView(props.room, props.router)}>
+        <TouchableOpacity style={{ paddingHorizontal: 16, paddingVertical: 12, marginBottom: 16, backgroundColor: theme.backgroundPrimary }} activeOpacity={0.6} onPress={() => joinRoom(room.id)}>
             <Text
                 style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, marginBottom: 8, }}
                 numberOfLines={2}
@@ -55,14 +57,6 @@ let RoomView = React.memo((props: { room: VoiceChat, theme: ThemeGlobal, router:
     );
 });
 
-type State = {
-    rooms: VoiceChat[],
-    cursor: string | null,
-    loading: boolean,
-};
-
-type Action = { type: 'start' } | { type: 'success', rooms: VoiceChat[], cursor: string | null };
-
 let RoomsFeedPage = React.memo((props: PageProps) => {
     let theme = useTheme();
     let client = useClient();
@@ -72,29 +66,14 @@ let RoomsFeedPage = React.memo((props: PageProps) => {
     }, [router]);
     // TODO: Change fetch-policy when updates are ready
     let initialRoomsList = client.useActiveVoiceChats({ first: 5 }, { fetchPolicy: 'network-only' }).activeVoiceChats;
-    let [{ cursor, rooms, loading }, dispatch] = React.useReducer<React.Reducer<State, Action>>(
-        (oldState, action) => {
-            if (action.type === 'start') {
-                return { ...oldState, loading: true };
-            }
-            if (action.type === 'success') {
-                return { ...oldState, loading: false, rooms: oldState.rooms.concat(action.rooms), cursor: action.cursor };
-            }
-            return oldState;
+
+    let { items: rooms, loading, loadMore } = useListReducer({
+        fetchItems: async (after) => {
+            return (await client.queryActiveVoiceChats({ after, first: 5 }, { fetchPolicy: 'network-only' })).activeVoiceChats;
         },
-        { loading: false, cursor: initialRoomsList.cursor, rooms: initialRoomsList.items || [] }
-    );
-
-    const loadMore = async () => {
-        if (loading || (!cursor && rooms.length > 0)) {
-            return;
-        }
-        dispatch({ type: 'start' });
-
-        let { items, cursor: newCursor } = (await client.queryActiveVoiceChats({ after: cursor, first: 5 }, { fetchPolicy: 'network-only' })).activeVoiceChats;
-
-        dispatch({ type: 'success', rooms: items || [], cursor: newCursor });
-    };
+        initialCursor: initialRoomsList.cursor,
+        initialItems: initialRoomsList.items,
+    });
 
     return (
         <>
@@ -105,7 +84,7 @@ let RoomsFeedPage = React.memo((props: PageProps) => {
                 <SDeferred>
                     <SFlatList
                         data={rooms}
-                        renderItem={({ item }) => <RoomView room={item} theme={theme} router={router} />}
+                        renderItem={({ item }) => <RoomFeedItem room={item} theme={theme} router={router} />}
                         keyExtractor={(item) => item.id}
                         ItemSeparatorComponent={() => rooms.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
                         ListHeaderComponent={rooms.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}

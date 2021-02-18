@@ -427,6 +427,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryUsers(variables: Types.UsersVariables, params?: QueryParameters): Promise<Types.Users> {
         return this.query('Users', variables, params);
     }
+    queryVoiceChat(variables: Types.VoiceChatVariables, params?: QueryParameters): Promise<Types.VoiceChat> {
+        return this.query('VoiceChat', variables, params);
+    }
+    queryVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params?: QueryParameters): Promise<Types.VoiceChatListeners> {
+        return this.query('VoiceChatListeners', variables, params);
+    }
     queryVoiceChatUser(variables: Types.VoiceChatUserVariables, params?: QueryParameters): Promise<Types.VoiceChatUser> {
         return this.query('VoiceChatUser', variables, params);
     }
@@ -847,6 +853,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchUsers(variables: Types.UsersVariables, params?: QueryParameters): Promise<Types.Users> {
         return this.refetch('Users', variables, params);
     }
+    refetchVoiceChat(variables: Types.VoiceChatVariables, params?: QueryParameters): Promise<Types.VoiceChat> {
+        return this.refetch('VoiceChat', variables, params);
+    }
+    refetchVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params?: QueryParameters): Promise<Types.VoiceChatListeners> {
+        return this.refetch('VoiceChatListeners', variables, params);
+    }
     refetchVoiceChatUser(variables: Types.VoiceChatUserVariables, params?: QueryParameters): Promise<Types.VoiceChatUser> {
         return this.refetch('VoiceChatUser', variables, params);
     }
@@ -1266,6 +1278,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateUsers(variables: Types.UsersVariables, updater: (data: Types.Users) => Types.Users | null): Promise<boolean> {
         return this.updateQuery(updater, 'Users', variables);
+    }
+    updateVoiceChat(variables: Types.VoiceChatVariables, updater: (data: Types.VoiceChat) => Types.VoiceChat | null): Promise<boolean> {
+        return this.updateQuery(updater, 'VoiceChat', variables);
+    }
+    updateVoiceChatListeners(variables: Types.VoiceChatListenersVariables, updater: (data: Types.VoiceChatListeners) => Types.VoiceChatListeners | null): Promise<boolean> {
+        return this.updateQuery(updater, 'VoiceChatListeners', variables);
     }
     updateVoiceChatUser(variables: Types.VoiceChatUserVariables, updater: (data: Types.VoiceChatUser) => Types.VoiceChatUser | null): Promise<boolean> {
         return this.updateQuery(updater, 'VoiceChatUser', variables);
@@ -1965,6 +1983,16 @@ export class OpenlandClient extends BaseSpaceXClient {
     useUsers(variables: Types.UsersVariables, params?: SpaceQueryWatchParameters): Types.Users | null {
         return this.useQuery('Users', variables, params);
     }
+    useVoiceChat(variables: Types.VoiceChatVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.VoiceChat | null;
+    useVoiceChat(variables: Types.VoiceChatVariables, params?: SpaceQueryWatchParameters): Types.VoiceChat;
+    useVoiceChat(variables: Types.VoiceChatVariables, params?: SpaceQueryWatchParameters): Types.VoiceChat | null {
+        return this.useQuery('VoiceChat', variables, params);
+    }
+    useVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.VoiceChatListeners | null;
+    useVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatListeners;
+    useVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatListeners | null {
+        return this.useQuery('VoiceChatListeners', variables, params);
+    }
     useVoiceChatUser(variables: Types.VoiceChatUserVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.VoiceChatUser | null;
     useVoiceChatUser(variables: Types.VoiceChatUserVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatUser;
     useVoiceChatUser(variables: Types.VoiceChatUserVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatUser | null {
@@ -2375,6 +2403,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateVoiceChatEnd(variables: Types.VoiceChatEndVariables, params?: MutationParameters): Promise<Types.VoiceChatEnd> {
         return this.mutate('VoiceChatEnd', variables, params);
     }
+    mutateVoiceChatJoin(variables: Types.VoiceChatJoinVariables, params?: MutationParameters): Promise<Types.VoiceChatJoin> {
+        return this.mutate('VoiceChatJoin', variables, params);
+    }
     mutateVoiceChatKick(variables: Types.VoiceChatKickVariables, params?: MutationParameters): Promise<Types.VoiceChatKick> {
         return this.mutate('VoiceChatKick', variables, params);
     }
@@ -2383,6 +2414,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateVoiceChatPromote(variables: Types.VoiceChatPromoteVariables, params?: MutationParameters): Promise<Types.VoiceChatPromote> {
         return this.mutate('VoiceChatPromote', variables, params);
+    }
+    mutateVoiceChatUpdate(variables: Types.VoiceChatUpdateVariables, params?: MutationParameters): Promise<Types.VoiceChatUpdate> {
+        return this.mutate('VoiceChatUpdate', variables, params);
     }
     mutateVoiceChatUpdateAdmin(variables: Types.VoiceChatUpdateAdminVariables, params?: MutationParameters): Promise<Types.VoiceChatUpdateAdmin> {
         return this.mutate('VoiceChatUpdateAdmin', variables, params);

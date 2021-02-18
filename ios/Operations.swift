@@ -1928,7 +1928,20 @@ private let UserFullSelector = obj(
                 ))
         )
 
-private let VoiceChatSelector = obj(
+private let VoiceChatParticipantSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("user", "user", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("firstName", "firstName", notNull(scalar("String"))),
+                    field("photo", "photo", scalar("String"))
+                ))),
+            field("status", "status", notNull(scalar("String")))
+        )
+
+private let VoiceChatWithSpeakersSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             field("title", "title", scalar("String")),
@@ -1936,15 +1949,7 @@ private let VoiceChatSelector = obj(
             field("speakersCount", "speakersCount", notNull(scalar("Int"))),
             field("speakers", "speakers", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("user", "user", notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("name", "name", notNull(scalar("String"))),
-                            field("firstName", "firstName", notNull(scalar("String"))),
-                            field("photo", "photo", scalar("String"))
-                        ))),
-                    field("status", "status", notNull(scalar("String")))
+                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
                 )))))
         )
 
@@ -2484,7 +2489,7 @@ private let ActiveVoiceChatsSelector = obj(
                     field("cursor", "cursor", scalar("String")),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("VoiceChat", VoiceChatSelector)
+                            fragment("VoiceChat", VoiceChatWithSpeakersSelector)
                         )))))
                 )))
         )
@@ -3128,7 +3133,7 @@ private let ExploreRoomsSelector = obj(
                     field("cursor", "cursor", scalar("String")),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("VoiceChat", VoiceChatSelector)
+                            fragment("VoiceChat", VoiceChatWithSpeakersSelector)
                         )))))
                 ))),
             field("discoverNewAndGrowing", "discoverNewAndGrowing", arguments(fieldValue("first", intValue(3)), fieldValue("seed", refValue("seed"))), notNull(obj(
@@ -4836,6 +4841,22 @@ private let UsersSelector = obj(
                     fragment("User", UserFullSelector)
                 )))))
         )
+private let VoiceChatSelector = obj(
+            field("voiceChat", "voiceChat", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("VoiceChat", VoiceChatWithSpeakersSelector)
+                )))
+        )
+private let VoiceChatListenersSelector = obj(
+            field("voiceChatListeners", "voiceChatListeners", arguments(fieldValue("id", refValue("id")), fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                )))
+        )
 private let VoiceChatUserSelector = obj(
             field("user", "user", arguments(fieldValue("id", refValue("uid"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5656,7 +5677,7 @@ private let UserStorageSetSelector = obj(
 private let VoiceChatCreateSelector = obj(
             field("voiceChatCreate", "voiceChatCreate", arguments(fieldValue("input", refValue("input"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("VoiceChat", VoiceChatSelector)
+                    fragment("VoiceChat", VoiceChatWithSpeakersSelector)
                 )))
         )
 private let VoiceChatDemoteSelector = obj(
@@ -5668,6 +5689,12 @@ private let VoiceChatEndSelector = obj(
                     field("id", "id", notNull(scalar("ID")))
                 )))
         )
+private let VoiceChatJoinSelector = obj(
+            field("voiceChatJoin", "voiceChatJoin", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("VoiceChat", VoiceChatWithSpeakersSelector)
+                )))
+        )
 private let VoiceChatKickSelector = obj(
             field("voiceChatKick", "voiceChatKick", arguments(fieldValue("id", refValue("id")), fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
         )
@@ -5676,6 +5703,12 @@ private let VoiceChatLeaveSelector = obj(
         )
 private let VoiceChatPromoteSelector = obj(
             field("voiceChatPromote", "voiceChatPromote", arguments(fieldValue("id", refValue("id")), fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
+        )
+private let VoiceChatUpdateSelector = obj(
+            field("voiceChatUpdate", "voiceChatUpdate", arguments(fieldValue("id", refValue("id")), fieldValue("input", refValue("input"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
+                )))
         )
 private let VoiceChatUpdateAdminSelector = obj(
             field("voiceChatUpdateAdmin", "voiceChatUpdateAdmin", arguments(fieldValue("id", refValue("id")), fieldValue("uid", refValue("uid")), fieldValue("admin", refValue("admin"))), notNull(scalar("Boolean")))
@@ -6031,7 +6064,7 @@ class Operations {
     let ActiveVoiceChats = OperationDefinition(
         "ActiveVoiceChats",
         .query, 
-        "query ActiveVoiceChats($first:Int!,$after:String){activeVoiceChats(first:$first,after:$after){__typename cursor items{__typename ...VoiceChat}}}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name firstName photo}status}}",
+        "query ActiveVoiceChats($first:Int!,$after:String){activeVoiceChats(first:$first,after:$after){__typename cursor items{__typename ...VoiceChatWithSpeakers}}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status}",
         ActiveVoiceChatsSelector
     )
     let AuthPoints = OperationDefinition(
@@ -6271,7 +6304,7 @@ class Operations {
     let ExploreRooms = OperationDefinition(
         "ExploreRooms",
         .query, 
-        "query ExploreRooms($seed:Int!){activeVoiceChats(first:3){__typename cursor items{__typename ...VoiceChat}}discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:3){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:3){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopOrganizations(first:3){__typename items{__typename ...DiscoverOrganization}cursor}discoverNewAndGrowingOrganizations(first:3,seed:$seed){__typename items{__typename ...DiscoverOrganization}cursor}isDiscoverDone:betaIsDiscoverDone}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name firstName photo}status}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive featured}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname featured:alphaFeatured}",
+        "query ExploreRooms($seed:Int!){activeVoiceChats(first:3){__typename cursor items{__typename ...VoiceChatWithSpeakers}}discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:3){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:3){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopOrganizations(first:3){__typename items{__typename ...DiscoverOrganization}cursor}discoverNewAndGrowingOrganizations(first:3,seed:$seed){__typename items{__typename ...DiscoverOrganization}cursor}isDiscoverDone:betaIsDiscoverDone}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive featured}fragment DiscoverOrganization on Organization{__typename id name photo membersCount shortname featured:alphaFeatured}",
         ExploreRoomsSelector
     )
     let FetchPushSettings = OperationDefinition(
@@ -6831,6 +6864,18 @@ class Operations {
         .query, 
         "query Users($ids:[ID!]!){users(ids:$ids){__typename ...UserFull}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
         UsersSelector
+    )
+    let VoiceChat = OperationDefinition(
+        "VoiceChat",
+        .query, 
+        "query VoiceChat($id:ID!){voiceChat(id:$id){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status}",
+        VoiceChatSelector
+    )
+    let VoiceChatListeners = OperationDefinition(
+        "VoiceChatListeners",
+        .query, 
+        "query VoiceChatListeners($id:ID!,$first:Int!,$after:String){voiceChatListeners(id:$id,first:$first,after:$after){__typename items{__typename ...VoiceChatParticipant}cursor}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status}",
+        VoiceChatListenersSelector
     )
     let VoiceChatUser = OperationDefinition(
         "VoiceChatUser",
@@ -7633,7 +7678,7 @@ class Operations {
     let VoiceChatCreate = OperationDefinition(
         "VoiceChatCreate",
         .mutation, 
-        "mutation VoiceChatCreate($input:VoiceChatInput!){voiceChatCreate(input:$input){__typename ...VoiceChat}}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name firstName photo}status}}",
+        "mutation VoiceChatCreate($input:VoiceChatInput!){voiceChatCreate(input:$input){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status}",
         VoiceChatCreateSelector
     )
     let VoiceChatDemote = OperationDefinition(
@@ -7647,6 +7692,12 @@ class Operations {
         .mutation, 
         "mutation VoiceChatEnd($id:ID!){voiceChatEnd(id:$id){__typename id}}",
         VoiceChatEndSelector
+    )
+    let VoiceChatJoin = OperationDefinition(
+        "VoiceChatJoin",
+        .mutation, 
+        "mutation VoiceChatJoin($id:ID!){voiceChatJoin(id:$id){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status}",
+        VoiceChatJoinSelector
     )
     let VoiceChatKick = OperationDefinition(
         "VoiceChatKick",
@@ -7665,6 +7716,12 @@ class Operations {
         .mutation, 
         "mutation VoiceChatPromote($id:ID!,$uid:ID!){voiceChatPromote(id:$id,uid:$uid)}",
         VoiceChatPromoteSelector
+    )
+    let VoiceChatUpdate = OperationDefinition(
+        "VoiceChatUpdate",
+        .mutation, 
+        "mutation VoiceChatUpdate($id:ID!,$input:VoiceChatInput!){voiceChatUpdate(id:$id,input:$input){__typename id}}",
+        VoiceChatUpdateSelector
     )
     let VoiceChatUpdateAdmin = OperationDefinition(
         "VoiceChatUpdateAdmin",
@@ -7939,6 +7996,8 @@ class Operations {
         if name == "UserSearchForOrganization" { return UserSearchForOrganization }
         if name == "UserStorage" { return UserStorage }
         if name == "Users" { return Users }
+        if name == "VoiceChat" { return VoiceChat }
+        if name == "VoiceChatListeners" { return VoiceChatListeners }
         if name == "VoiceChatUser" { return VoiceChatUser }
         if name == "AccountInviteJoin" { return AccountInviteJoin }
         if name == "AddAppToChat" { return AddAppToChat }
@@ -8075,9 +8134,11 @@ class Operations {
         if name == "VoiceChatCreate" { return VoiceChatCreate }
         if name == "VoiceChatDemote" { return VoiceChatDemote }
         if name == "VoiceChatEnd" { return VoiceChatEnd }
+        if name == "VoiceChatJoin" { return VoiceChatJoin }
         if name == "VoiceChatKick" { return VoiceChatKick }
         if name == "VoiceChatLeave" { return VoiceChatLeave }
         if name == "VoiceChatPromote" { return VoiceChatPromote }
+        if name == "VoiceChatUpdate" { return VoiceChatUpdate }
         if name == "VoiceChatUpdateAdmin" { return VoiceChatUpdateAdmin }
         if name == "conferenceAddScreenShare" { return conferenceAddScreenShare }
         if name == "conferenceAlterMediaState" { return conferenceAlterMediaState }
