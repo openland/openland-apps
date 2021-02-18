@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform } from 'react-native';
+import { View, Platform, ViewStyle } from 'react-native';
 import { showSheetModal } from './showSheetModal';
 import { ZModalController } from './ZModal';
 import { ZListItem } from './ZListItem';
@@ -7,7 +7,7 @@ import { ZButton } from './ZButton';
 import { showBottomSheet } from './BottomSheet';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { isPad } from 'openland-mobile/pages/Root';
-import { ModalProps } from 'react-native-fast-modal';
+import { ModalConfiguration, ModalProps } from 'react-native-fast-modal';
 
 interface ActionSheetBuilderActionItem {
     __typename: "ActionItem";
@@ -24,6 +24,13 @@ interface ActionSheetBuilderViewItem {
     __typename: "ViewItem";
 
     view: (ctx: ZModalController) => JSX.Element;
+}
+
+interface ActionSheetViewShowOptions {
+    containerStyle?: ViewStyle;
+    showAnimation?: ModalConfiguration['showAnimation'];
+    disableMargins?: boolean;
+    disableBottomSafeArea?: boolean;
 }
 
 export class ActionSheetBuilder {
@@ -113,7 +120,7 @@ export class ActionSheetBuilder {
         );
     }
 
-    show(haptic?: boolean) {
+    show(haptic?: boolean, options?: ActionSheetViewShowOptions) {
         if (haptic) {
             ReactNativeHapticFeedback.trigger('impactLight', { ignoreAndroidSystemSettings: false });
         }
@@ -137,7 +144,7 @@ export class ActionSheetBuilder {
                 );
             }, this._title);
         } else {
-            showBottomSheet({ view: this.renderItems, title: this._title, titleAlign: this._titleAlign, cancelable: this._cancelable, buttonTitle: this._buttonTitle });
+            showBottomSheet({ view: this.renderItems, title: this._title, titleAlign: this._titleAlign, cancelable: this._cancelable, buttonTitle: this._buttonTitle, ...options });
         }
     }
 }

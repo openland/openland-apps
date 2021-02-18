@@ -27,6 +27,8 @@ const UserFollowersComponent = React.memo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
     const [selectedTab, setSelectedTab] = React.useState<Tabs>(initialTab || Tabs.FOLLOWING);
     const [following, setFollowing] = React.useState<SocialUserFollowing_socialUserFollowing_items[] | null>(null);
+    const [followingCursor, setFollowingCursor] = React.useState<string | null>(null);
+    const [followersCursor, setFollowersCursor] = React.useState<string | null>(null);
     const [followers, setFollowers] = React.useState<SocialUserFollowers_socialUserFollowers_items[] | null>(null);
     const { followersCount, followingCount, name } = client.useUserFollowers({ id: uid }, { fetchPolicy: 'network-only' }).user;
 
@@ -36,11 +38,28 @@ const UserFollowersComponent = React.memo<PageProps>((props) => {
                 client.querySocialUserFollowing({ uid, first: 15 }, { fetchPolicy: 'network-only' }),
                 client.querySocialUserFollowers({ uid, first: 15 }, { fetchPolicy: 'network-only' })
             ]);
-            
             setFollowing(initialFollowing.socialUserFollowing.items);
+            setFollowingCursor(initialFollowing.socialUserFollowing.cursor);
             setFollowers(initialFollowers.socialUserFollowers.items);
+            setFollowersCursor(initialFollowers.socialUserFollowers.cursor);
         })();
     }, [uid]);
+
+    const handleLoadMoreFollowing = React.useCallback(async () => {
+        if (followingCursor && following) {
+            const followingBatch = (await client.querySocialUserFollowing({ uid, after: followingCursor, first: 15 }, { fetchPolicy: 'network-only' })).socialUserFollowing;
+            setFollowing(following.concat(followingBatch.items));
+            setFollowingCursor(followingBatch.cursor);
+        }
+    }, [following, followingCursor, uid]);
+
+    const handleLoadMoreFollowers = React.useCallback(async () => {
+        if (followersCursor && followers) {
+            const followersBatch = (await client.querySocialUserFollowers({ uid, after: followersCursor, first: 15 }, { fetchPolicy: 'network-only' })).socialUserFollowers;
+            setFollowers(followers.concat(followersBatch.items));
+            setFollowersCursor(followersBatch.cursor);
+        }
+    }, [followers, followersCursor, uid]);
 
     return (
         <>
@@ -71,6 +90,7 @@ const UserFollowersComponent = React.memo<PageProps>((props) => {
                         data={following}
                         renderItem={(item) => <UserFollowersItem {...item.item} hideButton={true}/>}
                         contentContainerStyle={{ paddingTop: 0, paddingBottom: 0 }}
+                        onEndReached={handleLoadMoreFollowing}
                     />
                 )}
                 {selectedTab === Tabs.FOLLOWERS && (
@@ -78,6 +98,7 @@ const UserFollowersComponent = React.memo<PageProps>((props) => {
                         data={followers}
                         renderItem={(item) => <UserFollowersItem {...item.item}/>}
                         contentContainerStyle={{ paddingTop: 0, paddingBottom: 0 }}
+                        onEndReached={handleLoadMoreFollowers}
                     />
                 )}
             </ASSafeAreaView>
