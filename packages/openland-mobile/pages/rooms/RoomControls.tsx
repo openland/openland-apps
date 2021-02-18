@@ -12,6 +12,8 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { View, Text, TouchableOpacity, Image, Share, Platform, Clipboard, LayoutChangeEvent } from 'react-native';
 import { VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import { TintBlue, TintOrange } from 'openland-y-utils/themes/tints';
+// import { getMessenger } from 'openland-mobile/utils/messenger';
+// import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 
 const showRoomInvite = ({ link, theme }: { link: string, theme: ThemeGlobal }) => {
     const handleShare = () => {
@@ -114,10 +116,10 @@ const ControlItem = React.memo((props: {
     );
 });
 
-const ControlMute = React.memo((props: { theme: ThemeGlobal }) => {
-    const { theme } = props;
-    const [muted, setMuted] = React.useState(true);
-    const toggleMute = React.useCallback(() => setMuted(x => !x), []);
+const ControlMute = React.memo((props: { theme: ThemeGlobal, muted: boolean, onPress: () => void }) => {
+    const { theme, muted, onPress } = props;
+    // const [muted, setMuted] = React.useState(true);
+    // const toggleMute = React.useCallback(() => setMuted(x => !x), []);
 
     return (
         <ControlItem
@@ -125,7 +127,7 @@ const ControlMute = React.memo((props: { theme: ThemeGlobal }) => {
             icon={muted ? require('assets/ic-mute-glyph-36.png') : require('assets/ic-microphone-36.png')}
             iconColor={theme.foregroundContrast}
             bgColor={muted ? TintOrange.primary : TintBlue.primary}
-            onPress={toggleMute}
+            onPress={onPress}
         />
     );
 });
@@ -239,11 +241,13 @@ interface RoomControlsProps {
     onLeave: () => void;
     onLayout: (e: LayoutChangeEvent) => void;
     router: SRouter;
+    muted: boolean;
+    onMutePress: () => void;
     modalCtx: ModalProps;
 }
 
 export const RoomControls = React.memo((props: RoomControlsProps) => {
-    const { theme, role, modalCtx, onLeave, onLayout } = props;
+    const { theme, role, muted, modalCtx, onLeave, onLayout, onMutePress } = props;
     const client = useClient();
     const user = client.useProfile({ suspense: false })?.user;
 
@@ -254,7 +258,7 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
     //     </>
     // ) : role === 'speaker' ? <ControlMute theme={theme} />
     //         : <ControlRaiseHand theme={theme} />;
-    const roleButtons = role === VoiceChatParticipantStatus.LISTENER ? null : <ControlMute theme={theme} />;
+    const roleButtons = role === VoiceChatParticipantStatus.LISTENER ? null : <ControlMute muted={muted} theme={theme} onPress={onMutePress} />;
 
     const handleLeave = React.useCallback(() => {
         onLeave();

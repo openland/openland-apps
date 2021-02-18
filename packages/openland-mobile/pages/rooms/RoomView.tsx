@@ -23,6 +23,10 @@ import { useForm } from 'openland-form/useForm';
 import { ZShaker } from 'openland-mobile/components/ZShaker';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { useListReducer } from 'openland-mobile/utils/listReducer';
+import InCallManager from 'react-native-incall-manager';
+import { RNSDevice } from 'react-native-s/RNSDevice';
+import { SStatusBar } from 'react-native-s/SStatusBar';
+import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 
 interface RoomUserViewProps {
     roomId: string;
@@ -34,7 +38,7 @@ interface RoomUserViewProps {
     };
     userStatus: VoiceChatParticipantStatus;
     theme: ThemeGlobal;
-    selfStatus: VoiceChatParticipantStatus;
+    selfStatus?: VoiceChatParticipantStatus;
     router: SRouter;
     modalCtx: { hide: () => void };
 }
@@ -308,7 +312,7 @@ interface RoomViewProps {
 const RoomHeader = React.memo(
     (props: RoomViewProps & { theme: ThemeGlobal; onLayout: (e: LayoutChangeEvent) => void }) => {
         const { room, theme } = props;
-        const isAdmin = true;
+        const isAdmin = room.me?.status === VoiceChatParticipantStatus.ADMIN;
         const handleMorePress = React.useCallback(() => {
             showEditRoom({ id: room.id, title: room.title });
         }, [room.id, room.title]);
@@ -386,7 +390,7 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
     const isListener = props.userStatus === VoiceChatParticipantStatus.LISTENER;
     const isTalking = false;
     const isMuted = false;
-    const isAdmin = false;
+    const isAdmin = props.userStatus === VoiceChatParticipantStatus.ADMIN;
 
     return (
         <View
@@ -465,6 +469,7 @@ interface RoomUsersListProps extends RoomViewProps {
     headerHeight: number;
     controlsHeight: number;
     router: SRouter;
+    callState: MediaSessionState | undefined;
     modalCtx: { hide: () => void };
 }
 
@@ -491,7 +496,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                         roomId={room.id}
                         user={item.user}
                         userStatus={item.status}
-                        selfStatus={VoiceChatParticipantStatus.ADMIN}
+                        selfStatus={room.me?.status}
                         theme={theme}
                         router={router}
                         modalCtx={modalCtx}
@@ -527,7 +532,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                         roomId={room.id}
                         user={item.user}
                         userStatus={item.status}
-                        selfStatus={VoiceChatParticipantStatus.LISTENER}
+                        selfStatus={room.me?.status}
                         theme={theme}
                         router={router}
                         modalCtx={modalCtx}
@@ -575,6 +580,28 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         }
     }, [room]);
 
+    const calls = getMessenger().engine.calls;
+    const mediaSession = calls.useCurrentSession();
+    const [state, setState] = React.useState<MediaSessionState | undefined>(mediaSession?.state.value);
+    const muted = !state?.sender.audioEnabled;
+    const handleMute = React.useCallback(() => {
+        mediaSession?.setAudioEnabled(!state?.sender.audioEnabled);
+    }, [state, mediaSession]);
+
+    React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
+
+    React.useLayoutEffect(() => {
+        SStatusBar.setBarStyle('light-content');
+        InCallManager.start({ media: 'audio' });
+        RNSDevice.proximityEnable();
+        // TODO: Check how speaker is working
+        // InCallManager.setForceSpeakerphoneOn(true);
+        return () => {
+            RNSDevice.proximityDisable();
+            SStatusBar.setBarStyle(theme.statusBar);
+        };
+    }, []);
+
     return (
         <View>
             <RoomHeader room={room} theme={theme} onLayout={onHeaderLayout} />
@@ -585,13 +612,16 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
                 controlsHeight={controlsHeight}
                 router={props.router}
                 modalCtx={props.ctx}
+                callState={state}
             />
             <RoomControls
                 id={room.id}
                 theme={theme}
-                role={VoiceChatParticipantStatus.ADMIN}
+                role={room.me?.status}
+                muted={muted}
                 onLayout={onControlsLayout}
                 onLeave={handleLeave}
+                onMutePress={handleMute}
                 router={props.router}
                 modalCtx={props.ctx}
             />
