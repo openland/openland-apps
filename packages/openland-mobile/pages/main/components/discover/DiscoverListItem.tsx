@@ -5,10 +5,9 @@ import {
     DiscoverOrganization,
 } from 'openland-y-utils/discover/normalizePopularItems';
 import { plural } from 'openland-y-utils/plural';
-import { RoomChat_room_SharedRoom, VoiceChat, VoiceChatParticipantStatus } from 'openland-api/spacex.types';
+import { RoomChat_room_SharedRoom, VoiceChatParticipantStatus, VoiceChatWithSpeakers } from 'openland-api/spacex.types';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
-import { showRoomView } from 'openland-mobile/pages/rooms/RoomView';
-import { SRouterContext } from 'react-native-s/SRouterContext';
+import { useJoinRoom } from 'openland-mobile/pages/rooms/joinRoom';
 
 interface DiscoverListItemProps {
     item: DiscoverRoom;
@@ -70,15 +69,15 @@ export const DiscoverListItemOrg = ({ item, rightElement }: DiscoverListItemOrgP
 };
 
 interface DiscoverListItemVoiceProps {
-    item: VoiceChat;
+    item: VoiceChatWithSpeakers;
 }
 
 export const DiscoverListItemVoice = ({ item }: DiscoverListItemVoiceProps) => {
     const admin = item.speakers.find(x => x.status === VoiceChatParticipantStatus.ADMIN);
-    const router = React.useContext(SRouterContext)!;
+    const joinRoom = useJoinRoom();
     const handlePress = React.useCallback(() => {
-        showRoomView(item, router);
-    }, [router]);
+        joinRoom(item.id);
+    }, [item.id, joinRoom]);
     return (
         <ZListItem
             key={item.id}

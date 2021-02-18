@@ -1,17 +1,39 @@
-fragment VoiceChat on VoiceChat {
+fragment VoiceChatParticipant on VoiceChatParticipant {
+    id
+    user {
+        id
+        name
+        firstName
+        photo
+    }
+    status
+}
+
+fragment VoiceChatWithSpeakers on VoiceChat {
     id
     title
     listenersCount
     speakersCount
+    me {
+        ...VoiceChatParticipant
+    }
     speakers {
-        id
-        user {
-            id
-            name
-            firstName
-            photo
+        ...VoiceChatParticipant
+    }
+}
+
+query VoiceChat($id: ID!) {
+    voiceChat(id: $id) {
+        ...VoiceChatWithSpeakers
+    }
+}
+
+query VoiceChatListeners($id: ID!, $first: Int!, $after: String) {
+    voiceChatListeners(id: $id, first: $first, after: $after) {
+        items {
+            ...VoiceChatParticipant
         }
-        status
+        cursor
     }
 }
 
@@ -19,7 +41,7 @@ query ActiveVoiceChats($first: Int!, $after: String) {
     activeVoiceChats(first: $first, after: $after) {
         cursor
         items {
-            ...VoiceChat
+            ...VoiceChatWithSpeakers
         }
     }
 }
@@ -33,9 +55,36 @@ query VoiceChatUser($uid: ID!) {
     }
 }
 
+query VoiceChatControls($id: ID!) {
+    voiceChat(id: $id) {
+        id
+        me {
+            id
+            user {
+                id
+                shortname
+            }
+            status
+            handRaised
+        }
+    }
+}
+
 mutation VoiceChatCreate($input: VoiceChatInput!) {
     voiceChatCreate(input: $input) {
-        ...VoiceChat
+        ...VoiceChatWithSpeakers
+    }
+}
+
+mutation VoiceChatJoin($id: ID!) {
+    voiceChatJoin(id: $id) {
+        ...VoiceChatWithSpeakers
+    }
+}
+
+mutation VoiceChatUpdate($id: ID!, $input: VoiceChatInput!) {
+    voiceChatUpdate(id: $id, input: $input) {
+        id
     }
 }
 
@@ -63,4 +112,8 @@ mutation VoiceChatPromote($id: ID!, $uid: ID!) {
 
 mutation VoiceChatDemote($id: ID!, $uid: ID!) {
     voiceChatDemote(id: $id, uid: $uid)
+}
+
+mutation VoiceChatRaiseHand($id: ID!, $raised: Boolean!) {
+    voiceChatRaiseHand(id: $id, raised: $raised)
 }

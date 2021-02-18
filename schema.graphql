@@ -3744,6 +3744,7 @@ type VoiceChat {
   speakersCount: Int!
   active: Boolean!
   speakers: [VoiceChatParticipant!]!
+  me: VoiceChatParticipant
 }
 
 type VoiceChatConnection {

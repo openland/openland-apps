@@ -193,7 +193,7 @@ export const ZInputBasic = React.forwardRef((props: ZInputBasicProps, ref: React
                     onBlur={handleBlur}
                     allowFontScaling={false}
                     selectionColor={Platform.OS === 'android' ? hexToRgba(theme.accentPrimary, HighlightAlpha) : theme.accentPrimary}
-                    style={[props.style, {
+                    style={[{
                         ...TextStyles.Densed,
                         color: theme.foregroundPrimary,
                         flex: 1,
@@ -209,7 +209,7 @@ export const ZInputBasic = React.forwardRef((props: ZInputBasicProps, ref: React
                         marginLeft: prefixWidth > 0 ? prefixWidth + 2 : 0,
                         marginRight: 0,
                         textAlignVertical: props.multiline ? 'top' : 'center'
-                    }]}
+                    }, props.style]}
                     {...{ scrollEnabled: false }}
                 />
             </View>

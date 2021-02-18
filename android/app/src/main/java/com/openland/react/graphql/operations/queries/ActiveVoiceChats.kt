@@ -10,13 +10,13 @@ internal val ActiveVoiceChatsSelector = obj(
                     field("cursor", "cursor", scalar("String")),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("VoiceChat", VoiceChatSelector)
+                            fragment("VoiceChat", VoiceChatWithSpeakersSelector)
                         )))))
                 )))
         )
 val ActiveVoiceChats = object: OperationDefinition {
     override val name = "ActiveVoiceChats"
     override val kind = OperationKind.QUERY
-    override val body = "query ActiveVoiceChats(\$first:Int!,\$after:String){activeVoiceChats(first:\$first,after:\$after){__typename cursor items{__typename ...VoiceChat}}}fragment VoiceChat on VoiceChat{__typename id title listenersCount speakersCount speakers{__typename id user{__typename id name firstName photo}status}}"
+    override val body = "query ActiveVoiceChats(\$first:Int!,\$after:String){activeVoiceChats(first:\$first,after:\$after){__typename cursor items{__typename ...VoiceChatWithSpeakers}}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title listenersCount speakersCount me{__typename ...VoiceChatParticipant}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status}"
     override val selector = ActiveVoiceChatsSelector
 }
