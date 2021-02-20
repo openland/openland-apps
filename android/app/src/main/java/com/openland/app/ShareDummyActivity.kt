@@ -1,27 +1,11 @@
 package com.openland.app
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.util.Log
-import android.view.View
-
-import com.facebook.react.ReactActivity
-
-import com.facebook.react.ReactActivityDelegate
-import com.facebook.react.ReactRootView
-import com.facebook.react.bridge.WritableNativeMap
-import com.facebook.react.modules.core.DeviceEventManagerModule
-import com.openland.react.keyboard.KeyboardHeightProvider
-import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView
 import android.net.Uri
 import android.os.Parcelable
-import android.view.WindowManager
-import android.util.DisplayMetrics
 import org.json.JSONObject
 import android.provider.MediaStore
-import com.beust.klaxon.JsonArray
 import org.json.JSONArray
 import java.net.URLEncoder
 
@@ -41,7 +25,6 @@ class ShareDummyActivity : Activity() {
     }
 
     private fun onIntent(intent: Intent?) {
-
 
         if (intent != null && intent.action === Intent.ACTION_SEND) {
             var files = JSONArray()

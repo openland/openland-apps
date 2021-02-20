@@ -76,7 +76,7 @@ class MainActivity : ReactActivity() {
                     super.onNewIntent(res)
                     return true
                 }
-                return false
+                return super.onNewIntent(intent)
             }
         }
         return delegate as ReactActivityDelegate
