@@ -296,6 +296,7 @@ type Conference {
   startTime: Date
   peers: [ConferencePeer!]!
   room: Room
+  parent: ConferenceParent
   kind: ConferenceKind!
   iceServers: [ICEServer!]!
   strategy: ConferenceStrategy!
@@ -322,6 +323,8 @@ type ConferenceMedia {
   iceServers: [ICEServer!]!
   localMedia: LocalMediaState!
 }
+
+union ConferenceParent = PrivateRoom | SharedRoom | VoiceChat
 
 type ConferencePeer {
   id: ID!
@@ -1879,14 +1882,6 @@ type Mutation {
   commentReactionRemove(commentId: ID!, reaction: MessageReactionType!): Boolean!
   subscribeToComments(peerId: ID!, type: CommentSubscriptionType!): Boolean!
   unsubscribeFromComments(peerId: ID!): Boolean!
-  conferenceJoin(id: ID!, input: ConferenceJoinInput, kind: ConferenceKind): ConferenceJoinResult!
-  conferenceKeepAlive(id: ID!, peerId: ID!): Conference!
-  conferenceLeave(id: ID!, peerId: ID!): Conference!
-  conferenceRequestLocalMediaChange(id: ID!, media: LocalMediaInput!): Conference!
-  mediaStreamOffer(id: ID!, peerId: ID!, offer: String!, seq: Int, hints: [MediaStreamHint!]): ConferenceMedia!
-  mediaStreamAnswer(id: ID!, peerId: ID!, answer: String!, seq: Int): ConferenceMedia!
-  mediaStreamCandidate(id: ID!, peerId: ID!, candidate: String!): ConferenceMedia!
-  mediaStreamFailed(id: ID!, peerId: ID!): ConferenceMedia!
   addToContacts(userId: ID!): Boolean!
   removeFromContacts(userId: ID!): Boolean!
   profileCreate(input: ProfileInput!, inviteKey: String): Profile!
@@ -1981,6 +1976,14 @@ type Mutation {
   voiceChatCreate(input: VoiceChatInput!): VoiceChat!
   voiceChatUpdate(id: ID!, input: VoiceChatInput!): VoiceChat!
   voiceChatEnd(id: ID!): VoiceChat!
+  conferenceJoin(id: ID!, input: ConferenceJoinInput, kind: ConferenceKind): ConferenceJoinResult!
+  conferenceKeepAlive(id: ID!, peerId: ID!): Conference!
+  conferenceLeave(id: ID!, peerId: ID!): Conference!
+  conferenceRequestLocalMediaChange(id: ID!, media: LocalMediaInput!): Conference!
+  mediaStreamOffer(id: ID!, peerId: ID!, offer: String!, seq: Int, hints: [MediaStreamHint!]): ConferenceMedia!
+  mediaStreamAnswer(id: ID!, peerId: ID!, answer: String!, seq: Int): ConferenceMedia!
+  mediaStreamCandidate(id: ID!, peerId: ID!, candidate: String!): ConferenceMedia!
+  mediaStreamFailed(id: ID!, peerId: ID!): ConferenceMedia!
   alphaCreateFeedPost(channel: ID!, message: String, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!], slides: [SlideInput!], repeatKey: String): FeedItem!
   alphaEditFeedPost(feedItemId: ID!, message: String, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!], slides: [SlideInput!]): FeedItem!
   alphaDeleteFeedPost(feedItemId: ID!): Boolean!
@@ -2761,8 +2764,6 @@ type Query {
   postComments(postId: ID!): CommentsPeer!
   comments(peerId: ID!): CommentsPeer!
   commentEntry(entryId: ID!): CommentEntry
-  conference(id: ID!): Conference!
-  conferenceMedia(id: ID!, peerId: ID!): ConferenceMedia!
   myContacts(first: Int!, after: String): ContactConnection!
   myContactsSearch(query: String, first: Int!, after: String, page: Int): UserConnection!
   myContactsState: ContactsState!
@@ -2840,6 +2841,8 @@ type Query {
   alphaProfiles(query: String, first: Int!, after: String, page: Int, sort: String): UserConnection!
   voiceChat(id: ID!): VoiceChat!
   activeVoiceChats(first: Int!, after: String): VoiceChatConnection!
+  conference(id: ID!): Conference!
+  conferenceMedia(id: ID!, peerId: ID!): ConferenceMedia!
   alphaHomeFeed(first: Int!, after: String): FeedItemConnection!
   alphaFeedItem(id: ID!): FeedItem
   alphaFeedChannel(id: ID!): FeedChannel!
@@ -3046,6 +3049,10 @@ type SequenceDifference {
   after: Int!
   hasMore: Boolean!
   seq: Int!
+}
+
+type SequenceFeedTopic implements Sequence {
+  id: ID!
 }
 
 type ServiceMessage implements ModernMessage {
@@ -3331,8 +3338,6 @@ type Subscription {
   blackListUpdates(fromState: String!): BlackListUpdateContainer!
   chatUpdates(chatId: ID!, fromState: String): ChatUpdateContainer!
   commentUpdates(peerId: ID!, fromState: String): CommentUpdateContainer
-  conferenceWatch(id: ID!): Conference!
-  conferenceMediaWatch(id: ID!, peerId: ID!): ConferenceMedia!
   myContactsUpdates(fromState: String!): ContactsUpdateContainer!
   dialogsUpdates(fromState: String): DialogUpdateContainer!
   homeFeedUpdates(fromState: String): FeedUpdateContainer!
@@ -3341,6 +3346,9 @@ type Subscription {
   alphaSubscribeOnline(users: [ID!]!): OnlineEvent!
   chatOnlinesCount(chatId: ID!): ChatOnlineEvent!
   typings: TypingEvent!
+  voiceChatWatch(id: ID!): VoiceChat!
+  conferenceWatch(id: ID!): Conference!
+  conferenceMediaWatch(id: ID!, peerId: ID!): ConferenceMedia!
 }
 
 type SuperAccount {
@@ -3500,7 +3508,19 @@ type UpdatedNotificationContentComment {
   comment: CommentEntry
 }
 
-union UpdateEvent = UpdateChatRead | UpdateProfileChanged | UpdateMyProfileChanged | UpdateChatMessage | UpdateChatMessageDeleted | UpdateChatDraftChanged | UpdateSettingsChanged | UpdateRoomChanged | UpdateDialogListSettingsChanged
+union UpdateEvent = UpdateChatRead | UpdateProfileChanged | UpdateMyProfileChanged | UpdateChatMessage | UpdateChatMessageDeleted | UpdateChatDraftChanged | UpdateSettingsChanged | UpdateRoomChanged | UpdateDialogListSettingsChanged | UpdateFeedItemReceived | UpdateFeedItemUpdated | UpdateFeedItemDeleted
+
+type UpdateFeedItemDeleted {
+  item: FeedItem!
+}
+
+type UpdateFeedItemReceived {
+  item: FeedItem!
+}
+
+type UpdateFeedItemUpdated {
+  item: FeedItem!
+}
 
 type UpdateMyProfileChanged {
   user: User!
@@ -3689,6 +3709,7 @@ type User {
   """deprecated"""
   badges: [UserBadge!]!
   primaryBadge: UserBadge
+  currentVoiceChat: VoiceChat
   shortname: String
 }
 
@@ -3744,6 +3765,7 @@ type VoiceChat {
   speakersCount: Int!
   active: Boolean!
   speakers: [VoiceChatParticipant!]!
+  listeners: [VoiceChatParticipant!]!
   me: VoiceChatParticipant
 }
 

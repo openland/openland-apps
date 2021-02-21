@@ -32,6 +32,20 @@ query AuthResolveShortName($shortname: String!) {
             photo
             externalSocialImage
             online
+            currentVoiceChat {
+                id
+                title
+                speakersCount
+                listenersCount
+                speakers {
+                    id
+                    user {
+                        id
+                        name
+                        photo
+                    }
+                }
+            }
         }
         ... on Organization {
             id

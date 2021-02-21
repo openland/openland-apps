@@ -26,6 +26,7 @@ export interface UAvatarProps extends XViewProps {
     selected?: boolean;
     squared?: boolean;
     savedMessages?: boolean;
+    dotColor?: string;
 }
 
 export const getPlaceholderIndex = (id: string) => Math.abs(doSimpleHash(id)) % PlaceholderColors.length;
@@ -264,6 +265,7 @@ export const UAvatar = React.memo((props: UAvatarProps) => {
         squared,
         savedMessages,
         badge,
+        dotColor,
         ...other
     } = props;
     let content: any = undefined;
@@ -284,7 +286,7 @@ export const UAvatar = React.memo((props: UAvatarProps) => {
     const boxSize = AvatarSizes[size].size;
 
     const dotBorder = selected ? 'var(--accentMuted)' : 'var(--backgroundPrimary)';
-    const dotBackground = selected ? 'var(--foregroundContrast)' : 'var(--accentPrimary)';
+    const dotBackground = dotColor ? dotColor : selected ? 'var(--foregroundContrast)' : 'var(--accentPrimary)';
 
     return (
         <XView height={boxSize} width={boxSize} cursor={props.onClick || props.path ? 'pointer' : undefined} {...other}>
