@@ -21,13 +21,14 @@ import { normalizePopularItems, normalizePopularOrgItems } from 'openland-y-util
 import {
     DiscoverListItem,
     DiscoverListItemOrg,
-    //   DiscoverListItemVoice 
+    DiscoverListItemVoice
 } from './components/discover/DiscoverListItem';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { getRandomSeed } from './DiscoverListing';
 import { ComponentRefContext } from './Home';
 import { DiscoverCreateList } from './components/discover/DiscoverCreateList';
+import { SUPER_ADMIN } from '../Init';
 
 export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) => {
     const theme = useTheme();
@@ -40,30 +41,32 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
     let topPremiumRooms = rooms.discoverTopPremium.items || [];
     let popularOrgs = normalizePopularOrgItems(rooms.discoverTopOrganizations.items);
     let newOrgs = rooms.discoverNewAndGrowingOrganizations.items || [];
-    // let voiceRooms = rooms.activeVoiceChats.items || [];
+    let voiceRooms = rooms.activeVoiceChats.items || [];
 
     return (
         <>
-            {/* <ZListGroup
-                header="Rooms"
-                actionRight={voiceRooms.length < 3 ? {
-                    title: 'New room', onPress: () => props.router.push('CreateRoom')
-                } : {
-                        title: 'See all', onPress: () => props.router.push('RoomsFeed', { cursor: rooms.activeVoiceChats.cursor })
-                    }}
-            >
-                {voiceRooms.length > 0
-                    ? voiceRooms.map(v => <DiscoverListItemVoice key={v.id} item={v} />)
-                    : (
-                        <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginBottom: 16, alignItems: 'center' }}>
-                            <Image source={require('assets/art-crowd.png')} style={{ width: 240, height: 150 }} />
-                            <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginVertical: 4 }}>Talk about anything!</Text>
-                            <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 16 }}>Create a new room and invite friends!</Text>
-                            <ZButton title="Start room" path="CreateRoom" />
-                        </View>
-                    )
-                }
-            </ZListGroup> */}
+            {SUPER_ADMIN && (
+                <ZListGroup
+                    header="Rooms"
+                    actionRight={voiceRooms.length < 3 ? {
+                        title: 'New room', onPress: () => props.router.push('CreateRoom')
+                    } : {
+                            title: 'See all', onPress: () => props.router.push('RoomsFeed', { cursor: rooms.activeVoiceChats.cursor })
+                        }}
+                >
+                    {voiceRooms.length > 0
+                        ? voiceRooms.map(v => <DiscoverListItemVoice key={v.id} item={v} />)
+                        : (
+                            <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginBottom: 16, alignItems: 'center' }}>
+                                <Image source={require('assets/art-crowd.png')} style={{ width: 240, height: 150 }} />
+                                <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginVertical: 4 }}>Talk about anything!</Text>
+                                <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 16 }}>Create a new room and invite friends!</Text>
+                                <ZButton title="Start room" path="CreateRoom" />
+                            </View>
+                        )
+                    }
+                </ZListGroup>
+            )}
             <DiscoverCreateList />
             <ZListGroup
                 header="Popular now"

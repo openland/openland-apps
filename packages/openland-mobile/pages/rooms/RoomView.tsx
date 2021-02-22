@@ -12,7 +12,7 @@ import { HighlightAlpha, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { RoomControls } from './RoomControls';
-import { VoiceChatParticipantStatus, VoiceChatWithSpeakers } from 'openland-api/spacex.types';
+import { Conference_conference_peers, VoiceChatParticipantStatus, VoiceChatWithSpeakers } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { SUPER_ADMIN } from '../Init';
 import { TintBlue } from 'openland-y-utils/themes/tints';
@@ -24,9 +24,9 @@ import { ZShaker } from 'openland-mobile/components/ZShaker';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { useListReducer } from 'openland-mobile/utils/listReducer';
 import InCallManager from 'react-native-incall-manager';
-import { RNSDevice } from 'react-native-s/RNSDevice';
 import { SStatusBar } from 'react-native-s/SStatusBar';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
+import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
 
 interface RoomUserViewProps {
     roomId: string;
@@ -40,6 +40,8 @@ interface RoomUserViewProps {
     theme: ThemeGlobal;
     selfStatus?: VoiceChatParticipantStatus;
     router: SRouter;
+    isMuted?: boolean;
+    isTalking?: boolean;
     modalCtx: { hide: () => void };
 }
 
@@ -54,7 +56,7 @@ const UserModalBody = React.memo(({
     modalCtx,
 }: RoomUserViewProps & { hide: () => void }) => {
     const client = useClient();
-    const { followingCount, followedByMe, followersCount } = client.useVoiceChatUser({ uid: user.id }, { fetchPolicy: 'cache-and-network' }).user;
+    const { followingCount, followedByMe, followersCount } = client.useVoiceChatUser({ uid: user.id }, { fetchPolicy: 'network-only' }).user;
     const isSelfAdmin = selfStatus === VoiceChatParticipantStatus.ADMIN || SUPER_ADMIN;
 
     const removeAdmin = React.useCallback(() => {
@@ -386,11 +388,10 @@ const RoomHeader = React.memo(
 );
 
 const RoomUserView = React.memo((props: RoomUserViewProps) => {
-    const messenger = getMessenger();
-    const isListener = props.userStatus === VoiceChatParticipantStatus.LISTENER;
-    const isTalking = false;
-    const isMuted = false;
-    const isAdmin = props.userStatus === VoiceChatParticipantStatus.ADMIN;
+    const { isMuted, isTalking, userStatus, theme, user } = props;
+    const messenger = getMessenger().engine;
+    const isAdmin = userStatus === VoiceChatParticipantStatus.ADMIN;
+    const isListener = userStatus === VoiceChatParticipantStatus.LISTENER;
 
     return (
         <View
@@ -410,7 +411,7 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}
-                disabled={messenger.engine.user.id === props.user.id}
+                disabled={messenger.user.id === user.id}
                 onPress={() => showUserInfo(props)}
             >
                 <View
@@ -423,9 +424,9 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                 >
                     <ZAvatar
                         size={isListener ? 'x-large' : 'xx-large'}
-                        photo={props.user.photo}
-                        title={props.user.name}
-                        id={props.user.id}
+                        photo={user.photo}
+                        title={user.name}
+                        id={user.id}
                     />
                     {isMuted && (
                         <View
@@ -436,12 +437,12 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                                 width: 24,
                                 height: 24,
                                 borderRadius: 100,
-                                backgroundColor: props.theme.backgroundSecondary,
+                                backgroundColor: theme.backgroundSecondary,
                                 justifyContent: 'center',
                                 alignItems: 'center'
                             }}
                         >
-                            <Image source={require('assets/ic-mute-glyph-16.png')} style={{ width: 16, height: 16, tintColor: props.theme.foregroundSecondary }} />
+                            <Image source={require('assets/ic-mute-glyph-16.png')} style={{ width: 16, height: 16, tintColor: theme.foregroundSecondary }} />
                         </View>
                     )}
                 </View>
@@ -453,10 +454,10 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                         numberOfLines={1}
                         style={{
                             ...isListener ? TextStyles.Label3 : TextStyles.Label2,
-                            color: props.theme.foregroundPrimary,
+                            color: theme.foregroundPrimary,
                         }}
                     >
-                        {props.user.firstName}
+                        {user.firstName}
                     </Text>
                 </View>
             </TouchableOpacity>
@@ -464,17 +465,32 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
     );
 });
 
+interface RoomSpeakingUserViewProps extends RoomUserViewProps {
+    peer: Conference_conference_peers;
+    analyzer: MediaSessionTrackAnalyzerManager;
+}
+
+const RoomSpeakingUserView = React.memo((props: RoomSpeakingUserViewProps) => {
+    const { analyzer, peer, ...other } = props;
+    // const isTalking = !!analyzer.usePeer(peer.id);
+    const isTalking = false;
+    const isMuted = peer?.mediaState.audioPaused;
+
+    return <RoomUserView {...other} isMuted={isMuted} isTalking={isTalking} />;
+});
+
 interface RoomUsersListProps extends RoomViewProps {
     theme: ThemeGlobal;
     headerHeight: number;
     controlsHeight: number;
     router: SRouter;
-    callState: MediaSessionState | undefined;
+    peers: Conference_conference_peers[];
+    analyzer: MediaSessionTrackAnalyzerManager;
     modalCtx: { hide: () => void };
 }
 
 const RoomUsersList = React.memo((props: RoomUsersListProps) => {
-    const { headerHeight, controlsHeight, theme, room, router, modalCtx } = props;
+    const { headerHeight, controlsHeight, peers, analyzer, theme, room, router, modalCtx } = props;
     const sa = useSafeArea();
     const sHeight = SDevice.wHeight - (sa.top + sa.bottom + headerHeight + controlsHeight + 16);
     const client = useClient();
@@ -487,23 +503,32 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
         initialCursor: initialListeners.cursor,
         initialItems: initialListeners.items,
     });
+    // let listenersState = { items: [] as VoiceChatListeners_voiceChatListeners_items[], loading: false, loadMore: () => { } };
+    const peersWithSpeakers = peers
+        .map(peer => ({ peer, speaker: room.speakers.find(s => s.user.id === peer.user.id)! }))
+        .filter((x) => !!x.speaker);
 
     const speakersElement = (
         <>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start' }}>
-                {room.speakers.map(item => (
-                    <RoomUserView
-                        roomId={room.id}
-                        user={item.user}
-                        userStatus={item.status}
-                        selfStatus={room.me?.status}
-                        theme={theme}
-                        router={router}
-                        modalCtx={modalCtx}
-                    />
-                ))}
+                {peersWithSpeakers.map(({ peer, speaker }) => {
+                    return (
+                        <RoomSpeakingUserView
+                            key={speaker.id}
+                            roomId={room.id}
+                            user={speaker.user}
+                            userStatus={speaker.status}
+                            selfStatus={room.me?.status}
+                            peer={peer}
+                            analyzer={analyzer}
+                            theme={theme}
+                            router={router}
+                            modalCtx={modalCtx}
+                        />
+                    );
+                })}
             </View>
-            {listenersState.items.length > 0 && (
+            {listenersState.items.length > 0 ? (
                 <Text
                     style={{
                         ...TextStyles.Title2,
@@ -518,7 +543,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                 >
                     Listeners
                 </Text>
-            )}
+            ) : null}
         </>
     );
 
@@ -539,7 +564,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                     />
                 )}
                 keyExtractor={(item, index) => index.toString() + item.id}
-                numColumns={3}
+                numColumns={4}
                 style={{ flex: 1 }}
                 refreshing={listenersState.loading}
                 onEndReached={listenersState.loadMore}
@@ -551,9 +576,8 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
 const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: SRouter }) => {
     const theme = useTheme();
     const client = useClient();
-    // TODO: fetch room with all speakers
-    const fetchedRoom = client.useVoiceChat({ id: props.room.id }, { suspense: false, fetchPolicy: 'cache-and-network' })?.voiceChat;
-    const room = fetchedRoom || props.room;
+    const room = client.useVoiceChat({ id: props.room.id }, { fetchPolicy: 'network-only' }).voiceChat;
+    const conference = client.useConference({ id: props.room.id }, { suspense: false })?.conference;
     const [headerHeight, setHeaderHeight] = React.useState(0);
     const [controlsHeight, setControlsHeight] = React.useState(0);
 
@@ -571,36 +595,42 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         [controlsHeight],
     );
 
-    const handleLeave = React.useCallback(() => {
-        let admins = room.speakers.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
-        if (admins.length <= 1) {
-            client.mutateVoiceChatEnd({ id: room.id });
-        } else {
-            client.mutateVoiceChatLeave({ id: room.id });
-        }
-    }, [room]);
-
     const calls = getMessenger().engine.calls;
     const mediaSession = calls.useCurrentSession();
     const [state, setState] = React.useState<MediaSessionState | undefined>(mediaSession?.state.value);
     const muted = !state?.sender.audioEnabled;
+
     const handleMute = React.useCallback(() => {
         mediaSession?.setAudioEnabled(!state?.sender.audioEnabled);
     }, [state, mediaSession]);
+
+    const handleLeave = React.useCallback(() => {
+        let admins = room.speakers.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
+        if (admins.length <= 1 && room.me?.status === VoiceChatParticipantStatus.ADMIN) {
+            client.mutateVoiceChatEnd({ id: room.id });
+        } else {
+            client.mutateVoiceChatLeave({ id: room.id });
+        }
+        InCallManager.stop({ busytone: '_BUNDLE_' });
+        calls.leaveCall();
+
+        SStatusBar.setBarStyle(theme.statusBar);
+    }, [room]);
 
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
 
     React.useLayoutEffect(() => {
         SStatusBar.setBarStyle('light-content');
         InCallManager.start({ media: 'audio' });
-        RNSDevice.proximityEnable();
-        // TODO: Check how speaker is working
-        // InCallManager.setForceSpeakerphoneOn(true);
+        InCallManager.setForceSpeakerphoneOn(true);
         return () => {
-            RNSDevice.proximityDisable();
             SStatusBar.setBarStyle(theme.statusBar);
         };
     }, []);
+
+    if (!mediaSession) {
+        return null;
+    }
 
     return (
         <View>
@@ -612,7 +642,8 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
                 controlsHeight={controlsHeight}
                 router={props.router}
                 modalCtx={props.ctx}
-                callState={state}
+                peers={conference?.peers || []}
+                analyzer={mediaSession.analyzer}
             />
             <RoomControls
                 id={room.id}

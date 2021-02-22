@@ -10,9 +10,9 @@ import { View, Text } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { SRouterContext } from 'react-native-s/SRouterContext';
-import { showRoomView } from './RoomView';
 import { useClient } from 'openland-api/useClient';
 import { ZShaker } from 'openland-mobile/components/ZShaker';
+import { useJoinRoom } from './joinRoom';
 
 const CreateRoomComponent = React.memo(() => {
     const form = useForm();
@@ -21,6 +21,7 @@ const CreateRoomComponent = React.memo(() => {
     const theme = useTheme();
     const client = useClient();
     const router = React.useContext(SRouterContext)!;
+    const joinRoom = useJoinRoom();
     const createRoom = React.useCallback(async () => {
         let name = nameField.value.trim();
         if (name.length <= 0) {
@@ -29,7 +30,7 @@ const CreateRoomComponent = React.memo(() => {
         }
         const room = (await client.mutateVoiceChatCreate({ input: { title: name } })).voiceChatCreate;
         router.pushAndReset('RoomsFeed');
-        showRoomView(room, router);
+        joinRoom(room.id);
     }, [router, nameField.value]);
 
     return (
