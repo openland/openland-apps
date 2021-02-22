@@ -48,11 +48,9 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
             {SUPER_ADMIN && (
                 <ZListGroup
                     header="Rooms"
-                    actionRight={voiceRooms.length < 3 ? {
-                        title: 'New room', onPress: () => props.router.push('CreateRoom')
-                    } : {
-                            title: 'See all', onPress: () => props.router.push('RoomsFeed', { cursor: rooms.activeVoiceChats.cursor })
-                        }}
+                    actionRight={{
+                        title: 'See all', onPress: () => props.router.push('RoomsFeed', { cursor: rooms.activeVoiceChats.cursor })
+                    }}
                 >
                     {voiceRooms.length > 0
                         ? voiceRooms.map(v => <DiscoverListItemVoice key={v.id} item={v} />)
