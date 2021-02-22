@@ -25,6 +25,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { useListReducer } from 'openland-mobile/utils/listReducer';
 import InCallManager from 'react-native-incall-manager';
 import { SStatusBar } from 'react-native-s/SStatusBar';
+import { VoiceChatProvider, useVoiceChat } from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
 
@@ -574,12 +575,15 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
 });
 
 const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: SRouter }) => {
+    const voiceChat = useVoiceChat();
     const theme = useTheme();
     const client = useClient();
     const room = client.useVoiceChat({ id: props.room.id }, { fetchPolicy: 'network-only' }).voiceChat;
     const conference = client.useConference({ id: props.room.id }, { suspense: false })?.conference;
     const [headerHeight, setHeaderHeight] = React.useState(0);
     const [controlsHeight, setControlsHeight] = React.useState(0);
+
+    const voiceChatData = voiceChat ? voiceChat : room;
 
     const onHeaderLayout = React.useCallback(
         (e: LayoutChangeEvent) => {
@@ -605,8 +609,8 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
     }, [state, mediaSession]);
 
     const handleLeave = React.useCallback(() => {
-        let admins = room.speakers.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
-        if (admins.length <= 1 && room.me?.status === VoiceChatParticipantStatus.ADMIN) {
+        let admins = voiceChatData.speakers.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
+        if (admins.length <= 1 && voiceChatData.me?.status === VoiceChatParticipantStatus.ADMIN) {
             client.mutateVoiceChatEnd({ id: room.id });
         } else {
             client.mutateVoiceChatLeave({ id: room.id });
@@ -615,7 +619,7 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         calls.leaveCall();
 
         SStatusBar.setBarStyle(theme.statusBar);
-    }, [room]);
+    }, [voiceChatData]);
 
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
 
@@ -634,9 +638,9 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
 
     return (
         <View>
-            <RoomHeader room={room} theme={theme} onLayout={onHeaderLayout} />
+            <RoomHeader room={voiceChatData} theme={theme} onLayout={onHeaderLayout} />
             <RoomUsersList
-                room={room}
+                room={voiceChatData}
                 theme={theme}
                 headerHeight={headerHeight}
                 controlsHeight={controlsHeight}
@@ -661,7 +665,11 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
 
 export const showRoomView = (room: VoiceChatWithSpeakers, router: SRouter) => {
     showBottomSheet({
-        view: (ctx) => <RoomView room={room} ctx={ctx} router={router} />,
+        view: (ctx) => (
+            <VoiceChatProvider room={room}>
+                <RoomView room={room} ctx={ctx} router={router} />
+            </VoiceChatProvider>
+            ),
         containerStyle: {
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,

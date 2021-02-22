@@ -6029,6 +6029,12 @@ const TypingsWatchSelector = obj(
                     field('type', 'type', args(), notNull(scalar('String')))
                 )))
         );
+const VoiceChatWatchSelector = obj(
+            field('voiceChatWatch', 'voiceChatWatch', args(fieldValue("id", refValue('id'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('VoiceChat', VoiceChatWithSpeakersSelector)
+                )))
+        );
 const WalletUpdatesSelector = obj(
             field('walletUpdates', 'event', args(fieldValue("fromState", refValue('state'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -7898,6 +7904,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'TypingsWatch',
         body: 'subscription TypingsWatch{typings{__typename conversation:chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}user{__typename id photo firstName}cancel type}}',
         selector: TypingsWatchSelector
+    },
+    VoiceChatWatch: {
+        kind: 'subscription',
+        name: 'VoiceChatWatch',
+        body: 'subscription VoiceChatWatch($id:ID!){voiceChatWatch(id:$id){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title listenersCount speakersCount me{__typename ...VoiceChatParticipant}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status}',
+        selector: VoiceChatWatchSelector
     },
     WalletUpdates: {
         kind: 'subscription',

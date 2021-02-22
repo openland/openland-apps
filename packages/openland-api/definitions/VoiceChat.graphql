@@ -117,3 +117,9 @@ mutation VoiceChatDemote($id: ID!, $uid: ID!) {
 mutation VoiceChatRaiseHand($id: ID!, $raised: Boolean!) {
     voiceChatRaiseHand(id: $id, raised: $raised)
 }
+
+subscription VoiceChatWatch($id: ID!) {
+    voiceChatWatch(id: $id) {
+        ...VoiceChatWithSpeakers
+    }
+}

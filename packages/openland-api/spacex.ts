@@ -2495,6 +2495,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     subscribeTypingsWatch(handler: GraphqlSubscriptionHandler<Types.TypingsWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.TypingsWatch> {
         return this.subscribe(handler, 'TypingsWatch', undefined, params);
     }
+    subscribeVoiceChatWatch(variables: Types.VoiceChatWatchVariables, handler: GraphqlSubscriptionHandler<Types.VoiceChatWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.VoiceChatWatch> {
+        return this.subscribe(handler, 'VoiceChatWatch', variables, params);
+    }
     subscribeWalletUpdates(variables: Types.WalletUpdatesVariables, handler: GraphqlSubscriptionHandler<Types.WalletUpdates>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.WalletUpdates> {
         return this.subscribe(handler, 'WalletUpdates', variables, params);
     }

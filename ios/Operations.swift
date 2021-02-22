@@ -6022,6 +6022,12 @@ private let TypingsWatchSelector = obj(
                     field("type", "type", notNull(scalar("String")))
                 )))
         )
+private let VoiceChatWatchSelector = obj(
+            field("voiceChatWatch", "voiceChatWatch", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("VoiceChat", VoiceChatWithSpeakersSelector)
+                )))
+        )
 private let WalletUpdatesSelector = obj(
             field("walletUpdates", "event", arguments(fieldValue("fromState", refValue("state"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -7896,6 +7902,12 @@ class Operations {
         "subscription TypingsWatch{typings{__typename conversation:chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}user{__typename id photo firstName}cancel type}}",
         TypingsWatchSelector
     )
+    let VoiceChatWatch = OperationDefinition(
+        "VoiceChatWatch",
+        .subscription, 
+        "subscription VoiceChatWatch($id:ID!){voiceChatWatch(id:$id){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title listenersCount speakersCount me{__typename ...VoiceChatParticipant}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status}",
+        VoiceChatWatchSelector
+    )
     let WalletUpdates = OperationDefinition(
         "WalletUpdates",
         .subscription, 
@@ -8214,6 +8226,7 @@ class Operations {
         if name == "SettingsWatch" { return SettingsWatch }
         if name == "StickersWatch" { return StickersWatch }
         if name == "TypingsWatch" { return TypingsWatch }
+        if name == "VoiceChatWatch" { return VoiceChatWatch }
         if name == "WalletUpdates" { return WalletUpdates }
         if name == "WatchUpdates" { return WatchUpdates }
         fatalError("Unknown operation: " + name)

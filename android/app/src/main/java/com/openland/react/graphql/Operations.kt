@@ -311,6 +311,7 @@ object Operations {
         if (name == "SettingsWatch") return SettingsWatch
         if (name == "StickersWatch") return StickersWatch
         if (name == "TypingsWatch") return TypingsWatch
+        if (name == "VoiceChatWatch") return VoiceChatWatch
         if (name == "WalletUpdates") return WalletUpdates
         if (name == "WatchUpdates") return WatchUpdates
         error("Unknown operation: $name")
