@@ -1877,6 +1877,17 @@ private let UpdateUserSelector = obj(
             field("photo", "photo", scalar("String"))
         )
 
+private let UserFollowerSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("shortname", "shortname", scalar("String")),
+            field("about", "about", scalar("String")),
+            field("followersCount", "followersCount", notNull(scalar("Int"))),
+            field("followedByMe", "followedByMe", notNull(scalar("Boolean"))),
+            field("photo", "photo", scalar("String"))
+        )
+
 private let UserForMentionSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -1889,6 +1900,35 @@ private let UserForMentionSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("name", "name", notNull(scalar("String")))
                 ))
+        )
+
+private let VoiceChatParticipantSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("user", "user", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("firstName", "firstName", notNull(scalar("String"))),
+                    field("photo", "photo", scalar("String"))
+                ))),
+            field("status", "status", notNull(scalar("String")))
+        )
+
+private let VoiceChatWithSpeakersSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", scalar("String")),
+            field("listenersCount", "listenersCount", notNull(scalar("Int"))),
+            field("speakersCount", "speakersCount", notNull(scalar("Int"))),
+            field("me", "me", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
+                )),
+            field("speakers", "speakers", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
+                )))))
         )
 
 private let UserFullSelector = obj(
@@ -1922,39 +1962,14 @@ private let UserFullSelector = obj(
             field("followedByMe", "followedByMe", notNull(scalar("Boolean"))),
             field("followersCount", "followersCount", notNull(scalar("Int"))),
             field("followingCount", "followingCount", notNull(scalar("Int"))),
+            field("currentVoiceChat", "currentVoiceChat", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("VoiceChat", VoiceChatWithSpeakersSelector)
+                )),
             field("primaryOrganization", "primaryOrganization", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationShortSelector)
                 ))
-        )
-
-private let VoiceChatParticipantSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("user", "user", notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("name", "name", notNull(scalar("String"))),
-                    field("firstName", "firstName", notNull(scalar("String"))),
-                    field("photo", "photo", scalar("String"))
-                ))),
-            field("status", "status", notNull(scalar("String")))
-        )
-
-private let VoiceChatWithSpeakersSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("title", "title", scalar("String")),
-            field("listenersCount", "listenersCount", notNull(scalar("Int"))),
-            field("speakersCount", "speakersCount", notNull(scalar("Int"))),
-            field("me", "me", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
-                )),
-            field("speakers", "speakers", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
-                )))))
         )
 
 private let WalletTransactionFragmentSelector = obj(
@@ -4568,12 +4583,7 @@ private let SocialUserFollowersSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("name", "name", notNull(scalar("String"))),
-                            field("about", "about", scalar("String")),
-                            field("followersCount", "followersCount", notNull(scalar("Int"))),
-                            field("followedByMe", "followedByMe", notNull(scalar("Boolean"))),
-                            field("photo", "photo", scalar("String"))
+                            fragment("User", UserFollowerSelector)
                         ))))),
                     field("cursor", "cursor", scalar("String"))
                 )))
@@ -4583,12 +4593,7 @@ private let SocialUserFollowingSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("name", "name", notNull(scalar("String"))),
-                            field("about", "about", scalar("String")),
-                            field("followersCount", "followersCount", notNull(scalar("Int"))),
-                            field("followedByMe", "followedByMe", notNull(scalar("Boolean"))),
-                            field("photo", "photo", scalar("String"))
+                            fragment("User", UserFollowerSelector)
                         ))))),
                     field("cursor", "cursor", scalar("String"))
                 )))
@@ -6759,13 +6764,13 @@ class Operations {
     let SocialUserFollowers = OperationDefinition(
         "SocialUserFollowers",
         .query, 
-        "query SocialUserFollowers($uid:ID!,$first:Int!,$after:String){socialUserFollowers(uid:$uid,first:$first,after:$after){__typename items{__typename id name about followersCount followedByMe photo}cursor}}",
+        "query SocialUserFollowers($uid:ID!,$first:Int!,$after:String){socialUserFollowers(uid:$uid,first:$first,after:$after){__typename items{__typename ...UserFollower}cursor}}fragment UserFollower on User{__typename id name shortname about followersCount followedByMe photo}",
         SocialUserFollowersSelector
     )
     let SocialUserFollowing = OperationDefinition(
         "SocialUserFollowing",
         .query, 
-        "query SocialUserFollowing($uid:ID!,$first:Int!,$after:String){socialUserFollowing(uid:$uid,first:$first,after:$after){__typename items{__typename id name about followersCount followedByMe photo}cursor}}",
+        "query SocialUserFollowing($uid:ID!,$first:Int!,$after:String){socialUserFollowing(uid:$uid,first:$first,after:$after){__typename items{__typename ...UserFollower}cursor}}fragment UserFollower on User{__typename id name shortname about followersCount followedByMe photo}",
         SocialUserFollowingSelector
     )
     let StickerPack = OperationDefinition(
@@ -6861,7 +6866,7 @@ class Operations {
     let User = OperationDefinition(
         "User",
         .query, 
-        "query User($userId:ID!){user:user(id:$userId){__typename ...UserFull}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
+        "query User($userId:ID!){user:user(id:$userId){__typename ...UserFull}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount currentVoiceChat{__typename ...VoiceChatWithSpeakers}primaryOrganization{__typename ...OrganizationShort}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title listenersCount speakersCount me{__typename ...VoiceChatParticipant}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
         UserSelector
     )
     let UserAvailableRooms = OperationDefinition(
@@ -6909,7 +6914,7 @@ class Operations {
     let Users = OperationDefinition(
         "Users",
         .query, 
-        "query Users($ids:[ID!]!){users(ids:$ids){__typename ...UserFull}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
+        "query Users($ids:[ID!]!){users(ids:$ids){__typename ...UserFull}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount currentVoiceChat{__typename ...VoiceChatWithSpeakers}primaryOrganization{__typename ...OrganizationShort}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title listenersCount speakersCount me{__typename ...VoiceChatParticipant}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
         UsersSelector
     )
     let VoiceChat = OperationDefinition(

@@ -1,5 +1,8 @@
 # Requirements
 * Mobile SVG converter: `brew install librsvg`
+- copy svg to packages/openland_mobile/assets/sources
+- add descriptor to _files.json
+- run yarn native:res
 
 ## web: `openland-web`
 Run `yarn install` to install dependencies \

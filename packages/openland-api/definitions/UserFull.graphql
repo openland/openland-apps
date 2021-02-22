@@ -28,6 +28,9 @@ fragment UserFull on User {
     followedByMe
     followersCount
     followingCount
+    currentVoiceChat {
+        ...VoiceChatWithSpeakers
+    }
     primaryOrganization {
         ...OrganizationShort
     }

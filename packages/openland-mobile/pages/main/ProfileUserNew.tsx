@@ -35,6 +35,7 @@ import Toast from 'openland-mobile/components/Toast';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { UserPhotoUploaderNew } from './components/UserPhotoUploaderNew';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
+import { CurrentVoiceChat } from './components/CurrentVoiceChat';
 
 const ProfileUserComponent = React.memo((props: PageProps) => {
     const client = getClient();
@@ -44,6 +45,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
     const data = client.useUser({ userId }, { fetchPolicy: 'cache-and-network' });
     const user = data.user;
     const conversation = data.conversation as User_conversation_PrivateRoom;
+    const { currentVoiceChat } = user;
 
     const { isBanned } = useUserBanInfo(user.id, user.isBanned, user.isMeBanned);
 
@@ -320,6 +322,10 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                         />
                     )}
                 </ZHero>
+
+                {currentVoiceChat && (
+                    <CurrentVoiceChat currentVoiceChat={currentVoiceChat}/>
+                )}
 
                 <ZListGroup header="About" useSpacer={true}>
                     {!!user.about && <ZShowMoreText text={user.about} />}

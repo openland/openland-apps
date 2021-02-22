@@ -22,6 +22,13 @@
             ]
         },
         {
+            "name": "ic-listener",
+            "src": "ic-listener-16.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
             "name": "ic-warning",
             "src": "ic-warning-16.svg",
             "sizes": [

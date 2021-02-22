@@ -95,12 +95,7 @@ query MySuccessfulInvitesCount {
 query SocialUserFollowers($uid: ID!, $first: Int!, $after: String) {
     socialUserFollowers(uid: $uid, first: $first, after: $after) {
         items {
-            id
-            name
-            about
-            followersCount
-            followedByMe
-            photo
+           ...UserFollower
         }
         cursor
     }
@@ -109,12 +104,7 @@ query SocialUserFollowers($uid: ID!, $first: Int!, $after: String) {
 query SocialUserFollowing($uid: ID!, $first: Int!, $after: String) {
     socialUserFollowing(uid: $uid, first: $first, after: $after) {
         items {
-            id
-            name
-            about
-            followersCount
-            followedByMe
-            photo
+            ...UserFollower
         }
         cursor
     }

@@ -1884,6 +1884,17 @@ const UpdateUserSelector = obj(
             field('photo', 'photo', args(), scalar('String'))
         );
 
+const UserFollowerSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('name', 'name', args(), notNull(scalar('String'))),
+            field('shortname', 'shortname', args(), scalar('String')),
+            field('about', 'about', args(), scalar('String')),
+            field('followersCount', 'followersCount', args(), notNull(scalar('Int'))),
+            field('followedByMe', 'followedByMe', args(), notNull(scalar('Boolean'))),
+            field('photo', 'photo', args(), scalar('String'))
+        );
+
 const UserForMentionSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -1896,6 +1907,35 @@ const UserForMentionSelector = obj(
                     field('id', 'id', args(), notNull(scalar('ID'))),
                     field('name', 'name', args(), notNull(scalar('String')))
                 ))
+        );
+
+const VoiceChatParticipantSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('user', 'user', args(), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('name', 'name', args(), notNull(scalar('String'))),
+                    field('firstName', 'firstName', args(), notNull(scalar('String'))),
+                    field('photo', 'photo', args(), scalar('String'))
+                ))),
+            field('status', 'status', args(), notNull(scalar('String')))
+        );
+
+const VoiceChatWithSpeakersSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('title', 'title', args(), scalar('String')),
+            field('listenersCount', 'listenersCount', args(), notNull(scalar('Int'))),
+            field('speakersCount', 'speakersCount', args(), notNull(scalar('Int'))),
+            field('me', 'me', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('VoiceChatParticipant', VoiceChatParticipantSelector)
+                )),
+            field('speakers', 'speakers', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('VoiceChatParticipant', VoiceChatParticipantSelector)
+                )))))
         );
 
 const UserFullSelector = obj(
@@ -1929,39 +1969,14 @@ const UserFullSelector = obj(
             field('followedByMe', 'followedByMe', args(), notNull(scalar('Boolean'))),
             field('followersCount', 'followersCount', args(), notNull(scalar('Int'))),
             field('followingCount', 'followingCount', args(), notNull(scalar('Int'))),
+            field('currentVoiceChat', 'currentVoiceChat', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('VoiceChat', VoiceChatWithSpeakersSelector)
+                )),
             field('primaryOrganization', 'primaryOrganization', args(), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('Organization', OrganizationShortSelector)
                 ))
-        );
-
-const VoiceChatParticipantSelector = obj(
-            field('__typename', '__typename', args(), notNull(scalar('String'))),
-            field('id', 'id', args(), notNull(scalar('ID'))),
-            field('user', 'user', args(), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('id', 'id', args(), notNull(scalar('ID'))),
-                    field('name', 'name', args(), notNull(scalar('String'))),
-                    field('firstName', 'firstName', args(), notNull(scalar('String'))),
-                    field('photo', 'photo', args(), scalar('String'))
-                ))),
-            field('status', 'status', args(), notNull(scalar('String')))
-        );
-
-const VoiceChatWithSpeakersSelector = obj(
-            field('__typename', '__typename', args(), notNull(scalar('String'))),
-            field('id', 'id', args(), notNull(scalar('ID'))),
-            field('title', 'title', args(), scalar('String')),
-            field('listenersCount', 'listenersCount', args(), notNull(scalar('Int'))),
-            field('speakersCount', 'speakersCount', args(), notNull(scalar('Int'))),
-            field('me', 'me', args(), obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('VoiceChatParticipant', VoiceChatParticipantSelector)
-                )),
-            field('speakers', 'speakers', args(), notNull(list(notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('VoiceChatParticipant', VoiceChatParticipantSelector)
-                )))))
         );
 
 const WalletTransactionFragmentSelector = obj(
@@ -4575,12 +4590,7 @@ const SocialUserFollowersSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('items', 'items', args(), notNull(list(notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('name', 'name', args(), notNull(scalar('String'))),
-                            field('about', 'about', args(), scalar('String')),
-                            field('followersCount', 'followersCount', args(), notNull(scalar('Int'))),
-                            field('followedByMe', 'followedByMe', args(), notNull(scalar('Boolean'))),
-                            field('photo', 'photo', args(), scalar('String'))
+                            fragment('User', UserFollowerSelector)
                         ))))),
                     field('cursor', 'cursor', args(), scalar('String'))
                 )))
@@ -4590,12 +4600,7 @@ const SocialUserFollowingSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('items', 'items', args(), notNull(list(notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('name', 'name', args(), notNull(scalar('String'))),
-                            field('about', 'about', args(), scalar('String')),
-                            field('followersCount', 'followersCount', args(), notNull(scalar('Int'))),
-                            field('followedByMe', 'followedByMe', args(), notNull(scalar('Boolean'))),
-                            field('photo', 'photo', args(), scalar('String'))
+                            fragment('User', UserFollowerSelector)
                         ))))),
                     field('cursor', 'cursor', args(), scalar('String'))
                 )))
@@ -6762,13 +6767,13 @@ export const Operations: { [key: string]: OperationDefinition } = {
     SocialUserFollowers: {
         kind: 'query',
         name: 'SocialUserFollowers',
-        body: 'query SocialUserFollowers($uid:ID!,$first:Int!,$after:String){socialUserFollowers(uid:$uid,first:$first,after:$after){__typename items{__typename id name about followersCount followedByMe photo}cursor}}',
+        body: 'query SocialUserFollowers($uid:ID!,$first:Int!,$after:String){socialUserFollowers(uid:$uid,first:$first,after:$after){__typename items{__typename ...UserFollower}cursor}}fragment UserFollower on User{__typename id name shortname about followersCount followedByMe photo}',
         selector: SocialUserFollowersSelector
     },
     SocialUserFollowing: {
         kind: 'query',
         name: 'SocialUserFollowing',
-        body: 'query SocialUserFollowing($uid:ID!,$first:Int!,$after:String){socialUserFollowing(uid:$uid,first:$first,after:$after){__typename items{__typename id name about followersCount followedByMe photo}cursor}}',
+        body: 'query SocialUserFollowing($uid:ID!,$first:Int!,$after:String){socialUserFollowing(uid:$uid,first:$first,after:$after){__typename items{__typename ...UserFollower}cursor}}fragment UserFollower on User{__typename id name shortname about followersCount followedByMe photo}',
         selector: SocialUserFollowingSelector
     },
     StickerPack: {
@@ -6864,7 +6869,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     User: {
         kind: 'query',
         name: 'User',
-        body: 'query User($userId:ID!){user:user(id:$userId){__typename ...UserFull}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
+        body: 'query User($userId:ID!){user:user(id:$userId){__typename ...UserFull}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount currentVoiceChat{__typename ...VoiceChatWithSpeakers}primaryOrganization{__typename ...OrganizationShort}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title listenersCount speakersCount me{__typename ...VoiceChatParticipant}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
         selector: UserSelector
     },
     UserAvailableRooms: {
@@ -6912,7 +6917,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     Users: {
         kind: 'query',
         name: 'Users',
-        body: 'query Users($ids:[ID!]!){users(ids:$ids){__typename ...UserFull}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
+        body: 'query Users($ids:[ID!]!){users(ids:$ids){__typename ...UserFull}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount currentVoiceChat{__typename ...VoiceChatWithSpeakers}primaryOrganization{__typename ...OrganizationShort}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title listenersCount speakersCount me{__typename ...VoiceChatParticipant}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
         selector: UsersSelector
     },
     VoiceChat: {

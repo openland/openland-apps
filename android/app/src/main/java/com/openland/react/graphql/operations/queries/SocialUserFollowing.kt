@@ -9,12 +9,7 @@ internal val SocialUserFollowingSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("name", "name", notNull(scalar("String"))),
-                            field("about", "about", scalar("String")),
-                            field("followersCount", "followersCount", notNull(scalar("Int"))),
-                            field("followedByMe", "followedByMe", notNull(scalar("Boolean"))),
-                            field("photo", "photo", scalar("String"))
+                            fragment("User", UserFollowerSelector)
                         ))))),
                     field("cursor", "cursor", scalar("String"))
                 )))
@@ -22,6 +17,6 @@ internal val SocialUserFollowingSelector = obj(
 val SocialUserFollowing = object: OperationDefinition {
     override val name = "SocialUserFollowing"
     override val kind = OperationKind.QUERY
-    override val body = "query SocialUserFollowing(\$uid:ID!,\$first:Int!,\$after:String){socialUserFollowing(uid:\$uid,first:\$first,after:\$after){__typename items{__typename id name about followersCount followedByMe photo}cursor}}"
+    override val body = "query SocialUserFollowing(\$uid:ID!,\$first:Int!,\$after:String){socialUserFollowing(uid:\$uid,first:\$first,after:\$after){__typename items{__typename ...UserFollower}cursor}}fragment UserFollower on User{__typename id name shortname about followersCount followedByMe photo}"
     override val selector = SocialUserFollowingSelector
 }
