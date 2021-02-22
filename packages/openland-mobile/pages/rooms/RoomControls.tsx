@@ -59,9 +59,10 @@ const ControlItem = React.memo((props: {
     bgColor: string,
     counter?: number,
     disabled?: boolean,
+    faded?: boolean,
     onPress?: () => void
 }) => {
-    const { theme, text, icon, iconColor, bgColor, counter, disabled, onPress } = props;
+    const { theme, text, icon, iconColor, bgColor, counter, disabled, faded, onPress } = props;
     const size = text ? 56 : 78;
     const iconSize = text ? 24 : 36;
     return (
@@ -70,7 +71,7 @@ const ControlItem = React.memo((props: {
                 activeOpacity={0.6}
                 onPress={onPress}
                 disabled={disabled}
-                style={{ width: size, height: size, marginBottom: 8, position: 'relative' }}
+                style={{ width: size, height: size, marginBottom: 8, position: 'relative', opacity: faded ? 0.4 : 1 }}
             >
                 <View style={{ backgroundColor: bgColor, width: size, height: size, borderRadius: 100, alignItems: 'center', justifyContent: 'center' }}>
                     {typeof icon === 'string' ? (
@@ -122,10 +123,11 @@ const ControlMute = React.memo((props: { theme: ThemeGlobal, disabled?: boolean,
     return (
         <ControlItem
             theme={theme}
-            icon={muted ? require('assets/ic-mute-glyph-36.png') : require('assets/ic-microphone-36.png')}
+            icon={(muted || disabled) ? require('assets/ic-mute-glyph-36.png') : require('assets/ic-microphone-36.png')}
             iconColor={theme.foregroundContrast}
-            bgColor={muted ? TintOrange.primary : TintBlue.primary}
+            bgColor={(muted || disabled) ? TintOrange.primary : TintBlue.primary}
             disabled={disabled}
+            faded={disabled}
             onPress={onPress}
         />
     );
@@ -261,7 +263,7 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
         <ControlMute
             muted={muted}
             theme={theme}
-            disabled={role === VoiceChatParticipantStatus.SPEAKER || role === VoiceChatParticipantStatus.ADMIN}
+            disabled={!(role === VoiceChatParticipantStatus.SPEAKER || role === VoiceChatParticipantStatus.ADMIN)}
             onPress={onMutePress}
         />
     );

@@ -69,11 +69,16 @@ export class MediaSessionManager {
     private kickDetectorSubscription: (() => void) | null = null;
     private ownPeerDetected = false;
     private destroyed = false;
+    private onLeave: (() => Promise<void>) | null = null;
 
-    constructor(messenger: MessengerEngine, conversationId: string) {
+    constructor(messenger: MessengerEngine, conversationId: string, onLeave?: () => Promise<void>) {
         this.messenger = messenger;
         this.client = messenger.client;
         this.conversationId = conversationId;
+
+        if (onLeave) {
+            this.onLeave = onLeave;
+        }
 
         // Initial state
         this.audioEnabled = true;
@@ -221,6 +226,11 @@ export class MediaSessionManager {
                     id: this.conferenceId,
                     peerId: this.peerId
                 });
+            });
+            backoff(async () => {
+                if (this.onLeave) {
+                    await this.onLeave();
+                }
             });
         }
     }
@@ -426,6 +436,11 @@ export class MediaSessionManager {
                         peerId: joinConference.peerId
                     });
                 });
+                backoff(async () => {
+                    if (this.onLeave) {
+                        await this.onLeave();
+                    }
+                });
                 return null;
             }
             console.log('[WEBRTC] Joined conference');
@@ -477,6 +492,9 @@ export class MediaSessionManager {
                     id: confId,
                     peerId: peerId
                 });
+                if (this.onLeave) {
+                    this.onLeave();
+                }
             }
         }, 1000);
     }

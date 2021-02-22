@@ -578,12 +578,12 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
     const voiceChat = useVoiceChat();
     const theme = useTheme();
     const client = useClient();
-    const room = client.useVoiceChat({ id: props.room.id }, { fetchPolicy: 'network-only' }).voiceChat;
+    const room = client.useVoiceChat({ id: props.room.id }, { fetchPolicy: 'cache-and-network' }).voiceChat;
     const conference = client.useConference({ id: props.room.id }, { suspense: false })?.conference;
     const [headerHeight, setHeaderHeight] = React.useState(0);
     const [controlsHeight, setControlsHeight] = React.useState(0);
-
     const voiceChatData = voiceChat ? voiceChat : room;
+    const canMeSpeak = voiceChatData.me?.status === VoiceChatParticipantStatus.ADMIN || voiceChatData.me?.status === VoiceChatParticipantStatus.SPEAKER;
 
     const onHeaderLayout = React.useCallback(
         (e: LayoutChangeEvent) => {
@@ -610,7 +610,7 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
 
     const handleLeave = React.useCallback(() => {
         let admins = voiceChatData.speakers.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
-        if (admins.length <= 1 && voiceChatData.me?.status === VoiceChatParticipantStatus.ADMIN) {
+        if (admins.length <= 1 && canMeSpeak) {
             client.mutateVoiceChatEnd({ id: room.id });
         } else {
             client.mutateVoiceChatLeave({ id: room.id });
@@ -622,6 +622,12 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
     }, [voiceChatData]);
 
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
+
+    React.useEffect(() => {
+        if (mediaSession && !muted && !canMeSpeak) {
+            mediaSession.setAudioEnabled(false);
+        }
+    }, [mediaSession, muted]);
 
     React.useLayoutEffect(() => {
         SStatusBar.setBarStyle('light-content');
@@ -669,7 +675,7 @@ export const showRoomView = (room: VoiceChatWithSpeakers, router: SRouter) => {
             <VoiceChatProvider room={room}>
                 <RoomView room={room} ctx={ctx} router={router} />
             </VoiceChatProvider>
-            ),
+        ),
         containerStyle: {
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,
