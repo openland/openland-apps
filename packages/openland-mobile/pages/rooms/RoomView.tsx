@@ -51,7 +51,7 @@ const UserModalBody = React.memo(({
     user,
     roomId,
     hide,
-    userStatus,
+    // userStatus,
     theme,
     router,
     modalCtx,
@@ -60,20 +60,20 @@ const UserModalBody = React.memo(({
     const { followingCount, followedByMe, followersCount } = client.useVoiceChatUser({ uid: user.id }, { fetchPolicy: 'network-only' }).user;
     const isSelfAdmin = selfStatus === VoiceChatParticipantStatus.ADMIN || SUPER_ADMIN;
 
-    const removeAdmin = React.useCallback(() => {
-        (async () => {
-            await client.mutateVoiceChatUpdateAdmin({ id: roomId, uid: user.id, admin: false });
-            client.refetchVoiceChat({ id: roomId });
-        })();
-        hide();
-    }, [roomId, user.id]);
-    const makeAdmin = React.useCallback(() => {
-        (async () => {
-            await client.mutateVoiceChatUpdateAdmin({ id: roomId, uid: user.id, admin: true });
-            client.refetchVoiceChat({ id: roomId });
-        })();
-        hide();
-    }, [roomId, user.id]);
+    // const removeAdmin = React.useCallback(() => {
+    //     (async () => {
+    //         await client.mutateVoiceChatUpdateAdmin({ id: roomId, uid: user.id, admin: false });
+    //         client.refetchVoiceChat({ id: roomId });
+    //     })();
+    //     hide();
+    // }, [roomId, user.id]);
+    // const makeAdmin = React.useCallback(() => {
+    //     (async () => {
+    //         await client.mutateVoiceChatUpdateAdmin({ id: roomId, uid: user.id, admin: true });
+    //         client.refetchVoiceChat({ id: roomId });
+    //     })();
+    //     hide();
+    // }, [roomId, user.id]);
     const removeUser = React.useCallback(() => {
         (async () => {
             await client.mutateVoiceChatKick({ id: roomId, uid: user.id });
@@ -81,20 +81,20 @@ const UserModalBody = React.memo(({
         })();
         hide();
     }, [roomId, user.id]);
-    const demoteUser = React.useCallback(() => {
-        (async () => {
-            await client.mutateVoiceChatDemote({ id: roomId, uid: user.id });
-            client.refetchVoiceChat({ id: roomId });
-        })();
-        hide();
-    }, [roomId, user.id]);
-    const promoteUser = React.useCallback(() => {
-        (async () => {
-            await client.mutateVoiceChatPromote({ id: roomId, uid: user.id });
-            client.refetchVoiceChat({ id: roomId });
-        })();
-        hide();
-    }, [roomId, user.id]);
+    // const demoteUser = React.useCallback(() => {
+    //     (async () => {
+    //         await client.mutateVoiceChatDemote({ id: roomId, uid: user.id });
+    //         client.refetchVoiceChat({ id: roomId });
+    //     })();
+    //     hide();
+    // }, [roomId, user.id]);
+    // const promoteUser = React.useCallback(() => {
+    //     (async () => {
+    //         await client.mutateVoiceChatPromote({ id: roomId, uid: user.id });
+    //         client.refetchVoiceChat({ id: roomId });
+    //     })();
+    //     hide();
+    // }, [roomId, user.id]);
     const followUser = React.useCallback(() => {
         client.mutateSocialFollow({ uid: user.id });
         hide();
@@ -155,7 +155,7 @@ const UserModalBody = React.memo(({
                     )}
                 {isSelfAdmin && (
                     <>
-                        {userStatus === VoiceChatParticipantStatus.SPEAKER && (
+                        {/* {userStatus === VoiceChatParticipantStatus.SPEAKER && (
                             <ZListItem
                                 leftIcon={require('assets/ic-listener-24.png')}
                                 small={true}
@@ -185,7 +185,7 @@ const UserModalBody = React.memo(({
                                     text="Make admin"
                                     onPress={makeAdmin}
                                 />
-                            )}
+                            )} */}
                         <ZListItem
                             leftIcon={require('assets/ic-leave-24.png')}
                             small={true}
