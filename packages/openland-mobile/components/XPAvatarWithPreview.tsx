@@ -2,8 +2,9 @@ import * as React from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
 import { showPictureModal } from './modal/ZPictureModal';
 import { ZAvatarProps, ZAvatar, avatarSizes } from './ZAvatar';
+import { XViewProps } from 'react-mental';
 
-class XPAvatarWithPreviewComponent extends React.PureComponent<ZAvatarProps> {
+class XPAvatarWithPreviewComponent extends React.PureComponent<ZAvatarProps & XViewProps> {
     ref = React.createRef<View>();
 
     handleLayout = () => {
@@ -51,7 +52,7 @@ class XPAvatarWithPreviewComponent extends React.PureComponent<ZAvatarProps> {
     }
 }
 
-export const XPAvatarWithPreview = (props: ZAvatarProps) => {
+export const XPAvatarWithPreview = (props: ZAvatarProps & XViewProps) => {
     return (
         <XPAvatarWithPreviewComponent {...props} />
     );

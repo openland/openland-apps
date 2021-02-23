@@ -28,14 +28,16 @@ export const CurrentVoiceChat = React.memo<CurrentVoiceChatProps>(props => {
             <View style={{ paddingHorizontal: 16, paddingBottom: 16 }}>
                 <View style={{ flexDirection: 'row', marginBottom: 20, alignItems: 'center' }}>
                     {firstSpeakers.map(item => (
-                        <XPAvatarWithPreview
-                            size="small"
-                            photo={item.user.photo}
-                            id={item.user.id}
-                            title={item.user.name}
-                        />
+                        <View style={{ marginRight: 8 }}>
+                            <XPAvatarWithPreview
+                                size="small"
+                                photo={item.user.photo}
+                                id={item.user.id}
+                                title={item.user.name}
+                            />
+                        </View>
                     ))}
-                    <Text style={{ color: theme.foregroundTertiary, marginLeft: 24 }}>{speakersCount}</Text>
+                    <Text style={{ color: theme.foregroundTertiary, marginLeft: 16 }}>{speakersCount}</Text>
                     <Image source={require('assets/ic-microphone-24.png')} style={{ tintColor: theme.foregroundTertiary, width: 16, height: 16, marginLeft: 6 }} />
                     <View style={{ backgroundColor: theme.foregroundTertiary, width: 3, height: 3, borderRadius: 3, opacity: 0.5, marginHorizontal: 8 }}/>
                     <Text style={{ color: theme.foregroundTertiary }}>{listenersCount}</Text>

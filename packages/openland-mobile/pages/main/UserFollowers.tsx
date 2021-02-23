@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
@@ -9,6 +9,7 @@ import { PageProps } from 'openland-mobile/components/PageProps';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZTab } from 'openland-mobile/components/ZTab';
 import { getCounterValue } from 'openland-y-utils/getCounterValue';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import {
     SocialUserFollowing_socialUserFollowing_items,
     SocialUserFollowers_socialUserFollowers_items,
@@ -85,7 +86,19 @@ const UserFollowersComponent = React.memo<PageProps>((props) => {
                         </Text>
                     </ZTab>
                 </View>
-                {selectedTab === Tabs.FOLLOWING && (
+                {selectedTab === Tabs.FOLLOWING && following && following.length === 0 && (
+                    <View style={{  justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                        <Image source={require('assets/art-empty.png')} />
+                        <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, textAlign: 'center' }}>No following yet</Text>
+                    </View>
+                )}
+                {selectedTab === Tabs.FOLLOWERS && followers && followers.length === 0 && (
+                    <View style={{  justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                        <Image source={require('assets/art-empty.png')} />
+                        <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, textAlign: 'center' }}>No followers yet</Text>
+                    </View>
+                )}
+                {selectedTab === Tabs.FOLLOWING && following && following.length > 0 && (
                     <SFlatList
                         data={following}
                         renderItem={(item) => <UserFollowersItem {...item.item} hideButton={true}/>}
