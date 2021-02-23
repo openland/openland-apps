@@ -682,7 +682,8 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
     React.useLayoutEffect(() => {
         SStatusBar.setBarStyle('light-content');
         InCallManager.start({ media: 'audio' });
-        // InCallManager.setForceSpeakerphoneOn(true);
+        InCallManager.setForceSpeakerphoneOn(true);
+
         return () => {
             SStatusBar.setBarStyle(theme.statusBar);
         };
