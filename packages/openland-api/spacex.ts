@@ -433,6 +433,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryVoiceChatControls(variables: Types.VoiceChatControlsVariables, params?: QueryParameters): Promise<Types.VoiceChatControls> {
         return this.query('VoiceChatControls', variables, params);
     }
+    queryVoiceChatEventsState(variables: Types.VoiceChatEventsStateVariables, params?: QueryParameters): Promise<Types.VoiceChatEventsState> {
+        return this.query('VoiceChatEventsState', variables, params);
+    }
     queryVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params?: QueryParameters): Promise<Types.VoiceChatListeners> {
         return this.query('VoiceChatListeners', variables, params);
     }
@@ -862,6 +865,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchVoiceChatControls(variables: Types.VoiceChatControlsVariables, params?: QueryParameters): Promise<Types.VoiceChatControls> {
         return this.refetch('VoiceChatControls', variables, params);
     }
+    refetchVoiceChatEventsState(variables: Types.VoiceChatEventsStateVariables, params?: QueryParameters): Promise<Types.VoiceChatEventsState> {
+        return this.refetch('VoiceChatEventsState', variables, params);
+    }
     refetchVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params?: QueryParameters): Promise<Types.VoiceChatListeners> {
         return this.refetch('VoiceChatListeners', variables, params);
     }
@@ -1290,6 +1296,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateVoiceChatControls(variables: Types.VoiceChatControlsVariables, updater: (data: Types.VoiceChatControls) => Types.VoiceChatControls | null): Promise<boolean> {
         return this.updateQuery(updater, 'VoiceChatControls', variables);
+    }
+    updateVoiceChatEventsState(variables: Types.VoiceChatEventsStateVariables, updater: (data: Types.VoiceChatEventsState) => Types.VoiceChatEventsState | null): Promise<boolean> {
+        return this.updateQuery(updater, 'VoiceChatEventsState', variables);
     }
     updateVoiceChatListeners(variables: Types.VoiceChatListenersVariables, updater: (data: Types.VoiceChatListeners) => Types.VoiceChatListeners | null): Promise<boolean> {
         return this.updateQuery(updater, 'VoiceChatListeners', variables);
@@ -2002,6 +2011,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useVoiceChatControls(variables: Types.VoiceChatControlsVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatControls | null {
         return this.useQuery('VoiceChatControls', variables, params);
     }
+    useVoiceChatEventsState(variables: Types.VoiceChatEventsStateVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.VoiceChatEventsState | null;
+    useVoiceChatEventsState(variables: Types.VoiceChatEventsStateVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatEventsState;
+    useVoiceChatEventsState(variables: Types.VoiceChatEventsStateVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatEventsState | null {
+        return this.useQuery('VoiceChatEventsState', variables, params);
+    }
     useVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.VoiceChatListeners | null;
     useVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatListeners;
     useVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatListeners | null {
@@ -2495,8 +2509,8 @@ export class OpenlandClient extends BaseSpaceXClient {
     subscribeTypingsWatch(handler: GraphqlSubscriptionHandler<Types.TypingsWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.TypingsWatch> {
         return this.subscribe(handler, 'TypingsWatch', undefined, params);
     }
-    subscribeVoiceChatWatch(variables: Types.VoiceChatWatchVariables, handler: GraphqlSubscriptionHandler<Types.VoiceChatWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.VoiceChatWatch> {
-        return this.subscribe(handler, 'VoiceChatWatch', variables, params);
+    subscribeVoiceChatEvents(variables: Types.VoiceChatEventsVariables, handler: GraphqlSubscriptionHandler<Types.VoiceChatEvents>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.VoiceChatEvents> {
+        return this.subscribe(handler, 'VoiceChatEvents', variables, params);
     }
     subscribeWalletUpdates(variables: Types.WalletUpdatesVariables, handler: GraphqlSubscriptionHandler<Types.WalletUpdates>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.WalletUpdates> {
         return this.subscribe(handler, 'WalletUpdates', variables, params);

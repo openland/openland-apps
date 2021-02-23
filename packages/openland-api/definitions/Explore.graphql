@@ -67,12 +67,6 @@ fragment DiscoverOrganization on Organization {
 }
 
 query ExploreRooms($seed: Int!) {
-    activeVoiceChats(first: 3) {
-        cursor
-        items {
-            ...VoiceChatWithSpeakers
-        }
-    }
     discoverNewAndGrowing(first: 3, seed: $seed) {
         items {
             ...DiscoverSharedRoom

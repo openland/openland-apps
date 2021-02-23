@@ -7,13 +7,16 @@ fragment VoiceChatParticipant on VoiceChatParticipant {
         photo
     }
     status
+    handRaised
 }
 
 fragment VoiceChatWithSpeakers on VoiceChat {
     id
     title
+    adminsCount
     listenersCount
     speakersCount
+    active
     me {
         ...VoiceChatParticipant
     }
@@ -118,8 +121,39 @@ mutation VoiceChatRaiseHand($id: ID!, $raised: Boolean!) {
     voiceChatRaiseHand(id: $id, raised: $raised)
 }
 
-subscription VoiceChatWatch($id: ID!) {
-    voiceChatWatch(id: $id) {
-        ...VoiceChatWithSpeakers
+query VoiceChatEventsState($id: ID!) {
+    voiceChatEventsState(id: $id) {
+        state
+    }
+}
+
+subscription VoiceChatEvents($id: ID!, $fromState: String!) {
+    voiceChatEvents(fromState: $fromState, id: $id) {
+        state
+        events {
+            ... on VoiceChatParticipantUpdatedEvent {
+                chat {
+                    id
+                    title
+                    adminsCount
+                    listenersCount
+                    speakersCount
+                    active
+                }
+                participant {
+                    ...VoiceChatParticipant
+                }
+            }
+            ... on VoiceChatUpdatedEvent {
+                chat {
+                    id
+                    title
+                    adminsCount
+                    listenersCount
+                    speakersCount
+                    active
+                }
+            }
+        }
     }
 }

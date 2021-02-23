@@ -25,7 +25,10 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { useListReducer } from 'openland-mobile/utils/listReducer';
 import InCallManager from 'react-native-incall-manager';
 import { SStatusBar } from 'react-native-s/SStatusBar';
-import { VoiceChatProvider, useVoiceChat } from 'openland-y-utils/voiceChat/voiceChatWatcher';
+import {
+    VoiceChatProvider,
+    // useVoiceChat
+} from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
 
@@ -625,16 +628,16 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
 });
 
 const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: SRouter }) => {
-    const voiceChat = useVoiceChat();
+    // const voiceChat = useVoiceChat();
+    // console.log('voiceChat---------', voiceChat);
     const theme = useTheme();
     const client = useClient();
-    const room = client.useVoiceChat({ id: props.room.id }, { fetchPolicy: 'cache-and-network' }).voiceChat;
+    const room = client.useVoiceChat({ id: props.room.id }, { fetchPolicy: 'network-only' }).voiceChat;
     const conference = client.useConference({ id: props.room.id }, { suspense: false })?.conference;
     const [headerHeight, setHeaderHeight] = React.useState(0);
     const [controlsHeight, setControlsHeight] = React.useState(0);
-    const voiceChatData = voiceChat ? voiceChat : room;
+    const voiceChatData = room;
     const canMeSpeak = voiceChatData.me?.status === VoiceChatParticipantStatus.ADMIN || voiceChatData.me?.status === VoiceChatParticipantStatus.SPEAKER;
-
     const onHeaderLayout = React.useCallback(
         (e: LayoutChangeEvent) => {
             setHeaderHeight(e.nativeEvent.layout.height);
@@ -658,12 +661,12 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         mediaSession?.setAudioEnabled(!state?.sender.audioEnabled);
     }, [state, mediaSession]);
 
-    const handleLeave = React.useCallback(() => {
+    const handleLeave = React.useCallback(async () => {
         let admins = voiceChatData.speakers.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
         if (admins.length <= 1 && canMeSpeak) {
-            client.mutateVoiceChatEnd({ id: room.id });
+            await client.mutateVoiceChatEnd({ id: room.id });
         } else {
-            client.mutateVoiceChatLeave({ id: room.id });
+            await client.mutateVoiceChatLeave({ id: room.id });
         }
         InCallManager.stop({ busytone: '_BUNDLE_' });
         calls.leaveCall();
@@ -722,7 +725,7 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
 export const showRoomView = (room: VoiceChatWithSpeakers, router: SRouter) => {
     showBottomSheet({
         view: (ctx) => (
-            <VoiceChatProvider room={room}>
+            <VoiceChatProvider room={{chat: room, speakers: room.speakers}}>
                 <RoomView room={room} ctx={ctx} router={router} />
             </VoiceChatProvider>
         ),

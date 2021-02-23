@@ -7,7 +7,7 @@ import { SSearchControler } from 'react-native-s/SSearchController';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { getClient } from 'openland-mobile/utils/graphqlClient';
+import { useClient } from 'openland-api/useClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { GlobalSearch } from './components/globalSearch/GlobalSearch';
 import { SRouter } from 'react-native-s/SRouter';
@@ -28,43 +28,57 @@ import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { getRandomSeed } from './DiscoverListing';
 import { ComponentRefContext } from './Home';
 import { DiscoverCreateList } from './components/discover/DiscoverCreateList';
-import { SUPER_ADMIN } from '../Init';
+
+const ActiveVoiceChats = React.memo((props: PageProps) => {
+    const theme = useTheme();
+    const client = useClient();
+    const voiceRooms = client.useActiveVoiceChats({ first: 3 }, { fetchPolicy: 'cache-and-network' }).activeVoiceChats;
+
+    React.useLayoutEffect(() => {
+        let timer = setInterval(async () => {
+            await client.refetchActiveVoiceChats({ first: 3 });
+        }, 5000);
+        return () => clearInterval(timer);
+    }, []);
+
+    return (
+        <ZListGroup
+            header="Rooms"
+            actionRight={{
+                title: 'See all', onPress: () => props.router.push('RoomsFeed', { cursor: voiceRooms.cursor })
+            }}
+        >
+            {voiceRooms.items.length > 0
+                ? voiceRooms.items.map(v => <DiscoverListItemVoice key={v.id} item={v} />)
+                : (
+                    <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginBottom: 16, alignItems: 'center' }}>
+                        <Image source={require('assets/art-crowd.png')} style={{ width: 240, height: 150 }} />
+                        <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginVertical: 4 }}>Talk about anything!</Text>
+                        <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 16 }}>Create a new room and invite friends!</Text>
+                        <ZButton title="Start room" path="CreateRoom" />
+                    </View>
+                )
+            }
+        </ZListGroup>
+    );
+});
 
 export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) => {
     const theme = useTheme();
-    let discoverSeed = getRandomSeed();
-    let rooms = getClient().useExploreRooms({ seed: discoverSeed }, { fetchPolicy: 'cache-and-network' });
-    let suggestedRooms = (rooms.suggestedRooms || []).filter(v => v.__typename === 'SharedRoom') as DiscoverSharedRoom[];
-    let newRooms = rooms.discoverNewAndGrowing.items || [];
-    let popularRooms = normalizePopularItems(rooms.discoverPopularNow.items);
-    let topFreeRooms = rooms.discoverTopFree.items || [];
-    let topPremiumRooms = rooms.discoverTopPremium.items || [];
-    let popularOrgs = normalizePopularOrgItems(rooms.discoverTopOrganizations.items);
-    let newOrgs = rooms.discoverNewAndGrowingOrganizations.items || [];
-    let voiceRooms = rooms.activeVoiceChats.items || [];
+    const client = useClient();
+    const discoverSeed = getRandomSeed();
+    const rooms = client.useExploreRooms({ seed: discoverSeed }, { fetchPolicy: 'cache-and-network' });
+    const suggestedRooms = (rooms.suggestedRooms || []).filter(v => v.__typename === 'SharedRoom') as DiscoverSharedRoom[];
+    const newRooms = rooms.discoverNewAndGrowing.items || [];
+    const popularRooms = normalizePopularItems(rooms.discoverPopularNow.items);
+    const topFreeRooms = rooms.discoverTopFree.items || [];
+    const topPremiumRooms = rooms.discoverTopPremium.items || [];
+    const popularOrgs = normalizePopularOrgItems(rooms.discoverTopOrganizations.items);
+    const newOrgs = rooms.discoverNewAndGrowingOrganizations.items || [];
 
     return (
         <>
-            {SUPER_ADMIN && (
-                <ZListGroup
-                    header="Rooms"
-                    actionRight={{
-                        title: 'See all', onPress: () => props.router.push('RoomsFeed', { cursor: rooms.activeVoiceChats.cursor })
-                    }}
-                >
-                    {voiceRooms.length > 0
-                        ? voiceRooms.map(v => <DiscoverListItemVoice key={v.id} item={v} />)
-                        : (
-                            <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginBottom: 16, alignItems: 'center' }}>
-                                <Image source={require('assets/art-crowd.png')} style={{ width: 240, height: 150 }} />
-                                <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginVertical: 4 }}>Talk about anything!</Text>
-                                <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 16 }}>Create a new room and invite friends!</Text>
-                                <ZButton title="Start room" path="CreateRoom" />
-                            </View>
-                        )
-                    }
-                </ZListGroup>
-            )}
+            <ActiveVoiceChats {...props}/>
             <DiscoverCreateList />
             <ZListGroup
                 header="Popular now"
@@ -184,7 +198,8 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
 };
 
 const ExplorePage = (props: PageProps) => {
-    let discoverDone = getClient().useDiscoverIsDone({ fetchPolicy: 'network-only' });
+    const client = useClient();
+    let discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
     const scrollRef = React.useContext(ComponentRefContext);
 
     return (
