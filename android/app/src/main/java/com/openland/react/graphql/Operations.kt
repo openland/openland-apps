@@ -148,6 +148,7 @@ object Operations {
         if (name == "Users") return Users
         if (name == "VoiceChat") return VoiceChat
         if (name == "VoiceChatControls") return VoiceChatControls
+        if (name == "VoiceChatEventsState") return VoiceChatEventsState
         if (name == "VoiceChatListeners") return VoiceChatListeners
         if (name == "VoiceChatUser") return VoiceChatUser
         if (name == "AccountInviteJoin") return AccountInviteJoin
@@ -311,7 +312,7 @@ object Operations {
         if (name == "SettingsWatch") return SettingsWatch
         if (name == "StickersWatch") return StickersWatch
         if (name == "TypingsWatch") return TypingsWatch
-        if (name == "VoiceChatWatch") return VoiceChatWatch
+        if (name == "VoiceChatEvents") return VoiceChatEvents
         if (name == "WalletUpdates") return WalletUpdates
         if (name == "WatchUpdates") return WatchUpdates
         error("Unknown operation: $name")

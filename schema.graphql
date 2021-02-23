@@ -1801,6 +1801,7 @@ type Mutation {
   debugCopyChatMembers(fromCid: ID!, toCid: ID!): Boolean!
   debugCopyOrgMembers(fromOrg: ID!, toOrg: ID!): Boolean!
   debugMigratePrivateChatMessages: Boolean!
+  debugKickAllFromVoiceChats: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2841,6 +2842,7 @@ type Query {
   alphaProfiles(query: String, first: Int!, after: String, page: Int, sort: String): UserConnection!
   voiceChat(id: ID!): VoiceChat!
   activeVoiceChats(first: Int!, after: String): VoiceChatConnection!
+  voiceChatEventsState(id: ID!): VoiceChatEventsState!
   conference(id: ID!): Conference!
   conferenceMedia(id: ID!, peerId: ID!): ConferenceMedia!
   alphaHomeFeed(first: Int!, after: String): FeedItemConnection!
@@ -3347,6 +3349,7 @@ type Subscription {
   chatOnlinesCount(chatId: ID!): ChatOnlineEvent!
   typings: TypingEvent!
   voiceChatWatch(id: ID!): VoiceChat!
+  voiceChatEvents(id: ID!, fromState: String!): VoiceChatEventsContainer!
   conferenceWatch(id: ID!): Conference!
   conferenceMediaWatch(id: ID!, peerId: ID!): ConferenceMedia!
 }
@@ -3774,6 +3777,17 @@ type VoiceChatConnection {
   cursor: String
 }
 
+union VoiceChatEvent = VoiceChatParticipantUpdatedEvent | VoiceChatUpdatedEvent
+
+type VoiceChatEventsContainer {
+  events: [VoiceChatEvent!]!
+  state: String!
+}
+
+type VoiceChatEventsState {
+  state: String!
+}
+
 input VoiceChatInput {
   title: String!
 }
@@ -3799,6 +3813,15 @@ enum VoiceChatParticipantStatus {
   ADMIN
   LEFT
   KICKED
+}
+
+type VoiceChatParticipantUpdatedEvent {
+  chat: VoiceChat!
+  participant: VoiceChatParticipant!
+}
+
+type VoiceChatUpdatedEvent {
+  chat: VoiceChat!
 }
 
 type WalletAccount {
