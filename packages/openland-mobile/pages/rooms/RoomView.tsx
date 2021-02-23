@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ModalProps } from 'react-native-fast-modal';
-import { View, Text, Image, FlatList, LayoutChangeEvent, TouchableOpacity } from 'react-native';
+import { View, Text, Image, FlatList, LayoutChangeEvent, TouchableOpacity, Keyboard, LayoutAnimation, Platform, DeviceEventEmitter } from 'react-native';
 import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { SDevice } from 'react-native-s/SDevice';
@@ -266,6 +266,7 @@ const EditRoomModal = React.memo(({ id, title, hide }: EditRoomModalProps & { hi
     const client = useClient();
     const form = useForm();
     const titleField = useField('room.title', title || '', form);
+
     const onCancel = () => {
         hide();
     };
@@ -279,10 +280,59 @@ const EditRoomModal = React.memo(({ id, title, hide }: EditRoomModalProps & { hi
         await client.refetchVoiceChat({ id });
         hide();
     };
+
+    const [keyboardHeight, setKeyboardHeight] = React.useState(0);
+    const isIos = Platform.OS === 'ios';
+
+    const keyboardWillShow = (e: any) => {
+        if (e.duration > 0) {
+            LayoutAnimation.configureNext(LayoutAnimation.create(
+                e.duration,
+                LayoutAnimation.Types[e.easing]
+            ));
+        }
+        setKeyboardHeight(e?.endCoordinates?.height);
+    };
+
+    const keyboardWillHide = (e: any) => {
+        if (e.duration > 0) {
+            LayoutAnimation.configureNext(LayoutAnimation.create(
+                e.duration,
+                LayoutAnimation.Types[e.easing]
+            ));
+        }
+        setKeyboardHeight(0);
+    };
+
+    const keyboardHeightChange = (e: any) => {
+        setKeyboardHeight(e?.height ? Math.ceil(e.height) : 0);
+    };
+
+    React.useEffect(
+        () => {
+            if (isIos) {
+                Keyboard.addListener('keyboardWillShow', keyboardWillShow);
+                Keyboard.addListener('keyboardWillHide', keyboardWillHide);
+            } else {
+                DeviceEventEmitter.addListener('async_keyboard_height', keyboardHeightChange);
+            }
+            return () => {
+                if (isIos) {
+                    Keyboard.removeListener('keyboardWillShow', keyboardWillShow);
+                    Keyboard.removeListener('keyboardWillHide', keyboardWillHide);
+                } else {
+                    DeviceEventEmitter.removeListener('async_keyboard_height', keyboardHeightChange);
+                }
+            };
+        },
+        [],
+    );
+
     return (
         <View
             style={{
                 marginTop: 15,
+                marginBottom: keyboardHeight,
             }}
         >
             <ZShaker ref={shakerRef}>
