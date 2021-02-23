@@ -1,26 +1,20 @@
 import * as React from 'react';
-import { withApp } from '../../components/withApp';
-import { ZListGroup } from '../../components/ZListGroup';
-import { ZListItem } from '../../components/ZListItem';
-import { PageProps } from '../../components/PageProps';
+import { View, Linking, Share, Platform, Text } from 'react-native';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { Linking, Share, Platform } from 'react-native';
+
+import { withApp } from 'openland-mobile/components/withApp';
+import { ZListGroup } from 'openland-mobile/components/ZListGroup';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
+import { PageProps } from 'openland-mobile/components/PageProps';
 import { User_conversation_PrivateRoom } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { SUPER_ADMIN } from '../Init';
-import { Modals } from './modals/Modals';
 import Alert from 'openland-mobile/components/AlertBlanket';
-import { formatError } from 'openland-y-forms/errorHandling';
-import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
-import Toast from 'openland-mobile/components/Toast';
+import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { formatPhone } from 'openland-y-utils/auth/formatPhone';
-import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { ZHero } from 'openland-mobile/components/ZHero';
-import { ZHeroAction } from 'openland-mobile/components/ZHeroAction';
-import { plural } from 'openland-y-utils/plural';
+import { plural, pluralForm } from 'openland-y-utils/plural';
 import { SHeader } from 'react-native-s/SHeader';
-import { UserPhotoUploader } from './components/UserPhotoUploader';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 import { useLastSeenShort } from 'openland-y-utils/LastSeen';
 import { ProfileDeleted } from './components/ProfileDeleted';
@@ -29,15 +23,29 @@ import { openMapsApp } from 'openland-mobile/utils/openMapsApp';
 import { openCalendar } from 'openland-mobile/utils/openCalendar';
 import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
 import { ZShowMoreText } from 'openland-mobile/components/ZShowMoreText';
-import { ProfileUserNew } from './ProfileUserNew';
+import { ZButton } from 'openland-mobile/components/ZButton';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+
+import { Tabs } from './UserFollowers';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
+import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
+import { Modals } from './modals/Modals';
+import Toast from 'openland-mobile/components/Toast';
+import { formatError } from 'openland-y-forms/errorHandling';
+import { UserPhotoUploaderNew } from './components/UserPhotoUploaderNew';
+import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
+import { CurrentVoiceChat } from './components/CurrentVoiceChat';
 
 const ProfileUserComponent = React.memo((props: PageProps) => {
     const client = getClient();
+    const theme = React.useContext(ThemeContext);
     const { router } = props;
     const userId = router.params.id;
     const data = client.useUser({ userId }, { fetchPolicy: 'cache-and-network' });
     const user = data.user;
     const conversation = data.conversation as User_conversation_PrivateRoom;
+    const { currentVoiceChat } = user;
 
     const { isBanned } = useUserBanInfo(user.id, user.isBanned, user.isMeBanned);
 
@@ -57,23 +65,6 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
             : 'user'
         : 'bot';
 
-    const onBannedClick = React.useCallback(async () => {
-        if (isBanned) {
-            await client.mutateUnBanUser({ id: user.id });
-        } else {
-            await client.mutateBanUser({ id: user.id });
-        }
-    }, [user.id, isBanned]);
-
-    const handleContactPress = React.useCallback(async () => {
-        setInContacts(!inContacts);
-        if (inContacts) {
-            await client.mutateRemoveFromContacts({ userId: user.id });
-        } else {
-            await client.mutateAddToContacts({ userId: user.id });
-        }
-    }, [inContacts, user.id]);
-
     const handleSharePress = React.useCallback(() => {
         let link = `https://openland.com/${user.shortname || user.id}`;
         Share.share(
@@ -85,80 +76,20 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
         );
     }, [user.shortname, user.id]);
 
-    const handleManagePress = React.useCallback(() => {
-        const builder = new ActionSheetBuilder();
-
-        if (SUPER_ADMIN) {
-            builder.action(
-                'Add to groups',
-                () => {
-                    Modals.showGroupMuptiplePicker(router, {
-                        title: 'Add',
-                        action: async (groups) => {
-                            if (groups.length > 0) {
-                                const loader = Toast.loader();
-                                loader.show();
-                                try {
-                                    await client.mutateRoomsInviteUser({
-                                        userId: user.id,
-                                        roomIds: groups.map((u) => u.id),
-                                    });
-                                } catch (e) {
-                                    Alert.alert(formatError(e));
-                                }
-                                loader.hide();
-                            }
-
-                            router.back();
-                        },
-                    });
-                },
-                false,
-                require('assets/ic-group-24.png'),
-            );
-        }
-        builder.action(
-            isBanned ? 'Unblock person' : 'Block person',
-            onBannedClick,
-            false,
-            isBanned ? require('assets/ic-unblock-24.png') : require('assets/ic-block-24.png'),
-        );
-        builder.action(
-            'Report spam',
-            () => Modals.showReportSpam({ router, userId }),
-            false,
-            require('assets/ic-flag-24.png'),
-        );
-        if (SUPER_ADMIN) {
-            builder.action(
-                'Delete person',
-                () => {
-                    Alert.builder()
-                        .title(`Delete user?`)
-                        .message(`This cannot be undone`)
-                        .button('Cancel', 'cancel')
-                        .action('Delete', 'destructive', async () => {
-                            await client.mutateDeleteUser({ id: userId });
-                            await client.refetchUser({ userId });
-                            setTimeout(() => {
-                                props.router.pushAndReset('Home');
-                            }, 200);
-                        })
-                        .show();
-                },
-                false,
-                require('assets/ic-delete-24.png'),
-            );
-        }
-
-        builder.show();
-    }, [user.id, isBanned]);
-
     const handleLinkPress = React.useCallback(async (link: string) => {
         if (await Linking.canOpenURL(link)) {
             await Linking.openURL(link);
         }
     }, []);
+
+    const handleContactPress = React.useCallback(async () => {
+        setInContacts(!inContacts);
+        if (inContacts) {
+            await client.mutateRemoveFromContacts({ userId });
+        } else {
+            await client.mutateAddToContacts({ userId });
+        }
+    }, [inContacts, userId]);
 
     const website = React.useMemo(() => findSocialShortname.site(user.website), [user.website]);
     const instagram = React.useMemo(() => findSocialShortname.instagram(user.instagram), [
@@ -178,84 +109,223 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
         return <ProfileDeleted photo={user.photo} id={user.id} title={user.name} />;
     }
 
+    let messageButtonTitle = 'Message';
+    if (profileType === 'my') {
+        messageButtonTitle = 'Edit profile';
+    } else if (profileType === 'bot') {
+        messageButtonTitle = 'View messages';
+    }
+
+    const onMessageButtonPress = React.useCallback(() => {
+        if (profileType === 'my') {
+            router.push('SettingsProfile');
+        } else {
+            router.pushAndReset('Conversation', { id: conversation.id });
+        }
+    }, [router, conversation.id, profileType]);
+
+    const onFollowingPress = React.useCallback(() => {
+        router.push('UserFollowers', { uid: userId, initialTab: Tabs.FOLLOWING });
+    }, [router, userId]);
+
+    const onFollowersPress = React.useCallback(() => {
+        router.push('UserFollowers', { uid: userId, initialTab: Tabs.FOLLOWERS });
+    }, [router, userId]);
+
+    const onFollowButtonPress = React.useCallback(async () => {
+        if (user.followedByMe) {
+            Alert.builder()
+                .title(`Unfollow ${user.name}`)
+                .button('Cancel', 'cancel')
+                .action('Unfollow', 'destructive', async () => {
+                    await client.mutateSocialUnfollow({ uid: userId });
+                    await client.refetchUser({ userId });
+                })
+                .show();
+        } else {
+            await client.mutateSocialFollow({ uid: userId });
+            await client.refetchUser({ userId });
+        }
+    }, [user.followedByMe, userId]);
+
+    const onBannedClick = React.useCallback(async () => {
+        if (isBanned) {
+            await client.mutateUnBanUser({ id: user.id });
+        } else {
+            await client.mutateBanUser({ id: user.id });
+        }
+    }, [user.id, isBanned]);
+
+    const onMutePress = React.useCallback(() => {
+        setMuted(!muted);
+        client.mutateRoomSettingsUpdate({
+            roomId: conversation.id,
+            settings: { mute: !muted },
+        });
+    }, [muted]);
+
+    const onMorePress = React.useCallback(() => {
+        const builder = new ActionSheetBuilder();
+
+        if (profileType === 'my') {
+            builder.view(() => <UserPhotoUploaderNew />);
+            builder.action(
+                'Saved messages',
+                () => router.push('Conversation', { id: conversation.id }),
+                false,
+                require('assets/ic-bookmark-24.png'),
+            );
+        } else {
+            if (SUPER_ADMIN) {
+                builder.action(
+                    'Add to groups',
+                    () => {
+                        Modals.showGroupMuptiplePicker(router, {
+                            title: 'Add',
+                            action: async (groups) => {
+                                if (groups.length > 0) {
+                                    const loader = Toast.loader();
+                                    loader.show();
+                                    try {
+                                        await client.mutateRoomsInviteUser({
+                                            userId,
+                                            roomIds: groups.map((u) => u.id),
+                                        });
+                                    } catch (e) {
+                                        Alert.alert(formatError(e));
+                                    }
+                                    loader.hide();
+                                }
+
+                                router.back();
+                            },
+                        });
+                    },
+                    false,
+                    require('assets/ic-group-24.png'),
+                );
+            }
+            if (profileType === 'user') {
+                builder.action(
+                    inContacts ? 'Remove from contacts' : 'Save to contacts',
+                    handleContactPress,
+                    false,
+                    inContacts ? require('assets/ic-user-remove-24.png') : require('assets/ic-user-add-24.png'),
+                );
+            }
+            builder.action(
+                isBanned ? 'Unblock person' : 'Block person',
+                onBannedClick,
+                false,
+                isBanned ? require('assets/ic-unblock-24.png') : require('assets/ic-block-24.png'),
+            );
+            builder.action(
+                'Report spam',
+                () => Modals.showReportSpam({ router, userId }),
+                false,
+                require('assets/ic-flag-24.png'),
+            );
+            if (SUPER_ADMIN) {
+                builder.action(
+                    'Delete person',
+                    () => {
+                        Alert.builder()
+                            .title(`Delete user?`)
+                            .message(`This cannot be undone`)
+                            .button('Cancel', 'cancel')
+                            .action('Delete', 'destructive', async () => {
+                                await client.mutateDeleteUser({ id: userId });
+                                await client.refetchUser({ userId });
+                                setTimeout(() => {
+                                    props.router.pushAndReset('Home');
+                                }, 200);
+                            })
+                            .show();
+                    },
+                    false,
+                    require('assets/ic-delete-24.png'),
+                );
+            }
+        }
+        builder.action(
+            'Share',
+            handleSharePress,
+            false,
+            require('assets/ic-share-24.png'),
+        );
+
+        builder.title('More');
+        builder.show(true, { disableBottomSafeArea: true, disableMargins: true });
+    }, [userId]);
+
+    const userFollowers = (
+        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 12 }}>
+            <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, marginRight: 20 }} onPress={onFollowingPress}>
+                <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>
+                    {user.followingCount}
+                </Text>
+                <Text> following</Text>
+            </Text>
+            <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary }} onPress={onFollowersPress}>
+                <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>
+                    {user.followersCount}
+                </Text>
+                <Text> {pluralForm(user.followersCount, ['follower', 'followers'])}</Text>
+            </Text>
+        </View>
+    );
+
     return (
         <>
             <SHeader title={Platform.OS === 'android' ? 'Info' : user.name} />
-
+            {profileType !== 'my' && (
+                <SHeaderButton
+                    title="Mute"
+                    priority={2}
+                    key={`mute-${muted}`}
+                    icon={muted
+                        ? require('assets/ic-notifications-24.png')
+                        : require('assets/ic-notifications-off-24.png')
+                    }
+                    onPress={onMutePress}
+                />
+            )}
+            <SHeaderButton
+                title="More"
+                priority={1}
+                icon={require('assets/ic-more-h-24.png')}
+                onPress={onMorePress}
+            />
             <SScrollView>
                 <ZHero
                     photo={user.photo}
                     id={user.id}
                     online={user.online}
                     title={user.name}
+                    userFollowers={userFollowers}
                     badge={lastseen}
-                    subtitle={profileType === 'bot' ? 'Bot' : user.primaryOrganization?.name}
-                    actionPrimary={{
-                        title:
-                            profileType === 'my'
-                                ? 'Edit profile'
-                                : profileType === 'bot'
-                                    ? 'View messages'
-                                    : 'Message',
-                        style: profileType === 'my' ? 'secondary' : 'primary',
-                        onPress: () => {
-                            if (profileType === 'my') {
-                                router.push('SettingsProfile');
-                            } else {
-                                router.pushAndReset('Conversation', { id: conversation.id });
-                            }
-                        },
-                    }}
+                    subtitle={profileType === 'bot' ? 'Bot' : undefined}
                 >
-                    {(profileType === 'user' || profileType === 'bot') && (
-                        <ZHeroAction
-                            icon={
-                                muted
-                                    ? require('assets/ic-notifications-24.png')
-                                    : require('assets/ic-notifications-off-24.png')
-                            }
-                            title={muted ? 'Unmute' : 'Mute'}
-                            onPress={() => {
-                                setMuted(!muted);
-                                client.mutateRoomSettingsUpdate({
-                                    roomId: conversation.id,
-                                    settings: { mute: !muted },
-                                });
-                            }}
-                        />
-                    )}
-                    {profileType === 'user' && (
-                        <ZHeroAction
-                            icon={
-                                inContacts
-                                    ? require('assets/ic-user-remove-24.png')
-                                    : require('assets/ic-user-add-24.png')
-                            }
-                            title={inContacts ? 'Remove' : 'Save'}
-                            onPress={handleContactPress}
-                        />
-                    )}
-                    {profileType === 'my' && <UserPhotoUploader />}
-                    {profileType === 'my' && (
-                        <ZHeroAction
-                            icon={require('assets/ic-bookmark-24.png')}
-                            title="Saved"
-                            onPress={() => router.push('Conversation', { id: conversation.id })}
-                        />
-                    )}
-                    <ZHeroAction
-                        icon={require('assets/ic-share-24.png')}
-                        title="Share"
-                        onPress={handleSharePress}
+                    <ZButton
+                        title={messageButtonTitle}
+                        size="xlarge"
+                        style={profileType === 'my' || !user.followedByMe ? 'secondary' : 'primary'}
+                        onPress={onMessageButtonPress}
                     />
                     {profileType === 'user' && (
-                        <ZHeroAction
-                            icon={require('assets/ic-more-h-24.png')}
-                            title="More"
-                            onPress={handleManagePress}
+                        <ZButton
+                            title={user.followedByMe ? 'Following' : 'Follow'}
+                            size="xlarge"
+                            marginLeft={16}
+                            style={user.followedByMe ? 'secondary' : 'primary'}
+                            onPress={onFollowButtonPress}
                         />
                     )}
                 </ZHero>
+
+                {currentVoiceChat && (
+                    <CurrentVoiceChat currentVoiceChat={currentVoiceChat}/>
+                )}
 
                 <ZListGroup header="About" useSpacer={true}>
                     {!!user.about && <ZShowMoreText text={user.about} />}
@@ -404,9 +474,4 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
     );
 });
 
-const ProfileUserOld = withApp(ProfileUserComponent, { navigationAppearance: 'small-hidden' });
-
-export const ProfileUser = () => {
-    // @ts-ignore
-  return SUPER_ADMIN ? <ProfileUserNew /> : <ProfileUserOld />;
-};
+export const ProfileUser = withApp(ProfileUserComponent, { navigationAppearance: 'small-hidden' });
