@@ -77,13 +77,13 @@ const UserModalBody = React.memo(({
     //     })();
     //     hide();
     // }, [roomId, user.id]);
-    const removeUser = React.useCallback(() => {
-        (async () => {
-            await client.mutateVoiceChatKick({ id: roomId, uid: user.id });
-            client.refetchVoiceChat({ id: roomId });
-        })();
-        hide();
-    }, [roomId, user.id]);
+    // const removeUser = React.useCallback(() => {
+    //     (async () => {
+    //         await client.mutateVoiceChatKick({ id: roomId, uid: user.id });
+    //         client.refetchVoiceChat({ id: roomId });
+    //     })();
+    //     hide();
+    // }, [roomId, user.id]);
     // const demoteUser = React.useCallback(() => {
     //     (async () => {
     //         await client.mutateVoiceChatDemote({ id: roomId, uid: user.id });
@@ -189,12 +189,14 @@ const UserModalBody = React.memo(({
                                     onPress={makeAdmin}
                                 />
                             )} */}
-                        <ZListItem
-                            leftIcon={require('assets/ic-leave-24.png')}
-                            small={true}
-                            text="Remove"
-                            onPress={removeUser}
-                        />
+                        {/* {userStatus !== VoiceChatParticipantStatus.ADMIN && (
+                                <ZListItem
+                                leftIcon={require('assets/ic-leave-24.png')}
+                                small={true}
+                                text="Remove"
+                                onPress={removeUser}
+                            />
+                            )} */}
                     </>
                 )}
                 <View style={{ marginTop: 16, paddingHorizontal: 16 }}>
@@ -726,7 +728,7 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
 export const showRoomView = (room: VoiceChatWithSpeakers, router: SRouter) => {
     showBottomSheet({
         view: (ctx) => (
-            <VoiceChatProvider room={{chat: room, speakers: room.speakers}}>
+            <VoiceChatProvider room={{ chat: room, speakers: room.speakers }}>
                 <RoomView room={room} ctx={ctx} router={router} />
             </VoiceChatProvider>
         ),
