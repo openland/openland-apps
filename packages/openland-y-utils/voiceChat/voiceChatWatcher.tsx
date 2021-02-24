@@ -1,28 +1,18 @@
 import * as React from 'react';
 import { useClient } from 'openland-api/useClient';
-import { VoiceChatParticipant, VoiceChatEvents } from 'openland-api/spacex.types';
+import { VoiceChatEntity, VoiceChatParticipant, VoiceChatEvents } from 'openland-api/spacex.types';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
-type VoiceChat = {
-    id: string;
-    title: string | null;
-    adminsCount: number;
-    listenersCount: number;
-    speakersCount: number;
-    active: boolean;
-};
-
-type VoiceChatEntity = {
-    chat: VoiceChat;
+export type VoiceChatT = VoiceChatEntity & {
     speakers?: VoiceChatParticipant[];
     listeners?: VoiceChatParticipant[];
 };
 
-const VoiceChatContext = React.createContext<VoiceChatEntity | null>(null);
+const VoiceChatContext = React.createContext<VoiceChatT | null>(null);
 
-export const VoiceChatProvider = React.memo((props: { room: VoiceChatEntity; children: any }) => {
-    const [voiceChat, setVoiceChat] = React.useState<VoiceChatEntity>({
-        chat: props.room.chat,
+export const VoiceChatProvider = React.memo((props: { room: VoiceChatT; children: any }) => {
+    const [voiceChat, setVoiceChat] = React.useState<VoiceChatT>({
+        ...props.room,
         speakers: props.room.speakers,
         listeners: props.room.listeners,
     });
@@ -32,7 +22,7 @@ export const VoiceChatProvider = React.memo((props: { room: VoiceChatEntity; chi
     const subscribe = async () => {
         const { state: initialState } = (
             await client.queryVoiceChatEventsState(
-                { id: props.room.chat.id },
+                { id: props.room.id },
                 { fetchPolicy: 'network-only' },
             )
         ).voiceChatEventsState;
@@ -41,13 +31,13 @@ export const VoiceChatProvider = React.memo((props: { room: VoiceChatEntity; chi
             initialState,
             (state, handler) =>
                 client.subscribeVoiceChatEvents(
-                    { id: props.room.chat.id, fromState: state! },
+                    { id: props.room.id, fromState: state! },
                     handler,
                 ),
             ({ voiceChatEvents }) => {
                 const { events } = voiceChatEvents;
                 setVoiceChat(prev => {
-                    let newVoiceChat = prev.chat;
+                    let newVoiceChat = prev;
                     let newSpeakers = prev.speakers;
                     let newListeners = prev.listeners;
                     events.map((i) => {
@@ -60,15 +50,23 @@ export const VoiceChatProvider = React.memo((props: { room: VoiceChatEntity; chi
                             const hasSpeaker = newSpeakers?.find(j => j.user.id === participant.user.id);
                             const hasListener = newListeners?.find(j => j.user.id === participant.user.id);
                             if (participant.status === 'LEFT' || participant.status === 'KICKED') {
-                                newSpeakers?.filter(j => j.user.id !== participant.user.id);
-                                newListeners?.filter(j => j.user.id !== participant.user.id);
+                                newSpeakers = newSpeakers?.filter(j => j.user.id !== participant.user.id);
+                                newListeners = newListeners?.filter(j => j.user.id !== participant.user.id);
+                            }
+                            if (participant.status === 'ADMIN') {
+                                if (!hasSpeaker) {
+                                    newSpeakers?.push(participant);
+                                }
+                                if (!!hasListener) {
+                                    newListeners = newListeners?.filter(j => j.user.id !== participant.user.id);
+                                }
                             }
                             if (participant.status === 'SPEAKER') {
                                 if (!hasSpeaker) {
                                     newSpeakers?.push(participant);
                                 }
                                 if (!!hasListener) {
-                                    newListeners?.filter(j => j.user.id !== participant.user.id);
+                                    newListeners = newListeners?.filter(j => j.user.id !== participant.user.id);
                                 }
                             }
                             if (participant.status === 'LISTENER') {
@@ -76,13 +74,13 @@ export const VoiceChatProvider = React.memo((props: { room: VoiceChatEntity; chi
                                     newListeners?.push(participant);
                                 }
                                 if (!!hasSpeaker) {
-                                    newSpeakers?.filter(j => j.user.id !== participant.user.id);
+                                    newSpeakers = newSpeakers?.filter(j => j.user.id !== participant.user.id);
                                 }
                             }
                         }
                     });
                     return {
-                        chat: newVoiceChat,
+                        ...newVoiceChat,
                         speakers: newSpeakers,
                         listeners: newListeners
                     };
@@ -106,6 +104,6 @@ export const VoiceChatProvider = React.memo((props: { room: VoiceChatEntity; chi
     );
 });
 
-// export const useVoiceChat = () => {
-//     return React.useContext(VoiceChatContext);
-// };
+export const useVoiceChat = () => {
+    return React.useContext(VoiceChatContext);
+};

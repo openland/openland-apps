@@ -14,12 +14,7 @@ internal val VoiceChatEventsSelector = obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
                                 field("chat", "chat", notNull(obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("title", "title", scalar("String")),
-                                        field("adminsCount", "adminsCount", notNull(scalar("Int"))),
-                                        field("listenersCount", "listenersCount", notNull(scalar("Int"))),
-                                        field("speakersCount", "speakersCount", notNull(scalar("Int"))),
-                                        field("active", "active", notNull(scalar("Boolean")))
+                                        fragment("VoiceChat", VoiceChatEntitySelector)
                                     ))),
                                 field("participant", "participant", notNull(obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -30,12 +25,7 @@ internal val VoiceChatEventsSelector = obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
                                 field("chat", "chat", notNull(obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("title", "title", scalar("String")),
-                                        field("adminsCount", "adminsCount", notNull(scalar("Int"))),
-                                        field("listenersCount", "listenersCount", notNull(scalar("Int"))),
-                                        field("speakersCount", "speakersCount", notNull(scalar("Int"))),
-                                        field("active", "active", notNull(scalar("Boolean")))
+                                        fragment("VoiceChat", VoiceChatEntitySelector)
                                     )))
                             ))
                         )))))
@@ -44,6 +34,6 @@ internal val VoiceChatEventsSelector = obj(
 val VoiceChatEvents = object: OperationDefinition {
     override val name = "VoiceChatEvents"
     override val kind = OperationKind.SUBSCRIPTION
-    override val body = "subscription VoiceChatEvents(\$id:ID!,\$fromState:String!){voiceChatEvents(fromState:\$fromState,id:\$id){__typename state events{__typename ... on VoiceChatParticipantUpdatedEvent{__typename chat{__typename id title adminsCount listenersCount speakersCount active}participant{__typename ...VoiceChatParticipant}}... on VoiceChatUpdatedEvent{__typename chat{__typename id title adminsCount listenersCount speakersCount active}}}}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}"
+    override val body = "subscription VoiceChatEvents(\$id:ID!,\$fromState:String!){voiceChatEvents(fromState:\$fromState,id:\$id){__typename state events{__typename ... on VoiceChatParticipantUpdatedEvent{__typename chat{__typename ...VoiceChatEntity}participant{__typename ...VoiceChatParticipant}}... on VoiceChatUpdatedEvent{__typename chat{__typename ...VoiceChatEntity}}}}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}"
     override val selector = VoiceChatEventsSelector
 }
