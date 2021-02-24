@@ -11,7 +11,7 @@ const profileView = css`
     flex-direction: column;
     flex-grow: 0;
     flex-shrink: 0;
-    width: 272px;
+    width: 278px;
     position: sticky;
     top: 0;
 `;
@@ -76,14 +76,14 @@ export const ProfileLayout = ({ title, track, leftColumn, rightColumn }: Profile
                 <XView alignItems="center" marginLeft={24}>
                     <XView flexDirection={compactView ? 'column' : 'row'} width="100%">
                         <XView
-                            width={compactView ? undefined : 272}
+                            width={compactView ? undefined : 278}
                             marginRight={compactView ? undefined : 16}
                         >
                             <div className={compactView ? profileViewCompact : profileView}>
                                 {leftColumn}
                             </div>
                         </XView>
-                        <XView maxWidth={536} width="100%" flexShrink={1}>{rightColumn}</XView>
+                        <XView maxWidth={530} width="100%" flexShrink={1}>{rightColumn}</XView>
                     </XView>
                 </XView>
             </ProfileLayoutContext.Provider>

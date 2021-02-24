@@ -87,13 +87,13 @@ const UserFollowersComponent = React.memo<PageProps>((props) => {
                     </ZTab>
                 </View>
                 {selectedTab === Tabs.FOLLOWING && following && following.length === 0 && (
-                    <View style={{  justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                         <Image source={require('assets/art-empty.png')} />
                         <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, textAlign: 'center' }}>No following yet</Text>
                     </View>
                 )}
                 {selectedTab === Tabs.FOLLOWERS && followers && followers.length === 0 && (
-                    <View style={{  justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                         <Image source={require('assets/art-empty.png')} />
                         <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, textAlign: 'center' }}>No followers yet</Text>
                     </View>
