@@ -2464,6 +2464,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateconferenceRequestLocalMediaChange(variables: Types.conferenceRequestLocalMediaChangeVariables, params?: MutationParameters): Promise<Types.conferenceRequestLocalMediaChange> {
         return this.mutate('conferenceRequestLocalMediaChange', variables, params);
     }
+    subscribeActiveVoiceChatsEvents(handler: GraphqlSubscriptionHandler<Types.ActiveVoiceChatsEvents>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.ActiveVoiceChatsEvents> {
+        return this.subscribe(handler, 'ActiveVoiceChatsEvents', undefined, params);
+    }
     subscribeBlackListUpdates(variables: Types.BlackListUpdatesVariables, handler: GraphqlSubscriptionHandler<Types.BlackListUpdates>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.BlackListUpdates> {
         return this.subscribe(handler, 'BlackListUpdates', variables, params);
     }
