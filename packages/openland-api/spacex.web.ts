@@ -1923,22 +1923,27 @@ const VoiceChatParticipantSelector = obj(
             field('handRaised', 'handRaised', args(), scalar('Boolean'))
         );
 
-const VoiceChatWithSpeakersSelector = obj(
+const VoiceChatEntitySelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
             field('title', 'title', args(), scalar('String')),
-            field('adminsCount', 'adminsCount', args(), notNull(scalar('Int'))),
-            field('listenersCount', 'listenersCount', args(), notNull(scalar('Int'))),
-            field('speakersCount', 'speakersCount', args(), notNull(scalar('Int'))),
             field('active', 'active', args(), notNull(scalar('Boolean'))),
+            field('adminsCount', 'adminsCount', args(), notNull(scalar('Int'))),
+            field('speakersCount', 'speakersCount', args(), notNull(scalar('Int'))),
+            field('listenersCount', 'listenersCount', args(), notNull(scalar('Int'))),
             field('me', 'me', args(), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('VoiceChatParticipant', VoiceChatParticipantSelector)
-                )),
+                ))
+        );
+
+const VoiceChatWithSpeakersSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('speakers', 'speakers', args(), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('VoiceChatParticipant', VoiceChatParticipantSelector)
-                )))))
+                ))))),
+            fragment('VoiceChat', VoiceChatEntitySelector)
         );
 
 const UserFullSelector = obj(
@@ -5791,6 +5796,18 @@ const conferenceRequestLocalMediaChangeSelector = obj(
                     fragment('Conference', ConferenceShortSelector)
                 )))
         );
+const ActiveVoiceChatsEventsSelector = obj(
+            field('activeVoiceChatsEvents', 'activeVoiceChatsEvents', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    inline('VoiceChatUpdatedEvent', obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('chat', 'chat', args(), notNull(obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                fragment('VoiceChat', VoiceChatWithSpeakersSelector)
+                            )))
+                    ))
+                )))))
+        );
 const BlackListUpdatesSelector = obj(
             field('blackListUpdates', 'blackListUpdates', args(fieldValue("fromState", refValue('fromState'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -6045,12 +6062,7 @@ const VoiceChatEventsSelector = obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
                                 field('chat', 'chat', args(), notNull(obj(
                                         field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                        field('id', 'id', args(), notNull(scalar('ID'))),
-                                        field('title', 'title', args(), scalar('String')),
-                                        field('adminsCount', 'adminsCount', args(), notNull(scalar('Int'))),
-                                        field('listenersCount', 'listenersCount', args(), notNull(scalar('Int'))),
-                                        field('speakersCount', 'speakersCount', args(), notNull(scalar('Int'))),
-                                        field('active', 'active', args(), notNull(scalar('Boolean')))
+                                        fragment('VoiceChat', VoiceChatEntitySelector)
                                     ))),
                                 field('participant', 'participant', args(), notNull(obj(
                                         field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -6061,12 +6073,7 @@ const VoiceChatEventsSelector = obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
                                 field('chat', 'chat', args(), notNull(obj(
                                         field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                        field('id', 'id', args(), notNull(scalar('ID'))),
-                                        field('title', 'title', args(), scalar('String')),
-                                        field('adminsCount', 'adminsCount', args(), notNull(scalar('Int'))),
-                                        field('listenersCount', 'listenersCount', args(), notNull(scalar('Int'))),
-                                        field('speakersCount', 'speakersCount', args(), notNull(scalar('Int'))),
-                                        field('active', 'active', args(), notNull(scalar('Boolean')))
+                                        fragment('VoiceChat', VoiceChatEntitySelector)
                                     )))
                             ))
                         )))))
@@ -6151,7 +6158,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ActiveVoiceChats: {
         kind: 'query',
         name: 'ActiveVoiceChats',
-        body: 'query ActiveVoiceChats($first:Int!,$after:String){activeVoiceChats(first:$first,after:$after){__typename cursor items{__typename ...VoiceChatWithSpeakers}}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title adminsCount listenersCount speakersCount active me{__typename ...VoiceChatParticipant}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}',
+        body: 'query ActiveVoiceChats($first:Int!,$after:String){activeVoiceChats(first:$first,after:$after){__typename cursor items{__typename ...VoiceChatWithSpeakers}}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}',
         selector: ActiveVoiceChatsSelector
     },
     AuthPoints: {
@@ -6901,7 +6908,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     User: {
         kind: 'query',
         name: 'User',
-        body: 'query User($userId:ID!){user:user(id:$userId){__typename ...UserFull}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount currentVoiceChat{__typename ...VoiceChatWithSpeakers}primaryOrganization{__typename ...OrganizationShort}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title adminsCount listenersCount speakersCount active me{__typename ...VoiceChatParticipant}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
+        body: 'query User($userId:ID!){user:user(id:$userId){__typename ...UserFull}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount currentVoiceChat{__typename ...VoiceChatWithSpeakers}primaryOrganization{__typename ...OrganizationShort}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
         selector: UserSelector
     },
     UserAvailableRooms: {
@@ -6949,13 +6956,13 @@ export const Operations: { [key: string]: OperationDefinition } = {
     Users: {
         kind: 'query',
         name: 'Users',
-        body: 'query Users($ids:[ID!]!){users(ids:$ids){__typename ...UserFull}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount currentVoiceChat{__typename ...VoiceChatWithSpeakers}primaryOrganization{__typename ...OrganizationShort}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title adminsCount listenersCount speakersCount active me{__typename ...VoiceChatParticipant}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
+        body: 'query Users($ids:[ID!]!){users(ids:$ids){__typename ...UserFull}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount currentVoiceChat{__typename ...VoiceChatWithSpeakers}primaryOrganization{__typename ...OrganizationShort}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
         selector: UsersSelector
     },
     VoiceChat: {
         kind: 'query',
         name: 'VoiceChat',
-        body: 'query VoiceChat($id:ID!){voiceChat(id:$id){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title adminsCount listenersCount speakersCount active me{__typename ...VoiceChatParticipant}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}',
+        body: 'query VoiceChat($id:ID!){voiceChat(id:$id){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}',
         selector: VoiceChatSelector
     },
     VoiceChatControls: {
@@ -7777,7 +7784,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     VoiceChatCreate: {
         kind: 'mutation',
         name: 'VoiceChatCreate',
-        body: 'mutation VoiceChatCreate($input:VoiceChatInput!){voiceChatCreate(input:$input){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title adminsCount listenersCount speakersCount active me{__typename ...VoiceChatParticipant}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}',
+        body: 'mutation VoiceChatCreate($input:VoiceChatInput!){voiceChatCreate(input:$input){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}',
         selector: VoiceChatCreateSelector
     },
     VoiceChatDemote: {
@@ -7795,7 +7802,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     VoiceChatJoin: {
         kind: 'mutation',
         name: 'VoiceChatJoin',
-        body: 'mutation VoiceChatJoin($id:ID!){voiceChatJoin(id:$id){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename id title adminsCount listenersCount speakersCount active me{__typename ...VoiceChatParticipant}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}',
+        body: 'mutation VoiceChatJoin($id:ID!){voiceChatJoin(id:$id){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}',
         selector: VoiceChatJoinSelector
     },
     VoiceChatKick: {
@@ -7857,6 +7864,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'conferenceRequestLocalMediaChange',
         body: 'mutation conferenceRequestLocalMediaChange($id:ID!,$media:LocalMediaInput!){conferenceRequestLocalMediaChange(id:$id,media:$media){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}',
         selector: conferenceRequestLocalMediaChangeSelector
+    },
+    ActiveVoiceChatsEvents: {
+        kind: 'subscription',
+        name: 'ActiveVoiceChatsEvents',
+        body: 'subscription ActiveVoiceChatsEvents{activeVoiceChatsEvents{__typename ... on VoiceChatUpdatedEvent{__typename chat{__typename ...VoiceChatWithSpeakers}}}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}',
+        selector: ActiveVoiceChatsEventsSelector
     },
     BlackListUpdates: {
         kind: 'subscription',
@@ -7951,7 +7964,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     VoiceChatEvents: {
         kind: 'subscription',
         name: 'VoiceChatEvents',
-        body: 'subscription VoiceChatEvents($id:ID!,$fromState:String!){voiceChatEvents(fromState:$fromState,id:$id){__typename state events{__typename ... on VoiceChatParticipantUpdatedEvent{__typename chat{__typename id title adminsCount listenersCount speakersCount active}participant{__typename ...VoiceChatParticipant}}... on VoiceChatUpdatedEvent{__typename chat{__typename id title adminsCount listenersCount speakersCount active}}}}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}',
+        body: 'subscription VoiceChatEvents($id:ID!,$fromState:String!){voiceChatEvents(fromState:$fromState,id:$id){__typename state events{__typename ... on VoiceChatParticipantUpdatedEvent{__typename chat{__typename ...VoiceChatEntity}participant{__typename ...VoiceChatParticipant}}... on VoiceChatUpdatedEvent{__typename chat{__typename ...VoiceChatEntity}}}}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}',
         selector: VoiceChatEventsSelector
     },
     WalletUpdates: {

@@ -10,16 +10,20 @@ fragment VoiceChatParticipant on VoiceChatParticipant {
     handRaised
 }
 
-fragment VoiceChatWithSpeakers on VoiceChat {
+fragment VoiceChatEntity on VoiceChat {
     id
     title
-    adminsCount
-    listenersCount
-    speakersCount
     active
+    adminsCount
+    speakersCount
+    listenersCount
     me {
         ...VoiceChatParticipant
     }
+}
+
+fragment VoiceChatWithSpeakers on VoiceChat {
+    ...VoiceChatEntity
     speakers {
         ...VoiceChatParticipant
     }
@@ -133,12 +137,7 @@ subscription VoiceChatEvents($id: ID!, $fromState: String!) {
         events {
             ... on VoiceChatParticipantUpdatedEvent {
                 chat {
-                    id
-                    title
-                    adminsCount
-                    listenersCount
-                    speakersCount
-                    active
+                    ...VoiceChatEntity
                 }
                 participant {
                     ...VoiceChatParticipant
@@ -146,13 +145,18 @@ subscription VoiceChatEvents($id: ID!, $fromState: String!) {
             }
             ... on VoiceChatUpdatedEvent {
                 chat {
-                    id
-                    title
-                    adminsCount
-                    listenersCount
-                    speakersCount
-                    active
+                    ...VoiceChatEntity
                 }
+            }
+        }
+    }
+}
+
+subscription ActiveVoiceChatsEvents {
+    activeVoiceChatsEvents {
+        ... on VoiceChatUpdatedEvent {
+            chat {
+                ...VoiceChatWithSpeakers
             }
         }
     }

@@ -34,6 +34,7 @@ interface UListHeroProps {
     descriptionColor?: string;
     online?: boolean;
     avatar?: { photo: string | null; id: string; title: string };
+    userFollowers?: JSX.Element;
     children?: any;
 }
 
@@ -47,6 +48,7 @@ export const UListHero = (props: UListHeroProps) => {
         avatar,
         badge,
         children,
+        userFollowers,
         online,
     } = props;
     const titleEmojify = React.useMemo(() => emoji(title), [title]);
@@ -64,8 +66,6 @@ export const UListHero = (props: UListHeroProps) => {
                             size={isSmallMobile ? 'large' : 'xx-large'}
                             online={online}
                             badge={badge}
-                            marginTop={16}
-                            marginRight={16}
                             onClick={
                                 avatar.photo && !avatar.photo.startsWith('ph://')
                                     ? () => showAvatarModal(avatar.photo!)
@@ -103,6 +103,7 @@ export const UListHero = (props: UListHeroProps) => {
                         <span className={textStyle}>{description}</span>
                     </XView>
                 )}
+                {userFollowers}
                 <XView flexDirection={compactView ? 'row' : 'column'} marginTop={16}>
                     {children}
                 </XView>

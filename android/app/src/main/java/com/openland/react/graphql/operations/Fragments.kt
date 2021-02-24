@@ -1922,22 +1922,27 @@ internal val VoiceChatParticipantSelector = obj(
             field("handRaised", "handRaised", scalar("Boolean"))
         )
 
-internal val VoiceChatWithSpeakersSelector = obj(
+internal val VoiceChatEntitySelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             field("title", "title", scalar("String")),
-            field("adminsCount", "adminsCount", notNull(scalar("Int"))),
-            field("listenersCount", "listenersCount", notNull(scalar("Int"))),
-            field("speakersCount", "speakersCount", notNull(scalar("Int"))),
             field("active", "active", notNull(scalar("Boolean"))),
+            field("adminsCount", "adminsCount", notNull(scalar("Int"))),
+            field("speakersCount", "speakersCount", notNull(scalar("Int"))),
+            field("listenersCount", "listenersCount", notNull(scalar("Int"))),
             field("me", "me", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
-                )),
+                ))
+        )
+
+internal val VoiceChatWithSpeakersSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
             field("speakers", "speakers", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
-                )))))
+                ))))),
+            fragment("VoiceChat", VoiceChatEntitySelector)
         )
 
 internal val UserFullSelector = obj(

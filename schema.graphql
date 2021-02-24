@@ -6,6 +6,8 @@ directive @withPermission(permission: String!) on FIELD_DEFINITION
 
 directive @disabled on FIELD_DEFINITION
 
+union ActiveVoiceChatsEvent = VoiceChatUpdatedEvent
+
 type AlphaSignupData {
   user: User
   organization: Organization
@@ -2750,6 +2752,7 @@ type Query {
   superAccount(id: ID!, viaOrgId: Boolean): SuperAccount!
   superAdmins: [SuperAdmin!]!
   voiceChatListeners(id: ID!, first: Int!, after: String): VoiceChatParticipantConnection!
+  activeVoiceChats(first: Int!, after: String): VoiceChatConnection!
   myBlackList: [User!]!
   discoverCollections(first: Int!, after: String): DiscoverChatsCollectionConnection
   discoverCollection(id: ID!): DiscoverChatsCollection
@@ -2841,7 +2844,6 @@ type Query {
   """Deprecated"""
   alphaProfiles(query: String, first: Int!, after: String, page: Int, sort: String): UserConnection!
   voiceChat(id: ID!): VoiceChat!
-  activeVoiceChats(first: Int!, after: String): VoiceChatConnection!
   voiceChatEventsState(id: ID!): VoiceChatEventsState!
   conference(id: ID!): Conference!
   conferenceMedia(id: ID!, peerId: ID!): ConferenceMedia!
@@ -3335,6 +3337,7 @@ type Subscription {
   watchSettings: Settings!
   alphaConferenceWatch(id: ID!): Conference!
   alphaConferenceMediaWatch(id: ID!, peerId: ID!): ConferenceMedia!
+  activeVoiceChatsEvents: [ActiveVoiceChatsEvent!]!
   userEventBus(topic: String!): UserEventBusMessage!
   globalEventBus(topic: String!): UserEventBusMessage!
   blackListUpdates(fromState: String!): BlackListUpdateContainer!

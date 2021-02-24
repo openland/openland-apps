@@ -297,6 +297,7 @@ object Operations {
         if (name == "conferenceAlterMediaState") return conferenceAlterMediaState
         if (name == "conferenceRemoveScreenShare") return conferenceRemoveScreenShare
         if (name == "conferenceRequestLocalMediaChange") return conferenceRequestLocalMediaChange
+        if (name == "ActiveVoiceChatsEvents") return ActiveVoiceChatsEvents
         if (name == "BlackListUpdates") return BlackListUpdates
         if (name == "ChatOnlinesCountWatch") return ChatOnlinesCountWatch
         if (name == "ChatWatch") return ChatWatch
