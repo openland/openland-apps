@@ -44,9 +44,9 @@ const ActiveVoiceChats = React.memo((props: PageProps) => {
     return (
         <ZListGroup
             header="Rooms"
-            actionRight={{
+            actionRight={voiceRooms.items.length > 0 ? {
                 title: 'See all', onPress: () => props.router.push('RoomsFeed', { cursor: voiceRooms.cursor })
-            }}
+            } : undefined}
         >
             {voiceRooms.items.length > 0
                 ? voiceRooms.items.map(v => <DiscoverListItemVoice key={v.id} item={v} />)
