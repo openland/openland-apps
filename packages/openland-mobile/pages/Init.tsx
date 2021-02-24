@@ -52,6 +52,7 @@ import { ModalProvider } from 'react-native-fast-modal';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { LocalContactsProvider } from 'openland-y-utils/contacts/LocalContacts';
 import { LocalBlackListProvider } from 'openland-y-utils/blacklist/LocalBlackList';
+import { VoiceChatsFeedProvider } from 'openland-y-utils/voiceChat/voiceChatsFeedWatcher';
 import { MessagesActionsStateProvider } from 'openland-y-runtime/MessagesActionsState';
 import { PersistenceVersion } from 'openland-engines/PersitenceVersion';
 
@@ -354,17 +355,19 @@ export class Init extends React.Component<
                     <PhonebookExporter client={getClient()} />
                     <PushManager client={getClient()} />
                     {this.state.dimensions && (
-                        <LocalBlackListProvider>
-                            <LocalContactsProvider>
-                                <MessagesActionsStateProvider>
-                                    <Root
-                                        routing={getMessenger().history}
-                                        width={this.state.dimensions.width}
-                                        height={this.state.dimensions.height}
-                                    />
-                                </MessagesActionsStateProvider>
-                            </LocalContactsProvider>
-                        </LocalBlackListProvider>
+                        <VoiceChatsFeedProvider>
+                            <LocalBlackListProvider>
+                                <LocalContactsProvider>
+                                    <MessagesActionsStateProvider>
+                                        <Root
+                                            routing={getMessenger().history}
+                                            width={this.state.dimensions.width}
+                                            height={this.state.dimensions.height}
+                                        />
+                                    </MessagesActionsStateProvider>
+                                </LocalContactsProvider>
+                            </LocalBlackListProvider>
+                        </VoiceChatsFeedProvider>
                     )}
                 </GQLClientContext.Provider>
             );

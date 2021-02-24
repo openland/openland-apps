@@ -5796,6 +5796,18 @@ const conferenceRequestLocalMediaChangeSelector = obj(
                     fragment('Conference', ConferenceShortSelector)
                 )))
         );
+const ActiveVoiceChatsEventsSelector = obj(
+            field('activeVoiceChatsEvents', 'activeVoiceChatsEvents', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    inline('VoiceChatUpdatedEvent', obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('chat', 'chat', args(), notNull(obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                fragment('VoiceChat', VoiceChatWithSpeakersSelector)
+                            )))
+                    ))
+                )))))
+        );
 const BlackListUpdatesSelector = obj(
             field('blackListUpdates', 'blackListUpdates', args(fieldValue("fromState", refValue('fromState'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -7852,6 +7864,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'conferenceRequestLocalMediaChange',
         body: 'mutation conferenceRequestLocalMediaChange($id:ID!,$media:LocalMediaInput!){conferenceRequestLocalMediaChange(id:$id,media:$media){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}',
         selector: conferenceRequestLocalMediaChangeSelector
+    },
+    ActiveVoiceChatsEvents: {
+        kind: 'subscription',
+        name: 'ActiveVoiceChatsEvents',
+        body: 'subscription ActiveVoiceChatsEvents{activeVoiceChatsEvents{__typename ... on VoiceChatUpdatedEvent{__typename chat{__typename ...VoiceChatWithSpeakers}}}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}',
+        selector: ActiveVoiceChatsEventsSelector
     },
     BlackListUpdates: {
         kind: 'subscription',

@@ -151,3 +151,13 @@ subscription VoiceChatEvents($id: ID!, $fromState: String!) {
         }
     }
 }
+
+subscription ActiveVoiceChatsEvents {
+    activeVoiceChatsEvents {
+        ... on VoiceChatUpdatedEvent {
+            chat {
+                ...VoiceChatWithSpeakers
+            }
+        }
+    }
+}
