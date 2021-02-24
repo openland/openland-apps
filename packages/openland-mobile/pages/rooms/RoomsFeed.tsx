@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
-import { ZLoader } from 'openland-mobile/components/ZLoader';
-import { SDeferred } from 'react-native-s/SDeferred';
 import { SRouter } from 'react-native-s/SRouter';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { withApp } from 'openland-mobile/components/withApp';
@@ -68,7 +66,7 @@ let RoomsFeedPage = React.memo((props: PageProps) => {
     // TODO: Change fetch-policy when updates are ready
     let initialRoomsList = client.useActiveVoiceChats({ first: 5 }, { fetchPolicy: 'network-only' }).activeVoiceChats;
 
-    let { items: rooms, loading, loadMore } = useListReducer({
+    let { items: rooms, loading, inited, loadMore } = useListReducer({
         fetchItems: async (after) => {
             return (await client.queryActiveVoiceChats({ after, first: 5 }, { fetchPolicy: 'network-only' })).activeVoiceChats;
         },
@@ -80,31 +78,26 @@ let RoomsFeedPage = React.memo((props: PageProps) => {
         <>
             <SHeader title="Rooms" />
             <SHeaderButton title="New room" onPress={pushRoom} />
-
-            <React.Suspense fallback={<ZLoader />}>
-                <SDeferred>
-                    <SFlatList
-                        data={rooms}
-                        renderItem={({ item }) => <RoomFeedItem room={item} theme={theme} router={router} />}
-                        keyExtractor={(item) => item.id}
-                        ItemSeparatorComponent={() => rooms.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
-                        ListHeaderComponent={rooms.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
-                        ListFooterComponent={(
-                            <>
-                                {rooms.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
-                                <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginBottom: 16, alignItems: 'center' }}>
-                                    <Image source={require('assets/art-crowd.png')} style={{ width: 240, height: 150 }} />
-                                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginVertical: 4 }}>Talk about anything!</Text>
-                                    <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 16 }}>Create a new room and invite friends!</Text>
-                                    <ZButton title="Start room" path="CreateRoom" />
-                                </View>
-                            </>
-                        )}
-                        refreshing={loading}
-                        onEndReached={loadMore}
-                    />
-                </SDeferred>
-            </React.Suspense>
+            <SFlatList
+                data={rooms}
+                renderItem={({ item }) => <RoomFeedItem room={item} theme={theme} router={router} />}
+                keyExtractor={(item) => item.id}
+                ItemSeparatorComponent={() => rooms.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
+                ListHeaderComponent={() => rooms.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
+                ListFooterComponent={inited ? () => (
+                    <>
+                        {rooms.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
+                        <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginBottom: 16, alignItems: 'center' }}>
+                            <Image source={require('assets/art-crowd.png')} style={{ width: 240, height: 150 }} />
+                            <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginVertical: 4 }}>Talk about anything!</Text>
+                            <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 16 }}>Create a new room and invite friends!</Text>
+                            <ZButton title="Start room" path="CreateRoom" />
+                        </View>
+                    </>
+                ) : undefined}
+                refreshing={loading}
+                onEndReached={loadMore}
+            />
         </>
     );
 });
