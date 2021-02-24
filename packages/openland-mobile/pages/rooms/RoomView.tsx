@@ -27,7 +27,8 @@ import InCallManager from 'react-native-incall-manager';
 import { SStatusBar } from 'react-native-s/SStatusBar';
 import {
     VoiceChatProvider,
-    // useVoiceChat
+    useVoiceChat,
+    VoiceChatT
 } from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
@@ -364,7 +365,7 @@ const showEditRoom = (props: EditRoomModalProps) => {
 };
 
 interface RoomViewProps {
-    room: VoiceChatWithSpeakers;
+    room: VoiceChatT;
 }
 
 const RoomHeader = React.memo(
@@ -561,7 +562,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
     });
     // let listenersState = { items: [] as VoiceChatListeners_voiceChatListeners_items[], loading: false, loadMore: () => { } };
     const peersWithSpeakers = peers
-        .map(peer => ({ peer, speaker: room.speakers.find(s => s.user.id === peer.user.id)! }))
+        .map(peer => ({ peer, speaker: room.speakers?.find(s => s.user.id === peer.user.id)! }))
         .filter((x) => !!x.speaker);
 
     const speakersElement = (
@@ -630,16 +631,16 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
 });
 
 const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: SRouter }) => {
-    // const voiceChat = useVoiceChat();
-    // console.log('voiceChat---------', voiceChat);
+    const voiceChat = useVoiceChat();
     const theme = useTheme();
     const client = useClient();
     const room = client.useVoiceChat({ id: props.room.id }, { fetchPolicy: 'network-only' }).voiceChat;
     const conference = client.useConference({ id: props.room.id }, { suspense: false })?.conference;
     const [headerHeight, setHeaderHeight] = React.useState(0);
     const [controlsHeight, setControlsHeight] = React.useState(0);
-    const voiceChatData = room;
+    const voiceChatData = voiceChat ? voiceChat : room;
     const canMeSpeak = voiceChatData.me?.status === VoiceChatParticipantStatus.ADMIN || voiceChatData.me?.status === VoiceChatParticipantStatus.SPEAKER;
+
     const onHeaderLayout = React.useCallback(
         (e: LayoutChangeEvent) => {
             setHeaderHeight(e.nativeEvent.layout.height);
@@ -664,8 +665,8 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
     }, [state, mediaSession]);
 
     const handleLeave = React.useCallback(async () => {
-        let admins = voiceChatData.speakers.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
-        if (admins.length <= 1 && canMeSpeak) {
+        let admins = voiceChatData.speakers?.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
+        if (admins && admins.length < 1 && canMeSpeak) {
             await client.mutateVoiceChatEnd({ id: room.id });
         } else {
             await client.mutateVoiceChatLeave({ id: room.id });
@@ -728,7 +729,7 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
 export const showRoomView = (room: VoiceChatWithSpeakers, router: SRouter) => {
     showBottomSheet({
         view: (ctx) => (
-            <VoiceChatProvider room={{ chat: room, speakers: room.speakers }}>
+            <VoiceChatProvider room={{ ...room, speakers: room.speakers }}>
                 <RoomView room={room} ctx={ctx} router={router} />
             </VoiceChatProvider>
         ),
