@@ -66,8 +66,6 @@ export const UListHero = (props: UListHeroProps) => {
                             size={isSmallMobile ? 'large' : 'xx-large'}
                             online={online}
                             badge={badge}
-                            marginTop={16}
-                            marginRight={16}
                             onClick={
                                 avatar.photo && !avatar.photo.startsWith('ph://')
                                     ? () => showAvatarModal(avatar.photo!)
