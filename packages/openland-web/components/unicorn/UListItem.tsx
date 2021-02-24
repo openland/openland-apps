@@ -49,6 +49,8 @@ export interface UListItemProps {
     onClick?: (event: React.MouseEvent) => void;
     onMouseOver?: (event: React.MouseEvent) => void;
     onMouseMove?: (event: React.MouseEvent) => void;
+    onMouseEnter?: (event: React.MouseEvent) => void;
+    onMouseLeave?: (event: React.MouseEvent) => void;
     path?: string;
     large?: boolean;
     label?: boolean;
@@ -84,6 +86,8 @@ export const UListItem = React.memo((props: UListItemProps) => {
         onClick,
         onMouseOver,
         onMouseMove,
+        onMouseEnter,
+        onMouseLeave,
         path,
         large,
         label,
@@ -239,7 +243,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
     }
 
     return (
-        <div ref={containerRef} className={cx('x', wrapperClassName)} onMouseOver={onMouseOver} onMouseMove={onMouseMove}>
+        <div ref={containerRef} className={cx('x', wrapperClassName)} onMouseOver={onMouseOver} onMouseMove={onMouseMove} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             <XView
                 height={height}
                 paddingHorizontal={paddingHorizontal}
