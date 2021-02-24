@@ -22,6 +22,7 @@ import { useListReducer } from 'openland-mobile/utils/listReducer';
 let RoomFeedItem = React.memo((props: { room: VoiceChatWithSpeakers, theme: ThemeGlobal, router: SRouter }) => {
     let { room, theme } = props;
     let joinRoom = useJoinRoom();
+    let speakers = room.speakers.slice(0, 4);
     return (
         <TouchableOpacity style={{ paddingHorizontal: 16, paddingVertical: 12, marginBottom: 16, backgroundColor: theme.backgroundPrimary }} activeOpacity={0.6} onPress={() => joinRoom(room.id)}>
             <Text
@@ -32,7 +33,7 @@ let RoomFeedItem = React.memo((props: { room: VoiceChatWithSpeakers, theme: Them
             </Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View>
-                    {room.speakers.map(speaker => (
+                    {speakers.map(speaker => (
                         <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }}>
                             {speaker.user.name}
                         </Text>
@@ -46,7 +47,7 @@ let RoomFeedItem = React.memo((props: { room: VoiceChatWithSpeakers, theme: Them
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-end', flexWrap: 'wrap', maxWidth: 88 }}>
-                    {room.speakers.map(speaker => (
+                    {speakers.map(speaker => (
                         <View key={speaker.id} style={{ marginLeft: 12, marginBottom: 12 }}>
                             <ZAvatar size="small" photo={speaker.user.photo} title={speaker.user.name} id={speaker.user.id} />
                         </View>

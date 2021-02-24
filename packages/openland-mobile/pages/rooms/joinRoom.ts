@@ -6,13 +6,14 @@ import * as React from 'react';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { showRoomView } from './RoomView';
 import { VoiceChatParticipantStatus } from 'openland-api/spacex.types';
+import { debounce } from 'openland-y-utils/timer';
 
 export const useJoinRoom = () => {
     const client = useClient();
     const router = React.useContext(SRouterContext)!;
     const messenger = getMessenger().engine;
 
-    return async (id: string) => {
+    return debounce(async (id: string) => {
         if (await checkPermissions('microphone')) {
             let room = (await client.mutateVoiceChatJoin({ id })).voiceChatJoin;
             messenger.calls.joinCall(id, async () => {
@@ -26,5 +27,5 @@ export const useJoinRoom = () => {
             });
             showRoomView(room, router);
         }
-    };
+    }, 500, false);
 };
