@@ -251,7 +251,7 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
                                 }}
                             >
                                 Get chat recommendations
-                        </Text>
+                            </Text>
                             <Text
                                 style={{
                                     ...TextStyles.Body,
@@ -260,7 +260,7 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
                                 }}
                             >
                                 Find the right chats for you
-                        </Text>
+                            </Text>
                             <ZButton
                                 title="Start"
                                 onPress={() => {
