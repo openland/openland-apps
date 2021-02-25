@@ -95,7 +95,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Enable access to your camera to take new photos and videos with Openland and share them in chats without leaving the app</string>
 	<key>NSContactsUsageDescription</key>
-	<string>Enable access to your contacts to find existing contacts on Openland</string>
+	<string>Find people you already know by allowing Openland to upload and store a copy of your contacts</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This lets you share your geolocation</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
