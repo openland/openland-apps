@@ -303,7 +303,23 @@ const ModalBoxComponent = React.memo<{
                             </XView>
                         </XView>
                     )}
-
+                    {!props.config.title && !isFullscreen && props.config.useTopCloser && (
+                        <XView position="absolute" right={18} top={18} zIndex={1000}>
+                            <XView
+                                onClick={tryHide}
+                                cursor="pointer"
+                                alignItems="center"
+                                justifyContent="center"
+                                padding={8}
+                                width={36}
+                                height={36}
+                                borderRadius={50}
+                                hoverBackgroundColor="var(--backgroundTertiaryTrans)"
+                            >
+                                <UIcon icon={<IcClose />} />
+                            </XView>
+                        </XView>
+                    )}
                     <React.Suspense fallback={Loader}>{contents}</React.Suspense>
                 </div>
             </div>

@@ -103,8 +103,8 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
                         </View>
                     </>
                 )}
-                // refreshing={loading}
-                // onEndReached={loadMore}
+            // refreshing={loading}
+            // onEndReached={loadMore}
             />
         </>
     );

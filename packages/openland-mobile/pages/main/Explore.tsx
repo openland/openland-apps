@@ -42,20 +42,19 @@ const ActiveVoiceChats = React.memo((props: PageProps) => {
     return (
         <ZListGroup
             header="Rooms"
-            actionRight={{
-                title: 'See all',
-                onPress: () => props.router.push('RoomsFeed'),
-            }}
+            actionRight={chatsMap && chatsMap.length > 0 ? {
+                title: 'See all', onPress: () => props.router.push('RoomsFeed', { cursor: voiceChats.cursor })
+            } : undefined}
         >
             {chatsMap ? (
                 chatsMap.map((v) => <DiscoverListItemVoice key={v.id} item={v} />)
             ) : (
-                <ZListItem
-                    leftIcon={require('assets/ic-add-glyph-24.png')}
-                    text="Start room"
-                    path="CreateRoom"
-                />
-            )}
+                    <ZListItem
+                        leftIcon={require('assets/ic-add-glyph-24.png')}
+                        text="Start room"
+                        path="CreateRoom"
+                    />
+                )}
         </ZListGroup>
     );
 });
@@ -87,14 +86,14 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
                 actionRight={
                     popularRooms.length === 3
                         ? {
-                              title: 'See all',
-                              onPress: () =>
-                                  props.router.push('DiscoverListing', {
-                                      initialRooms: popularRooms,
-                                      type: 'popular',
-                                      after: rooms.discoverPopularNow.cursor,
-                                  }),
-                          }
+                            title: 'See all',
+                            onPress: () =>
+                                props.router.push('DiscoverListing', {
+                                    initialRooms: popularRooms,
+                                    type: 'popular',
+                                    after: rooms.discoverPopularNow.cursor,
+                                }),
+                        }
                         : undefined
                 }
             >
@@ -107,14 +106,14 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
                 actionRight={
                     popularOrgs.length === 3
                         ? {
-                              title: 'See all',
-                              onPress: () =>
-                                  props.router.push('DiscoverListing', {
-                                      initialOrgs: popularOrgs,
-                                      type: 'top-orgs',
-                                      after: rooms.discoverTopOrganizations.cursor,
-                                  }),
-                          }
+                            title: 'See all',
+                            onPress: () =>
+                                props.router.push('DiscoverListing', {
+                                    initialOrgs: popularOrgs,
+                                    type: 'top-orgs',
+                                    after: rooms.discoverTopOrganizations.cursor,
+                                }),
+                        }
                         : undefined
                 }
             >
@@ -127,14 +126,14 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
                 actionRight={
                     topFreeRooms.length === 3
                         ? {
-                              title: 'See all',
-                              onPress: () =>
-                                  props.router.push('DiscoverListing', {
-                                      initialRooms: topFreeRooms,
-                                      type: 'top-free',
-                                      after: rooms.discoverTopFree.cursor,
-                                  }),
-                          }
+                            title: 'See all',
+                            onPress: () =>
+                                props.router.push('DiscoverListing', {
+                                    initialRooms: topFreeRooms,
+                                    type: 'top-free',
+                                    after: rooms.discoverTopFree.cursor,
+                                }),
+                        }
                         : undefined
                 }
             >
@@ -148,14 +147,14 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
                 actionRight={
                     newOrgs.length === 3
                         ? {
-                              title: 'See all',
-                              onPress: () =>
-                                  props.router.push('DiscoverListing', {
-                                      initialOrgs: newOrgs,
-                                      type: 'new-orgs',
-                                      after: rooms.discoverNewAndGrowingOrganizations.cursor,
-                                  }),
-                          }
+                            title: 'See all',
+                            onPress: () =>
+                                props.router.push('DiscoverListing', {
+                                    initialOrgs: newOrgs,
+                                    type: 'new-orgs',
+                                    after: rooms.discoverNewAndGrowingOrganizations.cursor,
+                                }),
+                        }
                         : undefined
                 }
             >
@@ -168,14 +167,14 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
                 actionRight={
                     newRooms.length === 3
                         ? {
-                              title: 'See all',
-                              onPress: () =>
-                                  props.router.push('DiscoverListing', {
-                                      initialRooms: newRooms,
-                                      type: 'new',
-                                      after: rooms.discoverNewAndGrowing.cursor,
-                                  }),
-                          }
+                            title: 'See all',
+                            onPress: () =>
+                                props.router.push('DiscoverListing', {
+                                    initialRooms: newRooms,
+                                    type: 'new',
+                                    after: rooms.discoverNewAndGrowing.cursor,
+                                }),
+                        }
                         : undefined
                 }
             >
@@ -189,14 +188,14 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
                 actionRight={
                     topPremiumRooms.length === 3
                         ? {
-                              title: 'See all',
-                              onPress: () =>
-                                  props.router.push('DiscoverListing', {
-                                      initialRooms: topPremiumRooms,
-                                      type: 'top-premium',
-                                      after: rooms.discoverTopPremium.cursor,
-                                  }),
-                          }
+                            title: 'See all',
+                            onPress: () =>
+                                props.router.push('DiscoverListing', {
+                                    initialRooms: topPremiumRooms,
+                                    type: 'top-premium',
+                                    after: rooms.discoverTopPremium.cursor,
+                                }),
+                        }
                         : undefined
                 }
             >
@@ -212,13 +211,13 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
                         actionRight={
                             suggestedRooms.length > 5
                                 ? {
-                                      title: 'See all',
-                                      onPress: () =>
-                                          props.router.push('DiscoverListing', {
-                                              initialRooms: suggestedRooms,
-                                              type: 'recommendations',
-                                          }),
-                                  }
+                                    title: 'See all',
+                                    onPress: () =>
+                                        props.router.push('DiscoverListing', {
+                                            initialRooms: suggestedRooms,
+                                            type: 'recommendations',
+                                        }),
+                                }
                                 : undefined
                         }
                     >
@@ -229,49 +228,49 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
                     <View style={{ height: 32 }} />
                 </>
             ) : (
-                <>
-                    <LinearGradient
-                        colors={[theme.gradient0to100End, theme.gradient0to100Start]}
-                        style={{
-                            paddingVertical: 16,
-                            paddingHorizontal: 32,
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <Image
-                            source={require('assets/art-discover.png')}
-                            style={{ width: 240, height: 150, marginBottom: 16 }}
-                        />
-                        <Text
+                    <>
+                        <LinearGradient
+                            colors={[theme.gradient0to100End, theme.gradient0to100Start]}
                             style={{
-                                ...TextStyles.Title2,
-                                color: theme.foregroundPrimary,
-                                marginBottom: 4,
+                                paddingVertical: 16,
+                                paddingHorizontal: 32,
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
                             }}
                         >
-                            Get chat recommendations
-                        </Text>
-                        <Text
-                            style={{
-                                ...TextStyles.Body,
-                                color: theme.foregroundSecondary,
-                                marginBottom: 16,
-                            }}
-                        >
-                            Find the right chats for you
-                        </Text>
-                        <ZButton
-                            title="Start"
-                            onPress={() => {
-                                props.router.push('Discover');
-                            }}
-                        />
-                    </LinearGradient>
-                    <View style={{ height: 16 }} />
-                </>
-            )}
+                            <Image
+                                source={require('assets/art-discover.png')}
+                                style={{ width: 240, height: 150, marginBottom: 16 }}
+                            />
+                            <Text
+                                style={{
+                                    ...TextStyles.Title2,
+                                    color: theme.foregroundPrimary,
+                                    marginBottom: 4,
+                                }}
+                            >
+                                Get chat recommendations
+                            </Text>
+                            <Text
+                                style={{
+                                    ...TextStyles.Body,
+                                    color: theme.foregroundSecondary,
+                                    marginBottom: 16,
+                                }}
+                            >
+                                Find the right chats for you
+                            </Text>
+                            <ZButton
+                                title="Start"
+                                onPress={() => {
+                                    props.router.push('Discover');
+                                }}
+                            />
+                        </LinearGradient>
+                        <View style={{ height: 16 }} />
+                    </>
+                )}
         </>
     );
 };

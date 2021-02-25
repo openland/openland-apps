@@ -61,6 +61,7 @@ export const UListHero = (props: UListHeroProps) => {
     return (
         <XView paddingHorizontal={16} flexDirection={compactView ? 'row' : 'column'} flexShrink={1}>
                 {!!avatar && (
+                    <XView marginTop={16} marginRight={16}>
                         <UAvatar
                             {...avatar}
                             size={isSmallMobile ? 'large' : 'xx-large'}
@@ -72,6 +73,7 @@ export const UListHero = (props: UListHeroProps) => {
                                     : undefined
                             }
                         />
+                    </XView>
                 )}
             <XView
                 marginTop={16}
