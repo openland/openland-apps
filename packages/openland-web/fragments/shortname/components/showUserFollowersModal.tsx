@@ -85,7 +85,7 @@ const UserFollowersModalComponent = React.memo<UserFollowersModalComponentProps>
         await client.mutateSocialFollow({ uid: userId });
 
         setFollowers(followers!.map(follower => {
-            return follower.id === userId ? { ...follower, followedByMe: true, followersCount: follower.followersCount++ } : follower;
+            return follower.id === userId ? { ...follower, followedByMe: true, followersCount: follower.followersCount + 1 } : follower;
         }));
     }, [followers]);
 
