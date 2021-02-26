@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { OpenlandClient } from 'openland-api/spacex';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
