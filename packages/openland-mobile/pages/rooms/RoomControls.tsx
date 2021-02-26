@@ -289,7 +289,7 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
                 icon={require('assets/ic-add-glyph-24.png')}
                 iconColor={theme.foregroundSecondary}
                 bgColor={theme.backgroundTertiaryTrans}
-                onPress={() => showRoomInvite({ theme, link: meParticipant ? `https://openland.com/${meParticipant.user.shortname || meParticipant?.id}` : 'Try again' })}
+                onPress={() => showRoomInvite({ theme, link: meParticipant ? `https://openland.com/${meParticipant.user.shortname || meParticipant?.user.id}` : 'Try again' })}
             />
             {roleButtons}
         </View>
