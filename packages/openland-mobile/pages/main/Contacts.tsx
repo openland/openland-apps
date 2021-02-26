@@ -6,7 +6,7 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import ActionSheet from 'openland-mobile/components/ActionSheet';
 import { withApp } from 'openland-mobile/components/withApp';
 import { useClient } from 'openland-api/useClient';
-import { Image, Linking, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Linking, Text, View } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { UserView } from './components/UserView';
