@@ -19,7 +19,6 @@ import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { backoff } from 'openland-y-utils/timer';
 import { Routes } from '../routes';
 import { PushManager } from '../components/PushManager';
-import { PhonebookExporter } from '../components/PhonebookExporter';
 import { MobileMessenger } from '../messenger/MobileMessenger';
 import { SRouting } from 'react-native-s/SRouting';
 import { Root } from './Root';
@@ -352,7 +351,6 @@ export class Init extends React.Component<
             loading = false;
             content = (
                 <GQLClientContext.Provider value={getClient()}>
-                    <PhonebookExporter client={getClient()} />
                     <PushManager client={getClient()} />
                     {this.state.dimensions && (
                         <VoiceChatsFeedProvider>

@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { OpenlandClient } from 'openland-api/spacex';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
+import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
 import { Platform, PermissionsAndroid } from 'react-native';
 import * as Contacts from 'react-native-contacts';
 import { Priority } from 'openland-api/Priority';
@@ -40,7 +42,6 @@ class PhonebookExporterImpl {
 
     constructor(client: OpenlandClient) {
         this.client = client.withParameters({ defaultPriority: Priority.LOW });
-        this.init();
     }
 
     init = async () => {
@@ -61,12 +62,21 @@ class PhonebookExporterImpl {
                 if (permissionCheck === 'authorized') {
                     this.findContacts();
                 }
+                if (permissionCheck === 'denied') {
+                    handlePermissionDismiss('contacts');
+                }
             });
         } else if (Platform.OS === 'android') {
             const permission = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS);
 
-            if (permission === PermissionsAndroid.RESULTS.GRANTED) {
+            if (permission === 'granted') {
                 this.findContacts();
+            }
+            if (permission === 'never_ask_again') {
+                handlePermissionDismiss('contacts');
+            }
+            if (permission === 'denied') {
+                return;
             }
         }
     }
@@ -178,16 +188,11 @@ class PhonebookExporterImpl {
     }
 }
 
-export let contactsExporter: PhonebookExporterImpl | null = null;
+export let cachedContactsExporter: PhonebookExporterImpl | null = null;
 
-export class PhonebookExporter extends React.PureComponent<{ client: OpenlandClient }> {
-    componentDidMount() {
-        if (contactsExporter === null) {
-            contactsExporter = new PhonebookExporterImpl(this.props.client);
-        }
+export function getContactsExporter() {
+    if (!cachedContactsExporter) {
+        cachedContactsExporter = new PhonebookExporterImpl(getClient());
     }
-
-    render() {
-        return null;
-    }
+    return cachedContactsExporter;
 }

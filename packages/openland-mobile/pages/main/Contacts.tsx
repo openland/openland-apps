@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { Platform, PermissionsAndroid } from 'react-native';
-import * as ContactsPermission from 'react-native-contacts';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
+import Alert from 'openland-mobile/components/AlertBlanket';
 import ActionSheet from 'openland-mobile/components/ActionSheet';
 import { withApp } from 'openland-mobile/components/withApp';
-import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { Image, Text } from 'react-native';
+import { useClient } from 'openland-api/useClient';
+import { Image, Linking, Text, TouchableOpacity, View } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { UserView } from './components/UserView';
@@ -20,11 +19,11 @@ import { ZButton } from 'openland-mobile/components/ZButton';
 import Toast from 'openland-mobile/components/Toast';
 import { MyContacts_myContacts_items_user } from 'openland-api/spacex.types';
 import { useLocalContacts } from 'openland-y-utils/contacts/LocalContacts';
-import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { GlobalSearchContacts } from './components/globalSearch/GlobalSearchContacth';
 import { ComponentRefContext } from './Home';
-import { contactsExporter } from '../../components/PhonebookExporter';
+import { getContactsExporter } from '../../components/PhonebookExporter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ContactsWasImportStub = React.memo(() => {
@@ -35,7 +34,7 @@ const ContactsWasImportStub = React.memo(() => {
                 flexGrow: 1,
                 paddingHorizontal: 32,
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
             }}
         >
             <Image
@@ -61,43 +60,44 @@ const ContactsWasImportStub = React.memo(() => {
                     textAlign: 'center',
                 }}
             >
-                Invite your contacts to Openland or add people manually from their profiles,and
-                they will appear here
+                Invite your contacts to Openland or add people manually from their profiles,and they
+                will appear here
             </Text>
         </ASSafeAreaView>
     );
 });
 
-const handleImportPress = async (onImportPress: Function) => {
-    if (Platform.OS === 'ios') {
-        ContactsPermission.checkPermission((errorCheck, permissionCheck) => {
-            if (permissionCheck === 'denied') {
-                handlePermissionDismiss('contacts');
-                return;
-            } else {
-                if (contactsExporter) {
-                    contactsExporter.init();
-                }
-                onImportPress();
-            }
-        });
-    } else if (Platform.OS === 'android') {
-        const permission = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-        );
-        if (permission === 'never_ask_again') {
-            handlePermissionDismiss('contacts');
-            return;
-        }
-        if (permission === 'denied') {
-            return;
-        } else {
-            if (contactsExporter) {
-                await contactsExporter.init();
-            }
-            onImportPress();
-        }
-    }
+const handleImportPress = (onImportPress: Function, theme: ThemeGlobal) => {
+    const handleContactsAllow = async () => {
+        const contactsExporter = getContactsExporter();
+        await contactsExporter.init();
+        onImportPress();
+    };
+    const builder = Alert.builder();
+    builder.title('Allow Openland access to your contacts');
+    builder.view(
+        <View>
+            <Text
+                style={{ ...TextStyles.Body, marginBottom: 16, color: theme.foregroundPrimary }}
+                allowFontScaling={false}
+            >
+                Find people you already know by allowing Openland to upload and store a copy of your
+                contacts. Privacy policy is at{' '}
+                <Text
+                    style={{
+                        color: theme.accentPrimary,
+                    }}
+                    onPress={() => Linking.openURL('https://openland.com/privacy')}
+                    allowFontScaling={false}
+                >
+                    https://openland.com/privacy
+                </Text>
+            </Text>
+        </View>,
+    );
+    builder.cancelable(true);
+    builder.button('Allow', 'default', () => handleContactsAllow());
+    builder.show();
 };
 
 const ContactsNoImportStub = React.memo((props: { onImportPress: Function }) => {
@@ -108,7 +108,7 @@ const ContactsNoImportStub = React.memo((props: { onImportPress: Function }) => 
                 flexGrow: 1,
                 paddingHorizontal: 32,
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
             }}
         >
             <Image
@@ -139,14 +139,15 @@ const ContactsNoImportStub = React.memo((props: { onImportPress: Function }) => 
             </Text>
             <ZButton
                 title="Import contacts"
-                onPress={() => handleImportPress(props.onImportPress)}
+                onPress={() => handleImportPress(props.onImportPress, theme)}
             />
         </ASSafeAreaView>
     );
 });
 
 const ContactsPage = React.memo((props: PageProps) => {
-    const client = getClient();
+    const theme = React.useContext(ThemeContext);
+    const client = useClient();
     const onlines = getMessenger().engine.getOnlines();
     const scrollRef = React.useContext(ComponentRefContext);
     const { items: initialItems, cursor: initialAfter } = client.useMyContacts(
@@ -260,7 +261,7 @@ const ContactsPage = React.memo((props: PageProps) => {
             text="Import contacts"
             leftIcon={require('assets/ic-cycle-glyph-24.png')}
             small={false}
-            onPress={() => handleImportPress(onImportPress)}
+            onPress={() => handleImportPress(onImportPress, theme)}
         />
     );
 
