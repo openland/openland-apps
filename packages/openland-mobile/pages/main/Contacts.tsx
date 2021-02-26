@@ -67,11 +67,10 @@ const ContactsWasImportStub = React.memo(() => {
     );
 });
 
-const handleImportPress = (onImportPress: Function, theme: ThemeGlobal) => {
+const handleImportPress = (cb: () => void, theme: ThemeGlobal) => {
     const handleContactsAllow = async () => {
         const contactsExporter = getContactsExporter();
-        await contactsExporter.init();
-        onImportPress();
+        await contactsExporter.init(cb);
     };
     const builder = Alert.builder();
     builder.title('Allow Openland access to your contacts');
@@ -100,7 +99,7 @@ const handleImportPress = (onImportPress: Function, theme: ThemeGlobal) => {
     builder.show();
 };
 
-const ContactsNoImportStub = React.memo((props: { onImportPress: Function }) => {
+const ContactsNoImportStub = React.memo((props: { cb: () => void }) => {
     const theme = React.useContext(ThemeContext);
     return (
         <ASSafeAreaView
@@ -137,15 +136,13 @@ const ContactsNoImportStub = React.memo((props: { onImportPress: Function }) => 
             >
                 Import contacts from your deviceto find people you know on Openland
             </Text>
-            <ZButton
-                title="Import contacts"
-                onPress={() => handleImportPress(props.onImportPress, theme)}
-            />
+            <ZButton title="Import contacts" onPress={() => handleImportPress(props.cb, theme)} />
         </ASSafeAreaView>
     );
 });
 
 const ContactsPage = React.memo((props: PageProps) => {
+    const contactsExporter = getContactsExporter();
     const theme = React.useContext(ThemeContext);
     const client = useClient();
     const onlines = getMessenger().engine.getOnlines();
@@ -169,22 +166,11 @@ const ContactsPage = React.memo((props: PageProps) => {
     React.useEffect(() => {
         (async () => {
             const permissions = await AsyncStorage.getItem('haveContactsPermission');
-            if (permissions === 'true' || contactsWasExported) {
-                setHaveContactsPermission(true);
+            if (permissions === 'true') {
+                await contactsExporter.init(() => setHaveContactsPermission(true));
             }
         })();
     }, [contactsWasExported]);
-
-    const onImportPress = React.useCallback(async () => {
-        const loader = Toast.loader();
-        loader.show();
-        const permissions = await AsyncStorage.getItem('haveContactsPermission');
-        if (permissions === 'true' || contactsWasExported) {
-            setHaveContactsPermission(true);
-        }
-        loader.hide();
-        Toast.success({ duration: 1000 }).show();
-    }, []);
 
     const handleRemoveMemberFromContacts = React.useCallback(async (userId: string) => {
         const loader = Toast.loader();
@@ -256,21 +242,12 @@ const ContactsPage = React.memo((props: PageProps) => {
         });
     }, [items]);
 
-    const ImportItem = () => (
-        <ZListItem
-            text="Import contacts"
-            leftIcon={require('assets/ic-cycle-glyph-24.png')}
-            small={false}
-            onPress={() => handleImportPress(onImportPress, theme)}
-        />
-    );
-
     return (
         <>
             <SHeader title="Contacts" searchPlaceholder="Search" />
             {!hasContacts && haveContactsPermission && <ContactsWasImportStub />}
             {!hasContacts && !haveContactsPermission && (
-                <ContactsNoImportStub onImportPress={onImportPress} />
+                <ContactsNoImportStub cb={() => setHaveContactsPermission(true)} />
             )}
             {hasContacts && (
                 <SSearchControler
@@ -286,8 +263,20 @@ const ContactsPage = React.memo((props: PageProps) => {
                                 onEndReached={handleLoadMore}
                                 refreshing={loading}
                                 ListHeaderComponent={
-                                    !haveContactsPermission && !contactsWasExported
-                                        ? ImportItem
+                                    !haveContactsPermission
+                                        ? () => (
+                                              <ZListItem
+                                                  text="Import contacts"
+                                                  leftIcon={require('assets/ic-cycle-glyph-24.png')}
+                                                  small={false}
+                                                  onPress={() =>
+                                                      handleImportPress(
+                                                          () => setHaveContactsPermission(true),
+                                                          theme,
+                                                      )
+                                                  }
+                                              />
+                                          )
                                         : undefined
                                 }
                                 keyExtractor={(item, index) => index + '-' + item.id}

@@ -43,7 +43,7 @@ class PhonebookExporterImpl {
         this.client = client.withParameters({ defaultPriority: Priority.LOW });
     }
 
-    init = async () => {
+    init = async (cb?: () => void) => {
         const deviceCountry = Localize.getCountry();
 
         this.defaultCountry = isSupportedCountry(deviceCountry) ? deviceCountry as CountryCode : 'US';
@@ -54,15 +54,22 @@ class PhonebookExporterImpl {
                     Contacts.requestPermission((error, permission) => {
                         if (permission === 'authorized') {
                             this.findContacts();
+                            if (cb) {
+                                cb();
+                            }
                         }
                     });
                 }
 
                 if (permissionCheck === 'authorized') {
                     this.findContacts();
+                    if (cb) {
+                        cb();
+                    }
                 }
                 if (permissionCheck === 'denied') {
                     handlePermissionDismiss('contacts');
+                    AsyncStorage.setItem('haveContactsPermission', 'false');
                 }
             });
         } else if (Platform.OS === 'android') {
@@ -70,9 +77,13 @@ class PhonebookExporterImpl {
 
             if (permission === 'granted') {
                 this.findContacts();
+                if (cb) {
+                    cb();
+                }
             }
             if (permission === 'never_ask_again') {
                 handlePermissionDismiss('contacts');
+                AsyncStorage.setItem('haveContactsPermission', 'false');
             }
             if (permission === 'denied') {
                 return;
@@ -151,7 +162,7 @@ class PhonebookExporterImpl {
                 }
             }
 
-            this.sendContacts();
+            await this.sendContacts();
         });
     }
 
