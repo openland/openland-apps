@@ -43,7 +43,7 @@ const ActiveVoiceChats = React.memo((props: PageProps) => {
         <ZListGroup
             header="Rooms"
             actionRight={chatsMap && chatsMap.length > 0 ? {
-                title: 'See all', onPress: () => props.router.push('RoomsFeed', { cursor: voiceChats.cursor })
+                title: 'See all', onPress: () => props.router.push('RoomsFeed')
             } : undefined}
         >
             {chatsMap ? (

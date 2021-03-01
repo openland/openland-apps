@@ -4,7 +4,6 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SRouter } from 'react-native-s/SRouter';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { withApp } from 'openland-mobile/components/withApp';
-import { PageProps } from 'openland-mobile/components/PageProps';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
@@ -12,10 +11,8 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { SRouterContext } from 'react-native-s/SRouterContext';
-// import { useClient } from 'openland-api/useClient';
 import { VoiceChatWithSpeakers } from 'openland-api/spacex.types';
 import { useJoinRoom } from './joinRoom';
-// import { useListReducer } from 'openland-mobile/utils/listReducer';
 import { useVoiceChatsFeed } from 'openland-y-utils/voiceChat/voiceChatsFeedWatcher';
 
 let RoomFeedItem = React.memo((props: { room: VoiceChatWithSpeakers, theme: ThemeGlobal, router: SRouter }) => {
@@ -57,30 +54,14 @@ let RoomFeedItem = React.memo((props: { room: VoiceChatWithSpeakers, theme: Them
     );
 });
 
-const RoomsFeedPage = React.memo((props: PageProps) => {
+const RoomsFeedPage = React.memo(() => {
     const voiceChats = useVoiceChatsFeed();
     const theme = useTheme();
-    // const client = useClient();
     const router = React.useContext(SRouterContext)!;
 
     const pushRoom = React.useCallback(() => {
         router.push('CreateRoom');
     }, [router]);
-    // TODO: Change fetch-policy when updates are ready
-    // let initialRoomsList = client.useActiveVoiceChats({ first: 5 }, { fetchPolicy: 'network-only' }).activeVoiceChats;
-
-    // let { items: rooms, loading, inited, loadMore } = useListReducer({
-    //     fetchItems: async (after) => {
-    //         return (
-    //             await client.queryActiveVoiceChats(
-    //                 { after, first: 5 },
-    //                 { fetchPolicy: 'network-only' },
-    //             )
-    //         ).activeVoiceChats;
-    //     },
-    //     initialCursor: voiceChats.cursor,
-    //     initialItems: voiceChats.chats,
-    // });
 
     return (
         <>
