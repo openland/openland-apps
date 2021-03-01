@@ -697,7 +697,9 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
             if (event.isPlugged) {
                 InCallManager.setForceSpeakerphoneOn(null);
             } else {
-                InCallManager.setForceSpeakerphoneOn(true);
+                setTimeout(() => {
+                    InCallManager.setForceSpeakerphoneOn(true);
+                }, 500);
             }
         };
         DeviceEventEmitter.addListener('WiredHeadset', handleHeadset);
