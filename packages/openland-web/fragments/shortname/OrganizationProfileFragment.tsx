@@ -9,7 +9,6 @@ import { OrgMember } from 'openland-y-utils/members/EntityMembersManager';
 import { ProfileLayout } from 'openland-web/components/ProfileLayout';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UListHero } from 'openland-web/components/unicorn/UListHero';
-import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -69,9 +68,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
         isMine,
         roomsCount,
         membersCount,
-        owner,
         featured,
-        isOwner,
     } = organization;
 
     const [members, setMembers] = React.useState<OrgMember[]>([]);
@@ -104,14 +101,6 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                     ) : undefined
                 }
             >
-                {!isOwner && (
-                    <UButton
-                        text="Message Admin"
-                        size="large"
-                        path={'/mail/' + owner.id}
-                        marginRight={16}
-                    />
-                )}
                 <OrganizationActions organization={organization} onLeave={handleRemoveMember} />
             </UListHero>
         </>

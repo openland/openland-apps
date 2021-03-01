@@ -468,17 +468,6 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                     '  ·  ' +
                     plural(organization.membersCount, ['member', 'members'])
                 }
-                actionPrimary={
-                    organization.owner.id !== myUserID
-                        ? {
-                            title: 'Message admin',
-                            onPress: () =>
-                                props.router.pushAndReset('Conversation', {
-                                    flexibleId: organization.owner.id,
-                                }),
-                        }
-                        : undefined
-                }
             />
 
             <ZListGroup header="About" useSpacer={true}>
