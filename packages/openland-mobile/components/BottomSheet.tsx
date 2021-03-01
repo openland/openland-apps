@@ -19,6 +19,7 @@ export interface BottomSheetConfig {
     containerStyle?: ViewStyle;
     showAnimation?: ModalConfiguration['showAnimation'];
     disableMargins?: boolean;
+    dismissOffset?: number;
     disableBottomSafeArea?: boolean;
 }
 
@@ -100,6 +101,7 @@ export function showBottomSheet(config: BottomSheetConfig) {
             SAnimated.timing(views.background, { property: 'opacity', from: 1, to: 0, duration: 0.3 });
             SAnimated.timing(views.container, { property: 'translateY', easing: { bezier: [0.23, 1, 0.32, 1] }, from: 0, to: contentHeight, duration: 0.15 });
         },
+        dismissOffset: config.dismissOffset,
         disableBottomSafeArea: config.disableBottomSafeArea
     });
 }

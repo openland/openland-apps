@@ -369,8 +369,8 @@ interface RoomViewProps {
 }
 
 const RoomHeader = React.memo(
-    (props: RoomViewProps & { theme: ThemeGlobal; onLayout: (e: LayoutChangeEvent) => void }) => {
-        const { room, theme } = props;
+    (props: RoomViewProps & { theme: ThemeGlobal; hide: () => void; onLayout: (e: LayoutChangeEvent) => void }) => {
+        const { room, hide, theme } = props;
         const isAdmin = room.me?.status === VoiceChatParticipantStatus.ADMIN;
         const handleMorePress = React.useCallback(() => {
             showEditRoom({ id: room.id, title: room.title });
@@ -379,7 +379,7 @@ const RoomHeader = React.memo(
             <View
                 style={{
                     paddingLeft: 16,
-                    paddingRight: isAdmin ? 56 : 16,
+                    paddingRight: isAdmin ? 112 : 56,
                     paddingTop: 15,
                     paddingBottom: 24,
                 }}
@@ -430,15 +430,24 @@ const RoomHeader = React.memo(
                         }}
                     />
                 </View>
-                {isAdmin && (
+                <View style={{ position: 'absolute', top: 0, right: 0, zIndex: 5, flexDirection: 'row' }}>
+                    {isAdmin && (
+                        <TouchableOpacity
+                            activeOpacity={HighlightAlpha}
+                            style={{ justifyContent: 'center', alignItems: 'center', width: 56, height: 56 }}
+                            onPress={handleMorePress}
+                        >
+                            <Image style={{ width: 24, height: 24, tintColor: theme.foregroundTertiary }} source={require('assets/ic-more-h-24.png')} />
+                        </TouchableOpacity>
+                    )}
                     <TouchableOpacity
                         activeOpacity={HighlightAlpha}
-                        style={{ position: 'absolute', top: 0, right: 0, zIndex: 5, justifyContent: 'center', alignItems: 'center', width: 56, height: 56 }}
-                        onPress={handleMorePress}
+                        style={{ justifyContent: 'center', alignItems: 'center', width: 56, height: 56 }}
+                        onPress={hide}
                     >
-                        <Image style={{ width: 24, height: 24, tintColor: theme.foregroundTertiary }} source={require('assets/ic-more-h-24.png')} />
+                        <Image style={{ width: 24, height: 24, tintColor: theme.foregroundTertiary }} source={require('assets/ic-size-down-glyph-24.png')} />
                     </TouchableOpacity>
-                )}
+                </View>
             </View>
         );
     },
@@ -701,7 +710,7 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
 
     return (
         <View>
-            <RoomHeader room={voiceChatData} theme={theme} onLayout={onHeaderLayout} />
+            <RoomHeader room={voiceChatData} theme={theme} onLayout={onHeaderLayout} hide={props.ctx.hide} />
             <RoomUsersList
                 room={voiceChatData}
                 theme={theme}
@@ -739,6 +748,7 @@ export const showRoomView = (room: VoiceChatWithSpeakers, router: SRouter) => {
             borderTopLeftRadius: 18,
             borderTopRightRadius: 18,
         },
+        dismissOffset: 10000,
         disableMargins: true,
         disableBottomSafeArea: true,
         cancelable: false,
