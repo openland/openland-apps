@@ -15,6 +15,7 @@ declare module 'react-native-incall-manager' {
         start: (args?: { media?: 'audio' | 'video' | 'cheburek' }) => void;
         setForceSpeakerphoneOn: (flag: boolean | null) => void;
         stop: (options?: { busytone?: '_DTMF_' | '_BUNDLE_' | '_DEFAULT_' }) => void;
+        setKeepScreenOn: (flag: boolean) => void;
     }
 
     export default InCallManager;

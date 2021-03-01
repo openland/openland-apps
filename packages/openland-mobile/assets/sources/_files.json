@@ -15,6 +15,20 @@
             ]
         },
         {
+            "name": "ic-room",
+            "src": "ic-room-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-room-filled",
+            "src": "ic-room-filled-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-listener",
             "src": "ic-listener-24.svg",
             "sizes": [
@@ -1349,13 +1363,6 @@
         {
             "name": "ic-add-fill",
             "src": "ic-add-fill-24.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-room",
-            "src": "ic-room.svg",
             "sizes": [
                 24
             ]

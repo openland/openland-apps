@@ -5,12 +5,10 @@ import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
 const VoiceChatsFeedContext = React.createContext<{
     chats: VoiceChatWithSpeakers[];
-    cursor: string | null;
-}>({ chats: [], cursor: null });
+}>({ chats: [] });
 
 export const VoiceChatsFeedProvider = React.memo((props: { children: any }) => {
     const [voiceChatsFeed, setVoiceChatsFeed] = React.useState<VoiceChatWithSpeakers[]>([]);
-    const [voiceChatsFeedCursor, setVoiceChatsFeedCursor] = React.useState<string | null>(null);
     const client = useClient();
     const subscribeRef = React.useRef<any>(null);
 
@@ -20,7 +18,6 @@ export const VoiceChatsFeedProvider = React.memo((props: { children: any }) => {
             { fetchPolicy: 'network-only' },
         );
         setVoiceChatsFeed(activeVoiceChats.items);
-        setVoiceChatsFeedCursor(activeVoiceChats.cursor);
 
         subscribeRef.current = sequenceWatcher<ActiveVoiceChatsEvents>(
             null,
@@ -55,7 +52,7 @@ export const VoiceChatsFeedProvider = React.memo((props: { children: any }) => {
 
     return (
         <VoiceChatsFeedContext.Provider
-            value={{ chats: voiceChatsFeed, cursor: voiceChatsFeedCursor }}
+            value={{ chats: voiceChatsFeed }}
         >
             {props.children}
         </VoiceChatsFeedContext.Provider>

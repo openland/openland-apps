@@ -22,7 +22,6 @@ import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
 import { ZShaker } from 'openland-mobile/components/ZShaker';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { useListReducer } from 'openland-mobile/utils/listReducer';
 import InCallManager from 'react-native-incall-manager';
 import { SStatusBar } from 'react-native-s/SStatusBar';
 import {
@@ -61,7 +60,7 @@ const UserModalBody = React.memo(({
     modalCtx,
 }: RoomUserViewProps & { hide: () => void }) => {
     const client = useClient();
-    const { followingCount, followedByMe, followersCount } = client.useVoiceChatUser({ uid: user.id }, { fetchPolicy: 'network-only' }).user;
+    const { followingCount, followedByMe, followersCount } = client.useVoiceChatUser({ uid: user.id }).user;
     const isSelfAdmin = selfStatus === VoiceChatParticipantStatus.ADMIN || SUPER_ADMIN;
 
     // const removeAdmin = React.useCallback(() => {
@@ -246,7 +245,7 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                     {user.name}
                 </Text>
             </View>
-            <React.Suspense fallback={<View style={{ flexGrow: 1, minHeight: 204, justifyContent: 'center', alignItems: 'center' }}><ZLoader /></View>}>
+            <React.Suspense fallback={<View style={{ flexGrow: 1, minHeight: 156, justifyContent: 'center', alignItems: 'center' }}><ZLoader /></View>}>
                 <UserModalBody
                     {...props}
                 />
@@ -559,16 +558,17 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
     const { headerHeight, controlsHeight, peers, analyzer, theme, room, router, modalCtx } = props;
     const sa = useSafeArea();
     const sHeight = SDevice.wHeight - (sa.top + sa.bottom + headerHeight + controlsHeight + 16);
-    const client = useClient();
-    const initialListeners = client.useVoiceChatListeners({ id: room.id, first: 12 }).voiceChatListeners;
+    const listeners = room.listeners || [];
+    // const client = useClient();
+    // const initialListeners = client.useVoiceChatListeners({ id: room.id, first: 12 }).voiceChatListeners;
 
-    let listenersState = useListReducer({
-        fetchItems: async (after) => {
-            return (await client.queryVoiceChatListeners({ id: room.id, after, first: 12 }, { fetchPolicy: 'network-only' })).voiceChatListeners;
-        },
-        initialCursor: initialListeners.cursor,
-        initialItems: initialListeners.items,
-    });
+    // let listenersState = useListReducer({
+    //     fetchItems: async (after) => {
+    //         return (await client.queryVoiceChatListeners({ id: room.id, after, first: 12 }, { fetchPolicy: 'network-only' })).voiceChatListeners;
+    //     },
+    //     initialCursor: initialListeners.cursor,
+    //     initialItems: initialListeners.items,
+    // });
     // let listenersState = { items: [] as VoiceChatListeners_voiceChatListeners_items[], loading: false, loadMore: () => { } };
     const peersWithSpeakers = peers
         .map(peer => ({ peer, speaker: room.speakers?.find(s => s.user.id === peer.user.id)! }))
@@ -594,7 +594,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                     );
                 })}
             </View>
-            {listenersState.items.length > 0 ? (
+            {listeners.length > 0 ? (
                 <Text
                     style={{
                         ...TextStyles.Title2,
@@ -617,7 +617,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
         <View style={{ flexGrow: 1, height: sHeight }}>
             <FlatList
                 ListHeaderComponent={speakersElement}
-                data={listenersState.items}
+                data={listeners}
                 renderItem={({ item }) => (
                     <RoomUserView
                         roomId={room.id}
@@ -632,8 +632,8 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                 keyExtractor={(item, index) => index.toString() + item.id}
                 numColumns={4}
                 style={{ flex: 1 }}
-                refreshing={listenersState.loading}
-                onEndReached={listenersState.loadMore}
+            // refreshing={listenersState.loading}
+            // onEndReached={listenersState.loadMore}
             />
         </View>
     );
@@ -643,7 +643,7 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
     const voiceChat = useVoiceChat();
     const theme = useTheme();
     const client = useClient();
-    const room = client.useVoiceChat({ id: props.room.id }, { fetchPolicy: 'network-only' }).voiceChat;
+    const { room } = props;
     const conference = client.useConference({ id: props.room.id }, { suspense: false })?.conference;
     const [headerHeight, setHeaderHeight] = React.useState(0);
     const [controlsHeight, setControlsHeight] = React.useState(0);
@@ -673,6 +673,13 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         mediaSession?.setAudioEnabled(!state?.sender.audioEnabled);
     }, [state, mediaSession]);
 
+    const closeCall = () => {
+        props.ctx.hide();
+        InCallManager.stop({ busytone: '_BUNDLE_' });
+        calls.leaveCall();
+        SStatusBar.setBarStyle(theme.statusBar);
+    };
+
     const handleLeave = React.useCallback(async () => {
         let admins = voiceChatData.speakers?.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
         if (admins && admins.length < 1 && canMeSpeak) {
@@ -680,10 +687,8 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         } else {
             await client.mutateVoiceChatLeave({ id: room.id });
         }
-        InCallManager.stop({ busytone: '_BUNDLE_' });
-        calls.leaveCall();
+        closeCall();
 
-        SStatusBar.setBarStyle(theme.statusBar);
     }, [voiceChatData]);
 
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
@@ -698,11 +703,34 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         SStatusBar.setBarStyle('light-content');
         InCallManager.start({ media: 'audio' });
         InCallManager.setForceSpeakerphoneOn(true);
+        InCallManager.setKeepScreenOn(true);
+
+        const handleHeadset = (event: { isPlugged: boolean, hasMic: boolean, deviceName: string }) => {
+            if (event.isPlugged) {
+                InCallManager.setForceSpeakerphoneOn(null);
+            } else {
+                setTimeout(() => {
+                    InCallManager.setForceSpeakerphoneOn(true);
+                }, 500);
+            }
+        };
+        DeviceEventEmitter.addListener('WiredHeadset', handleHeadset);
 
         return () => {
+            DeviceEventEmitter.removeListener('WiredHeadset', handleHeadset);
             SStatusBar.setBarStyle(theme.statusBar);
         };
     }, []);
+
+    const prevStatus = React.useRef<VoiceChatParticipantStatus | undefined>(voiceChatData.me?.status);
+    React.useEffect(() => {
+        let isLeft = prevStatus.current !== VoiceChatParticipantStatus.LEFT && voiceChatData.me?.status === VoiceChatParticipantStatus.LEFT;
+        let isKicked = prevStatus.current !== VoiceChatParticipantStatus.KICKED && voiceChatData.me?.status === VoiceChatParticipantStatus.KICKED;
+        if (isLeft || isKicked) {
+            closeCall();
+        }
+        prevStatus.current = voiceChatData.me?.status;
+    }, [voiceChatData]);
 
     if (!mediaSession) {
         return null;
