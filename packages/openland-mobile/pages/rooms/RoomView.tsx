@@ -691,8 +691,19 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         InCallManager.start({ media: 'audio' });
         InCallManager.setForceSpeakerphoneOn(true);
         RNSDevice.proximityDisable();
+        InCallManager.setKeepScreenOn(true);
+
+        const handleHeadset = (event: { isPlugged: boolean, hasMic: boolean, deviceName: string }) => {
+            if (event.isPlugged) {
+                InCallManager.setForceSpeakerphoneOn(null);
+            } else {
+                InCallManager.setForceSpeakerphoneOn(true);
+            }
+        };
+        DeviceEventEmitter.addListener('WiredHeadset', handleHeadset);
 
         return () => {
+            DeviceEventEmitter.removeListener('WiredHeadset', handleHeadset);
             SStatusBar.setBarStyle(theme.statusBar);
         };
     }, []);
