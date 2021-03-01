@@ -248,7 +248,7 @@ interface RoomControlsProps {
 }
 
 export const RoomControls = React.memo((props: RoomControlsProps) => {
-    const { theme, id, muted, modalCtx, onLeave, onLayout, onMutePress } = props;
+    const { theme, id, muted, onLeave, onLayout, onMutePress } = props;
     const client = useClient();
     const meParticipant = client.useVoiceChatControls({ id }, { fetchPolicy: 'cache-and-network' })?.voiceChat.me;
     const role = meParticipant?.status;
@@ -270,7 +270,6 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
 
     const handleLeave = React.useCallback(() => {
         onLeave();
-        modalCtx.hide();
     }, [onLeave]);
 
     return (

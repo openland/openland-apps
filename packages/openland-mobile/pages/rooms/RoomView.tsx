@@ -31,7 +31,6 @@ import {
 } from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
-import { RNSDevice } from 'react-native-s/RNSDevice';
 
 interface RoomUserViewProps {
     roomId: string;
@@ -665,6 +664,13 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         mediaSession?.setAudioEnabled(!state?.sender.audioEnabled);
     }, [state, mediaSession]);
 
+    const closeCall = () => {
+        props.ctx.hide();
+        InCallManager.stop({ busytone: '_BUNDLE_' });
+        calls.leaveCall();
+        SStatusBar.setBarStyle(theme.statusBar);
+    };
+
     const handleLeave = React.useCallback(async () => {
         let admins = voiceChatData.speakers?.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
         if (admins && admins.length < 1 && canMeSpeak) {
@@ -672,10 +678,8 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         } else {
             await client.mutateVoiceChatLeave({ id: room.id });
         }
-        InCallManager.stop({ busytone: '_BUNDLE_' });
-        calls.leaveCall();
+        closeCall();
 
-        SStatusBar.setBarStyle(theme.statusBar);
     }, [voiceChatData]);
 
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
@@ -690,7 +694,6 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         SStatusBar.setBarStyle('light-content');
         InCallManager.start({ media: 'audio' });
         InCallManager.setForceSpeakerphoneOn(true);
-        RNSDevice.proximityDisable();
         InCallManager.setKeepScreenOn(true);
 
         const handleHeadset = (event: { isPlugged: boolean, hasMic: boolean, deviceName: string }) => {
@@ -709,6 +712,16 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
             SStatusBar.setBarStyle(theme.statusBar);
         };
     }, []);
+
+    const prevStatus = React.useRef<VoiceChatParticipantStatus | undefined>(voiceChatData.me?.status);
+    React.useEffect(() => {
+        let isLeft = prevStatus.current !== VoiceChatParticipantStatus.LEFT && voiceChatData.me?.status === VoiceChatParticipantStatus.LEFT;
+        let isKicked = prevStatus.current !== VoiceChatParticipantStatus.KICKED && voiceChatData.me?.status === VoiceChatParticipantStatus.KICKED;
+        if (isLeft || isKicked) {
+            closeCall();
+        }
+        prevStatus.current = voiceChatData.me?.status;
+    }, [voiceChatData]);
 
     if (!mediaSession) {
         return null;
