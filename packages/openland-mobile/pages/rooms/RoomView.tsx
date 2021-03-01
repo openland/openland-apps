@@ -32,6 +32,7 @@ import {
 } from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
+import { RNSDevice } from 'react-native-s/RNSDevice';
 
 interface RoomUserViewProps {
     roomId: string;
@@ -689,6 +690,7 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         SStatusBar.setBarStyle('light-content');
         InCallManager.start({ media: 'audio' });
         InCallManager.setForceSpeakerphoneOn(true);
+        RNSDevice.proximityDisable();
 
         return () => {
             SStatusBar.setBarStyle(theme.statusBar);

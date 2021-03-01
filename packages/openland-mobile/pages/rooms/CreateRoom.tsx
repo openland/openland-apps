@@ -21,13 +21,18 @@ const CreateRoomComponent = React.memo(() => {
     const theme = useTheme();
     const client = useClient();
     const router = React.useContext(SRouterContext)!;
-    const joinRoom = useJoinRoom();
+    const joinRoom = useJoinRoom({ ignoreJoin: true });
+    const isLoadingRef = React.useRef<boolean>(false);
     const createRoom = React.useCallback(async () => {
         let name = nameField.value.trim();
         if (name.length <= 0) {
             shakerRef.current?.shake();
             return;
         }
+        if (isLoadingRef.current) {
+            return;
+        }
+        isLoadingRef.current = true;
         const room = (await client.mutateVoiceChatCreate({ input: { title: name } })).voiceChatCreate;
         router.pushAndReset('RoomsFeed');
         joinRoom(room.id);
