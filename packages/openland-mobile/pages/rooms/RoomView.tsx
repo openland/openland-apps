@@ -54,7 +54,7 @@ const UserModalBody = React.memo(({
     user,
     roomId,
     hide,
-    // userStatus,
+    userStatus,
     theme,
     router,
     modalCtx,
@@ -77,13 +77,13 @@ const UserModalBody = React.memo(({
     //     })();
     //     hide();
     // }, [roomId, user.id]);
-    // const removeUser = React.useCallback(() => {
-    //     (async () => {
-    //         await client.mutateVoiceChatKick({ id: roomId, uid: user.id });
-    //         client.refetchVoiceChat({ id: roomId });
-    //     })();
-    //     hide();
-    // }, [roomId, user.id]);
+    const removeUser = React.useCallback(() => {
+        (async () => {
+            await client.mutateVoiceChatKick({ id: roomId, uid: user.id });
+            client.refetchVoiceChat({ id: roomId });
+        })();
+        hide();
+    }, [roomId, user.id]);
     // const demoteUser = React.useCallback(() => {
     //     (async () => {
     //         await client.mutateVoiceChatDemote({ id: roomId, uid: user.id });
@@ -189,14 +189,14 @@ const UserModalBody = React.memo(({
                                     onPress={makeAdmin}
                                 />
                             )} */}
-                        {/* {userStatus !== VoiceChatParticipantStatus.ADMIN && (
-                                <ZListItem
+                        {userStatus !== VoiceChatParticipantStatus.ADMIN && (
+                            <ZListItem
                                 leftIcon={require('assets/ic-leave-24.png')}
                                 small={true}
                                 text="Remove"
                                 onPress={removeUser}
                             />
-                            )} */}
+                        )}
                     </>
                 )}
                 <View style={{ marginTop: 16, paddingHorizontal: 16 }}>
