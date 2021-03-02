@@ -26,9 +26,8 @@ export const useJoinRoom = () => {
             } else {
                 showRoomView(room, router);
                 messenger.calls.joinCall(id, async () => {
-                    let canMeSpeak = room.me?.status === VoiceChatParticipantStatus.ADMIN || room.me?.status === VoiceChatParticipantStatus.SPEAKER;
                     let admins = room.speakers.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
-                    if (admins.length <= 1 && canMeSpeak) {
+                    if (admins.length <= 1 && room.me?.status === VoiceChatParticipantStatus.ADMIN) {
                         client.mutateVoiceChatEnd({ id: room.id });
                     } else {
                         client.mutateVoiceChatLeave({ id: room.id });
