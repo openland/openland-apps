@@ -16,6 +16,7 @@ declare module 'react-native-incall-manager' {
         setForceSpeakerphoneOn: (flag: boolean | null) => void;
         stop: (options?: { busytone?: '_DTMF_' | '_BUNDLE_' | '_DEFAULT_' }) => void;
         setKeepScreenOn: (flag: boolean) => void;
+        getIsWiredHeadsetPluggedIn: () => Promise<any>;
     }
 
     export default InCallManager;

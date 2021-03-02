@@ -701,23 +701,31 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
 
     React.useLayoutEffect(() => {
         SStatusBar.setBarStyle('light-content');
-        InCallManager.start({ media: 'audio' });
-        InCallManager.setForceSpeakerphoneOn(true);
+        // media: 'video' has the correct default behaviour
+        InCallManager.start({ media: 'video' });
         InCallManager.setKeepScreenOn(true);
+        // InCallManager.setForceSpeakerphoneOn(null);
 
-        const handleHeadset = (event: { isPlugged: boolean, hasMic: boolean, deviceName: string }) => {
-            if (event.isPlugged) {
-                InCallManager.setForceSpeakerphoneOn(null);
-            } else {
-                setTimeout(() => {
-                    InCallManager.setForceSpeakerphoneOn(true);
-                }, 500);
-            }
-        };
-        DeviceEventEmitter.addListener('WiredHeadset', handleHeadset);
+        // if (Platform.OS === 'ios') {
+        //     InCallManager.getIsWiredHeadsetPluggedIn().then(x => {
+        //         console.log('@@ HEADPHONE', x);
+        //     });
+        // }
+        // InCallManager.setForceSpeakerphoneOn(true);
+
+        // const handleHeadset = (event: { isPlugged: boolean, hasMic: boolean, deviceName: string }) => {
+        //     if (event.isPlugged) {
+        //         InCallManager.setForceSpeakerphoneOn(null);
+        //     } else {
+        //         setTimeout(() => {
+        //             InCallManager.setForceSpeakerphoneOn(true);
+        //         }, 500);
+        //     }
+        // };
+        // DeviceEventEmitter.addListener('WiredHeadset', handleHeadset);
 
         return () => {
-            DeviceEventEmitter.removeListener('WiredHeadset', handleHeadset);
+            //     DeviceEventEmitter.removeListener('WiredHeadset', handleHeadset);
             SStatusBar.setBarStyle(theme.statusBar);
         };
     }, []);
