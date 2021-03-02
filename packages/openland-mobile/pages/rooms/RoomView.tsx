@@ -29,7 +29,6 @@ import {
     VoiceChatWithSpeakers,
 } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
-import { SUPER_ADMIN } from '../Init';
 import { TintBlue } from 'openland-y-utils/themes/tints';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { ZInput } from 'openland-mobile/components/ZInput';
@@ -78,7 +77,7 @@ const UserModalBody = React.memo(
         const { followingCount, followedByMe, followersCount } = client.useVoiceChatUser({
             uid: user.id,
         }, { fetchPolicy: 'network-only' }).user;
-        const isSelfAdmin = selfStatus === VoiceChatParticipantStatus.ADMIN || SUPER_ADMIN;
+        const isSelfAdmin = selfStatus === VoiceChatParticipantStatus.ADMIN;
 
         // const removeAdmin = React.useCallback(async () => {
         //     await Promise.all([
@@ -767,6 +766,7 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         //     await client.mutateVoiceChatLeave({ id: room.id });
         // }
         closeCall();
+
     }, [voiceChatData]);
 
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
