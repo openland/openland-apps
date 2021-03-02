@@ -34,8 +34,8 @@ const CreateRoomComponent = React.memo(() => {
         }
         isLoadingRef.current = true;
         const room = (await client.mutateVoiceChatCreate({ input: { title: name } })).voiceChatCreate;
-        router.pushAndReset('RoomsFeed');
         joinRoom(room.id);
+        router.back();
     }, [router, nameField.value, joinRoom]);
 
     return (
