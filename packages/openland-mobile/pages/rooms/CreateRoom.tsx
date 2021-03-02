@@ -21,7 +21,7 @@ const CreateRoomComponent = React.memo(() => {
     const theme = useTheme();
     const client = useClient();
     const router = React.useContext(SRouterContext)!;
-    const joinRoom = useJoinRoom({ ignoreJoin: true });
+    const joinRoom = useJoinRoom();
     const isLoadingRef = React.useRef<boolean>(false);
     const createRoom = React.useCallback(async () => {
         let name = nameField.value.trim();

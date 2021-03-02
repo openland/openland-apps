@@ -8,16 +8,19 @@ import { showRoomView } from './RoomView';
 import { VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import { debounce } from 'openland-y-utils/timer';
 
-export const useJoinRoom = ({ ignoreJoin }: { ignoreJoin?: boolean } = {}) => {
+export const useJoinRoom = () => {
     const client = useClient();
     const router = React.useContext(SRouterContext)!;
     const messenger = getMessenger().engine;
 
     return debounce(async (id: string) => {
         if (await checkPermissions('microphone')) {
-            let room = ignoreJoin
+            let status = (await client.queryVoiceChatControls({ id })).voiceChat.me?.status;
+            let didJoin = [VoiceChatParticipantStatus.ADMIN, VoiceChatParticipantStatus.SPEAKER, VoiceChatParticipantStatus.LISTENER, VoiceChatParticipantStatus.KICKED].includes(status!);
+            let room = didJoin
                 ? (await client.queryVoiceChat({ id })).voiceChat
                 : (await client.mutateVoiceChatJoin({ id })).voiceChatJoin;
+
             messenger.calls.joinCall(id, async () => {
                 let canMeSpeak = room.me?.status === VoiceChatParticipantStatus.ADMIN || room.me?.status === VoiceChatParticipantStatus.SPEAKER;
                 let admins = room.speakers.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);

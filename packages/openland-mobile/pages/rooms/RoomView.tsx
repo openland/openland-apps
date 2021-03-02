@@ -23,7 +23,6 @@ import { useForm } from 'openland-form/useForm';
 import { ZShaker } from 'openland-mobile/components/ZShaker';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import InCallManager from 'react-native-incall-manager';
-import { SStatusBar } from 'react-native-s/SStatusBar';
 import {
     VoiceChatProvider,
     useVoiceChat,
@@ -677,7 +676,6 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         props.ctx.hide();
         InCallManager.stop({ busytone: '_BUNDLE_' });
         calls.leaveCall();
-        SStatusBar.setBarStyle(theme.statusBar);
     };
 
     const handleLeave = React.useCallback(async () => {
@@ -700,34 +698,9 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
     }, [mediaSession, muted]);
 
     React.useLayoutEffect(() => {
-        SStatusBar.setBarStyle('light-content');
-        // media: 'video' has the correct default behaviour
+        // Don't change: 'video' has the correct default behaviour
         InCallManager.start({ media: 'video' });
         InCallManager.setKeepScreenOn(true);
-        // InCallManager.setForceSpeakerphoneOn(null);
-
-        // if (Platform.OS === 'ios') {
-        //     InCallManager.getIsWiredHeadsetPluggedIn().then(x => {
-        //         console.log('@@ HEADPHONE', x);
-        //     });
-        // }
-        // InCallManager.setForceSpeakerphoneOn(true);
-
-        // const handleHeadset = (event: { isPlugged: boolean, hasMic: boolean, deviceName: string }) => {
-        //     if (event.isPlugged) {
-        //         InCallManager.setForceSpeakerphoneOn(null);
-        //     } else {
-        //         setTimeout(() => {
-        //             InCallManager.setForceSpeakerphoneOn(true);
-        //         }, 500);
-        //     }
-        // };
-        // DeviceEventEmitter.addListener('WiredHeadset', handleHeadset);
-
-        return () => {
-            //     DeviceEventEmitter.removeListener('WiredHeadset', handleHeadset);
-            SStatusBar.setBarStyle(theme.statusBar);
-        };
     }, []);
 
     const prevStatus = React.useRef<VoiceChatParticipantStatus | undefined>(voiceChatData.me?.status);
