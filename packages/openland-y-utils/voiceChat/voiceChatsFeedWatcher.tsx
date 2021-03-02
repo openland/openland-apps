@@ -33,6 +33,9 @@ export const VoiceChatsFeedProvider = React.memo((props: { children: any }) => {
                         if (hasChat && !i.chat.active) {
                             chats = chats.filter((j) => j.id !== i.chat.id);
                         }
+                        if (hasChat && i.chat.active) {
+                            chats = chats.map((j) => j.id === i.chat.id ? i.chat : j);
+                        }
                     });
                     return Array.from(chats);
                 });
