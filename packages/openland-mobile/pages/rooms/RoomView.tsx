@@ -14,7 +14,6 @@ import { useSafeArea } from 'react-native-safe-area-context';
 import { RoomControls } from './RoomControls';
 import { Conference_conference_peers, VoiceChatParticipantStatus, VoiceChatWithSpeakers } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
-import { SUPER_ADMIN } from '../Init';
 import { TintBlue } from 'openland-y-utils/themes/tints';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { ZInput } from 'openland-mobile/components/ZInput';
