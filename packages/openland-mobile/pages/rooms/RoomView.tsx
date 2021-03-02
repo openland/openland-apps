@@ -679,12 +679,12 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
     };
 
     const handleLeave = React.useCallback(async () => {
-        let admins = voiceChatData.speakers?.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
-        if (admins && admins.length < 1 && canMeSpeak) {
-            await client.mutateVoiceChatEnd({ id: room.id });
-        } else {
-            await client.mutateVoiceChatLeave({ id: room.id });
-        }
+        // let admins = voiceChatData.speakers?.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
+        // if (admins && admins.length < 1 && canMeSpeak) {
+        //     await client.mutateVoiceChatEnd({ id: room.id });
+        // } else {
+        //     await client.mutateVoiceChatLeave({ id: room.id });
+        // }
         closeCall();
 
     }, [voiceChatData]);

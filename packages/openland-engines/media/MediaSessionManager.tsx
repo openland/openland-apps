@@ -222,15 +222,13 @@ export class MediaSessionManager {
         // Notify about leave
         if (this.conferenceId && this.peerId) {
             backoff(async () => {
-                await this.client.mutateConferenceLeave({
-                    id: this.conferenceId,
-                    peerId: this.peerId
-                });
-            });
-            backoff(async () => {
-                if (this.onLeave) {
-                    await this.onLeave();
-                }
+                await Promise.all([
+                    this.client.mutateConferenceLeave({
+                        id: this.conferenceId,
+                        peerId: this.peerId
+                    }),
+                    this.onLeave && this.onLeave()
+                ]);
             });
         }
     }
@@ -431,15 +429,13 @@ export class MediaSessionManager {
             if (this.destroyed) {
                 // Leave from already destroyed session
                 backoff(async () => {
-                    await this.client.mutateConferenceLeave({
-                        id: conferenceId,
-                        peerId: joinConference.peerId
-                    });
-                });
-                backoff(async () => {
-                    if (this.onLeave) {
-                        await this.onLeave();
-                    }
+                    await Promise.all([
+                        this.client.mutateConferenceLeave({
+                            id: conferenceId,
+                            peerId: joinConference.peerId
+                        }),
+                        this.onLeave && this.onLeave(),
+                    ]);
                 });
                 return null;
             }
@@ -492,9 +488,6 @@ export class MediaSessionManager {
                     id: confId,
                     peerId: peerId
                 });
-                if (this.onLeave) {
-                    this.onLeave();
-                }
             }
         }, 1000);
     }
