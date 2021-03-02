@@ -21,16 +21,21 @@ export const useJoinRoom = () => {
                 ? (await client.queryVoiceChat({ id })).voiceChat
                 : (await client.mutateVoiceChatJoin({ id })).voiceChatJoin;
 
-            messenger.calls.joinCall(id, async () => {
-                let canMeSpeak = room.me?.status === VoiceChatParticipantStatus.ADMIN || room.me?.status === VoiceChatParticipantStatus.SPEAKER;
-                let admins = room.speakers.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
-                if (admins.length <= 1 && canMeSpeak) {
-                    client.mutateVoiceChatEnd({ id: room.id });
-                } else {
-                    client.mutateVoiceChatLeave({ id: room.id });
-                }
-            });
-            showRoomView(room, router);
+            if (didJoin && messenger.calls.currentMediaSession) {
+                showRoomView(room, router);
+            } else {
+                showRoomView(room, router);
+                messenger.calls.joinCall(id, async () => {
+                    let canMeSpeak = room.me?.status === VoiceChatParticipantStatus.ADMIN || room.me?.status === VoiceChatParticipantStatus.SPEAKER;
+                    let admins = room.speakers.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
+                    if (admins.length <= 1 && canMeSpeak) {
+                        client.mutateVoiceChatEnd({ id: room.id });
+                    } else {
+                        client.mutateVoiceChatLeave({ id: room.id });
+                    }
+                });
+            }
+
         }
     }, 500, false);
 };
