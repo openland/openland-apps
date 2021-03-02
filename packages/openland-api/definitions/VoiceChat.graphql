@@ -5,6 +5,7 @@ fragment VoiceChatParticipant on VoiceChatParticipant {
         name
         firstName
         photo
+        followersCount
     }
     status
     handRaised

@@ -1910,7 +1910,8 @@ private let VoiceChatParticipantSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("name", "name", notNull(scalar("String"))),
                     field("firstName", "firstName", notNull(scalar("String"))),
-                    field("photo", "photo", scalar("String"))
+                    field("photo", "photo", scalar("String")),
+                    field("followersCount", "followersCount", notNull(scalar("Int")))
                 ))),
             field("status", "status", notNull(scalar("String"))),
             field("handRaised", "handRaised", scalar("Boolean"))
@@ -6155,7 +6156,7 @@ class Operations {
     let ActiveVoiceChats = OperationDefinition(
         "ActiveVoiceChats",
         .query, 
-        "query ActiveVoiceChats($first:Int!,$after:String){activeVoiceChats(first:$first,after:$after){__typename cursor items{__typename ...VoiceChatWithSpeakers}}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}",
+        "query ActiveVoiceChats($first:Int!,$after:String){activeVoiceChats(first:$first,after:$after){__typename cursor items{__typename ...VoiceChatWithSpeakers}}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount}status handRaised}",
         ActiveVoiceChatsSelector
     )
     let AuthPoints = OperationDefinition(
@@ -6905,7 +6906,7 @@ class Operations {
     let User = OperationDefinition(
         "User",
         .query, 
-        "query User($userId:ID!){user:user(id:$userId){__typename ...UserFull}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount currentVoiceChat{__typename ...VoiceChatWithSpeakers}primaryOrganization{__typename ...OrganizationShort}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
+        "query User($userId:ID!){user:user(id:$userId){__typename ...UserFull}conversation:room(id:$userId){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount currentVoiceChat{__typename ...VoiceChatWithSpeakers}primaryOrganization{__typename ...OrganizationShort}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount}status handRaised}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
         UserSelector
     )
     let UserAvailableRooms = OperationDefinition(
@@ -6953,13 +6954,13 @@ class Operations {
     let Users = OperationDefinition(
         "Users",
         .query, 
-        "query Users($ids:[ID!]!){users(ids:$ids){__typename ...UserFull}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount currentVoiceChat{__typename ...VoiceChatWithSpeakers}primaryOrganization{__typename ...OrganizationShort}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
+        "query Users($ids:[ID!]!){users(ids:$ids){__typename ...UserFull}}fragment UserFull on User{__typename id name firstName lastName photo phone birthDay email website about birthDay location isBot isDeleted online lastSeen joinDate linkedin instagram twitter facebook shortname audienceSize inContacts isBanned isMeBanned followedByMe followersCount followingCount currentVoiceChat{__typename ...VoiceChatWithSpeakers}primaryOrganization{__typename ...OrganizationShort}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount}status handRaised}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}",
         UsersSelector
     )
     let VoiceChat = OperationDefinition(
         "VoiceChat",
         .query, 
-        "query VoiceChat($id:ID!){voiceChat(id:$id){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}",
+        "query VoiceChat($id:ID!){voiceChat(id:$id){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount}status handRaised}",
         VoiceChatSelector
     )
     let VoiceChatControls = OperationDefinition(
@@ -6977,7 +6978,7 @@ class Operations {
     let VoiceChatListeners = OperationDefinition(
         "VoiceChatListeners",
         .query, 
-        "query VoiceChatListeners($id:ID!,$first:Int!,$after:String){voiceChatListeners(id:$id,first:$first,after:$after){__typename items{__typename ...VoiceChatParticipant}cursor}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}",
+        "query VoiceChatListeners($id:ID!,$first:Int!,$after:String){voiceChatListeners(id:$id,first:$first,after:$after){__typename items{__typename ...VoiceChatParticipant}cursor}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount}status handRaised}",
         VoiceChatListenersSelector
     )
     let VoiceChatUser = OperationDefinition(
@@ -7781,7 +7782,7 @@ class Operations {
     let VoiceChatCreate = OperationDefinition(
         "VoiceChatCreate",
         .mutation, 
-        "mutation VoiceChatCreate($input:VoiceChatInput!){voiceChatCreate(input:$input){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}",
+        "mutation VoiceChatCreate($input:VoiceChatInput!){voiceChatCreate(input:$input){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount}status handRaised}",
         VoiceChatCreateSelector
     )
     let VoiceChatDemote = OperationDefinition(
@@ -7799,7 +7800,7 @@ class Operations {
     let VoiceChatJoin = OperationDefinition(
         "VoiceChatJoin",
         .mutation, 
-        "mutation VoiceChatJoin($id:ID!){voiceChatJoin(id:$id){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}",
+        "mutation VoiceChatJoin($id:ID!){voiceChatJoin(id:$id){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount}status handRaised}",
         VoiceChatJoinSelector
     )
     let VoiceChatKick = OperationDefinition(
@@ -7865,7 +7866,7 @@ class Operations {
     let ActiveVoiceChatsEvents = OperationDefinition(
         "ActiveVoiceChatsEvents",
         .subscription, 
-        "subscription ActiveVoiceChatsEvents{activeVoiceChatsEvents{__typename ... on VoiceChatUpdatedEvent{__typename chat{__typename ...VoiceChatWithSpeakers}}}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}",
+        "subscription ActiveVoiceChatsEvents{activeVoiceChatsEvents{__typename ... on VoiceChatUpdatedEvent{__typename chat{__typename ...VoiceChatWithSpeakers}}}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount}status handRaised}",
         ActiveVoiceChatsEventsSelector
     )
     let BlackListUpdates = OperationDefinition(
@@ -7961,7 +7962,7 @@ class Operations {
     let VoiceChatEvents = OperationDefinition(
         "VoiceChatEvents",
         .subscription, 
-        "subscription VoiceChatEvents($id:ID!,$fromState:String!){voiceChatEvents(fromState:$fromState,id:$id){__typename state events{__typename ... on VoiceChatParticipantUpdatedEvent{__typename chat{__typename ...VoiceChatEntity}participant{__typename ...VoiceChatParticipant}}... on VoiceChatUpdatedEvent{__typename chat{__typename ...VoiceChatEntity}}}}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo}status handRaised}",
+        "subscription VoiceChatEvents($id:ID!,$fromState:String!){voiceChatEvents(fromState:$fromState,id:$id){__typename state events{__typename ... on VoiceChatParticipantUpdatedEvent{__typename chat{__typename ...VoiceChatEntity}participant{__typename ...VoiceChatParticipant}}... on VoiceChatUpdatedEvent{__typename chat{__typename ...VoiceChatEntity}}}}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount}status handRaised}",
         VoiceChatEventsSelector
     )
     let WalletUpdates = OperationDefinition(

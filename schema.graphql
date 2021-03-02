@@ -2752,6 +2752,7 @@ type Query {
   superAccount(id: ID!, viaOrgId: Boolean): SuperAccount!
   superAdmins: [SuperAdmin!]!
   voiceChatListeners(id: ID!, first: Int!, after: String): VoiceChatParticipantConnection!
+  voiceChatHandRaised(id: ID!, first: Int!, after: String): VoiceChatParticipantConnection!
   activeVoiceChats(first: Int!, after: String): VoiceChatConnection!
   myBlackList: [User!]!
   discoverCollections(first: Int!, after: String): DiscoverChatsCollectionConnection

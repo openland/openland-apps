@@ -6,6 +6,7 @@ import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 export type VoiceChatT = VoiceChatEntity & {
     speakers?: VoiceChatParticipant[];
     listeners?: VoiceChatParticipant[];
+    raisedHands?: VoiceChatParticipant[];
 };
 
 const VoiceChatContext = React.createContext<VoiceChatT | null>(null);
@@ -15,6 +16,7 @@ export const VoiceChatProvider = React.memo((props: { room: VoiceChatT; children
         ...props.room,
         speakers: props.room.speakers,
         listeners: props.room.listeners,
+        raisedHands: props.room.raisedHands,
     });
     const client = useClient();
     const subscribeRef = React.useRef<any>(null);
@@ -38,8 +40,9 @@ export const VoiceChatProvider = React.memo((props: { room: VoiceChatT; children
                 const { events } = voiceChatEvents;
                 setVoiceChat(prev => {
                     let newVoiceChat = prev;
-                    let newSpeakers = prev.speakers;
-                    let newListeners = prev.listeners;
+                    let newSpeakers = prev.speakers || [];
+                    let newListeners = prev.listeners || [];
+                    let newRaisedHands = prev.raisedHands || [];
                     events.map((i) => {
                         if (i.__typename === 'VoiceChatUpdatedEvent') {
                             newVoiceChat = i.chat;
@@ -47,34 +50,45 @@ export const VoiceChatProvider = React.memo((props: { room: VoiceChatT; children
                         if (i.__typename === 'VoiceChatParticipantUpdatedEvent') {
                             const { participant, chat } = i;
                             newVoiceChat = chat;
-                            const hasSpeaker = newSpeakers?.find(j => j.user.id === participant.user.id);
-                            const hasListener = newListeners?.find(j => j.user.id === participant.user.id);
+                            const hasSpeaker = newSpeakers.find(j => j.user.id === participant.user.id);
+                            const hasListener = newListeners.find(j => j.user.id === participant.user.id);
+                            const hasRaisedHand = newRaisedHands.find(j => j.user.id === participant.user.id && j.handRaised );
                             if (participant.status === 'LEFT' || participant.status === 'KICKED') {
-                                newSpeakers = newSpeakers?.filter(j => j.user.id !== participant.user.id);
-                                newListeners = newListeners?.filter(j => j.user.id !== participant.user.id);
+                                newSpeakers = newSpeakers.filter(j => j.user.id !== participant.user.id);
+                                newListeners = newListeners.filter(j => j.user.id !== participant.user.id);
+                                newRaisedHands = newRaisedHands.filter(j => j.user.id !== participant.user.id);
                             }
                             if (participant.status === 'ADMIN') {
                                 if (!hasSpeaker) {
-                                    newSpeakers?.push(participant);
+                                    newSpeakers.push(participant);
                                 }
                                 if (!!hasListener) {
-                                    newListeners = newListeners?.filter(j => j.user.id !== participant.user.id);
+                                    newListeners = newListeners.filter(j => j.user.id !== participant.user.id);
                                 }
                             }
                             if (participant.status === 'SPEAKER') {
                                 if (!hasSpeaker) {
-                                    newSpeakers?.push(participant);
+                                    newSpeakers.push(participant);
                                 }
                                 if (!!hasListener) {
-                                    newListeners = newListeners?.filter(j => j.user.id !== participant.user.id);
+                                    newListeners = newListeners.filter(j => j.user.id !== participant.user.id);
+                                }
+                                if (hasRaisedHand) {
+                                    newRaisedHands = newRaisedHands.filter(j => j.user.id !== participant.user.id);
                                 }
                             }
                             if (participant.status === 'LISTENER') {
                                 if (!hasListener) {
-                                    newListeners?.push(participant);
+                                    newListeners.push(participant);
                                 }
                                 if (!!hasSpeaker) {
-                                    newSpeakers = newSpeakers?.filter(j => j.user.id !== participant.user.id);
+                                    newSpeakers = newSpeakers.filter(j => j.user.id !== participant.user.id);
+                                }
+                                if (!hasRaisedHand && participant.handRaised) {
+                                    newRaisedHands.push(participant);
+                                }
+                                if (hasRaisedHand && !participant.handRaised) {
+                                    newRaisedHands = newRaisedHands.filter(j => j.user.id !== participant.user.id);
                                 }
                             }
                         }
@@ -82,7 +96,8 @@ export const VoiceChatProvider = React.memo((props: { room: VoiceChatT; children
                     return {
                         ...newVoiceChat,
                         speakers: newSpeakers,
-                        listeners: newListeners
+                        listeners: newListeners,
+                        raisedHands: newRaisedHands,
                     };
                 });
                 return voiceChatEvents.state;

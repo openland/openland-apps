@@ -83,7 +83,6 @@ import { EditCommunitySuperAdmin } from './pages/main/components/edit-community/
 import { ReportSpam } from './pages/main/components/ReportSpam';
 import { CreateRoom } from './pages/rooms/CreateRoom';
 import { RoomsFeed } from './pages/rooms/RoomsFeed';
-import { RaisedHands } from './pages/rooms/RaisedHands';
 import { UserFollowers } from './pages/main/UserFollowers';
 
 export const Routes = new SRoutesBuilder()
@@ -184,7 +183,6 @@ export const Routes = new SRoutesBuilder()
 
   .addRoute('CreateRoom', CreateRoom)
   .addRoute('RoomsFeed', RoomsFeed)
-  .addRoute('RaisedHands', RaisedHands)
   .addRoute('UserFollowers', UserFollowers)
 
   .build();

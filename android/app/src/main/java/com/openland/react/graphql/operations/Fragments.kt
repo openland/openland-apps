@@ -1916,7 +1916,8 @@ internal val VoiceChatParticipantSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("name", "name", notNull(scalar("String"))),
                     field("firstName", "firstName", notNull(scalar("String"))),
-                    field("photo", "photo", scalar("String"))
+                    field("photo", "photo", scalar("String")),
+                    field("followersCount", "followersCount", notNull(scalar("Int")))
                 ))),
             field("status", "status", notNull(scalar("String"))),
             field("handRaised", "handRaised", scalar("Boolean"))

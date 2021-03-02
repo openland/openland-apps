@@ -1,6 +1,17 @@
 import * as React from 'react';
 import { ModalProps } from 'react-native-fast-modal';
-import { View, Text, Image, FlatList, LayoutChangeEvent, TouchableOpacity, Keyboard, LayoutAnimation, Platform, DeviceEventEmitter } from 'react-native';
+import {
+    View,
+    Text,
+    Image,
+    FlatList,
+    LayoutChangeEvent,
+    TouchableOpacity,
+    Keyboard,
+    LayoutAnimation,
+    Platform,
+    DeviceEventEmitter,
+} from 'react-native';
 import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { SDevice } from 'react-native-s/SDevice';
@@ -12,7 +23,11 @@ import { HighlightAlpha, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { RoomControls } from './RoomControls';
-import { Conference_conference_peers, VoiceChatParticipantStatus, VoiceChatWithSpeakers } from 'openland-api/spacex.types';
+import {
+    Conference_conference_peers,
+    VoiceChatParticipantStatus,
+    VoiceChatWithSpeakers,
+} from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { SUPER_ADMIN } from '../Init';
 import { TintBlue } from 'openland-y-utils/themes/tints';
@@ -26,7 +41,7 @@ import InCallManager from 'react-native-incall-manager';
 import {
     VoiceChatProvider,
     useVoiceChat,
-    VoiceChatT
+    VoiceChatT,
 } from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
@@ -37,7 +52,7 @@ interface RoomUserViewProps {
         name: string;
         firstName: string;
         photo: string | null;
-        id: string,
+        id: string;
     };
     userStatus: VoiceChatParticipantStatus;
     theme: ThemeGlobal;
@@ -48,106 +63,105 @@ interface RoomUserViewProps {
     modalCtx: { hide: () => void };
 }
 
-const UserModalBody = React.memo(({
-    selfStatus,
-    user,
-    roomId,
-    hide,
-    userStatus,
-    theme,
-    router,
-    modalCtx,
-}: RoomUserViewProps & { hide: () => void }) => {
-    const client = useClient();
-    const { followingCount, followedByMe, followersCount } = client.useVoiceChatUser({ uid: user.id }).user;
-    const isSelfAdmin = selfStatus === VoiceChatParticipantStatus.ADMIN || SUPER_ADMIN;
+const UserModalBody = React.memo(
+    ({
+        selfStatus,
+        user,
+        roomId,
+        hide,
+        userStatus,
+        theme,
+        router,
+        modalCtx,
+    }: RoomUserViewProps & { hide: () => void }) => {
+        const client = useClient();
+        const { followingCount, followedByMe, followersCount } = client.useVoiceChatUser({
+            uid: user.id,
+        }, { fetchPolicy: 'network-only' }).user;
+        const isSelfAdmin = selfStatus === VoiceChatParticipantStatus.ADMIN || SUPER_ADMIN;
 
-    // const removeAdmin = React.useCallback(() => {
-    //     (async () => {
-    //         await client.mutateVoiceChatUpdateAdmin({ id: roomId, uid: user.id, admin: false });
-    //         client.refetchVoiceChat({ id: roomId });
-    //     })();
-    //     hide();
-    // }, [roomId, user.id]);
-    // const makeAdmin = React.useCallback(() => {
-    //     (async () => {
-    //         await client.mutateVoiceChatUpdateAdmin({ id: roomId, uid: user.id, admin: true });
-    //         client.refetchVoiceChat({ id: roomId });
-    //     })();
-    //     hide();
-    // }, [roomId, user.id]);
-    const removeUser = React.useCallback(() => {
-        (async () => {
+        // const removeAdmin = React.useCallback(async () => {
+        //     await Promise.all([
+        //         client.mutateVoiceChatUpdateAdmin({ id: roomId, uid: user.id, admin: false }),
+        //         client.refetchVoiceChat({ id: roomId }),
+        //     ]);
+        //     hide();
+        // }, [roomId, user.id]);
+        // const makeAdmin = React.useCallback(async () => {
+        //     await Promise.all([
+        //         client.mutateVoiceChatUpdateAdmin({ id: roomId, uid: user.id, admin: true }),
+        //         client.refetchVoiceChat({ id: roomId }),
+        //     ]);
+        //     hide();
+        // }, [roomId, user.id]);
+        const removeUser = React.useCallback(async () => {
             await client.mutateVoiceChatKick({ id: roomId, uid: user.id });
-            client.refetchVoiceChat({ id: roomId });
-        })();
-        hide();
-    }, [roomId, user.id]);
-    // const demoteUser = React.useCallback(() => {
-    //     (async () => {
-    //         await client.mutateVoiceChatDemote({ id: roomId, uid: user.id });
-    //         client.refetchVoiceChat({ id: roomId });
-    //     })();
-    //     hide();
-    // }, [roomId, user.id]);
-    // const promoteUser = React.useCallback(() => {
-    //     (async () => {
-    //         await client.mutateVoiceChatPromote({ id: roomId, uid: user.id });
-    //         client.refetchVoiceChat({ id: roomId });
-    //     })();
-    //     hide();
-    // }, [roomId, user.id]);
-    const followUser = React.useCallback(() => {
-        client.mutateSocialFollow({ uid: user.id });
-        hide();
-    }, [roomId, user.id]);
-    const unfollowUser = React.useCallback(async () => {
-        client.mutateSocialUnfollow({ uid: user.id });
-        hide();
-    }, [roomId, user.id]);
-    const handleViewUser = React.useCallback(() => {
-        router.push('ProfileUser', { id: user.id });
-        hide();
-        modalCtx.hide();
-    }, [router]);
+            await client.refetchVoiceChat({ id: roomId });
+            hide();
+        }, [roomId, user.id]);
+        const demoteUser = React.useCallback(async () => {
+            await client.mutateVoiceChatDemote({ id: roomId, uid: user.id });
+            await client.refetchVoiceChat({ id: roomId });
+            hide();
+        }, [roomId, user.id]);
+        const promoteUser = React.useCallback(async () => {
+            await client.mutateVoiceChatPromote({ id: roomId, uid: user.id });
+            await client.refetchVoiceChat({ id: roomId });
+            hide();
+        }, [roomId, user.id]);
+        const followUser = React.useCallback(async () => {
+            await client.mutateSocialFollow({ uid: user.id });
+            await client.refetchVoiceChatUser({ uid: user.id });
+            hide();
+        }, [roomId, user.id]);
+        const unfollowUser = React.useCallback(async () => {
+            await client.mutateSocialUnfollow({ uid: user.id });
+            await client.refetchVoiceChatUser({ uid: user.id });
+            hide();
+        }, [roomId, user.id]);
+        const handleViewUser = React.useCallback(() => {
+            router.push('ProfileUser', { id: user.id });
+            hide();
+            modalCtx.hide();
+        }, [router]);
 
-    return (
-        <>
-            <View
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginTop: 8,
-                    marginBottom: 16,
-                }}
-            >
-                <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>
-                    {followingCount} following
-                </Text>
+        return (
+            <>
                 <View
                     style={{
-                        width: 3,
-                        height: 3,
-                        borderRadius: 3,
-                        backgroundColor: theme.foregroundTertiary,
-                        marginHorizontal: 8,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginTop: 8,
+                        marginBottom: 16,
                     }}
-                />
-                <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>
-                    {followersCount} followers
-                </Text>
-            </View>
-            <View style={{ flexGrow: 1, alignItems: 'stretch' }}>
-                {followedByMe ? (
-                    <ZListItem
-                        leftIcon={require('assets/ic-user-remove-24.png')}
-                        small={true}
-                        text="Unfollow"
-                        onPress={unfollowUser}
+                >
+                    <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>
+                        {followingCount} following
+                    </Text>
+                    <View
+                        style={{
+                            width: 3,
+                            height: 3,
+                            borderRadius: 3,
+                            backgroundColor: theme.foregroundTertiary,
+                            marginHorizontal: 8,
+                        }}
                     />
-                ) : (
+                    <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>
+                        {followersCount} followers
+                    </Text>
+                </View>
+                <View style={{ flexGrow: 1, alignItems: 'stretch' }}>
+                    {followedByMe ? (
+                        <ZListItem
+                            leftIcon={require('assets/ic-user-remove-24.png')}
+                            small={true}
+                            text="Unfollow"
+                            onPress={unfollowUser}
+                        />
+                    ) : (
                         <ZListItem
                             leftIcon={require('assets/ic-user-add-24.png')}
                             small={true}
@@ -155,56 +169,62 @@ const UserModalBody = React.memo(({
                             onPress={followUser}
                         />
                     )}
-                {isSelfAdmin && (
-                    <>
-                        {/* {userStatus === VoiceChatParticipantStatus.SPEAKER && (
-                            <ZListItem
-                                leftIcon={require('assets/ic-listener-24.png')}
-                                small={true}
-                                text="Make listener"
-                                onPress={demoteUser}
-                            />
-                        )}
-                        {userStatus === VoiceChatParticipantStatus.LISTENER && (
-                            <ZListItem
-                                leftIcon={require('assets/ic-mic-24.png')}
-                                small={true}
-                                text="Make speaker"
-                                onPress={promoteUser}
-                            />
-                        )}
-                        {userStatus === VoiceChatParticipantStatus.ADMIN ? (
-                            <ZListItem
-                                leftIcon={require('assets/ic-pro-off-24.png')}
-                                small={true}
-                                text="Remove admin"
-                                onPress={removeAdmin}
-                            />
-                        ) : (
+                    {isSelfAdmin && (
+                        <>
+                            {userStatus === VoiceChatParticipantStatus.SPEAKER && (
                                 <ZListItem
-                                    leftIcon={require('assets/ic-pro-24.png')}
+                                    leftIcon={require('assets/ic-listener-24.png')}
                                     small={true}
-                                    text="Make admin"
-                                    onPress={makeAdmin}
+                                    text="Make listener"
+                                    onPress={demoteUser}
                                 />
-                            )} */}
-                        {userStatus !== VoiceChatParticipantStatus.ADMIN && (
-                            <ZListItem
-                                leftIcon={require('assets/ic-leave-24.png')}
-                                small={true}
-                                text="Remove"
-                                onPress={removeUser}
-                            />
-                        )}
-                    </>
-                )}
-                <View style={{ marginTop: 16, paddingHorizontal: 16 }}>
-                    <ZButton size="large" title="View profile" style="secondary" onPress={handleViewUser} />
+                            )}
+                            {userStatus === VoiceChatParticipantStatus.LISTENER && (
+                                <ZListItem
+                                    leftIcon={require('assets/ic-mic-24.png')}
+                                    small={true}
+                                    text="Make speaker"
+                                    onPress={promoteUser}
+                                />
+                            )}
+                            {/*{userStatus === VoiceChatParticipantStatus.ADMIN ? (*/}
+                            {/*    <ZListItem*/}
+                            {/*        leftIcon={require('assets/ic-pro-off-24.png')}*/}
+                            {/*        small={true}*/}
+                            {/*        text="Remove admin"*/}
+                            {/*        onPress={removeAdmin}*/}
+                            {/*    />*/}
+                            {/*) : (*/}
+                            {/*    <ZListItem*/}
+                            {/*        leftIcon={require('assets/ic-pro-24.png')}*/}
+                            {/*        small={true}*/}
+                            {/*        text="Make admin"*/}
+                            {/*        onPress={makeAdmin}*/}
+                            {/*    />*/}
+                            {/*)}*/}
+                            {userStatus !== VoiceChatParticipantStatus.ADMIN && (
+                                <ZListItem
+                                    leftIcon={require('assets/ic-leave-24.png')}
+                                    small={true}
+                                    text="Remove"
+                                    onPress={removeUser}
+                                />
+                            )}
+                        </>
+                    )}
+                    <View style={{ marginTop: 16, paddingHorizontal: 16 }}>
+                        <ZButton
+                            size="large"
+                            title="View profile"
+                            style="secondary"
+                            onPress={handleViewUser}
+                        />
+                    </View>
                 </View>
-            </View>
-        </>
-    );
-});
+            </>
+        );
+    },
+);
 
 const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => void }) => {
     const { user, theme } = props;
@@ -227,12 +247,7 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                     justifyContent: 'center',
                 }}
             >
-                <ZAvatar
-                    size="xx-large"
-                    photo={user.photo}
-                    title={user.name}
-                    id={user.id}
-                />
+                <ZAvatar size="xx-large" photo={user.photo} title={user.name} id={user.id} />
                 <Text
                     numberOfLines={1}
                     style={{
@@ -244,10 +259,21 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                     {user.name}
                 </Text>
             </View>
-            <React.Suspense fallback={<View style={{ flexGrow: 1, minHeight: 156, justifyContent: 'center', alignItems: 'center' }}><ZLoader /></View>}>
-                <UserModalBody
-                    {...props}
-                />
+            <React.Suspense
+                fallback={
+                    <View
+                        style={{
+                            flexGrow: 1,
+                            minHeight: 156,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <ZLoader />
+                    </View>
+                }
+            >
+                <UserModalBody {...props} />
             </React.Suspense>
         </View>
     );
@@ -261,59 +287,59 @@ const showUserInfo = (props: RoomUserViewProps) => {
 };
 
 type EditRoomModalProps = {
-    id: string,
-    title: string | null,
+    id: string;
+    title: string | null;
 };
 
-const EditRoomModal = React.memo(({ id, title, hide }: EditRoomModalProps & { hide: () => void }) => {
-    const shakerRef = React.useRef<{ shake: () => void }>(null);
-    const client = useClient();
-    const form = useForm();
-    const titleField = useField('room.title', title || '', form);
+const EditRoomModal = React.memo(
+    ({ id, title, hide }: EditRoomModalProps & { hide: () => void }) => {
+        const shakerRef = React.useRef<{ shake: () => void }>(null);
+        const client = useClient();
+        const form = useForm();
+        const titleField = useField('room.title', title || '', form);
 
-    const onCancel = () => {
-        hide();
-    };
-    const onConfirm = async () => {
-        let titleValue = titleField.value.trim();
-        if (titleValue.length <= 0) {
-            shakerRef.current?.shake();
-            return;
-        }
-        await client.mutateVoiceChatUpdate({ id, input: { title: titleValue } });
-        await client.refetchVoiceChat({ id });
-        hide();
-    };
+        const onCancel = () => {
+            hide();
+        };
+        const onConfirm = async () => {
+            let titleValue = titleField.value.trim();
+            if (titleValue.length <= 0) {
+                shakerRef.current?.shake();
+                return;
+            }
+            await Promise.all([
+                client.mutateVoiceChatUpdate({ id, input: { title: titleValue } }),
+                client.refetchVoiceChat({ id }),
+            ]);
+            hide();
+        };
 
-    const [keyboardHeight, setKeyboardHeight] = React.useState(0);
-    const isIos = Platform.OS === 'ios';
+        const [keyboardHeight, setKeyboardHeight] = React.useState(0);
+        const isIos = Platform.OS === 'ios';
 
-    const keyboardWillShow = (e: any) => {
-        if (e.duration > 0) {
-            LayoutAnimation.configureNext(LayoutAnimation.create(
-                e.duration,
-                LayoutAnimation.Types[e.easing]
-            ));
-        }
-        setKeyboardHeight(e?.endCoordinates?.height);
-    };
+        const keyboardWillShow = (e: any) => {
+            if (e.duration > 0) {
+                LayoutAnimation.configureNext(
+                    LayoutAnimation.create(e.duration, LayoutAnimation.Types[e.easing]),
+                );
+            }
+            setKeyboardHeight(e?.endCoordinates?.height);
+        };
 
-    const keyboardWillHide = (e: any) => {
-        if (e.duration > 0) {
-            LayoutAnimation.configureNext(LayoutAnimation.create(
-                e.duration,
-                LayoutAnimation.Types[e.easing]
-            ));
-        }
-        setKeyboardHeight(0);
-    };
+        const keyboardWillHide = (e: any) => {
+            if (e.duration > 0) {
+                LayoutAnimation.configureNext(
+                    LayoutAnimation.create(e.duration, LayoutAnimation.Types[e.easing]),
+                );
+            }
+            setKeyboardHeight(0);
+        };
 
-    const keyboardHeightChange = (e: any) => {
-        setKeyboardHeight(e?.height ? Math.ceil(e.height) : 0);
-    };
+        const keyboardHeightChange = (e: any) => {
+            setKeyboardHeight(e?.height ? Math.ceil(e.height) : 0);
+        };
 
-    React.useEffect(
-        () => {
+        React.useEffect(() => {
             if (isIos) {
                 Keyboard.addListener('keyboardWillShow', keyboardWillShow);
                 Keyboard.addListener('keyboardWillHide', keyboardWillHide);
@@ -325,34 +351,41 @@ const EditRoomModal = React.memo(({ id, title, hide }: EditRoomModalProps & { hi
                     Keyboard.removeListener('keyboardWillShow', keyboardWillShow);
                     Keyboard.removeListener('keyboardWillHide', keyboardWillHide);
                 } else {
-                    DeviceEventEmitter.removeListener('async_keyboard_height', keyboardHeightChange);
+                    DeviceEventEmitter.removeListener(
+                        'async_keyboard_height',
+                        keyboardHeightChange,
+                    );
                 }
             };
-        },
-        [],
-    );
+        }, []);
 
-    return (
-        <View
-            style={{
-                marginTop: 15,
-                marginBottom: keyboardHeight,
-            }}
-        >
-            <ZShaker ref={shakerRef}>
-                <ZInput placeholder="Room name" field={titleField} multiline={true} style={{ height: 100 }} />
-            </ZShaker>
-            <View style={{ flexDirection: 'row', flex: 1, marginHorizontal: 16, }}>
-                <View style={{ flex: 1, marginRight: 16 }}>
-                    <ZButton style="secondary" size="large" title="Cancel" onPress={onCancel} />
-                </View>
-                <View style={{ flex: 1 }}>
-                    <ZButton size="large" title="Save" action={onConfirm} />
+        return (
+            <View
+                style={{
+                    marginTop: 15,
+                    marginBottom: keyboardHeight,
+                }}
+            >
+                <ZShaker ref={shakerRef}>
+                    <ZInput
+                        placeholder="Room name"
+                        field={titleField}
+                        multiline={true}
+                        style={{ height: 100 }}
+                    />
+                </ZShaker>
+                <View style={{ flexDirection: 'row', flex: 1, marginHorizontal: 16 }}>
+                    <View style={{ flex: 1, marginRight: 16 }}>
+                        <ZButton style="secondary" size="large" title="Cancel" onPress={onCancel} />
+                    </View>
+                    <View style={{ flex: 1 }}>
+                        <ZButton size="large" title="Save" action={onConfirm} />
+                    </View>
                 </View>
             </View>
-        </View>
-    );
-});
+        );
+    },
+);
 
 const showEditRoom = (props: EditRoomModalProps) => {
     showBottomSheet({
@@ -367,7 +400,13 @@ interface RoomViewProps {
 }
 
 const RoomHeader = React.memo(
-    (props: RoomViewProps & { theme: ThemeGlobal; hide: () => void; onLayout: (e: LayoutChangeEvent) => void }) => {
+    (
+        props: RoomViewProps & {
+            theme: ThemeGlobal;
+            hide: () => void;
+            onLayout: (e: LayoutChangeEvent) => void;
+        },
+    ) => {
         const { room, hide, theme } = props;
         const isAdmin = room.me?.status === VoiceChatParticipantStatus.ADMIN;
         const handleMorePress = React.useCallback(() => {
@@ -428,22 +467,50 @@ const RoomHeader = React.memo(
                         }}
                     />
                 </View>
-                <View style={{ position: 'absolute', top: 0, right: 0, zIndex: 5, flexDirection: 'row' }}>
+                <View
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        zIndex: 5,
+                        flexDirection: 'row',
+                    }}
+                >
                     {isAdmin && (
                         <TouchableOpacity
                             activeOpacity={HighlightAlpha}
-                            style={{ justifyContent: 'center', alignItems: 'center', width: 56, height: 56 }}
+                            style={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                width: 56,
+                                height: 56,
+                            }}
                             onPress={handleMorePress}
                         >
-                            <Image style={{ width: 24, height: 24, tintColor: theme.foregroundTertiary }} source={require('assets/ic-more-h-24.png')} />
+                            <Image
+                                style={{
+                                    width: 24,
+                                    height: 24,
+                                    tintColor: theme.foregroundTertiary,
+                                }}
+                                source={require('assets/ic-more-h-24.png')}
+                            />
                         </TouchableOpacity>
                     )}
                     <TouchableOpacity
                         activeOpacity={HighlightAlpha}
-                        style={{ justifyContent: 'center', alignItems: 'center', width: 56, height: 56 }}
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: 56,
+                            height: 56,
+                        }}
                         onPress={hide}
                     >
-                        <Image style={{ width: 24, height: 24, tintColor: theme.foregroundTertiary }} source={require('assets/ic-size-down-glyph-24.png')} />
+                        <Image
+                            style={{ width: 24, height: 24, tintColor: theme.foregroundTertiary }}
+                            source={require('assets/ic-size-down-glyph-24.png')}
+                        />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -503,21 +570,31 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                                 borderRadius: 100,
                                 backgroundColor: theme.backgroundSecondary,
                                 justifyContent: 'center',
-                                alignItems: 'center'
+                                alignItems: 'center',
                             }}
                         >
-                            <Image source={require('assets/ic-mute-glyph-16.png')} style={{ width: 16, height: 16, tintColor: theme.foregroundSecondary }} />
+                            <Image
+                                source={require('assets/ic-mute-glyph-16.png')}
+                                style={{
+                                    width: 16,
+                                    height: 16,
+                                    tintColor: theme.foregroundSecondary,
+                                }}
+                            />
                         </View>
                     )}
                 </View>
                 <View style={{ marginTop: 12, flexDirection: 'row', alignItems: 'center' }}>
                     {isAdmin && (
-                        <Image source={require('assets/ic-crown-16.png')} style={{ tintColor: '#e8ac3c', marginRight: 6 }} />
+                        <Image
+                            source={require('assets/ic-crown-16.png')}
+                            style={{ tintColor: '#e8ac3c', marginRight: 6 }}
+                        />
                     )}
                     <Text
                         numberOfLines={1}
                         style={{
-                            ...isListener ? TextStyles.Label3 : TextStyles.Label2,
+                            ...(isListener ? TextStyles.Label3 : TextStyles.Label2),
                             color: theme.foregroundPrimary,
                         }}
                     >
@@ -570,7 +647,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
     // });
     // let listenersState = { items: [] as VoiceChatListeners_voiceChatListeners_items[], loading: false, loadMore: () => { } };
     const peersWithSpeakers = peers
-        .map(peer => ({ peer, speaker: room.speakers?.find(s => s.user.id === peer.user.id)! }))
+        .map((peer) => ({ peer, speaker: room.speakers?.find((s) => s.user.id === peer.user.id)! }))
         .filter((x) => !!x.speaker);
 
     const speakersElement = (
@@ -631,8 +708,8 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                 keyExtractor={(item, index) => index.toString() + item.id}
                 numColumns={4}
                 style={{ flex: 1 }}
-            // refreshing={listenersState.loading}
-            // onEndReached={listenersState.loadMore}
+                // refreshing={listenersState.loading}
+                // onEndReached={listenersState.loadMore}
             />
         </View>
     );
@@ -647,7 +724,9 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
     const [headerHeight, setHeaderHeight] = React.useState(0);
     const [controlsHeight, setControlsHeight] = React.useState(0);
     const voiceChatData = voiceChat ? voiceChat : room;
-    const canMeSpeak = voiceChatData.me?.status === VoiceChatParticipantStatus.ADMIN || voiceChatData.me?.status === VoiceChatParticipantStatus.SPEAKER;
+    const canMeSpeak =
+        voiceChatData.me?.status === VoiceChatParticipantStatus.ADMIN ||
+        voiceChatData.me?.status === VoiceChatParticipantStatus.SPEAKER;
 
     const onHeaderLayout = React.useCallback(
         (e: LayoutChangeEvent) => {
@@ -665,7 +744,9 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
 
     const calls = getMessenger().engine.calls;
     const mediaSession = calls.useCurrentSession();
-    const [state, setState] = React.useState<MediaSessionState | undefined>(mediaSession?.state.value);
+    const [state, setState] = React.useState<MediaSessionState | undefined>(
+        mediaSession?.state.value,
+    );
     const muted = !state?.sender.audioEnabled;
 
     const handleMute = React.useCallback(() => {
@@ -686,7 +767,6 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         //     await client.mutateVoiceChatLeave({ id: room.id });
         // }
         closeCall();
-
     }, [voiceChatData]);
 
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
@@ -695,7 +775,7 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         if (mediaSession && !muted && !canMeSpeak) {
             mediaSession.setAudioEnabled(false);
         }
-    }, [mediaSession, muted]);
+    }, [mediaSession, muted, canMeSpeak]);
 
     React.useLayoutEffect(() => {
         // Don't change: 'video' has the correct default behaviour
@@ -703,10 +783,16 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
         InCallManager.setKeepScreenOn(true);
     }, []);
 
-    const prevStatus = React.useRef<VoiceChatParticipantStatus | undefined>(voiceChatData.me?.status);
+    const prevStatus = React.useRef<VoiceChatParticipantStatus | undefined>(
+        voiceChatData.me?.status,
+    );
     React.useEffect(() => {
-        let isLeft = prevStatus.current !== VoiceChatParticipantStatus.LEFT && voiceChatData.me?.status === VoiceChatParticipantStatus.LEFT;
-        let isKicked = prevStatus.current !== VoiceChatParticipantStatus.KICKED && voiceChatData.me?.status === VoiceChatParticipantStatus.KICKED;
+        let isLeft =
+            prevStatus.current !== VoiceChatParticipantStatus.LEFT &&
+            voiceChatData.me?.status === VoiceChatParticipantStatus.LEFT;
+        let isKicked =
+            prevStatus.current !== VoiceChatParticipantStatus.KICKED &&
+            voiceChatData.me?.status === VoiceChatParticipantStatus.KICKED;
         if (isLeft || isKicked) {
             closeCall();
         }
@@ -719,7 +805,12 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
 
     return (
         <View>
-            <RoomHeader room={voiceChatData} theme={theme} onLayout={onHeaderLayout} hide={props.ctx.hide} />
+            <RoomHeader
+                room={voiceChatData}
+                theme={theme}
+                onLayout={onHeaderLayout}
+                hide={props.ctx.hide}
+            />
             <RoomUsersList
                 room={voiceChatData}
                 theme={theme}
@@ -737,8 +828,7 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
                 onLayout={onControlsLayout}
                 onLeave={handleLeave}
                 onMutePress={handleMute}
-                router={props.router}
-                modalCtx={props.ctx}
+                raisedHandUsers={voiceChatData.raisedHands?.map(i => i.user) || []}
             />
         </View>
     );
