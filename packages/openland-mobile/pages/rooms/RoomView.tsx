@@ -59,8 +59,8 @@ const UserModalBody = React.memo(({
     modalCtx,
 }: RoomUserViewProps & { hide: () => void }) => {
     const client = useClient();
-    const { followingCount, followedByMe, followersCount } = client.useVoiceChatUser({ uid: user.id }).user;
-    const isSelfAdmin = selfStatus === VoiceChatParticipantStatus.ADMIN || SUPER_ADMIN;
+    const { followingCount, followedByMe, followersCount } = client.useVoiceChatUser({ uid: user.id }, { fetchPolicy: 'network-only' }).user;
+    const isSelfAdmin = selfStatus === VoiceChatParticipantStatus.ADMIN;
 
     // const removeAdmin = React.useCallback(() => {
     //     (async () => {
