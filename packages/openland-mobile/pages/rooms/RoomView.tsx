@@ -11,6 +11,7 @@ import {
     LayoutAnimation,
     Platform,
     DeviceEventEmitter,
+    Dimensions,
 } from 'react-native';
 import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
@@ -646,7 +647,8 @@ interface RoomUsersListProps extends RoomViewProps {
 const RoomUsersList = React.memo((props: RoomUsersListProps) => {
     const { headerHeight, controlsHeight, peers, callState, analyzer, theme, room, router, modalCtx } = props;
     const sa = useSafeArea();
-    const sHeight = SDevice.wHeight - (sa.top + sa.bottom + headerHeight + controlsHeight + 16);
+    const currentHeight = isPad ? Dimensions.get('window').height : SDevice.wHeight;
+    const sHeight = currentHeight - (sa.top + sa.bottom + headerHeight + controlsHeight + 16);
     const listeners = room.listeners || [];
     // const client = useClient();
     // const initialListeners = client.useVoiceChatListeners({ id: room.id, first: 12 }).voiceChatListeners;
