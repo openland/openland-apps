@@ -46,6 +46,8 @@ import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
 import { withApp } from 'openland-mobile/components/withApp';
 import { isPad } from '../Root';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
+import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 
 interface RoomUserViewProps {
     roomId: string;
@@ -59,9 +61,14 @@ interface RoomUserViewProps {
     theme: ThemeGlobal;
     selfStatus?: VoiceChatParticipantStatus;
     router: SRouter;
-    isMuted?: boolean;
-    isTalking?: boolean;
+    state?: 'muted' | 'talking' | 'loading';
     modalCtx: { hide: () => void };
+}
+
+interface PeerMedia {
+    videoTrack: AppMediaStreamTrack | null;
+    audioTrack: AppMediaStreamTrack | null;
+    screencastTrack: AppMediaStreamTrack | null;
 }
 
 const UserModalBody = React.memo(
@@ -520,7 +527,7 @@ const RoomHeader = React.memo(
 );
 
 const RoomUserView = React.memo((props: RoomUserViewProps) => {
-    const { isMuted, isTalking, userStatus, theme, user } = props;
+    const { state, userStatus, theme, user } = props;
     const messenger = getMessenger().engine;
     const isAdmin = userStatus === VoiceChatParticipantStatus.ADMIN;
     const isListener = userStatus === VoiceChatParticipantStatus.LISTENER;
@@ -548,7 +555,7 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                 <View
                     style={{
                         padding: 4,
-                        borderColor: isTalking ? TintBlue.primary : 'transparent',
+                        borderColor: state === 'talking' ? TintBlue.primary : 'transparent',
                         borderWidth: 2,
                         borderRadius: 100,
                     }}
@@ -559,7 +566,7 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                         title={user.name}
                         id={user.id}
                     />
-                    {isMuted && (
+                    {(state === 'muted' || state === 'loading') && (
                         <View
                             style={{
                                 position: 'absolute',
@@ -573,14 +580,18 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                                 alignItems: 'center',
                             }}
                         >
-                            <Image
-                                source={require('assets/ic-mute-glyph-16.png')}
-                                style={{
-                                    width: 16,
-                                    height: 16,
-                                    tintColor: theme.foregroundSecondary,
-                                }}
-                            />
+                            {state === 'muted' ? (
+                                <Image
+                                    source={require('assets/ic-mute-glyph-16.png')}
+                                    style={{
+                                        width: 16,
+                                        height: 16,
+                                        tintColor: theme.foregroundSecondary,
+                                    }}
+                                />
+                            ) : state === 'loading' ? (
+                                <LoaderSpinner size="small" color={theme.foregroundSecondary} />
+                            ) : null}
                         </View>
                     )}
                 </View>
@@ -608,16 +619,17 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
 
 interface RoomSpeakingUserViewProps extends RoomUserViewProps {
     peer: Conference_conference_peers;
+    media: PeerMedia;
+    isLocal: boolean;
     analyzer: MediaSessionTrackAnalyzerManager;
 }
 
 const RoomSpeakingUserView = React.memo((props: RoomSpeakingUserViewProps) => {
-    const { analyzer, peer, ...other } = props;
+    const { analyzer, peer, media, isLocal, ...other } = props;
     // const isTalking = !!analyzer.usePeer(peer.id);
-    const isTalking = false;
-    const isMuted = peer?.mediaState.audioPaused;
+    const state = (!isLocal && !media.audioTrack) ? 'loading' : peer?.mediaState.audioPaused ? 'muted' : undefined;
 
-    return <RoomUserView {...other} isMuted={isMuted} isTalking={isTalking} />;
+    return <RoomUserView {...other} state={state} />;
 });
 
 interface RoomUsersListProps extends RoomViewProps {
@@ -627,11 +639,12 @@ interface RoomUsersListProps extends RoomViewProps {
     router: SRouter;
     peers: Conference_conference_peers[];
     analyzer: MediaSessionTrackAnalyzerManager;
+    callState: MediaSessionState | undefined;
     modalCtx: { hide: () => void };
 }
 
 const RoomUsersList = React.memo((props: RoomUsersListProps) => {
-    const { headerHeight, controlsHeight, peers, analyzer, theme, room, router, modalCtx } = props;
+    const { headerHeight, controlsHeight, peers, callState, analyzer, theme, room, router, modalCtx } = props;
     const sa = useSafeArea();
     const sHeight = SDevice.wHeight - (sa.top + sa.bottom + headerHeight + controlsHeight + 16);
     const listeners = room.listeners || [];
@@ -647,13 +660,31 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
     // });
     // let listenersState = { items: [] as VoiceChatListeners_voiceChatListeners_items[], loading: false, loadMore: () => { } };
     const peersWithSpeakers = peers
-        .map((peer) => ({ peer, speaker: room.speakers?.find((s) => s.user.id === peer.user.id)! }))
+        .map((peer) => {
+            let media: PeerMedia = { videoTrack: null, audioTrack: null, screencastTrack: null };
+            let isLocal = peer.id === callState?.sender.id;
+            if (isLocal) {
+                media = {
+                    videoTrack: callState?.sender.videoEnabled ? callState?.sender.videoTrack : null,
+                    audioTrack: callState?.sender.audioEnabled ? callState?.sender.audioTrack : null,
+                    screencastTrack: callState?.sender.screencastEnabled ? callState?.sender.screencastTrack : null,
+                };
+            } else {
+                media = { ...media, ...callState?.receivers[peer.id] };
+            }
+            return {
+                peer,
+                media,
+                isLocal,
+                speaker: room.speakers?.find((s) => s.user.id === peer.user.id)!
+            };
+        })
         .filter((x) => !!x.speaker);
 
     const speakersElement = (
         <>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start' }}>
-                {peersWithSpeakers.map(({ peer, speaker }) => {
+                {peersWithSpeakers.map(({ peer, media, isLocal, speaker }) => {
                     return (
                         <RoomSpeakingUserView
                             key={speaker.id}
@@ -662,6 +693,8 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                             userStatus={speaker.status}
                             selfStatus={room.me?.status}
                             peer={peer}
+                            media={media}
+                            isLocal={isLocal}
                             analyzer={analyzer}
                             theme={theme}
                             router={router}
@@ -820,6 +853,7 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
                 router={props.router}
                 modalCtx={props.ctx}
                 peers={conference?.peers || []}
+                callState={state}
                 analyzer={mediaSession.analyzer}
             />
             <RoomControls
