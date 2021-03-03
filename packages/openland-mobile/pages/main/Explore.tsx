@@ -24,40 +24,40 @@ import {
 import {
     DiscoverListItem,
     DiscoverListItemOrg,
-    DiscoverListItemVoice,
+    // DiscoverListItemVoice,
 } from './components/discover/DiscoverListItem';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { getRandomSeed } from './DiscoverListing';
 import { ComponentRefContext } from './Home';
 import { DiscoverCreateList } from './components/discover/DiscoverCreateList';
-import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { useVoiceChatsFeed } from 'openland-y-utils/voiceChat/voiceChatsFeedWatcher';
+// import { ZListItem } from 'openland-mobile/components/ZListItem';
+// import { useVoiceChatsFeed } from 'openland-y-utils/voiceChat/voiceChatsFeedWatcher';
 
-const ActiveVoiceChats = React.memo((props: PageProps) => {
-    const voiceChats = useVoiceChatsFeed();
-
-    const chatsMap = !!voiceChats.chats.length ? voiceChats.chats.slice(0, 3) : null;
-
-    return (
-        <ZListGroup
-            header="Rooms"
-            actionRight={chatsMap && chatsMap.length > 0 ? {
-                title: 'See all', onPress: () => props.router.push('RoomsFeed')
-            } : undefined}
-        >
-            {chatsMap ? (
-                chatsMap.map((v) => <DiscoverListItemVoice key={v.id} item={v} />)
-            ) : (
-                    <ZListItem
-                        leftIcon={require('assets/ic-add-glyph-24.png')}
-                        text="Start room"
-                        path="CreateRoom"
-                    />
-                )}
-        </ZListGroup>
-    );
-});
+// const ActiveVoiceChats = React.memo((props: PageProps) => {
+//     const voiceChats = useVoiceChatsFeed();
+//
+//     const chatsMap = !!voiceChats.chats.length ? voiceChats.chats.slice(0, 3) : null;
+//
+//     return (
+//         <ZListGroup
+//             header="Rooms"
+//             actionRight={chatsMap && chatsMap.length > 0 ? {
+//                 title: 'See all', onPress: () => props.router.push('RoomsFeed')
+//             } : undefined}
+//         >
+//             {chatsMap ? (
+//                 chatsMap.map((v) => <DiscoverListItemVoice key={v.id} item={v} />)
+//             ) : (
+//                     <ZListItem
+//                         leftIcon={require('assets/ic-add-glyph-24.png')}
+//                         text="Start room"
+//                         path="CreateRoom"
+//                     />
+//                 )}
+//         </ZListGroup>
+//     );
+// });
 
 export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) => {
     const theme = useTheme();
@@ -79,7 +79,7 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
 
     return (
         <>
-            <ActiveVoiceChats {...props} />
+            {/*<ActiveVoiceChats {...props} />*/}
             <DiscoverCreateList />
             <ZListGroup
                 header="Popular now"
@@ -277,7 +277,7 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
 
 const ExplorePage = (props: PageProps) => {
     const client = useClient();
-    let discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
+    const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
     const scrollRef = React.useContext(ComponentRefContext);
 
     return (

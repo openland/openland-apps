@@ -1,5 +1,9 @@
 import * as React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { useClient } from 'openland-api/useClient';
+import { VoiceChatWithSpeakers } from 'openland-api/spacex.types';
+import { PageProps } from 'openland-mobile/components/PageProps';
+import ActionSheet from 'openland-mobile/components/ActionSheet';
 import { SHeader } from 'react-native-s/SHeader';
 import { SRouter } from 'react-native-s/SRouter';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -9,13 +13,41 @@ import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZButton } from 'openland-mobile/components/ZButton';
+import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { SRouterContext } from 'react-native-s/SRouterContext';
-import { VoiceChatWithSpeakers } from 'openland-api/spacex.types';
 import { useJoinRoom } from './joinRoom';
 import { useVoiceChatsFeed } from 'openland-y-utils/voiceChat/voiceChatsFeedWatcher';
+import { RoomsList } from '../main/Explore';
+import { GlobalSearch } from '../main/components/globalSearch/GlobalSearch';
+import { ComponentRefContext } from '../main/Home';
+import { SSearchControler } from 'react-native-s/SSearchController';
+import { SScrollView } from 'react-native-s/SScrollView';
+import { SDeferred } from 'react-native-s/SDeferred';
 
-let RoomFeedItem = React.memo((props: { room: VoiceChatWithSpeakers, theme: ThemeGlobal, router: SRouter }) => {
+function showFilters(selected: 'voice' | 'explore', onSelect: (d: 'voice' | 'explore') => void) {
+    const actionSheet = ActionSheet.builder();
+    actionSheet.cancelable(false);
+    actionSheet.action(
+        'Rooms',
+        () => onSelect('voice'),
+        false,
+        require('assets/ic-room-24.png'),
+        undefined,
+        selected === 'voice',
+    );
+    actionSheet.action(
+        'Discover',
+        () => onSelect('explore'),
+        false,
+        require('assets/ic-discover-24.png'),
+        undefined,
+        selected === 'explore',
+    );
+    actionSheet.show(true);
+}
+
+const RoomFeedItem = React.memo((props: { room: VoiceChatWithSpeakers, theme: ThemeGlobal, router: SRouter }) => {
     let { room, theme } = props;
     let joinRoom = useJoinRoom();
     let speakers = room.speakers.slice(0, 4);
@@ -54,10 +86,14 @@ let RoomFeedItem = React.memo((props: { room: VoiceChatWithSpeakers, theme: Them
     );
 });
 
-const RoomsFeedPage = React.memo(() => {
+const RoomsFeedPage = React.memo((props: PageProps) => {
+    const client = useClient();
+    const [page, setPage] = React.useState<'voice' | 'explore'>('voice');
     const voiceChats = useVoiceChatsFeed();
     const theme = useTheme();
     const router = React.useContext(SRouterContext)!;
+    const scrollRef = React.useContext(ComponentRefContext);
+    const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
 
     const pushRoom = React.useCallback(() => {
         router.push('CreateRoom');
@@ -65,28 +101,64 @@ const RoomsFeedPage = React.memo(() => {
 
     return (
         <>
-            <SHeader title="Rooms" />
-            <SHeaderButton title="New room" onPress={pushRoom} />
-            <SFlatList
-                data={voiceChats.chats}
-                renderItem={({ item }) => <RoomFeedItem room={item} theme={theme} router={router} />}
-                keyExtractor={(item) => item.id}
-                ItemSeparatorComponent={() => voiceChats.chats.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
-                ListHeaderComponent={() => voiceChats.chats.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
-                ListFooterComponent={() => (
-                    <>
-                        {voiceChats.chats.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
-                        <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginBottom: 16, alignItems: 'center' }}>
-                            <Image source={require('assets/art-crowd.png')} style={{ width: 240, height: 150 }} />
-                            <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginVertical: 4 }}>Talk about anything!</Text>
-                            <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 16 }}>Create a new room and invite friends!</Text>
-                            <ZButton title="Start room" path="CreateRoom" />
-                        </View>
-                    </>
-                )}
-            // refreshing={loading}
-            // onEndReached={loadMore}
+            <SHeader
+                title={page === 'voice' ? 'Rooms' : 'Discover'}
+                titleAction={{
+                    title: page === 'voice' ? 'Rooms' : 'Discover',
+                    active: true,
+                    action: () => showFilters(page, setPage),
+                }}
             />
+            {page === 'voice' && (
+                <>
+                    <SHeaderButton title="New room" onPress={pushRoom} />
+                    <SFlatList
+                        scrollRef={scrollRef}
+                        data={voiceChats.chats}
+                        renderItem={({ item }) => <RoomFeedItem room={item} theme={theme} router={router} />}
+                        keyExtractor={(item) => item.id}
+                        ItemSeparatorComponent={() => voiceChats.chats.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
+                        ListHeaderComponent={() => voiceChats.chats.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
+                        ListFooterComponent={() => (
+                            <>
+                                {voiceChats.chats.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
+                                <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginBottom: 16, alignItems: 'center' }}>
+                                    <Image source={require('assets/art-crowd.png')} style={{ width: 240, height: 150 }} />
+                                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginVertical: 4 }}>Talk about anything!</Text>
+                                    <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 16 }}>Create a new room and invite friends!</Text>
+                                    <ZButton title="Start room" path="CreateRoom" />
+                                </View>
+                            </>
+                        )}
+                    />
+                </>
+            )}
+            {page === 'explore' && (
+                <>
+                    <SHeaderButton />
+                    <SSearchControler
+                        searchPlaceholder="Groups, communities, and more"
+                        searchRender={(p) => (
+                            <GlobalSearch
+                                query={p.query}
+                                router={props.router}
+                                onUserPress={(id: string) => props.router.push('ProfileUser', { id: id })}
+                            />
+                        )}
+                    >
+                        <React.Suspense fallback={<ZLoader />}>
+                            <SScrollView style={{ marginTop: -16 }} scrollRef={scrollRef}>
+                                <SDeferred>
+                                    <RoomsList
+                                        router={props.router}
+                                        isDiscoverDone={discoverDone.betaIsDiscoverDone}
+                                    />
+                                </SDeferred>
+                            </SScrollView>
+                        </React.Suspense>
+                    </SSearchControler>
+                </>
+            )}
         </>
     );
 });
