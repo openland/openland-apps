@@ -52,7 +52,7 @@ export const VoiceChatProvider = React.memo((props: { room: VoiceChatT; children
                             newVoiceChat = chat;
                             const hasSpeaker = newSpeakers.find(j => j.user.id === participant.user.id);
                             const hasListener = newListeners.find(j => j.user.id === participant.user.id);
-                            const hasRaisedHand = newRaisedHands.find(j => j.user.id === participant.user.id && j.handRaised );
+                            const hasRaisedHand = newRaisedHands.find(j => j.user.id === participant.user.id && j.handRaised);
                             if (participant.status === 'LEFT' || participant.status === 'KICKED') {
                                 newSpeakers = newSpeakers.filter(j => j.user.id !== participant.user.id);
                                 newListeners = newListeners.filter(j => j.user.id !== participant.user.id);
@@ -64,6 +64,9 @@ export const VoiceChatProvider = React.memo((props: { room: VoiceChatT; children
                                 }
                                 if (!!hasListener) {
                                     newListeners = newListeners.filter(j => j.user.id !== participant.user.id);
+                                }
+                                if (hasSpeaker) {
+                                    newSpeakers = newSpeakers.map((j) => j.id === participant.id ? participant : j);
                                 }
                             }
                             if (participant.status === 'SPEAKER') {

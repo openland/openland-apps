@@ -89,20 +89,20 @@ const UserModalBody = React.memo(
         }, { fetchPolicy: 'network-only' }).user;
         const isSelfAdmin = selfStatus === VoiceChatParticipantStatus.ADMIN;
 
-        // const removeAdmin = React.useCallback(async () => {
-        //     await Promise.all([
-        //         client.mutateVoiceChatUpdateAdmin({ id: roomId, uid: user.id, admin: false }),
-        //         client.refetchVoiceChat({ id: roomId }),
-        //     ]);
-        //     hide();
-        // }, [roomId, user.id]);
-        // const makeAdmin = React.useCallback(async () => {
-        //     await Promise.all([
-        //         client.mutateVoiceChatUpdateAdmin({ id: roomId, uid: user.id, admin: true }),
-        //         client.refetchVoiceChat({ id: roomId }),
-        //     ]);
-        //     hide();
-        // }, [roomId, user.id]);
+        const removeAdmin = React.useCallback(async () => {
+            await Promise.all([
+                client.mutateVoiceChatUpdateAdmin({ id: roomId, uid: user.id, admin: false }),
+                client.refetchVoiceChat({ id: roomId }),
+            ]);
+            hide();
+        }, [roomId, user.id]);
+        const makeAdmin = React.useCallback(async () => {
+            await Promise.all([
+                client.mutateVoiceChatUpdateAdmin({ id: roomId, uid: user.id, admin: true }),
+                client.refetchVoiceChat({ id: roomId }),
+            ]);
+            hide();
+        }, [roomId, user.id]);
         const removeUser = React.useCallback(async () => {
             await client.mutateVoiceChatKick({ id: roomId, uid: user.id });
             await client.refetchVoiceChat({ id: roomId });
@@ -196,21 +196,22 @@ const UserModalBody = React.memo(
                                     onPress={promoteUser}
                                 />
                             )}
-                            {/*{userStatus === VoiceChatParticipantStatus.ADMIN ? (*/}
-                            {/*    <ZListItem*/}
-                            {/*        leftIcon={require('assets/ic-pro-off-24.png')}*/}
-                            {/*        small={true}*/}
-                            {/*        text="Remove admin"*/}
-                            {/*        onPress={removeAdmin}*/}
-                            {/*    />*/}
-                            {/*) : (*/}
-                            {/*    <ZListItem*/}
-                            {/*        leftIcon={require('assets/ic-pro-24.png')}*/}
-                            {/*        small={true}*/}
-                            {/*        text="Make admin"*/}
-                            {/*        onPress={makeAdmin}*/}
-                            {/*    />*/}
-                            {/*)}*/}
+                            {/* {userStatus === VoiceChatParticipantStatus.ADMIN ? (
+                                <ZListItem
+                                    leftIcon={require('assets/ic-pro-off-24.png')}
+                                    small={true}
+                                    text="Remove admin"
+                                    onPress={removeAdmin}
+                                />
+                            ) :} */}
+                            {userStatus === VoiceChatParticipantStatus.SPEAKER ? (
+                                <ZListItem
+                                    leftIcon={require('assets/ic-pro-24.png')}
+                                    small={true}
+                                    text="Make admin"
+                                    onPress={makeAdmin}
+                                />
+                            ) : null}
                             {userStatus !== VoiceChatParticipantStatus.ADMIN && (
                                 <ZListItem
                                     leftIcon={require('assets/ic-leave-24.png')}
