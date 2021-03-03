@@ -11,20 +11,16 @@ export type VoiceChatT = VoiceChatEntity & {
 
 const VoiceChatContext = React.createContext<VoiceChatT | null>(null);
 
-export const VoiceChatProvider = React.memo((props: { room: VoiceChatT; children: any }) => {
-    const [voiceChat, setVoiceChat] = React.useState<VoiceChatT>({
-        ...props.room,
-        speakers: props.room.speakers,
-        listeners: props.room.listeners,
-        raisedHands: props.room.raisedHands,
-    });
+export const VoiceChatProvider = React.memo((props: { roomId: string; children: any }) => {
     const client = useClient();
+    const room = client.useVoiceChatFull({ id: props.roomId }, { fetchPolicy: 'network-only' }).voiceChat;
+    const [voiceChat, setVoiceChat] = React.useState<VoiceChatT>(room);
     const subscribeRef = React.useRef<any>(null);
 
     const subscribe = async () => {
         const { state: initialState } = (
             await client.queryVoiceChatEventsState(
-                { id: props.room.id },
+                { id: props.roomId },
                 { fetchPolicy: 'network-only' },
             )
         ).voiceChatEventsState;
@@ -33,7 +29,7 @@ export const VoiceChatProvider = React.memo((props: { room: VoiceChatT; children
             initialState,
             (state, handler) =>
                 client.subscribeVoiceChatEvents(
-                    { id: props.room.id, fromState: state! },
+                    { id: props.roomId, fromState: state! },
                     handler,
                 ),
             ({ voiceChatEvents }) => {
@@ -124,5 +120,5 @@ export const VoiceChatProvider = React.memo((props: { room: VoiceChatT; children
 });
 
 export const useVoiceChat = () => {
-    return React.useContext(VoiceChatContext);
+    return React.useContext(VoiceChatContext)!;
 };

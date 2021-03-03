@@ -30,9 +30,26 @@ fragment VoiceChatWithSpeakers on VoiceChat {
     }
 }
 
+fragment FullVoiceChat on VoiceChat {
+    ...VoiceChatEntity
+    speakers {
+        ...VoiceChatParticipant
+    }
+    listeners {
+        ...VoiceChatParticipant
+    }
+}
+
 query VoiceChat($id: ID!) {
     voiceChat(id: $id) {
         ...VoiceChatWithSpeakers
+    }
+}
+
+query VoiceChatFull($id: ID!) {
+    voiceChat(id: $id) {
+        ...FullVoiceChat
+        
     }
 }
 
@@ -86,7 +103,7 @@ mutation VoiceChatCreate($input: VoiceChatInput!) {
 
 mutation VoiceChatJoin($id: ID!) {
     voiceChatJoin(id: $id) {
-        ...VoiceChatWithSpeakers
+        id
     }
 }
 

@@ -27,7 +27,6 @@ import { RoomControls } from './RoomControls';
 import {
     Conference_conference_peers,
     VoiceChatParticipantStatus,
-    VoiceChatWithSpeakers,
 } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { TintBlue } from 'openland-y-utils/themes/tints';
@@ -750,15 +749,13 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
     );
 });
 
-const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: SRouter }) => {
-    const voiceChat = useVoiceChat();
+const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: SRouter }) => {
+    const voiceChatData = useVoiceChat();
     const theme = useTheme();
     const client = useClient();
-    const { room } = props;
-    const conference = client.useConference({ id: props.room.id }, { suspense: false })?.conference;
+    const conference = client.useConference({ id: props.roomId }, { suspense: false })?.conference;
     const [headerHeight, setHeaderHeight] = React.useState(0);
     const [controlsHeight, setControlsHeight] = React.useState(0);
-    const voiceChatData = voiceChat ? voiceChat : room;
     const canMeSpeak =
         voiceChatData.me?.status === VoiceChatParticipantStatus.ADMIN ||
         voiceChatData.me?.status === VoiceChatParticipantStatus.SPEAKER;
@@ -859,7 +856,7 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
                 analyzer={mediaSession.analyzer}
             />
             <RoomControls
-                id={room.id}
+                id={props.roomId}
                 theme={theme}
                 muted={muted}
                 onLayout={onControlsLayout}
@@ -872,23 +869,23 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
 });
 
 export const RoomViewPage = withApp(({ router }: { router: SRouter }) => (
-    <VoiceChatProvider room={{ ...router.params.room, speakers: router.params.room.speakers }}>
+    <VoiceChatProvider roomId={router.params.roomId}>
         <RoomView
-            room={router.params.room}
+            roomId={router.params.roomId}
             router={router}
             ctx={{ hide: () => router.back() }}
         />
     </VoiceChatProvider>
 ), { navigationAppearance: 'small-hidden' });
 
-export const showRoomView = (room: VoiceChatWithSpeakers, router: SRouter) => {
+export const showRoomView = (roomId: string, router: SRouter) => {
     if (isPad) {
-        router.push('RoomViewPage', { room });
+        router.push('RoomViewPage', { roomId });
     } else {
         showBottomSheet({
             view: (ctx) => (
-                <VoiceChatProvider room={{ ...room, speakers: room.speakers }}>
-                    <RoomView room={room} ctx={ctx} router={router} />
+                <VoiceChatProvider roomId={roomId}>
+                    <RoomView roomId={roomId} ctx={ctx} router={router} />
                 </VoiceChatProvider>
             ),
             containerStyle: {

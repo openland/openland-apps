@@ -1057,6 +1057,48 @@ private let FullMessageWithoutSourceSelector = obj(
             ))
         )
 
+private let VoiceChatParticipantSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("user", "user", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("firstName", "firstName", notNull(scalar("String"))),
+                    field("photo", "photo", scalar("String")),
+                    field("followersCount", "followersCount", notNull(scalar("Int")))
+                ))),
+            field("status", "status", notNull(scalar("String"))),
+            field("handRaised", "handRaised", scalar("Boolean"))
+        )
+
+private let VoiceChatEntitySelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", scalar("String")),
+            field("active", "active", notNull(scalar("Boolean"))),
+            field("adminsCount", "adminsCount", notNull(scalar("Int"))),
+            field("speakersCount", "speakersCount", notNull(scalar("Int"))),
+            field("listenersCount", "listenersCount", notNull(scalar("Int"))),
+            field("me", "me", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
+                ))
+        )
+
+private let FullVoiceChatSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("speakers", "speakers", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
+                ))))),
+            field("listeners", "listeners", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
+                ))))),
+            fragment("VoiceChat", VoiceChatEntitySelector)
+        )
+
 private let MediaStreamFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -1899,35 +1941,6 @@ private let UserForMentionSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
                     field("name", "name", notNull(scalar("String")))
-                ))
-        )
-
-private let VoiceChatParticipantSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("user", "user", notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("name", "name", notNull(scalar("String"))),
-                    field("firstName", "firstName", notNull(scalar("String"))),
-                    field("photo", "photo", scalar("String")),
-                    field("followersCount", "followersCount", notNull(scalar("Int")))
-                ))),
-            field("status", "status", notNull(scalar("String"))),
-            field("handRaised", "handRaised", scalar("Boolean"))
-        )
-
-private let VoiceChatEntitySelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("title", "title", scalar("String")),
-            field("active", "active", notNull(scalar("Boolean"))),
-            field("adminsCount", "adminsCount", notNull(scalar("Int"))),
-            field("speakersCount", "speakersCount", notNull(scalar("Int"))),
-            field("listenersCount", "listenersCount", notNull(scalar("Int"))),
-            field("me", "me", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
                 ))
         )
 
@@ -4897,6 +4910,12 @@ private let VoiceChatEventsStateSelector = obj(
                     field("state", "state", notNull(scalar("String")))
                 )))
         )
+private let VoiceChatFullSelector = obj(
+            field("voiceChat", "voiceChat", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("VoiceChat", FullVoiceChatSelector)
+                )))
+        )
 private let VoiceChatListenersSelector = obj(
             field("voiceChatListeners", "voiceChatListeners", arguments(fieldValue("id", refValue("id")), fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5742,7 +5761,7 @@ private let VoiceChatEndSelector = obj(
 private let VoiceChatJoinSelector = obj(
             field("voiceChatJoin", "voiceChatJoin", arguments(fieldValue("id", refValue("id"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("VoiceChat", VoiceChatWithSpeakersSelector)
+                    field("id", "id", notNull(scalar("ID")))
                 )))
         )
 private let VoiceChatKickSelector = obj(
@@ -6975,6 +6994,12 @@ class Operations {
         "query VoiceChatEventsState($id:ID!){voiceChatEventsState(id:$id){__typename state}}",
         VoiceChatEventsStateSelector
     )
+    let VoiceChatFull = OperationDefinition(
+        "VoiceChatFull",
+        .query, 
+        "query VoiceChatFull($id:ID!){voiceChat(id:$id){__typename ...FullVoiceChat}}fragment FullVoiceChat on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}listeners{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount}status handRaised}",
+        VoiceChatFullSelector
+    )
     let VoiceChatListeners = OperationDefinition(
         "VoiceChatListeners",
         .query, 
@@ -7800,7 +7825,7 @@ class Operations {
     let VoiceChatJoin = OperationDefinition(
         "VoiceChatJoin",
         .mutation, 
-        "mutation VoiceChatJoin($id:ID!){voiceChatJoin(id:$id){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount}status handRaised}",
+        "mutation VoiceChatJoin($id:ID!){voiceChatJoin(id:$id){__typename id}}",
         VoiceChatJoinSelector
     )
     let VoiceChatKick = OperationDefinition(
@@ -8121,6 +8146,7 @@ class Operations {
         if name == "VoiceChat" { return VoiceChat }
         if name == "VoiceChatControls" { return VoiceChatControls }
         if name == "VoiceChatEventsState" { return VoiceChatEventsState }
+        if name == "VoiceChatFull" { return VoiceChatFull }
         if name == "VoiceChatListeners" { return VoiceChatListeners }
         if name == "VoiceChatUser" { return VoiceChatUser }
         if name == "AccountInviteJoin" { return AccountInviteJoin }

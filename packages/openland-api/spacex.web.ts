@@ -1064,6 +1064,48 @@ const FullMessageWithoutSourceSelector = obj(
             ))
         );
 
+const VoiceChatParticipantSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('user', 'user', args(), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('name', 'name', args(), notNull(scalar('String'))),
+                    field('firstName', 'firstName', args(), notNull(scalar('String'))),
+                    field('photo', 'photo', args(), scalar('String')),
+                    field('followersCount', 'followersCount', args(), notNull(scalar('Int')))
+                ))),
+            field('status', 'status', args(), notNull(scalar('String'))),
+            field('handRaised', 'handRaised', args(), scalar('Boolean'))
+        );
+
+const VoiceChatEntitySelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('title', 'title', args(), scalar('String')),
+            field('active', 'active', args(), notNull(scalar('Boolean'))),
+            field('adminsCount', 'adminsCount', args(), notNull(scalar('Int'))),
+            field('speakersCount', 'speakersCount', args(), notNull(scalar('Int'))),
+            field('listenersCount', 'listenersCount', args(), notNull(scalar('Int'))),
+            field('me', 'me', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('VoiceChatParticipant', VoiceChatParticipantSelector)
+                ))
+        );
+
+const FullVoiceChatSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('speakers', 'speakers', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('VoiceChatParticipant', VoiceChatParticipantSelector)
+                ))))),
+            field('listeners', 'listeners', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('VoiceChatParticipant', VoiceChatParticipantSelector)
+                ))))),
+            fragment('VoiceChat', VoiceChatEntitySelector)
+        );
+
 const MediaStreamFullSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -1906,35 +1948,6 @@ const UserForMentionSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('id', 'id', args(), notNull(scalar('ID'))),
                     field('name', 'name', args(), notNull(scalar('String')))
-                ))
-        );
-
-const VoiceChatParticipantSelector = obj(
-            field('__typename', '__typename', args(), notNull(scalar('String'))),
-            field('id', 'id', args(), notNull(scalar('ID'))),
-            field('user', 'user', args(), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('id', 'id', args(), notNull(scalar('ID'))),
-                    field('name', 'name', args(), notNull(scalar('String'))),
-                    field('firstName', 'firstName', args(), notNull(scalar('String'))),
-                    field('photo', 'photo', args(), scalar('String')),
-                    field('followersCount', 'followersCount', args(), notNull(scalar('Int')))
-                ))),
-            field('status', 'status', args(), notNull(scalar('String'))),
-            field('handRaised', 'handRaised', args(), scalar('Boolean'))
-        );
-
-const VoiceChatEntitySelector = obj(
-            field('__typename', '__typename', args(), notNull(scalar('String'))),
-            field('id', 'id', args(), notNull(scalar('ID'))),
-            field('title', 'title', args(), scalar('String')),
-            field('active', 'active', args(), notNull(scalar('Boolean'))),
-            field('adminsCount', 'adminsCount', args(), notNull(scalar('Int'))),
-            field('speakersCount', 'speakersCount', args(), notNull(scalar('Int'))),
-            field('listenersCount', 'listenersCount', args(), notNull(scalar('Int'))),
-            field('me', 'me', args(), obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('VoiceChatParticipant', VoiceChatParticipantSelector)
                 ))
         );
 
@@ -4904,6 +4917,12 @@ const VoiceChatEventsStateSelector = obj(
                     field('state', 'state', args(), notNull(scalar('String')))
                 )))
         );
+const VoiceChatFullSelector = obj(
+            field('voiceChat', 'voiceChat', args(fieldValue("id", refValue('id'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('VoiceChat', FullVoiceChatSelector)
+                )))
+        );
 const VoiceChatListenersSelector = obj(
             field('voiceChatListeners', 'voiceChatListeners', args(fieldValue("id", refValue('id')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5749,7 +5768,7 @@ const VoiceChatEndSelector = obj(
 const VoiceChatJoinSelector = obj(
             field('voiceChatJoin', 'voiceChatJoin', args(fieldValue("id", refValue('id'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('VoiceChat', VoiceChatWithSpeakersSelector)
+                    field('id', 'id', args(), notNull(scalar('ID')))
                 )))
         );
 const VoiceChatKickSelector = obj(
@@ -6978,6 +6997,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query VoiceChatEventsState($id:ID!){voiceChatEventsState(id:$id){__typename state}}',
         selector: VoiceChatEventsStateSelector
     },
+    VoiceChatFull: {
+        kind: 'query',
+        name: 'VoiceChatFull',
+        body: 'query VoiceChatFull($id:ID!){voiceChat(id:$id){__typename ...FullVoiceChat}}fragment FullVoiceChat on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}listeners{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount}status handRaised}',
+        selector: VoiceChatFullSelector
+    },
     VoiceChatListeners: {
         kind: 'query',
         name: 'VoiceChatListeners',
@@ -7803,7 +7828,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     VoiceChatJoin: {
         kind: 'mutation',
         name: 'VoiceChatJoin',
-        body: 'mutation VoiceChatJoin($id:ID!){voiceChatJoin(id:$id){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount}status handRaised}',
+        body: 'mutation VoiceChatJoin($id:ID!){voiceChatJoin(id:$id){__typename id}}',
         selector: VoiceChatJoinSelector
     },
     VoiceChatKick: {
