@@ -196,15 +196,14 @@ const UserModalBody = React.memo(
                                     onPress={promoteUser}
                                 />
                             )}
-                            {/* {userStatus === VoiceChatParticipantStatus.ADMIN ? (
+                            {userStatus === VoiceChatParticipantStatus.ADMIN ? (
                                 <ZListItem
                                     leftIcon={require('assets/ic-pro-off-24.png')}
                                     small={true}
                                     text="Remove admin"
                                     onPress={removeAdmin}
                                 />
-                            ) :} */}
-                            {userStatus === VoiceChatParticipantStatus.SPEAKER ? (
+                            ) : userStatus === VoiceChatParticipantStatus.SPEAKER ? (
                                 <ZListItem
                                     leftIcon={require('assets/ic-pro-24.png')}
                                     small={true}

@@ -61,17 +61,18 @@ export const VoiceChatProvider = React.memo((props: { room: VoiceChatT; children
                             if (participant.status === 'ADMIN') {
                                 if (!hasSpeaker) {
                                     newSpeakers.push(participant);
+                                } else {
+                                    newSpeakers = newSpeakers.map((j) => j.id === participant.id ? participant : j);
                                 }
                                 if (!!hasListener) {
                                     newListeners = newListeners.filter(j => j.user.id !== participant.user.id);
-                                }
-                                if (hasSpeaker) {
-                                    newSpeakers = newSpeakers.map((j) => j.id === participant.id ? participant : j);
                                 }
                             }
                             if (participant.status === 'SPEAKER') {
                                 if (!hasSpeaker) {
                                     newSpeakers.push(participant);
+                                } else {
+                                    newSpeakers = newSpeakers.map((j) => j.id === participant.id ? participant : j);
                                 }
                                 if (!!hasListener) {
                                     newListeners = newListeners.filter(j => j.user.id !== participant.user.id);
