@@ -26,11 +26,12 @@ export const useJoinRoom = () => {
             } else {
                 showRoomView(room, router);
                 messenger.calls.joinCall(id, async () => {
-                    let admins = room.speakers.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
-                    if (admins.length <= 1 && room.me?.status === VoiceChatParticipantStatus.ADMIN) {
-                        client.mutateVoiceChatEnd({ id: room.id });
+                    let roomToLeave = (await client.queryVoiceChat({ id })).voiceChat;
+                    let admins = roomToLeave.speakers.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
+                    if (admins.length <= 1 && roomToLeave.me?.status === VoiceChatParticipantStatus.ADMIN) {
+                        client.mutateVoiceChatEnd({ id: roomToLeave.id });
                     } else {
-                        client.mutateVoiceChatLeave({ id: room.id });
+                        client.mutateVoiceChatLeave({ id: roomToLeave.id });
                     }
                 });
             }
