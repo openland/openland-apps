@@ -84,6 +84,7 @@ import { ReportSpam } from './pages/main/components/ReportSpam';
 import { CreateRoom } from './pages/rooms/CreateRoom';
 import { RoomsFeed } from './pages/rooms/RoomsFeed';
 import { UserFollowers } from './pages/main/UserFollowers';
+import { RoomViewPage } from './pages/rooms/RoomView';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -184,5 +185,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('CreateRoom', CreateRoom)
   .addRoute('RoomsFeed', RoomsFeed)
   .addRoute('UserFollowers', UserFollowers)
+  .addRoute('RoomViewPage', RoomViewPage)
 
   .build();

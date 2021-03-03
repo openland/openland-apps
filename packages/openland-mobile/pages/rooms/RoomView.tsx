@@ -44,6 +44,8 @@ import {
 } from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
+import { withApp } from 'openland-mobile/components/withApp';
+import { isPad } from '../Root';
 
 interface RoomUserViewProps {
     roomId: string;
@@ -161,13 +163,13 @@ const UserModalBody = React.memo(
                             onPress={unfollowUser}
                         />
                     ) : (
-                        <ZListItem
-                            leftIcon={require('assets/ic-user-add-24.png')}
-                            small={true}
-                            text="Follow"
-                            onPress={followUser}
-                        />
-                    )}
+                            <ZListItem
+                                leftIcon={require('assets/ic-user-add-24.png')}
+                                small={true}
+                                text="Follow"
+                                onPress={followUser}
+                            />
+                        )}
                     {isSelfAdmin && (
                         <>
                             {userStatus === VoiceChatParticipantStatus.SPEAKER && (
@@ -526,8 +528,7 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
     return (
         <View
             style={{
-                maxWidth: '34%',
-                flexGrow: 1,
+                width: '33.33%',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -707,8 +708,8 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                 keyExtractor={(item, index) => index.toString() + item.id}
                 numColumns={4}
                 style={{ flex: 1 }}
-                // refreshing={listenersState.loading}
-                // onEndReached={listenersState.loadMore}
+            // refreshing={listenersState.loading}
+            // onEndReached={listenersState.loadMore}
             />
         </View>
     );
@@ -834,22 +835,36 @@ const RoomView = React.memo((props: RoomViewProps & { ctx: ModalProps; router: S
     );
 });
 
+export const RoomViewPage = withApp(({ router }: { router: SRouter }) => (
+    <VoiceChatProvider room={{ ...router.params.room, speakers: router.params.room.speakers }}>
+        <RoomView
+            room={router.params.room}
+            router={router}
+            ctx={{ hide: () => router.back() }}
+        />
+    </VoiceChatProvider>
+), { navigationAppearance: 'small-hidden' });
+
 export const showRoomView = (room: VoiceChatWithSpeakers, router: SRouter) => {
-    showBottomSheet({
-        view: (ctx) => (
-            <VoiceChatProvider room={{ ...room, speakers: room.speakers }}>
-                <RoomView room={room} ctx={ctx} router={router} />
-            </VoiceChatProvider>
-        ),
-        containerStyle: {
-            borderBottomLeftRadius: 0,
-            borderBottomRightRadius: 0,
-            borderTopLeftRadius: 18,
-            borderTopRightRadius: 18,
-        },
-        dismissOffset: 10000,
-        disableMargins: true,
-        disableBottomSafeArea: true,
-        cancelable: false,
-    });
+    if (isPad) {
+        router.push('RoomViewPage', { room });
+    } else {
+        showBottomSheet({
+            view: (ctx) => (
+                <VoiceChatProvider room={{ ...room, speakers: room.speakers }}>
+                    <RoomView room={room} ctx={ctx} router={router} />
+                </VoiceChatProvider>
+            ),
+            containerStyle: {
+                borderBottomLeftRadius: 0,
+                borderBottomRightRadius: 0,
+                borderTopLeftRadius: 18,
+                borderTopRightRadius: 18,
+            },
+            dismissOffset: 10000,
+            disableMargins: true,
+            disableBottomSafeArea: true,
+            cancelable: false,
+        });
+    }
 };
