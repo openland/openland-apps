@@ -43,11 +43,12 @@ import {
     VoiceChatT,
 } from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
-import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
 import { withApp } from 'openland-mobile/components/withApp';
 import { isPad } from '../Root';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
+import AlertBlanket from 'openland-mobile/components/AlertBlanket';
+import Toast from 'openland-mobile/components/Toast';
 
 interface RoomUserViewProps {
     roomId: string;
@@ -618,14 +619,13 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
 });
 
 interface RoomSpeakingUserViewProps extends RoomUserViewProps {
-    peer: Conference_conference_peers;
+    peer: Conference_conference_peers | undefined;
     media: PeerMedia;
     isLocal: boolean;
-    analyzer: MediaSessionTrackAnalyzerManager;
 }
 
 const RoomSpeakingUserView = React.memo((props: RoomSpeakingUserViewProps) => {
-    const { analyzer, peer, media, isLocal, ...other } = props;
+    const { peer, media, isLocal, ...other } = props;
     // const isTalking = !!analyzer.usePeer(peer.id);
     const state = (!isLocal && !media.audioTrack) ? 'loading' : peer?.mediaState.audioPaused ? 'muted' : undefined;
 
@@ -638,13 +638,12 @@ interface RoomUsersListProps extends RoomViewProps {
     controlsHeight: number;
     router: SRouter;
     peers: Conference_conference_peers[];
-    analyzer: MediaSessionTrackAnalyzerManager;
     callState: MediaSessionState | undefined;
     modalCtx: { hide: () => void };
 }
 
 const RoomUsersList = React.memo((props: RoomUsersListProps) => {
-    const { headerHeight, controlsHeight, peers, callState, analyzer, theme, room, router, modalCtx } = props;
+    const { headerHeight, controlsHeight, peers, callState, theme, room, router, modalCtx } = props;
     const sa = useSafeArea();
     const currentHeight = isPad ? Dimensions.get('window').height : SDevice.wHeight;
     const sHeight = currentHeight - (sa.top + sa.bottom + headerHeight + controlsHeight + 16);
@@ -660,10 +659,11 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
     //     initialItems: initialListeners.items,
     // });
     // let listenersState = { items: [] as VoiceChatListeners_voiceChatListeners_items[], loading: false, loadMore: () => { } };
-    const peersWithSpeakers = peers
-        .map((peer) => {
+    const speakers = (room.speakers || [])
+        .map((speaker) => {
+            let peer = peers.find((p) => p.user.id === speaker.user.id);
             let media: PeerMedia = { videoTrack: null, audioTrack: null, screencastTrack: null };
-            let isLocal = peer.id === callState?.sender.id;
+            let isLocal = peer?.id === callState?.sender.id;
             if (isLocal) {
                 media = {
                     videoTrack: callState?.sender.videoEnabled ? callState?.sender.videoTrack : null,
@@ -671,21 +671,20 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                     screencastTrack: callState?.sender.screencastEnabled ? callState?.sender.screencastTrack : null,
                 };
             } else {
-                media = { ...media, ...callState?.receivers[peer.id] };
+                media = { ...media, ...peer ? callState?.receivers[peer.id] : {} };
             }
             return {
                 peer,
                 media,
                 isLocal,
-                speaker: room.speakers?.find((s) => s.user.id === peer.user.id)!
+                speaker,
             };
-        })
-        .filter((x) => !!x.speaker);
+        });
 
     const speakersElement = (
         <>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start' }}>
-                {peersWithSpeakers.map(({ peer, media, isLocal, speaker }) => {
+                {speakers.map(({ peer, media, isLocal, speaker }) => {
                     return (
                         <RoomSpeakingUserView
                             key={speaker.id}
@@ -696,7 +695,6 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                             peer={peer}
                             media={media}
                             isLocal={isLocal}
-                            analyzer={analyzer}
                             theme={theme}
                             router={router}
                             modalCtx={modalCtx}
@@ -792,13 +790,17 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
     };
 
     const handleLeave = React.useCallback(async () => {
-        // let admins = voiceChatData.speakers?.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
-        // if (admins && admins.length < 1 && canMeSpeak) {
-        //     await client.mutateVoiceChatEnd({ id: room.id });
-        // } else {
-        //     await client.mutateVoiceChatLeave({ id: room.id });
-        // }
-        closeCall();
+        let admins = voiceChatData.speakers?.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
+        if (admins && admins.length === 1 && voiceChatData.me?.status === VoiceChatParticipantStatus.ADMIN) {
+            let builder = AlertBlanket.builder();
+            builder
+                .title('End room')
+                .message('Leaving as the last admin will end the room. Return and make new admins if you want to keep the room going')
+                .action('Leave', 'destructive', () => closeCall())
+                .show();
+        } else {
+            closeCall();
+        }
 
     }, [voiceChatData]);
 
@@ -816,25 +818,35 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
         InCallManager.setKeepScreenOn(true);
     }, []);
 
-    const prevStatus = React.useRef<VoiceChatParticipantStatus | undefined>(
-        voiceChatData.me?.status,
+    const prevVoiceChat = React.useRef<VoiceChatT>(
+        voiceChatData,
     );
-    React.useEffect(() => {
-        let isLeft =
-            prevStatus.current !== VoiceChatParticipantStatus.LEFT &&
-            voiceChatData.me?.status === VoiceChatParticipantStatus.LEFT;
-        let isKicked =
-            prevStatus.current !== VoiceChatParticipantStatus.KICKED &&
-            voiceChatData.me?.status === VoiceChatParticipantStatus.KICKED;
-        if (isLeft || isKicked) {
-            closeCall();
-        }
-        prevStatus.current = voiceChatData.me?.status;
-    }, [voiceChatData]);
 
-    if (!mediaSession) {
-        return null;
-    }
+    React.useEffect(() => {
+        let hasPrevAdmins = prevVoiceChat.current.speakers?.some(x => x.status === VoiceChatParticipantStatus.ADMIN);
+        let isPrevAdmin = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.ADMIN;
+        let hasAdmins = voiceChatData.speakers?.some(x => x.status === VoiceChatParticipantStatus.ADMIN);
+
+        if (hasPrevAdmins && !hasAdmins && !isPrevAdmin) {
+            Toast
+                .build({ text: 'The last room admin left, the room will be closed now', duration: 2000 })
+                .show();
+            setTimeout(() => {
+                closeCall();
+            }, 2500);
+        } else {
+            let isLeft =
+                prevVoiceChat.current.me?.status !== VoiceChatParticipantStatus.LEFT &&
+                voiceChatData.me?.status === VoiceChatParticipantStatus.LEFT;
+            let isKicked =
+                prevVoiceChat.current.me?.status !== VoiceChatParticipantStatus.KICKED &&
+                voiceChatData.me?.status === VoiceChatParticipantStatus.KICKED;
+            if (isLeft || isKicked) {
+                closeCall();
+            }
+        }
+        prevVoiceChat.current = voiceChatData;
+    }, [voiceChatData]);
 
     return (
         <View>
@@ -853,7 +865,6 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
                 modalCtx={props.ctx}
                 peers={conference?.peers || []}
                 callState={state}
-                analyzer={mediaSession.analyzer}
             />
             <RoomControls
                 id={props.roomId}
@@ -878,7 +889,7 @@ export const RoomViewPage = withApp(({ router }: { router: SRouter }) => (
     </VoiceChatProvider>
 ), { navigationAppearance: 'small-hidden' });
 
-export const showRoomView = (roomId: string, router: SRouter) => {
+export const showRoomView = (roomId: string, router: SRouter, onHide?: () => void) => {
     if (isPad) {
         router.push('RoomViewPage', { roomId });
     } else {
