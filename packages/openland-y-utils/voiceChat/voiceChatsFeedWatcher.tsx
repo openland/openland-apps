@@ -13,15 +13,18 @@ export const VoiceChatsFeedProvider = React.memo((props: { children: any }) => {
     const subscribeRef = React.useRef<any>(null);
 
     const subscribe = async () => {
-        const { activeVoiceChats } = await client.queryActiveVoiceChats(
-            { first: 12 },
-            { fetchPolicy: 'network-only' },
-        );
-        setVoiceChatsFeed(activeVoiceChats.items);
-
         subscribeRef.current = sequenceWatcher<ActiveVoiceChatsEvents>(
             null,
-            (state, handler) => client.subscribeActiveVoiceChatsEvents(handler),
+            (state, handler) => {
+                (async () => {
+                    const { activeVoiceChats } = await client.queryActiveVoiceChats(
+                        { first: 50 },
+                        { fetchPolicy: 'network-only' },
+                    );
+                    setVoiceChatsFeed(activeVoiceChats.items);
+                })();
+                return client.subscribeActiveVoiceChatsEvents(handler);
+            },
             ({ activeVoiceChatsEvents }) => {
                 setVoiceChatsFeed((prev) => {
                     let chats = prev;
@@ -45,9 +48,7 @@ export const VoiceChatsFeedProvider = React.memo((props: { children: any }) => {
     };
 
     React.useEffect(() => {
-        (async () => {
-            await subscribe();
-        })();
+        subscribe();
         return () => {
             subscribeRef.current?.();
         };
