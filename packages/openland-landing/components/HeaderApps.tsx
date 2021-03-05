@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { LandingLinks } from './_links';
+import { getAppLink } from 'openland-x-utils/detectOS';
 
 const popup = css`
     display: flex;
@@ -98,17 +98,17 @@ export const HeaderApps = React.memo((props: HeaderAppsProps) => {
                     onMouseLeave={() => setShown(false)}
                 >
                     <HeaderAppsItem
-                        link={LandingLinks.apps.macos}
+                        link={getAppLink('Mac')}
                         icon="/static/landing/icons/mac.svg"
                         label="Mac"
                     />
                     <HeaderAppsItem
-                        link={LandingLinks.apps.windows}
+                        link={getAppLink('Windows')}
                         icon="/static/landing/icons/win.svg"
                         label="Windows"
                     />
                     <HeaderAppsItem
-                        link={LandingLinks.apps.linux}
+                        link={getAppLink('Linux')}
                         icon="/static/landing/icons/linux.svg"
                         label="Linux"
                     />

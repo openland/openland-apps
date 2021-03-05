@@ -13,14 +13,6 @@ export const LandingLinks = {
 
     careers: '/invite/8GbujwA',
     support: '/invite/zOF5IpZ',
-
-    apps: {
-        ios: 'https://oplnd.com/ios',
-        android: 'https://oplnd.com/android',
-        windows: 'https://oplnd.com/windows',
-        macos: 'https://oplnd.com/mac',
-        linux: 'https://oplnd.com/linux'
-    }
 };
 
 export const LandingSocials = {

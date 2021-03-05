@@ -26,7 +26,7 @@ import {
     noLoginMobileButton,
     noLoginDesktopButton,
 } from './InviteComponents';
-import { detectOS } from 'openland-x-utils/detectOS';
+import { detectOS, OS } from 'openland-x-utils/detectOS';
 import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
 
 type SharedRoomT = ResolvedInvite_shortnameItem_SharedRoom | ResolvedInvite_invite_RoomInvite_room;
@@ -195,7 +195,7 @@ export const InviteLandingComponentLayout = React.memo(
 
         if (props.noLogin) {
             if (isMobile) {
-                button = noLoginMobileButton(buttonText, os as 'iOS');
+                button = noLoginMobileButton(buttonText, os as OS);
             } else {
                 button = noLoginDesktopButton(buttonText, id, room);
             }

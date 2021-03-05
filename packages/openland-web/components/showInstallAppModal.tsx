@@ -3,12 +3,12 @@ import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import { showModalBox } from 'openland-x/showModalBox';
 import { TextBody, TextLabel1, TextTitle1 } from '../utils/TextStyles';
-import IcIos from 'openland-icons/ic-app-ios.svg';
-import IcAndroid from 'openland-icons/ic-app-android.svg';
-import { OS } from 'openland-x-utils/detectOS';
+import { getAppLink, OS } from 'openland-x-utils/detectOS';
 import { trackEvent } from 'openland-x-analytics';
 import { XModalFooter } from './XModalFooter';
 import { XModalContent } from './XModalContent';
+import IcIos from 'openland-icons/ic-app-ios.svg';
+import IcAndroid from 'openland-icons/ic-app-android.svg';
 
 const contentClass = css`
     padding-top: 30px;
@@ -132,12 +132,12 @@ const InstallAppModal = React.memo(() => {
                 <div className={appsContent}>
                     <div className={buttonsContent}>
                         <Button
-                            onClick={() => onAppClick('iOS', 'https://oplnd.com/ios')}
+                            onClick={() => onAppClick('iOS', getAppLink('iOS'))}
                             icon={<IcIos />}
                             title="iOS"
                         />
                         <Button
-                            onClick={() => onAppClick('iOS', 'https://oplnd.com/android')}
+                            onClick={() => onAppClick('iOS', getAppLink('Android'))}
                             icon={<IcAndroid />}
                             title="Android"
                         />

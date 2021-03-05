@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { TextTitle1, TextLabel1, TextBody } from 'openland-web/utils/TextStyles';
 import { defaultHover } from 'openland-web/utils/Styles';
-import { detectOS, OS } from 'openland-x-utils/detectOS';
+import { getAppLink, detectOS, OS } from 'openland-x-utils/detectOS';
 import { trackEvent } from 'openland-x-analytics';
 import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
@@ -158,12 +158,6 @@ const Button = React.memo((props: ButtonProps) => {
 export const DownloadAppsComponent = React.memo(() => {
     const os = detectOS();
 
-    // https://oplnd.com/ios
-    // https://oplnd.com/android
-    // https://oplnd.com/mac
-    // https://oplnd.com/windows
-    // https://oplnd.com/linux
-
     const onAppClick = React.useCallback((selectedOS: OS, path: string) => {
         const platform = ['iOS', 'Android'].includes(selectedOS) ? 'mobile' : 'desktop';
 
@@ -176,30 +170,30 @@ export const DownloadAppsComponent = React.memo(() => {
 
     let activeOsIcon = <IcMac />;
     let activeOsTitle = 'Mac';
-    let activeOsOnClick = () => onAppClick('Mac', 'https://oplnd.com/mac');
+    let activeOsOnClick = () => onAppClick('Mac', getAppLink('Mac'));
 
     let secondaryLeftLinkTitle = 'Windows';
-    let secondaryLeftLinkOnClick = () => onAppClick('Mac', 'https://oplnd.com/windows');
+    let secondaryLeftLinkOnClick = () => onAppClick('Mac', getAppLink('Windows'));
     let secondaryRightLinkTitle = 'Linux';
-    let secondaryRightLinkOnClick = () => onAppClick('Mac', 'https://oplnd.com/linux');
+    let secondaryRightLinkOnClick = () => onAppClick('Mac', getAppLink('Linux'));
 
     if (os === 'Windows') {
         activeOsIcon = <IcWin />;
         activeOsTitle = 'Windows';
-        activeOsOnClick = () => onAppClick('Mac', 'https://oplnd.com/windows');
+        activeOsOnClick = () => onAppClick('Mac', getAppLink('Windows'));
         secondaryLeftLinkTitle = 'Mac';
-        secondaryLeftLinkOnClick = () => onAppClick('Mac', 'https://oplnd.com/mac');
+        secondaryLeftLinkOnClick = () => onAppClick('Mac', getAppLink('Mac'));
         secondaryRightLinkTitle = 'Linux';
-        secondaryRightLinkOnClick = () => onAppClick('Mac', 'https://oplnd.com/linux');
+        secondaryRightLinkOnClick = () => onAppClick('Mac', getAppLink('Linux'));
     }
     if (os === 'Linux') {
         activeOsIcon = <IcLinux />;
         activeOsTitle = 'Linux';
-        activeOsOnClick = () => onAppClick('Mac', 'https://oplnd.com/linux');
+        activeOsOnClick = () => onAppClick('Mac', getAppLink('Linux'));
         secondaryLeftLinkTitle = 'Mac';
-        secondaryLeftLinkOnClick = () => onAppClick('Mac', 'https://oplnd.com/mac');
+        secondaryLeftLinkOnClick = () => onAppClick('Mac', getAppLink('Mac'));
         secondaryRightLinkTitle = 'Windows';
-        secondaryRightLinkOnClick = () => onAppClick('Mac', 'https://oplnd.com/windows');
+        secondaryRightLinkOnClick = () => onAppClick('Mac', getAppLink('Windows'));
     }
 
     return (
@@ -218,12 +212,12 @@ export const DownloadAppsComponent = React.memo(() => {
                         />
                         <div className={buttonsContent}>
                             <Button
-                                onClick={() => onAppClick('iOS', 'https://oplnd.com/ios')}
+                                onClick={() => onAppClick('iOS', getAppLink('iOS'))}
                                 icon={<IcIos />}
                                 title="iOS"
                             />
                             <Button
-                                onClick={() => onAppClick('iOS', 'https://oplnd.com/android')}
+                                onClick={() => onAppClick('iOS', getAppLink('Android'))}
                                 icon={<IcAndroid />}
                                 title="Android"
                             />
