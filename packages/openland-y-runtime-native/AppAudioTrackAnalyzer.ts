@@ -27,6 +27,7 @@ class NativeTrackVolumesManager {
 
     #stop = () => {
         clearInterval(this.#loop);
+        this.#volumes.clear();
     }
 
     #updateValues = () => {
