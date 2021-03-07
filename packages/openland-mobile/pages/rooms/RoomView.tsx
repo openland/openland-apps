@@ -822,10 +822,17 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
         voiceChatData,
     );
 
+    // Handle room state changes
     React.useEffect(() => {
         let hasPrevAdmins = prevVoiceChat.current.speakers?.some(x => x.status === VoiceChatParticipantStatus.ADMIN);
         let isPrevAdmin = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.ADMIN;
         let hasAdmins = voiceChatData.speakers?.some(x => x.status === VoiceChatParticipantStatus.ADMIN);
+        let isPrevListener = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.LISTENER;
+        let isSpeaker = voiceChatData.me?.status === VoiceChatParticipantStatus.SPEAKER;
+
+        if (isPrevListener && isSpeaker) {
+            mediaSession?.setAudioEnabled(true);
+        }
 
         if (hasPrevAdmins && !hasAdmins && !isPrevAdmin) {
             Toast

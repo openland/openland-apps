@@ -17,11 +17,12 @@ import { TextStyles, TextBody } from 'openland-web/utils/TextStyles';
 import { useListSelection } from 'openland-web/utils/useListSelection';
 import { useClient } from 'openland-api/useClient';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
+import { getAppLink } from 'openland-x-utils/detectOS';
 import { useLocalContacts } from 'openland-y-utils/contacts/LocalContacts';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import AppleIcon from 'openland-icons/s/ic-apple-glyph-24.svg';
-import GoogleIcon from 'openland-icons/s/ic-google-play-glyph-24.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import GoogleIcon from 'openland-icons/s/ic-google-play-glyph-24.svg';
+import AppleIcon from 'openland-icons/s/ic-apple-glyph-24.svg';
 
 const emptyScreenImg = css`
     height: 200px;
@@ -261,13 +262,13 @@ export const ContactsFragment = React.memo(() => {
             >
                 <XView marginTop={16} flexWrap="wrap" flexDirection="row" justifyContent="center">
                     <MobileAppButton
-                        href="https://oplnd.com/ios"
+                        href={getAppLink('iOS')}
                         isIOS={true}
                         marginTop={16}
                         marginHorizontal={8}
                     />
                     <MobileAppButton
-                        href="https://oplnd.com/android"
+                        href={getAppLink('Android')}
                         isIOS={false}
                         marginTop={16}
                         marginHorizontal={8}

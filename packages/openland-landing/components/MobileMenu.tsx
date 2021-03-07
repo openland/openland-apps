@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
+import { getAppLink } from 'openland-x-utils/detectOS';
 import { LandingLinks } from './_links';
 
 const logo = css`
@@ -160,14 +161,14 @@ export const MobileMenu = React.memo(() => {
 
                     <div className={mobileMenuFooter}>
                         <div className={apps}>
-                            <a href={LandingLinks.apps.ios}>
+                            <a href={getAppLink('iOS')}>
                                 <img
                                     src="/static/landing/apps-ios.svg"
                                     width="120"
                                     height="40"
                                 />
                             </a>
-                            <a href={LandingLinks.apps.android}>
+                            <a href={getAppLink('Android')}>
                                 <img
                                     src="/static/landing/apps-android.svg"
                                     width="130"

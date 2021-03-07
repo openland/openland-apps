@@ -164,7 +164,9 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let profileOrgPattern = new UrlPattern(patternBase + '(mail)(directory)(discover)/(o)(c)/:id');
         let matchOrgProfile = profileOrgPattern.match(link);
         if (matchOrgProfile && matchOrgProfile.id) {
+            loader.show();
             navigate('ProfileOrganization', { id: matchOrgProfile.id });
+            loader.hide();
             return;
         }
 
@@ -174,7 +176,9 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let profileUserPattern = new UrlPattern(patternBase + '(mail)(directory)(discover)/u/:id');
         let matchUserProfile = profileUserPattern.match(link);
         if (matchUserProfile && matchUserProfile.id) {
+            loader.show();
             navigate('ProfileUser', { id: matchUserProfile.id });
+            loader.hide();
             return;
         }
 
@@ -184,13 +188,17 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let profileGroupPattern = new UrlPattern(patternBase + '(mail)(directory)(discover)/p/:id');
         let matchGroupProfile = profileGroupPattern.match(link);
         if (matchGroupProfile && matchGroupProfile.id) {
+            loader.show();
             navigate('ProfileGroup', { id: matchGroupProfile.id });
+            loader.hide();
             return;
         }
         let profileGroupUnicornPattern = new UrlPattern(patternBase + 'group/:id');
         let matchGroupUnicornProfile = profileGroupUnicornPattern.match(link);
         if (matchGroupUnicornProfile && matchGroupUnicornProfile.id) {
+            loader.show();
             navigate('ProfileGroup', { id: matchGroupUnicornProfile.id });
+            loader.hide();
             return;
         }
 
@@ -200,7 +208,9 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let feedItemPattern = new UrlPattern(patternBase + 'feed/:id');
         let matchFeedItemProfile = feedItemPattern.match(link);
         if (matchFeedItemProfile && matchFeedItemProfile.id) {
+            loader.show();
             navigate('FeedItem', { feedItemId: matchFeedItemProfile.id });
+            loader.hide();
             return;
         }
 
@@ -210,7 +220,9 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let messagePattern = new UrlPattern(patternBase + 'message/:id');
         let matchMessage = messagePattern.match(link);
         if (matchMessage && matchMessage.id) {
+            loader.show();
             navigate('Message', { messageId: matchMessage.id });
+            loader.hide();
             return;
         }
 
@@ -221,7 +233,9 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let messageCommentPatternDeep = new UrlPattern(patternBaseDeep + 'message/:id/comment/:commentId');
         let matchMessageComment = messageCommentPattern.match(link) || messageCommentPatternDeep.match(link);
         if (matchMessageComment && matchMessageComment.id && matchMessageComment.commentId) {
+            loader.show();
             navigate('Message', { messageId: matchMessageComment.id, highlightId: matchMessageComment.commentId });
+            loader.hide();
             return;
         }
 
@@ -231,7 +245,9 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let collectionsPattern = new UrlPattern(patternBase + 'discover/collections/:id');
         let matchCollections = collectionsPattern.match(link);
         if (matchCollections && matchCollections.id) {
+            loader.show();
             navigate('DiscoverListing', { type: 'collections', collectionId: matchCollections.id });
+            loader.hide();
             return;
         }
 
@@ -242,7 +258,9 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let conversationPatternDeep = new UrlPattern(patternBaseDeep + 'mail/:id');
         let matchConversation = conversationPattern.match(link) || conversationPatternDeep.match(link);
         if (matchConversation && matchConversation.id) {
+            loader.show();
             navigate('Conversation', { id: matchConversation.id });
+            loader.hide();
             return;
         }
 
@@ -253,7 +271,9 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let sharedMediaPatternDeep = new UrlPattern(patternBaseDeep + 'mail/:id/shared');
         let matchSharedMedia = sharedMediaPattern.match(link) || sharedMediaPatternDeep.match(link);
         if (matchSharedMedia && matchSharedMedia.id) {
+            loader.show();
             navigate('SharedMedia', { chatId: matchSharedMedia.id });
+            loader.hide();
             return;
         }
 
@@ -319,20 +339,28 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         }
 
         if (link === '/onboarding_discover') {
+            loader.show();
             navigate('Discover');
+            loader.hide();
             return;
         }
 
         if (link === '/onboarding_apps') {
+            loader.show();
             navigate('InstallApps');
+            loader.hide();
             return;
         }
         if (link === '/onboarding_send_first_message') {
+            loader.show();
             navigate('Explore');
+            loader.hide();
             return;
         }
         if (link === '/onboarding_invite') {
+            loader.show();
             navigate('Invites');
+            loader.hide();
             return;
         }
 

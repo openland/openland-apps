@@ -16,6 +16,7 @@ import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { showPayConfirm } from '../wallet/modals/showPayConfirm';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { useToast } from 'openland-web/components/unicorn/UToast';
+import { getAppLink, OS } from 'openland-x-utils/detectOS';
 // import { showModalBox } from 'openland-x/showModalBox';
 
 type SharedRoomT = ResolvedInvite_shortnameItem_SharedRoom | ResolvedInvite_invite_RoomInvite_room;
@@ -287,13 +288,10 @@ export const resolveOrgButton = (organization: OrgT, noLogin: boolean, inviteKey
 //     showModalBox({ title: 'hui' }, (ctx) => <div>hui</div>);
 // };
 
-export const noLoginMobileButton = (buttonText: string, os: 'iOS' | 'Android') => {
-    const iosStore = 'https://oplnd.com/ios';
-    const androidStore = 'https://oplnd.com/android';
-
+export const noLoginMobileButton = (buttonText: string, os: OS) => {
     React.useEffect(() => {
         if (window.location.search === '?q=store') {
-            window.location.replace(os === 'iOS' ? iosStore : androidStore);
+            window.location.replace(os === 'iOS' ? getAppLink('iOS') : getAppLink('Android'));
         }
     }, []);
 

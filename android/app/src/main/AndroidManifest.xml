@@ -99,75 +99,20 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
+                    android:scheme="openland"
                     android:host="deep"
                     android:pathPrefix="/"
-                    android:scheme="openland" />
-            </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
+                    />
                 <data
                     android:scheme="https"
                     android:host="openland.com"
-                    android:pathPrefix="/invite/"
+                    android:pathPrefix="/"
                     />
-
-
                 <data
                     android:scheme="https"
-                    android:host="openland.com"
-                    android:pathPrefix="/join/"
+                    android:host="*.openland.com"
+                    android:pathPrefix="/"
                     />
-
-                <data
-                    android:scheme="https"
-                    android:host="openland.com"
-                    android:pathPrefix="/mail"
-                    />
-
-                <data
-                    android:scheme="https"
-                    android:host="next.openland.com"
-                    android:pathPrefix="/invite/"
-                    />
-
-
-                <data
-                    android:scheme="https"
-                    android:host="next.openland.com"
-                    android:pathPrefix="/join/"
-                    />
-
-                <data
-                    android:scheme="https"
-                    android:host="next.openland.com"
-                    android:pathPrefix="/mail"
-                    />
-
-                <data
-                    android:scheme="https"
-                    android:host="www.openland.com"
-                    android:pathPrefix="/invite/"
-                    />
-
-
-                <data
-                    android:scheme="https"
-                    android:host="www.openland.com"
-                    android:pathPrefix="/join/"
-                    />
-
-                <data
-                    android:scheme="https"
-                    android:host="www.openland.com"
-                    android:pathPrefix="/mail"
-                    />
-
-
             </intent-filter>
 
         </activity>

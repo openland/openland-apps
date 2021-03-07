@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { Container } from '../components/Container';
-import Mac from './icons/ic-mac.svg';
+import { XView } from 'react-mental';
+import { getAppLink, detectOS } from 'openland-x-utils/detectOS';
+import { LandingLinks } from '../components/_links';
 import Windows from './icons/ic-win.svg';
 import Linux from './icons/ic-linux.svg';
-import { XView } from 'react-mental';
-import { detectOS } from 'openland-x-utils/detectOS';
-import { LandingLinks } from '../components/_links';
+import Mac from './icons/ic-mac.svg';
 
 const box = css`
     padding: 100px 0 200px;
@@ -305,7 +305,7 @@ export const HomeAppsMobile = React.memo(() => (
     <div className={apps}>
         <a
             className={cx(appButton, appButtonActive)}
-            href={LandingLinks.apps.ios}
+            href={getAppLink('iOS')}
         >
             <img
                 className={appIcon}
@@ -318,7 +318,7 @@ export const HomeAppsMobile = React.memo(() => (
         </a>
         <a
             className={cx(appButton, appButtonActive)}
-            href={LandingLinks.apps.android}
+            href={getAppLink('Android')}
         >
             <img
                 className={appIcon}
@@ -358,21 +358,21 @@ export const HomeApps = React.forwardRef((props: {}, ref: React.Ref<HTMLDivEleme
                         <div className={apps}>
                             <a
                                 className={cx(appButton, os === 'Mac' && appButtonActive)}
-                                href={LandingLinks.apps.macos}
+                                href={getAppLink('Mac')}
                             >
                                 <Mac />
                                 Mac
                             </a>
                             <a
                                 className={cx(appButton, os === 'Windows' && appButtonActive)}
-                                href={LandingLinks.apps.windows}
+                                href={getAppLink('Windows')}
                             >
                                 <Windows />
                                 Windows
                             </a>
                             <a
                                 className={cx(appButton, os === 'Linux' && appButtonActive)}
-                                href={LandingLinks.apps.linux}
+                                href={getAppLink('Linux')}
                             >
                                 <Linux />
                                 Linux

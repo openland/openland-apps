@@ -23,3 +23,23 @@ export const detectOS = (): OS | null => {
 
     return os;
 };
+
+export const getAppLink = (os: OS) => {
+    if (os === 'Android') {
+        return 'https://oplnd.com/android';
+    }
+    if (os === 'iOS') {
+        return 'https://oplnd.com/ios';
+    }
+    if (os === 'Mac') {
+        return 'https://oplnd.com/mac';
+    }
+    if (os === 'Windows') {
+        return 'https://oplnd.com/windows';
+    }
+    if (os === 'Linux') {
+        return 'https://oplnd.com/linux';
+    } else {
+        return 'https://oplnd.com/ios';
+    }
+};

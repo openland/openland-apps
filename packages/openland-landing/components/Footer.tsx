@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
+import { getAppLink } from 'openland-x-utils/detectOS';
 import { Container } from './Container';
 import { LandingLinks, LandingSocials } from './_links';
 
@@ -388,10 +389,10 @@ export const Footer = React.memo(() => {
                             </li>
                         </ul>
                         <div className={apps}>
-                            <a href={LandingLinks.apps.ios} className={appsLink}>
+                            <a href={getAppLink('iOS')} className={appsLink}>
                                 <img src="/static/landing/apps-ios.svg" width="120" height="40" />
                             </a>
-                            <a href={LandingLinks.apps.android} className={appsLink}>
+                            <a href={getAppLink('Android')} className={appsLink}>
                                 <img src="/static/landing/apps-android.svg" width="130" height="40" />
                             </a>
                         </div>

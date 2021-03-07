@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Container } from '../components/Container';
 import { css, cx } from 'linaria';
-import { LandingLinks } from '../components/_links';
-import { detectOS } from 'openland-x-utils/detectOS';
+import { getAppLink, detectOS } from 'openland-x-utils/detectOS';
 import { emojiAnimated } from 'openland-y-utils/emojiAnimated';
 // @ts-ignore
 import Tilt from 'react-tilt';
@@ -356,11 +355,11 @@ export const HomeIntro = React.forwardRef((props: {}, ref: React.Ref<HTMLDivElem
                         <div className={apps}>
                             <a
                                 className={cx(app, mobileOS === 'iOS' && 'mobile-active')}
-                                href={LandingLinks.apps.ios}
+                                href={getAppLink('iOS')}
                             />
                             <a
                                 className={cx(app, appAndroid, mobileOS === 'Android' && 'mobile-active')}
-                                href={LandingLinks.apps.android}
+                                href={getAppLink('Android')}
                             />
                         </div>
                     </div>

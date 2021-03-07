@@ -61,6 +61,7 @@ export const AvatarSizes: {
 
 const avatarPlaceholderStyle = css`
     -webkit-user-select: none;
+    white-space: nowrap;
 `;
 
 export const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: number, fontSize: number }) => {

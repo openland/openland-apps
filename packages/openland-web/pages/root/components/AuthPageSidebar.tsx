@@ -7,8 +7,8 @@ import IcIos from 'openland-icons/s/ic-appstore-24.svg';
 import IcAndroid from 'openland-icons/s/ic-googleplay-24.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
-import { detectOS } from 'openland-x-utils/detectOS';
+import { TextTitle1, TextBody, TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
+import { getAppLink, detectOS } from 'openland-x-utils/detectOS';
 import { useTheme } from 'openland-x-utils/useTheme';
 import { trackEvent } from 'openland-x-analytics';
 
@@ -75,31 +75,25 @@ const buttonContainer = css`
     align-items: center;
     flex-shrink: 0;
     width: 200px;
-    background-color: var(--backgroundTertiaryTrans);
+    background-color: var(--foregroundPrimary);
     border-radius: 8px;
     margin-bottom: 17px;
     cursor: pointer;
     padding: 8px 0 8px 16px;
-    color: var(--foregroundSecondary);
+    color: var(--foregroundInverted);
     transition: all 0.15s ease;
     &:hover {
         text-decoration: none;
-        color: var(--foregroundSecondary);
-        background-color: var(--backgroundTertiaryHoverTrans);
+        color: var(--foregroundInverted);
     }
 
     &:last-of-type {
-        margin-bottom: 31px;
+        margin-bottom: 32px;
     }
 `;
 
 const buttonIcon = css`
-    width: 24px;
-    height: 24px;
-    opacity: 0.72;
-    & path {
-        fill: var(--foregroundSecondary);
-    }
+    flex-grow: 0;
 `;
 
 const buttonTextContainer = css`
@@ -108,16 +102,29 @@ const buttonTextContainer = css`
     flex-direction: column;
 `;
 
-const buttonNounContainer = css`
-    font-size: 13px;
-    line-height: 18px;
+const buttonTitleContainer = css`
+    margin-top: -3px;
 `;
 
-const buttonTitleContainer = css`
-    font-weight: 600;
-    font-size: 15px;
-    line-height: 24px;
-    margin-top: -3px;
+const desktopLinks = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    & > a {
+        color: var(--foregroundSecondary);
+        &:hover {
+            color: var(--foregroundSecondary);
+            text-decoration: none;
+        }
+    }
+    & > .dot {
+        width: 3px;
+        height: 3px;
+        border-radius: 3px;
+        background-color: var(--foregroundTertiary);
+        opacity: 0.5;
+        margin: 0 12px;
+    }
 `;
 
 interface DownloadButtonProps {
@@ -132,16 +139,23 @@ const DownloadButton = (props: DownloadButtonProps) => (
     <a
         className={buttonContainer}
         target="_blank"
-        href={props.ios ? 'https://oplnd.com/ios' : 'https://oplnd.com/android'}
+        href={props.ios ? getAppLink('iOS') : getAppLink('Android')}
         onClick={() =>
             props.analyticsEvent &&
             trackEvent(props.analyticsEvent.name, props.analyticsEvent.params)
         }
     >
-        {props.ios ? <IcIos className={buttonIcon} /> : <IcAndroid className={buttonIcon} />}
+        <UIcon
+            icon={props.ios ? <IcIos /> : <IcAndroid />}
+            size={24}
+            color="var(--foregroundInverted)"
+            className={buttonIcon}
+        />
         <div className={buttonTextContainer}>
-            <div className={buttonNounContainer}>{props.ios ? 'Download on the' : 'Get it on'}</div>
-            <div className={buttonTitleContainer}>{props.ios ? 'App Store' : 'Google Play'}</div>
+            <div className={TextCaption}>{props.ios ? 'Download on the' : 'Get it on'}</div>
+            <div className={cx(buttonTitleContainer, TextLabel1)}>
+                {props.ios ? 'App Store' : 'Google Play'}
+            </div>
         </div>
     </a>
 );
@@ -158,9 +172,7 @@ export const DesktopSidebar = React.memo((props: { className?: string }) => {
                     </div>
                 </div>
             </XView>
-            <div className={cx(logoSubtitle, TextBody)}>
-                The best place to find and build inspiring communities
-            </div>
+            <div className={cx(logoSubtitle, TextBody)}>Voice chats for everyone</div>
             <DownloadButton
                 ios={true}
                 analyticsEvent={{ name: 'app_download_action', params: { os: 'ios' } }}
@@ -168,6 +180,19 @@ export const DesktopSidebar = React.memo((props: { className?: string }) => {
             <DownloadButton
                 analyticsEvent={{ name: 'app_download_action', params: { os: 'android' } }}
             />
+            <div className={desktopLinks}>
+                <a href={getAppLink('Mac')} target="_blank" className={TextLabel1}>
+                    Mac
+                </a>
+                <div className="dot" />
+                <a href={getAppLink('Windows')} target="_blank" className={TextLabel1}>
+                    Windows
+                </a>
+                <div className="dot" />
+                <a href={getAppLink('Linux')} target="_blank" className={TextLabel1}>
+                    Linux
+                </a>
+            </div>
         </div>
     );
 });
@@ -185,10 +210,7 @@ const mobileHeaderContainer = css`
 export const MobileSidebar = React.memo(() => {
     const theme = useTheme();
     const os = detectOS();
-    let path = 'https://oplnd.com/ios';
-    if (os === 'Android') {
-        path = 'https://oplnd.com/android';
-    }
+    const path = os === 'Android' ? getAppLink('Android') : getAppLink('iOS');
     return (
         <div className={mobileHeaderContainer}>
             {theme.theme === 'dark' ? (

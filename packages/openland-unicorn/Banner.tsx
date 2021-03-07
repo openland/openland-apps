@@ -6,7 +6,7 @@ import { TextLabel3, TextTitle3 } from 'openland-web/utils/TextStyles';
 import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 import { useLayout } from './components/utils/LayoutContext';
 import { isElectron } from 'openland-y-utils/isElectron';
-import { detectOS, OS } from 'openland-x-utils/detectOS';
+import { getAppLink, detectOS, OS } from 'openland-x-utils/detectOS';
 import { trackEvent } from 'openland-x-analytics';
 import IcIos from 'openland-icons/s/ic-apple-16.svg';
 import IcAndroid from 'openland-icons/s/ic-android-16.svg';
@@ -117,12 +117,6 @@ const BannerButton = (props: {
         </a>
     );
 
-const links = {
-    Mac: 'https://oplnd.com/mac',
-    Windows: 'https://oplnd.com/windows',
-    Linux: 'https://oplnd.com/linux',
-};
-
 const icons = {
     Mac: <IcMac />,
     Windows: <IcWin />,
@@ -153,7 +147,7 @@ const MobileAppsBanner = () => {
                         <div className={bannerButton}>
                             <BannerButton
                                 text={os}
-                                href={links[os]}
+                                href={getAppLink(os)}
                                 onClick={() => onAppClick(os!)}
                                 icon={icons[os]}
                             />
@@ -162,7 +156,7 @@ const MobileAppsBanner = () => {
                 <div className={bannerButton}>
                     <BannerButton
                         text="iOS"
-                        href="https://oplnd.com/ios"
+                        href={getAppLink('iOS')}
                         onClick={() => onAppClick('iOS')}
                         icon={<IcIos />}
                     />
@@ -170,7 +164,7 @@ const MobileAppsBanner = () => {
                 <div className={bannerButton}>
                     <BannerButton
                         text="Android"
-                        href="https://oplnd.com/android"
+                        href={getAppLink('Android')}
                         onClick={() => onAppClick('Android')}
                         icon={<IcAndroid />}
                     />

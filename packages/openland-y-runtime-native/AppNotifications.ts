@@ -12,6 +12,7 @@ Push.configure({
         }
         tokenListeners = [];
     },
+    // onNotification: ()
     senderID: '1095846783035',
     requestPermissions: false,
 
