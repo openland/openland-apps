@@ -79,6 +79,11 @@ export class CallsEngine {
         return res;
     }
 
+    onCurrentSessionChange = (cb: (session: MediaSessionManager | null) => void) => {
+        this._sessionSubscriptions.push(cb);
+        return () => this._sessionSubscriptions.splice(this._sessionSubscriptions.indexOf(cb));
+    }
+
     private notifyCurrentSession() {
         let ss = this._mediaSession;
         for (let s of [...this._sessionSubscriptions]) {

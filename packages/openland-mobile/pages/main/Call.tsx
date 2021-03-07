@@ -134,7 +134,12 @@ const VideoView = React.memo((props: VideoViewProps) => {
         muted: <Image source={require('assets/ic-muted-bold-16.png')} style={{ tintColor: iconColor }} />,
         speaking: <Image source={require('assets/ic-speaking-bold-16.png')} style={{ tintColor: iconColor }} />,
     };
+
+    const talking = getMessenger().engine.calls.currentMediaSession!.analyzer.usePeer(props.peer.id);
     let icon = (!props.isLocal && !audioTrack) ? iconByStatus.loading : props.peer.mediaState.audioPaused ? iconByStatus.muted : null;
+    if (talking) {
+        icon = iconByStatus.speaking;
+    }
     let InfoWrapper = stream ? PeerInfoGradient : React.Fragment;
 
     let infoPaddingBottom = props.isLast ? Math.max(area.bottom, 30) : 14;
@@ -267,7 +272,7 @@ let Content = React.memo((props: { id: string, speaker: boolean, setSpeaker: (fn
                 {slices.map((s, i) =>
                     <View key={i} style={{ flexDirection: 'column', justifyContent: 'flex-start', flexGrow: 1 }}>
 
-                        {s.map((p, peerIndex) => {
+                        {mediaSession && s.map((p, peerIndex) => {
                             let media: PeerMedia = { videoTrack: null, audioTrack: null, screencastTrack: null };
                             let isLocal = p.id === state?.sender.id;
                             if (isLocal) {
