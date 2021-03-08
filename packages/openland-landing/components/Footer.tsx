@@ -141,7 +141,6 @@ const social = css`
 `;
 
 const socialItem = css`
-    display: inline-block;
     width: 64px;
     height: 64px;
     display: inline-flex;
@@ -175,8 +174,6 @@ const socialItem = css`
         transition: background-color 0.01s;
     }
 `;
-
-const socialLink = css``;
 
 const socialLogo = css`
     display: inline-block;
@@ -357,7 +354,7 @@ export const Footer = React.memo(() => {
                     <div className={links}>
                         <ul className={social}>
                             <li className={socialItem}>
-                                <a className={socialLink} href={LandingSocials.instagram}>
+                                <a href={LandingSocials.instagram}>
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/1.svg"
@@ -367,7 +364,7 @@ export const Footer = React.memo(() => {
                                 </a>
                             </li>
                             <li className={socialItem}>
-                                <a className={socialLink} href={LandingSocials.twitter}>
+                                <a href={LandingSocials.twitter}>
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/2.svg"

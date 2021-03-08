@@ -114,7 +114,7 @@ html {
     --tintInverted: rgba(255, 255, 255, 0.32);
 
     --featured-icon-display: flex;
-    
+
     --secret-chat-title-color: var(--foregroundPrimary);
     --secret-chat-icon-display: none;
 
@@ -334,4 +334,16 @@ html.highlight-secret-chat {
 
 html.regular-emoji-size {
     --emoji-size: inherit;
+}
+
+.x.landing {
+    --foregroundPrimary: #171A1F;
+    --foregroundSecondary: #71747A;
+    --foregroundTertiary: #9D9FA3;
+    --foregroundContrast: #FFFFFF;
+    --backgroundPrimary: #FFFFFF;
+    --backgroundPrimaryHover: #F2F3F5;
+    --backgroundSecondary: #FFFFFF;
+    --backgroundTertiary: #F2F3F5;
+    --accentPrimary: #248BF2;
 }
