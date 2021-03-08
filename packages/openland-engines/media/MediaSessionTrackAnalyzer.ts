@@ -171,11 +171,15 @@ export class MediaSessionTrackAnalyzerManager {
         };
     }
 
-    usePeer = (peerId: string) => {
+    usePeer = (peerId: string | undefined) => {
         let [val, setVal] = React.useState<boolean>();
         React.useEffect(() => {
+            if (!peerId) {
+                setVal(false);
+                return;
+            }
             return this.subscribePeer(peerId, setVal);
-        }, []);
+        }, [peerId]);
         return val;
     }
 

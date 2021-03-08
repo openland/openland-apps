@@ -49,6 +49,7 @@ import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
+import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
 
 interface RoomUserViewProps {
     roomId: string;
@@ -171,13 +172,13 @@ const UserModalBody = React.memo(
                             onPress={unfollowUser}
                         />
                     ) : (
-                            <ZListItem
-                                leftIcon={require('assets/ic-user-add-24.png')}
-                                small={true}
-                                text="Follow"
-                                onPress={followUser}
-                            />
-                        )}
+                        <ZListItem
+                            leftIcon={require('assets/ic-user-add-24.png')}
+                            small={true}
+                            text="Follow"
+                            onPress={followUser}
+                        />
+                    )}
                     {isSelfAdmin && (
                         <>
                             {userStatus === VoiceChatParticipantStatus.SPEAKER && (
@@ -622,12 +623,18 @@ interface RoomSpeakingUserViewProps extends RoomUserViewProps {
     peer: Conference_conference_peers | undefined;
     media: PeerMedia;
     isLocal: boolean;
+    analyzer: MediaSessionTrackAnalyzerManager;
 }
 
 const RoomSpeakingUserView = React.memo((props: RoomSpeakingUserViewProps) => {
-    const { peer, media, isLocal, ...other } = props;
-    // const isTalking = !!analyzer.usePeer(peer.id);
-    const state = (!isLocal && !media.audioTrack) ? 'loading' : peer?.mediaState.audioPaused ? 'muted' : undefined;
+    const { peer, media, isLocal, analyzer, ...other } = props;
+    const isTalking = analyzer.usePeer(peer?.id);
+    const state = (!isLocal && !media.audioTrack)
+        ? 'loading'
+        : peer?.mediaState.audioPaused
+            ? 'muted'
+            : isTalking
+                ? 'talking' : undefined;
 
     return <RoomUserView {...other} state={state} />;
 });
@@ -640,10 +647,11 @@ interface RoomUsersListProps extends RoomViewProps {
     peers: Conference_conference_peers[];
     callState: MediaSessionState | undefined;
     modalCtx: { hide: () => void };
+    analyzer: MediaSessionTrackAnalyzerManager;
 }
 
 const RoomUsersList = React.memo((props: RoomUsersListProps) => {
-    const { headerHeight, controlsHeight, peers, callState, theme, room, router, modalCtx } = props;
+    const { headerHeight, controlsHeight, peers, analyzer, callState, theme, room, router, modalCtx } = props;
     const sa = useSafeArea();
     const currentHeight = isPad ? Dimensions.get('window').height : SDevice.wHeight;
     const sHeight = currentHeight - (sa.top + sa.bottom + headerHeight + controlsHeight + 16);
@@ -698,6 +706,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                             theme={theme}
                             router={router}
                             modalCtx={modalCtx}
+                            analyzer={analyzer}
                         />
                     );
                 })}
@@ -855,6 +864,10 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
         prevVoiceChat.current = voiceChatData;
     }, [voiceChatData]);
 
+    if (!mediaSession) {
+        return null;
+    }
+
     return (
         <View>
             <RoomHeader
@@ -863,25 +876,30 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
                 onLayout={onHeaderLayout}
                 hide={props.ctx.hide}
             />
-            <RoomUsersList
-                room={voiceChatData}
-                theme={theme}
-                headerHeight={headerHeight}
-                controlsHeight={controlsHeight}
-                router={props.router}
-                modalCtx={props.ctx}
-                peers={conference?.peers || []}
-                callState={state}
-            />
-            <RoomControls
-                id={props.roomId}
-                theme={theme}
-                muted={muted}
-                onLayout={onControlsLayout}
-                onLeave={handleLeave}
-                onMutePress={handleMute}
-                raisedHandUsers={voiceChatData.raisedHands?.map(i => i.user) || []}
-            />
+            {mediaSession && (
+                <>
+                    <RoomUsersList
+                        room={voiceChatData}
+                        theme={theme}
+                        headerHeight={headerHeight}
+                        controlsHeight={controlsHeight}
+                        router={props.router}
+                        modalCtx={props.ctx}
+                        peers={conference?.peers || []}
+                        callState={state}
+                        analyzer={mediaSession.analyzer}
+                    />
+                    <RoomControls
+                        id={props.roomId}
+                        theme={theme}
+                        muted={muted}
+                        onLayout={onControlsLayout}
+                        onLeave={handleLeave}
+                        onMutePress={handleMute}
+                        raisedHandUsers={voiceChatData.raisedHands?.map(i => i.user) || []}
+                    />
+                </>
+            )}
         </View>
     );
 });
