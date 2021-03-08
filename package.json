@@ -192,7 +192,7 @@
         "react-native-version-number": "^0.3.6",
         "react-native-video": "4.4.4",
         "react-native-web": "^0.9.0",
-        "react-native-webrtc": "github:openland/react-native-webrtc#2d9bd294ecb88c98260a9fd22d840b194e52d989",
+        "react-native-webrtc": "github:openland/react-native-webrtc#266905df2313e86e133fd69972efc26f038c5b8d",
         "react-reconciler": "0.20.2",
         "react-resize-aware": "^2.7.1",
         "react-resize-detector": "^3.2.1",

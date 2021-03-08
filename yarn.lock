@@ -13623,9 +13623,9 @@ react-native-web@^0.9.0:
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
 
-"react-native-webrtc@github:openland/react-native-webrtc#2d9bd294ecb88c98260a9fd22d840b194e52d989":
+"react-native-webrtc@github:openland/react-native-webrtc#266905df2313e86e133fd69972efc26f038c5b8d":
   version "1.75.3"
-  resolved "https://codeload.github.com/openland/react-native-webrtc/tar.gz/2d9bd294ecb88c98260a9fd22d840b194e52d989"
+  resolved "https://codeload.github.com/openland/react-native-webrtc/tar.gz/266905df2313e86e133fd69972efc26f038c5b8d"
   dependencies:
     base64-js "^1.1.2"
     event-target-shim "^1.0.5"
