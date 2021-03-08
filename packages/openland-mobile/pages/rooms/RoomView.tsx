@@ -443,7 +443,7 @@ const RoomHeader = React.memo(
                     {props.room.title}
                 </Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>
+                    <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }}>
                         {room.speakersCount}
                     </Text>
                     <Image
@@ -451,20 +451,11 @@ const RoomHeader = React.memo(
                         style={{
                             width: 16,
                             height: 16,
-                            marginLeft: 4,
+                            marginLeft: 2,
                             tintColor: theme.foregroundTertiary,
                         }}
                     />
-                    <View
-                        style={{
-                            width: 3,
-                            height: 3,
-                            borderRadius: 3,
-                            backgroundColor: theme.foregroundTertiary,
-                            marginHorizontal: 8,
-                        }}
-                    />
-                    <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>
+                    <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary, marginLeft: 12 }}>
                         {room.listenersCount}
                     </Text>
                     <Image
@@ -519,7 +510,7 @@ const RoomHeader = React.memo(
                     >
                         <Image
                             style={{ width: 24, height: 24, tintColor: theme.foregroundTertiary }}
-                            source={require('assets/ic-size-down-glyph-24.png')}
+                            source={require('assets/ic-minimize-room-24.png')}
                         />
                     </TouchableOpacity>
                 </View>

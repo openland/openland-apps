@@ -43,6 +43,13 @@
             ]
         },
         {
+            "name": "ic-minimize-room",
+            "src": "ic-minimize-room-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-warning",
             "src": "ic-warning-16.svg",
             "sizes": [
