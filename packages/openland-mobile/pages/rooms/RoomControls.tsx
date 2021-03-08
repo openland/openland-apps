@@ -63,7 +63,7 @@ const ControlItem = React.memo((props: {
     const size = text ? 56 : 78;
     const iconSize = text ? 24 : 36;
     return (
-        <View>
+        <View style={{ flex: 1, alignItems: 'center' }}>
             <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={onPress}
@@ -74,8 +74,8 @@ const ControlItem = React.memo((props: {
                     {typeof icon === 'string' ? (
                         <Text style={{ fontSize: iconSize, color: iconColor }}>{icon}</Text>
                     ) : (
-                            <Image source={icon} style={{ width: iconSize, height: iconSize, tintColor: iconColor }} />
-                        )}
+                        <Image source={icon} style={{ width: iconSize, height: iconSize, tintColor: iconColor }} />
+                    )}
                 </View>
                 {counter ? (
                     <View
@@ -250,22 +250,14 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
             <ControlMute muted={muted} theme={theme} onPress={onMutePress} />
         </>
     ) : role === VoiceChatParticipantStatus.SPEAKER ? <ControlMute muted={muted} theme={theme} onPress={onMutePress} />
-            : role === VoiceChatParticipantStatus.LISTENER ? <ControlRaiseHand theme={theme} raised={!!meParticipant?.handRaised} roomId={id} /> : null;
-    // const roleButtons = (
-    //     <ControlMute
-    //         muted={muted}
-    //         theme={theme}
-    //         disabled={!(role === VoiceChatParticipantStatus.SPEAKER || role === VoiceChatParticipantStatus.ADMIN)}
-    //         onPress={onMutePress}
-    //     />
-    // );
+        : role === VoiceChatParticipantStatus.LISTENER ? <ControlRaiseHand theme={theme} raised={!!meParticipant?.handRaised} roomId={id} /> : null;
 
     const handleLeave = React.useCallback(() => {
         onLeave();
     }, [onLeave]);
 
     return (
-        <View style={{ paddingTop: 16, paddingHorizontal: 38, flexDirection: 'row', justifyContent: 'space-between' }} onLayout={onLayout}>
+        <View style={{ paddingTop: 16, paddingHorizontal: 16, flexDirection: 'row', justifyContent: 'space-around' }} onLayout={onLayout}>
             <ControlItem
                 theme={theme}
                 text="Leave"
