@@ -287,12 +287,6 @@ const popupText = css`
     font-weight: 600;
 `;
 
-const hiddenSmall = css`
-    @media (max-width: 1199px) {
-        display: none;
-    }
-`;
-
 export const Footer = React.memo(() => {
     const [legalIsOpen, legalSetOpen] = React.useState<boolean>(false);
 
@@ -318,11 +312,6 @@ export const Footer = React.memo(() => {
                         <li className={menuItem}>
                             <span className={menuLink}>
                                 <XView path={LandingLinks.about}>About</XView>
-                            </span>
-                        </li>
-                        <li className={cx(menuItem, hiddenSmall)}>
-                            <span className={menuLink}>
-                                <XView path={LandingLinks.discover}>Communities</XView>
                             </span>
                         </li>
                         <li className={menuItem}>

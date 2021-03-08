@@ -3,13 +3,11 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { HomeApps } from './home/HomeApps';
 import { Page } from './components/Page';
 import { HomeIntro } from './home/HomeIntro';
-import { HomeWhy } from './home/HomeWhy';
 import { HomeExceptional } from './home/HomeExceptional';
 import { HomeHelp } from './home/HomeHelp';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 export const HomePage = React.memo(() => {
-    const sectionWhyRef = React.useRef<HTMLDivElement>(null);
     const sectionExceptionalRef = React.useRef<HTMLDivElement>(null);
     const sectionHelpRef = React.useRef<HTMLDivElement>(null);
     const sectionAppsRef = React.useRef<HTMLDivElement>(null);
@@ -17,9 +15,6 @@ export const HomePage = React.memo(() => {
     React.useEffect(() => {
         const elementCanAnimate = (el: HTMLDivElement) => (el.className.indexOf('in-viewport') === -1) && (window.pageYOffset + window.innerHeight - 250 >= el.offsetTop);
         const handleScrollResize = () => {
-            if (sectionWhyRef.current && elementCanAnimate(sectionWhyRef.current)) {
-                sectionWhyRef.current.className += ' in-viewport';
-            }
             if (sectionExceptionalRef.current && elementCanAnimate(sectionExceptionalRef.current)) {
                 sectionExceptionalRef.current.className += ' in-viewport';
             }
@@ -56,7 +51,6 @@ export const HomePage = React.memo(() => {
             />
 
             <HomeIntro />
-            <HomeWhy ref={sectionWhyRef} />
             <HomeExceptional ref={sectionExceptionalRef} />
             <HomeHelp ref={sectionHelpRef} />
             <HomeApps ref={sectionAppsRef} />
