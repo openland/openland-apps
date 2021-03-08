@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css, cx } from 'linaria';
+import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { getAppLink } from 'openland-x-utils/detectOS';
 import { Container } from './Container';
