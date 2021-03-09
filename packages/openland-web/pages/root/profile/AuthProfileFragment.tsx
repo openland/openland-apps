@@ -44,6 +44,10 @@ const voiceChatInfo = css`
     flex-direction: column;
     align-items: center;
     margin-bottom: 52px;
+    @media (max-width: 750px) {
+        margin-top: 0;
+        margin-bottom: 28px;
+    }
 `;
 
 const liveIcon = css`
