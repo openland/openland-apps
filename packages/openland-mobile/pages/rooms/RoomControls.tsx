@@ -11,6 +11,7 @@ import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TintBlue, TintOrange } from 'openland-y-utils/themes/tints';
 import { showRaisedHands } from './RaisedHands';
+import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 
 const showRoomInvite = ({ link, theme }: { link: string, theme: ThemeGlobal }) => {
     const handleShare = () => {
@@ -56,12 +57,20 @@ const ControlItem = React.memo((props: {
     bgColor: string,
     counter?: number,
     disabled?: boolean,
+    loading?: boolean,
     faded?: boolean,
     onPress?: () => void
 }) => {
-    const { theme, text, icon, iconColor, bgColor, counter, disabled, faded, onPress } = props;
+    const { theme, text, icon, loading, iconColor, bgColor, counter, disabled, faded, onPress } = props;
     const size = text ? 56 : 78;
     const iconSize = text ? 24 : 36;
+    let iconContent = loading ? (
+        <LoaderSpinner color={iconColor} size="x-large" />
+    ) : typeof icon === 'string' ? (
+        <Text style={{ fontSize: iconSize, color: iconColor }}>{icon}</Text>
+    ) : (
+        <Image source={icon} style={{ width: iconSize, height: iconSize, tintColor: iconColor }} />
+    );
     return (
         <View style={{ flex: 1, alignItems: 'center' }}>
             <TouchableOpacity
@@ -71,11 +80,7 @@ const ControlItem = React.memo((props: {
                 style={{ width: size, height: size, marginBottom: 8, position: 'relative', opacity: faded ? 0.4 : 1 }}
             >
                 <View style={{ backgroundColor: bgColor, width: size, height: size, borderRadius: 100, alignItems: 'center', justifyContent: 'center' }}>
-                    {typeof icon === 'string' ? (
-                        <Text style={{ fontSize: iconSize, color: iconColor }}>{icon}</Text>
-                    ) : (
-                        <Image source={icon} style={{ width: iconSize, height: iconSize, tintColor: iconColor }} />
-                    )}
+                    {iconContent}
                 </View>
                 {counter ? (
                     <View
@@ -114,8 +119,8 @@ const ControlItem = React.memo((props: {
     );
 });
 
-const ControlMute = React.memo((props: { theme: ThemeGlobal, disabled?: boolean, muted: boolean, onPress: () => void }) => {
-    const { theme, muted, disabled, onPress } = props;
+const ControlMute = React.memo((props: { theme: ThemeGlobal, disabled?: boolean, connecting: boolean, muted: boolean, onPress: () => void }) => {
+    const { theme, muted, connecting, disabled, onPress } = props;
 
     return (
         <ControlItem
@@ -125,6 +130,7 @@ const ControlMute = React.memo((props: { theme: ThemeGlobal, disabled?: boolean,
             bgColor={(muted || disabled) ? TintOrange.primary : TintBlue.primary}
             disabled={disabled}
             faded={disabled}
+            loading={connecting}
             onPress={onPress}
         />
     );
@@ -235,21 +241,22 @@ interface RoomControlsProps {
     onLeave: () => void;
     onLayout: (e: LayoutChangeEvent) => void;
     muted: boolean;
+    connecting: boolean;
     onMutePress: () => void;
     raisedHandUsers: VoiceChatParticipant_user[];
 }
 
 export const RoomControls = React.memo((props: RoomControlsProps) => {
-    const { theme, id, muted, onLeave, onLayout, onMutePress, raisedHandUsers } = props;
+    const { theme, id, muted, connecting, onLeave, onLayout, onMutePress, raisedHandUsers } = props;
     const client = useClient();
     const meParticipant = client.useVoiceChatControls({ id }, { fetchPolicy: 'cache-and-network' })?.voiceChat.me;
     const role = meParticipant?.status;
     const roleButtons = role === VoiceChatParticipantStatus.ADMIN ? (
         <>
             <ControlRaisedHandsCount theme={theme} raisedCount={raisedHandUsers.length} raisedHandUsers={raisedHandUsers} roomId={id} />
-            <ControlMute muted={muted} theme={theme} onPress={onMutePress} />
+            <ControlMute muted={muted} connecting={connecting} theme={theme} onPress={onMutePress} />
         </>
-    ) : role === VoiceChatParticipantStatus.SPEAKER ? <ControlMute muted={muted} theme={theme} onPress={onMutePress} />
+    ) : role === VoiceChatParticipantStatus.SPEAKER ? <ControlMute muted={muted} connecting={connecting} theme={theme} onPress={onMutePress} />
         : role === VoiceChatParticipantStatus.LISTENER ? <ControlRaiseHand theme={theme} raised={!!meParticipant?.handRaised} roomId={id} /> : null;
 
     const handleLeave = React.useCallback(() => {

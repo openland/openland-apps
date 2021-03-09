@@ -173,6 +173,14 @@
             ]
         },
         {
+            "name": "ic-loader",
+            "src": "ic-loader-24.svg",
+            "sizes": [
+                24,
+                36
+            ]
+        },
+        {
             "name": "ic-instagram",
             "src": "ic-instagram-24.svg",
             "sizes": [
@@ -1470,13 +1478,6 @@
             "src": "ic-loader-16.svg",
             "sizes": [
                 16
-            ]
-        },
-        {
-            "name": "ic-loader",
-            "src": "ic-loader-24.svg",
-            "sizes": [
-                24
             ]
         },
         {
