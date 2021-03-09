@@ -6,10 +6,14 @@ import IcArrow from 'openland-icons/s/ic-chevron-16.svg';
 import IcIos from 'openland-icons/s/ic-appstore-24.svg';
 import IcAndroid from 'openland-icons/s/ic-googleplay-24.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import { UButton } from 'openland-web/components/unicorn/UButton';
-import { TextTitle1, TextBody, TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
+import {
+    TextTitle1,
+    TextBody,
+    TextCaption,
+    TextLabel1,
+    TextLabel2,
+} from 'openland-web/utils/TextStyles';
 import { getAppLink, detectOS } from 'openland-x-utils/detectOS';
-import { useTheme } from 'openland-x-utils/useTheme';
 import { trackEvent } from 'openland-x-analytics';
 
 const sidebarContainer = css`
@@ -201,33 +205,56 @@ const mobileHeaderContainer = css`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    padding: 6px 15px;
+    padding: 16px;
     flex-shrink: 0;
     align-self: stretch;
+    background-color: var(--tintBlue);
+    color: #fff;
+    & > img {
+        flex-shrink: 0;
+    }
+`;
+
+const mobileHeaderContent = css`
+    margin-left: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+`;
+
+const linkStyle = css`
+    padding: 6px 16px;
+    background: rgba(255, 255, 255, 0.24);
+    border-radius: 100px;
+    margin-top: 8px;
+    color: #fff;
+    &:hover {
+        color: #fff;
+        text-decoration: none;
+    }
 `;
 
 export const MobileSidebar = React.memo(() => {
-    const theme = useTheme();
     const os = detectOS();
-    const path = os === 'Android' ? getAppLink('Android') : getAppLink('iOS');
     return (
         <div className={mobileHeaderContainer}>
-            {theme.theme === 'dark' ? (
-                <img src="/static/landing/logo-light.svg" width={130} height={44} />
-            ) : (
-                <img src="/static/landing/logo.svg" width={130} height={44} />
-            )}
-            <UButton
-                text="Install the app"
-                size="small"
-                style="secondary"
-                marginBottom={-4}
-                href={path}
-                hoverTextDecoration="none"
-                target="_blank"
-                as="a"
+            <img
+                src="https://cdn.openland.com/shared/ic/ic-ios.png"
+                srcSet="https://cdn.openland.com/shared/ic/ic-ios@2x.png 2x"
+                alt=""
+                width={64}
+                height={64}
             />
+            <div className={mobileHeaderContent}>
+                <div className={cx(TextLabel1)}>Don’t have Openland yet?</div>
+                <a
+                    className={cx(linkStyle, TextLabel2)}
+                    target="_blank"
+                    href={getAppLink(os || 'iOS')}
+                >
+                    Install app
+                </a>
+            </div>
         </div>
     );
 });
