@@ -1,9 +1,9 @@
 import { AppAudioTrackAnalyzerApi } from 'openland-y-runtime-api/AppAudioTrackAnalyzerApi';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
-import { NativeModules } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 import { getMessenger } from '../openland-mobile/utils/messenger';
 
-const {WebRTCModule} = NativeModules;
+const { WebRTCModule } = NativeModules;
 
 class NativeTrackVolumesManager {
     #volumes = new Map<string, number>();
@@ -31,11 +31,13 @@ class NativeTrackVolumesManager {
     }
 
     #updateValues = () => {
-        WebRTCModule.getTrackVolumes((res: [[string, string]]) => {
-            for (let [trackId, volumeLevel] of res) {
-                this.#volumes.set(trackId, parseInt(volumeLevel, 10));
-            }
-        });
+        if (Platform.OS === 'ios') {
+            WebRTCModule.getTrackVolumes((res: [[string, string]]) => {
+                for (let [trackId, volumeLevel] of res) {
+                    this.#volumes.set(trackId, parseInt(volumeLevel, 10));
+                }
+            });
+        }
     }
 
     getVolume(trackId: string) {
