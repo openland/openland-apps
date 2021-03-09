@@ -411,7 +411,7 @@ export function showCallModal(props: { id: string, speaker: boolean, setSpeaker:
                 return (
                     <CallContainer id={props.id} speaker={props.speaker} setSpeaker={props.setSpeaker} modal={ctx} />
                 );
-            });
+            }, undefined, { style: { zIndex: 9 } });
         }
 
     })();
