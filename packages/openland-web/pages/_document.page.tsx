@@ -23,8 +23,8 @@ type MetaTagsInfoT = {
     image?: string;
 };
 const MetaTags = ({
-    title = 'Openland · Inspiring chat communities',
-    description = 'Join Openland to connect with inspiring people, learn, get help, or start your own community.',
+    title = 'Openland · Voice chats for everyone',
+    description = 'Openland is a modern social network built around voice chats. Join to find interesting conversations, meet new people, and build meaningful relationships.',
     image = ogImage,
     url,
 }: MetaTagsInfoT) => {
@@ -58,31 +58,21 @@ interface MetaTagsDescriptors {
 
 const matchMetaTags: MetaTagsDescriptors = {
     '/': {
-        title: 'Openland · Inspiring chat communities',
-        description:
-            'Discover and join communities for your industry, role, skills, interests, and location.',
-        image: ogImage,
-    },
-    '/start': {
-        title: 'Openland · Modern platform for chat communities',
-        description:
-            'Openland is an all-in-one platform for building great communities. Start your community in seconds and grow fast with built-in viral growth tools.',
+        title: 'Openland · Voice chats for everyone',
+        description: 'Openland is a modern social network built around voice chats. Join to find interesting conversations, meet new people, and build meaningful relationships.',
         image: ogImage,
     },
     '/about': {
         title: 'About Openland',
-        description:
-            'Openland is a modern platform fo chat communities. Join Openland to connect with inspiring people, learn, get help, or start your own community.',
+        description: 'Openland is a modern social network built around voice chats. Join to find interesting conversations, meet new people, and build meaningful relationships.',
     },
     '/terms': {
         title: 'Openland · Terms of service',
-        description:
-            'Review terms and conditions for using Openland websites, mobile apps, and other associated services.',
+        description: 'Review terms and conditions for using Openland websites, mobile apps, and other associated services.',
     },
     '/privacy': {
         title: 'Openland · Privacy policy',
-        description:
-            'Understand how Openland uses your personal information and how you can control it.',
+        description: 'Understand how Openland uses your personal information and how you can control it.',
     },
 };
 
