@@ -5030,6 +5030,9 @@ private let CancelSubscriptionSelector = obj(
                     field("id", "id", notNull(scalar("ID")))
                 )))
         )
+private let ChatDeleteSelector = obj(
+            field("deleteChat", "deleteChat", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("oneSide", refValue("oneSide"))), notNull(scalar("Boolean")))
+        )
 private let CommentDeleteUrlAugmentationSelector = obj(
             field("deleteCommentAugmentation", "deleteCommentAugmentation", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
@@ -7090,6 +7093,12 @@ class Operations {
         "mutation CancelSubscription($id:ID!){subscriptionCancel(id:$id){__typename id}}",
         CancelSubscriptionSelector
     )
+    let ChatDelete = OperationDefinition(
+        "ChatDelete",
+        .mutation, 
+        "mutation ChatDelete($chatId:ID!,$oneSide:Boolean){deleteChat(chatId:$chatId,oneSide:$oneSide)}",
+        ChatDeleteSelector
+    )
     let CommentDeleteUrlAugmentation = OperationDefinition(
         "CommentDeleteUrlAugmentation",
         .mutation, 
@@ -8162,6 +8171,7 @@ class Operations {
         if name == "BuyPremiumChatPass" { return BuyPremiumChatPass }
         if name == "BuyPremiumChatSubscription" { return BuyPremiumChatSubscription }
         if name == "CancelSubscription" { return CancelSubscription }
+        if name == "ChatDelete" { return ChatDelete }
         if name == "CommentDeleteUrlAugmentation" { return CommentDeleteUrlAugmentation }
         if name == "CommentSetReaction" { return CommentSetReaction }
         if name == "CommentUnsetReaction" { return CommentUnsetReaction }

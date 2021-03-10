@@ -374,6 +374,11 @@ mutation RoomLeave($roomId: ID!) {
         }
     }
 }
+
+mutation ChatDelete($chatId: ID!, $oneSide: Boolean) {
+    deleteChat(chatId: $chatId, oneSide: $oneSide)
+}
+
 query RoomSearch($query: String, $sort: String, $page: Int) {
     items: betaRoomSearch(query: $query, sort: $sort, page: $page, first: 25) {
         edges {

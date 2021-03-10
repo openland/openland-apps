@@ -2079,6 +2079,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateCancelSubscription(variables: Types.CancelSubscriptionVariables, params?: MutationParameters): Promise<Types.CancelSubscription> {
         return this.mutate('CancelSubscription', variables, params);
     }
+    mutateChatDelete(variables: Types.ChatDeleteVariables, params?: MutationParameters): Promise<Types.ChatDelete> {
+        return this.mutate('ChatDelete', variables, params);
+    }
     mutateCommentDeleteUrlAugmentation(variables: Types.CommentDeleteUrlAugmentationVariables, params?: MutationParameters): Promise<Types.CommentDeleteUrlAugmentation> {
         return this.mutate('CommentDeleteUrlAugmentation', variables, params);
     }

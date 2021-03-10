@@ -5037,6 +5037,9 @@ const CancelSubscriptionSelector = obj(
                     field('id', 'id', args(), notNull(scalar('ID')))
                 )))
         );
+const ChatDeleteSelector = obj(
+            field('deleteChat', 'deleteChat', args(fieldValue("chatId", refValue('chatId')), fieldValue("oneSide", refValue('oneSide'))), notNull(scalar('Boolean')))
+        );
 const CommentDeleteUrlAugmentationSelector = obj(
             field('deleteCommentAugmentation', 'deleteCommentAugmentation', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
         );
@@ -7092,6 +7095,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'CancelSubscription',
         body: 'mutation CancelSubscription($id:ID!){subscriptionCancel(id:$id){__typename id}}',
         selector: CancelSubscriptionSelector
+    },
+    ChatDelete: {
+        kind: 'mutation',
+        name: 'ChatDelete',
+        body: 'mutation ChatDelete($chatId:ID!,$oneSide:Boolean){deleteChat(chatId:$chatId,oneSide:$oneSide)}',
+        selector: ChatDeleteSelector
     },
     CommentDeleteUrlAugmentation: {
         kind: 'mutation',

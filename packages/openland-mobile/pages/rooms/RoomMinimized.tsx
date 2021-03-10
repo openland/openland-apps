@@ -70,7 +70,7 @@ const SpeakerPhotoView = React.memo((props: { firstSpeakers: VoiceChatParticipan
             </View>
         ));
     }
-        
+
     return (
         <View style={{ height: 40, marginBottom: 24, flexDirection: 'row', flexWrap: 'wrap' }}>
             {content}
@@ -124,7 +124,7 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
     const theme = useTheme();
     const joinRoom = useJoinRoom();
 
-    const speakingPeer = props.mediaSession.analyzer.useSpeakingPeer();
+    // const speakingPeer = props.mediaSession.analyzer.useSpeakingPeer();
     let state = props.mediaSession.state.useValue();
     const firstSpeakers = voiceChatData.speakers?.slice(0, 4);
     const status = voiceChatData.me?.status;

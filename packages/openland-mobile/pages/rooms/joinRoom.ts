@@ -17,17 +17,12 @@ export const useJoinRoom = () => {
         if (await checkPermissions('microphone')) {
             let status = (await client.queryVoiceChatControls({ id })).voiceChat.me?.status;
             let didJoin = [VoiceChatParticipantStatus.ADMIN, VoiceChatParticipantStatus.SPEAKER, VoiceChatParticipantStatus.LISTENER, VoiceChatParticipantStatus.KICKED].includes(status!);
-            if (!didJoin) {
+            if (!messenger.calls.currentMediaSession || messenger.calls.currentMediaSession && !didJoin) {
                 await client.mutateVoiceChatJoin({ id });
+                messenger.calls.joinCall(id);
             }
-            if (didJoin && messenger.calls.currentMediaSession) {
-                showRoomView(id, router);
-            } else {
-                showRoomView(id, router);
-                messenger.calls.joinCall(id, async () => {
-                    client.mutateVoiceChatLeave({ id });
-                });
-            }
+
+            showRoomView(id, router);
 
         }
     }, 500, false);
