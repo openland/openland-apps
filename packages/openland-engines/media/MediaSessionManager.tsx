@@ -69,16 +69,11 @@ export class MediaSessionManager {
     private kickDetectorSubscription: (() => void) | null = null;
     private ownPeerDetected = false;
     private destroyed = false;
-    private onLeave: (() => Promise<void>) | null = null;
 
-    constructor(messenger: MessengerEngine, conversationId: string, onLeave?: () => Promise<void>) {
+    constructor(messenger: MessengerEngine, conversationId: string) {
         this.messenger = messenger;
         this.client = messenger.client;
         this.conversationId = conversationId;
-
-        if (onLeave) {
-            this.onLeave = onLeave;
-        }
 
         // Initial state
         this.audioEnabled = true;
@@ -222,13 +217,10 @@ export class MediaSessionManager {
         // Notify about leave
         if (this.conferenceId && this.peerId) {
             backoff(async () => {
-                await Promise.all([
-                    this.client.mutateConferenceLeave({
-                        id: this.conferenceId,
-                        peerId: this.peerId
-                    }),
-                    this.onLeave && this.onLeave()
-                ]);
+                await this.client.mutateConferenceLeave({
+                    id: this.conferenceId,
+                    peerId: this.peerId
+                });
             });
         }
     }
@@ -429,13 +421,10 @@ export class MediaSessionManager {
             if (this.destroyed) {
                 // Leave from already destroyed session
                 backoff(async () => {
-                    await Promise.all([
-                        this.client.mutateConferenceLeave({
-                            id: conferenceId,
-                            peerId: joinConference.peerId
-                        }),
-                        this.onLeave && this.onLeave(),
-                    ]);
+                    await this.client.mutateConferenceLeave({
+                        id: conferenceId,
+                        peerId: joinConference.peerId
+                    });
                 });
                 return null;
             }

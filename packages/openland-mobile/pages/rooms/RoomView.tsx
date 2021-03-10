@@ -791,6 +791,7 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
         props.ctx.hide();
         InCallManager.stop({ busytone: '_BUNDLE_' });
         calls.leaveCall();
+        client.mutateVoiceChatLeave({ id: props.roomId });
     };
 
     const handleLeave = React.useCallback(async () => {
