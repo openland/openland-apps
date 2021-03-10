@@ -13,7 +13,6 @@ import { SAnimated } from 'react-native-fast-animations';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-fast-animations';
 import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAreaContext';
-import { isPad } from 'openland-mobile/pages/Root';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
@@ -28,6 +27,8 @@ interface BlanketModalProps {
     onCancel?: () => void;
     ignoreSafeArea?: boolean;
 }
+
+const isPad = !!(Platform.OS === 'ios' && (Platform as any).isPad);
 
 class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: ThemeGlobal }>
     implements ZModalController {

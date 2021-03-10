@@ -420,6 +420,13 @@
             ]
         },
         {
+            "name": "ic-size-up-glyph",
+            "src": "ic-size-up-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-message-glyph",
             "src": "ic-message-glyph-48.svg",
             "sizes": [
