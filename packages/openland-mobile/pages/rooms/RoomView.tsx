@@ -758,9 +758,6 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
     const conference = client.useConference({ id: props.roomId }, { suspense: false })?.conference;
     const [headerHeight, setHeaderHeight] = React.useState(0);
     const [controlsHeight, setControlsHeight] = React.useState(0);
-    const canMeSpeak =
-        voiceChatData.me?.status === VoiceChatParticipantStatus.ADMIN ||
-        voiceChatData.me?.status === VoiceChatParticipantStatus.SPEAKER;
 
     const onHeaderLayout = React.useCallback(
         (e: LayoutChangeEvent) => {
@@ -810,12 +807,6 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
     }, [voiceChatData]);
 
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
-
-    React.useEffect(() => {
-        if (mediaSession && !muted && !canMeSpeak) {
-            mediaSession.setAudioEnabled(false);
-        }
-    }, [mediaSession, muted, canMeSpeak]);
 
     React.useLayoutEffect(() => {
         // Don't change: 'video' has the correct default behaviour
@@ -958,6 +949,7 @@ export const showRoomView = (roomId: string, router: SRouter, onHide?: () => voi
             disableMargins: true,
             disableBottomSafeArea: true,
             cancelable: false,
+            onHide
         });
     }
 };

@@ -153,7 +153,7 @@ const RaiseModalView = React.memo(({ onCancel, onConfirm }: { onCancel: () => vo
                     marginBottom: 16,
                 }}
             >
-                <Text style={{ fontSize: 42 }}>🤚</Text>
+                <Image source={require('assets/ic-raise-back-hand-36.png')} style={{ width: 42, height: 42 }} />
             </View>
             <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, textAlign: 'center', marginBottom: 6 }}>Raise hand?</Text>
             <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginHorizontal: 32, marginBottom: 32 }}>
@@ -204,7 +204,7 @@ const ControlRaiseHand = React.memo((props: { theme: ThemeGlobal, raised: boolea
     return (
         <ControlItem
             theme={theme}
-            icon={raised ? '🖐' : '🤚'}
+            icon={raised ? require('assets/ic-raised-hand-36.png') : require('assets/ic-raise-back-hand-36.png')}
             bgColor={raised ? theme.accentPositive : theme.backgroundTertiaryTrans}
             onPress={handlePress}
         />

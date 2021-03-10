@@ -15,6 +15,7 @@ import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { showAddMembersModal } from '../showAddMembersModal';
 import {
     showLeaveChatConfirmation,
+    showDeleteChatConfirmation,
     showRoomEditModal,
 } from 'openland-web/fragments/settings/components/groupProfileModals';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
@@ -42,6 +43,7 @@ import SearchIcon from 'openland-icons/s/ic-search-24.svg';
 import MutedIcon from 'openland-icons/s/ic-muted-16.svg';
 import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
 import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
+import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
 
 const secondary = css`
     color: var(--foregroundSecondary);
@@ -160,6 +162,8 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; isBanned: bo
     const privateRoom = chat.__typename === 'PrivateRoom' ? chat : undefined;
     const sharedRoom = chat.__typename === 'SharedRoom' ? chat : undefined;
 
+    const isSavedMessages = privateRoom && messenger.user.id === privateRoom.user.id;
+
     const chatUser = privateRoom && privateRoom.user;
     const { isContact } = useLocalContact(
         chatUser ? chatUser.id : '',
@@ -274,6 +278,16 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; isBanned: bo
                     sharedRoom.kind === 'PUBLIC',
                     sharedRoom.isChannel,
                 ),
+        });
+    }
+
+    const deleteChat = false;
+
+    if (privateRoom && !isSavedMessages && deleteChat) {
+        res.item({
+            title: 'Delete conversation',
+            icon: <DeleteIcon />,
+            action: () => showDeleteChatConfirmation(chat.id, privateRoom.user.firstName),
         });
     }
 

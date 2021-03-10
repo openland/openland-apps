@@ -765,3 +765,54 @@ export const showLeaveChatConfirmation = (
         )
         .show();
 };
+
+const DeleteChatComponent = React.memo(
+    (props: { chatId: string; userName: string; hide: () => void }) => {
+        const [oneSide, setOneSide] = React.useState(true);
+        const client = useClient();
+
+        const onDelete = React.useCallback(async () => {
+            await client.mutateChatDelete({ chatId: props.chatId, oneSide: oneSide });
+            props.hide();
+        }, [oneSide]);
+
+        return (
+            <>
+                <XModalContent>
+                    <div>Are you sure you want to delete conversation? This cannot be undone.</div>
+                    <UCheckbox
+                        label={`Delete for me and ${props.userName}`}
+                        onChange={setOneSide}
+                        checked={!oneSide}
+                        squared={true}
+                        withCorners={true}
+                        paddingHorizontal={24}
+                        disableHorizontalPadding={true}
+                        wrapperStyle={{
+                            marginTop: 16,
+                            marginHorizontal: -24
+                        }}
+                    />
+                </XModalContent>
+                <XModalFooter>
+                    <UButton
+                        text="Cancel"
+                        style="tertiary"
+                        size="large"
+                        onClick={() => props.hide()}
+                    />
+                    <UButton text="Delete" style="danger" size="large" action={onDelete} />
+                </XModalFooter>
+            </>
+        );
+    },
+);
+
+export const showDeleteChatConfirmation = (chatId: string, userName: string) => {
+    showModalBox(
+        {
+            title: 'Delete conversation',
+        },
+        (ctx) => <DeleteChatComponent chatId={chatId} hide={ctx.hide} userName={userName} />,
+    );
+};

@@ -132,6 +132,7 @@ interface UCheckboxItemProps extends XViewProps {
     disableHorizontalPadding?: boolean;
     icon?: JSX.Element;
     iconColor?: string;
+    wrapperStyle?: XViewProps;
 }
 
 export const UCheckbox = (props: UCheckboxItemProps) => {
@@ -149,6 +150,7 @@ export const UCheckbox = (props: UCheckboxItemProps) => {
         boldTitle,
         leftElement,
         disableHorizontalPadding,
+        wrapperStyle,
         ...other
     } = props;
     const handleChange = () => {
@@ -160,7 +162,7 @@ export const UCheckbox = (props: UCheckboxItemProps) => {
     const id = `toggle_${Math.random().toString().replace(/0\./, '')}`;
 
     return (
-        <XView flexDirection="row" alignItems="center">
+        <XView flexDirection="row" alignItems="center" {...wrapperStyle}>
             <input
                 onChange={handleChange}
                 id={id}
