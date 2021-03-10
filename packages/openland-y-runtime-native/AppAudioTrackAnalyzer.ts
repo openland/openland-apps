@@ -31,13 +31,11 @@ class NativeTrackVolumesManager {
     }
 
     #updateValues = () => {
-        if (Platform.OS === 'ios') {
-            WebRTCModule.getTrackVolumes((res: [[string, string]]) => {
-                for (let [trackId, volumeLevel] of res) {
-                    this.#volumes.set(trackId, parseInt(volumeLevel, 10));
-                }
-            });
-        }
+        WebRTCModule.getTrackVolumes((res: [[string, string]]) => {
+            for (let [trackId, volumeLevel] of res) {
+                this.#volumes.set(trackId, parseInt(volumeLevel, 10));
+            }
+        });
     }
 
     getVolume(trackId: string) {
