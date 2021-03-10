@@ -456,18 +456,22 @@ const RoomHeader = React.memo(
                             tintColor: theme.foregroundTertiary,
                         }}
                     />
-                    <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary, marginLeft: 12 }}>
-                        {room.listenersCount}
-                    </Text>
-                    <Image
-                        source={require('assets/ic-headphones-16.png')}
-                        style={{
-                            width: 16,
-                            height: 16,
-                            marginLeft: 4,
-                            tintColor: theme.foregroundTertiary,
-                        }}
-                    />
+                    {room.listenersCount > 0 && (
+                        <>
+                            <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary, marginLeft: 12 }}>
+                                {room.listenersCount}
+                            </Text>
+                            <Image
+                                source={require('assets/ic-headphones-16.png')}
+                                style={{
+                                    width: 16,
+                                    height: 16,
+                                    marginLeft: 4,
+                                    tintColor: theme.foregroundTertiary,
+                                }}
+                            />
+                        </>
+                    )}
                 </View>
                 <View
                     style={{

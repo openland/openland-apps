@@ -69,9 +69,13 @@ const RoomFeedItem = React.memo((props: { room: VoiceChatWithSpeakers, theme: Th
                     <View style={{ marginTop: 12, flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>{room.speakersCount}</Text>
                         <Image source={require('assets/ic-microphone-16.png')} style={{ width: 16, height: 16, marginLeft: 4, tintColor: theme.foregroundTertiary }} />
-                        <View style={{ width: 3, height: 3, borderRadius: 3, backgroundColor: theme.foregroundTertiary, marginHorizontal: 8 }} />
-                        <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>{room.listenersCount}</Text>
-                        <Image source={require('assets/ic-headphones-16.png')} style={{ width: 16, height: 16, marginLeft: 4, tintColor: theme.foregroundTertiary }} />
+                        {room.listenersCount > 0 && (
+                            <>
+                                <View style={{ width: 3, height: 3, borderRadius: 3, backgroundColor: theme.foregroundTertiary, marginHorizontal: 8 }} />
+                                <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>{room.listenersCount}</Text>
+                                <Image source={require('assets/ic-headphones-16.png')} style={{ width: 16, height: 16, marginLeft: 4, tintColor: theme.foregroundTertiary }} />
+                            </>
+                        )}
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-end', flexWrap: 'wrap', maxWidth: 88 }}>
