@@ -1,16 +1,12 @@
 export const LandingLinks = {
     home: '/',
-    discover: '/discover',
-
     download: '/download',
     about: '/about',
     privacy: '/privacy',
     terms: '/terms',
-
     signin: '/signin',
     signup: '/signin',
     app: '/',
-
     careers: '/invite/8GbujwA',
     support: '/invite/zOF5IpZ',
 };

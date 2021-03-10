@@ -1,13 +1,15 @@
 import * as React from 'react';
 import * as Cookie from 'js-cookie';
 import { css, cx } from 'linaria';
+import { detectOS } from 'openland-x-utils/detectOS';
+import { AuthResolveShortName_item_User } from 'openland-api/spacex.types';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { emoji } from 'openland-y-utils/emoji';
 import { TextTitle1, TextBody, TextDetail, TextTitle3 } from 'openland-web/utils/TextStyles';
 import { AuthPageContainer } from '../components/AuthPageContainer';
-import { AuthResolveShortName_item_User } from 'openland-api/spacex.types';
+import { noLoginMobileButton } from 'openland-web/fragments/invite/InviteComponents';
 import IcListeners from 'openland-icons/s/ic-listener-16.svg';
 import IcSpeakers from 'openland-icons/s/ic-speaker-16.svg';
 
@@ -42,6 +44,10 @@ const voiceChatInfo = css`
     flex-direction: column;
     align-items: center;
     margin-bottom: 52px;
+    @media (max-width: 750px) {
+        margin-top: 0;
+        margin-bottom: 28px;
+    }
 `;
 
 const liveIcon = css`
@@ -105,6 +111,61 @@ const dotSeparator = css`
 
 export const AuthProfileFragment = React.memo((props: { user: AuthResolveShortName_item_User }) => {
     const { id, name, firstName, photo, online, currentVoiceChat } = props.user;
+    const os = detectOS();
+    const isMobile = os === 'iOS' || os === 'Android';
+
+    let buttons = (
+        <>
+            {!!currentVoiceChat ? (
+                <UButton
+                    width={240}
+                    style="success"
+                    text="Join room"
+                    size="large"
+                    onClick={() => {
+                        Cookie.set('x-signin-redirect', props.user.id, { path: '/' });
+                        window.location.href = '/signin';
+                    }}
+                />
+            ) : (
+                <UButton
+                    width={240}
+                    text="Follow"
+                    size="large"
+                    onClick={() => {
+                        Cookie.set('x-signin-redirect', props.user.id, { path: '/' });
+                        window.location.href = '/signin';
+                    }}
+                />
+            )}
+            <UButton
+                width={240}
+                marginTop={16}
+                style="secondary"
+                text="Message"
+                size="large"
+                onClick={() => {
+                    Cookie.set('x-signin-redirect', props.user.id, { path: '/' });
+                    window.location.href = '/signin';
+                }}
+            />
+        </>
+    );
+
+    if (isMobile) {
+        buttons = (
+            <>
+                {!!currentVoiceChat
+                    ? noLoginMobileButton({ text: 'Join room', style: 'success', width: 240 }, os)
+                    : noLoginMobileButton({ text: 'Follow', width: 240 }, os)}
+                {noLoginMobileButton(
+                    { text: 'Message', style: 'secondary', width: 240, marginTop: 16 },
+                    os,
+                )}
+            </>
+        );
+    }
+
     return (
         <AuthPageContainer>
             <div className={userInfoContainer}>
@@ -157,39 +218,7 @@ export const AuthProfileFragment = React.memo((props: { user: AuthResolveShortNa
                         </div>
                     </div>
                 )}
-                {!!currentVoiceChat ? (
-                    <UButton
-                        width={240}
-                        style="success"
-                        text="Join room"
-                        size="large"
-                        onClick={() => {
-                            Cookie.set('x-signin-redirect', props.user.id, { path: `/${id}` });
-                            window.location.href = '/signin';
-                        }}
-                    />
-                ) : (
-                    <UButton
-                        width={240}
-                        text="Follow"
-                        size="large"
-                        onClick={() => {
-                            Cookie.set('x-signin-redirect', props.user.id, { path: `/${id}` });
-                            window.location.href = '/signin';
-                        }}
-                    />
-                )}
-                <UButton
-                    width={240}
-                    marginTop={16}
-                    style="secondary"
-                    text="Message"
-                    size="large"
-                    onClick={() => {
-                        Cookie.set('x-signin-redirect', props.user.id, { path: '/' });
-                        window.location.href = '/signin';
-                    }}
-                />
+                {buttons}
             </div>
         </AuthPageContainer>
     );

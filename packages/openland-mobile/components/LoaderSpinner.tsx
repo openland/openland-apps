@@ -1,23 +1,25 @@
 import React from 'react';
 import { Animated, Easing, Platform, ActivityIndicator, View } from 'react-native';
 
-type LoaderSpinnerSize = 'small' | 'medium' | 'large';
+type LoaderSpinnerSize = 'small' | 'medium' | 'large' | 'x-large';
 
 export interface LoaderSpinnerProps {
-    size?: 'small' | 'medium' | 'large';
+    size?: 'small' | 'medium' | 'large' | 'x-large';
     color?: string;
 }
 
 const loaderSize: { [key in LoaderSpinnerSize]: number } = {
     small: 16,
     medium: 24,
-    large: 32
+    large: 32,
+    'x-large': 36
 };
 
 const loaderIcon: { [key in LoaderSpinnerSize]: NodeRequire } = {
     small: require('assets/ic-loader-16.png'),
     medium: require('assets/ic-loader-24.png'),
-    large: require('assets/ic-loader-32.png')
+    large: require('assets/ic-loader-32.png'),
+    'x-large': require('assets/ic-loader-36.png')
 };
 
 export function LoaderSpinnerIOS({ size = 'medium', color }: LoaderSpinnerProps) {

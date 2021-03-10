@@ -131,11 +131,6 @@ export const MobileMenu = React.memo(() => {
                         </li>
                         <li className={mobileMenuItem}>
                             <span className={mobileMenuLink}>
-                                <XView path={LandingLinks.discover}>Communities</XView>
-                            </span>
-                        </li>
-                        <li className={mobileMenuItem}>
-                            <span className={mobileMenuLink}>
                                 <XView path={LandingLinks.support}>Help</XView>
                             </span>
                         </li>

@@ -127,7 +127,7 @@ export const HomeHelp = React.forwardRef((props: {}, ref: React.Ref<HTMLDivEleme
                     </div>
                     <div className={itemInfo}>
                         <div className={itemTag}>What's New</div>
-                        <div className={itemText}>Openland Product Updates</div>
+                        <div className={itemText}>Product Updates</div>
                     </div>
                 </a>
 
@@ -140,7 +140,7 @@ export const HomeHelp = React.forwardRef((props: {}, ref: React.Ref<HTMLDivEleme
                         />
                     </div>
                     <div className={itemInfo}>
-                        <div className={itemTag}>Product</div>
+                        <div className={itemTag}>Getting started</div>
                         <div className={itemText}>Openland User Guide</div>
                     </div>
                 </a>
@@ -155,7 +155,7 @@ export const HomeHelp = React.forwardRef((props: {}, ref: React.Ref<HTMLDivEleme
                     </div>
                     <div className={itemInfo}>
                         <div className={itemTag}>Organizers</div>
-                        <div className={itemText}>Building communities on&nbsp;Openland</div>
+                        <div className={itemText}>Community Playbook</div>
                     </div>
                 </a>
             </div>

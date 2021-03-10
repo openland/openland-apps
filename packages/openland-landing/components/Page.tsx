@@ -1,7 +1,16 @@
 import * as React from 'react';
+import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import { Header } from './Header';
 import { Footer } from './Footer';
+
+const page = css`
+    overflow: hidden;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--backgroundPrimary);
+    color: var(--foregroundPrimary);
+`;
 
 interface PageProps {
     transparentHeader?: boolean;
@@ -18,21 +27,10 @@ export const Page = React.memo((props: PageProps) => {
     }, []);
 
     return (
-        <XView
-            overflow="hidden"
-            flexDirection="column"
-            width="100%"
-            minHeight="100vh"
-            backgroundColor="var(--backgroundPrimary)"
-            color="var(--foregroundPrimary)"
-        >
+        <div className={cx(page, 'x landing')}>
             <Header transparent={props.transparentHeader} />
-
-            <XView flexGrow={1}>
-                {props.children}
-            </XView>
-
+            <XView flexGrow={1}>{props.children}</XView>
             <Footer />
-        </XView>
+        </div>
     );
 });

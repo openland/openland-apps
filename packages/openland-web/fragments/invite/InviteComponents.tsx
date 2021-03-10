@@ -9,7 +9,7 @@ import {
 } from 'openland-api/spacex.types';
 import { XViewRouterContext } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
-import { UButton } from 'openland-web/components/unicorn/UButton';
+import { UButton, UButtonProps } from 'openland-web/components/unicorn/UButton';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { trackEvent } from 'openland-x-analytics';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
@@ -17,7 +17,6 @@ import { showPayConfirm } from '../wallet/modals/showPayConfirm';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { getAppLink, OS } from 'openland-x-utils/detectOS';
-// import { showModalBox } from 'openland-x/showModalBox';
 
 type SharedRoomT = ResolvedInvite_shortnameItem_SharedRoom | ResolvedInvite_invite_RoomInvite_room;
 type OrgT = ResolvedInvite_invite_InviteInfo_organization;
@@ -284,11 +283,7 @@ export const resolveOrgButton = (organization: OrgT, noLogin: boolean, inviteKey
     );
 };
 
-// const showMobileModal = () => {
-//     showModalBox({ title: 'hui' }, (ctx) => <div>hui</div>);
-// };
-
-export const noLoginMobileButton = (buttonText: string, os: OS) => {
+export const noLoginMobileButton = (button: UButtonProps, os: OS | null) => {
     React.useEffect(() => {
         if (window.location.search === '?q=store') {
             window.location.replace(os === 'iOS' ? getAppLink('iOS') : getAppLink('Android'));
@@ -316,10 +311,11 @@ export const noLoginMobileButton = (buttonText: string, os: OS) => {
 
     return (
         <UButton
-            text={buttonText}
+            text={button.text}
             size="large"
             shape="square"
             onClick={os === 'iOS' ? onIosClick : onAndroidClick}
+            {...button}
         />
     );
 };

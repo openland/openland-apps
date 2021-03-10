@@ -148,15 +148,17 @@ const emoji = css`
 `;
 
 const text = css`
-    font-size: 30px;
+    font-size: 35px;
     line-height: 46px;
     color: var(--foregroundSecondary);
     margin: 0 0 44px;
+    max-width: 500px;
 
     @media (min-width: 768px) and (max-width: 1199px) {
         font-size: 22px;
         line-height: 32px;
         margin: 0 0 32px;
+        max-width: 410px;
     }
 
     @media (max-width: 767px) {
@@ -275,6 +277,7 @@ const slide = css`
 `;
 
 const slideTitle = css`
+    white-space: pre-wrap;
     font-weight: 800;
     font-size: 28px;
     line-height: 32px;
@@ -298,11 +301,12 @@ const slideImage = css`
 `;
 
 const slides = [
-    'Find your\xa0community',
-    'Share your\xa0stories',
-    'Meet new\xa0people',
-    'See what others are\xa0doing',
-    'Start your own community',
+    'Join\nconversations',
+    'Get\ntalking',
+    'Meet\nnew people',
+    'Message\ndirectly',
+    'Get\nfollowers',
+    'Build\ncommunities',
 ];
 
 export const HomeIntro = React.forwardRef((props: {}, ref: React.Ref<HTMLDivElement>) => {
@@ -335,23 +339,23 @@ export const HomeIntro = React.forwardRef((props: {}, ref: React.Ref<HTMLDivElem
                     <Tilt options={{ max: 20, scale: 1 }} className={screens}>
                         <div className={screenback}>
                             <img
-                                src="https://cdn.openland.com/shared/landing/start/home-intro-screen-02.png"
-                                srcSet="https://cdn.openland.com/shared/landing/start/home-intro-screen-02@2x.png 2x"
+                                src="https://cdn.openland.com/shared/landing/start/home-intro-screen-2.png"
+                                srcSet="https://cdn.openland.com/shared/landing/start/home-intro-screen-2@2x.png 2x"
                                 alt=""
                             />
                         </div>
                         <div className={screenfront}>
                             <img
-                                src="https://cdn.openland.com/shared/landing/start/home-intro-screen-01.png"
-                                srcSet="https://cdn.openland.com/shared/landing/start/home-intro-screen-01@2x.png 2x"
+                                src="https://cdn.openland.com/shared/landing/start/home-intro-screen-1.png"
+                                srcSet="https://cdn.openland.com/shared/landing/start/home-intro-screen-1@2x.png 2x"
                                 alt=""
                             />
                         </div>
                     </Tilt>
                     <div className={info}>
                         <div className={emoji}>{emojiAnimated('👋')}</div>
-                        <div className={title}>A fresh start<span>for social</span></div>
-                        <div className={text}>Openland is a modern social network<br /> built for people, not advertisers</div>
+                        <div className={title}>Voice chats<span>for everyone</span></div>
+                        <div className={text}>Join interesting conversations, meet new people, and build meaningful relationships</div>
                         <div className={apps}>
                             <a
                                 className={cx(app, mobileOS === 'iOS' && 'mobile-active')}
@@ -380,8 +384,8 @@ export const HomeIntro = React.forwardRef((props: {}, ref: React.Ref<HTMLDivElem
                         <div className={slideTitle}>{s}</div>
                         <div className={slideImage}>
                             <img
-                                src={`https://cdn.openland.com/shared/landing/start/home-slide-0${i + 1}.png`}
-                                srcSet={`https://cdn.openland.com/shared/landing/start/home-slide-0${i + 1}@2x.png 2x`}
+                                src={`https://cdn.openland.com/shared/landing/start/home-screen-${i + 1}.png`}
+                                srcSet={`https://cdn.openland.com/shared/landing/start/home-screen-${i + 1}@2x.png 2x`}
                                 alt=""
                             />
                         </div>

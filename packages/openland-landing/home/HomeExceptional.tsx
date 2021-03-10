@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { Container } from '../components/Container';
+import VoiceChatIcon from './icons/ic_voicechat_24.svg';
 import VideoIcon from './icons/ic_video_28.svg';
 import BotsIcon from './icons/ic_bots_28.svg';
 import CommunitiesIcon from './icons/ic_communities_28.svg';
@@ -38,13 +39,13 @@ const wrapper = css`
 
 const title = css`
     font-weight: 800;
-    font-size: 54px;
+    font-size: 44px;
     line-height: 64px;
     margin: 0 0 4px;
     text-align: center;
 
     @media (min-width: 768px) and (max-width: 1199px) {
-        font-size: 34px;
+        font-size: 30px;
         line-height: 40px;
         margin: 0 0 5px;
     }
@@ -123,22 +124,23 @@ export const HomeExceptional = React.forwardRef((props: {}, ref: React.Ref<HTMLD
     <div ref={ref} className={box}>
         <Container>
             <div className={wrapper}>
-                <div className={title}>Exceptional apps</div>
+                <div className={title}>Modern voice-and-chat social network</div>
                 <div className={text}>Beautiful, simple, and ultra-fast</div>
                 <div className={screenshot}>
                     <img
-                        src="https://cdn.openland.com/shared/landing/start/home-exceptional.png"
-                        srcSet="https://cdn.openland.com/shared/landing/start/home-exceptional@2x.png 2x"
+                        src="https://cdn.openland.com/shared/landing/start/home-exceptional-2.png"
+                        srcSet="https://cdn.openland.com/shared/landing/start/home-exceptional-2@2x.png 2x"
                         alt=""
                     />
                 </div>
                 <div className={features}>
+                    <div className={feature}><VoiceChatIcon />Voice chats</div>
                     <div className={feature}><MessagingIcon />Messaging</div>
-                    <div className={feature}><VideoIcon />Video chat</div>
+                    <div className={feature}><VideoIcon />Direct calls</div>
                     <div className={feature}><CommunitiesIcon />Communities</div>
-                    <div className={feature}><ContactsIcon />Contacts</div>
                 </div>
                 <div className={features}>
+                    <div className={feature}><ContactsIcon />Contacts</div>
                     <div className={feature}><DiscoverIcon />Discover</div>
                     <div className={feature}><PaymentsIcon />Payments</div>
                     <div className={feature}><BotsIcon />Bots</div>

@@ -50,6 +50,7 @@ import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
+import { debounce } from 'openland-y-utils/timer';
 
 interface RoomUserViewProps {
     roomId: string;
@@ -443,7 +444,7 @@ const RoomHeader = React.memo(
                     {props.room.title}
                 </Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>
+                    <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }}>
                         {room.speakersCount}
                     </Text>
                     <Image
@@ -451,31 +452,26 @@ const RoomHeader = React.memo(
                         style={{
                             width: 16,
                             height: 16,
-                            marginLeft: 4,
+                            marginLeft: 2,
                             tintColor: theme.foregroundTertiary,
                         }}
                     />
-                    <View
-                        style={{
-                            width: 3,
-                            height: 3,
-                            borderRadius: 3,
-                            backgroundColor: theme.foregroundTertiary,
-                            marginHorizontal: 8,
-                        }}
-                    />
-                    <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>
-                        {room.listenersCount}
-                    </Text>
-                    <Image
-                        source={require('assets/ic-headphones-16.png')}
-                        style={{
-                            width: 16,
-                            height: 16,
-                            marginLeft: 4,
-                            tintColor: theme.foregroundTertiary,
-                        }}
-                    />
+                    {room.listenersCount > 0 && (
+                        <>
+                            <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary, marginLeft: 12 }}>
+                                {room.listenersCount}
+                            </Text>
+                            <Image
+                                source={require('assets/ic-headphones-16.png')}
+                                style={{
+                                    width: 16,
+                                    height: 16,
+                                    marginLeft: 4,
+                                    tintColor: theme.foregroundTertiary,
+                                }}
+                            />
+                        </>
+                    )}
                 </View>
                 <View
                     style={{
@@ -519,7 +515,7 @@ const RoomHeader = React.memo(
                     >
                         <Image
                             style={{ width: 24, height: 24, tintColor: theme.foregroundTertiary }}
-                            source={require('assets/ic-size-down-glyph-24.png')}
+                            source={require('assets/ic-minimize-room-24.png')}
                         />
                     </TouchableOpacity>
                 </View>
@@ -621,15 +617,14 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
 
 interface RoomSpeakingUserViewProps extends RoomUserViewProps {
     peer: Conference_conference_peers | undefined;
-    media: PeerMedia;
-    isLocal: boolean;
     analyzer: MediaSessionTrackAnalyzerManager;
+    isLoading: boolean;
 }
 
 const RoomSpeakingUserView = React.memo((props: RoomSpeakingUserViewProps) => {
-    const { peer, media, isLocal, analyzer, ...other } = props;
+    const { peer, analyzer, isLoading, ...other } = props;
     const isTalking = analyzer.usePeer(peer?.id);
-    const state = (!isLocal && !media.audioTrack)
+    const state = isLoading
         ? 'loading'
         : peer?.mediaState.audioPaused
             ? 'muted'
@@ -648,10 +643,11 @@ interface RoomUsersListProps extends RoomViewProps {
     callState: MediaSessionState | undefined;
     modalCtx: { hide: () => void };
     analyzer: MediaSessionTrackAnalyzerManager;
+    connecting: boolean;
 }
 
 const RoomUsersList = React.memo((props: RoomUsersListProps) => {
-    const { headerHeight, controlsHeight, peers, analyzer, callState, theme, room, router, modalCtx } = props;
+    const { headerHeight, controlsHeight, peers, connecting, analyzer, callState, theme, room, router, modalCtx } = props;
     const sa = useSafeArea();
     const currentHeight = isPad ? Dimensions.get('window').height : SDevice.wHeight;
     const sHeight = currentHeight - (sa.top + sa.bottom + headerHeight + controlsHeight + 16);
@@ -701,12 +697,11 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                             userStatus={speaker.status}
                             selfStatus={room.me?.status}
                             peer={peer}
-                            media={media}
-                            isLocal={isLocal}
                             theme={theme}
                             router={router}
                             modalCtx={modalCtx}
                             analyzer={analyzer}
+                            isLoading={connecting || !peer ? false : !isLocal && !media.audioTrack}
                         />
                     );
                 })}
@@ -864,6 +859,32 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
         prevVoiceChat.current = voiceChatData;
     }, [voiceChatData]);
 
+    const [connecting, setConnecting] = React.useState(!state?.sender.audioTrack);
+
+    const prevState = React.useRef(state);
+    React.useEffect(() => {
+        if (prevState.current?.sender.audioTrack && state?.sender.audioTrack && connecting) {
+            setConnecting(false);
+        }
+        prevState.current = state;
+    }, [state]);
+
+    React.useEffect(() => {
+        const setConnectingDebounced = debounce(setConnecting, 500);
+        let sub: undefined | (() => void);
+
+        setTimeout(() => {
+            sub = client.engine.watchStatus(s => {
+                setConnectingDebounced(s.status === 'connecting');
+            });
+        }, 3000);
+        return () => {
+            if (sub) {
+                sub();
+            }
+        };
+    }, []);
+
     if (!mediaSession) {
         return null;
     }
@@ -888,11 +909,13 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
                         peers={conference?.peers || []}
                         callState={state}
                         analyzer={mediaSession.analyzer}
+                        connecting={connecting}
                     />
                     <RoomControls
                         id={props.roomId}
                         theme={theme}
                         muted={muted}
+                        connecting={connecting}
                         onLayout={onControlsLayout}
                         onLeave={handleLeave}
                         onMutePress={handleMute}

@@ -7,7 +7,6 @@ import { MessengerProvider } from 'openland-web/fragments/chat/messenger/Messeng
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { PushEngineComponent } from 'openland-web/modules/push/PushEngineComponent';
 import { useClient } from 'openland-api/useClient';
-import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UnicornSplash } from 'openland-x/XLoader';
 import {
     highlightSecretOption,
@@ -33,20 +32,6 @@ export const AppContainer = (props: { children: any }) => {
     const [chatSearchState, setChatSearchState] = React.useState<ChatSearchState>({
         chatId: null,
     });
-
-    if (canUseDOM) {
-        useShortcuts([
-            {
-                keys: ['Control', 'q'],
-                callback: () => {
-                    console.warn('reset-cache-and-reload');
-                    (async () => {
-                        location.reload();
-                    })();
-                },
-            },
-        ]);
-    }
 
     React.useEffect(() => {
         if (localStorage.getItem('interactive_app_theme') === 'LIGHT') {

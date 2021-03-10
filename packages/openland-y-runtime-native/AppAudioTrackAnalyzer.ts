@@ -3,7 +3,7 @@ import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { NativeModules } from 'react-native';
 import { getMessenger } from '../openland-mobile/utils/messenger';
 
-const {WebRTCModule} = NativeModules;
+const { WebRTCModule } = NativeModules;
 
 class NativeTrackVolumesManager {
     #volumes = new Map<string, number>();

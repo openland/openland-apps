@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css, cx } from 'linaria';
+import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { getAppLink } from 'openland-x-utils/detectOS';
 import { Container } from './Container';
@@ -141,7 +141,6 @@ const social = css`
 `;
 
 const socialItem = css`
-    display: inline-block;
     width: 64px;
     height: 64px;
     display: inline-flex;
@@ -175,8 +174,6 @@ const socialItem = css`
         transition: background-color 0.01s;
     }
 `;
-
-const socialLink = css``;
 
 const socialLogo = css`
     display: inline-block;
@@ -287,12 +284,6 @@ const popupText = css`
     font-weight: 600;
 `;
 
-const hiddenSmall = css`
-    @media (max-width: 1199px) {
-        display: none;
-    }
-`;
-
 export const Footer = React.memo(() => {
     const [legalIsOpen, legalSetOpen] = React.useState<boolean>(false);
 
@@ -318,11 +309,6 @@ export const Footer = React.memo(() => {
                         <li className={menuItem}>
                             <span className={menuLink}>
                                 <XView path={LandingLinks.about}>About</XView>
-                            </span>
-                        </li>
-                        <li className={cx(menuItem, hiddenSmall)}>
-                            <span className={menuLink}>
-                                <XView path={LandingLinks.discover}>Communities</XView>
                             </span>
                         </li>
                         <li className={menuItem}>
@@ -368,7 +354,7 @@ export const Footer = React.memo(() => {
                     <div className={links}>
                         <ul className={social}>
                             <li className={socialItem}>
-                                <a className={socialLink} href={LandingSocials.instagram}>
+                                <a href={LandingSocials.instagram}>
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/1.svg"
@@ -378,7 +364,7 @@ export const Footer = React.memo(() => {
                                 </a>
                             </li>
                             <li className={socialItem}>
-                                <a className={socialLink} href={LandingSocials.twitter}>
+                                <a href={LandingSocials.twitter}>
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/2.svg"
