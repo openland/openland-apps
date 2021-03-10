@@ -175,7 +175,7 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
                 )}
                 <RoomMinimizedControlItem
                     bgColor={theme.accentPrimary}
-                    iconColor={theme.foregroundContrast}
+                    iconColor={theme.accentPrimary === theme.foregroundContrast ? theme.foregroundInverted : theme.foregroundContrast}
                     icon={require('assets/ic-size-up-glyph-24.png')}
                     onPress={() => joinRoom(voiceChatData.id)}
                 />
