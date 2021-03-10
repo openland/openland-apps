@@ -175,6 +175,7 @@ export const ZDraggableItem = React.memo<ZDraggableItemProps>((props) => {
                     onLayout={handleOnLayout}
                     style={{ top: y, left: x, alignSelf: 'baseline' }}
                     onPress={onPress}
+                    activeOpacity={0.6}
                     onPressOut={handlePressOut}
                 >
                     {children}
