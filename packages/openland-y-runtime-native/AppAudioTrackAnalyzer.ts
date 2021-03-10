@@ -1,6 +1,6 @@
 import { AppAudioTrackAnalyzerApi } from 'openland-y-runtime-api/AppAudioTrackAnalyzerApi';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
-import { NativeModules, Platform } from 'react-native';
+import { NativeModules } from 'react-native';
 import { getMessenger } from '../openland-mobile/utils/messenger';
 
 const { WebRTCModule } = NativeModules;
