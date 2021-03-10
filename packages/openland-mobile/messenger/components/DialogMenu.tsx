@@ -8,6 +8,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
+import { showDeleteChatConfirmation } from 'openland-mobile/pages/main/modals/deleteChatModal';
 import Toast from 'openland-mobile/components/Toast';
 import { View } from 'react-native';
 
@@ -41,6 +42,8 @@ const DialogMenuPrivate = React.memo((props: DialogMenuProps) => {
         }, false, require('assets/ic-attach-24.png'));
     }
 
+    const deleteChat = false;
+
     if (!isSavedMessages) {
         builder.action(
             isContact ? 'Remove from contacts' : 'Add to contacts',
@@ -58,6 +61,14 @@ const DialogMenuPrivate = React.memo((props: DialogMenuProps) => {
             false,
             isContact ? require('assets/ic-invite-off-24.png') : require('assets/ic-invite-24.png'),
         );
+        if (deleteChat) {
+            builder.action(
+                'Delete conversation',
+                () => showDeleteChatConfirmation(item.key, user.name),
+                false,
+                require('assets/ic-delete-24.png'),
+            );
+        }
     }
 
     return builder.renderItems(ctx);
