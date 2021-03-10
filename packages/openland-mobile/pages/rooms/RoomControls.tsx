@@ -205,8 +205,7 @@ const ControlRaiseHand = React.memo((props: { theme: ThemeGlobal, raised: boolea
         <ControlItem
             theme={theme}
             icon={raised ? '🖐' : '🤚'}
-            bgColor={raised ? theme.accentPositive : theme.incomingBackgroundPrimary}
-            disabled={raised}
+            bgColor={raised ? theme.accentPositive : theme.backgroundTertiaryTrans}
             onPress={handlePress}
         />
     );
