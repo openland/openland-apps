@@ -21,6 +21,7 @@ export interface BottomSheetConfig {
     disableMargins?: boolean;
     dismissOffset?: number;
     disableBottomSafeArea?: boolean;
+    onHide?: () => void;
 }
 
 export function showBottomSheet(config: BottomSheetConfig) {
@@ -100,8 +101,11 @@ export function showBottomSheet(config: BottomSheetConfig) {
         hideAnimation: (contentHeight, views) => {
             SAnimated.timing(views.background, { property: 'opacity', from: 1, to: 0, duration: 0.3 });
             SAnimated.timing(views.container, { property: 'translateY', easing: { bezier: [0.23, 1, 0.32, 1] }, from: 0, to: contentHeight, duration: 0.15 });
+            if (config.onHide) {
+                config.onHide();
+            }
         },
         dismissOffset: config.dismissOffset,
-        disableBottomSafeArea: config.disableBottomSafeArea
+        disableBottomSafeArea: config.disableBottomSafeArea,
     });
 }
