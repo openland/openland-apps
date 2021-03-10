@@ -346,8 +346,8 @@ export const HomeIntro = React.forwardRef((props: {}, ref: React.Ref<HTMLDivElem
                         </div>
                         <div className={screenfront}>
                             <img
-                                src="https://cdn.openland.com/shared/landing/start/home-intro-screen-01.png"
-                                srcSet="https://cdn.openland.com/shared/landing/start/home-intro-screen-01@2x.png 2x"
+                                src="https://cdn.openland.com/shared/landing/start/home-intro-screen-001.png"
+                                srcSet="https://cdn.openland.com/shared/landing/start/home-intro-screen-001@2x.png 2x"
                                 alt=""
                             />
                         </div>
