@@ -5,7 +5,7 @@ import { QueryCacheProvider } from '@openland/spacex';
 import { ZDraggableItem } from 'openland-mobile/components/ZDraggableItem';
 import { useVoiceChat, VoiceChatProvider } from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { GQLClientContext } from 'openland-api/useClient';
+import { GQLClientContext, useClient } from 'openland-api/useClient';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { VoiceChatParticipant, VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
@@ -123,6 +123,7 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
     const voiceChatData = useVoiceChat();
     const theme = useTheme();
     const joinRoom = useJoinRoom();
+    const client = useClient();
 
     // const speakingPeer = props.mediaSession.analyzer.useSpeakingPeer();
     let state = props.mediaSession.state.useValue();
@@ -138,6 +139,7 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
     const handleLeavePress = React.useCallback(() => {
         InCallManager.stop({ busytone: '_BUNDLE_' });
         getMessenger().engine.calls.leaveCall();
+        client.mutateVoiceChatLeave({ id: voiceChatData.id });
     }, []);
 
     const muted = !state.sender.audioEnabled;
