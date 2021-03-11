@@ -145,6 +145,8 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
     const muted = !state.sender.audioEnabled;
     const dimensionsWindow = Dimensions.get('window');
 
+    const isAdminOrSpeaker = status === VoiceChatParticipantStatus.SPEAKER || status === VoiceChatParticipantStatus.ADMIN;
+
     return (
         <ZDraggableItem x={dimensionsWindow.width - 80} y={dimensionsWindow.height - 300} minX={12} minY={50} onPress={() => joinRoom(voiceChatData.id)}>
             <View
@@ -159,7 +161,7 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
                 }}
             >
                 {firstSpeakers && <SpeakerPhotoView firstSpeakers={firstSpeakers} />}
-                {status !== VoiceChatParticipantStatus.LISTENER && (
+                {isAdminOrSpeaker && (
                     <RoomMinimizedControlItem
                         bgColor={muted ? TintOrange.primary : TintBlue.primary}
                         iconColor={theme.foregroundContrast}
@@ -167,7 +169,7 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
                         onPress={handleMutePress}
                     />
                 )}
-                {status === VoiceChatParticipantStatus.LISTENER && (
+                {!isAdminOrSpeaker && (
                     <RoomMinimizedControlItem
                         bgColor="rgba(255, 255, 255, 0.16)"
                         iconColor={theme.foregroundContrast}
@@ -203,7 +205,7 @@ export const RoomMinimized = React.memo(() => {
         <React.Suspense fallback={null}>
             <GQLClientContext.Provider value={getClient()}>
                 <QueryCacheProvider>
-                    <VoiceChatProvider roomId={mediaSession.conversationId}>
+                    <VoiceChatProvider key={`conversationId-${mediaSession.conversationId}`} roomId={mediaSession.conversationId}>
                         <RoomMinimizedComponent mediaSession={mediaSession} />
                     </VoiceChatProvider>
                 </QueryCacheProvider>
