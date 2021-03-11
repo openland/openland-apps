@@ -130,7 +130,7 @@ mutation ConferenceLeave($id: ID!, $peerId: ID!) {
 }
 mutation ConferenceKeepAlive($id: ID!, $peerId: ID!) {
     conferenceKeepAlive(id: $id, peerId: $peerId) {
-        ...ConferenceShort
+        id
     }
 }
 mutation MediaOffer($id: ID!, $peerId: ID!, $offer: String!, $seq: Int!, $hints: [MediaStreamHint!]) {

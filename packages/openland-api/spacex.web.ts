@@ -5068,7 +5068,7 @@ const ConferenceJoinSelector = obj(
 const ConferenceKeepAliveSelector = obj(
             field('conferenceKeepAlive', 'conferenceKeepAlive', args(fieldValue("id", refValue('id')), fieldValue("peerId", refValue('peerId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('Conference', ConferenceShortSelector)
+                    field('id', 'id', args(), notNull(scalar('ID')))
                 )))
         );
 const ConferenceLeaveSelector = obj(
@@ -7135,7 +7135,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ConferenceKeepAlive: {
         kind: 'mutation',
         name: 'ConferenceKeepAlive',
-        body: 'mutation ConferenceKeepAlive($id:ID!,$peerId:ID!){conferenceKeepAlive(id:$id,peerId:$peerId){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}',
+        body: 'mutation ConferenceKeepAlive($id:ID!,$peerId:ID!){conferenceKeepAlive(id:$id,peerId:$peerId){__typename id}}',
         selector: ConferenceKeepAliveSelector
     },
     ConferenceLeave: {
