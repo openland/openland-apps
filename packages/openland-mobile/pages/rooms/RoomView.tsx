@@ -828,12 +828,16 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
         let isPrevAdmin = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.ADMIN;
         let hasAdmins = voiceChatData.speakers?.some(x => x.status === VoiceChatParticipantStatus.ADMIN);
         let isPrevListener = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.LISTENER;
+        let isPrevSpeaker = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.SPEAKER || prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.ADMIN;
         let isSpeaker = voiceChatData.me?.status === VoiceChatParticipantStatus.SPEAKER;
+        let isListener = voiceChatData.me?.status === VoiceChatParticipantStatus.LISTENER;
 
         if (isPrevListener && isSpeaker) {
             mediaSession?.setAudioEnabled(true);
         }
-
+        if (isPrevSpeaker && isListener) {
+            mediaSession?.setAudioEnabled(false);
+        }
         if (hasPrevAdmins && !hasAdmins && !isPrevAdmin) {
             Toast
                 .build({ text: 'The last room admin left, the room will be closed now', duration: 2000 })
