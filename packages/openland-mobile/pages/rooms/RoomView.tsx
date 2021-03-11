@@ -420,6 +420,7 @@ const RoomHeader = React.memo(
     ) => {
         const { room, hide, theme } = props;
         const isAdmin = room.me?.status === VoiceChatParticipantStatus.ADMIN;
+        let topSpacing = isPad ? SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top : 0;
         const handleMorePress = React.useCallback(() => {
             showEditRoom({ id: room.id, title: room.title });
         }, [room.id, room.title]);
@@ -428,7 +429,7 @@ const RoomHeader = React.memo(
                 style={{
                     paddingLeft: 16,
                     paddingRight: isAdmin ? 112 : 56,
-                    paddingTop: 15,
+                    paddingTop: isPad ? topSpacing + 15 : 15,
                     paddingBottom: 24,
                 }}
                 onLayout={props.onLayout}
@@ -476,7 +477,7 @@ const RoomHeader = React.memo(
                 <View
                     style={{
                         position: 'absolute',
-                        top: 0,
+                        top: topSpacing,
                         right: 0,
                         zIndex: 5,
                         flexDirection: 'row',
@@ -503,21 +504,23 @@ const RoomHeader = React.memo(
                             />
                         </TouchableOpacity>
                     )}
-                    <TouchableOpacity
-                        activeOpacity={HighlightAlpha}
-                        style={{
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            width: 56,
-                            height: 56,
-                        }}
-                        onPress={hide}
-                    >
-                        <Image
-                            style={{ width: 24, height: 24, tintColor: theme.foregroundTertiary }}
-                            source={require('assets/ic-minimize-room-24.png')}
-                        />
-                    </TouchableOpacity>
+                    {!isPad && (
+                        <TouchableOpacity
+                            activeOpacity={HighlightAlpha}
+                            style={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                width: 56,
+                                height: 56,
+                            }}
+                            onPress={hide}
+                        >
+                            <Image
+                                style={{ width: 24, height: 24, tintColor: theme.foregroundTertiary }}
+                                source={require('assets/ic-minimize-room-24.png')}
+                            />
+                        </TouchableOpacity>
+                    )}
                 </View>
             </View>
         );
