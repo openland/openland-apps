@@ -178,8 +178,8 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
                     />
                 )}
                 <RoomMinimizedControlItem
-                    bgColor={status === VoiceChatParticipantStatus.LISTENER ? theme.accentPrimary : "rgba(255, 255, 255, 0.16)"}
-                    iconColor={theme.accentPrimary === theme.foregroundContrast && status === VoiceChatParticipantStatus.LISTENER ? theme.foregroundInverted : theme.foregroundContrast}
+                    bgColor={!isAdminOrSpeaker ? theme.accentPrimary : "rgba(255, 255, 255, 0.16)"}
+                    iconColor={theme.accentPrimary === theme.foregroundContrast && !isAdminOrSpeaker ? theme.foregroundInverted : theme.foregroundContrast}
                     icon={require('assets/ic-size-up-glyph-24.png')}
                     onPress={() => joinRoom(voiceChatData.id)}
                 />
