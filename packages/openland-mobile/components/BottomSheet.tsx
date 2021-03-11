@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Platform, Keyboard, ViewStyle, TouchableOpacity, Image } from 'react-native';
+import { View, Text, Platform, Keyboard, ViewStyle, TouchableOpacity, Image, ScrollViewProps } from 'react-native';
 import { HighlightAlpha, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { GQLClientContext } from 'openland-api/useClient';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
@@ -21,6 +21,7 @@ export interface BottomSheetConfig {
     disableMargins?: boolean;
     dismissOffset?: number;
     disableBottomSafeArea?: boolean;
+    scrollViewProps?: ScrollViewProps;
     onHide?: () => void;
 }
 
@@ -107,5 +108,6 @@ export function showBottomSheet(config: BottomSheetConfig) {
         },
         dismissOffset: config.dismissOffset,
         disableBottomSafeArea: config.disableBottomSafeArea,
+        scrollViewProps: config.scrollViewProps,
     });
 }

@@ -402,6 +402,7 @@ const showEditRoom = (props: EditRoomModalProps) => {
     showBottomSheet({
         title: 'Edit room',
         cancelable: true,
+        scrollViewProps: { keyboardShouldPersistTaps: 'handled' },
         view: (ctx) => <EditRoomModal {...props} hide={ctx.hide} />,
     });
 };
