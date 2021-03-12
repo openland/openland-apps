@@ -213,7 +213,7 @@ let Content = React.memo((props: { id: string, speaker: boolean, setSpeaker: (fn
     }, [speaker]);
 
     React.useEffect(() => {
-        calls.joinCall(props.id);
+        calls.joinCall(props.id, 'call');
     }, []);
 
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);

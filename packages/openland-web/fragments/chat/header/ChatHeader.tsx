@@ -138,7 +138,7 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
                 <UIconButton
                     icon={<PhoneIcon />}
                     onClick={() => {
-                        calls.joinCall(props.chat.id);
+                        calls.joinCall(props.chat.id, 'call');
                         showVideoCallModal();
                     }}
                     size="large"
@@ -190,14 +190,14 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; isBanned: bo
         (privateRoom
             ? !privateRoom.user.isBot
             : sharedRoom
-            ? sharedRoom.callSettings.mode === RoomCallsMode.STANDARD && !sharedRoom.isChannel
-            : true)
+                ? sharedRoom.callSettings.mode === RoomCallsMode.STANDARD && !sharedRoom.isChannel
+                : true)
     ) {
         res.item({
             title: 'Call',
             icon: <PhoneIcon />,
             action: () => {
-                calls.joinCall(chat.id);
+                calls.joinCall(chat.id, 'call');
                 showVideoCallModal();
             },
             disabled: currentSession ? currentSession.conversationId === chat.id : false,
@@ -309,10 +309,10 @@ export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
 
     const banInfo = privateRoom
         ? useUserBanInfo(
-              privateRoom.user.id,
-              privateRoom.user.isBanned,
-              privateRoom.user.isMeBanned,
-          )
+            privateRoom.user.id,
+            privateRoom.user.isBanned,
+            privateRoom.user.isMeBanned,
+        )
         : undefined;
     const isBanned = banInfo ? banInfo.isBanned || banInfo.isMeBanned : false;
 
@@ -322,8 +322,8 @@ export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
     const path = isSavedMessages
         ? `/mail/${chat.id}/shared`
         : privateRoom
-        ? `/${privateRoom.user.shortname || privateRoom.user.id}`
-        : `/group/${chat.id}`;
+            ? `/${privateRoom.user.shortname || privateRoom.user.id}`
+            : `/group/${chat.id}`;
     const showCallButton =
         !isBanned &&
         !isSavedMessages &&
@@ -331,8 +331,8 @@ export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
         (privateRoom
             ? !privateRoom.user.isBot
             : sharedRoom
-            ? sharedRoom.callSettings.mode !== RoomCallsMode.DISABLED && !sharedRoom.isChannel
-            : true);
+                ? sharedRoom.callSettings.mode !== RoomCallsMode.DISABLED && !sharedRoom.isChannel
+                : true);
     const titleEmojify = isSavedMessages
         ? 'Saved messages'
         : React.useMemo(() => emoji(title), [title]);
