@@ -7,7 +7,11 @@ import { useVoiceChat, VoiceChatProvider, VoiceChatT } from 'openland-y-utils/vo
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { GQLClientContext, useClient } from 'openland-api/useClient';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { VoiceChatParticipant, VoiceChatParticipantStatus } from 'openland-api/spacex.types';
+import {
+    VoiceChatParticipant,
+    VoiceChatParticipantStatus,
+    Conference_conference_peers,
+} from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { TintBlue, TintOrange } from 'openland-y-utils/themes/tints';
@@ -15,11 +19,27 @@ import InCallManager from 'react-native-incall-manager';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { useJoinRoom } from 'openland-mobile/pages/rooms/joinRoom';
 
-const SpeakerPhotoView = React.memo((props: { firstSpeakers: VoiceChatParticipant[] }) => {
-    const { firstSpeakers } = props;
+interface SpeakerPhotoViewProps {
+    firstSpeakers: VoiceChatParticipant[];
+    peers?: Conference_conference_peers[];
+    speakingPeerId?: string;
+}
+
+const SpeakerPhotoView = React.memo<SpeakerPhotoViewProps>((props) => {
+    const { firstSpeakers, speakingPeerId, peers } = props;
+    const speakingPeer = peers?.find(peer => peer.id === speakingPeerId);
 
     let content;
-    if (firstSpeakers.length === 1) {
+    if (speakingPeer) {
+        content = (
+            <ZAvatar
+                size="medium"
+                photo={speakingPeer.user.photo}
+                id={speakingPeer.user.id}
+                title={speakingPeer.user.name}
+            />
+        );
+    } else if (firstSpeakers.length === 1) {
         content = (
             <ZAvatar
                 size="medium"
@@ -124,11 +144,11 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
     const theme = useTheme();
     const joinRoom = useJoinRoom();
     const client = useClient();
-
-    // const speakingPeer = props.mediaSession.analyzer.useSpeakingPeer();
-    let state = props.mediaSession.state.useValue();
-    const firstSpeakers = voiceChatData.speakers?.slice(0, 4);
     const status = voiceChatData.me?.status;
+    const state = props.mediaSession.state.useValue();
+    const firstSpeakers = voiceChatData.speakers?.slice(0, 4);
+    const speakingPeerId = props.mediaSession.analyzer.useSpeakingPeer();
+    const peers = client.useConference({ id: voiceChatData.id }, { suspense: false })?.conference.peers;
 
     const prevVoiceChat = React.useRef<VoiceChatT>(
         voiceChatData,
@@ -171,8 +191,6 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
         prevVoiceChat.current = voiceChatData;
     }, [voiceChatData]);
 
-    // React.useEffect(() => {}, [speakingPeer]);
-
     const handleMutePress = React.useCallback(() => {
         props.mediaSession.setAudioEnabled(!state.sender.audioEnabled);
     }, [state]);
@@ -199,7 +217,13 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
                     padding: 16,
                 }}
             >
-                {firstSpeakers && <SpeakerPhotoView firstSpeakers={firstSpeakers} />}
+                {firstSpeakers && (
+                    <SpeakerPhotoView
+                        peers={peers}
+                        firstSpeakers={firstSpeakers}
+                        speakingPeerId={speakingPeerId}
+                    />
+                )}
                 {isAdminOrSpeaker && (
                     <RoomMinimizedControlItem
                         bgColor={muted ? TintOrange.primary : TintBlue.primary}
