@@ -47,7 +47,7 @@ export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
     const openVideoModal = useVideoCallModal({ chatId: props.chat.id });
 
     const joinCall = () => {
-        calls.joinCall(props.chat.id);
+        calls.joinCall(props.chat.id, 'call');
         openVideoModal();
     };
 

@@ -28,7 +28,7 @@ export const useJoinRoom = () => {
             let didJoin = [VoiceChatParticipantStatus.ADMIN, VoiceChatParticipantStatus.SPEAKER, VoiceChatParticipantStatus.LISTENER, VoiceChatParticipantStatus.KICKED].includes(status!);
             const mediaSession = messenger.calls.currentMediaSession;
             if (!mediaSession || mediaSession && !didJoin || id !== mediaSession.conversationId) {
-                messenger.calls.joinCall(id);
+                messenger.calls.joinCall(id, 'voice-chat');
                 await client.mutateVoiceChatJoin({ id });
             }
             showRoomView(id, router, () => setModalOpen(false));
