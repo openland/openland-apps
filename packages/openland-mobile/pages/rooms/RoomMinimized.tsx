@@ -253,15 +253,13 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
 
 export const RoomMinimized = React.memo(() => {
     let mediaSession;
-    const { calls } = getMessenger().engine;
-
     try {
-        mediaSession = calls.useCurrentSession();
+        mediaSession = getMessenger().engine.calls.useCurrentSession();
     } catch (e) {
         console.log(e);
     }
 
-    if (!mediaSession || mediaSession && calls.type !== 'voice-chat') {
+    if (!mediaSession || mediaSession && getMessenger().engine.calls.type !== 'voice-chat') {
         return null;
     }
 
