@@ -9,7 +9,7 @@ export const StartRoomFragment = React.memo(() => {
     const router = React.useContext(XViewRouterContext)!;
     const startRoom = React.useCallback(async () => {
         const room = (await client.mutateVoiceChatCreate({ input: { title: 'Hi' } })).voiceChatCreate;
-        router.navigate(`/room/${room.id}`);
+        router.navigate(`/rooms/${room.id}`);
     }, []);
     return (
         <XView

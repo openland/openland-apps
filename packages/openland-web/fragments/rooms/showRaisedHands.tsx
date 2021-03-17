@@ -23,7 +23,6 @@ const UserItem = React.memo((props: { roomId: string, participant: VoiceChatPart
     const client = useClient();
     const promoteUser = React.useCallback(async () => {
         await client.mutateVoiceChatPromote({ id: props.roomId, uid: user.id });
-        props.hide();
     }, []);
     return (
         <UListItem

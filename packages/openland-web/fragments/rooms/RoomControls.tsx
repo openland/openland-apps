@@ -19,6 +19,7 @@ import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { useClient } from 'openland-api/useClient';
 import { showEditRoom } from './showEditRoom';
 import { showRaisedHands } from './showRaisedHands';
+import { showInviteToRoom } from './showInviteToRoom';
 
 const RoomControlItem = React.memo((props: {
     icon: JSX.Element,
@@ -176,6 +177,7 @@ export const RoomControls = React.memo(({
     isMuted,
     handRaised,
     raisedHands,
+    inviteLink,
     onMute,
     onLeave,
     onHandRaise,
@@ -187,6 +189,7 @@ export const RoomControls = React.memo(({
     isMuted: boolean,
     raisedHands: VoiceChatParticipant[],
     handRaised: boolean,
+    inviteLink: string,
     onMute: () => void,
     onLeave: () => void,
     onHandRaise: () => void,
@@ -223,6 +226,7 @@ export const RoomControls = React.memo(({
                 <RoomControlItem
                     text="Invite"
                     icon={<IcAdd />}
+                    onClick={() => showInviteToRoom({ link: inviteLink })}
                 />
                 {status === VoiceChatParticipantStatus.ADMIN && (
                     <RoomControlItem

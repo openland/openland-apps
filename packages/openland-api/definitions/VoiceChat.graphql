@@ -13,6 +13,22 @@ fragment VoiceChatParticipant on VoiceChatParticipant {
     handRaised
 }
 
+fragment VoiceChatMeParticipant on VoiceChatParticipant {
+    id
+    user {
+        id
+        name
+        firstName
+        photo
+        followersCount
+        online
+        lastSeen
+        shortname
+    }
+    status
+    handRaised
+}
+
 fragment VoiceChatEntity on VoiceChat {
     id
     title
@@ -21,7 +37,7 @@ fragment VoiceChatEntity on VoiceChat {
     speakersCount
     listenersCount
     me {
-        ...VoiceChatParticipant
+        ...VoiceChatMeParticipant
     }
 }
 

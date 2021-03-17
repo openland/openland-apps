@@ -29,6 +29,7 @@ import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { useJoinRoom } from './joinRoom';
 import { showRaiseHand } from './showRaiseHand';
 import { showRaisedHands } from './showRaisedHands';
+import { showInviteToRoom } from './showInviteToRoom';
 
 interface PeerMedia {
     videoTrack: AppMediaStreamTrack | null;
@@ -219,7 +220,9 @@ const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: VoiceChatPart
     );
 };
 
-const InviteButton = React.memo(() => {
+// @ts-ignore
+const InviteButton = React.memo((props: { link: string }) => {
+    const { link } = props;
     return (
         <XView justifyContent="center" alignItems="center">
             <XView
@@ -233,6 +236,7 @@ const InviteButton = React.memo(() => {
                 borderRadius={100}
                 marginTop={4}
                 marginBottom={16}
+                onClick={() => showInviteToRoom({ link })}
             >
                 <UIcon icon={<IcAdd />} size={36} color="var(--foregroundSecondary)" />
             </XView>
@@ -353,12 +357,14 @@ const RoomSpeakers = React.memo(({
     callState,
     connecting,
     analyzer,
+    // inviteLink,
 }: {
     room: VoiceChatT,
     peers?: Conference_conference_peers[];
     callState: MediaSessionState | undefined;
     analyzer: MediaSessionTrackAnalyzerManager;
     connecting: boolean;
+    inviteLink: string;
 }) => {
     const speakers = (room.speakers || [])
         .map((speaker) => {
@@ -398,7 +404,7 @@ const RoomSpeakers = React.memo(({
             {speakers.length <= 8 && room.me?.status === VoiceChatParticipantStatus.ADMIN && (
                 <>
                     <RaisedHandsButton raisedHands={room.raisedHands || []} roomId={room.id} />
-                    <InviteButton />
+                    {/* <InviteButton link={inviteLink} /> */}
                 </>
             )}
         </div>
@@ -436,6 +442,9 @@ const RoomView = React.memo((props: { roomId: string }) => {
     );
     const muted = !state?.sender.audioEnabled;
     const handRaised = !!voiceChatData.me?.handRaised;
+    const inviteLink = voiceChatData.me
+        ? `https://openland.com/${voiceChatData.me.user.shortname || voiceChatData.me.user.id}`
+        : 'Try again';
 
     const handleMute = React.useCallback(() => {
         mediaSession?.setAudioEnabled(!state?.sender.audioEnabled);
@@ -567,6 +576,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
                     callState={state}
                     peers={conference?.peers}
                     connecting={connecting}
+                    inviteLink={inviteLink}
                 />
                 {voiceChatData.listeners && voiceChatData.listeners?.length > 0 && (
                     <>
@@ -598,6 +608,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
                     status={voiceChatData.me?.status}
                     handRaised={handRaised}
                     raisedHands={voiceChatData.raisedHands || []}
+                    inviteLink={inviteLink}
                     onMute={handleMute}
                     onLeave={handleLeave}
                     onHandRaise={handleHandRaise}
