@@ -226,8 +226,8 @@ const AvatarCover = React.memo((props: { photo?: string | null, id: string, titl
                 {props.photo && !props.photo.startsWith('ph://') ? (
                     <ImgWithRetry src={props.photo + '-/scale_crop/120x120/-/progressive/yes/'} className={bgAvatarImg} />
                 ) : (
-                        <div className={bgAvatarGradient} style={{ background: bgColor }} />
-                    )}
+                    <div className={bgAvatarGradient} style={{ background: bgColor }} />
+                )}
 
                 <div className={bgAvatarOverlay} />
             </div>
@@ -262,12 +262,12 @@ const VideoMediaView = React.memo((props: {
                     switching={true}
                 />
             ) : (
-                    <AvatarCover
-                        id={props.peer ? props.peer.user.id : props.fallback.id}
-                        title={props.peer ? props.peer.user.name : props.fallback.title}
-                        photo={props.peer ? props.peer.user.photo : props.fallback.photo}
-                    />
-                )}
+                <AvatarCover
+                    id={props.peer ? props.peer.user.id : props.fallback.id}
+                    title={props.peer ? props.peer.user.name : props.fallback.title}
+                    photo={props.peer ? props.peer.user.photo : props.fallback.photo}
+                />
+            )}
         </XView>
     );
 });
@@ -323,10 +323,10 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
                 title: props.room.user.name,
                 photo: props.room.user.photo,
             } : {
-                    id: props.room.id,
-                    title: props.room.title,
-                    photo: props.room.photo,
-                }}
+                id: props.room.id,
+                title: props.room.title,
+                photo: props.room.photo,
+            }}
             calls={calls}
         />
     );
@@ -456,7 +456,7 @@ const CallFloatingInner = React.memo((props: { id: string }) => {
 export const CallFloating = React.memo(() => {
     let calls = React.useContext(MessengerContext).calls;
     let currentMediaSession = calls.useCurrentSession();
-    if (!currentMediaSession?.conversationId) {
+    if (!currentMediaSession || calls.type === 'voice-chat') {
         return null;
     }
     return <CallFloatingInner id={currentMediaSession.conversationId} />;

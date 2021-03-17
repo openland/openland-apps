@@ -18,6 +18,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     const hasTitleView = !!props.config.titleView;
 
     const maxWidth = appearance === 'normal' ? 600 : appearance === 'fullwidth' ? '100%' : 824;
+    const headerHeight = props.config.dynamicHeight ? undefined : 56;
 
     useShortcuts({
         keys: ['Escape'],
@@ -27,7 +28,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     });
 
     return (
-        <XView height={56} flexDirection="row" alignItems="center" zIndex={2}>
+        <XView height={headerHeight} flexDirection="row" alignItems="center" zIndex={2}>
             {hasBack && (
                 <XView height={56} width={56} alignItems="center" justifyContent="center">
                     <UIconButton icon={<BackIcon />} onClick={() => router.pop()} size="large" />
@@ -45,7 +46,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
             >
                 {hasTitleView && (
                     <XView
-                        height={56}
+                        height={headerHeight}
                         color="var(--foregroundPrimary)"
                         minWidth={0}
                         flexBasis={0}

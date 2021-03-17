@@ -8,7 +8,7 @@ import { Page } from 'openland-unicorn/Page';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { DiscoverRecommendationsStart } from './components/DiscoverRecommendationsStart';
-import { JoinButton } from './components/JoinButton';
+import { GroupJoinButton } from './components/JoinButton';
 
 export const RecommendationsFragment = React.memo(() => {
     const client = useClient();
@@ -41,7 +41,7 @@ export const RecommendationsFragment = React.memo(() => {
                                     <UGroupView
                                         group={room as DiscoverSharedRoom}
                                         rightElement={
-                                            <JoinButton group={room as DiscoverSharedRoom} />
+                                            <GroupJoinButton group={room as DiscoverSharedRoom} />
                                         }
                                     />
                                 </XView>

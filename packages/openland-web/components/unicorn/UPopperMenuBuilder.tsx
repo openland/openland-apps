@@ -6,6 +6,7 @@ import { XLoader } from 'openland-x/XLoader';
 import IcCheck from 'openland-icons/s/ic-done-new-16.svg';
 import { UIcon } from './UIcon';
 import { XView } from 'react-mental';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 
 const container = css`
     min-width: 150px;
@@ -62,7 +63,23 @@ const MenuItemComponent = (props: { item: MenuItem, ctx: UPopperController }) =>
             linkSelectable={false}
             disabled={item.disabled}
             hovered={item.selected}
-            rightElement={item.selected ? <XView paddingRight={8}><UIcon icon={<IcCheck />} color="var(--foregroundTertiary)" size={16} /></XView> : undefined}
+            rightElement={item.selected ? (
+                <XView paddingRight={8}><UIcon icon={<IcCheck />} color="var(--foregroundTertiary)" size={16} /></XView>
+            ) : item.counter ? (
+                <XView
+                    borderRadius={100}
+                    backgroundColor="var(--tintBlue)"
+                    alignSelf="center"
+                    width={22}
+                    height={22}
+                    color="var(--foregroundContrast)"
+                    justifyContent="center"
+                    alignItems="center"
+                    {...TextStyles.Label3}
+                >
+                    {item.counter}
+                </XView>
+            ) : undefined}
         />
     );
 };

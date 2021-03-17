@@ -14,6 +14,13 @@ import { UIcon } from './UIcon';
 
 export type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'xxx-large';
 
+type AvatarSizesRecord = {
+    size: number;
+    placeholder: number;
+    dotSize: number;
+    dotPosition: number;
+    dotBorderWidth: number;
+};
 export interface UAvatarProps extends XViewProps {
     title: string;
     titleEmoji?: any;
@@ -27,6 +34,7 @@ export interface UAvatarProps extends XViewProps {
     squared?: boolean;
     savedMessages?: boolean;
     dotColor?: string;
+    customSizes?: AvatarSizesRecord;
 }
 
 export const getPlaceholderIndex = (id: string) => Math.abs(doSimpleHash(id)) % PlaceholderColors.length;
@@ -42,13 +50,7 @@ export const getPlaceholderColorById = (id: string) => {
 };
 
 export const AvatarSizes: {
-    [key in UAvatarSize]: {
-        size: number;
-        placeholder: number;
-        dotSize: number;
-        dotPosition: number;
-        dotBorderWidth: number;
-    }
+    [key in UAvatarSize]: AvatarSizesRecord;
 } = {
     'x-small': { size: 24, placeholder: 8, dotSize: 6, dotPosition: 0, dotBorderWidth: 1 },
     small: { size: 32, placeholder: 16, dotSize: 10, dotPosition: 0, dotBorderWidth: 2 },
@@ -267,24 +269,26 @@ export const UAvatar = React.memo((props: UAvatarProps) => {
         savedMessages,
         badge,
         dotColor,
+        customSizes,
         ...other
     } = props;
     let content: any = undefined;
+    let sizes = customSizes || AvatarSizes[size];
     if (savedMessages) {
-        content = <AvatarSavedMessages squared={squared} bookmarkSize={AvatarSizes[size].placeholder} />;
+        content = <AvatarSavedMessages squared={squared} bookmarkSize={sizes.placeholder} />;
     } else if (photo || uuid) {
         if (photo && photo.startsWith('ph://')) {
             const phIndex = parseInt(photo.substr(5), 10) || 0;
-            content = <AvatarPlaceholder {...props} fontSize={AvatarSizes[size].placeholder} index={phIndex} />;
+            content = <AvatarPlaceholder {...props} fontSize={sizes.placeholder} index={phIndex} />;
         } else {
-            content = <AvatarImage {...props} boxSize={AvatarSizes[size].size} />;
+            content = <AvatarImage {...props} boxSize={sizes.size} />;
         }
     } else {
         const phIndex = getPlaceholderIndex(id);
-        content = <AvatarPlaceholder {...props} fontSize={AvatarSizes[size].placeholder} index={phIndex} />;
+        content = <AvatarPlaceholder {...props} fontSize={sizes.placeholder} index={phIndex} />;
     }
 
-    const boxSize = AvatarSizes[size].size;
+    const boxSize = sizes.size;
 
     const dotBorder = selected ? 'var(--accentMuted)' : 'var(--backgroundPrimary)';
     const dotBackground = dotColor ? dotColor : selected ? 'var(--foregroundContrast)' : 'var(--accentPrimary)';

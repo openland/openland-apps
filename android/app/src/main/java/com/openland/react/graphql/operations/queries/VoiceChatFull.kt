@@ -13,6 +13,6 @@ internal val VoiceChatFullSelector = obj(
 val VoiceChatFull = object: OperationDefinition {
     override val name = "VoiceChatFull"
     override val kind = OperationKind.QUERY
-    override val body = "query VoiceChatFull(\$id:ID!){voiceChat(id:\$id){__typename ...FullVoiceChat}}fragment FullVoiceChat on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}listeners{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount}status handRaised}"
+    override val body = "query VoiceChatFull(\$id:ID!){voiceChat(id:\$id){__typename ...FullVoiceChat}}fragment FullVoiceChat on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}listeners{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount me{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount online lastSeen}status handRaised}"
     override val selector = VoiceChatFullSelector
 }

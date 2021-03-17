@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { useLastSeen } from 'openland-y-utils/LastSeen';
-import { UserShort } from 'openland-api/spacex.types';
+import { LastSeenUser, useLastSeen } from 'openland-y-utils/LastSeen';
 import { XViewSelectedContext } from 'react-mental';
 
 interface UPresenceProps {
-    user: UserShort;
+    user: LastSeenUser;
     suffix?: string | JSX.Element;
 }
 

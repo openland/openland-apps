@@ -17,6 +17,6 @@ internal val VoiceChatListenersSelector = obj(
 val VoiceChatListeners = object: OperationDefinition {
     override val name = "VoiceChatListeners"
     override val kind = OperationKind.QUERY
-    override val body = "query VoiceChatListeners(\$id:ID!,\$first:Int!,\$after:String){voiceChatListeners(id:\$id,first:\$first,after:\$after){__typename items{__typename ...VoiceChatParticipant}cursor}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount}status handRaised}"
+    override val body = "query VoiceChatListeners(\$id:ID!,\$first:Int!,\$after:String){voiceChatListeners(id:\$id,first:\$first,after:\$after){__typename items{__typename ...VoiceChatParticipant}cursor}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount online lastSeen}status handRaised}"
     override val selector = VoiceChatListenersSelector
 }

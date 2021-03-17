@@ -50,7 +50,7 @@ export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, 
                     {builder._cancelAction && !builder._actions.find(a => a.name.toLowerCase() === 'cancel') && (
                         <UButton
                             disable={form.loading}
-                            text="Cancel"
+                            text={builder._cancelText || 'Cancel'}
                             style="tertiary"
                             size="large"
                             onClick={() => {

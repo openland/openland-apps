@@ -11,11 +11,11 @@ import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 
 interface JoinButtonProps {
     group:
-        | DiscoverSharedRoom
-        | Pick<
-              RoomChat_room_SharedRoom,
-              'id' | 'isPremium' | 'premiumSettings' | 'title' | 'photo' | 'membership'
-          >;
+    | DiscoverSharedRoom
+    | Pick<
+        RoomChat_room_SharedRoom,
+        'id' | 'isPremium' | 'premiumSettings' | 'title' | 'photo' | 'membership'
+    >;
 }
 
 const buttonStyle = css`
@@ -77,7 +77,46 @@ const buttonAddPayStyle = css`
     }
 `;
 
-export const JoinButton = React.memo((props: JoinButtonProps) => {
+export const JoinButton = React.memo((props: {
+    initialJoined?: boolean,
+    onClick: () => Promise<void>
+}) => {
+    const [state, setState] = React.useState<'done' | 'initial' | 'loading'>(
+        props.initialJoined ? 'done' : 'initial',
+    );
+    const isDone = state === 'done';
+    const isLoading = state === 'loading';
+    const isAdd = !isDone && !isLoading;
+
+    return (
+        <div
+            className={cx(
+                buttonStyle,
+                buttonAddPrimaryStyle,
+                isDone && buttonDoneStyle,
+            )}
+            onClick={async (e) => {
+                if (isDone) {
+                    return;
+                }
+                if (isLoading) {
+                    return e.stopPropagation();
+                }
+                setState('loading');
+                await props.onClick();
+                setState('done');
+            }}
+        >
+            {isAdd && <IcAdd />}
+            {isDone && <IcDone />}
+            {isLoading && (
+                <XLoader loading={true} transparentBackground={true} size="small" contrast={true} />
+            )}
+        </div>
+    );
+});
+
+export const GroupJoinButton = React.memo((props: JoinButtonProps) => {
     const client = useClient();
     const router = React.useContext(XViewRouterContext)!;
     const [state, setState] = React.useState<string>(
@@ -135,7 +174,7 @@ export const JoinButton = React.memo((props: JoinButtonProps) => {
     );
 });
 
-export const JoinButtonSimple = React.memo((props: JoinButtonProps) => {
+export const GroupJoinButtonSimple = React.memo((props: JoinButtonProps) => {
     const router = React.useContext(XViewRouterContext);
     const onClick = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.stopPropagation();

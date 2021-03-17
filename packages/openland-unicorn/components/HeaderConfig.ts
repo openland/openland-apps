@@ -5,6 +5,7 @@ export interface HeaderConfig {
     appearance?: 'normal' | 'wide' | 'fullwidth';
     forceShowBack?: boolean;
     forceHideBack?: boolean;
+    dynamicHeight?: boolean;
 }
 
 export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
@@ -14,6 +15,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let titleView: any | undefined;
     let forceShowBack: boolean | undefined;
     let forceHideBack: boolean | undefined;
+    let dynamicHeight: boolean | undefined;
     for (let c of configs) {
         if (c.title) {
             title = c.title;
@@ -33,8 +35,11 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
         if (c.forceHideBack) {
             forceHideBack = c.forceHideBack;
         }
+        if (c.dynamicHeight) {
+            dynamicHeight = c.dynamicHeight;
+        }
     }
-    return { title, documentTitle, appearance, titleView, forceShowBack, forceHideBack };
+    return { title, documentTitle, appearance, titleView, forceShowBack, forceHideBack, dynamicHeight };
 }
 
 export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
