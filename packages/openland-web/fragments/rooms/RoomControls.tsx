@@ -16,7 +16,7 @@ import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
-import { useClient } from 'openland-api/useClient';
+// import { useClient } from 'openland-api/useClient';
 import { showEditRoom } from './showEditRoom';
 import { showRaisedHands } from './showRaisedHands';
 import { showInviteToRoom } from './showInviteToRoom';
@@ -139,7 +139,7 @@ const SettingsMenu = React.memo((props: {
     title: string | null,
     raisedHands: VoiceChatParticipant[],
 }) => {
-    const client = useClient();
+    // const client = useClient();
     let popper = new UPopperMenuBuilder();
 
     popper
@@ -157,14 +157,14 @@ const SettingsMenu = React.memo((props: {
                 showRaisedHands({ raisedHands: props.raisedHands, roomId: props.roomId });
             },
             counter: props.raisedHands.length,
-        })
-        .item({
-            title: 'Close room',
-            icon: <IcLeave />,
-            action: async () => {
-                await client.mutateVoiceChatEnd({ id: props.roomId });
-            },
         });
+    // .item({
+    //     title: 'Close room',
+    //     icon: <IcLeave />,
+    //     action: async () => {
+    //         await client.mutateVoiceChatEnd({ id: props.roomId });
+    //     },
+    // });
 
     return popper.build(props.ctx, 220);
 });

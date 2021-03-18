@@ -3,7 +3,7 @@ import { UHeader } from 'openland-unicorn/UHeader';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import * as React from 'react';
-import { XView } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
 import { css, cx } from 'linaria';
 import { TextLabel2, TextStyles, TextTitle1 } from 'openland-web/utils/TextStyles';
 import CrownIcon from 'openland-icons/ic-crown-4.svg';
@@ -24,7 +24,6 @@ import { useVoiceChat, VoiceChatProvider, VoiceChatT } from 'openland-y-utils/vo
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { useClient } from 'openland-api/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { StackRouter, useStackRouter } from 'openland-unicorn/components/StackRouter';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { Conference_conference_peers, VoiceChatParticipant, VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import AlertBlanket from 'openland-x/AlertBlanket';
@@ -257,8 +256,8 @@ const UserMenu = React.memo((props: {
     roomId: string,
     userId: string,
     status: VoiceChatParticipantStatus,
-    router: StackRouter,
 }) => {
+    const router = React.useContext(XViewRouterContext)!;
     const client = useClient();
     let popper = new UPopperMenuBuilder();
 
@@ -266,7 +265,7 @@ const UserMenu = React.memo((props: {
         title: 'View profile',
         icon: <IcUser />,
         action: () => {
-            props.router.push(`/${props.userId}`);
+            router.navigate(`/${props.userId}`);
         },
     });
 
@@ -322,6 +321,7 @@ interface RoomUserInfo {
     photo: string | null;
     roomId: string;
     userStatus: VoiceChatParticipantStatus;
+    selfStatus?: VoiceChatParticipantStatus;
     selfId?: string;
 }
 
@@ -332,11 +332,12 @@ const RoomUser = React.memo(({
     state,
     roomId,
     userStatus,
+    selfStatus,
     selfId,
 }: {
     state?: 'talking' | 'loading' | 'muted';
 } & RoomUserInfo) => {
-    const router = useStackRouter();
+    const router = React.useContext(XViewRouterContext)!;
     const [visible, show, hide] = usePopper(
         {
             placement: 'bottom-start',
@@ -345,10 +346,9 @@ const RoomUser = React.memo(({
             scope: 'room-user',
             hideOnChildClick: true,
             hideOnClick: true,
-            updatedDeps: userStatus,
         },
         (ctx) => (
-            <UserMenu ctx={ctx} roomId={roomId} userId={id} status={userStatus} router={router} />
+            <UserMenu ctx={ctx} roomId={roomId} userId={id} status={userStatus} />
         ),
     );
     const isAdmin = userStatus === VoiceChatParticipantStatus.ADMIN;
@@ -356,6 +356,10 @@ const RoomUser = React.memo(({
     const isListener = userStatus === VoiceChatParticipantStatus.LISTENER;
     const isSelf = selfId === id;
     const handleClick = (e: React.MouseEvent) => {
+        if (selfStatus !== VoiceChatParticipantStatus.ADMIN) {
+            router.navigate(`/${id}`);
+            return;
+        }
         if (visible) {
             hide();
         } else {
@@ -499,6 +503,7 @@ const RoomSpeakers = React.memo(({
                     photo={speaker.user.photo}
                     roomId={room.id}
                     selfId={room.me?.user.id}
+                    selfStatus={room.me?.status}
                     userStatus={speaker.status}
                 />
             ))}
@@ -532,7 +537,6 @@ const RoomListeners = React.memo((props: { room: VoiceChatT }) => {
 
 const RoomView = React.memo((props: { roomId: string }) => {
     const client = useClient();
-    const router = useStackRouter();
     const messenger = React.useContext(MessengerContext);
 
     const voiceChatData = useVoiceChat();
@@ -554,7 +558,6 @@ const RoomView = React.memo((props: { roomId: string }) => {
     }, [state, mediaSession]);
 
     const closeCall = () => {
-        router.pop();
         calls.leaveCall();
         client.mutateVoiceChatLeave({ id: props.roomId });
     };
