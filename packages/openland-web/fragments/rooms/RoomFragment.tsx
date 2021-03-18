@@ -16,6 +16,7 @@ import IcCrownOff from 'openland-icons/s/ic-pro-off-24.svg';
 import IcAdd from 'openland-icons/s/ic-add-36.svg';
 import IcUser from 'openland-icons/s/ic-user-24.svg';
 import IcLeave from 'openland-icons/s/ic-leave-24.svg';
+import IcMuted from 'openland-icons/s/ic-mic-off-36.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { SvgLoader, XLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
@@ -417,7 +418,7 @@ const RoomUser = React.memo(({
                         alignItems="center"
                     >
                         {state === 'muted' ? (
-                            <UIcon size={16} icon={<IcSpeakerSmall />} color="var(--foregroundTertiary)" />
+                            <UIcon size={16} icon={<IcMuted />} color="var(--foregroundTertiary)" />
                         ) : state === 'loading' ? (
                             <SvgLoader size="small" contrast={true} />
                         ) : null}
@@ -530,6 +531,7 @@ const RoomListeners = React.memo((props: { room: VoiceChatT }) => {
                     roomId={props.room.id}
                     selfId={props.room.me?.user.id}
                     userStatus={listener.status}
+                    selfStatus={props.room.me?.status}
                 />
             ))}
         </div>
