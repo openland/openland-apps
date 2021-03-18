@@ -190,7 +190,7 @@ export class TabRouter {
         return;
     }
 
-    reset(path: string) {
+    reset(path: string, historyReset?: boolean) {
 
         //
         // Ignore navigation if url is not changed
@@ -198,7 +198,7 @@ export class TabRouter {
         //
         if (NextRouter.asPath !== path) {
             this.stacks[this.currentTab].reset(path);
-            this.pushHistory(path);
+            this.pushHistory(path, historyReset);
             return;
         }
     }
@@ -268,7 +268,7 @@ export class TabRouter {
         return destUrl;
     }
 
-    private pushHistory = (path: string) => {
+    private pushHistory = (path: string, replace?: boolean) => {
         let stacks = this.stacks.map((s) => s.pages.map((v) => v.path));
         let state: TabHistoryRecord = {
             id: this.id,
@@ -278,9 +278,16 @@ export class TabRouter {
         console.log('push', {
             ['tab-routing']: state,
         });
-        Router.pushRoute(path, {
-            shallow: true,
-            ['tab-routing']: state
-        });
+        if (replace) {
+            Router.replaceRoute(path, {
+                shallow: true,
+                ['tab-routing']: state
+            });
+        } else {
+            Router.pushRoute(path, {
+                shallow: true,
+                ['tab-routing']: state
+            });
+        }
     }
 }

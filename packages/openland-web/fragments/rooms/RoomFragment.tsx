@@ -38,6 +38,7 @@ import { showInviteToRoom } from './showInviteToRoom';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
+import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 
 interface PeerMedia {
     videoTrack: AppMediaStreamTrack | null;
@@ -538,6 +539,7 @@ const RoomListeners = React.memo((props: { room: VoiceChatT }) => {
 const RoomView = React.memo((props: { roomId: string }) => {
     const client = useClient();
     const messenger = React.useContext(MessengerContext);
+    const router = useTabRouter().router;
 
     const voiceChatData = useVoiceChat();
     const conference = client.useConference({ id: props.roomId }, { suspense: false })?.conference;
@@ -557,9 +559,17 @@ const RoomView = React.memo((props: { roomId: string }) => {
         mediaSession?.setAudioEnabled(!state?.sender.audioEnabled);
     }, [state, mediaSession]);
 
+    const alreadyLeft = React.useRef(false);
+
     const closeCall = () => {
+        if (alreadyLeft.current) {
+            return;
+        }
+        alreadyLeft.current = true;
         calls.leaveCall();
         client.mutateVoiceChatLeave({ id: props.roomId });
+        router.reset('/rooms', true);
+        alreadyLeft.current = true;
     };
 
     const handleLeave = React.useCallback(async () => {
