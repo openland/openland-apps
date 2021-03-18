@@ -87,6 +87,8 @@ html {
     --spaceBackgroundSecondary: #363152;
     --spaceBackgroundTertiary: #5A537A;
 
+    --gradient100to0: linear-gradient(180deg, rgba(201, 204, 209, 0.14) 0%, rgba(201, 204, 209, 0) 100%);
+
     --tintRed: #F23051;
     --tintRedHover: #FF4060;
     --tintRedActive: #D92140;
