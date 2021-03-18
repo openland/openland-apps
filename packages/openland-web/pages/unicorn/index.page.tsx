@@ -6,7 +6,6 @@ import { LayoutProvider } from 'openland-unicorn/components/utils/LayoutContext'
 import { SettingsFragment } from 'openland-web/fragments/settings/SettingsFragment';
 import { DialogsFragment } from 'openland-web/fragments/dialogs/DialogsFragment';
 import { XLoader } from 'openland-x/XLoader';
-import { IndexFragment } from 'openland-web/fragments/discussions/IndexFragment';
 import { useRole } from 'openland-x-permissions/XWithRole';
 import { ContactsFragment } from 'openland-web/fragments/contacts/ContactsFragment';
 import { LocalContactsProvider } from 'openland-y-utils/contacts/LocalContacts';
@@ -20,8 +19,6 @@ import ProfileIcon from './navigation/icon_profile.svg';
 import ProfileActiveIcon from './navigation/icon_profile_active.svg';
 import RoomsIcon from './navigation/ic-room-24.svg';
 import RoomsActiveIcon from './navigation/ic-room-filled-24.svg';
-import ChannelsIcon from './navigation/ic-flashlight-24.svg';
-import ChannelsActiveIcon from './navigation/ic-flashlight-filled-24.svg';
 import ChatIcon from './navigation/icon_chat.svg';
 import ChatActiveIcon from './navigation/icon_chat_active.svg';
 import SettingsIcon from './navigation/icon_settings.svg';
