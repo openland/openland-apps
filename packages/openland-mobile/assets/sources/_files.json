@@ -75,6 +75,13 @@
             ]
         },
         {
+            "name": "ic-hand-2",
+            "src": "ic-hand-2-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-hand",
             "src": "ic-hand-24.svg",
             "sizes": [

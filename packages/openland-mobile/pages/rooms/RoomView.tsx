@@ -7,10 +7,6 @@ import {
     FlatList,
     LayoutChangeEvent,
     TouchableOpacity,
-    Keyboard,
-    LayoutAnimation,
-    Platform,
-    DeviceEventEmitter,
     Dimensions,
 } from 'react-native';
 import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
@@ -22,19 +18,13 @@ import { ZButton } from 'openland-mobile/components/ZButton';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { HighlightAlpha, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
+import { ZText } from 'openland-mobile/components/ZText';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { RoomControls } from './RoomControls';
-import {
-    Conference_conference_peers,
-    VoiceChatParticipantStatus,
-} from 'openland-api/spacex.types';
+import { Conference_conference_peers, VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { TintBlue } from 'openland-y-utils/themes/tints';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
-import { ZInput } from 'openland-mobile/components/ZInput';
-import { useField } from 'openland-form/useField';
-import { useForm } from 'openland-form/useForm';
-import { ZShaker } from 'openland-mobile/components/ZShaker';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import InCallManager from 'react-native-incall-manager';
 import {
@@ -51,6 +41,22 @@ import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
 import { debounce } from 'openland-y-utils/timer';
+
+const showPinnedMessage = (message: string, theme: ThemeGlobal) => {
+    showBottomSheet({
+        title: 'Pinned message',
+        cancelable: true,
+        view: () => (
+            <View style={{ paddingHorizontal: 16 }}>
+                <ZText
+                    linkify={true}
+                    style={{ ...TextStyles.Body, color: theme.foregroundPrimary }}
+                    text={message}
+                />
+            </View>
+        ),
+    });
+};
 
 interface RoomUserViewProps {
     roomId: string;
@@ -86,9 +92,12 @@ const UserModalBody = React.memo(
         modalCtx,
     }: RoomUserViewProps & { hide: () => void }) => {
         const client = useClient();
-        const { followingCount, followedByMe, followersCount } = client.useVoiceChatUser({
-            uid: user.id,
-        }, { fetchPolicy: 'network-only' }).user;
+        const { followingCount, followedByMe, followersCount } = client.useVoiceChatUser(
+            {
+                uid: user.id,
+            },
+            { fetchPolicy: 'network-only' },
+        ).user;
         const isSelfAdmin = selfStatus === VoiceChatParticipantStatus.ADMIN;
 
         const removeAdmin = React.useCallback(async () => {
@@ -297,116 +306,6 @@ const showUserInfo = (props: RoomUserViewProps) => {
     });
 };
 
-type EditRoomModalProps = {
-    id: string;
-    title: string | null;
-};
-
-const EditRoomModal = React.memo(
-    ({ id, title, hide }: EditRoomModalProps & { hide: () => void }) => {
-        const shakerRef = React.useRef<{ shake: () => void }>(null);
-        const client = useClient();
-        const form = useForm();
-        const titleField = useField('room.title', title || '', form);
-
-        const onCancel = () => {
-            hide();
-        };
-        const onConfirm = async () => {
-            let titleValue = titleField.value.trim();
-            if (titleValue.length <= 0) {
-                shakerRef.current?.shake();
-                return;
-            }
-            await Promise.all([
-                client.mutateVoiceChatUpdate({ id, input: { title: titleValue } }),
-                client.refetchVoiceChat({ id }),
-            ]);
-            hide();
-        };
-
-        const [keyboardHeight, setKeyboardHeight] = React.useState(0);
-        const isIos = Platform.OS === 'ios';
-
-        const keyboardWillShow = (e: any) => {
-            if (e.duration > 0) {
-                LayoutAnimation.configureNext(
-                    LayoutAnimation.create(e.duration, LayoutAnimation.Types[e.easing]),
-                );
-            }
-            setKeyboardHeight(e?.endCoordinates?.height);
-        };
-
-        const keyboardWillHide = (e: any) => {
-            if (e.duration > 0) {
-                LayoutAnimation.configureNext(
-                    LayoutAnimation.create(e.duration, LayoutAnimation.Types[e.easing]),
-                );
-            }
-            setKeyboardHeight(0);
-        };
-
-        const keyboardHeightChange = (e: any) => {
-            setKeyboardHeight(e?.height ? Math.ceil(e.height) : 0);
-        };
-
-        React.useEffect(() => {
-            if (isIos) {
-                Keyboard.addListener('keyboardWillShow', keyboardWillShow);
-                Keyboard.addListener('keyboardWillHide', keyboardWillHide);
-            } else {
-                DeviceEventEmitter.addListener('async_keyboard_height', keyboardHeightChange);
-            }
-            return () => {
-                if (isIos) {
-                    Keyboard.removeListener('keyboardWillShow', keyboardWillShow);
-                    Keyboard.removeListener('keyboardWillHide', keyboardWillHide);
-                } else {
-                    DeviceEventEmitter.removeListener(
-                        'async_keyboard_height',
-                        keyboardHeightChange,
-                    );
-                }
-            };
-        }, []);
-
-        return (
-            <View
-                style={{
-                    marginTop: 15,
-                    marginBottom: keyboardHeight,
-                }}
-            >
-                <ZShaker ref={shakerRef}>
-                    <ZInput
-                        placeholder="Room name"
-                        field={titleField}
-                        multiline={true}
-                        style={{ height: 100 }}
-                    />
-                </ZShaker>
-                <View style={{ flexDirection: 'row', flex: 1, marginHorizontal: 16 }}>
-                    <View style={{ flex: 1, marginRight: 16 }}>
-                        <ZButton style="secondary" size="large" title="Cancel" onPress={onCancel} />
-                    </View>
-                    <View style={{ flex: 1 }}>
-                        <ZButton size="large" title="Save" action={onConfirm} />
-                    </View>
-                </View>
-            </View>
-        );
-    },
-);
-
-const showEditRoom = (props: EditRoomModalProps) => {
-    showBottomSheet({
-        title: 'Edit room',
-        cancelable: true,
-        scrollViewProps: { keyboardShouldPersistTaps: 'handled' },
-        view: (ctx) => <EditRoomModal {...props} hide={ctx.hide} />,
-    });
-};
-
 interface RoomViewProps {
     room: VoiceChatT;
 }
@@ -421,10 +320,9 @@ const RoomHeader = React.memo(
     ) => {
         const { room, hide, theme } = props;
         const isAdmin = room.me?.status === VoiceChatParticipantStatus.ADMIN;
-        let topSpacing = isPad ? SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top : 0;
-        const handleMorePress = React.useCallback(() => {
-            showEditRoom({ id: room.id, title: room.title });
-        }, [room.id, room.title]);
+        const topSpacing = isPad
+            ? SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top
+            : 0;
         return (
             <View
                 style={{
@@ -460,7 +358,13 @@ const RoomHeader = React.memo(
                     />
                     {room.listenersCount > 0 && (
                         <>
-                            <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary, marginLeft: 12 }}>
+                            <Text
+                                style={{
+                                    ...TextStyles.Subhead,
+                                    color: theme.foregroundSecondary,
+                                    marginLeft: 12,
+                                }}
+                            >
                                 {room.listenersCount}
                             </Text>
                             <Image
@@ -484,27 +388,6 @@ const RoomHeader = React.memo(
                         flexDirection: 'row',
                     }}
                 >
-                    {isAdmin && (
-                        <TouchableOpacity
-                            activeOpacity={HighlightAlpha}
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                width: 56,
-                                height: 56,
-                            }}
-                            onPress={handleMorePress}
-                        >
-                            <Image
-                                style={{
-                                    width: 24,
-                                    height: 24,
-                                    tintColor: theme.foregroundTertiary,
-                                }}
-                                source={require('assets/ic-more-h-24.png')}
-                            />
-                        </TouchableOpacity>
-                    )}
                     {!isPad && (
                         <TouchableOpacity
                             activeOpacity={HighlightAlpha}
@@ -517,7 +400,11 @@ const RoomHeader = React.memo(
                             onPress={hide}
                         >
                             <Image
-                                style={{ width: 24, height: 24, tintColor: theme.foregroundTertiary }}
+                                style={{
+                                    width: 24,
+                                    height: 24,
+                                    tintColor: theme.foregroundTertiary,
+                                }}
                                 source={require('assets/ic-minimize-room-24.png')}
                             />
                         </TouchableOpacity>
@@ -631,9 +518,10 @@ const RoomSpeakingUserView = React.memo((props: RoomSpeakingUserViewProps) => {
     const state = isLoading
         ? 'loading'
         : peer?.mediaState.audioPaused
-            ? 'muted'
-            : isTalking
-                ? 'talking' : undefined;
+        ? 'muted'
+        : isTalking
+        ? 'talking'
+        : undefined;
 
     return <RoomUserView {...other} state={state} />;
 });
@@ -651,7 +539,18 @@ interface RoomUsersListProps extends RoomViewProps {
 }
 
 const RoomUsersList = React.memo((props: RoomUsersListProps) => {
-    const { headerHeight, controlsHeight, peers, connecting, analyzer, callState, theme, room, router, modalCtx } = props;
+    const {
+        headerHeight,
+        controlsHeight,
+        peers,
+        connecting,
+        analyzer,
+        callState,
+        theme,
+        room,
+        router,
+        modalCtx,
+    } = props;
     const sa = useSafeArea();
     const currentHeight = isPad ? Dimensions.get('window').height : SDevice.wHeight;
     const sHeight = currentHeight - (sa.top + sa.bottom + headerHeight + controlsHeight + 16);
@@ -667,30 +566,52 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
     //     initialItems: initialListeners.items,
     // });
     // let listenersState = { items: [] as VoiceChatListeners_voiceChatListeners_items[], loading: false, loadMore: () => { } };
-    const speakers = (room.speakers || [])
-        .map((speaker) => {
-            let peer = peers.find((p) => p.user.id === speaker.user.id);
-            let media: PeerMedia = { videoTrack: null, audioTrack: null, screencastTrack: null };
-            let isLocal = peer?.id === callState?.sender.id;
-            if (isLocal) {
-                media = {
-                    videoTrack: callState?.sender.videoEnabled ? callState?.sender.videoTrack : null,
-                    audioTrack: callState?.sender.audioEnabled ? callState?.sender.audioTrack : null,
-                    screencastTrack: callState?.sender.screencastEnabled ? callState?.sender.screencastTrack : null,
-                };
-            } else {
-                media = { ...media, ...peer ? callState?.receivers[peer.id] : {} };
-            }
-            return {
-                peer,
-                media,
-                isLocal,
-                speaker,
+    const speakers = (room.speakers || []).map((speaker) => {
+        let peer = peers.find((p) => p.user.id === speaker.user.id);
+        let media: PeerMedia = { videoTrack: null, audioTrack: null, screencastTrack: null };
+        let isLocal = peer?.id === callState?.sender.id;
+        if (isLocal) {
+            media = {
+                videoTrack: callState?.sender.videoEnabled ? callState?.sender.videoTrack : null,
+                audioTrack: callState?.sender.audioEnabled ? callState?.sender.audioTrack : null,
+                screencastTrack: callState?.sender.screencastEnabled
+                    ? callState?.sender.screencastTrack
+                    : null,
             };
-        });
+        } else {
+            media = { ...media, ...(peer ? callState?.receivers[peer.id] : {}) };
+        }
+        return {
+            peer,
+            media,
+            isLocal,
+            speaker,
+        };
+    });
 
     const speakersElement = (
         <>
+            {!!props.room.pinnedMessage && (
+                <TouchableOpacity
+                    onPress={() => showPinnedMessage(props.room.pinnedMessage!.message!, theme)}
+                >
+                    <View
+                        style={{
+                            paddingHorizontal: 16,
+                            paddingVertical: 12,
+                            backgroundColor: theme.backgroundTertiary,
+                        }}
+                    >
+                        <Text
+                            style={{ ...TextStyles.Subhead, color: theme.foregroundPrimary }}
+                            numberOfLines={2}
+                            allowFontScaling={false}
+                        >
+                            {props.room.pinnedMessage.message}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            )}
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start' }}>
                 {speakers.map(({ peer, media, isLocal, speaker }) => {
                     return (
@@ -748,14 +669,14 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                 keyExtractor={(item, index) => index.toString() + item.id}
                 numColumns={4}
                 style={{ flex: 1 }}
-            // refreshing={listenersState.loading}
-            // onEndReached={listenersState.loadMore}
+                // refreshing={listenersState.loading}
+                // onEndReached={listenersState.loadMore}
             />
         </View>
     );
 });
 
-const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: SRouter }) => {
+const RoomView = React.memo((props: { roomId: string; ctx: ModalProps; router: SRouter }) => {
     const voiceChatData = useVoiceChat();
     const theme = useTheme();
     const client = useClient();
@@ -796,18 +717,25 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
     };
 
     const handleLeave = React.useCallback(async () => {
-        let admins = voiceChatData.speakers?.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
-        if (admins && admins.length === 1 && voiceChatData.me?.status === VoiceChatParticipantStatus.ADMIN) {
+        let admins = voiceChatData.speakers?.filter(
+            (x) => x.status === VoiceChatParticipantStatus.ADMIN,
+        );
+        if (
+            admins &&
+            admins.length === 1 &&
+            voiceChatData.me?.status === VoiceChatParticipantStatus.ADMIN
+        ) {
             let builder = AlertBlanket.builder();
             builder
                 .title('End room')
-                .message('Leaving as the last admin will end the room. Return and make new admins if you want to keep the room going')
+                .message(
+                    'Leaving as the last admin will end the room. Return and make new admins if you want to keep the room going',
+                )
                 .action('Leave', 'destructive', () => closeCall())
                 .show();
         } else {
             closeCall();
         }
-
     }, [voiceChatData]);
 
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
@@ -818,17 +746,22 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
         InCallManager.setKeepScreenOn(true);
     }, []);
 
-    const prevVoiceChat = React.useRef<VoiceChatT>(
-        voiceChatData,
-    );
+    const prevVoiceChat = React.useRef<VoiceChatT>(voiceChatData);
 
     // Handle room state changes
     React.useEffect(() => {
-        let hasPrevAdmins = prevVoiceChat.current.speakers?.some(x => x.status === VoiceChatParticipantStatus.ADMIN);
+        let hasPrevAdmins = prevVoiceChat.current.speakers?.some(
+            (x) => x.status === VoiceChatParticipantStatus.ADMIN,
+        );
         let isPrevAdmin = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.ADMIN;
-        let hasAdmins = voiceChatData.speakers?.some(x => x.status === VoiceChatParticipantStatus.ADMIN);
-        let isPrevListener = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.LISTENER;
-        let isPrevSpeaker = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.SPEAKER || prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.ADMIN;
+        let hasAdmins = voiceChatData.speakers?.some(
+            (x) => x.status === VoiceChatParticipantStatus.ADMIN,
+        );
+        let isPrevListener =
+            prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.LISTENER;
+        let isPrevSpeaker =
+            prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.SPEAKER ||
+            prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.ADMIN;
         let isSpeaker = voiceChatData.me?.status === VoiceChatParticipantStatus.SPEAKER;
         let isListener = voiceChatData.me?.status === VoiceChatParticipantStatus.LISTENER;
 
@@ -839,9 +772,10 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
             mediaSession?.setAudioEnabled(false);
         }
         if (hasPrevAdmins && !hasAdmins && !isPrevAdmin) {
-            Toast
-                .build({ text: 'The last room admin left, the room will be closed now', duration: 2000 })
-                .show();
+            Toast.build({
+                text: 'The last room admin left, the room will be closed now',
+                duration: 2000,
+            }).show();
             setTimeout(() => {
                 closeCall();
             }, 2500);
@@ -874,7 +808,7 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
         let sub: undefined | (() => void);
 
         setTimeout(() => {
-            sub = client.engine.watchStatus(s => {
+            sub = client.engine.watchStatus((s) => {
                 setConnectingDebounced(s.status === 'connecting');
             });
         }, 3000);
@@ -913,13 +847,17 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
                     />
                     <RoomControls
                         id={props.roomId}
+                        title={voiceChatData.title}
+                        message={
+                            voiceChatData.pinnedMessage ? voiceChatData.pinnedMessage.message : null
+                        }
                         theme={theme}
                         muted={muted}
                         connecting={connecting}
                         onLayout={onControlsLayout}
                         onLeave={handleLeave}
                         onMutePress={handleMute}
-                        raisedHandUsers={voiceChatData.raisedHands?.map(i => i.user) || []}
+                        raisedHandUsers={voiceChatData.raisedHands?.map((i) => i.user) || []}
                     />
                 </>
             )}
@@ -927,15 +865,18 @@ const RoomView = React.memo((props: { roomId: string, ctx: ModalProps; router: S
     );
 });
 
-export const RoomViewPage = withApp(({ router }: { router: SRouter }) => (
-    <VoiceChatProvider roomId={router.params.roomId}>
-        <RoomView
-            roomId={router.params.roomId}
-            router={router}
-            ctx={{ hide: () => router.back() }}
-        />
-    </VoiceChatProvider>
-), { navigationAppearance: 'small-hidden' });
+export const RoomViewPage = withApp(
+    ({ router }: { router: SRouter }) => (
+        <VoiceChatProvider roomId={router.params.roomId}>
+            <RoomView
+                roomId={router.params.roomId}
+                router={router}
+                ctx={{ hide: () => router.back() }}
+            />
+        </VoiceChatProvider>
+    ),
+    { navigationAppearance: 'small-hidden' },
+);
 
 export const showRoomView = (roomId: string, router: SRouter, onHide?: () => void) => {
     if (isPad) {
@@ -957,7 +898,7 @@ export const showRoomView = (roomId: string, router: SRouter, onHide?: () => voi
             disableMargins: true,
             disableBottomSafeArea: true,
             cancelable: false,
-            onHide
+            onHide,
         });
     }
 };

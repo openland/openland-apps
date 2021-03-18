@@ -31,11 +31,11 @@ class NativeTrackVolumesManager {
     }
 
     #updateValues = () => {
-        WebRTCModule.getTrackVolumes((res: [[string, string]]) => {
-            for (let [trackId, volumeLevel] of res) {
-                this.#volumes.set(trackId, parseInt(volumeLevel, 10));
-            }
-        });
+        // WebRTCModule.getTrackVolumes((res: [[string, string]]) => {
+        //     for (let [trackId, volumeLevel] of res) {
+        //         this.#volumes.set(trackId, parseInt(volumeLevel, 10));
+        //     }
+        // });
     }
 
     getVolume(trackId: string) {
@@ -64,7 +64,7 @@ export class AppAudioTrackAnalyzerNative {
     }
 
     disconnect() {
-        //  
+        //
     }
 }
 

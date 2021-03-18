@@ -49,6 +49,7 @@ export interface ZInputBasicProps extends TextInputProps {
     description?: string;
     disabled?: boolean;
     noWrapper?: boolean;
+    scrollEnabled?: boolean;
 }
 
 export const ZInputBasic = React.forwardRef((props: ZInputBasicProps, ref: React.RefObject<TextInput>) => {

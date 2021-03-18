@@ -14,7 +14,10 @@ const VoiceChatContext = React.createContext<VoiceChatT | null>(null);
 export const VoiceChatProvider = React.memo((props: { roomId: string; children: any }) => {
     const client = useClient();
     const room = client.useVoiceChatFull({ id: props.roomId }, { fetchPolicy: 'network-only' }).voiceChat;
-    const [voiceChat, setVoiceChat] = React.useState<VoiceChatT>(room);
+    const [voiceChat, setVoiceChat] = React.useState<VoiceChatT>({
+        ...room,
+        raisedHands: room.listeners.filter(i => i.handRaised)
+    });
     const subscribeRef = React.useRef<any>(null);
 
     const subscribe = async () => {

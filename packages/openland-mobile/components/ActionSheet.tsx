@@ -18,6 +18,7 @@ interface ActionSheetBuilderActionItem {
     icon?: any;
     subtitle?: string;
     checkMark?: boolean;
+    rightElement?: JSX.Element;
 }
 
 interface ActionSheetBuilderViewItem {
@@ -61,7 +62,8 @@ export class ActionSheetBuilder {
         distructive?: boolean,
         icon?: any,
         subtitle?: string,
-        checkMark?: boolean
+        checkMark?: boolean,
+        rightElement?: JSX.Element,
     ): ActionSheetBuilder {
 
         let item: ActionSheetBuilderActionItem = {
@@ -71,7 +73,8 @@ export class ActionSheetBuilder {
             distructive,
             icon,
             subtitle,
-            checkMark
+            checkMark,
+            rightElement,
         };
 
         this._items.push(item);
@@ -106,6 +109,7 @@ export class ActionSheetBuilder {
                                 small={true}
                                 onPress={() => { ctx.hide(); a.callback(); }}
                                 checkmark={a.checkMark}
+                                rightElement={a.rightElement}
                                 checkmarkStyle={a.subtitle ? { marginBottom: -20 } : undefined}
                             />
                         )}

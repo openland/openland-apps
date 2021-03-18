@@ -1086,6 +1086,15 @@ internal val VoiceChatEntitySelector = obj(
             field("adminsCount", "adminsCount", notNull(scalar("Int"))),
             field("speakersCount", "speakersCount", notNull(scalar("Int"))),
             field("listenersCount", "listenersCount", notNull(scalar("Int"))),
+            field("pinnedMessage", "pinnedMessage", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("message", "message", scalar("String")),
+                    field("spans", "spans", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("MessageSpan", MessageSpanSelector)
+                        )))))
+                )),
             field("me", "me", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("VoiceChatParticipant", VoiceChatParticipantSelector)

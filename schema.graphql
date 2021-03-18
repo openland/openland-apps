@@ -6,6 +6,12 @@ directive @withPermission(permission: String!) on FIELD_DEFINITION
 
 directive @disabled on FIELD_DEFINITION
 
+"""Exposes a URL that specifies the behaviour of this scalar."""
+directive @specifiedBy(
+  """The URL that specifies the behaviour of this scalar."""
+  url: String!
+) on SCALAR
+
 union ActiveVoiceChatsEvent = VoiceChatUpdatedEvent
 
 type AlphaSignupData {
@@ -1804,6 +1810,7 @@ type Mutation {
   debugCopyOrgMembers(fromOrg: ID!, toOrg: ID!): Boolean!
   debugMigratePrivateChatMessages: Boolean!
   debugKickAllFromVoiceChats: Boolean!
+  debugMigrateChatCounters: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -1846,6 +1853,7 @@ type Mutation {
 
   """Listener actions"""
   voiceChatJoin(id: ID!): VoiceChat!
+  voiceChatJoinWithMedia(id: ID!, mediaInput: ConferenceJoinInput, mediaKind: ConferenceKind): VoiceChatJoinResult!
   voiceChatLeave(id: ID!): Boolean!
   voiceChatRaiseHand(id: ID!, raised: Boolean!): Boolean!
 
@@ -1977,8 +1985,11 @@ type Mutation {
   superBadgeVerify(badgeId: ID!, userId: ID!): User!
   superBadgeUnverify(badgeId: ID!, userId: ID!): User!
   voiceChatCreate(input: VoiceChatInput!): VoiceChat!
+  voiceChatCreateWithMedia(input: VoiceChatInput!, mediaInput: ConferenceJoinInput, mediaKind: ConferenceKind): VoiceChatJoinResult!
   voiceChatUpdate(id: ID!, input: VoiceChatInput!): VoiceChat!
   voiceChatEnd(id: ID!): VoiceChat!
+  voiceChatSetPinnedMessage(id: ID!, message: String, spans: [MessageSpanInput!]): VoiceChat!
+  voiceChatDeletePinnedMessage(id: ID!): VoiceChat!
   conferenceJoin(id: ID!, input: ConferenceJoinInput, kind: ConferenceKind): ConferenceJoinResult!
   conferenceKeepAlive(id: ID!, peerId: ID!): Conference!
   conferenceLeave(id: ID!, peerId: ID!): Conference!
@@ -3774,6 +3785,7 @@ type VoiceChat {
   speakers: [VoiceChatParticipant!]!
   listeners: [VoiceChatParticipant!]!
   me: VoiceChatParticipant
+  pinnedMessage: VoiceChatPinnedMessage
 }
 
 type VoiceChatConnection {
@@ -3794,6 +3806,12 @@ type VoiceChatEventsState {
 
 input VoiceChatInput {
   title: String!
+}
+
+type VoiceChatJoinResult {
+  chat: VoiceChat!
+  peerId: ID!
+  conference: Conference!
 }
 
 type VoiceChatParticipant {
@@ -3822,6 +3840,12 @@ enum VoiceChatParticipantStatus {
 type VoiceChatParticipantUpdatedEvent {
   chat: VoiceChat!
   participant: VoiceChatParticipant!
+}
+
+type VoiceChatPinnedMessage {
+  id: ID!
+  message: String
+  spans: [MessageSpan!]!
 }
 
 type VoiceChatUpdatedEvent {

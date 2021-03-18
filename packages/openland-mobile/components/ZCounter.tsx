@@ -33,8 +33,10 @@ type ZCounterSize = 'small' | 'medium';
 
 export interface ZCounterProps {
     value: number;
-    size?: ZCounterSize;
     theme: ThemeGlobal;
+    size?: ZCounterSize;
+    backgroundColor?: string;
+    textColor?: string;
 }
 
 export class ZCounter extends React.PureComponent<ZCounterProps, { value: number }> {
@@ -74,13 +76,13 @@ export class ZCounter extends React.PureComponent<ZCounterProps, { value: number
     }
 
     render() {
-        const { theme } = this.props;
+        const { theme, backgroundColor, textColor } = this.props;
         const size = this.props.size || 'small';
 
         return (
             <Animated.View style={{ opacity: this.opacity }}>
-                <View style={[styles.container, { ...containerBySize[size], backgroundColor: theme.accentNegative }]}>
-                    <Text style={{ ...textBySize[size], color: theme.foregroundContrast }} allowFontScaling={false}>{this.state.value}</Text>
+                <View style={[styles.container, { ...containerBySize[size], backgroundColor: backgroundColor ? backgroundColor : theme.accentNegative }]}>
+                    <Text style={{ ...textBySize[size], color: textColor ? textColor : theme.foregroundContrast }} allowFontScaling={false}>{this.state.value}</Text>
                 </View>
             </Animated.View>
         );

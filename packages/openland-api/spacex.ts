@@ -2442,6 +2442,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateVoiceChatCreate(variables: Types.VoiceChatCreateVariables, params?: MutationParameters): Promise<Types.VoiceChatCreate> {
         return this.mutate('VoiceChatCreate', variables, params);
     }
+    mutateVoiceChatDeletePinnedMessage(variables: Types.VoiceChatDeletePinnedMessageVariables, params?: MutationParameters): Promise<Types.VoiceChatDeletePinnedMessage> {
+        return this.mutate('VoiceChatDeletePinnedMessage', variables, params);
+    }
     mutateVoiceChatDemote(variables: Types.VoiceChatDemoteVariables, params?: MutationParameters): Promise<Types.VoiceChatDemote> {
         return this.mutate('VoiceChatDemote', variables, params);
     }
@@ -2462,6 +2465,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateVoiceChatRaiseHand(variables: Types.VoiceChatRaiseHandVariables, params?: MutationParameters): Promise<Types.VoiceChatRaiseHand> {
         return this.mutate('VoiceChatRaiseHand', variables, params);
+    }
+    mutateVoiceChatSetPinnedMessage(variables: Types.VoiceChatSetPinnedMessageVariables, params?: MutationParameters): Promise<Types.VoiceChatSetPinnedMessage> {
+        return this.mutate('VoiceChatSetPinnedMessage', variables, params);
     }
     mutateVoiceChatUpdate(variables: Types.VoiceChatUpdateVariables, params?: MutationParameters): Promise<Types.VoiceChatUpdate> {
         return this.mutate('VoiceChatUpdate', variables, params);

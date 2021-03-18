@@ -18,6 +18,13 @@ fragment VoiceChatEntity on VoiceChat {
     adminsCount
     speakersCount
     listenersCount
+    pinnedMessage {
+        id
+        message
+        spans {
+            ...MessageSpan
+        }
+    }
     me {
         ...VoiceChatParticipant
     }
@@ -49,7 +56,6 @@ query VoiceChat($id: ID!) {
 query VoiceChatFull($id: ID!) {
     voiceChat(id: $id) {
         ...FullVoiceChat
-        
     }
 }
 
@@ -141,6 +147,18 @@ mutation VoiceChatDemote($id: ID!, $uid: ID!) {
 
 mutation VoiceChatRaiseHand($id: ID!, $raised: Boolean!) {
     voiceChatRaiseHand(id: $id, raised: $raised)
+}
+
+mutation VoiceChatSetPinnedMessage($id: ID!, $message: String, $spans: [MessageSpanInput!]) {
+    voiceChatSetPinnedMessage(id: $id, message: $message, spans: $spans) {
+        id
+    }
+}
+
+mutation VoiceChatDeletePinnedMessage($id: ID!) {
+    voiceChatDeletePinnedMessage(id: $id) {
+        id
+    }
 }
 
 query VoiceChatEventsState($id: ID!) {

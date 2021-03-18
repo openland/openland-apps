@@ -122,6 +122,7 @@ const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) 
                 if (props.onActionSuccess) {
                     await props.onActionSuccess();
                 }
+                setActionInProgress(false);
             } catch (e) {
                 if (props.onActionError) {
                     await props.onActionError(e);

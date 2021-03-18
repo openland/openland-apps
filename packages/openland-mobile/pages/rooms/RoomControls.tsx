@@ -1,5 +1,14 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity, Image, Share, Platform, Clipboard, LayoutChangeEvent } from 'react-native';
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    Image,
+    Share,
+    Platform,
+    Clipboard,
+    LayoutChangeEvent,
+} from 'react-native';
 import { VoiceChatParticipantStatus, VoiceChatParticipant_user } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
@@ -10,10 +19,11 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TintBlue, TintOrange } from 'openland-y-utils/themes/tints';
-import { showRaisedHands } from './RaisedHands';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
+import { showRaisedHands } from './RaisedHands';
+import { showRoomSettings } from './RoomSettings';
 
-const showRoomInvite = ({ link, theme }: { link: string, theme: ThemeGlobal }) => {
+const showRoomInvite = ({ link, theme }: { link: string; theme: ThemeGlobal }) => {
     const handleShare = () => {
         Share.share(
             Platform.select({
@@ -49,123 +59,209 @@ const showRoomInvite = ({ link, theme }: { link: string, theme: ThemeGlobal }) =
         .show();
 };
 
-const ControlItem = React.memo((props: {
-    theme: ThemeGlobal,
-    text?: string,
-    icon: NodeRequire | string,
-    iconColor?: string,
-    bgColor: string,
-    counter?: number,
-    disabled?: boolean,
-    loading?: boolean,
-    faded?: boolean,
-    onPress?: () => void
-}) => {
-    const { theme, text, icon, loading, iconColor, bgColor, counter, disabled, faded, onPress } = props;
-    const size = text ? 56 : 78;
-    const iconSize = text ? 24 : 36;
-    let iconContent = loading ? (
-        <LoaderSpinner color={iconColor} size="x-large" />
-    ) : typeof icon === 'string' ? (
-        <Text style={{ fontSize: iconSize, color: iconColor }}>{icon}</Text>
-    ) : (
-        <Image source={icon} style={{ width: iconSize, height: iconSize, tintColor: iconColor }} />
-    );
-    return (
-        <View style={{ flex: 1, alignItems: 'center' }}>
-            <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={onPress}
-                disabled={disabled}
-                style={{ width: size, height: size, marginBottom: 8, position: 'relative', opacity: faded ? 0.4 : 1 }}
-            >
-                <View style={{ backgroundColor: bgColor, width: size, height: size, borderRadius: 100, alignItems: 'center', justifyContent: 'center' }}>
-                    {iconContent}
-                </View>
-                {counter ? (
+const ControlItem = React.memo(
+    (props: {
+        theme: ThemeGlobal;
+        text?: string;
+        icon: NodeRequire | string;
+        iconColor?: string;
+        bgColor: string;
+        counter?: number;
+        disabled?: boolean;
+        loading?: boolean;
+        faded?: boolean;
+        onPress?: () => void;
+    }) => {
+        const {
+            theme,
+            text,
+            icon,
+            loading,
+            iconColor,
+            bgColor,
+            counter,
+            disabled,
+            faded,
+            onPress,
+        } = props;
+        const size = text ? 56 : 78;
+        const iconSize = text ? 24 : 36;
+        let iconContent = loading ? (
+            <LoaderSpinner color={iconColor} size="x-large" />
+        ) : typeof icon === 'string' ? (
+            <Text style={{ fontSize: iconSize, color: iconColor }}>{icon}</Text>
+        ) : (
+            <Image
+                source={icon}
+                style={{ width: iconSize, height: iconSize, tintColor: iconColor }}
+            />
+        );
+        return (
+            <View style={{ flex: 1, alignItems: 'center' }}>
+                <TouchableOpacity
+                    activeOpacity={0.6}
+                    onPress={onPress}
+                    disabled={disabled}
+                    style={{
+                        width: size,
+                        height: size,
+                        marginBottom: 8,
+                        position: 'relative',
+                        opacity: faded ? 0.4 : 1,
+                    }}
+                >
                     <View
                         style={{
-                            position: "absolute",
-                            top: -3,
-                            right: 0,
+                            backgroundColor: bgColor,
+                            width: size,
+                            height: size,
                             borderRadius: 100,
-                            backgroundColor: theme.foregroundTertiary,
-                            paddingHorizontal: 4,
-                            paddingVertical: 2,
-                            borderWidth: 1,
-                            borderColor: theme.backgroundSecondary,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            overflow: "hidden",
+                            alignItems: 'center',
+                            justifyContent: 'center',
                         }}
                     >
-                        <Text
+                        {iconContent}
+                    </View>
+                    {counter ? (
+                        <View
                             style={{
-                                color: theme.foregroundContrast,
-                                ...TextStyles.Detail,
-                                textAlign: 'center'
+                                position: 'absolute',
+                                top: -3,
+                                right: 0,
+                                borderRadius: 100,
+                                backgroundColor: theme.backgroundPrimary,
+                                paddingHorizontal: 4,
+                                paddingVertical: 2,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                overflow: 'hidden',
                             }}
                         >
-                            {counter}
-                        </Text>
-                    </View>
+                            <Text
+                                style={{
+                                    color: theme.foregroundPrimary,
+                                    ...TextStyles.Detail,
+                                    textAlign: 'center',
+                                }}
+                            >
+                                {counter}
+                            </Text>
+                        </View>
+                    ) : null}
+                </TouchableOpacity>
+                {text ? (
+                    <Text
+                        style={{
+                            ...TextStyles.Label3,
+                            color: theme.foregroundPrimary,
+                            textAlign: 'center',
+                        }}
+                    >
+                        {text}
+                    </Text>
                 ) : null}
-            </TouchableOpacity>
-            {text
-                ? <Text style={{ ...TextStyles.Label3, color: theme.foregroundPrimary, textAlign: 'center' }}>{text}</Text>
-                : null
-            }
-        </View>
-    );
-});
-
-const ControlMute = React.memo((props: { theme: ThemeGlobal, disabled?: boolean, connecting: boolean, muted: boolean, onPress: () => void }) => {
-    const { theme, muted, connecting, disabled, onPress } = props;
-
-    return (
-        <ControlItem
-            theme={theme}
-            icon={(muted || disabled) ? require('assets/ic-mute-glyph-36.png') : require('assets/ic-microphone-36.png')}
-            iconColor={theme.foregroundContrast}
-            bgColor={(muted || disabled) ? TintOrange.primary : TintBlue.primary}
-            disabled={disabled}
-            faded={disabled}
-            loading={connecting}
-            onPress={onPress}
-        />
-    );
-});
-
-const RaiseModalView = React.memo(({ onCancel, onConfirm }: { onCancel: () => void, onConfirm: () => Promise<void> }) => {
-    const theme = useTheme();
-
-    return (
-        <>
-            <View
-                style={{
-                    backgroundColor: theme.backgroundTertiaryTrans,
-                    width: 96,
-                    height: 96,
-                    borderRadius: 100,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    alignSelf: 'center',
-                    marginBottom: 16,
-                }}
-            >
-                <Image source={require('assets/ic-raise-back-hand-36.png')} style={{ width: 42, height: 42 }} />
             </View>
-            <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, textAlign: 'center', marginBottom: 6 }}>Raise hand?</Text>
-            <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginHorizontal: 32, marginBottom: 32 }}>
-                Room admins will see that{'\u00A0'}you{'\u00A0'}want{'\u00A0'}to{'\u00A0'}speak
-            </Text>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 16 }}>
-                <ZButton style="secondary" size="large" title="Maybe later" onPress={onCancel} />
-                <ZButton style="positive" size="large" title="Raise hand 🖐" action={onConfirm} />
-            </View>
-        </>
-    );
-});
+        );
+    },
+);
+
+const ControlMute = React.memo(
+    (props: {
+        theme: ThemeGlobal;
+        disabled?: boolean;
+        connecting: boolean;
+        muted: boolean;
+        onPress: () => void;
+    }) => {
+        const { theme, muted, connecting, disabled, onPress } = props;
+
+        return (
+            <ControlItem
+                theme={theme}
+                icon={
+                    muted || disabled
+                        ? require('assets/ic-mute-glyph-36.png')
+                        : require('assets/ic-microphone-36.png')
+                }
+                iconColor={theme.foregroundContrast}
+                bgColor={muted || disabled ? TintOrange.primary : TintBlue.primary}
+                disabled={disabled}
+                faded={disabled}
+                loading={connecting}
+                onPress={onPress}
+            />
+        );
+    },
+);
+
+const RaiseModalView = React.memo(
+    ({ onCancel, onConfirm }: { onCancel: () => void; onConfirm: () => Promise<void> }) => {
+        const theme = useTheme();
+
+        return (
+            <>
+                <View
+                    style={{
+                        backgroundColor: theme.backgroundTertiaryTrans,
+                        width: 96,
+                        height: 96,
+                        borderRadius: 100,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        alignSelf: 'center',
+                        marginBottom: 16,
+                    }}
+                >
+                    <Image
+                        source={require('assets/ic-raise-back-hand-36.png')}
+                        style={{ width: 42, height: 42 }}
+                    />
+                </View>
+                <Text
+                    style={{
+                        ...TextStyles.Title2,
+                        color: theme.foregroundPrimary,
+                        textAlign: 'center',
+                        marginBottom: 6,
+                    }}
+                >
+                    Raise hand?
+                </Text>
+                <Text
+                    style={{
+                        ...TextStyles.Body,
+                        color: theme.foregroundSecondary,
+                        textAlign: 'center',
+                        marginHorizontal: 32,
+                        marginBottom: 32,
+                    }}
+                >
+                    Room admins will see that{'\u00A0'}you{'\u00A0'}want{'\u00A0'}to{'\u00A0'}speak
+                </Text>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginHorizontal: 16,
+                    }}
+                >
+                    <ZButton
+                        style="secondary"
+                        size="large"
+                        title="Maybe later"
+                        onPress={onCancel}
+                    />
+                    <ZButton
+                        style="positive"
+                        size="large"
+                        title="Raise hand 🖐"
+                        action={onConfirm}
+                    />
+                </View>
+            </>
+        );
+    },
+);
 
 const showRaiseHandModal = (onConfirm: () => Promise<void>) => {
     showBottomSheet({
@@ -180,62 +276,70 @@ const showRaiseHandModal = (onConfirm: () => Promise<void>) => {
                     }}
                 />
             );
-        }
+        },
     });
 };
 
-const ControlRaiseHand = React.memo((props: { theme: ThemeGlobal, raised: boolean, roomId: string }) => {
-    const { theme, raised, roomId } = props;
-    const client = useClient();
-    const handlePress = React.useCallback(async () => {
-        if (raised) {
-            await client.mutateVoiceChatRaiseHand({ id: roomId, raised: false });
-            await client.refetchVoiceChatControls({ id: roomId });
-            return;
-        }
-        showRaiseHandModal(
-            async () => {
+const ControlRaiseHand = React.memo(
+    (props: { theme: ThemeGlobal; raised: boolean; roomId: string }) => {
+        const { theme, raised, roomId } = props;
+        const client = useClient();
+        const handlePress = React.useCallback(async () => {
+            if (raised) {
+                await client.mutateVoiceChatRaiseHand({ id: roomId, raised: false });
+                await client.refetchVoiceChatControls({ id: roomId });
+                return;
+            }
+            showRaiseHandModal(async () => {
                 await client.mutateVoiceChatRaiseHand({ id: roomId, raised: true });
                 await client.refetchVoiceChatControls({ id: roomId });
-            }
-        );
-    }, [raised, roomId]);
+            });
+        }, [raised, roomId]);
 
-    return (
-        <ControlItem
-            theme={theme}
-            icon={raised ? require('assets/ic-raised-hand-36.png') : require('assets/ic-raise-back-hand-36.png')}
-            bgColor={raised ? theme.accentPositive : theme.backgroundTertiaryTrans}
-            onPress={handlePress}
-        />
-    );
-});
+        return (
+            <ControlItem
+                theme={theme}
+                icon={
+                    raised
+                        ? require('assets/ic-raised-hand-36.png')
+                        : require('assets/ic-raise-back-hand-36.png')
+                }
+                bgColor={raised ? theme.accentPositive : theme.backgroundTertiaryTrans}
+                onPress={handlePress}
+            />
+        );
+    },
+);
 
 interface ControlRaisedHandsCountProps {
     theme: ThemeGlobal;
     raisedCount?: number;
     raisedHandUsers: VoiceChatParticipant_user[];
     roomId: string;
+    roomTitle: string | null;
+    roomMessage: string | null;
 }
 
-const ControlRaisedHandsCount = React.memo((props: ControlRaisedHandsCountProps) => {
-    const { theme, raisedCount, raisedHandUsers, roomId } = props;
+const RoomSettingsButton = React.memo((props: ControlRaisedHandsCountProps) => {
+    const { theme, raisedCount, raisedHandUsers, roomId, roomTitle, roomMessage } = props;
 
     return (
         <ControlItem
             theme={theme}
-            icon={require('assets/ic-hand-24.png')}
+            icon={require('assets/ic-settings-24.png')}
             iconColor={theme.foregroundSecondary}
-            text="Raised"
+            text="Settings"
             bgColor={theme.backgroundTertiaryTrans}
             counter={raisedCount}
-            onPress={() => showRaisedHands(raisedHandUsers, roomId)}
+            onPress={() => showRoomSettings({ roomId, roomTitle, roomMessage, raisedHandUsers, theme })}
         />
     );
 });
 
 interface RoomControlsProps {
     id: string;
+    title: string | null;
+    message: string | null;
     theme: ThemeGlobal;
     onLeave: () => void;
     onLayout: (e: LayoutChangeEvent) => void;
@@ -246,30 +350,60 @@ interface RoomControlsProps {
 }
 
 export const RoomControls = React.memo((props: RoomControlsProps) => {
-    const { theme, id, muted, connecting, onLeave, onLayout, onMutePress, raisedHandUsers } = props;
+    const { theme, id, title, message, muted, connecting, onLeave, onLayout, onMutePress, raisedHandUsers } = props;
     const client = useClient();
-    const meParticipant = client.useVoiceChatControls({ id }, { fetchPolicy: 'cache-and-network' })?.voiceChat.me;
+    const meParticipant = client.useVoiceChatControls({ id }, { fetchPolicy: 'cache-and-network' })
+        ?.voiceChat.me;
     const role = meParticipant?.status;
-    const roleButtons = role === VoiceChatParticipantStatus.ADMIN ? (
-        <>
-            <ControlRaisedHandsCount theme={theme} raisedCount={raisedHandUsers.length} raisedHandUsers={raisedHandUsers} roomId={id} />
-            <ControlMute muted={muted} connecting={connecting} theme={theme} onPress={onMutePress} />
-        </>
-    ) : role === VoiceChatParticipantStatus.SPEAKER ? <ControlMute muted={muted} connecting={connecting} theme={theme} onPress={onMutePress} />
-        : role === VoiceChatParticipantStatus.LISTENER ? <ControlRaiseHand theme={theme} raised={!!meParticipant?.handRaised} roomId={id} /> : null;
+    const roleButtons =
+        role === VoiceChatParticipantStatus.ADMIN ? (
+            <>
+                <RoomSettingsButton
+                    theme={theme}
+                    raisedCount={raisedHandUsers.length}
+                    raisedHandUsers={raisedHandUsers}
+                    roomTitle={title}
+                    roomMessage={message}
+                    roomId={id}
+                />
+                <ControlMute
+                    muted={muted}
+                    connecting={connecting}
+                    theme={theme}
+                    onPress={onMutePress}
+                />
+            </>
+        ) : role === VoiceChatParticipantStatus.SPEAKER ? (
+            <ControlMute
+                muted={muted}
+                connecting={connecting}
+                theme={theme}
+                onPress={onMutePress}
+            />
+        ) : role === VoiceChatParticipantStatus.LISTENER ? (
+            <ControlRaiseHand theme={theme} raised={!!meParticipant?.handRaised} roomId={id} />
+        ) : null;
 
     const handleLeave = React.useCallback(() => {
         onLeave();
     }, [onLeave]);
 
     return (
-        <View style={{ paddingTop: 16, paddingHorizontal: 16, flexDirection: 'row', justifyContent: 'space-around' }} onLayout={onLayout}>
+        <View
+            style={{
+                paddingTop: 16,
+                paddingHorizontal: 16,
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+            }}
+            onLayout={onLayout}
+        >
             <ControlItem
                 theme={theme}
                 text="Leave"
-                icon={require('assets/ic-door-leave-24.png')}
-                iconColor={theme.accentNegative}
-                bgColor={theme.type === 'Light' ? 'rgba(242, 48, 81, 0.12)' : 'rgba(242, 48, 81, 0.16)'}
+                icon={require('assets/ic-leave-24.png')}
+                iconColor={theme.foregroundSecondary}
+                bgColor={theme.backgroundTertiaryTrans}
                 onPress={handleLeave}
             />
             <ControlItem
@@ -278,7 +412,16 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
                 icon={require('assets/ic-add-glyph-24.png')}
                 iconColor={theme.foregroundSecondary}
                 bgColor={theme.backgroundTertiaryTrans}
-                onPress={() => showRoomInvite({ theme, link: meParticipant ? `https://openland.com/${meParticipant.user.shortname || meParticipant?.user.id}` : 'Try again' })}
+                onPress={() =>
+                    showRoomInvite({
+                        theme,
+                        link: meParticipant
+                            ? `https://openland.com/${
+                                  meParticipant.user.shortname || meParticipant?.user.id
+                              }`
+                            : 'Try again',
+                    })
+                }
             />
             {roleButtons}
         </View>
