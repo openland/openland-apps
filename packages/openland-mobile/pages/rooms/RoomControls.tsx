@@ -20,7 +20,6 @@ import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TintBlue, TintOrange } from 'openland-y-utils/themes/tints';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
-import { showRaisedHands } from './RaisedHands';
 import { showRoomSettings } from './RoomSettings';
 
 const showRoomInvite = ({ link, theme }: { link: string; theme: ThemeGlobal }) => {
