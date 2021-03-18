@@ -117,6 +117,7 @@ export interface UToastConfig {
     backgroundColor?: string;
     textColor?: string;
     autoclose?: boolean;
+    duration?: number;
 }
 
 export interface UToastHandlers {
@@ -147,7 +148,7 @@ export const UToastProvider = React.memo((props: { children: any }) => {
             if (newConfig.autoclose === false) {
                 return;
             }
-            timeoutId = setTimeout(() => setVisible(false), 2000);
+            timeoutId = setTimeout(() => setVisible(false), config.duration || 2000);
             return () => clearTimeout(timeoutId);
         },
         hide: () => setVisible(false),

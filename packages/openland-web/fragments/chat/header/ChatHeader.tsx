@@ -21,7 +21,7 @@ import {
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { HoverAlpha, TextDensed, TextStyles } from 'openland-web/utils/TextStyles';
 import { emoji } from 'openland-y-utils/emoji';
-import { useLastSeen, User } from 'openland-y-utils/LastSeen';
+import { useLastSeen, LastSeenUser } from 'openland-y-utils/LastSeen';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { useVideoCallModal } from 'openland-web/modules/conference/CallModal';
@@ -88,7 +88,7 @@ const disabledBtn = css`
     pointer-events: none;
 `;
 
-const HeaderLastSeen = (props: { user: User }) => {
+const HeaderLastSeen = (props: { user: LastSeenUser }) => {
     // change to UPresence?
     const [sub, accent] = useLastSeen(props.user);
 

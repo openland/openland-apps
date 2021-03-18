@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { formatLastSeen, formatLastSeenShort } from 'openland-y-utils/formatTime';
 
-export interface User {
+export interface LastSeenUser {
     id: string;
     online: boolean;
     lastSeen: string | null;
-    isBot: boolean;
+    isBot?: boolean;
 }
 
 class LastSeenManagerImpl {
@@ -48,7 +48,7 @@ class LastSeenManagerImpl {
 
 const LastSeenManager = new LastSeenManagerImpl();
 
-export const useLastSeen = (user: User | null) => {
+export const useLastSeen = (user: LastSeenUser | null) => {
     const isBot = user && user.isBot;
     const isOnline = user && user.online;
     const accentColor = isBot || isOnline;
@@ -81,7 +81,7 @@ export const useLastSeen = (user: User | null) => {
     return [lastSeen, accentColor];
 };
 
-export const useLastSeenShort = (user: User | null) => {
+export const useLastSeenShort = (user: LastSeenUser | null) => {
     const isBot = user && user.isBot;
     const isOnline = user && user.online;
     const accentColor = isBot || isOnline;

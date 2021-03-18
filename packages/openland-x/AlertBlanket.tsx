@@ -10,6 +10,7 @@ export class AlertBlanketBuilder {
     _body?: (ctx: XModalController, confirm: () => void) => JSX.Element;
     _cancelable?: boolean;
     _cancelAction = true;
+    _cancelText: string | undefined = undefined;
     _actions: { name: string, action: () => Promise<void>, style: UButtonStyle }[] = [];
     _width?: number;
     _hideOnEscape?: boolean;
@@ -33,6 +34,11 @@ export class AlertBlanketBuilder {
 
     cancelable(cancelable: boolean): AlertBlanketBuilder {
         this._cancelable = cancelable;
+        return this;
+    }
+
+    cancelText(text: string): AlertBlanketBuilder {
+        this._cancelText = text;
         return this;
     }
 
@@ -71,8 +77,11 @@ export class AlertBlanketBuilder {
         return this;
     }
 
-    onCancel(onCancel: () => void): AlertBlanketBuilder {
+    onCancel(onCancel: () => void, cancelText?: string): AlertBlanketBuilder {
         this._onCancel = onCancel;
+        if (cancelText) {
+            this._cancelText = cancelText;
+        }
         return this;
     }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { XView } from 'react-mental';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
-import { JoinButton, JoinButtonSimple } from './JoinButton';
+import { GroupJoinButton, GroupJoinButtonSimple } from './JoinButton';
 
 interface ListingProps {
     items: DiscoverSharedRoom[];
@@ -18,9 +18,9 @@ export const Listing = React.memo((props: ListingProps) => {
                     group={item as DiscoverSharedRoom}
                     rightElement={
                         props.noLogin ? (
-                            <JoinButtonSimple group={item as DiscoverSharedRoom} />
+                            <GroupJoinButtonSimple group={item as DiscoverSharedRoom} />
                         ) : (
-                            <JoinButton group={item as DiscoverSharedRoom} />
+                            <GroupJoinButton group={item as DiscoverSharedRoom} />
                         )
                     }
                 />

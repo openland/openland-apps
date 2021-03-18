@@ -239,6 +239,15 @@ routes.add('/message/:messageId/comment/:commentId', '/unicorn/index');
 routes.add('/message/:messageId/comment/:commentId/', '/unicorn/index');
 
 //
+// Rooms
+//
+
+routes.add('/rooms', '/unicorn/index');
+routes.add('/rooms/', '/unicorn/index');
+routes.add('/rooms/:id', '/unicorn/index');
+routes.add('/rooms/:id/', '/unicorn/index');
+
+//
 // Oauth
 //
 routes.add('/oauth/:code', '/oauth/oauth');

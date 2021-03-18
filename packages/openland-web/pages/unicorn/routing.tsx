@@ -36,6 +36,8 @@ import { SettingsCommunitiesFragment } from 'openland-web/fragments/settings/Set
 import { DiscoverPopularOrgsFragment } from 'openland-web/fragments/discover/DiscoverPopularOrgsFragment';
 import { DiscoverNewOrgsFragment } from 'openland-web/fragments/discover/DiscoverNewOrgsFragment';
 import { SettingsCacheFragment } from 'openland-web/fragments/settings/SettingsCacheFragment';
+import { RoomFragment } from 'openland-web/fragments/rooms/RoomFragment';
+import { StartRoomFragment } from 'openland-web/fragments/rooms/StartRoomFragment';
 
 // temporary stub for /mail/ -> not found bug
 const TemporaryStubMail = React.memo(() => {
@@ -82,6 +84,11 @@ routing.addRoute('/discover/premium', () => DiscoverTopPremiumFragment);
 routing.addRoute('/discover/free', () => DiscoverTopFreeFragment);
 routing.addRoute('/discover/top-communities', () => DiscoverPopularOrgsFragment);
 routing.addRoute('/discover/new-communities', () => DiscoverNewOrgsFragment);
+
+// Rooms
+routing.addRoute('/rooms', () => StartRoomFragment);
+routing.addRoute('/rooms/', () => StartRoomFragment);
+routing.addRoute('/rooms/:id', () => RoomFragment);
 
 // Contacts
 

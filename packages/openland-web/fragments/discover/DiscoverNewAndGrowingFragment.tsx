@@ -6,7 +6,7 @@ import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { getRandomSeed } from './utils/getRandomSeed';
 import { DiscoverNoLoginProps } from './utils/DiscoverNoLoginContent';
-import { JoinButton, JoinButtonSimple } from './components/JoinButton';
+import { GroupJoinButton, GroupJoinButtonSimple } from './components/JoinButton';
 import { XView } from 'react-mental';
 
 export const DiscoverNewAndGrowingFragment = React.memo((props: DiscoverNoLoginProps) => {
@@ -52,10 +52,10 @@ export const DiscoverNewAndGrowingFragment = React.memo((props: DiscoverNoLoginP
                             group={item as DiscoverSharedRoom}
                             rightElement={
                                 props.noLogin ? (
-                                    <JoinButtonSimple group={item as DiscoverSharedRoom} />
+                                    <GroupJoinButtonSimple group={item as DiscoverSharedRoom} />
                                 ) : (
-                                        <JoinButton group={item as DiscoverSharedRoom} />
-                                    )
+                                    <GroupJoinButton group={item as DiscoverSharedRoom} />
+                                )
                             }
                         />
                     </XView>
