@@ -540,14 +540,13 @@ const RoomListeners = React.memo((props: { room: VoiceChatT }) => {
 
 const RoomView = React.memo((props: { roomId: string }) => {
     const client = useClient();
-    const messenger = React.useContext(MessengerContext);
     const router = useTabRouter().router;
     const joinRoom = useJoinRoom(true);
 
     const voiceChatData = useVoiceChat();
     const conference = client.useConference({ id: props.roomId }, { suspense: false })?.conference;
 
-    const calls = messenger.calls;
+    const calls = React.useContext(MessengerContext).calls;
     const mediaSession = calls.useCurrentSession();
     const [state, setState] = React.useState<MediaSessionState | undefined>(
         mediaSession?.state.value,
@@ -564,15 +563,16 @@ const RoomView = React.memo((props: { roomId: string }) => {
 
     const alreadyLeft = React.useRef(false);
 
-    const closeCall = () => {
+    const closeCall = (withRedirect: boolean = false) => {
         if (alreadyLeft.current) {
             return;
         }
         alreadyLeft.current = true;
         calls.leaveCall();
         client.mutateVoiceChatLeave({ id: props.roomId });
-        router.reset('/rooms', true);
-        alreadyLeft.current = true;
+        if (withRedirect) {
+            router.reset('/rooms', true);
+        }
     };
 
     const handleLeave = React.useCallback(async () => {
@@ -582,10 +582,10 @@ const RoomView = React.memo((props: { roomId: string }) => {
             builder
                 .title('End room')
                 .message('Leaving as the last admin will end the room. Return and make new admins if you want to keep the room going')
-                .action('Leave', () => Promise.resolve(closeCall()), 'danger')
+                .action('Leave', () => Promise.resolve(closeCall(true)), 'danger')
                 .show();
         } else {
-            closeCall();
+            closeCall(true);
         }
 
     }, [voiceChatData]);
