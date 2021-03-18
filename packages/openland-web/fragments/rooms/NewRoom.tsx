@@ -77,7 +77,7 @@ const contentWrapper = css`
     align-items: center;
 `;
 
-const NewRoomForm = React.memo((props:  { ctx: XModalController } ) => {
+export const NewRoomForm = React.memo((props:  { ctx: XModalController } ) => {
     const form = useForm();
     const client = useClient();
     const router = React.useContext(XViewRouterContext)!;

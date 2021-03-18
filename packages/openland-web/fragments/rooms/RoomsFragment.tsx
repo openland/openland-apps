@@ -9,9 +9,8 @@ import { VoiceChatWithSpeakers } from 'openland-api/spacex.types';
 import { TextLabel1, TextStyles, TextTitle3 } from 'openland-web/utils/TextStyles';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { useClient } from 'openland-api/useClient';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { NewRoomButton } from './NewRoom';
+import { NewRoomButton, NewRoomForm } from './NewRoom';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
@@ -21,6 +20,7 @@ import IcRooms from 'openland-icons/s/ic-mic-24.svg';
 import IcDiscover from 'openland-icons/s/ic-discover-24.svg';
 import IcListener from 'openland-icons/s/ic-listener-16.svg';
 import IcSpeaker from 'openland-icons/s/ic-speaker-16.svg';
+import { showModalBox } from 'openland-x/showModalBox';
 
 type ActivePageType = 'Rooms' | 'Discover';
 
@@ -69,11 +69,10 @@ const startRoomContainer = css`
 `;
 
 const StartRoomItem = React.memo(() => {
-    const client = useClient();
-    const router = React.useContext(XViewRouterContext)!;
     const startRoom = React.useCallback(async () => {
-        const room = (await client.mutateVoiceChatCreate({ input: { title: 'Hi' } })).voiceChatCreate;
-        router.navigate(`/room/${room.id}`);
+        showModalBox({ fullScreen: true, useTopCloser: false, hideOnEsc: false }, (ctx) => (
+            <NewRoomForm ctx={ctx}/>
+        ));
     }, []);
 
     return (

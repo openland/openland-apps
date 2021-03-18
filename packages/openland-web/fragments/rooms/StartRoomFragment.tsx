@@ -1,15 +1,15 @@
-import { useClient } from 'openland-api/useClient';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextBody, TextTitle1 } from 'openland-web/utils/TextStyles';
 import * as React from 'react';
-import { XView, XViewRouterContext } from 'react-mental';
+import { XView } from 'react-mental';
+import { showModalBox } from 'openland-x/showModalBox';
+import { NewRoomForm } from './NewRoom';
 
 export const StartRoomFragment = React.memo(() => {
-    const client = useClient();
-    const router = React.useContext(XViewRouterContext)!;
     const startRoom = React.useCallback(async () => {
-        const room = (await client.mutateVoiceChatCreate({ input: { title: 'Hi' } })).voiceChatCreate;
-        router.navigate(`/room/${room.id}`);
+        showModalBox({ fullScreen: true, useTopCloser: false, hideOnEsc: false }, (ctx) => (
+            <NewRoomForm ctx={ctx}/>
+        ));
     }, []);
     return (
         <XView
