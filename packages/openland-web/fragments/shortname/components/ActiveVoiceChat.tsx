@@ -10,7 +10,7 @@ import IcSpeaker from 'openland-icons/s/ic-speaker-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { showInstallAppModal } from 'openland-web/components/showInstallAppModal';
+import { useJoinRoom } from 'openland-web/fragments/rooms/joinRoom';
 
 interface CurrentVoiceChatProps {
     currentVoiceChat: VoiceChatWithSpeakers;
@@ -30,8 +30,9 @@ const dotDivider = css`
 `;
 
 export const ActiveVoiceChat = React.memo<CurrentVoiceChatProps>(props => {
-    const { title, speakers, speakersCount, listenersCount } = props.currentVoiceChat;
+    const { id, title, speakers, speakersCount, listenersCount } = props.currentVoiceChat;
     const router = React.useContext(XViewRouterContext)!;
+    const joinRoom = useJoinRoom();
 
     const firstSpeakers = speakers.slice(0, 5);
 
@@ -81,7 +82,9 @@ export const ActiveVoiceChat = React.memo<CurrentVoiceChatProps>(props => {
                     shape="round"
                     paddingVertical={6}
                     paddingHorizontal={16}
-                    onClick={showInstallAppModal}
+                    onClick={() => {
+                        joinRoom(id);
+                    }}
                 />
             </XView>
         </UListGroup>
