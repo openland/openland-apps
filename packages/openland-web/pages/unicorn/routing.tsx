@@ -86,8 +86,8 @@ routing.addRoute('/discover/top-communities', () => DiscoverPopularOrgsFragment)
 routing.addRoute('/discover/new-communities', () => DiscoverNewOrgsFragment);
 
 // Rooms
-routing.addRoute('/home/rooms', () => StartRoomFragment);
-routing.addRoute('/home/rooms/', () => StartRoomFragment);
+routing.addRoute('/rooms', () => StartRoomFragment);
+routing.addRoute('/rooms/', () => StartRoomFragment);
 routing.addRoute('/room/:id', () => RoomFragment);
 
 // Contacts
