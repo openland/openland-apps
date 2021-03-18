@@ -2,19 +2,19 @@ import { VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import * as React from 'react';
-// import { XViewRouteContext, XViewRouterContext } from 'react-mental';
+import { XViewRouteContext, XViewRouterContext } from 'react-mental';
 
-export const useJoinRoom = () => {
+export const useJoinRoom = (allowSamePath: boolean = false) => {
     const client = useClient();
-    // const router = React.useContext(XViewRouterContext)!;
+    const router = React.useContext(XViewRouterContext)!;
     const messenger = React.useContext(MessengerContext);
-    // const route = React.useContext(XViewRouteContext)!;
+    const route = React.useContext(XViewRouteContext)!;
 
     return async (id: string) => {
-        // let targetPath = `/room/${id}`;
-        // if (route.path === targetPath) {
-        //     return;
-        // }
+        let targetPath = `/room/${id}`;
+        if (!allowSamePath && route.path === targetPath) {
+            return;
+        }
 
         let status = (await client.queryVoiceChatControls({ id })).voiceChat.me?.status;
         let didJoin = [VoiceChatParticipantStatus.ADMIN, VoiceChatParticipantStatus.SPEAKER, VoiceChatParticipantStatus.LISTENER, VoiceChatParticipantStatus.KICKED].includes(status!);
@@ -23,6 +23,8 @@ export const useJoinRoom = () => {
             messenger.calls.joinCall(id, 'voice-chat');
             await client.mutateVoiceChatJoin({ id });
         }
-        // router.navigate(targetPath);
+        if (!allowSamePath) {
+            router.navigate(targetPath);
+        }
     };
 };

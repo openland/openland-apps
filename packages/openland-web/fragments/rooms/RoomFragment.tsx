@@ -17,7 +17,7 @@ import IcAdd from 'openland-icons/s/ic-add-36.svg';
 import IcUser from 'openland-icons/s/ic-user-24.svg';
 import IcLeave from 'openland-icons/s/ic-leave-24.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import { SvgLoader } from 'openland-x/XLoader';
+import { SvgLoader, XLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { RoomControls } from './RoomControls';
 import { useVoiceChat, VoiceChatProvider, VoiceChatT } from 'openland-y-utils/voiceChat/voiceChatWatcher';
@@ -540,6 +540,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
     const client = useClient();
     const messenger = React.useContext(MessengerContext);
     const router = useTabRouter().router;
+    const joinRoom = useJoinRoom(true);
 
     const voiceChatData = useVoiceChat();
     const conference = client.useConference({ id: props.roomId }, { suspense: false })?.conference;
@@ -669,8 +670,16 @@ const RoomView = React.memo((props: { roomId: string }) => {
         };
     }, []);
 
+    React.useEffect(() => {
+        if (!voiceChatData.me || !calls.currentMediaSession) {
+            setTimeout(() => {
+                joinRoom(voiceChatData.id);
+            }, 2000);
+        }
+    }, []);
+
     if (!mediaSession) {
-        return null;
+        return <XLoader loading={true} />;
     }
 
     return (

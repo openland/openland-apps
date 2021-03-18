@@ -21,6 +21,7 @@ import IcDiscover from 'openland-icons/s/ic-discover-24.svg';
 import IcListener from 'openland-icons/s/ic-listener-16.svg';
 import IcSpeaker from 'openland-icons/s/ic-speaker-16.svg';
 import { showModalBox } from 'openland-x/showModalBox';
+import { useJoinRoom } from './joinRoom';
 
 type ActivePageType = 'Rooms' | 'Discover';
 
@@ -71,13 +72,13 @@ const startRoomContainer = css`
 const StartRoomItem = React.memo(() => {
     const startRoom = React.useCallback(async () => {
         showModalBox({ fullScreen: true, useTopCloser: false, hideOnEsc: false }, (ctx) => (
-            <NewRoomForm ctx={ctx}/>
+            <NewRoomForm ctx={ctx} />
         ));
     }, []);
 
     return (
         <div className={startRoomContainer}>
-            <div className={artCrowdImg}/>
+            <div className={artCrowdImg} />
             <div className={TextTitle3}>Talk about anything!</div>
             <XView {...TextStyles.Body} color="var(--foregroundSecondary)">
                 Create a new room and invite friends
@@ -96,10 +97,10 @@ const StartRoomItem = React.memo(() => {
 const RoomsFeedItem = React.memo((props: { voiceChat: VoiceChatWithSpeakers }) => {
     const { title, speakers, speakersCount, listenersCount, id } = props.voiceChat;
     const firstSpeakers = speakers.slice(0, 3);
-    const router = React.useContext(XViewRouterContext)!;
+    const joinRoom = useJoinRoom();
 
     return (
-        <div className={roomItemContainer} onClick={() => router.navigate(`/room/${id}`)}>
+        <div className={roomItemContainer} onClick={() => joinRoom(id)}>
             <div className={cx(roomTitle, TextLabel1)}>{title}</div>
             <XView marginTop={8} flexDirection="row" alignItems="center">
                 <XView width={250}>
@@ -112,13 +113,13 @@ const RoomsFeedItem = React.memo((props: { voiceChat: VoiceChatWithSpeakers }) =
                 <div className={avatarsContainer}>
                     {firstSpeakers.reverse().map((speaker, i) => (
                         <XView marginLeft={12} marginTop={i === 2 ? 12 : 0}>
-                           <UAvatar
-                               id={speaker.id}
-                               key={speaker.id}
-                               title={speaker.user.name}
-                               size="small"
-                               photo={speaker.user.photo}
-                           />
+                            <UAvatar
+                                id={speaker.id}
+                                key={speaker.id}
+                                title={speaker.user.name}
+                                size="small"
+                                photo={speaker.user.photo}
+                            />
                         </XView>
                     ))}
                 </div>
@@ -132,13 +133,13 @@ const RoomsFeedItem = React.memo((props: { voiceChat: VoiceChatWithSpeakers }) =
                 <XView {...TextStyles.Subhead} color="var(--foregroundSecondary)" marginRight={7}>
                     {speakersCount}
                 </XView>
-                <UIcon icon={<IcSpeaker />} color="var(--foregroundSecondary)"/>
+                <UIcon icon={<IcSpeaker />} color="var(--foregroundSecondary)" />
                 {listenersCount > 0 && (
                     <>
                         <XView {...TextStyles.Subhead} color="var(--foregroundSecondary)" marginLeft={15} marginRight={7}>
                             {listenersCount}
                         </XView>
-                        <UIcon icon={<IcListener />} color="var(--foregroundSecondary)"/>
+                        <UIcon icon={<IcListener />} color="var(--foregroundSecondary)" />
                     </>
                 )}
             </XView>
