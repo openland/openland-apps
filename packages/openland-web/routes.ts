@@ -244,8 +244,8 @@ routes.add('/message/:messageId/comment/:commentId/', '/unicorn/index');
 
 routes.add('/rooms', '/unicorn/index');
 routes.add('/rooms/', '/unicorn/index');
-routes.add('/rooms/:id', '/unicorn/index');
-routes.add('/rooms/:id/', '/unicorn/index');
+routes.add('/room/:id', '/unicorn/index');
+routes.add('/room/:id/', '/unicorn/index');
 
 //
 // Oauth

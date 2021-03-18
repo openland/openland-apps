@@ -11,7 +11,7 @@ export const useJoinRoom = () => {
     // const route = React.useContext(XViewRouteContext)!;
 
     return async (id: string) => {
-        // let targetPath = `/rooms/${id}`;
+        // let targetPath = `/room/${id}`;
         // if (route.path === targetPath) {
         //     return;
         // }

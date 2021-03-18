@@ -1,3 +1,4 @@
+import copy from 'copy-to-clipboard';
 import { cx, css } from 'linaria';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
@@ -30,6 +31,7 @@ const InviteToRoom = React.memo((props: InviteToRoomProps & { hide: () => void }
         if (timeoutId) {
             window.clearTimeout(timeoutId);
         }
+        copy(link, { format: 'text/plain' });
         setTimeout(() => {
             setCopied(false);
         }, 1500);

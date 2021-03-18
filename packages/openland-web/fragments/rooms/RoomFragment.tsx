@@ -7,9 +7,15 @@ import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import { TextLabel2, TextStyles, TextTitle1 } from 'openland-web/utils/TextStyles';
 import CrownIcon from 'openland-icons/ic-crown-4.svg';
-import IcListener from 'openland-icons/s/ic-listener-16.svg';
-import IcSpeaker from 'openland-icons/s/ic-speaker-16.svg';
+import IcListenerSmall from 'openland-icons/s/ic-listener-16.svg';
+import IcSpeakerSmall from 'openland-icons/s/ic-speaker-16.svg';
+import IcListener from 'openland-icons/s/ic-listener-24.svg';
+import IcSpeaker from 'openland-icons/s/ic-mic-24.svg';
+import IcCrown from 'openland-icons/s/ic-pro-24.svg';
+import IcCrownOff from 'openland-icons/s/ic-pro-off-24.svg';
 import IcAdd from 'openland-icons/s/ic-add-36.svg';
+import IcUser from 'openland-icons/s/ic-user-24.svg';
+import IcLeave from 'openland-icons/s/ic-leave-24.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { SvgLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
@@ -18,7 +24,7 @@ import { useVoiceChat, VoiceChatProvider, VoiceChatT } from 'openland-y-utils/vo
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { useClient } from 'openland-api/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { useStackRouter } from 'openland-unicorn/components/StackRouter';
+import { StackRouter, useStackRouter } from 'openland-unicorn/components/StackRouter';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { Conference_conference_peers, VoiceChatParticipant, VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import AlertBlanket from 'openland-x/AlertBlanket';
@@ -30,6 +36,9 @@ import { useJoinRoom } from './joinRoom';
 import { showRaiseHand } from './showRaiseHand';
 import { showRaisedHands } from './showRaisedHands';
 import { showInviteToRoom } from './showInviteToRoom';
+import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
+import { UPopperController } from 'openland-web/components/unicorn/UPopper';
+import { usePopper } from 'openland-web/components/unicorn/usePopper';
 
 interface PeerMedia {
     videoTrack: AppMediaStreamTrack | null;
@@ -56,7 +65,7 @@ const listenerIconClass = css`
 `;
 
 const userNameStyle = cx(TextLabel2, css`
-    width: 100%;
+    /* width: 100%; */
     text-align: center;
     color: var(--foregroundPrimary);
     white-space: nowrap;
@@ -82,50 +91,17 @@ const buttonLabelStyle = cx(TextLabel2, css`
 `);
 
 const speakersGridStyle = css`
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    column-gap: 32px;
-    row-gap: 24px;
-
-    @media (min-width: 750px) and (max-width: 1030px) {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    @media (max-width: 590px) {
-        grid-template-columns: repeat(4, 1fr);
-        column-gap: 24px;
-    }
-
-    @media (max-width: 467px) {
-        grid-template-columns: repeat(3, 1fr);
-        column-gap: 24px;
-    }
+    margin: 0 -4px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 `;
 
 const listenersGridStyle = css`
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    column-gap: 35px;
-    row-gap: 16px;
-
-    @media (min-width: 750px) and (max-width: 1030px) {
-        grid-template-columns: repeat(5, 1fr);
-    }
-
-    @media (max-width: 590px) {
-        grid-template-columns: repeat(5, 1fr);
-        column-gap: 24px;
-    }
-
-    @media (max-width: 467px) {
-        grid-template-columns: repeat(4, 1fr);
-        column-gap: 24px;
-    }
-
-    @media (max-width: 360px) {
-        grid-template-columns: repeat(4, 1fr);
-        column-gap: 12px;
-    }
+    margin: 0 -5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 `;
 
 const RoomHeader = ({
@@ -153,7 +129,7 @@ const RoomHeader = ({
                     {speakersCount}
                 </XView>
                 <UIcon
-                    icon={<IcSpeaker />}
+                    icon={<IcSpeakerSmall />}
                     className={speakerIconClass}
                     color="var(--foregroundTertiary)"
                 />
@@ -163,7 +139,7 @@ const RoomHeader = ({
                             {listenersCount}
                         </XView>
                         <UIcon
-                            icon={<IcListener />}
+                            icon={<IcListenerSmall />}
                             className={listenerIconClass}
                             color="var(--foregroundTertiary)"
                         />
@@ -176,19 +152,24 @@ const RoomHeader = ({
 
 const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: VoiceChatParticipant[], roomId: string }) => {
     return (
-        <XView alignItems="center">
+        <XView
+            alignItems="center"
+            padding={8}
+            hoverBackgroundColor="var(--backgroundTertiaryTrans)"
+            hoverBorderRadius={8}
+            marginHorizontal={4}
+            hoverCursor="pointer"
+            onClick={() => showRaisedHands({ raisedHands, roomId })}
+        >
             <XView
                 width={80}
                 height={80}
                 backgroundColor="#F8F2E1"
-                hoverOpacity={0.8}
                 justifyContent="center"
                 alignItems="center"
-                cursor="pointer"
                 borderRadius={100}
-                marginTop={4}
-                marginBottom={16}
-                onClick={() => showRaisedHands({ raisedHands, roomId })}
+                marginTop={8}
+                marginBottom={8}
             >
                 <ImgWithRetry
                     src="//cdn.openland.com/shared/rooms/wave-hand-36.png"
@@ -224,7 +205,15 @@ const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: VoiceChatPart
 const InviteButton = React.memo((props: { link: string }) => {
     const { link } = props;
     return (
-        <XView justifyContent="center" alignItems="center">
+        <XView
+            justifyContent="center"
+            alignItems="center"
+            padding={8}
+            marginHorizontal={4}
+            hoverBackgroundColor="var(--backgroundTertiaryTrans)"
+            hoverBorderRadius={8}
+            hoverCursor="pointer"
+        >
             <XView
                 width={80}
                 height={80}
@@ -234,8 +223,8 @@ const InviteButton = React.memo((props: { link: string }) => {
                 alignItems="center"
                 cursor="pointer"
                 borderRadius={100}
-                marginTop={4}
-                marginBottom={16}
+                marginTop={8}
+                marginBottom={8}
                 onClick={() => showInviteToRoom({ link })}
             >
                 <UIcon icon={<IcAdd />} size={36} color="var(--foregroundSecondary)" />
@@ -263,26 +252,136 @@ const listenerAvatarSizes = {
     dotBorderWidth: 0,
 };
 
+const UserMenu = React.memo((props: {
+    ctx: UPopperController,
+    roomId: string,
+    userId: string,
+    status: VoiceChatParticipantStatus,
+    router: StackRouter,
+}) => {
+    const client = useClient();
+    let popper = new UPopperMenuBuilder();
+
+    popper.item({
+        title: 'View profile',
+        icon: <IcUser />,
+        action: () => {
+            props.router.push(`/${props.userId}`);
+        },
+    });
+
+    if (props.status === VoiceChatParticipantStatus.LISTENER) {
+        popper.item({
+            title: 'Make speaker',
+            icon: <IcSpeaker />,
+            action: async () => {
+                await client.mutateVoiceChatPromote({ id: props.roomId, uid: props.userId });
+            },
+        });
+    }
+    if (props.status === VoiceChatParticipantStatus.SPEAKER) {
+        popper.item({
+            title: 'Make admin',
+            icon: <IcCrown />,
+            action: async () => {
+                await client.mutateVoiceChatUpdateAdmin({ id: props.roomId, uid: props.userId, admin: true });
+            },
+        }).item({
+            title: 'Make listener',
+            icon: <IcListener />,
+            action: async () => {
+                await client.mutateVoiceChatDemote({ id: props.roomId, uid: props.userId });
+            },
+        });
+    }
+
+    if (props.status === VoiceChatParticipantStatus.ADMIN) {
+        popper.item({
+            title: 'Remove admin',
+            icon: <IcCrownOff />,
+            action: async () => {
+                await client.mutateVoiceChatUpdateAdmin({ id: props.roomId, uid: props.userId, admin: false });
+            },
+        });
+    }
+
+    popper.item({
+        title: 'Remove',
+        icon: <IcLeave />,
+        action: async () => {
+            await client.mutateVoiceChatKick({ id: props.roomId, uid: props.userId });
+        },
+    });
+
+    return popper.build(props.ctx, 200);
+});
+
 interface RoomUserInfo {
     id: string;
     name: string;
     photo: string | null;
-    isAdmin?: boolean;
+    roomId: string;
+    userStatus: VoiceChatParticipantStatus;
+    selfId?: string;
 }
 
 const RoomUser = React.memo(({
-    isSpeaker,
-    isAdmin,
     id,
     name,
     photo,
     state,
+    roomId,
+    userStatus,
+    selfId,
 }: {
-    isSpeaker: boolean;
     state?: 'talking' | 'loading' | 'muted';
 } & RoomUserInfo) => {
+    const router = useStackRouter();
+    const [visible, show, hide] = usePopper(
+        {
+            placement: 'bottom-start',
+            hideOnLeave: false,
+            borderRadius: 8,
+            scope: 'room-user',
+            hideOnChildClick: true,
+            hideOnClick: true,
+            updatedDeps: userStatus,
+        },
+        (ctx) => (
+            <UserMenu ctx={ctx} roomId={roomId} userId={id} status={userStatus} router={router} />
+        ),
+    );
+    const isAdmin = userStatus === VoiceChatParticipantStatus.ADMIN;
+    const isSpeaker = userStatus === VoiceChatParticipantStatus.SPEAKER;
+    const isListener = userStatus === VoiceChatParticipantStatus.LISTENER;
+    const isSelf = selfId === id;
+    const handleClick = (e: React.MouseEvent) => {
+        if (visible) {
+            hide();
+        } else {
+            show(e);
+        }
+    };
     return (
-        <XView alignItems="center" justifyContent="center">
+        <XView
+            flexGrow={0}
+            flexShrink={0}
+            alignItems="center"
+            padding={8}
+            {...!isSelf && {
+                hoverBackgroundColor: 'var(--backgroundTertiaryTrans)',
+                hoverBorderRadius: 8,
+                hoverCursor: 'pointer',
+                backgroundColor: visible ? 'var(--backgroundTertiaryTrans)' : undefined,
+                borderRadius: visible ? 8 : undefined,
+                onClick: handleClick,
+            }}
+            {...isListener ? {
+                marginHorizontal: 5,
+            } : {
+                marginHorizontal: 4,
+            }}
+        >
             <XView
                 width={88}
                 height={88}
@@ -295,7 +394,7 @@ const RoomUser = React.memo(({
                 marginBottom={8}
             >
                 <UAvatar
-                    customSizes={isSpeaker ? speakerAvatarSizes : listenerAvatarSizes}
+                    customSizes={isSpeaker || isAdmin ? speakerAvatarSizes : listenerAvatarSizes}
                     id={id}
                     title={name}
                     photo={photo}
@@ -313,7 +412,7 @@ const RoomUser = React.memo(({
                         alignItems="center"
                     >
                         {state === 'muted' ? (
-                            <UIcon size={16} icon={<IcSpeaker />} color="var(--foregroundTertiary)" />
+                            <UIcon size={16} icon={<IcSpeakerSmall />} color="var(--foregroundTertiary)" />
                         ) : state === 'loading' ? (
                             <SvgLoader size="small" contrast={true} />
                         ) : null}
@@ -344,7 +443,6 @@ const RoomSpeakerUser = React.memo((props: {
 
     return (
         <RoomUser
-            isSpeaker={true}
             state={state}
             {...other}
         />
@@ -399,6 +497,9 @@ const RoomSpeakers = React.memo(({
                     isMuted={peer?.mediaState.audioPaused}
                     analyzer={analyzer}
                     photo={speaker.user.photo}
+                    roomId={room.id}
+                    selfId={room.me?.user.id}
+                    userStatus={speaker.status}
                 />
             ))}
             {speakers.length <= 8 && room.me?.status === VoiceChatParticipantStatus.ADMIN && (
@@ -416,11 +517,13 @@ const RoomListeners = React.memo((props: { room: VoiceChatT }) => {
         <div className={listenersGridStyle}>
             {(props.room.listeners || []).map((listener, i) => (
                 <RoomUser
-                    isSpeaker={false}
                     key={listener.id}
                     id={listener.user.id}
                     name={listener.user.firstName}
                     photo={listener.user.photo}
+                    roomId={props.room.id}
+                    selfId={props.room.me?.user.id}
+                    userStatus={listener.status}
                 />
             ))}
         </div>

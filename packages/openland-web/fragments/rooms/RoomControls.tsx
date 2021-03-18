@@ -198,11 +198,11 @@ export const RoomControls = React.memo(({
     const [visible, show] = usePopper(
         {
             placement: 'top',
-            hideOnLeave: false,
+            hideOnLeave: true,
             borderRadius: 8,
             scope: 'room-settings',
-            hideOnChildClick: false,
-            hideOnClick: false,
+            hideOnChildClick: true,
+            hideOnClick: true,
         },
         (ctx) => (
             <SettingsMenu ctx={ctx} roomId={roomId} title={title} raisedHands={raisedHands} />
