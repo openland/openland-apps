@@ -356,6 +356,10 @@ const RoomUser = React.memo(({
     const isListener = userStatus === VoiceChatParticipantStatus.LISTENER;
     const isSelf = selfId === id;
     const handleClick = (e: React.MouseEvent) => {
+        if (isListener) {
+            router.push(`/${id}`);
+            return;
+        }
         if (visible) {
             hide();
         } else {

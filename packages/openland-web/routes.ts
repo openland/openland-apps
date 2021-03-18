@@ -242,8 +242,8 @@ routes.add('/message/:messageId/comment/:commentId/', '/unicorn/index');
 // Rooms
 //
 
-routes.add('/rooms', '/unicorn/index');
-routes.add('/rooms/', '/unicorn/index');
+routes.add('/home/rooms', '/unicorn/index');
+routes.add('/home/rooms/', '/unicorn/index');
 routes.add('/room/:id', '/unicorn/index');
 routes.add('/room/:id/', '/unicorn/index');
 
