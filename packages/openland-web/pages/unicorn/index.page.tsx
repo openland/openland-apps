@@ -52,14 +52,6 @@ const Unicorn = React.memo(() => {
                               isStackHidden: true,
                           },
                           {
-                              icon: <ChannelsIcon />,
-                              iconActive: <ChannelsActiveIcon />,
-                              path: '/channels',
-                              component: <IndexFragment />,
-                              caption: 'Channels',
-                              defaultPage: true,
-                          },
-                          {
                               icon: <ChatIcon />,
                               iconActive: <ChatActiveIcon />,
                               path: '/mail',
