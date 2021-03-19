@@ -8,6 +8,7 @@ import { showRoomView } from './RoomView';
 import { VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import { useVoiceChatsFeed } from 'openland-y-utils/voiceChat/voiceChatsFeedWatcher';
 import { isPad } from 'openland-mobile/pages/Root';
+import Toast from 'openland-mobile/components/Toast';
 
 export const useJoinRoom = () => {
     const client = useClient();
@@ -24,12 +25,17 @@ export const useJoinRoom = () => {
                 return;
             }
             setModalOpen(true);
-            let status = (await client.queryVoiceChatControls({ id })).voiceChat.me?.status;
+            let status: VoiceChatParticipantStatus | undefined;
+            try {
+                status = (await client.queryVoiceChatControls({ id })).voiceChat.me?.status;
+            } catch (e) {
+                Toast.failure({ text: `Room doesn't exist`, duration: 2000 }).show();
+            }
             let didJoin = [VoiceChatParticipantStatus.ADMIN, VoiceChatParticipantStatus.SPEAKER, VoiceChatParticipantStatus.LISTENER, VoiceChatParticipantStatus.KICKED].includes(status!);
             const mediaSession = messenger.calls.currentMediaSession;
-            if (!mediaSession || mediaSession && !didJoin || id !== mediaSession.conversationId) {
-                messenger.calls.joinCall(id, 'voice-chat');
+            if (!mediaSession || (mediaSession && !didJoin) || (id !== mediaSession.conversationId)) {
                 await client.mutateVoiceChatJoin({ id });
+                messenger.calls.joinCall(id, 'voice-chat');
             }
             showRoomView(id, router, () => setModalOpen(false));
         }

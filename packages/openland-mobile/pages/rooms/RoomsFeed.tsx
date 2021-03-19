@@ -98,6 +98,7 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
     const router = React.useContext(SRouterContext)!;
     const scrollRef = React.useContext(ComponentRefContext);
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
+    const joinRoom = useJoinRoom();
 
     const pushRoom = React.useCallback(() => {
         router.push('CreateRoom');
@@ -105,6 +106,14 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
 
     const onUpcomingPress = React.useCallback(() => {
         Linking.openURL('https://www.notion.so/openland/Openland-Upcoming-Rooms-e2b80f28693c4fc788b9f269cc3346b0');
+    }, []);
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            if (router.params.id) {
+                joinRoom(router.params.id);
+            }
+        }, 500);
     }, []);
 
     const upcomingHeader = (

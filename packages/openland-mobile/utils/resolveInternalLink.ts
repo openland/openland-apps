@@ -50,6 +50,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
             'discover/new-communities': { route: 'DiscoverListing', params: { type: 'new-orgs' } },
             'account/licenses': { route: 'SettingsLicenses' },
             'settings/licenses': { route: 'SettingsLicenses' },
+            'rooms': { route: 'RoomsFeed' },
         };
 
         let pagePattern = /(http(s)?\:\/\/)?(.*\.)?openland\.com\/(.*)/g;
@@ -273,6 +274,19 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         if (matchSharedMedia && matchSharedMedia.id) {
             loader.show();
             navigate('SharedMedia', { chatId: matchSharedMedia.id });
+            loader.hide();
+            return;
+        }
+
+        //
+        // SHARED MEDIA
+        //
+        let voiceChatPattern = new UrlPattern(patternBase + 'room/:id');
+        let voiceChatPatternDeep = new UrlPattern(patternBaseDeep + 'room/:id');
+        let matchVoiceChat = voiceChatPattern.match(link) || voiceChatPatternDeep.match(link);
+        if (matchVoiceChat && matchVoiceChat.id) {
+            loader.show();
+            navigate('RoomsFeed', { id: matchVoiceChat.id });
             loader.hide();
             return;
         }
