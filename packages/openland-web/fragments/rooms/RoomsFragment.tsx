@@ -22,6 +22,7 @@ import IcListener from 'openland-icons/s/ic-listener-16.svg';
 import IcSpeaker from 'openland-icons/s/ic-speaker-16.svg';
 import { showModalBox } from 'openland-x/showModalBox';
 import { useJoinRoom } from './joinRoom';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 type ActivePageType = 'Rooms' | 'Discover';
 
@@ -154,13 +155,19 @@ const HomeMenu = (props: {
 }) => {
     let res = new UPopperMenuBuilder();
     const router = React.useContext(XViewRouterContext)!;
+    let messenger = React.useContext(MessengerContext);
+    let ms = messenger.calls.useCurrentSession();
 
     res.item({
         title: 'Rooms',
         icon: <IcRooms />,
         action: () => {
             props.setActivePage('Rooms');
-            router.navigate('/rooms', true);
+            if (ms) {
+                router.navigate(`/room/${ms.conversationId}`, true);
+            } else {
+                router.navigate('/rooms', true);
+            }
         },
         selected: props.activePage === 'Rooms',
     });
