@@ -6,7 +6,7 @@ import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { useVoiceChatsFeed } from 'openland-y-utils/voiceChat/voiceChatsFeedWatcher';
 import { VoiceChatWithSpeakers } from 'openland-api/spacex.types';
-import { TextLabel1, TextStyles, TextTitle3 } from 'openland-web/utils/TextStyles';
+import { TextLabel1, TextStyles, TextSubhead, TextTitle3 } from 'openland-web/utils/TextStyles';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { UButton } from 'openland-web/components/unicorn/UButton';
@@ -59,7 +59,8 @@ const avatarsContainer = css`
     display: flex;
     flex-direction: row-reverse;
     flex-wrap: wrap;
-    width: 92px;
+    flex-shrink: 0;
+    max-width: 92px;
 `;
 
 const startRoomContainer = css`
@@ -68,6 +69,14 @@ const startRoomContainer = css`
     flex-direction: column;
     align-items: center;
     padding: 30px;
+`;
+
+const speakerNamesContainer = css`
+  color: var(--foregroundSecondary);
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 const StartRoomItem = React.memo(() => {
@@ -103,12 +112,12 @@ const RoomsFeedItem = React.memo((props: { voiceChat: VoiceChatWithSpeakers }) =
     return (
         <div className={roomItemContainer} onClick={() => joinRoom(id)}>
             <div className={cx(roomTitle, TextLabel1)}>{title}</div>
-            <XView marginTop={8} flexDirection="row" alignItems="center">
-                <XView width={250}>
+            <XView marginTop={8} flexDirection="row" alignItems="center" justifyContent="space-between">
+                <XView flexShrink={1}>
                     {firstSpeakers.map(speaker => (
-                        <XView {...TextStyles.Subhead} color="var(--foregroundSecondary)">
+                        <div className={cx(TextSubhead, speakerNamesContainer)}>
                             {speaker.user.name}
-                        </XView>
+                        </div>
                     ))}
                 </XView>
                 <div className={avatarsContainer}>
