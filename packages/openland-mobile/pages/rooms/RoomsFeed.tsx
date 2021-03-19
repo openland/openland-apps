@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Linking } from 'react-native';
 import { useClient } from 'openland-api/useClient';
 import { VoiceChatWithSpeakers } from 'openland-api/spacex.types';
 import { PageProps } from 'openland-mobile/components/PageProps';
@@ -103,6 +103,22 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
         router.push('CreateRoom');
     }, [router]);
 
+    const onUpcomingPress = React.useCallback(() => {
+        Linking.openURL('https://www.notion.so/openland/Openland-Upcoming-Rooms-e2b80f28693c4fc788b9f269cc3346b0');
+    }, []);
+
+    const upcomingHeader = (
+        <ZButton
+            title="🔥 Upcoming rooms"
+            marginHorizontal={16}
+            marginTop={8}
+            marginBottom={24}
+            size="large"
+            style="secondary"
+            onPress={onUpcomingPress}
+        />
+    );
+
     return (
         <>
             <SHeader
@@ -122,7 +138,7 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
                         renderItem={({ item }) => <RoomFeedItem room={item} theme={theme} router={router} />}
                         keyExtractor={(item) => item.id}
                         ItemSeparatorComponent={() => voiceChats.chats.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
-                        ListHeaderComponent={() => voiceChats.chats.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
+                        ListHeaderComponent={upcomingHeader}
                         ListFooterComponent={() => (
                             <>
                                 {voiceChats.chats.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
