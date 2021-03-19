@@ -160,7 +160,7 @@ const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: VoiceChatPart
             hoverBorderRadius={8}
             marginHorizontal={4}
             hoverCursor="pointer"
-            onClick={() => showRaisedHands({ raisedHands, roomId })}
+            onClick={() => showRaisedHands({ roomId })}
         >
             <XView
                 width={80}
@@ -348,6 +348,7 @@ const RoomUser = React.memo(({
             scope: 'room-user',
             hideOnChildClick: true,
             hideOnClick: true,
+            updatedDeps: userStatus,
         },
         (ctx) => (
             <UserMenu ctx={ctx} roomId={roomId} userId={id} status={userStatus} />
@@ -673,7 +674,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
     }, []);
 
     React.useEffect(() => {
-        if (!voiceChatData.me || !calls.currentMediaSession) {
+        if (!voiceChatData.me || !mediaSession) {
             setTimeout(() => {
                 joinRoom(voiceChatData.id);
             }, 2000);
@@ -747,10 +748,6 @@ const RoomView = React.memo((props: { roomId: string }) => {
 
 export const RoomFragment = React.memo(() => {
     const { id } = useUnicorn().query;
-    const joinRoom = useJoinRoom();
-    React.useEffect(() => {
-        joinRoom(id);
-    }, []);
     // TODO: Unavailable page for wrong id
     return (
         <VoiceChatProvider roomId={id}>

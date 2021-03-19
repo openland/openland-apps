@@ -154,7 +154,7 @@ const SettingsMenu = React.memo((props: {
             title: 'Raised hands',
             icon: <IcHand />,
             action: () => {
-                showRaisedHands({ raisedHands: props.raisedHands, roomId: props.roomId });
+                showRaisedHands({ roomId: props.roomId });
             },
             counter: props.raisedHands.length,
         });
@@ -195,7 +195,7 @@ export const RoomControls = React.memo(({
     onHandRaise: () => void,
 }) => {
 
-    const [visible, show] = usePopper(
+    const [visible, show, hide] = usePopper(
         {
             placement: 'top',
             hideOnLeave: true,
@@ -203,6 +203,7 @@ export const RoomControls = React.memo(({
             scope: 'room-settings',
             hideOnChildClick: true,
             hideOnClick: true,
+            updatedDeps: [raisedHands, title],
         },
         (ctx) => (
             <SettingsMenu ctx={ctx} roomId={roomId} title={title} raisedHands={raisedHands} />
@@ -234,7 +235,13 @@ export const RoomControls = React.memo(({
                         icon={<IcSettings />}
                         counter={raisedHands.length}
                         bgColor={visible ? 'var(--backgroundTertiaryActiveTrans)' : undefined}
-                        onClick={show}
+                        onClick={(e: React.MouseEvent) => {
+                            if (visible) {
+                                hide();
+                            } else {
+                                show(e);
+                            }
+                        }}
                     />
                 )}
                 <div style={{ justifySelf: 'end' }}>
