@@ -337,7 +337,7 @@ export const usePopper = (
                 );
             };
         },
-        [config.placement, config.wrapperClassName, config.updatedDeps],
+        [config.placement, config.wrapperClassName, ...Array.isArray(config.updatedDeps) ? config.updatedDeps : [config.updatedDeps]],
     );
 
     React.useEffect(() => {

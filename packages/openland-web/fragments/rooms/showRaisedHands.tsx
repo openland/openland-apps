@@ -12,10 +12,10 @@ import { css, cx } from 'linaria';
 import { TextBody, TextTitle1 } from 'openland-web/utils/TextStyles';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { useVoiceChat, VoiceChatProvider } from 'openland-y-utils/voiceChat/voiceChatWatcher';
 
 interface RaisedHandsProps {
     roomId: string;
-    raisedHands: VoiceChatParticipant[];
 }
 
 const UserItem = React.memo((props: { roomId: string, participant: VoiceChatParticipant, hide: () => void }) => {
@@ -57,7 +57,8 @@ const emptyImgStyle = css`
 `;
 
 const RaisedHands = React.memo((props: RaisedHandsProps & { hide: () => void }) => {
-    const { raisedHands, roomId, hide } = props;
+    const { roomId, hide } = props;
+    const { raisedHands = [] } = useVoiceChat();
 
     return (
         <XView>
@@ -89,6 +90,8 @@ const RaisedHands = React.memo((props: RaisedHandsProps & { hide: () => void }) 
 
 export const showRaisedHands = (props: RaisedHandsProps) => {
     showModalBox({ title: 'Raised Hands', width: 480 }, ctx => (
-        <RaisedHands {...props} hide={ctx.hide} />
+        <VoiceChatProvider roomId={props.roomId}>
+            <RaisedHands {...props} hide={ctx.hide} />
+        </VoiceChatProvider>
     ));
 };
