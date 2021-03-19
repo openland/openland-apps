@@ -106,7 +106,7 @@ const StartRoomItem = React.memo(() => {
 
 const RoomsFeedItem = React.memo((props: { voiceChat: VoiceChatWithSpeakers }) => {
     const { title, speakers, speakersCount, listenersCount, id } = props.voiceChat;
-    const firstSpeakers = speakers.slice(0, 3);
+    const firstSpeakers = speakers.slice(0, 4);
     const joinRoom = useJoinRoom();
 
     return (
@@ -122,7 +122,7 @@ const RoomsFeedItem = React.memo((props: { voiceChat: VoiceChatWithSpeakers }) =
                 </XView>
                 <div className={avatarsContainer}>
                     {firstSpeakers.reverse().map((speaker, i) => (
-                        <XView marginLeft={12} marginTop={i === 2 ? 12 : 0}>
+                        <XView marginLeft={12} marginTop={i > 1 ? 12 : 0}>
                             <UAvatar
                                 id={speaker.id}
                                 key={speaker.id}
