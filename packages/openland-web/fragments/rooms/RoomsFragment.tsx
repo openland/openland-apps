@@ -189,7 +189,7 @@ export const RoomsFragment = React.memo(() => {
     );
 
     React.useEffect(() => {
-        if (router.path.includes('/rooms') && activeHomePage !== 'Rooms') {
+        if (router.path.includes('/room') && activeHomePage !== 'Rooms') {
             setActiveHomePage('Rooms');
         } else if (router.path.includes('/discover') && activeHomePage !== 'Discover') {
             setActiveHomePage('Discover');
