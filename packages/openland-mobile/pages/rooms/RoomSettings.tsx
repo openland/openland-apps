@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { View, Platform, LayoutAnimation, Keyboard, DeviceEventEmitter } from 'react-native';
+import { View, Platform, LayoutAnimation, Keyboard, DeviceEventEmitter, Image } from 'react-native';
 import { useClient } from 'openland-api/useClient';
+import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { VoiceChatParticipant_user } from 'openland-api/spacex.types';
 import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import { ZButton } from 'openland-mobile/components/ZButton';
@@ -98,11 +99,7 @@ const EditRoomModal = React.memo((props: EditRoomModalProps & { hide: () => void
     return (
         <KeyboardHandlerContainer>
             <ZShaker ref={shakerRef}>
-                <ZInput
-                    placeholder="Room name"
-                    field={titleField}
-                    multiline={true}
-                />
+                <ZInput placeholder="Room name" field={titleField} multiline={true} />
             </ZShaker>
             <View style={{ flexDirection: 'row', flex: 1, marginHorizontal: 16 }}>
                 <View style={{ flex: 1, marginRight: 16 }}>
@@ -160,19 +157,23 @@ const EditPinnedMessage = React.memo((props: EditPinnedMessageProps & { hide: ()
         props.hide();
     };
 
+    const onDeleteClick = () => {
+        const builder = new AlertBlanketBuilder();
+
+        builder.title('Delete pinned message?');
+        builder.action('Delete', 'destructive', () => onDelete());
+        builder.show();
+    };
+
     return (
         <KeyboardHandlerContainer>
             <ZShaker ref={shakerRef}>
-                <ZInput
-                    placeholder="Pinned message"
-                    field={messageField}
-                    multiline={true}
-                />
+                <ZInput placeholder="Pinned message" field={messageField} multiline={true} />
             </ZShaker>
             <View style={{ flexDirection: 'row', flex: 1, marginHorizontal: 16 }}>
                 <View style={{ flex: 1, marginRight: 16 }}>
                     {props.message ? (
-                        <ZButton style="danger" size="large" title="Delete" action={onDelete} />
+                        <ZButton style="danger" size="large" title="Delete" action={onDeleteClick} />
                     ) : (
                         <ZButton style="secondary" size="large" title="Cancel" onPress={onCancel} />
                     )}
@@ -185,7 +186,7 @@ const EditPinnedMessage = React.memo((props: EditPinnedMessageProps & { hide: ()
     );
 });
 
-const showEditPinnedMessage = (props: EditPinnedMessageProps) => {
+export const showEditPinnedMessage = (props: EditPinnedMessageProps) => {
     showBottomSheet({
         title: 'Pinned message',
         cancelable: true,

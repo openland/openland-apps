@@ -10,7 +10,7 @@ import { PlaceholderOrange } from 'openland-y-utils/themes/placeholders';
 
 export type ZAvatarSize = 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'xxx-large';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
     placeholderText: {
         maxWidth: '100%',
         textAlign: 'center',

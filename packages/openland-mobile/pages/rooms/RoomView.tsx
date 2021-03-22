@@ -17,16 +17,20 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { HighlightAlpha, TextStyles } from 'openland-mobile/styles/AppStyles';
-import { ZAvatar } from 'openland-mobile/components/ZAvatar';
+import { ZAvatar, getPlaceholderColors, styles } from 'openland-mobile/components/ZAvatar';
+import { ZImage } from 'openland-mobile/components/ZImage';
+import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { ZText } from 'openland-mobile/components/ZText';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { RoomControls } from './RoomControls';
+import { showEditPinnedMessage } from './RoomSettings';
 import { Conference_conference_peers, VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { TintBlue } from 'openland-y-utils/themes/tints';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import InCallManager from 'react-native-incall-manager';
+import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradient.native';
 import {
     VoiceChatProvider,
     useVoiceChat,
@@ -42,11 +46,18 @@ import Toast from 'openland-mobile/components/Toast';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
 import { debounce } from 'openland-y-utils/timer';
 
-const showPinnedMessage = (message: string, theme: ThemeGlobal) => {
-    showBottomSheet({
-        title: 'Pinned message',
-        cancelable: true,
-        view: () => (
+interface PinnedMessageViewProps {
+    theme: ThemeGlobal;
+    ctx: ModalProps;
+    message: string;
+    roomId: string;
+    isAdmin: boolean;
+}
+
+const PinnedMessageView = React.memo((props: PinnedMessageViewProps) => {
+    const { message, roomId, isAdmin, theme, ctx } = props;
+    return (
+        <>
             <View style={{ paddingHorizontal: 16 }}>
                 <ZText
                     linkify={true}
@@ -54,6 +65,40 @@ const showPinnedMessage = (message: string, theme: ThemeGlobal) => {
                     text={message}
                 />
             </View>
+            {isAdmin && (
+                <View style={{ marginTop: 16 }}>
+                    <ZListItem
+                        leftIcon={require('assets/ic-edit-24.png')}
+                        small={true}
+                        text="Edit message"
+                        onPress={() => {
+                            ctx.hide();
+                            showEditPinnedMessage({ id: roomId, message });
+                        }}
+                    />
+                </View>
+            )}
+        </>
+    );
+});
+
+const showPinnedMessage = (
+    message: string,
+    roomId: string,
+    isAdmin: boolean,
+    theme: ThemeGlobal,
+) => {
+    showBottomSheet({
+        title: 'Pinned message',
+        cancelable: true,
+        view: (ctx) => (
+            <PinnedMessageView
+                message={message}
+                roomId={roomId}
+                isAdmin={isAdmin}
+                theme={theme}
+                ctx={ctx}
+            />
         ),
     });
 };
@@ -65,6 +110,7 @@ interface RoomUserViewProps {
         firstName: string;
         photo: string | null;
         id: string;
+        about: string | null;
     };
     userStatus: VoiceChatParticipantStatus;
     theme: ThemeGlobal;
@@ -80,118 +126,233 @@ interface PeerMedia {
     screencastTrack: AppMediaStreamTrack | null;
 }
 
-const UserModalBody = React.memo(
-    ({
-        selfStatus,
-        user,
-        roomId,
-        hide,
-        userStatus,
-        theme,
-        router,
-        modalCtx,
-    }: RoomUserViewProps & { hide: () => void }) => {
-        const client = useClient();
-        const { followingCount, followedByMe, followersCount } = client.useVoiceChatUser(
-            {
-                uid: user.id,
-            },
-            { fetchPolicy: 'network-only' },
-        ).user;
-        const isSelfAdmin = selfStatus === VoiceChatParticipantStatus.ADMIN;
+const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => void }) => {
+    const { user, theme } = props;
+    const [avatarSize, setAvatarSize] = React.useState<null | number>(null);
 
-        const removeAdmin = React.useCallback(async () => {
-            await Promise.all([
-                client.mutateVoiceChatUpdateAdmin({ id: roomId, uid: user.id, admin: false }),
-                client.refetchVoiceChat({ id: roomId }),
-            ]);
-            hide();
-        }, [roomId, user.id]);
-        const makeAdmin = React.useCallback(async () => {
-            await Promise.all([
-                client.mutateVoiceChatUpdateAdmin({ id: roomId, uid: user.id, admin: true }),
-                client.refetchVoiceChat({ id: roomId }),
-            ]);
-            hide();
-        }, [roomId, user.id]);
-        const removeUser = React.useCallback(async () => {
-            await client.mutateVoiceChatKick({ id: roomId, uid: user.id });
-            await client.refetchVoiceChat({ id: roomId });
-            hide();
-        }, [roomId, user.id]);
-        const demoteUser = React.useCallback(async () => {
-            await client.mutateVoiceChatDemote({ id: roomId, uid: user.id });
-            await client.refetchVoiceChat({ id: roomId });
-            hide();
-        }, [roomId, user.id]);
-        const promoteUser = React.useCallback(async () => {
-            await client.mutateVoiceChatPromote({ id: roomId, uid: user.id });
-            await client.refetchVoiceChat({ id: roomId });
-            hide();
-        }, [roomId, user.id]);
-        const followUser = React.useCallback(async () => {
-            await client.mutateSocialFollow({ uid: user.id });
-            await client.refetchVoiceChatUser({ uid: user.id });
-            hide();
-        }, [roomId, user.id]);
-        const unfollowUser = React.useCallback(async () => {
-            await client.mutateSocialUnfollow({ uid: user.id });
-            await client.refetchVoiceChatUser({ uid: user.id });
-            hide();
-        }, [roomId, user.id]);
-        const handleViewUser = React.useCallback(() => {
-            router.push('ProfileUser', { id: user.id });
-            hide();
-            modalCtx.hide();
-        }, [router]);
+    const client = useClient();
+    const { followedByMe, followersCount } = client.useVoiceChatUser(
+        {
+            uid: user.id,
+        },
+        { fetchPolicy: 'network-only' },
+    ).user;
 
-        return (
-            <>
+    const onLayout = React.useCallback(
+        (e: LayoutChangeEvent) => {
+            if (!avatarSize) {
+                setAvatarSize(e.nativeEvent.layout.width);
+            }
+        },
+        [avatarSize],
+    );
+
+    const isSelfAdmin = props.selfStatus === VoiceChatParticipantStatus.ADMIN;
+
+    const removeAdmin = async () => {
+        await Promise.all([
+            client.mutateVoiceChatUpdateAdmin({ id: props.roomId, uid: user.id, admin: false }),
+            client.refetchVoiceChat({ id: props.roomId }),
+        ]);
+        props.hide();
+    };
+    const makeAdmin = async () => {
+        await Promise.all([
+            client.mutateVoiceChatUpdateAdmin({ id: props.roomId, uid: user.id, admin: true }),
+            client.refetchVoiceChat({ id: props.roomId }),
+        ]);
+        props.hide();
+    };
+    const removeUser = async () => {
+        await client.mutateVoiceChatKick({ id: props.roomId, uid: user.id });
+        await client.refetchVoiceChat({ id: props.roomId });
+        props.hide();
+    };
+    const demoteUser = async () => {
+        await client.mutateVoiceChatDemote({ id: props.roomId, uid: user.id });
+        await client.refetchVoiceChat({ id: props.roomId });
+        props.hide();
+    };
+    const promoteUser = async () => {
+        await client.mutateVoiceChatPromote({ id: props.roomId, uid: user.id });
+        await client.refetchVoiceChat({ id: props.roomId });
+        props.hide();
+    };
+    const followUser = async () => {
+        await client.mutateSocialFollow({ uid: user.id });
+        await client.refetchVoiceChatUser({ uid: user.id });
+        props.hide();
+    };
+    const handleViewUser = () => {
+        props.router.push('ProfileUser', { id: user.id });
+        props.hide();
+        props.modalCtx.hide();
+    };
+
+    return (
+        <React.Suspense
+            fallback={
                 <View
                     style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
+                        flexGrow: 1,
+                        minHeight: 156,
                         justifyContent: 'center',
-                        marginTop: 8,
-                        marginBottom: 16,
+                        alignItems: 'center',
                     }}
                 >
-                    <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>
-                        {followingCount} following
-                    </Text>
+                    <ZLoader />
+                </View>
+            }
+        >
+            <View
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'stretch',
+                    justifyContent: 'center',
+                }}
+                onLayout={onLayout}
+            >
+                {!!avatarSize && (
                     <View
                         style={{
-                            width: 3,
-                            height: 3,
-                            borderRadius: 3,
-                            backgroundColor: theme.foregroundTertiary,
-                            marginHorizontal: 8,
+                            position: 'relative',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'flex-start',
+                            justifyContent: 'flex-end',
+                            width: avatarSize,
+                            height: avatarSize,
                         }}
-                    />
-                    <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>
-                        {followersCount} followers
-                    </Text>
-                </View>
-                <View style={{ flexGrow: 1, alignItems: 'stretch' }}>
-                    {followedByMe ? (
-                        <ZListItem
-                            leftIcon={require('assets/ic-user-remove-24.png')}
-                            small={true}
-                            text="Unfollow"
-                            onPress={unfollowUser}
+                    >
+                        <View
+                            style={{
+                                position: 'absolute',
+                                left: 0,
+                                right: 0,
+                                width: avatarSize,
+                                height: avatarSize,
+                            }}
+                        >
+                            {!!(user.photo && !user.photo.startsWith('ph://')) ? (
+                                <ZImage
+                                    highPriority={true}
+                                    imageSize={{ width: avatarSize, height: avatarSize }}
+                                    source={user.photo}
+                                    borderTopLeftRadius={18}
+                                    borderTopRightRadius={18}
+                                    width={avatarSize}
+                                    height={avatarSize}
+                                />
+                            ) : (
+                                <ZLinearGradient
+                                    width={avatarSize}
+                                    height={avatarSize}
+                                    borderTopLeftRadius={18}
+                                    borderTopRightRadius={18}
+                                    fallbackColor={
+                                        getPlaceholderColors(user.id || '').placeholderColor
+                                    }
+                                    colors={[
+                                        getPlaceholderColors(user.id || '').placeholderColorStart,
+                                        getPlaceholderColors(user.id || '').placeholderColorEnd,
+                                    ]}
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 1, y: 1 }}
+                                >
+                                    <View
+                                        style={{
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            width: avatarSize,
+                                            height: avatarSize,
+                                        }}
+                                    >
+                                        <Text
+                                            style={[styles.placeholderText, { fontSize: 128 }]}
+                                            allowFontScaling={false}
+                                        >
+                                            {extractPlaceholder(user.name)}
+                                        </Text>
+                                    </View>
+                                </ZLinearGradient>
+                            )}
+                        </View>
+                        <ZLinearGradient
+                            width={avatarSize}
+                            height={88}
+                            fallbackColor={'#00000000'}
+                            colors={['#00000000', '#000000b8']}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 0, y: 1 }}
+                        >
+                            <View
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'flex-start',
+                                    justifyContent: 'flex-end',
+                                    height: '100%',
+                                    padding: 16,
+                                }}
+                            >
+                                <Text
+                                    numberOfLines={1}
+                                    style={{
+                                        ...TextStyles.Title1,
+                                        color: theme.foregroundContrast,
+                                        marginBottom: 4,
+                                    }}
+                                    allowFontScaling={false}
+                                >
+                                    {user.name}
+                                </Text>
+                                <View
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{
+                                            ...TextStyles.Subhead,
+                                            color: theme.foregroundContrast,
+                                            opacity: 0.72,
+                                        }}
+                                    >
+                                        {followersCount} followers
+                                    </Text>
+                                    {followedByMe && (
+                                        <Image
+                                            source={require('assets/ic-done-16.png')}
+                                            style={{
+                                                tintColor: theme.foregroundContrast,
+                                                opacity: 0.72,
+                                                marginLeft: 2,
+                                            }}
+                                        />
+                                    )}
+                                </View>
+                            </View>
+                        </ZLinearGradient>
+                    </View>
+                )}
+                {user.about && (
+                    <View style={{ paddingHorizontal: 16, marginTop: 16 }}>
+                        <ZText
+                            linkify={false}
+                            style={{ ...TextStyles.Body, color: theme.foregroundPrimary }}
+                            text={user.about}
+                            numberOfLines={3}
                         />
-                    ) : (
-                        <ZListItem
-                            leftIcon={require('assets/ic-user-add-24.png')}
-                            small={true}
-                            text="Follow"
-                            onPress={followUser}
-                        />
-                    )}
+                    </View>
+                )}
+                <View style={{ marginTop: isSelfAdmin ? 16 : undefined, flexGrow: 1, alignItems: 'stretch' }}>
                     {isSelfAdmin && (
                         <>
-                            {userStatus === VoiceChatParticipantStatus.SPEAKER && (
+                            {props.userStatus === VoiceChatParticipantStatus.SPEAKER && (
                                 <ZListItem
                                     leftIcon={require('assets/ic-listener-24.png')}
                                     small={true}
@@ -199,7 +360,7 @@ const UserModalBody = React.memo(
                                     onPress={demoteUser}
                                 />
                             )}
-                            {userStatus === VoiceChatParticipantStatus.LISTENER && (
+                            {props.userStatus === VoiceChatParticipantStatus.LISTENER && (
                                 <ZListItem
                                     leftIcon={require('assets/ic-mic-24.png')}
                                     small={true}
@@ -207,14 +368,14 @@ const UserModalBody = React.memo(
                                     onPress={promoteUser}
                                 />
                             )}
-                            {userStatus === VoiceChatParticipantStatus.ADMIN ? (
+                            {props.userStatus === VoiceChatParticipantStatus.ADMIN ? (
                                 <ZListItem
                                     leftIcon={require('assets/ic-pro-off-24.png')}
                                     small={true}
                                     text="Remove admin"
                                     onPress={removeAdmin}
                                 />
-                            ) : userStatus === VoiceChatParticipantStatus.SPEAKER ? (
+                            ) : props.userStatus === VoiceChatParticipantStatus.SPEAKER ? (
                                 <ZListItem
                                     leftIcon={require('assets/ic-pro-24.png')}
                                     small={true}
@@ -222,7 +383,7 @@ const UserModalBody = React.memo(
                                     onPress={makeAdmin}
                                 />
                             ) : null}
-                            {userStatus !== VoiceChatParticipantStatus.ADMIN && (
+                            {props.userStatus !== VoiceChatParticipantStatus.ADMIN && (
                                 <ZListItem
                                     leftIcon={require('assets/ic-leave-24.png')}
                                     small={true}
@@ -232,70 +393,35 @@ const UserModalBody = React.memo(
                             )}
                         </>
                     )}
-                    <View style={{ marginTop: 16, paddingHorizontal: 16 }}>
-                        <ZButton
-                            size="large"
-                            title="View profile"
-                            style="secondary"
-                            onPress={handleViewUser}
-                        />
+                    <View style={{ marginTop: 16, paddingHorizontal: 16, flexDirection: 'row' }}>
+                        {!followedByMe ? (
+                            <>
+                                <View style={{ flex: 1 }}>
+                                    <ZButton size="large" title="Follow" action={followUser} />
+                                </View>
+                                <View style={{ width: 16 }} />
+                                <View style={{ flex: 1 }}>
+                                    <ZButton
+                                        size="large"
+                                        title="View profile"
+                                        style="secondary"
+                                        onPress={handleViewUser}
+                                    />
+                                </View>
+                            </>
+                        ) : (
+                            <View style={{ flex: 1 }}>
+                                <ZButton
+                                    size="large"
+                                    title="View profile"
+                                    onPress={handleViewUser}
+                                />
+                            </View>
+                        )}
                     </View>
                 </View>
-            </>
-        );
-    },
-);
-
-const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => void }) => {
-    const { user, theme } = props;
-
-    return (
-        <View
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'stretch',
-                justifyContent: 'center',
-                paddingTop: 8,
-            }}
-        >
-            <View
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <ZAvatar size="xx-large" photo={user.photo} title={user.name} id={user.id} />
-                <Text
-                    numberOfLines={1}
-                    style={{
-                        ...TextStyles.Label2,
-                        color: theme.foregroundPrimary,
-                        marginTop: 16,
-                    }}
-                >
-                    {user.name}
-                </Text>
             </View>
-            <React.Suspense
-                fallback={
-                    <View
-                        style={{
-                            flexGrow: 1,
-                            minHeight: 156,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <ZLoader />
-                    </View>
-                }
-            >
-                <UserModalBody {...props} />
-            </React.Suspense>
-        </View>
+        </React.Suspense>
     );
 });
 
@@ -303,6 +429,7 @@ const showUserInfo = (props: RoomUserViewProps) => {
     showBottomSheet({
         view: (ctx) => <UserModalContent {...props} hide={ctx.hide} />,
         cancelable: true,
+        containerStyle: {},
     });
 };
 
@@ -593,13 +720,20 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
         <>
             {!!props.room.pinnedMessage && (
                 <TouchableOpacity
-                    onPress={() => showPinnedMessage(props.room.pinnedMessage!.message!, theme)}
+                    onPress={() =>
+                        showPinnedMessage(
+                            props.room.pinnedMessage!.message!,
+                            props.room.id,
+                            room.me?.status === VoiceChatParticipantStatus.ADMIN,
+                            theme,
+                        )
+                    }
                 >
                     <View
                         style={{
                             paddingHorizontal: 16,
                             paddingVertical: 12,
-                            backgroundColor: theme.backgroundTertiary,
+                            backgroundColor: theme.backgroundTertiaryTrans,
                         }}
                     >
                         <Text

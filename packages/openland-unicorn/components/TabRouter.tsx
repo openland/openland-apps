@@ -177,7 +177,7 @@ export class TabRouter {
 
     //
     // Stack
-    // 
+    //
 
     navigate(path: string) {
 
