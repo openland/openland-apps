@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform, LayoutAnimation, Keyboard, DeviceEventEmitter, Image } from 'react-native';
+import { View, Platform, LayoutAnimation, Keyboard, DeviceEventEmitter } from 'react-native';
 import { useClient } from 'openland-api/useClient';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { VoiceChatParticipant_user } from 'openland-api/spacex.types';
