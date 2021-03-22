@@ -214,130 +214,132 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                 onLayout={onLayout}
             >
                 {!!avatarSize && (
-                    <View
-                        style={{
-                            position: 'relative',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'flex-start',
-                            justifyContent: 'flex-end',
-                            width: avatarSize,
-                            height: avatarSize,
-                        }}
-                    >
+                    <TouchableOpacity onPress={handleViewUser}>
                         <View
                             style={{
-                                position: 'absolute',
-                                left: 0,
-                                right: 0,
+                                position: 'relative',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'flex-start',
+                                justifyContent: 'flex-end',
                                 width: avatarSize,
                                 height: avatarSize,
                             }}
                         >
-                            {!!(user.photo && !user.photo.startsWith('ph://')) ? (
-                                <ZImage
-                                    highPriority={true}
-                                    imageSize={{ width: avatarSize, height: avatarSize }}
-                                    source={user.photo}
-                                    borderTopLeftRadius={18}
-                                    borderTopRightRadius={18}
-                                    width={avatarSize}
-                                    height={avatarSize}
-                                />
-                            ) : (
-                                <ZLinearGradient
-                                    width={avatarSize}
-                                    height={avatarSize}
-                                    borderTopLeftRadius={18}
-                                    borderTopRightRadius={18}
-                                    fallbackColor={
-                                        getPlaceholderColors(user.id || '').placeholderColor
-                                    }
-                                    colors={[
-                                        getPlaceholderColors(user.id || '').placeholderColorStart,
-                                        getPlaceholderColors(user.id || '').placeholderColorEnd,
-                                    ]}
-                                    start={{ x: 0, y: 0 }}
-                                    end={{ x: 1, y: 1 }}
-                                >
-                                    <View
-                                        style={{
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            width: avatarSize,
-                                            height: avatarSize,
-                                        }}
-                                    >
-                                        <Text
-                                            style={[styles.placeholderText, { fontSize: 128 }]}
-                                            allowFontScaling={false}
-                                        >
-                                            {extractPlaceholder(user.name)}
-                                        </Text>
-                                    </View>
-                                </ZLinearGradient>
-                            )}
-                        </View>
-                        <ZLinearGradient
-                            width={avatarSize}
-                            height={88}
-                            fallbackColor={'#00000000'}
-                            colors={['#00000000', '#000000b8']}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 0, y: 1 }}
-                        >
                             <View
                                 style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'flex-start',
-                                    justifyContent: 'flex-end',
-                                    height: '100%',
-                                    padding: 16,
+                                    position: 'absolute',
+                                    left: 0,
+                                    right: 0,
+                                    width: avatarSize,
+                                    height: avatarSize,
                                 }}
                             >
-                                <Text
-                                    numberOfLines={1}
-                                    style={{
-                                        ...TextStyles.Title1,
-                                        color: theme.foregroundContrast,
-                                        marginBottom: 4,
-                                    }}
-                                    allowFontScaling={false}
-                                >
-                                    {user.name}
-                                </Text>
+                                {!!(user.photo && !user.photo.startsWith('ph://')) ? (
+                                    <ZImage
+                                        highPriority={true}
+                                        imageSize={{ width: avatarSize, height: avatarSize }}
+                                        source={user.photo}
+                                        borderTopLeftRadius={18}
+                                        borderTopRightRadius={18}
+                                        width={avatarSize}
+                                        height={avatarSize}
+                                    />
+                                ) : (
+                                    <ZLinearGradient
+                                        width={avatarSize}
+                                        height={avatarSize}
+                                        borderTopLeftRadius={18}
+                                        borderTopRightRadius={18}
+                                        fallbackColor={
+                                            getPlaceholderColors(user.id || '').placeholderColor
+                                        }
+                                        colors={[
+                                            getPlaceholderColors(user.id || '').placeholderColorStart,
+                                            getPlaceholderColors(user.id || '').placeholderColorEnd,
+                                        ]}
+                                        start={{ x: 0, y: 0 }}
+                                        end={{ x: 1, y: 1 }}
+                                    >
+                                        <View
+                                            style={{
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                width: avatarSize,
+                                                height: avatarSize,
+                                            }}
+                                        >
+                                            <Text
+                                                style={[styles.placeholderText, { fontSize: 128 }]}
+                                                allowFontScaling={false}
+                                            >
+                                                {extractPlaceholder(user.name)}
+                                            </Text>
+                                        </View>
+                                    </ZLinearGradient>
+                                )}
+                            </View>
+                            <ZLinearGradient
+                                width={avatarSize}
+                                height={88}
+                                fallbackColor={'#00000000'}
+                                colors={['#00000000', '#000000b8']}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 0, y: 1 }}
+                            >
                                 <View
                                     style={{
                                         display: 'flex',
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
+                                        flexDirection: 'column',
+                                        alignItems: 'flex-start',
+                                        justifyContent: 'flex-end',
+                                        height: '100%',
+                                        padding: 16,
                                     }}
                                 >
                                     <Text
-                                        allowFontScaling={false}
+                                        numberOfLines={1}
                                         style={{
-                                            ...TextStyles.Subhead,
+                                            ...TextStyles.Title1,
                                             color: theme.foregroundContrast,
-                                            opacity: 0.72,
+                                            marginBottom: 4,
+                                        }}
+                                        allowFontScaling={false}
+                                    >
+                                        {user.name}
+                                    </Text>
+                                    <View
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
                                         }}
                                     >
-                                        {followersCount} followers
-                                    </Text>
-                                    {followedByMe && (
-                                        <Image
-                                            source={require('assets/ic-done-16.png')}
+                                        <Text
+                                            allowFontScaling={false}
                                             style={{
-                                                tintColor: theme.foregroundContrast,
+                                                ...TextStyles.Subhead,
+                                                color: theme.foregroundContrast,
                                                 opacity: 0.72,
-                                                marginLeft: 2,
                                             }}
-                                        />
-                                    )}
+                                        >
+                                            {followersCount} followers
+                                        </Text>
+                                        {followedByMe && (
+                                            <Image
+                                                source={require('assets/ic-done-16.png')}
+                                                style={{
+                                                    tintColor: theme.foregroundContrast,
+                                                    opacity: 0.72,
+                                                    marginLeft: 2,
+                                                }}
+                                            />
+                                        )}
+                                    </View>
                                 </View>
-                            </View>
-                        </ZLinearGradient>
-                    </View>
+                            </ZLinearGradient>
+                        </View>
+                    </TouchableOpacity>
                 )}
                 {user.about && (
                     <View style={{ paddingHorizontal: 16, marginTop: 16 }}>
