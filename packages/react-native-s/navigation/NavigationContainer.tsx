@@ -13,9 +13,11 @@ import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderCoordinator } from './header/HeaderCoordinator';
 import { HeaderComponentLoader } from './header/HeaderComponentLoader';
 import { ConnectionStatusComponent } from './header/ConnectionStatusComponent';
+import { SRouterContext } from 'react-native-s/SRouterContext';
 import uuid from 'uuid';
 import { ModalProvider } from 'openland-mobile/components/ZModal';
 import { SRouterMountedContext } from 'react-native-s/SRouterContext';
+import { RoomMinimized } from 'openland-mobile/pages/rooms/RoomMinimized';
 
 const styles = StyleSheet.create({
     fill: {
@@ -585,7 +587,9 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     {pages}
                     {header}
                     <ConnectionStatusComponent k={this.headerKey} />
-
+                    <SRouterContext.Provider value={this.state.routes[0].router}>
+                        <RoomMinimized/>
+                    </SRouterContext.Provider>
                 </ASSafeAreaProvider>
             </View>
         );

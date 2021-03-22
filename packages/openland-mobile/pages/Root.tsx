@@ -12,7 +12,6 @@ import { HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { getRateAppInfo, setRateAppInfo, showRateAppModal } from './main/modals/RateApp';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { RoomMinimized } from './rooms/RoomMinimized';
 
 export interface RootProps {
     width: number;
@@ -119,7 +118,6 @@ class RootContainer extends React.PureComponent<RootProps & { theme: ThemeGlobal
                     routing={this.props.routing}
                     navigationBarStyle={style}
                 />
-                <RoomMinimized />
                 {Platform.OS === 'android' && <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: SDevice.safeArea.bottom, backgroundColor: this.props.theme.backgroundTertiary }} />}
             </View>
         );
