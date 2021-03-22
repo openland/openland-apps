@@ -6,7 +6,6 @@ import { LayoutProvider } from 'openland-unicorn/components/utils/LayoutContext'
 import { SettingsFragment } from 'openland-web/fragments/settings/SettingsFragment';
 import { DialogsFragment } from 'openland-web/fragments/dialogs/DialogsFragment';
 import { XLoader } from 'openland-x/XLoader';
-import { useRole } from 'openland-x-permissions/XWithRole';
 import { ContactsFragment } from 'openland-web/fragments/contacts/ContactsFragment';
 import { LocalContactsProvider } from 'openland-y-utils/contacts/LocalContacts';
 import { LocalBlackListProvider } from 'openland-y-utils/blacklist/LocalBlackList';
@@ -25,47 +24,9 @@ import SettingsIcon from './navigation/icon_settings.svg';
 import SettingsActiveIcon from './navigation/icon_settings_active.svg';
 
 const Unicorn = React.memo(() => {
-    const isSuperadmin = useRole('super-admin');
     const router = React.useMemo(
         () =>
-            new TabRouter(
-                isSuperadmin
-                    ? [
-                          {
-                              icon: <RoomsIcon />,
-                              iconActive: <RoomsActiveIcon />,
-                              path: '/rooms',
-                              component: <RoomsFragment />,
-                              caption: 'Rooms',
-                              defaultPage: true,
-                          },
-                          {
-                              icon: <ProfileIcon />,
-                              iconActive: <ProfileActiveIcon />,
-                              path: '/contacts',
-                              component: <ContactsFragment />,
-                              caption: 'Contacts',
-                              defaultPage: true,
-                              isStackHidden: true,
-                          },
-                          {
-                              icon: <ChatIcon />,
-                              iconActive: <ChatActiveIcon />,
-                              path: '/mail',
-                              component: <DialogsFragment />,
-                              caption: 'Chats',
-                              defaultPage: false,
-                          },
-                          {
-                              icon: <SettingsIcon />,
-                              iconActive: <SettingsActiveIcon />,
-                              path: '/settings',
-                              component: <SettingsFragment />,
-                              caption: 'Settings',
-                              defaultPage: true,
-                          },
-                      ]
-                    : [
+            new TabRouter([
                           {
                               icon: <RoomsIcon />,
                               iconActive: <RoomsActiveIcon />,
@@ -100,7 +61,7 @@ const Unicorn = React.memo(() => {
                               defaultPage: true,
                           },
                       ],
-                0,
+                2,
                 Routing,
             ),
         [],

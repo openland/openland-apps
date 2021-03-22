@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { preprocessText } from 'openland-y-utils/TextProcessor';
-import { useRole } from 'openland-x-permissions/XWithRole';
 import { useGlobalSearch, useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { ULink } from './ULink';
 
@@ -20,10 +19,9 @@ const textStyle = css`
 const HashtagView = React.memo((props: { text: string }) => {
     const globalSearch = useGlobalSearch();
     const tabRouter = useTabRouter();
-    const isSuperAdmin = useRole('super-admin');
 
     const handleClick = () => {
-        tabRouter.setTab(isSuperAdmin ? 3 : 2);
+        tabRouter.setTab(2);
         if (globalSearch) {
             globalSearch.onChange(props.text);
         }

@@ -125,7 +125,7 @@ export const TabBarDesktop = React.memo((props: TabBarDesktopProps) => {
                 onClick={() => {
                     // set the active tab to /mail
 
-                    const i = isSuperAdmin ? 3 : 2;
+                    const i = 2;
 
                     if (props.router.stacks[i]) {
                         props.router.stacks[i].reset();
