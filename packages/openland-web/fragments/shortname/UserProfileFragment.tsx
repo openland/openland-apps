@@ -174,47 +174,47 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
             userFollowers={userFollowers}
             badge={lastseen}
         >
-                {!isMe && (
-                    <XView flexDirection="row">
-                        <UButton
-                            text={isBot ? 'View messages' : 'Message'}
-                            path={`/mail/${id}`}
-                            size="large"
-                            shape="square"
-                            style={!followedByMe ? 'secondary' : 'primary'}
-                            marginRight={16}
-                            width={115}
-                        />
-                        {!isBot && (
-                            <UButton
-                                text={followedByMe ? 'Following' : 'Follow'}
-                                size="large"
-                                shape="square"
-                                style={followedByMe ? 'secondary' : 'primary'}
-                                marginRight={16}
-                                width={115}
-                                onClick={onFollowButtonClick}
-                            />
-                        )}
-                    </XView>
-                )}
-                {isMe && (
+            {!isMe && (
+                <XView flexDirection="row">
                     <UButton
-                        text="Edit profile"
-                        path="/settings/profile"
+                        text={isBot ? 'View messages' : 'Message'}
+                        path={`/mail/${id}`}
                         size="large"
                         shape="square"
+                        style={!followedByMe ? 'secondary' : 'primary'}
                         marginRight={16}
-                        style="secondary"
+                        width={115}
                     />
-                )}
-                <UserActions chat={conversation} user={user} />
+                    {!isBot && (
+                        <UButton
+                            text={followedByMe ? 'Following' : 'Follow'}
+                            size="large"
+                            shape="square"
+                            style={followedByMe ? 'secondary' : 'primary'}
+                            marginRight={16}
+                            width={115}
+                            onClick={onFollowButtonClick}
+                        />
+                    )}
+                </XView>
+            )}
+            {isMe && (
+                <UButton
+                    text="Edit profile"
+                    path="/settings/profile"
+                    size="large"
+                    shape="square"
+                    marginRight={16}
+                    style="secondary"
+                />
+            )}
+            <UserActions chat={conversation} user={user} />
         </UListHero>
     );
 
     const rightColumn = (
         <>
-            {currentVoiceChat && <ActiveVoiceChat currentVoiceChat={currentVoiceChat} />}
+            {currentVoiceChat && currentVoiceChat.speakers.length > 0 && <ActiveVoiceChat currentVoiceChat={currentVoiceChat} />}
             <UListGroup header="About">
                 {!!about && <ShowMoreText text={about} />}
                 <XView flexDirection="row" flexWrap="wrap" marginTop={8}>
