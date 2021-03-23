@@ -259,7 +259,7 @@ export const RoomMinimized = React.memo(() => {
         console.log(e);
     }
 
-    if (!mediaSession || mediaSession && getMessenger().engine.calls.type !== 'voice-chat') {
+    if (!mediaSession || mediaSession && mediaSession.callType !== 'voice-chat') {
         return null;
     }
 

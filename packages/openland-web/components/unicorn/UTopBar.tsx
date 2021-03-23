@@ -15,6 +15,12 @@ const barContainer = css`
     cursor: pointer;
 `;
 
+const barContainerDisabled = css`
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.5;
+`;
+
 const lightContainer = css`
     background-color: var(--backgroundTertiary);
 `;
@@ -144,6 +150,7 @@ interface UTopBarProps {
     onClick?: (e: React.MouseEvent) => void;
     rightIcon?: JSX.Element;
     rightText?: JSX.Element | string;
+    disabled?: boolean;
     onRightClick?: (e: React.MouseEvent) => void;
 }
 
@@ -155,9 +162,10 @@ export const UTopBar = (props: UTopBarProps) => {
             className={cx(
                 barContainer,
                 props.type === 'light' ? lightContainer : positiveContainer,
-                props.type === 'light' ? lightContainerHover : positiveContainerHover
+                props.type === 'light' ? lightContainerHover : positiveContainerHover,
+                props.disabled && barContainerDisabled
             )}
-            onClick={props.onClick}
+            onClick={props.disabled ? undefined : props.onClick}
         >
             <div className={cx(barContent, !isMobile && desktopBarContent)}>
                 <div className={barMainContent}>

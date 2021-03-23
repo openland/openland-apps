@@ -176,7 +176,7 @@ export const UIconButton = React.memo((props: UIconButtonProps) => {
     );
 
     return (
-        <XView {...other} cursor="pointer" width={width} height={height}>
+        <XView cursor="pointer" width={width} height={height} {...other}>
             <div className={containerClassNames}>
                 {!loading && (
                     <div

@@ -45,6 +45,7 @@ export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
         { fetchPolicy: 'network-only', suspense: false },
     );
     const openVideoModal = useVideoCallModal({ chatId: props.chat.id });
+    const callDisabled = !!currentSession && currentSession.callType === 'voice-chat';
 
     const joinCall = () => {
         calls.joinCall(props.chat.id, 'call');
@@ -64,6 +65,7 @@ export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
             title="Call"
             subtitle={subtitle}
             rightText="Join"
+            disabled={callDisabled}
             rightIcon={<ChevronIcon />}
             onClick={currentSession && currentSession.conversationId ? openVideoModal : joinCall}
         />
