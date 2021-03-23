@@ -24,7 +24,7 @@ import { ZText } from 'openland-mobile/components/ZText';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { RoomControls } from './RoomControls';
 import { showEditPinnedMessage } from './RoomSettings';
-import { Conference_conference_peers, VoiceChatParticipantStatus } from 'openland-api/spacex.types';
+import { Conference_conference_peers, VoiceChatParticipantStatus, VoiceChatUser_conversation_PrivateRoom } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { TintBlue } from 'openland-y-utils/themes/tints';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
@@ -110,7 +110,6 @@ interface RoomUserViewProps {
         firstName: string;
         photo: string | null;
         id: string;
-        about: string | null;
     };
     userStatus: VoiceChatParticipantStatus;
     theme: ThemeGlobal;
@@ -128,15 +127,19 @@ interface PeerMedia {
 
 const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => void }) => {
     const { user, theme } = props;
+    const userId = user.id;
     const [avatarSize, setAvatarSize] = React.useState<null | number>(null);
 
     const client = useClient();
-    const { followedByMe, followersCount } = client.useVoiceChatUser(
+    const data = client.useVoiceChatUser(
         {
-            uid: user.id,
+            uid: userId,
         },
-        { fetchPolicy: 'network-only' },
-    ).user;
+        { fetchPolicy: 'cache-and-network' },
+    );
+
+    const { followedByMe, followersCount, photo, about, name } = data.user;
+    const conversationId = (data.conversation as VoiceChatUser_conversation_PrivateRoom).id;
 
     const onLayout = React.useCallback(
         (e: LayoutChangeEvent) => {
@@ -151,40 +154,40 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
 
     const removeAdmin = async () => {
         await Promise.all([
-            client.mutateVoiceChatUpdateAdmin({ id: props.roomId, uid: user.id, admin: false }),
+            client.mutateVoiceChatUpdateAdmin({ id: props.roomId, uid: userId, admin: false }),
             client.refetchVoiceChat({ id: props.roomId }),
         ]);
         props.hide();
     };
     const makeAdmin = async () => {
         await Promise.all([
-            client.mutateVoiceChatUpdateAdmin({ id: props.roomId, uid: user.id, admin: true }),
+            client.mutateVoiceChatUpdateAdmin({ id: props.roomId, uid: userId, admin: true }),
             client.refetchVoiceChat({ id: props.roomId }),
         ]);
         props.hide();
     };
     const removeUser = async () => {
-        await client.mutateVoiceChatKick({ id: props.roomId, uid: user.id });
+        await client.mutateVoiceChatKick({ id: props.roomId, uid: userId });
         await client.refetchVoiceChat({ id: props.roomId });
         props.hide();
     };
     const demoteUser = async () => {
-        await client.mutateVoiceChatDemote({ id: props.roomId, uid: user.id });
+        await client.mutateVoiceChatDemote({ id: props.roomId, uid: userId });
         await client.refetchVoiceChat({ id: props.roomId });
         props.hide();
     };
     const promoteUser = async () => {
-        await client.mutateVoiceChatPromote({ id: props.roomId, uid: user.id });
+        await client.mutateVoiceChatPromote({ id: props.roomId, uid: userId });
         await client.refetchVoiceChat({ id: props.roomId });
         props.hide();
     };
     const followUser = async () => {
-        await client.mutateSocialFollow({ uid: user.id });
-        await client.refetchVoiceChatUser({ uid: user.id });
+        await client.mutateSocialFollow({ uid: userId });
+        await client.refetchVoiceChatUser({ uid: userId });
         props.hide();
     };
     const handleViewUser = () => {
-        props.router.push('ProfileUser', { id: user.id });
+        props.router.pushAndReset('Conversation', { id: conversationId });
         props.hide();
         props.modalCtx.hide();
     };
@@ -235,11 +238,11 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                                     height: avatarSize,
                                 }}
                             >
-                                {!!(user.photo && !user.photo.startsWith('ph://')) ? (
+                                {!!(photo && !photo.startsWith('ph://')) ? (
                                     <ZImage
                                         highPriority={true}
                                         imageSize={{ width: avatarSize, height: avatarSize }}
-                                        source={user.photo}
+                                        source={photo}
                                         borderTopLeftRadius={18}
                                         borderTopRightRadius={18}
                                         width={avatarSize}
@@ -252,11 +255,11 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                                         borderTopLeftRadius={18}
                                         borderTopRightRadius={18}
                                         fallbackColor={
-                                            getPlaceholderColors(user.id || '').placeholderColor
+                                            getPlaceholderColors(userId || '').placeholderColor
                                         }
                                         colors={[
-                                            getPlaceholderColors(user.id || '').placeholderColorStart,
-                                            getPlaceholderColors(user.id || '').placeholderColorEnd,
+                                            getPlaceholderColors(userId || '').placeholderColorStart,
+                                            getPlaceholderColors(userId || '').placeholderColorEnd,
                                         ]}
                                         start={{ x: 0, y: 0 }}
                                         end={{ x: 1, y: 1 }}
@@ -273,7 +276,7 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                                                 style={[styles.placeholderText, { fontSize: 128 }]}
                                                 allowFontScaling={false}
                                             >
-                                                {extractPlaceholder(user.name)}
+                                                {extractPlaceholder(name)}
                                             </Text>
                                         </View>
                                     </ZLinearGradient>
@@ -306,7 +309,7 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                                         }}
                                         allowFontScaling={false}
                                     >
-                                        {user.name}
+                                        {name}
                                     </Text>
                                     <View
                                         style={{
@@ -341,12 +344,12 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                         </View>
                     </TouchableOpacity>
                 )}
-                {user.about && (
+                {about && (
                     <View style={{ paddingHorizontal: 16, marginTop: 16 }}>
                         <ZText
                             linkify={false}
                             style={{ ...TextStyles.Body, color: theme.foregroundPrimary }}
-                            text={user.about}
+                            text={about}
                             numberOfLines={3}
                         />
                     </View>
@@ -405,7 +408,7 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                                 <View style={{ flex: 1 }}>
                                     <ZButton
                                         size="large"
-                                        title="View profile"
+                                        title="Message"
                                         style="secondary"
                                         onPress={handleViewUser}
                                     />
@@ -415,7 +418,7 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                             <View style={{ flex: 1 }}>
                                 <ZButton
                                     size="large"
-                                    title="View profile"
+                                    title="Message"
                                     onPress={handleViewUser}
                                 />
                             </View>

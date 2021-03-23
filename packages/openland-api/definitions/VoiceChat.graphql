@@ -6,25 +6,9 @@ fragment VoiceChatParticipant on VoiceChatParticipant {
         firstName
         photo
         followersCount
-        online
-        lastSeen
-        about
-    }
-    status
-    handRaised
-}
-
-fragment VoiceChatMeParticipant on VoiceChatParticipant {
-    id
-    user {
-        id
-        name
-        firstName
-        photo
-        followersCount
-        online
-        lastSeen
         shortname
+        lastSeen
+        online
     }
     status
     handRaised
@@ -45,7 +29,7 @@ fragment VoiceChatEntity on VoiceChat {
         }
     }
     me {
-        ...VoiceChatMeParticipant
+        ...VoiceChatParticipant
     }
 }
 
@@ -99,9 +83,21 @@ query ActiveVoiceChats($first: Int!, $after: String) {
 query VoiceChatUser($uid: ID!) {
     user(id: $uid) {
         id
+        name
+        photo
         followingCount
         followersCount
         followedByMe
+        about
+    }
+    conversation: room(id: $uid) {
+        ... on PrivateRoom {
+            id
+            settings {
+                id
+                mute
+            }
+        }
     }
 }
 
