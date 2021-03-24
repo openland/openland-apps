@@ -650,10 +650,10 @@ const RoomSpeakingUserView = React.memo((props: RoomSpeakingUserViewProps) => {
     const state = isLoading
         ? 'loading'
         : peer?.mediaState.audioPaused
-        ? 'muted'
-        : isTalking
-        ? 'talking'
-        : undefined;
+            ? 'muted'
+            : isTalking
+                ? 'talking'
+                : undefined;
 
     return <RoomUserView {...other} state={state} />;
 });
@@ -808,8 +808,8 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                 keyExtractor={(item, index) => index.toString() + item.id}
                 numColumns={4}
                 style={{ flex: 1 }}
-                // refreshing={listenersState.loading}
-                // onEndReached={listenersState.loadMore}
+            // refreshing={listenersState.loading}
+            // onEndReached={listenersState.loadMore}
             />
         </View>
     );
@@ -905,7 +905,7 @@ const RoomView = React.memo((props: { roomId: string; ctx: ModalProps; router: S
         let isListener = voiceChatData.me?.status === VoiceChatParticipantStatus.LISTENER;
 
         if (isPrevListener && isSpeaker) {
-            mediaSession?.setAudioEnabled(true);
+            mediaSession?.setAudioEnabled(false);
         }
         if (isPrevSpeaker && isListener) {
             mediaSession?.setAudioEnabled(false);

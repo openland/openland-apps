@@ -80,7 +80,7 @@ export class MediaSessionManager {
         this.callType = callType;
 
         // Initial state
-        this.audioEnabled = true;
+        this.audioEnabled = callType === 'call';
         this.videoEnabled = false;
         this.screencastEnabled = false;
 
@@ -458,6 +458,8 @@ export class MediaSessionManager {
 
             // Start Media
             this.startMedia();
+
+            this.setAudioEnabled(this.audioEnabled);
 
             return;
         })();
