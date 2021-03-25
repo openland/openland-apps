@@ -495,18 +495,18 @@ const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession
     let client = useClient();
     const router = React.useContext(XViewRouterContext)!;
     const route = React.useContext(XViewRouteContext)!;
-    const tabRouter = useTabRouter().router;
+    const tabRouter = useTabRouter();
     const isCurrentRoute = route.path.includes(`/room/${props.id}`);
 
     const handleLeave = React.useCallback(() => {
         calls.leaveCall();
         client.mutateVoiceChatLeave({ id: props.id });
-        if (isCurrentRoute) {
-            tabRouter.reset('/rooms', true);
-        }
     }, [isCurrentRoute]);
     const showCall = React.useCallback(() => {
-        router.navigate(`/room/${props.id}`);
+        tabRouter.setTab(0);
+        setTimeout(() => {
+            router.navigate(`/room/${props.id}`);
+        }, 20);
     }, []);
 
     const targetRefCallback = React.useCallback((e: HTMLDivElement) => {
@@ -632,8 +632,9 @@ const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession
             </XView>
         );
     }
+    const validStatuses = [VoiceChatParticipantStatus.ADMIN, VoiceChatParticipantStatus.SPEAKER, VoiceChatParticipantStatus.LISTENER];
 
-    if (isCurrentRoute) {
+    if (!voiceChat.me || !validStatuses.includes(voiceChat.me.status)) {
         return null;
     }
 
@@ -698,7 +699,9 @@ export const CallFloating = React.memo(() => {
         return null;
     }
     if (currentMediaSession.callType === 'voice-chat') {
-        return <VoiceChatFloatingInner id={currentMediaSession.conversationId} />;
+        return (
+            <VoiceChatFloatingInner id={currentMediaSession.conversationId} />
+        );
     }
     return <CallFloatingInner id={currentMediaSession.conversationId} />;
 });
