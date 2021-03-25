@@ -687,7 +687,7 @@ internal val ConferenceFullSelector = obj(
                     field("username", "username", scalar("String")),
                     field("credential", "credential", scalar("String"))
                 ))))),
-            field("room", "room", obj(
+            field("parent", "parent", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),

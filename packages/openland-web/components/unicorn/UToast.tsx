@@ -51,6 +51,7 @@ export interface UToastProps {
     autoclose?: boolean;
     closeCb?: () => void;
     className?: string;
+    Icon?: () => JSX.Element;
 }
 
 export const UToast = React.memo((props: UToastProps) => {
@@ -93,7 +94,7 @@ export const UToast = React.memo((props: UToastProps) => {
         failure: () => <WarningIcon />,
     };
 
-    const Icon = iconByType[type];
+    const Icon = props.Icon || iconByType[type];
 
     return !!text ? (
         <div
@@ -118,6 +119,7 @@ export interface UToastConfig {
     textColor?: string;
     autoclose?: boolean;
     duration?: number;
+    Icon?: () => JSX.Element;
 }
 
 export interface UToastHandlers {

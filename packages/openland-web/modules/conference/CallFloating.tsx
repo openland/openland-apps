@@ -6,15 +6,17 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
 import { css, cx } from 'linaria';
 import { debounce } from 'openland-y-utils/timer';
-import { Conference_conference_room, Conference_conference_peers } from 'openland-api/spacex.types';
+import { Conference_conference_parent, Conference_conference_peers, VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { VideoComponent } from './ScreenShareModal';
-import { XView } from 'react-mental';
-import { TextStyles } from 'openland-web/utils/TextStyles';
+import { XView, XViewRouteContext, XViewRouterContext } from 'react-mental';
+import { TextLabel1, TextStyles, TextSubhead } from 'openland-web/utils/TextStyles';
 // import { plural } from 'openland-y-utils/plural';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import EndIcon from 'openland-icons/s/ic-call-end-glyph-24.svg';
+import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
+import MicIcon from 'openland-icons/s/ic-mic-24.svg';
 import FullscreenIcon from 'openland-icons/s/ic-size-up-glyph-24.svg';
 import { CallsEngine } from 'openland-engines/CallsEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
@@ -23,6 +25,8 @@ import { useVideoCallModal } from './CallModal';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { plural } from 'openland-y-utils/plural';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
+import { useVoiceChat, VoiceChatProvider } from 'openland-y-utils/voiceChat/voiceChatWatcher';
+import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 
 const VIDEO_WIDTH = 320;
 const VIDEO_HEIGHT = 213;
@@ -38,7 +42,6 @@ const FloatContainerClass = css`
     flex-direction: row;
     border-radius: 12px;
     overflow: hidden;
-    width: 320px;
     transition: opacity 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
         box-shadow 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
     box-shadow: var(--boxShadowPopper);
@@ -291,7 +294,7 @@ const MediaView = React.memo((props: {
     />;
 });
 
-const CallFloatingComponent = React.memo((props: { id: string; room: Conference_conference_room, mediaSession: MediaSessionManager }) => {
+const CallFloatingComponent = React.memo((props: { id: string; room: Conference_conference_parent, mediaSession: MediaSessionManager }) => {
     const targetRef = React.useRef<HTMLDivElement>();
     const containerRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
@@ -309,7 +312,9 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
     let client = useClient();
     let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
 
-    const title = props.room.__typename === 'PrivateRoom' ? props.room.user.name : props.room.title;
+    const title = props.room.__typename === 'PrivateRoom'
+        ? props.room.user.name :
+        props.room.__typename === 'SharedRoom' ? props.room.title : '';
     const subtitle = props.room.__typename === 'SharedRoom' && data ? plural(data.conference.peers.length, ['member', 'members'])
         : 'Call';
 
@@ -322,11 +327,11 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
                 id: props.room.user.id,
                 title: props.room.user.name,
                 photo: props.room.user.photo,
-            } : {
+            } : props.room.__typename === 'SharedRoom' ? {
                 id: props.room.id,
                 title: props.room.title,
                 photo: props.room.photo,
-            }}
+            } : { id: '', title: '' }}
             calls={calls}
         />
     );
@@ -448,7 +453,240 @@ const CallFloatingInner = React.memo((props: { id: string }) => {
     let ms = messenger.calls.useCurrentSession();
 
     let res = ms && data && data.conference.peers.length !== 0 && (
-        <CallFloatingComponent id={props.id} room={data.conference.room!} mediaSession={ms} />
+        <CallFloatingComponent id={props.id} room={data.conference.parent!} mediaSession={ms} />
+    );
+    return ReactDOM.createPortal(res, document.body);
+});
+
+const voiceChatSizeStyle = css`
+    min-width: 320px;
+    max-width: 420px;
+`;
+
+const titleStyle = cx(TextLabel1, css`
+    color: var(--foregroundContrast);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+`);
+
+const subtitleStyle = cx(TextSubhead, css`
+    color: var(--foregroundContrast);
+    opacity: 0.56;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+`);
+
+const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession: MediaSessionManager }) => {
+    const targetRef = React.useRef<HTMLDivElement>();
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    const contentRef = React.useRef<HTMLDivElement>(null);
+    const onMove = React.useCallback(debounce((shift: number[]) => {
+        window.localStorage.setItem('voice_chat_floating_shift', JSON.stringify(shift));
+    }, 500), []);
+    const [targetState, setTargetState] = React.useState<HTMLDivElement>();
+    useJsDrag(targetRef, { containerRef, onMove, savedCallback: JSON.parse(window.localStorage.getItem('voice_chat_floating_shift') || '[]'), limitToScreen: true }, [targetState]);
+    let messenger = React.useContext(MessengerContext);
+    let calls = messenger.calls;
+    let state = props.mediaSession.state.useValue();
+    const voiceChat = useVoiceChat();
+    const selfStatus = voiceChat.me?.status;
+    let client = useClient();
+    const router = React.useContext(XViewRouterContext)!;
+    const route = React.useContext(XViewRouteContext)!;
+    const tabRouter = useTabRouter().router;
+    const isCurrentRoute = route.path.includes(`/room/${props.id}`);
+
+    const handleLeave = React.useCallback(() => {
+        calls.leaveCall();
+        client.mutateVoiceChatLeave({ id: props.id });
+        if (isCurrentRoute) {
+            tabRouter.reset('/rooms', true);
+        }
+    }, [isCurrentRoute]);
+    const showCall = React.useCallback(() => {
+        router.navigate(`/room/${props.id}`);
+    }, []);
+
+    const targetRefCallback = React.useCallback((e: HTMLDivElement) => {
+        if (!targetState) {
+            targetRef.current = e;
+            setTargetState(e);
+        }
+    }, []);
+
+    const speakers = (voiceChat.speakers || []);
+    const title = voiceChat.title;
+    const participantsCount = voiceChat.speakersCount + voiceChat.listenersCount;
+    let subtitle = '';
+    if (speakers.length === 1) {
+        subtitle = speakers[0].user.name;
+    } else if (speakers.length === 2) {
+        subtitle = `${speakers[0].user.name} and ${speakers[1].user.name}`;
+    } else if (speakers.length > 0 && participantsCount > 2) {
+        subtitle = `${speakers[0].user.name} and ${participantsCount - 1} others`;
+    }
+
+    const buttons = (
+        <XView flexDirection="row" justifyContent="flex-end" marginLeft={'auto' as any}>
+            {selfStatus === VoiceChatParticipantStatus.LISTENER ? (
+                <>
+                    <UIconButton
+                        size="small"
+                        marginRight={12}
+                        icon={<LeaveIcon />}
+                        color="var(--foregroundContrast)"
+                        defaultRippleColor="rgba(255, 255, 255, 0.16)"
+                        hoverRippleColor="rgba(255, 255, 255, 0.32)"
+                        onClick={handleLeave}
+                    />
+                    <UIconButton
+                        size="small"
+                        icon={<FullscreenIcon />}
+                        color="var(--foregroundContrast)"
+                        rippleColor="var(--tintBlue)"
+                        hoverActiveRippleColor="var(--tintBlueHover)"
+                        active={true}
+                        onClick={showCall}
+                    />
+                </>
+            ) : (selfStatus === VoiceChatParticipantStatus.SPEAKER || selfStatus === VoiceChatParticipantStatus.ADMIN) ? (
+                <>
+                    <UIconButton
+                        size="small"
+                        marginRight={12}
+                        icon={<FullscreenIcon />}
+                        color="var(--foregroundContrast)"
+                        defaultRippleColor="rgba(255, 255, 255, 0.16)"
+                        hoverRippleColor="rgba(255, 255, 255, 0.32)"
+                        onClick={showCall}
+                    />
+                    <UIconButton
+                        size="small"
+                        icon={state.sender.audioEnabled ? <MicIcon /> : <MuteIcon />}
+                        active={true}
+                        color="var(--foregroundContrast)"
+                        rippleColor={state.sender.audioEnabled ? 'var(--tintBlue)' : 'var(--tintOrange)'}
+                        hoverActiveRippleColor={state.sender.audioEnabled ? 'var(--tintBlueHover)' : 'var(--tintOrangeHover)'}
+                        onClick={() => props.mediaSession.setAudioEnabled(!state.sender.audioEnabled)}
+                    />
+                </>
+            ) : null}
+        </XView>
+    );
+
+    const avatarSizeByLength = {
+        1: { size: 36, placeholder: 18, dotSize: 0, dotPosition: 0, dotBorderWidth: 0 },
+        2: { size: 22, placeholder: 12, dotSize: 0, dotPosition: 0, dotBorderWidth: 0 },
+        3: { size: 14, placeholder: 10, dotSize: 0, dotPosition: 0, dotBorderWidth: 0 },
+        4: { size: 14, placeholder: 10, dotSize: 0, dotPosition: 0, dotBorderWidth: 0 },
+    };
+    const avatars = speakers.slice(0, 4).map(({ user }, _, arr) => (
+        <UAvatar
+            key={user.id}
+            id={user.id}
+            title={user.name}
+            photo={user.photo}
+            customSizes={avatarSizeByLength[arr.length]}
+        />
+    ));
+    let avatarsContent: JSX.Element | null = null;
+    if (avatars.length === 1) {
+        avatarsContent = avatars[0];
+    } else if (avatars.length === 2) {
+        avatarsContent = (
+            <>
+                <XView
+                    position="absolute"
+                    top={0}
+                    left={0}
+                    lineHeight={1}
+                >
+                    {avatars[0]}
+                </XView>
+                <XView
+                    position="absolute"
+                    bottom={0}
+                    right={0}
+                    zIndex={1}
+                    borderWidth={2}
+                    lineHeight={1}
+                    borderColor="var(--overlayHeavy)"
+                    borderRadius={100}
+                >
+                    {avatars[1]}
+                </XView>
+            </>
+        );
+    } else if (avatars.length === 3 || avatars.length === 4) {
+        avatarsContent = (
+            <XView
+                lineHeight={1}
+                flexDirection={"row-reverse" as 'row'}
+                justifyContent="space-between"
+                flexWrap="wrap"
+                height="100%"
+            >
+                {avatars}
+            </XView>
+        );
+    }
+
+    if (isCurrentRoute) {
+        return null;
+    }
+
+    return (
+        <div className={cx(FloatContainerClass, voiceChatSizeStyle)} ref={containerRef}>
+            <div style={{ display: 'flex', flexDirection: 'row', flexGrow: 1 }} ref={contentRef}>
+                <div className={TargetClass} ref={targetRefCallback}>
+                    <XView
+                        flexDirection="row"
+                        paddingVertical={12}
+                        paddingHorizontal={16}
+                        width="100%"
+                        alignItems="center"
+                    >
+                        <XView
+                            width={36}
+                            height={36}
+                            position="relative"
+                        >
+                            {avatarsContent}
+                        </XView>
+                        <XView flexShrink={1} marginLeft={16} marginRight={24}>
+                            <div className={titleStyle}>
+                                {title}
+                            </div>
+                            {subtitle && (
+                                <div className={subtitleStyle}>
+                                    {subtitle}
+                                </div>
+                            )}
+                        </XView>
+                        {buttons}
+                    </XView>
+                </div>
+            </div>
+        </div>
+    );
+});
+
+const VoiceChatFloatingInner = React.memo((props: { id: string }) => {
+    let client = useClient();
+    let data = client.useConference({ id: props.id }, { suspense: false });
+    useTalkWatch(data && data.conference.id);
+
+    let messenger = React.useContext(MessengerContext);
+    let ms = messenger.calls.useCurrentSession();
+
+    let res = ms && data && data.conference.peers.length !== 0 && data.conference.parent?.__typename === 'VoiceChat' && (
+        <React.Suspense fallback={null}>
+            <VoiceChatProvider roomId={props.id}>
+                <VoiceChatFloatingComponent id={props.id} mediaSession={ms} />
+            </VoiceChatProvider>
+        </React.Suspense>
     );
     return ReactDOM.createPortal(res, document.body);
 });
@@ -456,8 +694,11 @@ const CallFloatingInner = React.memo((props: { id: string }) => {
 export const CallFloating = React.memo(() => {
     let calls = React.useContext(MessengerContext).calls;
     let currentMediaSession = calls.useCurrentSession();
-    if (!currentMediaSession || currentMediaSession.callType === 'voice-chat') {
+    if (!currentMediaSession) {
         return null;
+    }
+    if (currentMediaSession.callType === 'voice-chat') {
+        return <VoiceChatFloatingInner id={currentMediaSession.conversationId} />;
     }
     return <CallFloatingInner id={currentMediaSession.conversationId} />;
 });

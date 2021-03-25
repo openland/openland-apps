@@ -688,7 +688,7 @@ const ConferenceFullSelector = obj(
                     field('username', 'username', args(), scalar('String')),
                     field('credential', 'credential', args(), scalar('String'))
                 ))))),
-            field('room', 'room', args(), obj(
+            field('parent', 'parent', args(), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     inline('SharedRoom', obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -6322,7 +6322,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     Conference: {
         kind: 'query',
         name: 'Conference',
-        body: 'query Conference($id:ID!){conference(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}mediaState{__typename audioPaused videoPaused screencastEnabled}}iceServers{__typename urls username credential}room{__typename ... on SharedRoom{__typename id title isChannel membersCount photo owner{__typename id name}}... on PrivateRoom{__typename id user{__typename id name photo}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
+        body: 'query Conference($id:ID!){conference(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}mediaState{__typename audioPaused videoPaused screencastEnabled}}iceServers{__typename urls username credential}parent{__typename ... on SharedRoom{__typename id title isChannel membersCount photo owner{__typename id name}}... on PrivateRoom{__typename id user{__typename id name photo}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
         selector: ConferenceSelector
     },
     ConferenceMedia: {
@@ -7990,7 +7990,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ConferenceWatch: {
         kind: 'subscription',
         name: 'ConferenceWatch',
-        body: 'subscription ConferenceWatch($id:ID!){alphaConferenceWatch(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}mediaState{__typename audioPaused videoPaused screencastEnabled}}iceServers{__typename urls username credential}room{__typename ... on SharedRoom{__typename id title isChannel membersCount photo owner{__typename id name}}... on PrivateRoom{__typename id user{__typename id name photo}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
+        body: 'subscription ConferenceWatch($id:ID!){alphaConferenceWatch(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}mediaState{__typename audioPaused videoPaused screencastEnabled}}iceServers{__typename urls username credential}parent{__typename ... on SharedRoom{__typename id title isChannel membersCount photo owner{__typename id name}}... on PrivateRoom{__typename id user{__typename id name photo}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
         selector: ConferenceWatchSelector
     },
     DebugEventsWatch: {

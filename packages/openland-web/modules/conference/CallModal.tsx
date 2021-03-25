@@ -116,7 +116,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
         );
     }, []);
 
-    const room = conference?.conference?.room;
+    const room = conference?.conference?.parent;
     const messageName = room && room.__typename === 'PrivateRoom' ? room?.user.name
         : room && room.__typename === 'SharedRoom' ? room.owner?.name
             : '';

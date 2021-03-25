@@ -17,7 +17,7 @@ fragment ConferenceFull on Conference {
         username
         credential
     }
-    room {
+    parent {
         __typename
         ...on SharedRoom {
             id

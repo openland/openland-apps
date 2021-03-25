@@ -70,7 +70,7 @@ export const CallControls = (props: CallControlsProps) => {
     };
 
     let conference = getClient().useConference({ id: props.id }, { suspense: false });
-    let room = conference?.conference?.room;
+    let room = conference?.conference?.parent;
     let peers = [...conference ? conference.conference.peers : []];
 
     let title = room?.__typename === 'PrivateRoom'

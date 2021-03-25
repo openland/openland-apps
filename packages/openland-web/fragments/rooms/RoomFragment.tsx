@@ -202,12 +202,10 @@ const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: VoiceChatPart
     );
 };
 
-// @ts-ignore
 const InviteButton = React.memo((props: { link: string }) => {
     const { link } = props;
     return (
         <XView
-            justifyContent="center"
             alignItems="center"
             padding={8}
             marginHorizontal={4}
@@ -231,7 +229,7 @@ const InviteButton = React.memo((props: { link: string }) => {
                 <UIcon icon={<IcAdd />} size={36} color="var(--foregroundSecondary)" />
             </XView>
             <div className={buttonLabelStyle}>
-                Invite speaker
+                Invite
             </div>
         </XView>
     );
@@ -390,8 +388,6 @@ const RoomUser = React.memo(({
             }}
         >
             <XView
-                width={88}
-                height={88}
                 borderWidth={2}
                 borderColor={state === 'talking' ? '#248BF2' : 'transparent'}
                 padding={4}
@@ -462,7 +458,7 @@ const RoomSpeakers = React.memo(({
     callState,
     connecting,
     analyzer,
-    // inviteLink,
+    inviteLink,
 }: {
     room: VoiceChatT,
     peers?: Conference_conference_peers[];
@@ -506,6 +502,7 @@ const RoomSpeakers = React.memo(({
                     photo={speaker.user.photo}
                     roomId={room.id}
                     selfId={room.me?.user.id}
+                    peerId={peer?.id}
                     selfStatus={room.me?.status}
                     userStatus={speaker.status}
                 />
@@ -513,7 +510,7 @@ const RoomSpeakers = React.memo(({
             {speakers.length <= 8 && room.me?.status === VoiceChatParticipantStatus.ADMIN && (
                 <>
                     <RaisedHandsButton raisedHands={room.raisedHands || []} roomId={room.id} />
-                    {/* <InviteButton link={inviteLink} /> */}
+                    <InviteButton link={inviteLink} />
                 </>
             )}
         </div>
@@ -541,7 +538,7 @@ const RoomListeners = React.memo((props: { room: VoiceChatT }) => {
 
 const RoomView = React.memo((props: { roomId: string }) => {
     const client = useClient();
-    const router = useTabRouter().router;
+    const tabRouter = useTabRouter().router;
     const joinRoom = useJoinRoom(true);
 
     const voiceChatData = useVoiceChat();
@@ -572,7 +569,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
         calls.leaveCall();
         client.mutateVoiceChatLeave({ id: props.roomId });
         if (withRedirect) {
-            router.reset('/rooms', true);
+            tabRouter.reset('/rooms', true);
         }
     };
 
@@ -624,6 +621,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
 
         if (isPrevListener && isSpeaker) {
             mediaSession?.setAudioEnabled(false);
+            toast.show({ text: `You're a speaker now`, Icon: () => <IcSpeaker />, duration: 2000 });
         }
         if (isPrevSpeaker && isListener) {
             mediaSession?.setAudioEnabled(false);
