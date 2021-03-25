@@ -3,9 +3,12 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { View, TouchableOpacity, Text, Platform } from 'react-native';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { useWatchCall } from './useWatchCall';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 export const CallBarComponent = React.memo((props: { id: string, showCallModal: () => void }) => {
     let conference = getClient().useConference({ id: props.id }, { suspense: false });
+    const mediaSession = getMessenger().engine.calls.useCurrentSession();
+    const disabled = !!mediaSession && mediaSession.callType !== 'call';
 
     useWatchCall(conference && conference.conference.id);
 
@@ -34,8 +37,9 @@ export const CallBarComponent = React.memo((props: { id: string, showCallModal: 
                     {r => (
                         <TouchableOpacity
                             activeOpacity={0.3}
+                            disabled={disabled}
                             onPress={props.showCallModal}
-                            style={{ height: 28, paddingHorizontal: 12, marginHorizontal: 7, backgroundColor: 'white', borderRadius: 14, alignItems: 'center', justifyContent: 'center' }}
+                            style={{ height: 28, paddingHorizontal: 12, marginHorizontal: 7, backgroundColor: 'white', borderRadius: 14, alignItems: 'center', justifyContent: 'center', opacity: disabled ? 0.5 : undefined }}
                             delayPressIn={0}
                         >
                             <Text style={{ fontSize: 14, fontWeight: '600', color: '#0084fe' }} >JOIN</Text>

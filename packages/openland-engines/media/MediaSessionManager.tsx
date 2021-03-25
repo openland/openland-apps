@@ -18,6 +18,8 @@ import { MediaSessionVolumeSpace } from 'openland-engines/legacy/MediaSessionVol
 import { AppPeerConnectionFactory } from 'openland-y-runtime/AppPeerConnection';
 import sdpTransform from 'sdp-transform';
 
+export type CallType = 'call' | 'voice-chat';
+
 export class MediaSessionManager {
 
     // Configuration
@@ -31,6 +33,7 @@ export class MediaSessionManager {
     onConnected: (() => void) | null = null;
     onDestoy: (() => void) | null = null;
     state: Reducer<MediaSessionState, MediaSessionCommand>;
+    callType: CallType;
 
     // Audio track
     private audioEnabled: boolean;
@@ -70,13 +73,14 @@ export class MediaSessionManager {
     private ownPeerDetected = false;
     private destroyed = false;
 
-    constructor(messenger: MessengerEngine, conversationId: string) {
+    constructor(messenger: MessengerEngine, conversationId: string, callType: CallType) {
         this.messenger = messenger;
         this.client = messenger.client;
         this.conversationId = conversationId;
+        this.callType = callType;
 
         // Initial state
-        this.audioEnabled = true;
+        this.audioEnabled = callType === 'call';
         this.videoEnabled = false;
         this.screencastEnabled = false;
 
@@ -454,6 +458,8 @@ export class MediaSessionManager {
 
             // Start Media
             this.startMedia();
+
+            this.setAudioEnabled(this.audioEnabled);
 
             return;
         })();

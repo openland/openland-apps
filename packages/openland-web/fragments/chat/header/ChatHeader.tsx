@@ -119,6 +119,7 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
         props.chat.__typename === 'SharedRoom' ? props.chat.callSettings : undefined;
     const currentSession = calls.useCurrentSession();
     const showVideoCallModal = useVideoCallModal({ chatId: props.chat.id });
+    const callDisabled = !!currentSession && currentSession.callType === 'voice-chat';
 
     return (
         <div
@@ -136,8 +137,14 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
                 />
             ) : (
                 <UIconButton
+                    opacity={callDisabled ? 0.72 : undefined}
+                    disableHover={callDisabled}
+                    cursor={callDisabled ? undefined : 'pointer'}
                     icon={<PhoneIcon />}
                     onClick={() => {
+                        if (callDisabled) {
+                            return;
+                        }
                         calls.joinCall(props.chat.id, 'call');
                         showVideoCallModal();
                     }}
@@ -200,7 +207,9 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; isBanned: bo
                 calls.joinCall(chat.id, 'call');
                 showVideoCallModal();
             },
-            disabled: currentSession ? currentSession.conversationId === chat.id : false,
+            disabled: currentSession
+                ? currentSession.conversationId === chat.id || currentSession.callType === 'voice-chat'
+                : false,
         });
     }
 

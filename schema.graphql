@@ -1986,6 +1986,7 @@ type Mutation {
   superBadgeUnverify(badgeId: ID!, userId: ID!): User!
   voiceChatCreate(input: VoiceChatInput!): VoiceChat!
   voiceChatCreateWithMedia(input: VoiceChatInput!, mediaInput: ConferenceJoinInput, mediaKind: ConferenceKind): VoiceChatJoinResult!
+  voiceChatCreateInChat(input: VoiceChatInput!, cid: ID!, mediaInput: ConferenceJoinInput, mediaKind: ConferenceKind): VoiceChatJoinResult!
   voiceChatUpdate(id: ID!, input: VoiceChatInput!): VoiceChat!
   voiceChatEnd(id: ID!): VoiceChat!
   voiceChatSetPinnedMessage(id: ID!, message: String, spans: [MessageSpanInput!]): VoiceChat!
@@ -3216,6 +3217,7 @@ type SharedRoom {
   callSettings: RoomCallSettings!
   featured: Boolean!
   owner: User
+  activeVoiceChat: VoiceChat
   externalSocialImage: String
   linkedFeedChannels: [FeedChannel!]!
   shortname: String
@@ -3786,6 +3788,7 @@ type VoiceChat {
   listeners: [VoiceChatParticipant!]!
   me: VoiceChatParticipant
   pinnedMessage: VoiceChatPinnedMessage
+  parentRoom: SharedRoom
 }
 
 type VoiceChatConnection {
@@ -3806,6 +3809,7 @@ type VoiceChatEventsState {
 
 input VoiceChatInput {
   title: String!
+  isPrivate: Boolean
 }
 
 type VoiceChatJoinResult {

@@ -456,7 +456,7 @@ const CallFloatingInner = React.memo((props: { id: string }) => {
 export const CallFloating = React.memo(() => {
     let calls = React.useContext(MessengerContext).calls;
     let currentMediaSession = calls.useCurrentSession();
-    if (!currentMediaSession || calls.type === 'voice-chat') {
+    if (!currentMediaSession || currentMediaSession.callType === 'voice-chat') {
         return null;
     }
     return <CallFloatingInner id={currentMediaSession.conversationId} />;

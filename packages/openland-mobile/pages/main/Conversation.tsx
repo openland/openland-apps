@@ -52,6 +52,7 @@ import { matchLinks } from 'openland-y-utils/TextProcessor';
 import { StickerPicker } from './components/stickers/StickerPicker';
 import { SDevice } from 'react-native-s/SDevice';
 import { getCachedKeyboardHeight } from 'react-native-s/navigation/containers/PageKeyboard';
+import { CallHeaderButton } from './CallHeaderButton';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -554,12 +555,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     </SHeaderView>
                 )}
                 {!isBanned && showCallButton && callMode === RoomCallsMode.STANDARD && (
-                    <SHeaderButton
-                        title="Call"
-                        priority={1}
-                        icon={require('assets/ic-call-24.png')}
-                        onPress={this.props.showCallModal}
-                    />
+                    <CallHeaderButton showCallModal={this.props.showCallModal} />
                 )}
                 {!isBanned && showCallButton && callMode === RoomCallsMode.LINK && (
                     <SHeaderButton

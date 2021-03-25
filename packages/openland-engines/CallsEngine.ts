@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessengerEngine } from './MessengerEngine';
 import { OpenlandClient } from 'openland-api/spacex';
-import { MediaSessionManager } from './media/MediaSessionManager';
+import { CallType, MediaSessionManager } from './media/MediaSessionManager';
 // import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
 
 // export type CallStatus = 'initial' | 'connecting' | 'connected' | 'end' | 'waiting';
@@ -16,7 +16,6 @@ import { MediaSessionManager } from './media/MediaSessionManager';
 //     screenShare?: AppMediaStreamTrack;
 //     videoEnabled?: boolean;
 // }
-type CallType = 'call' | 'voice-chat';
 
 export class CallsEngine {
     readonly messenger: MessengerEngine;
@@ -24,7 +23,6 @@ export class CallsEngine {
 
     private _mediaSession: MediaSessionManager | null = null;
     private _sessionSubscriptions: ((state: MediaSessionManager | null) => void)[] = [];
-    private _type: CallType | null = null;
 
     constructor(messenger: MessengerEngine) {
         this.messenger = messenger;
@@ -35,31 +33,24 @@ export class CallsEngine {
         return this._mediaSession;
     }
 
-    get type() {
-        return this._type;
-    }
-
-    joinCall = (conversationId: string, source: CallType) => {
+    joinCall = (conversationId: string, callType: CallType) => {
         if (this._mediaSession) {
             if (this._mediaSession.conversationId === conversationId) {
                 return;
             } else {
                 this._mediaSession.destroy();
                 this._mediaSession = null;
-                this._type = null;
             }
         }
 
-        let manager = new MediaSessionManager(this.messenger, conversationId);
+        let manager = new MediaSessionManager(this.messenger, conversationId, callType);
         manager.onDestoy = () => {
             if (this._mediaSession === manager) {
                 this._mediaSession = null;
-                this._type = null;
                 this.notifyCurrentSession();
             }
         };
         this._mediaSession = manager;
-        this._type = source;
         this.notifyCurrentSession();
     }
 
@@ -67,7 +58,6 @@ export class CallsEngine {
         if (this._mediaSession) {
             this._mediaSession.destroy();
             this._mediaSession = null;
-            this._type = null;
             this.notifyCurrentSession();
         }
     }

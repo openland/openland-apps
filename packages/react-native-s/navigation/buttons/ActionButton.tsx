@@ -25,6 +25,7 @@ export const ActionButton = React.memo((props: ActionButtonProps) => {
                         height: size,
                         alignItems: 'center',
                         justifyContent: 'center',
+                        opacity: disabled ? 0.56 : undefined,
                     }}
                 >
                     <Image

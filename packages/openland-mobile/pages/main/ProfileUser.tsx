@@ -323,8 +323,8 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                     )}
                 </ZHero>
 
-                {currentVoiceChat && (
-                    <CurrentVoiceChat currentVoiceChat={currentVoiceChat}/>
+                {currentVoiceChat && currentVoiceChat.speakers.length > 0 && (
+                    <CurrentVoiceChat currentVoiceChat={currentVoiceChat} />
                 )}
 
                 <ZListGroup header="About" useSpacer={true}>

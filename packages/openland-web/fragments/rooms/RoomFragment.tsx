@@ -623,7 +623,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
         let isListener = voiceChatData.me?.status === VoiceChatParticipantStatus.LISTENER;
 
         if (isPrevListener && isSpeaker) {
-            mediaSession?.setAudioEnabled(true);
+            mediaSession?.setAudioEnabled(false);
         }
         if (isPrevSpeaker && isListener) {
             mediaSession?.setAudioEnabled(false);
