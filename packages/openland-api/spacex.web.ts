@@ -5786,6 +5786,20 @@ const VoiceChatCreateSelector = obj(
                     fragment('VoiceChat', VoiceChatWithSpeakersSelector)
                 )))
         );
+const VoiceChatCreateInChatSelector = obj(
+            field('voiceChatCreateInChat', 'voiceChatCreateInChat', args(fieldValue("input", refValue('input')), fieldValue("cid", refValue('cid'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('chat', 'chat', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('VoiceChat', VoiceChatWithSpeakersSelector)
+                        ))),
+                    field('peerId', 'peerId', args(), notNull(scalar('ID'))),
+                    field('conference', 'conference', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('Conference', ConferenceShortSelector)
+                        )))
+                )))
+        );
 const VoiceChatDeletePinnedMessageSelector = obj(
             field('voiceChatDeletePinnedMessage', 'voiceChatDeletePinnedMessage', args(fieldValue("id", refValue('id'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -7860,6 +7874,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'VoiceChatCreate',
         body: 'mutation VoiceChatCreate($input:VoiceChatInput!){voiceChatCreate(input:$input){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount pinnedMessage{__typename id message spans{__typename ...MessageSpan}}me{__typename ...VoiceChatParticipant}}fragment MessageSpan on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename id name}}... on MessageSpanMultiUserMention{__typename offset length}... on MessageSpanOrganizationMention{__typename organization{__typename id name}}... on MessageSpanRoomMention{__typename room{__typename ... on PrivateRoom{__typename id user{__typename id name}}... on SharedRoom{__typename id title isPremium}}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount shortname lastSeen online}status handRaised}',
         selector: VoiceChatCreateSelector
+    },
+    VoiceChatCreateInChat: {
+        kind: 'mutation',
+        name: 'VoiceChatCreateInChat',
+        body: 'mutation VoiceChatCreateInChat($input:VoiceChatInput!,$cid:ID!){voiceChatCreateInChat(input:$input,cid:$cid){__typename chat{__typename ...VoiceChatWithSpeakers}peerId conference{__typename ...ConferenceShort}}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount pinnedMessage{__typename id message spans{__typename ...MessageSpan}}me{__typename ...VoiceChatParticipant}}fragment MessageSpan on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename id name}}... on MessageSpanMultiUserMention{__typename offset length}... on MessageSpanOrganizationMention{__typename organization{__typename id name}}... on MessageSpanRoomMention{__typename room{__typename ... on PrivateRoom{__typename id user{__typename id name}}... on SharedRoom{__typename id title isPremium}}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount shortname lastSeen online}status handRaised}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}',
+        selector: VoiceChatCreateInChatSelector
     },
     VoiceChatDeletePinnedMessage: {
         kind: 'mutation',

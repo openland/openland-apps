@@ -122,6 +122,18 @@ mutation VoiceChatCreate($input: VoiceChatInput!) {
     }
 }
 
+mutation VoiceChatCreateInChat($input: VoiceChatInput!, $cid: ID!) {
+    voiceChatCreateInChat(input: $input, cid: $cid) {
+        chat {
+            ...VoiceChatWithSpeakers
+        }
+        peerId
+        conference {
+            ...ConferenceShort
+        }
+    }
+}
+
 mutation VoiceChatJoin($id: ID!) {
     voiceChatJoin(id: $id) {
         id

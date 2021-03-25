@@ -5779,6 +5779,20 @@ private let VoiceChatCreateSelector = obj(
                     fragment("VoiceChat", VoiceChatWithSpeakersSelector)
                 )))
         )
+private let VoiceChatCreateInChatSelector = obj(
+            field("voiceChatCreateInChat", "voiceChatCreateInChat", arguments(fieldValue("input", refValue("input")), fieldValue("cid", refValue("cid"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("chat", "chat", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("VoiceChat", VoiceChatWithSpeakersSelector)
+                        ))),
+                    field("peerId", "peerId", notNull(scalar("ID"))),
+                    field("conference", "conference", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("Conference", ConferenceShortSelector)
+                        )))
+                )))
+        )
 private let VoiceChatDeletePinnedMessageSelector = obj(
             field("voiceChatDeletePinnedMessage", "voiceChatDeletePinnedMessage", arguments(fieldValue("id", refValue("id"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -7858,6 +7872,12 @@ class Operations {
         "mutation VoiceChatCreate($input:VoiceChatInput!){voiceChatCreate(input:$input){__typename ...VoiceChatWithSpeakers}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount pinnedMessage{__typename id message spans{__typename ...MessageSpan}}me{__typename ...VoiceChatParticipant}}fragment MessageSpan on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename id name}}... on MessageSpanMultiUserMention{__typename offset length}... on MessageSpanOrganizationMention{__typename organization{__typename id name}}... on MessageSpanRoomMention{__typename room{__typename ... on PrivateRoom{__typename id user{__typename id name}}... on SharedRoom{__typename id title isPremium}}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount shortname lastSeen online}status handRaised}",
         VoiceChatCreateSelector
     )
+    let VoiceChatCreateInChat = OperationDefinition(
+        "VoiceChatCreateInChat",
+        .mutation, 
+        "mutation VoiceChatCreateInChat($input:VoiceChatInput!,$cid:ID!){voiceChatCreateInChat(input:$input,cid:$cid){__typename chat{__typename ...VoiceChatWithSpeakers}peerId conference{__typename ...ConferenceShort}}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount pinnedMessage{__typename id message spans{__typename ...MessageSpan}}me{__typename ...VoiceChatParticipant}}fragment MessageSpan on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename id name}}... on MessageSpanMultiUserMention{__typename offset length}... on MessageSpanOrganizationMention{__typename organization{__typename id name}}... on MessageSpanRoomMention{__typename room{__typename ... on PrivateRoom{__typename id user{__typename id name}}... on SharedRoom{__typename id title isPremium}}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id name firstName photo followersCount shortname lastSeen online}status handRaised}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}",
+        VoiceChatCreateInChatSelector
+    )
     let VoiceChatDeletePinnedMessage = OperationDefinition(
         "VoiceChatDeletePinnedMessage",
         .mutation, 
@@ -8343,6 +8363,7 @@ class Operations {
         if name == "UpdateWelcomeMessage" { return UpdateWelcomeMessage }
         if name == "UserStorageSet" { return UserStorageSet }
         if name == "VoiceChatCreate" { return VoiceChatCreate }
+        if name == "VoiceChatCreateInChat" { return VoiceChatCreateInChat }
         if name == "VoiceChatDeletePinnedMessage" { return VoiceChatDeletePinnedMessage }
         if name == "VoiceChatDemote" { return VoiceChatDemote }
         if name == "VoiceChatEnd" { return VoiceChatEnd }
