@@ -561,15 +561,20 @@ const RoomView = React.memo((props: { roomId: string }) => {
 
     const alreadyLeft = React.useRef(false);
 
-    const closeCall = (withRedirect: boolean = false) => {
+    const closeCall = () => {
         if (alreadyLeft.current) {
             return;
         }
         alreadyLeft.current = true;
         calls.leaveCall();
         client.mutateVoiceChatLeave({ id: props.roomId });
-        if (withRedirect) {
-            tabRouter.reset('/rooms', true);
+        if (window.location.pathname.startsWith('/room/')) {
+            let currentId = window.location.pathname.split('/')[2];
+            if (currentId === props.roomId) {
+                tabRouter.reset('/rooms', true);
+            }
+        } else {
+            tabRouter.stacks[0]?.reset('/rooms');
         }
     };
 
@@ -580,10 +585,10 @@ const RoomView = React.memo((props: { roomId: string }) => {
             builder
                 .title('End room')
                 .message('Leaving as the last admin will end the room. Return and make new admins if you want to keep the room going')
-                .action('Leave', () => Promise.resolve(closeCall(true)), 'danger')
+                .action('Leave', () => Promise.resolve(closeCall()), 'danger')
                 .show();
         } else {
-            closeCall(true);
+            closeCall();
         }
 
     }, [voiceChatData]);
