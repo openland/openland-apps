@@ -286,6 +286,7 @@ object Operations {
         if (name == "UpdateWelcomeMessage") return UpdateWelcomeMessage
         if (name == "UserStorageSet") return UserStorageSet
         if (name == "VoiceChatCreate") return VoiceChatCreate
+        if (name == "VoiceChatCreateInChat") return VoiceChatCreateInChat
         if (name == "VoiceChatDeletePinnedMessage") return VoiceChatDeletePinnedMessage
         if (name == "VoiceChatDemote") return VoiceChatDemote
         if (name == "VoiceChatEnd") return VoiceChatEnd
