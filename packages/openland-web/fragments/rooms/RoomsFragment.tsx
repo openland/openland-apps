@@ -53,6 +53,7 @@ const roomTitle = css`
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
+    color: var(--foregroundPrimary);
 `;
 
 const avatarsContainer = css`
