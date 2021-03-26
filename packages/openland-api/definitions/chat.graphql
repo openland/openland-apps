@@ -95,6 +95,9 @@ query RoomChat($id: ID!) {
             shortname
             featuredMembersCount
             socialImage
+            activeVoiceChat {
+                ...VoiceChatWithSpeakers
+            }
             featured
             welcomeMessage {
                 isOn
