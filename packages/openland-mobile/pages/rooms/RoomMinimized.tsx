@@ -170,7 +170,7 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
         let isListener = voiceChatData.me?.status === VoiceChatParticipantStatus.LISTENER;
 
         if (isPrevListener && isSpeaker) {
-            props.mediaSession.setAudioEnabled(true);
+            props.mediaSession.setAudioEnabled(false);
         }
         if (isPrevSpeaker && isListener) {
             props.mediaSession.setAudioEnabled(false);
