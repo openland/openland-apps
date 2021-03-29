@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
 import { normalizeUrl } from 'openland-x-utils/normalizeUrl';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { css, cx } from 'linaria';
@@ -32,6 +32,7 @@ import { RoomCallsMode, RoomChat_room } from 'openland-api/spacex.types';
 import { ChatSearchContext } from 'openland-web/pages/root/AppContainer';
 import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
+import MicIcon from 'openland-icons/s/ic-mic-24.svg';
 import ExternalCallIcon from 'openland-icons/s/ic-call-external-24.svg';
 import InviteIcon from 'openland-icons/s/ic-invite-24.svg';
 import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
@@ -114,6 +115,8 @@ const ChatOnlinesTitle = (props: { id: string }) => {
 };
 
 const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) => {
+    const client = useClient();
+    const router = React.useContext(XViewRouterContext)!;
     const calls = props.messenger.calls;
     const callSettings =
         props.chat.__typename === 'SharedRoom' ? props.chat.callSettings : undefined;
@@ -121,13 +124,22 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
     const showVideoCallModal = useVideoCallModal({ chatId: props.chat.id });
     const callDisabled = !!currentSession && currentSession.callType === 'voice-chat';
 
+    const startRoom = React.useCallback(async () => {
+        if (props.chat.__typename === 'SharedRoom' && !props.chat.activeVoiceChat) {
+            const room = (await client.mutateVoiceChatCreateInChat({ input: { title: props.chat.title }, cid: props.chat.id })).voiceChatCreateInChat;
+            router.navigate(`/room/${room.chat.id}`);
+        } else if (props.chat.__typename === 'SharedRoom' && props.chat.activeVoiceChat) {
+            router.navigate(`/room/${props.chat.activeVoiceChat.id}`);
+        }
+    }, [props.chat]);
+
     return (
         <div
             className={cx(
                 currentSession && currentSession.conversationId === props.chat.id && disabledBtn,
             )}
         >
-            {callSettings && callSettings.mode === RoomCallsMode.LINK ? (
+            {callSettings && callSettings.mode === RoomCallsMode.LINK && (
                 <UIconButton
                     icon={<ExternalCallIcon />}
                     as={'a'}
@@ -135,7 +147,16 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
                     target={'_blank'}
                     size="large"
                 />
-            ) : (
+            )}
+            {callSettings && callSettings.mode === RoomCallsMode.STANDARD && (
+                <UIconButton
+                    cursor="pointer"
+                    icon={<MicIcon />}
+                    onClick={startRoom}
+                    size="large"
+                />
+            )}
+            {props.chat.__typename === 'PrivateRoom' && (
                 <UIconButton
                     opacity={callDisabled ? 0.72 : undefined}
                     disableHover={callDisabled}

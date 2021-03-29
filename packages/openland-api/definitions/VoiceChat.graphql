@@ -9,6 +9,11 @@ fragment VoiceChatParticipant on VoiceChatParticipant {
         shortname
         lastSeen
         online
+        isBot
+        primaryOrganization {
+            id
+            name
+        }
     }
     status
     handRaised
