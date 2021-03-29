@@ -9,8 +9,14 @@ import {
     PanResponderGestureState,
     StyleProp,
     ViewStyle,
+    Keyboard,
+    Platform,
+    LayoutAnimation,
+    DeviceEventEmitter,
 } from 'react-native';
+import { SRouterContext } from 'react-native-s/SRouterContext';
 
+const Window = Dimensions.get('window');
 const clamp = (num: number, min: number, max: number) => Math.max(min, Math.min(num, max));
 
 interface ZDraggableItemProps {
@@ -50,6 +56,11 @@ export const ZDraggableItem = React.memo<ZDraggableItemProps>((props) => {
     const childSize = React.useRef({ x: 0, y: 0 });
     const startBounds = React.useRef({ top: 0, bottom: 0, left: 0, right: 0 });
     const isDragging = React.useRef(false);
+    const [keyboardHeight, setKeyboardHeight] = React.useState(0);
+    const [savedOffset, setSavedOffset] = React.useState<number | null>(null);
+    const router = React.useContext(SRouterContext);
+    const chatInputHeight = router?.route === 'Conversation' ? 50 : 0;
+    const isIos = Platform.OS === 'ios';
 
     const getBounds = React.useCallback(() => {
         const left = x + offsetFromStart.current.x;
@@ -62,7 +73,63 @@ export const ZDraggableItem = React.memo<ZDraggableItemProps>((props) => {
         };
     }, [x, y]);
 
-    const shouldStartDrag = React.useCallback((gs) => Math.abs(gs.dx) > 2 || Math.abs(gs.dy) > 2, []);
+    const keyboardWillShow = (e: any) => {
+        const currentY = y + offsetFromStart.current.y;
+        const currentBottomY = currentY + childSize.current.y;
+        const keyboardTopY = Window.height - e?.endCoordinates?.height;
+        setKeyboardHeight(e?.endCoordinates?.height);
+
+        if (currentBottomY > keyboardTopY - chatInputHeight) {
+            setSavedOffset(offsetFromStart.current.y);
+            if (e.duration > 0) {
+                LayoutAnimation.configureNext(
+                    LayoutAnimation.create(e.duration, LayoutAnimation.Types[e.easing]),
+                );
+            }
+            pan.current.setValue({ x: offsetFromStart.current.x, y: keyboardTopY - y - childSize.current.y - chatInputHeight });
+        }
+    };
+
+    const keyboardWillHide = (e: any) => {
+        setKeyboardHeight(0);
+        if (savedOffset !== null && e.duration > 0) {
+            LayoutAnimation.configureNext(
+                LayoutAnimation.create(
+                    e.duration,
+                    LayoutAnimation.Types[e.easing],
+                    LayoutAnimation.Properties.opacity,
+                ),
+            );
+            pan.current.setValue({ x: offsetFromStart.current.x, y: savedOffset });
+            setSavedOffset(null);
+        }
+    };
+
+    const keyboardHeightChange = (e: any) => {
+        setKeyboardHeight(e?.height ? Math.ceil(e.height) : 0);
+    };
+
+    React.useEffect(() => {
+        if (isIos) {
+            Keyboard.addListener('keyboardWillShow', keyboardWillShow);
+            Keyboard.addListener('keyboardWillHide', keyboardWillHide);
+        } else {
+            DeviceEventEmitter.addListener('async_keyboard_height', keyboardHeightChange);
+        }
+        return () => {
+            if (isIos) {
+                Keyboard.removeListener('keyboardWillShow', keyboardWillShow);
+                Keyboard.removeListener('keyboardWillHide', keyboardWillHide);
+            } else {
+                DeviceEventEmitter.removeListener('async_keyboard_height', keyboardHeightChange);
+            }
+        };
+    }, [savedOffset, router]);
+
+    const shouldStartDrag = React.useCallback(
+        (gs) => Math.abs(gs.dx) > 2 || Math.abs(gs.dy) > 2,
+        [],
+    );
 
     const onPanResponderRelease = React.useCallback(
         (e: GestureResponderEvent, gestureState: PanResponderGestureState) => {
@@ -76,41 +143,38 @@ export const ZDraggableItem = React.memo<ZDraggableItemProps>((props) => {
         [onDragRelease, onRelease],
     );
 
-    const onPanResponderGrant = React.useCallback(
-        () => {
-            startBounds.current = getBounds();
-            isDragging.current = true;
-            pan.current.setOffset(offsetFromStart.current);
-            pan.current.setValue({ x: 0, y: 0 });
-        },
-        [getBounds],
-    );
+    const onPanResponderGrant = React.useCallback(() => {
+        startBounds.current = getBounds();
+        isDragging.current = true;
+        pan.current.setOffset(offsetFromStart.current);
+        pan.current.setValue({ x: 0, y: 0 });
+    }, [getBounds]);
 
     const handleOnDrag = React.useCallback(
         (e: GestureResponderEvent, gestureState: PanResponderGestureState) => {
             const { dx, dy } = gestureState;
             const { top, right, left, bottom } = startBounds.current;
-            const Window = Dimensions.get('window');
             const changeX = clamp(
                 dx,
-            // @ts-ignore
+                // @ts-ignore
                 Number.isFinite(minX) ? minX - left : -Window.width,
-            // @ts-ignore
+                // @ts-ignore
                 Number.isFinite(maxX) ? maxX - right : Window.width - right - 12,
             );
             const changeY = clamp(
                 dy,
-            // @ts-ignore
+                // @ts-ignore
                 Number.isFinite(minY) ? minY - top : -Window.height,
-            // @ts-ignore
-                Number.isFinite(maxY) ? maxY - bottom : Window.height - bottom - 12,
+                // @ts-ignore
+                Number.isFinite(maxY) ? maxY - bottom : Window.height - bottom - keyboardHeight - chatInputHeight,
             );
             pan.current.setValue({ x: changeX, y: changeY });
+            setSavedOffset(null);
             if (onDrag) {
-              onDrag(e, gestureState);
+                onDrag(e, gestureState);
             }
         },
-        [maxX, maxY, minX, minY, onDrag],
+        [maxX, maxY, minX, minY, keyboardHeight, onDrag],
     );
 
     const panResponder = React.useMemo(() => {
@@ -137,7 +201,6 @@ export const ZDraggableItem = React.memo<ZDraggableItemProps>((props) => {
     }, []);
 
     const positionCss: StyleProp<ViewStyle> = React.useMemo(() => {
-        const Window = Dimensions.get('window');
         return {
             position: 'absolute',
             top: 0,

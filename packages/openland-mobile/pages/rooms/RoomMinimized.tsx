@@ -25,6 +25,8 @@ interface SpeakerPhotoViewProps {
     speakingPeerId?: string;
 }
 
+const dimensionsWindow = Dimensions.get('window');
+
 const SpeakerPhotoView = React.memo<SpeakerPhotoViewProps>((props) => {
     const { firstSpeakers, speakingPeerId, peers } = props;
     const speakingPeer = peers?.find(peer => peer.id === speakingPeerId);
@@ -200,7 +202,6 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
     }, []);
 
     const muted = !state.sender.audioEnabled;
-    const dimensionsWindow = Dimensions.get('window');
 
     const isAdminOrSpeaker = status === VoiceChatParticipantStatus.SPEAKER || status === VoiceChatParticipantStatus.ADMIN;
 
@@ -267,7 +268,10 @@ export const RoomMinimized = React.memo(() => {
         <React.Suspense fallback={null}>
             <GQLClientContext.Provider value={getClient()}>
                 <QueryCacheProvider>
-                    <VoiceChatProvider key={`conversationId-${mediaSession.conversationId}`} roomId={mediaSession.conversationId}>
+                    <VoiceChatProvider
+                        key={`conversationId-${mediaSession.conversationId}`}
+                        roomId={mediaSession.conversationId}
+                    >
                         <RoomMinimizedComponent mediaSession={mediaSession} />
                     </VoiceChatProvider>
                 </QueryCacheProvider>
