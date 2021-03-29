@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -82,7 +82,7 @@
 		AAD8F14A2208A5DF007C4FE3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F1492208A5DF007C4FE3 /* AVFoundation.framework */; };
 		AAD8F14C2208A5E5007C4FE3 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F14B2208A5E5007C4FE3 /* AudioToolbox.framework */; };
 		AAD8F14E2208A5EA007C4FE3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F14D2208A5EA007C4FE3 /* CoreGraphics.framework */; };
-		AAD8F1502208A5F2007C4FE3 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F14F2208A5F1007C4FE3 /* GLKit.framework */; };
+		AAD8F1502208A5F2007C4FE3 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F14F2208A5F1007C4FE3 /* GLKit.framework */; platformFilter = ios; };
 		AAD8F1522208A5F7007C4FE3 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F1512208A5F7007C4FE3 /* CoreAudio.framework */; };
 		AAD8F1542208A5FC007C4FE3 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F1532208A5FC007C4FE3 /* CoreVideo.framework */; };
 		AAD8F1562208A601007C4FE3 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F1552208A601007C4FE3 /* VideoToolbox.framework */; };
@@ -1295,7 +1295,11 @@
 				);
 				INFOPLIST_FILE = openlandTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
@@ -1350,7 +1354,11 @@
 				);
 				INFOPLIST_FILE = openlandTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
@@ -1399,7 +1407,10 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = openland/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-webrtc/ios/**",
@@ -1412,6 +1423,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.openland.app.debug;
 				PRODUCT_NAME = openland;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
 				SWIFT_OBJC_BRIDGING_HEADER = "openland-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1454,7 +1466,10 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = openland/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-webrtc/ios/**",
@@ -1467,6 +1482,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.openland.app;
 				PRODUCT_NAME = openland;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ENFORCE_EXCLUSIVE_ACCESS = off;
 				SWIFT_OBJC_BRIDGING_HEADER = "openland-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -1587,13 +1603,18 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "openland-share-ex/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.openland.app.debug.openland-share-ex";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
@@ -1631,13 +1652,19 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "openland-share-ex/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.openland.app.openland-share-ex";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
