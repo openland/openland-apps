@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
-    UserShort,
-    OrganizationShort,
+    Account_me,
     Account_myProfile,
     Account_sessionState
 } from 'openland-api/spacex.types';
@@ -9,8 +8,8 @@ import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 export interface UserInfo {
-    user: UserShort | null;
-    organization: OrganizationShort | null;
+    user: Account_me | null;
+    organization: { id: string, name: string } | null;
     profile: Account_myProfile | null;
     isLoggedIn: boolean;
     isAccountExists: boolean;
@@ -24,8 +23,8 @@ export interface UserInfo {
 export const UserInfoContext = React.createContext<UserInfo | undefined>(undefined);
 
 export interface UserInfoProps {
-    user?: UserShort | null;
-    organization?: OrganizationShort | null;
+    user?: Account_me | null;
+    organization?: { id: string, name: string } | null;
     sessionState: Account_sessionState;
     roles: string[];
     profile: Account_myProfile | null;

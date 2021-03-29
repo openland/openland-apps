@@ -3,6 +3,9 @@ fragment RoomShort on Room {
         id
         user {
             ...UserShort
+            inContacts
+            isBanned
+            isMeBanned
         }
         settings {
             id

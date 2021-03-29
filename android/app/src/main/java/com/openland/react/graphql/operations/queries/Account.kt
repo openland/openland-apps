@@ -7,7 +7,19 @@ import org.json.*
 internal val AccountSelector = obj(
             field("me", "me", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("User", UserShortSelector)
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("photo", "photo", scalar("String")),
+                    field("shortname", "shortname", scalar("String")),
+                    field("email", "email", scalar("String")),
+                    field("isBot", "isBot", notNull(scalar("Boolean"))),
+                    field("inContacts", "inContacts", notNull(scalar("Boolean"))),
+                    field("primaryOrganization", "primaryOrganization", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String"))),
+                            field("shortname", "shortname", scalar("String"))
+                        ))
                 )),
             field("myProfile", "myProfile", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -33,6 +45,6 @@ internal val AccountSelector = obj(
 val Account = object: OperationDefinition {
     override val name = "Account"
     override val kind = OperationKind.QUERY
-    override val body = "query Account{me:me{__typename ...UserShort}myProfile{__typename id authEmail}sessionState:sessionState{__typename isLoggedIn isActivated isProfileCreated isAccountActivated isAccountExists isAccountPicked isCompleted isBlocked}myPermissions{__typename roles}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}"
+    override val body = "query Account{me:me{__typename id name photo shortname email isBot inContacts primaryOrganization{__typename id name shortname}}myProfile{__typename id authEmail}sessionState:sessionState{__typename isLoggedIn isActivated isProfileCreated isAccountActivated isAccountExists isAccountPicked isCompleted isBlocked}myPermissions{__typename roles}}"
     override val selector = AccountSelector
 }

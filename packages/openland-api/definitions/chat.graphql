@@ -53,20 +53,9 @@ query RoomChat($id: ID!) {
         ... on PrivateRoom {
             id
             user {
-                id
-                name
-                firstName
-                photo
-                shortname
-                inContacts
-                primaryOrganization {
-                    id
-                    name
-                }
-                isBot
+                ...UserShort
                 isYou
-                online
-                lastSeen
+                inContacts
                 isBanned
                 isMeBanned
             }
@@ -108,7 +97,7 @@ query RoomChat($id: ID!) {
                 message
             }
             organization {
-                ...OrganizationMedium
+                ...OrganizationShort
             }
             canUnpinMessage
             pinnedMessage {
@@ -954,6 +943,8 @@ query UserSearchForChat($chatId: ID!, $query: String, $first: Int!,$after: Strin
         edges {
             node {
                 ...UserShort
+                isBanned
+                isMeBanned
             }
             isMember
             cursor

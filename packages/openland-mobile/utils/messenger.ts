@@ -1,5 +1,5 @@
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
-import { UserShort } from 'openland-api/spacex.types';
+import { Account_me } from 'openland-api/spacex.types';
 import { MobileMessenger } from '../messenger/MobileMessenger';
 import { OpenlandClient } from 'openland-api/spacex';
 import { Platform } from 'react-native';
@@ -7,7 +7,7 @@ import { EngineOptions } from 'openland-engines/EnginesOptions';
 
 let cachedMessenger: MobileMessenger | null = null;
 
-export function buildMessenger(client: OpenlandClient, user: UserShort, opts?: Partial<EngineOptions>) {
+export function buildMessenger(client: OpenlandClient, user: Account_me, opts?: Partial<EngineOptions>) {
     let platform = Platform.OS + ' ' + (__DEV__ ? 'debug' : 'release');
 
     return new MessengerEngine(client, user, platform, opts);

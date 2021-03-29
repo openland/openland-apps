@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { PageProps } from '../../../components/PageProps';
-import { withApp } from '../../../components/withApp';
+import { PageProps } from 'openland-mobile/components/PageProps';
+import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { View, LayoutChangeEvent, Image, Dimensions, ScrollView } from 'react-native';
 import { UserShort } from 'openland-api/spacex.types';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { ZBlurredView } from '../../../components/ZBlurredView';
-import { ZTagView } from '../../../components/ZTagView';
+import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
+import { ZTagView } from 'openland-mobile/components/ZTagView';
 import { UserView } from '../components/UserView';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
@@ -72,7 +72,7 @@ export const CheckListBoxWraper = React.memo(
 );
 
 interface UserSearchData {
-    node: UserShort;
+    node: UserShort & { isBanned: boolean, isMeBanned: boolean };
     isMember: boolean;
     inviteRestricted?: boolean;
     cursor: string;

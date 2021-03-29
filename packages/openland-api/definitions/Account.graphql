@@ -1,6 +1,17 @@
 query Account {
     me: me {
-        ...UserShort
+        id
+        name
+        photo
+        shortname
+        email
+        isBot
+        inContacts
+        primaryOrganization {
+            id
+            name
+            shortname
+        }
     }
     myProfile {
         id

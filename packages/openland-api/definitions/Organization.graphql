@@ -198,6 +198,8 @@ query UserSearchForOrganization($orgId: ID!, $query: String, $first: Int!,$after
         edges {
             node {
                 ...UserShort
+                isBanned
+                isMeBanned
             }
             isMember
             cursor

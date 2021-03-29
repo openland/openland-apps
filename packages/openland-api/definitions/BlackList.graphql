@@ -15,6 +15,8 @@ query BlackListUpdatesState {
 query MyBlackList {
     myBlackList {
         ...UserShort
+        isBanned
+        isMeBanned
     }
 }
 

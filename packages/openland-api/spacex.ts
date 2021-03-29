@@ -412,9 +412,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryUserNano(variables: Types.UserNanoVariables, params?: QueryParameters): Promise<Types.UserNano> {
         return this.query('UserNano', variables, params);
     }
-    queryUserPico(variables: Types.UserPicoVariables, params?: QueryParameters): Promise<Types.UserPico> {
-        return this.query('UserPico', variables, params);
-    }
     queryUserSearchForChat(variables: Types.UserSearchForChatVariables, params?: QueryParameters): Promise<Types.UserSearchForChat> {
         return this.query('UserSearchForChat', variables, params);
     }
@@ -423,9 +420,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryUserStorage(variables: Types.UserStorageVariables, params?: QueryParameters): Promise<Types.UserStorage> {
         return this.query('UserStorage', variables, params);
-    }
-    queryUsers(variables: Types.UsersVariables, params?: QueryParameters): Promise<Types.Users> {
-        return this.query('Users', variables, params);
     }
     queryVoiceChat(variables: Types.VoiceChatVariables, params?: QueryParameters): Promise<Types.VoiceChat> {
         return this.query('VoiceChat', variables, params);
@@ -847,9 +841,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchUserNano(variables: Types.UserNanoVariables, params?: QueryParameters): Promise<Types.UserNano> {
         return this.refetch('UserNano', variables, params);
     }
-    refetchUserPico(variables: Types.UserPicoVariables, params?: QueryParameters): Promise<Types.UserPico> {
-        return this.refetch('UserPico', variables, params);
-    }
     refetchUserSearchForChat(variables: Types.UserSearchForChatVariables, params?: QueryParameters): Promise<Types.UserSearchForChat> {
         return this.refetch('UserSearchForChat', variables, params);
     }
@@ -858,9 +849,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchUserStorage(variables: Types.UserStorageVariables, params?: QueryParameters): Promise<Types.UserStorage> {
         return this.refetch('UserStorage', variables, params);
-    }
-    refetchUsers(variables: Types.UsersVariables, params?: QueryParameters): Promise<Types.Users> {
-        return this.refetch('Users', variables, params);
     }
     refetchVoiceChat(variables: Types.VoiceChatVariables, params?: QueryParameters): Promise<Types.VoiceChat> {
         return this.refetch('VoiceChat', variables, params);
@@ -1282,9 +1270,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateUserNano(variables: Types.UserNanoVariables, updater: (data: Types.UserNano) => Types.UserNano | null): Promise<boolean> {
         return this.updateQuery(updater, 'UserNano', variables);
     }
-    updateUserPico(variables: Types.UserPicoVariables, updater: (data: Types.UserPico) => Types.UserPico | null): Promise<boolean> {
-        return this.updateQuery(updater, 'UserPico', variables);
-    }
     updateUserSearchForChat(variables: Types.UserSearchForChatVariables, updater: (data: Types.UserSearchForChat) => Types.UserSearchForChat | null): Promise<boolean> {
         return this.updateQuery(updater, 'UserSearchForChat', variables);
     }
@@ -1293,9 +1278,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateUserStorage(variables: Types.UserStorageVariables, updater: (data: Types.UserStorage) => Types.UserStorage | null): Promise<boolean> {
         return this.updateQuery(updater, 'UserStorage', variables);
-    }
-    updateUsers(variables: Types.UsersVariables, updater: (data: Types.Users) => Types.Users | null): Promise<boolean> {
-        return this.updateQuery(updater, 'Users', variables);
     }
     updateVoiceChat(variables: Types.VoiceChatVariables, updater: (data: Types.VoiceChat) => Types.VoiceChat | null): Promise<boolean> {
         return this.updateQuery(updater, 'VoiceChat', variables);
@@ -1985,11 +1967,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useUserNano(variables: Types.UserNanoVariables, params?: SpaceQueryWatchParameters): Types.UserNano | null {
         return this.useQuery('UserNano', variables, params);
     }
-    useUserPico(variables: Types.UserPicoVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.UserPico | null;
-    useUserPico(variables: Types.UserPicoVariables, params?: SpaceQueryWatchParameters): Types.UserPico;
-    useUserPico(variables: Types.UserPicoVariables, params?: SpaceQueryWatchParameters): Types.UserPico | null {
-        return this.useQuery('UserPico', variables, params);
-    }
     useUserSearchForChat(variables: Types.UserSearchForChatVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.UserSearchForChat | null;
     useUserSearchForChat(variables: Types.UserSearchForChatVariables, params?: SpaceQueryWatchParameters): Types.UserSearchForChat;
     useUserSearchForChat(variables: Types.UserSearchForChatVariables, params?: SpaceQueryWatchParameters): Types.UserSearchForChat | null {
@@ -2004,11 +1981,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useUserStorage(variables: Types.UserStorageVariables, params?: SpaceQueryWatchParameters): Types.UserStorage;
     useUserStorage(variables: Types.UserStorageVariables, params?: SpaceQueryWatchParameters): Types.UserStorage | null {
         return this.useQuery('UserStorage', variables, params);
-    }
-    useUsers(variables: Types.UsersVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.Users | null;
-    useUsers(variables: Types.UsersVariables, params?: SpaceQueryWatchParameters): Types.Users;
-    useUsers(variables: Types.UsersVariables, params?: SpaceQueryWatchParameters): Types.Users | null {
-        return this.useQuery('Users', variables, params);
     }
     useVoiceChat(variables: Types.VoiceChatVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.VoiceChat | null;
     useVoiceChat(variables: Types.VoiceChatVariables, params?: SpaceQueryWatchParameters): Types.VoiceChat;
