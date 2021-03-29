@@ -4,7 +4,7 @@ query MessageMultiSpan($id: ID!) {
         spans {
             ... on MessageSpanMultiUserMention {
                 users {
-                    ...UserForMention
+                    ...UserSmall
                 }
             }
         }

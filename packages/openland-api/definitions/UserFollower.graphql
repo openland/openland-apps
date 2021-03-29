@@ -1,9 +1,0 @@
-fragment UserFollower on User {
-    id
-    name
-    shortname
-    about
-    followersCount
-    followedByMe
-    photo
-}

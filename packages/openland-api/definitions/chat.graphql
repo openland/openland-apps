@@ -642,7 +642,7 @@ query ResolvedInvite($key: String!) {
     }
     shortnameItem: alphaResolveShortName(shortname: $key) {
         ... on SharedRoom {
-            ... SharedRoomPreview
+            ...SharedRoomPreview
         }
     }
 }

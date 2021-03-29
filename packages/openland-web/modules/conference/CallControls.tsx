@@ -2,16 +2,7 @@ import * as React from 'react';
 import { cx, css } from 'linaria';
 import { XView } from 'react-mental';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
-import MinimizeIcon from 'openland-icons/s/ic-size-down-glyph-24.svg';
-import EndIcon from 'openland-icons/s/ic-call-end-glyph-24.svg';
-import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
-import CameraIcon from 'openland-icons/s/ic-camera-video-glyph-24.svg';
-import ScreenIcon from 'openland-icons/s/ic-screen-glyph-24.svg';
-import SettingsIcon from 'openland-icons/s/ic-settings-glyph-24.svg';
-import MagicIcon from 'openland-icons/s/ic-magic-glyph-24.svg';
-import MessageIcon from 'openland-icons/s/ic-message-glyph-24.svg';
 import { TextStyles } from 'openland-web/utils/TextStyles';
-import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
 import { showModalBox } from 'openland-x/showModalBox';
 import { USelect, OptionType } from 'openland-web/components/unicorn/USelect';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
@@ -22,6 +13,14 @@ import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { VideoComponent } from './ScreenShareModal';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import MinimizeIcon from 'openland-icons/s/ic-size-down-glyph-24.svg';
+import EndIcon from 'openland-icons/s/ic-call-end-glyph-24.svg';
+import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
+import CameraIcon from 'openland-icons/s/ic-camera-video-glyph-24.svg';
+import ScreenIcon from 'openland-icons/s/ic-screen-glyph-24.svg';
+import SettingsIcon from 'openland-icons/s/ic-settings-glyph-24.svg';
+import MessageIcon from 'openland-icons/s/ic-message-glyph-24.svg';
+import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
 
 export const CONTROLS_WIDTH = 64;
 
@@ -306,13 +305,11 @@ interface CallControlsProps {
     muted: boolean;
     cameraEnabled: boolean;
     screenEnabled: boolean;
-    spaceEnabled: boolean;
     onMinimize: React.MouseEventHandler;
     onEnd: React.MouseEventHandler;
     onMute: React.MouseEventHandler;
     onCameraClick: React.MouseEventHandler;
     onScreenClick: React.MouseEventHandler;
-    onSpaceClick: React.MouseEventHandler;
     onMessageClick: React.MouseEventHandler;
 }
 
@@ -409,19 +406,6 @@ export const CallControls = (props: CallControlsProps) => {
                             onClick={props.onScreenClick}
                         />
                     }
-                    <ControlItem
-                        text="Space"
-                        icon={
-                            <UIconButton
-                                icon={<MagicIcon />}
-                                color="var(--foregroundContrast)"
-                                rippleColor="var(--tintBlue)"
-                                active={props.spaceEnabled}
-                                disableHover={true}
-                            />
-                        }
-                        onClick={props.onSpaceClick}
-                    />
                     <ControlItem
                         text="Message"
                         icon={

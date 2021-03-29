@@ -1,3 +1,4 @@
+import uuid from 'uuid/v4';
 import { OpenlandClient } from 'openland-api/spacex';
 import { backoff } from 'openland-y-utils/timer';
 import { MediaConnectionManager } from './MediaConnectionManager';
@@ -11,10 +12,8 @@ import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { InvalidateSync } from '@openland/patterns';
 import { MediaSessionState, MediaSessionCommand, reduceState } from './MediaSessionState';
 import { Reducer } from 'openland-y-utils/reducer';
-import uuid from 'uuid/v4';
 import { AppMediaDeviceManager } from 'openland-y-runtime/AppMediaDeviceManager';
 import { MediaSessionTrackAnalyzerManager } from './MediaSessionTrackAnalyzer';
-import { MediaSessionVolumeSpace } from 'openland-engines/legacy/MediaSessionVolumeSpace';
 import { AppPeerConnectionFactory } from 'openland-y-runtime/AppPeerConnection';
 import sdpTransform from 'sdp-transform';
 
@@ -63,9 +62,6 @@ export class MediaSessionManager {
     // Analyzer
     public analyzer: MediaSessionTrackAnalyzerManager;
 
-    // Additional media
-    public space: MediaSessionVolumeSpace;
-
     // Lifecycle
     private conferenceId!: string;
     private peerId!: string;
@@ -100,7 +96,6 @@ export class MediaSessionManager {
         });
 
         this.analyzer = new MediaSessionTrackAnalyzerManager(this.state);
-        this.space = new MediaSessionVolumeSpace(this);
 
         this.connectionsInvalidateSync = new InvalidateSync(this.handleState);
         this.doInit();
@@ -202,9 +197,6 @@ export class MediaSessionManager {
 
         // Dispose analyzer
         this.analyzer.dispose();
-
-        // Dispose space
-        this.space.dispose();
 
         // Connections invalidate sync
         if (this.connectionsSubscription) {

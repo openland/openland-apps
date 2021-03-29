@@ -2157,9 +2157,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateEditMessage(variables: Types.EditMessageVariables, params?: MutationParameters): Promise<Types.EditMessage> {
         return this.mutate('EditMessage', variables, params);
     }
-    mutateGlobalEventBusPublish(variables: Types.GlobalEventBusPublishVariables, params?: MutationParameters): Promise<Types.GlobalEventBusPublish> {
-        return this.mutate('GlobalEventBusPublish', variables, params);
-    }
     mutateMakeCardDefault(variables: Types.MakeCardDefaultVariables, params?: MutationParameters): Promise<Types.MakeCardDefault> {
         return this.mutate('MakeCardDefault', variables, params);
     }
@@ -2516,9 +2513,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     subscribeDialogsWatch(variables: Types.DialogsWatchVariables, handler: GraphqlSubscriptionHandler<Types.DialogsWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.DialogsWatch> {
         return this.subscribe(handler, 'DialogsWatch', variables, params);
-    }
-    subscribeGlobalEventBus(variables: Types.GlobalEventBusVariables, handler: GraphqlSubscriptionHandler<Types.GlobalEventBus>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.GlobalEventBus> {
-        return this.subscribe(handler, 'GlobalEventBus', variables, params);
     }
     subscribeMyContactsUpdates(variables: Types.MyContactsUpdatesVariables, handler: GraphqlSubscriptionHandler<Types.MyContactsUpdates>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.MyContactsUpdates> {
         return this.subscribe(handler, 'MyContactsUpdates', variables, params);

@@ -14,7 +14,7 @@ query BlackListUpdatesState {
 
 query MyBlackList {
     myBlackList {
-        ... UserShort
+        ...UserShort
     }
 }
 
@@ -24,18 +24,18 @@ subscription BlackListUpdates($fromState: String!) {
         updates {
             ... on BlackListAdded {
                 bannedBy {
-                    ... UserShort
+                    ...UserShort
                 }
                 bannedUser {
-                    ... UserShort
+                    ...UserShort
                 }
             }
             ... on BlackListRemoved {
                 bannedBy {
-                    ... UserShort
+                    ...UserShort
                 }
                 bannedUser {
-                    ... UserShort
+                    ...UserShort
                 }
             }
         }

@@ -1,3 +1,45 @@
+fragment UserFollower on User {
+    id
+    name
+    shortname
+    about
+    followersCount
+    followedByMe
+    photo
+}
+
+fragment UserSmall on User {
+    id
+    name
+    firstName
+    photo
+    shortname
+    isBot
+    primaryOrganization {
+        id
+        name
+    }
+}
+
+fragment UserShort on User {
+    id
+    name
+    firstName
+    lastName
+    photo
+    email
+    online
+    lastSeen
+    isBot
+    shortname
+    inContacts
+    isBanned
+    isMeBanned
+    primaryOrganization {
+        ...OrganizationShort
+    }
+}
+
 fragment UserFull on User {
     id
     name

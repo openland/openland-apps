@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as QuillType from 'quill';
 import { css, cx } from 'linaria';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
-import { StickerFragment, UserForMention } from 'openland-api/spacex.types';
+import { StickerFragment, UserSmall } from 'openland-api/spacex.types';
 import { EmojiPicker } from './emoji/EmojiPicker';
 import { emojiConvertToName } from 'openland-y-utils/emojiExtract';
 import { fileListToArray } from 'openland-web/fragments/chat/components/DropZone';
@@ -130,7 +130,7 @@ export const URickInput = React.memo(
         }
 
         function convertQuillContent(content: QuillType.Delta) {
-            let res: (string | UserForMention | AllMention)[] = [];
+            let res: (string | UserSmall | AllMention)[] = [];
             for (let c of content.ops!) {
                 if (c.insert) {
                     if (typeof c.insert === 'string') {

@@ -664,6 +664,21 @@ const CommentUpdateFragmentSelector = obj(
             ))
         );
 
+const UserSmallSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('name', 'name', args(), notNull(scalar('String'))),
+            field('firstName', 'firstName', args(), notNull(scalar('String'))),
+            field('photo', 'photo', args(), scalar('String')),
+            field('shortname', 'shortname', args(), scalar('String')),
+            field('isBot', 'isBot', args(), notNull(scalar('Boolean'))),
+            field('primaryOrganization', 'primaryOrganization', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('name', 'name', args(), notNull(scalar('String')))
+                ))
+        );
+
 const ConferenceFullSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -673,7 +688,7 @@ const ConferenceFullSelector = obj(
                     field('id', 'id', args(), notNull(scalar('ID'))),
                     field('user', 'user', args(), notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            fragment('User', UserShortSelector)
+                            fragment('User', UserSmallSelector)
                         ))),
                     field('mediaState', 'mediaState', args(), notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -1949,20 +1964,6 @@ const UserFollowerSelector = obj(
             field('photo', 'photo', args(), scalar('String'))
         );
 
-const UserForMentionSelector = obj(
-            field('__typename', '__typename', args(), notNull(scalar('String'))),
-            field('id', 'id', args(), notNull(scalar('ID'))),
-            field('name', 'name', args(), notNull(scalar('String'))),
-            field('photo', 'photo', args(), scalar('String')),
-            field('shortname', 'shortname', args(), scalar('String')),
-            field('isBot', 'isBot', args(), notNull(scalar('Boolean'))),
-            field('primaryOrganization', 'primaryOrganization', args(), obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('id', 'id', args(), notNull(scalar('ID'))),
-                    field('name', 'name', args(), notNull(scalar('String')))
-                ))
-        );
-
 const VoiceChatWithSpeakersSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('speakers', 'speakers', args(), notNull(list(notNull(obj(
@@ -2730,7 +2731,7 @@ const ChatMentionSearchSelector = obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
                                 field('user', 'user', args(), notNull(obj(
                                         field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                        fragment('User', UserForMentionSelector)
+                                        fragment('User', UserSmallSelector)
                                     ))),
                                 field('fromSameChat', 'fromSameChat', args(), notNull(scalar('Boolean')))
                             )),
@@ -3486,7 +3487,7 @@ const MessageMultiSpanSelector = obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
                                 field('users', 'users', args(), notNull(list(notNull(obj(
                                         field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                        fragment('User', UserForMentionSelector)
+                                        fragment('User', UserSmallSelector)
                                     )))))
                             ))
                         )))))
@@ -5223,9 +5224,6 @@ const EditCommentSelector = obj(
 const EditMessageSelector = obj(
             field('editMessage', 'editMessage', args(fieldValue("messageId", refValue('messageId')), fieldValue("message", refValue('message')), fieldValue("replyMessages", refValue('replyMessages')), fieldValue("mentions", refValue('mentions')), fieldValue("fileAttachments", refValue('fileAttachments')), fieldValue("spans", refValue('spans'))), notNull(scalar('Boolean')))
         );
-const GlobalEventBusPublishSelector = obj(
-            field('globalEventBusPublish', 'globalEventBusPublish', args(fieldValue("topic", refValue('topic')), fieldValue("message", refValue('message'))), notNull(scalar('Boolean')))
-        );
 const MakeCardDefaultSelector = obj(
             field('cardMakeDefault', 'cardMakeDefault', args(fieldValue("id", refValue('id'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -6023,12 +6021,6 @@ const DialogsWatchSelector = obj(
                     ))
                 )))
         );
-const GlobalEventBusSelector = obj(
-            field('globalEventBus', 'globalEventBus', args(fieldValue("topic", refValue('topic'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('message', 'message', args(), notNull(scalar('String')))
-                )))
-        );
 const MyContactsUpdatesSelector = obj(
             field('myContactsUpdates', 'myContactsUpdates', args(fieldValue("fromState", refValue('state'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -6292,7 +6284,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ChatMentionSearch: {
         kind: 'query',
         name: 'ChatMentionSearch',
-        body: 'query ChatMentionSearch($cid:ID!,$query:String,$first:Int!,$after:String){mentions:betaChatMentionSearch(cid:$cid,query:$query,first:$first,after:$after){__typename items{__typename ... on MentionSearchOrganization{__typename organization{__typename ...OrganizationShort}}... on MentionSearchUser{__typename user{__typename ...UserForMention}fromSameChat}... on MentionSearchSharedRoom{__typename room{__typename ...RoomSharedNano featured}}}cursor}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}fragment UserForMention on User{__typename id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title photo membersCount featured settings{__typename id mute}}',
+        body: 'query ChatMentionSearch($cid:ID!,$query:String,$first:Int!,$after:String){mentions:betaChatMentionSearch(cid:$cid,query:$query,first:$first,after:$after){__typename items{__typename ... on MentionSearchOrganization{__typename organization{__typename ...OrganizationShort}}... on MentionSearchUser{__typename user{__typename ...UserSmall}fromSameChat}... on MentionSearchSharedRoom{__typename room{__typename ...RoomSharedNano featured}}}cursor}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}fragment UserSmall on User{__typename id name firstName photo shortname isBot primaryOrganization{__typename id name}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title photo membersCount featured settings{__typename id mute}}',
         selector: ChatMentionSearchSelector
     },
     ChatNewGetMessage: {
@@ -6340,7 +6332,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     Conference: {
         kind: 'query',
         name: 'Conference',
-        body: 'query Conference($id:ID!){conference(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}mediaState{__typename audioPaused videoPaused screencastEnabled}}iceServers{__typename urls username credential}parent{__typename ... on SharedRoom{__typename id title isChannel membersCount photo owner{__typename id name}}... on PrivateRoom{__typename id user{__typename id name photo}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
+        body: 'query Conference($id:ID!){conference(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserSmall}mediaState{__typename audioPaused videoPaused screencastEnabled}}iceServers{__typename urls username credential}parent{__typename ... on SharedRoom{__typename id title isChannel membersCount photo owner{__typename id name}}... on PrivateRoom{__typename id user{__typename id name photo}}}}fragment UserSmall on User{__typename id name firstName photo shortname isBot primaryOrganization{__typename id name}}',
         selector: ConferenceSelector
     },
     ConferenceMedia: {
@@ -6550,7 +6542,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     MessageMultiSpan: {
         kind: 'query',
         name: 'MessageMultiSpan',
-        body: 'query MessageMultiSpan($id:ID!){message(messageId:$id){__typename id spans{__typename ... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}}}}fragment UserForMention on User{__typename id name photo shortname isBot primaryOrganization{__typename id name}}',
+        body: 'query MessageMultiSpan($id:ID!){message(messageId:$id){__typename id spans{__typename ... on MessageSpanMultiUserMention{__typename users{__typename ...UserSmall}}}}}fragment UserSmall on User{__typename id name firstName photo shortname isBot primaryOrganization{__typename id name}}',
         selector: MessageMultiSpanSelector
     },
     MessagesBatch: {
@@ -7309,12 +7301,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'mutation EditMessage($messageId:ID!,$message:String,$replyMessages:[ID!],$mentions:[MentionInput!],$fileAttachments:[FileAttachmentInput!],$spans:[MessageSpanInput!]){editMessage(messageId:$messageId,message:$message,replyMessages:$replyMessages,mentions:$mentions,fileAttachments:$fileAttachments,spans:$spans)}',
         selector: EditMessageSelector
     },
-    GlobalEventBusPublish: {
-        kind: 'mutation',
-        name: 'GlobalEventBusPublish',
-        body: 'mutation GlobalEventBusPublish($topic:String!,$message:String!){globalEventBusPublish(topic:$topic,message:$message)}',
-        selector: GlobalEventBusPublishSelector
-    },
     MakeCardDefault: {
         kind: 'mutation',
         name: 'MakeCardDefault',
@@ -8014,7 +8000,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ConferenceWatch: {
         kind: 'subscription',
         name: 'ConferenceWatch',
-        body: 'subscription ConferenceWatch($id:ID!){alphaConferenceWatch(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}mediaState{__typename audioPaused videoPaused screencastEnabled}}iceServers{__typename urls username credential}parent{__typename ... on SharedRoom{__typename id title isChannel membersCount photo owner{__typename id name}}... on PrivateRoom{__typename id user{__typename id name photo}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}',
+        body: 'subscription ConferenceWatch($id:ID!){alphaConferenceWatch(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserSmall}mediaState{__typename audioPaused videoPaused screencastEnabled}}iceServers{__typename urls username credential}parent{__typename ... on SharedRoom{__typename id title isChannel membersCount photo owner{__typename id name}}... on PrivateRoom{__typename id user{__typename id name photo}}}}fragment UserSmall on User{__typename id name firstName photo shortname isBot primaryOrganization{__typename id name}}',
         selector: ConferenceWatchSelector
     },
     DebugEventsWatch: {
@@ -8028,12 +8014,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'DialogsWatch',
         body: 'subscription DialogsWatch($state:String){event:dialogsUpdates(fromState:$state){__typename ... on DialogUpdateSingle{__typename state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{__typename state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{__typename cid unread globalUnread message:alphaMessage{__typename ...DialogMessage ... on ServiceMessage{__typename id serviceMetadata{__typename}}}haveMention silent{__typename mobile desktop}showNotification{__typename mobile desktop}membership}... on DialogMessageUpdated{__typename cid message:alphaMessage{__typename ...DialogMessage}haveMention}... on DialogMessageDeleted{__typename cid message:alphaMessage{__typename ...DialogMessage}prevMessage:alphaPrevMessage{__typename ...DialogMessage}unread globalUnread haveMention}... on DialogMessageRead{__typename cid mid unread globalUnread haveMention}... on DialogMuteChanged{__typename cid mute}... on DialogPeerUpdated{__typename cid peer{__typename ... on PrivateRoom{__typename id user{__typename id name photo}}... on SharedRoom{__typename id title photo kind featured}}}... on DialogDeleted{__typename cid globalUnread}... on DialogBump{__typename cid globalUnread unread topMessage{__typename ...DialogMessage ... on ServiceMessage{__typename id serviceMetadata{__typename}}}haveMention membership}... on DialogCallStateChanged{__typename cid hasActiveCall}}fragment DialogMessage on ModernMessage{__typename id date sender{__typename id name photo firstName}message fallback ... on GeneralMessage{__typename id quotedMessages{__typename id}}}',
         selector: DialogsWatchSelector
-    },
-    GlobalEventBus: {
-        kind: 'subscription',
-        name: 'GlobalEventBus',
-        body: 'subscription GlobalEventBus($topic:String!){globalEventBus(topic:$topic){__typename message}}',
-        selector: GlobalEventBusSelector
     },
     MyContactsUpdates: {
         kind: 'subscription',

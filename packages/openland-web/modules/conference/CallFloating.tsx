@@ -11,22 +11,20 @@ import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager'
 import { VideoComponent } from './ScreenShareModal';
 import { XView, XViewRouteContext, XViewRouterContext } from 'react-mental';
 import { TextLabel1, TextStyles, TextSubhead } from 'openland-web/utils/TextStyles';
-// import { plural } from 'openland-y-utils/plural';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
-import EndIcon from 'openland-icons/s/ic-call-end-glyph-24.svg';
-import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
-import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
-import MicIcon from 'openland-icons/s/ic-mic-24.svg';
-import FullscreenIcon from 'openland-icons/s/ic-size-up-glyph-24.svg';
 import { CallsEngine } from 'openland-engines/CallsEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
-import { useEffects } from './Effects';
 import { useVideoCallModal } from './CallModal';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { plural } from 'openland-y-utils/plural';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { useVoiceChat, VoiceChatProvider } from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
+import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
+import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
+import MicIcon from 'openland-icons/s/ic-mic-24.svg';
+import FullscreenIcon from 'openland-icons/s/ic-size-up-glyph-24.svg';
+import EndIcon from 'openland-icons/s/ic-call-end-glyph-24.svg';
 
 const VIDEO_WIDTH = 320;
 const VIDEO_HEIGHT = 213;
@@ -306,8 +304,6 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
     let messenger = React.useContext(MessengerContext);
     let calls = messenger.calls;
     let state = props.mediaSession.state.useValue();
-
-    useEffects(props.id);
 
     let client = useClient();
     let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });

@@ -173,7 +173,6 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     messageText: string = '';
     unmounter: (() => void) | null = null;
     unmounter2: (() => void) | null = null;
-    unmounter3: (() => void) | null = null;
     vars: {
         roomId: string;
         conversationId: string;
@@ -333,10 +332,6 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         if (this.unmounter2) {
             this.unmounter2();
             this.unmounter2 = null;
-        }
-        if (this.unmounter3) {
-            this.unmounter3();
-            this.unmounter3 = null;
         }
     }
 

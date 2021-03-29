@@ -7,10 +7,7 @@ import { css, cx } from 'linaria';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalController } from 'openland-x/showModal';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
-import { VolumeSpace } from './VolumeSpace';
 import { VideoPeer, PeerMedia } from './VideoPeer';
-import WatermarkLogo from 'openland-icons/watermark-logo.svg';
-import WatermarkShadow from 'openland-icons/watermark-shadow.svg';
 import { CallControls } from './CallControls';
 import { useMessageModal } from './useMessageModal';
 import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
@@ -18,6 +15,8 @@ import { useIncomingMessages } from './useIncomingMessages';
 import { useRouteChange } from 'openland-web/hooks/useRouteChange';
 import { useClient } from 'openland-api/useClient';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
+import WatermarkLogo from 'openland-icons/watermark-logo.svg';
+import WatermarkShadow from 'openland-icons/watermark-shadow.svg';
 
 const watermarkContainerstyle = css`
     will-change: transform;
@@ -31,10 +30,6 @@ const watermarkContainerstyle = css`
     &:hover {
         opacity: 1;
     }
-`;
-
-const watermarkContainerSpaceStyle = css`
-    pointer-events: none;
 `;
 
 const watermarkIconStyle = cx('x', css`
@@ -67,8 +62,6 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
         let count = Math.ceil(peers.length / divider--);
         slices.unshift(peers.splice(peers.length - count, count));
     }
-
-    let [layout, setLayout] = React.useState<'grid' | 'volume-space'>('grid');
 
     const [renderedMessages, handleItemAdded, handleItemUpdated] = useIncomingMessages({ hide: props.ctx.hide });
 
@@ -141,7 +134,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
         <XView flexDirection="row" flexGrow={1} backgroundColor="var(--overlayTotal)" alignItems="stretch" position="relative">
             <XView flexDirection="row" flexGrow={1} flexShrink={1}>
                 <XView flexDirection={rotated ? 'row' : 'column'} justifyContent="flex-start" flexGrow={1} flexShrink={1} position="relative">
-                    {layout === 'grid' && slices.map((s, i) => (
+                    {slices.map((s, i) => (
                         <XView
                             key={`container-${i}`}
                             flexDirection={rotated ? 'column' : 'row'}
@@ -172,19 +165,16 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
 
                         </XView>
                     ))}
-                    {layout === 'volume-space' && mediaSession && <VolumeSpace mediaSession={mediaSession} peers={[...conference ? conference.conference.peers : []]} />}
                 </XView >
                 {renderedMessages}
                 <CallControls
                     muted={!state.sender.audioEnabled}
                     cameraEnabled={state.sender.videoEnabled}
                     screenEnabled={state.sender.screencastEnabled}
-                    spaceEnabled={layout === 'volume-space'}
                     onMinimize={props.ctx.hide}
                     onMute={() => mediaSession.setAudioEnabled(!state.sender.audioEnabled)}
                     onCameraClick={() => mediaSession.setVideoEnabled(!state.sender.videoEnabled)}
                     onScreenClick={() => mediaSession.setScreenshareEnabled(!state.sender.screencastEnabled)}
-                    onSpaceClick={() => setLayout(prev => prev === 'volume-space' ? 'grid' : 'volume-space')}
                     onMessageClick={showMessage}
                     onEnd={() => {
                         props.ctx.hide();
@@ -194,7 +184,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
             </XView>
 
             <div
-                className={cx(watermarkContainerstyle, layout === 'volume-space' && watermarkContainerSpaceStyle)}
+                className={watermarkContainerstyle}
                 onClick={props.ctx.hide}
             >
                 <div className={watermarkIconStyle}>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UserForMention } from 'openland-api/spacex.types';
+import { UserSmall } from 'openland-api/spacex.types';
 import { css, cx } from 'linaria';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { MentionItemComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';
@@ -21,7 +21,7 @@ const wrapper = css`
 `;
 
 interface OthersPopperProps {
-    users: UserForMention[];
+    users: UserSmall[];
     children?: any;
     noStyling?: boolean;
 }

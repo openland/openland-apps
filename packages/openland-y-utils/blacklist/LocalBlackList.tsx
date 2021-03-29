@@ -80,9 +80,7 @@ export const LocalBlackListProvider = React.memo((props: { children: any }) => {
     };
 
     React.useEffect(() => {
-        (async () => {
-            await subscribe();
-        })();
+        subscribe();
         return () => {
             subscribeRef.current?.();
         };

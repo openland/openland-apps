@@ -191,7 +191,6 @@ object Operations {
         if (name == "DiscoverEditorsChoiceUpdate") return DiscoverEditorsChoiceUpdate
         if (name == "EditComment") return EditComment
         if (name == "EditMessage") return EditMessage
-        if (name == "GlobalEventBusPublish") return GlobalEventBusPublish
         if (name == "MakeCardDefault") return MakeCardDefault
         if (name == "MarkStickersViewed") return MarkStickersViewed
         if (name == "MediaAnswer") return MediaAnswer
@@ -311,7 +310,6 @@ object Operations {
         if (name == "ConferenceWatch") return ConferenceWatch
         if (name == "DebugEventsWatch") return DebugEventsWatch
         if (name == "DialogsWatch") return DialogsWatch
-        if (name == "GlobalEventBus") return GlobalEventBus
         if (name == "MyContactsUpdates") return MyContactsUpdates
         if (name == "MyNotificationsCenter") return MyNotificationsCenter
         if (name == "OnlineWatch") return OnlineWatch

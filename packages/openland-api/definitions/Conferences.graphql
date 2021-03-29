@@ -4,7 +4,7 @@ fragment ConferenceFull on Conference {
     peers {
         id
         user {
-            ...UserShort
+            ...UserSmall
         }
         mediaState {
             audioPaused
@@ -52,14 +52,11 @@ fragment ConferenceShort on Conference {
 
 fragment MediaStreamFull on MediaStream {
     id
-
     seq
     state
     sdp
-    
     ice
     iceTransportPolicy
-
     receivers {
         peerId
         kind
@@ -173,7 +170,6 @@ subscription ConferenceMediaWatch($id: ID!, $peerId: ID!) {
             ...MediaStreamFull
         }
         localMedia{
-            # id
             sendVideo
             sendAudio
             sendScreencast
