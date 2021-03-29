@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { UserShort } from 'openland-api/spacex.types';
+import { Account_me } from 'openland-api/spacex.types';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
 // import { XRoleContext } from 'openland-x-permissions/XRoleContext';
@@ -9,7 +9,7 @@ import { readGeneration } from 'openland-web/storage/generation';
 
 let cachedMessenger: MessengerEngine | null = null;
 
-const Messenger = (props: { currentUser: UserShort; children?: any }) => {
+const Messenger = (props: { currentUser: Account_me; children?: any }) => {
     if (canUseDOM) {
         let client = useClient();
         // let permissions = React.useContext(XRoleContext);
@@ -34,7 +34,7 @@ const Messenger = (props: { currentUser: UserShort; children?: any }) => {
 };
 
 export class MessengerProvider extends React.PureComponent<{
-    user?: UserShort;
+    user?: Account_me;
 }> {
     render() {
         if (this.props.user) {

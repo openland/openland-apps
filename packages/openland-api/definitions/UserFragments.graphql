@@ -25,18 +25,15 @@ fragment UserShort on User {
     id
     name
     firstName
-    lastName
     photo
-    email
     online
     lastSeen
     isBot
     shortname
-    inContacts
-    isBanned
-    isMeBanned
     primaryOrganization {
-        ...OrganizationShort
+        id
+        name
+        shortname
     }
 }
 
@@ -72,8 +69,5 @@ fragment UserFull on User {
     followingCount
     currentVoiceChat {
         ...VoiceChatWithSpeakers
-    }
-    primaryOrganization {
-        ...OrganizationShort
     }
 }

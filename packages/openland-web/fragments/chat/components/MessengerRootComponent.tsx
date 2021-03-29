@@ -9,7 +9,7 @@ import {
 } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
 import {
-    UserShort,
+    Account_me,
     SharedRoomKind,
     RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage,
     RoomChat_room,
@@ -63,7 +63,7 @@ interface MessagesComponentProps {
     conversationId: string;
     messenger: MessengerEngine;
     conversationType?: SharedRoomKind | 'PRIVATE';
-    me: UserShort | null;
+    me: Account_me | null;
     pinMessage:
     | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage
     | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage

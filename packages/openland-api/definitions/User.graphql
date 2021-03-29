@@ -1,8 +1,3 @@
-query Users($ids: [ID!]!) {
-    users(ids: $ids) {
-        ...UserFull
-    }
-}
 query User($userId: ID!) {
     user: user(id: $userId) {
         ...UserFull
@@ -15,14 +10,6 @@ query User($userId: ID!) {
                 mute
             }
         }
-    }
-}
-query UserPico($userId: ID!) {
-    user: user(id: $userId) {
-        id
-        name
-        firstName
-        photo
     }
 }
 query UserNano($id: ID!) {

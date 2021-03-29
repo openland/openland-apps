@@ -11,6 +11,8 @@ internal val UserSearchForChatSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("node", "node", notNull(obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("isBanned", "isBanned", notNull(scalar("Boolean"))),
+                                    field("isMeBanned", "isMeBanned", notNull(scalar("Boolean"))),
                                     fragment("User", UserShortSelector)
                                 ))),
                             field("isMember", "isMember", notNull(scalar("Boolean"))),
@@ -26,6 +28,6 @@ internal val UserSearchForChatSelector = obj(
 val UserSearchForChat = object: OperationDefinition {
     override val name = "UserSearchForChat"
     override val kind = OperationKind.QUERY
-    override val body = "query UserSearchForChat(\$chatId:ID!,\$query:String,\$first:Int!,\$after:String,\$sort:String){userSearchForChat(chatId:\$chatId,query:\$query,first:\$first,after:\$after,sort:\$sort){__typename edges{__typename node{__typename ...UserShort}isMember cursor inviteRestricted}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname inContacts isBanned isMeBanned primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}"
+    override val body = "query UserSearchForChat(\$chatId:ID!,\$query:String,\$first:Int!,\$after:String,\$sort:String){userSearchForChat(chatId:\$chatId,query:\$query,first:\$first,after:\$after,sort:\$sort){__typename edges{__typename node{__typename ...UserShort isBanned isMeBanned}isMember cursor inviteRestricted}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname primaryOrganization{__typename id name shortname}}"
     override val selector = UserSearchForChatSelector
 }

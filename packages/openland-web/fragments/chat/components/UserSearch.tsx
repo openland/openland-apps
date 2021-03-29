@@ -23,7 +23,7 @@ interface UserSearchForChatProps {
 const LOADING_HEIGHT = 200;
 
 interface UserSearchData {
-    node: UserShort;
+    node: UserShort & { isBanned: boolean, isMeBanned: boolean };
     isMember: boolean;
     inviteRestricted?: boolean;
     cursor: string;

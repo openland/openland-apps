@@ -479,6 +479,24 @@ internal val FullMessageSelector = obj(
             ))
         )
 
+internal val UserShortSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("firstName", "firstName", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String")),
+            field("online", "online", notNull(scalar("Boolean"))),
+            field("lastSeen", "lastSeen", scalar("String")),
+            field("isBot", "isBot", notNull(scalar("Boolean"))),
+            field("shortname", "shortname", scalar("String")),
+            field("primaryOrganization", "primaryOrganization", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("shortname", "shortname", scalar("String"))
+                ))
+        )
+
 internal val OrganizationShortSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -494,27 +512,6 @@ internal val OrganizationShortSelector = obj(
             field("alphaFeatured", "featured", notNull(scalar("Boolean")))
         )
 
-internal val UserShortSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("name", "name", notNull(scalar("String"))),
-            field("firstName", "firstName", notNull(scalar("String"))),
-            field("lastName", "lastName", scalar("String")),
-            field("photo", "photo", scalar("String")),
-            field("email", "email", scalar("String")),
-            field("online", "online", notNull(scalar("Boolean"))),
-            field("lastSeen", "lastSeen", scalar("String")),
-            field("isBot", "isBot", notNull(scalar("Boolean"))),
-            field("shortname", "shortname", scalar("String")),
-            field("inContacts", "inContacts", notNull(scalar("Boolean"))),
-            field("isBanned", "isBanned", notNull(scalar("Boolean"))),
-            field("isMeBanned", "isMeBanned", notNull(scalar("Boolean"))),
-            field("primaryOrganization", "primaryOrganization", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Organization", OrganizationShortSelector)
-                ))
-        )
-
 internal val RoomShortSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             inline("PrivateRoom", obj(
@@ -522,6 +519,9 @@ internal val RoomShortSelector = obj(
                 field("id", "id", notNull(scalar("ID"))),
                 field("user", "user", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
+                        field("inContacts", "inContacts", notNull(scalar("Boolean"))),
+                        field("isBanned", "isBanned", notNull(scalar("Boolean"))),
+                        field("isMeBanned", "isMeBanned", notNull(scalar("Boolean"))),
                         fragment("User", UserShortSelector)
                     ))),
                 field("settings", "settings", notNull(obj(
@@ -1427,23 +1427,6 @@ internal val OrganizationFragmentSelector = obj(
             field("betaMembersCanInvite", "membersCanInvite", notNull(scalar("Boolean")))
         )
 
-internal val OrganizationMediumSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("name", "name", notNull(scalar("String"))),
-            field("photo", "photo", scalar("String")),
-            field("isMine", "isMine", notNull(scalar("Boolean"))),
-            field("membersCount", "membersCount", notNull(scalar("Int"))),
-            field("shortname", "shortname", scalar("String")),
-            field("about", "about", scalar("String")),
-            field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
-            field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
-            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
-            field("alphaIsPrivate", "private", notNull(scalar("Boolean"))),
-            field("betaMembersCanInvite", "membersCanInvite", notNull(scalar("Boolean"))),
-            field("alphaFeatured", "featured", notNull(scalar("Boolean")))
-        )
-
 internal val OrganizationProfileFragmentSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -2012,10 +1995,6 @@ internal val UserFullSelector = obj(
             field("currentVoiceChat", "currentVoiceChat", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("VoiceChat", VoiceChatWithSpeakersSelector)
-                )),
-            field("primaryOrganization", "primaryOrganization", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Organization", OrganizationShortSelector)
                 ))
         )
 

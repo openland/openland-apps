@@ -3,7 +3,7 @@ import * as React from 'react';
 import { MessageSender } from './messenger/MessageSender';
 import { ConversationEngine } from './messenger/ConversationEngine';
 import { DialogSequenceEngine } from './messenger/DialogSequenceEngine';
-import { UserShort, ChatUpdateFragment_ChatMessageReceived, TypingType } from 'openland-api/spacex.types';
+import { Account_me, ChatUpdateFragment_ChatMessageReceived, TypingType } from 'openland-api/spacex.types';
 import { NotificationsEngine } from './NotificationsEngine';
 import { CreateEntityEngine } from './createEntity/CreateEntityState';
 import { NotificationCenterEngine } from './NotificationCenterEngine';
@@ -30,7 +30,7 @@ export class MessengerEngine {
     readonly notificationCenter: NotificationCenterEngine;
     readonly dialogSequence: DialogSequenceEngine;
     readonly onlineReporter: OnlineReportEngine;
-    readonly user: UserShort;
+    readonly user: Account_me;
     readonly notifications: NotificationsEngine;
     readonly calls: CallsEngine;
     readonly userStorage: UserStorageEngine;
@@ -51,7 +51,7 @@ export class MessengerEngine {
     private typingsWatcher: TypingsWatcher;
     private onlineWatcher: OnlineWatcher;
 
-    constructor(client: OpenlandClient, user: UserShort, platform: string, options?: Partial<EngineOptions>) {
+    constructor(client: OpenlandClient, user: Account_me, platform: string, options?: Partial<EngineOptions>) {
         console.log('------------ MessengerEngine initialized ----------');
         this.options = {
             conversationBatchSize: options && options.conversationBatchSize ? options.conversationBatchSize : 15,
