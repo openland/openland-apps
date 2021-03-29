@@ -68,6 +68,10 @@ const speakerNamesContainer = css`
   white-space: nowrap;
 `;
 
+const stubHeader = css`
+  color: var(--foregroundPrimary);
+`;
+
 const StartRoomItem = React.memo(() => {
     const startRoom = React.useCallback(async () => {
         showModalBox({ fullScreen: true, useTopCloser: false, hideOnEsc: false }, (ctx) => (
@@ -78,7 +82,7 @@ const StartRoomItem = React.memo(() => {
     return (
         <div className={startRoomContainer}>
             <div className={artCrowdImg} />
-            <div className={TextTitle3}>Talk about anything!</div>
+            <div className={cx(TextTitle3, stubHeader)}>Talk about anything!</div>
             <XView {...TextStyles.Body} color="var(--foregroundSecondary)">
                 Create a new room and invite friends
             </XView>
