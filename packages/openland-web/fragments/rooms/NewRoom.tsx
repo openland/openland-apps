@@ -91,7 +91,6 @@ export const NewRoomForm = React.memo((props:  { ctx: XModalController } ) => {
 
     const onSubmit = React.useCallback(() => {
         form.doAction(async () => {
-            console.log(nameField, '[nameField]');
             const room = (await client.mutateVoiceChatCreate({ input: { title: nameField.value } })).voiceChatCreate;
             props.ctx.hide();
             router.navigate(`/room/${room.id}`);

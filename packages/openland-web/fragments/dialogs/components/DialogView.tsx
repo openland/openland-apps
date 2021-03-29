@@ -6,6 +6,7 @@ import IcLock from 'openland-icons/s/ic-lock-16.svg';
 import IcReply from 'openland-icons/s/ic-reply-16.svg';
 import IcMention from 'openland-icons/s/ic-mention-12.svg';
 import IcCall from 'openland-icons/s/ic-call-12.svg';
+// import IcMic from 'openland-icons/s/ic-mic-12.svg';
 import IcMuted from 'openland-icons/s/ic-muted-16.svg';
 import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
 import { XCounter } from 'openland-x/XCounter';
@@ -419,17 +420,6 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                     </div>
                                     {(dialog.unread > 0 || dialog.hasActiveCall) && (
                                         <div className={dialogUnreadContainer}>
-                                            {dialog.hasActiveCall && (
-                                                <div
-                                                    className={cx(
-                                                        unreadCounterContainer,
-                                                        callBadgeContainer,
-                                                        active && callBadgeContainerActive
-                                                    )}
-                                                >
-                                                    <UIcon icon={<IcCall />} color={'var(--foregroundContrast)'} />
-                                                </div>
-                                            )}
                                             {haveMention && (
                                                 <div
                                                     className={cx(
@@ -451,6 +441,28 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                                     />
                                                 </div>
                                             )}
+                                            {dialog.hasActiveCall && (
+                                                <div
+                                                    className={cx(
+                                                        unreadCounterContainer,
+                                                        callBadgeContainer,
+                                                        active && callBadgeContainerActive
+                                                    )}
+                                                >
+                                                    <UIcon icon={<IcCall />} color={'var(--foregroundContrast)'} />
+                                                </div>
+                                            )}
+                                            {/*{dialog.hasActiveCall && (*/}
+                                            {/*    <div*/}
+                                            {/*        className={cx(*/}
+                                            {/*            unreadCounterContainer,*/}
+                                            {/*            callBadgeContainer,*/}
+                                            {/*            active && callBadgeContainerActive*/}
+                                            {/*        )}*/}
+                                            {/*    >*/}
+                                            {/*        <UIcon icon={<IcMic />} color={'var(--foregroundContrast)'} />*/}
+                                            {/*    </div>*/}
+                                            {/*)}*/}
                                         </div>
                                     )}
                                 </div>

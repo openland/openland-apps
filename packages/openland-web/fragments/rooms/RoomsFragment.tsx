@@ -1,5 +1,5 @@
 import React from 'react';
-import { XView, XViewRouterContext } from 'react-mental';
+import { XView, XViewRouteContext, XViewRouterContext } from 'react-mental';
 import { css, cx } from 'linaria';
 
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
@@ -37,17 +37,6 @@ const artCrowdImg = css`
     );
 `;
 
-const roomItemContainer = css`
-    display: flex;
-    flex-direction: column;
-    padding: 12px 16px;
-    cursor: pointer;
-
-    &:hover {
-        background-color: var(--backgroundPrimaryHover);
-    }
-`;
-
 const roomTitle = css`
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -73,7 +62,6 @@ const startRoomContainer = css`
 `;
 
 const speakerNamesContainer = css`
-  color: var(--foregroundSecondary);
   text-overflow: ellipsis;
   flex-shrink: 1;
   overflow: hidden;
@@ -109,12 +97,23 @@ const RoomsFeedItem = React.memo((props: { voiceChat: VoiceChatWithSpeakers }) =
     const { title, speakers, speakersCount, listenersCount, id } = props.voiceChat;
     const firstSpeakers = speakers.slice(0, 4);
     const joinRoom = useJoinRoom();
+    const route = React.useContext(XViewRouteContext)!;
 
     return (
-        <div className={roomItemContainer} onClick={() => joinRoom(id)}>
+        <XView
+            selected={route.path === `/room/${id}`}
+            paddingHorizontal={16}
+            paddingVertical={12}
+            cursor="pointer"
+            hoverBackgroundColor="var(--backgroundPrimaryHover)"
+            selectedBackgroundColor="var(--accentMuted)"
+            selectedHoverBackgroundColor="var(--accentMutedHover)"
+            selectedColor="var(--foregroundContrast)"
+            onClick={() => joinRoom(id)}
+        >
             <div className={cx(roomTitle, TextLabel1)}>{title}</div>
             <XView marginTop={8} flexDirection="row" alignItems="center" justifyContent="space-between">
-                <XView flexShrink={1}>
+                <XView flexShrink={1} color="var(--foregroundSecondary)" selectedColor="var(--foregroundContrast)">
                     {firstSpeakers.map(speaker => (
                         <div className={cx(TextSubhead, speakerNamesContainer)}>
                             {speaker.user.name}
@@ -140,21 +139,23 @@ const RoomsFeedItem = React.memo((props: { voiceChat: VoiceChatWithSpeakers }) =
                 alignItems="center"
                 marginTop={firstSpeakers.length > 2 ? 4 : 12}
                 alignSelf="flex-start"
+                color="var(--foregroundSecondary)"
+                selectedColor="var(--foregroundContrast)"
             >
-                <XView {...TextStyles.Subhead} color="var(--foregroundSecondary)" marginRight={7}>
+                <XView {...TextStyles.Subhead} marginRight={7}>
                     {speakersCount}
                 </XView>
-                <UIcon icon={<IcSpeaker />} color="var(--foregroundSecondary)" />
+                <UIcon icon={<IcSpeaker />} color="currentColor" />
                 {listenersCount > 0 && (
                     <>
-                        <XView {...TextStyles.Subhead} color="var(--foregroundSecondary)" marginLeft={15} marginRight={7}>
+                        <XView {...TextStyles.Subhead} marginLeft={15} marginRight={7}>
                             {listenersCount}
                         </XView>
-                        <UIcon icon={<IcListener />} color="var(--foregroundSecondary)" />
+                        <UIcon icon={<IcListener />} color="currentColor" />
                     </>
                 )}
             </XView>
-        </div>
+        </XView>
     );
 });
 

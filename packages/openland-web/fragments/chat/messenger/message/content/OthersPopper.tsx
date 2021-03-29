@@ -32,26 +32,35 @@ export const OthersPopper = React.memo((props: OthersPopperProps) => {
     const usersRef = React.useRef(users);
     usersRef.current = users;
 
-    const [, show] = usePopper({ placement: 'top', hideOnLeave: true, scope: 'others-users' }, ctx => (
-        <div className={wrapper}>
-            {usersRef.current.map((user, index) => (
-                <XView
-                    key={`user-${user.name}-${index}`}
-                    hoverBackgroundColor="var(--backgroundTertiaryHoverTrans)"
-                    cursor="pointer"
-                    path={`/${user.shortname || user.id}`}
-                    onClick={() => ctx.hide()}
-                >
-                    <MentionItemComponent
-                        id={user.id}
-                        title={user.name}
-                        photo={user.photo}
-                        subtitle={user.isBot ? 'Bot' : user.primaryOrganization ? user.primaryOrganization.name : undefined}
-                    />
-                </XView>
-            ))}
-        </div>
-    ));
+    const [, show] = usePopper(
+        { placement: 'top', hideOnLeave: true, scope: 'others-users' },
+        (ctx) => (
+            <div className={wrapper}>
+                {usersRef.current.map((user, index) => (
+                    <XView
+                        key={`user-${user.name}-${index}`}
+                        hoverBackgroundColor="var(--backgroundTertiaryHoverTrans)"
+                        cursor="pointer"
+                        path={`/${user.shortname || user.id}`}
+                        onClick={() => ctx.hide()}
+                    >
+                        <MentionItemComponent
+                            id={user.id}
+                            title={user.name}
+                            photo={user.photo}
+                            subtitle={
+                                user.isBot
+                                    ? 'Bot'
+                                    : user.primaryOrganization
+                                    ? user.primaryOrganization.name
+                                    : undefined
+                            }
+                        />
+                    </XView>
+                ))}
+            </div>
+        ),
+    );
 
     return (
         <span onMouseEnter={show} className={cx(!noStyling && style)}>

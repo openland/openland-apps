@@ -2,14 +2,15 @@ import * as React from 'react';
 import { useTalkWatch } from './useTalkWatch';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
-import { Conference_conference_peers_user, RoomChat_room } from 'openland-api/spacex.types';
+import { UserSmall, RoomChat_room } from 'openland-api/spacex.types';
 import { useVideoCallModal } from './CallModal';
 import { UTopBar } from 'openland-web/components/unicorn/UTopBar';
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
 import ChevronIcon from 'openland-icons/s/ic-chevron-16.svg';
 import { OthersPopper } from 'openland-web/fragments/chat/messenger/message/content/OthersPopper';
+import { useJoinRoom } from 'openland-web/fragments/rooms/joinRoom';
 
-const getSubtitle = (users: Conference_conference_peers_user[]) => {
+const getSubtitle = (users: UserSmall[]) => {
     return users.length === 0 ? (
         ''
     ) : users.length === 1 ? (
@@ -29,38 +30,60 @@ const getSubtitle = (users: Conference_conference_peers_user[]) => {
 };
 
 export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
-    let messenger = React.useContext(MessengerContext);
-    let calls = messenger.calls;
-    let currentSession = calls.useCurrentSession();
-    let client = useClient();
+    const messenger = React.useContext(MessengerContext);
+    const calls = messenger.calls;
+    const currentSession = calls.useCurrentSession();
+    const client = useClient();
+    const joinRoom = useJoinRoom();
+    const { chat } = props;
+
     let data = client.useConference(
-        { id: props.chat.id },
+        { id: chat.id },
         { fetchPolicy: 'network-only', suspense: false },
     );
-    const openVideoModal = useVideoCallModal({ chatId: props.chat.id });
-    const callDisabled = !!currentSession && currentSession.callType === 'voice-chat';
+    const openVideoModal = useVideoCallModal({ chatId: chat.id });
+    const callDisabled = props.chat.__typename === 'PrivateRoom' && !!currentSession && currentSession.callType === 'voice-chat';
 
     const joinCall = () => {
-        calls.joinCall(props.chat.id, 'call');
+        calls.joinCall(chat.id, 'call');
         openVideoModal();
     };
+
+    const onJoinClick = React.useCallback(() => {
+        if (chat.__typename === 'SharedRoom' && chat.activeVoiceChat?.active) {
+            joinRoom(chat.activeVoiceChat.id);
+        } else if (currentSession && currentSession.conversationId) {
+            openVideoModal();
+        } else {
+            joinCall();
+        }
+    }, [chat]);
 
     useTalkWatch(data && data.conference.id);
     if (!data) {
         return null;
     }
 
-    const subtitle = getSubtitle(data.conference.peers.map((peer) => peer.user));
-    return data.conference.peers.length !== 0 ? (
+    let subtitle;
+    if (chat.__typename === 'SharedRoom' && chat.activeVoiceChat?.active) {
+        subtitle = getSubtitle(chat.activeVoiceChat.speakers.map(speaker => speaker.user));
+    } else {
+        subtitle = getSubtitle(data.conference.peers.map(peer => peer.user));
+    }
+    const title = chat.__typename === 'SharedRoom' && chat.activeVoiceChat?.active ? '' : 'Call';
+    const rightText = chat.__typename === 'SharedRoom' && chat.activeVoiceChat?.active ? 'Join room' : 'Join';
+
+    const showBar = data.conference.peers.length !== 0 || (chat.__typename === 'SharedRoom' && chat.activeVoiceChat?.active);
+    return showBar ? (
         <UTopBar
             type="positive"
             leftIcon={<PhoneIcon />}
-            title="Call"
+            title={title}
             subtitle={subtitle}
-            rightText="Join"
+            rightText={rightText}
             disabled={callDisabled}
             rightIcon={<ChevronIcon />}
-            onClick={currentSession && currentSession.conversationId ? openVideoModal : joinCall}
+            onClick={onJoinClick}
         />
     ) : null;
 };
