@@ -630,7 +630,7 @@ const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession
     }
     const validStatuses = [VoiceChatParticipantStatus.ADMIN, VoiceChatParticipantStatus.SPEAKER, VoiceChatParticipantStatus.LISTENER];
 
-    if (!voiceChat.me || !validStatuses.includes(voiceChat.me.status)) {
+    if (!voiceChat.me || !validStatuses.includes(voiceChat.me.status) || isCurrentRoute) {
         return null;
     }
 
