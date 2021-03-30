@@ -13,6 +13,6 @@ internal val ConferenceWatchSelector = obj(
 val ConferenceWatch = object: OperationDefinition {
     override val name = "ConferenceWatch"
     override val kind = OperationKind.SUBSCRIPTION
-    override val body = "subscription ConferenceWatch(\$id:ID!){alphaConferenceWatch(id:\$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserSmall}mediaState{__typename audioPaused videoPaused screencastEnabled}}iceServers{__typename urls username credential}parent{__typename ... on SharedRoom{__typename id title isChannel membersCount photo owner{__typename id name}}... on PrivateRoom{__typename id user{__typename id name photo}}}}fragment UserSmall on User{__typename id name firstName photo shortname isBot primaryOrganization{__typename id name}}"
+    override val body = "subscription ConferenceWatch(\$id:ID!){alphaConferenceWatch(id:\$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserSmall}mediaState{__typename audioPaused videoPaused screencastEnabled}}iceServers{__typename urls username credential}parent{__typename ... on SharedRoom{__typename id title isChannel membersCount photo owner{__typename id name}}... on PrivateRoom{__typename id user{__typename id name photo}}... on VoiceChat{__typename id}}}fragment UserSmall on User{__typename id name firstName photo shortname isBot primaryOrganization{__typename id name}}"
     override val selector = ConferenceWatchSelector
 }

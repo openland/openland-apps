@@ -581,6 +581,10 @@ internal val RoomShortSelector = obj(
                         field("mode", "mode", notNull(scalar("String"))),
                         field("callLink", "callLink", scalar("String"))
                     ))),
+                field("activeVoiceChat", "activeVoiceChat", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
+                    )),
                 field("repliesEnabled", "repliesEnabled", notNull(scalar("Boolean")))
             ))
         )
@@ -726,6 +730,10 @@ internal val ConferenceFullSelector = obj(
                                 field("name", "name", notNull(scalar("String"))),
                                 field("photo", "photo", scalar("String"))
                             )))
+                    )),
+                    inline("VoiceChat", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
                     ))
                 ))
         )
@@ -1110,6 +1118,12 @@ internal val VoiceChatEntitySelector = obj(
             field("adminsCount", "adminsCount", notNull(scalar("Int"))),
             field("speakersCount", "speakersCount", notNull(scalar("Int"))),
             field("listenersCount", "listenersCount", notNull(scalar("Int"))),
+            field("parentRoom", "parentRoom", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("title", "title", notNull(scalar("String"))),
+                    field("photo", "photo", notNull(scalar("String")))
+                )),
             field("pinnedMessage", "pinnedMessage", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),

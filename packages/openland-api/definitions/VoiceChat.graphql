@@ -26,6 +26,11 @@ fragment VoiceChatEntity on VoiceChat {
     adminsCount
     speakersCount
     listenersCount
+    parentRoom {
+        id
+        title
+        photo
+    }
     pinnedMessage {
         id
         message

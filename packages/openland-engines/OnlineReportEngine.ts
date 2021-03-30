@@ -24,7 +24,7 @@ export class OnlineReportEngine {
     onReady() {
         (async () => {
             const waitForActive = async () => {
-                let d = delayBreakable(2000);
+                let d = delayBreakable(10000);
                 this.breakable = d.resolver;
                 await d.promise;
                 this.breakable = undefined;
