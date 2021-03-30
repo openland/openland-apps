@@ -3,7 +3,7 @@ query ChatMentionSearch($cid: ID!, $query: String, $first: Int!, $after: String)
         items {
             ... on MentionSearchOrganization {
                 organization {
-                    ...OrganizationShort
+                    ...OrganizationSmall
                 }
             }
             ... on MentionSearchUser {
@@ -14,7 +14,7 @@ query ChatMentionSearch($cid: ID!, $query: String, $first: Int!, $after: String)
             }
             ... on MentionSearchSharedRoom {
                 room {
-                    ...RoomSharedNano
+                    ...RoomSmall
                     featured
                 }
             }

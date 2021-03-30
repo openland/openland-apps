@@ -1,4 +1,4 @@
-import { RoomMemberRole, RoomTiny_room_SharedRoom, SharedRoomKind } from 'openland-api/spacex.types';
+import { RoomMemberRole, RoomChat_room_SharedRoom, SharedRoomKind } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import * as React from 'react';
@@ -6,7 +6,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { useJoinRoom } from '../rooms/joinRoom';
 
 const VoiceCallButton = React.memo((props: {
-    sharedRoom: RoomTiny_room_SharedRoom,
+    sharedRoom: RoomChat_room_SharedRoom,
     disabled: boolean;
 }) => {
     const client = useClient();
@@ -40,7 +40,7 @@ const VoiceCallButton = React.memo((props: {
 });
 
 export const CallHeaderButton = React.memo((props: {
-    sharedRoom?: RoomTiny_room_SharedRoom,
+    sharedRoom?: RoomChat_room_SharedRoom,
     showCallModal: () => void,
 }) => {
     const mediaSession = getMessenger().engine.calls.useCurrentSession();

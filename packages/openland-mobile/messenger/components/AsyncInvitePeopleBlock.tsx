@@ -37,7 +37,7 @@ export const AsyncInvitePeopleBlock = React.memo((props: AsyncInvitePeopleBlockP
                             })),
                             roomId: room.id,
                         });
-                        await client.refetchRoomTiny({ id: room.id });
+                        await client.refetchRoomChat({ id: room.id });
                     } catch (e) {
                         Alert.alert(e.message);
                     }

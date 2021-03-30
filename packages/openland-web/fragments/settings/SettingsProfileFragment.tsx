@@ -6,7 +6,6 @@ import { useForm } from 'openland-form/useForm';
 import { useClient } from 'openland-api/useClient';
 import { useField } from 'openland-form/useField';
 import { XView } from 'react-mental';
-import { USelectField } from 'openland-web/components/unicorn/USelect';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
@@ -38,8 +37,6 @@ export const SettingsProfileFragment = React.memo(() => {
     const { profile, user } = client.useProfile();
     const { phone, email } = client.useAuthPoints().authPoints;
 
-    const organizations = client.useMyOrganizations();
-
     if (!user || !profile) {
         return null;
     }
@@ -58,11 +55,6 @@ export const SettingsProfileFragment = React.memo(() => {
     const avatarField = useField<StoredFileT | undefined | null>(
         'input.avatar',
         sanitizeImageRef(profile.photoRef),
-        form,
-    );
-    const primaryOrganizationField = useField(
-        'input.primaryOrganization',
-        profile.primaryOrganization && profile.primaryOrganization.id,
         form,
     );
 
@@ -103,7 +95,6 @@ export const SettingsProfileFragment = React.memo(() => {
                 input: {
                     firstName: firstNameField.value,
                     lastName: lastNameField.value,
-                    primaryOrganization: primaryOrganizationField.value,
                     about: aboutField.value,
                     photoRef: sanitizeImageRef(avatarField.value),
                     website: websiteField.value,
@@ -123,23 +114,9 @@ export const SettingsProfileFragment = React.memo(() => {
             }
 
             await client.refetchAccount();
-            await client.refetchMyOrganizations();
             await client.refetchUser({ userId: user.id });
         });
     };
-
-    const organizationsWithoutCommunity = organizations.myOrganizations.filter(
-        (i) => !i.isCommunity,
-    );
-
-    // Temp && ugly fix for users with community as primary organizations
-    if (
-        profile.primaryOrganization &&
-        organizationsWithoutCommunity.filter((i) => i.id === profile.primaryOrganization!.id)
-            .length <= 0
-    ) {
-        organizationsWithoutCommunity.unshift(profile.primaryOrganization as any);
-    }
 
     const avatarUploadComponent = (
         <XView>
@@ -162,16 +139,6 @@ export const SettingsProfileFragment = React.memo(() => {
                             </XView>
                             <XView marginBottom={16}>
                                 <UInputField label="Last name" field={lastNameField} />
-                            </XView>
-                            <XView marginBottom={16}>
-                                <USelectField
-                                    field={primaryOrganizationField}
-                                    label="Primary organization"
-                                    options={organizationsWithoutCommunity.map((org: any) => ({
-                                        value: org.id,
-                                        label: org.name,
-                                    }))}
-                                />
                             </XView>
                             <XView marginBottom={16}>
                                 <UTextAreaField placeholder="About" field={aboutField} />

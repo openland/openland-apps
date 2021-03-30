@@ -22,7 +22,6 @@ interface UserViewProps {
     subtitle?: string;
     subtitleColor?: string;
     paddingRight?: number;
-    showOrganization?: boolean;
 }
 
 export const UserView = (props: UserViewProps) => {
@@ -36,7 +35,6 @@ export const UserView = (props: UserViewProps) => {
         subtitle,
         subtitleColor,
         paddingRight,
-        showOrganization = true,
     } = props;
     const theme = React.useContext(ThemeContext);
 
@@ -113,12 +111,6 @@ export const UserView = (props: UserViewProps) => {
                         allowFontScaling={false}
                     >
                         {user.name}
-                        {showOrganization && user.primaryOrganization && (
-                            <Text style={{ ...TextStyles.Label2, color: theme.foregroundTertiary }}>
-                                {' '}
-                                {user.primaryOrganization.name}
-                            </Text>
-                        )}
                     </Text>
                 </View>
                 {subtitle ? (

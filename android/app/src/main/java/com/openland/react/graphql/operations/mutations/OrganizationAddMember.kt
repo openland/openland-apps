@@ -17,6 +17,6 @@ internal val OrganizationAddMemberSelector = obj(
 val OrganizationAddMember = object: OperationDefinition {
     override val name = "OrganizationAddMember"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation OrganizationAddMember(\$userIds:[ID!],\$organizationId:ID!){alphaOrganizationMemberAdd(userIds:\$userIds,organizationId:\$organizationId){__typename role user{__typename ...UserShort}}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname primaryOrganization{__typename id name shortname}}"
+    override val body = "mutation OrganizationAddMember(\$userIds:[ID!],\$organizationId:ID!){alphaOrganizationMemberAdd(userIds:\$userIds,organizationId:\$organizationId){__typename role user{__typename ...UserShort}}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname}"
     override val selector = OrganizationAddMemberSelector
 }

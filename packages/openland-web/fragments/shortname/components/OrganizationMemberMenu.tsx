@@ -77,7 +77,7 @@ const getMenuContent = (opts: MenuContentOpts) => {
                             organizationId: id,
                         });
 
-                        await client.refetchMyOrganizations();
+                        await client.refetchMyCommunities();
                         await client.refetchAccount();
 
                         onRemove(user.id);

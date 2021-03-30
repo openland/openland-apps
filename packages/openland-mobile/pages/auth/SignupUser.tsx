@@ -68,7 +68,6 @@ const SignupUserComponent = React.memo((props: PageProps) => {
             await Promise.all([
                 getClient().mutateBetaDiscoverSkip({ selectedTagsIds: [] }),
                 getClient().refetchAccount(),
-                getClient().refetchAccountSettings()
             ]);
             await next(props.router);
         });

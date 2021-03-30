@@ -5,13 +5,6 @@ query Account {
         photo
         shortname
         email
-        isBot
-        inContacts
-        primaryOrganization {
-            id
-            name
-            shortname
-        }
     }
     myProfile {
         id
@@ -29,20 +22,6 @@ query Account {
     }
     myPermissions {
         roles
-    }
-}
-
-query AccountSettings {
-    me: me {
-        ...UserShort
-        audienceSize
-    }
-    myProfile {
-        id
-        authEmail
-    }
-    organizations: myOrganizations {
-        ...OrganizationShort
     }
 }
 
@@ -68,7 +47,7 @@ query AccountInviteInfo($inviteKey: String!) {
         photo
         joined
         creator {
-            ...UserShort
+            ...UserSmall
         }
         forEmail
         forName
@@ -85,12 +64,12 @@ query AccountAppInviteInfo($inviteKey: String!) {
     invite: alphaInviteInfo(key: $inviteKey) {
         id
         creator {
-            ...UserShort
+            ...UserSmall
         }
     }
     appInvite: appInviteInfo(key: $inviteKey) {
         inviter {
-            ...UserShort
+            ...UserSmall
         }
     }
 }

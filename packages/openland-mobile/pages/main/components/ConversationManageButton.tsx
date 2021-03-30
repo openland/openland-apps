@@ -5,7 +5,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { Modals } from '../modals/Modals';
 import { SRouter } from 'react-native-s/SRouter';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
-import { RoomTiny_room, RoomMemberRole, RoomTiny_room_SharedRoom } from 'openland-api/spacex.types';
+import { RoomChat_room, RoomMemberRole, RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
 import Toast from 'openland-mobile/components/Toast';
@@ -15,11 +15,11 @@ interface ConversationManageButtonProps {
     muted: boolean;
     onMutedChange: () => void;
     router: SRouter;
-    room: RoomTiny_room;
+    room: RoomChat_room;
     isBanned: boolean;
 }
 
-const useSharedHandlers = (room: RoomTiny_room_SharedRoom, router: SRouter) => {
+const useSharedHandlers = (room: RoomChat_room_SharedRoom, router: SRouter) => {
     const client = useClient();
     const userId = getMessenger().engine.user.id;
 
@@ -43,7 +43,7 @@ const useSharedHandlers = (room: RoomTiny_room_SharedRoom, router: SRouter) => {
                                 })),
                                 roomId: room.id,
                             });
-                            await client.refetchRoomTiny({ id: room.id });
+                            await client.refetchRoomChat({ id: room.id });
                         } catch (e) {
                             Alert.alert(e.message);
                         }
@@ -98,7 +98,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
             loader.show();
             await Promise.all([
                 client.mutateAddToContacts({ userId: isUser.id }),
-                client.refetchRoomTiny({ id: room.id })
+                client.refetchRoomChat({ id: room.id })
             ]);
             loader.hide();
             Toast.success({ duration: 1000 }).show();
@@ -111,7 +111,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
             loader.show();
             await Promise.all([
                 client.mutateRemoveFromContacts({ userId: isUser.id }),
-                client.refetchRoomTiny({ id: room.id })
+                client.refetchRoomChat({ id: room.id })
             ]);
             loader.hide();
             Toast.success({ duration: 1000 }).show();
@@ -122,7 +122,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         onMutedChange();
         await Promise.all([
             client.mutateRoomSettingsUpdate({ roomId: room.id, settings: { mute: !muted } }),
-            client.refetchRoomTiny({ id: room.id })
+            client.refetchRoomChat({ id: room.id })
         ]);
     }, [muted, room.id]);
     const onSharedPress = React.useCallback(() => {
@@ -134,7 +134,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
     }, [room.id]);
 
     const { onInvitePress, onLeavePress } = useSharedHandlers(
-        room as RoomTiny_room_SharedRoom,
+        room as RoomChat_room_SharedRoom,
         router,
     );
 
@@ -163,9 +163,9 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         builder.action('Search messages', onSearchPress, false, require('assets/ic-search-24.png'));
 
         if (sharedRoom) {
-            if ((room as RoomTiny_room_SharedRoom).canEdit) {
+            if ((room as RoomChat_room_SharedRoom).canEdit) {
                 builder.action(
-                    (room as RoomTiny_room_SharedRoom).isChannel ? 'Edit channel' : 'Edit group',
+                    (room as RoomChat_room_SharedRoom).isChannel ? 'Edit channel' : 'Edit group',
                     () => props.router.push('EditGroup', { id: room.id }),
                     false,
                     require('assets/ic-edit-24.png'),

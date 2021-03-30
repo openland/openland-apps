@@ -13,7 +13,7 @@ internal val ChatMentionSearchSelector = obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
                                 field("organization", "organization", notNull(obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
-                                        fragment("Organization", OrganizationShortSelector)
+                                        fragment("Organization", OrganizationSmallSelector)
                                     )))
                             )),
                             inline("MentionSearchUser", obj(
@@ -29,7 +29,7 @@ internal val ChatMentionSearchSelector = obj(
                                 field("room", "room", notNull(obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
                                         field("featured", "featured", notNull(scalar("Boolean"))),
-                                        fragment("SharedRoom", RoomSharedNanoSelector)
+                                        fragment("SharedRoom", RoomSmallSelector)
                                     )))
                             ))
                         ))))),
@@ -39,6 +39,6 @@ internal val ChatMentionSearchSelector = obj(
 val ChatMentionSearch = object: OperationDefinition {
     override val name = "ChatMentionSearch"
     override val kind = OperationKind.QUERY
-    override val body = "query ChatMentionSearch(\$cid:ID!,\$query:String,\$first:Int!,\$after:String){mentions:betaChatMentionSearch(cid:\$cid,query:\$query,first:\$first,after:\$after){__typename items{__typename ... on MentionSearchOrganization{__typename organization{__typename ...OrganizationShort}}... on MentionSearchUser{__typename user{__typename ...UserSmall}fromSameChat}... on MentionSearchSharedRoom{__typename room{__typename ...RoomSharedNano featured}}}cursor}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}fragment UserSmall on User{__typename id name firstName photo shortname isBot primaryOrganization{__typename id name}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title photo membersCount featured settings{__typename id mute}}"
+    override val body = "query ChatMentionSearch(\$cid:ID!,\$query:String,\$first:Int!,\$after:String){mentions:betaChatMentionSearch(cid:\$cid,query:\$query,first:\$first,after:\$after){__typename items{__typename ... on MentionSearchOrganization{__typename organization{__typename ...OrganizationSmall}}... on MentionSearchUser{__typename user{__typename ...UserSmall}fromSameChat}... on MentionSearchSharedRoom{__typename room{__typename ...RoomSmall featured}}}cursor}}fragment OrganizationSmall on Organization{__typename id name photo isCommunity:alphaIsCommunity featured:alphaFeatured}fragment UserSmall on User{__typename id name firstName photo shortname isBot}fragment RoomSmall on SharedRoom{__typename id title photo isChannel isPremium featured}"
     override val selector = ChatMentionSearchSelector
 }

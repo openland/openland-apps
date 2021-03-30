@@ -103,17 +103,6 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                 <ZListGroup header="Info" headerMarginTop={0}>
                     <ZInput placeholder="First name" field={firstNameField} />
                     <ZInput placeholder="Last name" field={lastNameField} />
-
-                    <ZPickField
-                        label="Primary organization"
-                        value={
-                            profile.primaryOrganization
-                                ? profile.primaryOrganization.name
-                                : undefined
-                        }
-                        path="SelectPrimaryOrganization"
-                    />
-
                     <ZInput placeholder="About" field={aboutField} multiline={true} />
                     <ZInput placeholder="Location" field={locationField} />
                 </ZListGroup>

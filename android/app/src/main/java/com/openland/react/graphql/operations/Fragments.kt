@@ -60,14 +60,7 @@ internal val MessageSenderSelector = obj(
             field("name", "name", notNull(scalar("String"))),
             field("photo", "photo", scalar("String")),
             field("isBot", "isBot", notNull(scalar("Boolean"))),
-            field("shortname", "shortname", scalar("String")),
-            field("inContacts", "inContacts", notNull(scalar("Boolean"))),
-            field("primaryOrganization", "primaryOrganization", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("name", "name", notNull(scalar("String"))),
-                    field("shortname", "shortname", scalar("String"))
-                ))
+            field("shortname", "shortname", scalar("String"))
         )
 
 internal val UserBadgeSelector = obj(
@@ -488,13 +481,67 @@ internal val UserShortSelector = obj(
             field("online", "online", notNull(scalar("Boolean"))),
             field("lastSeen", "lastSeen", scalar("String")),
             field("isBot", "isBot", notNull(scalar("Boolean"))),
+            field("shortname", "shortname", scalar("String"))
+        )
+
+internal val UserSmallSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("firstName", "firstName", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String")),
             field("shortname", "shortname", scalar("String")),
-            field("primaryOrganization", "primaryOrganization", obj(
+            field("isBot", "isBot", notNull(scalar("Boolean")))
+        )
+
+internal val VoiceChatParticipantSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("user", "user", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("followersCount", "followersCount", notNull(scalar("Int"))),
+                    fragment("User", UserSmallSelector)
+                ))),
+            field("status", "status", notNull(scalar("String"))),
+            field("handRaised", "handRaised", scalar("Boolean"))
+        )
+
+internal val VoiceChatEntitySelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", scalar("String")),
+            field("active", "active", notNull(scalar("Boolean"))),
+            field("adminsCount", "adminsCount", notNull(scalar("Int"))),
+            field("speakersCount", "speakersCount", notNull(scalar("Int"))),
+            field("listenersCount", "listenersCount", notNull(scalar("Int"))),
+            field("parentRoom", "parentRoom", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
-                    field("name", "name", notNull(scalar("String"))),
-                    field("shortname", "shortname", scalar("String"))
+                    field("title", "title", notNull(scalar("String"))),
+                    field("photo", "photo", notNull(scalar("String")))
+                )),
+            field("pinnedMessage", "pinnedMessage", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("message", "message", scalar("String")),
+                    field("spans", "spans", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("MessageSpan", MessageSpanSelector)
+                        )))))
+                )),
+            field("me", "me", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
                 ))
+        )
+
+internal val VoiceChatWithSpeakersSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("speakers", "speakers", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
+                ))))),
+            fragment("VoiceChat", VoiceChatEntitySelector)
         )
 
 internal val OrganizationShortSelector = obj(
@@ -519,20 +566,21 @@ internal val RoomShortSelector = obj(
                 field("id", "id", notNull(scalar("ID"))),
                 field("user", "user", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
+                        field("isYou", "isYou", notNull(scalar("Boolean"))),
                         field("inContacts", "inContacts", notNull(scalar("Boolean"))),
                         field("isBanned", "isBanned", notNull(scalar("Boolean"))),
                         field("isMeBanned", "isMeBanned", notNull(scalar("Boolean"))),
                         fragment("User", UserShortSelector)
                     ))),
+                field("pinnedMessage", "pinnedMessage", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("ModernMessage", FullMessageSelector)
+                    )),
                 field("settings", "settings", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("id", "id", notNull(scalar("ID"))),
                         field("mute", "mute", scalar("Boolean"))
                     ))),
-                field("pinnedMessage", "pinnedMessage", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("ModernMessage", FullMessageSelector)
-                    )),
                 field("myBadge", "myBadge", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("UserBadge", UserBadgeSelector)
@@ -542,33 +590,69 @@ internal val RoomShortSelector = obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("id", "id", notNull(scalar("ID"))),
                 field("kind", "kind", notNull(scalar("String"))),
-                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
-                field("isPremium", "isPremium", notNull(scalar("Boolean"))),
                 field("title", "title", notNull(scalar("String"))),
-                field("photo", "photo", notNull(scalar("String"))),
                 field("membership", "membership", notNull(scalar("String"))),
-                field("featured", "featured", notNull(scalar("Boolean"))),
+                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
                 field("role", "role", notNull(scalar("String"))),
                 field("canEdit", "canEdit", notNull(scalar("Boolean"))),
                 field("canSendMessage", "canSendMessage", notNull(scalar("Boolean"))),
+                field("photo", "photo", notNull(scalar("String"))),
                 field("membersCount", "membersCount", notNull(scalar("Int"))),
+                field("shortname", "shortname", scalar("String")),
+                field("featuredMembersCount", "featuredMembersCount", notNull(scalar("Int"))),
+                field("socialImage", "socialImage", scalar("String")),
+                field("activeVoiceChat", "activeVoiceChat", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("VoiceChat", VoiceChatWithSpeakersSelector)
+                    )),
+                field("featured", "featured", notNull(scalar("Boolean"))),
+                field("welcomeMessage", "welcomeMessage", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("isOn", "isOn", notNull(scalar("Boolean"))),
+                        field("sender", "sender", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("name", "name", notNull(scalar("String")))
+                            )),
+                        field("message", "message", scalar("String"))
+                    )),
+                field("organization", "organization", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("Organization", OrganizationShortSelector)
+                    )),
                 field("canUnpinMessage", "canUnpinMessage", notNull(scalar("Boolean"))),
                 field("pinnedMessage", "pinnedMessage", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", FullMessageSelector)
                     )),
-                field("organization", "organization", obj(
+                field("myBadge", "myBadge", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("Organization", OrganizationShortSelector)
+                        fragment("UserBadge", UserBadgeSelector)
                     )),
                 field("settings", "settings", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("id", "id", notNull(scalar("ID"))),
                         field("mute", "mute", scalar("Boolean"))
                     ))),
-                field("myBadge", "myBadge", obj(
+                field("description", "description", scalar("String")),
+                field("previewMembers", "previewMembers", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("UserBadge", UserBadgeSelector)
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("photo", "photo", scalar("String")),
+                        field("name", "name", notNull(scalar("String")))
+                    ))))),
+                field("isPremium", "isPremium", notNull(scalar("Boolean"))),
+                field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean"))),
+                field("premiumSubscription", "premiumSubscription", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("state", "state", notNull(scalar("String")))
+                    )),
+                field("premiumSettings", "premiumSettings", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("price", "price", notNull(scalar("Int"))),
+                        field("interval", "interval", scalar("String"))
                     )),
                 field("owner", "owner", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -576,15 +660,16 @@ internal val RoomShortSelector = obj(
                         field("firstName", "firstName", notNull(scalar("String"))),
                         field("isYou", "isYou", notNull(scalar("Boolean")))
                     )),
+                field("serviceMessageSettings", "serviceMessageSettings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("joinsMessageEnabled", "joinsMessageEnabled", notNull(scalar("Boolean"))),
+                        field("leavesMessageEnabled", "leavesMessageEnabled", notNull(scalar("Boolean")))
+                    ))),
                 field("callSettings", "callSettings", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("mode", "mode", notNull(scalar("String"))),
                         field("callLink", "callLink", scalar("String"))
                     ))),
-                field("activeVoiceChat", "activeVoiceChat", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID")))
-                    )),
                 field("repliesEnabled", "repliesEnabled", notNull(scalar("Boolean")))
             ))
         )
@@ -665,21 +750,6 @@ internal val CommentUpdateFragmentSelector = obj(
                         fragment("CommentEntry", CommentEntryFragmentSelector)
                     )))
             ))
-        )
-
-internal val UserSmallSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("name", "name", notNull(scalar("String"))),
-            field("firstName", "firstName", notNull(scalar("String"))),
-            field("photo", "photo", scalar("String")),
-            field("shortname", "shortname", scalar("String")),
-            field("isBot", "isBot", notNull(scalar("Boolean"))),
-            field("primaryOrganization", "primaryOrganization", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("name", "name", notNull(scalar("String")))
-                ))
         )
 
 internal val ConferenceFullSelector = obj(
@@ -1086,59 +1156,6 @@ internal val FullMessageWithoutSourceSelector = obj(
             ))
         )
 
-internal val VoiceChatParticipantSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("user", "user", notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("name", "name", notNull(scalar("String"))),
-                    field("firstName", "firstName", notNull(scalar("String"))),
-                    field("photo", "photo", scalar("String")),
-                    field("followersCount", "followersCount", notNull(scalar("Int"))),
-                    field("shortname", "shortname", scalar("String")),
-                    field("lastSeen", "lastSeen", scalar("String")),
-                    field("online", "online", notNull(scalar("Boolean"))),
-                    field("isBot", "isBot", notNull(scalar("Boolean"))),
-                    field("primaryOrganization", "primaryOrganization", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("name", "name", notNull(scalar("String")))
-                        ))
-                ))),
-            field("status", "status", notNull(scalar("String"))),
-            field("handRaised", "handRaised", scalar("Boolean"))
-        )
-
-internal val VoiceChatEntitySelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("title", "title", scalar("String")),
-            field("active", "active", notNull(scalar("Boolean"))),
-            field("adminsCount", "adminsCount", notNull(scalar("Int"))),
-            field("speakersCount", "speakersCount", notNull(scalar("Int"))),
-            field("listenersCount", "listenersCount", notNull(scalar("Int"))),
-            field("parentRoom", "parentRoom", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("title", "title", notNull(scalar("String"))),
-                    field("photo", "photo", notNull(scalar("String")))
-                )),
-            field("pinnedMessage", "pinnedMessage", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("message", "message", scalar("String")),
-                    field("spans", "spans", notNull(list(notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("MessageSpan", MessageSpanSelector)
-                        )))))
-                )),
-            field("me", "me", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
-                ))
-        )
-
 internal val FullVoiceChatSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("speakers", "speakers", notNull(list(notNull(obj(
@@ -1182,12 +1199,7 @@ internal val MessageUsersReactionsSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
                     field("name", "name", notNull(scalar("String"))),
-                    field("photo", "photo", scalar("String")),
-                    field("primaryOrganization", "primaryOrganization", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("name", "name", notNull(scalar("String")))
-                        ))
+                    field("photo", "photo", scalar("String"))
                 ))),
             field("reaction", "reaction", notNull(scalar("String")))
         )
@@ -1204,23 +1216,6 @@ internal val MyStickersFragmentSelector = obj(
                             fragment("Sticker", StickerFragmentSelector)
                         )))))
                 )))))
-        )
-
-internal val RoomSharedNanoSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("kind", "kind", notNull(scalar("String"))),
-            field("isChannel", "isChannel", notNull(scalar("Boolean"))),
-            field("isPremium", "isPremium", notNull(scalar("Boolean"))),
-            field("title", "title", notNull(scalar("String"))),
-            field("photo", "photo", notNull(scalar("String"))),
-            field("membersCount", "membersCount", notNull(scalar("Int"))),
-            field("featured", "featured", notNull(scalar("Boolean"))),
-            field("settings", "settings", notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("mute", "mute", scalar("Boolean"))
-                )))
         )
 
 internal val RoomNanoSelector = obj(
@@ -1242,7 +1237,19 @@ internal val RoomNanoSelector = obj(
             )),
             inline("SharedRoom", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
-                fragment("SharedRoom", RoomSharedNanoSelector)
+                field("id", "id", notNull(scalar("ID"))),
+                field("kind", "kind", notNull(scalar("String"))),
+                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                field("isPremium", "isPremium", notNull(scalar("Boolean"))),
+                field("title", "title", notNull(scalar("String"))),
+                field("photo", "photo", notNull(scalar("String"))),
+                field("membersCount", "membersCount", notNull(scalar("Int"))),
+                field("featured", "featured", notNull(scalar("Boolean"))),
+                field("settings", "settings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("mute", "mute", scalar("Boolean"))
+                    )))
             ))
         )
 
@@ -1475,6 +1482,15 @@ internal val OrganizationProfileFragmentSelector = obj(
             field("betaMembersCanInvite", "membersCanInvite", notNull(scalar("Boolean")))
         )
 
+internal val OrganizationSmallSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String")),
+            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+            field("alphaFeatured", "featured", notNull(scalar("Boolean")))
+        )
+
 internal val ParagraphSimpleSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             inline("TextParagraph", obj(
@@ -1528,6 +1544,23 @@ internal val ParagraphSimpleSelector = obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("text", "text", notNull(scalar("String")))
             ))
+        )
+
+internal val PaymentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("status", "status", notNull(scalar("String"))),
+            field("card", "card", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("brand", "brand", notNull(scalar("String"))),
+                    field("last4", "last4", notNull(scalar("String")))
+                )),
+            field("intent", "intent", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("clientSecret", "clientSecret", notNull(scalar("String")))
+                ))
         )
 
 internal val PlatformNotificationSettingsFullSelector = obj(
@@ -1612,6 +1645,16 @@ internal val PostSimpleSelector = obj(
             field("deletedAt", "deletedAt", scalar("Date"))
         )
 
+internal val RoomSmallSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("photo", "photo", notNull(scalar("String"))),
+            field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+            field("isPremium", "isPremium", notNull(scalar("Boolean"))),
+            field("featured", "featured", notNull(scalar("Boolean")))
+        )
+
 internal val SettingsFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -1676,7 +1719,6 @@ internal val SharedRoomViewSelector = obj(
             field("title", "title", notNull(scalar("String"))),
             field("photo", "photo", notNull(scalar("String"))),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
-            field("photo", "photo", notNull(scalar("String"))),
             field("featured", "featured", notNull(scalar("Boolean")))
         )
 
@@ -1966,15 +2008,6 @@ internal val UserFollowerSelector = obj(
             field("photo", "photo", scalar("String"))
         )
 
-internal val VoiceChatWithSpeakersSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("speakers", "speakers", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
-                ))))),
-            fragment("VoiceChat", VoiceChatEntitySelector)
-        )
-
 internal val UserFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -2012,6 +2045,68 @@ internal val UserFullSelector = obj(
                 ))
         )
 
+internal val WalletGroupSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("photo", "photo", notNull(scalar("String")))
+        )
+
+internal val WalletUserSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String"))
+        )
+
+internal val WalletProductSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("WalletProductGroup", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("group", "group", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("SharedRoom", WalletGroupSelector)
+                    )))
+            )),
+            inline("WalletProductDonation", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("User", WalletUserSelector)
+                    )))
+            )),
+            inline("WalletProductDonationMessage", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("User", WalletUserSelector)
+                    ))),
+                field("chat", "chat", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        inline("SharedRoom", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("title", "title", notNull(scalar("String")))
+                        ))
+                    )))
+            )),
+            inline("WalletProductDonationReaction", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("User", WalletUserSelector)
+                    ))),
+                field("chat", "chat", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        inline("SharedRoom", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("title", "title", notNull(scalar("String")))
+                        ))
+                    )))
+            ))
+        )
+
 internal val WalletTransactionFragmentSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -2024,19 +2119,7 @@ internal val WalletTransactionFragmentSelector = obj(
                         field("amount", "amount", notNull(scalar("Int"))),
                         field("payment", "payment", obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
-                                field("id", "id", notNull(scalar("ID"))),
-                                field("status", "status", notNull(scalar("String"))),
-                                field("card", "card", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("brand", "brand", notNull(scalar("String"))),
-                                        field("last4", "last4", notNull(scalar("String")))
-                                    )),
-                                field("intent", "intent", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
-                                    ))
+                                fragment("Payment", PaymentSelector)
                             ))
                     )),
                     inline("WalletTransactionIncome", obj(
@@ -2044,19 +2127,7 @@ internal val WalletTransactionFragmentSelector = obj(
                         field("amount", "amount", notNull(scalar("Int"))),
                         field("payment", "payment", obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
-                                field("id", "id", notNull(scalar("ID"))),
-                                field("status", "status", notNull(scalar("String"))),
-                                field("card", "card", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("brand", "brand", notNull(scalar("String"))),
-                                        field("last4", "last4", notNull(scalar("String")))
-                                    )),
-                                field("intent", "intent", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
-                                    ))
+                                fragment("Payment", PaymentSelector)
                             )),
                         field("source", "source", obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
@@ -2065,58 +2136,7 @@ internal val WalletTransactionFragmentSelector = obj(
                                     field("id", "id", notNull(scalar("ID"))),
                                     field("product", "product", notNull(obj(
                                             field("__typename", "__typename", notNull(scalar("String"))),
-                                            inline("WalletProductGroup", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("group", "group", notNull(obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        field("id", "id", notNull(scalar("ID"))),
-                                                        field("title", "title", notNull(scalar("String"))),
-                                                        field("photo", "photo", notNull(scalar("String")))
-                                                    )))
-                                            )),
-                                            inline("WalletProductDonation", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("user", "user", notNull(obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        field("id", "id", notNull(scalar("ID"))),
-                                                        field("name", "name", notNull(scalar("String"))),
-                                                        field("photo", "photo", scalar("String"))
-                                                    )))
-                                            )),
-                                            inline("WalletProductDonationMessage", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("user", "user", notNull(obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        field("id", "id", notNull(scalar("ID"))),
-                                                        field("name", "name", notNull(scalar("String"))),
-                                                        field("photo", "photo", scalar("String"))
-                                                    ))),
-                                                field("chat", "chat", notNull(obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        inline("SharedRoom", obj(
-                                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                                            field("id", "id", notNull(scalar("ID"))),
-                                                            field("title", "title", notNull(scalar("String")))
-                                                        ))
-                                                    )))
-                                            )),
-                                            inline("WalletProductDonationReaction", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("user", "user", notNull(obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        field("id", "id", notNull(scalar("ID"))),
-                                                        field("name", "name", notNull(scalar("String"))),
-                                                        field("photo", "photo", scalar("String"))
-                                                    ))),
-                                                field("chat", "chat", notNull(obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        inline("SharedRoom", obj(
-                                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                                            field("id", "id", notNull(scalar("ID"))),
-                                                            field("title", "title", notNull(scalar("String")))
-                                                        ))
-                                                    )))
-                                            ))
+                                            fragment("WalletProduct", WalletProductSelector)
                                         )))
                                 )),
                                 inline("Purchase", obj(
@@ -2124,64 +2144,11 @@ internal val WalletTransactionFragmentSelector = obj(
                                     field("id", "id", notNull(scalar("ID"))),
                                     field("user", "user", notNull(obj(
                                             field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("id", "id", notNull(scalar("ID"))),
-                                            field("name", "name", notNull(scalar("String"))),
-                                            field("photo", "photo", scalar("String"))
+                                            fragment("User", WalletUserSelector)
                                         ))),
                                     field("product", "product", notNull(obj(
                                             field("__typename", "__typename", notNull(scalar("String"))),
-                                            inline("WalletProductGroup", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("group", "group", notNull(obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        field("id", "id", notNull(scalar("ID"))),
-                                                        field("title", "title", notNull(scalar("String"))),
-                                                        field("photo", "photo", notNull(scalar("String")))
-                                                    )))
-                                            )),
-                                            inline("WalletProductDonation", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("user", "user", notNull(obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        field("id", "id", notNull(scalar("ID"))),
-                                                        field("name", "name", notNull(scalar("String"))),
-                                                        field("photo", "photo", scalar("String"))
-                                                    )))
-                                            )),
-                                            inline("WalletProductDonationMessage", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("user", "user", notNull(obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        field("id", "id", notNull(scalar("ID"))),
-                                                        field("name", "name", notNull(scalar("String"))),
-                                                        field("photo", "photo", scalar("String"))
-                                                    ))),
-                                                field("chat", "chat", notNull(obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        inline("SharedRoom", obj(
-                                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                                            field("id", "id", notNull(scalar("ID"))),
-                                                            field("title", "title", notNull(scalar("String")))
-                                                        ))
-                                                    )))
-                                            )),
-                                            inline("WalletProductDonationReaction", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("user", "user", notNull(obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        field("id", "id", notNull(scalar("ID"))),
-                                                        field("name", "name", notNull(scalar("String"))),
-                                                        field("photo", "photo", scalar("String"))
-                                                    ))),
-                                                field("chat", "chat", notNull(obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        inline("SharedRoom", obj(
-                                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                                            field("id", "id", notNull(scalar("ID"))),
-                                                            field("title", "title", notNull(scalar("String")))
-                                                        ))
-                                                    )))
-                                            ))
+                                            fragment("WalletProduct", WalletProductSelector)
                                         )))
                                 ))
                             ))
@@ -2191,19 +2158,7 @@ internal val WalletTransactionFragmentSelector = obj(
                         field("amount", "amount", notNull(scalar("Int"))),
                         field("payment", "payment", obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
-                                field("id", "id", notNull(scalar("ID"))),
-                                field("status", "status", notNull(scalar("String"))),
-                                field("card", "card", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("brand", "brand", notNull(scalar("String"))),
-                                        field("last4", "last4", notNull(scalar("String")))
-                                    )),
-                                field("intent", "intent", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
-                                    ))
+                                fragment("Payment", PaymentSelector)
                             )),
                         field("fromUser", "fromUser", notNull(obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
@@ -2217,19 +2172,7 @@ internal val WalletTransactionFragmentSelector = obj(
                         field("chargeAmount", "chargeAmount", notNull(scalar("Int"))),
                         field("payment", "payment", obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
-                                field("id", "id", notNull(scalar("ID"))),
-                                field("status", "status", notNull(scalar("String"))),
-                                field("card", "card", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("brand", "brand", notNull(scalar("String"))),
-                                        field("last4", "last4", notNull(scalar("String")))
-                                    )),
-                                field("intent", "intent", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
-                                    ))
+                                fragment("Payment", PaymentSelector)
                             )),
                         field("toUser", "toUser", notNull(obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
@@ -2248,75 +2191,12 @@ internal val WalletTransactionFragmentSelector = obj(
                                 field("amount", "amount", notNull(scalar("Int"))),
                                 field("product", "product", notNull(obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
-                                        inline("WalletProductGroup", obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("group", "group", notNull(obj(
-                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                    field("id", "id", notNull(scalar("ID"))),
-                                                    field("title", "title", notNull(scalar("String"))),
-                                                    field("photo", "photo", notNull(scalar("String")))
-                                                )))
-                                        )),
-                                        inline("WalletProductDonation", obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("user", "user", notNull(obj(
-                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                    field("id", "id", notNull(scalar("ID"))),
-                                                    field("name", "name", notNull(scalar("String"))),
-                                                    field("photo", "photo", scalar("String"))
-                                                )))
-                                        )),
-                                        inline("WalletProductDonationMessage", obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("user", "user", notNull(obj(
-                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                    field("id", "id", notNull(scalar("ID"))),
-                                                    field("name", "name", notNull(scalar("String"))),
-                                                    field("photo", "photo", scalar("String"))
-                                                ))),
-                                            field("chat", "chat", notNull(obj(
-                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                    inline("SharedRoom", obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        field("id", "id", notNull(scalar("ID"))),
-                                                        field("title", "title", notNull(scalar("String")))
-                                                    ))
-                                                )))
-                                        )),
-                                        inline("WalletProductDonationReaction", obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("user", "user", notNull(obj(
-                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                    field("id", "id", notNull(scalar("ID"))),
-                                                    field("name", "name", notNull(scalar("String"))),
-                                                    field("photo", "photo", scalar("String"))
-                                                ))),
-                                            field("chat", "chat", notNull(obj(
-                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                    inline("SharedRoom", obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        field("id", "id", notNull(scalar("ID"))),
-                                                        field("title", "title", notNull(scalar("String")))
-                                                    ))
-                                                )))
-                                        ))
+                                        fragment("WalletProduct", WalletProductSelector)
                                     )))
                             ))),
                         field("payment", "payment", obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
-                                field("id", "id", notNull(scalar("ID"))),
-                                field("status", "status", notNull(scalar("String"))),
-                                field("intent", "intent", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
-                                    )),
-                                field("card", "card", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("brand", "brand", notNull(scalar("String"))),
-                                        field("last4", "last4", notNull(scalar("String")))
-                                    ))
+                                fragment("Payment", PaymentSelector)
                             ))
                     )),
                     inline("WalletTransactionPurchase", obj(
@@ -2329,75 +2209,12 @@ internal val WalletTransactionFragmentSelector = obj(
                                 field("id", "id", notNull(scalar("ID"))),
                                 field("product", "product", notNull(obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
-                                        inline("WalletProductGroup", obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("group", "group", notNull(obj(
-                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                    field("id", "id", notNull(scalar("ID"))),
-                                                    field("title", "title", notNull(scalar("String"))),
-                                                    field("photo", "photo", notNull(scalar("String")))
-                                                )))
-                                        )),
-                                        inline("WalletProductDonation", obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("user", "user", notNull(obj(
-                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                    field("id", "id", notNull(scalar("ID"))),
-                                                    field("name", "name", notNull(scalar("String"))),
-                                                    field("photo", "photo", scalar("String"))
-                                                )))
-                                        )),
-                                        inline("WalletProductDonationMessage", obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("user", "user", notNull(obj(
-                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                    field("id", "id", notNull(scalar("ID"))),
-                                                    field("name", "name", notNull(scalar("String"))),
-                                                    field("photo", "photo", scalar("String"))
-                                                ))),
-                                            field("chat", "chat", notNull(obj(
-                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                    inline("SharedRoom", obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        field("id", "id", notNull(scalar("ID"))),
-                                                        field("title", "title", notNull(scalar("String")))
-                                                    ))
-                                                )))
-                                        )),
-                                        inline("WalletProductDonationReaction", obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("user", "user", notNull(obj(
-                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                    field("id", "id", notNull(scalar("ID"))),
-                                                    field("name", "name", notNull(scalar("String"))),
-                                                    field("photo", "photo", scalar("String"))
-                                                ))),
-                                            field("chat", "chat", notNull(obj(
-                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                    inline("SharedRoom", obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        field("id", "id", notNull(scalar("ID"))),
-                                                        field("title", "title", notNull(scalar("String")))
-                                                    ))
-                                                )))
-                                        ))
+                                        fragment("WalletProduct", WalletProductSelector)
                                     )))
                             ))),
                         field("payment", "payment", obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
-                                field("id", "id", notNull(scalar("ID"))),
-                                field("status", "status", notNull(scalar("String"))),
-                                field("intent", "intent", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
-                                    )),
-                                field("card", "card", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("brand", "brand", notNull(scalar("String"))),
-                                        field("last4", "last4", notNull(scalar("String")))
-                                    ))
+                                fragment("Payment", PaymentSelector)
                             ))
                     ))
                 )))
@@ -2439,19 +2256,7 @@ internal val WalletUpdateFragmentSelector = obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("payment", "payment", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("status", "status", notNull(scalar("String"))),
-                        field("intent", "intent", obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("id", "id", notNull(scalar("ID"))),
-                                field("clientSecret", "clientSecret", notNull(scalar("String")))
-                            )),
-                        field("card", "card", obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("id", "id", notNull(scalar("ID"))),
-                                field("brand", "brand", notNull(scalar("String"))),
-                                field("last4", "last4", notNull(scalar("String")))
-                            ))
+                        fragment("Payment", PaymentSelector)
                     )))
             ))
         )

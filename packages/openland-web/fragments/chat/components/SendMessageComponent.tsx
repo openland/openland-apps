@@ -104,7 +104,6 @@ const featuredIcon = css`
     width: 16px;
     height: 16px;
     margin-left: 4px;
-    flex-shrink: 0;
 `;
 
 export const MentionItemComponent = (props: MentionItemComponentProps) => (
@@ -353,7 +352,7 @@ export const AutoCompleteComponent = React.memo(
                                 id={v.user.id}
                                 photo={v.user.photo}
                                 title={v.user.name}
-                                subtitle={v.user.isBot ? 'Bot' : v.user.primaryOrganization ? v.user.primaryOrganization.name : undefined}
+                                subtitle={v.user.isBot ? 'Bot' : undefined}
                             />
                         );
                     } else if (v.__typename === 'MentionSearchOrganization') {

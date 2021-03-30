@@ -17,6 +17,7 @@ import { logout } from 'openland-mobile/utils/logout';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import { ComponentRefContext } from './Home';
 import { rateApp } from './modals/RateApp';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 export const handleGlobalInvitePress = async () => {
     const loader = Toast.loader();
@@ -39,14 +40,11 @@ export const handleGlobalInvitePress = async () => {
     }
 };
 
-let SettingsContent = ((props: PageProps) => {
+const SettingsContent = ((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const client = getClient();
-    const resp = client.useAccountSettings({ fetchPolicy: 'cache-and-network' });
-
-    if (resp.me === null) {
-        return null;
-    }
+    const messenger = getMessenger();
+    const me = messenger.engine.user;
 
     const wallet = getClient().useMyWallet({ suspense: false });
     const handleSignOut = React.useCallback(() => {
@@ -66,12 +64,12 @@ let SettingsContent = ((props: PageProps) => {
     return (
         <SScrollView scrollRef={scrollRef}>
             <ZListHero
-                photo={resp.me.photo}
-                id={resp.me.id}
-                title={resp.me.name}
-                subtitle={resp.myProfile?.authEmail}
+                photo={me.photo}
+                id={me.id}
+                title={me.name}
+                subtitle={me.email}
                 path="ProfileUser"
-                pathParams={{ id: resp.me.id }}
+                pathParams={{ id: me.id }}
                 verticalMargin="bottom"
             />
             <ZListItem

@@ -160,7 +160,6 @@ export const convertMentionsFromMessage = (
             });
         } else if (s.__typename === 'MessageSpanRoomMention') {
             res.push({
-                // __typename: 'SharedRoom',
                 ...s.room,
             } as ChatMentionSearch_mentions_items_MentionSearchSharedRoom_room);
         } else if (s.__typename === 'MessageSpanAllMention') {

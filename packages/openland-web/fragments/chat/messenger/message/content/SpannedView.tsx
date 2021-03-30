@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XViewRouterContext, XViewRouter, XView, XViewRouteContext } from 'react-mental';
-import { UserPopperContent } from 'openland-web/components/EntityPopperContent';
+import { MentionedUserPopperContent } from 'openland-web/components/EntityPopperContent';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { EntityPopperContent } from 'openland-web/components/EntityPopperContent';
 import { MentionItemComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';
@@ -136,22 +136,6 @@ const mentionBgClassName = css`
     border-radius: 4px;
 `;
 
-const MentionedUserPopperContent = React.memo(
-    (props: { userId: string; myId: string; hide: Function }) => {
-        const client = useClient();
-        const user = client.useUserNano({ id: props.userId }, { fetchPolicy: 'cache-and-network' })
-            .user;
-        return (
-            <UserPopperContent
-                user={user}
-                isMe={props.userId === props.myId}
-                hidePopper={props.hide}
-                noCardOnMe={true}
-            />
-        );
-    },
-);
-
 const MentionedUser = React.memo(
     (props: { userId: string; children: any; isService?: boolean }) => {
         const engine = React.useContext(MessengerContext);
@@ -175,11 +159,7 @@ const MentionedUser = React.memo(
             },
             (ctx) => (
                 <React.Suspense fallback={<XLoader loading={true} transparentBackground={true} />}>
-                    <MentionedUserPopperContent
-                        userId={userId}
-                        myId={engine.user.id}
-                        hide={ctx.hide}
-                    />
+                    <MentionedUserPopperContent userId={userId} hide={ctx.hide} noCardOnMe={true} />
                 </React.Suspense>
             ),
         );
@@ -248,13 +228,7 @@ const MentionedOtherUsersPopperContent = React.memo(
                                         id={user.id}
                                         title={user.name}
                                         photo={user.photo}
-                                        subtitle={
-                                            user.isBot
-                                                ? 'Bot'
-                                                : user.primaryOrganization
-                                                ? user.primaryOrganization.name
-                                                : undefined
-                                        }
+                                        subtitle={user.isBot ? 'Bot' : undefined}
                                     />
                                 </XView>
                             ))}
@@ -459,7 +433,7 @@ const MentionedOrganization = React.memo(
     },
 );
 
-const HashtagView = React.memo((props: { text?: string; children: any, chatId?: string }) => {
+const HashtagView = React.memo((props: { text?: string; children: any; chatId?: string }) => {
     const chatSearchContext = React.useContext(ChatSearchContext);
     const router = React.useContext(XViewRouterContext)!;
     const route = React.useContext(XViewRouteContext)!;
@@ -467,9 +441,19 @@ const HashtagView = React.memo((props: { text?: string; children: any, chatId?: 
     const handleClick = () => {
         if (props.chatId && route.path.indexOf('/mail/') !== 0) {
             router.navigate(`/mail/${props.chatId}`);
-            setTimeout(() => chatSearchContext!.setChatSearchState({ chatId: props.chatId!, initialQuery: props.text }), 800);
+            setTimeout(
+                () =>
+                    chatSearchContext!.setChatSearchState({
+                        chatId: props.chatId!,
+                        initialQuery: props.text,
+                    }),
+                800,
+            );
         } else {
-            chatSearchContext!.setChatSearchState({ chatId: props.chatId!, initialQuery: props.text });
+            chatSearchContext!.setChatSearchState({
+                chatId: props.chatId!,
+                initialQuery: props.text,
+            });
         }
     };
 
@@ -490,7 +474,11 @@ export const SpanView = React.memo<{
         }
         return <ULink href={span.link}>{children}</ULink>;
     } else if (span.type === 'hashtag') {
-        return <HashtagView text={span.textRaw} chatId={chatId}>{children}</HashtagView>;
+        return (
+            <HashtagView text={span.textRaw} chatId={chatId}>
+                {children}
+            </HashtagView>
+        );
     } else if (span.type === 'bold') {
         return (
             <span className={cx(boldTextClassName, props.isService && boldTextServiceClassName)}>

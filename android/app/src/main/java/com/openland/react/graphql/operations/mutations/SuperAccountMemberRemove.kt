@@ -17,6 +17,6 @@ internal val SuperAccountMemberRemoveSelector = obj(
 val SuperAccountMemberRemove = object: OperationDefinition {
     override val name = "SuperAccountMemberRemove"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation SuperAccountMemberRemove(\$accountId:ID!,\$userId:ID!){superAccountMemberRemove(id:\$accountId,userId:\$userId){__typename id members{__typename ...UserShort}}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname primaryOrganization{__typename id name shortname}}"
+    override val body = "mutation SuperAccountMemberRemove(\$accountId:ID!,\$userId:ID!){superAccountMemberRemove(id:\$accountId,userId:\$userId){__typename id members{__typename ...UserShort}}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname}"
     override val selector = SuperAccountMemberRemoveSelector
 }

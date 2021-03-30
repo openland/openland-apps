@@ -37,9 +37,7 @@ export const showLeaveConfirmation = (organization: Organization_organization, m
 
         onLeave(user.id);
 
-        await client.refetchMyOrganizations();
         await client.refetchMyCommunities();
-        await client.refetchAccount();
     }, 'danger');
 
     builder.show();
@@ -106,7 +104,6 @@ const MenuComponent = React.memo((props: OrganizationMenuProps & { ctx: UPopperC
                     .message(`Are you sure you want to delete ${name}? This cannot be undone.`)
                     .action('Delete', async () => {
                         await client.mutateDeleteOrganization({ organizationId: organization.id });
-                        await client.refetchAccountSettings();
                         await client.refetchMyCommunities();
 
                         router.pop();

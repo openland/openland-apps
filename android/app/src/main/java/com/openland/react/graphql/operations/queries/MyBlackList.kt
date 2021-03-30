@@ -15,6 +15,6 @@ internal val MyBlackListSelector = obj(
 val MyBlackList = object: OperationDefinition {
     override val name = "MyBlackList"
     override val kind = OperationKind.QUERY
-    override val body = "query MyBlackList{myBlackList{__typename ...UserShort isBanned isMeBanned}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname primaryOrganization{__typename id name shortname}}"
+    override val body = "query MyBlackList{myBlackList{__typename ...UserShort isBanned isMeBanned}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname}"
     override val selector = MyBlackListSelector
 }

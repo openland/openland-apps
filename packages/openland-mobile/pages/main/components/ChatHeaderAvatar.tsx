@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { View, TouchableOpacity, Platform } from 'react-native';
 import { SRouter } from 'react-native-s/SRouter';
-import { RoomTiny_room_SharedRoom, RoomNano_PrivateRoom, RoomTiny_room } from 'openland-api/spacex.types';
+import { RoomChat_room_SharedRoom, RoomNano_PrivateRoom, RoomChat_room } from 'openland-api/spacex.types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 
-export let resolveConversationProfilePath = (room: RoomTiny_room) => {
+export let resolveConversationProfilePath = (room: RoomChat_room) => {
     let path: string | undefined = undefined;
     let pathArgs: any = {};
-    let sharedRoom = room.__typename === 'SharedRoom' ? room as RoomTiny_room_SharedRoom : null;
+    let sharedRoom = room.__typename === 'SharedRoom' ? room as RoomChat_room_SharedRoom : null;
     let privateRoom = room.__typename === 'PrivateRoom' ? room as RoomNano_PrivateRoom : null;
     let isSavedMessages = privateRoom && privateRoom.user.id === getMessenger().engine.user.id;
 
@@ -31,11 +31,11 @@ export let resolveConversationProfilePath = (room: RoomTiny_room) => {
 };
 
 const ChatHeaderAvatarContent = React.memo((props: { conversationId: string, router: SRouter }) => {
-    let room = getClient().useRoomTiny({ id: props.conversationId });
+    let room = getClient().useRoomChat({ id: props.conversationId });
 
     let path = resolveConversationProfilePath(room.room!);
 
-    let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as RoomTiny_room_SharedRoom : null;
+    let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as RoomChat_room_SharedRoom : null;
     let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room! as RoomNano_PrivateRoom : null;
 
     return (

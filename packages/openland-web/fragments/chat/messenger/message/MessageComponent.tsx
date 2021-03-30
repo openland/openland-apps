@@ -8,23 +8,24 @@ import { MAvatar } from './MAvatar';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
 import { formatTime, formatDateAtTime } from 'openland-y-utils/formatTime';
-import { MessageSender, MessageSender_primaryOrganization } from 'openland-api/spacex.types';
+import { MessageSender } from 'openland-api/spacex.types';
 import { HoverMenu } from './Menu/HoverMenu';
-import { ULink } from 'openland-web/components/unicorn/ULink';
 import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
-import { useUserPopper } from 'openland-web/components/EntityPoppers';
 import { defaultHover } from 'openland-web/utils/Styles';
 import { isPendingAttach } from 'openland-engines/messenger/ConversationEngine';
 import { buildBaseImageUrl } from 'openland-y-utils/photoRefUtils';
 import { useChatMessagesSelected } from 'openland-y-utils/MessagesActionsState';
 import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
 import { emoji } from 'openland-y-utils/emoji';
+import { MessageLikeButton } from './reactions/MessageLikeButton';
+import { usePopper } from 'openland-web/components/unicorn/usePopper';
+import { XLoader } from 'openland-x/XLoader';
+import { MentionedUserPopperContent } from 'openland-web/components/EntityPopperContent';
 import StarIcon from 'openland-icons/s/ic-star-16.svg';
 import IcPending from 'openland-icons/s/ic-pending-16.svg';
 import IcSuccess from 'openland-icons/s/ic-success-16.svg';
-import { MessageLikeButton } from './reactions/MessageLikeButton';
 
 const senderContainer = css`
     display: flex;
@@ -80,18 +81,6 @@ const senderDateCursor = css`
     cursor: pointer;
 `;
 
-const senderOrgStyle = css`
-    flex-shrink: 1;
-    margin-left: 8px;
-    color: var(--foregroundSecondary);
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    &:hover {
-        color: var(--foregroundSecondary);
-    }
-`;
-
 const senderBadgeStyle = css`
     display: flex;
     align-items: center;
@@ -108,10 +97,27 @@ interface MessageSenderNameProps {
 
 export const MessageSenderName = React.memo((props: MessageSenderNameProps) => {
     const router = React.useContext(XViewRouterContext)!;
-    const [show, instantHide] = useUserPopper({
-        user: props.sender,
-        noCardOnMe: false,
-    });
+    const [, show, instantHide] = usePopper(
+        {
+            placement: 'top',
+            hideOnLeave: true,
+            useObserve: true,
+            borderRadius: 8,
+            scope: 'entity-popper',
+            useWrapper: true,
+            showTimeout: 400,
+            hideOnChildClick: false,
+            hideOnClick: false,
+        },
+        (ctx) => (
+            <React.Suspense fallback={<XLoader loading={true} transparentBackground={true} />}>
+                <MentionedUserPopperContent
+                    userId={props.sender.id}
+                    hide={ctx.hide}
+                />
+            </React.Suspense>
+        ),
+    );
     return (
         <div
             onClick={(e) => {
@@ -136,17 +142,6 @@ export const MessageSenderFeatured = React.memo(
             </div>
         );
     },
-);
-
-export const MessageSenderOrg = React.memo(
-    (props: { organization: MessageSender_primaryOrganization }) => (
-        <ULink
-            path={`/${props.organization.shortname || props.organization.id}`}
-            className={cx(TextDensed, senderOrgStyle, defaultHover)}
-        >
-            {emoji(props.organization.name)}
-        </ULink>
-    ),
 );
 
 export const MessageTime = React.memo(
@@ -217,9 +212,6 @@ export const MessageSenderContent = React.memo((props: MessageSenderContentProps
         {props.sender.isBot && <span className={cx(TextDensed, senderDateStyle)}>Bot</span>}
         {props.senderBadgeNameEmojify && (
             <MessageSenderFeatured senderBadgeNameEmojify={props.senderBadgeNameEmojify} />
-        )}
-        {props.sender.primaryOrganization && (
-            <MessageSenderOrg organization={props.sender.primaryOrganization} />
         )}
         {props.date && (
             <MessageTime
@@ -501,10 +493,27 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     );
 
     const Avatar = () => {
-        const [show] = useUserPopper({
-            user: message.sender,
-            noCardOnMe: false,
-        });
+        const [, show] = usePopper(
+            {
+                placement: 'top',
+                hideOnLeave: true,
+                useObserve: true,
+                borderRadius: 8,
+                scope: 'entity-popper',
+                useWrapper: true,
+                showTimeout: 400,
+                hideOnChildClick: false,
+                hideOnClick: false,
+            },
+            (ctx) => (
+                <React.Suspense fallback={<XLoader loading={true} transparentBackground={true} />}>
+                    <MentionedUserPopperContent
+                        userId={message.sender.id}
+                        hide={ctx.hide}
+                    />
+                </React.Suspense>
+            ),
+        );
 
         return (
             <div className={messageAvatarWrapper} onMouseEnter={show}>

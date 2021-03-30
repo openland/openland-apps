@@ -57,13 +57,7 @@ fragment OrganizationFragment on Organization {
     roomsCount: betaPublicRoomsCount
     membersCanInvite: betaMembersCanInvite
 }
-query MyOrganizations {
-    myOrganizations {
-        ...OrganizationShort
 
-        isPrimary: betaIsPrimary
-    }
-}
 query MyCommunities {
     myCommunities {
         ...OrganizationShort
@@ -72,21 +66,25 @@ query MyCommunities {
         isAdmin: betaIsAdmin
     }
 }
+
 mutation UpdateOrganization($input: UpdateOrganizationProfileInput!, $organizationId: ID) {
     updateOrganizationProfile(input: $input, id: $organizationId) {
         id
     }
 }
+
 query Organization($organizationId: ID!) {
     organization(id: $organizationId) {
         ...OrganizationFragment
     }
 }
+
 query OrganizationPico($id: ID!) {
     organization(id: $id) {
         ...OrganizationShort
     }
 }
+
 query OrganizationMembersShort($organizationId: ID!) {
     organization(id: $organizationId) {
         ...OrganizationFragment
@@ -97,6 +95,7 @@ query OrganizationMembersShort($organizationId: ID!) {
         }
     }
 }
+
 query OrganizationMembers($organizationId: ID!, $first: Int, $after: ID) {
     organization(id: $organizationId) {
         id
@@ -131,6 +130,7 @@ query OrganizationProfile($organizationId: ID!) {
         ...OrganizationProfileFragment
     }
 }
+
 mutation OrganizationChangeMemberRole(
     $memberId: ID!
     $newRole: OrganizationMemberRole!
@@ -142,6 +142,7 @@ mutation OrganizationChangeMemberRole(
         organizationId: $organizationId
     )
 }
+
 mutation OrganizationAddMember($userIds: [ID!], $organizationId: ID!) {
     alphaOrganizationMemberAdd(userIds: $userIds, organizationId: $organizationId) {
         role
@@ -150,6 +151,7 @@ mutation OrganizationAddMember($userIds: [ID!], $organizationId: ID!) {
         }
     }
 }
+
 query OrganizationPublicInvite($organizationId: ID) {
     publicInvite: alphaOrganizationInviteLink(organizationId: $organizationId) {
         id
@@ -157,6 +159,7 @@ query OrganizationPublicInvite($organizationId: ID) {
         ttl
     }
 }
+
 mutation OrganizationCreatePublicInvite($expirationDays: Int, $organizationId: ID) {
     alphaOrganizationRefreshInviteLink(
         expirationDays: $expirationDays
@@ -167,17 +170,21 @@ mutation OrganizationCreatePublicInvite($expirationDays: Int, $organizationId: I
         ttl
     }
 }
+
 mutation DeleteOrganization($organizationId: ID!) {
     deleteOrganization(id: $organizationId)
 }
+
 mutation OrganizationMemberRemove($userId: ID!, $organizationId: ID!) {
     betaOrganizationMemberRemove(userId: $userId, organizationId: $organizationId) {
         id
     }
 }
+
 mutation OrganizationActivateByInvite($inviteKey: String!) {
     joinAppInvite(key: $inviteKey)
 }
+
 query OrganizationPublicRooms($organizationId: ID!, $first: Int!, $after: ID) {
     organizationPublicRooms(id: $organizationId, first: $first, after: $after) {
         items {
@@ -186,9 +193,11 @@ query OrganizationPublicRooms($organizationId: ID!, $first: Int!, $after: ID) {
         cursor
     }
 }
+
 query RoomSocialImage($roomId: ID!) {
     roomSocialImage(roomId: $roomId)
 }
+
 mutation OrganizationRequestMembersExport($organizationId: ID!) {
     requestOrganizationMembersExport(id: $organizationId)
 }

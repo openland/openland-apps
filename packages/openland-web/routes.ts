@@ -154,12 +154,8 @@ routes.add('/super/orgs/:accountId', '/dev/orgView');
 routes.add('/super/orgs/:accountId/', '/dev/orgView');
 routes.add('/super/admins', '/dev/admins');
 routes.add('/super/admins/', '/dev/admins');
-routes.add('/super/traces', '/dev/traces');
-routes.add('/super/traces/', '/dev/traces');
 routes.add('/super/stickers', '/dev/stickers');
 routes.add('/super/stickers/', '/dev/stickers');
-routes.add('/super/trace/:id', '/dev/trace');
-routes.add('/super/trace/:id/', '/dev/trace');
 routes.add('/performance', '/perf/perf');
 
 //

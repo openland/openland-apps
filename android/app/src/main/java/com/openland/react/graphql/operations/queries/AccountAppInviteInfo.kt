@@ -10,20 +10,20 @@ internal val AccountAppInviteInfoSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("creator", "creator", obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("User", UserShortSelector)
+                            fragment("User", UserSmallSelector)
                         ))
                 )),
             field("appInviteInfo", "appInvite", arguments(fieldValue("key", refValue("inviteKey"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("inviter", "inviter", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("User", UserShortSelector)
+                            fragment("User", UserSmallSelector)
                         )))
                 ))
         )
 val AccountAppInviteInfo = object: OperationDefinition {
     override val name = "AccountAppInviteInfo"
     override val kind = OperationKind.QUERY
-    override val body = "query AccountAppInviteInfo(\$inviteKey:String!){invite:alphaInviteInfo(key:\$inviteKey){__typename id creator{__typename ...UserShort}}appInvite:appInviteInfo(key:\$inviteKey){__typename inviter{__typename ...UserShort}}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname primaryOrganization{__typename id name shortname}}"
+    override val body = "query AccountAppInviteInfo(\$inviteKey:String!){invite:alphaInviteInfo(key:\$inviteKey){__typename id creator{__typename ...UserSmall}}appInvite:appInviteInfo(key:\$inviteKey){__typename inviter{__typename ...UserSmall}}}fragment UserSmall on User{__typename id name firstName photo shortname isBot}"
     override val selector = AccountAppInviteInfoSelector
 }

@@ -122,7 +122,6 @@ const UsersList = React.memo(
                                 user={node}
                                 enabled={!(isMember || inviteRestricted) || (node.isBanned || node.isMeBanned)}
                                 onPress={() => props.onAdd(node)}
-                                showOrganization={false}
                                 paddingRight={56}
                             />
                         </CheckListBoxWraper>

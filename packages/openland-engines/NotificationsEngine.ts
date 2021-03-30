@@ -1,7 +1,7 @@
 import { MessengerEngine } from './MessengerEngine';
 import {
-    RoomTiny_room_SharedRoom,
-    RoomTiny_room_PrivateRoom,
+    RoomChat_room_SharedRoom,
+    RoomChat_room_PrivateRoom,
     DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived,
 } from 'openland-api/spacex.types';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
@@ -71,11 +71,11 @@ export class NotificationsEngine {
 
     handleIncomingMessage = async (cid: string, event: NewMessageEvent) => {
         const msg = event.message;
-        let room = (await this.engine.client.queryRoomTiny({ id: cid })).room!;
+        let room = (await this.engine.client.queryRoomChat({ id: cid })).room!;
         let sharedRoom =
-            room.__typename === 'SharedRoom' ? (room as RoomTiny_room_SharedRoom) : null;
+            room.__typename === 'SharedRoom' ? (room as RoomChat_room_SharedRoom) : null;
         let privateRoom =
-            room.__typename === 'PrivateRoom' ? (room as RoomTiny_room_PrivateRoom) : null;
+            room.__typename === 'PrivateRoom' ? (room as RoomChat_room_PrivateRoom) : null;
         let conversationId = privateRoom ? privateRoom.user.id : sharedRoom!.id;
         let message = msg.message || msg.fallback;
 

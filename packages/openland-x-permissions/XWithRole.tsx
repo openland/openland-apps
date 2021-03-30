@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { XRoleContext } from './XRoleContext';
 
-export const XWithRole = (props: { role: string | string[], or?: boolean, orgPermission?: string | 'primary', negate?: boolean, children?: any }) => {
+export const XWithRole = (props: { role: string | string[], or?: boolean, negate?: boolean, children?: any }) => {
     return (
         <XRoleContext.Consumer>
             {userRoles => {
                 if (!userRoles) {
                     return <>{props.children}</>;
                 }
-                let targetRoles = (Array.isArray(props.role) ? props.role : [props.role]).map(r => props.orgPermission ? ('org-' + ((props.orgPermission === 'primary' ? userRoles.currentOrganizatonId : props.orgPermission) || '') + '-' + r) : r);
+                let targetRoles = (Array.isArray(props.role) ? props.role : [props.role]);
 
                 let _hasRole = false;
                 for (let r of targetRoles) {
@@ -45,14 +45,14 @@ export const XWithRole = (props: { role: string | string[], or?: boolean, orgPer
     );
 };
 
-export const useRole = (role: string | string[], or?: boolean, orgPermission?: string | 'primary', negate?: boolean) => {
+export const useRole = (role: string | string[], or?: boolean, negate?: boolean) => {
     const userRoles = React.useContext(XRoleContext);
 
     if (!userRoles) {
         return false;
     }
-    
-    let targetRoles = (Array.isArray(role) ? role : [role]).map(r => orgPermission ? ('org-' + ((orgPermission === 'primary' ? userRoles.currentOrganizatonId : orgPermission) || '') + '-' + r) : r);
+
+    let targetRoles = (Array.isArray(role) ? role : [role]);
     let _hasRole = false;
 
     for (let r of targetRoles) {

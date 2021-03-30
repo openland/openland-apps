@@ -63,10 +63,7 @@ const EditGroupCallsComponent = React.memo((props: PageProps) => {
                     callSettings: callSettings,
                 },
             });
-            await Promise.all([
-                client.refetchRoomChat({ id: roomId }),
-                client.refetchRoomTiny({ id: roomId }),
-            ]);
+            await client.refetchRoomChat({ id: roomId });
             Toast.success({ duration: 1000 }).show();
             props.router.back();
         });

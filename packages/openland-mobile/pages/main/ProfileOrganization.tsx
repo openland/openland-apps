@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { ZListGroup } from '../../components/ZListGroup';
-import { ZListItem } from '../../components/ZListItem';
-import { PageProps } from '../../components/PageProps';
+import { ZListGroup } from 'openland-mobile/components/ZListGroup';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
+import { PageProps } from 'openland-mobile/components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { getMessenger } from '../../utils/messenger';
-import { ActionSheetBuilder } from '../../components/ActionSheet';
+import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { UserView } from './components/UserView';
 import { Modals } from './modals/Modals';
 import { formatError } from 'openland-y-forms/errorHandling';
@@ -43,7 +43,6 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const client = getClient();
     const onlines = getMessenger().engine.getOnlines();
-    const settings = client.useAccountSettings();
     const organization = client.useOrganization(
         { organizationId: props.router.params.id },
         { fetchPolicy: 'cache-and-network' },
@@ -65,16 +64,9 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     const organizationRooms = publicRooms ? publicRooms.items : [];
 
     const myUserID = getMessenger().engine.user.id;
-    const canMakePrimary =
-        organization.isMine &&
-        organization.id !==
-        (settings.me &&
-            settings.me.primaryOrganization &&
-            settings.me.primaryOrganization.id) &&
-        !organization.isCommunity;
     const canEdit = organization.isOwner || organization.isAdmin;
     const canLeave = organization.isMine;
-    const showManageBtn = canMakePrimary || canEdit || canLeave;
+    const showManageBtn = canEdit || canLeave;
     const typeString = organization.isCommunity ? 'community' : 'organization';
 
     const [members, setMembers] = React.useState<OrgMember[]>([]);
@@ -182,30 +174,6 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
             );
         }
 
-        if (canMakePrimary) {
-            builder.action(
-                'Make primary',
-                async () => {
-                    const loader = Toast.loader();
-                    loader.show();
-                    try {
-                        await client.mutateProfileUpdate({
-                            input: {
-                                primaryOrganization: organization.id,
-                            },
-                        });
-                        await client.refetchAccountSettings();
-
-                        props.router.back();
-                    } finally {
-                        loader.hide();
-                    }
-                },
-                false,
-                require('assets/ic-star-24.png'),
-            );
-        }
-
         if (canLeave) {
             builder.action(
                 'Leave ' + typeString,
@@ -220,8 +188,6 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                                 organizationId: props.router.params.id,
                             });
                             await client.refetchMyCommunities();
-                            await client.refetchMyOrganizations();
-                            await client.refetchAccount();
 
                             props.router.back();
                         })
@@ -244,7 +210,6 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                             await client.mutateDeleteOrganization({
                                 organizationId: organization.id,
                             });
-                            await client.refetchAccountSettings();
                             await client.refetchMyCommunities();
 
                             props.router.back();
@@ -351,10 +316,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                                     userId: user.id,
                                     organizationId: props.router.params.id,
                                 });
-                                await Promise.all([
-                                    client.refetchMyOrganizations(),
-                                    client.refetchAccount(),
-                                ]);
+                                await client.refetchMyCommunities();
                                 props.router.back();
                             })
                             .show();

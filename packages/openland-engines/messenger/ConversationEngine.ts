@@ -30,6 +30,7 @@ const timeGroup = 1000 * 60 * 60;
 type DataSourceMessageSourceT = Types.FullMessage_GeneralMessage_source | Types.FullMessage_StickerMessage_source;
 
 export type PendingAttachProps = { uri?: string, key?: string, filePreview?: string | null, progress?: number, duration?: number };
+
 export interface DataSourceMessageItem {
     chatId: string;
     type: 'message';
@@ -38,7 +39,14 @@ export interface DataSourceMessageItem {
     seq: null | number;
     date: number;
     isOut: boolean;
-    sender: Types.MessageSender;
+    sender: {
+        __typename: "User";
+        id: string;
+        name: string;
+        photo: string | null;
+        isBot: boolean;
+        shortname: string | null;
+    };
     senderBadge?: Types.UserBadge;
     text?: string;
     isEdited?: boolean;
@@ -1095,7 +1103,14 @@ export class ConversationEngine implements MessageSendHandler {
                 chatId: this.conversationId,
                 key: src.key,
                 date: parseInt(src.date, 10),
-                sender: this.engine.user,
+                sender: {
+                    __typename: 'User',
+                    id: this.engine.user.id,
+                    name: this.engine.user.name,
+                    shortname: this.engine.user.shortname,
+                    photo: this.engine.user.photo,
+                    isBot: false
+                },
                 senderBadge: this.badge,
                 isOut: true,
                 isSending: true,
@@ -1282,7 +1297,14 @@ export class ConversationEngine implements MessageSendHandler {
         // Process All messages
         //
         for (let m of src) {
-            let sender = isServerMessage(m) ? m.sender : this.engine.user;
+            let sender = isServerMessage(m) ? m.sender : {
+                __typename: 'User' as 'User',
+                id: this.engine.user.id,
+                name: this.engine.user.name,
+                shortname: this.engine.user.shortname,
+                photo: this.engine.user.photo,
+                isBot: false
+            };
             let group = prepareSenderIfNeeded(sender, m, parseInt(m.date, 10));
             group.messages.push(m);
         }

@@ -2,12 +2,12 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XView, XViewRouterContext } from 'react-mental';
-import { MessageSender, UserNano_user } from 'openland-api/spacex.types';
+import { UserNano_user } from 'openland-api/spacex.types';
 import { XDate } from 'openland-x/XDate';
 import { UAvatar } from './unicorn/UAvatar';
 import { emoji } from 'openland-y-utils/emoji';
 import { useClient } from 'openland-api/useClient';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { TextCaption, TextStyles } from 'openland-web/utils/TextStyles';
 import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
 import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
@@ -41,8 +41,8 @@ const Status = (({ variables }) => {
                 {user.lastSeen === 'never_online' ? (
                     'moments ago'
                 ) : (
-                        <XDate value={user.lastSeen} format="humanize_cute" />
-                    )}
+                    <XDate value={user.lastSeen} format="humanize_cute" />
+                )}
             </div>
         );
     } else if (user && user.online) {
@@ -83,17 +83,19 @@ const userName = css`
     text-overflow: ellipsis;
 `;
 
-export const UserPopperContent = React.memo(
+const UserPopperContent = React.memo(
     ({
         noCardOnMe,
         isMe,
         user,
         hidePopper,
+        engine,
     }: {
-        user: MessageSender | UserNano_user;
+        user: UserNano_user;
         isMe: boolean;
         noCardOnMe?: boolean;
         hidePopper: Function;
+        engine: MessengerEngine;
     }) => {
         const router = React.useContext(XViewRouterContext);
         const toastHandlers = useToast();
@@ -113,9 +115,10 @@ export const UserPopperContent = React.memo(
             );
         } else {
             const client = useClient();
-            const messenger = React.useContext(MessengerContext);
             const { isContact } = useLocalContact(user.id, user.inContacts);
-            const [showContactCaption] = useCaptionPopper({ text: isContact ? 'Remove from contacts' : 'Add to contacts' });
+            const [showContactCaption] = useCaptionPopper({
+                text: isContact ? 'Remove from contacts' : 'Add to contacts',
+            });
             const [loading, setLoading] = React.useState(false);
 
             const handleContactClick = async () => {
@@ -143,7 +146,7 @@ export const UserPopperContent = React.memo(
             }, [loading, isContact]);
 
             React.useEffect(() => {
-                messenger.getOnlines().onUsersAppear([user.id!]);
+                engine.getOnlines().onUsersAppear([user.id!]);
             }, []);
             return (
                 <div className={userContainer}>
@@ -192,7 +195,13 @@ export const UserPopperContent = React.memo(
                                 <Status variables={{ userId: user.id }} />
                             </React.Suspense>
                             {!isMe && (
-                                <XView flexGrow={1} width="100%" alignItems="flex-end" flexDirection="row" justifyContent="space-between">
+                                <XView
+                                    flexGrow={1}
+                                    width="100%"
+                                    alignItems="flex-end"
+                                    flexDirection="row"
+                                    justifyContent="space-between"
+                                >
                                     <UButton
                                         marginBottom={4}
                                         text="Message"
@@ -207,17 +216,29 @@ export const UserPopperContent = React.memo(
                                     {loading ? (
                                         <UIconButton
                                             loading={true}
-                                            icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
+                                            icon={
+                                                isContact ? (
+                                                    <RemoveContactIcon />
+                                                ) : (
+                                                    <AddContactIcon />
+                                                )
+                                            }
                                             size="medium"
                                         />
                                     ) : (
-                                            <UIconButton
-                                                icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
-                                                onClick={handleContactClick}
-                                                size="medium"
-                                                onMouseEnter={showContactCaption}
-                                            />
-                                        )}
+                                        <UIconButton
+                                            icon={
+                                                isContact ? (
+                                                    <RemoveContactIcon />
+                                                ) : (
+                                                    <AddContactIcon />
+                                                )
+                                            }
+                                            onClick={handleContactClick}
+                                            size="medium"
+                                            onMouseEnter={showContactCaption}
+                                        />
+                                    )}
                                 </XView>
                             )}
                         </div>
@@ -227,6 +248,28 @@ export const UserPopperContent = React.memo(
         }
     },
 );
+
+interface MentionedUserPopperContent {
+    userId: string;
+    hide: Function;
+    noCardOnMe?: boolean;
+}
+
+export const MentionedUserPopperContent = React.memo((props: MentionedUserPopperContent) => {
+    const engine = React.useContext(MessengerContext);
+    const myId = engine.user.id;
+    const client = useClient();
+    const user = client.useUserNano({ id: props.userId }, { fetchPolicy: 'cache-and-network' }).user;
+    return (
+        <UserPopperContent
+            user={user}
+            isMe={props.userId === myId}
+            hidePopper={props.hide}
+            noCardOnMe={props.noCardOnMe}
+            engine={engine}
+        />
+    );
+});
 
 const entityContainer = css`
     display: flex;

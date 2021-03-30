@@ -283,7 +283,6 @@ const ContactsPage = React.memo((props: PageProps) => {
                                 renderItem={({ item }) => (
                                     <UserView
                                         user={item}
-                                        showOrganization={false}
                                         onPress={() =>
                                             props.router.push('ProfileUser', { id: item.id })
                                         }

@@ -13,7 +13,6 @@ import { ProfileGroup } from './pages/main/ProfileGroup';
 import { Navigation } from './pages/dev/Navigation';
 import { Loader } from './pages/dev/Loader';
 import { Home } from './pages/main/Home';
-import { SettingsOrganizations } from './pages/main/beta/SettingsOrganizations';
 import { SRoutesBuilder } from 'react-native-s/SRoutes';
 import { NewOrganization } from './pages/main/NewOrganization';
 import { EditOrganization } from './pages/main/EditOrganization';
@@ -30,7 +29,6 @@ import { Worker } from './pages/dev/Worker';
 import { ToastPage } from './pages/dev/Toast';
 import { BottomSheetPage } from './pages/dev/BottomSheetPage';
 import { DiscoverListing } from './pages/main/DiscoverListing';
-import { SelectPrimaryOrganization } from './pages/main/SelectPrimaryOrganization';
 import { SetUserShortname } from './pages/main/SetUserShortname';
 import { SettingsAppearance } from './pages/main/SettingsAppearance';
 import { SettingsAbout } from './pages/main/SettingsAbout';
@@ -52,8 +50,6 @@ import { GroupMultiplePicker } from './pages/main/modals/GroupMultiplePicker';
 import { NotificationCenter } from './pages/main/NotificationCenter';
 import { InstallApps } from './pages/main/InstallApps';
 import { StartConversation } from './pages/main/StartConversation';
-import { Invites } from './pages/main/Invites';
-import { InvitesMore } from './pages/main/InvitesMore';
 import { ProfileGroupFeatured } from './pages/main/ProfileGroupFeatured';
 import { Buttons } from './pages/dev/Buttons';
 import { Inputs } from './pages/dev/Inputs';
@@ -106,7 +102,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('ChangeLoginMethodCode', ChangeLoginMethodCode)
   .addRoute('SettingsNotifications', SettingsNotifications)
   .addRoute('SettingsEmail', SettingsEmail)
-  .addRoute('SettingsOrganizations', SettingsOrganizations)
   .addRoute('SettingsAppearance', SettingsAppearance)
   .addRoute('SettingsAbout', SettingsAbout)
   .addRoute('SettingsLicenses', SettingsLicenses)
@@ -136,7 +131,6 @@ export const Routes = new SRoutesBuilder()
 
   .addRoute('SetUserShortname', SetUserShortname)
   .addRoute('SetShortname', SetShortname)
-  .addRoute('SelectPrimaryOrganization', SelectPrimaryOrganization)
 
   .addRoute('SignupUser', SignupUser)
 
@@ -165,8 +159,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('Discover', Discover)
   .addRoute('InstallApps', InstallApps)
   .addRoute('StartConversation', StartConversation)
-  .addRoute('Invites', Invites)
-  .addRoute('InvitesMore', InvitesMore)
   .addRoute('Explore', Explore)
   .addRoute('Collections', Collections)
 

@@ -43,11 +43,7 @@ const NewOrganizationComponent = (props: PageProps) => {
                 },
             });
 
-            await Promise.all([
-                client.refetchAccount(),
-                client.refetchAccountSettings(),
-                client.refetchMyCommunities(),
-            ]);
+            await client.refetchMyCommunities();
 
             if (props.router.params.action) {
                 await props.router.params.action(props.router);

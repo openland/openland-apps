@@ -6,16 +6,13 @@ import { useClient } from 'openland-api/useClient';
 import LinkedInIcon from 'openland-icons/s/ic-linkedin-24.svg';
 import TwitterIcon from 'openland-icons/s/ic-twitter-24.svg';
 import FacebookIcon from 'openland-icons/s/ic-facebook-24.svg';
-import DoneIcon from 'openland-icons/s/ic-done-bold-16.svg';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { OwnerLinkComponent } from 'openland-web/fragments/invite/OwnerLinkComponent';
-import { TextBody, TextStyles, TextTitle1 } from 'openland-web/utils/TextStyles';
+import { TextBody, TextStyles } from 'openland-web/utils/TextStyles';
 import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { trackEvent } from 'openland-x-analytics';
-import { plural } from 'openland-y-utils/plural';
-import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
 const socialTextStyle = css`
     width: 100%;
@@ -140,19 +137,6 @@ const WritePostBlock = (props: { inviteKey: string; isMobile: boolean }) => {
     );
 };
 
-const headerTitleStyle = cx(TextTitle1, css`
-    align-self: center;
-    flex: 1;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    color: var(--foregroundPrimary);
-`);
-
-const headerIconStyle = css`
-    margin-right: 8px;
-`;
-
 export const InviteFriendsContent = (props: XViewProps) => {
     const client = useClient();
     const { invite: openlandInvite } = client.useAccountAppInvite();
@@ -187,32 +171,11 @@ export const InviteFriendsContent = (props: XViewProps) => {
 };
 
 export const InviteFriendsFragment = React.memo(() => {
-    const client = useClient();
-    const inviteCount = client.useMySuccessfulInvitesCount();
     return (
         <Page track="account_invite">
             <UHeader
                 documentTitle="Invite friends"
-                titleView={(
-                    <>
-                        <div className={headerTitleStyle}>
-                            Invite friends
-                        </div>
-                        {inviteCount.mySuccessfulInvitesCount > 0 && (
-                            <XView
-                                {...TextStyles.Label1}
-                                alignSelf="center"
-                                flexDirection="row"
-                                alignItems="center"
-                                color="var(--accentPositive)"
-                                marginLeft={8}
-                            >
-                                <UIcon className={headerIconStyle} icon={<DoneIcon />} size={16} color="var(--accentPositive)" />
-                                {plural(inviteCount.mySuccessfulInvitesCount, ['invite', 'invites'])} accepted
-                            </XView>
-                        )}
-                    </>
-                )}
+                title="Invite friends"
             />
             <InviteFriendsContent />
         </Page>

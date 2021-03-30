@@ -21,6 +21,6 @@ internal val CommentFullReactionsSelector = obj(
 val CommentFullReactions = object: OperationDefinition {
     override val name = "CommentFullReactions"
     override val kind = OperationKind.QUERY
-    override val body = "query CommentFullReactions(\$id:ID!){commentEntry(entryId:\$id){__typename id comment{__typename id reactions{__typename ...MessageUsersReactions}}}}fragment MessageUsersReactions on ModernMessageReaction{__typename user{__typename id name photo primaryOrganization{__typename id name}}reaction}"
+    override val body = "query CommentFullReactions(\$id:ID!){commentEntry(entryId:\$id){__typename id comment{__typename id reactions{__typename ...MessageUsersReactions}}}}fragment MessageUsersReactions on ModernMessageReaction{__typename user{__typename id name photo}reaction}"
     override val selector = CommentFullReactionsSelector
 }

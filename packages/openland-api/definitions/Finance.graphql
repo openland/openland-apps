@@ -10,41 +10,112 @@ query MyCards {
         deleted
     }
 }
+
 mutation CreateCardSetupIntent($retryKey: String!) {
     cardCreateSetupIntent(retryKey: $retryKey) {
         id
         clientSecret
     }
 }
+
 mutation CommitCardSetupIntent($id: ID!, $pmid: ID!) {
     cardCommitSetupIntent(id: $id, pmid: $pmid) {
         id
     }
 }
+
 mutation RemoveCard($id: ID!) {
     cardRemove(id: $id) {
         id
         deleted
     }
 }
+
 mutation MakeCardDefault($id: ID!) {
     cardMakeDefault(id: $id) {
         id
         isDefault
     }
 }
+
 mutation CreateDepositIntent($cardId: ID!, $amount: Int!, $retryKey: String!) {
     cardDepositIntent(id: $cardId, amount: $amount, retryKey: $retryKey) {
         id
         clientSecret
     }
 }
+
 mutation PaymentIntentCommit($id: ID!) {
     paymentIntentCommit(id: $id)
 }
+
 mutation PaymentIntentCancel($id: ID!) {
     paymentCancel(id: $id)
 }
+
+fragment Payment on Payment {
+    id
+    status
+    card {
+        id
+        brand
+        last4
+    }
+    intent {
+        id
+        clientSecret
+    }
+}
+
+fragment WalletUser on User {
+    id
+    name
+    photo
+}
+
+fragment WalletGroup on SharedRoom {
+    id
+    title
+    photo
+}
+
+fragment WalletProduct on WalletProduct {
+    ... on WalletProductGroup {
+        group {
+            ...WalletGroup
+        }
+    }
+
+    ...on WalletProductDonation {
+        user {
+            ...WalletUser
+        }
+    }
+
+    ...on WalletProductDonationMessage {
+        user {
+            ...WalletUser
+        }
+        chat {
+            ... on SharedRoom {
+                id
+                title
+            }
+        }
+    }
+    ...on WalletProductDonationReaction {
+        user {
+            ...WalletUser
+        }
+        chat {
+            ... on SharedRoom {
+                id
+                title
+            }
+        }
+    }
+}
+
 fragment WalletTransactionFragment on WalletTransaction {
     id
     status
@@ -53,132 +124,28 @@ fragment WalletTransactionFragment on WalletTransaction {
         ... on WalletTransactionDeposit {
             amount
             payment {
-                id
-                status
-                card {
-                    id
-                    brand
-                    last4
-                }
-                intent {
-                    id
-                    clientSecret
-                }
+                ...Payment
             }
         }
         ... on WalletTransactionIncome {
             amount
             payment {
-                id
-                status
-                card {
-                    id
-                    brand
-                    last4
-                }
-                intent {
-                    id
-                    clientSecret
-                }
+                ...Payment
             }
             source {
                 ... on WalletSubscription {
                     id
                     product {
-                        ... on WalletProductGroup {
-                            group {
-                                id
-                                title
-                                photo
-                            }
-                        }
-
-                        ...on WalletProductDonation {
-                            user {
-                                id
-                                name
-                                photo
-                            }
-                        }
-
-                        ...on WalletProductDonationMessage {
-                            user {
-                                id
-                                name
-                                photo
-                            }
-                            chat {
-                                ... on SharedRoom {
-                                    id
-                                    title
-                                }
-                            }
-                        }
-                        ...on WalletProductDonationReaction {
-                            user {
-                                id
-                                name
-                                photo
-                            }
-                            chat {
-                                ... on SharedRoom {
-                                    id
-                                    title
-                                }
-                            }
-                        }
+                        ...WalletProduct
                     }
                 }
                 ... on Purchase {
                     id
                     user {
-                        id
-                        name
-                        photo
+                        ...WalletUser
                     }
                     product {
-                        ... on WalletProductGroup {
-                            group {
-                                id
-                                title
-                                photo
-                            }
-                        }
-
-                        ...on WalletProductDonation {
-                            user {
-                                id
-                                name
-                                photo
-                            }
-                        }
-
-                        ...on WalletProductDonationMessage {
-                            user {
-                                id
-                                name
-                                photo
-                            }
-                            chat {
-                                ... on SharedRoom {
-                                    id
-                                    title
-                                }
-                            }
-                        }
-                        ...on WalletProductDonationReaction {
-                            user {
-                                id
-                                name
-                                photo
-                            }
-                            chat {
-                                ... on SharedRoom {
-                                    id
-                                    title
-                                }
-                            }
-                        }
+                        ...WalletProduct
                     }
                 }
             }
@@ -186,17 +153,7 @@ fragment WalletTransactionFragment on WalletTransaction {
         ... on WalletTransactionTransferIn {
             amount
             payment {
-                id
-                status
-                card {
-                    id
-                    brand
-                    last4
-                }
-                intent {
-                    id
-                    clientSecret
-                }
+                ...Payment
             }
             fromUser {
                 ...UserShort
@@ -207,17 +164,7 @@ fragment WalletTransactionFragment on WalletTransaction {
             walletAmount
             chargeAmount
             payment {
-                id
-                status
-                card {
-                    id
-                    brand
-                    last4
-                }
-                intent {
-                    id
-                    clientSecret
-                }
+                ...Payment
             }
             toUser {
                 ...UserShort
@@ -232,62 +179,11 @@ fragment WalletTransactionFragment on WalletTransaction {
                 interval
                 amount
                 product {
-                    ... on WalletProductGroup {
-                        group {
-                            id
-                            title
-                            photo
-                        }
-                    }
-
-                    ...on WalletProductDonation {
-                        user {
-                            id
-                            name
-                            photo
-                        }
-                    }
-
-                    ...on WalletProductDonationMessage {
-                        user {
-                            id
-                            name
-                            photo
-                        }
-                        chat {
-                            ... on SharedRoom {
-                                id
-                                title
-                            }
-                        }
-                    }
-                    ...on WalletProductDonationReaction {
-                            user {
-                                id
-                                name
-                                photo
-                            }
-                            chat {
-                                ... on SharedRoom {
-                                    id
-                                    title
-                                }
-                            }
-                        }
+                    ...WalletProduct
                 }
             }
             payment {
-                id
-                status
-                intent {
-                    id
-                    clientSecret
-                }
-                card {
-                    id
-                    brand
-                    last4
-                }
+                ...Payment
             }
         }
         ... on WalletTransactionPurchase {
@@ -297,67 +193,16 @@ fragment WalletTransactionFragment on WalletTransaction {
             purchase {
                 id
                 product {
-                    ... on WalletProductGroup {
-                        group {
-                            id
-                            title
-                            photo
-                        }
-                    }
-
-                    ...on WalletProductDonation {
-                        user {
-                            id
-                            name
-                            photo
-                        }
-                    }
-
-                    ...on WalletProductDonationMessage {
-                        user {
-                            id
-                            name
-                            photo
-                        }
-                        chat {
-                            ... on SharedRoom {
-                                id
-                                title
-                            }
-                        }
-                    }
-                    ...on WalletProductDonationReaction {
-                            user {
-                                id
-                                name
-                                photo
-                            }
-                            chat {
-                                ... on SharedRoom {
-                                    id
-                                    title
-                                }
-                            }
-                        }
+                    ...WalletProduct
                 }
             }
             payment {
-                id
-                status
-                intent {
-                    id
-                    clientSecret
-                }
-                card {
-                    id
-                    brand
-                    last4
-                }
+                ...Payment
             }
         }
-        
     }
 }
+
 query MyWallet {
     myWallet {
         id
@@ -411,20 +256,11 @@ fragment WalletUpdateFragment on WalletUpdate {
     }
     ... on WalletUpdatePaymentStatus {
         payment {
-            id
-            status
-            intent {
-                id
-                clientSecret
-            }
-            card {
-                id
-                brand
-                last4
-            }
+            ...Payment
         }
     }
 }
+
 subscription WalletUpdates($state: String!) {
     event: walletUpdates(fromState: $state) {
         ... on WalletUpdateSingle {
@@ -441,6 +277,7 @@ subscription WalletUpdates($state: String!) {
         }
     }
 }
+
 query Subscriptions {
     subscriptions {
         id
@@ -459,11 +296,13 @@ query Subscriptions {
         }
     }
 }
+
 mutation CancelSubscription($id: ID!) {
     subscriptionCancel(id: $id) {
         id
     }
 }
+
 query StripeToken {
     stripeToken
 }

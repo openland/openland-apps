@@ -1,0 +1,132 @@
+fragment UserFollower on User {
+    id
+    name
+    shortname
+    about
+    followersCount
+    followedByMe
+    photo
+}
+
+fragment UserSmall on User {
+    id
+    name
+    firstName
+    photo
+    shortname
+    isBot
+}
+
+fragment UserShort on User {
+    id
+    name
+    firstName
+    photo
+    online
+    lastSeen
+    isBot
+    shortname
+}
+
+fragment UserFull on User {
+    id
+    name
+    firstName
+    lastName
+    photo
+    phone
+    birthDay
+    email
+    website
+    about
+    birthDay
+    location
+    isBot
+    isDeleted
+    online
+    lastSeen
+    joinDate
+    linkedin
+    instagram
+    twitter
+    facebook
+    shortname
+    audienceSize
+    inContacts
+    isBanned
+    isMeBanned
+    followedByMe
+    followersCount
+    followingCount
+    currentVoiceChat {
+        ...VoiceChatWithSpeakers
+    }
+}
+
+fragment RoomSmall on SharedRoom {
+    id
+    title
+    photo
+    isChannel
+    isPremium
+    featured
+}
+
+fragment SharedRoomView on SharedRoom {
+    id
+    title
+    photo
+    membersCount
+    featured
+}
+
+fragment RoomNano on Room {
+    ... on PrivateRoom {
+        id
+        user {
+            id
+            name
+            photo
+        }
+        settings {
+            id
+            mute
+        }
+    }
+    ... on SharedRoom {
+        id
+        kind
+        isChannel
+        isPremium
+        title
+        photo
+        membersCount
+        featured
+        settings {
+            id
+            mute
+        }
+    }
+}
+
+fragment OrganizationSmall on Organization {
+    id
+    name
+    photo
+    isCommunity: alphaIsCommunity
+    featured: alphaFeatured
+}
+
+fragment OrganizationShort on Organization {
+    id
+    name
+    photo
+    shortname
+    about
+    isCommunity: alphaIsCommunity
+    private: alphaIsPrivate
+    membersCount
+    isAdmin: betaIsAdmin
+    membersCanInvite: betaMembersCanInvite
+    featured: alphaFeatured
+}

@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { XViewRouterContext } from 'react-mental';
 import { css, cx } from 'linaria';
-
-import { useUserPopper } from 'openland-web/components/EntityPoppers';
 import { isPendingAttach } from 'openland-engines/messenger/ConversationEngine';
 import { buildBaseImageUrl } from 'openland-y-utils/photoRefUtils';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-
 import { DataSourceWebMessageItem } from '../messenger/data/WebMessageItemDataSource';
 import { MessageContent } from '../messenger/message/MessageContent';
 import { MAvatar } from '../messenger/message/MAvatar';
 import { MessageSenderContent, MessageTimeShort } from '../messenger/message/MessageComponent';
+import { usePopper } from 'openland-web/components/unicorn/usePopper';
+import { XLoader } from 'openland-x/XLoader';
+import { MentionedUserPopperContent } from 'openland-web/components/EntityPopperContent';
 
 const messageContainerClass = css`
     position: relative;
@@ -179,10 +179,28 @@ export const ChatSearchMessage = React.memo((props: MessageComponentProps) => {
     }, [router, message]);
 
     const Avatar = () => {
-        const [show] = useUserPopper({
-            user: message.sender,
-            noCardOnMe: false,
-        });
+        const [, show] = usePopper(
+            {
+                placement: 'top',
+                hideOnLeave: true,
+                useObserve: true,
+                borderRadius: 8,
+                scope: 'entity-popper',
+                useWrapper: false,
+                showTimeout: 400,
+                hideOnChildClick: false,
+                hideOnClick: false,
+            },
+            (ctx) => (
+                <React.Suspense fallback={<XLoader loading={true} transparentBackground={true} />}>
+                    <MentionedUserPopperContent
+                        userId={message.sender.id}
+                        hide={ctx.hide}
+                        noCardOnMe={false}
+                    />
+                </React.Suspense>
+            ),
+        );
 
         return (
             <div className={messageAvatarWrapper} onMouseEnter={show}>

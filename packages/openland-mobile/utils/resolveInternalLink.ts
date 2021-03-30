@@ -371,12 +371,6 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
             loader.hide();
             return;
         }
-        if (link === '/onboarding_invite') {
-            loader.show();
-            navigate('Invites');
-            loader.hide();
-            return;
-        }
 
         if (!srcLink.startsWith('openland://deep/') && !isInternalLink(srcLink)) {
             if (fallback) {

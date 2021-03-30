@@ -1,19 +1,8 @@
 fragment VoiceChatParticipant on VoiceChatParticipant {
     id
     user {
-        id
-        name
-        firstName
-        photo
+        ...UserSmall
         followersCount
-        shortname
-        lastSeen
-        online
-        isBot
-        primaryOrganization {
-            id
-            name
-        }
     }
     status
     handRaised

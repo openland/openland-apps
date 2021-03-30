@@ -10,10 +10,6 @@ export interface ZUserViewProps {
         id: string,
         name: string,
         photo: string | null,
-        primaryOrganization: {
-            id: string,
-            name: string,
-        } | null
     };
     onPress: (userId: string) => void;
 }
@@ -37,15 +33,7 @@ export const ZUserView = React.memo((props: ZUserViewProps) => {
                         ellipsizeMode="tail"
                         allowFontScaling={false}
                     >
-                        {props.user.name}{'   '}
-                        {props.user.primaryOrganization && (
-                            <Text
-                                style={{ color: theme.foregroundSecondary, fontWeight: FontStyles.Weight.Regular }}
-                                allowFontScaling={false}
-                            >
-                                {props.user.primaryOrganization.name}
-                            </Text>
-                        )}
+                        {props.user.name}
                     </Text>
                 </View>
             </View>

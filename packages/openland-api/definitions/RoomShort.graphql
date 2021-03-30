@@ -3,16 +3,17 @@ fragment RoomShort on Room {
         id
         user {
             ...UserShort
+            isYou
             inContacts
             isBanned
             isMeBanned
         }
+        pinnedMessage {
+            ...FullMessage
+        }
         settings {
             id
             mute
-        }
-        pinnedMessage {
-            ...FullMessage
         }
         myBadge {
             ...UserBadge
@@ -21,41 +22,72 @@ fragment RoomShort on Room {
     ... on SharedRoom {
         id
         kind
-        isChannel
-        isPremium
         title
-        photo
         membership
-        featured
+        isChannel
         role
         canEdit
         canSendMessage
+        photo
         membersCount
+        shortname
+        featuredMembersCount
+        socialImage
+        activeVoiceChat {
+            ...VoiceChatWithSpeakers
+        }
+        featured
+        welcomeMessage {
+            isOn
+            sender {
+                id
+                name
+            }
+            message
+        }
+        organization {
+            ...OrganizationShort
+        }
         canUnpinMessage
         pinnedMessage {
             ...FullMessage
         }
-        organization {
-            ...OrganizationShort
+        myBadge {
+            ...UserBadge
         }
         settings {
             id
             mute
         }
-        myBadge {
-            ...UserBadge
+        description
+        previewMembers {
+            id
+            photo
+            name
+        }
+        isPremium
+        premiumPassIsActive
+        premiumSubscription {
+            id
+            state
+        }
+        premiumSettings {
+            id
+            price
+            interval
         }
         owner {
             id
             firstName
             isYou
         }
+        serviceMessageSettings {
+            joinsMessageEnabled
+            leavesMessageEnabled
+        }
         callSettings {
             mode
             callLink
-        }
-        activeVoiceChat {
-            id
         }
         repliesEnabled
     }

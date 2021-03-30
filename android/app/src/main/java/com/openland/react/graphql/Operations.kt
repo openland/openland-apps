@@ -11,7 +11,6 @@ object Operations {
         if (name == "AccountAppInvite") return AccountAppInvite
         if (name == "AccountAppInviteInfo") return AccountAppInviteInfo
         if (name == "AccountInviteInfo") return AccountInviteInfo
-        if (name == "AccountSettings") return AccountSettings
         if (name == "ActiveVoiceChats") return ActiveVoiceChats
         if (name == "AuthPoints") return AuthPoints
         if (name == "AuthResolveShortName") return AuthResolveShortName
@@ -32,8 +31,6 @@ object Operations {
         if (name == "Conference") return Conference
         if (name == "ConferenceMedia") return ConferenceMedia
         if (name == "CreatedStickerPacks") return CreatedStickerPacks
-        if (name == "DebugGqlTrace") return DebugGqlTrace
-        if (name == "DebugGqlTraces") return DebugGqlTraces
         if (name == "Dialogs") return Dialogs
         if (name == "DiscoverCollection") return DiscoverCollection
         if (name == "DiscoverCollectionShort") return DiscoverCollectionShort
@@ -77,10 +74,8 @@ object Operations {
         if (name == "MyContactsState") return MyContactsState
         if (name == "MyNotificationCenter") return MyNotificationCenter
         if (name == "MyNotifications") return MyNotifications
-        if (name == "MyOrganizations") return MyOrganizations
         if (name == "MyPostDrafts") return MyPostDrafts
         if (name == "MyStickers") return MyStickers
-        if (name == "MySuccessfulInvitesCount") return MySuccessfulInvitesCount
         if (name == "MyWallet") return MyWallet
         if (name == "OauthContext") return OauthContext
         if (name == "Online") return Online
@@ -115,7 +110,6 @@ object Operations {
         if (name == "RoomSearch") return RoomSearch
         if (name == "RoomSocialImage") return RoomSocialImage
         if (name == "RoomSuper") return RoomSuper
-        if (name == "RoomTiny") return RoomTiny
         if (name == "Settings") return Settings
         if (name == "SharedMedia") return SharedMedia
         if (name == "SharedMediaCounters") return SharedMediaCounters

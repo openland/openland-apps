@@ -38,6 +38,6 @@ internal val BlackListUpdatesSelector = obj(
 val BlackListUpdates = object: OperationDefinition {
     override val name = "BlackListUpdates"
     override val kind = OperationKind.SUBSCRIPTION
-    override val body = "subscription BlackListUpdates(\$fromState:String!){blackListUpdates(fromState:\$fromState){__typename state updates{__typename ... on BlackListAdded{__typename bannedBy{__typename ...UserShort}bannedUser{__typename ...UserShort}}... on BlackListRemoved{__typename bannedBy{__typename ...UserShort}bannedUser{__typename ...UserShort}}}}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname primaryOrganization{__typename id name shortname}}"
+    override val body = "subscription BlackListUpdates(\$fromState:String!){blackListUpdates(fromState:\$fromState){__typename state updates{__typename ... on BlackListAdded{__typename bannedBy{__typename ...UserShort}bannedUser{__typename ...UserShort}}... on BlackListRemoved{__typename bannedBy{__typename ...UserShort}bannedUser{__typename ...UserShort}}}}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname}"
     override val selector = BlackListUpdatesSelector
 }

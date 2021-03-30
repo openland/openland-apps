@@ -26,7 +26,7 @@ export const ChannelMuteButton = React.memo((props: ChannelMuteButtonProps) => {
         onMutedChange();
 
         await client.mutateRoomSettingsUpdate({ roomId: props.id, settings: { mute: !value } });
-        await client.refetchRoomTiny({ id: props.id });
+        await client.refetchRoomChat({ id: props.id });
     }, [notifications]);
 
     if (Platform.OS === 'ios') {

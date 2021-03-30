@@ -54,9 +54,7 @@ export const showLeaveConfirmation = (
 
             onLeave(user.id);
 
-            await client.refetchMyOrganizations();
             await client.refetchMyCommunities();
-            await client.refetchAccount();
         },
         'danger',
     );
@@ -112,7 +110,6 @@ export const OrganizationActions = React.memo(
                     'Delete',
                     async () => {
                         await client.mutateDeleteOrganization({ organizationId: organization.id });
-                        await client.refetchAccountSettings();
                         await client.refetchMyCommunities();
 
                         router.pop();

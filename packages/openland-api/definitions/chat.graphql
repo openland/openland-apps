@@ -50,98 +50,7 @@ query RoomPico($id: ID!) {
 }
 query RoomChat($id: ID!) {
     room(id: $id) {
-        ... on PrivateRoom {
-            id
-            user {
-                ...UserShort
-                isYou
-                inContacts
-                isBanned
-                isMeBanned
-            }
-            pinnedMessage {
-                ...FullMessage
-            }
-            settings {
-                id
-                mute
-            }
-            myBadge {
-                ...UserBadge
-            }
-        }
-        ... on SharedRoom {
-            id
-            kind
-            title
-            membership
-            isChannel
-            role
-            canEdit
-            canSendMessage
-            photo
-            membersCount
-            shortname
-            featuredMembersCount
-            socialImage
-            activeVoiceChat {
-                ...VoiceChatWithSpeakers
-            }
-            featured
-            welcomeMessage {
-                isOn
-                sender {
-                    id
-                    name
-                }
-                message
-            }
-            organization {
-                ...OrganizationShort
-            }
-            canUnpinMessage
-            pinnedMessage {
-                ...FullMessage
-            }
-            myBadge {
-                ...UserBadge
-            }
-            settings {
-                id
-                mute
-            }
-            description
-            previewMembers {
-                id
-                photo
-                name
-            }
-            isPremium
-            premiumPassIsActive
-            premiumSubscription {
-                id
-                state
-            }
-            premiumSettings {
-                id
-                price
-                interval
-            }
-            owner {
-                id
-                firstName
-                isYou
-            }
-            serviceMessageSettings {
-                joinsMessageEnabled
-                leavesMessageEnabled
-            }
-            callSettings {
-                mode
-                callLink
-            }
-            repliesEnabled
-        }
+        ...RoomShort
     }
 }
 query RoomFeaturedMembers($roomId: ID!) {
@@ -155,11 +64,6 @@ query RoomFeaturedMembers($roomId: ID!) {
         badge {
             ...UserBadge
         }
-    }
-}
-query RoomTiny($id: ID!) {
-    room(id: $id) {
-        ...RoomShort
     }
 }
 

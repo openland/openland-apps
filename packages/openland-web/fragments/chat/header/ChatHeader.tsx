@@ -19,7 +19,7 @@ import {
     showRoomEditModal,
 } from 'openland-web/fragments/settings/components/groupProfileModals';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
-import { HoverAlpha, TextDensed, TextStyles } from 'openland-web/utils/TextStyles';
+import { HoverAlpha, TextStyles } from 'openland-web/utils/TextStyles';
 import { emoji } from 'openland-y-utils/emoji';
 import { useLastSeen, LastSeenUser } from 'openland-y-utils/LastSeen';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -45,11 +45,6 @@ import MutedIcon from 'openland-icons/s/ic-muted-16.svg';
 import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
 import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
-
-const secondary = css`
-    color: var(--foregroundSecondary);
-    padding-left: 4px;
-`;
 
 const secondaryAccent = css`
     color: var(--accentPrimary);
@@ -431,13 +426,6 @@ export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
                             {sharedRoom && sharedRoom.isPremium && <PremiumBadge />}
                             <span className={titleStyle}>
                                 {titleEmojify}
-                                {!isSavedMessages &&
-                                    privateRoom &&
-                                    privateRoom.user.primaryOrganization && (
-                                        <span className={cx(secondary, TextDensed)}>
-                                            {privateRoom.user.primaryOrganization.name}
-                                        </span>
-                                    )}
                             </span>
                             {highlightFeaturedChat && (
                                 <div className={featuredIcon}>

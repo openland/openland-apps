@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, StyleSheet, TextStyle, Image, Platform } from 'react-native';
 import { SRouter } from 'react-native-s/SRouter';
 import { getMessenger } from '../../../utils/messenger';
-import { TypingType, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom } from 'openland-api/spacex.types';
+import { TypingType, RoomChat_room_SharedRoom, RoomChat_room_PrivateRoom } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     } as TextStyle,
 });
 
-const SharedChatHeaderContent = React.memo((props: { room: RoomTiny_room_SharedRoom, typing?: string, theme: ThemeGlobal, muted: boolean }) => {
+const SharedChatHeaderContent = React.memo((props: { room: RoomChat_room_SharedRoom, typing?: string, theme: ThemeGlobal, muted: boolean }) => {
     const { room, typing, theme } = props;
     const [onlineCount, setOnlineCount] = React.useState<number>(0);
 
@@ -91,7 +91,7 @@ const SharedChatHeaderContent = React.memo((props: { room: RoomTiny_room_SharedR
     );
 });
 
-const PrivateChatHeaderContent = React.memo((props: { room: RoomTiny_room_PrivateRoom, typing?: string, typingType?: string, theme: ThemeGlobal, muted: boolean }) => {
+const PrivateChatHeaderContent = React.memo((props: { room: RoomChat_room_PrivateRoom, typing?: string, typingType?: string, theme: ThemeGlobal, muted: boolean }) => {
     const { room, typing, theme, typingType } = props;
 
     let [subtitle, accent] = useLastSeen(room.user);
@@ -226,10 +226,10 @@ const PrivateChatHeaderContent = React.memo((props: { room: RoomTiny_room_Privat
 
 const ChatHeaderContent = React.memo((props: { conversationId: string, router: SRouter, typing?: string, typingType?: string, muted: boolean }) => {
     let theme = React.useContext(ThemeContext);
-    let room = getClient().useRoomTiny({ id: props.conversationId });
+    let room = getClient().useRoomChat({ id: props.conversationId });
 
-    let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room as RoomTiny_room_SharedRoom : null;
-    let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room as RoomTiny_room_PrivateRoom : null;
+    let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room as RoomChat_room_SharedRoom : null;
+    let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room as RoomChat_room_PrivateRoom : null;
 
     if (sharedRoom) {
         return <SharedChatHeaderContent room={sharedRoom} typing={props.typing} theme={theme} muted={props.muted} />;

@@ -32,7 +32,7 @@ const DialogMenuPrivate = React.memo((props: DialogMenuProps) => {
     if (!isSavedMessages) {
         builder.action(`${muted ? 'Unmute' : 'Mute'} notifications`, () => {
             client.mutateRoomSettingsUpdate({ roomId: item.key, settings: { mute: !muted } });
-            client.refetchRoomTiny({ id: item.key });
+            client.refetchRoomChat({ id: item.key });
         }, false, muted ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-off-24.png'));
     }
 
@@ -87,7 +87,7 @@ export const showDialogMenu = (item: DialogDataSourceItem) => {
 
         builder.action(`${muted ? 'Unmute' : 'Mute'} notifications`, () => {
             client.mutateRoomSettingsUpdate({ roomId: item.key, settings: { mute: !muted } });
-            client.refetchRoomTiny({ id: item.key });
+            client.refetchRoomChat({ id: item.key });
         }, false, muted ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-off-24.png'));
 
         builder.action('Media, files, links', () => {

@@ -23,6 +23,6 @@ internal val RoomAddMembersSelector = obj(
 val RoomAddMembers = object: OperationDefinition {
     override val name = "RoomAddMembers"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation RoomAddMembers(\$roomId:ID!,\$invites:[RoomInviteInput!]!){alphaRoomInvite(roomId:\$roomId,invites:\$invites){__typename user{__typename ...UserShort}role membership canKick badge{__typename ...UserBadge}}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname primaryOrganization{__typename id name shortname}}fragment UserBadge on UserBadge{__typename id name verified}"
+    override val body = "mutation RoomAddMembers(\$roomId:ID!,\$invites:[RoomInviteInput!]!){alphaRoomInvite(roomId:\$roomId,invites:\$invites){__typename user{__typename ...UserShort}role membership canKick badge{__typename ...UserBadge}}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname}fragment UserBadge on UserBadge{__typename id name verified}"
     override val selector = RoomAddMembersSelector
 }

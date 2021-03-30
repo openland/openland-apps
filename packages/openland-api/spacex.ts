@@ -22,9 +22,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryAccountInviteInfo(variables: Types.AccountInviteInfoVariables, params?: QueryParameters): Promise<Types.AccountInviteInfo> {
         return this.query('AccountInviteInfo', variables, params);
     }
-    queryAccountSettings(params?: QueryParameters): Promise<Types.AccountSettings> {
-        return this.query('AccountSettings', undefined, params);
-    }
     queryActiveVoiceChats(variables: Types.ActiveVoiceChatsVariables, params?: QueryParameters): Promise<Types.ActiveVoiceChats> {
         return this.query('ActiveVoiceChats', variables, params);
     }
@@ -84,12 +81,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryCreatedStickerPacks(params?: QueryParameters): Promise<Types.CreatedStickerPacks> {
         return this.query('CreatedStickerPacks', undefined, params);
-    }
-    queryDebugGqlTrace(variables: Types.DebugGqlTraceVariables, params?: QueryParameters): Promise<Types.DebugGqlTrace> {
-        return this.query('DebugGqlTrace', variables, params);
-    }
-    queryDebugGqlTraces(variables: Types.DebugGqlTracesVariables, params?: QueryParameters): Promise<Types.DebugGqlTraces> {
-        return this.query('DebugGqlTraces', variables, params);
     }
     queryDialogs(variables: Types.DialogsVariables, params?: QueryParameters): Promise<Types.Dialogs> {
         return this.query('Dialogs', variables, params);
@@ -220,17 +211,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryMyNotifications(variables: Types.MyNotificationsVariables, params?: QueryParameters): Promise<Types.MyNotifications> {
         return this.query('MyNotifications', variables, params);
     }
-    queryMyOrganizations(params?: QueryParameters): Promise<Types.MyOrganizations> {
-        return this.query('MyOrganizations', undefined, params);
-    }
     queryMyPostDrafts(variables: Types.MyPostDraftsVariables, params?: QueryParameters): Promise<Types.MyPostDrafts> {
         return this.query('MyPostDrafts', variables, params);
     }
     queryMyStickers(params?: QueryParameters): Promise<Types.MyStickers> {
         return this.query('MyStickers', undefined, params);
-    }
-    queryMySuccessfulInvitesCount(params?: QueryParameters): Promise<Types.MySuccessfulInvitesCount> {
-        return this.query('MySuccessfulInvitesCount', undefined, params);
     }
     queryMyWallet(params?: QueryParameters): Promise<Types.MyWallet> {
         return this.query('MyWallet', undefined, params);
@@ -333,9 +318,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryRoomSuper(variables: Types.RoomSuperVariables, params?: QueryParameters): Promise<Types.RoomSuper> {
         return this.query('RoomSuper', variables, params);
-    }
-    queryRoomTiny(variables: Types.RoomTinyVariables, params?: QueryParameters): Promise<Types.RoomTiny> {
-        return this.query('RoomTiny', variables, params);
     }
     querySettings(params?: QueryParameters): Promise<Types.Settings> {
         return this.query('Settings', undefined, params);
@@ -451,9 +433,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchAccountInviteInfo(variables: Types.AccountInviteInfoVariables, params?: QueryParameters): Promise<Types.AccountInviteInfo> {
         return this.refetch('AccountInviteInfo', variables, params);
     }
-    refetchAccountSettings(params?: QueryParameters): Promise<Types.AccountSettings> {
-        return this.refetch('AccountSettings', undefined, params);
-    }
     refetchActiveVoiceChats(variables: Types.ActiveVoiceChatsVariables, params?: QueryParameters): Promise<Types.ActiveVoiceChats> {
         return this.refetch('ActiveVoiceChats', variables, params);
     }
@@ -513,12 +492,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchCreatedStickerPacks(params?: QueryParameters): Promise<Types.CreatedStickerPacks> {
         return this.refetch('CreatedStickerPacks', undefined, params);
-    }
-    refetchDebugGqlTrace(variables: Types.DebugGqlTraceVariables, params?: QueryParameters): Promise<Types.DebugGqlTrace> {
-        return this.refetch('DebugGqlTrace', variables, params);
-    }
-    refetchDebugGqlTraces(variables: Types.DebugGqlTracesVariables, params?: QueryParameters): Promise<Types.DebugGqlTraces> {
-        return this.refetch('DebugGqlTraces', variables, params);
     }
     refetchDialogs(variables: Types.DialogsVariables, params?: QueryParameters): Promise<Types.Dialogs> {
         return this.refetch('Dialogs', variables, params);
@@ -649,17 +622,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchMyNotifications(variables: Types.MyNotificationsVariables, params?: QueryParameters): Promise<Types.MyNotifications> {
         return this.refetch('MyNotifications', variables, params);
     }
-    refetchMyOrganizations(params?: QueryParameters): Promise<Types.MyOrganizations> {
-        return this.refetch('MyOrganizations', undefined, params);
-    }
     refetchMyPostDrafts(variables: Types.MyPostDraftsVariables, params?: QueryParameters): Promise<Types.MyPostDrafts> {
         return this.refetch('MyPostDrafts', variables, params);
     }
     refetchMyStickers(params?: QueryParameters): Promise<Types.MyStickers> {
         return this.refetch('MyStickers', undefined, params);
-    }
-    refetchMySuccessfulInvitesCount(params?: QueryParameters): Promise<Types.MySuccessfulInvitesCount> {
-        return this.refetch('MySuccessfulInvitesCount', undefined, params);
     }
     refetchMyWallet(params?: QueryParameters): Promise<Types.MyWallet> {
         return this.refetch('MyWallet', undefined, params);
@@ -762,9 +729,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchRoomSuper(variables: Types.RoomSuperVariables, params?: QueryParameters): Promise<Types.RoomSuper> {
         return this.refetch('RoomSuper', variables, params);
-    }
-    refetchRoomTiny(variables: Types.RoomTinyVariables, params?: QueryParameters): Promise<Types.RoomTiny> {
-        return this.refetch('RoomTiny', variables, params);
     }
     refetchSettings(params?: QueryParameters): Promise<Types.Settings> {
         return this.refetch('Settings', undefined, params);
@@ -880,9 +844,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateAccountInviteInfo(variables: Types.AccountInviteInfoVariables, updater: (data: Types.AccountInviteInfo) => Types.AccountInviteInfo | null): Promise<boolean> {
         return this.updateQuery(updater, 'AccountInviteInfo', variables);
     }
-    updateAccountSettings(updater: (data: Types.AccountSettings) => Types.AccountSettings | null): Promise<boolean> {
-        return this.updateQuery(updater, 'AccountSettings', undefined);
-    }
     updateActiveVoiceChats(variables: Types.ActiveVoiceChatsVariables, updater: (data: Types.ActiveVoiceChats) => Types.ActiveVoiceChats | null): Promise<boolean> {
         return this.updateQuery(updater, 'ActiveVoiceChats', variables);
     }
@@ -942,12 +903,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateCreatedStickerPacks(updater: (data: Types.CreatedStickerPacks) => Types.CreatedStickerPacks | null): Promise<boolean> {
         return this.updateQuery(updater, 'CreatedStickerPacks', undefined);
-    }
-    updateDebugGqlTrace(variables: Types.DebugGqlTraceVariables, updater: (data: Types.DebugGqlTrace) => Types.DebugGqlTrace | null): Promise<boolean> {
-        return this.updateQuery(updater, 'DebugGqlTrace', variables);
-    }
-    updateDebugGqlTraces(variables: Types.DebugGqlTracesVariables, updater: (data: Types.DebugGqlTraces) => Types.DebugGqlTraces | null): Promise<boolean> {
-        return this.updateQuery(updater, 'DebugGqlTraces', variables);
     }
     updateDialogs(variables: Types.DialogsVariables, updater: (data: Types.Dialogs) => Types.Dialogs | null): Promise<boolean> {
         return this.updateQuery(updater, 'Dialogs', variables);
@@ -1078,17 +1033,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateMyNotifications(variables: Types.MyNotificationsVariables, updater: (data: Types.MyNotifications) => Types.MyNotifications | null): Promise<boolean> {
         return this.updateQuery(updater, 'MyNotifications', variables);
     }
-    updateMyOrganizations(updater: (data: Types.MyOrganizations) => Types.MyOrganizations | null): Promise<boolean> {
-        return this.updateQuery(updater, 'MyOrganizations', undefined);
-    }
     updateMyPostDrafts(variables: Types.MyPostDraftsVariables, updater: (data: Types.MyPostDrafts) => Types.MyPostDrafts | null): Promise<boolean> {
         return this.updateQuery(updater, 'MyPostDrafts', variables);
     }
     updateMyStickers(updater: (data: Types.MyStickers) => Types.MyStickers | null): Promise<boolean> {
         return this.updateQuery(updater, 'MyStickers', undefined);
-    }
-    updateMySuccessfulInvitesCount(updater: (data: Types.MySuccessfulInvitesCount) => Types.MySuccessfulInvitesCount | null): Promise<boolean> {
-        return this.updateQuery(updater, 'MySuccessfulInvitesCount', undefined);
     }
     updateMyWallet(updater: (data: Types.MyWallet) => Types.MyWallet | null): Promise<boolean> {
         return this.updateQuery(updater, 'MyWallet', undefined);
@@ -1191,9 +1140,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateRoomSuper(variables: Types.RoomSuperVariables, updater: (data: Types.RoomSuper) => Types.RoomSuper | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomSuper', variables);
-    }
-    updateRoomTiny(variables: Types.RoomTinyVariables, updater: (data: Types.RoomTiny) => Types.RoomTiny | null): Promise<boolean> {
-        return this.updateQuery(updater, 'RoomTiny', variables);
     }
     updateSettings(updater: (data: Types.Settings) => Types.Settings | null): Promise<boolean> {
         return this.updateQuery(updater, 'Settings', undefined);
@@ -1317,11 +1263,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useAccountInviteInfo(variables: Types.AccountInviteInfoVariables, params?: SpaceQueryWatchParameters): Types.AccountInviteInfo | null {
         return this.useQuery('AccountInviteInfo', variables, params);
     }
-    useAccountSettings(params: SpaceQueryWatchParameters & { suspense: false }): Types.AccountSettings | null;
-    useAccountSettings(params?: SpaceQueryWatchParameters): Types.AccountSettings;
-    useAccountSettings(params?: SpaceQueryWatchParameters): Types.AccountSettings | null {
-        return this.useQuery('AccountSettings', undefined, params);
-    }
     useActiveVoiceChats(variables: Types.ActiveVoiceChatsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ActiveVoiceChats | null;
     useActiveVoiceChats(variables: Types.ActiveVoiceChatsVariables, params?: SpaceQueryWatchParameters): Types.ActiveVoiceChats;
     useActiveVoiceChats(variables: Types.ActiveVoiceChatsVariables, params?: SpaceQueryWatchParameters): Types.ActiveVoiceChats | null {
@@ -1421,16 +1362,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useCreatedStickerPacks(params?: SpaceQueryWatchParameters): Types.CreatedStickerPacks;
     useCreatedStickerPacks(params?: SpaceQueryWatchParameters): Types.CreatedStickerPacks | null {
         return this.useQuery('CreatedStickerPacks', undefined, params);
-    }
-    useDebugGqlTrace(variables: Types.DebugGqlTraceVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DebugGqlTrace | null;
-    useDebugGqlTrace(variables: Types.DebugGqlTraceVariables, params?: SpaceQueryWatchParameters): Types.DebugGqlTrace;
-    useDebugGqlTrace(variables: Types.DebugGqlTraceVariables, params?: SpaceQueryWatchParameters): Types.DebugGqlTrace | null {
-        return this.useQuery('DebugGqlTrace', variables, params);
-    }
-    useDebugGqlTraces(variables: Types.DebugGqlTracesVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DebugGqlTraces | null;
-    useDebugGqlTraces(variables: Types.DebugGqlTracesVariables, params?: SpaceQueryWatchParameters): Types.DebugGqlTraces;
-    useDebugGqlTraces(variables: Types.DebugGqlTracesVariables, params?: SpaceQueryWatchParameters): Types.DebugGqlTraces | null {
-        return this.useQuery('DebugGqlTraces', variables, params);
     }
     useDialogs(variables: Types.DialogsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.Dialogs | null;
     useDialogs(variables: Types.DialogsVariables, params?: SpaceQueryWatchParameters): Types.Dialogs;
@@ -1647,11 +1578,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useMyNotifications(variables: Types.MyNotificationsVariables, params?: SpaceQueryWatchParameters): Types.MyNotifications | null {
         return this.useQuery('MyNotifications', variables, params);
     }
-    useMyOrganizations(params: SpaceQueryWatchParameters & { suspense: false }): Types.MyOrganizations | null;
-    useMyOrganizations(params?: SpaceQueryWatchParameters): Types.MyOrganizations;
-    useMyOrganizations(params?: SpaceQueryWatchParameters): Types.MyOrganizations | null {
-        return this.useQuery('MyOrganizations', undefined, params);
-    }
     useMyPostDrafts(variables: Types.MyPostDraftsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.MyPostDrafts | null;
     useMyPostDrafts(variables: Types.MyPostDraftsVariables, params?: SpaceQueryWatchParameters): Types.MyPostDrafts;
     useMyPostDrafts(variables: Types.MyPostDraftsVariables, params?: SpaceQueryWatchParameters): Types.MyPostDrafts | null {
@@ -1661,11 +1587,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useMyStickers(params?: SpaceQueryWatchParameters): Types.MyStickers;
     useMyStickers(params?: SpaceQueryWatchParameters): Types.MyStickers | null {
         return this.useQuery('MyStickers', undefined, params);
-    }
-    useMySuccessfulInvitesCount(params: SpaceQueryWatchParameters & { suspense: false }): Types.MySuccessfulInvitesCount | null;
-    useMySuccessfulInvitesCount(params?: SpaceQueryWatchParameters): Types.MySuccessfulInvitesCount;
-    useMySuccessfulInvitesCount(params?: SpaceQueryWatchParameters): Types.MySuccessfulInvitesCount | null {
-        return this.useQuery('MySuccessfulInvitesCount', undefined, params);
     }
     useMyWallet(params: SpaceQueryWatchParameters & { suspense: false }): Types.MyWallet | null;
     useMyWallet(params?: SpaceQueryWatchParameters): Types.MyWallet;
@@ -1836,11 +1757,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useRoomSuper(variables: Types.RoomSuperVariables, params?: SpaceQueryWatchParameters): Types.RoomSuper;
     useRoomSuper(variables: Types.RoomSuperVariables, params?: SpaceQueryWatchParameters): Types.RoomSuper | null {
         return this.useQuery('RoomSuper', variables, params);
-    }
-    useRoomTiny(variables: Types.RoomTinyVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomTiny | null;
-    useRoomTiny(variables: Types.RoomTinyVariables, params?: SpaceQueryWatchParameters): Types.RoomTiny;
-    useRoomTiny(variables: Types.RoomTinyVariables, params?: SpaceQueryWatchParameters): Types.RoomTiny | null {
-        return this.useQuery('RoomTiny', variables, params);
     }
     useSettings(params: SpaceQueryWatchParameters & { suspense: false }): Types.Settings | null;
     useSettings(params?: SpaceQueryWatchParameters): Types.Settings;

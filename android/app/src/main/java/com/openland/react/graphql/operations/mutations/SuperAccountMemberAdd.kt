@@ -17,6 +17,6 @@ internal val SuperAccountMemberAddSelector = obj(
 val SuperAccountMemberAdd = object: OperationDefinition {
     override val name = "SuperAccountMemberAdd"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation SuperAccountMemberAdd(\$accountId:ID!,\$userId:ID!){superAccountMemberAdd(id:\$accountId,userId:\$userId){__typename id members{__typename ...UserShort}}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname primaryOrganization{__typename id name shortname}}"
+    override val body = "mutation SuperAccountMemberAdd(\$accountId:ID!,\$userId:ID!){superAccountMemberAdd(id:\$accountId,userId:\$userId){__typename id members{__typename ...UserShort}}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname}"
     override val selector = SuperAccountMemberAddSelector
 }

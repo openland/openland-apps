@@ -63,7 +63,7 @@ export const MentionView = React.memo((props: MentionViewProps) => {
                         <SuggestionsItemName
                             theme={theme}
                             name={mention.user.name}
-                            description={mention.user.isBot ? 'Bot' : mention.user.primaryOrganization ? mention.user.primaryOrganization.name : undefined}
+                            description={mention.user.isBot ? 'Bot' : undefined}
                         />
                     )}
                     {mention.__typename === 'MentionSearchOrganization' && (

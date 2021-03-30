@@ -48,13 +48,7 @@ export const OthersPopper = React.memo((props: OthersPopperProps) => {
                             id={user.id}
                             title={user.name}
                             photo={user.photo}
-                            subtitle={
-                                user.isBot
-                                    ? 'Bot'
-                                    : user.primaryOrganization
-                                    ? user.primaryOrganization.name
-                                    : undefined
-                            }
+                            subtitle={user.isBot ? 'Bot' : undefined}
                         />
                     </XView>
                 ))}

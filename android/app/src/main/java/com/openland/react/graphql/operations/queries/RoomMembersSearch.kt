@@ -34,6 +34,6 @@ internal val RoomMembersSearchSelector = obj(
 val RoomMembersSearch = object: OperationDefinition {
     override val name = "RoomMembersSearch"
     override val kind = OperationKind.QUERY
-    override val body = "query RoomMembersSearch(\$cid:ID!,\$query:String,\$first:Int!,\$after:String){chatMembersSearch(cid:\$cid,query:\$query,first:\$first,after:\$after){__typename edges{__typename node{__typename user{__typename ...UserShort}role membership canKick badge{__typename ...UserBadge}}cursor}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname primaryOrganization{__typename id name shortname}}fragment UserBadge on UserBadge{__typename id name verified}"
+    override val body = "query RoomMembersSearch(\$cid:ID!,\$query:String,\$first:Int!,\$after:String){chatMembersSearch(cid:\$cid,query:\$query,first:\$first,after:\$after){__typename edges{__typename node{__typename user{__typename ...UserShort}role membership canKick badge{__typename ...UserBadge}}cursor}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname}fragment UserBadge on UserBadge{__typename id name verified}"
     override val selector = RoomMembersSearchSelector
 }

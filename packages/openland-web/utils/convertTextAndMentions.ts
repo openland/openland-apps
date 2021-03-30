@@ -1,7 +1,9 @@
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { Span, SpanType } from 'openland-y-utils/spans/Span';
-import { RoomSharedNano } from 'openland-api/spacex.types';
+import { MessageSpan_MessageSpanRoomMention_room_SharedRoom } from 'openland-api/spacex.types';
+
+type RoomT = MessageSpan_MessageSpanRoomMention_room_SharedRoom;
 
 export function extractTextAndMentions(data: URickTextValue): { text: string; mentions: MentionToSend[] } {
     let text = '';
@@ -51,7 +53,7 @@ export function convertToInputValue(text: string, spans: Span[]): URickTextValue
             if (userSpan.type === SpanType.mention_user) {
                 value.push({ __typename: 'User', ...userSpan.user });
             } else if (userSpan.type === SpanType.mention_room) {
-                value.push({ __typename: 'SharedRoom', ...userSpan.room as RoomSharedNano });
+                value.push({ __typename: 'SharedRoom', ...userSpan.room as RoomT });
             } else if (userSpan.type === SpanType.mention_organization) {
                 value.push({ __typename: 'Organization', ...userSpan.organization });
             }

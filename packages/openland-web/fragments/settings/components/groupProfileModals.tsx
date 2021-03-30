@@ -313,9 +313,6 @@ const OptionRender = (option: OptionType) => (
         id={option.user.id}
         photo={option.user.photo}
         title={option.user.name}
-        subtitle={
-            option.user.primaryOrganization ? option.user.primaryOrganization.name : undefined
-        }
     />
 );
 

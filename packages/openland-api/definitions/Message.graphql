@@ -16,10 +16,6 @@ fragment MessageUsersReactions on ModernMessageReaction {
         id
         name
         photo
-        primaryOrganization {
-            id
-            name
-        }
     }
     reaction
 }
@@ -48,12 +44,6 @@ fragment MessageSender on User {
     photo
     isBot
     shortname
-    inContacts
-    primaryOrganization {
-        id
-        name
-        shortname
-    }
 }
 
 fragment MessageReactionCounter on ReactionCounter {

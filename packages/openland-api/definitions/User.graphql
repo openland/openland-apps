@@ -75,9 +75,6 @@ mutation DeleteUser($id: ID!) {
 mutation BetaNextDiscoverReset {
     betaNextDiscoverReset
 }
-query MySuccessfulInvitesCount {
-    mySuccessfulInvitesCount
-}
 
 query SocialUserFollowers($uid: ID!, $first: Int!, $after: String) {
     socialUserFollowers(uid: $uid, first: $first, after: $after) {

@@ -9,7 +9,6 @@ import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 export interface UserInfo {
     user: Account_me | null;
-    organization: { id: string, name: string } | null;
     profile: Account_myProfile | null;
     isLoggedIn: boolean;
     isAccountExists: boolean;
@@ -23,8 +22,7 @@ export interface UserInfo {
 export const UserInfoContext = React.createContext<UserInfo | undefined>(undefined);
 
 export interface UserInfoProps {
-    user?: Account_me | null;
-    organization?: { id: string, name: string } | null;
+    user: Account_me | null;
     sessionState: Account_sessionState;
     roles: string[];
     profile: Account_myProfile | null;
@@ -32,16 +30,14 @@ export interface UserInfoProps {
 
 export class UserInfoProvider extends React.Component<UserInfoProps> {
     ctx: UserInfo;
-    rolesCtx: { roles: string[]; currentOrganizatonId?: string };
+    rolesCtx: { roles: string[] };
 
     constructor(props: UserInfoProps) {
         super(props);
 
-        let hasUser = this.props.user !== null && this.props.user !== undefined;
-        let hasAccount = this.props.organization !== null && this.props.organization !== undefined;
+        const hasUser = !!this.props.user;
         this.ctx = {
-            user: hasUser ? this.props.user! : null,
-            organization: hasAccount ? this.props.organization! : null,
+            user: hasUser ? this.props.user : null,
             profile: hasUser ? this.props.profile : null,
             isLoggedIn: this.props.sessionState.isLoggedIn,
             isProfileCreated: this.props.sessionState.isProfileCreated && hasUser,
@@ -51,12 +47,11 @@ export class UserInfoProvider extends React.Component<UserInfoProps> {
             isCompleted: this.props.sessionState.isCompleted && hasUser,
             isBlocked: this.props.sessionState.isBlocked,
         };
-        AppConfig.setNonProduction(this.props.roles.indexOf('feature-non-production') >= 0);
-        AppConfig.setSuperAdmin(this.props.roles.indexOf('super-admin') >= 0);
         this.rolesCtx = {
             roles: this.props.roles,
-            currentOrganizatonId: this.props.organization ? this.props.organization.id : undefined,
         };
+        AppConfig.setNonProduction(this.props.roles.indexOf('feature-non-production') >= 0);
+        AppConfig.setSuperAdmin(this.props.roles.indexOf('super-admin') >= 0);
     }
 
     render() {

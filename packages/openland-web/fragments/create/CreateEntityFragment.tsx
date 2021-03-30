@@ -667,11 +667,7 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
             });
         }
 
-        await Promise.all([
-            client.refetchAccount(),
-            client.refetchAccountSettings(),
-            client.refetchMyCommunities(),
-        ]);
+        await client.refetchMyCommunities();
 
         props.ctx.hide();
         router.navigate('/' + organization.id);

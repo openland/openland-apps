@@ -14,7 +14,7 @@ import { ZButton } from 'openland-mobile/components/ZButton';
 import { ZText } from 'openland-mobile/components/ZText';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import {
-    RoomTiny_room_SharedRoom,
+    RoomChat_room_SharedRoom,
     ChatJoin_room_SharedRoom,
     WalletSubscriptionState,
 } from 'openland-api/spacex.types';
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 });
 
 interface ChatJoinProps {
-    room: Omit<RoomTiny_room_SharedRoom, 'featured'>;
+    room: Omit<RoomChat_room_SharedRoom, 'featured'>;
     theme: ThemeGlobal;
     router: SRouter;
 }
@@ -375,7 +375,7 @@ export const ChatJoin = React.memo((props: ChatJoinProps) => {
     const room = client.useChatJoin({ id: props.room.id }).room as ChatJoin_room_SharedRoom;
     const action = React.useCallback(async () => {
         await client.mutateRoomJoin({ roomId: props.room.id });
-        await client.refetchRoomTiny({ id: props.room.id });
+        await client.refetchRoomChat({ id: props.room.id });
     }, [props.room]);
 
     return (

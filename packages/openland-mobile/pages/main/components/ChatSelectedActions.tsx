@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RoomTiny_room } from 'openland-api/spacex.types';
+import { RoomChat_room } from 'openland-api/spacex.types';
 import { View, Platform, TouchableOpacity, Image, Text } from 'react-native';
 import { ZKeyboardAwareBar } from 'openland-mobile/components/layout/ZKeyboardAwareBar';
 import { SDevice } from 'react-native-s/SDevice';
@@ -54,7 +54,7 @@ export const ChatSelectedActionsHeader = (props: { messagesCount: number; cancel
 
 interface ChatSelectedActionsProps {
     conversation: ConversationEngine;
-    chat: RoomTiny_room;
+    chat: RoomChat_room;
 }
 
 export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {

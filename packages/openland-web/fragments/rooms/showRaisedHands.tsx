@@ -1,6 +1,5 @@
 import { VoiceChatParticipant } from 'openland-api/spacex.types';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { UPresence } from 'openland-web/components/unicorn/UPresence';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import * as React from 'react';
@@ -27,8 +26,8 @@ const UserItem = React.memo((props: { roomId: string, participant: VoiceChatPart
     return (
         <UListItem
             title={user.name}
-            description={<UPresence user={user} />}
-            avatar={{ photo: user.photo, id: user.id, title: user.name, online: user.online }}
+            description={`${user.followersCount} followers`}
+            avatar={{ photo: user.photo, id: user.id, title: user.name, online: true }}
             rightElement={(
                 <JoinButton
                     onClick={promoteUser}

@@ -29,6 +29,6 @@ internal val MessageFullReactionsSelector = obj(
 val MessageFullReactions = object: OperationDefinition {
     override val name = "MessageFullReactions"
     override val kind = OperationKind.QUERY
-    override val body = "query MessageFullReactions(\$id:ID!){message(messageId:\$id){__typename id ... on GeneralMessage{__typename id reactions{__typename ...MessageUsersReactions}}... on StickerMessage{__typename id reactions{__typename ...MessageUsersReactions}}}}fragment MessageUsersReactions on ModernMessageReaction{__typename user{__typename id name photo primaryOrganization{__typename id name}}reaction}"
+    override val body = "query MessageFullReactions(\$id:ID!){message(messageId:\$id){__typename id ... on GeneralMessage{__typename id reactions{__typename ...MessageUsersReactions}}... on StickerMessage{__typename id reactions{__typename ...MessageUsersReactions}}}}fragment MessageUsersReactions on ModernMessageReaction{__typename user{__typename id name photo}reaction}"
     override val selector = MessageFullReactionsSelector
 }

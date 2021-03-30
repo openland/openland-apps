@@ -12,7 +12,7 @@ import { ChatHeader } from './components/ChatHeader';
 import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/ChatHeaderAvatar';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
-import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType, StickerFragment, RoomCallsMode, MessageAttachments_MessageAttachmentFile } from 'openland-api/spacex.types';
+import { RoomChat_room, RoomChat_room_SharedRoom, RoomChat_room_PrivateRoom, SharedRoomKind, TypingType, StickerFragment, RoomCallsMode, MessageAttachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
@@ -56,7 +56,7 @@ import { CallHeaderButton } from './CallHeaderButton';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
-    chat: RoomTiny_room;
+    chat: RoomChat_room;
     theme: ThemeGlobal;
     showCallModal: () => void;
     mountedRef: { mounted: string[] };
@@ -705,7 +705,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 const ConversationComponent = React.memo((props: PageProps) => {
     let theme = React.useContext(ThemeContext);
     let messenger = getMessenger();
-    let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id }, { fetchPolicy: 'cache-and-network' }).room;
+    let room = getClient().useRoomChat({ id: props.router.params.flexibleId || props.router.params.id }, { fetchPolicy: 'cache-and-network' }).room;
     let hasNewStickers = !!getClient().useUnviewedStickers({ suspense: false })?.stickers.unviewedCount;
     let mountedRef = React.useContext(SRouterMountedContext);
     let showCallModal = useCallModal({ id: room?.id! });
@@ -723,8 +723,8 @@ const ConversationComponent = React.memo((props: PageProps) => {
         return <ChatAccessDenied theme={theme} onPress={() => props.router.back()} />;
     }
 
-    let sharedRoom = room.__typename === 'SharedRoom' ? room as RoomTiny_room_SharedRoom : null;
-    let privateRoom = room.__typename === 'PrivateRoom' ? room as RoomTiny_room_PrivateRoom : null;
+    let sharedRoom = room.__typename === 'SharedRoom' ? room as RoomChat_room_SharedRoom : null;
+    let privateRoom = room.__typename === 'PrivateRoom' ? room as RoomChat_room_PrivateRoom : null;
     let hasPinnedMessage = (sharedRoom || privateRoom)?.pinnedMessage;
 
     const banInfo = privateRoom
