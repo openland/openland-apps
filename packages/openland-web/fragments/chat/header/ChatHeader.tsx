@@ -128,6 +128,7 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
         if (props.chat.__typename === 'SharedRoom' && !props.chat.activeVoiceChat) {
             const room = (await client.mutateVoiceChatCreateInChat({ input: { title: props.chat.title }, cid: props.chat.id })).voiceChatCreateInChat;
             router.navigate(`/room/${room.chat.id}`);
+            await client.refetchRoomChat({ id: props.chat.id });
         } else if (props.chat.__typename === 'SharedRoom' && props.chat.activeVoiceChat) {
             router.navigate(`/room/${props.chat.activeVoiceChat.id}`);
         }
