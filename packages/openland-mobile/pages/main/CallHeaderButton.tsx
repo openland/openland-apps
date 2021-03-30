@@ -1,4 +1,4 @@
-import { RoomMemberRole, RoomTiny_room_SharedRoom } from 'openland-api/spacex.types';
+import { RoomMemberRole, RoomTiny_room_SharedRoom, SharedRoomKind } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import * as React from 'react';
@@ -14,7 +14,13 @@ const VoiceCallButton = React.memo((props: {
     const handleStartRoom = React.useCallback(async () => {
         let roomId = props.sharedRoom.activeVoiceChat?.id;
         if (!roomId) {
-            const room = (await client.mutateVoiceChatCreateInChat({ input: { title: '' }, cid: props.sharedRoom.id })).voiceChatCreateInChat;
+            const room = (await client.mutateVoiceChatCreateInChat({
+                input: {
+                    title: props.sharedRoom.title,
+                    isPrivate: props.sharedRoom.kind === SharedRoomKind.GROUP
+                },
+                cid: props.sharedRoom.id
+            })).voiceChatCreateInChat;
             roomId = room.chat.id;
         }
         if (roomId) {

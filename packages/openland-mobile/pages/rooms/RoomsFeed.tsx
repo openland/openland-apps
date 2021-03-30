@@ -52,9 +52,10 @@ const RoomFeedItem = React.memo((props: { room: VoiceChatWithSpeakers, theme: Th
     let joinRoom = useJoinRoom();
     let speakers = room.speakers.slice(0, room.parentRoom ? 3 : 4);
     let trimmedTitle = room.title?.trim();
-    let title = room.parentRoom
-        ? `${room.parentRoom.title}${trimmedTitle ? ` – ${trimmedTitle}` : ''}`
-        : (trimmedTitle || 'New room');
+    let title = trimmedTitle;
+    // let title = room.parentRoom
+    //     ? `${room.parentRoom.title}${trimmedTitle ? ` – ${trimmedTitle}` : ''}`
+    //     : (trimmedTitle || 'New room');
     return (
         <TouchableOpacity style={{ paddingHorizontal: 16, paddingVertical: 12, marginBottom: 16, backgroundColor: theme.backgroundPrimary }} activeOpacity={0.6} onPress={() => joinRoom(room.id)}>
             <Text
