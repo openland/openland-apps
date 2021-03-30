@@ -38,6 +38,9 @@ fragment ConferenceFull on Conference {
                 photo
             }
         }
+        ... on VoiceChat {
+            id
+        }
     }
 }
 fragment ConferenceShort on Conference {

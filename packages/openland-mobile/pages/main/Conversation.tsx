@@ -555,7 +555,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     </SHeaderView>
                 )}
                 {!isBanned && showCallButton && callMode === RoomCallsMode.STANDARD && (
-                    <CallHeaderButton showCallModal={this.props.showCallModal} />
+                    <CallHeaderButton
+                        sharedRoom={sharedRoom}
+                        showCallModal={this.props.showCallModal}
+                    />
                 )}
                 {!isBanned && showCallButton && callMode === RoomCallsMode.LINK && (
                     <SHeaderButton

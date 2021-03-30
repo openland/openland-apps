@@ -50,14 +50,18 @@ function showFilters(selected: 'voice' | 'explore', onSelect: (d: 'voice' | 'exp
 const RoomFeedItem = React.memo((props: { room: VoiceChatWithSpeakers, theme: ThemeGlobal, router: SRouter }) => {
     let { room, theme } = props;
     let joinRoom = useJoinRoom();
-    let speakers = room.speakers.slice(0, 4);
+    let speakers = room.speakers.slice(0, room.parentRoom ? 3 : 4);
+    let trimmedTitle = room.title?.trim();
+    let title = room.parentRoom
+        ? `${room.parentRoom.title}${trimmedTitle ? ` – ${trimmedTitle}` : ''}`
+        : (trimmedTitle || 'New room');
     return (
         <TouchableOpacity style={{ paddingHorizontal: 16, paddingVertical: 12, marginBottom: 16, backgroundColor: theme.backgroundPrimary }} activeOpacity={0.6} onPress={() => joinRoom(room.id)}>
             <Text
                 style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, marginBottom: 8, }}
                 numberOfLines={2}
             >
-                {props.room.title ?? 'New room'}
+                {title}
             </Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View>
@@ -79,6 +83,11 @@ const RoomFeedItem = React.memo((props: { room: VoiceChatWithSpeakers, theme: Th
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-end', flexWrap: 'wrap', maxWidth: 88 }}>
+                    {room.parentRoom && (
+                        <View key={room.parentRoom.id} style={{ marginLeft: 12, marginBottom: 12 }}>
+                            <ZAvatar size="small" photo={room.parentRoom.photo} title={room.parentRoom.title} id={room.parentRoom.id} />
+                        </View>
+                    )}
                     {speakers.map(speaker => (
                         <View key={speaker.id} style={{ marginLeft: 12, marginBottom: 12 }}>
                             <ZAvatar size="small" photo={speaker.user.photo} title={speaker.user.name} id={speaker.user.id} />

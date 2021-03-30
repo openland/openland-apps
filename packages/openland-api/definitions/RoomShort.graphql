@@ -54,6 +54,9 @@ fragment RoomShort on Room {
             mode
             callLink
         }
+        activeVoiceChat {
+            id
+        }
         repliesEnabled
     }
 }
