@@ -1,52 +1,68 @@
 import * as React from 'react';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { View, TouchableOpacity, Text, Platform } from 'react-native';
-import { SRouterContext } from 'react-native-s/SRouterContext';
+import { View, Text, Image } from 'react-native';
 import { useWatchCall } from './useWatchCall';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { useTheme } from 'openland-mobile/themes/ThemeContext';
+import { plural } from 'openland-y-utils/plural';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TouchableHighlight } from 'react-native-gesture-handler';
+import { useJoinRoom } from 'openland-mobile/pages/rooms/joinRoom';
 
 export const CallBarComponent = React.memo((props: { id: string, showCallModal: () => void }) => {
     let conference = getClient().useConference({ id: props.id }, { suspense: false });
+    const theme = useTheme();
     const mediaSession = getMessenger().engine.calls.useCurrentSession();
-    const disabled = !!mediaSession && mediaSession.callType !== 'call';
+    const isVoiceChat = conference?.conference.parent?.__typename === 'VoiceChat';
+    const disabled = !!mediaSession && mediaSession.callType === 'voice-chat' && !isVoiceChat;
+    const joinRoom = useJoinRoom();
+    const handlePress = React.useCallback(() => {
+        if (isVoiceChat) {
+            joinRoom(props.id);
+        } else {
+            props.showCallModal();
+        }
+    }, [isVoiceChat, props.id]);
 
     useWatchCall(conference && conference.conference.id);
 
     if (conference && conference.conference && conference.conference.peers.length > 0) {
+        let [firstPeer, ...otherPeers] = conference.conference.peers;
+        let othersText = otherPeers.length === 0
+            ? ''
+            : ` and ${plural(otherPeers.length, ['other', 'others'])}`;
+        let text = `${firstPeer.user.name}${othersText}`;
         return (
-            <View
-                style={{
-                    alignSelf: 'stretch',
-                    alignItems: 'center',
-                    height: 40,
-                    marginHorizontal: 10,
-                    borderRadius: 20,
-                    backgroundColor: '#0084fe',
-                    flexDirection: 'row',
-                    shadowOpacity: 0.2,
-                    shadowColor: 'black',
-                    shadowRadius: 6,
-                    shadowOffset: { width: 0, height: 4 },
-                    elevation: 4
-                }}
+            <TouchableHighlight
+                activeOpacity={1}
+                disabled={disabled}
+                underlayColor={theme.accentPositiveHover}
+                style={{ backgroundColor: theme.accentPositive, opacity: disabled ? 0.7 : 1 }}
+                onPress={handlePress}
             >
-                <View style={{ flexGrow: 1, marginLeft: 16, height: 20 }}>
-                    <Text style={{ fontSize: 16, fontWeight: Platform.OS === 'android' ? '500' : '600', color: '#fff' }} allowFontScaling={false}>Call in progress</Text>
+                <View
+                    style={{
+                        paddingHorizontal: 16,
+                        paddingVertical: 12,
+                        flexDirection: 'row',
+                    }}
+                >
+                    <View style={{ flexDirection: 'row', alignItems: 'center', flexGrow: 1, flexShrink: 1 }}>
+                        <Image
+                            source={isVoiceChat ? require('assets/ic-mic-24.png') : require('assets/ic-call-24.png')}
+                            style={{ marginRight: 16, tintColor: theme.foregroundContrast }}
+                        />
+                        <Text style={{ ...TextStyles.Subhead, color: theme.foregroundContrast }} numberOfLines={1} allowFontScaling={false}>
+                            {text}
+                        </Text>
+                    </View>
+                    <View style={{ marginLeft: 8, flexShrink: 0, justifyContent: 'center' }}>
+                        <Text style={{ ...TextStyles.Label2, color: theme.foregroundContrast }} numberOfLines={1} allowFontScaling={false}>
+                            Join
+                    </Text>
+                    </View>
                 </View>
-                <SRouterContext.Consumer>
-                    {r => (
-                        <TouchableOpacity
-                            activeOpacity={0.3}
-                            disabled={disabled}
-                            onPress={props.showCallModal}
-                            style={{ height: 28, paddingHorizontal: 12, marginHorizontal: 7, backgroundColor: 'white', borderRadius: 14, alignItems: 'center', justifyContent: 'center', opacity: disabled ? 0.5 : undefined }}
-                            delayPressIn={0}
-                        >
-                            <Text style={{ fontSize: 14, fontWeight: '600', color: '#0084fe' }} >JOIN</Text>
-                        </TouchableOpacity>
-                    )}
-                </SRouterContext.Consumer>
-            </View>
+            </TouchableHighlight>
         );
     }
     return null;

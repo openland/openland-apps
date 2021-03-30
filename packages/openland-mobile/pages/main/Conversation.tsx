@@ -759,12 +759,12 @@ const ConversationComponent = React.memo((props: PageProps) => {
                     <View
                         style={{
                             position: 'absolute',
-                            top: hasPinnedMessage ? safe.top + PINNED_MESSAGE_HEIGHT : safe.top + 10,
+                            top: hasPinnedMessage ? safe.top + PINNED_MESSAGE_HEIGHT : safe.top,
                             right: 0,
                             left: 0
                         }}
                     >
-                        <CallBarComponent id={(sharedRoom || privateRoom)!.id} showCallModal={showCallModal} />
+                        <CallBarComponent id={sharedRoom?.activeVoiceChat?.id || (sharedRoom || privateRoom)!.id} showCallModal={showCallModal} />
                     </View>
                 )}
             </ASSafeAreaContext.Consumer>
