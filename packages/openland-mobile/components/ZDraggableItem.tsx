@@ -13,6 +13,7 @@ import {
     Platform,
     LayoutAnimation,
     DeviceEventEmitter,
+    UIManager,
 } from 'react-native';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 
@@ -33,6 +34,12 @@ interface ZDraggableItemProps {
     onPressIn?: (event: GestureResponderEvent) => void;
     onPressOut?: (event: GestureResponderEvent) => void;
     onRelease?: (event: GestureResponderEvent, wasDragging: boolean) => void;
+}
+
+if (Platform.OS === 'android') {
+    if (UIManager.setLayoutAnimationEnabledExperimental) {
+        UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
 }
 
 export const ZDraggableItem = React.memo<ZDraggableItemProps>((props) => {
@@ -106,7 +113,27 @@ export const ZDraggableItem = React.memo<ZDraggableItemProps>((props) => {
     };
 
     const keyboardHeightChange = (e: any) => {
-        setKeyboardHeight(e?.height ? Math.ceil(e.height) : 0);
+        const newHeight = e?.height ? Math.ceil(e.height) : 0;
+
+        if (newHeight > 0) {
+            const currentY = y + offsetFromStart.current.y;
+            const currentBottomY = currentY + childSize.current.y;
+            const keyboardTopY = Window.height - newHeight;
+            setKeyboardHeight(newHeight);
+
+            if (currentBottomY > keyboardTopY - chatInputHeight) {
+                setSavedOffset(offsetFromStart.current.y);
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                pan.current.setValue({ x: offsetFromStart.current.x, y: keyboardTopY - y - childSize.current.y - chatInputHeight });
+            }
+        } else {
+            setKeyboardHeight(0);
+            if (savedOffset !== null) {
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                pan.current.setValue({ x: offsetFromStart.current.x, y: savedOffset });
+                setSavedOffset(null);
+            }
+        }
     };
 
     React.useEffect(() => {
