@@ -451,31 +451,60 @@ const RoomHeader = React.memo(
         },
     ) => {
         const { room, hide, theme } = props;
-        const isAdmin = room.me?.status === VoiceChatParticipantStatus.ADMIN;
         const topSpacing = isPad
             ? SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top
             : 0;
+        const { parentRoom } = room;
         return (
             <View
                 style={{
+                    paddingHorizontal: 16,
                     paddingLeft: 16,
-                    paddingRight: isAdmin ? 112 : 56,
-                    paddingTop: isPad ? topSpacing + 15 : 15,
+                    paddingTop: isPad ? topSpacing + 16 : 16,
                     paddingBottom: 24,
                 }}
                 onLayout={props.onLayout}
             >
-                <Text
-                    style={{
-                        ...TextStyles.Title2,
-                        color: theme.foregroundPrimary,
-                        marginBottom: 8,
-                    }}
-                    numberOfLines={2}
-                >
-                    {props.room.title}
-                </Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {parentRoom && (
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginBottom: 12,
+                        }}
+                    >
+                        <ZAvatar
+                            size="x-small"
+                            id={parentRoom.id}
+                            title={parentRoom.title}
+                        />
+                        <Text
+                            style={{
+                                ...TextStyles.Label2,
+                                color: theme.foregroundPrimary,
+                                marginRight: 48,
+                                marginLeft: 12,
+                            }}
+                            ellipsizeMode="tail"
+                            numberOfLines={1}
+                        >
+                            {parentRoom.title}
+                        </Text>
+                    </View>
+                )}
+                {props.room.title && (
+                    <Text
+                        style={{
+                            ...TextStyles.Title2,
+                            color: theme.foregroundPrimary,
+                            paddingRight: parentRoom ? undefined : 48,
+                        }}
+                        numberOfLines={2}
+                    >
+                        {props.room.title}
+                    </Text>
+                )}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: room.title ? 10 : 14 }}>
                     <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }}>
                         {room.speakersCount}
                     </Text>
