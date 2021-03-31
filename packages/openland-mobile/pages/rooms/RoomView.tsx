@@ -492,7 +492,7 @@ const RoomHeader = React.memo(
                         </Text>
                     </View>
                 )}
-                {props.room.title && (
+                {props.room.title ? (
                     <Text
                         style={{
                             ...TextStyles.Title2,
@@ -503,7 +503,7 @@ const RoomHeader = React.memo(
                     >
                         {props.room.title}
                     </Text>
-                )}
+                ) : null}
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: room.title ? 10 : 14 }}>
                     <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }}>
                         {room.speakersCount}

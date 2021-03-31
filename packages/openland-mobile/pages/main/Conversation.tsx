@@ -546,7 +546,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         const reloadButton = <ReloadFromBottomButton conversation={this.engine} />;
         const isBot = privateRoom && privateRoom.user.isBot;
         const callMode = sharedRoom ? sharedRoom.callSettings.mode : RoomCallsMode.STANDARD;
-        const showCallButton = !isSavedMessages && !isBot && !showSelectedMessagesActions && !sharedRoom?.isChannel;
+        const showCallButton = !isSavedMessages && !isBot && !showSelectedMessagesActions;
         return (
             <>
                 {!showSelectedMessagesActions && (
@@ -560,7 +560,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                         showCallModal={this.props.showCallModal}
                     />
                 )}
-                {!isBanned && showCallButton && callMode === RoomCallsMode.LINK && (
+                {!isBanned && showCallButton && !sharedRoom?.isChannel && callMode === RoomCallsMode.LINK && (
                     <SHeaderButton
                         title="Call"
                         priority={1}
