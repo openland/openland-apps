@@ -16,7 +16,7 @@ const VoiceCallButton = React.memo((props: {
         if (!roomId) {
             const room = (await client.mutateVoiceChatCreateInChat({
                 input: {
-                    title: '',
+                    title: props.sharedRoom.title,
                     isPrivate: props.sharedRoom.kind === SharedRoomKind.GROUP
                 },
                 cid: props.sharedRoom.id
