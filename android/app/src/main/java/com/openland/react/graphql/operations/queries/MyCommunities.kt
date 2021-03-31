@@ -7,14 +7,15 @@ import org.json.*
 internal val MyCommunitiesSelector = obj(
             field("myCommunities", "myCommunities", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
+                    field("membersCount", "membersCount", notNull(scalar("Int"))),
                     field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
                     field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
-                    fragment("Organization", OrganizationShortSelector)
+                    fragment("Organization", OrganizationSmallSelector)
                 )))))
         )
 val MyCommunities = object: OperationDefinition {
     override val name = "MyCommunities"
     override val kind = OperationKind.QUERY
-    override val body = "query MyCommunities{myCommunities{__typename ...OrganizationShort isOwner:betaIsOwner isAdmin:betaIsAdmin}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}"
+    override val body = "query MyCommunities{myCommunities{__typename ...OrganizationSmall membersCount isOwner:betaIsOwner isAdmin:betaIsAdmin}}fragment OrganizationSmall on Organization{__typename id name photo about shortname isCommunity:alphaIsCommunity featured:alphaFeatured}"
     override val selector = MyCommunitiesSelector
 }

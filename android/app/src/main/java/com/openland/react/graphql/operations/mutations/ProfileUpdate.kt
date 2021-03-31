@@ -32,7 +32,6 @@ internal val ProfileUpdateSelector = obj(
                     field("instagram", "instagram", scalar("String")),
                     field("facebook", "facebook", scalar("String")),
                     field("twitter", "twitter", scalar("String")),
-                    field("alphaPrimaryOrganizationId", "primaryOrganizationId", scalar("ID")),
                     field("alphaJoinedAt", "joinedAt", scalar("String")),
                     field("alphaInvitedBy", "invitedBy", obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
@@ -44,6 +43,6 @@ internal val ProfileUpdateSelector = obj(
 val ProfileUpdate = object: OperationDefinition {
     override val name = "ProfileUpdate"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation ProfileUpdate(\$input:ProfileInput!,\$uid:ID,\$inviteKey:String){profileUpdate(input:\$input,uid:\$uid,inviteKey:\$inviteKey){__typename id firstName lastName photoRef{__typename uuid crop{__typename x y w h}}birthDay email phone website about location role:alphaRole linkedin instagram facebook twitter primaryOrganizationId:alphaPrimaryOrganizationId joinedAt:alphaJoinedAt invitedBy:alphaInvitedBy{__typename id name}}}"
+    override val body = "mutation ProfileUpdate(\$input:ProfileInput!,\$uid:ID,\$inviteKey:String){profileUpdate(input:\$input,uid:\$uid,inviteKey:\$inviteKey){__typename id firstName lastName photoRef{__typename uuid crop{__typename x y w h}}birthDay email phone website about location role:alphaRole linkedin instagram facebook twitter joinedAt:alphaJoinedAt invitedBy:alphaInvitedBy{__typename id name}}}"
     override val selector = ProfileUpdateSelector
 }

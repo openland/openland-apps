@@ -12,6 +12,7 @@ query User($userId: ID!) {
         }
     }
 }
+
 query UserNano($id: ID!) {
     user(id: $id) {
         id
@@ -24,6 +25,7 @@ query UserNano($id: ID!) {
         isMeBanned
     }
 }
+
 query UserFollowers($id: ID!) {
     user(id: $id) {
         id
@@ -32,6 +34,7 @@ query UserFollowers($id: ID!) {
         followingCount
     }
 }
+
 query Online($userId: ID!) {
     user: user(id: $userId) {
         id
@@ -40,6 +43,7 @@ query Online($userId: ID!) {
         isBot
     }
 }
+
 subscription OnlineWatch($users: [ID!]!) {
     alphaSubscribeOnline(users: $users) {
         user {
@@ -50,6 +54,7 @@ subscription OnlineWatch($users: [ID!]!) {
         timeout
     }
 }
+
 query ExplorePeople($query: String, $sort: String, $page: Int, $after: String) {
     items: userSearch(query: $query, sort: $sort, page: $page, first: 25, after: $after) {
         edges {
@@ -69,9 +74,11 @@ query ExplorePeople($query: String, $sort: String, $page: Int, $after: String) {
         }
     }
 }
+
 mutation DeleteUser($id: ID!) {
     superDeleteUser(id: $id)
 }
+
 mutation BetaNextDiscoverReset {
     betaNextDiscoverReset
 }

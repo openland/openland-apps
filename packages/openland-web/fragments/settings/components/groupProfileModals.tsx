@@ -325,7 +325,7 @@ const WelcomeMessageModalBody = React.memo((props: WelcomeMessageModalBodyProps)
 
     const [enabled, setEnabled] = React.useState(welcomeMessage.isOn);
 
-    const roomAdmins = client.useRoomAdminMembers({ roomId: props.roomId }).roomAdmins;
+    const roomAdmins = client.useRoomAdminMembers({ roomId: props.roomId }, { fetchPolicy: 'cache-and-network' }).roomAdmins;
 
     const messageField = useField('welcomeMessageText', welcomeMessage.message || '', form);
 

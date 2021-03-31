@@ -28,6 +28,7 @@ fragment OrganizationProfileFragment on OrganizationProfile {
     editorial: alphaEditorial
     membersCanInvite: betaMembersCanInvite
 }
+
 fragment OrganizationFragment on Organization {
     id
     isMine
@@ -60,8 +61,8 @@ fragment OrganizationFragment on Organization {
 
 query MyCommunities {
     myCommunities {
-        ...OrganizationShort
-
+        ...OrganizationSmall
+        membersCount
         isOwner: betaIsOwner
         isAdmin: betaIsAdmin
     }
@@ -81,18 +82,8 @@ query Organization($organizationId: ID!) {
 
 query OrganizationPico($id: ID!) {
     organization(id: $id) {
-        ...OrganizationShort
-    }
-}
-
-query OrganizationMembersShort($organizationId: ID!) {
-    organization(id: $organizationId) {
-        ...OrganizationFragment
-        members: alphaOrganizationMembers {
-            user {
-                id
-            }
-        }
+        ...OrganizationSmall
+        membersCount
     }
 }
 
@@ -181,10 +172,6 @@ mutation OrganizationMemberRemove($userId: ID!, $organizationId: ID!) {
     }
 }
 
-mutation OrganizationActivateByInvite($inviteKey: String!) {
-    joinAppInvite(key: $inviteKey)
-}
-
 query OrganizationPublicRooms($organizationId: ID!, $first: Int!, $after: ID) {
     organizationPublicRooms(id: $organizationId, first: $first, after: $after) {
         items {
@@ -192,10 +179,6 @@ query OrganizationPublicRooms($organizationId: ID!, $first: Int!, $after: ID) {
         }
         cursor
     }
-}
-
-query RoomSocialImage($roomId: ID!) {
-    roomSocialImage(roomId: $roomId)
 }
 
 mutation OrganizationRequestMembersExport($organizationId: ID!) {

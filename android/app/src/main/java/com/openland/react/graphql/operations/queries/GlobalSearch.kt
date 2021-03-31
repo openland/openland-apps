@@ -43,6 +43,6 @@ internal val GlobalSearchSelector = obj(
 val GlobalSearch = object: OperationDefinition {
     override val name = "GlobalSearch"
     override val kind = OperationKind.QUERY
-    override val body = "query GlobalSearch(\$query:String!,\$kinds:[GlobalSearchEntryKind!]){items:alphaGlobalSearch(query:\$query,kinds:\$kinds){__typename ... on Organization{__typename id name about photo shortname isCommunity:alphaIsCommunity featured:alphaFeatured}... on User{__typename ...UserShort}... on SharedRoom{__typename id kind title canSendMessage roomPhoto:photo membersCount membership organization{__typename id name photo}featured}}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname}"
+    override val body = "query GlobalSearch(\$query:String!,\$kinds:[GlobalSearchEntryKind!]){items:alphaGlobalSearch(query:\$query,kinds:\$kinds){__typename ... on Organization{__typename id name about photo shortname isCommunity:alphaIsCommunity featured:alphaFeatured}... on User{__typename ...UserShort}... on SharedRoom{__typename id kind title canSendMessage roomPhoto:photo membersCount membership organization{__typename id name photo}featured}}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot}"
     override val selector = GlobalSearchSelector
 }

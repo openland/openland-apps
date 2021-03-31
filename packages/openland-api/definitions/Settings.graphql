@@ -27,11 +27,6 @@ query Profile {
         instagram
         facebook
         twitter
-        primaryOrganization {
-            id
-            name
-            membersCount
-        }
         joinedAt: alphaJoinedAt
         invitedBy: alphaInvitedBy {
             id
@@ -64,7 +59,6 @@ mutation ProfileUpdate($input: ProfileInput!, $uid: ID, $inviteKey: String) {
         instagram
         facebook
         twitter
-        primaryOrganizationId: alphaPrimaryOrganizationId
         joinedAt: alphaJoinedAt
         invitedBy: alphaInvitedBy {
             id

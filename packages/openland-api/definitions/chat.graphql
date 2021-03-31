@@ -24,6 +24,7 @@ fragment ChatUpdateFragment on ChatUpdate {
         lostAccess
     }
 }
+
 subscription ChatWatch($chatId: ID!, $state: String) {
     event: chatUpdates(chatId: $chatId, fromState: $state) {
         ... on ChatUpdateSingle {
@@ -43,16 +44,19 @@ subscription ChatWatch($chatId: ID!, $state: String) {
         }
     }
 }
+
 query RoomPico($id: ID!) {
     room(id: $id) {
         ...RoomNano
     }
 }
+
 query RoomChat($id: ID!) {
     room(id: $id) {
         ...RoomShort
     }
 }
+
 query RoomFeaturedMembers($roomId: ID!) {
     roomFeaturedMembers(roomId: $roomId) {
         user {
@@ -89,26 +93,32 @@ mutation PinMessage($chatId: ID!, $messageId: ID!) {
         ...RoomShort
     }
 }
+
 mutation UnpinMessage($chatId: ID!) {
     unpinMessage: gammaUnpinMessage(chatId: $chatId) {
         ...RoomShort
     }
 }
+
 mutation MessageSetReaction($messageId: ID!, $reaction: MessageReactionType!) {
     messageReactionAdd(messageId: $messageId, reaction: $reaction)
 }
+
 mutation MessageUnsetReaction($messageId: ID!, $reaction: MessageReactionType!) {
     messageReactionRemove(messageId: $messageId, reaction: $reaction)
 }
+
 mutation MessageSetDonationReaction($messageId: ID!) {
     messageDonationReactionAdd(messageId: $messageId)
 }
+
 query GlobalCounter {
     alphaNotificationCounter {
         id
         unreadCount
     }
 }
+
 query MessagesBatch($chatId: ID!, $first: Int!, $before: ID, $after: ID) {
     gammaMessages(chatId: $chatId, first: $first, before: $before, after: $after) {
         messages {
@@ -121,6 +131,7 @@ query MessagesBatch($chatId: ID!, $first: Int!, $before: ID, $after: ID) {
         state
     }
 }
+
 query ChatInit($chatId: ID!, $before: ID, $first: Int!) {
     messages(chatId: $chatId, first: $first, before: $before) {
         ...FullMessage
@@ -135,6 +146,7 @@ query ChatInit($chatId: ID!, $before: ID, $first: Int!) {
         id
     }
 }
+
 query ChatInitFromUnread($chatId: ID!, $before: ID, $first: Int!) {
     gammaMessages(chatId: $chatId, first: $first, before: $before) {
         messages {
@@ -153,6 +165,7 @@ query ChatInitFromUnread($chatId: ID!, $before: ID, $first: Int!) {
         id
     }
 }
+
 mutation SendMessage(
     $chatId: ID!
     $message: String
@@ -172,9 +185,11 @@ mutation SendMessage(
         repeatKey: $repeatKey
     )
 }
+
 mutation RoomRead($id: ID!, $mid: ID!) {
     roomRead(id: $id, mid: $mid)
 }
+
 mutation RoomCreate(
     $kind: SharedRoomKind!
     $members: [ID!]!
@@ -202,6 +217,7 @@ mutation RoomCreate(
         id
     }
 }
+
 mutation BuyPremiumChatSubscription($chatId: ID!) {
     betaBuyPremiumChatSubscription(chatId: $chatId) {
         id
@@ -213,6 +229,7 @@ mutation BuyPremiumChatSubscription($chatId: ID!) {
         membership
     }
 }
+
 mutation BuyPremiumChatPass($chatId: ID!) {
     betaBuyPremiumChatPass(chatId: $chatId) {
         id
@@ -224,9 +241,11 @@ mutation BuyPremiumChatPass($chatId: ID!) {
 mutation SetTyping($conversationId: ID!, $type: TypingType!) {
     typingSend(conversationId: $conversationId, type: $type)
 }
+
 mutation UnsetTyping($conversationId: ID!) {
     typingCancel(conversationId: $conversationId)
 }
+
 mutation RoomAddMembers($roomId: ID!, $invites: [RoomInviteInput!]!) {
     alphaRoomInvite(roomId: $roomId, invites: $invites) {
         user {
@@ -240,6 +259,7 @@ mutation RoomAddMembers($roomId: ID!, $invites: [RoomInviteInput!]!) {
         }
     }
 }
+
 mutation RoomKick($roomId: ID!, $userId: ID!) {
     betaRoomKick(roomId: $roomId, userId: $userId) {
         ... on PrivateRoom {
@@ -250,6 +270,7 @@ mutation RoomKick($roomId: ID!, $userId: ID!) {
         }
     }
 }
+
 mutation RoomChangeRole($roomId: ID!, $userId: ID!, $newRole: RoomMemberRole!) {
     betaRoomChangeRole(roomId: $roomId, userId: $userId, newRole: $newRole) {
         ... on PrivateRoom {
@@ -260,6 +281,7 @@ mutation RoomChangeRole($roomId: ID!, $userId: ID!, $newRole: RoomMemberRole!) {
         }
     }
 }
+
 mutation RoomLeave($roomId: ID!) {
     betaRoomLeave(roomId: $roomId) {
         ... on PrivateRoom {
@@ -306,27 +328,7 @@ query RoomSearch($query: String, $sort: String, $page: Int) {
         }
     }
 }
-query RoomMembersShort($roomId: ID!) {
-    members: roomMembers(roomId: $roomId) {
-        user {
-            id
-        }
-    }
-}
-query RoomMembersTiny($roomId: ID!) {
-    members: roomMembers(roomId: $roomId) {
-        user {
-            id
-            name
-            shortname
-            photo
-            primaryOrganization {
-                id
-                name
-            }
-        }
-    }
-}
+
 query RoomAdminMembers($roomId: ID!) {
     roomAdmins(roomId: $roomId) {
         user {
@@ -334,6 +336,7 @@ query RoomAdminMembers($roomId: ID!) {
         }
     }
 }
+
 query RoomMembersPaginated($roomId: ID!, $first: Int, $after: ID) {
     members: roomMembers(roomId: $roomId, first: $first, after: $after) {
         user {
@@ -394,6 +397,7 @@ mutation RoomJoin($roomId: ID!) {
         }
     }
 }
+
 mutation RoomsJoin($roomsIds: [ID!]!) {
     join: betaRoomsJoin(roomsIds: $roomsIds) {
         ... on PrivateRoom {
@@ -404,22 +408,31 @@ mutation RoomsJoin($roomsIds: [ID!]!) {
         }
     }
 }
+
+query RoomSocialImage($roomId: ID!) {
+    roomSocialImage(roomId: $roomId)
+}
+
 mutation RoomsInviteUser($userId: ID!, $roomIds: [ID!]!) {
     rooms: betaRoomsInviteUser(userId: $userId, roomIds: $roomIds) {
         ...RoomShort
     }
 }
+
 mutation RoomJoinInviteLink($invite: String!) {
     join: betaRoomInviteLinkJoin(invite: $invite) {
         ...RoomShort
     }
 }
+
 mutation RoomRenewInviteLink($roomId: ID!) {
     link: betaRoomInviteLinkRenew(roomId: $roomId)
 }
+
 query RoomInviteLink($roomId: ID!) {
     link: betaRoomInviteLink(roomId: $roomId)
 }
+
 query RoomInviteInfo($invite: String!) {
     invite: betaRoomInviteInfo(invite: $invite) {
         id
@@ -434,7 +447,7 @@ query RoomInviteInfo($invite: String!) {
                 description
                 featured
                 organization {
-                    ...OrganizationShort
+                    ...OrganizationSmall
                 }
                 membership
                 membersCount
@@ -465,6 +478,7 @@ query RoomInviteInfo($invite: String!) {
         }
     }
 }
+
 query ResolvedInvite($key: String!) {
     invite: alphaResolveInvite(key: $key) {
         __typename
@@ -539,6 +553,7 @@ query ResolvedInvite($key: String!) {
         }
     }
 }
+
 mutation RoomUpdate($roomId: ID!, $input: RoomUpdateInput!) {
     betaRoomUpdate(roomId: $roomId, input: $input) {
         ... on PrivateRoom {
@@ -554,12 +569,15 @@ mutation RoomUpdate($roomId: ID!, $input: RoomUpdateInput!) {
         }
     }
 }
+
 mutation RoomDeleteMessage($messageId: ID!) {
     betaMessageDelete(mid: $messageId)
 }
+
 mutation RoomDeleteMessages($mids: [ID!]!) {
     betaMessageDelete(mids: $mids)
 }
+
 mutation RoomDeleteUrlAugmentation($messageId: ID!) {
     betaMessageDeleteAugmentation(mid: $messageId)
 }
@@ -605,11 +623,13 @@ subscription TypingsWatch {
         type
     }
 }
+
 subscription ChatOnlinesCountWatch($chatId: ID!) {
     chatOnlinesCount(chatId: $chatId) {
         onlineMembers
     }
 }
+
 mutation UpdateWelcomeMessage(
     $roomId: ID!
     $welcomeMessageIsOn: Boolean!
@@ -623,6 +643,7 @@ mutation UpdateWelcomeMessage(
         welcomeMessageText: $welcomeMessageText
     )
 }
+
 query Message($messageId: ID!) {
     message(messageId: $messageId) {
         ...FullMessageWithoutSource
@@ -665,6 +686,7 @@ query Message($messageId: ID!) {
         }
     }
 }
+
 query MessagesSearch($query: String!, $sort: String, $first: Int!, $after: String, $cid: ID) {
     messagesSearch(query: $query, sort: $sort, first: $first, after: $after, cid: $cid) {
         edges {
@@ -744,6 +766,7 @@ query MessagesSearch($query: String!, $sort: String, $first: Int!, $after: Strin
         }
     }
 }
+
 query MessagesSearchFull($query: String!, $sort: String, $first: Int!, $after: String, $cid: ID) {
     messagesSearch(query: $query, sort: $sort, first: $first, after: $after, cid: $cid) {
         edges {

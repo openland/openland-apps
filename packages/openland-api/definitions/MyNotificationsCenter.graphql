@@ -27,7 +27,7 @@ fragment NotificationFragment on Notification {
                         chat {
                             ...RoomNano
                         }
-                    }                   
+                    }
                     ... on CommentPeerRootPost {
                         post {
                             id
@@ -161,6 +161,5 @@ mutation ReadNotification($notificationId: ID!) {
     readNotification(notificationId: $notificationId) {
         id
         unread
-        # state
     }
 }

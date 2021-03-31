@@ -7,12 +7,13 @@ import org.json.*
 internal val OrganizationPicoSelector = obj(
             field("organization", "organization", arguments(fieldValue("id", refValue("id"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Organization", OrganizationShortSelector)
+                    field("membersCount", "membersCount", notNull(scalar("Int"))),
+                    fragment("Organization", OrganizationSmallSelector)
                 )))
         )
 val OrganizationPico = object: OperationDefinition {
     override val name = "OrganizationPico"
     override val kind = OperationKind.QUERY
-    override val body = "query OrganizationPico(\$id:ID!){organization(id:\$id){__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}"
+    override val body = "query OrganizationPico(\$id:ID!){organization(id:\$id){__typename ...OrganizationSmall membersCount}}fragment OrganizationSmall on Organization{__typename id name photo about shortname isCommunity:alphaIsCommunity featured:alphaFeatured}"
     override val selector = OrganizationPicoSelector
 }

@@ -82,12 +82,10 @@ object Operations {
         if (name == "Organization") return Organization
         if (name == "OrganizationMembers") return OrganizationMembers
         if (name == "OrganizationMembersSearch") return OrganizationMembersSearch
-        if (name == "OrganizationMembersShort") return OrganizationMembersShort
         if (name == "OrganizationPico") return OrganizationPico
         if (name == "OrganizationProfile") return OrganizationProfile
         if (name == "OrganizationPublicInvite") return OrganizationPublicInvite
         if (name == "OrganizationPublicRooms") return OrganizationPublicRooms
-        if (name == "Permissions") return Permissions
         if (name == "PhonebookWasExported") return PhonebookWasExported
         if (name == "PicSharedMedia") return PicSharedMedia
         if (name == "Post") return Post
@@ -104,8 +102,6 @@ object Operations {
         if (name == "RoomInviteLink") return RoomInviteLink
         if (name == "RoomMembersPaginated") return RoomMembersPaginated
         if (name == "RoomMembersSearch") return RoomMembersSearch
-        if (name == "RoomMembersShort") return RoomMembersShort
-        if (name == "RoomMembersTiny") return RoomMembersTiny
         if (name == "RoomPico") return RoomPico
         if (name == "RoomSearch") return RoomSearch
         if (name == "RoomSocialImage") return RoomSocialImage
@@ -121,8 +117,6 @@ object Operations {
         if (name == "StripeToken") return StripeToken
         if (name == "Subscriptions") return Subscriptions
         if (name == "SuggestedRooms") return SuggestedRooms
-        if (name == "SuperAccount") return SuperAccount
-        if (name == "SuperAccounts") return SuperAccounts
         if (name == "SuperAdmins") return SuperAdmins
         if (name == "SuperAllStickerPacks") return SuperAllStickerPacks
         if (name == "SuperBadgeInRoom") return SuperBadgeInRoom
@@ -194,7 +188,6 @@ object Operations {
         if (name == "MessageUnsetReaction") return MessageUnsetReaction
         if (name == "MyNotificationCenterMarkSeqRead") return MyNotificationCenterMarkSeqRead
         if (name == "OnLogout") return OnLogout
-        if (name == "OrganizationActivateByInvite") return OrganizationActivateByInvite
         if (name == "OrganizationAddMember") return OrganizationAddMember
         if (name == "OrganizationChangeMemberRole") return OrganizationChangeMemberRole
         if (name == "OrganizationCreatePublicInvite") return OrganizationCreatePublicInvite
@@ -257,13 +250,6 @@ object Operations {
         if (name == "StickerPackRemoveFromCollection") return StickerPackRemoveFromCollection
         if (name == "StickerPackUpdate") return StickerPackUpdate
         if (name == "SubscribeToComments") return SubscribeToComments
-        if (name == "SuperAccountActivate") return SuperAccountActivate
-        if (name == "SuperAccountAdd") return SuperAccountAdd
-        if (name == "SuperAccountMemberAdd") return SuperAccountMemberAdd
-        if (name == "SuperAccountMemberRemove") return SuperAccountMemberRemove
-        if (name == "SuperAccountPend") return SuperAccountPend
-        if (name == "SuperAccountRename") return SuperAccountRename
-        if (name == "SuperAccountSuspend") return SuperAccountSuspend
         if (name == "SuperAdminAdd") return SuperAdminAdd
         if (name == "SuperAdminRemove") return SuperAdminRemove
         if (name == "SuperBadgeCreateToRoom") return SuperBadgeCreateToRoom
@@ -300,7 +286,6 @@ object Operations {
         if (name == "CommentWatch") return CommentWatch
         if (name == "ConferenceMediaWatch") return ConferenceMediaWatch
         if (name == "ConferenceWatch") return ConferenceWatch
-        if (name == "DebugEventsWatch") return DebugEventsWatch
         if (name == "DialogsWatch") return DialogsWatch
         if (name == "MyContactsUpdates") return MyContactsUpdates
         if (name == "MyNotificationsCenter") return MyNotificationsCenter

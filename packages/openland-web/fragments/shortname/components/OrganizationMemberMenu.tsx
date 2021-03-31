@@ -51,8 +51,6 @@ const getMenuContent = (opts: MenuContentOpts) => {
                     organizationId: id,
                     newRole,
                 });
-                await client.refetchOrganizationMembersShort({ organizationId: id });
-
                 onChangeRole(user.id, newRole);
             },
         });
@@ -110,9 +108,6 @@ const getMenuContent = (opts: MenuContentOpts) => {
                             userId: user.id,
                             organizationId: id,
                         });
-
-                        await client.refetchOrganizationMembersShort({ organizationId: id });
-
                         onRemove(user.id);
                     },
                     'danger',

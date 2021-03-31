@@ -1,3 +1,12 @@
+fragment UserSmall on User {
+    id
+    name
+    firstName
+    photo
+    shortname
+    isBot
+}
+
 fragment UserFollower on User {
     id
     name
@@ -8,24 +17,10 @@ fragment UserFollower on User {
     photo
 }
 
-fragment UserSmall on User {
-    id
-    name
-    firstName
-    photo
-    shortname
-    isBot
-}
-
 fragment UserShort on User {
-    id
-    name
-    firstName
-    photo
+    ...UserSmall
     online
     lastSeen
-    isBot
-    shortname
 }
 
 fragment UserFull on User {
@@ -113,20 +108,8 @@ fragment OrganizationSmall on Organization {
     id
     name
     photo
-    isCommunity: alphaIsCommunity
-    featured: alphaFeatured
-}
-
-fragment OrganizationShort on Organization {
-    id
-    name
-    photo
-    shortname
     about
+    shortname
     isCommunity: alphaIsCommunity
-    private: alphaIsPrivate
-    membersCount
-    isAdmin: betaIsAdmin
-    membersCanInvite: betaMembersCanInvite
     featured: alphaFeatured
 }

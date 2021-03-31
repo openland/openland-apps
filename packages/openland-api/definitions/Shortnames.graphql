@@ -29,7 +29,7 @@ query AuthResolveShortName($shortname: String!) {
             name
             firstName
             lastName
-            userPhoto: photo
+            photo
             externalSocialImage
             online
             currentVoiceChat {
@@ -50,7 +50,7 @@ query AuthResolveShortName($shortname: String!) {
         ... on Organization {
             id
             name
-            orgPhoto: photo
+            photo
             about
             applyLinkEnabled
             applyLink

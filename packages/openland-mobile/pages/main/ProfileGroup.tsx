@@ -99,11 +99,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 .button('Cancel', 'cancel')
                 .action('Remove', 'destructive', async () => {
                     await client.mutateRoomKick({ userId: user.id, roomId });
-                    await Promise.all([
-                        client.refetchRoomChat({ id: roomId }),
-                        client.refetchRoomMembersShort({ roomId: roomId }),
-                        client.refetchRoomFeaturedMembers({ roomId: roomId }),
-                    ]);
+                    await client.refetchRoomChat({ id: roomId });
 
                     handleRemoveMember(user.id);
                     if (onKick) {
@@ -126,7 +122,6 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                         roomId,
                         newRole: RoomMemberRole.ADMIN,
                     });
-                    await client.refetchRoomMembersShort({ roomId: roomId });
                     handleChangeMemberRole(user.id, RoomMemberRole.ADMIN);
                     if (onRoleChange) {
                         onRoleChange(user.id, RoomMemberRole.ADMIN);
@@ -148,7 +143,6 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                         roomId,
                         newRole: RoomMemberRole.MEMBER,
                     });
-                    await client.refetchRoomMembersShort({ roomId: roomId });
                     handleChangeMemberRole(user.id, RoomMemberRole.MEMBER);
                     if (onRoleChange) {
                         onRoleChange(user.id, RoomMemberRole.MEMBER);

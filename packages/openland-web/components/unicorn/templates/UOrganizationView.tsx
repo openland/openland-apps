@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { UListItem, UListItemProps } from 'openland-web/components/unicorn/UListItem';
-import { OrganizationShort } from 'openland-api/spacex.types';
+import { OrganizationSmall } from 'openland-api/spacex.types';
 import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
@@ -26,7 +26,7 @@ const featuredIcon = css`
 `;
 
 interface UOrganizationViewProps {
-    organization: OrganizationShort;
+    organization: OrganizationSmall;
     usePath?: boolean;
     hovered?: boolean;
     description?: string;

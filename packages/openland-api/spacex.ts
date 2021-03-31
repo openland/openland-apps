@@ -235,9 +235,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryOrganizationMembersSearch(variables: Types.OrganizationMembersSearchVariables, params?: QueryParameters): Promise<Types.OrganizationMembersSearch> {
         return this.query('OrganizationMembersSearch', variables, params);
     }
-    queryOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: QueryParameters): Promise<Types.OrganizationMembersShort> {
-        return this.query('OrganizationMembersShort', variables, params);
-    }
     queryOrganizationPico(variables: Types.OrganizationPicoVariables, params?: QueryParameters): Promise<Types.OrganizationPico> {
         return this.query('OrganizationPico', variables, params);
     }
@@ -249,9 +246,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, params?: QueryParameters): Promise<Types.OrganizationPublicRooms> {
         return this.query('OrganizationPublicRooms', variables, params);
-    }
-    queryPermissions(params?: QueryParameters): Promise<Types.Permissions> {
-        return this.query('Permissions', undefined, params);
     }
     queryPhonebookWasExported(params?: QueryParameters): Promise<Types.PhonebookWasExported> {
         return this.query('PhonebookWasExported', undefined, params);
@@ -301,12 +295,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryRoomMembersSearch(variables: Types.RoomMembersSearchVariables, params?: QueryParameters): Promise<Types.RoomMembersSearch> {
         return this.query('RoomMembersSearch', variables, params);
     }
-    queryRoomMembersShort(variables: Types.RoomMembersShortVariables, params?: QueryParameters): Promise<Types.RoomMembersShort> {
-        return this.query('RoomMembersShort', variables, params);
-    }
-    queryRoomMembersTiny(variables: Types.RoomMembersTinyVariables, params?: QueryParameters): Promise<Types.RoomMembersTiny> {
-        return this.query('RoomMembersTiny', variables, params);
-    }
     queryRoomPico(variables: Types.RoomPicoVariables, params?: QueryParameters): Promise<Types.RoomPico> {
         return this.query('RoomPico', variables, params);
     }
@@ -351,12 +339,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     querySuggestedRooms(params?: QueryParameters): Promise<Types.SuggestedRooms> {
         return this.query('SuggestedRooms', undefined, params);
-    }
-    querySuperAccount(variables: Types.SuperAccountVariables, params?: QueryParameters): Promise<Types.SuperAccount> {
-        return this.query('SuperAccount', variables, params);
-    }
-    querySuperAccounts(params?: QueryParameters): Promise<Types.SuperAccounts> {
-        return this.query('SuperAccounts', undefined, params);
     }
     querySuperAdmins(params?: QueryParameters): Promise<Types.SuperAdmins> {
         return this.query('SuperAdmins', undefined, params);
@@ -646,9 +628,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchOrganizationMembersSearch(variables: Types.OrganizationMembersSearchVariables, params?: QueryParameters): Promise<Types.OrganizationMembersSearch> {
         return this.refetch('OrganizationMembersSearch', variables, params);
     }
-    refetchOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: QueryParameters): Promise<Types.OrganizationMembersShort> {
-        return this.refetch('OrganizationMembersShort', variables, params);
-    }
     refetchOrganizationPico(variables: Types.OrganizationPicoVariables, params?: QueryParameters): Promise<Types.OrganizationPico> {
         return this.refetch('OrganizationPico', variables, params);
     }
@@ -660,9 +639,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, params?: QueryParameters): Promise<Types.OrganizationPublicRooms> {
         return this.refetch('OrganizationPublicRooms', variables, params);
-    }
-    refetchPermissions(params?: QueryParameters): Promise<Types.Permissions> {
-        return this.refetch('Permissions', undefined, params);
     }
     refetchPhonebookWasExported(params?: QueryParameters): Promise<Types.PhonebookWasExported> {
         return this.refetch('PhonebookWasExported', undefined, params);
@@ -712,12 +688,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchRoomMembersSearch(variables: Types.RoomMembersSearchVariables, params?: QueryParameters): Promise<Types.RoomMembersSearch> {
         return this.refetch('RoomMembersSearch', variables, params);
     }
-    refetchRoomMembersShort(variables: Types.RoomMembersShortVariables, params?: QueryParameters): Promise<Types.RoomMembersShort> {
-        return this.refetch('RoomMembersShort', variables, params);
-    }
-    refetchRoomMembersTiny(variables: Types.RoomMembersTinyVariables, params?: QueryParameters): Promise<Types.RoomMembersTiny> {
-        return this.refetch('RoomMembersTiny', variables, params);
-    }
     refetchRoomPico(variables: Types.RoomPicoVariables, params?: QueryParameters): Promise<Types.RoomPico> {
         return this.refetch('RoomPico', variables, params);
     }
@@ -762,12 +732,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchSuggestedRooms(params?: QueryParameters): Promise<Types.SuggestedRooms> {
         return this.refetch('SuggestedRooms', undefined, params);
-    }
-    refetchSuperAccount(variables: Types.SuperAccountVariables, params?: QueryParameters): Promise<Types.SuperAccount> {
-        return this.refetch('SuperAccount', variables, params);
-    }
-    refetchSuperAccounts(params?: QueryParameters): Promise<Types.SuperAccounts> {
-        return this.refetch('SuperAccounts', undefined, params);
     }
     refetchSuperAdmins(params?: QueryParameters): Promise<Types.SuperAdmins> {
         return this.refetch('SuperAdmins', undefined, params);
@@ -1057,9 +1021,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateOrganizationMembersSearch(variables: Types.OrganizationMembersSearchVariables, updater: (data: Types.OrganizationMembersSearch) => Types.OrganizationMembersSearch | null): Promise<boolean> {
         return this.updateQuery(updater, 'OrganizationMembersSearch', variables);
     }
-    updateOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, updater: (data: Types.OrganizationMembersShort) => Types.OrganizationMembersShort | null): Promise<boolean> {
-        return this.updateQuery(updater, 'OrganizationMembersShort', variables);
-    }
     updateOrganizationPico(variables: Types.OrganizationPicoVariables, updater: (data: Types.OrganizationPico) => Types.OrganizationPico | null): Promise<boolean> {
         return this.updateQuery(updater, 'OrganizationPico', variables);
     }
@@ -1071,9 +1032,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, updater: (data: Types.OrganizationPublicRooms) => Types.OrganizationPublicRooms | null): Promise<boolean> {
         return this.updateQuery(updater, 'OrganizationPublicRooms', variables);
-    }
-    updatePermissions(updater: (data: Types.Permissions) => Types.Permissions | null): Promise<boolean> {
-        return this.updateQuery(updater, 'Permissions', undefined);
     }
     updatePhonebookWasExported(updater: (data: Types.PhonebookWasExported) => Types.PhonebookWasExported | null): Promise<boolean> {
         return this.updateQuery(updater, 'PhonebookWasExported', undefined);
@@ -1123,12 +1081,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateRoomMembersSearch(variables: Types.RoomMembersSearchVariables, updater: (data: Types.RoomMembersSearch) => Types.RoomMembersSearch | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomMembersSearch', variables);
     }
-    updateRoomMembersShort(variables: Types.RoomMembersShortVariables, updater: (data: Types.RoomMembersShort) => Types.RoomMembersShort | null): Promise<boolean> {
-        return this.updateQuery(updater, 'RoomMembersShort', variables);
-    }
-    updateRoomMembersTiny(variables: Types.RoomMembersTinyVariables, updater: (data: Types.RoomMembersTiny) => Types.RoomMembersTiny | null): Promise<boolean> {
-        return this.updateQuery(updater, 'RoomMembersTiny', variables);
-    }
     updateRoomPico(variables: Types.RoomPicoVariables, updater: (data: Types.RoomPico) => Types.RoomPico | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomPico', variables);
     }
@@ -1173,12 +1125,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateSuggestedRooms(updater: (data: Types.SuggestedRooms) => Types.SuggestedRooms | null): Promise<boolean> {
         return this.updateQuery(updater, 'SuggestedRooms', undefined);
-    }
-    updateSuperAccount(variables: Types.SuperAccountVariables, updater: (data: Types.SuperAccount) => Types.SuperAccount | null): Promise<boolean> {
-        return this.updateQuery(updater, 'SuperAccount', variables);
-    }
-    updateSuperAccounts(updater: (data: Types.SuperAccounts) => Types.SuperAccounts | null): Promise<boolean> {
-        return this.updateQuery(updater, 'SuperAccounts', undefined);
     }
     updateSuperAdmins(updater: (data: Types.SuperAdmins) => Types.SuperAdmins | null): Promise<boolean> {
         return this.updateQuery(updater, 'SuperAdmins', undefined);
@@ -1618,11 +1564,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useOrganizationMembersSearch(variables: Types.OrganizationMembersSearchVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembersSearch | null {
         return this.useQuery('OrganizationMembersSearch', variables, params);
     }
-    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationMembersShort | null;
-    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembersShort;
-    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembersShort | null {
-        return this.useQuery('OrganizationMembersShort', variables, params);
-    }
     useOrganizationPico(variables: Types.OrganizationPicoVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationPico | null;
     useOrganizationPico(variables: Types.OrganizationPicoVariables, params?: SpaceQueryWatchParameters): Types.OrganizationPico;
     useOrganizationPico(variables: Types.OrganizationPicoVariables, params?: SpaceQueryWatchParameters): Types.OrganizationPico | null {
@@ -1642,11 +1583,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, params?: SpaceQueryWatchParameters): Types.OrganizationPublicRooms;
     useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, params?: SpaceQueryWatchParameters): Types.OrganizationPublicRooms | null {
         return this.useQuery('OrganizationPublicRooms', variables, params);
-    }
-    usePermissions(params: SpaceQueryWatchParameters & { suspense: false }): Types.Permissions | null;
-    usePermissions(params?: SpaceQueryWatchParameters): Types.Permissions;
-    usePermissions(params?: SpaceQueryWatchParameters): Types.Permissions | null {
-        return this.useQuery('Permissions', undefined, params);
     }
     usePhonebookWasExported(params: SpaceQueryWatchParameters & { suspense: false }): Types.PhonebookWasExported | null;
     usePhonebookWasExported(params?: SpaceQueryWatchParameters): Types.PhonebookWasExported;
@@ -1728,16 +1664,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useRoomMembersSearch(variables: Types.RoomMembersSearchVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersSearch | null {
         return this.useQuery('RoomMembersSearch', variables, params);
     }
-    useRoomMembersShort(variables: Types.RoomMembersShortVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMembersShort | null;
-    useRoomMembersShort(variables: Types.RoomMembersShortVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersShort;
-    useRoomMembersShort(variables: Types.RoomMembersShortVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersShort | null {
-        return this.useQuery('RoomMembersShort', variables, params);
-    }
-    useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMembersTiny | null;
-    useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersTiny;
-    useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersTiny | null {
-        return this.useQuery('RoomMembersTiny', variables, params);
-    }
     useRoomPico(variables: Types.RoomPicoVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomPico | null;
     useRoomPico(variables: Types.RoomPicoVariables, params?: SpaceQueryWatchParameters): Types.RoomPico;
     useRoomPico(variables: Types.RoomPicoVariables, params?: SpaceQueryWatchParameters): Types.RoomPico | null {
@@ -1812,16 +1738,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useSuggestedRooms(params?: SpaceQueryWatchParameters): Types.SuggestedRooms;
     useSuggestedRooms(params?: SpaceQueryWatchParameters): Types.SuggestedRooms | null {
         return this.useQuery('SuggestedRooms', undefined, params);
-    }
-    useSuperAccount(variables: Types.SuperAccountVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.SuperAccount | null;
-    useSuperAccount(variables: Types.SuperAccountVariables, params?: SpaceQueryWatchParameters): Types.SuperAccount;
-    useSuperAccount(variables: Types.SuperAccountVariables, params?: SpaceQueryWatchParameters): Types.SuperAccount | null {
-        return this.useQuery('SuperAccount', variables, params);
-    }
-    useSuperAccounts(params: SpaceQueryWatchParameters & { suspense: false }): Types.SuperAccounts | null;
-    useSuperAccounts(params?: SpaceQueryWatchParameters): Types.SuperAccounts;
-    useSuperAccounts(params?: SpaceQueryWatchParameters): Types.SuperAccounts | null {
-        return this.useQuery('SuperAccounts', undefined, params);
     }
     useSuperAdmins(params: SpaceQueryWatchParameters & { suspense: false }): Types.SuperAdmins | null;
     useSuperAdmins(params?: SpaceQueryWatchParameters): Types.SuperAdmins;
@@ -2078,9 +1994,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateOnLogout(params?: MutationParameters): Promise<Types.OnLogout> {
         return this.mutate('OnLogout', undefined, params);
     }
-    mutateOrganizationActivateByInvite(variables: Types.OrganizationActivateByInviteVariables, params?: MutationParameters): Promise<Types.OrganizationActivateByInvite> {
-        return this.mutate('OrganizationActivateByInvite', variables, params);
-    }
     mutateOrganizationAddMember(variables: Types.OrganizationAddMemberVariables, params?: MutationParameters): Promise<Types.OrganizationAddMember> {
         return this.mutate('OrganizationAddMember', variables, params);
     }
@@ -2267,27 +2180,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateSubscribeToComments(variables: Types.SubscribeToCommentsVariables, params?: MutationParameters): Promise<Types.SubscribeToComments> {
         return this.mutate('SubscribeToComments', variables, params);
     }
-    mutateSuperAccountActivate(variables: Types.SuperAccountActivateVariables, params?: MutationParameters): Promise<Types.SuperAccountActivate> {
-        return this.mutate('SuperAccountActivate', variables, params);
-    }
-    mutateSuperAccountAdd(variables: Types.SuperAccountAddVariables, params?: MutationParameters): Promise<Types.SuperAccountAdd> {
-        return this.mutate('SuperAccountAdd', variables, params);
-    }
-    mutateSuperAccountMemberAdd(variables: Types.SuperAccountMemberAddVariables, params?: MutationParameters): Promise<Types.SuperAccountMemberAdd> {
-        return this.mutate('SuperAccountMemberAdd', variables, params);
-    }
-    mutateSuperAccountMemberRemove(variables: Types.SuperAccountMemberRemoveVariables, params?: MutationParameters): Promise<Types.SuperAccountMemberRemove> {
-        return this.mutate('SuperAccountMemberRemove', variables, params);
-    }
-    mutateSuperAccountPend(variables: Types.SuperAccountPendVariables, params?: MutationParameters): Promise<Types.SuperAccountPend> {
-        return this.mutate('SuperAccountPend', variables, params);
-    }
-    mutateSuperAccountRename(variables: Types.SuperAccountRenameVariables, params?: MutationParameters): Promise<Types.SuperAccountRename> {
-        return this.mutate('SuperAccountRename', variables, params);
-    }
-    mutateSuperAccountSuspend(variables: Types.SuperAccountSuspendVariables, params?: MutationParameters): Promise<Types.SuperAccountSuspend> {
-        return this.mutate('SuperAccountSuspend', variables, params);
-    }
     mutateSuperAdminAdd(variables: Types.SuperAdminAddVariables, params?: MutationParameters): Promise<Types.SuperAdminAdd> {
         return this.mutate('SuperAdminAdd', variables, params);
     }
@@ -2395,9 +2287,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     subscribeConferenceWatch(variables: Types.ConferenceWatchVariables, handler: GraphqlSubscriptionHandler<Types.ConferenceWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.ConferenceWatch> {
         return this.subscribe(handler, 'ConferenceWatch', variables, params);
-    }
-    subscribeDebugEventsWatch(variables: Types.DebugEventsWatchVariables, handler: GraphqlSubscriptionHandler<Types.DebugEventsWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.DebugEventsWatch> {
-        return this.subscribe(handler, 'DebugEventsWatch', variables, params);
     }
     subscribeDialogsWatch(variables: Types.DialogsWatchVariables, handler: GraphqlSubscriptionHandler<Types.DialogsWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.DialogsWatch> {
         return this.subscribe(handler, 'DialogsWatch', variables, params);

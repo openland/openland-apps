@@ -38,6 +38,6 @@ internal val MyContactsUpdatesSelector = obj(
 val MyContactsUpdates = object: OperationDefinition {
     override val name = "MyContactsUpdates"
     override val kind = OperationKind.SUBSCRIPTION
-    override val body = "subscription MyContactsUpdates(\$state:String!){myContactsUpdates(fromState:\$state){__typename updates{__typename ... on ContactRemoved{__typename contact{__typename id user{__typename ...UserShort}}}... on ContactAdded{__typename contact{__typename id user{__typename ...UserShort}}}}state}}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname}"
+    override val body = "subscription MyContactsUpdates(\$state:String!){myContactsUpdates(fromState:\$state){__typename updates{__typename ... on ContactRemoved{__typename contact{__typename id user{__typename ...UserShort}}}... on ContactAdded{__typename contact{__typename id user{__typename ...UserShort}}}}state}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot}"
     override val selector = MyContactsUpdatesSelector
 }

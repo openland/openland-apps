@@ -22,7 +22,7 @@ internal val RoomInviteInfoSelector = obj(
                                 field("featured", "featured", notNull(scalar("Boolean"))),
                                 field("organization", "organization", obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
-                                        fragment("Organization", OrganizationShortSelector)
+                                        fragment("Organization", OrganizationSmallSelector)
                                     )),
                                 field("membership", "membership", notNull(scalar("String"))),
                                 field("membersCount", "membersCount", notNull(scalar("Int"))),
@@ -61,6 +61,6 @@ internal val RoomInviteInfoSelector = obj(
 val RoomInviteInfo = object: OperationDefinition {
     override val name = "RoomInviteInfo"
     override val kind = OperationKind.QUERY
-    override val body = "query RoomInviteInfo(\$invite:String!){invite:betaRoomInviteInfo(invite:\$invite){__typename id room{__typename ... on SharedRoom{__typename id kind isChannel title photo socialImage description featured organization{__typename ...OrganizationShort}membership membersCount previewMembers{__typename id photo name}isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}owner{__typename id firstName}}}invitedByUser{__typename ...UserShort}}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity private:alphaIsPrivate membersCount isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite featured:alphaFeatured}fragment UserShort on User{__typename id name firstName photo online lastSeen isBot shortname}"
+    override val body = "query RoomInviteInfo(\$invite:String!){invite:betaRoomInviteInfo(invite:\$invite){__typename id room{__typename ... on SharedRoom{__typename id kind isChannel title photo socialImage description featured organization{__typename ...OrganizationSmall}membership membersCount previewMembers{__typename id photo name}isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}owner{__typename id firstName}}}invitedByUser{__typename ...UserShort}}}fragment OrganizationSmall on Organization{__typename id name photo about shortname isCommunity:alphaIsCommunity featured:alphaFeatured}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot}"
     override val selector = RoomInviteInfoSelector
 }

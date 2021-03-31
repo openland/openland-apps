@@ -117,7 +117,6 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                                 organizationId: organization.id,
                             })
                         ).alphaOrganizationMemberAdd;
-
                         handleAddMembers(addedMembers);
                     } catch (e) {
                         Alert.alert(formatError(e));
@@ -285,11 +284,6 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                                         organizationId: props.router.params.id,
                                         newRole,
                                     });
-
-                                    await client.refetchOrganizationMembersShort({
-                                        organizationId: props.router.params.id,
-                                    });
-
                                     handleChangeMemberRole(user.id, newRole);
                                     if (callbacks?.onRoleChange) {
                                         callbacks.onRoleChange(user.id, newRole);
@@ -337,9 +331,6 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                             .action('Remove', 'destructive', async () => {
                                 await client.mutateOrganizationMemberRemove({
                                     userId: user.id,
-                                    organizationId: props.router.params.id,
-                                });
-                                await client.refetchOrganizationMembersShort({
                                     organizationId: props.router.params.id,
                                 });
                                 handleRemoveMember(user.id);

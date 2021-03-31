@@ -46,7 +46,10 @@ fragment RoomShort on Room {
             message
         }
         organization {
-            ...OrganizationShort
+            ...OrganizationSmall
+            private: alphaIsPrivate
+            isAdmin: betaIsAdmin
+            membersCanInvite: betaMembersCanInvite
         }
         canUnpinMessage
         pinnedMessage {
