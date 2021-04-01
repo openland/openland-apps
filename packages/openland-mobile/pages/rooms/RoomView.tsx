@@ -447,10 +447,11 @@ const RoomHeader = React.memo(
         props: RoomViewProps & {
             theme: ThemeGlobal;
             hide: () => void;
+            router: SRouter;
             onLayout: (e: LayoutChangeEvent) => void;
         },
     ) => {
-        const { room, hide, theme } = props;
+        const { room, hide, router, theme } = props;
         const topSpacing = isPad
             ? SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top
             : 0;
@@ -466,31 +467,38 @@ const RoomHeader = React.memo(
                 onLayout={props.onLayout}
             >
                 {parentRoom && (
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            marginBottom: 12,
+                    <TouchableOpacity
+                        onPress={() => {
+                            hide();
+                            router.push('Conversation', { id: parentRoom.id });
                         }}
                     >
-                        <ZAvatar
-                            size="x-small"
-                            id={parentRoom.id}
-                            title={parentRoom.title}
-                        />
-                        <Text
+                        <View
                             style={{
-                                ...TextStyles.Label2,
-                                color: theme.foregroundPrimary,
-                                marginRight: 48,
-                                marginLeft: 12,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                marginBottom: 12,
                             }}
-                            ellipsizeMode="tail"
-                            numberOfLines={1}
                         >
-                            {parentRoom.title}
-                        </Text>
-                    </View>
+                            <ZAvatar
+                                size="x-small"
+                                id={parentRoom.id}
+                                title={parentRoom.title}
+                            />
+                            <Text
+                                style={{
+                                    ...TextStyles.Label2,
+                                    color: theme.foregroundPrimary,
+                                    marginRight: 48,
+                                    marginLeft: 12,
+                                }}
+                                ellipsizeMode="tail"
+                                numberOfLines={1}
+                            >
+                                {parentRoom.title}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
                 )}
                 {props.room.title ? (
                     <Text
@@ -983,6 +991,7 @@ const RoomView = React.memo((props: { roomId: string; ctx: ModalProps; router: S
             <RoomHeader
                 room={voiceChatData}
                 theme={theme}
+                router={props.router}
                 onLayout={onHeaderLayout}
                 hide={props.ctx.hide}
             />

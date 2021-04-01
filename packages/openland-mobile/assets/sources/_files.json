@@ -60,6 +60,7 @@
             "name": "ic-microphone",
             "src": "ic-microphone-16.svg",
             "sizes": [
+                12,
                 16,
                 24,
                 36
