@@ -515,6 +515,7 @@ internal val VoiceChatEntitySelector = obj(
                     field("title", "title", notNull(scalar("String"))),
                     field("photo", "photo", notNull(scalar("String"))),
                     field("membership", "membership", notNull(scalar("String"))),
+                    field("kind", "kind", notNull(scalar("String"))),
                     field("isChannel", "isChannel", notNull(scalar("Boolean")))
                 )),
             field("pinnedMessage", "pinnedMessage", obj(

@@ -24,7 +24,7 @@ import { ZText } from 'openland-mobile/components/ZText';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { RoomControls } from './RoomControls';
 import { showEditPinnedMessage } from './RoomSettings';
-import { Conference_conference_peers, SharedRoomMembershipStatus, VoiceChatParticipantStatus, VoiceChatUser_conversation_PrivateRoom } from 'openland-api/spacex.types';
+import { Conference_conference_peers, SharedRoomKind, SharedRoomMembershipStatus, VoiceChatParticipantStatus, VoiceChatUser_conversation_PrivateRoom } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { TintBlue } from 'openland-y-utils/themes/tints';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
@@ -511,7 +511,7 @@ const RoomHeader = React.memo(
                                 </Text>
                             </View>
                         </TouchableOpacity>
-                        {joinState !== 'joined' && (
+                        {parentRoom.kind === SharedRoomKind.PUBLIC && joinState !== 'joined' && (
                             <TouchableOpacity
                                 style={{ marginLeft: 16, position: 'relative' }}
                                 onPress={async () => {
