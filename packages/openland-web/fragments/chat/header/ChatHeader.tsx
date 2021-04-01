@@ -28,7 +28,7 @@ import { useVideoCallModal } from 'openland-web/modules/conference/CallModal';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
-import { RoomCallsMode, RoomChat_room, SharedRoomKind } from 'openland-api/spacex.types';
+import { RoomCallsMode, RoomChat_room, SharedRoomKind, RoomMemberRole } from 'openland-api/spacex.types';
 import { ChatSearchContext } from 'openland-web/pages/root/AppContainer';
 import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
@@ -118,6 +118,8 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
     const currentSession = calls.useCurrentSession();
     const showVideoCallModal = useVideoCallModal({ chatId: props.chat.id });
     const callDisabled = !!currentSession && currentSession.callType === 'voice-chat';
+    const isAdmin = props.chat.__typename === 'SharedRoom' && (props.chat.role === RoomMemberRole.ADMIN || props.chat.role === RoomMemberRole.OWNER);
+    const showStartRoom = callSettings && callSettings.mode === RoomCallsMode.STANDARD && isAdmin;
 
     const startRoom = React.useCallback(async () => {
         if (props.chat.__typename === 'SharedRoom' && !props.chat.activeVoiceChat) {
@@ -152,7 +154,7 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
                     size="large"
                 />
             )}
-            {callSettings && callSettings.mode === RoomCallsMode.STANDARD && (
+            {showStartRoom && (
                 <UIconButton
                     cursor="pointer"
                     icon={<MicIcon />}
