@@ -24,7 +24,7 @@ export class OnlineReportEngine {
     onReady() {
         (async () => {
             const waitForActive = async () => {
-                let d = delayBreakable(10000);
+                let d = delayBreakable(3000);
                 this.breakable = d.resolver;
                 await d.promise;
                 this.breakable = undefined;
@@ -44,7 +44,7 @@ export class OnlineReportEngine {
                         await waitForActive();
                     }
 
-                    let locked = tryLock('presence_report', 2000);
+                    let locked = tryLock('presence_report', 3000);
 
                     if (!locked) {
                         await waitForActive();
