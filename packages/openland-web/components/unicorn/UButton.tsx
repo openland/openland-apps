@@ -18,6 +18,7 @@ export interface UButtonProps extends XViewProps {
     action?: () => void;
     className?: string;
     tabIndex?: number;
+    id?: string;
 }
 
 const textStyle = css`
@@ -322,6 +323,7 @@ export const UButton = React.memo(
 
         return (
             <XView
+                id={props.id}
                 hoverTextDecoration="none"
                 {...other}
                 onClick={!disable ? (action ? actionCallback : onClick) : undefined}
