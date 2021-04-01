@@ -19,6 +19,8 @@ fragment VoiceChatEntity on VoiceChat {
         id
         title
         photo
+        membership
+        isChannel
     }
     pinnedMessage {
         id

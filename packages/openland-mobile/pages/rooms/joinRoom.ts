@@ -33,11 +33,16 @@ export const useJoinRoom = () => {
             }
             let didJoin = [VoiceChatParticipantStatus.ADMIN, VoiceChatParticipantStatus.SPEAKER, VoiceChatParticipantStatus.LISTENER, VoiceChatParticipantStatus.KICKED].includes(status!);
             const mediaSession = messenger.calls.currentMediaSession;
-            if (!mediaSession || (mediaSession && !didJoin) || (id !== mediaSession.conversationId)) {
-                await client.mutateVoiceChatJoin({ id });
-                messenger.calls.joinCall(id, 'voice-chat');
+            try {
+                if (!mediaSession || (mediaSession && !didJoin) || (id !== mediaSession.conversationId)) {
+                    await client.mutateVoiceChatJoin({ id });
+                    messenger.calls.joinCall(id, 'voice-chat');
+                }
+                showRoomView(id, router, () => setModalOpen(false));
+            } catch (e) {
+                Toast.failure({ text: `Couldn't connect to room`, duration: 2000 }).show();
+                setModalOpen(false);
             }
-            showRoomView(id, router, () => setModalOpen(false));
         }
     };
 };
