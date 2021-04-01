@@ -4387,6 +4387,22 @@
             "deprecationReason": null
           },
           {
+            "name": "hasActiveVoiceChat",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "membership",
             "description": null,
             "args": [],
@@ -13298,6 +13314,11 @@
           },
           {
             "kind": "OBJECT",
+            "name": "DialogVoiceChatStateChanged",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
             "name": "DialogGotAccess",
             "ofType": null
           },
@@ -14237,6 +14258,49 @@
           },
           {
             "name": "hasActiveCall",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "DialogVoiceChatStateChanged",
+        "description": null,
+        "fields": [
+          {
+            "name": "cid",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hasActiveVoiceChat",
             "description": null,
             "args": [],
             "type": {
@@ -44366,6 +44430,22 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "keepAlive",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -51846,6 +51926,22 @@
             "deprecationReason": null
           },
           {
+            "name": "hasActiveVoiceChat",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "stickerPack",
             "description": null,
             "args": [],
@@ -52260,6 +52356,18 @@
           },
           {
             "name": "activeVoiceChat",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "VoiceChat",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "voiceChat",
             "description": null,
             "args": [],
             "type": {

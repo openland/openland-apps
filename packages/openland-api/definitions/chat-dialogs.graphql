@@ -26,6 +26,7 @@ fragment DialogFragment on Dialog {
     unreadCount
     isMuted
     hasActiveCall
+    hasActiveVoiceChat
     haveMention
     topMessage: alphaTopMessage {
         ...DialogMessage
@@ -168,5 +169,10 @@ fragment DialogUpdateFragment on DialogUpdate {
     ... on DialogCallStateChanged {
         cid
         hasActiveCall
+    }
+
+    ... on DialogVoiceChatStateChanged {
+        cid
+        hasActiveVoiceChat
     }
 }

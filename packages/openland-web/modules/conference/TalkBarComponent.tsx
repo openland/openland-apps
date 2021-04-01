@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useTalkWatch } from './useTalkWatch';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
-import { UserSmall, RoomChat_room } from 'openland-api/spacex.types';
+import { UserSmall, RoomChat_room, RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
 import { useVideoCallModal } from './CallModal';
 import { UTopBar } from 'openland-web/components/unicorn/UTopBar';
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
@@ -37,8 +37,10 @@ export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
     const joinRoom = useJoinRoom();
     const { chat } = props;
 
+    let sharedRoom = chat.__typename === 'SharedRoom' ? chat as RoomChat_room_SharedRoom : null;
+
     let data = client.useConference(
-        { id: chat.id },
+        { id: sharedRoom?.activeVoiceChat?.id || chat.id },
         { fetchPolicy: 'network-only', suspense: false },
     );
     const openVideoModal = useVideoCallModal({ chatId: chat.id });

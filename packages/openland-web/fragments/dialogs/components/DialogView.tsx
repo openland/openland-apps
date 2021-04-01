@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView, XViewSelectedContext } from 'react-mental';
+import Lottie from 'react-lottie';
 import { XDate } from 'openland-x/XDate';
 import IcLock from 'openland-icons/s/ic-lock-16.svg';
 import IcReply from 'openland-icons/s/ic-reply-16.svg';
 import IcMention from 'openland-icons/s/ic-mention-12.svg';
 import IcCall from 'openland-icons/s/ic-call-12.svg';
-// import IcMic from 'openland-icons/s/ic-mic-12.svg';
+import IcMic from 'openland-icons/s/ic-mic-12.svg';
 import IcMuted from 'openland-icons/s/ic-muted-16.svg';
 import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
 import { XCounter } from 'openland-x/XCounter';
@@ -14,7 +15,6 @@ import { DialogListWebItem } from './DialogListWebDataSource';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
-import Lottie from 'react-lottie';
 import { getJSON } from 'openland-y-utils/lottie/getJSON';
 import { TypingType } from 'openland-api/spacex.types';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
@@ -182,6 +182,11 @@ const callBadgeContainer = css`
     display: flex;
     align-items: center;
     justify-content: center;
+
+    & svg path {
+        fill: var(--foregroundContrast);
+        stroke: var(--foregroundContrast);
+    }
 `;
 
 const mentionContainerActive = css`
@@ -199,6 +204,7 @@ const callBadgeContainerActive = css`
     & svg path,
     & svg circle {
         fill: var(--accentMuted);
+        stroke: var(--accentMuted);
     }
 `;
 
@@ -418,7 +424,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                     >
                                         {message}
                                     </div>
-                                    {(dialog.unread > 0 || dialog.hasActiveCall) && (
+                                    {(dialog.unread > 0 || dialog.hasActiveCall || dialog.hasActiveVoiceChat) && (
                                         <div className={dialogUnreadContainer}>
                                             {haveMention && (
                                                 <div
@@ -452,17 +458,17 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                                     <UIcon icon={<IcCall />} color={'var(--foregroundContrast)'} />
                                                 </div>
                                             )}
-                                            {/*{dialog.hasActiveCall && (*/}
-                                            {/*    <div*/}
-                                            {/*        className={cx(*/}
-                                            {/*            unreadCounterContainer,*/}
-                                            {/*            callBadgeContainer,*/}
-                                            {/*            active && callBadgeContainerActive*/}
-                                            {/*        )}*/}
-                                            {/*    >*/}
-                                            {/*        <UIcon icon={<IcMic />} color={'var(--foregroundContrast)'} />*/}
-                                            {/*    </div>*/}
-                                            {/*)}*/}
+                                            {dialog.hasActiveVoiceChat && (
+                                                <div
+                                                    className={cx(
+                                                        unreadCounterContainer,
+                                                        callBadgeContainer,
+                                                        active && callBadgeContainerActive
+                                                    )}
+                                                >
+                                                    <UIcon icon={<IcMic />} color={'var(--foregroundContrast)'} />
+                                                </div>
+                                            )}
                                         </div>
                                     )}
                                 </div>

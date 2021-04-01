@@ -28,7 +28,7 @@ import { useVideoCallModal } from 'openland-web/modules/conference/CallModal';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
-import { RoomCallsMode, RoomChat_room } from 'openland-api/spacex.types';
+import { RoomCallsMode, RoomChat_room, SharedRoomKind } from 'openland-api/spacex.types';
 import { ChatSearchContext } from 'openland-web/pages/root/AppContainer';
 import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
@@ -121,7 +121,15 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
 
     const startRoom = React.useCallback(async () => {
         if (props.chat.__typename === 'SharedRoom' && !props.chat.activeVoiceChat) {
-            const room = (await client.mutateVoiceChatCreateInChat({ input: { title: props.chat.title }, cid: props.chat.id })).voiceChatCreateInChat;
+            const room = (
+                await client.mutateVoiceChatCreateInChat({
+                    input: {
+                        title: props.chat.title,
+                        isPrivate: props.chat.kind === SharedRoomKind.GROUP,
+                    },
+                    cid: props.chat.id,
+                })
+            ).voiceChatCreateInChat;
             router.navigate(`/room/${room.chat.id}`);
             await client.refetchRoomChat({ id: props.chat.id });
         } else if (props.chat.__typename === 'SharedRoom' && props.chat.activeVoiceChat) {

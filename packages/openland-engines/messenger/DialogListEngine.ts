@@ -21,6 +21,7 @@ import {
     RoomPico_room_SharedRoom,
     TypingType,
     SharedRoomMembershipStatus,
+    DialogUpdateFragment_DialogVoiceChatStateChanged,
 } from 'openland-api/spacex.types';
 
 const log = createLogger('Engine-Dialogs');
@@ -42,6 +43,7 @@ export interface DialogDataSourceItemStored {
     haveMention?: boolean;
     isMuted?: boolean;
     hasActiveCall?: boolean;
+    hasActiveVoiceChat?: boolean;
     featured?: boolean;
 
     // Chat Top Message
@@ -83,6 +85,7 @@ const extractDialog = (dialog: DialogFragment, uid: string): DialogDataSourceIte
         haveMention: dialog.haveMention,
         isMuted: dialog.isMuted,
         hasActiveCall: dialog.hasActiveCall,
+        hasActiveVoiceChat: dialog.hasActiveVoiceChat,
         featured: dialog.featured,
         kind: dialog.kind,
         isChannel: dialog.isChannel,
@@ -250,6 +253,9 @@ export class DialogListEngine {
         } else if (update.__typename === 'DialogCallStateChanged') {
             await this.handleDialogCallStateChanged(update);
             return true;
+        } else if (update.__typename === 'DialogVoiceChatStateChanged') {
+            await this.handleDialogVoiceChatStateChanged(update);
+            return true;
         }
         return false;
     }
@@ -321,6 +327,7 @@ export class DialogListEngine {
                     haveMention: update.haveMention,
                     membership: existing.membership as SharedRoomMembershipStatus,
                     hasActiveCall: !!existing.hasActiveCall,
+                    hasActiveVoiceChat: !!existing.hasActiveVoiceChat,
                     featured: !!existing.featured
                 }, this.engine.user.id));
             }
@@ -359,6 +366,17 @@ export class DialogListEngine {
             await this._dataSourceStored.updateItem({
                 ...existing,
                 hasActiveCall: update.hasActiveCall,
+            });
+        }
+    }
+
+    private handleDialogVoiceChatStateChanged = async (update: DialogUpdateFragment_DialogVoiceChatStateChanged) => {
+        log.log('Voice Chat State Changed');
+        let existing = await this._dataSourceStored.getItem(update.cid);
+        if (existing) {
+            await this._dataSourceStored.updateItem({
+                ...existing,
+                hasActiveVoiceChat: update.hasActiveVoiceChat,
             });
         }
     }

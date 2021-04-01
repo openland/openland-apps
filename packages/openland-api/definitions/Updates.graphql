@@ -305,6 +305,7 @@ fragment UpdateRoom on Room {
         membersCount
         featured
         hasActiveCall
+        hasActiveVoiceChat
         settings {
             id
             mute

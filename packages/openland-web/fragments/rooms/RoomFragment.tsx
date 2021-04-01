@@ -5,7 +5,7 @@ import { XScrollView3 } from 'openland-x/XScrollView3';
 import * as React from 'react';
 import { XView, XViewRouterContext } from 'react-mental';
 import { css, cx } from 'linaria';
-import { TextLabel2, TextStyles, TextTitle1 } from 'openland-web/utils/TextStyles';
+import { TextLabel1, TextLabel2, TextStyles, TextTitle1 } from 'openland-web/utils/TextStyles';
 import CrownIcon from 'openland-icons/ic-crown-4.svg';
 import IcListenerSmall from 'openland-icons/s/ic-listener-16.svg';
 import IcSpeakerSmall from 'openland-icons/s/ic-speaker-16.svg';
@@ -26,7 +26,11 @@ import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { useClient } from 'openland-api/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
-import { Conference_conference_peers, VoiceChatParticipant, VoiceChatParticipantStatus } from 'openland-api/spacex.types';
+import {
+    Conference_conference_peers,
+    VoiceChatParticipant,
+    VoiceChatParticipantStatus,
+} from 'openland-api/spacex.types';
 import AlertBlanket from 'openland-x/AlertBlanket';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { debounce } from 'openland-y-utils/timer';
@@ -46,6 +50,13 @@ interface PeerMedia {
     audioTrack: AppMediaStreamTrack | null;
     screencastTrack: AppMediaStreamTrack | null;
 }
+
+const headerParentRoomClass = css`
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
 
 const headerTitleStyle = css`
     color: var(--foregroundPrimary);
@@ -112,13 +123,15 @@ const RoomHeader = ({
 }: {
     speakersCount: number,
     listenersCount: number,
-    title: string | null,
+    title?: string | null,
 }) => {
     return (
         <XView paddingTop={12} paddingBottom={14} paddingRight={12} width="100%">
-            <div className={cx(TextTitle1, headerTitleStyle)}>
-                {title}
-            </div>
+            {title && (
+                <div className={cx(TextTitle1, headerTitleStyle)}>
+                    {title}
+                </div>
+            )}
             <XView
                 flexDirection="row"
                 marginTop={8}
@@ -540,6 +553,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
     const client = useClient();
     const tabRouter = useTabRouter().router;
     const joinRoom = useJoinRoom(true);
+    const router = React.useContext(XViewRouterContext)!;
 
     const voiceChatData = useVoiceChat();
     const conference = client.useConference({ id: props.roomId }, { suspense: false })?.conference;
@@ -577,6 +591,10 @@ const RoomView = React.memo((props: { roomId: string }) => {
             tabRouter.stacks[0]?.reset('/rooms');
         }
     };
+
+    const handleParentRoomClick = React.useCallback(() => {
+        router.navigate(`/${voiceChatData.parentRoom!.id}`);
+    }, [voiceChatData.parentRoom]);
 
     const handleLeave = React.useCallback(async () => {
         let admins = voiceChatData.speakers?.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
@@ -691,15 +709,34 @@ const RoomView = React.memo((props: { roomId: string }) => {
     return (
         <Page>
             <UHeader
-                titleView={(
-                    <RoomHeader
-                        title={voiceChatData.title}
-                        speakersCount={voiceChatData.speakersCount}
-                        listenersCount={voiceChatData.listenersCount}
-                    />
-                )}
+                titleView={
+                    voiceChatData.parentRoom ? (
+                        <div className={headerParentRoomClass} onClick={handleParentRoomClick}>
+                            <UAvatar
+                                title={voiceChatData.parentRoom.title}
+                                id={voiceChatData.parentRoom.id}
+                                photo={voiceChatData.parentRoom.photo}
+                                marginRight={12}
+                            />
+                            <div className={TextLabel1}>{voiceChatData.parentRoom.title}</div>
+                        </div>
+                    ) : (
+                        <RoomHeader
+                            title={voiceChatData.title}
+                            speakersCount={voiceChatData.speakersCount}
+                            listenersCount={voiceChatData.listenersCount}
+                        />
+                    )
+                }
                 dynamicHeight={true}
             />
+            {voiceChatData.parentRoom && (
+                <RoomHeader
+                    title={voiceChatData.title}
+                    speakersCount={voiceChatData.speakersCount}
+                    listenersCount={voiceChatData.listenersCount}
+                />
+            )}
             <XScrollView3 marginTop={20} marginBottom={114}>
                 <RoomSpeakers
                     room={voiceChatData}

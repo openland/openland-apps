@@ -850,6 +850,7 @@ internal val DialogFragmentSelector = obj(
             field("unreadCount", "unreadCount", notNull(scalar("Int"))),
             field("isMuted", "isMuted", notNull(scalar("Boolean"))),
             field("hasActiveCall", "hasActiveCall", notNull(scalar("Boolean"))),
+            field("hasActiveVoiceChat", "hasActiveVoiceChat", notNull(scalar("Boolean"))),
             field("haveMention", "haveMention", notNull(scalar("Boolean"))),
             field("alphaTopMessage", "topMessage", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -980,6 +981,11 @@ internal val DialogUpdateFragmentSelector = obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("cid", "cid", notNull(scalar("ID"))),
                 field("hasActiveCall", "hasActiveCall", notNull(scalar("Boolean")))
+            )),
+            inline("DialogVoiceChatStateChanged", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("cid", "cid", notNull(scalar("ID"))),
+                field("hasActiveVoiceChat", "hasActiveVoiceChat", notNull(scalar("Boolean")))
             ))
         )
 
@@ -1736,6 +1742,7 @@ internal val UpdateRoomSelector = obj(
                 field("membersCount", "membersCount", notNull(scalar("Int"))),
                 field("featured", "featured", notNull(scalar("Boolean"))),
                 field("hasActiveCall", "hasActiveCall", notNull(scalar("Boolean"))),
+                field("hasActiveVoiceChat", "hasActiveVoiceChat", notNull(scalar("Boolean"))),
                 field("settings", "settings", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("id", "id", notNull(scalar("ID"))),

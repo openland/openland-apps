@@ -338,6 +338,7 @@ type ConferencePeer {
   id: ID!
   user: User!
   mediaState: ConferencePeerMediaState!
+  keepAlive: Int!
 }
 
 type ConferencePeerMediaState {
@@ -567,6 +568,7 @@ type Dialog {
   isMuted: Boolean!
   haveMention: Boolean!
   hasActiveCall: Boolean!
+  hasActiveVoiceChat: Boolean!
   membership: SharedRoomMembershipStatus!
 }
 
@@ -677,7 +679,7 @@ type DialogTitleUpdated {
   title: String!
 }
 
-union DialogUpdate = DialogMessageReceived | DialogMessageUpdated | DialogMessageDeleted | DialogMessageRead | DialogTitleUpdated | DialogDeleted | DialogPhotoUpdated | DialogMuteChanged | DialogMentionedChanged | DialogBump | DialogPeerUpdated | DialogCallStateChanged | DialogGotAccess | DialogLostAccess
+union DialogUpdate = DialogMessageReceived | DialogMessageUpdated | DialogMessageDeleted | DialogMessageRead | DialogTitleUpdated | DialogDeleted | DialogPhotoUpdated | DialogMuteChanged | DialogMentionedChanged | DialogBump | DialogPeerUpdated | DialogCallStateChanged | DialogVoiceChatStateChanged | DialogGotAccess | DialogLostAccess
 
 type DialogUpdateBatch {
   updates: [DialogUpdate!]!
@@ -696,6 +698,11 @@ type DialogUpdateSingle {
 
 type DialogUpdateState {
   state: String
+}
+
+type DialogVoiceChatStateChanged {
+  cid: ID!
+  hasActiveVoiceChat: Boolean!
 }
 
 type DiscoverChatsCollection {
@@ -3192,6 +3199,7 @@ type SharedRoom {
   canUnpinMessage: Boolean!
   welcomeMessage: WelcomeMessage
   hasActiveCall: Boolean!
+  hasActiveVoiceChat: Boolean!
   stickerPack: StickerPack
   organization: Organization
   membersCount: Int!
@@ -3218,6 +3226,7 @@ type SharedRoom {
   featured: Boolean!
   owner: User
   activeVoiceChat: VoiceChat
+  voiceChat: VoiceChat
   externalSocialImage: String
   linkedFeedChannels: [FeedChannel!]!
   shortname: String
