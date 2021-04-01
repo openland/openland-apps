@@ -286,6 +286,7 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
                     onClick={handleNext}
                     marginTop={32}
                     tabIndex={0}
+                    id="next"
                 />
             </FormLayout>
         </>
@@ -370,6 +371,7 @@ const WebSignUpCreateWithEmail = (
                     loading={authSending}
                     onClick={handleNext}
                     tabIndex={0}
+                    id="next"
                 />
             </FormLayout>
         </>

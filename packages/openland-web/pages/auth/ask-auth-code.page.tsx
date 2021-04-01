@@ -278,6 +278,7 @@ const WebSignUpActivationCode = (
                     loading={codeSending}
                     onClick={handleNext}
                     marginTop={32}
+                    id="next"
                 />
                 {!isExistingUser && (
                     <p className={cx(TextCaption, captionText, textClassName)}>
