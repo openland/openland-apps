@@ -223,7 +223,7 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                                         </ASFlex>
                                     )}
                                 </ASFlex>
-                                {(item.unread > 0 || item.hasActiveCall) && (
+                                {(item.unread > 0 || item.hasActiveCall || item.hasActiveVoiceChat) && (
                                     <ASFlex flexShrink={0} alignItems="center" marginLeft={3}>
                                         {item.hasActiveCall && (
                                             <ASFlex
@@ -241,6 +241,25 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                                                     width={12}
                                                     height={12}
                                                     source={require('assets/ic-call-12.png')}
+                                                />
+                                            </ASFlex>
+                                        )}
+                                        {item.hasActiveVoiceChat && (
+                                            <ASFlex
+                                                width={22}
+                                                height={22}
+                                                backgroundColor={theme.accentPositive}
+                                                borderRadius={11}
+                                                marginLeft={6}
+                                                alignItems="center"
+                                                justifyContent="center"
+                                            >
+                                                <ASImage
+                                                    key={`voice-chat-${theme.foregroundInverted}`}
+                                                    tintColor={theme.foregroundInverted}
+                                                    width={12}
+                                                    height={12}
+                                                    source={require('assets/ic-microphone-12.png')}
                                                 />
                                             </ASFlex>
                                         )}
