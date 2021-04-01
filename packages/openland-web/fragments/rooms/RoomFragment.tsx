@@ -63,6 +63,7 @@ const headerTitleStyle = css`
     max-height: 64px;
     overflow: hidden;
     display: -webkit-box;
+    margin-bottom: 8px;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
 `;
@@ -134,7 +135,6 @@ const RoomHeader = ({
             )}
             <XView
                 flexDirection="row"
-                marginTop={8}
                 alignItems="center"
                 color="var(--foregroundSecondary)"
                 alignSelf="flex-start"
@@ -732,7 +732,6 @@ const RoomView = React.memo((props: { roomId: string }) => {
             />
             {voiceChatData.parentRoom && (
                 <RoomHeader
-                    title={voiceChatData.title}
                     speakersCount={voiceChatData.speakersCount}
                     listenersCount={voiceChatData.listenersCount}
                 />
