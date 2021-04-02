@@ -21,7 +21,6 @@ import {
     RoomPico_room_SharedRoom,
     TypingType,
     SharedRoomMembershipStatus,
-    DialogUpdateFragment_DialogVoiceChatStateChanged,
 } from 'openland-api/spacex.types';
 
 const log = createLogger('Engine-Dialogs');
@@ -370,7 +369,7 @@ export class DialogListEngine {
         }
     }
 
-    private handleDialogVoiceChatStateChanged = async (update: DialogUpdateFragment_DialogVoiceChatStateChanged) => {
+    handleDialogVoiceChatStateChanged = async (update: { cid: string, hasActiveVoiceChat: boolean }) => {
         log.log('Voice Chat State Changed');
         let existing = await this._dataSourceStored.getItem(update.cid);
         if (existing) {
