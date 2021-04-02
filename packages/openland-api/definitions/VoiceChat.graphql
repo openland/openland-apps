@@ -2,6 +2,7 @@ fragment VoiceChatParticipant on VoiceChatParticipant {
     id
     user {
         ...UserSmall
+        followedByMe
         followersCount
     }
     status
