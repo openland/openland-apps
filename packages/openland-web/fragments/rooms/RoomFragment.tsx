@@ -44,6 +44,7 @@ import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuB
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
+import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 
 interface PeerMedia {
     videoTrack: AppMediaStreamTrack | null;
@@ -693,9 +694,9 @@ const RoomView = React.memo((props: { roomId: string }) => {
             }
         };
     }, []);
-
+    const isTabVisible = useVisibleTab();
     React.useEffect(() => {
-        if (!voiceChatData.me || !mediaSession) {
+        if ((!voiceChatData.me || !mediaSession) && isTabVisible) {
             setTimeout(() => {
                 joinRoom(voiceChatData.id);
             }, 2000);

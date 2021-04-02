@@ -1065,6 +1065,11 @@ export class ConversationEngine implements MessageSendHandler {
         } else if (event.__typename === 'ChatUpdated') {
             this.pinId = (event.chat && event.chat.pinnedMessage) ? event.chat.pinnedMessage.id : undefined;
             this.canReply = getCanReply(event.chat);
+            let hasActiveVoiceChat = !!(event.chat.__typename === 'SharedRoom' && event.chat.activeVoiceChat?.active);
+            let oldHasActiveVoiceChat = this.engine.dialogList.dataSource.getItem(event.chat.id)?.hasActiveVoiceChat;
+            if (!oldHasActiveVoiceChat && hasActiveVoiceChat) {
+                this.engine.dialogList.handleDialogVoiceChatStateChanged({ cid: event.chat.id, hasActiveVoiceChat });
+            }
         } else {
             log.warn('Received unknown message');
         }

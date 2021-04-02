@@ -24,7 +24,7 @@ import { ZText } from 'openland-mobile/components/ZText';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { RoomControls } from './RoomControls';
 import { showEditPinnedMessage } from './RoomSettings';
-import { Conference_conference_peers, VoiceChatParticipantStatus, VoiceChatUser_conversation_PrivateRoom } from 'openland-api/spacex.types';
+import { Conference_conference_peers, SharedRoomKind, SharedRoomMembershipStatus, VoiceChatParticipantStatus, VoiceChatUser_conversation_PrivateRoom } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { TintBlue } from 'openland-y-utils/themes/tints';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
@@ -452,10 +452,15 @@ const RoomHeader = React.memo(
         },
     ) => {
         const { room, hide, router, theme } = props;
+        const { parentRoom } = room;
+        const [joinState, setJoinState] = React.useState<'initial' | 'loading' | 'success' | 'joined'>(
+            parentRoom?.membership === SharedRoomMembershipStatus.MEMBER ? 'joined' : 'initial'
+        );
+        const client = useClient();
+
         const topSpacing = isPad
             ? SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top
             : 0;
-        const { parentRoom } = room;
         return (
             <View
                 style={{
@@ -467,38 +472,94 @@ const RoomHeader = React.memo(
                 onLayout={props.onLayout}
             >
                 {parentRoom && (
-                    <TouchableOpacity
-                        onPress={() => {
-                            hide();
-                            router.push('Conversation', { id: parentRoom.id });
+
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginBottom: 12,
+                            marginRight: 48,
                         }}
                     >
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                marginBottom: 12,
+                        <TouchableOpacity
+                            onPress={() => {
+                                hide();
+                                router.push('Conversation', { id: parentRoom.id });
                             }}
                         >
-                            <ZAvatar
-                                size="x-small"
-                                id={parentRoom.id}
-                                title={parentRoom.title}
-                            />
-                            <Text
+                            <View
                                 style={{
-                                    ...TextStyles.Label2,
-                                    color: theme.foregroundPrimary,
-                                    marginRight: 48,
-                                    marginLeft: 12,
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
                                 }}
-                                ellipsizeMode="tail"
-                                numberOfLines={1}
                             >
-                                {parentRoom.title}
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
+                                <ZAvatar
+                                    size="x-small"
+                                    id={parentRoom.id}
+                                    title={parentRoom.title}
+                                />
+                                <Text
+                                    style={{
+                                        ...TextStyles.Label2,
+                                        color: theme.foregroundPrimary,
+                                        marginLeft: 12,
+                                    }}
+                                    ellipsizeMode="tail"
+                                    numberOfLines={1}
+                                >
+                                    {parentRoom.title}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                        {parentRoom.kind === SharedRoomKind.PUBLIC && joinState !== 'joined' && (
+                            <TouchableOpacity
+                                style={{ marginLeft: 16, position: 'relative' }}
+                                onPress={async () => {
+                                    if (joinState !== 'initial') {
+                                        return;
+                                    }
+                                    setJoinState('loading');
+                                    try {
+                                        await client.mutateRoomJoin({ roomId: parentRoom.id });
+                                        client.refetchRoomChat({ id: parentRoom.id });
+                                        setJoinState('success');
+                                        setTimeout(() => {
+                                            setJoinState('joined');
+                                        }, 1000);
+                                    } catch (e) {
+                                        Toast.failure({ text: `Couldn't join ${parentRoom.isChannel ? 'channel' : 'group'}`, duration: 2000 }).show();
+                                        setJoinState('initial');
+                                    }
+                                }}
+                            >
+                                <Text
+                                    style={{ ...TextStyles.Label2, color: theme.accentPrimary, opacity: joinState === 'initial' ? 1 : 0 }}
+                                >
+                                    Join {parentRoom.isChannel ? 'channel' : 'group'}
+                                </Text>
+                                <View
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        bottom: 0,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <>
+                                        {joinState === 'loading' && (
+                                            <LoaderSpinner size="small" color={theme.accentPrimary} />
+                                        )}
+                                        {joinState === 'success' && (
+                                            <Image source={require('assets/ic-done-24.png')} style={{ tintColor: theme.accentPrimary }} />
+                                        )}
+                                    </>
+                                </View>
+                            </TouchableOpacity>
+                        )}
+                    </View>
                 )}
                 {props.room.title ? (
                     <Text
