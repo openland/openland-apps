@@ -57,26 +57,32 @@ export const CurrentVoiceChat = React.memo<CurrentVoiceChatProps>((props) => {
                                 marginLeft: 6,
                             }}
                         />
-                        <View
-                            style={{
-                                backgroundColor: theme.foregroundTertiary,
-                                width: 3,
-                                height: 3,
-                                borderRadius: 3,
-                                opacity: 0.5,
-                                marginHorizontal: 8,
-                            }}
-                        />
-                        <Text style={{ color: theme.foregroundTertiary }}>{listenersCount}</Text>
-                        <Image
-                            source={require('assets/ic-listener-16.png')}
-                            style={{
-                                tintColor: theme.foregroundTertiary,
-                                width: 16,
-                                height: 16,
-                                marginLeft: 6,
-                            }}
-                        />
+                        {listenersCount > 0 && (
+                            <>
+                                <View
+                                    style={{
+                                        backgroundColor: theme.foregroundTertiary,
+                                        width: 3,
+                                        height: 3,
+                                        borderRadius: 3,
+                                        opacity: 0.5,
+                                        marginHorizontal: 8,
+                                    }}
+                                />
+                                <Text style={{ color: theme.foregroundTertiary }}>
+                                    {listenersCount}
+                                </Text>
+                                <Image
+                                    source={require('assets/ic-listener-16.png')}
+                                    style={{
+                                        tintColor: theme.foregroundTertiary,
+                                        width: 16,
+                                        height: 16,
+                                        marginLeft: 6,
+                                    }}
+                                />
+                            </>
+                        )}
                     </View>
                     <ZButton
                         title="Join room"

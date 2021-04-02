@@ -66,13 +66,17 @@ export const ActiveVoiceChat = React.memo<CurrentVoiceChatProps>(props => {
                             className={iconClass}
                             color="var(--foregroundTertiary)"
                         />
-                        <div className={dotDivider} />
-                        {listenersCount}
-                        <UIcon
-                            icon={<IcListener />}
-                            className={iconClass}
-                            color="var(--foregroundTertiary)"
-                        />
+                        {listenersCount > 0 && (
+                            <>
+                                <div className={dotDivider} />
+                                {listenersCount}
+                                <UIcon
+                                    icon={<IcListener />}
+                                    className={iconClass}
+                                    color="var(--foregroundTertiary)"
+                                />
+                            </>
+                        )}
                     </XView>
                 </XView>
                 <UButton
