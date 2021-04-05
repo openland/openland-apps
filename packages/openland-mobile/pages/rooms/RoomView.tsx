@@ -1119,7 +1119,9 @@ export const showRoomView = (roomId: string, router: SRouter, onHide?: () => voi
                 borderTopLeftRadius: 18,
                 borderTopRightRadius: 18,
             },
-            dismissOffset: 10000,
+            scrollViewProps: {
+                scrollEnabled: false,
+            },
             disableMargins: true,
             disableBottomSafeArea: true,
             cancelable: false,
