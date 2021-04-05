@@ -15,6 +15,8 @@ import IcCrown from 'openland-icons/s/ic-pro-24.svg';
 import IcCrownOff from 'openland-icons/s/ic-pro-off-24.svg';
 import IcAdd from 'openland-icons/s/ic-add-36.svg';
 import IcUser from 'openland-icons/s/ic-user-24.svg';
+import IcFollow from 'openland-icons/s/ic-invite-24.svg';
+import IcMessage from 'openland-icons/s/ic-message-24.svg';
 import IcLeave from 'openland-icons/s/ic-leave-24.svg';
 import IcMuted from 'openland-icons/s/ic-mic-off-36.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -270,10 +272,14 @@ const UserMenu = React.memo((props: {
     roomId: string,
     userId: string,
     status: VoiceChatParticipantStatus,
+    followedByMe: boolean,
+    selfStatus?: VoiceChatParticipantStatus,
 }) => {
     const router = React.useContext(XViewRouterContext)!;
     const client = useClient();
+    const followedByMe = client.useVoiceChatUser({ uid: props.userId }, { suspense: false })?.user.followedByMe;
     let popper = new UPopperMenuBuilder();
+    const isFollowed = typeof followedByMe === 'undefined' ? props.followedByMe : followedByMe;
 
     popper.item({
         title: 'View profile',
@@ -283,48 +289,74 @@ const UserMenu = React.memo((props: {
         },
     });
 
-    if (props.status === VoiceChatParticipantStatus.LISTENER) {
+    if (!isFollowed) {
         popper.item({
-            title: 'Make speaker',
-            icon: <IcSpeaker />,
+            title: 'Follow',
+            icon: <IcFollow />,
             action: async () => {
-                await client.mutateVoiceChatPromote({ id: props.roomId, uid: props.userId });
-            },
-        });
-    }
-    if (props.status === VoiceChatParticipantStatus.SPEAKER) {
-        popper.item({
-            title: 'Make admin',
-            icon: <IcCrown />,
-            action: async () => {
-                await client.mutateVoiceChatUpdateAdmin({ id: props.roomId, uid: props.userId, admin: true });
-            },
-        }).item({
-            title: 'Make listener',
-            icon: <IcListener />,
-            action: async () => {
-                await client.mutateVoiceChatDemote({ id: props.roomId, uid: props.userId });
+                await client.mutateSocialFollow({ uid: props.userId });
+                await client.refetchVoiceChatUser({ uid: props.userId });
             },
         });
     }
 
-    if (props.status === VoiceChatParticipantStatus.ADMIN) {
+    if (
+        props.selfStatus === VoiceChatParticipantStatus.SPEAKER
+        || props.selfStatus === VoiceChatParticipantStatus.LISTENER
+    ) {
         popper.item({
-            title: 'Remove admin',
-            icon: <IcCrownOff />,
+            title: 'Message',
+            icon: <IcMessage />,
             action: async () => {
-                await client.mutateVoiceChatUpdateAdmin({ id: props.roomId, uid: props.userId, admin: false });
+                router.navigate(`/mail/${props.userId}`);
             },
         });
     }
 
-    popper.item({
-        title: 'Remove',
-        icon: <IcLeave />,
-        action: async () => {
-            await client.mutateVoiceChatKick({ id: props.roomId, uid: props.userId });
-        },
-    });
+    if (props.selfStatus === VoiceChatParticipantStatus.ADMIN) {
+        if (props.status === VoiceChatParticipantStatus.LISTENER) {
+            popper.item({
+                title: 'Make speaker',
+                icon: <IcSpeaker />,
+                action: async () => {
+                    await client.mutateVoiceChatPromote({ id: props.roomId, uid: props.userId });
+                },
+            });
+        }
+        if (props.status === VoiceChatParticipantStatus.SPEAKER) {
+            popper.item({
+                title: 'Make admin',
+                icon: <IcCrown />,
+                action: async () => {
+                    await client.mutateVoiceChatUpdateAdmin({ id: props.roomId, uid: props.userId, admin: true });
+                },
+            }).item({
+                title: 'Make listener',
+                icon: <IcListener />,
+                action: async () => {
+                    await client.mutateVoiceChatDemote({ id: props.roomId, uid: props.userId });
+                },
+            });
+        }
+
+        if (props.status === VoiceChatParticipantStatus.ADMIN) {
+            popper.item({
+                title: 'Remove admin',
+                icon: <IcCrownOff />,
+                action: async () => {
+                    await client.mutateVoiceChatUpdateAdmin({ id: props.roomId, uid: props.userId, admin: false });
+                },
+            });
+        }
+
+        popper.item({
+            title: 'Remove',
+            icon: <IcLeave />,
+            action: async () => {
+                await client.mutateVoiceChatKick({ id: props.roomId, uid: props.userId });
+            },
+        });
+    }
 
     return popper.build(props.ctx, 200);
 });
@@ -333,6 +365,7 @@ interface RoomUserInfo {
     id: string;
     name: string;
     photo: string | null;
+    followedByMe: boolean;
     roomId: string;
     userStatus: VoiceChatParticipantStatus;
     selfStatus?: VoiceChatParticipantStatus;
@@ -348,10 +381,10 @@ const RoomUser = React.memo(({
     userStatus,
     selfStatus,
     selfId,
+    followedByMe,
 }: {
     state?: 'talking' | 'loading' | 'muted';
 } & RoomUserInfo) => {
-    const router = React.useContext(XViewRouterContext)!;
     const [visible, show, hide] = usePopper(
         {
             placement: 'bottom-start',
@@ -363,7 +396,7 @@ const RoomUser = React.memo(({
             updatedDeps: userStatus,
         },
         (ctx) => (
-            <UserMenu ctx={ctx} roomId={roomId} userId={id} status={userStatus} />
+            <UserMenu ctx={ctx} roomId={roomId} userId={id} status={userStatus} selfStatus={selfStatus} followedByMe={followedByMe} />
         ),
     );
     const isAdmin = userStatus === VoiceChatParticipantStatus.ADMIN;
@@ -371,10 +404,6 @@ const RoomUser = React.memo(({
     const isListener = userStatus === VoiceChatParticipantStatus.LISTENER;
     const isSelf = selfId === id;
     const handleClick = (e: React.MouseEvent) => {
-        if (selfStatus !== VoiceChatParticipantStatus.ADMIN) {
-            router.navigate(`/${id}`);
-            return;
-        }
         if (visible) {
             hide();
         } else {
@@ -519,6 +548,7 @@ const RoomSpeakers = React.memo(({
                     peerId={peer?.id}
                     selfStatus={room.me?.status}
                     userStatus={speaker.status}
+                    followedByMe={speaker.user.followedByMe}
                 />
             ))}
             {speakers.length <= 8 && room.me?.status === VoiceChatParticipantStatus.ADMIN && (
@@ -544,6 +574,7 @@ const RoomListeners = React.memo((props: { room: VoiceChatT }) => {
                     selfId={props.room.me?.user.id}
                     userStatus={listener.status}
                     selfStatus={props.room.me?.status}
+                    followedByMe={listener.user.followedByMe}
                 />
             ))}
         </div>
