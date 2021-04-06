@@ -14,7 +14,7 @@ interface DialogListFragmentProps {
 
 export const DialogListFragment = React.memo((props: DialogListFragmentProps) => {
     const source = React.useMemo(() => {
-        if (props.messenger.experimentalUpdates && props.experimental) {
+        if (props.messenger && !!props.messenger.experimentalUpdates && props.experimental) {
             if (props.selectedFilter === 'unread') {
                 return dialogListWebDataSource(props.messenger.experimentalUpdates.dialogs.dialogsUnread.legacy);
             }
