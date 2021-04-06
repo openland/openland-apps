@@ -497,6 +497,7 @@ const RoomHeader = React.memo(
                                     size="x-small"
                                     id={parentRoom.id}
                                     title={parentRoom.title}
+                                    photo={parentRoom.photo}
                                 />
                                 <Text
                                     style={{
