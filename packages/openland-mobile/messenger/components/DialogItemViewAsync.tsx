@@ -236,8 +236,8 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                                                 justifyContent="center"
                                             >
                                                 <ASImage
-                                                    key={`call-${theme.foregroundInverted}`}
-                                                    tintColor={theme.foregroundInverted}
+                                                    key={`call-${theme.foregroundContrast}`}
+                                                    tintColor={theme.foregroundContrast}
                                                     width={12}
                                                     height={12}
                                                     source={require('assets/ic-call-12.png')}
@@ -255,8 +255,8 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                                                 justifyContent="center"
                                             >
                                                 <ASImage
-                                                    key={`voice-chat-${theme.foregroundInverted}`}
-                                                    tintColor={theme.foregroundInverted}
+                                                    key={`voice-chat-${theme.foregroundContrast}`}
+                                                    tintColor={theme.foregroundContrast}
                                                     width={12}
                                                     height={12}
                                                     source={require('assets/ic-microphone-12.png')}
