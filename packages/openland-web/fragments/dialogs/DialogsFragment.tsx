@@ -141,7 +141,7 @@ export const DialogsFragment = React.memo(() => {
             >
                 <USideHeader
                     title={
-                        !!messenger.experimentalUpdates
+                        !!messenger && !!messenger.experimentalUpdates
                             ? { title: title, active: menuVisible, action: menuShow }
                             : title
                     }
