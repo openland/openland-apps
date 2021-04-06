@@ -78,7 +78,7 @@ const GroupCallsModalBody = React.memo((props: GroupSettingsModalBodyProps<Group
                     <XView marginHorizontal={-24}>
                         <RadioButtonsSelect
                             selectOptions={[
-                                { label: 'Standard Openland calls', value: RoomCallsMode.STANDARD },
+                                { label: 'Standard Openland rooms', value: RoomCallsMode.STANDARD },
                                 { label: 'Custom call link', value: RoomCallsMode.LINK },
                                 { label: 'No calls', value: RoomCallsMode.DISABLED },
                             ]}

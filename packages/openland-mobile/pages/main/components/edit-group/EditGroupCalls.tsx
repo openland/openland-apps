@@ -83,7 +83,7 @@ const EditGroupCallsComponent = React.memo((props: PageProps) => {
                     <ZListGroup header={null}>
                         <CheckListBoxWraper isRadio={true} checked={mode === RoomCallsMode.STANDARD}>
                             <ZListItem
-                                text="Standard Openland calls"
+                                text="Standard Openland rooms"
                                 onPress={() => setMode(RoomCallsMode.STANDARD)}
                             />
                         </CheckListBoxWraper>
