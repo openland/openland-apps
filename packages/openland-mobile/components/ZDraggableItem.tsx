@@ -208,6 +208,7 @@ export const ZDraggableItem = React.memo<ZDraggableItemProps>((props) => {
         return PanResponder.create({
             onMoveShouldSetPanResponder: (_, gestureState) => shouldStartDrag(gestureState),
             onMoveShouldSetPanResponderCapture: (_, gestureState) => shouldStartDrag(gestureState),
+            onPanResponderTerminationRequest: () => false,
             onPanResponderGrant,
             onPanResponderMove: Animated.event([], {
                 // @ts-ignore
