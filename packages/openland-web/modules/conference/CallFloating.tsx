@@ -22,7 +22,7 @@ import { useVoiceChat, VoiceChatProvider } from 'openland-y-utils/voiceChat/voic
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
-import MicIcon from 'openland-icons/s/ic-mic-24.svg';
+import MicIcon from 'openland-icons/s/ic-mic-on-36.svg';
 import FullscreenIcon from 'openland-icons/s/ic-size-up-glyph-24.svg';
 import EndIcon from 'openland-icons/s/ic-call-end-glyph-24.svg';
 

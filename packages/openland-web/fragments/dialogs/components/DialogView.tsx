@@ -7,7 +7,7 @@ import IcLock from 'openland-icons/s/ic-lock-16.svg';
 import IcReply from 'openland-icons/s/ic-reply-16.svg';
 import IcMention from 'openland-icons/s/ic-mention-12.svg';
 import IcCall from 'openland-icons/s/ic-call-12.svg';
-import IcMic from 'openland-icons/s/ic-mic-12.svg';
+import IcMic from 'openland-icons/s/ic-min-glyph-12.svg';
 import IcMuted from 'openland-icons/s/ic-muted-16.svg';
 import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
 import { XCounter } from 'openland-x/XCounter';
@@ -185,7 +185,6 @@ const callBadgeContainer = css`
 
     & svg path {
         fill: var(--foregroundContrast);
-        stroke: var(--foregroundContrast);
     }
 `;
 
@@ -204,7 +203,6 @@ const callBadgeContainerActive = css`
     & svg path,
     & svg circle {
         fill: var(--accentMuted);
-        stroke: var(--accentMuted);
     }
 `;
 
