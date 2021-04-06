@@ -141,7 +141,7 @@ export const DialogsFragment = React.memo(() => {
             >
                 <USideHeader
                     title={
-                        messenger.experimentalUpdates
+                        !!messenger && !!messenger.experimentalUpdates
                             ? { title: title, active: menuVisible, action: menuShow }
                             : title
                     }
@@ -154,7 +154,7 @@ export const DialogsFragment = React.memo(() => {
                 <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>
                     <DialogListFragment
                         messenger={messenger}
-                        experimental={true}
+                        experimental={false}
                         onDialogPress={(id) => {
                             stackRouter.navigate(`/mail/${id}`);
                         }}
