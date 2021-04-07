@@ -629,7 +629,9 @@ const RoomView = React.memo((props: { roomId: string }) => {
         client.mutateVoiceChatLeave({ id: props.roomId });
         if (window.location.pathname.startsWith('/room/')) {
             let currentId = window.location.pathname.split('/')[2];
-            if (currentId === props.roomId) {
+            if (tabRouter.currentTab === 2 && voiceChatData.parentRoom && currentId === props.roomId) {
+                tabRouter.reset(`/mail/${voiceChatData.parentRoom.id}`, true);
+            } else if (currentId === props.roomId) {
                 tabRouter.reset('/rooms', true);
             }
         } else {
