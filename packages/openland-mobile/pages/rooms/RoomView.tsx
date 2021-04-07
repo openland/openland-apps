@@ -135,18 +135,13 @@ interface UserAvatarProps {
     theme: ThemeGlobal;
     router: SRouter;
     modalCtx: { hide: () => void };
+    handleUserView: () => void;
 }
 
 const UserAvatar = React.memo((props: UserAvatarProps) => {
     const { user, theme } = props;
     const { id, name, photo, followersCount, followedByMe } = user;
     const avatarSize = isPad ? 350 : SDevice.wWidth - 16;
-
-    const handleUserView = () => {
-        props.router.pushAndReset('ProfileUser', { id: id });
-        props.hide();
-        props.modalCtx.hide();
-    };
 
     const hasPhoto = !!(photo && !photo.startsWith('ph://'));
     const placeholder = hasPhoto
@@ -158,7 +153,7 @@ const UserAvatar = React.memo((props: UserAvatarProps) => {
           };
 
     return (
-        <TouchableOpacity onPress={handleUserView}>
+        <TouchableOpacity onPress={props.handleUserView}>
             <View
                 style={{
                     position: 'relative',
@@ -360,6 +355,7 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                 router={props.router}
                 hide={props.hide}
                 modalCtx={props.modalCtx}
+                handleUserView={handleUserView}
             />
             {about && (
                 <View style={{ paddingHorizontal: 16, marginTop: 16 }}>
