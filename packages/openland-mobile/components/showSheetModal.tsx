@@ -5,6 +5,7 @@ import { SAnimated } from 'react-native-fast-animations';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-fast-animations';
 import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAreaContext';
+import { QueryCacheProvider } from '@openland/spacex';
 import { isPad } from 'openland-mobile/pages/Root';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
@@ -18,6 +19,10 @@ interface SheetModalProps {
     modal: ZModal;
     safe: ASSafeArea;
     title?: string;
+    style?: {
+        paddingTop?: number;
+        paddingBottom?: number;
+    };
 }
 
 class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlobal }> implements ZModalController {
@@ -133,7 +138,9 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
     }
 
     render() {
-        const { theme, safe, title } = this.props;
+        const { theme, safe, title, style } = this.props;
+        const paddingTop = style ? style.paddingTop : undefined;
+        const paddingBottom = style ? style.paddingBottom : undefined;
         const maxScrollHeight = Dimensions.get('screen').height - safe.top - safe.bottom - 100;
 
         return (
@@ -179,7 +186,7 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
                             }}
                             onLayout={this.onLayout}
                         >
-                            <ScrollView alwaysBounceVertical={false} style={{ maxHeight: maxScrollHeight }} contentContainerStyle={{ paddingTop: 20, paddingBottom: Platform.select({ ios: safe.bottom, android: undefined }) }}>
+                            <ScrollView alwaysBounceVertical={false} style={{ maxHeight: maxScrollHeight }} contentContainerStyle={{ paddingTop: paddingTop !== undefined ? paddingTop : 20, paddingBottom: paddingBottom !== undefined ? paddingBottom : Platform.select({ ios: safe.bottom, android: undefined }) }}>
                                 {!!title && (
                                     <View style={{ paddingTop: 4, paddingBottom: 30, alignItems: 'center' }}>
                                         <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
@@ -196,7 +203,7 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
                     {isPad && (
                         <View
                             style={{
-                                borderRadius: RadiusStyles.Medium,
+                                borderRadius: RadiusStyles.Large,
                                 marginHorizontal: 10,
                                 overflow: 'hidden',
                                 width: 350,
@@ -205,7 +212,7 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
                             }}
                             onLayout={this.onLayout}
                         >
-                            <ScrollView alwaysBounceVertical={false} style={{ maxHeight: maxScrollHeight }} contentContainerStyle={{ paddingTop: 10 }}>
+                            <ScrollView alwaysBounceVertical={false} style={{ maxHeight: maxScrollHeight }} contentContainerStyle={{ paddingTop: paddingTop !== undefined ? paddingTop : 10, paddingBottom: paddingBottom !== undefined ? paddingBottom : undefined }}>
                                 {!!title && (
                                     <View style={{ paddingTop: 4, paddingBottom: 30, alignItems: 'center' }}>
                                         <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
@@ -230,13 +237,22 @@ const ThemedSheetModal = React.memo((props: SheetModalProps) => {
     return <SheetModal {...props} theme={theme} />;
 });
 
-export function showSheetModal(render: (ctx: ZModalController) => React.ReactElement<{}>, title?: string) {
+export function showSheetModal(
+    render: (ctx: ZModalController) => React.ReactElement<{}>,
+    title?: string,
+    style?: {
+        paddingTop?: number;
+        paddingBottom?: number;
+    }
+) {
     showModal((ctx) => {
         return (
             <GQLClientContext.Provider value={getClient()}>
-                <ASSafeAreaContext.Consumer>
-                    {safe => <ThemedSheetModal modal={render} safe={safe} ctx={ctx} title={title} />}
-                </ASSafeAreaContext.Consumer>
+                <QueryCacheProvider>
+                    <ASSafeAreaContext.Consumer>
+                        {safe => <ThemedSheetModal modal={render} safe={safe} ctx={ctx} title={title} style={style} />}
+                    </ASSafeAreaContext.Consumer>
+                </QueryCacheProvider>
             </GQLClientContext.Provider>
         );
     });
