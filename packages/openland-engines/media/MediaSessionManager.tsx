@@ -69,14 +69,14 @@ export class MediaSessionManager {
     private ownPeerDetected = false;
     private destroyed = false;
 
-    constructor(messenger: MessengerEngine, conversationId: string, callType: CallType) {
+    constructor(messenger: MessengerEngine, conversationId: string, callType: CallType, audioEnabled: boolean) {
         this.messenger = messenger;
         this.client = messenger.client;
         this.conversationId = conversationId;
         this.callType = callType;
 
         // Initial state
-        this.audioEnabled = callType === 'call';
+        this.audioEnabled = audioEnabled;
         this.videoEnabled = false;
         this.screencastEnabled = false;
 

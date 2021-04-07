@@ -1,6 +1,5 @@
 import { css, cx } from 'linaria';
 import React from 'react';
-import { XViewRouterContext } from 'react-mental';
 
 import { XModalController } from 'openland-x/showModal';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
@@ -13,6 +12,7 @@ import { useForm } from 'openland-form/useForm';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useClient } from 'openland-api/useClient';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { useJoinRoom } from './joinRoom';
 
 const newRoomButton = css`
   margin-right: 16px;
@@ -81,7 +81,7 @@ const contentWrapper = css`
 export const NewRoomForm = React.memo((props: { ctx: XModalController }) => {
     const form = useForm();
     const client = useClient();
-    const router = React.useContext(XViewRouterContext)!;
+    const joinRoom = useJoinRoom();
 
     const nameField = useField('input.name', '', form, [
         {
@@ -94,7 +94,7 @@ export const NewRoomForm = React.memo((props: { ctx: XModalController }) => {
         form.doAction(async () => {
             const room = (await client.mutateVoiceChatCreate({ input: { title: nameField.value } })).voiceChatCreate;
             props.ctx.hide();
-            router.navigate(`/room/${room.id}`);
+            joinRoom(room.id, true);
         });
     }, [nameField.value]);
 

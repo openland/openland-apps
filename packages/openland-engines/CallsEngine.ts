@@ -33,7 +33,7 @@ export class CallsEngine {
         return this._mediaSession;
     }
 
-    joinCall = (conversationId: string, callType: CallType) => {
+    joinCall = (conversationId: string, callType: CallType, audioEnabled: boolean = callType === 'call') => {
         if (this._mediaSession) {
             if (this._mediaSession.conversationId === conversationId) {
                 return;
@@ -43,7 +43,7 @@ export class CallsEngine {
             }
         }
 
-        let manager = new MediaSessionManager(this.messenger, conversationId, callType);
+        let manager = new MediaSessionManager(this.messenger, conversationId, callType, audioEnabled);
         manager.onDestoy = () => {
             if (this._mediaSession === manager) {
                 this._mediaSession = null;
