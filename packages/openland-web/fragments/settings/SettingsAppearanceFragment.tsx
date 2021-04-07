@@ -40,7 +40,7 @@ enum AccentColors {
     ORANGE = '#F28B0C',
     GREEN = '#8AB840',
     CYAN = '#27B2CE',
-    PURPLE = '#7A24F2',
+    PURPLE = '#8643E4',
     PINK = '#EF568D',
     GREY = '#8192B2',
 }
