@@ -4495,7 +4495,6 @@ const VoiceChatUserSelector = obj(
                     field('id', 'id', args(), notNull(scalar('ID'))),
                     field('name', 'name', args(), notNull(scalar('String'))),
                     field('photo', 'photo', args(), scalar('String')),
-                    field('followingCount', 'followingCount', args(), notNull(scalar('Int'))),
                     field('followersCount', 'followersCount', args(), notNull(scalar('Int'))),
                     field('followedByMe', 'followedByMe', args(), notNull(scalar('Boolean'))),
                     field('about', 'about', args(), scalar('String'))
@@ -6454,7 +6453,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     VoiceChatUser: {
         kind: 'query',
         name: 'VoiceChatUser',
-        body: 'query VoiceChatUser($uid:ID!){user(id:$uid){__typename id name photo followingCount followersCount followedByMe about}conversation:room(id:$uid){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}',
+        body: 'query VoiceChatUser($uid:ID!){user(id:$uid){__typename id name photo followersCount followedByMe about}conversation:room(id:$uid){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}',
         selector: VoiceChatUserSelector
     },
     AccountInviteJoin: {

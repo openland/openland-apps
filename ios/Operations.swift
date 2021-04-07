@@ -4488,7 +4488,6 @@ private let VoiceChatUserSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("name", "name", notNull(scalar("String"))),
                     field("photo", "photo", scalar("String")),
-                    field("followingCount", "followingCount", notNull(scalar("Int"))),
                     field("followersCount", "followersCount", notNull(scalar("Int"))),
                     field("followedByMe", "followedByMe", notNull(scalar("Boolean"))),
                     field("about", "about", scalar("String"))
@@ -6451,7 +6450,7 @@ class Operations {
     let VoiceChatUser = OperationDefinition(
         "VoiceChatUser",
         .query, 
-        "query VoiceChatUser($uid:ID!){user(id:$uid){__typename id name photo followingCount followersCount followedByMe about}conversation:room(id:$uid){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}",
+        "query VoiceChatUser($uid:ID!){user(id:$uid){__typename id name photo followersCount followedByMe about}conversation:room(id:$uid){__typename ... on PrivateRoom{__typename id settings{__typename id mute}}}}",
         VoiceChatUserSelector
     )
     let AccountInviteJoin = OperationDefinition(

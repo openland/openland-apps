@@ -7,7 +7,6 @@ import { createLogger } from 'mental-log';
 import { currentTimeMillis } from 'openland-y-utils/currentTime';
 import { InvalidationQueue } from 'openland-y-utils/InvalidationQueue';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
-// import { Priority } from 'openland-api/Priority';
 
 const log = createLogger('Engine-Dialog-Sequence');
 
@@ -70,14 +69,6 @@ export class DialogSequenceEngine {
             }
             return null;
         });
-    }
-
-    resolvePrivateConversation = async (uid: string) => {
-        let res = await this.engine.client.queryRoomPico({ id: uid });
-        return {
-            id: res.room!!.id,
-            flexibleId: uid
-        };
     }
 
     onConversationVisible = (conversationId: string) => {

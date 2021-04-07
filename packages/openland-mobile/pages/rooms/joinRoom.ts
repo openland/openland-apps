@@ -19,7 +19,7 @@ export const useJoinRoom = () => {
 
     modalOpenRef.current = modalOpen;
 
-    return async (id: string) => {
+    return async (id: string, audioEnabled?: boolean) => {
         if (await checkPermissions('microphone')) {
             if (modalOpenRef.current && !isPad) {
                 return;
@@ -36,7 +36,7 @@ export const useJoinRoom = () => {
             try {
                 if (!mediaSession || (mediaSession && !didJoin) || (id !== mediaSession.conversationId)) {
                     await client.mutateVoiceChatJoin({ id });
-                    messenger.calls.joinCall(id, 'voice-chat');
+                    messenger.calls.joinCall(id, 'voice-chat', audioEnabled);
                 }
                 showRoomView(id, router, () => setModalOpen(false));
             } catch (e) {
