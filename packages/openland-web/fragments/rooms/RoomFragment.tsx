@@ -18,6 +18,7 @@ import IcUser from 'openland-icons/s/ic-user-24.svg';
 import IcFollow from 'openland-icons/s/ic-invite-24.svg';
 import IcMessage from 'openland-icons/s/ic-message-24.svg';
 import IcLeave from 'openland-icons/s/ic-leave-24.svg';
+import IcEdit from 'openland-icons/s/ic-edit-24.svg';
 import IcMuted from 'openland-icons/s/ic-mic-off-36.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { SvgLoader, XLoader } from 'openland-x/XLoader';
@@ -274,12 +275,14 @@ const UserMenu = React.memo((props: {
     status: VoiceChatParticipantStatus,
     followedByMe: boolean,
     selfStatus?: VoiceChatParticipantStatus,
+    isSelf: boolean,
 }) => {
     const router = React.useContext(XViewRouterContext)!;
     const client = useClient();
     const followedByMe = client.useVoiceChatUser({ uid: props.userId }, { suspense: false })?.user.followedByMe;
     let popper = new UPopperMenuBuilder();
     const isFollowed = typeof followedByMe === 'undefined' ? props.followedByMe : followedByMe;
+    const width = 200;
 
     popper.item({
         title: 'View profile',
@@ -288,6 +291,18 @@ const UserMenu = React.memo((props: {
             router.navigate(`/${props.userId}`);
         },
     });
+
+    if (props.isSelf) {
+        popper.item({
+            title: 'Edit profile',
+            icon: <IcEdit />,
+            action: () => {
+                router.navigate(`/settings/profile`);
+            },
+        });
+
+        return popper.build(props.ctx, width);
+    }
 
     if (!isFollowed) {
         popper.item({
@@ -358,7 +373,7 @@ const UserMenu = React.memo((props: {
         });
     }
 
-    return popper.build(props.ctx, 200);
+    return popper.build(props.ctx, width);
 });
 
 interface RoomUserInfo {
@@ -385,6 +400,7 @@ const RoomUser = React.memo(({
 }: {
     state?: 'talking' | 'loading' | 'muted';
 } & RoomUserInfo) => {
+    const isSelf = selfId === id;
     const [visible, show, hide] = usePopper(
         {
             placement: 'bottom-start',
@@ -396,13 +412,12 @@ const RoomUser = React.memo(({
             updatedDeps: userStatus,
         },
         (ctx) => (
-            <UserMenu ctx={ctx} roomId={roomId} userId={id} status={userStatus} selfStatus={selfStatus} followedByMe={followedByMe} />
+            <UserMenu ctx={ctx} roomId={roomId} userId={id} status={userStatus} selfStatus={selfStatus} followedByMe={followedByMe} isSelf={isSelf} />
         ),
     );
     const isAdmin = userStatus === VoiceChatParticipantStatus.ADMIN;
     const isSpeaker = userStatus === VoiceChatParticipantStatus.SPEAKER;
     const isListener = userStatus === VoiceChatParticipantStatus.LISTENER;
-    const isSelf = selfId === id;
     const handleClick = (e: React.MouseEvent) => {
         if (visible) {
             hide();
@@ -416,14 +431,12 @@ const RoomUser = React.memo(({
             flexShrink={0}
             alignItems="center"
             padding={8}
-            {...!isSelf && {
-                hoverBackgroundColor: 'var(--backgroundTertiaryTrans)',
-                hoverBorderRadius: 8,
-                hoverCursor: 'pointer',
-                backgroundColor: visible ? 'var(--backgroundTertiaryTrans)' : undefined,
-                borderRadius: visible ? 8 : undefined,
-                onClick: handleClick,
-            }}
+            hoverBackgroundColor="var(--backgroundTertiaryTrans)"
+            hoverBorderRadius={8}
+            hoverCursor="pointer"
+            backgroundColor={visible ? 'var(--backgroundTertiaryTrans)' : undefined}
+            borderRadius={visible ? 8 : undefined}
+            onClick={handleClick}
             {...isListener ? {
                 marginHorizontal: 5,
             } : {

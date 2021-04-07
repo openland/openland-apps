@@ -114,6 +114,7 @@ interface RoomUserViewProps {
     userStatus: VoiceChatParticipantStatus;
     theme: ThemeGlobal;
     selfStatus?: VoiceChatParticipantStatus;
+    isSelf: boolean;
     router: SRouter;
     state?: 'muted' | 'talking' | 'loading';
     modalCtx: { hide: () => void };
@@ -126,7 +127,7 @@ interface PeerMedia {
 }
 
 const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => void }) => {
-    const { user, theme } = props;
+    const { user, theme, isSelf } = props;
     const userId = user.id;
     const [avatarSize, setAvatarSize] = React.useState<null | number>(null);
 
@@ -188,6 +189,11 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
     };
     const handleViewUser = () => {
         props.router.pushAndReset('Conversation', { id: conversationId });
+        props.hide();
+        props.modalCtx.hide();
+    };
+    const handleViewUserProfile = () => {
+        props.router.pushAndReset('ProfileUser', { id: user.id });
         props.hide();
         props.modalCtx.hide();
     };
@@ -355,7 +361,7 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                     </View>
                 )}
                 <View style={{ marginTop: isSelfAdmin ? 16 : undefined, flexGrow: 1, alignItems: 'stretch' }}>
-                    {isSelfAdmin && (
+                    {isSelfAdmin && !isSelf && (
                         <>
                             {props.userStatus === VoiceChatParticipantStatus.SPEAKER && (
                                 <ZListItem
@@ -399,7 +405,15 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                         </>
                     )}
                     <View style={{ marginTop: 16, paddingHorizontal: 16, flexDirection: 'row' }}>
-                        {!followedByMe ? (
+                        {isSelf ? (
+                            <View style={{ flex: 1 }}>
+                                <ZButton
+                                    size="large"
+                                    title="View profile"
+                                    onPress={handleViewUserProfile}
+                                />
+                            </View>
+                        ) : !followedByMe ? (
                             <>
                                 <View style={{ flex: 1 }}>
                                     <ZButton size="large" title="Follow" action={followUser} />
@@ -648,7 +662,6 @@ const RoomHeader = React.memo(
 
 const RoomUserView = React.memo((props: RoomUserViewProps) => {
     const { state, userStatus, theme, user } = props;
-    const messenger = getMessenger().engine;
     const isAdmin = userStatus === VoiceChatParticipantStatus.ADMIN;
     const isListener = userStatus === VoiceChatParticipantStatus.LISTENER;
 
@@ -669,7 +682,6 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}
-                disabled={messenger.user.id === user.id}
                 onPress={() => showUserInfo(props)}
             >
                 <View
@@ -859,6 +871,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                             user={speaker.user}
                             userStatus={speaker.status}
                             selfStatus={room.me?.status}
+                            isSelf={room.me?.user.id === speaker.user.id}
                             peer={peer}
                             theme={theme}
                             router={router}
@@ -899,6 +912,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                         user={item.user}
                         userStatus={item.status}
                         selfStatus={room.me?.status}
+                        isSelf={item.user.id === room.me?.user.id}
                         theme={theme}
                         router={router}
                         modalCtx={modalCtx}

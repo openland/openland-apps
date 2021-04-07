@@ -1,5 +1,5 @@
 import React from 'react';
-import { XView, XViewRouteContext, XViewRouterContext } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
 import { css, cx } from 'linaria';
 
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
@@ -101,11 +101,12 @@ const RoomsFeedItem = React.memo((props: { voiceChat: VoiceChatWithSpeakers }) =
     const { title, speakers, speakersCount, listenersCount, id } = props.voiceChat;
     const firstSpeakers = speakers.slice(0, 4);
     const joinRoom = useJoinRoom();
-    const route = React.useContext(XViewRouteContext)!;
+    let messenger = React.useContext(MessengerContext);
+    let session = messenger.calls.useCurrentSession();
 
     return (
         <XView
-            selected={route.path === `/room/${id}`}
+            selected={session?.conversationId === id}
             paddingHorizontal={16}
             paddingVertical={12}
             cursor="pointer"
