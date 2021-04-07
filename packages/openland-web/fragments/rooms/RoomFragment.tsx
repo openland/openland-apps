@@ -764,6 +764,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
             />
             {voiceChatData.parentRoom && (
                 <RoomHeader
+                    title={voiceChatData.title}
                     speakersCount={voiceChatData.speakersCount}
                     listenersCount={voiceChatData.listenersCount}
                 />
