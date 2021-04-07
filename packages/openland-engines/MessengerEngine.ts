@@ -5,7 +5,6 @@ import { ConversationEngine } from './messenger/ConversationEngine';
 import { DialogSequenceEngine } from './messenger/DialogSequenceEngine';
 import { Account_me, ChatUpdateFragment_ChatMessageReceived, TypingType } from 'openland-api/spacex.types';
 import { NotificationsEngine } from './NotificationsEngine';
-import { CreateEntityEngine } from './createEntity/CreateEntityState';
 import { NotificationCenterEngine } from './NotificationCenterEngine';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { TypingEngine, TypingsWatcher } from './messenger/Typings';
@@ -39,7 +38,6 @@ export class MessengerEngine {
     readonly wallet: WalletEngine;
     readonly experimentalUpdates: UpdatesEngine | null;
 
-    private readonly createEntityState: CreateEntityEngine;
     private readonly activeUserConversations = new Map<string, ConversationEngine>();
     private readonly mountedConversations = new Map<string, { count: number; unread: number }>();
     private readonly activeTypings = new Map<string, TypingEngine>();
@@ -72,9 +70,6 @@ export class MessengerEngine {
 
         this.dialogSequence = new DialogSequenceEngine(this);
         this.sender = new MessageSender(client);
-
-        // Create entity
-        this.createEntityState = new CreateEntityEngine();
 
         // Visibility
         AppVisibility.watch(this.handleVisibleChanged);
@@ -153,10 +148,6 @@ export class MessengerEngine {
 
     handleNewMessage = (message: ChatUpdateFragment_ChatMessageReceived, cid: string) => {
         this.typingsWatcher.clearTyping(cid, message.message.sender.id);
-    }
-
-    getEntityState() {
-        return this.createEntityState;
     }
 
     getConversation(conversationId: string) {

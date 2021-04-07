@@ -24,10 +24,17 @@ import { ZText } from 'openland-mobile/components/ZText';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { RoomControls } from './RoomControls';
 import { showEditPinnedMessage } from './RoomSettings';
-import { Conference_conference_peers, SharedRoomKind, SharedRoomMembershipStatus, VoiceChatParticipantStatus, VoiceChatUser_conversation_PrivateRoom } from 'openland-api/spacex.types';
+import {
+    Conference_conference_peers,
+    SharedRoomKind,
+    SharedRoomMembershipStatus,
+    VoiceChatParticipantStatus,
+    VoiceChatUser_conversation_PrivateRoom,
+    VoiceChatParticipant_user,
+    VoiceChatUser_user,
+} from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { TintBlue } from 'openland-y-utils/themes/tints';
-import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import InCallManager from 'react-native-incall-manager';
 import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradient.native';
@@ -45,6 +52,7 @@ import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
 import { debounce } from 'openland-y-utils/timer';
+import { showSheetModal } from 'openland-mobile/components/showSheetModal';
 
 interface PinnedMessageViewProps {
     theme: ThemeGlobal;
@@ -105,12 +113,7 @@ const showPinnedMessage = (
 
 interface RoomUserViewProps {
     roomId: string;
-    user: {
-        name: string;
-        firstName: string;
-        photo: string | null;
-        id: string;
-    };
+    user: VoiceChatParticipant_user;
     userStatus: VoiceChatParticipantStatus;
     theme: ThemeGlobal;
     selfStatus?: VoiceChatParticipantStatus;
@@ -125,312 +128,327 @@ interface PeerMedia {
     screencastTrack: AppMediaStreamTrack | null;
 }
 
+interface UserAvatarProps {
+    user: VoiceChatUser_user;
+    hide: () => void;
+    theme: ThemeGlobal;
+    router: SRouter;
+    modalCtx: { hide: () => void };
+}
+
+const UserAvatar = React.memo((props: UserAvatarProps) => {
+    const { user, theme } = props;
+    const { id, name, photo, followersCount, followedByMe } = user;
+    const avatarSize = isPad ? 350 : SDevice.wWidth - 16;
+
+    const handleUserView = () => {
+        props.router.pushAndReset('ProfileUser', { id: id });
+        props.hide();
+        props.modalCtx.hide();
+    };
+
+    const hasPhoto = !!(photo && !photo.startsWith('ph://'));
+    const placeholder = hasPhoto
+        ? undefined
+        : {
+              fallbackColor: getPlaceholderColors(id || '').placeholderColor,
+              topColor: getPlaceholderColors(id || '').placeholderColorStart,
+              bottomColor: getPlaceholderColors(id || '').placeholderColorEnd,
+          };
+
+    return (
+        <TouchableOpacity onPress={handleUserView}>
+            <View
+                style={{
+                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-end',
+                    width: avatarSize,
+                    height: avatarSize,
+                }}
+            >
+                <View
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        width: avatarSize,
+                        height: avatarSize,
+                    }}
+                >
+                    {hasPhoto ? (
+                        <ZImage
+                            highPriority={true}
+                            imageSize={{ width: avatarSize * 2, height: avatarSize * 2 }}
+                            source={photo}
+                            borderTopLeftRadius={18}
+                            borderTopRightRadius={18}
+                            width={avatarSize}
+                            height={avatarSize}
+                        />
+                    ) : (
+                        <ZLinearGradient
+                            width={avatarSize}
+                            height={avatarSize}
+                            borderTopLeftRadius={18}
+                            borderTopRightRadius={18}
+                            fallbackColor={placeholder!.fallbackColor}
+                            colors={[placeholder!.topColor, placeholder!.bottomColor]}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 1 }}
+                        >
+                            <View
+                                style={{
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: avatarSize,
+                                    height: avatarSize,
+                                }}
+                            >
+                                <Text
+                                    style={[styles.placeholderText, { fontSize: 128 }]}
+                                    allowFontScaling={false}
+                                >
+                                    {extractPlaceholder(name)}
+                                </Text>
+                            </View>
+                        </ZLinearGradient>
+                    )}
+                </View>
+                <ZLinearGradient
+                    width={avatarSize}
+                    height={88}
+                    fallbackColor={'#00000000'}
+                    colors={['#00000000', '#000000b8']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 0, y: 1 }}
+                >
+                    <View
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'flex-start',
+                            justifyContent: 'flex-end',
+                            height: '100%',
+                            padding: 16,
+                        }}
+                    >
+                        <Text
+                            numberOfLines={1}
+                            style={{
+                                ...TextStyles.Title1,
+                                color: theme.foregroundContrast,
+                                marginBottom: 4,
+                            }}
+                            allowFontScaling={false}
+                        >
+                            {name}
+                        </Text>
+                        <View
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Text
+                                allowFontScaling={false}
+                                style={{
+                                    ...TextStyles.Subhead,
+                                    color: theme.foregroundContrast,
+                                    opacity: 0.72,
+                                }}
+                            >
+                                {followersCount} followers
+                            </Text>
+                            {followedByMe && (
+                                <Image
+                                    source={require('assets/ic-done-16.png')}
+                                    style={{
+                                        tintColor: theme.foregroundContrast,
+                                        opacity: 0.72,
+                                        marginLeft: 2,
+                                    }}
+                                />
+                            )}
+                        </View>
+                    </View>
+                </ZLinearGradient>
+            </View>
+        </TouchableOpacity>
+    );
+});
+
 const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => void }) => {
     const { user, theme } = props;
-    const userId = user.id;
-    const [avatarSize, setAvatarSize] = React.useState<null | number>(null);
+    const { id } = user;
 
     const client = useClient();
     const data = client.useVoiceChatUser(
         {
-            uid: userId,
+            uid: id,
         },
         { fetchPolicy: 'cache-and-network' },
     );
 
-    const { followedByMe, followersCount, photo, about, name } = data.user;
+    const { about, followedByMe } = data.user;
     const conversationId = (data.conversation as VoiceChatUser_conversation_PrivateRoom).id;
-
-    const onLayout = React.useCallback(
-        (e: LayoutChangeEvent) => {
-            if (!avatarSize) {
-                setAvatarSize(e.nativeEvent.layout.width);
-            }
-        },
-        [avatarSize],
-    );
 
     const isSelfAdmin = props.selfStatus === VoiceChatParticipantStatus.ADMIN;
 
     const removeAdmin = async () => {
         await Promise.all([
-            client.mutateVoiceChatUpdateAdmin({ id: props.roomId, uid: userId, admin: false }),
+            client.mutateVoiceChatUpdateAdmin({ id: props.roomId, uid: id, admin: false }),
             client.refetchVoiceChat({ id: props.roomId }),
         ]);
         props.hide();
     };
     const makeAdmin = async () => {
         await Promise.all([
-            client.mutateVoiceChatUpdateAdmin({ id: props.roomId, uid: userId, admin: true }),
+            client.mutateVoiceChatUpdateAdmin({ id: props.roomId, uid: id, admin: true }),
             client.refetchVoiceChat({ id: props.roomId }),
         ]);
         props.hide();
     };
     const removeUser = async () => {
-        await client.mutateVoiceChatKick({ id: props.roomId, uid: userId });
+        await client.mutateVoiceChatKick({ id: props.roomId, uid: id });
         await client.refetchVoiceChat({ id: props.roomId });
         props.hide();
     };
     const demoteUser = async () => {
-        await client.mutateVoiceChatDemote({ id: props.roomId, uid: userId });
+        await client.mutateVoiceChatDemote({ id: props.roomId, uid: id });
         await client.refetchVoiceChat({ id: props.roomId });
         props.hide();
     };
     const promoteUser = async () => {
-        await client.mutateVoiceChatPromote({ id: props.roomId, uid: userId });
+        await client.mutateVoiceChatPromote({ id: props.roomId, uid: id });
         await client.refetchVoiceChat({ id: props.roomId });
         props.hide();
     };
     const followUser = async () => {
-        await client.mutateSocialFollow({ uid: userId });
-        await client.refetchVoiceChatUser({ uid: userId });
+        await client.mutateSocialFollow({ uid: id });
+        await client.refetchVoiceChatUser({ uid: id });
         props.hide();
     };
-    const handleViewUser = () => {
+    const handleUserMessage = () => {
         props.router.pushAndReset('Conversation', { id: conversationId });
         props.hide();
         props.modalCtx.hide();
     };
 
     return (
-        <React.Suspense
-            fallback={
-                <View
-                    style={{
-                        flexGrow: 1,
-                        minHeight: 156,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                >
-                    <ZLoader />
-                </View>
-            }
+        <View
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'stretch',
+                justifyContent: 'center',
+            }}
         >
+            <UserAvatar
+                user={data.user}
+                theme={theme}
+                router={props.router}
+                hide={props.hide}
+                modalCtx={props.modalCtx}
+            />
+            {about && (
+                <View style={{ paddingHorizontal: 16, marginTop: 16 }}>
+                    <ZText
+                        linkify={false}
+                        style={{ ...TextStyles.Body, color: theme.foregroundPrimary }}
+                        text={about}
+                        numberOfLines={3}
+                    />
+                </View>
+            )}
             <View
                 style={{
-                    display: 'flex',
-                    flexDirection: 'column',
+                    marginTop: isSelfAdmin ? 16 : undefined,
+                    flexGrow: 1,
                     alignItems: 'stretch',
-                    justifyContent: 'center',
                 }}
-                onLayout={onLayout}
             >
-                {!!avatarSize && (
-                    <TouchableOpacity onPress={handleViewUser}>
-                        <View
-                            style={{
-                                position: 'relative',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'flex-start',
-                                justifyContent: 'flex-end',
-                                width: avatarSize,
-                                height: avatarSize,
-                            }}
-                        >
-                            <View
-                                style={{
-                                    position: 'absolute',
-                                    left: 0,
-                                    right: 0,
-                                    width: avatarSize,
-                                    height: avatarSize,
-                                }}
-                            >
-                                {!!(photo && !photo.startsWith('ph://')) ? (
-                                    <ZImage
-                                        highPriority={true}
-                                        imageSize={{ width: avatarSize, height: avatarSize }}
-                                        source={photo}
-                                        borderTopLeftRadius={18}
-                                        borderTopRightRadius={18}
-                                        width={avatarSize}
-                                        height={avatarSize}
-                                    />
-                                ) : (
-                                    <ZLinearGradient
-                                        width={avatarSize}
-                                        height={avatarSize}
-                                        borderTopLeftRadius={18}
-                                        borderTopRightRadius={18}
-                                        fallbackColor={
-                                            getPlaceholderColors(userId || '').placeholderColor
-                                        }
-                                        colors={[
-                                            getPlaceholderColors(userId || '').placeholderColorStart,
-                                            getPlaceholderColors(userId || '').placeholderColorEnd,
-                                        ]}
-                                        start={{ x: 0, y: 0 }}
-                                        end={{ x: 1, y: 1 }}
-                                    >
-                                        <View
-                                            style={{
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                width: avatarSize,
-                                                height: avatarSize,
-                                            }}
-                                        >
-                                            <Text
-                                                style={[styles.placeholderText, { fontSize: 128 }]}
-                                                allowFontScaling={false}
-                                            >
-                                                {extractPlaceholder(name)}
-                                            </Text>
-                                        </View>
-                                    </ZLinearGradient>
-                                )}
-                            </View>
-                            <ZLinearGradient
-                                width={avatarSize}
-                                height={88}
-                                fallbackColor={'#00000000'}
-                                colors={['#00000000', '#000000b8']}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 0, y: 1 }}
-                            >
-                                <View
-                                    style={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'flex-start',
-                                        justifyContent: 'flex-end',
-                                        height: '100%',
-                                        padding: 16,
-                                    }}
-                                >
-                                    <Text
-                                        numberOfLines={1}
-                                        style={{
-                                            ...TextStyles.Title1,
-                                            color: theme.foregroundContrast,
-                                            marginBottom: 4,
-                                        }}
-                                        allowFontScaling={false}
-                                    >
-                                        {name}
-                                    </Text>
-                                    <View
-                                        style={{
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        <Text
-                                            allowFontScaling={false}
-                                            style={{
-                                                ...TextStyles.Subhead,
-                                                color: theme.foregroundContrast,
-                                                opacity: 0.72,
-                                            }}
-                                        >
-                                            {followersCount} followers
-                                        </Text>
-                                        {followedByMe && (
-                                            <Image
-                                                source={require('assets/ic-done-16.png')}
-                                                style={{
-                                                    tintColor: theme.foregroundContrast,
-                                                    opacity: 0.72,
-                                                    marginLeft: 2,
-                                                }}
-                                            />
-                                        )}
-                                    </View>
-                                </View>
-                            </ZLinearGradient>
-                        </View>
-                    </TouchableOpacity>
+                {isSelfAdmin && (
+                    <>
+                        {props.userStatus === VoiceChatParticipantStatus.SPEAKER && (
+                            <ZListItem
+                                leftIcon={require('assets/ic-listener-24.png')}
+                                small={true}
+                                text="Make listener"
+                                onPress={demoteUser}
+                            />
+                        )}
+                        {props.userStatus === VoiceChatParticipantStatus.LISTENER && (
+                            <ZListItem
+                                leftIcon={require('assets/ic-mic-24.png')}
+                                small={true}
+                                text="Make speaker"
+                                onPress={promoteUser}
+                            />
+                        )}
+                        {props.userStatus === VoiceChatParticipantStatus.ADMIN ? (
+                            <ZListItem
+                                leftIcon={require('assets/ic-pro-off-24.png')}
+                                small={true}
+                                text="Remove admin"
+                                onPress={removeAdmin}
+                            />
+                        ) : props.userStatus === VoiceChatParticipantStatus.SPEAKER ? (
+                            <ZListItem
+                                leftIcon={require('assets/ic-pro-24.png')}
+                                small={true}
+                                text="Make admin"
+                                onPress={makeAdmin}
+                            />
+                        ) : null}
+                        {props.userStatus !== VoiceChatParticipantStatus.ADMIN && (
+                            <ZListItem
+                                leftIcon={require('assets/ic-leave-24.png')}
+                                small={true}
+                                text="Remove"
+                                onPress={removeUser}
+                            />
+                        )}
+                    </>
                 )}
-                {about && (
-                    <View style={{ paddingHorizontal: 16, marginTop: 16 }}>
-                        <ZText
-                            linkify={false}
-                            style={{ ...TextStyles.Body, color: theme.foregroundPrimary }}
-                            text={about}
-                            numberOfLines={3}
-                        />
-                    </View>
-                )}
-                <View style={{ marginTop: isSelfAdmin ? 16 : undefined, flexGrow: 1, alignItems: 'stretch' }}>
-                    {isSelfAdmin && (
+                <View style={{ marginTop: 16, paddingHorizontal: 16, flexDirection: 'row' }}>
+                    {!followedByMe ? (
                         <>
-                            {props.userStatus === VoiceChatParticipantStatus.SPEAKER && (
-                                <ZListItem
-                                    leftIcon={require('assets/ic-listener-24.png')}
-                                    small={true}
-                                    text="Make listener"
-                                    onPress={demoteUser}
-                                />
-                            )}
-                            {props.userStatus === VoiceChatParticipantStatus.LISTENER && (
-                                <ZListItem
-                                    leftIcon={require('assets/ic-mic-24.png')}
-                                    small={true}
-                                    text="Make speaker"
-                                    onPress={promoteUser}
-                                />
-                            )}
-                            {props.userStatus === VoiceChatParticipantStatus.ADMIN ? (
-                                <ZListItem
-                                    leftIcon={require('assets/ic-pro-off-24.png')}
-                                    small={true}
-                                    text="Remove admin"
-                                    onPress={removeAdmin}
-                                />
-                            ) : props.userStatus === VoiceChatParticipantStatus.SPEAKER ? (
-                                <ZListItem
-                                    leftIcon={require('assets/ic-pro-24.png')}
-                                    small={true}
-                                    text="Make admin"
-                                    onPress={makeAdmin}
-                                />
-                            ) : null}
-                            {props.userStatus !== VoiceChatParticipantStatus.ADMIN && (
-                                <ZListItem
-                                    leftIcon={require('assets/ic-leave-24.png')}
-                                    small={true}
-                                    text="Remove"
-                                    onPress={removeUser}
-                                />
-                            )}
-                        </>
-                    )}
-                    <View style={{ marginTop: 16, paddingHorizontal: 16, flexDirection: 'row' }}>
-                        {!followedByMe ? (
-                            <>
-                                <View style={{ flex: 1 }}>
-                                    <ZButton size="large" title="Follow" action={followUser} />
-                                </View>
-                                <View style={{ width: 16 }} />
-                                <View style={{ flex: 1 }}>
-                                    <ZButton
-                                        size="large"
-                                        title="Message"
-                                        style="secondary"
-                                        onPress={handleViewUser}
-                                    />
-                                </View>
-                            </>
-                        ) : (
+                            <View style={{ flex: 1 }}>
+                                <ZButton size="large" title="Follow" action={followUser} />
+                            </View>
+                            <View style={{ width: 16 }} />
                             <View style={{ flex: 1 }}>
                                 <ZButton
                                     size="large"
                                     title="Message"
-                                    onPress={handleViewUser}
+                                    style="secondary"
+                                    onPress={handleUserMessage}
                                 />
                             </View>
-                        )}
-                    </View>
+                        </>
+                    ) : (
+                        <View style={{ flex: 1 }}>
+                            <ZButton size="large" title="Message" onPress={handleUserMessage} />
+                        </View>
+                    )}
                 </View>
             </View>
-        </React.Suspense>
+        </View>
     );
 });
 
 const showUserInfo = (props: RoomUserViewProps) => {
+    if (isPad) {
+        showSheetModal((ctx) => <UserModalContent {...props} hide={ctx.hide} />, undefined, {
+            paddingTop: 0,
+            paddingBottom: 20,
+        });
+        return;
+    }
     showBottomSheet({
         view: (ctx) => <UserModalContent {...props} hide={ctx.hide} />,
         cancelable: true,
@@ -453,9 +471,9 @@ const RoomHeader = React.memo(
     ) => {
         const { room, hide, router, theme } = props;
         const { parentRoom } = room;
-        const [joinState, setJoinState] = React.useState<'initial' | 'loading' | 'success' | 'joined'>(
-            parentRoom?.membership === SharedRoomMembershipStatus.MEMBER ? 'joined' : 'initial'
-        );
+        const [joinState, setJoinState] = React.useState<
+            'initial' | 'loading' | 'success' | 'joined'
+        >(parentRoom?.membership === SharedRoomMembershipStatus.MEMBER ? 'joined' : 'initial');
         const client = useClient();
 
         const topSpacing = isPad
@@ -472,7 +490,6 @@ const RoomHeader = React.memo(
                 onLayout={props.onLayout}
             >
                 {parentRoom && (
-
                     <View
                         style={{
                             flexDirection: 'row',
@@ -528,13 +545,22 @@ const RoomHeader = React.memo(
                                             setJoinState('joined');
                                         }, 1000);
                                     } catch (e) {
-                                        Toast.failure({ text: `Couldn't join ${parentRoom.isChannel ? 'channel' : 'group'}`, duration: 2000 }).show();
+                                        Toast.failure({
+                                            text: `Couldn't join ${
+                                                parentRoom.isChannel ? 'channel' : 'group'
+                                            }`,
+                                            duration: 2000,
+                                        }).show();
                                         setJoinState('initial');
                                     }
                                 }}
                             >
                                 <Text
-                                    style={{ ...TextStyles.Label2, color: theme.accentPrimary, opacity: joinState === 'initial' ? 1 : 0 }}
+                                    style={{
+                                        ...TextStyles.Label2,
+                                        color: theme.accentPrimary,
+                                        opacity: joinState === 'initial' ? 1 : 0,
+                                    }}
                                 >
                                     Join {parentRoom.isChannel ? 'channel' : 'group'}
                                 </Text>
@@ -551,10 +577,16 @@ const RoomHeader = React.memo(
                                 >
                                     <>
                                         {joinState === 'loading' && (
-                                            <LoaderSpinner size="small" color={theme.accentPrimary} />
+                                            <LoaderSpinner
+                                                size="small"
+                                                color={theme.accentPrimary}
+                                            />
                                         )}
                                         {joinState === 'success' && (
-                                            <Image source={require('assets/ic-done-24.png')} style={{ tintColor: theme.accentPrimary }} />
+                                            <Image
+                                                source={require('assets/ic-done-24.png')}
+                                                style={{ tintColor: theme.accentPrimary }}
+                                            />
                                         )}
                                     </>
                                 </View>
@@ -574,7 +606,13 @@ const RoomHeader = React.memo(
                         {props.room.title}
                     </Text>
                 ) : null}
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: room.title ? 10 : 14 }}>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginTop: room.title ? 10 : 14,
+                    }}
+                >
                     <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }}>
                         {room.speakersCount}
                     </Text>
@@ -749,10 +787,10 @@ const RoomSpeakingUserView = React.memo((props: RoomSpeakingUserViewProps) => {
     const state = isLoading
         ? 'loading'
         : peer?.mediaState.audioPaused
-            ? 'muted'
-            : isTalking
-                ? 'talking'
-                : undefined;
+        ? 'muted'
+        : isTalking
+        ? 'talking'
+        : undefined;
 
     return <RoomUserView {...other} state={state} />;
 });
@@ -907,8 +945,8 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                 keyExtractor={(item, index) => index.toString() + item.id}
                 numColumns={4}
                 style={{ flex: 1 }}
-            // refreshing={listenersState.loading}
-            // onEndReached={listenersState.loadMore}
+                // refreshing={listenersState.loading}
+                // onEndReached={listenersState.loadMore}
             />
         </View>
     );
