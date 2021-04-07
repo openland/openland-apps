@@ -66,9 +66,9 @@ html {
     --accentPrimaryActive: #1677D9;
     --accentPrimaryTrans: rgba(24, 133, 242, 0.24);
 
-    --accentMuted: #4595E5;
-    --accentMutedHover: #4595E5;
-    --accentMutedActive: #4595E5;
+    --accentMuted: #398FE5;
+    --accentMutedHover: #398FE5;
+    --accentMutedActive: #398FE5;
 
     --accentPositive: #40B855;
     --accentPositiveHover: #52CC66;
@@ -124,7 +124,7 @@ html {
 }
 
 @media (prefers-color-scheme: dark) {
-    html:not(.landing) {
+    html:not(.landing):not(.light) {
         --transparent: rgba(0, 0, 0, 0);
 
         --foregroundPrimary: #FFFFFF;
@@ -154,17 +154,65 @@ html {
         --accentPayHover: #898B8F;
         --accentPayActive: #898B8F;
 
+        --accentMuted: #3A79B9;
+        --accentMutedHover: #3A79B9;
+        --accentMutedActive: #3A79B9;
+
         --border: rgba(255, 255, 255, 0.08);
         --borderLight: rgba(255, 255, 255, 0.04);
 
         --backgroundBlurPrimary: rgba(35, 39, 41, 0.72);
         --backgroundBlurSecondary: rgba(35, 39, 41, 0.92);
 
+        --gradient100to0: linear-gradient(180deg, rgba(96, 101, 107, 0.14) 0%, rgba(96, 101, 107, 0) 100%);
+
         --boxShadowPopper: 0px 8px 24px rgba(0, 0, 0, 0.4), 0px 0px 48px rgba(0, 0, 0, 0.3);
 
         --backgroundLightPink: #453440;
         --backgroundLightYellow: #453D3B;
         --backgroundLightBlue: #343746;
+    }
+
+    html.red:not(.landing):not(.light) {
+        --accentMuted: #B44B56;
+        --accentMutedHover: #B44B56;
+        --accentMutedActive: #B44B56;
+    }
+
+    html.green:not(.landing):not(.light) {
+        --accentMuted: #7DA044;
+        --accentMutedHover: #7DA044;
+        --accentMutedActive: #7DA044;
+    }
+
+    html.grey:not(.landing):not(.light) {
+        --accentMuted: #677798;
+        --accentMutedHover: #677798;
+        --accentMutedActive: #677798;
+    }
+
+    html.purple:not(.landing):not(.light) {
+        --accentMuted: #4F2788;
+        --accentMutedHover: #4F2788;
+        --accentMutedActive: #4F2788;
+    }
+
+    html.orange:not(.landing):not(.light) {
+        --accentMuted: #C7763C;
+        --accentMutedHover: #C7763C;
+        --accentMutedActive: #C7763C;
+    }
+
+    html.cyan:not(.landing):not(.light) {
+        --accentMuted: #309BB0;
+        --accentMutedHover: #309BB0;
+        --accentMutedActive: #309BB0;
+    }
+
+    html.pink:not(.landing):not(.light) {
+        --accentMuted: #C1587E;
+        --accentMutedHover: #C1587E;
+        --accentMutedActive: #C1587E;
     }
 }
 
@@ -242,6 +290,10 @@ html.dark:not(.landing) {
     --accentPayActive: #898B8F;
     --accentPrimaryTrans: rgba(255, 255, 255, 0.16);
 
+    --accentMuted: #3A79B9;
+    --accentMutedHover: #3A79B9;
+    --accentMutedActive: #3A79B9;
+
     --border: rgba(255, 255, 255, 0.08);
     --borderLight: rgba(255, 255, 255, 0.04);
 
@@ -253,76 +305,120 @@ html.dark:not(.landing) {
     --backgroundLightPink: #453440;
     --backgroundLightYellow: #453D3B;
     --backgroundLightBlue: #343746;
+
+    --gradient100to0: linear-gradient(180deg, rgba(96, 101, 107, 0.14) 0%, rgba(96, 101, 107, 0) 100%);
 }
 
 html.red:not(.landing) {
-    --accentPrimary: #F23051;
-    --accentPrimaryHover: #FF4060;
-    --accentPrimaryActive: #D92140;
+    --accentPrimary: #E04556;
+    --accentPrimaryHover: #ED5263;
+    --accentPrimaryActive: #DA384A;
 
-    --accentMuted: #F23051;
-    --accentMutedHover: #F23051;
-    --accentMutedActive: #F23051;
+    --accentMuted: #D14D5C;
+    --accentMutedHover: #D14D5C;
+    --accentMutedActive: #D14D5C;
+}
+
+html.dark.red:not(.landing) {
+    --accentMuted: #B44B56;
+    --accentMutedHover: #B44B56;
+    --accentMutedActive: #B44B56;
 }
 
 html.orange:not(.landing) {
-    --accentPrimary: #FF9F1A;
-    --accentPrimaryHover: #FFBB33;
-    --accentPrimaryActive: #F27F0C;
+    --accentPrimary: #F28B0C;
+    --accentPrimaryHover: #FF9F29;
+    --accentPrimaryActive: #EA8304;
 
-    --accentMuted: #FF9F1A;
-    --accentMutedHover: #FF9F1A;
-    --accentMutedActive: #FF9F1A;
+    --accentMuted: #EB8E4A;
+    --accentMutedHover: #EB8E4A;
+    --accentMutedActive: #EB8E4A;
+}
+
+html.dark.orange:not(.landing) {
+    --accentMuted: #C7763C;
+    --accentMutedHover: #C7763C;
+    --accentMutedActive: #C7763C;
 }
 
 html.green:not(.landing) {
-    --accentPrimary: #40B855;
-    --accentPrimaryHover: #52CC66;
-    --accentPrimaryActive: #32A645;
+    --accentPrimary: #8AB840;
+    --accentPrimaryHover: #99C84D;
+    --accentPrimaryActive: #80B12F;
 
-    --accentMuted: #40B855;
-    --accentMutedHover: #40B855;
-    --accentMutedActive: #40B855;
+    --accentMuted: #8EB254;
+    --accentMutedHover: #8EB254;
+    --accentMutedActive: #8EB254;
+}
+
+html.dark.green:not(.landing) {
+    --accentMuted: #7DA044;
+    --accentMutedHover: #7DA044;
+    --accentMutedActive: #7DA044;
 }
 
 html.cyan:not(.landing) {
-    --accentPrimary: #36BED9;
-    --accentPrimaryHover: #45CBE5;
-    --accentPrimaryActive: #26A1BF;
+    --accentPrimary: #27B2CE;
+    --accentPrimaryHover: #35C4E0;
+    --accentPrimaryActive: #19A9C6;
 
-    --accentMuted: #36BED9;
-    --accentMutedHover: #36BED9;
-    --accentMutedActive: #36BED9;
+    --accentMuted: #4BB7CC;
+    --accentMutedHover: #4BB7CC;
+    --accentMutedActive: #4BB7CC;
+}
+
+html.dark.cyan:not(.landing) {
+    --accentMuted: #309BB0;
+    --accentMutedHover: #309BB0;
+    --accentMutedActive: #309BB0;
 }
 
 html.purple:not(.landing) {
     --accentPrimary: #7A24F2;
-    --accentPrimaryHover: #8833FF;
-    --accentPrimaryActive: #6114CC;
+    --accentPrimaryHover: #9041FF;
+    --accentPrimaryActive: #690FE5;
 
-    --accentMuted: #7A24F2;
-    --accentMutedHover: #7A24F2;
-    --accentMutedActive: #7A24F2;
+    --accentMuted: #7C47C4;
+    --accentMutedHover: #7C47C4;
+    --accentMutedActive: #7C47C4;
+}
+
+html.dark.purple:not(.landing) {
+    --accentMuted: #4F2788;
+    --accentMutedHover: #4F2788;
+    --accentMutedActive: #4F2788;
 }
 
 html.pink:not(.landing) {
-    --accentPrimary: #E539AC;
-    --accentPrimaryHover: #F249BA;
-    --accentPrimaryActive: #CC1F93;
+    --accentPrimary: #EF568D;
+    --accentPrimaryHover: #FD6FA2;
+    --accentPrimaryActive: #EA4480;
 
-    --accentMuted: #E539AC;
-    --accentMutedHover: #E539AC;
-    --accentMutedActive: #E539AC;
+    --accentMuted: #F16A9B;
+    --accentMutedHover: #F16A9B;
+    --accentMutedActive: #F16A9B;
+}
+
+html.dark.pink:not(.landing) {
+    --accentMuted: #C1587E;
+    --accentMutedHover: #C1587E;
+    --accentMutedActive: #C1587E;
 }
 
 html.grey:not(.landing) {
-    --accentPrimary: #71747A;
-    --accentPrimaryHover: #81848A;
-    --accentPrimaryActive: #5C5F66;
+    --accentPrimary: #8192B2;
+    --accentPrimaryHover: #97A7C6;
+    --accentPrimaryActive: #7489B0;
 
-    --accentMuted: #71747A;
-    --accentMutedHover: #71747A;
-    --accentMutedActive: #71747A;
+    --accentMuted: #8794AE;
+    --accentMutedHover: #8794AE;
+    --accentMutedActive: #8794AE;
+}
+
+html.dark.grey:not(.landing) {
+    --accentMuted: #677798;
+    --accentMutedHover: #677798;
+    --accentMutedActive: #677798;
 }
 
 html.hide-featured-icon {

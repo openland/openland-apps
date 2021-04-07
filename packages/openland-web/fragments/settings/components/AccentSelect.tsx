@@ -49,6 +49,7 @@ interface AccentSelectProps {
     selectOptions: ({
         value: AccentOptions;
         label: string;
+        color: string;
     })[];
 }
 
@@ -56,7 +57,6 @@ export const AccentSelect = React.memo((props: AccentSelectProps) => {
     return (
         <div className={appearanceContainer}>
             {props.selectOptions.map((i) => {
-                const bg = `var(--tint${i.value.charAt(0) + i.value.slice(1).toLowerCase()})`;
                 const selected = i.value === props.value;
                 return (
                     <div
@@ -65,7 +65,7 @@ export const AccentSelect = React.memo((props: AccentSelectProps) => {
                         onClick={() => props.onChange(i.value)}
                         style={
                             {
-                                '--bgItem': bg,
+                                '--bgItem': i.color,
                             } as React.CSSProperties
                         }
                     >

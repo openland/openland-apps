@@ -34,6 +34,17 @@ export enum AccentOptions {
     GREY = 'GREY',
 }
 
+enum AccentColors {
+    BLUE = '#248BF2',
+    RED = '#E04556',
+    ORANGE = '#F28B0C',
+    GREEN = '#8AB840',
+    CYAN = '#27B2CE',
+    PURPLE = '#7A24F2',
+    PINK = '#EF568D',
+    GREY = '#8192B2',
+}
+
 export const SettingsAppearanceFragment = React.memo(() => {
     const theme = useTheme();
     const form = useForm();
@@ -212,34 +223,42 @@ export const SettingsAppearanceFragment = React.memo(() => {
                             {
                                 value: AccentOptions.BLUE,
                                 label: 'Default',
+                                color: AccentColors.BLUE,
                             },
                             {
                                 value: AccentOptions.RED,
                                 label: 'Red',
+                                color: AccentColors.RED,
                             },
                             {
                                 value: AccentOptions.ORANGE,
                                 label: 'Orange',
+                                color: AccentColors.ORANGE,
                             },
                             {
                                 value: AccentOptions.GREEN,
                                 label: 'Green',
+                                color: AccentColors.GREEN,
                             },
                             {
                                 value: AccentOptions.CYAN,
                                 label: 'Cyan',
+                                color: AccentColors.CYAN,
                             },
                             {
                                 value: AccentOptions.PURPLE,
                                 label: 'Purple',
+                                color: AccentColors.PURPLE,
                             },
                             {
                                 value: AccentOptions.PINK,
                                 label: 'Pink',
+                                color: AccentColors.PINK,
                             },
                             {
                                 value: AccentOptions.GREY,
                                 label: 'Grey',
+                                color: AccentColors.GREY,
                             },
                         ]}
                     />
