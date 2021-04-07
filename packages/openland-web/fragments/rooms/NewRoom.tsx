@@ -12,6 +12,7 @@ import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useClient } from 'openland-api/useClient';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const newRoomButton = css`
   margin-right: 16px;
@@ -77,7 +78,7 @@ const contentWrapper = css`
     align-items: center;
 `;
 
-export const NewRoomForm = React.memo((props:  { ctx: XModalController } ) => {
+export const NewRoomForm = React.memo((props: { ctx: XModalController }) => {
     const form = useForm();
     const client = useClient();
     const router = React.useContext(XViewRouterContext)!;
@@ -96,6 +97,13 @@ export const NewRoomForm = React.memo((props:  { ctx: XModalController } ) => {
             router.navigate(`/room/${room.id}`);
         });
     }, [nameField.value]);
+
+    useShortcuts({
+        keys: ['Enter'],
+        callback: () => {
+            onSubmit();
+        },
+    });
 
     return (
         <div className={rootContainer}>
@@ -122,6 +130,7 @@ export const NewRoomForm = React.memo((props:  { ctx: XModalController } ) => {
                         alignSelf="center"
                         marginTop={32}
                         onClick={onSubmit}
+                        loading={form.loading}
                     />
                 </div>
             </div>
@@ -132,7 +141,7 @@ export const NewRoomForm = React.memo((props:  { ctx: XModalController } ) => {
 export const NewRoomButton = React.memo(() => {
     const onClick = () => {
         showModalBox({ fullScreen: true, useTopCloser: false, hideOnEsc: false }, (ctx) => (
-            <NewRoomForm ctx={ctx}/>
+            <NewRoomForm ctx={ctx} />
         ));
     };
     return (
