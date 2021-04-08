@@ -474,7 +474,7 @@ const subtitleStyle = cx(TextSubhead, css`
     white-space: nowrap;
 `);
 
-const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession: MediaSessionManager }) => {
+const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession: MediaSessionManager, peers: Conference_conference_peers[] }) => {
     const targetRef = React.useRef<HTMLDivElement>();
     const containerRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
@@ -494,10 +494,19 @@ const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession
     const tabRouter = useTabRouter();
     const isCurrentRoute = route.path.includes(`/room/${props.id}`);
 
-    const handleLeave = React.useCallback(() => {
+    const handleLeave = () => {
+        if (!state) {
+            return;
+        }
         calls.leaveCall();
-        client.mutateVoiceChatLeave({ id: props.id });
-    }, [isCurrentRoute]);
+        const selfPeers = (props.peers || []).filter(p => p.user.id === voiceChat.me?.user.id);
+        const hasOtherSelfPeers = selfPeers.length > 1 || selfPeers.length === 1 && selfPeers[0].id !== state.sender.id;
+        if (hasOtherSelfPeers) {
+            tabRouter.router.stacks[0]?.reset('/rooms');
+        } else {
+            client.mutateVoiceChatLeave({ id: props.id });
+        }
+    };
     const showCall = React.useCallback(() => {
         tabRouter.setTab(0);
         setTimeout(() => {
@@ -681,7 +690,7 @@ const VoiceChatFloatingInner = React.memo((props: { id: string }) => {
     let res = ms && data && data.conference.peers.length !== 0 && data.conference.parent?.__typename === 'VoiceChat' && (
         <React.Suspense fallback={null}>
             <VoiceChatProvider roomId={props.id}>
-                <VoiceChatFloatingComponent id={props.id} mediaSession={ms} />
+                <VoiceChatFloatingComponent id={props.id} mediaSession={ms} peers={data.conference.peers} />
             </VoiceChatProvider>
         </React.Suspense>
     );
