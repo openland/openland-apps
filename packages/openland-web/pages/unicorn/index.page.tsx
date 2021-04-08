@@ -14,14 +14,14 @@ import { MessagesActionsStateProvider } from 'openland-y-runtime/MessagesActions
 import { RoomsFragment } from 'openland-web/fragments/rooms/RoomsFragment';
 import { VoiceChatsFeedProvider } from 'openland-y-utils/voiceChat/voiceChatsFeedWatcher';
 
-import ProfileIcon from './navigation/icon_profile.svg';
-import ProfileActiveIcon from './navigation/icon_profile_active.svg';
+import ProfileIcon from './navigation/ic-user-24.svg';
+import ProfileActiveIcon from './navigation/ic-user-filled-24.svg';
 import RoomsIcon from './navigation/ic-room-24.svg';
 import RoomsActiveIcon from './navigation/ic-room-filled-24.svg';
-import ChatIcon from './navigation/icon_chat.svg';
-import ChatActiveIcon from './navigation/icon_chat_active.svg';
-import SettingsIcon from './navigation/icon_settings.svg';
-import SettingsActiveIcon from './navigation/icon_settings_active.svg';
+import ChatIcon from './navigation/ic-message-24.svg';
+import ChatActiveIcon from './navigation/ic-message-filled-24.svg';
+import SettingsIcon from './navigation/ic-settings-24.svg';
+import SettingsActiveIcon from './navigation/ic-settings-filled-24.svg';
 
 const Unicorn = React.memo(() => {
     const router = React.useMemo(
