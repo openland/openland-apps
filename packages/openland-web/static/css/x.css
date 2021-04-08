@@ -192,9 +192,9 @@ html {
     }
 
     html.purple:not(.landing):not(.light) {
-        --accentMuted: #552895;
-        --accentMutedHover: #552895;
-        --accentMutedActive: #552895;
+        --accentMuted: #654692;
+        --accentMutedHover: #654692;
+        --accentMutedActive: #654692;
     }
 
     html.orange:not(.landing):not(.light) {
@@ -374,19 +374,19 @@ html.dark.cyan:not(.landing) {
 }
 
 html.purple:not(.landing) {
-    --accentPrimary: #8643E4;
-    --accentPrimaryHover: #9859F1;
-    --accentPrimaryActive: #722FD3;
+    --accentPrimary: #9456EC;
+    --accentPrimaryHover: #A56AFA;
+    --accentPrimaryActive: #8341E1;
 
-    --accentMuted: #915BDF;
-    --accentMutedHover: #915BDF;
-    --accentMutedActive: #915BDF;
+    --accentMuted: #9969DD;
+    --accentMutedHover: #9969DD;
+    --accentMutedActive: #9969DD;
 }
 
 html.dark.purple:not(.landing) {
-    --accentMuted: #552895;
-    --accentMutedHover: #552895;
-    --accentMutedActive: #552895;
+    --accentMuted: #654692;
+    --accentMutedHover: #654692;
+    --accentMutedActive: #654692;
 }
 
 html.pink:not(.landing) {
