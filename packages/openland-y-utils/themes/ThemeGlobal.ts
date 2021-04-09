@@ -141,6 +141,7 @@ export type AccentGlobal = {
     accentPrimary: string;
     accentPrimaryHover: string;
     accentPrimaryActive: string;
+    accentDarkMuted: string;
 
     outgoingBackgroundPrimary: string;
     outgoingBackgroundSecondary: string;

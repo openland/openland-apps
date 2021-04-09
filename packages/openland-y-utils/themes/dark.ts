@@ -1,5 +1,15 @@
 import { ThemeGlobal } from './ThemeGlobal';
-import { TintGreen, TintRed, TintInverted, TintMono } from './tints';
+import { TintGreen, TintRed, TintInverted } from './tints';
+import {
+    AccentBlue,
+    AccentCyan,
+    AccentGreen,
+    AccentGrey,
+    AccentOrange,
+    AccentPink,
+    AccentPurple,
+    AccentRed,
+} from './accents';
 
 export const ThemeDark: ThemeGlobal = {
     type: 'Dark',
@@ -65,14 +75,14 @@ export const ThemeDark: ThemeGlobal = {
     overlayMedium: 'rgba(0, 0, 0, 0.48)',
     overlayLight: 'rgba(0, 0, 0, 0.24)',
 
-    tintRed: TintMono.primary,
-    tintOrange: TintMono.primary,
-    tintGreen: TintMono.primary,
-    tintCyan: TintMono.primary,
-    tintBlue: TintMono.primary,
-    tintPurple: TintMono.primary,
-    tintPink: TintMono.primary,
-    tintGrey: TintMono.primary,
+    tintRed: AccentRed.accentDarkMuted,
+    tintOrange: AccentOrange.accentDarkMuted,
+    tintGreen: AccentGreen.accentDarkMuted,
+    tintCyan: AccentCyan.accentDarkMuted,
+    tintBlue: AccentBlue.accentDarkMuted,
+    tintPurple: AccentPurple.accentDarkMuted,
+    tintPink: AccentPink.accentDarkMuted,
+    tintGrey: AccentGrey.accentDarkMuted,
     tintInverted: TintInverted.primary,
 
     incomingBackgroundPrimary: '#242629',
