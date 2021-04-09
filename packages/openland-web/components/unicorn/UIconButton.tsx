@@ -4,7 +4,7 @@ import { css, cx } from 'linaria';
 import { UIcon } from './UIcon';
 import { XLoader } from 'openland-x/XLoader';
 
-export type UIconButtonSize = 'xsmall' | 'small' | 'small-densed' | 'medium' | 'large' | 'large-densed';
+export type UIconButtonSize = 'xsmall' | 'small' | 'small-densed' | 'medium' | 'medium-densed' | 'large' | 'large-densed';
 export type UIconButtonShape = 'round' | 'square';
 
 const wrapper = css`
@@ -107,6 +107,7 @@ const widthBySize: { [key in UIconButtonSize]: number } = {
     small: 32,
     'small-densed': 24,
     medium: 40,
+    'medium-densed': 36,
     large: 48,
     'large-densed': 40,
 };
@@ -116,6 +117,7 @@ const heightBySize: { [key in UIconButtonSize]: number } = {
     small: 32,
     'small-densed': 32,
     medium: 40,
+    'medium-densed': 36,
     large: 48,
     'large-densed': 48,
 };
@@ -125,6 +127,7 @@ const rippleBySize: { [key in UIconButtonSize]: string } = {
     small: '32px',
     'small-densed': '32px',
     medium: '40px',
+    'medium-densed': '36px',
     large: '40px',
     'large-densed': '40px',
 };
@@ -134,6 +137,7 @@ const iconBySize: { [key in UIconButtonSize]: string } = {
     small: '20px',
     'small-densed': '20px',
     medium: '24px',
+    'medium-densed': '20px',
     large: '24px',
     'large-densed': '24px',
 };

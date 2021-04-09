@@ -43,6 +43,14 @@ const FloatContainerClass = css`
     transition: opacity 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
         box-shadow 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
     box-shadow: var(--boxShadowPopper);
+
+    html.dark & {
+        background-color: rgba(46, 48, 51, 0.84);
+    }
+
+    @media (prefers-color-scheme: dark) {
+        background-color: rgba(46, 48, 51, 0.84);
+    }
 `;
 
 const VideoOnClass = css`
@@ -351,7 +359,7 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
     const buttons = (
         <XView flexDirection="row" justifyContent="flex-end" marginLeft={'auto' as any}>
             <UIconButton
-                size="small"
+                size="medium-densed"
                 marginRight={12}
                 icon={<EndIcon />}
                 active={true}
@@ -361,7 +369,7 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
                 onClick={() => calls.leaveCall()}
             />
             <UIconButton
-                size="small"
+                size="medium-densed"
                 marginRight={12}
                 icon={<MuteIcon />}
                 color="var(--foregroundContrast)"
@@ -373,7 +381,7 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
                 onClick={() => props.mediaSession.setAudioEnabled(!state.sender.audioEnabled)}
             />
             <UIconButton
-                size="small"
+                size="medium-densed"
                 icon={<FullscreenIcon />}
                 color="var(--foregroundContrast)"
                 defaultRippleColor="rgba(255, 255, 255, 0.16)"
@@ -553,7 +561,7 @@ const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession
             {selfStatus === VoiceChatParticipantStatus.LISTENER ? (
                 <>
                     <UIconButton
-                        size="small"
+                        size="medium-densed"
                         marginRight={12}
                         icon={<LeaveIcon />}
                         color="var(--foregroundContrast)"
@@ -562,7 +570,7 @@ const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession
                         onClick={handleLeave}
                     />
                     <UIconButton
-                        size="small"
+                        size="medium-densed"
                         icon={<FullscreenIcon />}
                         color="var(--foregroundContrast)"
                         rippleColor="var(--tintBlue)"
@@ -574,7 +582,7 @@ const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession
             ) : (selfStatus === VoiceChatParticipantStatus.SPEAKER || selfStatus === VoiceChatParticipantStatus.ADMIN) ? (
                 <>
                     <UIconButton
-                        size="small"
+                        size="medium-densed"
                         marginRight={12}
                         icon={<FullscreenIcon />}
                         color="var(--foregroundContrast)"
@@ -583,7 +591,7 @@ const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession
                         onClick={showCall}
                     />
                     <UIconButton
-                        size="small"
+                        size="medium-densed"
                         icon={state.sender.audioEnabled ? <MicIcon /> : <MuteIcon />}
                         active={true}
                         color="var(--foregroundContrast)"
