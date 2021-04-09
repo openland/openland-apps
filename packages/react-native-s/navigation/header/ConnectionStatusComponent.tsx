@@ -6,6 +6,7 @@ import { Text, Platform } from 'react-native';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TintOrange } from 'openland-y-utils/themes/tints';
 
 export const ConnectionStatusComponent = (props: { k: string }) => {
     let animate = new SAnimatedShadowView(`header-connecting-status-content-${props.k}`, { opacity: 0, translateY: -8, scale: 0.84 });
@@ -61,7 +62,7 @@ export const ConnectionStatusComponent = (props: { k: string }) => {
                 style={{
                     height: 36,
                     borderRadius: 36,
-                    backgroundColor: theme.tintOrange,
+                    backgroundColor: TintOrange.primary,
                     justifyContent: 'center',
                     alignItems: 'center',
                     flexDirection: 'row',
