@@ -181,6 +181,13 @@ export const useJsDrag = (
             }
             prev = current;
         };
+        const onResize = () => {
+            checkPostion();
+            if (container) {
+                container.style.transform = `translate(${positionShift[0]}px, ${positionShift[1]
+                    }px)`;
+            }
+        };
 
         checkPostion();
         if (target) {
@@ -194,6 +201,10 @@ export const useJsDrag = (
             target.addEventListener('touchcancel', onDragStop, { passive: true });
             target.addEventListener('touchmove', ev => ev.preventDefault());
             window.document.addEventListener('touchmove', onDrag, { passive: true });
+
+            if (limitToScreen) {
+                window.addEventListener('resize', onResize, { passive: true });
+            }
 
             if (container) {
                 container.style.display = 'flex';
@@ -213,6 +224,10 @@ export const useJsDrag = (
                 target.removeEventListener('touchcancel', onDragStop);
                 target.removeEventListener('touchmove', ev => ev.preventDefault());
                 window.document.removeEventListener('touchmove', onDrag);
+
+                if (limitToScreen) {
+                    window.removeEventListener('resize', onResize);
+                }
             }
         };
     }, depth || []);
