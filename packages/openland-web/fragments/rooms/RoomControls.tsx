@@ -154,7 +154,7 @@ const SettingsMenu = React.memo((props: {
             title: 'Raised hands',
             icon: <IcHand />,
             action: () => {
-                showRaisedHands({ roomId: props.roomId });
+                showRaisedHands({ roomId: props.roomId, raisedHands: props.raisedHands });
             },
             counter: props.raisedHands.length,
         });

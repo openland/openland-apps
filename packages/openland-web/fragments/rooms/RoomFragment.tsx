@@ -177,7 +177,7 @@ const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: VoiceChatPart
             hoverBorderRadius={8}
             marginHorizontal={4}
             hoverCursor="pointer"
-            onClick={() => showRaisedHands({ roomId })}
+            onClick={() => showRaisedHands({ roomId, raisedHands })}
         >
             <XView
                 width={80}
