@@ -94,6 +94,7 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
                     let state = this.state.downloadStates[attach.previewFileId || attach.fileId];
                     let sourceUri = state && state.path ? ('file://' + state.path) : undefined;
                     let sizes = { width: layout.width, height: layout.height };
+                    let isVideoFile = isVideo(attach.fileMetadata.name);
 
                     return (
                         <ASFlex
@@ -112,6 +113,25 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
                                 isGif={attach!!.fileMetadata.imageFormat === 'GIF'}
                                 {...sizes}
                             />
+                            {isVideoFile && (
+                                <ASFlex
+                                    flexGrow={1}
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    overlay={true}
+                                >
+                                    <ASFlex
+                                        width={isForward ? 36 : 20}
+                                        height={isForward ? 36 : 20}
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        backgroundColor={theme.overlayMedium}
+                                        borderRadius={isForward ? 18 : 10}
+                                    >
+                                        <ASImage width={isForward ? 18 : 10} height={isForward ? 18 : 10} source={require('assets/ic-play-glyph-24.png')} tintColor={theme.foregroundContrast} />
+                                    </ASFlex>
+                                </ASFlex>
+                            )}
                         </ASFlex>
                     );
                 })}
