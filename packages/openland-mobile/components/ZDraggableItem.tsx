@@ -65,8 +65,8 @@ export const ZDraggableItem = React.memo<ZDraggableItemProps>((props) => {
     const isDragging = React.useRef(false);
     const [keyboardHeight, setKeyboardHeight] = React.useState(0);
     const [savedOffset, setSavedOffset] = React.useState<number | null>(null);
-    const router = React.useContext(SRouterContext);
-    const chatInputHeight = router?.route === 'Conversation' ? 50 : 0;
+    const router = React.useContext(SRouterContext)!;
+    const chatInputHeight = router.route === 'Conversation' || router.route === 'Message' ? 50 : 0;
     const isIos = Platform.OS === 'ios';
 
     const getBounds = React.useCallback(() => {

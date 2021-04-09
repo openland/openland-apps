@@ -27,6 +27,8 @@ interface SpeakerPhotoViewProps {
 }
 
 const dimensionsWindow = Dimensions.get('window');
+const startX = dimensionsWindow.width - 84;
+const startY = dimensionsWindow.height - 300;
 
 const SpeakerPhotoView = React.memo<SpeakerPhotoViewProps>((props) => {
     const { firstSpeakers, speakingPeerId, peers } = props;
@@ -206,6 +208,8 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
         prevVoiceChat.current = voiceChatData;
     }, [voiceChatData]);
 
+    const handleJoin = React.useCallback(() => joinRoom(voiceChatData.id), [voiceChatData.id]);
+
     const handleMutePress = React.useCallback(() => {
         props.mediaSession.setAudioEnabled(!state.sender.audioEnabled);
     }, [state]);
@@ -215,7 +219,7 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
     const isAdminOrSpeaker = status === VoiceChatParticipantStatus.SPEAKER || status === VoiceChatParticipantStatus.ADMIN;
 
     return (
-        <ZDraggableItem x={dimensionsWindow.width - 80} y={dimensionsWindow.height - 300} minX={12} minY={50} onPress={() => joinRoom(voiceChatData.id)}>
+        <ZDraggableItem x={startX} y={startY} minX={12} minY={50} onPress={handleJoin}>
             <View
                 style={{
                     zIndex: 10000,
@@ -254,7 +258,7 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
                     bgColor={!isAdminOrSpeaker ? theme.accentPrimary : "rgba(255, 255, 255, 0.16)"}
                     iconColor={theme.accentPrimary === theme.foregroundContrast && !isAdminOrSpeaker ? theme.foregroundInverted : theme.foregroundContrast}
                     icon={require('assets/ic-size-up-glyph-24.png')}
-                    onPress={() => joinRoom(voiceChatData.id)}
+                    onPress={handleJoin}
                 />
             </View>
         </ZDraggableItem>
