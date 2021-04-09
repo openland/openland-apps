@@ -112,5 +112,5 @@ export function showFileModal(config: ZFileModalConfig) {
         return (
             <FileModalWithTransition config={config} ctx={ctx} />
         );
-    });
+    }, undefined, { style: { zIndex: 9 } });
 }

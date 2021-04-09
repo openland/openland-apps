@@ -5,8 +5,8 @@ import { ZPictureOverlay } from './ZPictureOverlay';
 
 export function showPictureModal(config: ZPictureTransitionConfig) {
     showModal((ctr) => {
-        return(
+        return (
             <ZPictureOverlay config={config} onClose={ctr.hide} />
         );
-    });
+    }, undefined, { style: { zIndex: 9 } });
 }
