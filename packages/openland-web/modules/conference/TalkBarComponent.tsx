@@ -6,6 +6,7 @@ import { UserSmall, RoomChat_room, RoomChat_room_SharedRoom } from 'openland-api
 import { useVideoCallModal } from './CallModal';
 import { UTopBar } from 'openland-web/components/unicorn/UTopBar';
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
+import MicIcon from 'openland-icons/s/ic-mic-24.svg';
 import ChevronIcon from 'openland-icons/s/ic-chevron-16.svg';
 import { OthersPopper } from 'openland-web/fragments/chat/messenger/message/content/OthersPopper';
 import { useJoinRoom } from 'openland-web/fragments/rooms/joinRoom';
@@ -36,6 +37,7 @@ export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
     const client = useClient();
     const joinRoom = useJoinRoom();
     const { chat } = props;
+    const isActiveVoiceChat = chat.__typename === 'SharedRoom' && chat.activeVoiceChat?.active;
 
     let sharedRoom = chat.__typename === 'SharedRoom' ? chat as RoomChat_room_SharedRoom : null;
 
@@ -52,8 +54,8 @@ export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
     };
 
     const onJoinClick = React.useCallback(() => {
-        if (chat.__typename === 'SharedRoom' && chat.activeVoiceChat?.active) {
-            joinRoom(chat.activeVoiceChat.id);
+        if (isActiveVoiceChat) {
+            joinRoom(sharedRoom!.activeVoiceChat!.id);
         } else if (currentSession && currentSession.conversationId) {
             openVideoModal();
         } else {
@@ -67,19 +69,19 @@ export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
     }
 
     let subtitle;
-    if (chat.__typename === 'SharedRoom' && chat.activeVoiceChat?.active) {
-        subtitle = getSubtitle(chat.activeVoiceChat.speakers.map(speaker => speaker.user));
+    if (isActiveVoiceChat) {
+        subtitle = getSubtitle(sharedRoom!.activeVoiceChat!.speakers.map(speaker => speaker.user));
     } else {
         subtitle = getSubtitle(data.conference.peers.map(peer => peer.user));
     }
-    const title = chat.__typename === 'SharedRoom' && chat.activeVoiceChat?.active ? '' : 'Call';
-    const rightText = chat.__typename === 'SharedRoom' && chat.activeVoiceChat?.active ? 'Join room' : 'Join';
+    const title = isActiveVoiceChat ? '' : 'Call';
+    const rightText = isActiveVoiceChat ? 'Join room' : 'Join';
 
-    const showBar = data.conference.peers.length !== 0 || (chat.__typename === 'SharedRoom' && chat.activeVoiceChat?.active);
+    const showBar = data.conference.peers.length !== 0 || isActiveVoiceChat;
     return showBar ? (
         <UTopBar
             type="positive"
-            leftIcon={<PhoneIcon />}
+            leftIcon={isActiveVoiceChat ? <MicIcon /> : <PhoneIcon />}
             title={title}
             subtitle={subtitle}
             rightText={rightText}
