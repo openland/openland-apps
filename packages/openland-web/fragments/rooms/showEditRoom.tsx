@@ -1,26 +1,39 @@
 import * as React from 'react';
-import { showModalBox } from "openland-x/showModalBox";
-import { UTextAreaField } from 'openland-web/components/unicorn/UTextArea';
+import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
+
+import { showModalBox } from 'openland-x/showModalBox';
+import { UTextAreaField } from 'openland-web/components/unicorn/UTextArea';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useShake } from 'openland-web/pages/auth/components/authComponents';
-import { cx } from 'linaria';
 import { useClient } from 'openland-api/useClient';
+import { TextTitle3 } from 'openland-web/utils/TextStyles';
+import { UListItem } from 'openland-web/components/unicorn/UListItem';
+import { useVoiceChat, VoiceChatProvider } from 'openland-y-utils/voiceChat/voiceChatWatcher';
 
-interface EditRoomProps {
-    roomId: string;
-    title: string | null;
-}
+import { showPinnedMessageSettingsModal } from './showPinnedMessageSettingsModal';
+import IcPin from 'openland-icons/s/ic-pin-24.svg';
 
-const EditRoom = React.memo((props: EditRoomProps & { hide: () => void }) => {
+const formTitle = css`
+    height: 48px;
+    margin-top: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    color: var(--foregroundPrimary);
+`;
+
+const EditRoom = React.memo((props: { hide: () => void }) => {
     const client = useClient();
     const form = useForm();
-    const titleField = useField('room.title', props.title || '', form);
-    let [shakeClassName, shake] = useShake();
+    const voiceChatData = useVoiceChat();
+    const titleField = useField('room.title', voiceChatData.title || '', form);
     const [loading, setLoading] = React.useState(false);
+    const [shakeClassName, shake] = useShake();
+    const pinnedMessage = voiceChatData.pinnedMessage?.message;
+
     const handleSave = React.useCallback(async () => {
         let title = titleField.value.trim();
         if (loading) {
@@ -31,21 +44,29 @@ const EditRoom = React.memo((props: EditRoomProps & { hide: () => void }) => {
             return;
         }
         setLoading(true);
-        await client.mutateVoiceChatUpdate({ id: props.roomId, input: { title } });
+        await client.mutateVoiceChatUpdate({ id: voiceChatData.id, input: { title } });
         props.hide();
     }, [titleField.value.length, loading]);
 
     return (
         <>
-            <XView paddingHorizontal={24} paddingBottom={16}>
+            <XView paddingHorizontal={24} marginTop={16}>
                 <div className={cx('x', shakeClassName)}>
                     <UTextAreaField
                         placeholder="Room name"
                         field={titleField}
                     />
                 </div>
+                <div className={cx(formTitle, TextTitle3)}>Settings</div>
             </XView>
-            <XModalFooter>
+            <UListItem
+                title="Pinned message"
+                icon={<IcPin />}
+                paddingHorizontal={24}
+                onClick={() => showPinnedMessageSettingsModal(voiceChatData.id, pinnedMessage)}
+                textRight={pinnedMessage ? 'On' : 'Off'}
+            />
+            <XModalFooter marginTop={16}>
                 <UButton
                     text="Cancel"
                     style="tertiary"
@@ -64,8 +85,10 @@ const EditRoom = React.memo((props: EditRoomProps & { hide: () => void }) => {
     );
 });
 
-export const showEditRoom = (props: EditRoomProps) => {
+export const showEditRoom = (roomId: string) => {
     showModalBox({ title: 'Edit room', width: 368 }, ctx => (
-        <EditRoom {...props} hide={ctx.hide} />
+        <VoiceChatProvider roomId={roomId}>
+            <EditRoom hide={ctx.hide} />
+        </VoiceChatProvider>
     ));
 };

@@ -136,27 +136,27 @@ const controlsAdminStyle = css`
 const SettingsMenu = React.memo((props: {
     ctx: UPopperController,
     roomId: string,
-    title: string | null,
     raisedHands: VoiceChatParticipant[],
 }) => {
     // const client = useClient();
     let popper = new UPopperMenuBuilder();
+    const { roomId, raisedHands } = props;
 
     popper
         .item({
             title: 'Edit room',
             icon: <IcEdit />,
             action: () => {
-                showEditRoom({ roomId: props.roomId, title: props.title });
+                showEditRoom(roomId);
             },
         })
         .item({
             title: 'Raised hands',
             icon: <IcHand />,
             action: () => {
-                showRaisedHands({ roomId: props.roomId, raisedHands: props.raisedHands });
+                showRaisedHands({ roomId, raisedHands });
             },
-            counter: props.raisedHands.length,
+            counter: raisedHands.length,
         });
     // .item({
     //     title: 'Close room',
@@ -206,7 +206,11 @@ export const RoomControls = React.memo(({
             updatedDeps: [raisedHands, title],
         },
         (ctx) => (
-            <SettingsMenu ctx={ctx} roomId={roomId} title={title} raisedHands={raisedHands} />
+            <SettingsMenu
+                ctx={ctx}
+                roomId={roomId}
+                raisedHands={raisedHands}
+            />
         ),
     );
 

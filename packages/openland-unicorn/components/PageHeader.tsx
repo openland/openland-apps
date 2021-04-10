@@ -28,7 +28,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     });
 
     return (
-        <XView height={headerHeight} flexDirection="row" alignItems="center" zIndex={2}>
+        <XView height={headerHeight} flexDirection="row" alignItems="flex-start" zIndex={2} backgroundColor={props.config.backgroundColor}>
             {hasBack && (
                 <XView height={56} width={56} alignItems="center" justifyContent="center">
                     <UIconButton icon={<BackIcon />} onClick={() => router.pop()} size="large" />

@@ -5,7 +5,7 @@ import { XScrollView3 } from 'openland-x/XScrollView3';
 import * as React from 'react';
 import { XView, XViewRouterContext } from 'react-mental';
 import { css, cx } from 'linaria';
-import { TextLabel1, TextLabel2, TextStyles, TextTitle1 } from 'openland-web/utils/TextStyles';
+import { TextBody, TextLabel1, TextLabel2, TextStyles, TextTitle1 } from 'openland-web/utils/TextStyles';
 import CrownIcon from 'openland-icons/ic-crown-4.svg';
 import IcListenerSmall from 'openland-icons/s/ic-listener-16.svg';
 import IcSpeakerSmall from 'openland-icons/s/ic-speaker-16.svg';
@@ -48,6 +48,7 @@ import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
+import { showPinnedMessageModal } from './showPinnedMessageModal';
 
 interface PeerMedia {
     videoTrack: AppMediaStreamTrack | null;
@@ -119,6 +120,24 @@ const listenersGridStyle = css`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+`;
+
+const pinnedMessageContainerStyle = css`
+  cursor: pointer;
+  margin: 0 -1200px;
+  padding: 12px 1200px;
+  
+  &:hover {
+    background-color: var(--backgroundPrimaryHover);
+  }
+`;
+
+const pinnedMessageTextStyle = css`
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
 `;
 
 const RoomHeader = ({
@@ -610,6 +629,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
     );
     const muted = !state?.sender.audioEnabled;
     const handRaised = !!voiceChatData.me?.handRaised;
+    const pinnedMessage = voiceChatData.pinnedMessage?.message;
     const inviteLink = voiceChatData.me
         ? `https://openland.com/${voiceChatData.me.user.shortname || voiceChatData.me.user.id}`
         : 'Try again';
@@ -762,15 +782,29 @@ const RoomView = React.memo((props: { roomId: string }) => {
             <UHeader
                 titleView={
                     voiceChatData.parentRoom ? (
-                        <div className={headerParentRoomClass} onClick={handleParentRoomClick}>
-                            <UAvatar
-                                title={voiceChatData.parentRoom.title}
-                                id={voiceChatData.parentRoom.id}
-                                photo={voiceChatData.parentRoom.photo}
-                                marginRight={12}
+                        <XView width="100%">
+                            <div className={headerParentRoomClass} onClick={handleParentRoomClick}>
+                                <UAvatar
+                                    title={voiceChatData.parentRoom.title}
+                                    id={voiceChatData.parentRoom.id}
+                                    photo={voiceChatData.parentRoom.photo}
+                                    marginRight={12}
+                                />
+                                <div className={TextLabel1}>{voiceChatData.parentRoom.title}</div>
+                            </div>
+                            <RoomHeader
+                                title={voiceChatData.title}
+                                speakersCount={voiceChatData.speakersCount}
+                                listenersCount={voiceChatData.listenersCount}
                             />
-                            <div className={TextLabel1}>{voiceChatData.parentRoom.title}</div>
-                        </div>
+                            {pinnedMessage && (
+                                <div className={pinnedMessageContainerStyle} onClick={() => showPinnedMessageModal(voiceChatData.id)}>
+                                    <div className={cx(pinnedMessageTextStyle, TextBody)}>
+                                        {pinnedMessage}
+                                    </div>
+                                </div>
+                            )}
+                        </XView>
                     ) : (
                         <RoomHeader
                             title={voiceChatData.title}
@@ -781,13 +815,6 @@ const RoomView = React.memo((props: { roomId: string }) => {
                 }
                 dynamicHeight={true}
             />
-            {voiceChatData.parentRoom && (
-                <RoomHeader
-                    title={voiceChatData.title}
-                    speakersCount={voiceChatData.speakersCount}
-                    listenersCount={voiceChatData.listenersCount}
-                />
-            )}
             <XScrollView3 marginTop={20} marginBottom={114}>
                 <RoomSpeakers
                     room={voiceChatData}

@@ -6,6 +6,7 @@ export interface HeaderConfig {
     forceShowBack?: boolean;
     forceHideBack?: boolean;
     dynamicHeight?: boolean;
+    backgroundColor?: string;
 }
 
 export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
@@ -16,6 +17,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let forceShowBack: boolean | undefined;
     let forceHideBack: boolean | undefined;
     let dynamicHeight: boolean | undefined;
+    let backgroundColor: string | undefined;
     for (let c of configs) {
         if (c.title) {
             title = c.title;
@@ -38,8 +40,11 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
         if (c.dynamicHeight) {
             dynamicHeight = c.dynamicHeight;
         }
+        if (c.backgroundColor) {
+            backgroundColor = c.backgroundColor;
+        }
     }
-    return { title, documentTitle, appearance, titleView, forceShowBack, forceHideBack, dynamicHeight };
+    return { title, documentTitle, appearance, titleView, forceShowBack, forceHideBack, dynamicHeight, backgroundColor };
 }
 
 export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
