@@ -147,10 +147,10 @@ const UserAvatar = React.memo((props: UserAvatarProps) => {
     const placeholder = hasPhoto
         ? undefined
         : {
-              fallbackColor: getPlaceholderColors(id || '').placeholderColor,
-              topColor: getPlaceholderColors(id || '').placeholderColorStart,
-              bottomColor: getPlaceholderColors(id || '').placeholderColorEnd,
-          };
+            fallbackColor: getPlaceholderColors(id || '').placeholderColor,
+            topColor: getPlaceholderColors(id || '').placeholderColorStart,
+            bottomColor: getPlaceholderColors(id || '').placeholderColorEnd,
+        };
 
     return (
         <TouchableOpacity onPress={props.handleUserView}>
@@ -553,9 +553,8 @@ const RoomHeader = React.memo(
                                         }, 1000);
                                     } catch (e) {
                                         Toast.failure({
-                                            text: `Couldn't join ${
-                                                parentRoom.isChannel ? 'channel' : 'group'
-                                            }`,
+                                            text: `Couldn't join ${parentRoom.isChannel ? 'channel' : 'group'
+                                                }`,
                                             duration: 2000,
                                         }).show();
                                         setJoinState('initial');
@@ -699,11 +698,13 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
     return (
         <View
             style={{
-                width: '33.33%',
+                width: isListener ? undefined : '33.33%',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginBottom: isListener ? 14 : 20,
+                flex: isListener ? 1 : undefined,
+                maxWidth: isListener ? '25%' : undefined,
             }}
         >
             <TouchableOpacity
@@ -749,20 +750,20 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                                     style={{
                                         width: 16,
                                         height: 16,
-                                        tintColor: theme.foregroundSecondary,
+                                        tintColor: theme.foregroundTertiary,
                                     }}
                                 />
                             ) : state === 'loading' ? (
-                                <LoaderSpinner size="small" color={theme.foregroundSecondary} />
+                                <LoaderSpinner size="small" color={theme.foregroundTertiary} />
                             ) : null}
                         </View>
                     )}
                 </View>
-                <View style={{ marginTop: 12, flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ marginTop: 8, flexDirection: 'row', alignItems: 'center' }}>
                     {isAdmin && (
                         <Image
                             source={require('assets/ic-crown-16.png')}
-                            style={{ tintColor: '#e8ac3c', marginRight: 6 }}
+                            style={{ tintColor: '#e8ac3c', marginRight: 6, marginBottom: 1 }}
                         />
                     )}
                     <Text
@@ -792,10 +793,10 @@ const RoomSpeakingUserView = React.memo((props: RoomSpeakingUserViewProps) => {
     const state = isLoading
         ? 'loading'
         : peer?.mediaState.audioPaused
-        ? 'muted'
-        : isTalking
-        ? 'talking'
-        : undefined;
+            ? 'muted'
+            : isTalking
+                ? 'talking'
+                : undefined;
 
     return <RoomUserView {...other} state={state} />;
 });
@@ -916,7 +917,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
             {listeners.length > 0 ? (
                 <Text
                     style={{
-                        ...TextStyles.Title2,
+                        ...TextStyles.Label1,
                         color: theme.foregroundPrimary,
                         paddingHorizontal: 16,
                         marginBottom: 16,
@@ -952,8 +953,6 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                 keyExtractor={(item, index) => index.toString() + item.id}
                 numColumns={4}
                 style={{ flex: 1 }}
-                // refreshing={listenersState.loading}
-                // onEndReached={listenersState.loadMore}
             />
         </View>
     );

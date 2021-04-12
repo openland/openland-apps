@@ -96,7 +96,7 @@ const ControlItem = React.memo(
             />
         );
         return (
-            <View style={{ flex: 1, alignItems: 'center' }}>
+            <View style={{ alignItems: 'center' }}>
                 <TouchableOpacity
                     activeOpacity={0.6}
                     onPress={onPress}
@@ -354,25 +354,36 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
     const meParticipant = client.useVoiceChatControls({ id }, { fetchPolicy: 'cache-and-network' })
         ?.voiceChat.me;
     const role = meParticipant?.status;
-    const roleButtons =
-        role === VoiceChatParticipantStatus.ADMIN ? (
-            <>
-                <RoomSettingsButton
-                    theme={theme}
-                    raisedCount={raisedHandUsers.length}
-                    raisedHandUsers={raisedHandUsers}
-                    roomTitle={title}
-                    roomMessage={message}
-                    roomId={id}
-                />
-                <ControlMute
-                    muted={muted}
-                    connecting={connecting}
-                    theme={theme}
-                    onPress={onMutePress}
-                />
-            </>
-        ) : role === VoiceChatParticipantStatus.SPEAKER ? (
+    const leaveBtn = (
+        <ControlItem
+            theme={theme}
+            text="Leave"
+            icon={require('assets/ic-leave-24.png')}
+            iconColor={theme.foregroundSecondary}
+            bgColor={theme.backgroundTertiaryTrans}
+            onPress={onLeave}
+        />
+    );
+    const inviteBtn = (
+        <ControlItem
+            theme={theme}
+            text="Invite"
+            icon={require('assets/ic-add-24.png')}
+            iconColor={theme.foregroundSecondary}
+            bgColor={theme.backgroundTertiaryTrans}
+            onPress={() =>
+                showRoomInvite({
+                    theme,
+                    link: meParticipant
+                        ? `https://openland.com/${meParticipant.user.shortname || meParticipant?.user.id
+                        }`
+                        : 'Try again',
+                })
+            }
+        />
+    );
+    const primaryBtn =
+        role === VoiceChatParticipantStatus.ADMIN || role === VoiceChatParticipantStatus.SPEAKER ? (
             <ControlMute
                 muted={muted}
                 connecting={connecting}
@@ -383,46 +394,31 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
             <ControlRaiseHand theme={theme} raised={!!meParticipant?.handRaised} roomId={id} />
         ) : null;
 
-    const handleLeave = React.useCallback(() => {
-        onLeave();
-    }, [onLeave]);
-
     return (
-        <View
-            style={{
-                paddingTop: 16,
-                paddingHorizontal: 16,
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-            }}
-            onLayout={onLayout}
-        >
-            <ControlItem
-                theme={theme}
-                text="Leave"
-                icon={require('assets/ic-leave-24.png')}
-                iconColor={theme.foregroundSecondary}
-                bgColor={theme.backgroundTertiaryTrans}
-                onPress={handleLeave}
-            />
-            <ControlItem
-                theme={theme}
-                text="Invite"
-                icon={require('assets/ic-add-glyph-24.png')}
-                iconColor={theme.foregroundSecondary}
-                bgColor={theme.backgroundTertiaryTrans}
-                onPress={() =>
-                    showRoomInvite({
-                        theme,
-                        link: meParticipant
-                            ? `https://openland.com/${
-                                  meParticipant.user.shortname || meParticipant?.user.id
-                              }`
-                            : 'Try again',
-                    })
-                }
-            />
-            {roleButtons}
+        <View style={{ paddingTop: 16 }} onLayout={onLayout}>
+            <View
+                style={{
+                    paddingHorizontal: 16,
+                    flexDirection: 'row',
+                    justifyContent: role === VoiceChatParticipantStatus.ADMIN ? 'space-between' : 'space-around'
+                }}
+            >
+                {leaveBtn}
+                {role === VoiceChatParticipantStatus.ADMIN ? (
+                    <>
+                        <RoomSettingsButton
+                            theme={theme}
+                            raisedCount={raisedHandUsers.length}
+                            raisedHandUsers={raisedHandUsers}
+                            roomTitle={title}
+                            roomMessage={message}
+                            roomId={id}
+                        />
+                        {inviteBtn}
+                    </>
+                ) : inviteBtn}
+                {primaryBtn}
+            </View>
         </View>
     );
 });
