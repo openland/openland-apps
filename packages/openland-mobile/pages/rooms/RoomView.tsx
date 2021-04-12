@@ -147,10 +147,10 @@ const UserAvatar = React.memo((props: UserAvatarProps) => {
     const placeholder = hasPhoto
         ? undefined
         : {
-            fallbackColor: getPlaceholderColors(id || '').placeholderColor,
-            topColor: getPlaceholderColors(id || '').placeholderColorStart,
-            bottomColor: getPlaceholderColors(id || '').placeholderColorEnd,
-        };
+              fallbackColor: getPlaceholderColors(id || '').placeholderColor,
+              topColor: getPlaceholderColors(id || '').placeholderColorStart,
+              bottomColor: getPlaceholderColors(id || '').placeholderColorEnd,
+          };
 
     return (
         <TouchableOpacity onPress={props.handleUserView}>
@@ -553,8 +553,9 @@ const RoomHeader = React.memo(
                                         }, 1000);
                                     } catch (e) {
                                         Toast.failure({
-                                            text: `Couldn't join ${parentRoom.isChannel ? 'channel' : 'group'
-                                                }`,
+                                            text: `Couldn't join ${
+                                                parentRoom.isChannel ? 'channel' : 'group'
+                                            }`,
                                             duration: 2000,
                                         }).show();
                                         setJoinState('initial');
@@ -791,10 +792,10 @@ const RoomSpeakingUserView = React.memo((props: RoomSpeakingUserViewProps) => {
     const state = isLoading
         ? 'loading'
         : peer?.mediaState.audioPaused
-            ? 'muted'
-            : isTalking
-                ? 'talking'
-                : undefined;
+        ? 'muted'
+        : isTalking
+        ? 'talking'
+        : undefined;
 
     return <RoomUserView {...other} state={state} />;
 });
@@ -951,8 +952,8 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                 keyExtractor={(item, index) => index.toString() + item.id}
                 numColumns={4}
                 style={{ flex: 1 }}
-            // refreshing={listenersState.loading}
-            // onEndReached={listenersState.loadMore}
+                // refreshing={listenersState.loading}
+                // onEndReached={listenersState.loadMore}
             />
         </View>
     );
@@ -985,7 +986,6 @@ const RoomView = React.memo((props: { roomId: string; ctx: ModalProps; router: S
     const [state, setState] = React.useState<MediaSessionState | undefined>(
         mediaSession?.state.value,
     );
-    const [connecting, setConnecting] = React.useState(!state?.sender.audioTrack);
     const muted = !state?.sender.audioEnabled;
 
     const handleMute = React.useCallback(() => {
@@ -993,20 +993,13 @@ const RoomView = React.memo((props: { roomId: string; ctx: ModalProps; router: S
     }, [state, mediaSession]);
 
     const closeCall = () => {
-        if (!state) {
-            return;
-        }
         props.ctx.hide();
         InCallManager.stop({ busytone: '_BUNDLE_' });
         calls.leaveCall();
-        const selfPeers = (conference?.peers || []).filter(p => p.user.id === voiceChatData.me?.user.id);
-        if (selfPeers.length > 1 || selfPeers.length === 1 && selfPeers[0].id !== state.sender.id) {
-            return;
-        }
         client.mutateVoiceChatLeave({ id: props.roomId });
     };
 
-    const handleLeave = async () => {
+    const handleLeave = React.useCallback(async () => {
         let admins = voiceChatData.speakers?.filter(
             (x) => x.status === VoiceChatParticipantStatus.ADMIN,
         );
@@ -1026,7 +1019,7 @@ const RoomView = React.memo((props: { roomId: string; ctx: ModalProps; router: S
         } else {
             closeCall();
         }
-    };
+    }, [voiceChatData]);
 
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
 
@@ -1069,6 +1062,8 @@ const RoomView = React.memo((props: { roomId: string; ctx: ModalProps; router: S
         }
         prevVoiceChat.current = voiceChatData;
     }, [voiceChatData]);
+
+    const [connecting, setConnecting] = React.useState(!state?.sender.audioTrack);
 
     const prevState = React.useRef(state);
     React.useEffect(() => {

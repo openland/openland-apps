@@ -641,16 +641,12 @@ const RoomView = React.memo((props: { roomId: string }) => {
     const alreadyLeft = React.useRef(false);
 
     const closeCall = () => {
-        if (alreadyLeft.current || !state) {
+        if (alreadyLeft.current) {
             return;
         }
         alreadyLeft.current = true;
         calls.leaveCall();
-        const selfPeers = (conference?.peers || []).filter(p => p.user.id === voiceChatData.me?.user.id);
-        const hasOtherSelfPeers = selfPeers.length > 1 || selfPeers.length === 1 && selfPeers[0].id !== state.sender.id;
-        if (!hasOtherSelfPeers) {
-            client.mutateVoiceChatLeave({ id: props.roomId });
-        }
+        client.mutateVoiceChatLeave({ id: props.roomId });
         if (window.location.pathname.startsWith('/room/')) {
             let currentId = window.location.pathname.split('/')[2];
             if (tabRouter.currentTab === 2 && voiceChatData.parentRoom && currentId === props.roomId) {
@@ -667,7 +663,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
         router.navigate(`/${voiceChatData.parentRoom!.id}`);
     }, [voiceChatData.parentRoom]);
 
-    const handleLeave = async () => {
+    const handleLeave = React.useCallback(async () => {
         let admins = voiceChatData.speakers?.filter(x => x.status === VoiceChatParticipantStatus.ADMIN);
         if (admins && admins.length === 1 && voiceChatData.me?.status === VoiceChatParticipantStatus.ADMIN) {
             let builder = AlertBlanket.builder();
@@ -680,7 +676,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
             closeCall();
         }
 
-    };
+    }, [voiceChatData]);
 
     const handleHandRaise = React.useCallback(async () => {
         if (handRaised) {

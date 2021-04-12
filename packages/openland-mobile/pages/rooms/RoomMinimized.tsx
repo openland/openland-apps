@@ -18,7 +18,6 @@ import { TintBlue, TintOrange } from 'openland-y-utils/themes/tints';
 import InCallManager from 'react-native-incall-manager';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { useJoinRoom } from 'openland-mobile/pages/rooms/joinRoom';
-import { useVoiceChatsFeed } from 'openland-y-utils/voiceChat/voiceChatsFeedWatcher';
 
 interface SpeakerPhotoViewProps {
     firstSpeakers: VoiceChatParticipant[];
@@ -148,7 +147,6 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
     const voiceChatData = useVoiceChat();
     const theme = useTheme();
     const joinRoom = useJoinRoom();
-    const { modalOpen } = useVoiceChatsFeed();
     const client = useClient();
     const status = voiceChatData.me?.status;
     const state = props.mediaSession.state.useValue();
@@ -161,23 +159,12 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
     );
 
     const handleClose = () => {
-        if (!state) {
-            return;
-        }
         InCallManager.stop({ busytone: '_BUNDLE_' });
         getMessenger().engine.calls.leaveCall();
-        const selfPeers = (peers || []).filter(p => p.user.id === voiceChatData.me?.user.id);
-        if (selfPeers.length > 1 || selfPeers.length === 1 && selfPeers[0].id !== state.sender.id) {
-            return;
-        }
         client.mutateVoiceChatLeave({ id: voiceChatData.id });
     };
 
     React.useEffect(() => {
-        if (modalOpen) {
-            prevVoiceChat.current = voiceChatData;
-            return;
-        }
         let hasPrevAdmins = prevVoiceChat.current.speakers?.some(x => x.status === VoiceChatParticipantStatus.ADMIN);
         let isPrevAdmin = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.ADMIN;
         let hasAdmins = voiceChatData.speakers?.some(x => x.status === VoiceChatParticipantStatus.ADMIN);
@@ -213,6 +200,10 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
     const handleMutePress = React.useCallback(() => {
         props.mediaSession.setAudioEnabled(!state.sender.audioEnabled);
     }, [state]);
+
+    const handleLeavePress = React.useCallback(() => {
+        handleClose();
+    }, []);
 
     const muted = !state.sender.audioEnabled;
 
@@ -251,7 +242,7 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
                         bgColor="rgba(255, 255, 255, 0.16)"
                         iconColor={theme.foregroundContrast}
                         icon={require('assets/ic-leave-24.png')}
-                        onPress={handleClose}
+                        onPress={handleLeavePress}
                     />
                 )}
                 <RoomMinimizedControlItem
