@@ -877,6 +877,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                             theme,
                         )
                     }
+                    style={{ marginBottom: 16 }}
                 >
                     <View
                         style={{
