@@ -8,6 +8,13 @@
             ]
         },
         {
+            "name": "ic-message",
+            "src": "ic-message-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-pro-off",
             "src": "ic-pro-off-24.svg",
             "sizes": [
@@ -1093,13 +1100,6 @@
         {
             "name": "ic-like-active",
             "src": "ic-like-active-24.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-message",
-            "src": "ic-message-24.svg",
             "sizes": [
                 24
             ]
