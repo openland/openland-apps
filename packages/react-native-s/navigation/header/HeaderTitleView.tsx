@@ -108,11 +108,11 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
         title = (v.config.titleView && <View style={{ flexGrow: 1, flexShrink: 1, minWidth: 0, flexBasis: 0, alignItems: 'stretch' }}>{v.config.titleView()}</View>) || title;
         if (v.config.titleAction) {
             title = (
-                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={v.config.titleAction.action}>
+                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={v.config.titleAction.action}>
                     <Text style={[styles.title, { color: this.props.style.textColor }, this.props.page.page.startIndex === 0 ? styles.rootFirst : {}]}>{v.config.titleAction.title}</Text>
                     <ThemeContext.Consumer>
                         {theme => (
-                            <Image source={require('assets/ic-dropdown-16.png')} style={{ marginLeft: 8, marginTop: 5, tintColor: theme.foregroundTertiary }}/>
+                            <Image source={require('assets/ic-arrow-down-appbar-24.png')} style={{ marginLeft: 8, marginTop: 5, tintColor: theme.foregroundTertiary }} />
                         )}
                     </ThemeContext.Consumer>
                 </TouchableOpacity>

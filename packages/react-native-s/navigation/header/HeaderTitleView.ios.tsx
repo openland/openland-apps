@@ -130,11 +130,11 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                     {(v.config.appearance === 'large' || !v.config.appearance) && v.config.titleAction && (
                         <View style={{ position: 'absolute', top: SDevice.navigationBarHeight, left: 0, right: 0, height: MAX_SIZE, paddingTop: 5, paddingBottom: 12, overflow: 'hidden', paddingLeft: 16, paddingRight: 16 }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                             <SAnimated.View name={'header-large--' + v.page.key} pointerEvents={this.props.current ? 'box-none' : 'none'}>
-                                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start'}} onPress={v.config.titleAction.action}>
+                                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start' }} onPress={v.config.titleAction.action}>
                                     <Text numberOfLines={1} style={[styles.titleAction, { color: this.props.style.textColor }]} allowFontScaling={false}>{v.config.titleAction.title}</Text>
                                     <ThemeContext.Consumer>
                                         {theme => (
-                                            <Image source={require('assets/ic-dropdown-16.png')} style={{ marginLeft: 8, marginTop: 5, tintColor: theme.foregroundTertiary }}/>
+                                            <Image source={require('assets/ic-arrow-down-appbar-24.png')} style={{ marginLeft: 8, marginTop: 5, tintColor: theme.foregroundTertiary }} />
                                         )}
                                     </ThemeContext.Consumer>
                                 </TouchableOpacity>

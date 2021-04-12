@@ -15,6 +15,13 @@
             ]
         },
         {
+            "name": "ic-arrow-down-appbar",
+            "src": "ic-arrow-down-appbar-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-room",
             "src": "ic-room-24.svg",
             "sizes": [

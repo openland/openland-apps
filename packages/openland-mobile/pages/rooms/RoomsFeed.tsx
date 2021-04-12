@@ -53,7 +53,7 @@ const RoomFeedItem = React.memo((props: { room: VoiceChatWithSpeakers, theme: Th
     let speakers = room.speakers.slice(0, room.parentRoom ? 3 : 4);
     let title = room.title?.trim() || 'Room';
     return (
-        <TouchableOpacity style={{ paddingHorizontal: 16, paddingVertical: 12, marginBottom: 16, backgroundColor: theme.backgroundPrimary }} activeOpacity={0.6} onPress={() => joinRoom(room.id)}>
+        <TouchableOpacity style={{ paddingHorizontal: 16, paddingVertical: 8, backgroundColor: theme.backgroundPrimary }} activeOpacity={0.6} onPress={() => joinRoom(room.id)}>
             <Text
                 style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, marginBottom: 8, }}
                 numberOfLines={2}
@@ -68,12 +68,11 @@ const RoomFeedItem = React.memo((props: { room: VoiceChatWithSpeakers, theme: Th
                         </Text>
                     ))}
                     <View style={{ marginTop: 12, flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>{room.speakersCount}</Text>
-                        <Image source={require('assets/ic-microphone-16.png')} style={{ width: 16, height: 16, marginLeft: 4, tintColor: theme.foregroundTertiary }} />
+                        <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }}>{room.speakersCount}</Text>
+                        <Image source={require('assets/ic-microphone-16.png')} style={{ width: 16, height: 16, marginLeft: 2, marginRight: 12, tintColor: theme.foregroundTertiary }} />
                         {room.listenersCount > 0 && (
                             <>
-                                <View style={{ width: 3, height: 3, borderRadius: 3, backgroundColor: theme.foregroundTertiary, marginHorizontal: 8 }} />
-                                <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>{room.listenersCount}</Text>
+                                <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }}>{room.listenersCount}</Text>
                                 <Image source={require('assets/ic-headphones-16.png')} style={{ width: 16, height: 16, marginLeft: 4, tintColor: theme.foregroundTertiary }} />
                             </>
                         )}
@@ -152,15 +151,20 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
                         data={voiceChats.chats}
                         renderItem={({ item }) => <RoomFeedItem room={item} theme={theme} router={router} />}
                         keyExtractor={(item) => item.id}
-                        ItemSeparatorComponent={() => voiceChats.chats.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
+                        ItemSeparatorComponent={() => voiceChats.chats.length > 0 ? <View style={{ height: 8 }} /> : null}
                         ListHeaderComponent={upcomingHeader}
                         ListFooterComponent={() => (
                             <>
-                                {voiceChats.chats.length > 0 ? <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} /> : null}
+                                {voiceChats.chats.length > 0 ? (
+                                    <>
+                                        <View style={{ height: 8, backgroundColor: theme.backgroundPrimary }} />
+                                        <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} />
+                                    </>
+                                ) : null}
                                 <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginBottom: 16, alignItems: 'center' }}>
                                     <Image source={require('assets/art-crowd.png')} style={{ width: 240, height: 150 }} />
-                                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginVertical: 4 }}>Talk about anything!</Text>
-                                    <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 16 }}>Create a new room and invite friends!</Text>
+                                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 16, marginBottom: 6 }}>Talk about anything!</Text>
+                                    <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 24 }}>Create a new room and invite friends!</Text>
                                     <ZButton title="Start room" path="CreateRoom" />
                                 </View>
                             </>
