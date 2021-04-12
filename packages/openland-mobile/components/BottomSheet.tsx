@@ -13,6 +13,7 @@ import { QueryCacheProvider } from '@openland/spacex';
 export interface BottomSheetConfig {
     view: (ctx: ModalProps) => React.ReactElement;
     cancelable?: boolean;
+    cancelBtnContrast?: boolean;
     title?: string;
     titleAlign?: 'left';
     buttonTitle?: string;
@@ -55,15 +56,26 @@ export function showBottomSheet(config: BottomSheetConfig) {
                     >
                         <View
                             style={{
-                                backgroundColor: theme.backgroundTertiaryTrans,
+                                backgroundColor: config.cancelBtnContrast ? theme.overlayLight : theme.backgroundTertiaryTrans,
                                 borderRadius: 100,
                                 width: 28,
                                 height: 28,
                                 justifyContent: 'center',
-                                alignItems: 'center'
+                                alignItems: 'center',
+                                ...config.cancelBtnContrast && {
+                                    borderWidth: 1,
+                                    borderColor: 'rgba(255, 255, 255, 0.16)',
+                                }
                             }}
                         >
-                            <Image style={{ width: 16, height: 16, tintColor: theme.foregroundTertiary }} source={require('assets/ic-close-bold-16.png')} />
+                            <Image
+                                style={{
+                                    width: 16,
+                                    height: 16,
+                                    tintColor: config.cancelBtnContrast ? theme.foregroundContrast : theme.foregroundTertiary
+                                }}
+                                source={require('assets/ic-close-bold-16.png')}
+                            />
                         </View>
                     </TouchableOpacity>
                 )}

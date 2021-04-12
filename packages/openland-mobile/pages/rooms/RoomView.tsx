@@ -459,6 +459,7 @@ const showUserInfo = (props: RoomUserViewProps) => {
     showBottomSheet({
         view: (ctx) => <UserModalContent {...props} hide={ctx.hide} />,
         cancelable: true,
+        cancelBtnContrast: true,
         containerStyle: {},
     });
 };
