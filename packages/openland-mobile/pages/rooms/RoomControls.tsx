@@ -212,7 +212,7 @@ const RaiseModalView = React.memo(
                     }}
                 >
                     <Image
-                        source={require('assets/ic-raise-back-hand-36.png')}
+                        source={require('assets/reactions/ic-reaction-raised-36.png')}
                         style={{ width: 42, height: 42 }}
                     />
                 </View>
@@ -298,11 +298,7 @@ const ControlRaiseHand = React.memo(
         return (
             <ControlItem
                 theme={theme}
-                icon={
-                    raised
-                        ? require('assets/ic-raised-hand-36.png')
-                        : require('assets/ic-raise-back-hand-36.png')
-                }
+                icon={require('assets/reactions/ic-reaction-raised-36.png')}
                 bgColor={raised ? theme.accentPositive : theme.backgroundTertiaryTrans}
                 onPress={handlePress}
             />
