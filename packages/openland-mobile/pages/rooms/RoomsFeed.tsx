@@ -161,7 +161,7 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
                                         <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} />
                                     </>
                                 ) : null}
-                                <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginBottom: 16, alignItems: 'center' }}>
+                                <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginVertical: 16, alignItems: 'center' }}>
                                     <Image source={require('assets/art-crowd.png')} style={{ width: 240, height: 150 }} />
                                     <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 16, marginBottom: 6 }}>Talk about anything!</Text>
                                     <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 24 }}>Create a new room and invite friends!</Text>
