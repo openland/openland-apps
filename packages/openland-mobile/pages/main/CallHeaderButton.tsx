@@ -24,9 +24,9 @@ const VoiceCallButton = React.memo((props: {
             roomId = room.chat.id;
         }
         if (roomId) {
-            joinRoom(roomId);
+            joinRoom(roomId, !props.sharedRoom.activeVoiceChat?.active);
         }
-    }, [props.sharedRoom]);
+    }, [props.sharedRoom, props.sharedRoom.activeVoiceChat]);
 
     return (
         <SHeaderButton

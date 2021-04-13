@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView, XViewRouterContext } from 'react-mental';
+import { XView } from 'react-mental';
 import { normalizeUrl } from 'openland-x-utils/normalizeUrl';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { css, cx } from 'linaria';
@@ -45,6 +45,7 @@ import MutedIcon from 'openland-icons/s/ic-muted-16.svg';
 import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
 import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
+import { useJoinRoom } from 'openland-web/fragments/rooms/joinRoom';
 
 const secondaryAccent = css`
     color: var(--accentPrimary);
@@ -111,7 +112,6 @@ const ChatOnlinesTitle = (props: { id: string }) => {
 
 const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) => {
     const client = useClient();
-    const router = React.useContext(XViewRouterContext)!;
     const calls = props.messenger.calls;
     const callSettings =
         props.chat.__typename === 'SharedRoom' ? props.chat.callSettings : undefined;
@@ -120,6 +120,7 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
     const callDisabled = !!currentSession && currentSession.callType === 'voice-chat';
     const isAdmin = props.chat.__typename === 'SharedRoom' && (props.chat.role === RoomMemberRole.ADMIN || props.chat.role === RoomMemberRole.OWNER);
     const showStartRoom = callSettings && callSettings.mode === RoomCallsMode.STANDARD && isAdmin;
+    const joinRoom = useJoinRoom();
 
     const startRoom = React.useCallback(async () => {
         if (props.chat.__typename === 'SharedRoom' && !props.chat.activeVoiceChat) {
@@ -132,10 +133,10 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
                     cid: props.chat.id,
                 })
             ).voiceChatCreateInChat;
-            router.navigate(`/room/${room.chat.id}`);
+            joinRoom(room.chat.id, true);
             await client.refetchRoomChat({ id: props.chat.id });
         } else if (props.chat.__typename === 'SharedRoom' && props.chat.activeVoiceChat) {
-            router.navigate(`/room/${props.chat.activeVoiceChat.id}`);
+            joinRoom(props.chat.activeVoiceChat.id, !props.chat.activeVoiceChat.active);
         }
     }, [props.chat]);
 
