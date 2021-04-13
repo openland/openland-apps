@@ -539,7 +539,12 @@ const RoomHeader = React.memo(
                         </TouchableOpacity>
                         {parentRoom.kind === SharedRoomKind.PUBLIC && joinState !== 'joined' && (
                             <TouchableOpacity
-                                style={{ marginLeft: 16, position: 'relative' }}
+                                style={{
+                                    marginLeft: 16,
+                                    position: 'relative',
+                                    paddingHorizontal: 12,
+                                    paddingVertical: 6,
+                                }}
                                 onPress={async () => {
                                     if (joinState !== 'initial') {
                                         return;
@@ -562,14 +567,26 @@ const RoomHeader = React.memo(
                                     }
                                 }}
                             >
+                                <View
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        bottom: 0,
+                                        opacity: 0.16,
+                                        borderRadius: 100,
+                                        backgroundColor: theme.accentPrimary,
+                                    }}
+                                />
                                 <Text
                                     style={{
-                                        ...TextStyles.Label2,
+                                        ...TextStyles.Detail,
                                         color: theme.accentPrimary,
                                         opacity: joinState === 'initial' ? 1 : 0,
                                     }}
                                 >
-                                    Join {parentRoom.isChannel ? 'channel' : 'group'}
+                                    JOIN {parentRoom.isChannel ? 'CHANNEL' : 'GROUP'}
                                 </Text>
                                 <View
                                     style={{
@@ -591,7 +608,7 @@ const RoomHeader = React.memo(
                                         )}
                                         {joinState === 'success' && (
                                             <Image
-                                                source={require('assets/ic-done-24.png')}
+                                                source={require('assets/ic-done-16.png')}
                                                 style={{ tintColor: theme.accentPrimary }}
                                             />
                                         )}
