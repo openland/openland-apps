@@ -624,12 +624,12 @@ const RoomHeader = React.memo(
                         {room.speakersCount}
                     </Text>
                     <Image
-                        source={require('assets/ic-microphone-16.png')}
+                        source={require('assets/ic-speaker-16.png')}
                         style={{
                             width: 16,
                             height: 16,
-                            marginLeft: 2,
-                            tintColor: theme.foregroundTertiary,
+                            marginLeft: 3,
+                            tintColor: theme.foregroundQuaternary,
                         }}
                     />
                     {room.listenersCount > 0 && (
@@ -644,12 +644,12 @@ const RoomHeader = React.memo(
                                 {room.listenersCount}
                             </Text>
                             <Image
-                                source={require('assets/ic-headphones-16.png')}
+                                source={require('assets/ic-listener-16.png')}
                                 style={{
                                     width: 16,
                                     height: 16,
-                                    marginLeft: 4,
-                                    tintColor: theme.foregroundTertiary,
+                                    marginLeft: 6,
+                                    tintColor: theme.foregroundQuaternary,
                                 }}
                             />
                         </>
@@ -747,7 +747,7 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                         >
                             {state === 'muted' ? (
                                 <Image
-                                    source={require('assets/ic-mute-glyph-16.png')}
+                                    source={require('assets/ic-speaker-off-16.png')}
                                     style={{
                                         width: 16,
                                         height: 16,

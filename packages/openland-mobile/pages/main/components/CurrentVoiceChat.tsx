@@ -49,33 +49,23 @@ export const CurrentVoiceChat = React.memo<CurrentVoiceChatProps>((props) => {
                             {speakersCount}
                         </Text>
                         <Image
-                            source={require('assets/ic-microphone-24.png')}
+                            source={require('assets/ic-speaker-16.png')}
                             style={{
                                 tintColor: theme.foregroundTertiary,
                                 width: 16,
                                 height: 16,
-                                marginLeft: 6,
+                                marginLeft: 3,
                             }}
                         />
                         {listenersCount > 0 && (
                             <>
-                                <View
-                                    style={{
-                                        backgroundColor: theme.foregroundTertiary,
-                                        width: 3,
-                                        height: 3,
-                                        borderRadius: 3,
-                                        opacity: 0.5,
-                                        marginHorizontal: 8,
-                                    }}
-                                />
-                                <Text style={{ color: theme.foregroundTertiary }}>
+                                <Text style={{ color: theme.foregroundQuaternary, marginLeft: 12 }}>
                                     {listenersCount}
                                 </Text>
                                 <Image
                                     source={require('assets/ic-listener-16.png')}
                                     style={{
-                                        tintColor: theme.foregroundTertiary,
+                                        tintColor: theme.foregroundQuaternary,
                                         width: 16,
                                         height: 16,
                                         marginLeft: 6,
