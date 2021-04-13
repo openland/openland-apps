@@ -554,9 +554,9 @@ const RoomHeader = React.memo(
                                         }, 1000);
                                     } catch (e) {
                                         Toast.failure({
-                                            text: `Couldn't join ${parentRoom.isChannel ? 'channel' : 'group'
+                                            text: e.message || `Couldn't join ${parentRoom.isChannel ? 'channel' : 'group'
                                                 }`,
-                                            duration: 2000,
+                                            duration: 4000,
                                         }).show();
                                         setJoinState('initial');
                                     }
