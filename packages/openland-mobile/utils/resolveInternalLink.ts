@@ -12,12 +12,14 @@ import Toast from 'openland-mobile/components/Toast';
 import { AppLoader } from 'openland-y-runtime/AppLoader';
 import { isInternalLink } from 'openland-y-utils/isInternalLink';
 import { ModalProvider as ZModalProvider } from 'openland-mobile/components/ZModal';
+import { hideModals } from 'react-native-fast-modal';
 
 export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?: boolean) => {
     return async () => {
         if (ZModalProvider) {
             ZModalProvider.hideModals();
         }
+        hideModals();
         const loader = Toast.loader();
         let link = srcLink;
         if (link.includes('?')) {

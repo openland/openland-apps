@@ -13432,10 +13432,10 @@ react-native-fast-image@^7.0.0:
   resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-7.0.2.tgz#e06b21f42f4a9786eaa86f3db35d919070fb8403"
   integrity sha512-MfuzJbC0RjYobR2gFCdqe1I7jvNOCfDkjQ7VGOHXniqjohhULMkcWNBE9Umovi9Dx93lJ6t5utcE2wf/09zvlg==
 
-react-native-fast-modal@^0.0.12:
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/react-native-fast-modal/-/react-native-fast-modal-0.0.12.tgz#8208a6a9e8a3f3ab6e1dc9bcde05785235b0895b"
-  integrity sha512-adQdEMws+qxaK2qrSBX/EzK+Hp2wbUGzYoEo2zzU1uvi1cDL85nG4Ws8P3cF3NHy4XFnOsIPZlysn0tToNct7g==
+react-native-fast-modal@^0.0.13:
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/react-native-fast-modal/-/react-native-fast-modal-0.0.13.tgz#9501da75a65d6760887e1967779d1e51e5cf2bca"
+  integrity sha512-ayFTCfqQ3EQ1SDGaXpe3mdvtY5lmSBzG7vMcV62CEfYvp7tH2brZvtF1lHnHnKVw8iMPzY2nieL2xsDsx+7dlw==
   dependencies:
     uuid "^3.4.0"
 

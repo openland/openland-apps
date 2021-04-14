@@ -115,7 +115,7 @@ const DialogsComponent = React.memo((props: PageProps) => {
             if (props.router.params.share) {
                 let entityId = id;
                 if (isUser) {
-                    const conv = await client.queryUser({ userId: id });
+                    const conv = await client.queryVoiceChatUser({ uid: id });
                     const data = await conv.conversation as User_conversation_PrivateRoom;
                     entityId = data.id;
                 }
