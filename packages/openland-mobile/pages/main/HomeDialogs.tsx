@@ -15,9 +15,10 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { GlobalSearchEntryKind } from 'openland-api/spacex.types';
+import { GlobalSearchEntryKind, User_conversation_PrivateRoom } from 'openland-api/spacex.types';
 import { SetTabContext } from './Home';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
+import { useClient } from 'openland-api/useClient';
 
 type DialogType = 'all' | 'unread' | 'groups' | 'private';
 
@@ -107,10 +108,17 @@ const DefaultDialogs = React.memo(
 const DialogsComponent = React.memo((props: PageProps) => {
     const [dialogFilter, setDialogFilter] = React.useState<DialogType>('all');
     const messenger = getMessenger();
+    const client = useClient();
 
     const handlePress = React.useCallback(
-        (id: string, title: string) => {
+        async (id: string, title: string, isUser?: boolean) => {
             if (props.router.params.share) {
+                let entityId = id;
+                if (isUser) {
+                    const conv = await client.queryUser({ userId: id });
+                    const data = await conv.conversation as User_conversation_PrivateRoom;
+                    entityId = data.id;
+                }
                 Alert.builder()
                     .title(`Share with ${title}?`)
                     .button('Cancel', 'cancel')
@@ -123,7 +131,7 @@ const DialogsComponent = React.memo((props: PageProps) => {
                             }
                             try {
                                 await UploadManagerInstance.registerMessageUploads(
-                                    id,
+                                    entityId,
                                     filesMeta,
                                     undefined,
                                 );
@@ -134,7 +142,7 @@ const DialogsComponent = React.memo((props: PageProps) => {
 
                         if (props.router.params.share.strings) {
                             for (let s of props.router.params.share.strings) {
-                                messenger.engine.getConversation(id).sendMessage(s, [], undefined);
+                                messenger.engine.getConversation(entityId).sendMessage(s, [], undefined);
                             }
                         }
                         messenger.history.navigationManager.pushAndRemove('Conversation', { id });
@@ -203,7 +211,7 @@ const DialogsComponent = React.memo((props: PageProps) => {
                             query={p.query}
                             router={props.router}
                             onGroupPress={handlePress}
-                            onUserPress={handlePress}
+                            onUserPress={(id, title) => handlePress(id, title, true)}
                             kinds={
                                 props.router.params.title || props.router.params.share
                                     ? [GlobalSearchEntryKind.USER, GlobalSearchEntryKind.SHAREDROOM]

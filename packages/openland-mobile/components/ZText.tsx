@@ -13,6 +13,7 @@ interface ZTextProps {
     linkify?: boolean;
     onPress?: (link: string) => void;
     onLongPress?: (link: string) => void;
+    onHashTagClick?: (hst: string) => void;
 }
 
 export const ZText = (props: ZTextProps) => {
@@ -34,6 +35,9 @@ export const ZText = (props: ZTextProps) => {
     }, []);
 
     const onHashTagPress = React.useCallback((hashtag: string) => {
+        if (props.onHashTagClick) {
+            return props.onHashTagClick(hashtag);
+        }
         router.push('HomeDialogs', { searchValue: hashtag, title: hashtag });
     }, []);
 

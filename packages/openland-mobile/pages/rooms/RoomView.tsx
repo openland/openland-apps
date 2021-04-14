@@ -340,6 +340,12 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
         props.modalCtx.hide();
     };
 
+    const handleHashTagClick = (hs: string) => {
+        props.router.push('HomeDialogs', { searchValue: hs, title: hs });
+        props.hide();
+        props.modalCtx.hide();
+    };
+
     return (
         <View
             style={{
@@ -364,6 +370,7 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                         style={{ ...TextStyles.Body, color: theme.foregroundPrimary }}
                         text={about}
                         numberOfLines={3}
+                        onHashTagClick={handleHashTagClick}
                     />
                 </View>
             )}

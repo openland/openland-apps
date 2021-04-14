@@ -11,10 +11,13 @@ import { publicPaths } from 'openland-y-utils/publicPaths';
 import Toast from 'openland-mobile/components/Toast';
 import { AppLoader } from 'openland-y-runtime/AppLoader';
 import { isInternalLink } from 'openland-y-utils/isInternalLink';
+import { ModalProvider as ZModalProvider } from 'openland-mobile/components/ZModal';
 
 export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?: boolean) => {
     return async () => {
-
+        if (ZModalProvider) {
+            ZModalProvider.hideModals();
+        }
         const loader = Toast.loader();
         let link = srcLink;
         if (link.includes('?')) {
