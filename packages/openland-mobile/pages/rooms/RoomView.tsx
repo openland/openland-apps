@@ -46,7 +46,6 @@ import {
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { withApp } from 'openland-mobile/components/withApp';
 import { isPad } from '../Root';
-import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
@@ -121,12 +120,6 @@ interface RoomUserViewProps {
     router: SRouter;
     state?: 'muted' | 'talking' | 'loading';
     modalCtx: { hide: () => void };
-}
-
-interface PeerMedia {
-    videoTrack: AppMediaStreamTrack | null;
-    audioTrack: AppMediaStreamTrack | null;
-    screencastTrack: AppMediaStreamTrack | null;
 }
 
 interface UserAvatarProps {
@@ -807,20 +800,21 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
 });
 
 interface RoomSpeakingUserViewProps extends RoomUserViewProps {
-    peer: Conference_conference_peers | undefined;
+    peersIds: string[];
     analyzer: MediaSessionTrackAnalyzerManager;
     isLoading: boolean;
+    isMuted: boolean;
 }
 
 const RoomSpeakingUserView = React.memo((props: RoomSpeakingUserViewProps) => {
-    const { peer, analyzer, isLoading, ...other } = props;
-    const isTalking = analyzer.usePeer(peer?.id);
+    const { peersIds, analyzer, isLoading, isMuted, ...other } = props;
+    const isTalking = analyzer.usePeers(peersIds);
     const state = isLoading
         ? 'loading'
-        : peer?.mediaState.audioPaused
-            ? 'muted'
-            : isTalking
-                ? 'talking'
+        : isTalking
+            ? 'talking'
+            : isMuted
+                ? 'muted'
                 : undefined;
 
     return <RoomUserView {...other} state={state} />;
@@ -866,28 +860,32 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
     //     initialItems: initialListeners.items,
     // });
     // let listenersState = { items: [] as VoiceChatListeners_voiceChatListeners_items[], loading: false, loadMore: () => { } };
-    const speakers = (room.speakers || []).map((speaker) => {
-        let peer = peers.find((p) => p.user.id === speaker.user.id);
-        let media: PeerMedia = { videoTrack: null, audioTrack: null, screencastTrack: null };
-        let isLocal = peer?.id === callState?.sender.id;
-        if (isLocal) {
-            media = {
-                videoTrack: callState?.sender.videoEnabled ? callState?.sender.videoTrack : null,
-                audioTrack: callState?.sender.audioEnabled ? callState?.sender.audioTrack : null,
-                screencastTrack: callState?.sender.screencastEnabled
-                    ? callState?.sender.screencastTrack
-                    : null,
+    const speakers = (room.speakers || [])
+        .map((speaker) => {
+            let speakerPeers = (peers || []).filter((p) => p.user.id === speaker.user.id);
+            let speakerStates = speakerPeers.map(peer => {
+                let isLocal = peer?.id === callState?.sender.id;
+                let isLoading = false;
+                let isMuted = !!peer?.mediaState.audioPaused;
+                if (!isLocal) {
+                    let hasAudioTrack = !!callState?.receivers[peer.id]?.audioTrack;
+                    isLoading = !connecting && !hasAudioTrack;
+                }
+                return { isMuted, isLoading };
+            }).reduce((acc, peerState) => {
+                return {
+                    isMuted: acc.isMuted && peerState.isMuted,
+                    isLoading: acc.isLoading && peerState.isLoading
+                };
+            }, { isMuted: true, isLoading: true });
+
+            return {
+                isMuted: speakerStates.isMuted,
+                isLoading: speakerStates.isLoading,
+                peersIds: speakerPeers.map(p => p.id),
+                speaker,
             };
-        } else {
-            media = { ...media, ...(peer ? callState?.receivers[peer.id] : {}) };
-        }
-        return {
-            peer,
-            media,
-            isLocal,
-            speaker,
-        };
-    });
+        });
 
     const speakersElement = (
         <>
@@ -921,7 +919,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                 </TouchableOpacity>
             )}
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start' }}>
-                {speakers.map(({ peer, media, isLocal, speaker }) => {
+                {speakers.map(({ speaker, isMuted, isLoading, peersIds }) => {
                     return (
                         <RoomSpeakingUserView
                             key={speaker.id}
@@ -930,12 +928,13 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                             userStatus={speaker.status}
                             selfStatus={room.me?.status}
                             isSelf={room.me?.user.id === speaker.user.id}
-                            peer={peer}
+                            peersIds={peersIds}
                             theme={theme}
                             router={router}
                             modalCtx={modalCtx}
                             analyzer={analyzer}
-                            isLoading={connecting || !peer ? false : !isLocal && !media.audioTrack}
+                            isLoading={isLoading}
+                            isMuted={isMuted}
                         />
                     );
                 })}

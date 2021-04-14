@@ -38,7 +38,6 @@ import AlertBlanket from 'openland-x/AlertBlanket';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { debounce } from 'openland-y-utils/timer';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
-import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { useJoinRoom } from './joinRoom';
 import { showRaiseHand } from './showRaiseHand';
 import { showRaisedHands } from './showRaisedHands';
@@ -49,12 +48,6 @@ import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { showPinnedMessageModal } from './showPinnedMessageModal';
-
-interface PeerMedia {
-    videoTrack: AppMediaStreamTrack | null;
-    audioTrack: AppMediaStreamTrack | null;
-    screencastTrack: AppMediaStreamTrack | null;
-}
 
 const headerParentRoomClass = css`
   padding: 12px 0;
@@ -505,19 +498,20 @@ const RoomUser = React.memo(({
 });
 
 const RoomSpeakerUser = React.memo((props: {
-    peerId?: string;
+    peersIds: string[];
     analyzer: MediaSessionTrackAnalyzerManager;
     isLoading?: boolean,
     isMuted?: boolean,
 } & RoomUserInfo) => {
-    const { peerId, analyzer, isLoading, isMuted, ...other } = props;
-    const isTalking = analyzer.usePeer(peerId);
+    const { peersIds, analyzer, isLoading, isMuted, ...other } = props;
+    const isTalking = analyzer.usePeers(peersIds);
     const state = isLoading
         ? 'loading'
-        : isMuted
-            ? 'muted'
-            : isTalking
-                ? 'talking' : undefined;
+        : isTalking
+            ? 'talking'
+            : isMuted
+                ? 'muted'
+                : undefined;
 
     return (
         <RoomUser
@@ -544,40 +538,45 @@ const RoomSpeakers = React.memo(({
 }) => {
     const speakers = (room.speakers || [])
         .map((speaker) => {
-            let peer = (peers || []).find((p) => p.user.id === speaker.user.id);
-            let media: PeerMedia = { videoTrack: null, audioTrack: null, screencastTrack: null };
-            let isLocal = peer?.id === callState?.sender.id;
-            if (isLocal) {
-                media = {
-                    videoTrack: callState?.sender.videoEnabled ? callState?.sender.videoTrack : null,
-                    audioTrack: callState?.sender.audioEnabled ? callState?.sender.audioTrack : null,
-                    screencastTrack: callState?.sender.screencastEnabled ? callState?.sender.screencastTrack : null,
+            let speakerPeers = (peers || []).filter((p) => p.user.id === speaker.user.id);
+            let speakerStates = speakerPeers.map(peer => {
+                let isLocal = peer?.id === callState?.sender.id;
+                let isLoading = false;
+                let isMuted = !!peer?.mediaState.audioPaused;
+                if (!isLocal) {
+                    let hasAudioTrack = !!callState?.receivers[peer.id]?.audioTrack;
+                    isLoading = !connecting && !hasAudioTrack;
+                }
+                return { isMuted, isLoading };
+            }).reduce((acc, peerState) => {
+                return {
+                    isMuted: acc.isMuted && peerState.isMuted,
+                    isLoading: acc.isLoading && peerState.isLoading
                 };
-            } else {
-                media = { ...media, ...peer ? callState?.receivers[peer.id] : {} };
-            }
+            }, { isMuted: true, isLoading: true });
+
             return {
-                peer,
-                media,
-                isLocal,
+                isMuted: speakerStates.isMuted,
+                isLoading: speakerStates.isLoading,
+                peersIds: speakerPeers.map(p => p.id),
                 speaker,
             };
         });
 
     return (
         <div className={speakersGridStyle}>
-            {speakers.map(({ speaker, peer, media, isLocal }) => (
+            {speakers.map(({ speaker, isMuted, isLoading, peersIds }) => (
                 <RoomSpeakerUser
                     key={speaker.id}
                     name={speaker.user.firstName}
                     id={speaker.user.id}
-                    isLoading={connecting || !peer ? false : !isLocal && !media.audioTrack}
-                    isMuted={peer?.mediaState.audioPaused}
+                    isLoading={isLoading}
+                    isMuted={isMuted}
                     analyzer={analyzer}
                     photo={speaker.user.photo}
                     roomId={room.id}
                     selfId={room.me?.user.id}
-                    peerId={peer?.id}
+                    peersIds={peersIds}
                     selfStatus={room.me?.status}
                     userStatus={speaker.status}
                     followedByMe={speaker.user.followedByMe}

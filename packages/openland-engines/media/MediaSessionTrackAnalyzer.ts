@@ -183,6 +183,15 @@ export class MediaSessionTrackAnalyzerManager {
         return val;
     }
 
+    usePeers = (peersIds: string[]) => {
+        let [val, setVal] = React.useState<boolean>();
+        React.useEffect(() => {
+            let listeners = peersIds.map(id => this.subscribePeer(id, setVal));
+            return () => listeners.forEach(l => l());
+        }, [peersIds.length]);
+        return val;
+    }
+
     private sepakingPeerListeners = new Set<(peerId: string) => void>();
     notifySpeakingPeerIdChanged = (peerId: string) => {
         for (let l of this.sepakingPeerListeners) {
