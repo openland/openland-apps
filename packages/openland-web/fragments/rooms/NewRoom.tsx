@@ -98,12 +98,20 @@ export const NewRoomForm = React.memo((props: { ctx: XModalController }) => {
         });
     }, [nameField.value]);
 
-    useShortcuts({
-        keys: ['Enter'],
-        callback: () => {
-            onSubmit();
+    useShortcuts([
+        {
+            keys: ['Enter'],
+            callback: () => {
+                onSubmit();
+            },
         },
-    });
+        {
+            keys: ['Escape'],
+            callback: () => {
+                props.ctx.hide();
+            },
+        },
+    ]);
 
     return (
         <div className={rootContainer}>
