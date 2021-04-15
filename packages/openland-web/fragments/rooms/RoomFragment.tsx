@@ -119,6 +119,7 @@ const pinnedMessageContainerStyle = css`
   cursor: pointer;
   margin: 0 -1200px;
   padding: 12px 1200px;
+  background: var(--gradient0to100);
   
   &:hover {
     background-color: var(--backgroundPrimaryHover);
