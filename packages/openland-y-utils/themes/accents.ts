@@ -29,7 +29,7 @@ const AccentSourceRed: AccentSource = {
     hover: '#ED5263',
     active: '#DA384A',
     secondary: '#DA384A',
-    darkMuted: '#B44B56',
+    darkMuted: '#CA4453',
 };
 
 const AccentSourceOrange: AccentSource = {
@@ -37,7 +37,7 @@ const AccentSourceOrange: AccentSource = {
     hover: '#FF9F29',
     active: '#EA8304',
     secondary: '#EA8304',
-    darkMuted: '#C7763C',
+    darkMuted: '#D87D2A',
 };
 
 const AccentSourceGreen: AccentSource = {
@@ -77,7 +77,7 @@ const AccentSourcePink: AccentSource = {
     hover: '#FD6FA2',
     active: '#EA4480',
     secondary: '#EA4480',
-    darkMuted: '#C1587E',
+    darkMuted: '#D34F7F',
 };
 
 const AccentSourceGrey: AccentSource = {
