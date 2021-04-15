@@ -174,9 +174,9 @@ html {
     }
 
     html.red:not(.landing):not(.light) {
-        --accentMuted: #CA4453,;
-        --accentMutedHover: #CA4453,;
-        --accentMutedActive: #CA4453,;
+        --accentMuted: #CA4453;
+        --accentMutedHover: #CA4453;
+        --accentMutedActive: #CA4453;
     }
 
     html.green:not(.landing):not(.light) {
@@ -320,9 +320,9 @@ html.red:not(.landing) {
 }
 
 html.dark.red:not(.landing) {
-    --accentMuted: #CA4453,;
-    --accentMutedHover: #CA4453,;
-    --accentMutedActive: #CA4453,;
+    --accentMuted: #CA4453;
+    --accentMutedHover: #CA4453;
+    --accentMutedActive: #CA4453;
 }
 
 html.orange:not(.landing) {
