@@ -69,7 +69,7 @@ const AccentSourcePurple: AccentSource = {
     hover: '#A56AFA',
     active: '#8341E1',
     secondary: '#654692',
-    darkMuted: '#654692'
+    darkMuted: '#673AA7'
 };
 
 const AccentSourcePink: AccentSource = {

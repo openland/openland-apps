@@ -192,9 +192,9 @@ html {
     }
 
     html.purple:not(.landing):not(.light) {
-        --accentMuted: #654692;
-        --accentMutedHover: #654692;
-        --accentMutedActive: #654692;
+        --accentMuted: #673AA7;
+        --accentMutedHover: #673AA7;
+        --accentMutedActive: #673AA7;
     }
 
     html.orange:not(.landing):not(.light) {
@@ -384,9 +384,9 @@ html.purple:not(.landing) {
 }
 
 html.dark.purple:not(.landing) {
-    --accentMuted: #654692;
-    --accentMutedHover: #654692;
-    --accentMutedActive: #654692;
+    --accentMuted: #673AA7;
+    --accentMutedHover: #673AA7;
+    --accentMutedActive: #673AA7;
 }
 
 html.pink:not(.landing) {
