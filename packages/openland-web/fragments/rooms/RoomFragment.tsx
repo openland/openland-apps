@@ -776,8 +776,8 @@ const RoomView = React.memo((props: { roomId: string }) => {
         <Page>
             <UHeader
                 titleView={
-                    voiceChatData.parentRoom ? (
-                        <XView width="100%">
+                    <XView width="100%">
+                        {voiceChatData.parentRoom && (
                             <div className={headerParentRoomClass} onClick={handleParentRoomClick}>
                                 <UAvatar
                                     title={voiceChatData.parentRoom.title}
@@ -787,26 +787,23 @@ const RoomView = React.memo((props: { roomId: string }) => {
                                 />
                                 <div className={TextLabel1}>{voiceChatData.parentRoom.title}</div>
                             </div>
-                            <RoomHeader
-                                title={voiceChatData.title}
-                                speakersCount={voiceChatData.speakersCount}
-                                listenersCount={voiceChatData.listenersCount}
-                            />
-                            {pinnedMessage && (
-                                <div className={pinnedMessageContainerStyle} onClick={() => showPinnedMessageModal(voiceChatData.id)}>
-                                    <div className={cx(pinnedMessageTextStyle, TextBody)}>
-                                        {pinnedMessage}
-                                    </div>
-                                </div>
-                            )}
-                        </XView>
-                    ) : (
+                        )}
                         <RoomHeader
                             title={voiceChatData.title}
                             speakersCount={voiceChatData.speakersCount}
                             listenersCount={voiceChatData.listenersCount}
                         />
-                    )
+                        {pinnedMessage && (
+                            <div
+                                className={pinnedMessageContainerStyle}
+                                onClick={() => showPinnedMessageModal(voiceChatData.id)}
+                            >
+                                <div className={cx(pinnedMessageTextStyle, TextBody)}>
+                                    {pinnedMessage}
+                                </div>
+                            </div>
+                        )}
+                    </XView>
                 }
                 dynamicHeight={true}
             />
