@@ -225,10 +225,7 @@ export class MediaSessionManager {
     // Media State
     //
 
-    private startMedia = () => {
-
-        // Request audio
-        this.doLoadAudioIfNeeded();
+    private startMedia = async () => {
 
         // Subscribe for media streams
         this.connectionsSubscription = reliableWatcher<ConferenceMediaWatch>((handler) => this.client.subscribeConferenceMediaWatch({ peerId: this.peerId, id: this.conferenceId }, handler), (src) => {
@@ -238,6 +235,9 @@ export class MediaSessionManager {
             this.localMediaConfig = src.media.localMedia;
             this.connectionsInvalidateSync.invalidate();
         });
+
+        // Request audio
+        await this.doLoadAudioIfNeeded();
     }
 
     private handleState = async () => {
@@ -449,7 +449,7 @@ export class MediaSessionManager {
             this.doKeepAlive();
 
             // Start Media
-            this.startMedia();
+            await this.startMedia();
 
             this.setAudioEnabled(this.audioEnabled);
 
