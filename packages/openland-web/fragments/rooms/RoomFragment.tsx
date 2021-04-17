@@ -19,7 +19,7 @@ import IcFollow from 'openland-icons/s/ic-invite-24.svg';
 import IcMessage from 'openland-icons/s/ic-message-24.svg';
 import IcLeave from 'openland-icons/s/ic-leave-24.svg';
 import IcEdit from 'openland-icons/s/ic-edit-24.svg';
-import IcMuted from 'openland-icons/s/ic-mic-off-36.svg';
+import IcMuted from 'openland-icons/s/ic-speaker-off-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { SvgLoader, XLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
@@ -48,12 +48,13 @@ import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { showPinnedMessageModal } from './showPinnedMessageModal';
+import { RoomJoinButton } from './RoomJoinButton';
 
 const headerParentRoomClass = css`
   padding: 12px 0;
   display: flex;
   align-items: center;
-  cursor: pointer;
+  margin-left: -16px;
 `;
 
 const headerTitleStyle = css`
@@ -77,7 +78,9 @@ const listenerIconClass = css`
 
 const userNameStyle = cx(TextLabel2, css`
     /* width: 100%; */
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--foregroundPrimary);
     white-space: nowrap;
     overflow: hidden;
@@ -89,11 +92,61 @@ const userNameTalkingStyle = css`
 `;
 
 const adminIconStyle = css`
-    display: inline-block;
-
-    & * {
+    height: 18px;
+    margin-right: 6px;
+  
+    & svg * {
         fill: var(--tintOrange);
     }
+`;
+
+const stateIconStyle = css`
+  display: flex;
+  position: absolute;
+  bottom: 4px;
+  right: 0px;
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  background-color: var(--backgroundPrimary);
+  justify-content: center;
+  align-items: center;
+`;
+
+const roomUserContainer = css`
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 8px;
+  margin: 0 11px;
+  
+  &:hover {
+    background-color: var(--backgroundTertiaryTrans);
+    border-radius: 8px;
+    cursor: pointer;
+    
+    .${stateIconStyle} {
+      background-color: var(--backgroundPrimaryHover);
+    }
+  }
+`;
+
+const roomUserContainerVisible = css`
+  background-color: var(--backgroundTertiaryTrans);
+  border-radius: 8px;
+`;
+
+const listenerStyle = css`
+  margin-left: 7px;
+  margin-right: 8px;
+`;
+
+const parentRoomTitle = css`
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+  padding: 0 16px;
+  cursor: pointer;
 `;
 
 const buttonLabelStyle = cx(TextLabel2, css`
@@ -102,14 +155,15 @@ const buttonLabelStyle = cx(TextLabel2, css`
 `);
 
 const speakersGridStyle = css`
-    margin: 0 -4px;
+    margin: 0 -9px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 `;
 
 const listenersGridStyle = css`
-    margin: 0 -5px;
+    margin-left: -5px;
+    margin-right: -11px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -200,7 +254,7 @@ const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: VoiceChatPart
                 alignItems="center"
                 borderRadius={100}
                 marginTop={8}
-                marginBottom={8}
+                marginBottom={10}
             >
                 <ImgWithRetry
                     src="//cdn.openland.com/shared/rooms/wave-hand-36.png"
@@ -253,7 +307,7 @@ const InviteButton = React.memo((props: { link: string }) => {
                 cursor="pointer"
                 borderRadius={100}
                 marginTop={8}
-                marginBottom={8}
+                marginBottom={10}
                 onClick={() => showInviteToRoom({ link })}
             >
                 <UIcon icon={<IcAdd />} size={36} color="var(--foregroundSecondary)" />
@@ -439,22 +493,13 @@ const RoomUser = React.memo(({
         }
     };
     return (
-        <XView
-            flexGrow={0}
-            flexShrink={0}
-            alignItems="center"
-            padding={8}
-            hoverBackgroundColor="var(--backgroundTertiaryTrans)"
-            hoverBorderRadius={8}
-            hoverCursor="pointer"
-            backgroundColor={visible ? 'var(--backgroundTertiaryTrans)' : undefined}
-            borderRadius={visible ? 8 : undefined}
+        <div
+            className={cx(
+                roomUserContainer,
+                visible && roomUserContainerVisible,
+                isListener && listenerStyle
+            )}
             onClick={handleClick}
-            {...isListener ? {
-                marginHorizontal: 5,
-            } : {
-                marginHorizontal: 4,
-            }}
         >
             <XView
                 borderWidth={2}
@@ -463,38 +508,39 @@ const RoomUser = React.memo(({
                 borderRadius={100}
                 alignItems="center"
                 justifyContent="center"
-                marginBottom={8}
+                marginBottom={6}
             >
                 <UAvatar
-                    customSizes={isSpeaker || isAdmin ? speakerAvatarSizes : listenerAvatarSizes}
+                    customSizes={
+                        isSpeaker || isAdmin ? speakerAvatarSizes : listenerAvatarSizes
+                    }
                     id={id}
                     title={name}
                     photo={photo}
                 />
                 {(state === 'muted' || state === 'loading') && (
-                    <XView
-                        position="absolute"
-                        bottom={0}
-                        right={0}
-                        width={24}
-                        height={24}
-                        borderRadius={12}
-                        backgroundColor="var(--backgroundPrimary)"
-                        justifyContent="center"
-                        alignItems="center"
-                    >
+                    <div className={stateIconStyle}>
                         {state === 'muted' ? (
-                            <UIcon size={16} icon={<IcMuted />} color="var(--foregroundTertiary)" />
+                            <UIcon
+                                size={16}
+                                icon={<IcMuted />}
+                                color="var(--foregroundTertiary)"
+                            />
                         ) : state === 'loading' ? (
                             <SvgLoader size="small" contrast={true} />
                         ) : null}
-                    </XView>
+                    </div>
                 )}
             </XView>
             <div className={cx(userNameStyle, state === 'talking' && userNameTalkingStyle)}>
-                {isAdmin && <CrownIcon className={adminIconStyle} />} {name}
+                {isAdmin && (
+                    <div className={adminIconStyle}>
+                        <CrownIcon />
+                    </div>
+                )}
+                <div className={TextLabel2}>{name}</div>
             </div>
-        </XView>
+        </div>
     );
 });
 
@@ -779,14 +825,18 @@ const RoomView = React.memo((props: { roomId: string }) => {
                 titleView={
                     <XView width="100%">
                         {voiceChatData.parentRoom && (
-                            <div className={headerParentRoomClass} onClick={handleParentRoomClick}>
-                                <UAvatar
-                                    title={voiceChatData.parentRoom.title}
-                                    id={voiceChatData.parentRoom.id}
-                                    photo={voiceChatData.parentRoom.photo}
-                                    marginRight={12}
-                                />
-                                <div className={TextLabel1}>{voiceChatData.parentRoom.title}</div>
+                            <div className={headerParentRoomClass}>
+                                <div className={parentRoomTitle} onClick={handleParentRoomClick}>
+                                    <UAvatar
+                                        title={voiceChatData.parentRoom.title}
+                                        id={voiceChatData.parentRoom.id}
+                                        photo={voiceChatData.parentRoom.photo}
+                                        size="small"
+                                        marginRight={12}
+                                    />
+                                    <div className={TextLabel1}>{voiceChatData.parentRoom.title}</div>
+                                </div>
+                                <RoomJoinButton parentRoom={voiceChatData.parentRoom}/>
                             </div>
                         )}
                         <RoomHeader
@@ -808,7 +858,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
                 }
                 dynamicHeight={true}
             />
-            <XScrollView3 marginTop={20} marginBottom={114}>
+            <XScrollView3 marginTop={20} marginHorizontal={-16} marginBottom={114}>
                 <RoomSpeakers
                     room={voiceChatData}
                     analyzer={mediaSession.analyzer}
@@ -822,6 +872,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
                         <XView
                             marginTop={24}
                             paddingVertical={12}
+                            paddingHorizontal={16}
                             color="var(--foregroundPrimary)"
                             {...TextStyles.Title3}
                         >

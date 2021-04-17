@@ -42,7 +42,6 @@ const roomTitle = css`
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
-    color: var(--foregroundPrimary);
 `;
 
 const avatarsContainer = css`
@@ -69,6 +68,7 @@ const speakerNamesContainer = css`
 `;
 
 const stubHeader = css`
+  margin-top: 16px;
   color: var(--foregroundPrimary);
 `;
 
@@ -90,7 +90,7 @@ const StartRoomItem = React.memo(() => {
                 text="Start room"
                 size="medium"
                 shape="round"
-                paddingTop={30}
+                paddingTop={24}
                 onClick={startRoom}
             />
         </div>
@@ -116,10 +116,21 @@ const RoomsFeedItem = React.memo((props: { voiceChat: VoiceChatWithSpeakers }) =
             selectedColor="var(--foregroundContrast)"
             onClick={() => joinRoom(id)}
         >
-            <div className={cx(roomTitle, TextLabel1)}>{title}</div>
-            <XView marginTop={8} flexDirection="row" alignItems="center" justifyContent="space-between">
-                <XView flexShrink={1} color="var(--foregroundSecondary)" selectedColor="var(--foregroundContrast)">
-                    {firstSpeakers.map(speaker => (
+            <XView color="var(--foregroundPrimary)" selectedColor="var(--foregroundContrast)">
+                <div className={cx(roomTitle, TextLabel1)}>{title}</div>
+            </XView>
+            <XView
+                marginTop={8}
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-between"
+            >
+                <XView
+                    flexShrink={1}
+                    color="var(--foregroundSecondary)"
+                    selectedColor="var(--foregroundContrast)"
+                >
+                    {firstSpeakers.map((speaker) => (
                         <div className={cx(TextSubhead, speakerNamesContainer)}>
                             {speaker.user.name}
                         </div>
@@ -147,16 +158,26 @@ const RoomsFeedItem = React.memo((props: { voiceChat: VoiceChatWithSpeakers }) =
                 color="var(--foregroundSecondary)"
                 selectedColor="var(--foregroundContrast)"
             >
-                <XView {...TextStyles.Subhead} marginRight={7}>
+                <XView {...TextStyles.Subhead} marginRight={6}>
                     {speakersCount}
                 </XView>
-                <UIcon icon={<IcSpeaker />} color="currentColor" />
+                <XView
+                    color="var(--foregroundTertiary)"
+                    selectedColor="var(--foregroundContrast)"
+                >
+                    <UIcon icon={<IcSpeaker />} color="currentColor" />
+                </XView>
                 {listenersCount > 0 && (
                     <>
-                        <XView {...TextStyles.Subhead} marginLeft={15} marginRight={7}>
+                        <XView {...TextStyles.Subhead} marginLeft={15} marginRight={8}>
                             {listenersCount}
                         </XView>
-                        <UIcon icon={<IcListener />} color="currentColor" />
+                        <XView
+                            color="var(--foregroundTertiary)"
+                            selectedColor="var(--foregroundContrast)"
+                        >
+                            <UIcon icon={<IcListener />} color="currentColor" />
+                        </XView>
                     </>
                 )}
             </XView>

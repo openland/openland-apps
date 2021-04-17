@@ -37,13 +37,13 @@ const InviteToRoom = React.memo((props: InviteToRoomProps & { hide: () => void }
         }, 1500);
     };
     return (
-        <XView paddingHorizontal={8}>
-            <XView paddingHorizontal={16} paddingVertical={12} color="var(--foregroundPrimary)" {...TextStyles.Title3}>
+        <XView>
+            <XView paddingHorizontal={24} paddingVertical={12} color="var(--foregroundPrimary)" {...TextStyles.Title3}>
                 Share room link
             </XView>
             <XView
                 flexDirection="row"
-                paddingHorizontal={16}
+                paddingHorizontal={24}
                 marginBottom={24}
             >
                 <div className={cx(linkStyle, TextBody)}>{link}</div>
