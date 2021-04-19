@@ -337,6 +337,8 @@ interface RoomControlsProps {
     message: string | null;
     theme: ThemeGlobal;
     inviteLink: string | undefined;
+    handRaised: boolean;
+    selfStatus: VoiceChatParticipantStatus | undefined;
     onLeave: () => void;
     onLayout: (e: LayoutChangeEvent) => void;
     muted: boolean;
@@ -345,12 +347,9 @@ interface RoomControlsProps {
     raisedHandUsers: VoiceChatParticipant_user[];
 }
 
-export const RoomControls = React.memo((props: RoomControlsProps) => {
-    const { theme, id, title, message, muted, inviteLink, connecting, onLeave, onLayout, onMutePress, raisedHandUsers } = props;
-    const client = useClient();
-    const meParticipant = client.useVoiceChatControls({ id }, { fetchPolicy: 'cache-and-network' })
-        ?.voiceChat.me;
-    const role = meParticipant?.status;
+const getButtons = (props: RoomControlsProps) => {
+    const { theme, id, title, message, muted, selfStatus, handRaised, inviteLink, connecting, onLeave, onMutePress, raisedHandUsers } = props;
+
     const leaveBtn = (
         <ControlItem
             theme={theme}
@@ -376,42 +375,57 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
             }
         />
     ) : null;
-    const primaryBtn =
-        role === VoiceChatParticipantStatus.ADMIN || role === VoiceChatParticipantStatus.SPEAKER ? (
+
+    let buttons: (JSX.Element | null)[] = [leaveBtn];
+
+    if (selfStatus === VoiceChatParticipantStatus.ADMIN) {
+        buttons.push(
+            <RoomSettingsButton
+                theme={theme}
+                raisedCount={raisedHandUsers.length}
+                raisedHandUsers={raisedHandUsers}
+                roomTitle={title}
+                roomMessage={message}
+                roomId={id}
+            />,
+            inviteBtn
+        );
+    } else {
+        buttons.push(
+            inviteBtn
+        );
+    }
+
+    if (selfStatus === VoiceChatParticipantStatus.ADMIN || selfStatus === VoiceChatParticipantStatus.SPEAKER) {
+        buttons.push(
             <ControlMute
                 muted={muted}
                 connecting={connecting}
                 theme={theme}
                 onPress={onMutePress}
             />
-        ) : role === VoiceChatParticipantStatus.LISTENER ? (
-            <ControlRaiseHand theme={theme} raised={!!meParticipant?.handRaised} roomId={id} />
-        ) : null;
+        );
+    } else if (selfStatus === VoiceChatParticipantStatus.LISTENER) {
+        buttons.push(<ControlRaiseHand theme={theme} raised={handRaised} roomId={id} />);
+    }
 
+    return buttons.filter(x => x);
+};
+
+export const RoomControls = React.memo((props: RoomControlsProps) => {
+    const { onLayout } = props;
+
+    const buttons = getButtons(props);
     return (
         <View style={{ paddingTop: 16 }} onLayout={onLayout}>
             <View
                 style={{
                     paddingHorizontal: 16,
                     flexDirection: 'row',
-                    justifyContent: role === VoiceChatParticipantStatus.ADMIN ? 'space-between' : 'space-around'
+                    justifyContent: buttons.length >= 4 ? 'space-between' : 'space-around'
                 }}
             >
-                {leaveBtn}
-                {role === VoiceChatParticipantStatus.ADMIN ? (
-                    <>
-                        <RoomSettingsButton
-                            theme={theme}
-                            raisedCount={raisedHandUsers.length}
-                            raisedHandUsers={raisedHandUsers}
-                            roomTitle={title}
-                            roomMessage={message}
-                            roomId={id}
-                        />
-                        {inviteBtn}
-                    </>
-                ) : inviteBtn}
-                {primaryBtn}
+                {buttons}
             </View>
         </View>
     );

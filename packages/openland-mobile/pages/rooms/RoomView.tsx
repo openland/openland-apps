@@ -1160,6 +1160,8 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
                         message={
                             voiceChatData.pinnedMessage ? voiceChatData.pinnedMessage.message : null
                         }
+                        handRaised={!!voiceChatData.me?.handRaised}
+                        selfStatus={voiceChatData.me?.status}
                         inviteLink={inviteLink}
                         theme={theme}
                         muted={muted}
