@@ -336,6 +336,7 @@ interface RoomControlsProps {
     title: string | null;
     message: string | null;
     theme: ThemeGlobal;
+    inviteLink: string | undefined;
     onLeave: () => void;
     onLayout: (e: LayoutChangeEvent) => void;
     muted: boolean;
@@ -345,7 +346,7 @@ interface RoomControlsProps {
 }
 
 export const RoomControls = React.memo((props: RoomControlsProps) => {
-    const { theme, id, title, message, muted, connecting, onLeave, onLayout, onMutePress, raisedHandUsers } = props;
+    const { theme, id, title, message, muted, inviteLink, connecting, onLeave, onLayout, onMutePress, raisedHandUsers } = props;
     const client = useClient();
     const meParticipant = client.useVoiceChatControls({ id }, { fetchPolicy: 'cache-and-network' })
         ?.voiceChat.me;
@@ -360,7 +361,7 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
             onPress={onLeave}
         />
     );
-    const inviteBtn = (
+    const inviteBtn = inviteLink ? (
         <ControlItem
             theme={theme}
             text="Invite"
@@ -370,14 +371,11 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
             onPress={() =>
                 showRoomInvite({
                     theme,
-                    link: meParticipant
-                        ? `https://openland.com/${meParticipant.user.shortname || meParticipant?.user.id
-                        }`
-                        : 'Try again',
+                    link: inviteLink,
                 })
             }
         />
-    );
+    ) : null;
     const primaryBtn =
         role === VoiceChatParticipantStatus.ADMIN || role === VoiceChatParticipantStatus.SPEAKER ? (
             <ControlMute

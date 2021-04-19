@@ -121,6 +121,10 @@ const controlsStyle = css`
     column-gap: 56px;
 `;
 
+const controlsNoInviteStyle = css`
+    grid-template-columns: repeat(1, 56px) auto;
+`;
+
 const controlsAdminStyle = css`
     grid-template-columns: repeat(3, 56px) auto;
 
@@ -131,6 +135,10 @@ const controlsAdminStyle = css`
     @media (max-width: 340px) {
         column-gap: 8px;
     }
+`;
+
+const controlsNoInviteAdminStyle = css`
+    grid-template-columns: repeat(2, 56px) auto;
 `;
 
 const SettingsMenu = React.memo((props: {
@@ -189,7 +197,7 @@ export const RoomControls = React.memo(({
     isMuted: boolean,
     raisedHands: VoiceChatParticipant[],
     handRaised: boolean,
-    inviteLink: string,
+    inviteLink: string | undefined,
     onMute: () => void,
     onLeave: () => void,
     onHandRaise: () => void,
@@ -222,17 +230,25 @@ export const RoomControls = React.memo(({
             maxWidth={600}
             width="100%"
         >
-            <div className={cx(controlsStyle, status === VoiceChatParticipantStatus.ADMIN && controlsAdminStyle)}>
+            <div
+                className={cx(
+                    controlsStyle,
+                    status === VoiceChatParticipantStatus.ADMIN && controlsAdminStyle,
+                    !inviteLink && (status === VoiceChatParticipantStatus.ADMIN ? controlsNoInviteAdminStyle : controlsNoInviteStyle),
+                )}
+            >
                 <RoomControlItem
                     text="Leave"
                     icon={<IcLeave />}
                     onClick={onLeave}
                 />
-                <RoomControlItem
-                    text="Invite"
-                    icon={<IcAdd />}
-                    onClick={() => showInviteToRoom({ link: inviteLink })}
-                />
+                {inviteLink && (
+                    <RoomControlItem
+                        text="Invite"
+                        icon={<IcAdd />}
+                        onClick={() => showInviteToRoom({ link: inviteLink })}
+                    />
+                )}
                 {status === VoiceChatParticipantStatus.ADMIN && (
                     <RoomControlItem
                         text="Settings"

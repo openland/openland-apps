@@ -31,6 +31,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import {
     Conference_conference_peers,
+    SharedRoomKind,
     VoiceChatParticipant,
     VoiceChatParticipantStatus,
 } from 'openland-api/spacex.types';
@@ -581,7 +582,7 @@ const RoomSpeakers = React.memo(({
     callState: MediaSessionState | undefined;
     analyzer: MediaSessionTrackAnalyzerManager;
     connecting: boolean;
-    inviteLink: string;
+    inviteLink: string | undefined;
 }) => {
     const speakers = (room.speakers || [])
         .map((speaker) => {
@@ -632,7 +633,7 @@ const RoomSpeakers = React.memo(({
             {speakers.length <= 8 && room.me?.status === VoiceChatParticipantStatus.ADMIN && (
                 <>
                     <RaisedHandsButton raisedHands={room.raisedHands || []} roomId={room.id} />
-                    <InviteButton link={inviteLink} />
+                    {inviteLink && <InviteButton link={inviteLink} />}
                 </>
             )}
         </div>
@@ -676,9 +677,13 @@ const RoomView = React.memo((props: { roomId: string }) => {
     const muted = !state?.sender.audioEnabled;
     const handRaised = !!voiceChatData.me?.handRaised;
     const pinnedMessage = voiceChatData.pinnedMessage?.message;
-    const inviteLink = voiceChatData.me
-        ? `https://openland.com/${voiceChatData.me.user.shortname || voiceChatData.me.user.id}`
+    const inviteEntity = voiceChatData.parentRoom || voiceChatData.me?.user;
+    const inviteEntityLink = inviteEntity
+        ? `https://openland.com/${inviteEntity.shortname || inviteEntity.id}`
         : 'Try again';
+    const inviteLink = voiceChatData.parentRoom && voiceChatData.parentRoom.kind !== SharedRoomKind.PUBLIC
+        ? undefined
+        : inviteEntityLink;
 
     const handleMute = React.useCallback(() => {
         mediaSession?.setAudioEnabled(!state?.sender.audioEnabled);
@@ -836,7 +841,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
                                     />
                                     <div className={TextLabel1}>{voiceChatData.parentRoom.title}</div>
                                 </div>
-                                <RoomJoinButton parentRoom={voiceChatData.parentRoom}/>
+                                <RoomJoinButton parentRoom={voiceChatData.parentRoom} />
                             </div>
                         )}
                         <RoomHeader

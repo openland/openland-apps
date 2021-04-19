@@ -983,13 +983,27 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
     );
 });
 
-const RoomView = React.memo((props: { roomId: string; ctx: ModalProps; router: SRouter }) => {
+interface RoomViewInnerProps {
+    roomId: string;
+    ctx: ModalProps;
+    router: SRouter;
+}
+
+const RoomView = React.memo((props: RoomViewInnerProps) => {
     const voiceChatData = useVoiceChat();
     const theme = useTheme();
     const client = useClient();
     const conference = client.useConference({ id: props.roomId }, { suspense: false })?.conference;
     const [headerHeight, setHeaderHeight] = React.useState(0);
     const [controlsHeight, setControlsHeight] = React.useState(0);
+
+    const inviteEntity = voiceChatData.parentRoom || voiceChatData.me?.user;
+    const inviteEntityLink = inviteEntity
+        ? `https://openland.com/${inviteEntity.shortname || inviteEntity.id}`
+        : 'Try again';
+    const inviteLink = voiceChatData.parentRoom && voiceChatData.parentRoom.kind !== SharedRoomKind.PUBLIC
+        ? undefined
+        : inviteEntityLink;
 
     const onHeaderLayout = React.useCallback(
         (e: LayoutChangeEvent) => {
@@ -1146,6 +1160,7 @@ const RoomView = React.memo((props: { roomId: string; ctx: ModalProps; router: S
                         message={
                             voiceChatData.pinnedMessage ? voiceChatData.pinnedMessage.message : null
                         }
+                        inviteLink={inviteLink}
                         theme={theme}
                         muted={muted}
                         connecting={connecting}

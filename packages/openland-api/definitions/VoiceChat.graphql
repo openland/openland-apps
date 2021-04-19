@@ -23,6 +23,7 @@ fragment VoiceChatEntity on VoiceChat {
         membership
         kind
         isChannel
+        shortname
     }
     pinnedMessage {
         id
