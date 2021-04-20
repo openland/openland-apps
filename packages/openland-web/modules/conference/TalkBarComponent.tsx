@@ -37,7 +37,6 @@ export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
     const client = useClient();
     const joinRoom = useJoinRoom();
     const { chat } = props;
-    const isActiveVoiceChat = chat.__typename === 'SharedRoom' && chat.activeVoiceChat?.active;
 
     let sharedRoom = chat.__typename === 'SharedRoom' ? chat as RoomChat_room_SharedRoom : null;
 
@@ -47,6 +46,7 @@ export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
     );
     const openVideoModal = useVideoCallModal({ chatId: chat.id });
     const callDisabled = props.chat.__typename === 'PrivateRoom' && !!currentSession && currentSession.callType === 'voice-chat';
+    const isVoiceChat = data?.conference.parent?.__typename === 'VoiceChat';
 
     const joinCall = () => {
         calls.joinCall(chat.id, 'call');
@@ -54,7 +54,7 @@ export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
     };
 
     const onJoinClick = React.useCallback(() => {
-        if (isActiveVoiceChat) {
+        if (isVoiceChat) {
             joinRoom(sharedRoom!.activeVoiceChat!.id);
         } else if (currentSession && currentSession.conversationId) {
             openVideoModal();
@@ -68,20 +68,15 @@ export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
         return null;
     }
 
-    let subtitle;
-    if (isActiveVoiceChat) {
-        subtitle = getSubtitle(sharedRoom!.activeVoiceChat!.speakers.map(speaker => speaker.user));
-    } else {
-        subtitle = getSubtitle(data.conference.peers.map(peer => peer.user));
-    }
-    const title = isActiveVoiceChat ? '' : 'Call';
-    const rightText = isActiveVoiceChat ? 'Join room' : 'Join';
+    const subtitle = getSubtitle(data.conference.peers.map(peer => peer.user));
+    const title = isVoiceChat ? '' : 'Call';
+    const rightText = isVoiceChat ? 'Join room' : 'Join';
 
-    const showBar = data.conference.peers.length !== 0 || isActiveVoiceChat;
+    const showBar = data.conference.peers.length !== 0;
     return showBar ? (
         <UTopBar
             type="positive"
-            leftIcon={isActiveVoiceChat ? <MicIcon /> : <PhoneIcon />}
+            leftIcon={isVoiceChat ? <MicIcon /> : <PhoneIcon />}
             title={title}
             subtitle={subtitle}
             rightText={rightText}
