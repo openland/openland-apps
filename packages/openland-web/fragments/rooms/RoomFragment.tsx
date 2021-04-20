@@ -555,10 +555,10 @@ const RoomSpeakerUser = React.memo((props: {
     const isTalking = analyzer.usePeers(peersIds);
     const state = isLoading
         ? 'loading'
-        : isTalking
-            ? 'talking'
-            : isMuted
-                ? 'muted'
+        : isMuted
+            ? 'muted'
+            : isTalking
+                ? 'talking'
                 : undefined;
 
     return (

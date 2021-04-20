@@ -811,10 +811,10 @@ const RoomSpeakingUserView = React.memo((props: RoomSpeakingUserViewProps) => {
     const isTalking = analyzer.usePeers(peersIds);
     const state = isLoading
         ? 'loading'
-        : isTalking
-            ? 'talking'
-            : isMuted
-                ? 'muted'
+        : isMuted
+            ? 'muted'
+            : isTalking
+                ? 'talking'
                 : undefined;
 
     return <RoomUserView {...other} state={state} />;
