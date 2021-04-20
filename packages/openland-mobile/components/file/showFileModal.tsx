@@ -5,6 +5,9 @@ import { randomKey } from 'openland-mobile/utils/randomKey';
 import { View, BackHandler, Platform, Dimensions } from 'react-native';
 import { SAnimated } from 'react-native-fast-animations';
 import { SAnimatedShadowView } from 'react-native-fast-animations';
+import { isVideo } from 'openland-mobile/utils/isVideo';
+import Toast from '../Toast';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 class FileModalWithTransition extends React.PureComponent<{ config: ZFileModalConfig, ctx: ZModalController }> implements ZModalController {
     key = randomKey();
@@ -108,6 +111,16 @@ class FileModalWithTransition extends React.PureComponent<{ config: ZFileModalCo
 }
 
 export function showFileModal(config: ZFileModalConfig) {
+    let mediaSession = getMessenger().engine.calls.currentMediaSession;
+    if (isVideo(config.name) && !!mediaSession) {
+        Toast
+            .failure({
+                text: `Can’t open video during a ${mediaSession.callType === 'voice-chat' ? 'voice chat' : 'call'}`,
+                duration: 2000
+            })
+            .show();
+        return;
+    }
     showModal((ctx) => {
         return (
             <FileModalWithTransition config={config} ctx={ctx} />
