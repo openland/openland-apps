@@ -17,6 +17,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.util.List;
+import com.bugsnag.android.Bugsnag;
 
 public class MainApplication extends Application implements ShareApplication, ReactApplication {
 
@@ -64,6 +65,8 @@ public class MainApplication extends Application implements ShareApplication, Re
 
         // Stripe
         PaymentConfiguration.init(this, "pk_live_eLENsh8Ten2AoOcJhfxUkTfD");
+
+        Bugsnag.start(this);
 
         Log.d("Native", "BOOTSTRAP: app start done");
     }

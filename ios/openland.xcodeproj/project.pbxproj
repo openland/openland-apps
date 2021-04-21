@@ -782,6 +782,7 @@
 				A0DDD9B92226BE8B00AA3061 /* Embed App Extensions */,
 				8B331E392A91FD34D17E4EA3 /* [CP] Embed Pods Frameworks */,
 				D58CC1ACF2D2F2C4B3B11665 /* [CP] Copy Pods Resources */,
+				50593AA248A94CD3A03CB234 /* Upload source maps to Bugsnag */,
 			);
 			buildRules = (
 			);
@@ -1002,7 +1003,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\nexport BUNDLE_COMMAND=\"ram-bundle\"\n../scripts/ios_prebuild.sh\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			shellScript = "export EXTRA_PACKAGER_ARGS=\"--sourcemap-output $TMPDIR/$(md5 -qs \"$CONFIGURATION_BUILD_DIR\")-main.jsbundle.map\"\nexport NODE_BINARY=node\nexport BUNDLE_COMMAND=\"ram-bundle\"\n../scripts/ios_prebuild.sh\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		32DFCC3987DF11A47097890C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1125,6 +1126,20 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-openland/Pods-openland-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		50593AA248A94CD3A03CB234 /* Upload source maps to Bugsnag */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			name = "Upload source maps to Bugsnag";
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			shellPath = /bin/sh;
+			shellScript = "SOURCE_MAP=\"$TMPDIR/$(md5 -qs \"$CONFIGURATION_BUILD_DIR\")-main.jsbundle.map\" ../node_modules/@bugsnag/react-native/bugsnag-react-native-xcode.sh";
 		};
 /* End PBXShellScriptBuildPhase section */
 

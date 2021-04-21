@@ -166,6 +166,7 @@
         <!-- <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/notification_color" /> -->
+        <meta-data android:name="com.bugsnag.android.API_KEY" android:value="f4cc5bd3d7d4473e7cd3799b767d87d7" />
 
     </application>
 

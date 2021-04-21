@@ -1,3 +1,4 @@
+#import <Bugsnag/Bugsnag.h>
 #import <UserNotifications/UserNotifications.h>
 #import <React/RCTLinkingManager.h>
 #import <React/RCTBundleURLProvider.h>
@@ -12,7 +13,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  /*
+    [Bugsnag start];
+
+/*
    * Stripe
    */
   [StripeAPI setDefaultPublishableKey: @"pk_live_eLENsh8Ten2AoOcJhfxUkTfD"];

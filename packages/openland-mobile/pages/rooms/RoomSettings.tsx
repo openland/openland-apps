@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Platform, LayoutAnimation, Keyboard, DeviceEventEmitter } from 'react-native';
 import { useClient } from 'openland-api/useClient';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
-import { VoiceChatParticipant_user } from 'openland-api/spacex.types';
+import { VoiceChatParticipantStatus, VoiceChatParticipant_user } from 'openland-api/spacex.types';
 import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { useForm } from 'openland-form/useForm';
@@ -13,6 +13,7 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { ZCounter } from 'openland-mobile/components/ZCounter';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { showRaisedHands } from './RaisedHands';
+import { ReportCallErrorType } from './RoomView';
 
 const KeyboardHandlerContainer = React.memo((props: { children: JSX.Element | JSX.Element[] }) => {
     const [keyboardHeight, setKeyboardHeight] = React.useState(0);
@@ -195,41 +196,60 @@ export const showEditPinnedMessage = (props: EditPinnedMessageProps) => {
     });
 };
 
+const showReportProblem = (onSelect: (type: ReportCallErrorType) => void) => {
+    const builder = new ActionSheetBuilder();
+    builder.action('I can’t hear anyone', () => onSelect('report-self-speaker'));
+    builder.action('Others can’t hear me', () => onSelect('report-self-micro'));
+    builder.action('I can’t connect to the call', () => onSelect('report-self-loading'));
+    builder.action('Other user can’t connect to the call', () => onSelect('report-user-loading'));
+    return builder.show();
+};
+
 export const showRoomSettings = (props: {
     roomId: string;
     roomTitle: string | null;
     roomMessage: string | null;
     raisedHandUsers: VoiceChatParticipant_user[];
     theme: ThemeGlobal;
+    status: VoiceChatParticipantStatus | undefined;
+    reportUserError: (type: ReportCallErrorType) => void;
 }) => {
     const builder = new ActionSheetBuilder();
     builder.title('Settings');
+    if (props.status === VoiceChatParticipantStatus.ADMIN) {
+        builder.action(
+            'Edit room',
+            () => showEditRoom({ id: props.roomId, title: props.roomTitle }),
+            false,
+            require('assets/ic-edit-24.png'),
+        );
+        builder.action(
+            'Pinned message',
+            () => showEditPinnedMessage({ id: props.roomId, message: props.roomMessage }),
+            false,
+            require('assets/ic-pin-24.png'),
+        );
+        builder.action(
+            'Raised hands',
+            () => showRaisedHands(props.raisedHandUsers, props.roomId),
+            false,
+            require('assets/ic-hand-2-24.png'),
+            undefined,
+            undefined,
+            <ZCounter
+                theme={props.theme}
+                value={props.raisedHandUsers.length}
+                size="medium"
+                backgroundColor={props.theme.accentPrimary}
+                textColor={props.theme.foregroundInverted}
+            />,
+        );
+    }
     builder.action(
-        'Edit room',
-        () => showEditRoom({ id: props.roomId, title: props.roomTitle }),
+        'Report a problem',
+        () => showReportProblem(props.reportUserError),
         false,
-        require('assets/ic-edit-24.png'),
-    );
-    builder.action(
-        'Pinned message',
-        () => showEditPinnedMessage({ id: props.roomId, message: props.roomMessage }),
-        false,
-        require('assets/ic-pin-24.png'),
-    );
-    builder.action(
-        'Raised hands',
-        () => showRaisedHands(props.raisedHandUsers, props.roomId),
-        false,
-        require('assets/ic-hand-2-24.png'),
-        undefined,
-        undefined,
-        <ZCounter
-            theme={props.theme}
-            value={props.raisedHandUsers.length}
-            size="medium"
-            backgroundColor={props.theme.accentPrimary}
-            textColor={props.theme.foregroundInverted}
-        />,
+        require('assets/ic-flag-24.png'),
     );
     builder.show();
 };

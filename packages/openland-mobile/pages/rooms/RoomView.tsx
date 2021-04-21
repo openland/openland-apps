@@ -52,6 +52,32 @@ import Toast from 'openland-mobile/components/Toast';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
 import { debounce } from 'openland-y-utils/timer';
 import { showSheetModal } from 'openland-mobile/components/showSheetModal';
+import Bugsnag from '@bugsnag/react-native';
+
+export type ReportCallErrorType = 'report-self-micro'
+    | 'report-self-speaker'
+    | 'report-self-loading'
+    | 'report-user-loading';
+
+type CallError = {
+    type: ReportCallErrorType | 'system-user-loading',
+    info: any,
+} | {
+    type: 'system-participants-lists-unmatch',
+    info: {
+        speakers: any,
+        listeners: any,
+        speakersCount: any,
+        listenersCount: any,
+    }
+};
+
+const notifyError = (error: CallError) => {
+    Bugsnag.notify({
+        name: error.type,
+        message: JSON.stringify(error.info),
+    });
+};
 
 interface PinnedMessageViewProps {
     theme: ThemeGlobal;
@@ -804,10 +830,11 @@ interface RoomSpeakingUserViewProps extends RoomUserViewProps {
     analyzer: MediaSessionTrackAnalyzerManager;
     isLoading: boolean;
     isMuted: boolean;
+    reportUserLoading: () => any;
 }
 
 const RoomSpeakingUserView = React.memo((props: RoomSpeakingUserViewProps) => {
-    const { peersIds, analyzer, isLoading, isMuted, ...other } = props;
+    const { peersIds, analyzer, isLoading, reportUserLoading, isMuted, ...other } = props;
     const isTalking = analyzer.usePeers(peersIds);
     const state = isLoading
         ? 'loading'
@@ -816,6 +843,18 @@ const RoomSpeakingUserView = React.memo((props: RoomSpeakingUserViewProps) => {
             : isTalking
                 ? 'talking'
                 : undefined;
+    const loadingRef = React.useRef(isLoading);
+    loadingRef.current = isLoading;
+    React.useEffect(() => {
+        let timerId = setTimeout(() => {
+            if (loadingRef.current === true) {
+                reportUserLoading();
+            }
+        }, 5000);
+        return () => {
+            clearTimeout(timerId);
+        };
+    }, []);
 
     return <RoomUserView {...other} state={state} />;
 });
@@ -830,6 +869,7 @@ interface RoomUsersListProps extends RoomViewProps {
     modalCtx: { hide: () => void };
     analyzer: MediaSessionTrackAnalyzerManager;
     connecting: boolean;
+    reportUserLoading: () => any;
 }
 
 const RoomUsersList = React.memo((props: RoomUsersListProps) => {
@@ -843,6 +883,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
         theme,
         room,
         router,
+        reportUserLoading,
         modalCtx,
     } = props;
     const sa = useSafeArea();
@@ -935,6 +976,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                             analyzer={analyzer}
                             isLoading={isLoading}
                             isMuted={isMuted}
+                            reportUserLoading={reportUserLoading}
                         />
                     );
                 })}
@@ -1127,6 +1169,41 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
         };
     }, []);
 
+    const analyticsRef = React.useRef<any>({});
+    analyticsRef.current = {
+        callState: state,
+        peers: conference?.peers,
+        appConnecting: connecting
+    };
+    const reportUserLoading = React.useCallback(() => {
+        notifyError({
+            type: 'system-user-loading',
+            info: analyticsRef.current
+        });
+    }, []);
+    const reportUserError = React.useCallback((type: ReportCallErrorType) => {
+        notifyError({
+            type,
+            info: analyticsRef.current
+        });
+    }, []);
+    React.useEffect(() => {
+        if (
+            voiceChatData.speakers && voiceChatData.speakers.length !== voiceChatData.speakersCount
+            || voiceChatData.listeners && voiceChatData.listeners.length !== voiceChatData.listenersCount
+        ) {
+            notifyError({
+                type: 'system-participants-lists-unmatch',
+                info: {
+                    speakers: voiceChatData.speakers,
+                    listeners: voiceChatData.listeners,
+                    speakersCount: voiceChatData.speakersCount,
+                    listenersCount: voiceChatData.listenersCount,
+                }
+            });
+        }
+    }, [voiceChatData.speakers, voiceChatData.listeners, voiceChatData.speakersCount, voiceChatData.listenersCount]);
+
     if (!mediaSession) {
         return null;
     }
@@ -1153,6 +1230,7 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
                         callState={state}
                         analyzer={mediaSession.analyzer}
                         connecting={connecting}
+                        reportUserLoading={reportUserLoading}
                     />
                     <RoomControls
                         id={props.roomId}
@@ -1169,6 +1247,7 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
                         onLayout={onControlsLayout}
                         onLeave={handleLeave}
                         onMutePress={handleMute}
+                        reportUserError={reportUserError}
                         raisedHandUsers={voiceChatData.raisedHands?.map((i) => i.user) || []}
                     />
                 </>

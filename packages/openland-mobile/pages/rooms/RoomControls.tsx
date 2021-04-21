@@ -21,6 +21,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TintBlue, TintOrange } from 'openland-y-utils/themes/tints';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { showRoomSettings } from './RoomSettings';
+import { ReportCallErrorType } from './RoomView';
 
 const showRoomInvite = ({ link, theme }: { link: string; theme: ThemeGlobal }) => {
     const handleShare = () => {
@@ -306,17 +307,19 @@ const ControlRaiseHand = React.memo(
     },
 );
 
-interface ControlRaisedHandsCountProps {
+interface RoomSettingsButtonProps {
     theme: ThemeGlobal;
     raisedCount?: number;
     raisedHandUsers: VoiceChatParticipant_user[];
     roomId: string;
     roomTitle: string | null;
     roomMessage: string | null;
+    status: VoiceChatParticipantStatus | undefined;
+    reportUserError: (type: ReportCallErrorType) => void;
 }
 
-const RoomSettingsButton = React.memo((props: ControlRaisedHandsCountProps) => {
-    const { theme, raisedCount, raisedHandUsers, roomId, roomTitle, roomMessage } = props;
+const RoomSettingsButton = React.memo((props: RoomSettingsButtonProps) => {
+    const { theme, raisedCount, raisedHandUsers, roomId, status, roomTitle, reportUserError, roomMessage } = props;
 
     return (
         <ControlItem
@@ -326,7 +329,15 @@ const RoomSettingsButton = React.memo((props: ControlRaisedHandsCountProps) => {
             text="Settings"
             bgColor={theme.backgroundTertiaryTrans}
             counter={raisedCount}
-            onPress={() => showRoomSettings({ roomId, roomTitle, roomMessage, raisedHandUsers, theme })}
+            onPress={() => showRoomSettings({
+                roomId,
+                roomTitle,
+                roomMessage,
+                raisedHandUsers,
+                theme,
+                status,
+                reportUserError
+            })}
         />
     );
 });
@@ -344,14 +355,16 @@ interface RoomControlsProps {
     muted: boolean;
     connecting: boolean;
     onMutePress: () => void;
+    reportUserError: (type: ReportCallErrorType) => void;
     raisedHandUsers: VoiceChatParticipant_user[];
 }
 
 const getButtons = (props: RoomControlsProps) => {
-    const { theme, id, title, message, muted, selfStatus, handRaised, inviteLink, connecting, onLeave, onMutePress, raisedHandUsers } = props;
+    const { theme, id, title, message, muted, selfStatus, handRaised, inviteLink, connecting, onLeave, onMutePress, raisedHandUsers, reportUserError } = props;
 
     const leaveBtn = (
         <ControlItem
+            key="leave-btn"
             theme={theme}
             text="Leave"
             icon={require('assets/ic-leave-24.png')}
@@ -363,6 +376,7 @@ const getButtons = (props: RoomControlsProps) => {
     const inviteBtn = inviteLink ? (
         <ControlItem
             theme={theme}
+            key="invite-btn"
             text="Invite"
             icon={require('assets/ic-add-24.png')}
             iconColor={theme.foregroundSecondary}
@@ -376,25 +390,21 @@ const getButtons = (props: RoomControlsProps) => {
         />
     ) : null;
 
-    let buttons: (JSX.Element | null)[] = [leaveBtn];
-
-    if (selfStatus === VoiceChatParticipantStatus.ADMIN) {
-        buttons.push(
-            <RoomSettingsButton
-                theme={theme}
-                raisedCount={raisedHandUsers.length}
-                raisedHandUsers={raisedHandUsers}
-                roomTitle={title}
-                roomMessage={message}
-                roomId={id}
-            />,
-            inviteBtn
-        );
-    } else {
-        buttons.push(
-            inviteBtn
-        );
-    }
+    let buttons: (JSX.Element | null)[] = [
+        leaveBtn,
+        <RoomSettingsButton
+            key="settings-btn"
+            theme={theme}
+            raisedCount={raisedHandUsers.length}
+            raisedHandUsers={raisedHandUsers}
+            roomTitle={title}
+            roomMessage={message}
+            roomId={id}
+            status={selfStatus}
+            reportUserError={reportUserError}
+        />,
+        inviteBtn
+    ];
 
     if (selfStatus === VoiceChatParticipantStatus.ADMIN || selfStatus === VoiceChatParticipantStatus.SPEAKER) {
         buttons.push(
