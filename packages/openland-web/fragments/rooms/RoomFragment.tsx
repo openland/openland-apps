@@ -20,7 +20,7 @@ import IcMessage from 'openland-icons/s/ic-message-24.svg';
 import IcLeave from 'openland-icons/s/ic-leave-24.svg';
 import IcEdit from 'openland-icons/s/ic-edit-24.svg';
 import IcMuted from 'openland-icons/s/ic-speaker-off-16.svg';
-import IcCurrentSpeaker from 'openland-icons/s/ic-current-speaker-16.svg'
+import IcCurrentSpeaker from 'openland-icons/s/ic-current-speaker-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { SvgLoader, XLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
@@ -31,7 +31,6 @@ import { useClient } from 'openland-api/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import {
-    Conference_conference_peers,
     SharedRoomKind,
     VoiceChatParticipant,
     VoiceChatParticipantStatus,
@@ -210,7 +209,7 @@ const RoomHeader = ({
 }) => {
     const peerIds = speakers.map(i => i.peersIds).flat();
     const currentlySpeaking = analyzer.useCurrentlySpeaking(peerIds);
-    let currentSpeaker: VoiceChatParticipant | undefined = speakers.find(s => s.peersIds.includes(currentlySpeaking[0]))?.speaker
+    let currentSpeaker: VoiceChatParticipant | undefined = speakers.find(s => s.peersIds.includes(currentlySpeaking[0]))?.speaker;
     return (
         <XView paddingTop={12} paddingBottom={14} paddingRight={12} width="100%">
             {title && <div className={cx(TextTitle1, headerTitleStyle)}>{title}</div>}

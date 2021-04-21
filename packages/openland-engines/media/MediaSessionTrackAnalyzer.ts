@@ -198,9 +198,9 @@ export class MediaSessionTrackAnalyzerManager {
             let listeners = peersIds.map(id => {
                 return this.subscribePeer(id, speaking => {
                     if (speaking) {
-                        setSpeakingPeers([...speakingPeers, id])
+                        setSpeakingPeers([...speakingPeers, id]);
                     } else {
-                        setSpeakingPeers([...speakingPeers.filter(p => p !== id)])
+                        setSpeakingPeers([...speakingPeers.filter(p => p !== id)]);
                     }
                 });
             });
