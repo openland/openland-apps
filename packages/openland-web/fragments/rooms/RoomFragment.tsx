@@ -20,6 +20,7 @@ import IcMessage from 'openland-icons/s/ic-message-24.svg';
 import IcLeave from 'openland-icons/s/ic-leave-24.svg';
 import IcEdit from 'openland-icons/s/ic-edit-24.svg';
 import IcMuted from 'openland-icons/s/ic-speaker-off-16.svg';
+import IcCurrentSpeaker from 'openland-icons/s/ic-current-speaker-16.svg'
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { SvgLoader, XLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
@@ -192,47 +193,71 @@ const pinnedMessageTextStyle = css`
 const RoomHeader = ({
     speakersCount,
     listenersCount,
+    analyzer,
+    speakers,
     title,
 }: {
     speakersCount: number,
     listenersCount: number,
     title?: string | null,
+    analyzer: MediaSessionTrackAnalyzerManager;
+    speakers: {
+        isMuted: boolean,
+        isLoading: boolean,
+        peersIds: string[],
+        speaker: VoiceChatParticipant
+    }[];
 }) => {
+    const peerIds = speakers.map(i => i.peersIds).flat();
+    const currentlySpeaking = analyzer.useCurrentlySpeaking(peerIds);
+    let currentSpeaker: VoiceChatParticipant | undefined = speakers.find(s => s.peersIds.includes(currentlySpeaking[0]))?.speaker
     return (
         <XView paddingTop={12} paddingBottom={14} paddingRight={12} width="100%">
-            {title && (
-                <div className={cx(TextTitle1, headerTitleStyle)}>
-                    {title}
-                </div>
-            )}
+            {title && <div className={cx(TextTitle1, headerTitleStyle)}>{title}</div>}
             <XView
                 flexDirection="row"
                 alignItems="center"
                 color="var(--foregroundSecondary)"
-                alignSelf="flex-start"
+                justifyContent="space-between"
             >
-                <XView {...TextStyles.Subhead}>
-                    {speakersCount}
+                <XView
+                    flexDirection="row"
+                    alignItems="center"
+                    color="var(--foregroundSecondary)"
+                    alignSelf="flex-start"
+                >
+                    <XView {...TextStyles.Subhead}>{speakersCount}</XView>
+                    <UIcon
+                        icon={<IcSpeakerSmall />}
+                        className={speakerIconClass}
+                        color="var(--foregroundTertiary)"
+                    />
+                    {listenersCount > 0 && (
+                        <>
+                            <XView {...TextStyles.Subhead}>{listenersCount}</XView>
+                            <UIcon
+                                icon={<IcListenerSmall />}
+                                className={listenerIconClass}
+                                color="var(--foregroundTertiary)"
+                            />
+                        </>
+                    )}
                 </XView>
-                <UIcon
-                    icon={<IcSpeakerSmall />}
-                    className={speakerIconClass}
-                    color="var(--foregroundTertiary)"
-                />
-                {listenersCount > 0 && (
-                    <>
-                        <XView {...TextStyles.Subhead}>
-                            {listenersCount}
+                {((speakers.length > 10) && !!currentSpeaker) && (
+                    <XView flexDirection="row" alignItems="center">
+                        <XView
+                            {...TextStyles.Body}
+                            color="var(--foregroundSecondary)"
+                            marginRight={8}
+                            lineHeight="20px"
+                        >
+                            {currentSpeaker.user.name}
                         </XView>
-                        <UIcon
-                            icon={<IcListenerSmall />}
-                            className={listenerIconClass}
-                            color="var(--foregroundTertiary)"
-                        />
-                    </>
+                        <IcCurrentSpeaker/>
+                    </XView>
                 )}
             </XView>
-        </XView >
+        </XView>
     );
 };
 
@@ -571,46 +596,20 @@ const RoomSpeakerUser = React.memo((props: {
 
 const RoomSpeakers = React.memo(({
     room,
-    peers,
-    callState,
-    connecting,
     analyzer,
     inviteLink,
+    speakers,
 }: {
     room: VoiceChatT,
-    peers?: Conference_conference_peers[];
-    callState: MediaSessionState | undefined;
     analyzer: MediaSessionTrackAnalyzerManager;
-    connecting: boolean;
     inviteLink: string | undefined;
+    speakers: {
+        isMuted: boolean,
+        isLoading: boolean,
+        peersIds: string[],
+        speaker: VoiceChatParticipant
+    }[];
 }) => {
-    const speakers = (room.speakers || [])
-        .map((speaker) => {
-            let speakerPeers = (peers || []).filter((p) => p.user.id === speaker.user.id);
-            let speakerStates = speakerPeers.map(peer => {
-                let isLocal = peer?.id === callState?.sender.id;
-                let isLoading = false;
-                let isMuted = !!peer?.mediaState.audioPaused;
-                if (!isLocal) {
-                    let hasAudioTrack = !!callState?.receivers[peer.id]?.audioTrack;
-                    isLoading = !connecting && !hasAudioTrack;
-                }
-                return { isMuted, isLoading };
-            }).reduce((acc, peerState) => {
-                return {
-                    isMuted: acc.isMuted && peerState.isMuted,
-                    isLoading: acc.isLoading && peerState.isLoading
-                };
-            }, { isMuted: true, isLoading: true });
-
-            return {
-                isMuted: speakerStates.isMuted,
-                isLoading: speakerStates.isLoading,
-                peersIds: speakerPeers.map(p => p.id),
-                speaker,
-            };
-        });
-
     return (
         <div className={speakersGridStyle}>
             {speakers.map(({ speaker, isMuted, isLoading, peersIds }) => (
@@ -824,6 +823,33 @@ const RoomView = React.memo((props: { roomId: string }) => {
         return <XLoader loading={true} />;
     }
 
+    const speakers = (voiceChatData.speakers || [])
+        .map((speaker) => {
+            let speakerPeers = (conference?.peers || []).filter((p) => p.user.id === speaker.user.id);
+            let speakerStates = speakerPeers.map(peer => {
+                let isLocal = peer?.id === state?.sender.id;
+                let isLoading = false;
+                let isMuted = !!peer?.mediaState.audioPaused;
+                if (!isLocal) {
+                    let hasAudioTrack = !!state?.receivers[peer.id]?.audioTrack;
+                    isLoading = !connecting && !hasAudioTrack;
+                }
+                return { isMuted, isLoading };
+            }).reduce((acc, peerState) => {
+                return {
+                    isMuted: acc.isMuted && peerState.isMuted,
+                    isLoading: acc.isLoading && peerState.isLoading
+                };
+            }, { isMuted: true, isLoading: true });
+
+            return {
+                isMuted: speakerStates.isMuted,
+                isLoading: speakerStates.isLoading,
+                peersIds: speakerPeers.map(p => p.id),
+                speaker,
+            };
+        });
+
     return (
         <Page>
             <UHeader
@@ -845,6 +871,8 @@ const RoomView = React.memo((props: { roomId: string }) => {
                             </div>
                         )}
                         <RoomHeader
+                            analyzer={mediaSession.analyzer}
+                            speakers={speakers}
                             title={voiceChatData.title}
                             speakersCount={voiceChatData.speakersCount}
                             listenersCount={voiceChatData.listenersCount}
@@ -865,11 +893,9 @@ const RoomView = React.memo((props: { roomId: string }) => {
             />
             <XScrollView3 marginTop={20} marginHorizontal={-16} marginBottom={114}>
                 <RoomSpeakers
+                    speakers={speakers}
                     room={voiceChatData}
                     analyzer={mediaSession.analyzer}
-                    callState={state}
-                    peers={conference?.peers}
-                    connecting={connecting}
                     inviteLink={inviteLink}
                 />
                 {voiceChatData.listeners && voiceChatData.listeners?.length > 0 && (
