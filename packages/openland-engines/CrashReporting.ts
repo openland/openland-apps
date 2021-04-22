@@ -28,7 +28,8 @@ class CrashReportingImpl {
             if (error instanceof Error) {
                 payload = error;
             } else {
-                payload = { name: error.name, message: JSON.stringify(error.data) };
+                payload = new Error(JSON.stringify(error.data));
+                payload.name = error.name;
             }
             this.reporter.notify(payload);
         }

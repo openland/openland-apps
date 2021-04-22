@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { CrashReporting } from 'openland-engines/CrashReporting';
+import Bugsnag from '@bugsnag/react-native';
+// import { CrashReporting } from 'openland-engines/CrashReporting';
 import { VoiceChatT } from './voiceChatWatcher';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
@@ -23,9 +24,13 @@ type CallError = {
 };
 
 const notifyError = (error: CallError) => {
-    CrashReporting.notify({
+    // CrashReporting.notify({
+    //     name: error.type,
+    //     message: error.info,
+    // });
+    Bugsnag.notify({
         name: error.type,
-        message: error.info,
+        message: JSON.stringify(error.info),
     });
 };
 
