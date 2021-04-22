@@ -103,7 +103,6 @@ const RoomsFeedItem = React.memo((props: { voiceChat: VoiceChatWithSpeakers }) =
     const joinRoom = useJoinRoom();
     let messenger = React.useContext(MessengerContext);
     let session = messenger.calls.useCurrentSession();
-
     return (
         <XView
             selected={session?.conversationId === id}
@@ -140,7 +139,7 @@ const RoomsFeedItem = React.memo((props: { voiceChat: VoiceChatWithSpeakers }) =
                     {firstSpeakers.reverse().map((speaker, i) => (
                         <XView marginLeft={12} marginTop={i > 1 ? 12 : 0}>
                             <UAvatar
-                                id={speaker.id}
+                                id={speaker.user.id}
                                 key={speaker.id}
                                 title={speaker.user.name}
                                 size="small"

@@ -170,6 +170,22 @@ const listenersGridStyle = css`
     flex-wrap: wrap;
 `;
 
+const speakerName = css`
+    display: flex;
+    flex-shrink: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 20px;
+    color: var(--foregroundSecondary);
+    margin-right: 8px;
+`;
+
+const speakerIcon = css`
+    flex-grow: 0;
+    flex-shrink: 0;
+`;
+
 const pinnedMessageContainerStyle = css`
   cursor: pointer;
   margin: 0 -1200px;
@@ -224,6 +240,7 @@ const RoomHeader = ({
                     alignItems="center"
                     color="var(--foregroundSecondary)"
                     alignSelf="flex-start"
+                    marginRight={8}
                 >
                     <XView {...TextStyles.Subhead}>{speakersCount}</XView>
                     <UIcon
@@ -243,16 +260,11 @@ const RoomHeader = ({
                     )}
                 </XView>
                 {((speakers.length > 10) && !!currentSpeaker) && (
-                    <XView flexDirection="row" alignItems="center">
-                        <XView
-                            {...TextStyles.Body}
-                            color="var(--foregroundSecondary)"
-                            marginRight={8}
-                            lineHeight="20px"
-                        >
+                    <XView flexDirection="row" alignItems="center" flexShrink={1}>
+                        <div className={cx(speakerName, TextBody)}>
                             {currentSpeaker.user.name}
-                        </XView>
-                        <IcCurrentSpeaker/>
+                        </div>
+                        <UIcon icon={<IcCurrentSpeaker/>} color="var(--accentPrimary)" className={speakerIcon}/>
                     </XView>
                 )}
             </XView>
