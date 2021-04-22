@@ -91,7 +91,7 @@ const StartRoomItem = React.memo(() => {
         ));
     }, []);
 
-    const artCrowdClass = useTheme().theme === 'dark' ? artCrowdImg : artCrowdDarkImg;
+    const artCrowdClass = useTheme().theme === 'dark' ? artCrowdDarkImg : artCrowdImg;
 
     return (
         <div className={startRoomContainer}>
