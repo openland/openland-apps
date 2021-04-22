@@ -41,6 +41,8 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                 fontSize={24}
                 flexDirection="row"
                 justifyContent="center"
+                alignItems="center"
+                alignSelf="center"
                 marginRight={(hasBack && layout !== 'mobile') ? 56 : undefined}
                 paddingHorizontal={16}
             >

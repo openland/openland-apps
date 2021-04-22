@@ -74,7 +74,7 @@ const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterI
 
                     <ASText
                         fontSize={14}
-                        lineHeight={18}
+                        lineHeight={16}
                         fontWeight={FontStyles.Weight.Medium}
                         color={theme.foregroundPrimary}
                         marginLeft={8}
@@ -96,10 +96,11 @@ const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterI
 
                             <ASText
                                 fontSize={14}
-                                lineHeight={18}
+                                lineHeight={16}
                                 fontWeight={FontStyles.Weight.Medium}
                                 color={theme.foregroundPrimary}
                                 marginLeft={8}
+                                numberOfLines={1}
                             >
                                 {sharedRoom.title}
                             </ASText>
@@ -136,7 +137,6 @@ const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterI
             {item.notificationType === 'new_comment' && (
                 <ASFlex marginTop={2}>
                     <ZRelativeDateAsync
-                        fontWeight={FontStyles.Weight.Medium}
                         fontSize={13}
                         lineHeight={20}
                         color={theme.foregroundSecondary}
@@ -144,10 +144,9 @@ const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterI
                     />
 
                     <ASFlex onPress={handleReplyPress} marginLeft={12} alignItems="center">
-                        <ASImage source={require('assets/ic-reply-16.png')} marginTop={4} tintColor={theme.accentPrimary} width={16} height={16} opacity={0.7} />
                         <ASText
                             fontWeight={FontStyles.Weight.Medium}
-                            color={theme.accentPrimary}
+                            color={theme.foregroundSecondary}
                             fontSize={13}
                             lineHeight={20}
                             marginLeft={6}

@@ -22,6 +22,7 @@ import { XView } from 'react-mental';
 const wrapper = css`
     display: flex;
     flex-direction: row;
+    margin: 0 -16px;
     margin-bottom: 8px;
     padding: 4px 0;
 `;
@@ -40,13 +41,24 @@ const content = css`
 `;
 
 const replyWrapper = css`
-    border-left: 2px solid var(--foregroundQuaternary);
     color: var(--foregroundPrimary);
     margin: 4px 0;
-    padding-left: 12px;
+    padding-left: 8px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    position: relative;
+  
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2px;
+      height: 20px;
+      border-radius: 2px;
+      background-color: var(--foregroundQuaternary);
+    }
 `;
 
 const toolsWrapperClass = css`
