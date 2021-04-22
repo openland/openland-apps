@@ -25,7 +25,7 @@ import { useSafeArea } from 'react-native-safe-area-context';
 import { RoomControls } from './RoomControls';
 import { showEditPinnedMessage } from './RoomSettings';
 import {
-    Conference_conference_peers,
+    VoiceChatParticipant,
     SharedRoomKind,
     SharedRoomMembershipStatus,
     VoiceChatParticipantStatus,
@@ -501,9 +501,19 @@ const RoomHeader = React.memo(
             hide: () => void;
             router: SRouter;
             onLayout: (e: LayoutChangeEvent) => void;
+            analyzer: MediaSessionTrackAnalyzerManager;
+            speakers: {
+                isMuted: boolean,
+                isLoading: boolean,
+                peersIds: string[],
+                speaker: VoiceChatParticipant
+            }[];
         },
     ) => {
-        const { room, hide, router, theme } = props;
+        const { room, hide, router, theme, analyzer, speakers } = props;
+        const peerIds = speakers.map(i => i.peersIds).flat();
+        const currentlySpeaking = analyzer.useCurrentlySpeaking(peerIds);
+        let currentSpeaker: VoiceChatParticipant | undefined = speakers.find(s => s.peersIds.includes(currentlySpeaking[0]))?.speaker;
         const { parentRoom } = room;
         const [joinState, setJoinState] = React.useState<
             'initial' | 'loading' | 'success' | 'joined'
@@ -558,6 +568,7 @@ const RoomHeader = React.memo(
                                     }}
                                     ellipsizeMode="tail"
                                     numberOfLines={1}
+                                    allowFontScaling={false}
                                 >
                                     {parentRoom.title}
                                 </Text>
@@ -611,6 +622,7 @@ const RoomHeader = React.memo(
                                         color: theme.accentPrimary,
                                         opacity: joinState === 'initial' ? 1 : 0,
                                     }}
+                                    allowFontScaling={false}
                                 >
                                     JOIN {parentRoom.isChannel ? 'CHANNEL' : 'GROUP'}
                                 </Text>
@@ -652,6 +664,7 @@ const RoomHeader = React.memo(
                             paddingRight: parentRoom ? undefined : 48,
                         }}
                         numberOfLines={2}
+                        allowFontScaling={false}
                     >
                         {props.room.title}
                     </Text>
@@ -659,43 +672,90 @@ const RoomHeader = React.memo(
                 <View
                     style={{
                         flexDirection: 'row',
+                        justifyContent: 'space-between',
                         alignItems: 'center',
                         marginTop: room.title ? 10 : 14,
+                        overflow: 'hidden',
+                        flexShrink: 1,
                     }}
                 >
-                    <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }}>
-                        {room.speakersCount}
-                    </Text>
-                    <Image
-                        source={require('assets/ic-speaker-16.png')}
+                    <View
                         style={{
-                            width: 16,
-                            height: 16,
-                            marginLeft: 3,
-                            tintColor: theme.foregroundQuaternary,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginRight: 8,
+                            flexShrink: 0,
                         }}
-                    />
-                    {room.listenersCount > 0 && (
-                        <>
+                    >
+                        <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} allowFontScaling={false}>
+                            {room.speakersCount}
+                        </Text>
+                        <Image
+                            source={require('assets/ic-speaker-16.png')}
+                            style={{
+                                width: 16,
+                                height: 16,
+                                marginLeft: 3,
+                                tintColor: theme.foregroundQuaternary,
+                                flexShrink: 0,
+                            }}
+                        />
+                        {room.listenersCount > 0 && (
+                            <>
+                                <Text
+                                    style={{
+                                        ...TextStyles.Subhead,
+                                        color: theme.foregroundSecondary,
+                                        marginLeft: 12,
+                                    }}
+                                    allowFontScaling={false}
+                                >
+                                    {room.listenersCount}
+                                </Text>
+                                <Image
+                                    source={require('assets/ic-listener-16.png')}
+                                    style={{
+                                        width: 16,
+                                        height: 16,
+                                        marginLeft: 6,
+                                        tintColor: theme.foregroundQuaternary,
+                                        flexShrink: 0,
+                                    }}
+                                />
+                            </>
+                        )}
+                    </View>
+                    {((speakers.length > 9) && !!currentSpeaker) && (
+                        <View
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                flexShrink: 1,
+                            }}
+                        >
                             <Text
                                 style={{
                                     ...TextStyles.Subhead,
                                     color: theme.foregroundSecondary,
-                                    marginLeft: 12,
+                                    marginRight: 8,
+                                    flexShrink: 1,
                                 }}
+                                ellipsizeMode="tail"
+                                numberOfLines={1}
+                                allowFontScaling={false}
                             >
-                                {room.listenersCount}
+                                {currentSpeaker.user.name}
                             </Text>
                             <Image
-                                source={require('assets/ic-listener-16.png')}
+                                source={require('assets/ic-current-speaker-16.png')}
                                 style={{
                                     width: 16,
                                     height: 16,
-                                    marginLeft: 6,
-                                    tintColor: theme.foregroundQuaternary,
+                                    flexShrink: 0,
                                 }}
                             />
-                        </>
+                        </View>
                     )}
                 </View>
                 <View
@@ -864,27 +924,28 @@ interface RoomUsersListProps extends RoomViewProps {
     headerHeight: number;
     controlsHeight: number;
     router: SRouter;
-    peers: Conference_conference_peers[];
-    callState: MediaSessionState | undefined;
     modalCtx: { hide: () => void };
     analyzer: MediaSessionTrackAnalyzerManager;
-    connecting: boolean;
     reportUserLoading: () => any;
+    speakers: {
+        isMuted: boolean,
+        isLoading: boolean,
+        peersIds: string[],
+        speaker: VoiceChatParticipant
+    }[];
 }
 
 const RoomUsersList = React.memo((props: RoomUsersListProps) => {
     const {
         headerHeight,
         controlsHeight,
-        peers,
-        connecting,
         analyzer,
-        callState,
         theme,
         room,
         router,
         reportUserLoading,
         modalCtx,
+        speakers
     } = props;
     const sa = useSafeArea();
     const currentHeight = isPad ? Dimensions.get('window').height : SDevice.wHeight;
@@ -901,32 +962,6 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
     //     initialItems: initialListeners.items,
     // });
     // let listenersState = { items: [] as VoiceChatListeners_voiceChatListeners_items[], loading: false, loadMore: () => { } };
-    const speakers = (room.speakers || [])
-        .map((speaker) => {
-            let speakerPeers = (peers || []).filter((p) => p.user.id === speaker.user.id);
-            let speakerStates = speakerPeers.map(peer => {
-                let isLocal = peer?.id === callState?.sender.id;
-                let isLoading = false;
-                let isMuted = !!peer?.mediaState.audioPaused;
-                if (!isLocal) {
-                    let hasAudioTrack = !!callState?.receivers[peer.id]?.audioTrack;
-                    isLoading = !connecting && !hasAudioTrack;
-                }
-                return { isMuted, isLoading };
-            }).reduce((acc, peerState) => {
-                return {
-                    isMuted: acc.isMuted && peerState.isMuted,
-                    isLoading: acc.isLoading && peerState.isLoading
-                };
-            }, { isMuted: true, isLoading: true });
-
-            return {
-                isMuted: speakerStates.isMuted,
-                isLoading: speakerStates.isLoading,
-                peersIds: speakerPeers.map(p => p.id),
-                speaker,
-            };
-        });
 
     const speakersElement = (
         <>
@@ -1208,6 +1243,33 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
         return null;
     }
 
+    const speakers = (voiceChatData.speakers || [])
+        .map((speaker) => {
+            let speakerPeers = (conference?.peers || []).filter((p) => p.user.id === speaker.user.id);
+            let speakerStates = speakerPeers.map(peer => {
+                let isLocal = peer?.id === state?.sender.id;
+                let isLoading = false;
+                let isMuted = !!peer?.mediaState.audioPaused;
+                if (!isLocal) {
+                    let hasAudioTrack = !!state?.receivers[peer.id]?.audioTrack;
+                    isLoading = !connecting && !hasAudioTrack;
+                }
+                return { isMuted, isLoading };
+            }).reduce((acc, peerState) => {
+                return {
+                    isMuted: acc.isMuted && peerState.isMuted,
+                    isLoading: acc.isLoading && peerState.isLoading
+                };
+            }, { isMuted: true, isLoading: true });
+
+            return {
+                isMuted: speakerStates.isMuted,
+                isLoading: speakerStates.isLoading,
+                peersIds: speakerPeers.map(p => p.id),
+                speaker,
+            };
+        });
+
     return (
         <View>
             <RoomHeader
@@ -1216,20 +1278,20 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
                 router={props.router}
                 onLayout={onHeaderLayout}
                 hide={props.ctx.hide}
+                analyzer={mediaSession.analyzer}
+                speakers={speakers}
             />
             {mediaSession && (
                 <>
                     <RoomUsersList
                         room={voiceChatData}
+                        speakers={speakers}
                         theme={theme}
                         headerHeight={headerHeight}
                         controlsHeight={controlsHeight}
                         router={props.router}
                         modalCtx={props.ctx}
-                        peers={conference?.peers || []}
-                        callState={state}
                         analyzer={mediaSession.analyzer}
-                        connecting={connecting}
                         reportUserLoading={reportUserLoading}
                     />
                     <RoomControls

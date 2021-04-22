@@ -259,12 +259,12 @@ const RoomHeader = ({
                         </>
                     )}
                 </XView>
-                {((speakers.length > 10) && !!currentSpeaker) && (
+                {((speakers.length > 9) && !!currentSpeaker) && (
                     <XView flexDirection="row" alignItems="center" flexShrink={1}>
                         <div className={cx(speakerName, TextBody)}>
                             {currentSpeaker.user.name}
                         </div>
-                        <UIcon icon={<IcCurrentSpeaker/>} color="var(--accentPrimary)" className={speakerIcon}/>
+                        <UIcon icon={<IcCurrentSpeaker/>} color="var(--tintBlue)" className={speakerIcon}/>
                     </XView>
                 )}
             </XView>
