@@ -7,6 +7,7 @@ import { showCreatingGroupFragment } from 'openland-web/fragments/create/CreateE
 import Plus from 'openland-icons/placeholder/plus.svg';
 import Person from 'openland-icons/placeholder/person.svg';
 import Apps from 'openland-icons/placeholder/apps.svg';
+import { useThemeSuffix } from 'openland-x-utils/useTheme';
 
 const button = css`
     &:hover,
@@ -82,6 +83,8 @@ const Button = React.memo((props: ButtonProps) => (
 
 export const MessengerPlaceholderFragment = React.memo(() => {
     const createGroup = () => showCreatingGroupFragment({ entityType: 'group' });
+    const themeSuffix = useThemeSuffix();
+
     return (
         <XView
             width="100%"
@@ -93,8 +96,8 @@ export const MessengerPlaceholderFragment = React.memo(() => {
             <img
                 width="320"
                 height="200"
-                src="//cdn.openland.com/shared/art/art-create.png"
-                srcSet="//cdn.openland.com/shared/art/art-create@2x.png 2x, //cdn.openland.com/shared/art/art-create@3x.png 3x"
+                src={`//cdn.openland.com/shared/art/art-create${themeSuffix}.png`}
+                srcSet={`//cdn.openland.com/shared/art/art-create${themeSuffix}@2x.png 2x, //cdn.openland.com/shared/art/art-create${themeSuffix}@3x.png 3x`}
                 alt=""
             />
             <XView marginTop={16} color="var(--foregroundPrimary)">

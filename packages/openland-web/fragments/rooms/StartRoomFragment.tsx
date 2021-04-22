@@ -4,6 +4,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { showModalBox } from 'openland-x/showModalBox';
 import { NewRoomForm } from './NewRoom';
+import { useThemeSuffix } from 'openland-x-utils/useTheme';
 
 export const StartRoomFragment = React.memo(() => {
     const startRoom = React.useCallback(async () => {
@@ -11,6 +12,8 @@ export const StartRoomFragment = React.memo(() => {
             <NewRoomForm ctx={ctx}/>
         ));
     }, []);
+    const themeSuffix = useThemeSuffix();
+
     return (
         <XView
             width="100%"
@@ -22,8 +25,8 @@ export const StartRoomFragment = React.memo(() => {
             <img
                 width="320"
                 height="200"
-                src="//cdn.openland.com/shared/art/art-create.png"
-                srcSet="//cdn.openland.com/shared/art/art-create@2x.png 2x, //cdn.openland.com/shared/art/art-create@3x.png 3x"
+                src={`//cdn.openland.com/shared/art/art-create-room${themeSuffix}.png`}
+                srcSet={`//cdn.openland.com/shared/art/art-create-room${themeSuffix}@2x.png 2x, //cdn.openland.com/shared/art/art-create${themeSuffix}@3x.png 3x`}
                 alt="Pick a room on the left"
             />
             <XView marginTop={16} color="var(--foregroundPrimary)">

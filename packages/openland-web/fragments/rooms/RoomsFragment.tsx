@@ -23,17 +23,29 @@ import IcSpeaker from 'openland-icons/s/ic-speaker-16.svg';
 import { showModalBox } from 'openland-x/showModalBox';
 import { useJoinRoom } from './joinRoom';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { useTheme } from 'openland-x-utils/useTheme';
 
 type ActivePageType = 'Rooms' | 'Discover';
 
 const artCrowdImg = css`
     width: 300px;
     height: 144px;
-    background: url('https://cdn.openland.com/shared/art/art-crowd.png')  center center / contain no-repeat;
+    background: url('https://cdn.openland.com/shared/art/art-crowd-new.png')  center center / contain no-repeat;
     background-image: -webkit-image-set(
-        url('https://cdn.openland.com/shared/art/art-crowd.png') 1x,
-        url('https://cdn.openland.com/shared/art/art-crowd@2x.png') 2x,
-        url('https://cdn.openland.com/shared/art/art-crowd@3x.png') 3x
+        url('https://cdn.openland.com/shared/art/art-crowd-new.png') 1x,
+        url('https://cdn.openland.com/shared/art/art-crowd-new@2x.png') 2x,
+        url('https://cdn.openland.com/shared/art/art-crowd-new@3x.png') 3x
+    );
+`;
+
+const artCrowdDarkImg = css`
+    width: 300px;
+    height: 144px;
+    background: url('https://cdn.openland.com/shared/art/art-crowd-new-dark.png')  center center / contain no-repeat;
+    background-image: -webkit-image-set(
+        url('https://cdn.openland.com/shared/art/art-crowd-new-dark.png') 1x,
+        url('https://cdn.openland.com/shared/art/art-crowd-new-dark@2x.png') 2x,
+        url('https://cdn.openland.com/shared/art/art-crowd-new-dark@3x.png') 3x
     );
 `;
 
@@ -79,9 +91,11 @@ const StartRoomItem = React.memo(() => {
         ));
     }, []);
 
+    const artCrowdClass = useTheme().theme === 'dark' ? artCrowdImg : artCrowdDarkImg;
+
     return (
         <div className={startRoomContainer}>
-            <div className={artCrowdImg} />
+            <div className={artCrowdClass} />
             <div className={cx(TextTitle3, stubHeader)}>Talk about anything!</div>
             <XView {...TextStyles.Body} color="var(--foregroundSecondary)">
                 Create a new room and invite friends

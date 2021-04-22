@@ -23,6 +23,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import GoogleIcon from 'openland-icons/s/ic-google-play-glyph-24.svg';
 import AppleIcon from 'openland-icons/s/ic-apple-glyph-24.svg';
+import { useTheme } from 'openland-x-utils/useTheme';
 
 const emptyScreenImg = css`
     height: 200px;
@@ -39,13 +40,23 @@ const emptyScreenSubtitle = cx(
 );
 
 const findFriendsImgSrc = css`
-    background: url('https://cdn.openland.com/shared/art/art-crowd.png') center center no-repeat;
-    background-image: -webkit-image-set(url('https://cdn.openland.com/shared/art/art-crowd.png') 1x, url('https://cdn.openland.com/shared/art/art-crowd@2x.png') 2x, url('https://cdn.openland.com/shared/art/art-crowd@3x.png') 3x);
+    background: url('https://cdn.openland.com/shared/art/art-crowd-new.png') center center no-repeat;
+    background-image: -webkit-image-set(url('https://cdn.openland.com/shared/art/art-crowd-new.png') 1x, url('https://cdn.openland.com/shared/art/art-crowd-new@2x.png') 2x, url('https://cdn.openland.com/shared/art/art-crowd-new@3x.png') 3x);
+`;
+
+const findFriendsImgDarkSrc = css`
+    background: url('https://cdn.openland.com/shared/art/art-crowd-new-dark.png') center center no-repeat;
+    background-image: -webkit-image-set(url('https://cdn.openland.com/shared/art/art-crowd-new-dark.png') 1x, url('https://cdn.openland.com/shared/art/art-crowd-new-dark@2x.png') 2x, url('https://cdn.openland.com/shared/art/art-crowd-new-dark@3x.png') 3x);
 `;
 
 const noContactsImgSrc = css`
     background: url('https://cdn.openland.com/shared/art/art-shared.png') center center no-repeat;
     background-image: -webkit-image-set(url('https://cdn.openland.com/shared/art/art-shared.png') 1x, url('https://cdn.openland.com/shared/art/art-shared@2x.png') 2x, url('https://cdn.openland.com/shared/art/art-shared@3x.png') 3x);
+`;
+
+const noContactsImgDarkSrc = css`
+    background: url('https://cdn.openland.com/shared/art/art-shared-dark.png') center center no-repeat;
+    background-image: -webkit-image-set(url('https://cdn.openland.com/shared/art/art-shared-dark.png') 1x, url('https://cdn.openland.com/shared/art/art-shared-dark@2x.png') 2x, url('https://cdn.openland.com/shared/art/art-shared-dark@3x.png') 3x);
 `;
 
 const MobileAppButton = (props: { isIOS: boolean } & XViewProps) => {
@@ -144,6 +155,8 @@ export const ContactsFragment = React.memo(() => {
     const [redirected, setRedirected] = React.useState(false);
     const { listenUpdates } = useLocalContacts();
     const isVisible = useVisibleTab();
+    const noContactsImgClass = useTheme().theme === 'dark' ? noContactsImgDarkSrc : noContactsImgSrc;
+    const findFriendsImgClass = useTheme().theme === 'dark' ? findFriendsImgDarkSrc : findFriendsImgSrc;
     const [searchItemsCount, setSearchItemsCount] = React.useState(0);
     const { selectedIndex, setSelectedIndex } = useListSelection({
         disable: !isVisible,
@@ -252,13 +265,13 @@ export const ContactsFragment = React.memo(() => {
         <EmptyScreen
             title="No contacts yet"
             subtitle="Invite your contacts to Openland or add people manually from their profiles, and they will appear here"
-            imgSrcStyle={noContactsImgSrc}
+            imgSrcStyle={noContactsImgClass}
         />
     ) : (
             <EmptyScreen
                 title="Find your friends"
                 subtitle="Import contacts from your phone to find people you know on Openland. Install a mobile app and tap “Import contacts”"
-                imgSrcStyle={findFriendsImgSrc}
+                imgSrcStyle={findFriendsImgClass}
             >
                 <XView marginTop={16} flexWrap="wrap" flexDirection="row" justifyContent="center">
                     <MobileAppButton

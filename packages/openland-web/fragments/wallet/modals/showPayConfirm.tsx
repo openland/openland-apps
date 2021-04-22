@@ -16,6 +16,7 @@ import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { css } from 'linaria';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { AlertBlanketComponent } from 'openland-x/AlertBlanketComponent';
+import { useTheme } from 'openland-x-utils/useTheme';
 
 const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController } & PaymentProps) => {
     let client = useClient();
@@ -76,8 +77,15 @@ const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController } & P
 });
 
 const warningContainer = css`
-    background: url(https://cdn.openland.com/shared/art/art-failing-transactions.png) center center no-repeat;
-    background-image: -webkit-image-set(url(https://cdn.openland.com/shared/art/art-failing-transactions.png) 1x, url(https://cdn.openland.com/shared/art/art-failing-transactions@2x.png) 2x, url(https://cdn.openland.com/shared/art/art-failing-transactions@3x.png) 3x);
+    background: url(https://cdn.openland.com/shared/art/art-wait.png) center center no-repeat;
+    background-image: -webkit-image-set(url(https://cdn.openland.com/shared/art/art-wait.png) 1x, url(https://cdn.openland.com/shared/art/art-wait@2x.png) 2x, url(https://cdn.openland.com/shared/art/art-wait@3x.png) 3x);
+    height: 200px;
+    margin: -8px 0 20px;
+`;
+
+const warningContainerDark = css`
+    background: url(https://cdn.openland.com/shared/art/art-wait-dark.png) center center no-repeat;
+    background-image: -webkit-image-set(url(https://cdn.openland.com/shared/art/art-wait-dark.png) 1x, url(https://cdn.openland.com/shared/art/art-wait-dark@2x.png) 2x, url(https://cdn.openland.com/shared/art/art-wait-dark@3x.png) 3x);
     height: 200px;
     margin: -8px 0 20px;
 `;
@@ -85,9 +93,10 @@ const warningContainer = css`
 const CheckLock = React.memo((props: { ctx: XModalController, onContinue?: () => void }) => {
     const builder = new AlertBlanketBuilder();
     let router = React.useContext(XViewRouterContext);
+    const warningContainerClass = useTheme().theme === 'dark' ? warningContainerDark : warningContainer;
 
     builder.message("Update payment method to complete previously failed transactions and enable new purchases");
-    builder.body(ctx => <div className={warningContainer} />);
+    builder.body(ctx => <div className={warningContainerClass} />);
     builder.action('Continue', async () => {
         router?.navigate('/wallet');
         if (props.onContinue) {

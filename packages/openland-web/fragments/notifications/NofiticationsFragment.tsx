@@ -23,6 +23,7 @@ const wrapperClass = css`
     max-width: 824px;
     margin: 0 auto;
     width: 100%;
+    height: 100%;
 `;
 
 const loaderClass = css`
@@ -106,7 +107,7 @@ class CommentsNotificationsInner extends React.PureComponent<
 
     private renderEmpty = () => {
         return (
-            <XView flexDirection="row" alignItems="center" flexGrow={1}>
+            <XView flexDirection="row" alignItems="center" height="100%" flexGrow={1}>
                 <MessengerEmptyFragment text="Comments in threads you are involved in will be right here" />
             </XView>
         );

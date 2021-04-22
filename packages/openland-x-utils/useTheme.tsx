@@ -54,3 +54,4 @@ export const ThemeProvider = React.memo((props: {children: any}) => {
 });
 
 export const useTheme = () => React.useContext(ThemeContext);
+export const useThemeSuffix = () => useTheme().theme === 'dark' ? '-dark' : '';

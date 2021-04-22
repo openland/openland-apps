@@ -15,6 +15,7 @@ import {
     SocialUserFollowers_socialUserFollowers_items,
     SocialUserFollowing_socialUserFollowing_items,
 } from 'openland-api/spacex.types';
+import { useThemeSuffix } from 'openland-x-utils/useTheme';
 
 const counterStyle = css`
     color: var(--foregroundTertiary);
@@ -39,6 +40,7 @@ const UserFollowersModalComponent = React.memo<UserFollowersModalComponentProps>
     const client = useClient();
     const engine = React.useContext(MessengerContext);
     const router = React.useContext(XViewRouterContext);
+    const themeSuffix = useThemeSuffix();
     const [selectedTab, setSelectedTab] = React.useState(initialTab || FollowersTabs.FOLLOWING);
     const [following, setFollowing] = React.useState<SocialUserFollowing_socialUserFollowing_items[] | null>(null);
     const [followingCursor, setFollowingCursor] = React.useState<string | null>(null);
@@ -146,8 +148,8 @@ const UserFollowersModalComponent = React.memo<UserFollowersModalComponentProps>
                         <img
                             width="320"
                             height="200"
-                            src="//cdn.openland.com/shared/art/art-shared.png"
-                            srcSet="//cdn.openland.com/shared/art/art-shared@2x.png 2x, //cdn.openland.com/shared/art/art-shared@3x.png 3x"
+                            src={`//cdn.openland.com/shared/art/art-shared${themeSuffix}.png`}
+                            srcSet={`//cdn.openland.com/shared/art/art-shared${themeSuffix}@2x.png 2x, //cdn.openland.com/shared/art/art-shared${themeSuffix}@3x.png 3x`}
                             alt=""
                         />
                         No following yet
@@ -158,8 +160,8 @@ const UserFollowersModalComponent = React.memo<UserFollowersModalComponentProps>
                         <img
                             width="320"
                             height="200"
-                            src="//cdn.openland.com/shared/art/art-shared.png"
-                            srcSet="//cdn.openland.com/shared/art/art-shared@2x.png 2x, //cdn.openland.com/shared/art/art-shared@3x.png 3x"
+                            src={`//cdn.openland.com/shared/art/art-shared${themeSuffix}.png`}
+                            srcSet={`//cdn.openland.com/shared/art/art-shared${themeSuffix}@2x.png 2x, //cdn.openland.com/shared/art/art-shared${themeSuffix}@3x.png 3x`}
                             alt=""
                         />
                         No followers yet

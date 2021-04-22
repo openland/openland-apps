@@ -6,6 +6,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { css, cx } from 'linaria';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { useThemeSuffix } from 'openland-x-utils/useTheme';
 
 interface MessageProps {
     children: string | string[];
@@ -47,6 +48,7 @@ export const PrivatePlaceholder = React.memo((props: ChatEmptyComponentPrivatePr
     const layout = useLayout();
     const messenger = React.useContext(MessengerContext);
     const isSavedMessages = messenger.user.id === props.conversation.user!.id;
+    const themeSuffix = useThemeSuffix();
 
     return (
         <div className={wrapper}>
@@ -56,8 +58,8 @@ export const PrivatePlaceholder = React.memo((props: ChatEmptyComponentPrivatePr
                         <img
                             width="320"
                             height="200"
-                            src="//cdn.openland.com/shared/art/art-no-messages.png"
-                            srcSet="//cdn.openland.com/shared/art/art-no-messages@2x.png 2x, //cdn.openland.com/shared/art/art-no-messages@3x.png 3x"
+                            src={`//cdn.openland.com/shared/art/art-no-messages${themeSuffix}.png`}
+                            srcSet={`//cdn.openland.com/shared/art/art-no-messages${themeSuffix}@2x.png 2x, //cdn.openland.com/shared/art/art-no-messages${themeSuffix}@3x.png 3x`}
                             alt=""
                         />
                         <XView marginTop={16} color="var(--foregroundPrimary)">

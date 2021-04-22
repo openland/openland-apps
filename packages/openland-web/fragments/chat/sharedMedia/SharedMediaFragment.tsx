@@ -27,6 +27,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { convertPartialMessage } from 'openland-engines/messenger/ConversationEngine';
 import { RichContent } from './RichContent';
 import { useForward } from '../messenger/message/actions/forward';
+import { useThemeSuffix } from 'openland-x-utils/useTheme';
 
 interface SharedMediaProps {
     chatId: string;
@@ -147,12 +148,14 @@ const SharedMediaContainerHiddenClass = css`
 `;
 
 export const Placeholder = (props: { mediaTypes: SharedMediaType[]; }) => {
+    const themeSuffix = useThemeSuffix();
+
     return (
         <XView flexDirection="column" alignItems="center" justifyContent="center" height="calc(100vh - 56px)" width="100%">
             <img
                 height={200}
-                src="https://cdn.openland.com/shared/art/art-shared.png"
-                srcSet="https://cdn.openland.com/shared/art/art-shared@2x.png 2x, https://cdn.openland.com/shared/art/art-shared@3x.png 3x"
+                src={`https://cdn.openland.com/shared/art/art-shared${themeSuffix}.png`}
+                srcSet={`https://cdn.openland.com/shared/art/art-shared${themeSuffix}@2x.png 2x, https://cdn.openland.com/shared/art/art-shared${themeSuffix}@3x.png 3x`}
             />
             <XView {...TextStyles.Title1} color="var(--foregroundPrimary)" marginTop={12} >{props.mediaTypes.includes(SharedMediaType.IMAGE) ? 'No media yet' : props.mediaTypes.includes(SharedMediaType.LINK) ? 'No links yet' : 'No files yet'}</XView>
             <XView {...TextStyles.Body} color="var(--foregroundSecondary)" marginTop={8} >{props.mediaTypes.includes(SharedMediaType.IMAGE) ? 'Share photos and videos in this chat, and they will appear here' : props.mediaTypes.includes(SharedMediaType.LINK) ? 'Share links in this chat, and they will appear here' : 'Share files in this chat, and they will appear here'}</XView>
