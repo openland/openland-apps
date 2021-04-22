@@ -28,30 +28,30 @@ import './_app.css';
 //
 
 import React from 'react';
-import bugsnag from '@bugsnag/js';
-import bugsnagReact from '@bugsnag/plugin-react';
-import { getConfig } from 'openland-web/config';
-import { CrashReporting } from 'openland-engines/CrashReporting';
-import { VERSION } from 'openland-web/version';
-let config = getConfig();
+// import bugsnag from '@bugsnag/js';
+// import bugsnagReact from '@bugsnag/plugin-react';
+// import { getConfig } from 'openland-web/config';
+// import { CrashReporting } from 'openland-engines/CrashReporting';
+// import { VERSION } from 'openland-web/version';
+// let config = getConfig();
 
 let ErrorBoundary: any;
-if (config.env === 'production' || config.env === 'next') {
-    const bugsnagClient = bugsnag({
-        apiKey: 'face7f06bcc3b1b0d5d60ed0fe912a88',
-        releaseStage: config.env,
-        notifyReleaseStages: ['production', 'next'],
-        appVersion: VERSION
-    });
-    bugsnagClient.use(bugsnagReact, React);
-    CrashReporting.setReporter({
-        notify: (src) => bugsnagClient.notify(src),
-        setUserId: (src) => bugsnagClient.user = { id: src }
-    });
-    ErrorBoundary = bugsnagClient.getPlugin('react');
-} else {
-    ErrorBoundary = (props: { children?: any }) => <>{props.children}</>;
-}
+// if (config.env === 'production' || config.env === 'next') {
+// const bugsnagClient = bugsnag({
+//     apiKey: 'face7f06bcc3b1b0d5d60ed0fe912a88',
+//     releaseStage: config.env,
+//     notifyReleaseStages: ['production', 'next'],
+//     appVersion: VERSION
+// });
+// bugsnagClient.use(bugsnagReact, React);
+// CrashReporting.setReporter({
+//     notify: (src) => bugsnagClient.notify(src),
+//     setUserId: (src) => bugsnagClient.user = { id: src }
+// });
+// ErrorBoundary = bugsnagClient.getPlugin('react');
+// } else {
+ErrorBoundary = (props: { children?: any }) => <>{props.children}</>;
+// }
 
 import './init';
 import '../globals';
