@@ -22,9 +22,16 @@ class CrashReportingImpl {
         }
     }
 
-    notify = (error: Error) => {
+    notify = (error: Error | { name: string, data: Object }) => {
         if (this.reporter) {
-            this.reporter.notify(error);
+            let payload: { name: string, message: string };
+            if (error instanceof Error) {
+                payload = error;
+            } else {
+                payload = new Error(JSON.stringify(error.data));
+                payload.name = error.name;
+            }
+            this.reporter.notify(payload);
         }
     }
 }

@@ -13,7 +13,7 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { ZCounter } from 'openland-mobile/components/ZCounter';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { showRaisedHands } from './RaisedHands';
-import { ReportCallErrorType } from './RoomView';
+import { ReportCallErrorType } from 'openland-y-utils/voiceChat/voiceChatErrorNotifier';
 
 const KeyboardHandlerContainer = React.memo((props: { children: JSX.Element | JSX.Element[] }) => {
     const [keyboardHeight, setKeyboardHeight] = React.useState(0);
