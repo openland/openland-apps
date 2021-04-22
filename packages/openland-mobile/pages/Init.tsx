@@ -23,7 +23,7 @@ import { MobileMessenger } from '../messenger/MobileMessenger';
 import { SRouting } from 'react-native-s/SRouting';
 import { Root } from './Root';
 import { PageProps } from '../components/PageProps';
-import { Account_sessionState } from 'openland-api/spacex.types';
+import { Account_sessionState, Account } from 'openland-api/spacex.types';
 import { resolveNextPage } from './auth/signup';
 import {
     resolveInternalLink,
@@ -54,6 +54,7 @@ import { LocalBlackListProvider } from 'openland-y-utils/blacklist/LocalBlackLis
 import { VoiceChatsFeedProvider } from 'openland-y-utils/voiceChat/voiceChatsFeedWatcher';
 import { MessagesActionsStateProvider } from 'openland-y-runtime/MessagesActionsState';
 import { PersistenceVersion } from 'openland-engines/PersitenceVersion';
+import { CrashReporting } from 'openland-engines/CrashReporting';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(
@@ -150,7 +151,7 @@ export class Init extends React.Component<
         sessionState?: Account_sessionState;
         dimensions?: { width: number; height: number };
     }
-    > {
+> {
     private history: any;
     private pendingDeepLink?: string;
     private resolving = false;
@@ -271,7 +272,7 @@ export class Init extends React.Component<
                         this.setState({ state: 'signup' });
                     }
                 } else {
-                    let res: any;
+                    let res: Account | undefined;
                     let authenticated = false;
                     if (AppStorage.token) {
                         this.setState({ state: 'loading' });
@@ -329,6 +330,7 @@ export class Init extends React.Component<
                         if (res && res.me) {
                             this.setState({ state: 'app' });
                             NotificationHandler.init();
+                            CrashReporting.setUserId(res.me.id);
                         } else {
                             this.setState({ state: 'signup' });
                         }

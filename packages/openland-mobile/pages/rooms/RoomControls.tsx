@@ -21,7 +21,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TintBlue, TintOrange } from 'openland-y-utils/themes/tints';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { showRoomSettings } from './RoomSettings';
-import { ReportCallErrorType } from './RoomView';
+import { ReportCallErrorType } from 'openland-y-utils/voiceChat/voiceChatErrorNotifier';
 
 const showRoomInvite = ({ link, theme }: { link: string; theme: ThemeGlobal }) => {
     const handleShare = () => {

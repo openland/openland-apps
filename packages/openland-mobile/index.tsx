@@ -30,5 +30,14 @@ import { AppRegistry } from 'react-native';
 import { withGlobalLoader } from './components/ZGlobalLoader';
 import { Init } from './pages/Init';
 import { SNativeConfig } from 'react-native-s/SNativeConfig';
+import Bugsnag from "@bugsnag/react-native";
+import { CrashReporting } from 'openland-engines/CrashReporting';
+if (!__DEV__) {
+    let bugsnagClient = Bugsnag.start();
+    CrashReporting.setReporter({
+        notify: (src) => bugsnagClient.notify(src),
+        setUserId: (src) => bugsnagClient.setUser(src),
+    });
+}
 SNativeConfig.loader = <ZLoader />;
 AppRegistry.registerComponent('openland', () => withGlobalLoader(Init));

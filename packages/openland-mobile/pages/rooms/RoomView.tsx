@@ -52,32 +52,7 @@ import Toast from 'openland-mobile/components/Toast';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
 import { debounce } from 'openland-y-utils/timer';
 import { showSheetModal } from 'openland-mobile/components/showSheetModal';
-import Bugsnag from '@bugsnag/react-native';
-
-export type ReportCallErrorType = 'report-self-micro'
-    | 'report-self-speaker'
-    | 'report-self-loading'
-    | 'report-user-loading';
-
-type CallError = {
-    type: ReportCallErrorType | 'system-user-loading',
-    info: any,
-} | {
-    type: 'system-participants-lists-unmatch',
-    info: {
-        speakers: any,
-        listeners: any,
-        speakersCount: any,
-        listenersCount: any,
-    }
-};
-
-const notifyError = (error: CallError) => {
-    Bugsnag.notify({
-        name: error.type,
-        message: JSON.stringify(error.info),
-    });
-};
+import { useVoiceChatErrorNotifier } from 'openland-y-utils/voiceChat/voiceChatErrorNotifier';
 
 interface PinnedMessageViewProps {
     theme: ThemeGlobal;
@@ -1204,40 +1179,12 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
         };
     }, []);
 
-    const analyticsRef = React.useRef<any>({});
-    analyticsRef.current = {
+    const { reportUserError, reportUserLoading } = useVoiceChatErrorNotifier({
         callState: state,
         peers: conference?.peers,
-        appConnecting: connecting
-    };
-    const reportUserLoading = React.useCallback(() => {
-        notifyError({
-            type: 'system-user-loading',
-            info: analyticsRef.current
-        });
-    }, []);
-    const reportUserError = React.useCallback((type: ReportCallErrorType) => {
-        notifyError({
-            type,
-            info: analyticsRef.current
-        });
-    }, []);
-    React.useEffect(() => {
-        if (
-            voiceChatData.speakers && voiceChatData.speakers.length !== voiceChatData.speakersCount
-            || voiceChatData.listeners && voiceChatData.listeners.length !== voiceChatData.listenersCount
-        ) {
-            notifyError({
-                type: 'system-participants-lists-unmatch',
-                info: {
-                    speakers: voiceChatData.speakers,
-                    listeners: voiceChatData.listeners,
-                    speakersCount: voiceChatData.speakersCount,
-                    listenersCount: voiceChatData.listenersCount,
-                }
-            });
-        }
-    }, [voiceChatData.speakers, voiceChatData.listeners, voiceChatData.speakersCount, voiceChatData.listenersCount]);
+        voiceChat: voiceChatData,
+        appConnecting: connecting,
+    });
 
     if (!mediaSession) {
         return null;
