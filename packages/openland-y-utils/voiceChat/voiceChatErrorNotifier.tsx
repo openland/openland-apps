@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { CrashReporting } from 'openland-engines/CrashReporting';
+import Bugsnag from '@bugsnag/react-native';
+// import { CrashReporting } from 'openland-engines/CrashReporting';
 import { VoiceChatT } from './voiceChatWatcher';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
@@ -10,22 +11,18 @@ export type ReportCallErrorType = 'report-self-micro'
     | 'report-user-loading';
 
 type CallError = {
-    type: ReportCallErrorType | 'system-user-loading',
+    type: ReportCallErrorType | 'system-user-loading' | 'system-participants-lists-unmatch',
     info: any,
-} | {
-    type: 'system-participants-lists-unmatch',
-    info: {
-        speakers: any,
-        listeners: any,
-        speakersCount: any,
-        listenersCount: any,
-    }
 };
 
 const notifyError = (error: CallError) => {
-    CrashReporting.notify({
+    // CrashReporting.notify({
+    //     name: error.type,
+    //     message: error.info,
+    // });
+    Bugsnag.notify({
         name: error.type,
-        message: error.info,
+        message: JSON.stringify(error.info),
     });
 };
 
@@ -39,7 +36,8 @@ export const useVoiceChatErrorNotifier = ({ callState, peers, appConnecting, voi
     analyticsRef.current = {
         callState,
         peers: peers,
-        appConnecting: appConnecting
+        appConnecting: appConnecting,
+        voiceChat
     };
     const reportUserLoading = React.useCallback(() => {
         notifyError({
@@ -60,12 +58,7 @@ export const useVoiceChatErrorNotifier = ({ callState, peers, appConnecting, voi
         ) {
             notifyError({
                 type: 'system-participants-lists-unmatch',
-                info: {
-                    speakers: voiceChat.speakers,
-                    listeners: voiceChat.listeners,
-                    speakersCount: voiceChat.speakersCount,
-                    listenersCount: voiceChat.listenersCount,
-                }
+                info: analyticsRef.current
             });
         }
     }, [voiceChat.speakers, voiceChat.listeners, voiceChat.speakersCount, voiceChat.listenersCount]);

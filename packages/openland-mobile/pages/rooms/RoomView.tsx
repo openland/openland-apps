@@ -486,7 +486,7 @@ const RoomHeader = React.memo(
         },
     ) => {
         const { room, hide, router, theme, analyzer, speakers } = props;
-        const peerIds = speakers.map(i => i.peersIds).flat();
+        const peerIds = speakers.filter(i => !i.isLoading && !i.isMuted).map(i => i.peersIds).flat();
         const currentlySpeaking = analyzer.useCurrentlySpeaking(peerIds);
         let currentSpeaker: VoiceChatParticipant | undefined = speakers.find(s => s.peersIds.includes(currentlySpeaking[0]))?.speaker;
         const { parentRoom } = room;
