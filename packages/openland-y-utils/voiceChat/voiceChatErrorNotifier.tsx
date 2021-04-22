@@ -11,16 +11,8 @@ export type ReportCallErrorType = 'report-self-micro'
     | 'report-user-loading';
 
 type CallError = {
-    type: ReportCallErrorType | 'system-user-loading',
+    type: ReportCallErrorType | 'system-user-loading' | 'system-participants-lists-unmatch',
     info: any,
-} | {
-    type: 'system-participants-lists-unmatch',
-    info: {
-        speakers: any,
-        listeners: any,
-        speakersCount: any,
-        listenersCount: any,
-    }
 };
 
 const notifyError = (error: CallError) => {
@@ -44,7 +36,8 @@ export const useVoiceChatErrorNotifier = ({ callState, peers, appConnecting, voi
     analyticsRef.current = {
         callState,
         peers: peers,
-        appConnecting: appConnecting
+        appConnecting: appConnecting,
+        voiceChat
     };
     const reportUserLoading = React.useCallback(() => {
         notifyError({
@@ -65,12 +58,7 @@ export const useVoiceChatErrorNotifier = ({ callState, peers, appConnecting, voi
         ) {
             notifyError({
                 type: 'system-participants-lists-unmatch',
-                info: {
-                    speakers: voiceChat.speakers,
-                    listeners: voiceChat.listeners,
-                    speakersCount: voiceChat.speakersCount,
-                    listenersCount: voiceChat.listenersCount,
-                }
+                info: analyticsRef.current
             });
         }
     }, [voiceChat.speakers, voiceChat.listeners, voiceChat.speakersCount, voiceChat.listenersCount]);
