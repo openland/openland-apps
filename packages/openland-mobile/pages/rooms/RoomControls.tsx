@@ -328,7 +328,7 @@ const RoomSettingsButton = React.memo((props: RoomSettingsButtonProps) => {
             iconColor={theme.foregroundSecondary}
             text="Settings"
             bgColor={theme.backgroundTertiaryTrans}
-            counter={raisedCount}
+            counter={status === VoiceChatParticipantStatus.ADMIN ? raisedCount : undefined}
             onPress={() => showRoomSettings({
                 roomId,
                 roomTitle,
