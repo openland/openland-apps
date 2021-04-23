@@ -33,7 +33,7 @@ const ItemBase = React.memo((props: ItemBaseProps) => {
                 {avatar}
             </ASFlex>
             <ASFlex marginLeft={16} flexGrow={1} flexBasis={0} alignItems="center">
-                <ASText {...TextStylesAsync.Label1} maxWidth={width} color={theme.foregroundPrimary} numberOfLines={1}>
+                <ASText {...TextStylesAsync.Label1} maxWidth={width} color={theme.foregroundPrimary} numberOfLines={1} lineHeight={20}>
                     {name}
                 </ASText>
                 {showFeatured && (

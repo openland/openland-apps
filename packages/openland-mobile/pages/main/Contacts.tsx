@@ -283,6 +283,7 @@ const ContactsPage = React.memo((props: PageProps) => {
                                         : undefined
                                 }
                                 keyExtractor={(item, index) => index + '-' + item.id}
+                                ListFooterComponent={<View style={{ height: 32 }} />}
                                 renderItem={({ item }) => (
                                     <UserView
                                         user={item}

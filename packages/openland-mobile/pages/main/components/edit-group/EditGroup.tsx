@@ -107,90 +107,92 @@ const EditGroupComponent = React.memo((props: PageProps) => {
             <SHeader title={`Edit ${typeString}`} />
             <SHeaderButton title="Save" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
-                <ZListGroup header={null} alignItems="center">
-                    <ZAvatarPicker size="xx-large" field={photoField} />
-                </ZListGroup>
-                <ZListGroup header="Info" headerMarginTop={0}>
-                    <ZInput placeholder="Name" field={titleField} />
-                    <ZInput field={descriptionField} placeholder="Description" multiline={true} />
-                    {!isShared && <SecretLabel isChannel={group.isChannel} />}
-                </ZListGroup>
-                <ZListGroup header="Settings" headerMarginTop={0}>
-                    {isShared && (
-                        <ZListItem
-                            leftIcon={require('assets/ic-at-24.png')}
-                            text="Shortname"
-                            small={true}
-                            description={group.shortname ? group.shortname : 'None'}
-                            onPress={() =>
-                                router.push('SetShortname', { id: group.id, isGroup: true })
-                            }
-                        />
-                    )}
-                    {SUPER_ADMIN && (
-                        <ZListItem
-                            leftIcon={require('assets/ic-wallet-24.png')}
-                            text="Payments"
-                            small={true}
-                            onPress={() => router.push('EditGroupPrice', { id: group.id })}
-                            description={
-                                group.premiumSettings
-                                    ? formatMoneyInterval(
-                                        group.premiumSettings.price,
-                                        group.premiumSettings.interval,
-                                    )
-                                    : 'Free'
-                            }
-                        />
-                    )}
-                    <ZListItem
-                        leftIcon={require('assets/ic-gallery-24.png')}
-                        text="Social sharing image"
-                        small={true}
-                        description={!!group.socialImage ? 'On' : 'None'}
-                        onPress={() => router.push('EditGroupSocialImage', { id: group.id })}
-                    />
-                    {group.welcomeMessage && (
-                        <ZListItem
-                            leftIcon={require('assets/ic-message-24.png')}
-                            text="Welcome message"
-                            small={true}
-                            description={group.welcomeMessage.isOn ? 'On' : 'Off'}
-                            onPress={() => router.push('EditGroupWelcomeMessage', { id: group.id })}
-                        />
-                    )}
-                    {!group.isChannel && (
-                        <>
+                <View style={{ paddingBottom: 32 }}>
+                    <ZListGroup header={null} alignItems="center">
+                        <ZAvatarPicker size="xx-large" field={photoField} />
+                    </ZListGroup>
+                    <ZListGroup header="Info" headerMarginTop={0}>
+                        <ZInput placeholder="Name" field={titleField} />
+                        <ZInput field={descriptionField} placeholder="Description" multiline={true} />
+                        {!isShared && <SecretLabel isChannel={group.isChannel} />}
+                    </ZListGroup>
+                    <ZListGroup header="Settings" headerMarginTop={0}>
+                        {isShared && (
                             <ZListItem
-                                leftIcon={require('assets/ic-megaphone-24.png')}
-                                text="Service messages"
+                                leftIcon={require('assets/ic-at-24.png')}
+                                text="Shortname"
                                 small={true}
-                                description={serviceMessageLabel}
+                                description={group.shortname ? group.shortname : 'None'}
                                 onPress={() =>
-                                    router.push('EditGroupServiceMessages', { id: group.id })
+                                    router.push('SetShortname', { id: group.id, isGroup: true })
                                 }
                             />
+                        )}
+                        {SUPER_ADMIN && (
                             <ZListItem
-                                leftIcon={require('assets/ic-call-24.png')}
-                                text="Group calls"
+                                leftIcon={require('assets/ic-wallet-24.png')}
+                                text="Payments"
                                 small={true}
-                                description={callSettingsLabel}
-                                onPress={() => router.push('EditGroupCalls', { id: group.id })}
+                                onPress={() => router.push('EditGroupPrice', { id: group.id })}
+                                description={
+                                    group.premiumSettings
+                                        ? formatMoneyInterval(
+                                        group.premiumSettings.price,
+                                        group.premiumSettings.interval,
+                                        )
+                                        : 'Free'
+                                }
                             />
-                        </>
-                    )}
-                    {SUPER_ADMIN && (
+                        )}
                         <ZListItem
-                            leftIcon={require('assets/ic-lock-24.png')}
-                            text="Superadmin settings"
+                            leftIcon={require('assets/ic-gallery-24.png')}
+                            text="Social sharing image"
                             small={true}
-                            description="Custom"
-                            onPress={() =>
-                                props.router.push('EditGroupSuperadmin', { id: group.id })
-                            }
+                            description={!!group.socialImage ? 'On' : 'None'}
+                            onPress={() => router.push('EditGroupSocialImage', { id: group.id })}
                         />
-                    )}
-                </ZListGroup>
+                        {group.welcomeMessage && (
+                            <ZListItem
+                                leftIcon={require('assets/ic-message-24.png')}
+                                text="Welcome message"
+                                small={true}
+                                description={group.welcomeMessage.isOn ? 'On' : 'Off'}
+                                onPress={() => router.push('EditGroupWelcomeMessage', { id: group.id })}
+                            />
+                        )}
+                        {!group.isChannel && (
+                            <>
+                                <ZListItem
+                                    leftIcon={require('assets/ic-megaphone-24.png')}
+                                    text="Service messages"
+                                    small={true}
+                                    description={serviceMessageLabel}
+                                    onPress={() =>
+                                        router.push('EditGroupServiceMessages', { id: group.id })
+                                    }
+                                />
+                                <ZListItem
+                                    leftIcon={require('assets/ic-call-24.png')}
+                                    text="Group calls"
+                                    small={true}
+                                    description={callSettingsLabel}
+                                    onPress={() => router.push('EditGroupCalls', { id: group.id })}
+                                />
+                            </>
+                        )}
+                        {SUPER_ADMIN && (
+                            <ZListItem
+                                leftIcon={require('assets/ic-lock-24.png')}
+                                text="Superadmin settings"
+                                small={true}
+                                description="Custom"
+                                onPress={() =>
+                                    props.router.push('EditGroupSuperadmin', { id: group.id })
+                                }
+                            />
+                        )}
+                    </ZListGroup>
+                </View>
             </KeyboardAvoidingScrollView>
         </>
     );

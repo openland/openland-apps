@@ -136,6 +136,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
                         label="Month"
                         options={OPTIONS}
                         value={month?.value}
+                        modalTitle="Month"
                         invalid={getInvalid('month')}
                         noWrapper={true}
                         onChange={(val: SelectedMonth) => setMonth(val)}
