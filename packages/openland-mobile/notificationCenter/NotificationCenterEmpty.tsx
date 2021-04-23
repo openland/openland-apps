@@ -26,6 +26,17 @@ export const NotificationCenterEmpty = React.memo(() => {
             />
             <Text
                 style={{
+                    ...TextStyles.Title2,
+                    color: theme.foregroundPrimary,
+                    textAlign: 'center',
+                    marginBottom: 4,
+                }}
+                allowFontScaling={false}
+            >
+                No notifications yet
+            </Text>
+            <Text
+                style={{
                     ...TextStyles.Body,
                     color: theme.foregroundSecondary,
                     textAlign: 'center',
