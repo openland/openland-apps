@@ -52,7 +52,7 @@ import Toast from 'openland-mobile/components/Toast';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
 import { debounce } from 'openland-y-utils/timer';
 import { showSheetModal } from 'openland-mobile/components/showSheetModal';
-import { useVoiceChatErrorNotifier } from 'openland-y-utils/voiceChat/voiceChatErrorNotifier';
+import { useVoiceChatErrorNotifier } from 'openland-mobile/utils/voiceChatErrorNotifier';
 
 interface PinnedMessageViewProps {
     theme: ThemeGlobal;

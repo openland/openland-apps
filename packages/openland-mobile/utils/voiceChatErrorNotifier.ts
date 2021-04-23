@@ -1,9 +1,8 @@
 import * as React from 'react';
 import Bugsnag from '@bugsnag/react-native';
-// import { CrashReporting } from 'openland-engines/CrashReporting';
-import { VoiceChatT } from './voiceChatWatcher';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
+import { VoiceChatT } from 'openland-y-utils/voiceChat/voiceChatWatcher';
 
 export type ReportCallErrorType = 'report-self-micro'
     | 'report-self-speaker'
@@ -16,10 +15,6 @@ type CallError = {
 };
 
 const notifyError = (error: CallError) => {
-    // CrashReporting.notify({
-    //     name: error.type,
-    //     message: error.info,
-    // });
     Bugsnag.notify({
         name: error.type,
         message: JSON.stringify(error.info),

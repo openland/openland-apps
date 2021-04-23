@@ -54,7 +54,6 @@ import { LocalBlackListProvider } from 'openland-y-utils/blacklist/LocalBlackLis
 import { VoiceChatsFeedProvider } from 'openland-y-utils/voiceChat/voiceChatsFeedWatcher';
 import { MessagesActionsStateProvider } from 'openland-y-runtime/MessagesActionsState';
 import { PersistenceVersion } from 'openland-engines/PersitenceVersion';
-import { CrashReporting } from 'openland-engines/CrashReporting';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(
@@ -330,7 +329,6 @@ export class Init extends React.Component<
                         if (res && res.me) {
                             this.setState({ state: 'app' });
                             NotificationHandler.init();
-                            CrashReporting.setUserId(res.me.id);
                         } else {
                             this.setState({ state: 'signup' });
                         }
