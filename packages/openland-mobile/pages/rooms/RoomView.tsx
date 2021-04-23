@@ -53,6 +53,7 @@ import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSe
 import { debounce } from 'openland-y-utils/timer';
 import { showSheetModal } from 'openland-mobile/components/showSheetModal';
 import { useVoiceChatErrorNotifier } from 'openland-mobile/utils/voiceChatErrorNotifier';
+import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
 
 interface PinnedMessageViewProps {
     theme: ThemeGlobal;
@@ -1053,7 +1054,6 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
     const voiceChatData = useVoiceChat();
     const theme = useTheme();
     const client = useClient();
-    const conference = client.useConference({ id: props.roomId }, { suspense: false })?.conference;
     const [headerHeight, setHeaderHeight] = React.useState(0);
     const [controlsHeight, setControlsHeight] = React.useState(0);
 
@@ -1064,6 +1064,9 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
     const inviteLink = voiceChatData.parentRoom && voiceChatData.parentRoom.kind !== SharedRoomKind.PUBLIC
         ? undefined
         : inviteEntityLink;
+    const initialConference = client.useConference({ id: props.roomId }, { suspense: false })?.conference;
+    const [conference, setConference] = React.useState(initialConference);
+    useWatchCall(conference?.id, setConference);
 
     const onHeaderLayout = React.useCallback(
         (e: LayoutChangeEvent) => {
