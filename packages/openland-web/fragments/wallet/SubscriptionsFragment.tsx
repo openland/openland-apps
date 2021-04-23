@@ -3,7 +3,7 @@ import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 import { useClient } from 'openland-api/useClient';
 import { WalletSubscriptionState } from 'openland-api/spacex.types';
-import { XView, XViewRouterContext, XImage } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
 import { TextTitle1, TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
 import { FormSection } from '../settings/components/FormSection';
 import { FormWrapper } from '../settings/components/FormWrapper';
