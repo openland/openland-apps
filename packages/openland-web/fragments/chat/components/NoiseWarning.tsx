@@ -20,11 +20,10 @@ const warningContainerDark = css`
 export const showNoiseWarning = async (title: string, message: string) => {
     return new Promise((resolve, reject) => {
         const builder = new AlertBlanketBuilder();
-        const warningContainerClass = useTheme().theme === 'dark' ? warningContainerDark : warningContainer;
 
         builder.title(title);
         builder.message(message);
-        builder.body(ctx => <div className={warningContainerClass} />);
+        builder.body(ctx => <div className={useTheme().theme === 'dark' ? warningContainerDark : warningContainer} />);
         builder.action('Continue', async () => { resolve(); }, 'danger');
         builder.onCancel(reject);
         builder.width(480);

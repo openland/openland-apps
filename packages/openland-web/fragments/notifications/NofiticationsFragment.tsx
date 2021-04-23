@@ -11,7 +11,7 @@ import {
     buildMessagesDataSource,
 } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
-import { MessengerEmptyFragment } from 'openland-web/fragments/chat/MessengerEmptyFragment';
+import { NotificationsEmptyFragment } from 'openland-web/fragments/chat/NotificationsEmptyFragment';
 import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { UHeader } from 'openland-unicorn/UHeader';
@@ -108,7 +108,7 @@ class CommentsNotificationsInner extends React.PureComponent<
     private renderEmpty = () => {
         return (
             <XView flexDirection="row" alignItems="center" height="100%" flexGrow={1}>
-                <MessengerEmptyFragment text="Comments in threads you are involved in will be right here" />
+                <NotificationsEmptyFragment text="Comments in threads you are involved in will be right here" />
             </XView>
         );
     }

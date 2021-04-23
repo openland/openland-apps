@@ -2,6 +2,8 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { useThemeSuffix } from 'openland-x-utils/useTheme';
+import { useWithHeight } from 'openland-web/hooks/useWithWidth';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 
 const textWrapper = css`
     text-align: center;
@@ -11,9 +13,10 @@ interface MessengerEmptyFragmentProps {
     text?: string;
 }
 
-export const MessengerEmptyFragment = React.memo((props: MessengerEmptyFragmentProps) => {
+export const NotificationsEmptyFragment = React.memo((props: MessengerEmptyFragmentProps) => {
     const { text } = props;
     const themeSuffix = useThemeSuffix();
+    const [windowHeight] = useWithHeight();
 
     return (
         <XView
@@ -35,7 +38,7 @@ export const MessengerEmptyFragment = React.memo((props: MessengerEmptyFragmentP
                 alignItems="center"
                 alignSelf="center"
                 zIndex={1}
-                height="100%"
+                height={windowHeight! - 160}
             >
                 <img
                     width="320"
@@ -44,7 +47,10 @@ export const MessengerEmptyFragment = React.memo((props: MessengerEmptyFragmentP
                     srcSet={`//cdn.openland.com/shared/art/art-notifications-off${themeSuffix}@2x.png 2x, //cdn.openland.com/shared/art/art-notifications-off${themeSuffix}@3x.png 3x`}
                     alt=""
                 />
-                <XView fontSize={16} lineHeight="24px" color="var(--foregroundSecondary)" marginBottom={32} marginTop={50}>
+                <XView marginTop={16} marginBottom={16} {...TextStyles.Title1}>
+                    No notifications yet
+                </XView>
+                <XView fontSize={16} lineHeight="24px" color="var(--foregroundSecondary)" marginBottom={32}>
                     <span className={textWrapper}>
                         {text || 'Select a chat to start messaging'}
                     </span>

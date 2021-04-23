@@ -22,12 +22,11 @@ const containerDark = css`
 
 export const showWithdrawFunds = async (router: XViewRouter) => {
         const builder = new AlertBlanketBuilder();
-        const containerClass = useTheme().theme === 'dark' ? container : containerDark;
 
         builder
             .title('Withdraw funds')
             .message('To request funds withdrawal ($50 minimum) message\u00A0Openland support for instructions')
-            .body(ctx => <div className={containerClass} />)
+            .body(ctx => <div className={useTheme().theme === 'dark' ? container : containerDark} />)
             .action('Continue', async() => { router.navigate('/mail/LOaDEWDj9zsVv999DDpJiEj05K'); }, 'primary')
             .width(400);
         builder.show();
