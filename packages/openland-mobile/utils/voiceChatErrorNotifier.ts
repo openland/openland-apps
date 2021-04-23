@@ -10,7 +10,7 @@ export type ReportCallErrorType = 'report-self-micro'
     | 'report-user-loading';
 
 type CallError = {
-    type: ReportCallErrorType | 'system-user-loading' | 'system-participants-lists-unmatch',
+    type: ReportCallErrorType | 'system-user-loading' | 'system-participants-lists-unmatch' | 'system-user-out-of-call',
     info: any,
 };
 
@@ -57,5 +57,25 @@ export const useVoiceChatErrorNotifier = ({ callState, peers, appConnecting, voi
             });
         }
     }, [voiceChat.speakers, voiceChat.listeners, voiceChat.speakersCount, voiceChat.listenersCount]);
+
+    const voiceChatRef = React.useRef<VoiceChatT>(voiceChat);
+    voiceChatRef.current = voiceChat;
+    React.useEffect(() => {
+        let timerId: any;
+        if (!voiceChat.me) {
+            timerId = setTimeout(() => {
+                if (!voiceChatRef.current.me) {
+                    notifyError({
+                        type: 'system-user-out-of-call',
+                        info: { senderId: callState?.sender.id, ...analyticsRef.current }
+                    });
+                }
+            }, 2000);
+        }
+        return () => {
+            clearTimeout(timerId);
+        };
+    }, [voiceChat.me]);
+
     return { reportUserError, reportUserLoading };
 };
