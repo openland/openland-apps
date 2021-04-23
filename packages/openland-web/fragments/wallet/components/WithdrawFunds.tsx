@@ -26,7 +26,7 @@ export const showWithdrawFunds = async (router: XViewRouter) => {
         builder
             .title('Withdraw funds')
             .message('To request funds withdrawal ($50 minimum) message\u00A0Openland support for instructions')
-            .body(ctx => <div className={useTheme().theme === 'dark' ? container : containerDark} />)
+            .body(ctx => <div className={useTheme().theme === 'dark' ? containerDark : container} />)
             .action('Continue', async() => { router.navigate('/mail/LOaDEWDj9zsVv999DDpJiEj05K'); }, 'primary')
             .width(400);
         builder.show();
