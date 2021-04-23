@@ -34,10 +34,10 @@ export const useVoiceChatErrorNotifier = ({ callState, peers, appConnecting, voi
         appConnecting: appConnecting,
         voiceChat
     };
-    const reportUserLoading = React.useCallback(() => {
+    const reportUserLoading = React.useCallback((moreData: { userId: string, peersIds: string[] }) => {
         notifyError({
             type: 'system-user-loading',
-            info: analyticsRef.current
+            info: { ...moreData, ...analyticsRef.current },
         });
     }, []);
     const reportUserError = React.useCallback((type: ReportCallErrorType) => {
