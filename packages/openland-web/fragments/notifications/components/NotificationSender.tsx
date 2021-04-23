@@ -61,7 +61,7 @@ export const NotificationSender = React.memo((props: NotificationSenderProps) =>
             {group && (
                 <>
                     <div className={iconWrapper}>
-                        <UIcon icon={<GroupReplyIcon />} color="var(--foregroundTertiary)" />
+                        <UIcon icon={<GroupReplyIcon />} color="var(--foregroundTertiary)" size={14}/>
                     </div>
 
                     <ULink path={`/mail/${group.id}`} className={cx(TextLabel1, linkClass)}>
