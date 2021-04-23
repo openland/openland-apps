@@ -12,6 +12,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import Warning from 'openland-icons/ic-warning-24.svg';
 import { SubscriptionView } from './components/SubscriptionView';
 import { convertSubscription } from 'openland-y-utils/wallet/subscription';
+import { useThemeSuffix } from 'openland-x-utils/useTheme';
 
 const billingProblems = css`
     display: flex;
@@ -47,6 +48,7 @@ export const SubscriptionsFragment = React.memo(() => {
     const client = useClient();
     const subscriptions = client.useSubscriptions();
     const router = React.useContext(XViewRouterContext)!;
+    const themeSuffix = useThemeSuffix();
     const normalizedSubscriptions = subscriptions.subscriptions.map(convertSubscription);
 
     const activeSubscriptions = normalizedSubscriptions.filter(subscription =>
@@ -116,12 +118,12 @@ export const SubscriptionsFragment = React.memo(() => {
                 {activeSubscriptions.length === 0 && expiredSubscriptions.length === 0 && (
                     <div className={empty}>
                         <XView justifyContent="center" alignItems="center">
-                            <XImage
-                                marginBottom={16}
-                                width={320}
-                                height={200}
-                                src="/static/X/art-empty.png"
-                                srcSet="/static/X/art-empty@2x.png 2x"
+                            <img
+                                width="320"
+                                height="200"
+                                src={`//cdn.openland.com/shared/art/art-shared${themeSuffix}.png`}
+                                srcSet={`//cdn.openland.com/shared/art/art-shared${themeSuffix}@2x.png 2x, //cdn.openland.com/shared/art/art-shared${themeSuffix}@3x.png 3x`}
+                                alt=""
                             />
                             <XView marginBottom={8}>
                                 <span className={TextTitle1}>
