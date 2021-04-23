@@ -5,7 +5,7 @@ import { useClient } from 'openland-api/useClient';
 import { View, Text, Image } from 'react-native';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import AlertBlanket, { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
-import { useTheme } from 'openland-mobile/themes/ThemeContext';
+import { ThemeContext, useTheme } from 'openland-mobile/themes/ThemeContext';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { SRouter } from 'react-native-s/SRouter';
@@ -70,17 +70,25 @@ export const showCheckLock = (props: { onSuccess: () => void }) => {
     builder.message('Update payment method to complete previously failed transactions and enable new purchases');
 
     builder.view(
-        <View style={{ marginBottom: 16, marginHorizontal: -24, overflow: 'hidden' }}>
-            <Image
-                source={require('assets/art-transactions-failing.png')}
-                style={{
-                    width: 340,
-                    height: 200,
-                    alignSelf: 'center',
-                    resizeMode: 'contain'
-                }}
-            />
-        </View>
+        <ThemeContext.Consumer>
+            {(theme) => (
+                <View style={{ marginBottom: 16, marginHorizontal: -24, overflow: 'hidden' }}>
+                    <Image
+                        source={
+                            theme.type === 'Light'
+                                ? require('assets/art-wait.png')
+                                : require('assets/art-wait-dark.png')
+                        }
+                        style={{
+                            width: 340,
+                            height: 200,
+                            alignSelf: 'center',
+                            resizeMode: 'contain',
+                        }}
+                    />
+                </View>
+            )}
+        </ThemeContext.Consumer>,
     );
 
     builder.button('Cancel', 'cancel');

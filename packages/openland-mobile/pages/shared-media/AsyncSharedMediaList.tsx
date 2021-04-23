@@ -38,11 +38,12 @@ const EmptyTab = React.memo(({ type }: { type: SharedMediaItemType }) => {
         [SharedMediaItemType.LINK]: 'links',
     };
     const theme = useThemeGlobal();
+    const imgSrc = theme.type === 'Light' ? require('assets/art-empty.png') : require('assets/art-empty-dark.png');
 
     return (
         <View style={emptyTab.wrapper}>
             <Image
-                source={require('assets/art-empty.png')}
+                source={imgSrc}
                 style={emptyTab.image}
             />
             <View style={emptyTab.textWrapper}>

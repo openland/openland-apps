@@ -140,6 +140,7 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
     const subscriptions = client.useSubscriptions({ fetchPolicy: 'cache-and-network' }).subscriptions;
     const groupSubscriptions = subscriptions.filter(subscription => subscription.product.__typename === 'WalletProductGroup');
     const normalizedSubscriptions = groupSubscriptions.map(convertSubscription);
+    const imgSrc = theme.type === 'Light' ? require('assets/art-empty.png') : require('assets/art-empty-dark.png');
 
     const activeSubscriptions = normalizedSubscriptions.filter(subscription =>
         subscription.state === WalletSubscriptionState.STARTED ||
@@ -175,7 +176,7 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
                         }}
                     >
                         <Image
-                            source={require('assets/art-empty.png')}
+                            source={imgSrc}
                             style={{
                                 width: 240,
                                 height: 150,

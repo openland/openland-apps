@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, Image } from 'react-native';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export const showNoiseWarning = async (title: string, message: string) => {
     return new Promise((resolve, reject) => {
@@ -10,17 +11,25 @@ export const showNoiseWarning = async (title: string, message: string) => {
         builder.message(message);
 
         builder.view(
-            <View style={{ marginBottom: 16, marginHorizontal: -24, overflow: 'hidden' }}>
-                <Image
-                    source={require('assets/art-noise.png')}
-                    style={{
-                        width: 340,
-                        height: 200,
-                        alignSelf: 'center',
-                        resizeMode: 'contain'
-                    }}
-                />
-            </View>
+            <ThemeContext.Consumer>
+                {(theme) => (
+                    <View style={{ marginBottom: 16, marginHorizontal: -24, overflow: 'hidden' }}>
+                        <Image
+                            source={
+                                theme.type === 'Light'
+                                    ? require('assets/art-noise.png')
+                                    : require('assets/art-noise-dark.png')
+                            }
+                            style={{
+                                width: 340,
+                                height: 200,
+                                alignSelf: 'center',
+                                resizeMode: 'contain',
+                            }}
+                        />
+                    </View>
+                )}
+            </ThemeContext.Consumer>,
         );
 
         builder.button('Cancel', 'cancel', reject);

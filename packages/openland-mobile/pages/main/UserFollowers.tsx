@@ -32,6 +32,7 @@ const UserFollowersComponent = React.memo<PageProps>((props) => {
     const [followersCursor, setFollowersCursor] = React.useState<string | null>(null);
     const [followers, setFollowers] = React.useState<SocialUserFollowers_socialUserFollowers_items[] | null>(null);
     const { followersCount, followingCount, name } = client.useUserFollowers({ id: uid }, { fetchPolicy: 'network-only' }).user;
+    const imgSrc = theme.type === 'Light' ? require('assets/art-empty.png') : require('assets/art-empty-dark.png');
 
     React.useEffect(() => {
         (async () => {
@@ -88,13 +89,13 @@ const UserFollowersComponent = React.memo<PageProps>((props) => {
                 </View>
                 {selectedTab === Tabs.FOLLOWING && following && following.length === 0 && (
                     <View style={{ justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                        <Image source={require('assets/art-empty.png')} />
+                        <Image source={imgSrc} />
                         <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, textAlign: 'center' }}>No following yet</Text>
                     </View>
                 )}
                 {selectedTab === Tabs.FOLLOWERS && followers && followers.length === 0 && (
                     <View style={{ justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                        <Image source={require('assets/art-empty.png')} />
+                        <Image source={imgSrc} />
                         <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, textAlign: 'center' }}>No followers yet</Text>
                     </View>
                 )}

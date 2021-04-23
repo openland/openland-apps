@@ -110,6 +110,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
         const userName = this.props.engine.user ? this.props.engine.user.firstName : '';
         const canSendMessage = this.props.engine.canSendMessage;
         const isSavedMessages = this.props.engine.user && getMessenger().engine.user.id === this.props.engine.user.id;
+        const imgSrc = this.props.theme.type === 'Light' ? require('assets/art-no-messages.png') : require('assets/art-no-messages-dark.png');
 
         return (
             <View style={{ flexBasis: 0, flexGrow: 1, marginBottom: Platform.select({ default: 0, android: -androidMessageInputListOverlap }) }}>
@@ -127,7 +128,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                         <ASSafeAreaView style={{ position: 'absolute', top: 0, right: 32, left: 32, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
                             {canSendMessage && (
                                 <>
-                                    <Image source={require('assets/art-no-messages.png')} style={styles.image} />
+                                    <Image source={imgSrc} style={styles.image} />
 
                                     <Text style={[styles.title, { color: this.props.theme.foregroundPrimary }]} allowFontScaling={false}>
                                         No messages yet

@@ -104,6 +104,7 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
     const scrollRef = React.useContext(ComponentRefContext);
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
     const joinRoom = useJoinRoom();
+    const imgSrc = theme.type === 'Light' ? require('assets/art-crowd.png') : require('assets/art-crowd-dark.png');
 
     const pushRoom = React.useCallback(() => {
         router.push('CreateRoom');
@@ -162,7 +163,7 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
                                     </>
                                 ) : null}
                                 <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginVertical: 16, alignItems: 'center' }}>
-                                    <Image source={require('assets/art-crowd.png')} style={{ width: 240, height: 150 }} />
+                                    <Image source={imgSrc} style={{ width: 240, height: 150 }} />
                                     <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 16, marginBottom: 6 }}>Talk about anything!</Text>
                                     <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 24 }}>Create a new room and invite friends!</Text>
                                     <ZButton title="Start room" path="CreateRoom" />

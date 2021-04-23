@@ -28,6 +28,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ContactsWasImportStub = React.memo(() => {
     const theme = React.useContext(ThemeContext);
+    const imgSrc = theme.type === 'Light' ? require('assets/art-empty.png') : require('assets/art-empty-dark.png');
     return (
         <ASSafeAreaView
             style={{
@@ -38,7 +39,7 @@ const ContactsWasImportStub = React.memo(() => {
             }}
         >
             <Image
-                source={require('assets/art-empty.png')}
+                source={imgSrc}
                 style={{ width: 240, height: 140, marginBottom: 12 }}
             />
             <Text
@@ -101,6 +102,8 @@ const handleImportPress = (cb: () => void, theme: ThemeGlobal) => {
 
 const ContactsNoImportStub = React.memo((props: { cb: () => void }) => {
     const theme = React.useContext(ThemeContext);
+    const imgSrc = theme.type === 'Light' ? require('assets/art-crowd.png') : require('assets/art-crowd-dark.png');
+
     return (
         <ASSafeAreaView
             style={{
@@ -111,7 +114,7 @@ const ContactsNoImportStub = React.memo((props: { cb: () => void }) => {
             }}
         >
             <Image
-                source={require('assets/art-crowd.png')}
+                source={imgSrc}
                 style={{ width: 240, height: 140, marginBottom: 12 }}
             />
             <Text

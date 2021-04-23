@@ -418,6 +418,14 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                         )}
                     </>
                 )}
+                {isSelf && props.userStatus === VoiceChatParticipantStatus.SPEAKER && (
+                    <ZListItem
+                        leftIcon={require('assets/ic-listener-24.png')}
+                        small={true}
+                        text="Become listener"
+                        onPress={demoteUser}
+                    />
+                )}
                 <View style={{ marginTop: 16, paddingHorizontal: 16, flexDirection: 'row' }}>
                     {isSelf ? (
                         <View style={{ flex: 1 }}>

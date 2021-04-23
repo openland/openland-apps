@@ -17,6 +17,7 @@ interface RaisedHandsProps {
 
 const EmptyView = React.memo((props: { theme: ThemeGlobal }) => {
     const { theme } = props;
+    const imgSrc = theme.type === 'Light' ? require('assets/art-empty.png') : require('assets/art-empty-dark.png');
     return (
         <View
             style={{
@@ -27,7 +28,7 @@ const EmptyView = React.memo((props: { theme: ThemeGlobal }) => {
             }}
         >
             <Image
-                source={require('assets/art-empty.png')}
+                source={imgSrc}
                 style={{ width: 240, height: 150, marginBottom: 4 }}
             />
             <Text
