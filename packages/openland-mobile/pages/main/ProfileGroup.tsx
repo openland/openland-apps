@@ -414,7 +414,6 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 />
             </View>
 
-
             <ZListHeader text="Members" counter={group.membersCount} useSpacer={true} />
             {canAddDirectly && (
                 <ZListItem

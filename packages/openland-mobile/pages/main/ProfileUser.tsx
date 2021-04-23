@@ -462,12 +462,14 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                 {profileType === 'user' && !isBanned && (
                     <>
                         <View style={{ backgroundColor: theme.backgroundTertiary, height: 16 }} />
-                        <ZListItem
-                            leftIcon={require('assets/ic-attach-glyph-24.png')}
-                            text="Media, files, links"
-                            path="SharedMedia"
-                            pathParams={{ chatId: conversation.id }}
-                        />
+                        <View style={{ paddingVertical: 4 }}>
+                            <ZListItem
+                                leftIcon={require('assets/ic-attach-glyph-24.png')}
+                                text="Media, files, links"
+                                path="SharedMedia"
+                                pathParams={{ chatId: conversation.id }}
+                            />
+                        </View>
                     </>
                 )}
             </SScrollView>
