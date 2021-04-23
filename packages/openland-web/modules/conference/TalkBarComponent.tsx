@@ -61,7 +61,7 @@ export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
         } else {
             joinCall();
         }
-    }, [chat]);
+    }, [chat, isVoiceChat]);
 
     useTalkWatch(data && data.conference.id);
     if (!data) {

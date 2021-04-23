@@ -405,6 +405,20 @@ const UserMenu = React.memo((props: {
             },
         });
 
+        if (props.status === VoiceChatParticipantStatus.SPEAKER) {
+            popper.item({
+                title: 'Become listener',
+                icon: <IcListener />,
+                action: async () => {
+                    try {
+                        await client.mutateVoiceChatDemote({ id: props.roomId, uid: props.userId });
+                    } catch (e) {
+                        console.error(e);
+                    }
+                },
+            });
+        }
+
         return popper.build(props.ctx, width);
     }
 
