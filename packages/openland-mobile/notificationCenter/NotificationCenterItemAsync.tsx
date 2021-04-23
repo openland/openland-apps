@@ -137,17 +137,17 @@ const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterI
             {item.notificationType === 'new_comment' && (
                 <ASFlex marginTop={2}>
                     <ZRelativeDateAsync
-                        fontSize={13}
+                        fontSize={15}
                         lineHeight={20}
-                        color={theme.foregroundSecondary}
+                        color={theme.foregroundTertiary}
                         date={item.date}
                     />
 
                     <ASFlex onPress={handleReplyPress} marginLeft={12} alignItems="center">
                         <ASText
                             fontWeight={FontStyles.Weight.Medium}
-                            color={theme.foregroundSecondary}
-                            fontSize={13}
+                            color={theme.foregroundTertiary}
+                            fontSize={15}
                             lineHeight={20}
                             marginLeft={6}
                         >

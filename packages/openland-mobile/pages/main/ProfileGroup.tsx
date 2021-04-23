@@ -406,11 +406,14 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             )}
 
             <View style={{ backgroundColor: theme.backgroundTertiary, height: 16 }} />
-            <ZListItem
-                leftIcon={require('assets/ic-attach-glyph-24.png')}
-                text="Media, files, links"
-                onPress={onSharedPress}
-            />
+            <View style={{ paddingVertical: 4 }}>
+                <ZListItem
+                    leftIcon={require('assets/ic-attach-glyph-24.png')}
+                    text="Media, files, links"
+                    onPress={onSharedPress}
+                />
+            </View>
+
 
             <ZListHeader text="Members" counter={group.membersCount} useSpacer={true} />
             {canAddDirectly && (
