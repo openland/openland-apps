@@ -52,7 +52,7 @@ import Toast from 'openland-mobile/components/Toast';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
 import { debounce } from 'openland-y-utils/timer';
 import { showSheetModal } from 'openland-mobile/components/showSheetModal';
-import { useVoiceChatErrorNotifier } from 'openland-y-utils/voiceChat/voiceChatErrorNotifier';
+import { useVoiceChatErrorNotifier } from 'openland-mobile/utils/voiceChatErrorNotifier';
 
 interface PinnedMessageViewProps {
     theme: ThemeGlobal;
@@ -865,7 +865,7 @@ interface RoomSpeakingUserViewProps extends RoomUserViewProps {
     analyzer: MediaSessionTrackAnalyzerManager;
     isLoading: boolean;
     isMuted: boolean;
-    reportUserLoading: () => any;
+    reportUserLoading: (moreData: { userId: string, peersIds: string[] }) => any;
 }
 
 const RoomSpeakingUserView = React.memo((props: RoomSpeakingUserViewProps) => {
@@ -883,7 +883,7 @@ const RoomSpeakingUserView = React.memo((props: RoomSpeakingUserViewProps) => {
     React.useEffect(() => {
         let timerId = setTimeout(() => {
             if (loadingRef.current === true) {
-                reportUserLoading();
+                reportUserLoading({ userId: other.user.id, peersIds });
             }
         }, 5000);
         return () => {
@@ -901,7 +901,7 @@ interface RoomUsersListProps extends RoomViewProps {
     router: SRouter;
     modalCtx: { hide: () => void };
     analyzer: MediaSessionTrackAnalyzerManager;
-    reportUserLoading: () => any;
+    reportUserLoading: (moreData: { userId: string, peersIds: string[] }) => any;
     speakers: {
         isMuted: boolean,
         isLoading: boolean,
