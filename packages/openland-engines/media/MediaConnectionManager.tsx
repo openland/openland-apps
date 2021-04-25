@@ -87,8 +87,8 @@ export class MediaConnectionManager {
             username: v.username ? v.username : undefined,
         })) : [];
 
-        console.log('[WEBRTC]: Using ICE: ', iceServers);
-        console.log('[WEBRTC]: Using ICE Policy: ', iceTransportPolicy);
+        console.log('[WEBRTC]: ' + this.id + ': Using ICE: ', iceServers);
+        console.log('[WEBRTC]: ' + this.id + ': Using ICE Policy: ', iceTransportPolicy);
 
         this.peerConnection = AppPeerConnectionFactory.createConnection({
             iceServers: iceServers,
@@ -227,19 +227,19 @@ export class MediaConnectionManager {
 
                 // Log mids
                 if (this.audioTransceiver) {
-                    console.log('[WEBRTC]: Send Audio MID: ' + this.audioTransceiver.mid);
+                    console.log('[WEBRTC]: ' + this.id + ': Send Audio MID: ' + this.audioTransceiver.mid);
                 }
                 if (this.videoTransceiver) {
-                    console.log('[WEBRTC]: Send Video MID: ' + this.videoTransceiver.mid);
+                    console.log('[WEBRTC]: ' + this.id + ': Send Video MID: ' + this.videoTransceiver.mid);
                 }
                 if (this.screencastTransceiver) {
-                    console.log('[WEBRTC]: Send Screencast MID: ' + this.screencastTransceiver.mid);
+                    console.log('[WEBRTC]: ' + this.id + ': Send Screencast MID: ' + this.screencastTransceiver.mid);
                 }
 
                 for (let peerId of this.receivers.keys()) {
                     let refs = this.receivers.get(peerId)!;
                     for (let kind of refs.keys()) {
-                        console.log('[WEBRTC]: Receive ' + peerId + ':' + kind + ':' + refs.get(kind)!.mid);
+                        console.log('[WEBRTC]: ' + this.id + ': Receive ' + peerId + ':' + kind + ':' + refs.get(kind)!.mid);
                     }
                 }
             }
@@ -326,7 +326,7 @@ export class MediaConnectionManager {
 
             // Apply remote description
             if (!this.remoteOffer) {
-                console.log('[WEBRTC]: Got offer');
+                console.log('[WEBRTC]: ' + this.id + ': Got offer');
                 let offer = JSON.parse(config.sdp!);
                 await this.peerConnection.setRemoteDescription(offer);
                 this.remoteDescriptionSet = true;
@@ -334,7 +334,7 @@ export class MediaConnectionManager {
             }
 
             // Handle senders
-            console.log('[WEBRTC]: transceivers');
+            console.log('[WEBRTC]: ' + this.id + ': transceivers');
             await this.extractTransceivers(config);
             // Dynamically created senders have invalid state. We have to reconfigure them.
             await this.configureSenders(config);
@@ -344,7 +344,7 @@ export class MediaConnectionManager {
 
             // Generate answer
             if (!this.localAnswer) {
-                console.log('[WEBRTC]: Creating answer');
+                console.log('[WEBRTC]: ' + this.id + ': Creating answer');
                 let answer = await this.peerConnection.createAnswer();
                 console.log(answer.sdp);
                 await this.peerConnection.setLocalDescription(answer);
@@ -366,7 +366,7 @@ export class MediaConnectionManager {
 
             if (!this.remoteAnwer && !this.remoteOffer) {
                 let answer = JSON.parse(config.sdp!);
-                console.log('[WEBRTC]: Received answer');
+                console.log('[WEBRTC]: ' + this.id + ': Received answer');
                 console.log(answer.sdp);
                 await this.peerConnection.setRemoteDescription(answer);
 
@@ -487,10 +487,10 @@ export class MediaConnectionManager {
     private configureSenders = async (config: ConferenceMedia_conferenceMedia_streams) => {
         if (this.audioTransceiver) {
             if (config.senders.find((s) => s.kind === MediaKind.AUDIO)) {
-                console.log('[WEBRTC]: set direction: sendonly');
+                console.log('[WEBRTC]: ' + this.id + ': set direction: sendonly');
                 this.audioTransceiver.direction = 'sendonly';
             } else {
-                console.log('[WEBRTC]: set direction: inactive');
+                console.log('[WEBRTC]: ' + this.id + ': set direction: inactive');
                 this.audioTransceiver.direction = 'inactive';
             }
         }
@@ -512,11 +512,11 @@ export class MediaConnectionManager {
 
     private extractTransceivers = async (config: ConferenceMedia_conferenceMedia_streams) => {
         let transceivers = this.peerConnection.getTransceivers();
-        console.log('[WEBRTC]: Transceivers');
+        console.log('[WEBRTC]: ' + this.id + ': Transceivers');
         for (let t of transceivers) {
             console.log(t.id + ': ' + t.direction + ', ' + t.mid);
         }
-        console.log('[WEBRTC]: Config');
+        console.log('[WEBRTC]: ' + this.id + ': Config');
         console.log(JSON.stringify(config));
 
         // Check audio sender
@@ -526,7 +526,7 @@ export class MediaConnectionManager {
                 let at = transceivers.find((tr) => tr.mid === audioSender.mid);
                 if (at) {
                     this.audioTransceiver = at;
-                    console.log('[WEBRTC]: Found audio track: ' + audioSender.mid);
+                    console.log('[WEBRTC]: ' + this.id + ': Found audio track: ' + audioSender.mid);
                     at.sender.replaceTrack(this.audioTrack || AppUserMedia.getSilence());
                 }
             }
@@ -539,7 +539,7 @@ export class MediaConnectionManager {
                 let at = transceivers.find((tr) => tr.mid === videoSender.mid);
                 if (at) {
                     this.videoTransceiver = at;
-                    console.log('[WEBRTC]: Found video track: ' + videoSender.mid);
+                    console.log('[WEBRTC]: ' + this.id + ': Found video track: ' + videoSender.mid);
                     at.sender.replaceTrack(this.videoTrack || AppUserMedia.getBlack());
                 }
             }
@@ -552,7 +552,7 @@ export class MediaConnectionManager {
                 let at = transceivers.find((tr) => tr.mid === screencastSender.mid);
                 if (at) {
                     this.screencastTransceiver = at;
-                    console.log('[WEBRTC]: Found screencast track: ' + screencastSender.mid);
+                    console.log('[WEBRTC]: ' + this.id + ': Found screencast track: ' + screencastSender.mid);
                     at.sender.replaceTrack(this.screencastTrack || AppUserMedia.getBlack());
                 }
             }

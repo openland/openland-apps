@@ -229,7 +229,7 @@ export class MediaSessionManager {
 
         // Subscribe for media streams
         this.connectionsSubscription = reliableWatcher<ConferenceMediaWatch>((handler) => this.client.subscribeConferenceMediaWatch({ peerId: this.peerId, id: this.conferenceId }, handler), (src) => {
-            console.log('[WEBRTC] Update');
+            console.log('[WEBRTC]: Update');
             let streams = src.media.streams;
             this.connectionConfigs = streams;
             this.localMediaConfig = src.media.localMedia;
@@ -244,12 +244,12 @@ export class MediaSessionManager {
         if (this.destroyed) {
             return;
         }
-        console.log('[WEBRTC] Apply');
+        console.log('[WEBRTC]: Apply');
 
         // Detect deletions
         for (let s of this.connections.keys()) {
             if (!this.connectionConfigs.find((v) => v.id === s)) {
-                console.log('[WEBRTC] Destroy stream ' + s);
+                console.log('[WEBRTC]: ' + s + ': Destroy stream');
                 let stream = this.connections.get(s);
                 this.connections.delete(s);
                 if (stream) {
@@ -262,10 +262,10 @@ export class MediaSessionManager {
         for (let s of this.connectionConfigs) {
             let ms = this.connections.get(s.id);
             if (ms) {
-                console.log('[WEBRTC] Update stream ' + s.id);
+                console.log('[WEBRTC]: ' + s.id + ': Update stream');
                 ms.dispatch(s);
             } else {
-                console.log('[WEBRTC] Add stream ' + s.id);
+                console.log('[WEBRTC]: ' + s.id + ': Add Stream');
                 ms = new MediaConnectionManager(s.id, this.peerId, s, this);
                 ms.setAudioTrack(this.audioTrack);
                 ms.setVideoTrack(this.videoTrack);
@@ -375,7 +375,7 @@ export class MediaSessionManager {
     }
 
     private doInit = () => {
-        console.log('[WEBRTC] Starting conference');
+        console.log('[WEBRTC]: Starting conference');
         (async () => {
 
             // Start resolve capabilities
@@ -392,11 +392,11 @@ export class MediaSessionManager {
                 return;
             }
 
-            console.log('[WEBRTC] Resolved conference');
+            console.log('[WEBRTC]: Resolved conference');
 
             // Joining
             let capabilities = await rtpCapabilities;
-            console.log('[WEBRTC] Resolved Capabilities');
+            console.log('[WEBRTC]: Resolved Capabilities');
             console.log(capabilities);
             let joinConference = (await backoff(async () => {
                 if (this.destroyed) {
@@ -424,7 +424,7 @@ export class MediaSessionManager {
                 });
                 return null;
             }
-            console.log('[WEBRTC] Joined conference');
+            console.log('[WEBRTC]: Joined conference');
             this.iceServers = joinConference.conference.iceServers;
             this.conferenceId = conferenceId;
             this.peerId = joinConference.peerId;
@@ -464,7 +464,7 @@ export class MediaSessionManager {
             // this will be executed once after 10 seconds
             // even when app is the the background
             if (!this.destroyed) {
-                console.log('[WEBRTC] Keep Alive sent');
+                console.log('[WEBRTC]: Keep Alive sent');
                 this.client.mutateConferenceKeepAlive({
                     id: confId,
                     peerId,
