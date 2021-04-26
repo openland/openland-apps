@@ -20,7 +20,6 @@ import IcMessage from 'openland-icons/s/ic-message-24.svg';
 import IcLeave from 'openland-icons/s/ic-leave-24.svg';
 import IcEdit from 'openland-icons/s/ic-edit-24.svg';
 import IcMuted from 'openland-icons/s/ic-speaker-off-16.svg';
-import IcCurrentSpeaker from 'openland-icons/s/ic-current-speaker-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { SvgLoader, XLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
@@ -181,11 +180,6 @@ const speakerName = css`
     margin-right: 8px;
 `;
 
-const speakerIcon = css`
-    flex-grow: 0;
-    flex-shrink: 0;
-`;
-
 const pinnedMessageContainerStyle = css`
   cursor: pointer;
   margin: 0 -1200px;
@@ -204,6 +198,97 @@ const pinnedMessageTextStyle = css`
   -webkit-box-orient: vertical;
   word-break: break-word;
 `;
+
+const equalizer = css`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+
+    & .speaker-bar {
+        display: flex;
+        flex-shrink: 0;
+        width: 1px;
+        background-color: var(--tintBlue);
+        margin: 0 1px;
+
+        &.out {
+            height: 4px;
+            animation: equalizeOut linear 0.8s infinite;
+        }
+        &.middle {
+            height: 8px;
+            animation: equalizeMiddle linear 0.8s infinite;
+        }
+        &.center {
+            height: 12px;
+            animation: equalizeCenter linear 0.8s infinite;
+        }
+    }
+    @keyframes equalizeCenter {
+        0% {
+            height: 12px;
+        }
+        20% {
+            height: 8px;
+        }
+        40% {
+            height: 6px;
+        }
+        60% {
+            height: 2px;
+        }
+        80% {
+            height: 6px;
+        }
+        100% {
+            height: 12px;
+        }
+    }
+    @keyframes equalizeMiddle {
+        0% {
+            height: 8px;
+        }
+        30% {
+            height: 4px;
+        }
+        50% {
+            height: 2px;
+        }
+        70% {
+            height: 4px;
+        }
+        100% {
+            height: 8px;
+        }
+    }
+    @keyframes equalizeOut {
+        0% {
+            height: 4px;
+        }
+        50% {
+            height: 1px;
+        }
+        100% {
+            height: 4px;
+        }
+    }
+`;
+
+const Equalizer = React.memo(() => {
+    return (
+        <div className={equalizer}>
+            <div className="speaker-bar out" />
+            <div className="speaker-bar middle" />
+            <div className="speaker-bar center" />
+            <div className="speaker-bar middle" />
+            <div className="speaker-bar out" />
+        </div>
+    );
+});
 
 const RoomHeader = ({
     speakersCount,
@@ -264,7 +349,7 @@ const RoomHeader = ({
                         <div className={cx(speakerName, TextBody)}>
                             {currentSpeaker.user.name}
                         </div>
-                        <UIcon icon={<IcCurrentSpeaker/>} color="var(--tintBlue)" className={speakerIcon}/>
+                        <Equalizer/>
                     </XView>
                 )}
             </XView>

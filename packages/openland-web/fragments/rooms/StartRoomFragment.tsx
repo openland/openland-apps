@@ -1,6 +1,6 @@
+import * as React from 'react';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextBody, TextTitle1 } from 'openland-web/utils/TextStyles';
-import * as React from 'react';
 import { XView } from 'react-mental';
 import { showModalBox } from 'openland-x/showModalBox';
 import { NewRoomForm } from './NewRoom';
@@ -9,7 +9,7 @@ import { useThemeSuffix } from 'openland-x-utils/useTheme';
 export const StartRoomFragment = React.memo(() => {
     const startRoom = React.useCallback(async () => {
         showModalBox({ fullScreen: true, useTopCloser: false, hideOnEsc: false }, (ctx) => (
-            <NewRoomForm ctx={ctx}/>
+            <NewRoomForm ctx={ctx} />
         ));
     }, []);
     const themeSuffix = useThemeSuffix();
