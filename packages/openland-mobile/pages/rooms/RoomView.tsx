@@ -53,6 +53,7 @@ import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSe
 import { debounce } from 'openland-y-utils/timer';
 import { showSheetModal } from 'openland-mobile/components/showSheetModal';
 import { useVoiceChatErrorNotifier } from 'openland-mobile/utils/voiceChatErrorNotifier';
+import { Equalizer } from './Equalizer';
 
 interface PinnedMessageViewProps {
     theme: ThemeGlobal;
@@ -730,14 +731,7 @@ const RoomHeader = React.memo(
                             >
                                 {currentSpeaker.user.name}
                             </Text>
-                            <Image
-                                source={require('assets/ic-current-speaker-16.png')}
-                                style={{
-                                    width: 16,
-                                    height: 16,
-                                    flexShrink: 0,
-                                }}
-                            />
+                            <Equalizer theme={theme} />
                         </View>
                     )}
                 </View>
