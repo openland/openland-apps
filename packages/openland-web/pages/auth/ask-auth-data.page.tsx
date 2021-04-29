@@ -364,6 +364,7 @@ const WebSignUpCreateWithEmail = (
                         ref={inputRef}
                         value={dataField.input.value}
                         onChange={dataField.input.onChange}
+                        id="authEmailInput"
                     />
                 </AuthInputWrapper>
                 <AuthActionButton
@@ -371,7 +372,7 @@ const WebSignUpCreateWithEmail = (
                     loading={authSending}
                     onClick={handleNext}
                     tabIndex={0}
-                    id="next"
+                    id="authEmailNext"
                 />
             </FormLayout>
         </>

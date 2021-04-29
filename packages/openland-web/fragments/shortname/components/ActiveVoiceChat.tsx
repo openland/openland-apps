@@ -86,6 +86,7 @@ export const ActiveVoiceChat = React.memo<CurrentVoiceChatProps>(props => {
                     shape="round"
                     paddingVertical={6}
                     paddingHorizontal={16}
+                    id="joinRoom"
                     onClick={() => {
                         joinRoom(id);
                     }}

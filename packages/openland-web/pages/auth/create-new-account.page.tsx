@@ -40,6 +40,7 @@ const SignUpAuthMechanism = (props: AuthMechanism) => {
                     shape="square"
                     text="Continue with email"
                     style="secondary"
+                    id="authEmail"
                 />
             </XView>
         </FormLayout>

@@ -259,6 +259,7 @@ const WebSignUpActivationCode = (
                 <AuthInputWrapper className={cx(codeWrapperStyle, shakeClassName)}>
                     {codeField.input.value.map((value, i) => (
                         <input
+                            id={`authCodeInput-${i}`}
                             name={`code-${i}`}
                             ref={codeRefs.current[i]}
                             key={i}
@@ -278,7 +279,7 @@ const WebSignUpActivationCode = (
                     loading={codeSending}
                     onClick={handleNext}
                     marginTop={32}
-                    id="next"
+                    id="authCodeNext"
                 />
                 {!isExistingUser && (
                     <p className={cx(TextCaption, captionText, textClassName)}>
