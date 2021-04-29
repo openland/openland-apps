@@ -942,7 +942,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
                 let isMuted = !!peer?.mediaState.audioPaused;
                 if (!isLocal) {
                     let hasAudioTrack = !!state?.receivers[peer.id]?.audioTrack;
-                    isLoading = !connecting && !hasAudioTrack;
+                    isLoading = connecting || !hasAudioTrack;
                 }
                 return { isMuted, isLoading };
             }).reduce((acc, peerState) => {
