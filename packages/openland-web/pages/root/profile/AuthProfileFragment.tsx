@@ -126,6 +126,7 @@ export const AuthProfileFragment = React.memo((props: { user: AuthResolveShortNa
                         Cookie.set('x-signin-redirect', props.user.id, { path: '/' });
                         window.location.href = '/signin';
                     }}
+                    id="joinRoomAuth"
                 />
             ) : (
                 <UButton

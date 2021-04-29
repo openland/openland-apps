@@ -288,6 +288,7 @@
         "linaria-jest": "^0.0.4",
         "postinstall-postinstall": "^1.0.0",
         "prettier": "^2.0.2",
+        "puppeteer": "^9.0.0",
         "react-native": "0.63.4",
         "rimraf": "^2.6.2",
         "rsync": "^0.6.1",
@@ -306,6 +307,8 @@
         "**/@babel/core": "^7.8.4"
     },
     "scripts": {
+        "pptr": "node ppttr/calls.js",
+        "pptr:local": "NODE_ENV=dev node ppttr/calls.js",
         "format-web": "prettier --write \"./packages/openland-web/**/*.tsx\" \"./packages/openland-web/**/*.ts\" \"./packages/openland-web/**/*.js\"",
         "dev": "BABEL_ENV=default API_WS_ENDPOINT=\"wss://api.openland.com/api\" API_ENDPOINT=\"https://api.openland.com\" nodemon ./packages/openland-web/server.ts",
         "prod-local:start": "BABEL_ENV=default NODE_ENV=production API_WS_ENDPOINT=\"wss://api.openland.com/api\" API_ENDPOINT=\"https://api.openland.com\" nodemon ./dist/server.js",

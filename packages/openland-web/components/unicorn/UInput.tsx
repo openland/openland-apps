@@ -124,6 +124,7 @@ export interface UInputProps extends XViewProps {
     onChange?: (v: string) => void | boolean;
     maxLength?: number;
     onKeyDown?: React.KeyboardEventHandler;
+    id?: string;
 }
 
 export const UInput = React.forwardRef(
@@ -193,6 +194,7 @@ export const UInput = React.forwardRef(
                         {pref}
                     </div>
                     <input
+                        id={props.id}
                         disabled={disabled}
                         value={val}
                         className={cx(
