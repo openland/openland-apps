@@ -224,6 +224,10 @@ export const AuthRouter = React.memo((props: { children: any }) => {
         return redirectIfNeeded('/createProfile');
     }
 
+    if (userInfo.isAccountExists && router.path.startsWith('/createProfile')) {
+        return <XPageRedirect path="/mail"/>;
+    }
+
     // Everything is ok! Display content
     return <>{props.children}</>;
 });
