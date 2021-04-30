@@ -33,9 +33,9 @@ PODS:
     - libwebp/demux
   - libwebp/webp (1.1.0)
   - lottie-ios (3.1.8)
-  - lottie-react-native (3.5.0):
+  - lottie-react-native (4.0.2):
     - lottie-ios (~> 3.1.8)
-    - React
+    - React-Core
   - ObjectiveRocks (0.11.0)
   - PINCache (3.0.3):
     - PINCache/Arc-exception-safe (= 3.0.3)
@@ -625,7 +625,7 @@ SPEC CHECKSUMS:
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
-  lottie-react-native: 1fb4ce21d6ad37dab8343eaff8719df76035bd93
+  lottie-react-native: 4dff8fe8d10ddef9e7880e770080f4a56121397e
   ObjectiveRocks: 464f1d38a77847be0acc3dda268bec52486ec02d
   PINCache: 7a8fc1a691173d21dbddbf86cd515de6efa55086
   PINOperation: 00c935935f1e8cf0d1e2d6b542e75b88fc3e5e20
