@@ -246,7 +246,7 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
                     />
                 )}
                 <RoomMinimizedControlItem
-                    bgColor={!isAdminOrSpeaker ? theme.accentPrimary : "rgba(255, 255, 255, 0.16)"}
+                    bgColor={!isAdminOrSpeaker ? theme.accentPrimary : 'rgba(255, 255, 255, 0.16)'}
                     iconColor={theme.accentPrimary === theme.foregroundContrast && !isAdminOrSpeaker ? theme.foregroundInverted : theme.foregroundContrast}
                     icon={require('assets/ic-size-up-glyph-24.png')}
                     onPress={handleJoin}

@@ -49,6 +49,7 @@ import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { showPinnedMessageModal } from './showPinnedMessageModal';
 import { RoomJoinButton } from './RoomJoinButton';
+import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 
 const headerParentRoomClass = css`
   padding: 12px 0;
@@ -408,9 +409,7 @@ const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: VoiceChatPart
     );
 };
 
-const InviteButton = React.memo((props: { link: string }) => {
-    const { link } = props;
-    return (
+const InviteButton = React.memo((props: { roomId: string }) => (
         <XView
             alignItems="center"
             padding={8}
@@ -430,7 +429,7 @@ const InviteButton = React.memo((props: { link: string }) => {
                 borderRadius={100}
                 marginTop={8}
                 marginBottom={10}
-                onClick={() => showInviteToRoom({ link })}
+                onClick={() => showInviteToRoom({ roomId: props.roomId })}
             >
                 <UIcon icon={<IcAdd />} size={36} color="var(--foregroundSecondary)" />
             </XView>
@@ -438,8 +437,7 @@ const InviteButton = React.memo((props: { link: string }) => {
                 Invite
             </div>
         </XView>
-    );
-});
+));
 
 const speakerAvatarSizes = {
     size: 80,
@@ -707,12 +705,12 @@ const RoomSpeakerUser = React.memo((props: {
 const RoomSpeakers = React.memo(({
     room,
     analyzer,
-    inviteLink,
+    showInviteButton,
     speakers,
 }: {
     room: VoiceChatT,
     analyzer: MediaSessionTrackAnalyzerManager;
-    inviteLink: string | undefined;
+    showInviteButton: boolean;
     speakers: {
         isMuted: boolean,
         isLoading: boolean,
@@ -742,7 +740,7 @@ const RoomSpeakers = React.memo(({
             {speakers.length <= 8 && room.me?.status === VoiceChatParticipantStatus.ADMIN && (
                 <>
                     <RaisedHandsButton raisedHands={room.raisedHands || []} roomId={room.id} />
-                    {inviteLink && <InviteButton link={inviteLink} />}
+                    {showInviteButton && <InviteButton roomId={room.id}/>}
                 </>
             )}
         </div>
@@ -786,13 +784,10 @@ const RoomView = React.memo((props: { roomId: string }) => {
     const muted = !state?.sender.audioEnabled;
     const handRaised = !!voiceChatData.me?.handRaised;
     const pinnedMessage = voiceChatData.pinnedMessage?.message;
-    const inviteEntity = voiceChatData.parentRoom || voiceChatData.me?.user;
-    const inviteEntityLink = inviteEntity
-        ? `https://openland.com/${inviteEntity.shortname || inviteEntity.id}`
-        : 'Try again';
-    const inviteLink = voiceChatData.parentRoom && voiceChatData.parentRoom.kind !== SharedRoomKind.PUBLIC
-        ? undefined
-        : inviteEntityLink;
+    const showInviteButton =
+        !voiceChatData.parentRoom ||
+        voiceChatData.parentRoom.kind === SharedRoomKind.PUBLIC ||
+        groupInviteCapabilities(voiceChatData.parentRoom).canGetInviteLink;
 
     const handleMute = React.useCallback(() => {
         mediaSession?.setAudioEnabled(!state?.sender.audioEnabled);
@@ -1005,8 +1000,8 @@ const RoomView = React.memo((props: { roomId: string }) => {
                 <RoomSpeakers
                     speakers={speakers}
                     room={voiceChatData}
+                    showInviteButton={showInviteButton}
                     analyzer={mediaSession.analyzer}
-                    inviteLink={inviteLink}
                 />
                 {voiceChatData.listeners && voiceChatData.listeners?.length > 0 && (
                     <>
@@ -1039,7 +1034,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
                     status={voiceChatData.me?.status}
                     handRaised={handRaised}
                     raisedHands={voiceChatData.raisedHands || []}
-                    inviteLink={inviteLink}
+                    showInviteButton={showInviteButton}
                     onMute={handleMute}
                     onLeave={handleLeave}
                     onHandRaise={handleHandRaise}

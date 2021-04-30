@@ -4,16 +4,11 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    Share,
-    Platform,
-    Clipboard,
     LayoutChangeEvent,
 } from 'react-native';
 import { VoiceChatParticipantStatus, VoiceChatParticipant_user } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
-import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
-import Toast from 'openland-mobile/components/Toast';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
@@ -22,42 +17,7 @@ import { TintBlue, TintOrange } from 'openland-y-utils/themes/tints';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { showRoomSettings } from './RoomSettings';
 import { ReportCallErrorType } from 'openland-mobile/utils/voiceChatErrorNotifier';
-
-const showRoomInvite = ({ link, theme }: { link: string; theme: ThemeGlobal }) => {
-    const handleShare = () => {
-        Share.share(
-            Platform.select({
-                ios: { url: link },
-                android: { message: link },
-                default: { message: link },
-            }),
-        );
-    };
-    const handleCopy = () => {
-        Clipboard.setString(link);
-        Toast.showCopied();
-    };
-    const builder = new ActionSheetBuilder();
-    builder
-        .title('Invite friends')
-        .view(() => (
-            <View
-                style={{
-                    borderRadius: 12,
-                    backgroundColor: theme.backgroundTertiaryTrans,
-                    paddingHorizontal: 16,
-                    paddingVertical: 13,
-                    marginHorizontal: 16,
-                    marginBottom: 8,
-                }}
-            >
-                <Text style={{ ...TextStyles.Body, color: theme.foregroundPrimary }}>{link}</Text>
-            </View>
-        ))
-        .action('Copy link', handleCopy, false, require('assets/ic-copy-24.png'))
-        .action('Share link', handleShare, false, require('assets/ic-share-24.png'))
-        .show();
-};
+import { showRoomInvite } from './showRoomInvite';
 
 const ControlItem = React.memo(
     (props: {
@@ -347,7 +307,7 @@ interface RoomControlsProps {
     title: string | null;
     message: string | null;
     theme: ThemeGlobal;
-    inviteLink: string | undefined;
+    showInviteButton: boolean;
     handRaised: boolean;
     selfStatus: VoiceChatParticipantStatus | undefined;
     onLeave: () => void;
@@ -360,7 +320,7 @@ interface RoomControlsProps {
 }
 
 const getButtons = (props: RoomControlsProps) => {
-    const { theme, id, title, message, muted, selfStatus, handRaised, inviteLink, connecting, onLeave, onMutePress, raisedHandUsers, reportUserError } = props;
+    const { theme, id, title, message, muted, selfStatus, showInviteButton, handRaised, connecting, onLeave, onMutePress, raisedHandUsers, reportUserError } = props;
 
     const leaveBtn = (
         <ControlItem
@@ -373,7 +333,7 @@ const getButtons = (props: RoomControlsProps) => {
             onPress={onLeave}
         />
     );
-    const inviteBtn = inviteLink ? (
+    const inviteBtn = showInviteButton ? (
         <ControlItem
             theme={theme}
             key="invite-btn"
@@ -384,7 +344,7 @@ const getButtons = (props: RoomControlsProps) => {
             onPress={() =>
                 showRoomInvite({
                     theme,
-                    link: inviteLink,
+                    roomId: id,
                 })
             }
         />

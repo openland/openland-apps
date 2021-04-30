@@ -54,6 +54,7 @@ import { debounce } from 'openland-y-utils/timer';
 import { showSheetModal } from 'openland-mobile/components/showSheetModal';
 import { useVoiceChatErrorNotifier } from 'openland-mobile/utils/voiceChatErrorNotifier';
 import { Equalizer } from './Equalizer';
+import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 
 interface PinnedMessageViewProps {
     theme: ThemeGlobal;
@@ -1051,14 +1052,6 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
     const [headerHeight, setHeaderHeight] = React.useState(0);
     const [controlsHeight, setControlsHeight] = React.useState(0);
 
-    const inviteEntity = voiceChatData.parentRoom || voiceChatData.me?.user;
-    const inviteEntityLink = inviteEntity
-        ? `https://openland.com/${inviteEntity.shortname || inviteEntity.id}`
-        : 'Try again';
-    const inviteLink = voiceChatData.parentRoom && voiceChatData.parentRoom.kind !== SharedRoomKind.PUBLIC
-        ? undefined
-        : inviteEntityLink;
-
     const onHeaderLayout = React.useCallback(
         (e: LayoutChangeEvent) => {
             setHeaderHeight(e.nativeEvent.layout.height);
@@ -1079,6 +1072,10 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
         mediaSession?.state.value,
     );
     const muted = !state?.sender.audioEnabled;
+    const showInviteButton =
+        !voiceChatData.parentRoom ||
+        voiceChatData.parentRoom.kind === SharedRoomKind.PUBLIC ||
+        groupInviteCapabilities(voiceChatData.parentRoom).canGetInviteLink;
 
     const handleMute = React.useCallback(() => {
         mediaSession?.setAudioEnabled(!state?.sender.audioEnabled);
@@ -1251,9 +1248,9 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
                         }
                         handRaised={!!voiceChatData.me?.handRaised}
                         selfStatus={voiceChatData.me?.status}
-                        inviteLink={inviteLink}
                         theme={theme}
                         muted={muted}
+                        showInviteButton={showInviteButton}
                         connecting={connecting}
                         onLayout={onControlsLayout}
                         onLeave={handleLeave}

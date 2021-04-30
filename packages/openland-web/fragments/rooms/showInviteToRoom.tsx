@@ -6,6 +6,13 @@ import { TextBody, TextStyles } from 'openland-web/utils/TextStyles';
 import { showModalBox } from 'openland-x/showModalBox';
 import * as React from 'react';
 import { XView } from 'react-mental';
+import {
+    useVoiceChat,
+    VoiceChatProvider,
+} from 'openland-y-utils/voiceChat/voiceChatWatcher';
+import { SharedRoomKind } from 'openland-api/spacex.types';
+import { useClient } from 'openland-api/useClient';
+import { XLoader } from 'openland-x/XLoader';
 
 const linkStyle = css`
     flex-grow: 1;
@@ -18,14 +25,39 @@ const linkStyle = css`
     overflow: hidden;
 `;
 
-interface InviteToRoomProps {
-    link: string;
-}
-
-const InviteToRoom = React.memo((props: InviteToRoomProps & { hide: () => void }) => {
-    const { link, hide } = props;
+const InviteToRoom = React.memo((props: { hide: () => void }) => {
+    const { hide } = props;
     const [copied, setCopied] = React.useState(false);
+    const client = useClient();
+    const [roomInviteLink, setRoomInviteLink] = React.useState<string | undefined>();
+    const [loading, setLoading] = React.useState(false);
+    const voiceChatData = useVoiceChat();
     let timeoutId: any;
+
+    React.useEffect(() => {
+        (async () => {
+            if (
+                voiceChatData.parentRoom?.kind === SharedRoomKind.GROUP &&
+                !roomInviteLink &&
+                !loading
+            ) {
+                setLoading(true);
+                const invite = await client.queryRoomInviteLink(
+                    { roomId: voiceChatData.parentRoom.id },
+                    { fetchPolicy: 'network-only' },
+                );
+
+                setRoomInviteLink(invite.link);
+                setLoading(false);
+            }
+        })();
+    }, [voiceChatData.parentRoom, roomInviteLink, loading]);
+
+    const inviteEntity = voiceChatData.parentRoom || voiceChatData.me!.user;
+    const link = roomInviteLink
+        ? `https://openland.com/invite/${roomInviteLink}`
+        : `https://openland.com/${inviteEntity.shortname || inviteEntity.id}`;
+
     const handleCopy = () => {
         setCopied(true);
         if (timeoutId) {
@@ -38,26 +70,37 @@ const InviteToRoom = React.memo((props: InviteToRoomProps & { hide: () => void }
     };
     return (
         <XView>
-            <XView paddingHorizontal={24} paddingVertical={12} color="var(--foregroundPrimary)" {...TextStyles.Title3}>
+            <XView
+                paddingHorizontal={24}
+                paddingVertical={12}
+                color="var(--foregroundPrimary)"
+                {...TextStyles.Title3}
+            >
                 Share room link
             </XView>
-            <XView
-                flexDirection="row"
-                paddingHorizontal={24}
-                marginBottom={24}
-            >
-                <div className={cx(linkStyle, TextBody)}>{link}</div>
+            <XView flexDirection="row" paddingHorizontal={24} marginBottom={24}>
+                <div className={cx(linkStyle, TextBody)}>
+                    {loading ? <XLoader loading={true} transparentBackground={true} /> : link}
+                </div>
             </XView>
             <XModalFooter>
                 <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
-                <UButton text={copied ? 'Copied' : 'Copy'} style={copied ? 'success' : 'primary'} size="large" onClick={handleCopy} />
+                <UButton
+                    text={copied ? 'Copied' : 'Copy'}
+                    style={copied ? 'success' : 'primary'}
+                    size="large"
+                    loading={loading}
+                    onClick={handleCopy}
+                />
             </XModalFooter>
         </XView>
     );
 });
 
-export const showInviteToRoom = (props: InviteToRoomProps) => {
-    showModalBox({ title: 'Invite people', width: 480 }, ctx => (
-        <InviteToRoom {...props} hide={ctx.hide} />
+export const showInviteToRoom = (props: { roomId: string }) => {
+    showModalBox({ title: 'Invite people', width: 480 }, (ctx) => (
+        <VoiceChatProvider roomId={props.roomId}>
+            <InviteToRoom hide={ctx.hide} />
+        </VoiceChatProvider>
     ));
 };

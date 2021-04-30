@@ -24,6 +24,13 @@ fragment VoiceChatEntity on VoiceChat {
         kind
         isChannel
         shortname
+        organization {
+            id
+            isAdmin: betaIsAdmin
+            membersCanInvite: betaMembersCanInvite
+        }
+        isPremium
+        role
     }
     pinnedMessage {
         id

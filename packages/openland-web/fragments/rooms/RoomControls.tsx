@@ -16,7 +16,6 @@ import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
-// import { useClient } from 'openland-api/useClient';
 import { showEditRoom } from './showEditRoom';
 import { showRaisedHands } from './showRaisedHands';
 import { showInviteToRoom } from './showInviteToRoom';
@@ -185,7 +184,7 @@ export const RoomControls = React.memo(({
     isMuted,
     handRaised,
     raisedHands,
-    inviteLink,
+    showInviteButton,
     onMute,
     onLeave,
     onHandRaise,
@@ -197,12 +196,11 @@ export const RoomControls = React.memo(({
     isMuted: boolean,
     raisedHands: VoiceChatParticipant[],
     handRaised: boolean,
-    inviteLink: string | undefined,
+    showInviteButton: boolean;
     onMute: () => void,
     onLeave: () => void,
     onHandRaise: () => void,
 }) => {
-
     const [visible, show, hide] = usePopper(
         {
             placement: 'top',
@@ -234,7 +232,7 @@ export const RoomControls = React.memo(({
                 className={cx(
                     controlsStyle,
                     status === VoiceChatParticipantStatus.ADMIN && controlsAdminStyle,
-                    !inviteLink && (status === VoiceChatParticipantStatus.ADMIN ? controlsNoInviteAdminStyle : controlsNoInviteStyle),
+                    !showInviteButton && (status === VoiceChatParticipantStatus.ADMIN ? controlsNoInviteAdminStyle : controlsNoInviteStyle),
                 )}
             >
                 <RoomControlItem
@@ -242,11 +240,11 @@ export const RoomControls = React.memo(({
                     icon={<IcLeave />}
                     onClick={onLeave}
                 />
-                {inviteLink && (
+                {showInviteButton && (
                     <RoomControlItem
                         text="Invite"
                         icon={<IcAdd />}
-                        onClick={() => showInviteToRoom({ link: inviteLink })}
+                        onClick={() => showInviteToRoom({ roomId })}
                     />
                 )}
                 {status === VoiceChatParticipantStatus.ADMIN && (
