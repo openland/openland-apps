@@ -150,6 +150,7 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
             <XView width={isSmallMobile ? '100%' : 320} alignSelf="center" marginBottom={16}>
                 <AuthInputWrapper className={shakeClassName}>
                     <UInput
+                        id="authName"
                         label="First name"
                         value={firstName.value}
                         flexGrow={1}
@@ -174,6 +175,7 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
                 loading={sending}
                 text={InitTexts.auth.save}
                 onClick={handleNext}
+                id="authNameNext"
             />
         </FormLayout>
     );
