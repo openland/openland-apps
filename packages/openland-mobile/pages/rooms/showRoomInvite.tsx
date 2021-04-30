@@ -42,17 +42,21 @@ const RoomInviteContent = React.memo(
             : `https://openland.com/${inviteEntity.shortname || inviteEntity.id}`;
 
         const handleShare = () => {
-            Share.share(
-                Platform.select({
-                    ios: { url: link },
-                    android: { message: link },
-                    default: { message: link },
-                }),
-            );
+            if (!loading) {
+                Share.share(
+                    Platform.select({
+                        ios: { url: link },
+                        android: { message: link },
+                        default: { message: link },
+                    }),
+                );
+            }
         };
         const handleCopy = () => {
-            Clipboard.setString(link);
-            Toast.showCopied();
+            if (!loading) {
+                Clipboard.setString(link);
+                Toast.showCopied();
+            }
         };
 
         return (
