@@ -46,6 +46,7 @@ import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
 import IcFeatured from 'openland-icons/s/ic-verified-3-16.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
 import { useJoinRoom } from 'openland-web/fragments/rooms/joinRoom';
+import { useRole } from 'openland-x-permissions/XWithRole';
 
 const secondaryAccent = css`
     color: var(--accentPrimary);
@@ -120,6 +121,7 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
     const callDisabled = !!currentSession && currentSession.callType === 'voice-chat';
     const isAdmin = props.chat.__typename === 'SharedRoom' && (props.chat.role === RoomMemberRole.ADMIN || props.chat.role === RoomMemberRole.OWNER);
     const showStartRoom = callSettings && callSettings.mode === RoomCallsMode.STANDARD && isAdmin;
+    const showClassicCallButton = props.chat.__typename === 'PrivateRoom' || useRole('super-admin');
     const joinRoom = useJoinRoom();
 
     const startRoom = React.useCallback(async () => {
@@ -155,30 +157,32 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
                     size="large"
                 />
             )}
-            {showStartRoom && (
-                <UIconButton
-                    cursor="pointer"
-                    icon={<MicIcon />}
-                    onClick={startRoom}
-                    size="large"
-                />
-            )}
-            {props.chat.__typename === 'PrivateRoom' && (
-                <UIconButton
-                    opacity={callDisabled ? 0.72 : undefined}
-                    disableHover={callDisabled}
-                    cursor={callDisabled ? undefined : 'pointer'}
-                    icon={<PhoneIcon />}
-                    onClick={() => {
-                        if (callDisabled) {
-                            return;
-                        }
-                        calls.joinCall(props.chat.id, 'call');
-                        showVideoCallModal();
-                    }}
-                    size="large"
-                />
-            )}
+            <XView flexDirection="row">
+                {showStartRoom && (
+                    <UIconButton
+                        cursor="pointer"
+                        icon={<MicIcon />}
+                        onClick={startRoom}
+                        size="large"
+                    />
+                )}
+                {showClassicCallButton && (
+                    <UIconButton
+                        opacity={callDisabled ? 0.72 : undefined}
+                        disableHover={callDisabled}
+                        cursor={callDisabled ? undefined : 'pointer'}
+                        icon={<PhoneIcon />}
+                        onClick={() => {
+                            if (callDisabled) {
+                                return;
+                            }
+                            calls.joinCall(props.chat.id, 'call');
+                            showVideoCallModal();
+                        }}
+                        size="large"
+                    />
+                )}
+            </XView>
         </div>
     );
 };
