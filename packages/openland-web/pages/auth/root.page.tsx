@@ -227,6 +227,7 @@ const Root = (props: { countryCode?: string }) => {
     const [fromOutside, setFromOutside] = React.useState(false);
     const [isExistingUser, setExistingUser] = React.useState(false);
     const [avatarId, setAvatarId] = React.useState(null);
+    const [profileExist, setProfileExist] = React.useState(false);
     const [avatarPlaceholder, setAvatarPlaceholder] = React.useState<{ hash: number, initials: string } | null>(null);
     const prevDataFired = React.useRef<string>();
 
@@ -245,6 +246,7 @@ const Root = (props: { countryCode?: string }) => {
             if (!res.ok) {
                 throw new Error(res.errorText || 'Something went wrong');
             }
+            setProfileExist(res.profileExists);
             localStorage.setItem('authSession', res.session);
 
             setAuthSending(false);
@@ -316,6 +318,7 @@ const Root = (props: { countryCode?: string }) => {
                     <XPageRedirect path="/" />
                 ) : (
                     <AskAuthCodePage
+                        profileExist={profileExist}
                         authValue={authValue}
                         phoneCodeValue={phoneCodeValue}
                         authWasResend={authWasResend}

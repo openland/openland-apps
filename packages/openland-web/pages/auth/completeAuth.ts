@@ -1,8 +1,9 @@
 import * as Cookie from 'js-cookie';
 import { advanceGeneration } from '../../storage/generation';
 import createHistory from 'history/createBrowserHistory';
+import { redirectSuffix } from '../root/router/redirectSuffix';
 
-export const completeAuth = (token: string) => {
+export const completeAuth = (token: string, profileExist: boolean) => {
     let path = '/';
     if (Cookie.get('x-signin-redirect')) {
         path = '/' + Cookie.get('x-signin-redirect');
@@ -12,6 +13,10 @@ export const completeAuth = (token: string) => {
     }
     if (Cookie.get('x-openland-invite')) {
         path = '/invite/' + Cookie.get('x-openland-invite');
+    }
+    if (!profileExist) {
+        const oldPath = path;
+        path = '/createProfile' + redirectSuffix(oldPath);
     }
     Cookie.remove('x-openland-org', { path: '/' });
     Cookie.remove('x-openland-invite', { path: '/' });

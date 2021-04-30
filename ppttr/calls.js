@@ -28,7 +28,10 @@ const main = async (shortname) => {
     const userEmail = `${userName}@openland.com`
     const userCode = userEmailCode.toString()[5].repeat(6)
 
-    const browser = await puppeteer.launch({ headless: isDev ? false : undefined })
+    // const browser = await puppeteer.launch({ headless: isDev ? false : undefined })
+    const browser = await puppeteer.connect({
+        browserWSEndpoint: 'wss://chrome.browserless.io?token=6c11b2ba-17e0-49cf-85f7-0644d15cc1fa',
+    })
     const page = await browser.newPage()
     await page.goto(`${urlPath}${shortname.trim()}`)
 
@@ -57,9 +60,6 @@ const main = async (shortname) => {
     await codeInput.focus()
     await delay(500)
     await codeInput.type(userCode, { delay: 50 })
-    await click('#authCodeNext')
-    await loaded()
-    await page.waitForTimeout(1500)
     await loaded()
 
     if (page.url().search('createProfile') !== -1) {

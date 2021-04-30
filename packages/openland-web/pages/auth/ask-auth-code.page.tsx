@@ -91,6 +91,7 @@ type ActivationCodeProps = {
     isExistingUser: boolean;
     avatarId: string | null;
     avatarPlaceholder: { hash: number, initials: string } | null;
+    profileExist: boolean;
 };
 
 const WebSignUpActivationCode = (
@@ -279,7 +280,6 @@ const WebSignUpActivationCode = (
                     loading={codeSending}
                     onClick={handleNext}
                     marginTop={32}
-                    id="authCodeNext"
                 />
                 {!isExistingUser && (
                     <p className={cx(TextCaption, captionText, textClassName)}>
@@ -326,7 +326,7 @@ export const AskAuthCodePage = (props: ActivationCodeProps) => {
             setCodeSending(true);
             try {
                 let token = await checkCode(codeValue, isPhoneAuth);
-                await completeAuth(token);
+                await completeAuth(token, props.profileExist);
             } catch (e) {
                 let message = 'Something went wrong';
                 if (!navigator.onLine) {
