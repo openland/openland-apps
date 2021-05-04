@@ -54,7 +54,7 @@ import { LocalBlackListProvider } from 'openland-y-utils/blacklist/LocalBlackLis
 import { VoiceChatsFeedProvider } from 'openland-y-utils/voiceChat/voiceChatsFeedWatcher';
 import { MessagesActionsStateProvider } from 'openland-y-runtime/MessagesActionsState';
 import { PersistenceVersion } from 'openland-engines/PersitenceVersion';
-import { initMixpanel } from 'openland-mobile/mixpanel';
+import { initMixpanel, tracker } from 'openland-mobile/tracker';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(
@@ -151,7 +151,7 @@ export class Init extends React.Component<
         sessionState?: Account_sessionState;
         dimensions?: { width: number; height: number };
     }
-> {
+    > {
     private history: any;
     private pendingDeepLink?: string;
     private resolving = false;
@@ -236,6 +236,7 @@ export class Init extends React.Component<
         })();
     }
     componentDidMount() {
+        const bootStart = Date.now();
         Linking.addEventListener('url', this.handleOpenURL);
         Linking.getInitialURL().then(async (url) => url && await this.handleOpenURL({ url: url }));
         if (getMessengerNullable()) {
@@ -328,8 +329,12 @@ export class Init extends React.Component<
                     }
 
                     // Launch app or login sequence
+                    tracker.track('Boot Completed', { Duration: Date.now() - bootStart });
                     if (authenticated) {
                         if (res && res.me) {
+                            tracker.identify(res.me.id);
+                            tracker.people.set('Name', res.me.name);
+                            tracker.people.set('Username', res.me.shortname);
                             this.setState({ state: 'app' });
                             NotificationHandler.init();
                         } else {
