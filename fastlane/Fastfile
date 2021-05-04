@@ -21,10 +21,15 @@ lane :upload_ios do
     upload_to_testflight(ipa: './fastlane/build/Openland.ipa', skip_waiting_for_build_processing: true)
 end
 
+lane :upload_android do
+   upload_to_play_store(aab: './android/app/build/outputs/bundle/release/app-release.aab', track: 'internal')
+end
+
 lane :release do
 
     build_ios
     build_android
 
     upload_ios
+    upload_android
 end
