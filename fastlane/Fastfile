@@ -1,0 +1,29 @@
+fastlane_version '2.53.1'
+
+lane :build_android do
+    gradle(task: 'clean', project_dir: 'android/')
+    gradle(task: 'bundle', build_type: 'Release', project_dir: 'android/')
+end
+
+lane :build_ios do
+    get_provisioning_profile(app_identifier: 'com.openland.app')
+    build_app(
+        scheme: 'Production', 
+        clean: true,
+        workspace: './ios/openland.xcworkspace',
+        output_directory: './fastlane/build',
+        output_name: 'Openland.ipa'
+    )
+end
+
+lane :upload_ios do
+    upload_to_testflight(ipa: './fastlane/build/Openland.ipa', skip_waiting_for_build_processing: true)
+end
+
+lane :release do
+
+    build_ios
+    build_android
+
+    upload_ios
+end

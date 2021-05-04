@@ -70,3 +70,4 @@ ios/Pods
 .linaria-cache
 packages/openland-desktop/dist
 output
+AppStore_com.openland.app.mobileprovision
