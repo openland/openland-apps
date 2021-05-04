@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlinx-serialization'
+apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 
 import com.android.build.OutputFile
 
@@ -233,7 +234,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     implementation 'com.beust:klaxon:3.0.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1'
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.11.0"
@@ -264,6 +265,9 @@ dependencies {
 
     // Tests
     testImplementation 'org.json:json:20160810'
+
+    // Unimodules
+    addUnimodulesDependencies()
 }
 
 // Run this once to be able to run the application with BUCK

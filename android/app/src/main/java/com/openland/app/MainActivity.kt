@@ -190,10 +190,14 @@ class MainActivity : ReactActivity() {
             override fun onSuccess(result: PaymentIntentResult) {
                 val paymentIntent = result.intent
                 val status = paymentIntent.status
-                if(StripeModule.pendingConfirmPaymentId == null){
+                if (StripeModule.pendingConfirmPaymentId == null) {
                     Log.e("stripe onPaymentResult", "no payment id!")
-                }else{
-                    Log.w("stripe", paymentIntent.id)
+                } else {
+                    if (paymentIntent.id != null) {
+                        Log.w("stripe", paymentIntent.id!!)
+                    } else {
+                        Log.w("stripe", "<null>")
+                    }
                     if (status == StripeIntent.Status.Succeeded) {
                         reportConfirmPaymentResult(StripeModule.pendingConfirmPaymentId!!, "success", null)
                     } else {
@@ -204,9 +208,9 @@ class MainActivity : ReactActivity() {
             }
 
             override fun onError(e: Exception) {
-                if(StripeModule.pendingConfirmPaymentId == null){
+                if (StripeModule.pendingConfirmPaymentId == null) {
                     Log.e("stripe onPaymentResult", "no payment id!")
-                }else{
+                } else {
                     reportConfirmPaymentResult(StripeModule.pendingConfirmPaymentId!!, "failed", e.localizedMessage)
 
                 }

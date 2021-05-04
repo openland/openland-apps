@@ -1,7 +1,20 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.3.30'
+
+    ext {
+        kotlinVersion = "1.4.0"
+        playServicesVersion = "17.0.0"
+        androidMapsUtilsVersion = "2.2.3"
+        supportLibVersion = "30.0.0"
+        buildToolsVersion = "30.0.0"
+        firebaseVersion = "17.3.0"
+        googlePlayServicesAuthVersion = "16.0.1"
+        compileSdkVersion = 30
+        targetSdkVersion = 29
+        minSdkVersion = 23
+    }
+
     repositories {
         mavenLocal()
         maven {
@@ -27,8 +40,8 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.1'
         classpath 'com.google.gms:google-services:4.2.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.0"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:1.4.0"
         classpath "com.bugsnag:bugsnag-android-gradle-plugin:5.+"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -59,32 +72,23 @@ allprojects {
 
 subprojects { project ->
     def name = project.name
-    if (name.contains('react-native-blur') || 
-            name.contains('react-native-fast-image') || 
-            name.contains('react-native-image-picker') || 
+    if (name.contains('react-native-blur') ||
+            name.contains('react-native-fast-image') ||
+            name.contains('react-native-image-picker') ||
             name.contains('react-native-linear-gradient') ||
             name.contains('react-native-reanimated') ||
             name.contains('react-native-vector-icons') ||
             name.contains('rn-fetch-blob')) {
         buildscript {
             repositories {
+                jcenter()
                 maven { url "https://dl.bintray.com/android/android-tools/"  }
             }
         }
-    } 
+    }
 }
 
-ext {
-    buildToolsVersion = "29.0.2"
-    minSdkVersion = 23
-    compileSdkVersion = 29
-    targetSdkVersion = 29
-    supportLibVersion = "29.0.2"
-    firebaseVersion = "17.3.0"
-    googlePlayServicesAuthVersion = "16.0.1"
-}
-
-
+/*
 subprojects {
     afterEvaluate { project ->
         if (project.hasProperty("android")) {
@@ -94,4 +98,4 @@ subprojects {
             }
         }
     }
-}
+}*/

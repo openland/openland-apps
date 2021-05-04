@@ -38,18 +38,10 @@ class NetworkingApollo(
     private var pingTimeout: (() -> Unit)? = null
 
     private val connectivityCallback = object : ConnectivityManager.NetworkCallback() {
-        override fun onAvailable(network: Network?) {
+        override fun onAvailable(network: Network) {
             queue.async {
                 onReachable()
             }
-        }
-
-        override fun onLinkPropertiesChanged(network: Network?, linkProperties: LinkProperties?) {
-            // Do nothing
-        }
-
-        override fun onCapabilitiesChanged(network: Network?, networkCapabilities: NetworkCapabilities?) {
-            // Do nothing
         }
 
         override fun onUnavailable() {
@@ -58,7 +50,7 @@ class NetworkingApollo(
             }
         }
 
-        override fun onLost(network: Network?) {
+        override fun onLost(network: Network) {
             queue.async {
                 onUnreachable()
             }

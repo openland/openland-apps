@@ -4,43 +4,38 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <React/RCTPushNotificationManager.h>
+#import <UMCore/UMModuleRegistry.h>
+#import <UMReactNativeAdapter/UMNativeModulesProxy.h>
+#import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
 
 @import Stripe;
 #import "AppDelegate.h"
 #import "openland-Swift.h"
 
+@interface AppDelegate () <RCTBridgeDelegate>
+@property (nonatomic, strong) UMModuleRegistryAdapter *moduleRegistryAdapter;
+@end
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [Bugsnag start];
+  
+  // Bugsnag
+  [Bugsnag start];
 
-/*
-   * Stripe
-   */
+  // Stripe
   [StripeAPI setDefaultPublishableKey: @"pk_live_eLENsh8Ten2AoOcJhfxUkTfD"];
   
-  
-  /*
-   * Bundle location
-   */
-  
-  NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  // Expo
+  self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
 
-  /*
-   * Start Keyboard Manager
-   */
-  
+  // Keyboard manager
   [RNAsyncKeyboardManager.sharedInstance start];
 
-  /*
-   * Start App
-   */
-  
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
-                                                      moduleName:@"openland"
-                                               initialProperties:nil
-                                                   launchOptions:launchOptions];
+  // Start app
+  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"openland" initialProperties:nil];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -64,7 +59,21 @@
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   center.delegate = self;
   
+  // Start expo
+  [super application:application didFinishLaunchingWithOptions:launchOptions];
+  
   return YES;
+}
+
+- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
+  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+}
+
+- (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge
+{
+    NSArray<id<RCTBridgeModule>> *extraModules = [_moduleRegistryAdapter extraModulesForBridge:bridge];
+    // If you'd like to export some custom RCTBridgeModules that are not Expo modules, add them here!
+    return extraModules;
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url

@@ -5,6 +5,8 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.openland.app.generated.BasePackageList;
+
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
@@ -19,7 +21,14 @@ import com.facebook.soloader.SoLoader;
 import java.util.List;
 import com.bugsnag.android.Bugsnag;
 
+import java.util.Arrays;
+
+import org.unimodules.adapters.react.ModuleRegistryAdapter;
+import org.unimodules.adapters.react.ReactModuleRegistryProvider;
+
 public class MainApplication extends Application implements ShareApplication, ReactApplication {
+
+    private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), null);
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
@@ -32,6 +41,11 @@ public class MainApplication extends Application implements ShareApplication, Re
         protected List<ReactPackage> getPackages() {
             List<ReactPackage> res = new PackageList(this).getPackages();
             res.add(new RNSPackage());
+            // Add unimodules
+            List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
+                    new ModuleRegistryAdapter(mModuleRegistryProvider)
+            );
+            res.addAll(unimodules);
             return res;
         }
 
