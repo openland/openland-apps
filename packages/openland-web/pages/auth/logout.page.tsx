@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Cookie from 'js-cookie';
 import { isElectron } from 'openland-y-utils/isElectron';
-import { advanceGeneration } from 'openland-web/storage/generation';
+import { advanceGeneration } from 'openland-api/storage/generation';
 
 export default class LogoutHandler extends React.Component<{}, {}> {
     constructor(props: {}) {

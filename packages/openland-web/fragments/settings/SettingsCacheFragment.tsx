@@ -4,7 +4,7 @@ import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 import { FormWrapper } from './components/FormWrapper';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { advanceGeneration } from 'openland-web/storage/generation';
+import { advanceGeneration } from 'openland-api/storage/generation';
 
 export const SettingsCacheFragment = React.memo(() => {
     return (

@@ -1,6 +1,6 @@
-import { NativeEngine } from './native/NativeEngine';
 import { createClient } from './createClient';
+import { createEngineNative } from './createEngineNative';
 
 export function createClientNative(storageKey?: string, token?: string) {
-    return createClient(new NativeEngine(storageKey, token));
+    return createClient(createEngineNative(storageKey, token));
 }

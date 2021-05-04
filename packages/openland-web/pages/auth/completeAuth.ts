@@ -1,5 +1,5 @@
 import * as Cookie from 'js-cookie';
-import { advanceGeneration } from '../../storage/generation';
+import { advanceGeneration } from '../../../openland-api/storage/generation';
 import createHistory from 'history/createBrowserHistory';
 import { redirectSuffix } from '../root/router/redirectSuffix';
 

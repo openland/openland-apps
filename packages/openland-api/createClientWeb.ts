@@ -1,4 +1,4 @@
-import { readGeneration } from 'openland-web/storage/generation';
+import { readGeneration } from 'openland-api/storage/generation';
 import { createEngineWeb } from './createEngineWeb';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { loadConfig } from 'openland-x-config';

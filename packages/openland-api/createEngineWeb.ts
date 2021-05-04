@@ -1,4 +1,4 @@
-import { openWebStorage } from 'openland-web/storage/openWebStorage';
+import { openWebStorage } from 'openland-api/storage/openWebStorage';
 import { WebEngine, PersistenceProvider } from '@openland/spacex';
 import { Definitions } from './spacex.web';
 import { createPersistenceProvider } from './createPersistenceProvider';

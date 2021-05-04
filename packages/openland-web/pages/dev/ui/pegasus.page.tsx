@@ -4,7 +4,7 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { View } from 'react-native';
 import { Deferred } from 'openland-unicorn/components/Deferred';
 import { XLoader } from 'openland-x/XLoader';
-import { openWebStorage } from 'openland-web/storage/openWebStorage';
+import { openWebStorage } from 'openland-api/storage/openWebStorage';
 // import { useClient } from 'openland-api/useClient';
 // import { UpdatesEngine } from 'openland-engines/updates/UpdatesEngine';
 // import { Persistence } from 'openland-engines/persistence/Persistence';
