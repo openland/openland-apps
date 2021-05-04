@@ -142,7 +142,8 @@
                             "assets": "./packages/openland-mobile/assets",
                             "assets-s": "./packages/react-native-s/assets",
                             "openland-pegasus": "./packages/openland-pegasus",
-                            "openland-powerups": "./packages/openland-powerups"
+                            "openland-powerups": "./packages/openland-powerups",
+                            "openland-y-store": "./packages/openland-y-store"
                         }
                     }
                 ],

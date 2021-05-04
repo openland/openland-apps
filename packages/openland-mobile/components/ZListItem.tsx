@@ -2,8 +2,6 @@ import * as React from 'react';
 import { ZListItemBase } from './ZListItemBase';
 import { View, Text, Switch, Image, Clipboard, TextStyle, Platform, Linking, ViewStyle } from 'react-native';
 import { ZText } from './ZText';
-import { XStoreState } from 'openland-y-store/XStoreState';
-import { XStoreContext } from 'openland-y-store/XStoreContext';
 import ActionSheet from './ActionSheet';
 import { ZAvatar } from './ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -27,11 +25,9 @@ export interface ZListItemProps {
     descriptionColor?: string;
     descriptionIcon?: any;
     toggle?: boolean | null;
-    toggleField?: { key: string };
     toggleDisabled?: boolean | null;
     checkmark?: boolean | null;
     checkmarkStyle?: ViewStyle;
-    checkmarkField?: { key: string, value: string };
     checkmarkType?: 'radio' | 'checkbox';
     onToggle?: (value: boolean) => void;
     path?: string;
@@ -82,20 +78,11 @@ const LeftIconViewWrapper = (props: { children: any }) => {
     );
 };
 
-class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: XStoreState, theme: ThemeGlobal }> {
+class ZListItemComponent extends React.PureComponent<ZListItemProps & { theme: ThemeGlobal }> {
     handleOnPress = () => {
         if (this.props.onPress) {
             this.props.onPress();
         }
-        if (this.props.checkmarkField) {
-            this.props.store!!.writeValue('fields.' + this.props.checkmarkField.key, this.props.checkmarkField.value);
-        }
-
-        if (this.props.toggleField) {
-            let current = this.props.store!!.readValue('fields.' + this.props.toggleField.key);
-            this.props.store!!.writeValue('fields.' + this.props.toggleField.key, !current);
-        }
-
         if (this.props.linkify && this.props.text) {
             this.openLink(this.props.text);
         }
@@ -126,18 +113,11 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
     render() {
         const { theme } = this.props;
 
-        const showCheckmark = (this.props.checkmark !== undefined && this.props.checkmark !== null) || (!!this.props.checkmarkField);
+        const showCheckmark = (this.props.checkmark !== undefined && this.props.checkmark !== null);
         let checkmarkEnabled = !!this.props.checkmark;
-        if (this.props.checkmarkField) {
-            checkmarkEnabled = this.props.store!!.readValue('fields.' + this.props.checkmarkField.key) === this.props.checkmarkField.value;
-        }
-
         let toggleValue: boolean | undefined = this.props.toggle ? this.props.toggle : undefined;
-        if (this.props.toggleField) {
-            toggleValue = this.props.store!!.readValue('fields.' + this.props.toggleField.key);
-        }
 
-        const enabled = !!this.props.copy || !!this.props.onPress || !!this.props.onLongPress || !!this.props.path || ((!!this.props.checkmarkField) && !checkmarkEnabled) || !!this.props.toggleField;
+        const enabled = !!this.props.copy || !!this.props.onPress || !!this.props.onLongPress || !!this.props.path;
         const linkify = (this.props.linkify === true || (this.props.linkify === undefined && !this.props.onPress && !this.props.path));
         const descriptionColor = this.props.descriptionColor ? this.props.descriptionColor : theme.foregroundTertiary;
         const isBig = this.props.leftIconView || this.props.subTitle || this.props.leftAvatar || this.props.leftIconColor || (this.props.leftIcon && !this.props.small);
@@ -199,14 +179,14 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                                 text={this.props.description}
                             />
                         )}
-                        {((this.props.onToggle !== undefined) || (this.props.toggle !== undefined) || (this.props.toggleDisabled !== undefined) || (this.props.toggleField)) && (
+                        {((this.props.onToggle !== undefined) || (this.props.toggle !== undefined) || (this.props.toggleDisabled !== undefined)) && (
                             <Switch
                                 style={{ marginLeft: 15 }}
                                 value={toggleValue}
                                 tintColor={theme.border}
                                 thumbTintColor={Platform.OS === 'android' ? (toggleValue ? theme.accentPrimary : theme.backgroundTertiary) : undefined}
                                 onTintColor={Platform.OS === 'android' ? theme.border : switchTintColor}
-                                onValueChange={this.props.toggleField ? this.handleOnPress : this.props.onToggle}
+                                onValueChange={this.props.onToggle}
                                 disabled={this.props.toggleDisabled !== null ? this.props.toggleDisabled : undefined}
                             />
                         )}
@@ -253,18 +233,18 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
 
 export const ZListItem = React.memo<ZListItemProps>((props) => {
     const theme = React.useContext(ThemeContext);
-    const needStore = !!props.checkmarkField || !!props.toggleField;
-    if (needStore) {
-        return (
-            <XStoreContext.Consumer>
-                {store => {
-                    if (!store) {
-                        throw Error('No store!');
-                    }
-                    return (<ZListItemComponent {...props} store={store} theme={theme} />);
-                }}
-            </XStoreContext.Consumer>
-        );
-    }
+    // const needStore = !!props.checkmarkField || !!props.toggleField;
+    // if (needStore) {
+    //     return (
+    //         <XStoreContext.Consumer>
+    //             {store => {
+    //                 if (!store) {
+    //                     throw Error('No store!');
+    //                 }
+    //                 return (<ZListItemComponent {...props} store={store} theme={theme} />);
+    //             }}
+    //         </XStoreContext.Consumer>
+    //     );
+    // }
     return <ZListItemComponent {...props} theme={theme} />;
 });
