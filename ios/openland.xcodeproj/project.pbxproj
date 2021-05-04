@@ -762,6 +762,7 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				96A41ECA9A2726BDB3C6AF16 /* [CP] Copy Pods Resources */,
+				AA77C0FA2641CF29003860CF /* Bundle React Native code and images */,
 			);
 			buildRules = (
 			);
@@ -1118,6 +1119,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "cd \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" \nif [[ -d \"Frameworks\" ]]; \nthen rm -fr Frameworks \nfi\n";
+		};
+		AA77C0FA2641CF29003860CF /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native code and images";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		D58CC1ACF2D2F2C4B3B11665 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
