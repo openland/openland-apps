@@ -71,3 +71,5 @@ ios/Pods
 packages/openland-desktop/dist
 output
 AppStore_com.openland.app.mobileprovision
+fastlane/report.xml
+fastlane/README.md
