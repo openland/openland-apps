@@ -48,6 +48,7 @@
 		AA3DDA112284E14E0078A762 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3DDA102284E14E0078A762 /* Types.swift */; };
 		AA6281AB2151C8BD007C8200 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = AA6281AA2151C8BC007C8200 /* VERSION */; };
 		AA6D99872171A2E100E04A29 /* RNLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6D99862171A2E100E04A29 /* RNLoadingCell.swift */; };
+		AA77C0ED26419276003860CF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA77C0EC26419276003860CF /* StoreKit.framework */; };
 		AA7B7BE022851C3F001AA400 /* normalizeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB181772284EDE6008D3603 /* normalizeData.swift */; };
 		AA7B7BF822860CA6001AA400 /* RecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7B7BF722860CA6001AA400 /* RecordStore.swift */; };
 		AA7B7BFA22860E00001AA400 /* SpaceXClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7B7BF922860E00001AA400 /* SpaceXClient.swift */; };
@@ -285,6 +286,7 @@
 		AA3DDA102284E14E0078A762 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		AA6281AA2151C8BC007C8200 /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION; sourceTree = "<group>"; };
 		AA6D99862171A2E100E04A29 /* RNLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNLoadingCell.swift; sourceTree = "<group>"; };
+		AA77C0EC26419276003860CF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		AA7B7BF722860CA6001AA400 /* RecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStore.swift; sourceTree = "<group>"; };
 		AA7B7BF922860E00001AA400 /* SpaceXClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceXClient.swift; sourceTree = "<group>"; };
 		AA904699210F2EDB00F989BC /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -374,6 +376,7 @@
 				A030D38A236B0785005917D1 /* libz.tbd in Frameworks */,
 				A030D388236B0778005917D1 /* SystemConfiguration.framework in Frameworks */,
 				A030D386236B076A005917D1 /* SafariServices.framework in Frameworks */,
+				AA77C0ED26419276003860CF /* StoreKit.framework in Frameworks */,
 				A030D384236B074B005917D1 /* AddressBook.framework in Frameworks */,
 				AA2281DC228B5E3300810848 /* CoreTelephony.framework in Frameworks */,
 				AAD8F15C2208A619007C4FE3 /* libsqlite3.tbd in Frameworks */,
@@ -456,6 +459,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA77C0EC26419276003860CF /* StoreKit.framework */,
 				AAE0B5E625B07D6E000036D6 /* libBVLinearGradient.a */,
 				A030D38B236B0807005917D1 /* RNGoogleSignin.framework */,
 				A030D389236B0785005917D1 /* libz.tbd */,
