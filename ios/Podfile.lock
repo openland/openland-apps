@@ -51,6 +51,12 @@ PODS:
   - lottie-react-native (4.0.2):
     - lottie-ios (~> 3.1.8)
     - React-Core
+  - Mixpanel-swift (2.9.3):
+    - Mixpanel-swift/Complete (= 2.9.3)
+  - Mixpanel-swift/Complete (2.9.3)
+  - MixpanelReactNative (1.2.0):
+    - Mixpanel-swift (= 2.9.3)
+    - React
   - ObjectiveRocks (0.11.0)
   - PINCache (3.0.3):
     - PINCache/Arc-exception-safe (= 3.0.3)
@@ -450,6 +456,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - lottie-ios (from `../node_modules/lottie-ios`)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
+  - MixpanelReactNative (from `../node_modules/mixpanel-react-native`)
   - ObjectiveRocks (~> 0.11)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTRestart (from `../node_modules/react-native-restart/ios`)
@@ -527,6 +534,7 @@ SPEC REPOS:
   trunk:
     - boost-for-react-native
     - libwebp
+    - Mixpanel-swift
     - ObjectiveRocks
     - PINCache
     - PINOperation
@@ -568,6 +576,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/lottie-ios"
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
+  MixpanelReactNative:
+    :path: "../node_modules/mixpanel-react-native"
   RCTRequired:
     :path: "../node_modules/react-native/Libraries/RCTRequired"
   RCTRestart:
@@ -722,6 +732,8 @@ SPEC CHECKSUMS:
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: 4dff8fe8d10ddef9e7880e770080f4a56121397e
+  Mixpanel-swift: 05ab116526c72e0e66a6a2feb9005e933c414347
+  MixpanelReactNative: 119808d469cc1dae94e7eb7cf6c2e805ec21cc58
   ObjectiveRocks: 464f1d38a77847be0acc3dda268bec52486ec02d
   PINCache: 7a8fc1a691173d21dbddbf86cd515de6efa55086
   PINOperation: 00c935935f1e8cf0d1e2d6b542e75b88fc3e5e20

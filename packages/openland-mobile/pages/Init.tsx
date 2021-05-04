@@ -54,6 +54,7 @@ import { LocalBlackListProvider } from 'openland-y-utils/blacklist/LocalBlackLis
 import { VoiceChatsFeedProvider } from 'openland-y-utils/voiceChat/voiceChatsFeedWatcher';
 import { MessagesActionsStateProvider } from 'openland-y-runtime/MessagesActionsState';
 import { PersistenceVersion } from 'openland-engines/PersitenceVersion';
+import { initMixpanel } from 'openland-mobile/mixpanel';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(
@@ -243,6 +244,8 @@ export class Init extends React.Component<
         }
         (async () => {
             console.log('BOOTSTRAP: loading');
+            await initMixpanel();
+            console.log('BOOTSTRAP: mixpanel prepared');
             await ThemePersister.prepare();
             console.log('BOOTSTRAP: theme prepared');
             await AppStorage.prepare();
