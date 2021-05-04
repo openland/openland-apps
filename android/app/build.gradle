@@ -78,7 +78,7 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-        entryFile      : "index.js",
+        entryFile      : "index.ts",
         bundleAssetName: "index.android.bundle",
         inputExcludes  : ["android/**", "ios/**", "node_modules/**", "packages/openland-mac/node_modules/**"],
         bundleInRelease: true,
