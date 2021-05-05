@@ -16,7 +16,7 @@ if ENV['RELEASE_CHANNEL'] === 'staging'
 end
 
 updatesUrl = "https://updates.openland.com/#{updatesPath}"
-updatesAssetsUrl = "https://updates.openland.com/mobile/assets/"
+updatesAssetsUrl = "https://updates.openland.com/assets/"
 
 #
 # Configure
