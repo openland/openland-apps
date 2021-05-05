@@ -24,7 +24,8 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { MetaInfoIndicator } from './content/MetaInfoIndicator';
 import { SenderContent } from './content/SenderContent';
 import { DonationContent } from './content/DonationContent';
-import { isVideo } from 'openland-mobile/utils/isVideo';
+import { isAudio, isVideo } from 'openland-mobile/utils/isVideo';
+import { AudioContent } from './content/AudioContent';
 
 export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={17}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 20 : 16, ios: edited ? 17 : 14 }))}</ASText>;
 
@@ -191,6 +192,18 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
                     hasTopContent={hasReply && !hasForward}
                     hasBottomContent={hasText || hasUrlAug || hasForward}
                     layout={videoPreviewLayout}
+                />
+            );
+        } else if (fileAttach?.fileMetadata.name && isAudio(fileAttach?.fileMetadata.name)) {
+            topContent.push(
+                <AudioContent
+                    key="msg-audio"
+                    theme={theme}
+                    attach={fileAttach!}
+                    message={message}
+                    maxWidth={maxSize!}
+                    onDocumentPress={onDocumentPress}
+                    onLongPress={onLongPress}
                 />
             );
         } else {

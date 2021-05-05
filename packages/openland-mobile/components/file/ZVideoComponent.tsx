@@ -3,6 +3,7 @@ import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { View } from 'react-native';
 import Video from 'react-native-video';
 import { LoaderSpinner } from '../LoaderSpinner';
+import { isAudio, extractExtension } from 'openland-mobile/utils/isVideo';
 
 export const ZVideoComponent = React.memo(
     (props: { uuid: string; name: string; completed: boolean }) => {
@@ -15,7 +16,7 @@ export const ZVideoComponent = React.memo(
                     const filePathWithExtension = await DownloadManagerInstance.getFilePathWithRealName(
                         uuid,
                         null,
-                        `${uuid}.mp4`,
+                        isAudio(props.name) ? `${uuid}.${extractExtension(props.name)}` : `${uuid}.mp4`,
                     );
 
                     if (filePathWithExtension) {
@@ -35,6 +36,7 @@ export const ZVideoComponent = React.memo(
                         playWhenInactive={true}
                         ignoreSilentSwitch="ignore"
                         resizeMode="contain"
+                        onError={e => console.log('@@ er', e)}
                     />
                 )}
                 {(path.length <= 0 || !completed) && (

@@ -6,7 +6,7 @@ import { formatBytes } from 'openland-mobile/utils/formatBytes';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ZDocumentExt } from 'openland-mobile/components/file/ZDocumentExt';
-import { isVideo } from 'openland-mobile/utils/isVideo';
+import { isAudio, isVideo } from 'openland-mobile/utils/isVideo';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { formatDuration } from 'openland-mobile/utils/formatDuration';
@@ -96,6 +96,48 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
                         </View>
                     </View>
                 </>
+            </TouchableOpacity>
+        );
+    }
+
+    if (isAudio(attach!!.fileMetadata.name)) {
+        return (
+            <TouchableOpacity onPress={() => onDocumentPress(attach)} activeOpacity={0.6} style={{ marginBottom: 8 }}>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        padding: 12,
+                        alignItems: 'center',
+                        backgroundColor: theme.incomingBackgroundPrimary,
+                        borderRadius: 18,
+                    }}
+                >
+                    <View
+                        style={{
+                            width: 40,
+                            height: 40,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: theme.accentPrimary,
+                            borderRadius: 20,
+                            marginRight: 12,
+                        }}
+                    >
+                        <Image source={require('assets/ic-play-glyph-24.png')} style={{ width: 20, height: 20, tintColor: theme.foregroundContrast }} />
+                    </View>
+                    <Text
+                        style={{
+                            ...TextStyles.Label2,
+                            color: theme.foregroundPrimary,
+                            flexShrink: 1
+                        }}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                        allowFontScaling={false}
+                    >
+                        {attach.fileMetadata.name}
+                    </Text>
+                </View>
             </TouchableOpacity>
         );
     }
