@@ -127,7 +127,7 @@ export const GlobalSearchItemUser = React.memo((props: ItemUserProps) => {
             name={isSavedMessages ? 'Saved messages' : item.name}
             onPress={handlePress}
             theme={theme}
-            proBadge={!!item.systemBadge}
+            proBadge={isSavedMessages ? false : !!item.systemBadge}
             avatar={
                 <UserAvatar
                     src={item.photo}
