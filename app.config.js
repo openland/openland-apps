@@ -1,7 +1,9 @@
 const build = parseInt(process.env.BUILD_COUNTER || '1', 10);
-const runtimeVersion = require('./packages/openland-mobile/version.json').runtimeVersion;
-const internalVersion = packageVersion + '.' + build;
-const runtimeVersion = packageVersion;
+let runtimeVersion = require('./packages/openland-mobile/version.json').runtimeVersion;
+let internalVersion = runtimeVersion + '.' + build;
+if (process.env.RELEASE_CHANNEL === 'staging') {
+    internalVersion = '999.' + build;
+}
 
 export default {
     name: 'Openland',
@@ -12,6 +14,7 @@ export default {
         slug: 'Openland',
         sdkVersion: '40.0.0',
         runtimeVersion,
+        version: internalVersion,
         assetBundlePatterns: [
             "**/*"
         ],

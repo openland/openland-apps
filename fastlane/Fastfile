@@ -8,6 +8,15 @@ versionJson = read_json(json_path: "./packages/openland-mobile/version.json")
 runtimeVersion = versionJson[:runtimeVersion]
 build = Integer(ENV['BUILD_COUNTER'] || '1')
 version = "#{runtimeVersion}.#{build}"
+updatesPath = "mobile/v#{runtimeVersion}"
+
+if ENV['RELEASE_CHANNEL'] === 'staging'
+    version = "999.#{build}"
+    updatesPath = "mobile-staging/v#{runtimeVersion}"
+end
+
+updatesUrl = "https://updates.openland.com/#{updatesPath}"
+updatesAssetsUrl = "https://updates.openland.com/mobile/assets/"
 
 #
 # Configure
@@ -25,6 +34,13 @@ end
 #
 # Build
 #
+
+lane :build_bundle do
+    Dir.chdir("..") do
+        sh('rm', '-fr', './build/expo')
+        sh('expo', 'export', '--dump-sourcemap', '--asset-url', updatesAssetsUrl, '--public-url', updatesUrl, '--output-dir', './build/expo')
+    end
+end
 
 lane :build_android do
     gradle(task: 'clean', project_dir: 'android/', flags: '--info')
@@ -44,6 +60,7 @@ lane :build_ios do
 end
 
 lane :build do
+    build_bundle
     build_android
     build_ios
 end
@@ -60,7 +77,21 @@ lane :upload_android do
    upload_to_play_store(aab: './android/app/build/outputs/bundle/release/app-release.aab', track: 'internal')
 end
 
+lane :upload_bundle do
+    Dir.chdir("../build/expo/assets") do
+        sh('gsutil', 'rsync', '.', 'gs://openland-updates/mobile/assets/')
+    end
+    Dir.chdir("../build/expo/bundles") do
+        sh('gsutil', 'cp', '*.js', "gs://openland-updates/#{updatesPath}/bundles/")
+    end
+    Dir.chdir("../build/expo") do
+        sh('gsutil', 'cp', './android-index.json', "gs://openland-updates/#{updatesPath}/")
+        sh('gsutil', 'cp', './ios-index.json', "gs://openland-updates/#{updatesPath}/")
+    end
+end
+
 lane :upload do
+    upload_bundle
     upload_android
     upload_ios
 end

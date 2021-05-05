@@ -121,6 +121,10 @@ def runtimeVersion = versionJson.runtimeVersion
 def appVersionCode = Integer.valueOf(System.env.BUILD_COUNTER ?: 1)
 def appVersion = runtimeVersion + "." + appVersionCode
 
+if (System.env.RELEASE_CHANNEL == "staging") {
+    appVersion = "999." + appVersionCode
+}
+
 def enableHermes = true
 project.ext.react.put("enableHermes", enableHermes)
 
