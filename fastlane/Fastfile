@@ -1,7 +1,7 @@
 fastlane_version '2.53.1'
 
 lane :build_android do
-    gradle(task: 'clean', project_dir: 'android/')
+    gradle(task: 'clean', project_dir: 'android/', flags: '--info')
     gradle(task: 'bundle', build_type: 'Release', project_dir: 'android/')
 end
 
