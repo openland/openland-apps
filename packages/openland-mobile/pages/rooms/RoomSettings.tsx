@@ -14,6 +14,7 @@ import { ZCounter } from 'openland-mobile/components/ZCounter';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { showRaisedHands } from './RaisedHands';
 import { ReportCallErrorType } from 'openland-mobile/utils/voiceChatErrorNotifier';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 
 const KeyboardHandlerContainer = React.memo((props: { children: JSX.Element | JSX.Element[] }) => {
     const [keyboardHeight, setKeyboardHeight] = React.useState(0);
@@ -243,6 +244,12 @@ export const showRoomSettings = (props: {
                 backgroundColor={props.theme.accentPrimary}
                 textColor={props.theme.foregroundInverted}
             />,
+        );
+        builder.action(
+            'Close room',
+            () => getClient().mutateVoiceChatEnd({ id: props.roomId }),
+            false,
+            require('assets/ic-door-leave-24.png'),
         );
     }
     builder.action(

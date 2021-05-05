@@ -9,6 +9,7 @@ import IcMicOn from 'openland-icons/s/ic-mic-on-36.svg';
 import IcMicOff from 'openland-icons/s/ic-mic-off-36.svg';
 import IcEdit from 'openland-icons/s/ic-edit-24.svg';
 import IcHand from 'openland-icons/s/ic-hand-24.svg';
+import IcDoorLeave from 'openland-icons/s/ic-door-leave-24.svg';
 import { css, cx } from 'linaria';
 import { VoiceChatParticipant, VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import { SvgLoader } from 'openland-x/XLoader';
@@ -19,6 +20,7 @@ import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { showEditRoom } from './showEditRoom';
 import { showRaisedHands } from './showRaisedHands';
 import { showInviteToRoom } from './showInviteToRoom';
+import { useClient } from 'openland-api/useClient';
 
 const RoomControlItem = React.memo((props: {
     icon: JSX.Element,
@@ -145,7 +147,7 @@ const SettingsMenu = React.memo((props: {
     roomId: string,
     raisedHands: VoiceChatParticipant[],
 }) => {
-    // const client = useClient();
+    const client = useClient();
     let popper = new UPopperMenuBuilder();
     const { roomId, raisedHands } = props;
 
@@ -164,14 +166,14 @@ const SettingsMenu = React.memo((props: {
                 showRaisedHands({ roomId, raisedHands });
             },
             counter: raisedHands.length,
+        })
+        .item({
+            title: 'Close room',
+            icon: <IcDoorLeave />,
+            action: async () => {
+                await client.mutateVoiceChatEnd({ id: props.roomId });
+            },
         });
-    // .item({
-    //     title: 'Close room',
-    //     icon: <IcLeave />,
-    //     action: async () => {
-    //         await client.mutateVoiceChatEnd({ id: props.roomId });
-    //     },
-    // });
 
     return popper.build(props.ctx, 220);
 });
