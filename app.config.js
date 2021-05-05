@@ -1,6 +1,9 @@
 const build = parseInt(process.env.BUILD_COUNTER || '1', 10);
-const runtimeVersion = require('./packages/openland-mobile/version.json').runtimeVersion;
-const internalVersion = runtimeVersion + '.' + build;
+let runtimeVersion = require('./packages/openland-mobile/version.json').runtimeVersion;
+let internalVersion = runtimeVersion + '.' + build;
+if (process.env.RELEASE_CHANNEL === 'staging') {
+    internalVersion = '999.' + build;
+}
 
 export default {
     name: 'Openland',

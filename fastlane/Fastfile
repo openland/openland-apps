@@ -9,6 +9,12 @@ runtimeVersion = versionJson[:runtimeVersion]
 build = Integer(ENV['BUILD_COUNTER'] || '1')
 version = "#{runtimeVersion}.#{build}"
 updatesPath = "mobile/v#{runtimeVersion}"
+
+if ENV['RELEASE_CHANNEL'] === 'staging'
+    version = "999.#{build}"
+    updatesPath = "mobile-staging/v#{runtimeVersion}"
+end
+
 updatesUrl = "https://updates.openland.com/#{updatesPath}"
 updatesAssetsUrl = "https://updates.openland.com/mobile/assets/"
 
