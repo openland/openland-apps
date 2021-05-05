@@ -18,7 +18,7 @@ import { SDevice } from 'react-native-s/SDevice';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SShareButton } from 'react-native-s/SShareButton';
 import { SStatusBar } from 'react-native-s/SStatusBar';
-import { isVideo } from 'openland-mobile/utils/isVideo';
+import { isAudio, isPlayableMedia, isVideo } from 'openland-mobile/utils/isVideo';
 
 export interface ZFileModalConfig {
     uuid: string;
@@ -47,7 +47,7 @@ interface ZFileModal {
 interface FilePreviewInnerProps extends ZFileModal {
     config: ZFileModalConfig;
     onClose: () => void;
-    style: 'default' | 'video';
+    style: 'default' | 'playable';
     theme: ThemeGlobal;
     router?: SRouter;
 }
@@ -60,7 +60,7 @@ interface FilePreviewInnerState {
 
 class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePreviewInnerState> {
     subscription?: WatchSubscription;
-    content: 'unknown' | 'pdf' | 'video' = 'unknown';
+    content: 'unknown' | 'pdf' | 'video' | 'audio' = 'unknown';
 
     constructor(props: FilePreviewInnerProps) {
         super(props);
@@ -70,11 +70,13 @@ class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePr
             this.content = 'pdf';
         } else if (isVideo(props.config.name)) {
             this.content = 'video';
+        } else if (isAudio(props.config.name)) {
+            this.content = 'audio';
         }
     }
 
     componentDidMount() {
-        if (this.content === 'video') {
+        if (this.content === 'video' || this.content === 'audio') {
             SStatusBar.setBarStyle('light-content');
         }
 
@@ -138,7 +140,7 @@ class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePr
             >
                 <SCloseButton tintColor={iconColor} onPress={this.props.onClose} />
                 <Text style={{ ...TextStyles.Headline, flexGrow: 1, textAlign: 'center', color: textColor }} allowFontScaling={false}>
-                    {this.content === 'video' ? 'Video' : 'Document'}
+                    {this.content === 'video' ? 'Video' : this.content === 'audio' ? 'Audio' : 'Document'}
                 </Text>
                 <SShareButton tintColor={iconColor} onPress={this.handleOpen} />
             </View>
@@ -173,7 +175,7 @@ class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePr
             );
         }
 
-        if (this.content === 'video') {
+        if (this.content === 'video' || this.content === 'audio') {
             content = <ZVideoComponent uuid={config.uuid} name={config.name} completed={this.state.completed} />;
         }
 
@@ -195,7 +197,7 @@ export const ZFileModal = React.memo((props: ZFileModal) => {
             {...props}
             theme={theme}
             router={router}
-            style={isVideo(props.config.name) ? 'video' : 'default'}
+            style={isPlayableMedia(props.config.name) ? 'playable' : 'default'}
         />
     );
 });
