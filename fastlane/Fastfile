@@ -79,7 +79,7 @@ end
 
 lane :upload_bundle do
     Dir.chdir("../build/expo/assets") do
-        sh('gsutil', 'rsync', '.', 'gs://openland-updates/mobile/assets/')
+        sh('gsutil', 'rsync', '.', 'gs://openland-updates/assets/')
     end
     Dir.chdir("../build/expo/bundles") do
         sh('gsutil', 'cp', '*.js', "gs://openland-updates/#{updatesPath}/bundles/")
