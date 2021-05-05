@@ -3,7 +3,6 @@ import {
     UserShort,
     RoomMemberRole,
     OrganizationMemberRole,
-    UserBadge,
 } from 'openland-api/spacex.types';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { View, Text, Image } from 'react-native';
@@ -11,11 +10,11 @@ import { PresenceComponent } from './PresenceComponent';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
 
 interface UserViewProps {
     user: UserShort;
     memberRole?: RoomMemberRole | OrganizationMemberRole;
-    badge?: UserBadge | null;
     enabled?: boolean;
     onPress: () => void;
     onLongPress?: () => void;
@@ -28,7 +27,6 @@ export const UserView = (props: UserViewProps) => {
     const {
         user,
         memberRole,
-        badge,
         enabled,
         onPress,
         onLongPress,
@@ -78,7 +76,7 @@ export const UserView = (props: UserViewProps) => {
                     paddingRight: paddingRight || 16
                 }}
             >
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     {showCrown && (
                         <Image
                             source={require('assets/ic-crown-16.png')}
@@ -89,22 +87,11 @@ export const UserView = (props: UserViewProps) => {
                             }}
                         />
                     )}
-                    {!!badge && (
-                        <Image
-                            source={require('assets/ic-star-admin-16.png')}
-                            style={{
-                                tintColor: theme.accentPrimary,
-                                alignSelf: 'center',
-                                marginRight: 3,
-                            }}
-                        />
-                    )}
                     <Text
                         style={{
                             ...TextStyles.Label1,
                             color: theme.foregroundPrimary,
-                            flexGrow: 1,
-                            flexBasis: 0,
+                            flexShrink: 1,
                         }}
                         numberOfLines={1}
                         ellipsizeMode="tail"
@@ -112,6 +99,11 @@ export const UserView = (props: UserViewProps) => {
                     >
                         {user.name}
                     </Text>
+                    {!!user.systemBadge && (
+                        <View style={{ marginLeft: 8, flexShrink: 0 }}>
+                            <PremiumBadge />
+                        </View>
+                    )}
                 </View>
                 {subtitle ? (
                     <Text

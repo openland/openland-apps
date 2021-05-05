@@ -46,8 +46,8 @@ export interface DataSourceMessageItem {
         photo: string | null;
         isBot: boolean;
         shortname: string | null;
+        systemBadge: string | null;
     };
-    senderBadge?: Types.UserBadge;
     text?: string;
     isEdited?: boolean;
     reply?: DataSourceMessageItem[];
@@ -132,7 +132,6 @@ export function convertPartialMessage(src: RecursivePartial<Types.FullMessage> &
         attachments: [],
         date: null,
         fallback: "Unknow message type",
-        senderBadge: null,
         edited: false,
         message: null,
         source: null,
@@ -159,7 +158,6 @@ export function convertMessage(src: Types.FullMessage & { repeatKey?: string }, 
         key: src.repeatKey || src.id,
         date: parseInt(src.date, 10),
         isOut: src.sender.id === engine.user.id,
-        senderBadge: src.senderBadge || undefined,
         sender: src.sender,
         text: src.message || undefined,
         isSending: false,
@@ -190,7 +188,6 @@ export function convertMessageBack(src: DataSourceMessageItem): Types.FullMessag
         message: src.text || null,
         fallback: src.fallback || 'unknown message type',
         sender: src.sender,
-        senderBadge: src.senderBadge || null,
         spans: src.spans || [],
         commentsCount: src.commentsCount || 0,
         attachments: src.attachments || [],
@@ -287,7 +284,6 @@ export class ConversationEngine implements MessageSendHandler {
     isChannel?: boolean;
     isPrivate?: boolean;
     user?: Types.ChatInit_room_PrivateRoom_user;
-    badge?: Types.UserBadge;
     isSavedMessage?: boolean;
     isBanned?: boolean;
 
@@ -367,7 +363,6 @@ export class ConversationEngine implements MessageSendHandler {
         this.room = initialChat.room;
         this.pinId = (initialChat.room && initialChat.room.pinnedMessage) ? initialChat.room.pinnedMessage.id : undefined;
         this.role = sharedRoom ? sharedRoom.role : null;
-        this.badge = initialChat.room && initialChat.room.myBadge || undefined;
         this.canEdit = ((sharedRoom && sharedRoom.canEdit) || AppConfig.isSuperAdmin()) || false;
         this.canPin = this.canEdit || !!privateRoom || false;
         this.canReply = getCanReply(initialChat.room);
@@ -1114,9 +1109,9 @@ export class ConversationEngine implements MessageSendHandler {
                     name: this.engine.user.name,
                     shortname: this.engine.user.shortname,
                     photo: this.engine.user.photo,
+                    systemBadge: this.engine.user.systemBadge,
                     isBot: false
                 },
-                senderBadge: this.badge,
                 isOut: true,
                 isSending: true,
                 text: src.message ? src.message : undefined,
@@ -1308,6 +1303,7 @@ export class ConversationEngine implements MessageSendHandler {
                 name: this.engine.user.name,
                 shortname: this.engine.user.shortname,
                 photo: this.engine.user.photo,
+                systemBadge: this.engine.user.systemBadge,
                 isBot: false
             };
             let group = prepareSenderIfNeeded(sender, m, parseInt(m.date, 10));

@@ -12,6 +12,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { formatPhone } from 'openland-y-utils/auth/formatPhone';
+import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
 import { ZHero } from 'openland-mobile/components/ZHero';
 import { plural, pluralForm } from 'openland-y-utils/plural';
 import { SHeader } from 'react-native-s/SHeader';
@@ -283,9 +284,10 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                     title="Mute"
                     priority={2}
                     key={`mute-${muted}`}
-                    icon={muted
-                        ? require('assets/ic-notifications-24.png')
-                        : require('assets/ic-notifications-off-24.png')
+                    icon={
+                        muted
+                            ? require('assets/ic-notifications-24.png')
+                            : require('assets/ic-notifications-off-24.png')
                     }
                     onPress={onMutePress}
                 />
@@ -305,6 +307,19 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                     userFollowers={userFollowers}
                     badge={lastseen}
                     subtitle={profileType === 'bot' ? 'Bot' : undefined}
+                    titleIconRightElement={
+                        !!user.systemBadge ? (
+                            <View
+                                style={{
+                                    marginLeft: 8,
+                                    marginTop: Platform.OS === 'ios' ? 2 : 4,
+                                    alignSelf: 'center',
+                                }}
+                            >
+                                <PremiumBadge />
+                            </View>
+                        ) : undefined
+                    }
                 >
                     <ZButton
                         title={messageButtonTitle}
@@ -439,9 +454,9 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                         actionRight={
                             mutualGroups.count > 3
                                 ? {
-                                    title: 'See all',
-                                    onPress: () => router.push('UserMutualGroups', { userId }),
-                                }
+                                      title: 'See all',
+                                      onPress: () => router.push('UserMutualGroups', { userId }),
+                                  }
                                 : undefined
                         }
                         useSpacer={true}

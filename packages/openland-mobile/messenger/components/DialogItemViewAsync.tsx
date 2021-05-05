@@ -145,6 +145,12 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                             >
                                 {isSavedMessages ? 'Saved messages' : item.title}
                             </ASText>
+                            {/*TODO: uncomment pro*/}
+                            {/*{isUser && (*/}
+                            {/*    <ASFlex marginLeft={8} marginTop={Platform.OS === 'ios' ? 5 : 2}>*/}
+                            {/*        <PremiumBadgeAsync theme={theme} />*/}
+                            {/*    </ASFlex>*/}
+                            {/*)}*/}
                             {item.featured && theme.displayFeaturedIcon && (
                                 <ASFlex alignItems="center" marginLeft={4} marginTop={4}>
                                     <ASImage

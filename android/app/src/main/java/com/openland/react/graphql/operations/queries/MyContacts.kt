@@ -21,6 +21,6 @@ internal val MyContactsSelector = obj(
 val MyContacts = object: OperationDefinition {
     override val name = "MyContacts"
     override val kind = OperationKind.QUERY
-    override val body = "query MyContacts(\$first:Int!,\$after:String){myContacts(first:\$first,after:\$after){__typename items{__typename id user{__typename ...UserShort}}cursor}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot}"
+    override val body = "query MyContacts(\$first:Int!,\$after:String){myContacts(first:\$first,after:\$after){__typename items{__typename id user{__typename ...UserShort}}cursor}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot systemBadge}"
     override val selector = MyContactsSelector
 }

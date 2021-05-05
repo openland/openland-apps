@@ -5,6 +5,7 @@ import { TextStylesAsync } from 'openland-mobile/styles/AppStyles';
 import { GlobalSearch_items_User, GlobalSearch_items_Organization, GlobalSearch_items_SharedRoom, GlobalSearch_items } from 'openland-api/spacex.types';
 import { ASAvatar } from 'openland-mobile/messenger/components/ASAvatar';
 import { UserAvatar } from 'openland-mobile/messenger/components/UserAvatar';
+import { PremiumBadgeAsync } from 'openland-mobile/components/PremiumBadge';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { Dimensions, Platform } from 'react-native';
@@ -18,12 +19,12 @@ interface ItemBaseProps {
     name: string;
     theme: ThemeGlobal;
     featured?: boolean;
-
+    proBadge?: boolean;
     onPress: () => void;
 }
 
 const ItemBase = React.memo((props: ItemBaseProps) => {
-    const { onPress, avatar, name, featured, theme } = props;
+    const { onPress, avatar, name, featured, theme, proBadge } = props;
     const showFeatured = featured && theme.displayFeaturedIcon;
     const width = React.useMemo(() => Dimensions.get('screen').width - (showFeatured ? 94 : 74), [showFeatured]);
 
@@ -36,6 +37,11 @@ const ItemBase = React.memo((props: ItemBaseProps) => {
                 <ASText {...TextStylesAsync.Label1} maxWidth={width} color={theme.foregroundPrimary} numberOfLines={1} lineHeight={20}>
                     {name}
                 </ASText>
+                {proBadge && (
+                    <ASFlex marginLeft={8}>
+                        <PremiumBadgeAsync theme={theme} />
+                    </ASFlex>
+                )}
                 {showFeatured && (
                     <ASImage source={require('assets/ic-verified-16.png')} tintColor="#3DA7F2" width={16} height={16} marginLeft={4} marginTop={2} alignSelf="center" />
                 )}
@@ -121,6 +127,7 @@ export const GlobalSearchItemUser = React.memo((props: ItemUserProps) => {
             name={isSavedMessages ? 'Saved messages' : item.name}
             onPress={handlePress}
             theme={theme}
+            proBadge={!!item.systemBadge}
             avatar={
                 <UserAvatar
                     src={item.photo}

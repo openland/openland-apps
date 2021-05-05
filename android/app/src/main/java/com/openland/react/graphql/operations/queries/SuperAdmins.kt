@@ -18,6 +18,6 @@ internal val SuperAdminsSelector = obj(
 val SuperAdmins = object: OperationDefinition {
     override val name = "SuperAdmins"
     override val kind = OperationKind.QUERY
-    override val body = "query SuperAdmins{superAdmins{__typename role user{__typename ...UserShort}email}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot}"
+    override val body = "query SuperAdmins{superAdmins{__typename role user{__typename ...UserShort}email}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot systemBadge}"
     override val selector = SuperAdminsSelector
 }

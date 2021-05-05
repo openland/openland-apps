@@ -44,6 +44,7 @@ fragment MessageSender on User {
     photo
     isBot
     shortname
+    systemBadge
 }
 
 fragment MessageReactionCounter on ReactionCounter {
@@ -234,9 +235,6 @@ fragment QuotedMessage on ModernMessage {
     sender {
         ...MessageSender
     }
-    senderBadge {
-        ...UserBadge
-    }
     fallback
     source {
         ... on MessageSourceChat {
@@ -279,9 +277,6 @@ fragment FullMessage on ModernMessage {
     date
     sender {
         ...MessageSender
-    }
-    senderBadge {
-        ...UserBadge
     }
     message
     fallback
@@ -369,9 +364,6 @@ fragment FullMessageWithoutSource on ModernMessage {
     date
     sender {
         ...MessageSender
-    }
-    senderBadge {
-        ...UserBadge
     }
     message
     fallback

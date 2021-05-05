@@ -10,8 +10,8 @@ import { useClient } from 'openland-api/useClient';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { useLastSeen } from 'openland-y-utils/LastSeen';
 import { TextStyles, CompensationAlpha } from 'openland-mobile/styles/AppStyles';
-import Lottie from 'lottie-react-native';
 import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
+import Lottie from 'lottie-react-native';
 
 const styles = StyleSheet.create({
     title: {
@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
     } as TextStyle,
 });
 
-const SharedChatHeaderContent = React.memo((props: { room: RoomChat_room_SharedRoom, typing?: string, theme: ThemeGlobal, muted: boolean }) => {
-    const { room, typing, theme } = props;
+const SharedChatHeaderContent = React.memo((props: { room: RoomChat_room_SharedRoom, typing?: string, typingType?: string, theme: ThemeGlobal, muted: boolean }) => {
+    const { room, typing, typingType, theme } = props;
     const [onlineCount, setOnlineCount] = React.useState<number>(0);
 
     getChatOnlinesCount(room.id, useClient(), (count) => setOnlineCount(count));
@@ -83,10 +83,85 @@ const SharedChatHeaderContent = React.memo((props: { room: RoomChat_room_SharedR
                     />
                 )}
             </View>
-            <Text style={[styles.subTitle, { color: accent ? theme.accentPrimary : theme.foregroundSecondary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
-                {subtitle}
-                {onlineCount > 0 && (!typing) && (<Text style={{ color: theme.accentPrimary }} allowFontScaling={false}>{'  '}{onlineCount} online</Text>)}
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {typing && typingType === TypingType.TEXT && (
+                    <Lottie
+                        loop={true}
+                        autoPlay={true}
+                        resizeMode="contain"
+                        source={require('assets/animations/typing.json')}
+                        style={{
+                            width: 16,
+                            height: 16,
+                            marginRight: 8,
+                            marginTop: 0.3,
+                        }}
+                        colorFilters={[{
+                            keypath: "1",
+                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                        }, {
+                            keypath: "2",
+                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                        }, {
+                            keypath: "3",
+                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                        }]}
+                    />
+                )}
+
+                {/* sticker typing */}
+                {typing && typingType === TypingType.STICKER && (
+                    <Lottie
+                        loop={true}
+                        autoPlay={true}
+                        resizeMode="contain"
+                        source={require('assets/animations/stickerTyping.json')}
+                        style={{
+                            width: 16,
+                            height: 16,
+                            marginRight: 8,
+                            marginTop: 0.3,
+                        }}
+                        colorFilters={[{
+                            keypath: "1",
+                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                        }, {
+                            keypath: "2",
+                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                        }]}
+                    />
+                )}
+
+                {/* file typing */}
+                {typing && typingType !== TypingType.TEXT && typingType !== TypingType.STICKER && (
+                    <Lottie
+                        loop={true}
+                        autoPlay={true}
+                        resizeMode="contain"
+                        source={require('assets/animations/fileTyping.json')}
+                        style={{
+                            width: 16,
+                            height: 16,
+                            marginRight: 8,
+                            marginTop: 0.3,
+                        }}
+                        colorFilters={[{
+                            keypath: "1",
+                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                        }, {
+                            keypath: "2",
+                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                        }, {
+                            keypath: "Mask",
+                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                        }]}
+                    />
+                )}
+                <Text style={[styles.subTitle, { color: accent ? theme.accentPrimary : theme.foregroundSecondary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
+                    {subtitle}
+                    {onlineCount > 0 && (!typing) && (<Text style={{ color: theme.accentPrimary }} allowFontScaling={false}>{'  '}{onlineCount} online</Text>)}
+                </Text>
+            </View>
         </View>
     );
 });
@@ -130,6 +205,7 @@ const PrivateChatHeaderContent = React.memo((props: { room: RoomChat_room_Privat
         >
             <View style={{ flexDirection: 'row' }}>
                 <Text style={[styles.title, { color: theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{isSavedMessages ? 'Saved messages' : title}</Text>
+                {!!(room.user.systemBadge && !isSavedMessages) && <View style={{ marginLeft: 8, marginTop: Platform.OS === 'ios' ? 0 : 1, marginBottom: Platform.OS === 'ios' ? 0 : -1, alignSelf: 'center' }}><PremiumBadge /></View>}
                 {props.muted && (
                     <Image
                         source={require('assets/ic-muted-16.png')}
@@ -232,7 +308,7 @@ const ChatHeaderContent = React.memo((props: { conversationId: string, router: S
     let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room as RoomChat_room_PrivateRoom : null;
 
     if (sharedRoom) {
-        return <SharedChatHeaderContent room={sharedRoom} typing={props.typing} theme={theme} muted={props.muted} />;
+        return <SharedChatHeaderContent room={sharedRoom} typing={props.typing} typingType={props.typingType} theme={theme} muted={props.muted} />;
     }
 
     if (privateRoom) {

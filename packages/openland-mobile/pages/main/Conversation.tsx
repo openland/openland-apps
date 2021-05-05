@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextInput, Linking } from 'react-native';
+import { View, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextInput, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine, convertMessageBack } from 'openland-engines/messenger/ConversationEngine';
@@ -85,7 +85,6 @@ interface ConversationRootState {
 
 class ConversationRoot extends React.Component<ConversationRootProps, ConversationRootState> {
     engine: ConversationEngine;
-    listRef = React.createRef<FlatList<any>>();
     inputRef = React.createRef<TextInput>();
     waitingForKeyboard = false;
     waitingForKeyboardNative = false;

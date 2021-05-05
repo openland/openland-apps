@@ -280,9 +280,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryRoomChat(variables: Types.RoomChatVariables, params?: QueryParameters): Promise<Types.RoomChat> {
         return this.query('RoomChat', variables, params);
     }
-    queryRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, params?: QueryParameters): Promise<Types.RoomFeaturedMembers> {
-        return this.query('RoomFeaturedMembers', variables, params);
-    }
     queryRoomInviteInfo(variables: Types.RoomInviteInfoVariables, params?: QueryParameters): Promise<Types.RoomInviteInfo> {
         return this.query('RoomInviteInfo', variables, params);
     }
@@ -345,9 +342,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     querySuperAllStickerPacks(params?: QueryParameters): Promise<Types.SuperAllStickerPacks> {
         return this.query('SuperAllStickerPacks', undefined, params);
-    }
-    querySuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, params?: QueryParameters): Promise<Types.SuperBadgeInRoom> {
-        return this.query('SuperBadgeInRoom', variables, params);
     }
     querySuperStickerPack(variables: Types.SuperStickerPackVariables, params?: QueryParameters): Promise<Types.SuperStickerPack> {
         return this.query('SuperStickerPack', variables, params);
@@ -673,9 +667,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchRoomChat(variables: Types.RoomChatVariables, params?: QueryParameters): Promise<Types.RoomChat> {
         return this.refetch('RoomChat', variables, params);
     }
-    refetchRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, params?: QueryParameters): Promise<Types.RoomFeaturedMembers> {
-        return this.refetch('RoomFeaturedMembers', variables, params);
-    }
     refetchRoomInviteInfo(variables: Types.RoomInviteInfoVariables, params?: QueryParameters): Promise<Types.RoomInviteInfo> {
         return this.refetch('RoomInviteInfo', variables, params);
     }
@@ -738,9 +729,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchSuperAllStickerPacks(params?: QueryParameters): Promise<Types.SuperAllStickerPacks> {
         return this.refetch('SuperAllStickerPacks', undefined, params);
-    }
-    refetchSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, params?: QueryParameters): Promise<Types.SuperBadgeInRoom> {
-        return this.refetch('SuperBadgeInRoom', variables, params);
     }
     refetchSuperStickerPack(variables: Types.SuperStickerPackVariables, params?: QueryParameters): Promise<Types.SuperStickerPack> {
         return this.refetch('SuperStickerPack', variables, params);
@@ -1066,9 +1054,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateRoomChat(variables: Types.RoomChatVariables, updater: (data: Types.RoomChat) => Types.RoomChat | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomChat', variables);
     }
-    updateRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, updater: (data: Types.RoomFeaturedMembers) => Types.RoomFeaturedMembers | null): Promise<boolean> {
-        return this.updateQuery(updater, 'RoomFeaturedMembers', variables);
-    }
     updateRoomInviteInfo(variables: Types.RoomInviteInfoVariables, updater: (data: Types.RoomInviteInfo) => Types.RoomInviteInfo | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomInviteInfo', variables);
     }
@@ -1131,9 +1116,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateSuperAllStickerPacks(updater: (data: Types.SuperAllStickerPacks) => Types.SuperAllStickerPacks | null): Promise<boolean> {
         return this.updateQuery(updater, 'SuperAllStickerPacks', undefined);
-    }
-    updateSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, updater: (data: Types.SuperBadgeInRoom) => Types.SuperBadgeInRoom | null): Promise<boolean> {
-        return this.updateQuery(updater, 'SuperBadgeInRoom', variables);
     }
     updateSuperStickerPack(variables: Types.SuperStickerPackVariables, updater: (data: Types.SuperStickerPack) => Types.SuperStickerPack | null): Promise<boolean> {
         return this.updateQuery(updater, 'SuperStickerPack', variables);
@@ -1639,11 +1621,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useRoomChat(variables: Types.RoomChatVariables, params?: SpaceQueryWatchParameters): Types.RoomChat | null {
         return this.useQuery('RoomChat', variables, params);
     }
-    useRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomFeaturedMembers | null;
-    useRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, params?: SpaceQueryWatchParameters): Types.RoomFeaturedMembers;
-    useRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, params?: SpaceQueryWatchParameters): Types.RoomFeaturedMembers | null {
-        return this.useQuery('RoomFeaturedMembers', variables, params);
-    }
     useRoomInviteInfo(variables: Types.RoomInviteInfoVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomInviteInfo | null;
     useRoomInviteInfo(variables: Types.RoomInviteInfoVariables, params?: SpaceQueryWatchParameters): Types.RoomInviteInfo;
     useRoomInviteInfo(variables: Types.RoomInviteInfoVariables, params?: SpaceQueryWatchParameters): Types.RoomInviteInfo | null {
@@ -1748,11 +1725,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useSuperAllStickerPacks(params?: SpaceQueryWatchParameters): Types.SuperAllStickerPacks;
     useSuperAllStickerPacks(params?: SpaceQueryWatchParameters): Types.SuperAllStickerPacks | null {
         return this.useQuery('SuperAllStickerPacks', undefined, params);
-    }
-    useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.SuperBadgeInRoom | null;
-    useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, params?: SpaceQueryWatchParameters): Types.SuperBadgeInRoom;
-    useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, params?: SpaceQueryWatchParameters): Types.SuperBadgeInRoom | null {
-        return this.useQuery('SuperBadgeInRoom', variables, params);
     }
     useSuperStickerPack(variables: Types.SuperStickerPackVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.SuperStickerPack | null;
     useSuperStickerPack(variables: Types.SuperStickerPackVariables, params?: SpaceQueryWatchParameters): Types.SuperStickerPack;
@@ -2185,12 +2157,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateSuperAdminRemove(variables: Types.SuperAdminRemoveVariables, params?: MutationParameters): Promise<Types.SuperAdminRemove> {
         return this.mutate('SuperAdminRemove', variables, params);
-    }
-    mutateSuperBadgeCreateToRoom(variables: Types.SuperBadgeCreateToRoomVariables, params?: MutationParameters): Promise<Types.SuperBadgeCreateToRoom> {
-        return this.mutate('SuperBadgeCreateToRoom', variables, params);
-    }
-    mutateSuperBadgeUnsetToRoom(variables: Types.SuperBadgeUnsetToRoomVariables, params?: MutationParameters): Promise<Types.SuperBadgeUnsetToRoom> {
-        return this.mutate('SuperBadgeUnsetToRoom', variables, params);
     }
     mutateUnBanUser(variables: Types.UnBanUserVariables, params?: MutationParameters): Promise<Types.UnBanUser> {
         return this.mutate('UnBanUser', variables, params);

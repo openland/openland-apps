@@ -123,6 +123,7 @@ const MessageComponent = React.memo((props: PageProps) => {
                         id: sender.id,
                         title: sender.name,
                     }}
+                    proBadge={!!sender.systemBadge}
                     title={sender.name}
                     subtitle={formatDateAtTime(parseInt(date, 10))}
                     onPress={() => router.push('ProfileUser', { id: sender.id })}

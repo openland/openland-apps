@@ -7,13 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00F258EA97B8CF0182CF4BEA /* libPods-openlandTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 668DD3828F1EB73FBBFBECBD /* libPods-openlandTests.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		440BD442C9014A379447F506 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E35F176CD4E46009EB90F2E /* AppCenter-Config.plist */; };
-		66D707344F4B2F0C5E35DC83 /* libPods-openland.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE9CC75B7C859C9C76FE5744 /* libPods-openland.a */; };
 		A0153A96222426F400C026A4 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0153A95222426F400C026A4 /* ShareViewController.swift */; };
 		A0153A99222426F400C026A4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0153A97222426F400C026A4 /* MainInterface.storyboard */; };
 		A030D384236B074B005917D1 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A030D383236B074A005917D1 /* AddressBook.framework */; };
@@ -99,6 +97,8 @@
 		AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC42129FA3C003706B3 /* Bridge.m */; };
 		AAE56DE4212A0CDC003706B3 /* Nuke.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; };
 		AAE56DE5212A0CDC003706B3 /* Nuke.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D758020AFAE36ECEE9A31FCD /* libPods-openlandTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 62CD22F8FF9005A702EF0B3C /* libPods-openlandTests.a */; };
+		DBE158DB4FFA766363CE4795 /* libPods-openland.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 538F6933EAA0CE8A204602CB /* libPods-openland.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -227,18 +227,20 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = openland/main.m; sourceTree = "<group>"; };
 		140BD70175364845BD979918 /* libLottieReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libLottieReactNative.a; sourceTree = "<group>"; };
 		18EC2FD3E40F4887822E0BE1 /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
-		2152CD4283A28E17F647273D /* Pods-openlandTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openlandTests.debug.xcconfig"; path = "Target Support Files/Pods-openlandTests/Pods-openlandTests.debug.xcconfig"; sourceTree = "<group>"; };
 		225A9B88E13940309EFA3D50 /* libAppCenterReactNativeCrashes.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNativeCrashes.a; sourceTree = "<group>"; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BC04373DF80411497509133 /* libFastImage.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libFastImage.a; sourceTree = "<group>"; };
 		42DDC5D7B8BC46629B7918F3 /* libLottie.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libLottie.a; sourceTree = "<group>"; };
+		538F6933EAA0CE8A204602CB /* libPods-openland.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-openland.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		53F5AB72267448BA8CB99FDA /* libA0Auth0.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libA0Auth0.a; sourceTree = "<group>"; };
 		5DAD0C618B9F41E699CF1155 /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
-		668DD3828F1EB73FBBFBECBD /* libPods-openlandTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-openlandTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		62CD22F8FF9005A702EF0B3C /* libPods-openlandTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-openlandTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7023E2C8438941E08C21ED1F /* libRNShare.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNShare.a; sourceTree = "<group>"; };
 		7343F041C8954F498DB6F766 /* libAppCenterReactNativeAnalytics.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNativeAnalytics.a; sourceTree = "<group>"; };
 		7575E5B9294149ECB950973F /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
 		7B3868FD2FDC437B84669D3B /* libRNRate.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNRate.a; sourceTree = "<group>"; };
+		83F303FB5CB60DE0E5A58DF7 /* Pods-openlandTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openlandTests.release.xcconfig"; path = "Target Support Files/Pods-openlandTests/Pods-openlandTests.release.xcconfig"; sourceTree = "<group>"; };
+		8C167F71C0B6777FC86370B4 /* Pods-openlandTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openlandTests.debug.xcconfig"; path = "Target Support Files/Pods-openlandTests/Pods-openlandTests.debug.xcconfig"; sourceTree = "<group>"; };
 		9261232309A543F49CE4D850 /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
 		936CCCC339C043038F75626F /* libRNReactNativeHapticFeedback.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNReactNativeHapticFeedback.a; sourceTree = "<group>"; };
 		95A2DA4661304DEE850FB986 /* libRNBlur.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBlur.a; sourceTree = "<group>"; };
@@ -348,16 +350,14 @@
 		AAE56DC32129FA25003706B3 /* Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Bridge.h; path = openland/hacks/Bridge.h; sourceTree = "<group>"; };
 		AAE56DC42129FA3C003706B3 /* Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Bridge.m; path = openland/hacks/Bridge.m; sourceTree = "<group>"; };
 		AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nuke.xcodeproj; path = Vendor/Nuke/Nuke.xcodeproj; sourceTree = "<group>"; };
-		AC7B88423845F8EAD8DCB734 /* Pods-openland.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openland.release.xcconfig"; path = "Target Support Files/Pods-openland/Pods-openland.release.xcconfig"; sourceTree = "<group>"; };
 		AE573BB4274A4A7687D530D8 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
 		B54BAE5BF85F49A3AE452322 /* libimageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libimageCropPicker.a; sourceTree = "<group>"; };
-		BE9CC75B7C859C9C76FE5744 /* libPods-openland.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-openland.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD66E08746544FAC954BD413 /* libRCTRestart.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTRestart.a; sourceTree = "<group>"; };
 		D1364232686B4C9CBE4687ED /* libRNGestureHandler.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGestureHandler.a; sourceTree = "<group>"; };
 		D42AFEFF61464D6C82A4A5F5 /* libRNSearchBar.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSearchBar.a; sourceTree = "<group>"; };
+		DAC5DF0F28F3547C91C4C5D9 /* Pods-openland.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openland.release.xcconfig"; path = "Target Support Files/Pods-openland/Pods-openland.release.xcconfig"; sourceTree = "<group>"; };
 		E6F85E750CB349B7995263A8 /* libRNThread.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNThread.a; sourceTree = "<group>"; };
-		EEBC54265D15510450AF331F /* Pods-openlandTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openlandTests.release.xcconfig"; path = "Target Support Files/Pods-openlandTests/Pods-openlandTests.release.xcconfig"; sourceTree = "<group>"; };
-		F0129911A3402B0C232928E2 /* Pods-openland.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openland.debug.xcconfig"; path = "Target Support Files/Pods-openland/Pods-openland.debug.xcconfig"; sourceTree = "<group>"; };
+		F342900DBD846CDBE17F1863 /* Pods-openland.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openland.debug.xcconfig"; path = "Target Support Files/Pods-openland/Pods-openland.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -365,7 +365,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00F258EA97B8CF0182CF4BEA /* libPods-openlandTests.a in Frameworks */,
+				D758020AFAE36ECEE9A31FCD /* libPods-openlandTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,7 +391,7 @@
 				AAD8F14C2208A5E5007C4FE3 /* AudioToolbox.framework in Frameworks */,
 				AAD8F14A2208A5DF007C4FE3 /* AVFoundation.framework in Frameworks */,
 				AAE56DE4212A0CDC003706B3 /* Nuke.framework in Frameworks */,
-				66D707344F4B2F0C5E35DC83 /* libPods-openland.a in Frameworks */,
+				DBE158DB4FFA766363CE4795 /* libPods-openland.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,8 +486,8 @@
 				AA904699210F2EDB00F989BC /* QBImagePicker.framework */,
 				AA90469B210F2EDB00F989BC /* RSKImageCropper.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				BE9CC75B7C859C9C76FE5744 /* libPods-openland.a */,
-				668DD3828F1EB73FBBFBECBD /* libPods-openlandTests.a */,
+				538F6933EAA0CE8A204602CB /* libPods-openland.a */,
+				62CD22F8FF9005A702EF0B3C /* libPods-openlandTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -742,10 +742,10 @@
 		FB01BBF9C87681A139B9CFDB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				F0129911A3402B0C232928E2 /* Pods-openland.debug.xcconfig */,
-				AC7B88423845F8EAD8DCB734 /* Pods-openland.release.xcconfig */,
-				2152CD4283A28E17F647273D /* Pods-openlandTests.debug.xcconfig */,
-				EEBC54265D15510450AF331F /* Pods-openlandTests.release.xcconfig */,
+				F342900DBD846CDBE17F1863 /* Pods-openland.debug.xcconfig */,
+				DAC5DF0F28F3547C91C4C5D9 /* Pods-openland.release.xcconfig */,
+				8C167F71C0B6777FC86370B4 /* Pods-openlandTests.debug.xcconfig */,
+				83F303FB5CB60DE0E5A58DF7 /* Pods-openlandTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -757,11 +757,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "openlandTests" */;
 			buildPhases = (
-				32DFCC3987DF11A47097890C /* [CP] Check Pods Manifest.lock */,
+				24A2B38756776547E93EF523 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				96A41ECA9A2726BDB3C6AF16 /* [CP] Copy Pods Resources */,
+				C1E2B8B016BE5CB844EFA3A7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -777,16 +777,16 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "openland" */;
 			buildPhases = (
-				81A680BE9AF9AB1D4EE2AA02 /* [CP] Check Pods Manifest.lock */,
+				1D7D6BF413B81B6DA0A189F7 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				AA904695210F2C2900F989BC /* Embed Frameworks */,
 				A0DDD9B92226BE8B00AA3061 /* Embed App Extensions */,
-				8B331E392A91FD34D17E4EA3 /* [CP] Embed Pods Frameworks */,
-				D58CC1ACF2D2F2C4B3B11665 /* [CP] Copy Pods Resources */,
 				50593AA248A94CD3A03CB234 /* Upload source maps to Bugsnag */,
+				32191EF2F8702B0C3A2347FF /* [CP] Embed Pods Frameworks */,
+				6D239AC3BD0FEDEC79007387 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1009,43 +1009,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export EXTRA_PACKAGER_ARGS=\"--sourcemap-output $TMPDIR/$(md5 -qs \"$CONFIGURATION_BUILD_DIR\")-main.jsbundle.map\"\nexport NODE_BINARY=node\nexport BUNDLE_COMMAND=\"ram-bundle\"\nexport ENTRY_FILE=\"index.ts\"\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		32DFCC3987DF11A47097890C /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-openlandTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		50593AA248A94CD3A03CB234 /* Upload source maps to Bugsnag */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Upload source maps to Bugsnag";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "SOURCE_MAP=\"$TMPDIR/$(md5 -qs \"$CONFIGURATION_BUILD_DIR\")-main.jsbundle.map\" ../node_modules/@bugsnag/react-native/bugsnag-react-native-xcode.sh";
-		};
-		81A680BE9AF9AB1D4EE2AA02 /* [CP] Check Pods Manifest.lock */ = {
+		1D7D6BF413B81B6DA0A189F7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1067,7 +1031,29 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8B331E392A91FD34D17E4EA3 /* [CP] Embed Pods Frameworks */ = {
+		24A2B38756776547E93EF523 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-openlandTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		32191EF2F8702B0C3A2347FF /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1085,41 +1071,21 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-openland/Pods-openland-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		96A41ECA9A2726BDB3C6AF16 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-openlandTests/Pods-openlandTests-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe3DS2.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe3DS2.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-openlandTests/Pods-openlandTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A093F55022293812003D370B /* Run Script */ = {
+		50593AA248A94CD3A03CB234 /* Upload source maps to Bugsnag */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Run Script";
+			name = "Upload source maps to Bugsnag";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" \nif [[ -d \"Frameworks\" ]]; \nthen rm -fr Frameworks \nfi\n";
+			shellScript = "SOURCE_MAP=\"$TMPDIR/$(md5 -qs \"$CONFIGURATION_BUILD_DIR\")-main.jsbundle.map\" ../node_modules/@bugsnag/react-native/bugsnag-react-native-xcode.sh";
 		};
-		D58CC1ACF2D2F2C4B3B11665 /* [CP] Copy Pods Resources */ = {
+		6D239AC3BD0FEDEC79007387 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1153,6 +1119,40 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-openland/Pods-openland-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A093F55022293812003D370B /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\" \nif [[ -d \"Frameworks\" ]]; \nthen rm -fr Frameworks \nfi\n";
+		};
+		C1E2B8B016BE5CB844EFA3A7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-openlandTests/Pods-openlandTests-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe3DS2.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe3DS2.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-openlandTests/Pods-openlandTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1285,7 +1285,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2152CD4283A28E17F647273D /* Pods-openlandTests.debug.xcconfig */;
+			baseConfigurationReference = 8C167F71C0B6777FC86370B4 /* Pods-openlandTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1347,7 +1347,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EEBC54265D15510450AF331F /* Pods-openlandTests.release.xcconfig */;
+			baseConfigurationReference = 83F303FB5CB60DE0E5A58DF7 /* Pods-openlandTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1405,7 +1405,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F0129911A3402B0C232928E2 /* Pods-openland.debug.xcconfig */;
+			baseConfigurationReference = F342900DBD846CDBE17F1863 /* Pods-openland.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1464,7 +1464,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AC7B88423845F8EAD8DCB734 /* Pods-openland.release.xcconfig */;
+			baseConfigurationReference = DAC5DF0F28F3547C91C4C5D9 /* Pods-openland.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;

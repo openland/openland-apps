@@ -3,13 +3,12 @@ import { PageProps } from 'openland-mobile/components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { withApp } from 'openland-mobile/components/withApp';
-import { UserShort, RoomMemberRole, OrganizationMemberRole, UserBadge } from 'openland-api/spacex.types';
+import { UserShort, RoomMemberRole, OrganizationMemberRole } from 'openland-api/spacex.types';
 import { GlobalSearchMembers } from '../components/globalSearch/GlobalSearchMembers';
 
 export type RoomMemberType = {
     user: UserShort,
     role: RoomMemberRole,
-    badge: UserBadge | null,
     canKick: boolean,
 };
 

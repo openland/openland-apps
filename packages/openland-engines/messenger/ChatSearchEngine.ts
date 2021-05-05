@@ -62,7 +62,6 @@ export function convertSearchMessage(src: FullMessage_GeneralMessage & { repeatK
         key: src.repeatKey || src.id,
         date: parseInt(src.date, 10),
         isOut: src.sender.id === engine.user.id,
-        senderBadge: src.senderBadge || undefined,
         sender: src.sender,
         text: src.message || undefined,
         isSending: false,

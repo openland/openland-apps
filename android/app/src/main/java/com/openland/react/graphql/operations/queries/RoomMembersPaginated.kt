@@ -13,16 +13,12 @@ internal val RoomMembersPaginatedSelector = obj(
                         ))),
                     field("role", "role", notNull(scalar("String"))),
                     field("membership", "membership", notNull(scalar("String"))),
-                    field("canKick", "canKick", notNull(scalar("Boolean"))),
-                    field("badge", "badge", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("UserBadge", UserBadgeSelector)
-                        ))
+                    field("canKick", "canKick", notNull(scalar("Boolean")))
                 )))))
         )
 val RoomMembersPaginated = object: OperationDefinition {
     override val name = "RoomMembersPaginated"
     override val kind = OperationKind.QUERY
-    override val body = "query RoomMembersPaginated(\$roomId:ID!,\$first:Int,\$after:ID){members:roomMembers(roomId:\$roomId,first:\$first,after:\$after){__typename user{__typename ...UserShort}role membership canKick badge{__typename ...UserBadge}}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot}fragment UserBadge on UserBadge{__typename id name verified}"
+    override val body = "query RoomMembersPaginated(\$roomId:ID!,\$first:Int,\$after:ID){members:roomMembers(roomId:\$roomId,first:\$first,after:\$after){__typename user{__typename ...UserShort}role membership canKick}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot systemBadge}"
     override val selector = RoomMembersPaginatedSelector
 }

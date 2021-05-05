@@ -29,7 +29,6 @@ export const convertMessage = (
         date: parseInt(src.date, 10),
         isOut: true,
         sender: src.sender,
-        senderBadge: src.senderBadge || undefined,
         text: src.message || undefined,
         isSending: false,
         attachTop: false,

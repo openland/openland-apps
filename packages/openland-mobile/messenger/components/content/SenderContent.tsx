@@ -2,9 +2,11 @@ import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASText } from 'react-native-async-view/ASText';
 import { ASFlex } from 'react-native-async-view/ASFlex';
-import { ASImage } from 'react-native-async-view/ASImage';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TextStylesAsync } from 'openland-mobile/styles/AppStyles';
+
+// TODO: uncomment pro
+import { PremiumBadgeAsync } from 'openland-mobile/components/PremiumBadge';
 
 interface SenderContentProps {
     theme: ThemeGlobal;
@@ -23,23 +25,14 @@ export const SenderContent = React.memo((props: SenderContentProps) => {
             key={'name-' + theme.accentPrimary}
             alignItems="center"
         >
-            {!!message.senderBadge && (
-                <ASImage
-                    marginRight={3}
-                    source={require('assets/ic-featured-12.png')}
-                    width={12}
-                    height={12}
-                    tintColor={color}
-                />
-            )}
-            <ASText
-                {...TextStylesAsync.Label2}
-                color={color}
-                numberOfLines={1}
-                flexShrink={1}
-            >
+            <ASText {...TextStylesAsync.Label2} color={color} numberOfLines={1} flexShrink={1}>
                 {message.overrideName || message.sender.name}
             </ASText>
+            {!!message.sender.systemBadge && (
+                <ASFlex marginLeft={8} marginTop={3}>
+                    <PremiumBadgeAsync theme={theme}/>
+                </ASFlex>
+            )}
         </ASFlex>
     );
 });

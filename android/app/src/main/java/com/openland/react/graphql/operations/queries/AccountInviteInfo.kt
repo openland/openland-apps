@@ -31,6 +31,6 @@ internal val AccountInviteInfoSelector = obj(
 val AccountInviteInfo = object: OperationDefinition {
     override val name = "AccountInviteInfo"
     override val kind = OperationKind.QUERY
-    override val body = "query AccountInviteInfo(\$inviteKey:String!){invite:alphaInviteInfo(key:\$inviteKey){__typename id key orgId title photo joined creator{__typename ...UserSmall}forEmail forName membersCount organization{__typename id isCommunity:alphaIsCommunity about}}}fragment UserSmall on User{__typename id name firstName photo shortname isBot}"
+    override val body = "query AccountInviteInfo(\$inviteKey:String!){invite:alphaInviteInfo(key:\$inviteKey){__typename id key orgId title photo joined creator{__typename ...UserSmall}forEmail forName membersCount organization{__typename id isCommunity:alphaIsCommunity about}}}fragment UserSmall on User{__typename id name firstName photo shortname isBot systemBadge}"
     override val selector = AccountInviteInfoSelector
 }

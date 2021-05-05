@@ -2,7 +2,6 @@ import {
     FullMessage,
     FullMessage_GeneralMessage_spans,
     MyStickers_stickers_packs_stickers,
-    UserBadge,
 } from 'openland-api/spacex.types';
 import { DataSourceMessageItem } from './ConversationEngine';
 
@@ -25,7 +24,6 @@ export interface PendingMessage {
     spans: FullMessage_GeneralMessage_spans[];
     failed?: boolean;
     quoted?: DataSourceMessageItem[];
-    senderBadge?: UserBadge;
     sticker: MyStickers_stickers_packs_stickers | null;
 }
 

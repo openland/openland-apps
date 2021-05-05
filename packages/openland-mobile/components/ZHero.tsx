@@ -65,7 +65,8 @@ interface ZHeroProps {
     online?: boolean;
     title: string;
     titleIcon?: NodeRequire;
-    titleIconElement?: JSX.Element;
+    titleIconLeftElement?: JSX.Element;
+    titleIconRightElement?: JSX.Element;
     titleIconRight?: NodeRequire;
     titleIconRightColor?: string;
     titleColor?: string;
@@ -90,7 +91,8 @@ export const ZHero = React.memo<ZHeroProps>((props) => {
         online,
         title,
         titleIcon,
-        titleIconElement,
+        titleIconLeftElement,
+        titleIconRightElement,
         titleIconRight,
         titleIconRightColor,
         titleColor,
@@ -155,7 +157,7 @@ export const ZHero = React.memo<ZHeroProps>((props) => {
                             }}
                         />
                     )}
-                    {titleIconElement}
+                    {titleIconLeftElement}
                 </View>
                 <Text
                     style={[{ color: titleColor || theme.foregroundPrimary }, styles.title]}
@@ -166,6 +168,7 @@ export const ZHero = React.memo<ZHeroProps>((props) => {
                     {title}
                 </Text>
                 <View style={styles.titleIconBox}>
+                    {titleIconRightElement}
                     {titleIconRight && (
                         <Image
                             source={titleIconRight}

@@ -19,9 +19,6 @@ fragment NotificationFragment on Notification {
                                     id
                                     name
                                 }
-                                senderBadge {
-                                    ...UserBadge
-                                }
                             }
                         }
                         chat {
@@ -98,9 +95,6 @@ fragment NotificationCenterUpdateFragment on NotificationCenterUpdate {
                                     sender {
                                         id
                                         name
-                                    }
-                                    senderBadge {
-                                        ...UserBadge
                                     }
                                 }
                             }

@@ -27,6 +27,6 @@ internal val UserSearchForOrganizationSelector = obj(
 val UserSearchForOrganization = object: OperationDefinition {
     override val name = "UserSearchForOrganization"
     override val kind = OperationKind.QUERY
-    override val body = "query UserSearchForOrganization(\$orgId:ID!,\$query:String,\$first:Int!,\$after:String,\$sort:String){userSearchForOrg(orgId:\$orgId,query:\$query,first:\$first,after:\$after,sort:\$sort){__typename edges{__typename node{__typename ...UserShort isBanned isMeBanned}isMember cursor}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot}"
+    override val body = "query UserSearchForOrganization(\$orgId:ID!,\$query:String,\$first:Int!,\$after:String,\$sort:String){userSearchForOrg(orgId:\$orgId,query:\$query,first:\$first,after:\$after,sort:\$sort){__typename edges{__typename node{__typename ...UserShort isBanned isMeBanned}isMember cursor}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot systemBadge}"
     override val selector = UserSearchForOrganizationSelector
 }
