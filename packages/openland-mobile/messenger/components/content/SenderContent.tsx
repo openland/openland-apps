@@ -29,7 +29,7 @@ export const SenderContent = React.memo((props: SenderContentProps) => {
                 {message.overrideName || message.sender.name}
             </ASText>
             {!!message.sender.systemBadge && (
-                <ASFlex marginLeft={8}>
+                <ASFlex marginLeft={8} marginTop={3}>
                     <PremiumBadgeAsync theme={theme}/>
                 </ASFlex>
             )}
