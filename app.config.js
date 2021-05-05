@@ -1,3 +1,8 @@
+const build = parseInt(process.env.BUILD_COUNTER || '1', 10);
+const runtimeVersion = require('./packages/openland-mobile/version.json').runtimeVersion;
+const internalVersion = packageVersion + '.' + build;
+const runtimeVersion = packageVersion;
+
 export default {
     name: 'Openland',
     displayName: 'Openland',
@@ -6,15 +11,20 @@ export default {
         owner: 'openland',
         slug: 'Openland',
         sdkVersion: '40.0.0',
-        runtimeVersion: '1.1',
+        runtimeVersion,
         assetBundlePatterns: [
             "**/*"
         ],
         ios: {
-            bundleIdentifier: 'com.panic.avocado'
+            bundleIdentifier: 'com.openland.app'
         },
         android: {
-            package: 'com.panic.avocado'
+            package: 'com.openland.app'
+        },
+        extra: {
+            internalVersion,
+            runtimeVersion,
+            build
         }
     },
 }

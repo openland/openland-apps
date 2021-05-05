@@ -6,6 +6,7 @@ apply plugin: 'kotlinx-serialization'
 apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 
 import com.android.build.OutputFile
+import groovy.json.JsonSlurper
 
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
@@ -112,7 +113,14 @@ if ("$System.env.CI" == "true") {
 }
 
 def jscFlavor = 'org.webkit:android-jsc:+'
-def appVersionCode = Integer.valueOf(System.env.BUILD_NUMBER ?: 1)
+
+// Resolve versions
+def packageSlurper = new JsonSlurper()
+def versionJson = packageSlurper.parse file('../../packages/openland-mobile/version.json')
+def runtimeVersion = versionJson.runtimeVersion
+def appVersionCode = Integer.valueOf(System.env.BUILD_COUNTER ?: 1)
+def appVersion = packageVersion + "." + build
+
 def enableHermes = true
 project.ext.react.put("enableHermes", enableHermes)
 
@@ -133,8 +141,7 @@ android {
         renderscriptTargetApi 23
         renderscriptSupportModeEnabled true
         versionCode appVersionCode
-        versionName "1.1." + appVersionCode
-        println("##teamcity[buildNumber '1.1.$appVersionCode']")
+        versionName appVersion
         multiDexEnabled false
     }
     lintOptions {
