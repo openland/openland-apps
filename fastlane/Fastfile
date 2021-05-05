@@ -91,6 +91,7 @@ lane :upload_bundle do
 end
 
 lane :upload do
+    upload_bundle
     upload_android
     upload_ios
 end
