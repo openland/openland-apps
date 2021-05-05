@@ -23,7 +23,6 @@ import { MessageLikeButton } from './reactions/MessageLikeButton';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { XLoader } from 'openland-x/XLoader';
 import { MentionedUserPopperContent } from 'openland-web/components/EntityPopperContent';
-import StarIcon from 'openland-icons/s/ic-star-16.svg';
 import IcPending from 'openland-icons/s/ic-pending-16.svg';
 import IcSuccess from 'openland-icons/s/ic-success-16.svg';
 
@@ -81,15 +80,6 @@ const senderDateCursor = css`
     cursor: pointer;
 `;
 
-const senderBadgeStyle = css`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-self: center;
-    cursor: pointer;
-    margin-left: 4px;
-`;
-
 interface MessageSenderNameProps {
     sender: MessageSender;
     overrideName?: string | null;
@@ -132,17 +122,6 @@ export const MessageSenderName = React.memo((props: MessageSenderNameProps) => {
         </div>
     );
 });
-
-export const MessageSenderFeatured = React.memo(
-    (props: { senderBadgeNameEmojify: string | JSX.Element }) => {
-        const [show] = useCaptionPopper({ text: props.senderBadgeNameEmojify });
-        return (
-            <div className={senderBadgeStyle} onMouseEnter={show}>
-                <StarIcon />
-            </div>
-        );
-    },
-);
 
 export const MessageTime = React.memo(
     (props: { mId?: string; time: number; dateFormat: 'time' | 'date-time' }) => {
@@ -200,7 +179,6 @@ export const MessageTime = React.memo(
 interface MessageSenderContentProps {
     mId?: string;
     sender: MessageSender;
-    senderBadgeNameEmojify?: string | JSX.Element;
     date?: number;
     dateFormat?: 'time' | 'date-time';
     overrideName?: string | null;
@@ -210,9 +188,6 @@ export const MessageSenderContent = React.memo((props: MessageSenderContentProps
     <div className={senderContainer}>
         <MessageSenderName sender={props.sender} overrideName={props.overrideName} />
         {props.sender.isBot && <span className={cx(TextDensed, senderDateStyle)}>Bot</span>}
-        {props.senderBadgeNameEmojify && (
-            <MessageSenderFeatured senderBadgeNameEmojify={props.senderBadgeNameEmojify} />
-        )}
         {props.date && (
             <MessageTime
                 mId={props.mId}
@@ -534,7 +509,6 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const sender = (
         <MessageSenderContent
             sender={message.sender}
-            senderBadgeNameEmojify={message.senderBadgeNameEmojify}
             date={message.date}
             overrideName={message.overrideName}
             mId={message.id}

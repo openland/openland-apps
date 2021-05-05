@@ -97,7 +97,6 @@ object Operations {
         if (name == "ResolvedInvite") return ResolvedInvite
         if (name == "RoomAdminMembers") return RoomAdminMembers
         if (name == "RoomChat") return RoomChat
-        if (name == "RoomFeaturedMembers") return RoomFeaturedMembers
         if (name == "RoomInviteInfo") return RoomInviteInfo
         if (name == "RoomInviteLink") return RoomInviteLink
         if (name == "RoomMembersPaginated") return RoomMembersPaginated
@@ -119,7 +118,6 @@ object Operations {
         if (name == "SuggestedRooms") return SuggestedRooms
         if (name == "SuperAdmins") return SuperAdmins
         if (name == "SuperAllStickerPacks") return SuperAllStickerPacks
-        if (name == "SuperBadgeInRoom") return SuperBadgeInRoom
         if (name == "SuperStickerPack") return SuperStickerPack
         if (name == "SuperStickerPackCatalog") return SuperStickerPackCatalog
         if (name == "TransactionsHistory") return TransactionsHistory
@@ -252,8 +250,6 @@ object Operations {
         if (name == "SubscribeToComments") return SubscribeToComments
         if (name == "SuperAdminAdd") return SuperAdminAdd
         if (name == "SuperAdminRemove") return SuperAdminRemove
-        if (name == "SuperBadgeCreateToRoom") return SuperBadgeCreateToRoom
-        if (name == "SuperBadgeUnsetToRoom") return SuperBadgeUnsetToRoom
         if (name == "UnBanUser") return UnBanUser
         if (name == "UnSubscribeFromComments") return UnSubscribeFromComments
         if (name == "UnpinMessage") return UnpinMessage

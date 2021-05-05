@@ -21,6 +21,6 @@ internal val OrganizationMembersSelector = obj(
 val OrganizationMembers = object: OperationDefinition {
     override val name = "OrganizationMembers"
     override val kind = OperationKind.QUERY
-    override val body = "query OrganizationMembers(\$organizationId:ID!,\$first:Int,\$after:ID){organization(id:\$organizationId){__typename id members:alphaOrganizationMembers(first:\$first,after:\$after){__typename role user{__typename ...UserShort}}}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot}"
+    override val body = "query OrganizationMembers(\$organizationId:ID!,\$first:Int,\$after:ID){organization(id:\$organizationId){__typename id members:alphaOrganizationMembers(first:\$first,after:\$after){__typename role user{__typename ...UserShort}}}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot systemBadge}"
     override val selector = OrganizationMembersSelector
 }

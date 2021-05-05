@@ -15,9 +15,6 @@ fragment RoomShort on Room {
             id
             mute
         }
-        myBadge {
-            ...UserBadge
-        }
     }
     ... on SharedRoom {
         id
@@ -31,7 +28,6 @@ fragment RoomShort on Room {
         photo
         membersCount
         shortname
-        featuredMembersCount
         socialImage
         activeVoiceChat {
             ...VoiceChatWithSpeakers
@@ -54,9 +50,6 @@ fragment RoomShort on Room {
         canUnpinMessage
         pinnedMessage {
             ...FullMessage
-        }
-        myBadge {
-            ...UserBadge
         }
         settings {
             id

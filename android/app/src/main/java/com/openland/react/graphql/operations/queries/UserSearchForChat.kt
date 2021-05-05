@@ -28,6 +28,6 @@ internal val UserSearchForChatSelector = obj(
 val UserSearchForChat = object: OperationDefinition {
     override val name = "UserSearchForChat"
     override val kind = OperationKind.QUERY
-    override val body = "query UserSearchForChat(\$chatId:ID!,\$query:String,\$first:Int!,\$after:String,\$sort:String){userSearchForChat(chatId:\$chatId,query:\$query,first:\$first,after:\$after,sort:\$sort){__typename edges{__typename node{__typename ...UserShort isBanned isMeBanned}isMember cursor inviteRestricted}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot}"
+    override val body = "query UserSearchForChat(\$chatId:ID!,\$query:String,\$first:Int!,\$after:String,\$sort:String){userSearchForChat(chatId:\$chatId,query:\$query,first:\$first,after:\$after,sort:\$sort){__typename edges{__typename node{__typename ...UserShort isBanned isMeBanned}isMember cursor inviteRestricted}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot systemBadge}"
     override val selector = UserSearchForChatSelector
 }

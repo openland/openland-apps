@@ -48,6 +48,14 @@ input AppProfileInput {
   about: String
 }
 
+type AppRelease {
+  id: ID!
+  platform: ReleasePlatform!
+  version: String!
+  notes: String
+  date: Date!
+}
+
 type AppStorageValue {
   id: ID!
   key: String!
@@ -353,8 +361,9 @@ input ConferenceSettingsInput {
 }
 
 enum ConferenceStrategy {
-  MASH
+  MESH
   SFU
+  ASYNC
 }
 
 type Contact {
@@ -1818,6 +1827,7 @@ type Mutation {
   debugMigratePrivateChatMessages: Boolean!
   debugKickAllFromVoiceChats: Boolean!
   debugMigrateChatCounters: Boolean!
+  debugActivateUser(id: ID!): Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -1846,6 +1856,7 @@ type Mutation {
   alphaOrganizationCreatePublicInvite(expirationDays: Int, organizationId: ID): Invite!
   alphaOrganizationRemoveMember(memberId: ID!, organizationId: ID!): String!
   alphaOrganizationDeletePublicInvite(organizationId: ID): String!
+  superAddAppRelease(platform: ReleasePlatform!, version: String!, notes: String!): AppRelease!
   superAccountAdd(title: String!): SuperAccount!
   superAccountRename(id: ID!, title: String!): SuperAccount!
   superAccountActivate(id: ID!): SuperAccount!
@@ -2767,6 +2778,8 @@ type Query {
 
   """deprecated"""
   alphaOrganizationPublicInvite(organizationId: ID): Invite
+  latestAppRelease(platform: ReleasePlatform!): AppRelease
+  appReleases(platform: ReleasePlatform!): [AppRelease!]!
   superAccounts: [SuperAccount!]!
   superAccount(id: ID!, viaOrgId: Boolean): SuperAccount!
   superAdmins: [SuperAdmin!]!
@@ -2928,6 +2941,12 @@ type ReactionCounter {
   reaction: MessageReactionType!
   count: Int!
   setByMe: Boolean!
+}
+
+enum ReleasePlatform {
+  IOS
+  ANDROID
+  TEST
 }
 
 union ResolveInviteEntry = InviteInfo | AppInvite | RoomInvite
@@ -3705,6 +3724,7 @@ type User {
   joinDate: Date!
   birthDay: Date
   status: Status
+  systemBadge: String
 
   """TODO: Refactor"""
   channelsJoined: [ChannelConversation!]!

@@ -24,6 +24,6 @@ internal val MyContactsSearchSelector = obj(
 val MyContactsSearch = object: OperationDefinition {
     override val name = "MyContactsSearch"
     override val kind = OperationKind.QUERY
-    override val body = "query MyContactsSearch(\$query:String,\$first:Int!,\$after:String,\$page:Int){myContactsSearch(query:\$query,first:\$first,after:\$after,page:\$page){__typename edges{__typename node{__typename ...UserShort}}pageInfo{__typename hasNextPage currentPage}}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot}"
+    override val body = "query MyContactsSearch(\$query:String,\$first:Int!,\$after:String,\$page:Int){myContactsSearch(query:\$query,first:\$first,after:\$after,page:\$page){__typename edges{__typename node{__typename ...UserShort}}pageInfo{__typename hasNextPage currentPage}}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot systemBadge}"
     override val selector = MyContactsSearchSelector
 }

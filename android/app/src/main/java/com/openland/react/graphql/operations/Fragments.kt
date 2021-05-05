@@ -60,14 +60,8 @@ internal val MessageSenderSelector = obj(
             field("name", "name", notNull(scalar("String"))),
             field("photo", "photo", scalar("String")),
             field("isBot", "isBot", notNull(scalar("Boolean"))),
-            field("shortname", "shortname", scalar("String"))
-        )
-
-internal val UserBadgeSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("name", "name", notNull(scalar("String"))),
-            field("verified", "verified", notNull(scalar("Boolean")))
+            field("shortname", "shortname", scalar("String")),
+            field("systemBadge", "systemBadge", scalar("String"))
         )
 
 internal val MessageSpanSelector = obj(
@@ -267,10 +261,6 @@ internal val QuotedMessageSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("User", MessageSenderSelector)
                 ))),
-            field("senderBadge", "senderBadge", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("UserBadge", UserBadgeSelector)
-                )),
             field("fallback", "fallback", notNull(scalar("String"))),
             field("source", "source", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -369,10 +359,6 @@ internal val FullMessageSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("User", MessageSenderSelector)
                 ))),
-            field("senderBadge", "senderBadge", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("UserBadge", UserBadgeSelector)
-                )),
             field("message", "message", scalar("String")),
             field("fallback", "fallback", notNull(scalar("String"))),
             field("source", "source", obj(
@@ -479,7 +465,8 @@ internal val UserSmallSelector = obj(
             field("firstName", "firstName", notNull(scalar("String"))),
             field("photo", "photo", scalar("String")),
             field("shortname", "shortname", scalar("String")),
-            field("isBot", "isBot", notNull(scalar("Boolean")))
+            field("isBot", "isBot", notNull(scalar("Boolean"))),
+            field("systemBadge", "systemBadge", scalar("String"))
         )
 
 internal val UserShortSelector = obj(
@@ -584,11 +571,7 @@ internal val RoomShortSelector = obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("id", "id", notNull(scalar("ID"))),
                         field("mute", "mute", scalar("Boolean"))
-                    ))),
-                field("myBadge", "myBadge", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("UserBadge", UserBadgeSelector)
-                    ))
+                    )))
             )),
             inline("SharedRoom", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
@@ -603,7 +586,6 @@ internal val RoomShortSelector = obj(
                 field("photo", "photo", notNull(scalar("String"))),
                 field("membersCount", "membersCount", notNull(scalar("Int"))),
                 field("shortname", "shortname", scalar("String")),
-                field("featuredMembersCount", "featuredMembersCount", notNull(scalar("Int"))),
                 field("socialImage", "socialImage", scalar("String")),
                 field("activeVoiceChat", "activeVoiceChat", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -631,10 +613,6 @@ internal val RoomShortSelector = obj(
                 field("pinnedMessage", "pinnedMessage", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", FullMessageSelector)
-                    )),
-                field("myBadge", "myBadge", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("UserBadge", UserBadgeSelector)
                     )),
                 field("settings", "settings", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -1090,10 +1068,6 @@ internal val FullMessageWithoutSourceSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("User", MessageSenderSelector)
                 ))),
-            field("senderBadge", "senderBadge", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("UserBadge", UserBadgeSelector)
-                )),
             field("message", "message", scalar("String")),
             field("fallback", "fallback", notNull(scalar("String"))),
             field("spans", "spans", notNull(list(notNull(obj(
@@ -1296,11 +1270,7 @@ internal val NotificationFragmentSelector = obj(
                                                                 field("__typename", "__typename", notNull(scalar("String"))),
                                                                 field("id", "id", notNull(scalar("ID"))),
                                                                 field("name", "name", notNull(scalar("String")))
-                                                            ))),
-                                                        field("senderBadge", "senderBadge", obj(
-                                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                                fragment("UserBadge", UserBadgeSelector)
-                                                            ))
+                                                            )))
                                                     ))
                                                 ))),
                                             field("chat", "chat", notNull(obj(
@@ -1394,11 +1364,7 @@ internal val NotificationCenterUpdateFragmentSelector = obj(
                                                                     field("__typename", "__typename", notNull(scalar("String"))),
                                                                     field("id", "id", notNull(scalar("ID"))),
                                                                     field("name", "name", notNull(scalar("String")))
-                                                                ))),
-                                                            field("senderBadge", "senderBadge", obj(
-                                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                                    fragment("UserBadge", UserBadgeSelector)
-                                                                ))
+                                                                )))
                                                         ))
                                                     ))),
                                                 field("chat", "chat", notNull(obj(
@@ -2044,6 +2010,7 @@ internal val UserFullSelector = obj(
             field("followedByMe", "followedByMe", notNull(scalar("Boolean"))),
             field("followersCount", "followersCount", notNull(scalar("Int"))),
             field("followingCount", "followingCount", notNull(scalar("Int"))),
+            field("systemBadge", "systemBadge", scalar("String")),
             field("currentVoiceChat", "currentVoiceChat", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("VoiceChat", VoiceChatWithSpeakersSelector)

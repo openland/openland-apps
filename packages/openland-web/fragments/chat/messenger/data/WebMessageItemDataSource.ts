@@ -10,7 +10,6 @@ import { processSpans } from 'openland-y-utils/spans/processSpans';
 
 export interface DataSourceWebMessageItem extends DataSourceMessageItem {
     senderNameEmojify?: string | JSX.Element;
-    senderBadgeNameEmojify?: string | JSX.Element;
     replyWeb: DataSourceWebMessageItem[];
     replyQuoteTextEmojify?: string | JSX.Element;
 }
@@ -24,9 +23,6 @@ export function convertDsMessage(src: DataSourceMessageItem): DataSourceWebMessa
                 : undefined,
 
         textSpans: processSpans(src.text || '', src.spans),
-        senderBadgeNameEmojify: src.senderBadge
-            ? emoji(src.senderBadge.name)
-            : undefined,
         replyWeb: (src.reply || []).map(convertDsMessage),
         replyQuoteTextEmojify: src.replyQuoteText
             ? emoji(src.replyQuoteText)
@@ -47,9 +43,6 @@ export function convertDsSearchMessage(src: DataSourceMessageItem): DataSourceWe
             src.type === 'message' && !src.attachTop
                 ? emoji(src.sender.name)
                 : undefined,
-        senderBadgeNameEmojify: src.senderBadge
-            ? emoji(src.senderBadge.name)
-            : undefined,
         replyWeb: (src.reply || []).map(convertDsMessage),
         replyQuoteTextEmojify: src.replyQuoteText
             ? emoji(src.replyQuoteText)

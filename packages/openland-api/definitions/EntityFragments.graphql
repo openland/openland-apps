@@ -5,6 +5,7 @@ fragment UserSmall on User {
     photo
     shortname
     isBot
+    systemBadge
 }
 
 fragment UserFollower on User {
@@ -53,6 +54,7 @@ fragment UserFull on User {
     followedByMe
     followersCount
     followingCount
+    systemBadge
     currentVoiceChat {
         ...VoiceChatWithSpeakers
     }

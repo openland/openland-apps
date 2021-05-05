@@ -17,11 +17,7 @@ internal val RoomMembersSearchSelector = obj(
                                         ))),
                                     field("role", "role", notNull(scalar("String"))),
                                     field("membership", "membership", notNull(scalar("String"))),
-                                    field("canKick", "canKick", notNull(scalar("Boolean"))),
-                                    field("badge", "badge", obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            fragment("UserBadge", UserBadgeSelector)
-                                        ))
+                                    field("canKick", "canKick", notNull(scalar("Boolean")))
                                 ))),
                             field("cursor", "cursor", notNull(scalar("String")))
                         ))))),
@@ -34,6 +30,6 @@ internal val RoomMembersSearchSelector = obj(
 val RoomMembersSearch = object: OperationDefinition {
     override val name = "RoomMembersSearch"
     override val kind = OperationKind.QUERY
-    override val body = "query RoomMembersSearch(\$cid:ID!,\$query:String,\$first:Int!,\$after:String){chatMembersSearch(cid:\$cid,query:\$query,first:\$first,after:\$after){__typename edges{__typename node{__typename user{__typename ...UserShort}role membership canKick badge{__typename ...UserBadge}}cursor}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot}fragment UserBadge on UserBadge{__typename id name verified}"
+    override val body = "query RoomMembersSearch(\$cid:ID!,\$query:String,\$first:Int!,\$after:String){chatMembersSearch(cid:\$cid,query:\$query,first:\$first,after:\$after){__typename edges{__typename node{__typename user{__typename ...UserShort}role membership canKick}cursor}pageInfo{__typename hasNextPage}}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot systemBadge}"
     override val selector = RoomMembersSearchSelector
 }

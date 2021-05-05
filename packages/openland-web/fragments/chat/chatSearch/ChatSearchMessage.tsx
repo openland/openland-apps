@@ -221,7 +221,6 @@ export const ChatSearchMessage = React.memo((props: MessageComponentProps) => {
     const sender = (
         <MessageSenderContent
             sender={message.sender}
-            senderBadgeNameEmojify={message.senderBadgeNameEmojify}
             date={message.date}
             overrideName={message.overrideName}
             mId={message.id}

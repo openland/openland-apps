@@ -50,7 +50,6 @@ import { GroupMultiplePicker } from './pages/main/modals/GroupMultiplePicker';
 import { NotificationCenter } from './pages/main/NotificationCenter';
 import { InstallApps } from './pages/main/InstallApps';
 import { StartConversation } from './pages/main/StartConversation';
-import { ProfileGroupFeatured } from './pages/main/ProfileGroupFeatured';
 import { Buttons } from './pages/dev/Buttons';
 import { Inputs } from './pages/dev/Inputs';
 import { Avatars } from './pages/dev/Avatars';
@@ -88,7 +87,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('ProfileUser', ProfileUser)
   .addRoute('ProfileOrganization', ProfileOrganization)
   .addRoute('ProfileGroup', ProfileGroup)
-  .addRoute('ProfileGroupFeatured', ProfileGroupFeatured)
   .addRoute('EditGroup', EditGroup)
   .addRoute('EditGroupSocialImage', EditGroupSocialImage)
   .addRoute('EditGroupWelcomeMessage', EditGroupWelcomeMessage)

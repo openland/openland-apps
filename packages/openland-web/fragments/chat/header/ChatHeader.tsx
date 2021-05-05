@@ -87,7 +87,6 @@ const disabledBtn = css`
 `;
 
 const HeaderLastSeen = (props: { user: LastSeenUser }) => {
-    // change to UPresence?
     const [sub, accent] = useLastSeen(props.user);
 
     return <span className={accent ? secondaryAccent : undefined}>{sub}</span>;

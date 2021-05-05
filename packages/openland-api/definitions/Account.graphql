@@ -5,6 +5,7 @@ query Account {
         photo
         shortname
         email
+        systemBadge
     }
     myProfile {
         id

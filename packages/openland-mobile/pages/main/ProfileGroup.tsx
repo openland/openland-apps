@@ -325,7 +325,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 id={group.id}
                 title={group.title}
                 titleIcon={highlightGroup ? require('assets/ic-lock-16.png') : undefined}
-                titleIconElement={
+                titleIconLeftElement={
                     group.isPremium ? (
                         <View
                             style={{
@@ -450,15 +450,6 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 })
                 }
             />
-
-            {group.featuredMembersCount > 0 && (
-                <ZListItem
-                    leftIcon={require('assets/ic-star-glyph-24.png')}
-                    text="Featured members"
-                    onPress={() => props.router.push('ProfileGroupFeatured', { id: group.id })}
-                    description={group.featuredMembersCount + ''}
-                />
-            )}
         </>
     );
 
@@ -475,7 +466,6 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 renderItem={({ item }) => (
                     <UserView
                         memberRole={item.role}
-                        badge={item.badge}
                         user={item.user}
                         onLongPress={() =>
                             handleMemberLongPress(

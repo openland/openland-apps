@@ -57,10 +57,6 @@ internal val MessagesSearchSelector = obj(
                                                     field("firstName", "firstName", notNull(scalar("String"))),
                                                     field("photo", "photo", scalar("String"))
                                                 ))),
-                                            field("senderBadge", "senderBadge", obj(
-                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                    fragment("UserBadge", UserBadgeSelector)
-                                                )),
                                             field("message", "message", scalar("String")),
                                             field("fallback", "fallback", notNull(scalar("String"))),
                                             inline("GeneralMessage", obj(
@@ -104,6 +100,6 @@ internal val MessagesSearchSelector = obj(
 val MessagesSearch = object: OperationDefinition {
     override val name = "MessagesSearch"
     override val kind = OperationKind.QUERY
-    override val body = "query MessagesSearch(\$query:String!,\$sort:String,\$first:Int!,\$after:String,\$cid:ID){messagesSearch(query:\$query,sort:\$sort,first:\$first,after:\$after,cid:\$cid){__typename edges{__typename node{__typename chat{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename id kind title membership isChannel role canEdit photo featured settings{__typename id mute}}}message{__typename id date sender{__typename id name firstName photo}senderBadge{__typename ...UserBadge}message fallback ... on GeneralMessage{__typename id attachments{__typename id fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename isImage imageFormat}}}quotedMessages{__typename id}}}}cursor}pageInfo{__typename hasNextPage hasPreviousPage itemsCount currentPage pagesCount openEnded}}}fragment UserBadge on UserBadge{__typename id name verified}"
+    override val body = "query MessagesSearch(\$query:String!,\$sort:String,\$first:Int!,\$after:String,\$cid:ID){messagesSearch(query:\$query,sort:\$sort,first:\$first,after:\$after,cid:\$cid){__typename edges{__typename node{__typename chat{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename id kind title membership isChannel role canEdit photo featured settings{__typename id mute}}}message{__typename id date sender{__typename id name firstName photo}message fallback ... on GeneralMessage{__typename id attachments{__typename id fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename isImage imageFormat}}}quotedMessages{__typename id}}}}cursor}pageInfo{__typename hasNextPage hasPreviousPage itemsCount currentPage pagesCount openEnded}}}"
     override val selector = MessagesSearchSelector
 }

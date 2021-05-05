@@ -13,16 +13,12 @@ internal val RoomAddMembersSelector = obj(
                         ))),
                     field("role", "role", notNull(scalar("String"))),
                     field("membership", "membership", notNull(scalar("String"))),
-                    field("canKick", "canKick", notNull(scalar("Boolean"))),
-                    field("badge", "badge", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("UserBadge", UserBadgeSelector)
-                        ))
+                    field("canKick", "canKick", notNull(scalar("Boolean")))
                 )))))
         )
 val RoomAddMembers = object: OperationDefinition {
     override val name = "RoomAddMembers"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation RoomAddMembers(\$roomId:ID!,\$invites:[RoomInviteInput!]!){alphaRoomInvite(roomId:\$roomId,invites:\$invites){__typename user{__typename ...UserShort}role membership canKick badge{__typename ...UserBadge}}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot}fragment UserBadge on UserBadge{__typename id name verified}"
+    override val body = "mutation RoomAddMembers(\$roomId:ID!,\$invites:[RoomInviteInput!]!){alphaRoomInvite(roomId:\$roomId,invites:\$invites){__typename user{__typename ...UserShort}role membership canKick}}fragment UserShort on User{__typename ...UserSmall online lastSeen}fragment UserSmall on User{__typename id name firstName photo shortname isBot systemBadge}"
     override val selector = RoomAddMembersSelector
 }

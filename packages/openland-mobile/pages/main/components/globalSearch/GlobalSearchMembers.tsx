@@ -135,7 +135,6 @@ const RoomMembersSearch = (props: RoomMembersSearchProps) => {
                 <UserView
                     user={item.user}
                     memberRole={item.role}
-                    badge={item.badge}
                     onPress={() => onPress(item)}
                     onLongPress={() => onLongPress(item, { onRoleChange, onKick })}
                 />
