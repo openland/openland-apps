@@ -119,7 +119,7 @@ def packageSlurper = new JsonSlurper()
 def versionJson = packageSlurper.parse file('../../packages/openland-mobile/version.json')
 def runtimeVersion = versionJson.runtimeVersion
 def appVersionCode = Integer.valueOf(System.env.BUILD_COUNTER ?: 1)
-def appVersion = packageVersion + "." + build
+def appVersion = runtimeVersion + "." + appVersionCode
 
 def enableHermes = true
 project.ext.react.put("enableHermes", enableHermes)
