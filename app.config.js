@@ -25,6 +25,7 @@ export default {
             package: 'com.openland.app'
         },
         extra: {
+            staging: process.env.RELEASE_CHANNEL === 'staging',
             internalVersion,
             runtimeVersion,
             build
