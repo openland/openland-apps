@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Share, View, Linking } from 'react-native';
+import { Share, View, Linking, Platform } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListGroup } from '../../components/ZListGroup';
@@ -18,6 +18,7 @@ import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import { ComponentRefContext } from './Home';
 import { rateApp } from './modals/RateApp';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
 
 export const handleGlobalInvitePress = async () => {
     const loader = Toast.loader();
@@ -70,6 +71,19 @@ const SettingsContent = ((props: PageProps) => {
                 subtitle={me.email}
                 path="ProfileUser"
                 pathParams={{ id: me.id }}
+                titleIconRightElement={
+                    !!me.systemBadge ? (
+                        <View
+                            style={{
+                                marginLeft: 8,
+                                marginTop: Platform.OS === 'ios' ? 2 : 4,
+                                alignSelf: 'center',
+                            }}
+                        >
+                            <PremiumBadge />
+                        </View>
+                    ) : undefined
+                }
                 verticalMargin="bottom"
             />
             <ZListItem

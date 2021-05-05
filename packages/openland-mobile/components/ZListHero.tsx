@@ -58,6 +58,7 @@ export interface ZListHeroProps {
     title?: string | null;
     titleIcon?: NodeRequire;
     titleIconElement?: JSX.Element;
+    titleIconRightElement?: JSX.Element;
     titleColor?: string;
     subtitle?: string | null | JSX.Element;
     subtitleColor?: string;
@@ -77,7 +78,7 @@ export interface ZListHeroProps {
 
 export const ZListHero = React.memo<ZListHeroProps>((props) => {
     const theme = React.useContext(ThemeContext);
-    const { photo, id, title, titleIcon, titleIconElement, titleColor, subtitle, subtitleColor, action, score, path, pathParams, verticalMargin = 'both' } = props;
+    const { photo, id, title, titleIcon, titleIconElement, titleIconRightElement, titleColor, subtitle, subtitleColor, action, score, path, pathParams, verticalMargin = 'both' } = props;
     const colorTitle = titleColor ? titleColor : theme.foregroundPrimary;
     const colorSubtitle = subtitleColor ? subtitleColor : theme.foregroundTertiary;
     const wrapperStyles = verticalMargin === 'both' ? styles.wrapper : styles.wrapperBottomed;
@@ -100,6 +101,7 @@ export const ZListHero = React.memo<ZListHeroProps>((props) => {
                         {titleIcon && <Image source={titleIcon} style={{ width: 20, height: 20, marginRight: 4, alignSelf: 'center', tintColor: colorTitle }} />}
                         {titleIconElement}
                         <Text style={[styles.title, { color: colorTitle }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
+                        {titleIconRightElement}
                     </View>
                     <Text style={[styles.subtitle, { color: colorSubtitle }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{subtitle}</Text>
 
