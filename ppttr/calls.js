@@ -21,12 +21,11 @@ async function askQuestion(query) {
     }))
 }
 
-const main = async (shortname) => {
-    const userEmailCode = Math.floor(100000 + Math.random() * 900000)
-    // const userEmailCode = 999999
+const main = async (shortname, userNumber) => {
+    const userEmailCode = ('000000' + userNumber.toString()).slice(-6);
+    const userCode = userEmailCode[5].toString().repeat(6)
     const userName = `test${userEmailCode}`
     const userEmail = `${userName}@openland.com`
-    const userCode = userEmailCode.toString()[5].repeat(6)
 
     // const browser = await puppeteer.launch({ headless: isDev ? false : undefined })
     const browser = await puppeteer.connect({
@@ -80,10 +79,15 @@ const main = async (shortname) => {
     console.log('joined success')
 }
 
+let userNumber = 1;
+
 (async () => {
-    const iterations = await askQuestion('how iterations?:')
+    const iterations = await askQuestion('how many iterations?:')
+    const lastUserNumber = await askQuestion('last user number?:')
+    userNumber = Number(lastUserNumber);
     const username = await askQuestion('user shortname with chat:')
     for (let i = 0; i < Number(iterations || 1); i++) {
-        main(username)
+        main(username, userNumber || 1);
+        userNumber++;
     }
 })()
