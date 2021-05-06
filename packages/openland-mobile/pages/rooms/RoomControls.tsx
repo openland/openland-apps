@@ -147,7 +147,7 @@ const ControlMute = React.memo(
                 bgColor={muted || disabled ? TintOrange.primary : TintBlue.primary}
                 disabled={disabled}
                 faded={disabled}
-                loading={connecting}
+                loading={!muted && connecting}
                 onPress={onPress}
             />
         );

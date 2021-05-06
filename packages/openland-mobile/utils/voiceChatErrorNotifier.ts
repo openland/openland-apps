@@ -46,17 +46,17 @@ export const useVoiceChatErrorNotifier = ({ callState, peers, appConnecting, voi
             info: analyticsRef.current
         });
     }, []);
-    React.useEffect(() => {
-        if (
-            voiceChat.speakers && voiceChat.speakers.length !== voiceChat.speakersCount
-            || voiceChat.listeners && voiceChat.listeners.length !== voiceChat.listenersCount
-        ) {
-            notifyError({
-                type: 'system-participants-lists-unmatch',
-                info: analyticsRef.current
-            });
-        }
-    }, [voiceChat.speakers, voiceChat.listeners, voiceChat.speakersCount, voiceChat.listenersCount]);
+    // React.useEffect(() => {
+    //     if (
+    //         voiceChat.speakers && voiceChat.speakers.length !== voiceChat.speakersCount
+    //         || voiceChat.listeners && voiceChat.listeners.length !== voiceChat.listenersCount
+    //     ) {
+    //         notifyError({
+    //             type: 'system-participants-lists-unmatch',
+    //             info: analyticsRef.current
+    //         });
+    //     }
+    // }, [voiceChat.speakers, voiceChat.listeners, voiceChat.speakersCount, voiceChat.listenersCount]);
 
     const voiceChatRef = React.useRef<VoiceChatT>(voiceChat);
     voiceChatRef.current = voiceChat;
