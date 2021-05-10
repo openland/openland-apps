@@ -509,9 +509,6 @@ const RoomHeader = React.memo(
         const topSpacing = isPad
             ? SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top
             : 0;
-        const rightFooter = ((speakers.length > 9) && !!currentSpeaker)
-            ? 'speaker' :
-            connecting ? 'connecting' : null;
         return (
             <View
                 style={{
@@ -714,7 +711,7 @@ const RoomHeader = React.memo(
                             </>
                         )}
                     </View>
-                    {rightFooter === 'speaker' ? (
+                    {((speakers.length > 9) && !!currentSpeaker) ? (
                         <View
                             style={{
                                 display: 'flex',
@@ -734,11 +731,11 @@ const RoomHeader = React.memo(
                                 numberOfLines={1}
                                 allowFontScaling={false}
                             >
-                                {currentSpeaker?.user.name}
+                                {currentSpeaker.user.name}
                             </Text>
                             <Equalizer theme={theme} />
                         </View>
-                    ) : rightFooter === 'connecting' ? (
+                    ) : connecting ? (
                         <View
                             style={{
                                 display: 'flex',
