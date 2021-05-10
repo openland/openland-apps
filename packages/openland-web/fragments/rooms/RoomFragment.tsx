@@ -350,7 +350,7 @@ const RoomHeader = ({
                         <div className={cx(speakerName, TextBody)}>
                             {currentSpeaker.user.name}
                         </div>
-                        <Equalizer/>
+                        <Equalizer />
                     </XView>
                 )}
             </XView>
@@ -410,33 +410,33 @@ const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: VoiceChatPart
 };
 
 const InviteButton = React.memo((props: { roomId: string }) => (
+    <XView
+        alignItems="center"
+        padding={8}
+        marginHorizontal={4}
+        hoverBackgroundColor="var(--backgroundTertiaryTrans)"
+        hoverBorderRadius={8}
+        hoverCursor="pointer"
+    >
         <XView
+            width={80}
+            height={80}
+            backgroundColor="var(--backgroundTertiaryTrans)"
+            hoverBackgroundColor="var(--backgroundTertiaryHoverTrans)"
+            justifyContent="center"
             alignItems="center"
-            padding={8}
-            marginHorizontal={4}
-            hoverBackgroundColor="var(--backgroundTertiaryTrans)"
-            hoverBorderRadius={8}
-            hoverCursor="pointer"
+            cursor="pointer"
+            borderRadius={100}
+            marginTop={8}
+            marginBottom={10}
+            onClick={() => showInviteToRoom({ roomId: props.roomId })}
         >
-            <XView
-                width={80}
-                height={80}
-                backgroundColor="var(--backgroundTertiaryTrans)"
-                hoverBackgroundColor="var(--backgroundTertiaryHoverTrans)"
-                justifyContent="center"
-                alignItems="center"
-                cursor="pointer"
-                borderRadius={100}
-                marginTop={8}
-                marginBottom={10}
-                onClick={() => showInviteToRoom({ roomId: props.roomId })}
-            >
-                <UIcon icon={<IcAdd />} size={36} color="var(--foregroundSecondary)" />
-            </XView>
-            <div className={buttonLabelStyle}>
-                Invite
-            </div>
+            <UIcon icon={<IcAdd />} size={36} color="var(--foregroundSecondary)" />
         </XView>
+        <div className={buttonLabelStyle}>
+            Invite
+        </div>
+    </XView>
 ));
 
 const speakerAvatarSizes = {
@@ -740,7 +740,7 @@ const RoomSpeakers = React.memo(({
             {speakers.length <= 8 && room.me?.status === VoiceChatParticipantStatus.ADMIN && (
                 <>
                     <RaisedHandsButton raisedHands={room.raisedHands || []} roomId={room.id} />
-                    {showInviteButton && <InviteButton roomId={room.id}/>}
+                    {showInviteButton && <InviteButton roomId={room.id} />}
                 </>
             )}
         </div>
@@ -890,15 +890,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
         prevVoiceChat.current = voiceChatData;
     }, [voiceChatData]);
 
-    const [connecting, setConnecting] = React.useState(!state?.sender.audioTrack);
-
-    const prevState = React.useRef(state);
-    React.useEffect(() => {
-        if (prevState.current?.sender.audioTrack && state?.sender.audioTrack && connecting) {
-            setConnecting(false);
-        }
-        prevState.current = state;
-    }, [state]);
+    const [connecting, setConnecting] = React.useState(false);
 
     React.useEffect(() => {
         const setConnectingDebounced = debounce(setConnecting, 500);
@@ -936,8 +928,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
                 let isLoading = false;
                 let isMuted = !!peer?.mediaState.audioPaused;
                 if (!isLocal) {
-                    let hasAudioTrack = !!state?.receivers[peer.id]?.audioTrack;
-                    isLoading = connecting || !hasAudioTrack;
+                    isLoading = !state?.receivers[peer.id]?.audioTrack;
                 }
                 return { isMuted, isLoading };
             }).reduce((acc, peerState) => {
@@ -1030,7 +1021,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
                     roomId={props.roomId}
                     title={voiceChatData.title}
                     isMuted={muted}
-                    connecting={connecting}
+                    connecting={!muted && connecting}
                     status={voiceChatData.me?.status}
                     handRaised={handRaised}
                     raisedHands={voiceChatData.raisedHands || []}
