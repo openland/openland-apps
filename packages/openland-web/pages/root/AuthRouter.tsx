@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as Cookie from 'js-cookie';
 import { UserInfoContext } from '../../components/UserInfo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
@@ -144,6 +145,8 @@ export const AuthRouter = React.memo((props: { children: any }) => {
     const defaultRoute = <>{props.children}</>;
 
     function redirectIfNeeded(to: string, args?: { pages?: string[] }) {
+        const redirect = redirectPath.startsWith('/') ? redirectPath.substring(1) : redirectPath;
+        Cookie.set('x-signin-redirect', redirect, { path: '/' });
         if (args && args.pages) {
             if (args.pages.indexOf(router.path) < 0) {
                 return <XPageRedirect path={to + redirectSuffix(redirectPath)} />;
