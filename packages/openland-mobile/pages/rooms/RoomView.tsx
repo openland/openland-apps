@@ -487,6 +487,7 @@ const RoomHeader = React.memo(
             router: SRouter;
             onLayout: (e: LayoutChangeEvent) => void;
             analyzer: MediaSessionTrackAnalyzerManager;
+            connecting: boolean;
             speakers: {
                 isMuted: boolean,
                 isLoading: boolean,
@@ -495,7 +496,7 @@ const RoomHeader = React.memo(
             }[];
         },
     ) => {
-        const { room, hide, router, theme, analyzer, speakers } = props;
+        const { room, hide, router, theme, analyzer, connecting, speakers } = props;
         const peerIds = speakers.filter(i => !i.isLoading && !i.isMuted).map(i => i.peersIds).flat();
         const currentlySpeaking = analyzer.useCurrentlySpeaking(peerIds);
         let currentSpeaker: VoiceChatParticipant | undefined = speakers.find(s => s.peersIds.includes(currentlySpeaking[0]))?.speaker;
@@ -508,6 +509,9 @@ const RoomHeader = React.memo(
         const topSpacing = isPad
             ? SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top
             : 0;
+        const rightFooter = ((speakers.length > 9) && !!currentSpeaker)
+            ? 'speaker' :
+            connecting ? 'connecting' : null;
         return (
             <View
                 style={{
@@ -710,7 +714,7 @@ const RoomHeader = React.memo(
                             </>
                         )}
                     </View>
-                    {((speakers.length > 9) && !!currentSpeaker) && (
+                    {rightFooter === 'speaker' ? (
                         <View
                             style={{
                                 display: 'flex',
@@ -730,11 +734,35 @@ const RoomHeader = React.memo(
                                 numberOfLines={1}
                                 allowFontScaling={false}
                             >
-                                {currentSpeaker.user.name}
+                                {currentSpeaker?.user.name}
                             </Text>
                             <Equalizer theme={theme} />
                         </View>
-                    )}
+                    ) : rightFooter === 'connecting' ? (
+                        <View
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                flexShrink: 1,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    ...TextStyles.Subhead,
+                                    color: theme.foregroundSecondary,
+                                    marginRight: 8,
+                                    flexShrink: 1,
+                                }}
+                                ellipsizeMode="tail"
+                                numberOfLines={1}
+                                allowFontScaling={false}
+                            >
+                                Waiting for network…
+                            </Text>
+                            <LoaderSpinner size="small" color={theme.foregroundTertiary} />
+                        </View>
+                    ) : null}
                 </View>
                 <View
                     style={{
@@ -1152,15 +1180,7 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
         prevVoiceChat.current = voiceChatData;
     }, [voiceChatData]);
 
-    const [connecting, setConnecting] = React.useState(!state?.sender.audioTrack);
-
-    const prevState = React.useRef(state);
-    React.useEffect(() => {
-        if (prevState.current?.sender.audioTrack && state?.sender.audioTrack && connecting) {
-            setConnecting(false);
-        }
-        prevState.current = state;
-    }, [state]);
+    const [connecting, setConnecting] = React.useState(false);
 
     React.useEffect(() => {
         const setConnectingDebounced = debounce(setConnecting, 500);
@@ -1218,6 +1238,7 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
     return (
         <View>
             <RoomHeader
+                connecting={connecting}
                 room={voiceChatData}
                 theme={theme}
                 router={props.router}
@@ -1250,7 +1271,7 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
                         theme={theme}
                         muted={muted}
                         showInviteButton={showInviteButton}
-                        connecting={connecting}
+                        connecting={!muted && connecting}
                         onLayout={onControlsLayout}
                         onLeave={handleLeave}
                         onMutePress={handleMute}
