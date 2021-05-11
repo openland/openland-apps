@@ -1,13 +1,41 @@
 import * as React from 'react';
-import { ViewProps, View } from 'react-native';
+import { ViewProps, View, AccessibilityInfo } from 'react-native';
 import { BlurView } from 'react-native-blur';
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export const ZBlurredView = React.memo<ViewProps & { intensity?: 'normal' | 'high', fallbackColor?: string, blurType?: 'dark' | 'light', children?: any }>((props) => {
+    const [blurDisable, setBlurDisable] = React.useState(false);
+
+    const handleReduceTransparencyChanged = (tEnable: boolean) => {
+        setBlurDisable(tEnable);
+    };
+
+    React.useEffect(() => {
+        if (SDevice.renderBlurSupported) {
+            AccessibilityInfo.addEventListener(
+                "reduceTransparencyChanged",
+                handleReduceTransparencyChanged
+            );
+            AccessibilityInfo.isReduceTransparencyEnabled().then(
+                (tEnable: boolean) => {
+                    setBlurDisable(tEnable);
+                }
+            );
+            return () => {
+                AccessibilityInfo.removeEventListener(
+                    "reduceTransparencyChanged",
+                    handleReduceTransparencyChanged
+                );
+            };
+        }
+        return () => {
+            //
+        };
+    }, []);
     let theme = React.useContext(ThemeContext);
     let { intensity, blurType, ...other } = props;
-    if (SDevice.renderBlurSupported && (theme.blurType !== 'none' || blurType)) {
+    if (SDevice.renderBlurSupported && (theme.blurType !== 'none' || blurType) && !blurDisable) {
         return (
             <View {...other}>
                 <View
