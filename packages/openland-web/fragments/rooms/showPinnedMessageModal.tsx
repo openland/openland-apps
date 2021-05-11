@@ -62,7 +62,7 @@ const PinnedMessageModalBody = React.memo<PinnedMessageModalBodyProps>((props) =
 });
 
 export const showPinnedMessageModal = (roomId: string) => {
-    showModalBox({ title: 'PinnedMessage', width: 368, useTopCloser: true }, (ctx) => (
+    showModalBox({ title: 'Pinned message', width: 368, useTopCloser: true }, (ctx) => (
         <VoiceChatProvider roomId={roomId}>
             <PinnedMessageModalBody hide={ctx.hide} />
         </VoiceChatProvider>
