@@ -50,6 +50,7 @@ import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabConte
 import { showPinnedMessageModal } from './showPinnedMessageModal';
 import { RoomJoinButton } from './RoomJoinButton';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
+import { useWakeLock } from 'openland-web/utils/useWakeLock';
 
 const headerParentRoomClass = css`
   padding: 12px 0;
@@ -772,8 +773,8 @@ const RoomView = React.memo((props: { roomId: string }) => {
     const tabRouter = useTabRouter().router;
     const joinRoom = useJoinRoom(true);
     const router = React.useContext(XViewRouterContext)!;
-
     const voiceChatData = useVoiceChat();
+    useWakeLock();
     const conference = client.useConference({ id: props.roomId }, { suspense: false })?.conference;
 
     const calls = React.useContext(MessengerContext).calls;
