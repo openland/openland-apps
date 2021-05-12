@@ -55,8 +55,9 @@ import { debounce } from 'openland-y-utils/timer';
 import { showSheetModal } from 'openland-mobile/components/showSheetModal';
 import { useVoiceChatErrorNotifier } from 'openland-mobile/utils/voiceChatErrorNotifier';
 import { Equalizer } from './Equalizer';
-import { useWakeLock } from 'react-native-wake-lock';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
+
+const useWakeLock = Platform.OS === 'android' ? require('react-native-wake-lock').useWakeLock : undefined;
 
 interface PinnedMessageViewProps {
     theme: ThemeGlobal;
@@ -1078,7 +1079,7 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
     const conference = client.useConference({ id: props.roomId }, { suspense: false })?.conference;
     const [headerHeight, setHeaderHeight] = React.useState(0);
     const [controlsHeight, setControlsHeight] = React.useState(0);
-    if (Platform.OS === 'android') {
+    if (useWakeLock) {
         useWakeLock();
     }
 
