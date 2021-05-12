@@ -33,6 +33,7 @@ import {
     VoiceChatUser_conversation_PrivateRoom,
     VoiceChatParticipant_user,
     VoiceChatUser_user,
+    Conference_conference_peers,
 } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { TintBlue } from 'openland-y-utils/themes/tints';
@@ -491,24 +492,17 @@ const RoomHeader = React.memo(
             onLayout: (e: LayoutChangeEvent) => void;
             analyzer: MediaSessionTrackAnalyzerManager;
             connecting: boolean;
-            speakers: {
-                isMuted: boolean,
-                isLoading: boolean,
-                peersIds: string[],
-                speaker: VoiceChatParticipant
-            }[];
+            peers: Conference_conference_peers[];
         },
     ) => {
-        const { room, hide, router, theme, analyzer, connecting, speakers } = props;
-        const peerIds = speakers.filter(i => !i.isLoading && !i.isMuted).map(i => i.peersIds).flat();
-        const currentlySpeaking = analyzer.useCurrentlySpeaking(peerIds);
-        let currentSpeaker: VoiceChatParticipant | undefined = speakers.find(s => s.peersIds.includes(currentlySpeaking[0]))?.speaker;
+        const { room, hide, router, theme, analyzer, connecting, peers } = props;
+        const currentlySpeaking = analyzer.useSpeakingPeer();
+        let currentPeer = currentlySpeaking.speaking ? peers.find(x => x.id === currentlySpeaking.id) : undefined;
         const { parentRoom } = room;
         const [joinState, setJoinState] = React.useState<
             'initial' | 'loading' | 'success' | 'joined'
         >(parentRoom?.membership === SharedRoomMembershipStatus.MEMBER ? 'joined' : 'initial');
         const client = useClient();
-
         const topSpacing = isPad
             ? SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top
             : 0;
@@ -714,7 +708,7 @@ const RoomHeader = React.memo(
                             </>
                         )}
                     </View>
-                    {((speakers.length > 9) && !!currentSpeaker) ? (
+                    {(room.speakers && room.speakers.length > 9 && !!currentPeer && !currentPeer.mediaState.audioPaused) ? (
                         <View
                             style={{
                                 display: 'flex',
@@ -734,7 +728,7 @@ const RoomHeader = React.memo(
                                 numberOfLines={1}
                                 allowFontScaling={false}
                             >
-                                {currentSpeaker.user.name}
+                                {currentPeer.user.name}
                             </Text>
                             <Equalizer theme={theme} />
                         </View>
@@ -892,16 +886,16 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
 });
 
 interface RoomSpeakingUserViewProps extends RoomUserViewProps {
-    peersIds: string[];
+    peersIds?: string[];
     analyzer: MediaSessionTrackAnalyzerManager;
     isLoading: boolean;
     isMuted: boolean;
-    reportUserLoading: (moreData: { userId: string, peersIds: string[] }) => any;
+    reportUserLoading: (moreData: { userId: string, peersIds?: string[] }) => any;
 }
 
 const RoomSpeakingUserView = React.memo((props: RoomSpeakingUserViewProps) => {
     const { peersIds, analyzer, isLoading, reportUserLoading, isMuted, ...other } = props;
-    const isTalking = analyzer.usePeers(peersIds);
+    const isTalking = analyzer.usePeers(peersIds || []);
     const state = isLoading
         ? 'loading'
         : isMuted
@@ -936,9 +930,9 @@ interface RoomUsersListProps extends RoomViewProps {
     speakers: {
         isMuted: boolean,
         isLoading: boolean,
-        peersIds: string[],
         speaker: VoiceChatParticipant
     }[];
+    peersIdsMap: { [userId: string]: string[] };
 }
 
 const RoomUsersList = React.memo((props: RoomUsersListProps) => {
@@ -951,24 +945,13 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
         router,
         reportUserLoading,
         modalCtx,
-        speakers
+        speakers,
+        peersIdsMap,
     } = props;
     const sa = useSafeArea();
     const currentHeight = isPad ? Dimensions.get('window').height : SDevice.wHeight;
     const sHeight = currentHeight - (sa.top + sa.bottom + headerHeight + controlsHeight + 16);
     const listeners = room.listeners || [];
-    // const client = useClient();
-    // const initialListeners = client.useVoiceChatListeners({ id: room.id, first: 12 }).voiceChatListeners;
-
-    // let listenersState = useListReducer({
-    //     fetchItems: async (after) => {
-    //         return (await client.queryVoiceChatListeners({ id: room.id, after, first: 12 }, { fetchPolicy: 'network-only' })).voiceChatListeners;
-    //     },
-    //     initialCursor: initialListeners.cursor,
-    //     initialItems: initialListeners.items,
-    // });
-    // let listenersState = { items: [] as VoiceChatListeners_voiceChatListeners_items[], loading: false, loadMore: () => { } };
-
     const speakersElement = (
         <>
             {!!props.room.pinnedMessage && (
@@ -1001,7 +984,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                 </TouchableOpacity>
             )}
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start' }}>
-                {speakers.map(({ speaker, isMuted, isLoading, peersIds }) => {
+                {speakers.map(({ speaker, isMuted, isLoading }) => {
                     return (
                         <RoomSpeakingUserView
                             key={speaker.id}
@@ -1010,7 +993,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                             userStatus={speaker.status}
                             selfStatus={room.me?.status}
                             isSelf={room.me?.user.id === speaker.user.id}
-                            peersIds={peersIds}
+                            peersIds={peersIdsMap[speaker.user.id]}
                             theme={theme}
                             router={router}
                             modalCtx={modalCtx}
@@ -1208,10 +1191,7 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
         appConnecting: connecting,
     });
 
-    if (!mediaSession) {
-        return null;
-    }
-
+    const peersIdsMap = React.useRef<{ [userId: string]: string[] }>({});
     const speakers = (voiceChatData.speakers || [])
         .map((speaker) => {
             let speakerPeers = (conference?.peers || []).filter((p) => p.user.id === speaker.user.id);
@@ -1229,14 +1209,22 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
                     isLoading: acc.isLoading && peerState.isLoading
                 };
             }, { isMuted: true, isLoading: true });
+            let peersIds = speakerPeers.map(p => p.id);
+            let currentPeersIds = peersIdsMap.current[speaker.user.id];
+            if (!currentPeersIds || currentPeersIds.join('') !== peersIds.join('')) {
+                peersIdsMap.current[speaker.user.id] = peersIds;
+            }
 
             return {
                 isMuted: speakerStates.isMuted,
                 isLoading: speakerStates.isLoading,
-                peersIds: speakerPeers.map(p => p.id),
                 speaker,
+                userId: speaker.user.id,
             };
         });
+    if (!mediaSession) {
+        return null;
+    }
 
     return (
         <View>
@@ -1248,7 +1236,7 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
                 onLayout={onHeaderLayout}
                 hide={props.ctx.hide}
                 analyzer={mediaSession.analyzer}
-                speakers={speakers}
+                peers={conference?.peers || []}
             />
             {mediaSession && (
                 <>
@@ -1262,6 +1250,7 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
                         modalCtx={props.ctx}
                         analyzer={mediaSession.analyzer}
                         reportUserLoading={reportUserLoading}
+                        peersIdsMap={peersIdsMap.current}
                     />
                     <RoomControls
                         id={props.roomId}
