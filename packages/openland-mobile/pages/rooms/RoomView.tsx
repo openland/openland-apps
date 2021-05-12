@@ -8,6 +8,7 @@ import {
     LayoutChangeEvent,
     TouchableOpacity,
     Dimensions,
+    Platform,
 } from 'react-native';
 import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
@@ -54,6 +55,7 @@ import { debounce } from 'openland-y-utils/timer';
 import { showSheetModal } from 'openland-mobile/components/showSheetModal';
 import { useVoiceChatErrorNotifier } from 'openland-mobile/utils/voiceChatErrorNotifier';
 import { Equalizer } from './Equalizer';
+import { useWakeLock } from 'react-native-wake-lock';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 
 interface PinnedMessageViewProps {
@@ -1076,6 +1078,9 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
     const conference = client.useConference({ id: props.roomId }, { suspense: false })?.conference;
     const [headerHeight, setHeaderHeight] = React.useState(0);
     const [controlsHeight, setControlsHeight] = React.useState(0);
+    if (Platform.OS === 'android') {
+        useWakeLock();
+    }
 
     const onHeaderLayout = React.useCallback(
         (e: LayoutChangeEvent) => {

@@ -192,6 +192,7 @@
         "react-native-unimodules": "^0.13.3",
         "react-native-version-number": "^0.3.6",
         "react-native-video": "4.4.4",
+        "react-native-wake-lock": "^1.0.1",
         "react-native-web": "^0.9.0",
         "react-native-webrtc": "github:openland/react-native-webrtc#293cdefdeb4c2745c6f59c945d823bda29cfea40",
         "react-reconciler": "0.20.2",
