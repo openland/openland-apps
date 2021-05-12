@@ -30,6 +30,7 @@ import { useClient } from 'openland-api/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import {
+    Conference_conference_peers,
     SharedRoomKind,
     VoiceChatParticipant,
     VoiceChatParticipantStatus,
@@ -296,23 +297,17 @@ const RoomHeader = ({
     speakersCount,
     listenersCount,
     analyzer,
-    speakers,
+    peers,
     title,
 }: {
     speakersCount: number,
     listenersCount: number,
     title?: string | null,
     analyzer: MediaSessionTrackAnalyzerManager;
-    speakers: {
-        isMuted: boolean,
-        isLoading: boolean,
-        peersIds: string[],
-        speaker: VoiceChatParticipant
-    }[];
+    peers: Conference_conference_peers[];
 }) => {
-    const peerIds = speakers.filter(i => !i.isLoading && !i.isMuted).map(i => i.peersIds).flat();
-    const currentlySpeaking = analyzer.useCurrentlySpeaking(peerIds);
-    let currentSpeaker: VoiceChatParticipant | undefined = speakers.find(s => s.peersIds.includes(currentlySpeaking[0]))?.speaker;
+    const currentlySpeaking = analyzer.useSpeakingPeer();
+    let currentPeer = currentlySpeaking.speaking ? peers.find(x => x.id === currentlySpeaking.id) : undefined;
     return (
         <XView paddingTop={12} paddingBottom={14} paddingRight={12} width="100%">
             {title && <div className={cx(TextTitle1, headerTitleStyle)}>{title}</div>}
@@ -346,10 +341,10 @@ const RoomHeader = ({
                         </>
                     )}
                 </XView>
-                {((speakers.length > 9) && !!currentSpeaker) && (
+                {(speakersCount > 9) && !!currentPeer && !currentPeer.mediaState.audioPaused && (
                     <XView flexDirection="row" alignItems="center" flexShrink={1}>
                         <div className={cx(speakerName, TextBody)}>
-                            {currentSpeaker.user.name}
+                            {currentPeer.user.name}
                         </div>
                         <Equalizer />
                     </XView>
@@ -969,7 +964,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
                         )}
                         <RoomHeader
                             analyzer={mediaSession.analyzer}
-                            speakers={speakers}
+                            peers={conference?.peers || []}
                             title={voiceChatData.title}
                             speakersCount={voiceChatData.speakersCount}
                             listenersCount={voiceChatData.listenersCount}

@@ -192,23 +192,6 @@ export class MediaSessionTrackAnalyzerManager {
         return val;
     }
 
-    useCurrentlySpeaking = (peersIds: string[]) => {
-        let [speakingPeers, setSpeakingPeers] = React.useState<string[]>([]);
-        React.useEffect(() => {
-            let listeners = peersIds.map(id => {
-                return this.subscribePeer(id, speaking => {
-                    if (speaking) {
-                        setSpeakingPeers([...speakingPeers, id]);
-                    } else {
-                        setSpeakingPeers([...speakingPeers.filter(p => p !== id)]);
-                    }
-                });
-            });
-            return () => listeners.forEach(l => l());
-        }, [peersIds.length]);
-        return speakingPeers;
-    }
-
     private sepakingPeerListeners = new Set<(peerId: string) => void>();
     notifySpeakingPeerIdChanged = (peerId: string) => {
         for (let l of this.sepakingPeerListeners) {
