@@ -151,7 +151,7 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
     const status = voiceChatData.me?.status;
     const state = props.mediaSession.state.useValue();
     const firstSpeakers = voiceChatData.speakers?.slice(0, 4);
-    const speakingPeerId = props.mediaSession.analyzer.useSpeakingPeer();
+    const { id: speakingPeerId } = props.mediaSession.analyzer.useSpeakingPeer();
     const peers = client.useConference({ id: voiceChatData.id }, { suspense: false })?.conference.peers;
 
     const prevVoiceChat = React.useRef<VoiceChatT>(

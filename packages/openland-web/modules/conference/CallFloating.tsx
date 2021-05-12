@@ -303,7 +303,7 @@ const MediaView = React.memo((props: {
     state: MediaSessionState;
     calls: CallsEngine;
 }) => {
-    let peerId = props.mediaSessionManager.analyzer.useSpeakingPeer();
+    let { id: peerId } = props.mediaSessionManager.analyzer.useSpeakingPeer();
     let peer = props.peers.find(p => p.id === peerId);
 
     return <VideoMediaView

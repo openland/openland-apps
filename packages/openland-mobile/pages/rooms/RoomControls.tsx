@@ -386,6 +386,7 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
     const { onLayout } = props;
 
     const buttons = getButtons(props);
+    // console.log('@@ CONTROLS')
     return (
         <View style={{ paddingTop: 16 }} onLayout={onLayout}>
             <View

@@ -229,10 +229,17 @@ export class MediaSessionTrackAnalyzerManager {
 
     useSpeakingPeer = () => {
         let [val, setVal] = React.useState<string>();
+        let [speaking, setSpeaking] = React.useState(false);
         React.useEffect(() => {
             return this.subscribeSpeakingPeerId(setVal);
         }, []);
-        return val;
+        React.useEffect(() => {
+            if (val) {
+                return this.subscribePeer(val, setSpeaking);
+            }
+            return;
+        }, [val]);
+        return { id: val, speaking };
     }
 
     dispose = () => {
