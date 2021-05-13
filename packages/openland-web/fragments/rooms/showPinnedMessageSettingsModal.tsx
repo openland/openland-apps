@@ -109,7 +109,7 @@ const PinnedMessageSettingsModalBody = React.memo<PinnedMessageSettingsModalBody
 });
 
 export const showPinnedMessageSettingsModal = (roomId: string, pinnedMessage?: string | null) => {
-    showModalBox({ title: 'PinnedMessage', width: 368 }, (ctx) => (
+    showModalBox({ title: 'Pinned message', width: 368 }, (ctx) => (
         <PinnedMessageSettingsModalBody
             roomId={roomId}
             pinnedMessage={pinnedMessage}
