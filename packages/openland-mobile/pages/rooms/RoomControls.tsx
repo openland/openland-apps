@@ -18,6 +18,7 @@ import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { showRoomSettings } from './RoomSettings';
 import { ReportCallErrorType } from 'openland-mobile/utils/voiceChatErrorNotifier';
 import { showRoomInvite } from './showRoomInvite';
+// import { RoomDonationBar } from './RoomDonationBar';
 
 const ControlItem = React.memo(
     (props: {
@@ -386,9 +387,9 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
     const { onLayout } = props;
 
     const buttons = getButtons(props);
-    // console.log('@@ CONTROLS')
     return (
-        <View style={{ paddingTop: 16 }} onLayout={onLayout}>
+        <View onLayout={onLayout}>
+            {/* <RoomDonationBar /> */}
             <View
                 style={{
                     paddingHorizontal: 16,

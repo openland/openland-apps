@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-donate",
+            "src": "ic-donate-16.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
             "name": "ic-pro",
             "src": "ic-pro-24.svg",
             "sizes": [
