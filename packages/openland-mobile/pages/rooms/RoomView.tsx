@@ -68,6 +68,8 @@ interface PinnedMessageViewProps {
     isAdmin: boolean;
 }
 
+const ScreenWidth = Dimensions.get('screen').width;
+
 const PinnedMessageView = React.memo((props: PinnedMessageViewProps) => {
     const { message, roomId, isAdmin, theme, ctx } = props;
     return (
@@ -497,12 +499,14 @@ const RoomHeader = React.memo(
     ) => {
         const { room, hide, router, theme, analyzer, connecting, peers } = props;
         const currentlySpeaking = analyzer.useSpeakingPeer();
+        const client = useClient();
         let currentPeer = currentlySpeaking.speaking ? peers.find(x => x.id === currentlySpeaking.id) : undefined;
         const { parentRoom } = room;
         const [joinState, setJoinState] = React.useState<
             'initial' | 'loading' | 'success' | 'joined'
         >(parentRoom?.membership === SharedRoomMembershipStatus.MEMBER ? 'joined' : 'initial');
-        const client = useClient();
+        const joinButtonVisible = parentRoom?.kind === SharedRoomKind.PUBLIC && joinState !== 'joined';
+
         const topSpacing = isPad
             ? SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top
             : 0;
@@ -548,6 +552,9 @@ const RoomHeader = React.memo(
                                         ...TextStyles.Label2,
                                         color: theme.foregroundPrimary,
                                         marginLeft: 12,
+                                        maxWidth: joinButtonVisible
+                                            ? ScreenWidth - (parentRoom.isChannel ? 220 : 210)
+                                            : ScreenWidth - 100,
                                     }}
                                     ellipsizeMode="tail"
                                     numberOfLines={1}
@@ -557,7 +564,7 @@ const RoomHeader = React.memo(
                                 </Text>
                             </View>
                         </TouchableOpacity>
-                        {parentRoom.kind === SharedRoomKind.PUBLIC && joinState !== 'joined' && (
+                        {joinButtonVisible && (
                             <TouchableOpacity
                                 style={{
                                     marginLeft: 16,
@@ -670,7 +677,10 @@ const RoomHeader = React.memo(
                             flexShrink: 0,
                         }}
                     >
-                        <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} allowFontScaling={false}>
+                        <Text
+                            style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }}
+                            allowFontScaling={false}
+                        >
                             {room.speakersCount}
                         </Text>
                         <Image
@@ -708,7 +718,10 @@ const RoomHeader = React.memo(
                             </>
                         )}
                     </View>
-                    {(room.speakers && room.speakers.length > 9 && !!currentPeer && !currentPeer.mediaState.audioPaused) ? (
+                    {room.speakers &&
+                    room.speakers.length > 9 &&
+                    !!currentPeer &&
+                    !currentPeer.mediaState.audioPaused ? (
                         <View
                             style={{
                                 display: 'flex',
