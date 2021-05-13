@@ -23,6 +23,8 @@ async function askQuestion(query) {
     );
 }
 
+const TIMEOUT = 120000;
+
 const main = async (shortname, userNumber) => {
     const userEmailCode = ('000000' + userNumber.toString()).slice(-6);
     const userCode = userEmailCode[5].toString().repeat(6);
@@ -34,11 +36,12 @@ const main = async (shortname, userNumber) => {
         browserWSEndpoint: 'wss://chrome.browserless.io?token=6c11b2ba-17e0-49cf-85f7-0644d15cc1fa',
     });
     const page = await browser.newPage();
+    await page.setDefaultNavigationTimeout(TIMEOUT);
     await page.goto(`${urlPath}${shortname.trim()}`);
 
     console.log('page loaded');
 
-    const click = (id) => page.waitForSelector(id, { visible: true }).then((d) => d.click());
+    const click = (id) => page.waitForSelector(id, { visible: true, timeout: TIMEOUT }).then((d) => d.click());
     const loaded = () => page.waitForNavigation({ waitUntil: 'domcontentloaded' });
 
     await click('#joinRoomAuth');
@@ -49,7 +52,7 @@ const main = async (shortname, userNumber) => {
     await loaded();
 
     console.log('email login');
-    const emailInput = await page.waitForSelector('#authEmailInput');
+    const emailInput = await page.waitForSelector('#authEmailInput', { timeout: TIMEOUT });
     await emailInput.focus();
     await delay(500);
     await emailInput.type(userEmail, { delay: 50 });
@@ -65,7 +68,7 @@ const main = async (shortname, userNumber) => {
 
     if (page.url().search('createProfile') !== -1) {
         console.log('create user page');
-        await page.waitForSelector('#authName', { timeout: 300000 });
+        await page.waitForSelector('#authName', { timeout: TIMEOUT });
         const nameInput = await page.waitForSelector('#authName');
         await nameInput.focus();
         await delay(500);
@@ -75,7 +78,7 @@ const main = async (shortname, userNumber) => {
     }
 
     console.log('navigate to user');
-    await page.waitForSelector('#joinRoom', { visible: true });
+    await page.waitForSelector('#joinRoom', { visible: true, timeout: TIMEOUT });
     await click('#joinRoom');
     await loaded();
     console.log('joined success');
