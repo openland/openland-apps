@@ -10,6 +10,8 @@ import { useClient } from 'openland-api/useClient';
 
 import { showPinnedMessageSettingsModal } from './showPinnedMessageSettingsModal';
 import { VoiceChatParticipantStatus } from 'openland-api/spacex.types';
+import { UText } from 'openland-web/components/unicorn/UText';
+import { emoji } from 'openland-y-utils/emoji';
 
 interface PinnedMessageModalBodyProps {
     hide: () => void;
@@ -44,16 +46,25 @@ const PinnedMessageModalBody = React.memo<PinnedMessageModalBodyProps>((props) =
 
     return (
         <>
-            <XModalContent>{pinnedMessage}</XModalContent>
+            <XModalContent>
+                <UText text={pinnedMessage} proccessText={emoji} />
+            </XModalContent>
             {voiceChatData.me?.status === VoiceChatParticipantStatus.ADMIN && (
                 <XModalFooter>
-                    <UButton text="Delete" style="danger" size="large" onClick={handleDeleteClick} />
+                    <UButton
+                        text="Delete"
+                        style="danger"
+                        size="large"
+                        onClick={handleDeleteClick}
+                    />
                     <UButton
                         text="Edit"
                         style="primary"
                         size="large"
                         marginLeft={16}
-                        onClick={() => showPinnedMessageSettingsModal(voiceChatData.id, pinnedMessage)}
+                        onClick={() =>
+                            showPinnedMessageSettingsModal(voiceChatData.id, pinnedMessage)
+                        }
                     />
                 </XModalFooter>
             )}
