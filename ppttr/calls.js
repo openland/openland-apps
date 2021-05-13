@@ -31,10 +31,10 @@ const main = async (shortname, userNumber) => {
     const userName = `test${userEmailCode}`;
     const userEmail = `${userName}@openland.com`;
 
-    // const browser = await puppeteer.launch({ headless: isDev ? false : undefined })
-    const browser = await puppeteer.connect({
-        browserWSEndpoint: 'wss://chrome.browserless.io?token=6c11b2ba-17e0-49cf-85f7-0644d15cc1fa',
-    });
+    const browser = await puppeteer.launch({ headless: isDev ? false : undefined })
+    // const browser = await puppeteer.connect({
+    //     browserWSEndpoint: 'wss://chrome.browserless.io?token=6c11b2ba-17e0-49cf-85f7-0644d15cc1fa',
+    // });
     const page = await browser.newPage();
     await page.setDefaultNavigationTimeout(TIMEOUT);
     await page.goto(`${urlPath}${shortname.trim()}`);
