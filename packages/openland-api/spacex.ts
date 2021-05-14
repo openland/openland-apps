@@ -79,6 +79,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryConferenceMedia(variables: Types.ConferenceMediaVariables, params?: QueryParameters): Promise<Types.ConferenceMedia> {
         return this.query('ConferenceMedia', variables, params);
     }
+    queryConferenceMeta(variables: Types.ConferenceMetaVariables, params?: QueryParameters): Promise<Types.ConferenceMeta> {
+        return this.query('ConferenceMeta', variables, params);
+    }
     queryCreatedStickerPacks(params?: QueryParameters): Promise<Types.CreatedStickerPacks> {
         return this.query('CreatedStickerPacks', undefined, params);
     }
@@ -469,6 +472,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchConferenceMedia(variables: Types.ConferenceMediaVariables, params?: QueryParameters): Promise<Types.ConferenceMedia> {
         return this.refetch('ConferenceMedia', variables, params);
     }
+    refetchConferenceMeta(variables: Types.ConferenceMetaVariables, params?: QueryParameters): Promise<Types.ConferenceMeta> {
+        return this.refetch('ConferenceMeta', variables, params);
+    }
     refetchCreatedStickerPacks(params?: QueryParameters): Promise<Types.CreatedStickerPacks> {
         return this.refetch('CreatedStickerPacks', undefined, params);
     }
@@ -858,6 +864,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateConferenceMedia(variables: Types.ConferenceMediaVariables, updater: (data: Types.ConferenceMedia) => Types.ConferenceMedia | null): Promise<boolean> {
         return this.updateQuery(updater, 'ConferenceMedia', variables);
+    }
+    updateConferenceMeta(variables: Types.ConferenceMetaVariables, updater: (data: Types.ConferenceMeta) => Types.ConferenceMeta | null): Promise<boolean> {
+        return this.updateQuery(updater, 'ConferenceMeta', variables);
     }
     updateCreatedStickerPacks(updater: (data: Types.CreatedStickerPacks) => Types.CreatedStickerPacks | null): Promise<boolean> {
         return this.updateQuery(updater, 'CreatedStickerPacks', undefined);
@@ -1294,6 +1303,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useConferenceMedia(variables: Types.ConferenceMediaVariables, params?: SpaceQueryWatchParameters): Types.ConferenceMedia;
     useConferenceMedia(variables: Types.ConferenceMediaVariables, params?: SpaceQueryWatchParameters): Types.ConferenceMedia | null {
         return this.useQuery('ConferenceMedia', variables, params);
+    }
+    useConferenceMeta(variables: Types.ConferenceMetaVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ConferenceMeta | null;
+    useConferenceMeta(variables: Types.ConferenceMetaVariables, params?: SpaceQueryWatchParameters): Types.ConferenceMeta;
+    useConferenceMeta(variables: Types.ConferenceMetaVariables, params?: SpaceQueryWatchParameters): Types.ConferenceMeta | null {
+        return this.useQuery('ConferenceMeta', variables, params);
     }
     useCreatedStickerPacks(params: SpaceQueryWatchParameters & { suspense: false }): Types.CreatedStickerPacks | null;
     useCreatedStickerPacks(params?: SpaceQueryWatchParameters): Types.CreatedStickerPacks;

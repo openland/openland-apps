@@ -2673,6 +2673,24 @@ const ConferenceMediaSelector = obj(
                         )))))
                 )))
         );
+const ConferenceMetaSelector = obj(
+            field('conference', 'conference', args(fieldValue("id", refValue('id'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('parent', 'parent', args(), obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String')))
+                        )),
+                    field('peers', 'peers', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('user', 'user', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    field('id', 'id', args(), notNull(scalar('ID'))),
+                                    field('name', 'name', args(), notNull(scalar('String')))
+                                )))
+                        )))))
+                )))
+        );
 const CreatedStickerPacksSelector = obj(
             field('createdStickerPacks', 'createdStickerPacks', args(), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5798,6 +5816,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'ConferenceMedia',
         body: 'query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}iceServers{__typename urls username credential}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}',
         selector: ConferenceMediaSelector
+    },
+    ConferenceMeta: {
+        kind: 'query',
+        name: 'ConferenceMeta',
+        body: 'query ConferenceMeta($id:ID!){conference(id:$id){__typename id parent{__typename}peers{__typename id user{__typename id name}}}}',
+        selector: ConferenceMetaSelector
     },
     CreatedStickerPacks: {
         kind: 'query',

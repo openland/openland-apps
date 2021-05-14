@@ -2666,6 +2666,24 @@ private let ConferenceMediaSelector = obj(
                         )))))
                 )))
         )
+private let ConferenceMetaSelector = obj(
+            field("conference", "conference", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("parent", "parent", obj(
+                            field("__typename", "__typename", notNull(scalar("String")))
+                        )),
+                    field("peers", "peers", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("user", "user", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("name", "name", notNull(scalar("String")))
+                                )))
+                        )))))
+                )))
+        )
 private let CreatedStickerPacksSelector = obj(
             field("createdStickerPacks", "createdStickerPacks", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5796,6 +5814,12 @@ class Operations {
         "query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}iceServers{__typename urls username credential}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}",
         ConferenceMediaSelector
     )
+    let ConferenceMeta = OperationDefinition(
+        "ConferenceMeta",
+        .query, 
+        "query ConferenceMeta($id:ID!){conference(id:$id){__typename id parent{__typename}peers{__typename id user{__typename id name}}}}",
+        ConferenceMetaSelector
+    )
     let CreatedStickerPacks = OperationDefinition(
         "CreatedStickerPacks",
         .query, 
@@ -7399,6 +7423,7 @@ class Operations {
         if name == "CommonChatsWithUser" { return CommonChatsWithUser }
         if name == "Conference" { return Conference }
         if name == "ConferenceMedia" { return ConferenceMedia }
+        if name == "ConferenceMeta" { return ConferenceMeta }
         if name == "CreatedStickerPacks" { return CreatedStickerPacks }
         if name == "Dialogs" { return Dialogs }
         if name == "DiscoverCollection" { return DiscoverCollection }
