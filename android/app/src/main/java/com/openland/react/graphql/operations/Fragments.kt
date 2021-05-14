@@ -476,19 +476,6 @@ internal val UserShortSelector = obj(
             fragment("User", UserSmallSelector)
         )
 
-internal val VoiceChatParticipantSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("user", "user", notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("followedByMe", "followedByMe", notNull(scalar("Boolean"))),
-                    field("followersCount", "followersCount", notNull(scalar("Int"))),
-                    fragment("User", UserSmallSelector)
-                ))),
-            field("status", "status", notNull(scalar("String"))),
-            field("handRaised", "handRaised", scalar("Boolean"))
-        )
-
 internal val VoiceChatEntitySelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -526,15 +513,43 @@ internal val VoiceChatEntitySelector = obj(
                 )),
             field("me", "me", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("photo", "photo", scalar("String")),
+                            field("firstName", "firstName", notNull(scalar("String"))),
+                            field("name", "name", notNull(scalar("String"))),
+                            field("shortname", "shortname", scalar("String"))
+                        ))),
+                    field("status", "status", notNull(scalar("String"))),
+                    field("handRaised", "handRaised", scalar("Boolean"))
                 ))
+        )
+
+internal val VoiceChatParticipantSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("user", "user", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("photo", "photo", scalar("String")),
+                    field("firstName", "firstName", notNull(scalar("String"))),
+                    field("name", "name", notNull(scalar("String")))
+                )))
+        )
+
+internal val VoiceChatSpeakerSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("status", "status", notNull(scalar("String"))),
+            fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
         )
 
 internal val VoiceChatWithSpeakersSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("speakers", "speakers", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
+                    fragment("VoiceChatParticipant", VoiceChatSpeakerSelector)
                 ))))),
             fragment("VoiceChat", VoiceChatEntitySelector)
         )
@@ -1143,15 +1158,21 @@ internal val FullMessageWithoutSourceSelector = obj(
             ))
         )
 
+internal val VoiceChatListenerSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("handRaised", "handRaised", scalar("Boolean")),
+            fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
+        )
+
 internal val FullVoiceChatSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("speakers", "speakers", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
+                    fragment("VoiceChatParticipant", VoiceChatSpeakerSelector)
                 ))))),
             field("listeners", "listeners", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
+                    fragment("VoiceChatParticipant", VoiceChatListenerSelector)
                 ))))),
             fragment("VoiceChat", VoiceChatEntitySelector)
         )

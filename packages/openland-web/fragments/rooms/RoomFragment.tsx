@@ -34,6 +34,7 @@ import {
     SharedRoomKind,
     VoiceChatParticipant,
     VoiceChatParticipantStatus,
+    VoiceChatSpeaker,
 } from 'openland-api/spacex.types';
 import AlertBlanket from 'openland-x/AlertBlanket';
 import { useToast } from 'openland-web/components/unicorn/UToast';
@@ -363,7 +364,7 @@ const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: VoiceChatPart
             hoverBorderRadius={8}
             marginHorizontal={4}
             hoverCursor="pointer"
-            onClick={() => showRaisedHands({ roomId, raisedHands })}
+            onClick={() => showRaisedHands({ roomId })}
         >
             <XView
                 width={80}
@@ -456,15 +457,13 @@ const UserMenu = React.memo((props: {
     roomId: string,
     userId: string,
     status: VoiceChatParticipantStatus,
-    followedByMe: boolean,
     selfStatus?: VoiceChatParticipantStatus,
     isSelf: boolean,
 }) => {
     const router = React.useContext(XViewRouterContext)!;
     const client = useClient();
-    const followedByMe = client.useVoiceChatUser({ uid: props.userId }, { suspense: false })?.user.followedByMe;
+    const isFollowed = !!client.useVoiceChatUser({ uid: props.userId }, { suspense: false })?.user.followedByMe;
     let popper = new UPopperMenuBuilder();
-    const isFollowed = typeof followedByMe === 'undefined' ? props.followedByMe : followedByMe;
     const width = 200;
 
     popper.item({
@@ -577,7 +576,6 @@ interface RoomUserInfo {
     id: string;
     name: string;
     photo: string | null;
-    followedByMe: boolean;
     roomId: string;
     userStatus: VoiceChatParticipantStatus;
     selfStatus?: VoiceChatParticipantStatus;
@@ -593,7 +591,6 @@ const RoomUser = React.memo(({
     userStatus,
     selfStatus,
     selfId,
-    followedByMe,
 }: {
     state?: 'talking' | 'loading' | 'muted';
 } & RoomUserInfo) => {
@@ -609,7 +606,7 @@ const RoomUser = React.memo(({
             updatedDeps: userStatus,
         },
         (ctx) => (
-            <UserMenu ctx={ctx} roomId={roomId} userId={id} status={userStatus} selfStatus={selfStatus} followedByMe={followedByMe} isSelf={isSelf} />
+            <UserMenu ctx={ctx} roomId={roomId} userId={id} status={userStatus} selfStatus={selfStatus} isSelf={isSelf} />
         ),
     );
     const isAdmin = userStatus === VoiceChatParticipantStatus.ADMIN;
@@ -711,7 +708,7 @@ const RoomSpeakers = React.memo(({
         isMuted: boolean,
         isLoading: boolean,
         peersIds: string[],
-        speaker: VoiceChatParticipant
+        speaker: VoiceChatSpeaker
     }[];
 }) => {
     return (
@@ -730,7 +727,6 @@ const RoomSpeakers = React.memo(({
                     peersIds={peersIds}
                     selfStatus={room.me?.status}
                     userStatus={speaker.status}
-                    followedByMe={speaker.user.followedByMe}
                 />
             ))}
             {speakers.length <= 8 && room.me?.status === VoiceChatParticipantStatus.ADMIN && (
@@ -754,9 +750,8 @@ const RoomListeners = React.memo((props: { room: VoiceChatT }) => {
                     photo={listener.user.photo}
                     roomId={props.room.id}
                     selfId={props.room.me?.user.id}
-                    userStatus={listener.status}
+                    userStatus={VoiceChatParticipantStatus.LISTENER}
                     selfStatus={props.room.me?.status}
-                    followedByMe={listener.user.followedByMe}
                 />
             ))}
         </div>

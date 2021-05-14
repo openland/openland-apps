@@ -1,11 +1,20 @@
 fragment VoiceChatParticipant on VoiceChatParticipant {
     id
     user {
-        ...UserSmall
-        followedByMe
-        followersCount
+        id
+        photo
+        firstName
+        name
     }
+}
+
+fragment VoiceChatSpeaker on VoiceChatParticipant {
+    ...VoiceChatParticipant
     status
+}
+
+fragment VoiceChatListener on VoiceChatParticipant {
+    ...VoiceChatParticipant
     handRaised
 }
 
@@ -40,24 +49,33 @@ fragment VoiceChatEntity on VoiceChat {
         }
     }
     me {
-        ...VoiceChatParticipant
+        id
+        user {
+            id
+            photo
+            firstName
+            name
+            shortname
+        }
+        status
+        handRaised
     }
 }
 
 fragment VoiceChatWithSpeakers on VoiceChat {
     ...VoiceChatEntity
     speakers {
-        ...VoiceChatParticipant
+        ...VoiceChatSpeaker
     }
 }
 
 fragment FullVoiceChat on VoiceChat {
     ...VoiceChatEntity
     speakers {
-        ...VoiceChatParticipant
+        ...VoiceChatSpeaker
     }
     listeners {
-        ...VoiceChatParticipant
+        ...VoiceChatListener
     }
 }
 
@@ -76,7 +94,7 @@ query VoiceChatFull($id: ID!) {
 query VoiceChatListeners($id: ID!, $first: Int!, $after: String) {
     voiceChatListeners(id: $id, first: $first, after: $after) {
         items {
-            ...VoiceChatParticipant
+            ...VoiceChatListener
         }
         cursor
     }
@@ -108,6 +126,23 @@ query VoiceChatUser($uid: ID!) {
                 mute
             }
         }
+    }
+}
+
+query VoiceChatHandRaised($id: ID!, $first: Int!, $after: String) {
+    voiceChatHandRaised(id: $id, first: $first, after: $after) {
+        items {
+            id
+            user {
+                id
+                photo
+                firstName
+                name
+                followersCount
+            }
+        }
+        cursor
+        haveMore
     }
 }
 
@@ -214,6 +249,8 @@ subscription VoiceChatEvents($id: ID!, $fromState: String!) {
                 }
                 participant {
                     ...VoiceChatParticipant
+                    status
+                    handRaised
                 }
             }
             ... on VoiceChatUpdatedEvent {

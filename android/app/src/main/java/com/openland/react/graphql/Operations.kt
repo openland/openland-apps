@@ -134,6 +134,7 @@ object Operations {
         if (name == "VoiceChatControls") return VoiceChatControls
         if (name == "VoiceChatEventsState") return VoiceChatEventsState
         if (name == "VoiceChatFull") return VoiceChatFull
+        if (name == "VoiceChatHandRaised") return VoiceChatHandRaised
         if (name == "VoiceChatListeners") return VoiceChatListeners
         if (name == "VoiceChatUser") return VoiceChatUser
         if (name == "AccountInviteJoin") return AccountInviteJoin
