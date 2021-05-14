@@ -62,6 +62,22 @@ fragment VoiceChatEntity on VoiceChat {
     }
 }
 
+fragment VoiceChatShort on VoiceChat {
+    id
+    active
+    title
+    speakersCount
+    listenersCount
+    parentRoom {
+        id
+        title
+        photo
+    }
+    speakers {
+        ...VoiceChatParticipant
+    }
+}
+
 fragment VoiceChatWithSpeakers on VoiceChat {
     ...VoiceChatEntity
     speakers {
@@ -104,7 +120,7 @@ query ActiveVoiceChats($first: Int!, $after: String) {
     activeVoiceChats(first: $first, after: $after) {
         cursor
         items {
-            ...VoiceChatWithSpeakers
+            ...VoiceChatShort
         }
     }
 }
@@ -266,7 +282,7 @@ subscription ActiveVoiceChatsEvents {
     activeVoiceChatsEvents {
         ... on VoiceChatUpdatedEvent {
             chat {
-                ...VoiceChatWithSpeakers
+                ...VoiceChatShort
             }
         }
     }

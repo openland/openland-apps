@@ -2038,6 +2038,25 @@ internal val UserFullSelector = obj(
                 ))
         )
 
+internal val VoiceChatShortSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("active", "active", notNull(scalar("Boolean"))),
+            field("title", "title", scalar("String")),
+            field("speakersCount", "speakersCount", notNull(scalar("Int"))),
+            field("listenersCount", "listenersCount", notNull(scalar("Int"))),
+            field("parentRoom", "parentRoom", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("title", "title", notNull(scalar("String"))),
+                    field("photo", "photo", notNull(scalar("String")))
+                )),
+            field("speakers", "speakers", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
+                )))))
+        )
+
 internal val WalletGroupSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),

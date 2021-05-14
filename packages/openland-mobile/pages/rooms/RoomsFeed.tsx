@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, Image, TouchableOpacity, Linking } from 'react-native';
 import { useClient } from 'openland-api/useClient';
-import { VoiceChatWithSpeakers } from 'openland-api/spacex.types';
+import { VoiceChatShort } from 'openland-api/spacex.types';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import ActionSheet from 'openland-mobile/components/ActionSheet';
 import { SHeader } from 'react-native-s/SHeader';
@@ -47,7 +47,7 @@ function showFilters(selected: 'voice' | 'explore', onSelect: (d: 'voice' | 'exp
     actionSheet.show(true);
 }
 
-const RoomFeedItem = React.memo((props: { room: VoiceChatWithSpeakers, theme: ThemeGlobal, router: SRouter }) => {
+const RoomFeedItem = React.memo((props: { room: VoiceChatShort, theme: ThemeGlobal, router: SRouter }) => {
     let { room, theme } = props;
     let joinRoom = useJoinRoom();
     let speakers = room.speakers.slice(0, room.parentRoom ? 3 : 4);

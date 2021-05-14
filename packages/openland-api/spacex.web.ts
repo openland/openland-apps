@@ -2039,6 +2039,25 @@ const UserFullSelector = obj(
                 ))
         );
 
+const VoiceChatShortSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('active', 'active', args(), notNull(scalar('Boolean'))),
+            field('title', 'title', args(), scalar('String')),
+            field('speakersCount', 'speakersCount', args(), notNull(scalar('Int'))),
+            field('listenersCount', 'listenersCount', args(), notNull(scalar('Int'))),
+            field('parentRoom', 'parentRoom', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('title', 'title', args(), notNull(scalar('String'))),
+                    field('photo', 'photo', args(), notNull(scalar('String')))
+                )),
+            field('speakers', 'speakers', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('VoiceChatParticipant', VoiceChatParticipantSelector)
+                )))))
+        );
+
 const WalletGroupSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -2336,7 +2355,7 @@ const ActiveVoiceChatsSelector = obj(
                     field('cursor', 'cursor', args(), scalar('String')),
                     field('items', 'items', args(), notNull(list(notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            fragment('VoiceChat', VoiceChatWithSpeakersSelector)
+                            fragment('VoiceChat', VoiceChatShortSelector)
                         )))))
                 )))
         );
@@ -5331,7 +5350,7 @@ const ActiveVoiceChatsEventsSelector = obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
                         field('chat', 'chat', args(), notNull(obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                fragment('VoiceChat', VoiceChatWithSpeakersSelector)
+                                fragment('VoiceChat', VoiceChatShortSelector)
                             )))
                     ))
                 )))))
@@ -5669,7 +5688,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ActiveVoiceChats: {
         kind: 'query',
         name: 'ActiveVoiceChats',
-        body: 'query ActiveVoiceChats($first:Int!,$after:String){activeVoiceChats(first:$first,after:$after){__typename cursor items{__typename ...VoiceChatWithSpeakers}}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatSpeaker}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount parentRoom{__typename id title photo membership kind isChannel shortname organization{__typename id isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite}isPremium role}pinnedMessage{__typename id message spans{__typename ...MessageSpan}}me{__typename id user{__typename id photo firstName name shortname}status handRaised}}fragment MessageSpan on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename id name}}... on MessageSpanMultiUserMention{__typename offset length}... on MessageSpanOrganizationMention{__typename organization{__typename id name}}... on MessageSpanRoomMention{__typename room{__typename ... on PrivateRoom{__typename id user{__typename id name}}... on SharedRoom{__typename id title isPremium}}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment VoiceChatSpeaker on VoiceChatParticipant{__typename ...VoiceChatParticipant status}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id photo firstName name}}',
+        body: 'query ActiveVoiceChats($first:Int!,$after:String){activeVoiceChats(first:$first,after:$after){__typename cursor items{__typename ...VoiceChatShort}}}fragment VoiceChatShort on VoiceChat{__typename id active title speakersCount listenersCount parentRoom{__typename id title photo}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id photo firstName name}}',
         selector: ActiveVoiceChatsSelector
     },
     AuthPoints: {
@@ -7259,7 +7278,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ActiveVoiceChatsEvents: {
         kind: 'subscription',
         name: 'ActiveVoiceChatsEvents',
-        body: 'subscription ActiveVoiceChatsEvents{activeVoiceChatsEvents{__typename ... on VoiceChatUpdatedEvent{__typename chat{__typename ...VoiceChatWithSpeakers}}}}fragment VoiceChatWithSpeakers on VoiceChat{__typename ...VoiceChatEntity speakers{__typename ...VoiceChatSpeaker}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount parentRoom{__typename id title photo membership kind isChannel shortname organization{__typename id isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite}isPremium role}pinnedMessage{__typename id message spans{__typename ...MessageSpan}}me{__typename id user{__typename id photo firstName name shortname}status handRaised}}fragment MessageSpan on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename id name}}... on MessageSpanMultiUserMention{__typename offset length}... on MessageSpanOrganizationMention{__typename organization{__typename id name}}... on MessageSpanRoomMention{__typename room{__typename ... on PrivateRoom{__typename id user{__typename id name}}... on SharedRoom{__typename id title isPremium}}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment VoiceChatSpeaker on VoiceChatParticipant{__typename ...VoiceChatParticipant status}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id photo firstName name}}',
+        body: 'subscription ActiveVoiceChatsEvents{activeVoiceChatsEvents{__typename ... on VoiceChatUpdatedEvent{__typename chat{__typename ...VoiceChatShort}}}}fragment VoiceChatShort on VoiceChat{__typename id active title speakersCount listenersCount parentRoom{__typename id title photo}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id photo firstName name}}',
         selector: ActiveVoiceChatsEventsSelector
     },
     BlackListUpdates: {
