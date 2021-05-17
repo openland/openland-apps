@@ -38,7 +38,7 @@ export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
 
     let data = client.useConferenceMeta(
         { id: sharedRoom?.activeVoiceChat?.id || chat.id },
-        { fetchPolicy: 'cache-and-network' },
+        { fetchPolicy: 'network-only', suspense: false },
     );
     const openVideoModal = useVideoCallModal({ chatId: chat.id });
     const callDisabled = props.chat.__typename === 'PrivateRoom' && !!currentSession && currentSession.callType === 'voice-chat';
