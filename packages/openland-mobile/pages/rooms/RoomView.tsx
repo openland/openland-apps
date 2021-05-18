@@ -1209,12 +1209,10 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
         .map((speaker) => {
             let speakerPeers = (conference?.peers || []).filter((p) => p.user.id === speaker.user.id);
             let speakerStates = speakerPeers.map(peer => {
-                let isLocal = peer?.id === state?.sender.id;
-                let isLoading = false;
-                let isMuted = !!peer?.mediaState.audioPaused;
-                if (!isLocal) {
-                    isLoading = !state?.receivers[peer.id]?.audioTrack;
-                }
+                const isLocal = peer?.id === state?.sender.id;
+                const isLoading = isLocal ? false : !state?.receivers[peer.id]?.audioTrack;
+                const isMuted = isLocal ? !state?.sender.audioEnabled : !!peer?.mediaState.audioPaused;
+
                 return { isMuted, isLoading };
             }).reduce((acc, peerState) => {
                 return {
