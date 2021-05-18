@@ -117,7 +117,8 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
         props.chat.__typename === 'SharedRoom' ? props.chat.callSettings : undefined;
     const currentSession = calls.useCurrentSession();
     const showVideoCallModal = useVideoCallModal({ chatId: props.chat.id });
-    const callDisabled = !!currentSession && currentSession.callType === 'voice-chat';
+    const voiceChat = props.messenger.voiceChat.useVoiceChat();
+    const callDisabled = !!currentSession && !!voiceChat;
     const isAdmin = props.chat.__typename === 'SharedRoom' && (props.chat.role === RoomMemberRole.ADMIN || props.chat.role === RoomMemberRole.OWNER);
     const showStartRoom = callSettings && callSettings.mode === RoomCallsMode.STANDARD && isAdmin;
     const showClassicCallButton = props.chat.__typename === 'PrivateRoom' || useRole('super-admin');
@@ -175,7 +176,7 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
                             if (callDisabled) {
                                 return;
                             }
-                            calls.joinCall(props.chat.id, 'call');
+                            calls.joinCall(props.chat.id);
                             showVideoCallModal();
                         }}
                         size="large"
@@ -195,6 +196,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; isBanned: bo
     const [muted, setMuted] = React.useState(chat.settings.mute);
     const calls = messenger.calls;
     const currentSession = calls.useCurrentSession();
+    const voiceChat = messenger.voiceChat.useVoiceChat();
     const showVideoCallModal = useVideoCallModal({ chatId: chat.id });
 
     const privateRoom = chat.__typename === 'PrivateRoom' ? chat : undefined;
@@ -235,11 +237,11 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; isBanned: bo
             title: 'Call',
             icon: <PhoneIcon />,
             action: () => {
-                calls.joinCall(chat.id, 'call');
+                calls.joinCall(chat.id);
                 showVideoCallModal();
             },
             disabled: currentSession
-                ? currentSession.conversationId === chat.id || currentSession.callType === 'voice-chat'
+                ? currentSession.conversationId === chat.id || !!voiceChat
                 : false,
         });
     }

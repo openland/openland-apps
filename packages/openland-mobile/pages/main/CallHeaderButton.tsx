@@ -44,7 +44,8 @@ export const CallHeaderButton = React.memo((props: {
     showCallModal: () => void,
 }) => {
     const mediaSession = getMessenger().engine.calls.useCurrentSession();
-    const disabled = !!mediaSession && mediaSession.callType === 'voice-chat';
+    const voiceChat = getMessenger().engine.voiceChat.useVoiceChat();
+    const disabled = !!mediaSession && !!voiceChat;
     const isAdmin = props.sharedRoom?.role === RoomMemberRole.ADMIN || props.sharedRoom?.role === RoomMemberRole.OWNER;
 
     if (!props.sharedRoom) {

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useVoiceChat, VoiceChatProvider } from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { Clipboard, Platform, Share, Text, View } from 'react-native';
 import Toast from 'openland-mobile/components/Toast';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
@@ -9,10 +8,11 @@ import { useClient } from 'openland-api/useClient';
 import { SharedRoomKind } from 'openland-api/spacex.types';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 const RoomInviteContent = React.memo(
     (props: { theme: ThemeGlobal }) => {
-        const voiceChatData = useVoiceChat();
+        const voiceChatData = getMessenger().engine.voiceChat.useVoiceChat();
         const client = useClient();
         const [roomInviteLink, setRoomInviteLink] = React.useState<string | undefined>();
         const [loading, setLoading] = React.useState(false);
@@ -20,7 +20,7 @@ const RoomInviteContent = React.memo(
         React.useEffect(() => {
             (async () => {
                 if (
-                    voiceChatData.parentRoom?.kind === SharedRoomKind.GROUP &&
+                    voiceChatData?.parentRoom?.kind === SharedRoomKind.GROUP &&
                     !roomInviteLink &&
                     !loading
                 ) {
@@ -34,15 +34,16 @@ const RoomInviteContent = React.memo(
                     setLoading(false);
                 }
             })();
-        }, [voiceChatData.parentRoom, roomInviteLink, loading]);
+        }, [voiceChatData?.parentRoom, roomInviteLink, loading]);
 
-        const inviteEntity = voiceChatData.parentRoom || voiceChatData.me!.user;
+        const inviteEntity = voiceChatData?.parentRoom || voiceChatData?.me!.user;
         const link = roomInviteLink
             ? `https://openland.com/invite/${roomInviteLink}`
-            : `https://openland.com/${inviteEntity.shortname || inviteEntity.id}`;
+            : inviteEntity
+                ? `https://openland.com/${inviteEntity.shortname || inviteEntity.id}` : null;
 
         const handleShare = () => {
-            if (!loading) {
+            if (!loading && link) {
                 Share.share(
                     Platform.select({
                         ios: { url: link },
@@ -53,7 +54,7 @@ const RoomInviteContent = React.memo(
             }
         };
         const handleCopy = () => {
-            if (!loading) {
+            if (!loading && link) {
                 Clipboard.setString(link);
                 Toast.showCopied();
             }
@@ -73,7 +74,7 @@ const RoomInviteContent = React.memo(
                 >
                     {loading ? (
                         <View style={{ height: 24 }}>
-                            <ZLoader/>
+                            <ZLoader />
                         </View>
                     ) : (
                         <Text style={{ ...TextStyles.Body, color: props.theme.foregroundPrimary }}>
@@ -102,9 +103,7 @@ export const showRoomInvite = ({ roomId, theme }: { roomId: string; theme: Theme
     builder
         .title('Invite friends')
         .view(() => (
-            <VoiceChatProvider roomId={roomId}>
-                <RoomInviteContent theme={theme} />
-            </VoiceChatProvider>
+            <RoomInviteContent theme={theme} />
         ))
         .show();
 };

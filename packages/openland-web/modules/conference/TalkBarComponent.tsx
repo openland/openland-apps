@@ -30,6 +30,7 @@ export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
     const messenger = React.useContext(MessengerContext);
     const calls = messenger.calls;
     const currentSession = calls.useCurrentSession();
+    const voiceChat = messenger.voiceChat.useVoiceChat();
     const client = useClient();
     const joinRoom = useJoinRoom();
     const { chat } = props;
@@ -41,11 +42,11 @@ export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
         { fetchPolicy: 'network-only', suspense: false },
     );
     const openVideoModal = useVideoCallModal({ chatId: chat.id });
-    const callDisabled = props.chat.__typename === 'PrivateRoom' && !!currentSession && currentSession.callType === 'voice-chat';
+    const callDisabled = props.chat.__typename === 'PrivateRoom' && !!currentSession && !!voiceChat;
     const isVoiceChat = data?.conference.parent?.__typename === 'VoiceChat';
 
     const joinCall = () => {
-        calls.joinCall(chat.id, 'call');
+        calls.joinCall(chat.id);
         openVideoModal();
     };
 

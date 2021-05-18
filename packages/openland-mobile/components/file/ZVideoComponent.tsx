@@ -36,7 +36,6 @@ export const ZVideoComponent = React.memo(
                         playWhenInactive={true}
                         ignoreSilentSwitch="ignore"
                         resizeMode="contain"
-                        onError={e => console.log('@@ er', e)}
                     />
                 )}
                 {(path.length <= 0 || !completed) && (

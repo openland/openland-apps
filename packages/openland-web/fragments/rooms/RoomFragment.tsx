@@ -1,7 +1,7 @@
 import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { XScrollView3 } from 'openland-x/XScrollView3';
+import { XScrollValues, XScrollView3 } from 'openland-x/XScrollView3';
 import * as React from 'react';
 import { XView, XViewRouterContext } from 'react-mental';
 import { css, cx } from 'linaria';
@@ -24,7 +24,6 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { SvgLoader, XLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { RoomControls } from './RoomControls';
-import { useVoiceChat, VoiceChatProvider, VoiceChatT } from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { useClient } from 'openland-api/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
@@ -53,6 +52,8 @@ import { showPinnedMessageModal } from './showPinnedMessageModal';
 import { RoomJoinButton } from './RoomJoinButton';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 import { useWakeLock } from 'openland-web/utils/useWakeLock';
+import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
+import { VoiceChatT } from 'openland-engines/VoiceChatEngine';
 
 const headerParentRoomClass = css`
   padding: 12px 0;
@@ -740,35 +741,44 @@ const RoomSpeakers = React.memo(({
 });
 
 const RoomListeners = React.memo((props: { room: VoiceChatT }) => {
+    const messenger = React.useContext(MessengerContext);
+    const handleScroll = React.useCallback(
+        (values: XScrollValues) => {
+            let d = values.scrollHeight - (values.clientHeight + values.scrollTop);
+            if (d < 200) {
+                messenger.voiceChat.loadMoreListeners();
+            }
+        }, [messenger.voiceChat.loadMoreListeners]);
+
     return (
-        <div className={listenersGridStyle}>
-            {(props.room.listeners || []).map((listener, i) => (
-                <RoomUser
-                    key={listener.id}
-                    id={listener.user.id}
-                    name={listener.user.firstName}
-                    photo={listener.user.photo}
-                    roomId={props.room.id}
-                    selfId={props.room.me?.user.id}
-                    userStatus={VoiceChatParticipantStatus.LISTENER}
-                    selfStatus={props.room.me?.status}
-                />
-            ))}
-        </div>
+        <XScrollView3 onScroll={handleScroll} flexGrow={1}>
+            <div className={listenersGridStyle}>
+                {(props.room.listeners || []).map((listener, i) => (
+                    <RoomUser
+                        key={listener.id}
+                        id={listener.user.id}
+                        name={listener.user.firstName}
+                        photo={listener.user.photo}
+                        roomId={props.room.id}
+                        selfId={props.room.me?.user.id}
+                        userStatus={VoiceChatParticipantStatus.LISTENER}
+                        selfStatus={props.room.me?.status}
+                    />
+                ))}
+            </div>
+        </XScrollView3>
     );
 });
 
-const RoomView = React.memo((props: { roomId: string }) => {
+const RoomViewInner = React.memo((props: { roomId: string, voiceChatData: VoiceChatT, mediaSession: MediaSessionManager }) => {
     const client = useClient();
     const tabRouter = useTabRouter().router;
-    const joinRoom = useJoinRoom(true);
     const router = React.useContext(XViewRouterContext)!;
-    const voiceChatData = useVoiceChat();
+    const { voiceChatData, mediaSession } = props;
     useWakeLock();
     const conference = client.useConference({ id: props.roomId }, { suspense: false })?.conference;
 
-    const calls = React.useContext(MessengerContext).calls;
-    const mediaSession = calls.useCurrentSession();
+    const messenger = React.useContext(MessengerContext);
     const [state, setState] = React.useState<MediaSessionState | undefined>(
         mediaSession?.state.value,
     );
@@ -791,8 +801,8 @@ const RoomView = React.memo((props: { roomId: string }) => {
             return;
         }
         alreadyLeft.current = true;
-        calls.leaveCall();
-        client.mutateVoiceChatLeave({ id: props.roomId });
+        messenger.voiceChat.leave();
+
         if (window.location.pathname.startsWith('/room/')) {
             let currentId = window.location.pathname.split('/')[2];
             if (tabRouter.currentTab === 2 && voiceChatData.parentRoom && currentId === props.roomId) {
@@ -898,18 +908,6 @@ const RoomView = React.memo((props: { roomId: string }) => {
             }
         };
     }, []);
-    const isTabVisible = useVisibleTab();
-    React.useEffect(() => {
-        if ((!voiceChatData.me || !mediaSession) && isTabVisible) {
-            setTimeout(() => {
-                joinRoom(voiceChatData.id);
-            }, 2000);
-        }
-    }, []);
-
-    if (!mediaSession) {
-        return <XLoader loading={true} />;
-    }
 
     const speakers = (voiceChatData.speakers || [])
         .map((speaker) => {
@@ -1024,12 +1022,30 @@ const RoomView = React.memo((props: { roomId: string }) => {
     );
 });
 
+const RoomView = React.memo((props: { roomId: string }) => {
+    const messenger = React.useContext(MessengerContext)!;
+    const voiceChat = messenger.voiceChat.useVoiceChat();
+    const joinRoom = useJoinRoom(true);
+    const isTabVisible = useVisibleTab();
+    const mediaSession = messenger.calls.useCurrentSession();
+
+    React.useEffect(() => {
+        if (!mediaSession && !voiceChat && !messenger.voiceChat.isJoining && isTabVisible) {
+            joinRoom(props.roomId);
+        }
+    }, []);
+
+    if (!voiceChat || !mediaSession) {
+        return <XLoader loading={true} />;
+    }
+
+    return <RoomViewInner roomId={props.roomId} mediaSession={mediaSession} voiceChatData={voiceChat} />;
+});
+
 export const RoomFragment = React.memo(() => {
     const { id } = useUnicorn().query;
     // TODO: Unavailable page for wrong id
     return (
-        <VoiceChatProvider roomId={id}>
-            <RoomView roomId={id} />
-        </VoiceChatProvider>
+        <RoomView roomId={id} />
     );
 });

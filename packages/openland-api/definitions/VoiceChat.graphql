@@ -18,6 +18,19 @@ fragment VoiceChatListener on VoiceChatParticipant {
     handRaised
 }
 
+fragment VoiceChatMe on VoiceChatParticipant {
+    id
+    user {
+        id
+        photo
+        firstName
+        name
+        shortname
+    }
+    status
+    handRaised
+}
+
 fragment VoiceChatEntity on VoiceChat {
     id
     title
@@ -25,6 +38,7 @@ fragment VoiceChatEntity on VoiceChat {
     adminsCount
     speakersCount
     listenersCount
+    handRaisedCount
     parentRoom {
         id
         title
@@ -49,16 +63,7 @@ fragment VoiceChatEntity on VoiceChat {
         }
     }
     me {
-        id
-        user {
-            id
-            photo
-            firstName
-            name
-            shortname
-        }
-        status
-        handRaised
+        ...VoiceChatMe
     }
 }
 
@@ -103,7 +108,13 @@ query VoiceChat($id: ID!) {
 
 query VoiceChatFull($id: ID!) {
     voiceChat(id: $id) {
-        ...FullVoiceChat
+        ...VoiceChatWithSpeakers
+    }
+    voiceChatListeners(id: $id, first: 12) {
+        items {
+            ...VoiceChatListener
+        }
+        cursor
     }
 }
 
@@ -113,6 +124,7 @@ query VoiceChatListeners($id: ID!, $first: Int!, $after: String) {
             ...VoiceChatListener
         }
         cursor
+        haveMore
     }
 }
 
@@ -255,13 +267,33 @@ query VoiceChatEventsState($id: ID!) {
     }
 }
 
+query VoiceChatPrefetch($id: ID!) {
+    voiceChatEventsState(id: $id) {
+        state
+    }
+    voiceChat(id: $id) {
+        ...VoiceChatWithSpeakers
+    }
+    voiceChatListeners(id: $id, first: 12) {
+        items {
+            ...VoiceChatListener
+        }
+        cursor
+        haveMore
+    }
+}
+
 subscription VoiceChatEvents($id: ID!, $fromState: String!) {
     voiceChatEvents(fromState: $fromState, id: $id) {
         state
         events {
             ... on VoiceChatParticipantUpdatedEvent {
                 chat {
-                    ...VoiceChatEntity
+                    id
+                    handRaisedCount
+                    me {
+                        ...VoiceChatMe
+                    }
                 }
                 participant {
                     ...VoiceChatParticipant

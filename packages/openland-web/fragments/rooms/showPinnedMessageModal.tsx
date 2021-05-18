@@ -4,7 +4,6 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { useVoiceChat, VoiceChatProvider } from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
 
@@ -12,15 +11,17 @@ import { showPinnedMessageSettingsModal } from './showPinnedMessageSettingsModal
 import { VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import { UText } from 'openland-web/components/unicorn/UText';
 import { emoji } from 'openland-y-utils/emoji';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 interface PinnedMessageModalBodyProps {
     hide: () => void;
 }
 
 const PinnedMessageModalBody = React.memo<PinnedMessageModalBodyProps>((props) => {
-    const voiceChatData = useVoiceChat();
+    const messenger = React.useContext(MessengerContext)!;
+    const voiceChatData = messenger.voiceChat.useVoiceChat();
     const client = useClient();
-    const pinnedMessage = voiceChatData.pinnedMessage?.message;
+    const pinnedMessage = voiceChatData?.pinnedMessage?.message;
 
     React.useEffect(() => {
         if (!pinnedMessage) {
@@ -29,6 +30,9 @@ const PinnedMessageModalBody = React.memo<PinnedMessageModalBodyProps>((props) =
     }, [pinnedMessage]);
 
     const handleDeleteClick = React.useCallback(() => {
+        if (!voiceChatData) {
+            return;
+        }
         const builder = new AlertBlanketBuilder();
 
         builder.title('Delete pinned message');
@@ -42,7 +46,11 @@ const PinnedMessageModalBody = React.memo<PinnedMessageModalBodyProps>((props) =
             'danger',
         );
         builder.show();
-    }, []);
+    }, [voiceChatData]);
+
+    if (!voiceChatData) {
+        return null;
+    }
 
     return (
         <>
@@ -74,8 +82,6 @@ const PinnedMessageModalBody = React.memo<PinnedMessageModalBodyProps>((props) =
 
 export const showPinnedMessageModal = (roomId: string) => {
     showModalBox({ title: 'Pinned message', width: 368, useTopCloser: true }, (ctx) => (
-        <VoiceChatProvider roomId={roomId}>
-            <PinnedMessageModalBody hide={ctx.hide} />
-        </VoiceChatProvider>
+        <PinnedMessageModalBody hide={ctx.hide} />
     ));
 };

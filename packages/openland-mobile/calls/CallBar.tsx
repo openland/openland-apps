@@ -13,8 +13,9 @@ export const CallBarComponent = React.memo((props: { id: string, showCallModal: 
     let conference = getClient().useConferenceMeta({ id: props.id }, { fetchPolicy: 'cache-and-network' });
     const theme = useTheme();
     const mediaSession = getMessenger().engine.calls.useCurrentSession();
+    const voiceChat = getMessenger().engine.voiceChat.useVoiceChat();
     const isVoiceChat = conference?.conference.parent?.__typename === 'VoiceChat';
-    const disabled = !!mediaSession && mediaSession.callType === 'voice-chat' && !isVoiceChat;
+    const disabled = !!mediaSession && !!voiceChat && !isVoiceChat;
     const joinRoom = useJoinRoom();
     const handlePress = React.useCallback(() => {
         if (isVoiceChat) {

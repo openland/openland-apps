@@ -40,11 +40,6 @@ import { TintBlue } from 'openland-y-utils/themes/tints';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import InCallManager from 'react-native-incall-manager';
 import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradient.native';
-import {
-    VoiceChatProvider,
-    useVoiceChat,
-    VoiceChatT,
-} from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { withApp } from 'openland-mobile/components/withApp';
 import { isPad } from '../Root';
@@ -57,6 +52,7 @@ import { showSheetModal } from 'openland-mobile/components/showSheetModal';
 import { useVoiceChatErrorNotifier } from 'openland-mobile/utils/voiceChatErrorNotifier';
 import { Equalizer } from './Equalizer';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
+import { VoiceChatT } from 'openland-engines/VoiceChatEngine';
 
 const useWakeLock = Platform.OS === 'android' ? require('react-native-wake-lock').useWakeLock : undefined;
 
@@ -965,6 +961,8 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
     const currentHeight = isPad ? Dimensions.get('window').height : SDevice.wHeight;
     const sHeight = currentHeight - (sa.top + sa.bottom + headerHeight + controlsHeight + 16);
     const listeners = room.listeners || [];
+    const messenger = getMessenger().engine;
+    const { loading } = messenger.voiceChat.useListenersMeta();
     const speakersElement = (
         <>
             {!!props.room.pinnedMessage && (
@@ -1057,6 +1055,8 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                 keyExtractor={(item, index) => index.toString() + item.id}
                 numColumns={4}
                 style={{ flex: 1 }}
+                refreshing={loading}
+                onEndReached={messenger.voiceChat.loadMoreListeners}
             />
         </View>
     );
@@ -1066,10 +1066,11 @@ interface RoomViewInnerProps {
     roomId: string;
     ctx: ModalProps;
     router: SRouter;
+    voiceChatData: VoiceChatT;
 }
 
-const RoomView = React.memo((props: RoomViewInnerProps) => {
-    const voiceChatData = useVoiceChat();
+const RoomViewInner = React.memo((props: RoomViewInnerProps) => {
+    const { voiceChatData } = props;
     const theme = useTheme();
     const client = useClient();
     const conference = client.useConference({ id: props.roomId }, { suspense: false })?.conference;
@@ -1111,8 +1112,7 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
     const closeCall = () => {
         props.ctx.hide();
         InCallManager.stop({ busytone: '_BUNDLE_' });
-        calls.leaveCall();
-        client.mutateVoiceChatLeave({ id: props.roomId });
+        getMessenger().engine.voiceChat.leave();
     };
 
     const handleLeave = React.useCallback(async () => {
@@ -1287,15 +1287,25 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
     );
 });
 
+const RoomView = React.memo((props: any) => {
+    const voiceChat = getMessenger().engine.voiceChat.useVoiceChat();
+    if (!voiceChat) {
+        return (
+            <View style={{ height: 200, alignItems: 'center', justifyContent: 'center' }}>
+                <LoaderSpinner size="large" />
+            </View>
+        );
+    }
+    return <RoomViewInner {...props} voiceChatData={voiceChat} />;
+});
+
 export const RoomViewPage = withApp(
     ({ router }: { router: SRouter }) => (
-        <VoiceChatProvider roomId={router.params.roomId}>
-            <RoomView
-                roomId={router.params.roomId}
-                router={router}
-                ctx={{ hide: () => router.back() }}
-            />
-        </VoiceChatProvider>
+        <RoomView
+            roomId={router.params.roomId}
+            router={router}
+            ctx={{ hide: () => router.back() }}
+        />
     ),
     { navigationAppearance: 'small-hidden' },
 );
@@ -1306,9 +1316,7 @@ export const showRoomView = (roomId: string, router: SRouter, onHide?: () => voi
     } else {
         showBottomSheet({
             view: (ctx) => (
-                <VoiceChatProvider roomId={roomId}>
-                    <RoomView roomId={roomId} ctx={ctx} router={router} />
-                </VoiceChatProvider>
+                <RoomView roomId={roomId} ctx={ctx} router={router} />
             ),
             containerStyle: {
                 borderBottomLeftRadius: 0,

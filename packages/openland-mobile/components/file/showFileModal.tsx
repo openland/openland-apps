@@ -115,7 +115,7 @@ export function showFileModal(config: ZFileModalConfig) {
     if (isPlayableMedia(config.name) && !!mediaSession) {
         Toast
             .failure({
-                text: `Can’t open video during a ${mediaSession.callType === 'voice-chat' ? 'voice chat' : 'call'}`,
+                text: `Can’t open video during a call`,
                 duration: 2000
             })
             .show();

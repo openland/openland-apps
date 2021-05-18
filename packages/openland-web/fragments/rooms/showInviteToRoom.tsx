@@ -6,13 +6,10 @@ import { TextBody, TextStyles } from 'openland-web/utils/TextStyles';
 import { showModalBox } from 'openland-x/showModalBox';
 import * as React from 'react';
 import { XView } from 'react-mental';
-import {
-    useVoiceChat,
-    VoiceChatProvider,
-} from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { SharedRoomKind } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { XLoader } from 'openland-x/XLoader';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 const linkStyle = css`
     flex-grow: 1;
@@ -31,13 +28,14 @@ const InviteToRoom = React.memo((props: { hide: () => void }) => {
     const client = useClient();
     const [roomInviteLink, setRoomInviteLink] = React.useState<string | undefined>();
     const [loading, setLoading] = React.useState(false);
-    const voiceChatData = useVoiceChat();
+    const messenger = React.useContext(MessengerContext)!;
+    const voiceChatData = messenger.voiceChat.useVoiceChat();
     let timeoutId: any;
 
     React.useEffect(() => {
         (async () => {
             if (
-                voiceChatData.parentRoom?.kind === SharedRoomKind.GROUP &&
+                voiceChatData?.parentRoom?.kind === SharedRoomKind.GROUP &&
                 !roomInviteLink &&
                 !loading
             ) {
@@ -51,9 +49,9 @@ const InviteToRoom = React.memo((props: { hide: () => void }) => {
                 setLoading(false);
             }
         })();
-    }, [voiceChatData.parentRoom, roomInviteLink, loading]);
+    }, [voiceChatData?.parentRoom, roomInviteLink, loading]);
 
-    const inviteEntity = voiceChatData.parentRoom || voiceChatData.me!.user;
+    const inviteEntity = (voiceChatData?.parentRoom || voiceChatData?.me!.user)!;
     const link = roomInviteLink
         ? `https://openland.com/invite/${roomInviteLink}`
         : `https://openland.com/${inviteEntity.shortname || inviteEntity.id}`;
@@ -68,6 +66,9 @@ const InviteToRoom = React.memo((props: { hide: () => void }) => {
             setCopied(false);
         }, 1500);
     };
+    if (!voiceChatData) {
+        return null;
+    }
     return (
         <XView>
             <XView
@@ -99,8 +100,6 @@ const InviteToRoom = React.memo((props: { hide: () => void }) => {
 
 export const showInviteToRoom = (props: { roomId: string }) => {
     showModalBox({ title: 'Invite people', width: 480 }, (ctx) => (
-        <VoiceChatProvider roomId={props.roomId}>
-            <InviteToRoom hide={ctx.hide} />
-        </VoiceChatProvider>
+        <InviteToRoom hide={ctx.hide} />
     ));
 };

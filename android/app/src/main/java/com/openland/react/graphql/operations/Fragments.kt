@@ -476,6 +476,21 @@ internal val UserShortSelector = obj(
             fragment("User", UserSmallSelector)
         )
 
+internal val VoiceChatMeSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("user", "user", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("photo", "photo", scalar("String")),
+                    field("firstName", "firstName", notNull(scalar("String"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("shortname", "shortname", scalar("String"))
+                ))),
+            field("status", "status", notNull(scalar("String"))),
+            field("handRaised", "handRaised", scalar("Boolean"))
+        )
+
 internal val VoiceChatEntitySelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -484,6 +499,7 @@ internal val VoiceChatEntitySelector = obj(
             field("adminsCount", "adminsCount", notNull(scalar("Int"))),
             field("speakersCount", "speakersCount", notNull(scalar("Int"))),
             field("listenersCount", "listenersCount", notNull(scalar("Int"))),
+            field("handRaisedCount", "handRaisedCount", notNull(scalar("Int"))),
             field("parentRoom", "parentRoom", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
@@ -513,17 +529,7 @@ internal val VoiceChatEntitySelector = obj(
                 )),
             field("me", "me", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("user", "user", notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("photo", "photo", scalar("String")),
-                            field("firstName", "firstName", notNull(scalar("String"))),
-                            field("name", "name", notNull(scalar("String"))),
-                            field("shortname", "shortname", scalar("String"))
-                        ))),
-                    field("status", "status", notNull(scalar("String"))),
-                    field("handRaised", "handRaised", scalar("Boolean"))
+                    fragment("VoiceChatParticipant", VoiceChatMeSelector)
                 ))
         )
 

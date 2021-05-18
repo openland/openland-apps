@@ -19,6 +19,7 @@ import { EngineOptions } from './EnginesOptions';
 import { InMemoryKeyValueStore } from 'openland-y-utils/InMemoryKeyValueStore';
 import { WalletEngine } from './wallet/WalletEngine';
 import { Persistence } from './persistence/Persistence';
+import { VoiceChatEngine } from './VoiceChatEngine';
 
 const log = createLogger('Engine');
 
@@ -32,6 +33,7 @@ export class MessengerEngine {
     readonly user: Account_me;
     readonly notifications: NotificationsEngine;
     readonly calls: CallsEngine;
+    readonly voiceChat: VoiceChatEngine;
     readonly userStorage: UserStorageEngine;
     readonly options: EngineOptions;
     readonly activeConversations = new Map<string, ConversationEngine>();
@@ -60,6 +62,7 @@ export class MessengerEngine {
         this.client = client;
         this.user = user;
         this.calls = new CallsEngine(this);
+        this.voiceChat = new VoiceChatEngine(this);
         this.userStorage = new UserStorageEngine(this);
 
         // Onlines
