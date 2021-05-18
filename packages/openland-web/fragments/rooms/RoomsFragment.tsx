@@ -5,7 +5,7 @@ import { css, cx } from 'linaria';
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { useVoiceChatsFeed } from 'openland-y-utils/voiceChat/voiceChatsFeedWatcher';
-import { VoiceChatWithSpeakers } from 'openland-api/spacex.types';
+import { VoiceChatShort } from 'openland-api/spacex.types';
 import { TextLabel1, TextStyles, TextSubhead, TextTitle3 } from 'openland-web/utils/TextStyles';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
@@ -111,7 +111,7 @@ const StartRoomItem = React.memo(() => {
     );
 });
 
-const RoomsFeedItem = React.memo((props: { voiceChat: VoiceChatWithSpeakers }) => {
+const RoomsFeedItem = React.memo((props: { voiceChat: VoiceChatShort }) => {
     const { title, speakers, speakersCount, listenersCount, id } = props.voiceChat;
     const firstSpeakers = speakers.slice(0, 4);
     const joinRoom = useJoinRoom();

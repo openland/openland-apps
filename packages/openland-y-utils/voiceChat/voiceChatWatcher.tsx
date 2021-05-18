@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { useClient } from 'openland-api/useClient';
-import { VoiceChatEntity, VoiceChatParticipant, VoiceChatEvents } from 'openland-api/spacex.types';
+import { VoiceChatEntity, VoiceChatEvents, VoiceChatListener, VoiceChatSpeaker } from 'openland-api/spacex.types';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
 export type VoiceChatT = VoiceChatEntity & {
-    speakers?: VoiceChatParticipant[];
-    listeners?: VoiceChatParticipant[];
-    raisedHands?: VoiceChatParticipant[];
+    speakers?: VoiceChatSpeaker[];
+    listeners?: VoiceChatListener[];
+    raisedHands?: VoiceChatListener[];
 };
 
 const VoiceChatContext = React.createContext<VoiceChatT | null>(null);

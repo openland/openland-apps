@@ -232,7 +232,7 @@ export const showRoomSettings = (props: {
         );
         builder.action(
             'Raised hands',
-            () => showRaisedHands(props.raisedHandUsers, props.roomId),
+            () => showRaisedHands(props.roomId),
             false,
             require('assets/ic-hand-2-24.png'),
             undefined,

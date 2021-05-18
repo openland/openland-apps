@@ -26,7 +26,6 @@ import { useSafeArea } from 'react-native-safe-area-context';
 import { RoomControls } from './RoomControls';
 import { showEditPinnedMessage } from './RoomSettings';
 import {
-    VoiceChatParticipant,
     SharedRoomKind,
     SharedRoomMembershipStatus,
     VoiceChatParticipantStatus,
@@ -34,6 +33,7 @@ import {
     VoiceChatParticipant_user,
     VoiceChatUser_user,
     Conference_conference_peers,
+    VoiceChatSpeaker,
 } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { TintBlue } from 'openland-y-utils/themes/tints';
@@ -719,9 +719,9 @@ const RoomHeader = React.memo(
                         )}
                     </View>
                     {room.speakers &&
-                    room.speakers.length > 9 &&
-                    !!currentPeer &&
-                    !currentPeer.mediaState.audioPaused ? (
+                        room.speakers.length > 9 &&
+                        !!currentPeer &&
+                        !currentPeer.mediaState.audioPaused ? (
                         <View
                             style={{
                                 display: 'flex',
@@ -943,7 +943,7 @@ interface RoomUsersListProps extends RoomViewProps {
     speakers: {
         isMuted: boolean,
         isLoading: boolean,
-        speaker: VoiceChatParticipant
+        speaker: VoiceChatSpeaker
     }[];
     peersIdsMap: { [userId: string]: string[] };
 }
@@ -1046,7 +1046,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                     <RoomUserView
                         roomId={room.id}
                         user={item.user}
-                        userStatus={item.status}
+                        userStatus={VoiceChatParticipantStatus.LISTENER}
                         selfStatus={room.me?.status}
                         isSelf={item.user.id === room.me?.user.id}
                         theme={theme}

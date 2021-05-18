@@ -30,6 +30,7 @@ object Operations {
         if (name == "CommonChatsWithUser") return CommonChatsWithUser
         if (name == "Conference") return Conference
         if (name == "ConferenceMedia") return ConferenceMedia
+        if (name == "ConferenceMeta") return ConferenceMeta
         if (name == "CreatedStickerPacks") return CreatedStickerPacks
         if (name == "Dialogs") return Dialogs
         if (name == "DiscoverCollection") return DiscoverCollection
@@ -134,6 +135,7 @@ object Operations {
         if (name == "VoiceChatControls") return VoiceChatControls
         if (name == "VoiceChatEventsState") return VoiceChatEventsState
         if (name == "VoiceChatFull") return VoiceChatFull
+        if (name == "VoiceChatHandRaised") return VoiceChatHandRaised
         if (name == "VoiceChatListeners") return VoiceChatListeners
         if (name == "VoiceChatUser") return VoiceChatUser
         if (name == "AccountInviteJoin") return AccountInviteJoin

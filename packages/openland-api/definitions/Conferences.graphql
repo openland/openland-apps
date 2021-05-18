@@ -80,6 +80,22 @@ query Conference($id: ID!) {
     }
 }
 
+query ConferenceMeta($id: ID!) {
+    conference(id: $id) {
+        id
+        parent {
+            __typename
+        }
+        peers {
+            id
+            user {
+                id
+                name
+            }
+        }
+    }
+}
+
 query ConferenceMedia($id: ID!, $peerId: ID!) {
     conferenceMedia(id: $id, peerId: $peerId) {
         id
