@@ -34,7 +34,7 @@ export const VoiceChatsFeedProvider = React.memo((props: { children: any }) => {
                     activeVoiceChatsEvents.map((i) => {
                         const hasChat = !!chats.find((j) => j.id === i.chat.id);
                         if (!hasChat && i.chat.active) {
-                            chats.push(i.chat);
+                            chats.unshift(i.chat);
                         }
                         if (hasChat && !i.chat.active) {
                             chats = chats.filter((j) => j.id !== i.chat.id);
