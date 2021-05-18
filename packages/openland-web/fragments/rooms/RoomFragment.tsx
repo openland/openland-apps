@@ -37,7 +37,7 @@ import {
 } from 'openland-api/spacex.types';
 import AlertBlanket from 'openland-x/AlertBlanket';
 import { useToast } from 'openland-web/components/unicorn/UToast';
-import { debounce } from 'openland-y-utils/timer';
+import { debounce, throttle } from 'openland-y-utils/timer';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
 import { useJoinRoom } from './joinRoom';
 import { showRaiseHand } from './showRaiseHand';
@@ -202,6 +202,14 @@ const pinnedMessageTextStyle = css`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   word-break: break-word;
+`;
+
+const loaderClass = css`
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
 `;
 
 const equalizer = css`
@@ -741,33 +749,32 @@ const RoomSpeakers = React.memo(({
 });
 
 const RoomListeners = React.memo((props: { room: VoiceChatT }) => {
-    const messenger = React.useContext(MessengerContext);
-    const handleScroll = React.useCallback(
-        (values: XScrollValues) => {
-            let d = values.scrollHeight - (values.clientHeight + values.scrollTop);
-            if (d < 200) {
-                messenger.voiceChat.loadMoreListeners();
-            }
-        }, [messenger.voiceChat.loadMoreListeners]);
-
     return (
-        <XScrollView3 onScroll={handleScroll} flexGrow={1}>
-            <div className={listenersGridStyle}>
-                {(props.room.listeners || []).map((listener, i) => (
-                    <RoomUser
-                        key={listener.id}
-                        id={listener.user.id}
-                        name={listener.user.firstName}
-                        photo={listener.user.photo}
-                        roomId={props.room.id}
-                        selfId={props.room.me?.user.id}
-                        userStatus={VoiceChatParticipantStatus.LISTENER}
-                        selfStatus={props.room.me?.status}
-                    />
-                ))}
-            </div>
-        </XScrollView3>
+        <div className={listenersGridStyle}>
+            {(props.room.listeners || []).map((listener, i) => (
+                <RoomUser
+                    key={listener.id}
+                    id={listener.user.id}
+                    name={listener.user.firstName}
+                    photo={listener.user.photo}
+                    roomId={props.room.id}
+                    selfId={props.room.me?.user.id}
+                    userStatus={VoiceChatParticipantStatus.LISTENER}
+                    selfStatus={props.room.me?.status}
+                />
+            ))}
+        </div>
     );
+});
+
+const RoomListenersLoader = React.memo(() => {
+    const messenger = React.useContext(MessengerContext);
+    const { loading } = messenger.voiceChat.useListenersMeta();
+    return loading ? (
+        <div className={loaderClass}>
+            <XLoader loading={true} />
+        </div>
+    ) : null;
 });
 
 const RoomViewInner = React.memo((props: { roomId: string, voiceChatData: VoiceChatT, mediaSession: MediaSessionManager }) => {
@@ -909,6 +916,14 @@ const RoomViewInner = React.memo((props: { roomId: string, voiceChatData: VoiceC
         };
     }, []);
 
+    const handleScroll = React.useCallback(
+        (values: XScrollValues) => throttle(() => {
+            let d = values.scrollHeight - (values.clientHeight + values.scrollTop);
+            if (d < 200) {
+                messenger.voiceChat.loadMoreListeners();
+            }
+        }, 500), [messenger.voiceChat.loadMoreListeners]);
+
     const speakers = (voiceChatData.speakers || [])
         .map((speaker) => {
             let speakerPeers = (conference?.peers || []).filter((p) => p.user.id === speaker.user.id);
@@ -974,7 +989,7 @@ const RoomViewInner = React.memo((props: { roomId: string, voiceChatData: VoiceC
                 }
                 dynamicHeight={true}
             />
-            <XScrollView3 marginTop={20} marginHorizontal={-16} marginBottom={114}>
+            <XScrollView3 onScroll={handleScroll} marginTop={20} marginHorizontal={-16} marginBottom={114}>
                 <RoomSpeakers
                     speakers={speakers}
                     room={voiceChatData}
@@ -993,6 +1008,7 @@ const RoomViewInner = React.memo((props: { roomId: string, voiceChatData: VoiceC
                             Listeners
                         </XView>
                         <RoomListeners room={voiceChatData} />
+                        <RoomListenersLoader />
                     </>
                 )}
             </XScrollView3>
