@@ -1,24 +1,39 @@
 import * as React from 'react';
-import { withApp } from 'openland-mobile/components/withApp';
+import { Linking, View, Text } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
+import { SFlatList } from 'react-native-s/SFlatList';
+import LinearGradient from 'react-native-linear-gradient';
+import { SRouterContext } from 'react-native-s/SRouterContext';
+
+import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { useClient } from 'openland-api/useClient';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
-import { BalanceView } from './components/BalanceView';
+import { getMessenger } from 'openland-mobile/utils/messenger';
+import { ZListHeader } from 'openland-mobile/components/ZListHeader';
+import { useTheme } from 'openland-mobile/themes/ThemeContext';
+import { ZButton } from 'openland-mobile/components/ZButton';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { Money } from 'openland-y-utils/wallet/Money';
+
 import { CardView } from './components/CardView';
 import { TransactionView } from './components/TransactionView';
-import { getMessenger } from 'openland-mobile/utils/messenger';
 import { AddCardItem } from './components/AddCardItem';
-import { SFlatList } from 'react-native-s/SFlatList';
-import { ZListHeader } from 'openland-mobile/components/ZListHeader';
+import { showWithdrawFunds } from './components/showWithdrawFunds';
 
 const WalletComponent = React.memo<PageProps>((props) => {
     const client = useClient();
+    const theme = useTheme();
+    const router = React.useContext(SRouterContext)!;
     const walletEngine = getMessenger().engine.wallet;
     const walletState = walletEngine.state.useState();
     const cards = client.useMyCards({ fetchPolicy: 'cache-and-network' }).myCards;
     const balance = walletState.balance;
     const transactions = [...walletState.pendingTransactions, ...walletState.historyTransactions];
+
+    const onFaqPress = React.useCallback(() => {
+        Linking.openURL('https://www.notion.so/openland/FAQ-d5314c72f67948d49437d021fb221405');
+    }, []);
 
     const handleAddCard = React.useCallback(() => {
         props.router.push('AddCard');
@@ -26,15 +41,81 @@ const WalletComponent = React.memo<PageProps>((props) => {
 
     const content = (
         <>
-            <BalanceView amount={balance} />
+            <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]}>
+                <ZListGroup
+                    header="Payment methods"
+                    actionRight={
+                        cards.length > 0 ? { title: 'Add card', onPress: handleAddCard } : undefined
+                    }
+                >
+                    {cards.length === 0 && <AddCardItem onPress={handleAddCard} />}
+                    {cards.map((card) => (
+                        <CardView key={card.id} item={card} />
+                    ))}
+                </ZListGroup>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        paddingHorizontal: 16,
+                        marginTop: 16,
+                        marginBottom: 24,
+                    }}
+                >
+                    <ZButton
+                        title="Payments FAQ"
+                        size="large"
+                        flexGrow={1}
+                        marginRight={16}
+                        style="secondary"
+                        onPress={onFaqPress}
+                    />
+                    <ZButton
+                        title="Payments help"
+                        size="large"
+                        flexGrow={1}
+                        style="secondary"
+                        onPress={() => router.push('ProfileUser', { id: 'zoebp1bZA0F5P5oL5ZgrFwEMA4' })}
+                    />
+                </View>
+            </LinearGradient>
             <ZListGroup
-                header="Payment methods"
-                actionRight={cards.length > 0 ? { title: 'Add card', onPress: handleAddCard } : undefined}
+                header="Your balance"
+                actionRight={
+                    balance !== 0
+                        ? { title: 'Withdraw', onPress: () => showWithdrawFunds(router) }
+                        : undefined
+                }
             >
-                {cards.length === 0 && (
-                    <AddCardItem onPress={handleAddCard} />
+                {balance === 0 && (
+                    <Text
+                        style={{
+                            ...TextStyles.Body,
+                            textAlign: 'center',
+                            color: theme.foregroundSecondary,
+                            marginTop: 8,
+                        }}
+                    >
+                        No earnings yet
+                    </Text>
                 )}
-                {cards.map(card => <CardView key={card.id} item={card} />)}
+                {balance !== 0 && (
+                    <View
+                        style={{
+                            height: 80,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: theme.backgroundTertiaryTrans,
+                            marginHorizontal: 16,
+                            marginBottom: 24,
+                            marginTop: 8,
+                            borderRadius: 12,
+                        }}
+                    >
+                        <Text style={{ ...TextStyles.Title1 }}>
+                            <Money amount={balance} />
+                        </Text>
+                    </View>
+                )}
             </ZListGroup>
             {transactions.length > 0 && <ZListHeader text="Transactions" />}
         </>
