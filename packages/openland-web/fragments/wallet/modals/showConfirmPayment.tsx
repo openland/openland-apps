@@ -121,14 +121,14 @@ const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController, id: 
             </XView>
             <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} backgroundColor="var(--backgroundTertiaryTrans)" justifyContent="flex-end" flexDirection="row">
                 <UButton text="Cancel" onClick={() => props.ctx.hide()} style="tertiary" size="large" />
-                <UButton text="Continue" style="pay" onClick={onSubmit} size="large" loading={loading} />
+                <UButton text="Try again" onClick={onSubmit} size="large" loading={loading} />
             </XView>
         </>
     );
 });
 
 export function showConfirmPayment(id: string, clientSecret: string) {
-    showModalBox({ title: 'Update payment method', width: 400 }, (ctx) => {
+    showModalBox({ title: 'Complete transaction', width: 400 }, (ctx) => {
         return (
             <ConfirmPaymentComponent ctx={ctx} id={id} clientSecret={clientSecret} />
         );
