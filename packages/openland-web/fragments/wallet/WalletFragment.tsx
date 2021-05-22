@@ -26,6 +26,7 @@ const balanceWrapper = css`
     margin: 16px 16px 0;
     height: 80px;
     border-radius: 8px;
+    color: var(--foregroundPrimary);
 `;
 
 const balanceWrapperFilled = css`
