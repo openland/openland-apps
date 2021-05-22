@@ -1,7 +1,7 @@
 import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { XScrollValues, XScrollView3 } from 'openland-x/XScrollView3';
+import { XScrollValues } from 'openland-x/XScrollView3';
 import * as React from 'react';
 import { XView, XViewRouterContext } from 'react-mental';
 import { css, cx } from 'linaria';
@@ -37,7 +37,7 @@ import {
 } from 'openland-api/spacex.types';
 import AlertBlanket from 'openland-x/AlertBlanket';
 import { useToast } from 'openland-web/components/unicorn/UToast';
-import { debounce, throttle } from 'openland-y-utils/timer';
+import { debounce } from 'openland-y-utils/timer';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
 import { useJoinRoom } from './joinRoom';
 import { showRaiseHand } from './showRaiseHand';
@@ -917,7 +917,7 @@ const RoomViewInner = React.memo((props: { roomId: string, voiceChatData: VoiceC
     }, []);
 
     const handleScroll = React.useCallback(
-        (values: XScrollValues) => throttle(() => {
+        debounce((values: XScrollValues) => {
             let d = values.scrollHeight - (values.clientHeight + values.scrollTop);
             if (d < 200) {
                 messenger.voiceChat.loadMoreListeners();
@@ -949,7 +949,7 @@ const RoomViewInner = React.memo((props: { roomId: string, voiceChatData: VoiceC
         });
 
     return (
-        <Page>
+        <Page onScroll={handleScroll}>
             <UHeader
                 titleView={
                     <XView width="100%">
@@ -989,7 +989,7 @@ const RoomViewInner = React.memo((props: { roomId: string, voiceChatData: VoiceC
                 }
                 dynamicHeight={true}
             />
-            <XScrollView3 onScroll={handleScroll} marginTop={20} marginHorizontal={-16} marginBottom={114}>
+            <XView marginTop={20} marginHorizontal={-16} marginBottom={114}>
                 <RoomSpeakers
                     speakers={speakers}
                     room={voiceChatData}
@@ -1011,7 +1011,7 @@ const RoomViewInner = React.memo((props: { roomId: string, voiceChatData: VoiceC
                         <RoomListenersLoader />
                     </>
                 )}
-            </XScrollView3>
+            </XView>
             <XView
                 position="fixed"
                 bottom={0}

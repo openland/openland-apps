@@ -294,6 +294,8 @@ subscription VoiceChatEvents($id: ID!, $fromState: String!) {
                     me {
                         ...VoiceChatMe
                     }
+                    listenersCount
+                    speakersCount
                 }
                 participant {
                     ...VoiceChatParticipant
