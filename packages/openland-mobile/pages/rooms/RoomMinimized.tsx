@@ -154,45 +154,11 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
     const { id: speakingPeerId } = props.mediaSession.analyzer.useSpeakingPeer();
     const peers = client.useConference({ id: voiceChatData.id }, { suspense: false })?.conference.peers;
 
-    const prevVoiceChat = React.useRef<VoiceChatT>(
-        voiceChatData,
-    );
-
-    const handleClose = () => {
-        InCallManager.stop({ busytone: '_BUNDLE_' });
-        getMessenger().engine.voiceChat.leave();
-    };
-
     React.useEffect(() => {
-        let hasPrevAdmins = prevVoiceChat.current.speakers?.some(x => x.status === VoiceChatParticipantStatus.ADMIN);
-        let isPrevAdmin = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.ADMIN;
-        let hasAdmins = voiceChatData.speakers?.some(x => x.status === VoiceChatParticipantStatus.ADMIN);
-        let isPrevListener = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.LISTENER;
-        let isPrevSpeaker = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.SPEAKER || prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.ADMIN;
-        let isSpeaker = voiceChatData.me?.status === VoiceChatParticipantStatus.SPEAKER;
-        let isListener = voiceChatData.me?.status === VoiceChatParticipantStatus.LISTENER;
-
-        if (isPrevListener && isSpeaker) {
-            props.mediaSession.setAudioEnabled(false);
-        }
-        if (isPrevSpeaker && isListener) {
-            props.mediaSession.setAudioEnabled(false);
-        }
-        if (hasPrevAdmins && !hasAdmins && !isPrevAdmin) {
-            handleClose();
-        } else {
-            let isLeft =
-                prevVoiceChat.current.me?.status !== VoiceChatParticipantStatus.LEFT &&
-                voiceChatData.me?.status === VoiceChatParticipantStatus.LEFT;
-            let isKicked =
-                prevVoiceChat.current.me?.status !== VoiceChatParticipantStatus.KICKED &&
-                voiceChatData.me?.status === VoiceChatParticipantStatus.KICKED;
-            if (isLeft || isKicked) {
-                handleClose();
-            }
-        }
-        prevVoiceChat.current = voiceChatData;
-    }, [voiceChatData]);
+        return getMessenger().engine.voiceChat.onLeave(() => {
+            InCallManager.stop({ busytone: '_BUNDLE_' });
+        });
+    }, []);
 
     const handleJoin = React.useCallback(() => joinRoom(voiceChatData.id), [voiceChatData.id]);
 
@@ -201,7 +167,7 @@ const RoomMinimizedComponent = React.memo((props: { mediaSession: MediaSessionMa
     }, [state]);
 
     const handleLeavePress = React.useCallback(() => {
-        handleClose();
+        getMessenger().engine.voiceChat.leave();
     }, []);
 
     const muted = !state.sender.audioEnabled;

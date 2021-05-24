@@ -5,7 +5,7 @@ import { randomKey } from 'openland-mobile/utils/randomKey';
 import { View, BackHandler, Platform, Dimensions } from 'react-native';
 import { SAnimated } from 'react-native-fast-animations';
 import { SAnimatedShadowView } from 'react-native-fast-animations';
-import { isPlayableMedia } from 'openland-mobile/utils/isVideo';
+import { isPlayableMedia } from 'openland-mobile/utils/mediaExtension';
 import Toast from '../Toast';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 

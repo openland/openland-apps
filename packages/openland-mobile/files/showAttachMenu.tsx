@@ -8,7 +8,7 @@ import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handl
 import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import { FileMeta } from './UploadManager';
-import { isVideo } from 'openland-mobile/utils/isVideo';
+import { isVideo } from 'openland-mobile/utils/mediaExtension';
 
 type PickerMedia = {
     type: 'document' | 'photo' | 'video',

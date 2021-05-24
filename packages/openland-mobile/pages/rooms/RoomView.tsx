@@ -1109,16 +1109,24 @@ const RoomViewInner = React.memo((props: RoomViewInnerProps) => {
         mediaSession?.setAudioEnabled(!state?.sender.audioEnabled);
     }, [state, mediaSession]);
 
-    const closeCall = () => {
-        props.ctx.hide();
-        InCallManager.stop({ busytone: '_BUNDLE_' });
-        getMessenger().engine.voiceChat.leave();
-    };
+    React.useEffect(() => {
+        return getMessenger().engine.voiceChat.onLeave(({ closedByAdmin }) => {
+            if (closedByAdmin) {
+                Toast.build({
+                    text: 'The last room admin left, the room will be closed now',
+                    duration: 2000,
+                }).show();
+            }
+            props.ctx.hide();
+            InCallManager.stop({ busytone: '_BUNDLE_' });
+        });
+    }, []);
 
     const handleLeave = React.useCallback(async () => {
         let admins = voiceChatData.speakers?.filter(
             (x) => x.status === VoiceChatParticipantStatus.ADMIN,
         );
+        const closeCall = getMessenger().engine.voiceChat.leave;
         if (
             admins &&
             admins.length === 1 &&
@@ -1144,40 +1152,6 @@ const RoomViewInner = React.memo((props: RoomViewInnerProps) => {
         InCallManager.start({ media: 'video' });
         InCallManager.setKeepScreenOn(true);
     }, []);
-
-    const prevVoiceChat = React.useRef<VoiceChatT>(voiceChatData);
-
-    // Handle room state changes
-    React.useEffect(() => {
-        let hasPrevAdmins = prevVoiceChat.current.speakers?.some(
-            (x) => x.status === VoiceChatParticipantStatus.ADMIN,
-        );
-        let isPrevAdmin = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.ADMIN;
-        let hasAdmins = voiceChatData.speakers?.some(
-            (x) => x.status === VoiceChatParticipantStatus.ADMIN,
-        );
-
-        if (hasPrevAdmins && !hasAdmins && !isPrevAdmin) {
-            Toast.build({
-                text: 'The last room admin left, the room will be closed now',
-                duration: 2000,
-            }).show();
-            setTimeout(() => {
-                closeCall();
-            }, 2500);
-        } else {
-            let isLeft =
-                prevVoiceChat.current.me?.status !== VoiceChatParticipantStatus.LEFT &&
-                voiceChatData.me?.status === VoiceChatParticipantStatus.LEFT;
-            let isKicked =
-                prevVoiceChat.current.me?.status !== VoiceChatParticipantStatus.KICKED &&
-                voiceChatData.me?.status === VoiceChatParticipantStatus.KICKED;
-            if (isLeft || isKicked) {
-                closeCall();
-            }
-        }
-        prevVoiceChat.current = voiceChatData;
-    }, [voiceChatData]);
 
     const [connecting, setConnecting] = React.useState(false);
 
@@ -1279,7 +1253,7 @@ const RoomViewInner = React.memo((props: RoomViewInnerProps) => {
                         onLeave={handleLeave}
                         onMutePress={handleMute}
                         reportUserError={reportUserError}
-                        raisedHandUsers={voiceChatData.raisedHands?.map((i) => i.user) || []}
+                        raisedHandUsers={voiceChatData.handRaisedCount}
                     />
                 </>
             )}
