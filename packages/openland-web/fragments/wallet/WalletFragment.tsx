@@ -1,22 +1,24 @@
 import * as React from 'react';
-import { UHeader } from 'openland-unicorn/UHeader';
+import { css, cx } from 'linaria';
 import { XView, XViewRouterContext } from 'react-mental';
+
+import { UHeader } from 'openland-unicorn/UHeader';
 import { useClient } from 'openland-api/useClient';
-import { showAddCard } from './modals/showAddCard';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
-import { CardView } from './components/CardView';
-import { TransactionView } from './components/TransactionView';
 import { Money } from 'openland-y-utils/wallet/Money';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { css, cx } from 'linaria';
-import { showWithdrawFunds } from './components/WithdrawFunds';
 import AddIcon from 'openland-icons/s/ic-plus-glyph-24.svg';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
+
+import { showAddCard } from './modals/showAddCard';
+import { CardView } from './components/CardView';
+import { TransactionView } from './components/TransactionView';
+import { showWithdrawFunds } from './components/WithdrawFunds';
 
 const balanceWrapper = css`
     flex-direction: row;
@@ -122,8 +124,8 @@ export const WalletFragment = React.memo(() => {
                         : undefined
                 }
             >
-                {balance !== 0 && <div className={cx('x', balanceWrapper)}>No earnings yet</div>}
-                {balance === 0 && (
+                {balance === 0 && <div className={cx('x', balanceWrapper)}>No earnings yet</div>}
+                {balance !== 0 && (
                     <div className={cx('x', balanceWrapper, balanceWrapperFilled)}>
                         <XView flexDirection="column">
                             <XView {...TextStyles.Title1} color="var(--foregroundPrimary)">
