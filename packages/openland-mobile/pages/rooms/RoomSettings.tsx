@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Platform, LayoutAnimation, Keyboard, DeviceEventEmitter } from 'react-native';
 import { useClient } from 'openland-api/useClient';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
-import { VoiceChatParticipantStatus, VoiceChatParticipant_user } from 'openland-api/spacex.types';
+import { VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { useForm } from 'openland-form/useForm';
@@ -210,7 +210,7 @@ export const showRoomSettings = (props: {
     roomId: string;
     roomTitle: string | null;
     roomMessage: string | null;
-    raisedHandUsers: VoiceChatParticipant_user[];
+    raisedHandCount: number;
     theme: ThemeGlobal;
     status: VoiceChatParticipantStatus | undefined;
     reportUserError: (type: ReportCallErrorType) => void;
@@ -239,7 +239,7 @@ export const showRoomSettings = (props: {
             undefined,
             <ZCounter
                 theme={props.theme}
-                value={props.raisedHandUsers.length}
+                value={props.raisedHandCount}
                 size="medium"
                 backgroundColor={props.theme.accentPrimary}
                 textColor={props.theme.foregroundInverted}

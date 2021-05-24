@@ -31,7 +31,6 @@ import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import {
     Conference_conference_peers,
     SharedRoomKind,
-    VoiceChatParticipant,
     VoiceChatParticipantStatus,
     VoiceChatSpeaker,
 } from 'openland-api/spacex.types';
@@ -364,7 +363,7 @@ const RoomHeader = ({
     );
 };
 
-const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: VoiceChatParticipant[], roomId: string }) => {
+const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: number, roomId: string }) => {
     return (
         <XView
             alignItems="center"
@@ -389,7 +388,7 @@ const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: VoiceChatPart
                     src="//cdn.openland.com/shared/rooms/wave-hand-36.png"
                     srcSet="//cdn.openland.com/shared/rooms/wave-hand-36@2x.png 2x, //cdn.openland.com/shared/rooms/wave-hand-36@3x.png 3x"
                 />
-                {raisedHands.length > 0 && (
+                {raisedHands > 0 && (
                     <XView
                         position="absolute"
                         bottom={0}
@@ -404,7 +403,7 @@ const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: VoiceChatPart
                         color="var(--foregroundPrimary)"
                         {...TextStyles.Detail}
                     >
-                        {raisedHands.length > 9 ? `9+` : raisedHands.length}
+                        {raisedHands > 9 ? `9+` : raisedHands}
                     </XView>
                 )}
             </XView>
@@ -740,7 +739,7 @@ const RoomSpeakers = React.memo(({
             ))}
             {speakers.length <= 8 && room.me?.status === VoiceChatParticipantStatus.ADMIN && (
                 <>
-                    <RaisedHandsButton raisedHands={room.raisedHands || []} roomId={room.id} />
+                    <RaisedHandsButton raisedHands={room.handRaisedCount} roomId={room.id} />
                     {showInviteButton && <InviteButton roomId={room.id} />}
                 </>
             )}
@@ -780,6 +779,7 @@ const RoomListenersLoader = React.memo(() => {
 const RoomViewInner = React.memo((props: { roomId: string, voiceChatData: VoiceChatT, mediaSession: MediaSessionManager }) => {
     const client = useClient();
     const tabRouter = useTabRouter().router;
+    const toast = useToast();
     const router = React.useContext(XViewRouterContext)!;
     const { voiceChatData, mediaSession } = props;
     useWakeLock();
@@ -809,18 +809,34 @@ const RoomViewInner = React.memo((props: { roomId: string, voiceChatData: VoiceC
         }
         alreadyLeft.current = true;
         messenger.voiceChat.leave();
-
-        if (window.location.pathname.startsWith('/room/')) {
-            let currentId = window.location.pathname.split('/')[2];
-            if (tabRouter.currentTab === 2 && voiceChatData.parentRoom && currentId === props.roomId) {
-                tabRouter.reset(`/mail/${voiceChatData.parentRoom.id}`, true);
-            } else if (currentId === props.roomId) {
-                tabRouter.reset('/rooms', true);
-            }
-        } else {
-            tabRouter.stacks[0]?.reset('/rooms');
-        }
     };
+    const tabRouterRef = React.useRef(tabRouter);
+    tabRouterRef.current = tabRouter;
+
+    React.useEffect(() => {
+        return messenger.voiceChat.onLeave(({ roomId, parentRoomId, closedByAdmin }) => {
+            const close = () => {
+                const routerRef = tabRouterRef.current;
+                if (window.location.pathname.startsWith('/room/')) {
+                    let currentId = window.location.pathname.split('/')[2];
+                    if (routerRef.currentTab === 2 && parentRoomId && currentId === roomId) {
+                        routerRef.reset(`/mail/${parentRoomId}`, true);
+                    } else if (currentId === roomId) {
+                        routerRef.reset('/rooms', true);
+                    }
+                } else {
+                    routerRef.stacks[0]?.reset('/rooms');
+                }
+            };
+            if (closedByAdmin) {
+                toast.show({ text: 'The last room admin left, the room will be closed now', duration: 2000 });
+                close();
+            } else {
+                close();
+            }
+
+        });
+    }, []);
 
     const handleParentRoomClick = React.useCallback(() => {
         router.navigate(`/${voiceChatData.parentRoom!.id}`);
@@ -857,46 +873,13 @@ const RoomViewInner = React.memo((props: { roomId: string, voiceChatData: VoiceC
 
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
 
-    const prevVoiceChat = React.useRef<VoiceChatT>(
-        voiceChatData,
-    );
-    const toast = useToast();
-
-    // Handle room state changes
     React.useEffect(() => {
-        let hasPrevAdmins = prevVoiceChat.current.speakers?.some(x => x.status === VoiceChatParticipantStatus.ADMIN);
-        let isPrevAdmin = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.ADMIN;
-        let hasAdmins = voiceChatData.speakers?.some(x => x.status === VoiceChatParticipantStatus.ADMIN);
-        let isPrevListener = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.LISTENER;
-        let isPrevSpeaker = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.SPEAKER || prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.ADMIN;
-        let isSpeaker = voiceChatData.me?.status === VoiceChatParticipantStatus.SPEAKER;
-        let isListener = voiceChatData.me?.status === VoiceChatParticipantStatus.LISTENER;
-
-        if (isPrevListener && isSpeaker) {
-            mediaSession?.setAudioEnabled(false);
-            toast.show({ text: `You're a speaker now`, Icon: () => <IcSpeaker />, duration: 2000 });
-        }
-        if (isPrevSpeaker && isListener) {
-            mediaSession?.setAudioEnabled(false);
-        }
-        if (hasPrevAdmins && !hasAdmins && !isPrevAdmin) {
-            toast.show({ text: 'The last room admin left, the room will be closed now', duration: 2000 });
-            setTimeout(() => {
-                closeCall();
-            }, 2500);
-        } else {
-            let isLeft =
-                prevVoiceChat.current.me?.status !== VoiceChatParticipantStatus.LEFT &&
-                voiceChatData.me?.status === VoiceChatParticipantStatus.LEFT;
-            let isKicked =
-                prevVoiceChat.current.me?.status !== VoiceChatParticipantStatus.KICKED &&
-                voiceChatData.me?.status === VoiceChatParticipantStatus.KICKED;
-            if (isLeft || isKicked) {
-                closeCall();
+        return messenger.voiceChat.onStatusChange((status, prevStatus) => {
+            if (status === VoiceChatParticipantStatus.SPEAKER && prevStatus === VoiceChatParticipantStatus.LISTENER) {
+                toast.show({ text: `You're a speaker now`, Icon: () => <IcSpeaker />, duration: 2000 });
             }
-        }
-        prevVoiceChat.current = voiceChatData;
-    }, [voiceChatData]);
+        });
+    }, []);
 
     const [connecting, setConnecting] = React.useState(false);
 
@@ -1027,7 +1010,7 @@ const RoomViewInner = React.memo((props: { roomId: string, voiceChatData: VoiceC
                     connecting={!muted && connecting}
                     status={voiceChatData.me?.status}
                     handRaised={handRaised}
-                    raisedHands={voiceChatData.raisedHands || []}
+                    raisedHands={voiceChatData.handRaisedCount}
                     showInviteButton={showInviteButton}
                     onMute={handleMute}
                     onLeave={handleLeave}
