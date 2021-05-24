@@ -6,7 +6,7 @@ import { formatBytes } from 'openland-mobile/utils/formatBytes';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ZDocumentExt } from 'openland-mobile/components/file/ZDocumentExt';
-import { isAudio, isVideo } from 'openland-mobile/utils/mediaExtension';
+import { isAudio, isVideo } from 'openland-y-utils/mediaExtension';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { formatDuration } from 'openland-mobile/utils/formatDuration';

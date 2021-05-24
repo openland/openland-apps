@@ -1,7 +1,7 @@
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { DataSourceMessageItem, PendingAttachProps } from 'openland-engines/messenger/ConversationEngine';
 import { TextStylesAsync } from 'openland-mobile/styles/AppStyles';
-import { removeExtension } from 'openland-mobile/utils/mediaExtension';
+import { removeExtension } from 'openland-y-utils/mediaExtension';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import * as React from 'react';
 import { ASFlex, ASFlexProps } from 'react-native-async-view/ASFlex';

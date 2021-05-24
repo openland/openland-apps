@@ -3,7 +3,7 @@ import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { View } from 'react-native';
 import Video from 'react-native-video';
 import { LoaderSpinner } from '../LoaderSpinner';
-import { isAudio, extractExtension } from 'openland-mobile/utils/mediaExtension';
+import { isAudio, extractExtension } from 'openland-y-utils/mediaExtension';
 
 export const ZVideoComponent = React.memo(
     (props: { uuid: string; name: string; completed: boolean }) => {
