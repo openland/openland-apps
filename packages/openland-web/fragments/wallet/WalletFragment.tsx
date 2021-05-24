@@ -30,11 +30,7 @@ const balanceWrapper = css`
 `;
 
 const balanceWrapperFilled = css`
-    background: linear-gradient(
-        180deg,
-        var(--backgroundTertiaryTrans) 0%,
-        var(--backgroundTertiary) 100%
-    );
+    background-color: var(--backgroundTertiaryTrans);
 `;
 
 export const WalletFragment = React.memo(() => {
@@ -126,8 +122,8 @@ export const WalletFragment = React.memo(() => {
                         : undefined
                 }
             >
-                {balance === 0 && <div className={cx('x', balanceWrapper)}>No earnings yet</div>}
-                {balance !== 0 && (
+                {balance !== 0 && <div className={cx('x', balanceWrapper)}>No earnings yet</div>}
+                {balance === 0 && (
                     <div className={cx('x', balanceWrapper, balanceWrapperFilled)}>
                         <XView flexDirection="column">
                             <XView {...TextStyles.Title1} color="var(--foregroundPrimary)">
