@@ -7,7 +7,7 @@ import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { ConferenceMediaWatch, ConferenceMediaWatch_media_streams, ConferenceMediaWatch_media_localMedia, ConferenceMedia_conferenceMedia_iceServers } from 'openland-api/spacex.types';
 import { AppBackgroundTask } from 'openland-y-runtime/AppBackgroundTask';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
-// import { ConferenceWatch } from 'openland-api/spacex.types';
+import { ConferenceWatch } from 'openland-api/spacex.types';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { InvalidateSync } from '@openland/patterns';
 import { MediaSessionState, MediaSessionCommand, reduceState } from './MediaSessionState';
@@ -62,7 +62,7 @@ export class MediaSessionManager {
     // Lifecycle
     private conferenceId!: string;
     private peerId!: string;
-    private kickDetectorSubscription: (() => void) | null = null;
+    private conferenceSubscription: (() => void) | null = null;
     // private ownPeerDetected = false;
     private destroyed = false;
 
@@ -201,9 +201,9 @@ export class MediaSessionManager {
         }
 
         // Kick detector
-        if (this.kickDetectorSubscription) {
-            this.kickDetectorSubscription();
-            this.kickDetectorSubscription = null;
+        if (this.conferenceSubscription) {
+            this.conferenceSubscription();
+            this.conferenceSubscription = null;
         }
 
         // Notify about leave
@@ -430,16 +430,16 @@ export class MediaSessionManager {
             // this.onStatusChange(this.isPrivate ? 'waiting' : 'connected', !this.isPrivate ? joinConference.conference.startTime : undefined);
 
             // Start kick detection
-            // this.kickDetectorSubscription = reliableWatcher<ConferenceWatch>((handler) => this.client.subscribeConferenceWatch({ id: this.conferenceId }, handler), (src) => {
-            //     let ownPeerDetected = !!(src.alphaConferenceWatch.peers).find(p => p.id === this.peerId);
-            //     if (this.ownPeerDetected && !ownPeerDetected) {
-            //         this.destroy();
-            //         if (this.onDestoy) {
-            //             this.onDestoy();
-            //         }
-            //     }
-            //     this.ownPeerDetected = ownPeerDetected;
-            // });
+            this.conferenceSubscription = reliableWatcher<ConferenceWatch>((handler) => this.client.subscribeConferenceWatch({ id: this.conferenceId }, handler), (src) => {
+                //     let ownPeerDetected = !!(src.alphaConferenceWatch.peers).find(p => p.id === this.peerId);
+                //     if (this.ownPeerDetected && !ownPeerDetected) {
+                //         this.destroy();
+                //         if (this.onDestoy) {
+                //             this.onDestoy();
+                //         }
+                //     }
+                //     this.ownPeerDetected = ownPeerDetected;
+            });
 
             // Start keep alive
             this.doKeepAlive();
