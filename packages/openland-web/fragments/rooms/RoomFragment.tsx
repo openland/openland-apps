@@ -104,6 +104,11 @@ const adminIconStyle = css`
     }
 `;
 
+const ellipsis = css`
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 const stateIconStyle = css`
   display: flex;
   position: absolute;
@@ -122,7 +127,8 @@ const roomUserContainer = css`
   flex-shrink: 0;
   align-items: center;
   padding: 8px;
-  margin: 0 11px;
+  margin: 0 10px;
+  width: 110px;
   
   &:hover {
     background-color: var(--backgroundTertiaryTrans);
@@ -141,8 +147,9 @@ const roomUserContainerVisible = css`
 `;
 
 const listenerStyle = css`
-  margin-left: 7px;
-  margin-right: 8px;
+  width: 100px;
+  margin-left: 3px;
+  margin-right: 4px;
 `;
 
 const parentRoomTitle = css`
@@ -673,7 +680,7 @@ const RoomUser = React.memo(({
                         <CrownIcon />
                     </div>
                 )}
-                <div className={TextLabel2}>{name}</div>
+                <div className={cx(TextLabel2, ellipsis)}>{name}</div>
             </div>
         </div>
     );
