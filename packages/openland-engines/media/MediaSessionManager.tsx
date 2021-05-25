@@ -430,16 +430,16 @@ export class MediaSessionManager {
             // this.onStatusChange(this.isPrivate ? 'waiting' : 'connected', !this.isPrivate ? joinConference.conference.startTime : undefined);
 
             // Start kick detection
-            this.kickDetectorSubscription = reliableWatcher<ConferenceWatch>((handler) => this.client.subscribeConferenceWatch({ id: this.conferenceId }, handler), (src) => {
-                let ownPeerDetected = !!(src.alphaConferenceWatch.peers).find(p => p.id === this.peerId);
-                if (this.ownPeerDetected && !ownPeerDetected) {
-                    this.destroy();
-                    if (this.onDestoy) {
-                        this.onDestoy();
-                    }
-                }
-                this.ownPeerDetected = ownPeerDetected;
-            });
+            // this.kickDetectorSubscription = reliableWatcher<ConferenceWatch>((handler) => this.client.subscribeConferenceWatch({ id: this.conferenceId }, handler), (src) => {
+            //     let ownPeerDetected = !!(src.alphaConferenceWatch.peers).find(p => p.id === this.peerId);
+            //     if (this.ownPeerDetected && !ownPeerDetected) {
+            //         this.destroy();
+            //         if (this.onDestoy) {
+            //             this.onDestoy();
+            //         }
+            //     }
+            //     this.ownPeerDetected = ownPeerDetected;
+            // });
 
             // Start keep alive
             this.doKeepAlive();
