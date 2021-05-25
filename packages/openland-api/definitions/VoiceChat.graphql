@@ -1,9 +1,31 @@
 fragment VoiceChatParticipant on VoiceChatParticipant {
     id
     user {
-        ...UserSmall
-        followedByMe
-        followersCount
+        id
+        photo
+        firstName
+        name
+    }
+}
+
+fragment VoiceChatSpeaker on VoiceChatParticipant {
+    ...VoiceChatParticipant
+    status
+}
+
+fragment VoiceChatListener on VoiceChatParticipant {
+    ...VoiceChatParticipant
+    handRaised
+}
+
+fragment VoiceChatMe on VoiceChatParticipant {
+    id
+    user {
+        id
+        photo
+        firstName
+        name
+        shortname
     }
     status
     handRaised
@@ -16,6 +38,7 @@ fragment VoiceChatEntity on VoiceChat {
     adminsCount
     speakersCount
     listenersCount
+    handRaisedCount
     parentRoom {
         id
         title
@@ -40,6 +63,22 @@ fragment VoiceChatEntity on VoiceChat {
         }
     }
     me {
+        ...VoiceChatMe
+    }
+}
+
+fragment VoiceChatShort on VoiceChat {
+    id
+    active
+    title
+    speakersCount
+    listenersCount
+    parentRoom {
+        id
+        title
+        photo
+    }
+    speakers {
         ...VoiceChatParticipant
     }
 }
@@ -47,17 +86,17 @@ fragment VoiceChatEntity on VoiceChat {
 fragment VoiceChatWithSpeakers on VoiceChat {
     ...VoiceChatEntity
     speakers {
-        ...VoiceChatParticipant
+        ...VoiceChatSpeaker
     }
 }
 
 fragment FullVoiceChat on VoiceChat {
     ...VoiceChatEntity
     speakers {
-        ...VoiceChatParticipant
+        ...VoiceChatSpeaker
     }
     listeners {
-        ...VoiceChatParticipant
+        ...VoiceChatListener
     }
 }
 
@@ -69,16 +108,23 @@ query VoiceChat($id: ID!) {
 
 query VoiceChatFull($id: ID!) {
     voiceChat(id: $id) {
-        ...FullVoiceChat
+        ...VoiceChatWithSpeakers
+    }
+    voiceChatListeners(id: $id, first: 12) {
+        items {
+            ...VoiceChatListener
+        }
+        cursor
     }
 }
 
 query VoiceChatListeners($id: ID!, $first: Int!, $after: String) {
     voiceChatListeners(id: $id, first: $first, after: $after) {
         items {
-            ...VoiceChatParticipant
+            ...VoiceChatListener
         }
         cursor
+        haveMore
     }
 }
 
@@ -86,7 +132,7 @@ query ActiveVoiceChats($first: Int!, $after: String) {
     activeVoiceChats(first: $first, after: $after) {
         cursor
         items {
-            ...VoiceChatWithSpeakers
+            ...VoiceChatShort
         }
     }
 }
@@ -108,6 +154,23 @@ query VoiceChatUser($uid: ID!) {
                 mute
             }
         }
+    }
+}
+
+query VoiceChatHandRaised($id: ID!, $first: Int!, $after: String) {
+    voiceChatHandRaised(id: $id, first: $first, after: $after) {
+        items {
+            id
+            user {
+                id
+                photo
+                firstName
+                name
+                followersCount
+            }
+        }
+        cursor
+        haveMore
     }
 }
 
@@ -204,16 +267,40 @@ query VoiceChatEventsState($id: ID!) {
     }
 }
 
+query VoiceChatPrefetch($id: ID!) {
+    voiceChatEventsState(id: $id) {
+        state
+    }
+    voiceChat(id: $id) {
+        ...VoiceChatWithSpeakers
+    }
+    voiceChatListeners(id: $id, first: 12) {
+        items {
+            ...VoiceChatListener
+        }
+        cursor
+        haveMore
+    }
+}
+
 subscription VoiceChatEvents($id: ID!, $fromState: String!) {
     voiceChatEvents(fromState: $fromState, id: $id) {
         state
         events {
             ... on VoiceChatParticipantUpdatedEvent {
                 chat {
-                    ...VoiceChatEntity
+                    id
+                    handRaisedCount
+                    me {
+                        ...VoiceChatMe
+                    }
+                    listenersCount
+                    speakersCount
                 }
                 participant {
                     ...VoiceChatParticipant
+                    status
+                    handRaised
                 }
             }
             ... on VoiceChatUpdatedEvent {
@@ -229,7 +316,7 @@ subscription ActiveVoiceChatsEvents {
     activeVoiceChatsEvents {
         ... on VoiceChatUpdatedEvent {
             chat {
-                ...VoiceChatWithSpeakers
+                ...VoiceChatShort
             }
         }
     }

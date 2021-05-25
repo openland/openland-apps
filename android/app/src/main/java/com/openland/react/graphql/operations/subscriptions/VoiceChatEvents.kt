@@ -14,10 +14,19 @@ internal val VoiceChatEventsSelector = obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
                                 field("chat", "chat", notNull(obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
-                                        fragment("VoiceChat", VoiceChatEntitySelector)
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("handRaisedCount", "handRaisedCount", notNull(scalar("Int"))),
+                                        field("me", "me", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                fragment("VoiceChatParticipant", VoiceChatMeSelector)
+                                            )),
+                                        field("listenersCount", "listenersCount", notNull(scalar("Int"))),
+                                        field("speakersCount", "speakersCount", notNull(scalar("Int")))
                                     ))),
                                 field("participant", "participant", notNull(obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("status", "status", notNull(scalar("String"))),
+                                        field("handRaised", "handRaised", scalar("Boolean")),
                                         fragment("VoiceChatParticipant", VoiceChatParticipantSelector)
                                     )))
                             )),
@@ -34,6 +43,6 @@ internal val VoiceChatEventsSelector = obj(
 val VoiceChatEvents = object: OperationDefinition {
     override val name = "VoiceChatEvents"
     override val kind = OperationKind.SUBSCRIPTION
-    override val body = "subscription VoiceChatEvents(\$id:ID!,\$fromState:String!){voiceChatEvents(fromState:\$fromState,id:\$id){__typename state events{__typename ... on VoiceChatParticipantUpdatedEvent{__typename chat{__typename ...VoiceChatEntity}participant{__typename ...VoiceChatParticipant}}... on VoiceChatUpdatedEvent{__typename chat{__typename ...VoiceChatEntity}}}}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount parentRoom{__typename id title photo membership kind isChannel shortname organization{__typename id isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite}isPremium role}pinnedMessage{__typename id message spans{__typename ...MessageSpan}}me{__typename ...VoiceChatParticipant}}fragment MessageSpan on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename id name}}... on MessageSpanMultiUserMention{__typename offset length}... on MessageSpanOrganizationMention{__typename organization{__typename id name}}... on MessageSpanRoomMention{__typename room{__typename ... on PrivateRoom{__typename id user{__typename id name}}... on SharedRoom{__typename id title isPremium}}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename ...UserSmall followedByMe followersCount}status handRaised}fragment UserSmall on User{__typename id name firstName photo shortname isBot systemBadge}"
+    override val body = "subscription VoiceChatEvents(\$id:ID!,\$fromState:String!){voiceChatEvents(fromState:\$fromState,id:\$id){__typename state events{__typename ... on VoiceChatParticipantUpdatedEvent{__typename chat{__typename id handRaisedCount me{__typename ...VoiceChatMe}listenersCount speakersCount}participant{__typename ...VoiceChatParticipant status handRaised}}... on VoiceChatUpdatedEvent{__typename chat{__typename ...VoiceChatEntity}}}}}fragment VoiceChatMe on VoiceChatParticipant{__typename id user{__typename id photo firstName name shortname}status handRaised}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id photo firstName name}}fragment VoiceChatEntity on VoiceChat{__typename id title active adminsCount speakersCount listenersCount handRaisedCount parentRoom{__typename id title photo membership kind isChannel shortname organization{__typename id isAdmin:betaIsAdmin membersCanInvite:betaMembersCanInvite}isPremium role}pinnedMessage{__typename id message spans{__typename ...MessageSpan}}me{__typename ...VoiceChatMe}}fragment MessageSpan on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename id name}}... on MessageSpanMultiUserMention{__typename offset length}... on MessageSpanOrganizationMention{__typename organization{__typename id name}}... on MessageSpanRoomMention{__typename room{__typename ... on PrivateRoom{__typename id user{__typename id name}}... on SharedRoom{__typename id title isPremium}}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}"
     override val selector = VoiceChatEventsSelector
 }

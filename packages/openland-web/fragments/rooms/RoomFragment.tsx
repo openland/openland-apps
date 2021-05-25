@@ -1,7 +1,7 @@
 import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { XScrollView3 } from 'openland-x/XScrollView3';
+import { XScrollValues } from 'openland-x/XScrollView3';
 import * as React from 'react';
 import { XView, XViewRouterContext } from 'react-mental';
 import { css, cx } from 'linaria';
@@ -24,7 +24,6 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { SvgLoader, XLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { RoomControls } from './RoomControls';
-import { useVoiceChat, VoiceChatProvider, VoiceChatT } from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { useClient } from 'openland-api/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
@@ -32,8 +31,8 @@ import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import {
     Conference_conference_peers,
     SharedRoomKind,
-    VoiceChatParticipant,
     VoiceChatParticipantStatus,
+    VoiceChatSpeaker,
 } from 'openland-api/spacex.types';
 import AlertBlanket from 'openland-x/AlertBlanket';
 import { useToast } from 'openland-web/components/unicorn/UToast';
@@ -52,6 +51,8 @@ import { showPinnedMessageModal } from './showPinnedMessageModal';
 import { RoomJoinButton } from './RoomJoinButton';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 import { useWakeLock } from 'openland-web/utils/useWakeLock';
+import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
+import { VoiceChatT } from 'openland-engines/VoiceChatEngine';
 
 const headerParentRoomClass = css`
   padding: 12px 0;
@@ -200,6 +201,14 @@ const pinnedMessageTextStyle = css`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   word-break: break-word;
+`;
+
+const loaderClass = css`
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
 `;
 
 const equalizer = css`
@@ -354,7 +363,7 @@ const RoomHeader = ({
     );
 };
 
-const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: VoiceChatParticipant[], roomId: string }) => {
+const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: number, roomId: string }) => {
     return (
         <XView
             alignItems="center"
@@ -363,7 +372,7 @@ const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: VoiceChatPart
             hoverBorderRadius={8}
             marginHorizontal={4}
             hoverCursor="pointer"
-            onClick={() => showRaisedHands({ roomId, raisedHands })}
+            onClick={() => showRaisedHands({ roomId })}
         >
             <XView
                 width={80}
@@ -379,7 +388,7 @@ const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: VoiceChatPart
                     src="//cdn.openland.com/shared/rooms/wave-hand-36.png"
                     srcSet="//cdn.openland.com/shared/rooms/wave-hand-36@2x.png 2x, //cdn.openland.com/shared/rooms/wave-hand-36@3x.png 3x"
                 />
-                {raisedHands.length > 0 && (
+                {raisedHands > 0 && (
                     <XView
                         position="absolute"
                         bottom={0}
@@ -394,7 +403,7 @@ const RaisedHandsButton = ({ raisedHands, roomId }: { raisedHands: VoiceChatPart
                         color="var(--foregroundPrimary)"
                         {...TextStyles.Detail}
                     >
-                        {raisedHands.length > 9 ? `9+` : raisedHands.length}
+                        {raisedHands > 9 ? `9+` : raisedHands}
                     </XView>
                 )}
             </XView>
@@ -456,15 +465,13 @@ const UserMenu = React.memo((props: {
     roomId: string,
     userId: string,
     status: VoiceChatParticipantStatus,
-    followedByMe: boolean,
     selfStatus?: VoiceChatParticipantStatus,
     isSelf: boolean,
 }) => {
     const router = React.useContext(XViewRouterContext)!;
     const client = useClient();
-    const followedByMe = client.useVoiceChatUser({ uid: props.userId }, { suspense: false })?.user.followedByMe;
+    const isFollowed = !!client.useVoiceChatUser({ uid: props.userId }, { suspense: false })?.user.followedByMe;
     let popper = new UPopperMenuBuilder();
-    const isFollowed = typeof followedByMe === 'undefined' ? props.followedByMe : followedByMe;
     const width = 200;
 
     popper.item({
@@ -577,7 +584,6 @@ interface RoomUserInfo {
     id: string;
     name: string;
     photo: string | null;
-    followedByMe: boolean;
     roomId: string;
     userStatus: VoiceChatParticipantStatus;
     selfStatus?: VoiceChatParticipantStatus;
@@ -593,7 +599,6 @@ const RoomUser = React.memo(({
     userStatus,
     selfStatus,
     selfId,
-    followedByMe,
 }: {
     state?: 'talking' | 'loading' | 'muted';
 } & RoomUserInfo) => {
@@ -609,7 +614,7 @@ const RoomUser = React.memo(({
             updatedDeps: userStatus,
         },
         (ctx) => (
-            <UserMenu ctx={ctx} roomId={roomId} userId={id} status={userStatus} selfStatus={selfStatus} followedByMe={followedByMe} isSelf={isSelf} />
+            <UserMenu ctx={ctx} roomId={roomId} userId={id} status={userStatus} selfStatus={selfStatus} isSelf={isSelf} />
         ),
     );
     const isAdmin = userStatus === VoiceChatParticipantStatus.ADMIN;
@@ -711,7 +716,7 @@ const RoomSpeakers = React.memo(({
         isMuted: boolean,
         isLoading: boolean,
         peersIds: string[],
-        speaker: VoiceChatParticipant
+        speaker: VoiceChatSpeaker
     }[];
 }) => {
     return (
@@ -730,12 +735,11 @@ const RoomSpeakers = React.memo(({
                     peersIds={peersIds}
                     selfStatus={room.me?.status}
                     userStatus={speaker.status}
-                    followedByMe={speaker.user.followedByMe}
                 />
             ))}
             {speakers.length <= 8 && room.me?.status === VoiceChatParticipantStatus.ADMIN && (
                 <>
-                    <RaisedHandsButton raisedHands={room.raisedHands || []} roomId={room.id} />
+                    <RaisedHandsButton raisedHands={room.handRaisedCount} roomId={room.id} />
                     {showInviteButton && <InviteButton roomId={room.id} />}
                 </>
             )}
@@ -754,26 +758,34 @@ const RoomListeners = React.memo((props: { room: VoiceChatT }) => {
                     photo={listener.user.photo}
                     roomId={props.room.id}
                     selfId={props.room.me?.user.id}
-                    userStatus={listener.status}
+                    userStatus={VoiceChatParticipantStatus.LISTENER}
                     selfStatus={props.room.me?.status}
-                    followedByMe={listener.user.followedByMe}
                 />
             ))}
         </div>
     );
 });
 
-const RoomView = React.memo((props: { roomId: string }) => {
+const RoomListenersLoader = React.memo(() => {
+    const messenger = React.useContext(MessengerContext);
+    const { loading } = messenger.voiceChat.useListenersMeta();
+    return loading ? (
+        <div className={loaderClass}>
+            <XLoader loading={true} />
+        </div>
+    ) : null;
+});
+
+const RoomViewInner = React.memo((props: { roomId: string, voiceChatData: VoiceChatT, mediaSession: MediaSessionManager }) => {
     const client = useClient();
     const tabRouter = useTabRouter().router;
-    const joinRoom = useJoinRoom(true);
+    const toast = useToast();
     const router = React.useContext(XViewRouterContext)!;
-    const voiceChatData = useVoiceChat();
+    const { voiceChatData, mediaSession } = props;
     useWakeLock();
     const conference = client.useConference({ id: props.roomId }, { suspense: false })?.conference;
 
-    const calls = React.useContext(MessengerContext).calls;
-    const mediaSession = calls.useCurrentSession();
+    const messenger = React.useContext(MessengerContext);
     const [state, setState] = React.useState<MediaSessionState | undefined>(
         mediaSession?.state.value,
     );
@@ -796,19 +808,35 @@ const RoomView = React.memo((props: { roomId: string }) => {
             return;
         }
         alreadyLeft.current = true;
-        calls.leaveCall();
-        client.mutateVoiceChatLeave({ id: props.roomId });
-        if (window.location.pathname.startsWith('/room/')) {
-            let currentId = window.location.pathname.split('/')[2];
-            if (tabRouter.currentTab === 2 && voiceChatData.parentRoom && currentId === props.roomId) {
-                tabRouter.reset(`/mail/${voiceChatData.parentRoom.id}`, true);
-            } else if (currentId === props.roomId) {
-                tabRouter.reset('/rooms', true);
-            }
-        } else {
-            tabRouter.stacks[0]?.reset('/rooms');
-        }
+        messenger.voiceChat.leave();
     };
+    const tabRouterRef = React.useRef(tabRouter);
+    tabRouterRef.current = tabRouter;
+
+    React.useEffect(() => {
+        return messenger.voiceChat.onLeave(({ roomId, parentRoomId, closedByAdmin }) => {
+            const close = () => {
+                const routerRef = tabRouterRef.current;
+                if (window.location.pathname.startsWith('/room/')) {
+                    let currentId = window.location.pathname.split('/')[2];
+                    if (routerRef.currentTab === 2 && parentRoomId && currentId === roomId) {
+                        routerRef.reset(`/mail/${parentRoomId}`, true);
+                    } else if (currentId === roomId) {
+                        routerRef.reset('/rooms', true);
+                    }
+                } else {
+                    routerRef.stacks[0]?.reset('/rooms');
+                }
+            };
+            if (closedByAdmin) {
+                toast.show({ text: 'The last room admin left, the room will be closed now', duration: 2000 });
+                close();
+            } else {
+                close();
+            }
+
+        });
+    }, []);
 
     const handleParentRoomClick = React.useCallback(() => {
         router.navigate(`/${voiceChatData.parentRoom!.id}`);
@@ -845,46 +873,13 @@ const RoomView = React.memo((props: { roomId: string }) => {
 
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
 
-    const prevVoiceChat = React.useRef<VoiceChatT>(
-        voiceChatData,
-    );
-    const toast = useToast();
-
-    // Handle room state changes
     React.useEffect(() => {
-        let hasPrevAdmins = prevVoiceChat.current.speakers?.some(x => x.status === VoiceChatParticipantStatus.ADMIN);
-        let isPrevAdmin = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.ADMIN;
-        let hasAdmins = voiceChatData.speakers?.some(x => x.status === VoiceChatParticipantStatus.ADMIN);
-        let isPrevListener = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.LISTENER;
-        let isPrevSpeaker = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.SPEAKER || prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.ADMIN;
-        let isSpeaker = voiceChatData.me?.status === VoiceChatParticipantStatus.SPEAKER;
-        let isListener = voiceChatData.me?.status === VoiceChatParticipantStatus.LISTENER;
-
-        if (isPrevListener && isSpeaker) {
-            mediaSession?.setAudioEnabled(false);
-            toast.show({ text: `You're a speaker now`, Icon: () => <IcSpeaker />, duration: 2000 });
-        }
-        if (isPrevSpeaker && isListener) {
-            mediaSession?.setAudioEnabled(false);
-        }
-        if (hasPrevAdmins && !hasAdmins && !isPrevAdmin) {
-            toast.show({ text: 'The last room admin left, the room will be closed now', duration: 2000 });
-            setTimeout(() => {
-                closeCall();
-            }, 2500);
-        } else {
-            let isLeft =
-                prevVoiceChat.current.me?.status !== VoiceChatParticipantStatus.LEFT &&
-                voiceChatData.me?.status === VoiceChatParticipantStatus.LEFT;
-            let isKicked =
-                prevVoiceChat.current.me?.status !== VoiceChatParticipantStatus.KICKED &&
-                voiceChatData.me?.status === VoiceChatParticipantStatus.KICKED;
-            if (isLeft || isKicked) {
-                closeCall();
+        return messenger.voiceChat.onStatusChange((status, prevStatus) => {
+            if (status === VoiceChatParticipantStatus.SPEAKER && prevStatus === VoiceChatParticipantStatus.LISTENER) {
+                toast.show({ text: `You're a speaker now`, Icon: () => <IcSpeaker />, duration: 2000 });
             }
-        }
-        prevVoiceChat.current = voiceChatData;
-    }, [voiceChatData]);
+        });
+    }, []);
 
     const [connecting, setConnecting] = React.useState(false);
 
@@ -903,29 +898,23 @@ const RoomView = React.memo((props: { roomId: string }) => {
             }
         };
     }, []);
-    const isTabVisible = useVisibleTab();
-    React.useEffect(() => {
-        if ((!voiceChatData.me || !mediaSession) && isTabVisible) {
-            setTimeout(() => {
-                joinRoom(voiceChatData.id);
-            }, 2000);
-        }
-    }, []);
 
-    if (!mediaSession) {
-        return <XLoader loading={true} />;
-    }
+    const handleScroll = React.useCallback(
+        debounce((values: XScrollValues) => {
+            let d = values.scrollHeight - (values.clientHeight + values.scrollTop);
+            if (d < 200) {
+                messenger.voiceChat.loadMoreListeners();
+            }
+        }, 500), [messenger.voiceChat.loadMoreListeners]);
 
     const speakers = (voiceChatData.speakers || [])
         .map((speaker) => {
             let speakerPeers = (conference?.peers || []).filter((p) => p.user.id === speaker.user.id);
             let speakerStates = speakerPeers.map(peer => {
-                let isLocal = peer?.id === state?.sender.id;
-                let isLoading = false;
-                let isMuted = !!peer?.mediaState.audioPaused;
-                if (!isLocal) {
-                    isLoading = !state?.receivers[peer.id]?.audioTrack;
-                }
+                const isLocal = peer?.id === state?.sender.id;
+                const isLoading = isLocal ? false : !state?.receivers[peer.id]?.audioTrack;
+                const isMuted = isLocal ? !state?.sender.audioEnabled : !!peer?.mediaState.audioPaused;
+
                 return { isMuted, isLoading };
             }).reduce((acc, peerState) => {
                 return {
@@ -943,7 +932,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
         });
 
     return (
-        <Page>
+        <Page onScroll={handleScroll}>
             <UHeader
                 titleView={
                     <XView width="100%">
@@ -983,7 +972,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
                 }
                 dynamicHeight={true}
             />
-            <XScrollView3 marginTop={20} marginHorizontal={-16} marginBottom={114}>
+            <XView marginTop={20} marginHorizontal={-16} marginBottom={114}>
                 <RoomSpeakers
                     speakers={speakers}
                     room={voiceChatData}
@@ -1002,9 +991,10 @@ const RoomView = React.memo((props: { roomId: string }) => {
                             Listeners
                         </XView>
                         <RoomListeners room={voiceChatData} />
+                        <RoomListenersLoader />
                     </>
                 )}
-            </XScrollView3>
+            </XView>
             <XView
                 position="fixed"
                 bottom={0}
@@ -1020,7 +1010,7 @@ const RoomView = React.memo((props: { roomId: string }) => {
                     connecting={!muted && connecting}
                     status={voiceChatData.me?.status}
                     handRaised={handRaised}
-                    raisedHands={voiceChatData.raisedHands || []}
+                    raisedHands={voiceChatData.handRaisedCount}
                     showInviteButton={showInviteButton}
                     onMute={handleMute}
                     onLeave={handleLeave}
@@ -1031,12 +1021,30 @@ const RoomView = React.memo((props: { roomId: string }) => {
     );
 });
 
+const RoomView = React.memo((props: { roomId: string }) => {
+    const messenger = React.useContext(MessengerContext)!;
+    const voiceChat = messenger.voiceChat.useVoiceChat();
+    const joinRoom = useJoinRoom(true);
+    const isTabVisible = useVisibleTab();
+    const mediaSession = messenger.calls.useCurrentSession();
+
+    React.useEffect(() => {
+        if (!mediaSession && !voiceChat && !messenger.voiceChat.isJoining && isTabVisible) {
+            joinRoom(props.roomId);
+        }
+    }, []);
+
+    if (!voiceChat || !mediaSession) {
+        return <XLoader loading={true} />;
+    }
+
+    return <RoomViewInner roomId={props.roomId} mediaSession={mediaSession} voiceChatData={voiceChat} />;
+});
+
 export const RoomFragment = React.memo(() => {
     const { id } = useUnicorn().query;
     // TODO: Unavailable page for wrong id
     return (
-        <VoiceChatProvider roomId={id}>
-            <RoomView roomId={id} />
-        </VoiceChatProvider>
+        <RoomView roomId={id} />
     );
 });

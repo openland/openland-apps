@@ -6,7 +6,7 @@ import {
     Image,
     LayoutChangeEvent,
 } from 'react-native';
-import { VoiceChatParticipantStatus, VoiceChatParticipant_user } from 'openland-api/spacex.types';
+import { VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import { ZButton } from 'openland-mobile/components/ZButton';
@@ -270,8 +270,7 @@ const ControlRaiseHand = React.memo(
 
 interface RoomSettingsButtonProps {
     theme: ThemeGlobal;
-    raisedCount?: number;
-    raisedHandUsers: VoiceChatParticipant_user[];
+    raisedCount: number;
     roomId: string;
     roomTitle: string | null;
     roomMessage: string | null;
@@ -280,7 +279,7 @@ interface RoomSettingsButtonProps {
 }
 
 const RoomSettingsButton = React.memo((props: RoomSettingsButtonProps) => {
-    const { theme, raisedCount, raisedHandUsers, roomId, status, roomTitle, reportUserError, roomMessage } = props;
+    const { theme, raisedCount, roomId, status, roomTitle, reportUserError, roomMessage } = props;
 
     return (
         <ControlItem
@@ -294,7 +293,7 @@ const RoomSettingsButton = React.memo((props: RoomSettingsButtonProps) => {
                 roomId,
                 roomTitle,
                 roomMessage,
-                raisedHandUsers,
+                raisedHandCount: raisedCount,
                 theme,
                 status,
                 reportUserError
@@ -317,7 +316,7 @@ interface RoomControlsProps {
     connecting: boolean;
     onMutePress: () => void;
     reportUserError: (type: ReportCallErrorType) => void;
-    raisedHandUsers: VoiceChatParticipant_user[];
+    raisedHandUsers: number;
 }
 
 const getButtons = (props: RoomControlsProps) => {
@@ -356,8 +355,7 @@ const getButtons = (props: RoomControlsProps) => {
         <RoomSettingsButton
             key="settings-btn"
             theme={theme}
-            raisedCount={raisedHandUsers.length}
-            raisedHandUsers={raisedHandUsers}
+            raisedCount={raisedHandUsers}
             roomTitle={title}
             roomMessage={message}
             roomId={id}
@@ -388,7 +386,7 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
 
     const buttons = getButtons(props);
     return (
-        <View onLayout={onLayout}>
+        <View onLayout={onLayout} style={{ paddingTop: 16 }}>
             {/* <RoomDonationBar /> */}
             <View
                 style={{

@@ -18,13 +18,13 @@ import { useVideoCallModal } from './CallModal';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { plural } from 'openland-y-utils/plural';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
-import { useVoiceChat, VoiceChatProvider } from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
 import MicIcon from 'openland-icons/s/ic-mic-on-36.svg';
 import FullscreenIcon from 'openland-icons/s/ic-size-up-glyph-24.svg';
 import EndIcon from 'openland-icons/s/ic-call-end-glyph-24.svg';
+import { VoiceChatT } from 'openland-engines/VoiceChatEngine';
 
 const VIDEO_WIDTH = 320;
 const VIDEO_HEIGHT = 213;
@@ -497,7 +497,8 @@ const subtitleStyle = cx(TextSubhead, css`
     white-space: nowrap;
 `);
 
-const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession: MediaSessionManager }) => {
+const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession: MediaSessionManager, voiceChat: VoiceChatT }) => {
+    const { voiceChat } = props;
     const targetRef = React.useRef<HTMLDivElement>();
     const containerRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
@@ -507,19 +508,15 @@ const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession
     const [targetState, setTargetState] = React.useState<HTMLDivElement>();
     useJsDrag(targetRef, { containerRef, onMove, savedCallback: JSON.parse(window.localStorage.getItem('voice_chat_floating_shift') || '[]'), limitToScreen: true }, [targetState]);
     let messenger = React.useContext(MessengerContext);
-    let calls = messenger.calls;
     let state = props.mediaSession.state.useValue();
-    const voiceChat = useVoiceChat();
     const selfStatus = voiceChat.me?.status;
-    let client = useClient();
     const router = React.useContext(XViewRouterContext)!;
     const route = React.useContext(XViewRouteContext)!;
     const tabRouter = useTabRouter();
     const isCurrentRoute = route.path.includes(`/room/${props.id}`);
 
     const handleLeave = React.useCallback(() => {
-        calls.leaveCall();
-        client.mutateVoiceChatLeave({ id: props.id });
+        messenger.voiceChat.leave();
     }, [isCurrentRoute]);
     const showCall = React.useCallback(() => {
         tabRouter.setTab(0);
@@ -693,33 +690,34 @@ const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession
     );
 });
 
-const VoiceChatFloatingInner = React.memo((props: { id: string }) => {
+const VoiceChatFloatingInner = React.memo((props: { id: string, voiceChat: VoiceChatT | null }) => {
+    let { voiceChat } = props;
     let client = useClient();
     let data = client.useConference({ id: props.id }, { suspense: false });
     useTalkWatch(data && data.conference.id);
-
     let messenger = React.useContext(MessengerContext);
+
     let ms = messenger.calls.useCurrentSession();
 
-    let res = ms && data && data.conference.peers.length !== 0 && data.conference.parent?.__typename === 'VoiceChat' && (
+    let res = ms && data && data.conference.peers.length !== 0 && data.conference.parent?.__typename === 'VoiceChat' && voiceChat && (
         <React.Suspense fallback={null}>
-            <VoiceChatProvider roomId={props.id}>
-                <VoiceChatFloatingComponent id={props.id} mediaSession={ms} />
-            </VoiceChatProvider>
+            <VoiceChatFloatingComponent id={props.id} mediaSession={ms} voiceChat={voiceChat} />
         </React.Suspense>
     );
     return ReactDOM.createPortal(res, document.body);
 });
 
 export const CallFloating = React.memo(() => {
-    let calls = React.useContext(MessengerContext).calls;
-    let currentMediaSession = calls.useCurrentSession();
+    let messenger = React.useContext(MessengerContext);
+    let currentMediaSession = messenger.calls.useCurrentSession();
+    const voiceChat = messenger.voiceChat.useVoiceChat();
+
     if (!currentMediaSession) {
         return null;
     }
-    if (currentMediaSession.callType === 'voice-chat') {
+    if (!!voiceChat) {
         return (
-            <VoiceChatFloatingInner id={currentMediaSession.conversationId} />
+            <VoiceChatFloatingInner id={currentMediaSession.conversationId} voiceChat={voiceChat} />
         );
     }
     return <CallFloatingInner id={currentMediaSession.conversationId} />;

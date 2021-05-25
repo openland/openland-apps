@@ -1,6 +1,7 @@
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { DataSourceMessageItem, PendingAttachProps } from 'openland-engines/messenger/ConversationEngine';
 import { TextStylesAsync } from 'openland-mobile/styles/AppStyles';
+import { removeExtension } from 'openland-y-utils/mediaExtension';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import * as React from 'react';
 import { ASFlex, ASFlexProps } from 'react-native-async-view/ASFlex';
@@ -43,7 +44,10 @@ export const AudioContent = React.memo((props: {
                     height={40}
                     justifyContent="center"
                     alignItems="center"
-                    backgroundColor={isOut ? theme.tintInverted : theme.accentPrimary}
+                    backgroundColor={isOut
+                        ? theme.tintInverted :
+                        theme.accentPrimary === theme.foregroundContrast
+                            ? theme.foregroundInverted : theme.accentPrimary}
                     borderRadius={20}
                     marginRight={12}
                     marginTop={6}
@@ -63,7 +67,7 @@ export const AudioContent = React.memo((props: {
                     marginRight={12}
                     maxWidth={maxWidth - 72}
                 >
-                    {attach.fileMetadata.name}
+                    {removeExtension(attach.fileMetadata.name)}
                 </ASText>
             </ASFlex>
         </ASFlex >

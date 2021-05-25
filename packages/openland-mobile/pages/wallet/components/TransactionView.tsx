@@ -9,6 +9,7 @@ import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { showTransactionInfo } from 'openland-mobile/pages/main/modals/TransactionInfo';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { convertTransaction } from 'openland-y-utils/wallet/transaction';
+import { ZButton } from 'openland-mobile/components/ZButton';
 
 interface TransactionViewProps {
     item: WalletTransactionFragment;
@@ -16,12 +17,19 @@ interface TransactionViewProps {
 
 export const TransactionView = (props: TransactionViewProps) => {
     const theme = React.useContext(ThemeContext);
-    const router = React.useContext(SRouterContext);
+    const router = React.useContext(SRouterContext)!;
 
-    const { avatar, title, type, dateTime, status, amount, source, group } = convertTransaction(props.item);
+    const { avatar, title, type, dateTime, status, amount, source, group } = convertTransaction(
+        props.item,
+    );
     const payment = source.operation.payment;
     const actionRequired = status === 'failing';
-    const color = (actionRequired || status === 'canceled') ? theme.accentNegative : (source.operation.amount > 0 ? theme.accentPositive : theme.foregroundPrimary);
+    const color =
+        actionRequired || status === 'canceled'
+            ? theme.accentNegative
+            : source.operation.amount > 0
+            ? theme.accentPositive
+            : theme.foregroundPrimary;
     const subtitleTime = dateTime.isToday ? dateTime.time : dateTime.date;
     const groupTitle = group ? `, ${group.title}` : '';
     const subtitleStatus = status !== 'success' ? `, ${status}` : '';
@@ -40,14 +48,36 @@ export const TransactionView = (props: TransactionViewProps) => {
     return (
         <>
             <ZListItemBase height={76} separator={false} onPress={handlePress}>
-                <View style={{ flexDirection: 'row', paddingVertical: 6, paddingHorizontal: 16, flexGrow: 1, width: '100%' }}>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        paddingVertical: 6,
+                        paddingHorizontal: 16,
+                        flexGrow: 1,
+                        width: '100%',
+                    }}
+                >
                     <View style={{ paddingTop: 2, paddingRight: 16 }}>
                         {avatar && <ZAvatar size="medium" {...avatar} />}
                         {!avatar && <Image source={require('assets/ic-top-up-40.png')} />}
                     </View>
                     <View style={{ flexGrow: 1, flexShrink: 1 }}>
-                        <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
-                        <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }} numberOfLines={2} ellipsizeMode="tail" allowFontScaling={false}>{subtitle}</Text>
+                        <Text
+                            style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            allowFontScaling={false}
+                        >
+                            {title}
+                        </Text>
+                        <Text
+                            style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}
+                            numberOfLines={2}
+                            ellipsizeMode="tail"
+                            allowFontScaling={false}
+                        >
+                            {subtitle}
+                        </Text>
                     </View>
                     <View style={{ flexShrink: 0, paddingLeft: 16 }}>
                         <Text style={{ ...TextStyles.Label1, color }} allowFontScaling={false}>
@@ -57,22 +87,93 @@ export const TransactionView = (props: TransactionViewProps) => {
                 </View>
             </ZListItemBase>
             {actionRequired && (
-                <TouchableWithoutFeedback onPress={complete}>
-                    <View style={{ marginLeft: 72, marginRight: 16, paddingVertical: 8, alignItems: 'flex-start', justifyContent: 'flex-start', position: 'relative' }}>
-                        <View style={{ position: 'absolute', top: 2, left: 16, width: 12, height: 6 }}>
-                            <Image source={require('assets/wallet/ic-tail-12.png')} style={{ width: 12, height: 6 }} />
-                        </View>
-                        <View style={{ paddingHorizontal: 16, paddingVertical: 12, borderRadius: RadiusStyles.Medium, width: 287, maxWidth: '100%', backgroundColor: theme.accentNegative }}>
-                            <Text style={{ ...TextStyles.Subhead, color: theme.foregroundContrast }} allowFontScaling={false}>Transaction failed</Text>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={{ ...TextStyles.Label2, color: theme.foregroundContrast, }} allowFontScaling={false}>
-                                    Update payment method
-                                </Text>
-                                <Image source={require('assets/ic-chevron-16.png')} style={{ tintColor: theme.foregroundContrast, }} />
+                <View
+                    style={{
+                        marginLeft: 72,
+                        width: '100%',
+                    }}
+                >
+                    <TouchableWithoutFeedback onPress={complete}>
+                        <View
+                            style={{
+                                paddingVertical: 8,
+                                alignItems: 'flex-start',
+                                justifyContent: 'flex-start',
+                                position: 'relative',
+                            }}
+                        >
+                            <View
+                                style={{
+                                    position: 'absolute',
+                                    top: 2,
+                                    left: 16,
+                                    width: 12,
+                                    height: 6,
+                                }}
+                            >
+                                <Image
+                                    source={require('assets/wallet/ic-tail-12.png')}
+                                    style={{ width: 12, height: 6 }}
+                                />
+                            </View>
+                            <View
+                                style={{
+                                    paddingHorizontal: 16,
+                                    paddingVertical: 12,
+                                    borderRadius: RadiusStyles.Medium,
+                                    width: 287,
+                                    maxWidth: '100%',
+                                    backgroundColor: theme.accentNegative,
+                                }}
+                            >
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Image
+                                        source={require('assets/ic-failure-16.png')}
+                                        style={{ tintColor: '#fff' }}
+                                    />
+                                    <Text
+                                        style={{
+                                            ...TextStyles.Subhead,
+                                            color: theme.foregroundContrast,
+                                            marginLeft: 8,
+                                        }}
+                                        allowFontScaling={false}
+                                    >
+                                        Transaction failed
+                                    </Text>
+                                </View>
+                                <ZButton
+                                    title="Try again"
+                                    size="large"
+                                    marginTop={12}
+                                    backgroundColor="#fff"
+                                    textColor={theme.accentNegative}
+                                    onPress={complete}
+                                />
                             </View>
                         </View>
+                    </TouchableWithoutFeedback>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text
+                            style={{
+                                ...TextStyles.Subhead,
+                                color: theme.foregroundTertiary,
+                            }}
+                        >
+                            Need help?
+                        </Text>
+                        <Text
+                            style={{
+                                ...TextStyles.Label2,
+                                color: theme.accentPrimary,
+                                marginLeft: 6,
+                            }}
+                            onPress={() => router.push('ProfileUser', { id: 'zoebp1bZA0F5P5oL5ZgrFwEMA4' })}
+                        >
+                            Contact us
+                        </Text>
                     </View>
-                </TouchableWithoutFeedback>
+                </View>
             )}
         </>
     );

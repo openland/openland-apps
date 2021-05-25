@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { useClient } from 'openland-api/useClient';
-import { ActiveVoiceChatsEvents, VoiceChatWithSpeakers } from 'openland-api/spacex.types';
+import { ActiveVoiceChatsEvents, VoiceChatShort } from 'openland-api/spacex.types';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
 const VoiceChatsFeedContext = React.createContext<{
-    chats: VoiceChatWithSpeakers[];
+    chats: VoiceChatShort[];
     modalOpen: boolean;
     setModalOpen: (flag: boolean) => void;
 }>({ chats: [], modalOpen: false, setModalOpen: () => {/**/ } });
 
 export const VoiceChatsFeedProvider = React.memo((props: { children: any }) => {
-    const [voiceChatsFeed, setVoiceChatsFeed] = React.useState<VoiceChatWithSpeakers[]>([]);
+    const [voiceChatsFeed, setVoiceChatsFeed] = React.useState<VoiceChatShort[]>([]);
     const [modalOpen, setModalOpen] = React.useState(false);
     const client = useClient();
     const subscribeRef = React.useRef<any>(null);
@@ -34,7 +34,7 @@ export const VoiceChatsFeedProvider = React.memo((props: { children: any }) => {
                     activeVoiceChatsEvents.map((i) => {
                         const hasChat = !!chats.find((j) => j.id === i.chat.id);
                         if (!hasChat && i.chat.active) {
-                            chats.push(i.chat);
+                            chats.unshift(i.chat);
                         }
                         if (hasChat && !i.chat.active) {
                             chats = chats.filter((j) => j.id !== i.chat.id);

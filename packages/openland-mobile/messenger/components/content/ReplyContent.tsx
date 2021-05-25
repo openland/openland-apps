@@ -13,7 +13,7 @@ import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from 
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { StickerContent } from './StickerContent';
 import { AsyncReplyMessageRichAttach } from '../AsyncReplyMessageRichAttach';
-import { isVideo } from 'openland-mobile/utils/isVideo';
+import { isVideo } from 'openland-y-utils/mediaExtension';
 
 const getAttachFile = (message: DataSourceMessageItem) => {
     return message.attachments && message.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;

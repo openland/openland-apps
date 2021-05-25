@@ -59,13 +59,13 @@ export const CurrentVoiceChat = React.memo<CurrentVoiceChatProps>((props) => {
                         />
                         {listenersCount > 0 && (
                             <>
-                                <Text style={{ color: theme.foregroundQuaternary, marginLeft: 12 }}>
+                                <Text style={{ color: theme.foregroundTertiary, marginLeft: 12 }}>
                                     {listenersCount}
                                 </Text>
                                 <Image
                                     source={require('assets/ic-listener-16.png')}
                                     style={{
-                                        tintColor: theme.foregroundQuaternary,
+                                        tintColor: theme.foregroundTertiary,
                                         width: 16,
                                         height: 16,
                                         marginLeft: 6,

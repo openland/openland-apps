@@ -10,11 +10,12 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 import { useJoinRoom } from 'openland-mobile/pages/rooms/joinRoom';
 
 export const CallBarComponent = React.memo((props: { id: string, showCallModal: () => void }) => {
-    let conference = getClient().useConference({ id: props.id }, { suspense: false });
+    let conference = getClient().useConferenceMeta({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
     const theme = useTheme();
     const mediaSession = getMessenger().engine.calls.useCurrentSession();
+    const voiceChat = getMessenger().engine.voiceChat.useVoiceChat();
     const isVoiceChat = conference?.conference.parent?.__typename === 'VoiceChat';
-    const disabled = !!mediaSession && mediaSession.callType === 'voice-chat' && !isVoiceChat;
+    const disabled = !!mediaSession && !!voiceChat && !isVoiceChat;
     const joinRoom = useJoinRoom();
     const handlePress = React.useCallback(() => {
         if (isVoiceChat) {

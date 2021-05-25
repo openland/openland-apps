@@ -12,10 +12,9 @@ import { useShake } from 'openland-web/pages/auth/components/authComponents';
 import { useClient } from 'openland-api/useClient';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { useVoiceChat, VoiceChatProvider } from 'openland-y-utils/voiceChat/voiceChatWatcher';
-
 import { showPinnedMessageSettingsModal } from './showPinnedMessageSettingsModal';
 import IcPin from 'openland-icons/s/ic-pin-24.svg';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 const formTitle = css`
     height: 48px;
@@ -28,13 +27,17 @@ const formTitle = css`
 const EditRoom = React.memo((props: { hide: () => void }) => {
     const client = useClient();
     const form = useForm();
-    const voiceChatData = useVoiceChat();
-    const titleField = useField('room.title', voiceChatData.title || '', form);
+    const messenger = React.useContext(MessengerContext)!;
+    const voiceChatData = messenger.voiceChat.useVoiceChat();
+    const titleField = useField('room.title', voiceChatData?.title || '', form);
     const [loading, setLoading] = React.useState(false);
     const [shakeClassName, shake] = useShake();
-    const pinnedMessage = voiceChatData.pinnedMessage?.message;
+    const pinnedMessage = voiceChatData?.pinnedMessage?.message;
 
     const handleSave = React.useCallback(async () => {
+        if (!voiceChatData) {
+            return;
+        }
         let title = titleField.value.trim();
         if (loading) {
             return;
@@ -47,6 +50,9 @@ const EditRoom = React.memo((props: { hide: () => void }) => {
         await client.mutateVoiceChatUpdate({ id: voiceChatData.id, input: { title } });
         props.hide();
     }, [titleField.value.length, loading]);
+    if (!voiceChatData) {
+        return null;
+    }
 
     return (
         <>
@@ -87,8 +93,6 @@ const EditRoom = React.memo((props: { hide: () => void }) => {
 
 export const showEditRoom = (roomId: string) => {
     showModalBox({ title: 'Edit room', width: 368 }, ctx => (
-        <VoiceChatProvider roomId={roomId}>
-            <EditRoom hide={ctx.hide} />
-        </VoiceChatProvider>
+        <EditRoom hide={ctx.hide} />
     ));
 };

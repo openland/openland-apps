@@ -1,4 +1,4 @@
-import { VoiceChatParticipant } from 'openland-api/spacex.types';
+import { VoiceChatHandRaised_voiceChatHandRaised_items_user } from 'openland-api/spacex.types';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XScrollView3 } from 'openland-x/XScrollView3';
@@ -11,14 +11,15 @@ import { css, cx } from 'linaria';
 import { TextBody, TextTitle1 } from 'openland-web/utils/TextStyles';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { XLoader } from 'openland-x/XLoader';
+import { usePagination } from 'openland-y-utils/usePagination';
 
 interface RaisedHandsProps {
     roomId: string;
-    raisedHands: VoiceChatParticipant[];
 }
 
-const UserItem = React.memo((props: { roomId: string, participant: VoiceChatParticipant, hide: () => void }) => {
-    const { user } = props.participant;
+const UserItem = React.memo((props: { roomId: string, user: VoiceChatHandRaised_voiceChatHandRaised_items_user, hide: () => void }) => {
+    const { user } = props;
     const client = useClient();
     const promoteUser = React.useCallback(async () => {
         await client.mutateVoiceChatPromote({ id: props.roomId, uid: user.id });
@@ -56,12 +57,28 @@ const emptyImgStyle = css`
 `;
 
 const RaisedHands = React.memo((props: RaisedHandsProps & { hide: () => void }) => {
-    const { roomId, hide, raisedHands } = props;
+    const { roomId, hide } = props;
+    const client = useClient();
+    let { items: raisedHands, loading, loadMore } = usePagination({
+        fetchItems: async (after) => {
+            return (await client.queryVoiceChatHandRaised({ id: roomId, after, first: 10 }, { fetchPolicy: 'network-only' })).voiceChatHandRaised;
+        },
+        initialCursor: null,
+        initialItems: [],
+    });
+    React.useEffect(() => {
+        loadMore();
+    }, []);
     return (
         <XView>
-            {raisedHands.length > 0 ? (
+            {(raisedHands.length > 0 || loading) ? (
                 <XScrollView3 minHeight={200}>
-                    {raisedHands.map(x => <UserItem key={x.id} roomId={roomId} participant={x} hide={hide} />)}
+                    {raisedHands.map(x => <UserItem key={x.id} roomId={roomId} user={x.user} hide={hide} />)}
+                    {loading && (
+                        <XView height={56} alignItems="center" justifyContent="center">
+                            <XLoader loading={true} transparentBackground={true} />
+                        </XView>
+                    )}
                 </XScrollView3>
             ) : (
                 <XView alignItems="center">

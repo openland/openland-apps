@@ -2,7 +2,7 @@ import * as React from 'react';
 import Bugsnag from '@bugsnag/react-native';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
-import { VoiceChatT } from 'openland-y-utils/voiceChat/voiceChatWatcher';
+import { VoiceChatT } from 'openland-engines/VoiceChatEngine';
 
 export type ReportCallErrorType = 'report-self-micro'
     | 'report-self-speaker'

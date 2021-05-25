@@ -21,6 +21,7 @@ import { isElectron } from 'openland-y-utils/isElectron';
 import { MediaLoader } from './MediaLoader';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { isChrome } from 'openland-y-utils/isChrome';
+import { isAudio } from 'openland-y-utils/mediaExtension';
 
 const modalContainer = css`
     position: relative;
@@ -276,6 +277,11 @@ const videoContainerSize = css`
     max-height: 302px;
 `;
 
+const audioContainer = css`
+    max-width: 480px;
+    min-width: 240px;
+`;
+
 const videoStyle = css`
     border-radius: 8px;
     width: 100%;
@@ -363,6 +369,33 @@ const VideoContent = React.memo(
                 >
                     <source src={videoSrc} type="video/mp4" />
                 </video>
+            </div>
+        );
+    },
+);
+
+const AudioContent = React.memo(
+    (props: {
+        file: {
+            fileId?: string;
+            fileMetadata: { name: string; size: number };
+            uri?: string;
+            previewFileId?: string | null;
+            previewFileMetadata?: { name: string; imageWidth: number | null; imageHeight: number | null; mimeType: string | null } | null;
+            filePreview?: string;
+        };
+    }) => {
+        const name = props.file.fileMetadata.name;
+        const src = props.file.fileId ? `https://ucarecdn.com/${props.file.fileId}/${name}` : props.file.uri;
+
+        return (
+            <div
+                className={cx(audioContainer)}
+                onClick={e => e.stopPropagation()}
+            >
+                <audio controls={true}>
+                    <source src={src} />
+                </audio>
             </div>
         );
     },
@@ -484,6 +517,10 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
         return <VideoContent file={props.file} videoProps={videoProps} />;
     }
 
+    if (!!file.fileMetadata.mimeType?.match('audio') || isAudio(file.fileMetadata.name)) {
+        return <AudioContent file={props.file} />;
+    }
+
     let fileSrc: undefined | string = `https://ucarecdn.com/${file.fileId}/`;
     const isUpload = !!progress && (progress >= 0 && progress < 1);
 
@@ -540,16 +577,16 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
                             cancelable={!isUpload}
                         />
                     ) : (
-                            <div className={cx(iconInfo, 'icon-info')}>
-                                <UIcon
-                                    icon={applyShowPdfModal && !isElectron ? <IcSearch /> : <IcDownload />}
-                                    color="#fff"
-                                    size={16}
-                                    className="download-icon"
-                                />
-                                <div className="format-text">{fileFormat(name)}</div>
-                            </div>
-                        )}
+                        <div className={cx(iconInfo, 'icon-info')}>
+                            <UIcon
+                                icon={applyShowPdfModal && !isElectron ? <IcSearch /> : <IcDownload />}
+                                color="#fff"
+                                size={16}
+                                className="download-icon"
+                            />
+                            <div className="format-text">{fileFormat(name)}</div>
+                        </div>
+                    )}
                 </div>
                 <div className={metadataContainer}>
                     <div className={cx(title + ' title', TextLabel1)}>{name}</div>

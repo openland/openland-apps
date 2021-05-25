@@ -5,7 +5,7 @@ import { randomKey } from 'openland-mobile/utils/randomKey';
 import { View, BackHandler, Platform, Dimensions } from 'react-native';
 import { SAnimated } from 'react-native-fast-animations';
 import { SAnimatedShadowView } from 'react-native-fast-animations';
-import { isPlayableMedia } from 'openland-mobile/utils/isVideo';
+import { isPlayableMedia } from 'openland-y-utils/mediaExtension';
 import Toast from '../Toast';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 
@@ -115,7 +115,7 @@ export function showFileModal(config: ZFileModalConfig) {
     if (isPlayableMedia(config.name) && !!mediaSession) {
         Toast
             .failure({
-                text: `Can’t open video during a ${mediaSession.callType === 'voice-chat' ? 'voice chat' : 'call'}`,
+                text: `Can’t open video during a call`,
                 duration: 2000
             })
             .show();

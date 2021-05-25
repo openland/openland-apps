@@ -42,35 +42,97 @@ const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController } & P
 
     return (
         <XView paddingHorizontal={8}>
-            <XView marginHorizontal={16} marginVertical={20} {...TextStyles.Title1}>Payment</XView>
-            <XView paddingHorizontal={16}>
-                {props.productTitle && <XView flexDirection="row" alignItems="center">
-                    <XView flexDirection="column" flexGrow={1}>
-                        <XView {...TextStyles.Title3} color="var(--foregroundPrimary)" marginBottom={4}>{props.productTitle}</XView>
-                        {props.productDescription && <XView {...TextStyles.Body} color="var(--foregroundSecondary)">{props.productDescription}</XView>}
-                    </XView>
-                    {props.productPicture}
-                </XView>}
-                {props.productView}
-                <XView {...TextStyles.Title3} color="var(--foregroundPrimary)" marginBottom={4} marginTop={20}>{`${formatMoney(props.amount)} ${props.type === 'payment' ? '' : props.interval === WalletSubscriptionInterval.MONTH ? ' / mo' : props.interval === WalletSubscriptionInterval.WEEK ? ' / wk' : ' / /?'}`}</XView>
-                {props.productDescription && <XView {...TextStyles.Body} color="var(--foregroundSecondary)">Amount</XView>}
-
+            <XView marginHorizontal={16} marginVertical={20} {...TextStyles.Title1}>
+                Payment
             </XView>
-            {(cards.length === 0) && (
+            <XView paddingHorizontal={16}>
+                {props.productTitle && (
+                    <XView flexDirection="row" alignItems="center">
+                        <XView flexDirection="column" flexGrow={1}>
+                            <XView
+                                {...TextStyles.Title3}
+                                color="var(--foregroundPrimary)"
+                                marginBottom={4}
+                            >
+                                {props.productTitle}
+                            </XView>
+                            {props.productDescription && (
+                                <XView {...TextStyles.Body} color="var(--foregroundSecondary)">
+                                    {props.productDescription}
+                                </XView>
+                            )}
+                        </XView>
+                        {props.productPicture}
+                    </XView>
+                )}
+                {props.productView}
+                <XView
+                    {...TextStyles.Title3}
+                    color="var(--foregroundPrimary)"
+                    marginBottom={4}
+                    marginTop={20}
+                >
+                    {`${formatMoney(props.amount)} ${
+                        props.type === 'payment'
+                            ? ''
+                            : props.interval === WalletSubscriptionInterval.MONTH
+                            ? ' / mo'
+                            : props.interval === WalletSubscriptionInterval.WEEK
+                            ? ' / wk'
+                            : ' / /?'
+                    }`}
+                </XView>
+                {props.productDescription && (
+                    <XView {...TextStyles.Body} color="var(--foregroundSecondary)">
+                        Amount
+                    </XView>
+                )}
+            </XView>
+            {cards.length === 0 && (
                 <UListGroup header="Payment method">
                     <UListItem
                         key="add"
                         title="Add card"
                         titleStyle={TextStyles.Label1}
-                        leftElement={<XView width={40} height={28} backgroundColor="var(--backgroundTertiaryTrans)" borderRadius={4}><UIcon icon={<AddIcon />} size={16} /></XView>}
+                        leftElement={
+                            <XView
+                                width={40}
+                                height={28}
+                                backgroundColor="var(--backgroundTertiaryTrans)"
+                                borderRadius={4}
+                            >
+                                <UIcon icon={<AddIcon />} size={16} />
+                            </XView>
+                        }
                         onClick={() => showAddCard()}
                         useRadius={true}
                     />
                 </UListGroup>
             )}
-            <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} marginHorizontal={-8} backgroundColor="var(--backgroundTertiaryTrans)" justifyContent="flex-end" flexDirection="row">
-                <UButton text="Cancel" disable={!cancelable} onClick={() => props.ctx.hide()} style="tertiary" size="large" />
-                <UButton disable={cards.length === 0} text="Confirm" action={onSubmit} style="primary" size="large" loading={loading} />
+            <XView
+                marginTop={24}
+                paddingVertical={16}
+                paddingHorizontal={24}
+                marginHorizontal={-8}
+                backgroundColor="var(--backgroundTertiaryTrans)"
+                justifyContent="flex-end"
+                flexDirection="row"
+            >
+                <UButton
+                    text="Cancel"
+                    disable={!cancelable}
+                    onClick={() => props.ctx.hide()}
+                    style="tertiary"
+                    size="large"
+                />
+                <UButton
+                    disable={cards.length === 0}
+                    text="Confirm"
+                    action={onSubmit}
+                    style="primary"
+                    size="large"
+                    loading={loading}
+                />
             </XView>
         </XView>
     );
@@ -90,13 +152,16 @@ const warningContainerDark = css`
     margin: -8px 0 20px;
 `;
 
-const CheckLock = React.memo((props: { ctx: XModalController, onContinue?: () => void }) => {
+const CheckLock = React.memo((props: { ctx: XModalController; onContinue?: () => void }) => {
     const builder = new AlertBlanketBuilder();
     let router = React.useContext(XViewRouterContext);
-    const warningContainerClass = useTheme().theme === 'dark' ? warningContainerDark : warningContainer;
+    const warningContainerClass =
+        useTheme().theme === 'dark' ? warningContainerDark : warningContainer;
 
-    builder.message("Update payment method to complete previously failed transactions and enable new purchases");
-    builder.body(ctx => <div className={warningContainerClass} />);
+    builder.message(
+        'Update payment method to complete previously failed transactions and enable new purchases',
+    );
+    builder.body((ctx) => <div className={warningContainerClass} />);
     builder.action('Continue', async () => {
         router?.navigate('/wallet');
         if (props.onContinue) {
@@ -107,7 +172,6 @@ const CheckLock = React.memo((props: { ctx: XModalController, onContinue?: () =>
     builder.width(480);
     return (
         <XView>
-            <XView marginLeft={20} marginTop={24} marginBottom={-20} {...TextStyles.Title1}>Update payment method</XView>
             <AlertBlanketComponent builder={builder} controller={props.ctx} />
         </XView>
     );
@@ -127,20 +191,17 @@ type PaymentProps = {
     productDescription?: string;
     productPicture?: JSX.Element;
     productView?: JSX.Element;
-    action: () => void
-} & ({ type: 'payment' } | { type: 'subscription', interval: WalletSubscriptionInterval });
+    action: () => void;
+} & ({ type: 'payment' } | { type: 'subscription'; interval: WalletSubscriptionInterval });
+
 export function showPayConfirm(props: PaymentProps) {
     showModalBox({}, (ctx) => {
-        return (
-            <PayConfirm ctx={ctx} {...props} />
-        );
+        return <PayConfirm ctx={ctx} {...props} />;
     });
 }
 
 export function showCheckLock(props?: { onContinue?: () => void }) {
-    showModalBox({}, (ctx) => {
-        return (
-            <CheckLock ctx={ctx} {...props} />
-        );
+    showModalBox({ title: 'Update payment method' }, (ctx) => {
+        return <CheckLock ctx={ctx} {...props} />;
     });
 }

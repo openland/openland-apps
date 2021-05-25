@@ -1,17 +1,19 @@
 import * as React from 'react';
 import { Image, Text, View } from 'react-native';
 import { useClient } from 'openland-api/useClient';
-import { VoiceChatParticipant_user } from 'openland-api/spacex.types';
+import { VoiceChatHandRaised_voiceChatHandRaised_items_user } from 'openland-api/spacex.types';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import { ZFollowButton } from 'openland-mobile/components/ZFollowButton';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
+import { usePagination } from 'openland-y-utils/usePagination';
+import { ZLoader } from 'openland-mobile/components/ZLoader';
+import { FlatList } from 'react-native-gesture-handler';
 
 interface RaisedHandsProps {
     hide: () => void;
-    users: VoiceChatParticipant_user[];
     roomId: string;
 }
 
@@ -57,7 +59,7 @@ const EmptyView = React.memo((props: { theme: ThemeGlobal }) => {
 });
 
 const RaisedHandUserView = React.memo(
-    (props: { user: VoiceChatParticipant_user; roomId: string; theme: ThemeGlobal }) => {
+    (props: { user: VoiceChatHandRaised_voiceChatHandRaised_items_user; roomId: string; theme: ThemeGlobal }) => {
         const client = useClient();
         const { user, theme } = props;
         const promoteUser = React.useCallback(async () => {
@@ -88,31 +90,59 @@ const RaisedHandUserView = React.memo(
 
 const RaisedHandsContent = React.memo((props: RaisedHandsProps) => {
     const theme = useTheme();
-    if (!props.users.length) {
+    const client = useClient();
+    const initialRaisedHands = client.useVoiceChatHandRaised({ id: props.roomId, first: 10 }, { fetchPolicy: 'network-only' }).voiceChatHandRaised;
+    let { items, loading, loadMore } = usePagination({
+        fetchItems: async (after) => {
+            return (await client.queryVoiceChatHandRaised({ id: props.roomId, after, first: 10 }, { fetchPolicy: 'network-only' })).voiceChatHandRaised;
+        },
+        initialCursor: initialRaisedHands.cursor,
+        initialItems: initialRaisedHands.items,
+        initialAllFetched: !initialRaisedHands.haveMore,
+    });
+    React.useEffect(() => {
+        loadMore();
+    }, []);
+
+    if (loading && items.length === 0) {
+        return (
+            <ZLoader />
+        );
+    }
+
+    if (items.length === 0) {
         return <EmptyView theme={theme} />;
     }
+
     return (
-        <View
+        <FlatList
             style={{
                 paddingHorizontal: 16,
                 flexGrow: 1,
-                flexDirection: 'column',
-                alignItems: 'stretch',
             }}
-        >
-            {props.users.map((i) => (
-                <RaisedHandUserView user={i} theme={theme} roomId={props.roomId} />
-            ))}
-        </View>
+            data={items}
+            renderItem={({ item }) => (
+                <RaisedHandUserView user={item.user} theme={theme} roomId={props.roomId} />
+            )}
+            refreshing={loading}
+            onEndReached={loadMore}
+            ListFooterComponent={
+                loading ? (
+                    <View style={{ alignItems: 'center', justifyContent: 'center', height: 40 }} >
+                        <ZLoader size="small" />
+                    </View >
+                ) : null
+            }
+        />
     );
 });
 
-export const showRaisedHands = (users: VoiceChatParticipant_user[], roomId: string) => {
+export const showRaisedHands = (roomId: string) => {
     showBottomSheet({
         title: 'Raised hands',
         cancelable: true,
         view: ({ hide }) => {
-            return <RaisedHandsContent users={users} hide={hide} roomId={roomId} />;
+            return <RaisedHandsContent hide={hide} roomId={roomId} />;
         },
     });
 };

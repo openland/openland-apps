@@ -24,7 +24,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { MetaInfoIndicator } from './content/MetaInfoIndicator';
 import { SenderContent } from './content/SenderContent';
 import { DonationContent } from './content/DonationContent';
-import { isAudio, isVideo } from 'openland-mobile/utils/isVideo';
+import { isAudio, isVideo } from 'openland-y-utils/mediaExtension';
 import { AudioContent } from './content/AudioContent';
 
 export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={17}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 20 : 16, ios: edited ? 17 : 14 }))}</ASText>;

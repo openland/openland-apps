@@ -125,7 +125,7 @@ export const SubscriptionsFragment = React.memo(() => {
                                 srcSet={`//cdn.openland.com/shared/art/art-shared${themeSuffix}@2x.png 2x, //cdn.openland.com/shared/art/art-shared${themeSuffix}@3x.png 3x`}
                                 alt=""
                             />
-                            <XView marginBottom={8}>
+                            <XView marginBottom={8} color="var(--foregroundPrimary)">
                                 <span className={TextTitle1}>
                                     No subscriptions yet
                                 </span>

@@ -11,7 +11,7 @@ import IcEdit from 'openland-icons/s/ic-edit-24.svg';
 import IcHand from 'openland-icons/s/ic-hand-24.svg';
 import IcDoorLeave from 'openland-icons/s/ic-door-leave-24.svg';
 import { css, cx } from 'linaria';
-import { VoiceChatParticipant, VoiceChatParticipantStatus } from 'openland-api/spacex.types';
+import { VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import { SvgLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
@@ -145,7 +145,7 @@ const controlsNoInviteAdminStyle = css`
 const SettingsMenu = React.memo((props: {
     ctx: UPopperController,
     roomId: string,
-    raisedHands: VoiceChatParticipant[],
+    raisedHands: number,
 }) => {
     const client = useClient();
     let popper = new UPopperMenuBuilder();
@@ -163,9 +163,9 @@ const SettingsMenu = React.memo((props: {
             title: 'Raised hands',
             icon: <IcHand />,
             action: () => {
-                showRaisedHands({ roomId, raisedHands });
+                showRaisedHands({ roomId });
             },
-            counter: raisedHands.length,
+            counter: raisedHands,
         })
         .item({
             title: 'Close room',
@@ -196,7 +196,7 @@ export const RoomControls = React.memo(({
     status?: VoiceChatParticipantStatus | null,
     connecting: boolean,
     isMuted: boolean,
-    raisedHands: VoiceChatParticipant[],
+    raisedHands: number,
     handRaised: boolean,
     showInviteButton: boolean;
     onMute: () => void,
@@ -253,7 +253,7 @@ export const RoomControls = React.memo(({
                     <RoomControlItem
                         text="Settings"
                         icon={<IcSettings />}
-                        counter={raisedHands.length}
+                        counter={raisedHands}
                         bgColor={visible ? 'var(--backgroundTertiaryActiveTrans)' : undefined}
                         onClick={(e: React.MouseEvent) => {
                             if (visible) {

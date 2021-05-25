@@ -7,8 +7,9 @@ import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { TintOrange } from 'openland-y-utils/themes/tints';
+import { NavigationPage } from '../NavigationPage';
 
-export const ConnectionStatusComponent = (props: { k: string }) => {
+export const ConnectionStatusComponent = (props: { k: string, route: NavigationPage | undefined }) => {
     let animate = new SAnimatedShadowView(`header-connecting-status-content-${props.k}`, { opacity: 0, translateY: -8, scale: 0.84 });
 
     const client = useClient();
@@ -55,6 +56,9 @@ export const ConnectionStatusComponent = (props: { k: string }) => {
             });
         }, 1000);
     }, []);
+    if (props.route?.params.hideConnectionStatus) {
+        return null;
+    }
     return (
         <SAnimated.View name={`header-connecting-status-${props.k}`} style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 36, alignItems: 'center' }} pointerEvents="none">
             <SAnimated.View

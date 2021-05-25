@@ -26,7 +26,6 @@ import { useSafeArea } from 'react-native-safe-area-context';
 import { RoomControls } from './RoomControls';
 import { showEditPinnedMessage } from './RoomSettings';
 import {
-    VoiceChatParticipant,
     SharedRoomKind,
     SharedRoomMembershipStatus,
     VoiceChatParticipantStatus,
@@ -34,17 +33,13 @@ import {
     VoiceChatParticipant_user,
     VoiceChatUser_user,
     Conference_conference_peers,
+    VoiceChatSpeaker,
 } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { TintBlue } from 'openland-y-utils/themes/tints';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import InCallManager from 'react-native-incall-manager';
 import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradient.native';
-import {
-    VoiceChatProvider,
-    useVoiceChat,
-    VoiceChatT,
-} from 'openland-y-utils/voiceChat/voiceChatWatcher';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { withApp } from 'openland-mobile/components/withApp';
 import { isPad } from '../Root';
@@ -57,6 +52,7 @@ import { showSheetModal } from 'openland-mobile/components/showSheetModal';
 import { useVoiceChatErrorNotifier } from 'openland-mobile/utils/voiceChatErrorNotifier';
 import { Equalizer } from './Equalizer';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
+import { VoiceChatT } from 'openland-engines/VoiceChatEngine';
 
 const useWakeLock = Platform.OS === 'android' ? require('react-native-wake-lock').useWakeLock : undefined;
 
@@ -719,9 +715,9 @@ const RoomHeader = React.memo(
                         )}
                     </View>
                     {room.speakers &&
-                    room.speakers.length > 9 &&
-                    !!currentPeer &&
-                    !currentPeer.mediaState.audioPaused ? (
+                        room.speakers.length > 9 &&
+                        !!currentPeer &&
+                        !currentPeer.mediaState.audioPaused ? (
                         <View
                             style={{
                                 display: 'flex',
@@ -943,7 +939,7 @@ interface RoomUsersListProps extends RoomViewProps {
     speakers: {
         isMuted: boolean,
         isLoading: boolean,
-        speaker: VoiceChatParticipant
+        speaker: VoiceChatSpeaker
     }[];
     peersIdsMap: { [userId: string]: string[] };
 }
@@ -965,6 +961,8 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
     const currentHeight = isPad ? Dimensions.get('window').height : SDevice.wHeight;
     const sHeight = currentHeight - (sa.top + sa.bottom + headerHeight + controlsHeight + 16);
     const listeners = room.listeners || [];
+    const messenger = getMessenger().engine;
+    const { loading } = messenger.voiceChat.useListenersMeta();
     const speakersElement = (
         <>
             {!!props.room.pinnedMessage && (
@@ -1046,7 +1044,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                     <RoomUserView
                         roomId={room.id}
                         user={item.user}
-                        userStatus={item.status}
+                        userStatus={VoiceChatParticipantStatus.LISTENER}
                         selfStatus={room.me?.status}
                         isSelf={item.user.id === room.me?.user.id}
                         theme={theme}
@@ -1057,6 +1055,8 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                 keyExtractor={(item, index) => index.toString() + item.id}
                 numColumns={4}
                 style={{ flex: 1 }}
+                refreshing={loading}
+                onEndReached={messenger.voiceChat.loadMoreListeners}
             />
         </View>
     );
@@ -1066,10 +1066,11 @@ interface RoomViewInnerProps {
     roomId: string;
     ctx: ModalProps;
     router: SRouter;
+    voiceChatData: VoiceChatT;
 }
 
-const RoomView = React.memo((props: RoomViewInnerProps) => {
-    const voiceChatData = useVoiceChat();
+const RoomViewInner = React.memo((props: RoomViewInnerProps) => {
+    const { voiceChatData } = props;
     const theme = useTheme();
     const client = useClient();
     const conference = client.useConference({ id: props.roomId }, { suspense: false })?.conference;
@@ -1108,17 +1109,24 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
         mediaSession?.setAudioEnabled(!state?.sender.audioEnabled);
     }, [state, mediaSession]);
 
-    const closeCall = () => {
-        props.ctx.hide();
-        InCallManager.stop({ busytone: '_BUNDLE_' });
-        calls.leaveCall();
-        client.mutateVoiceChatLeave({ id: props.roomId });
-    };
+    React.useEffect(() => {
+        return getMessenger().engine.voiceChat.onLeave(({ closedByAdmin }) => {
+            if (closedByAdmin) {
+                Toast.build({
+                    text: 'The last room admin left, the room will be closed now',
+                    duration: 2000,
+                }).show();
+            }
+            props.ctx.hide();
+            InCallManager.stop({ busytone: '_BUNDLE_' });
+        });
+    }, []);
 
     const handleLeave = React.useCallback(async () => {
         let admins = voiceChatData.speakers?.filter(
             (x) => x.status === VoiceChatParticipantStatus.ADMIN,
         );
+        const closeCall = getMessenger().engine.voiceChat.leave;
         if (
             admins &&
             admins.length === 1 &&
@@ -1144,40 +1152,6 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
         InCallManager.start({ media: 'video' });
         InCallManager.setKeepScreenOn(true);
     }, []);
-
-    const prevVoiceChat = React.useRef<VoiceChatT>(voiceChatData);
-
-    // Handle room state changes
-    React.useEffect(() => {
-        let hasPrevAdmins = prevVoiceChat.current.speakers?.some(
-            (x) => x.status === VoiceChatParticipantStatus.ADMIN,
-        );
-        let isPrevAdmin = prevVoiceChat.current.me?.status === VoiceChatParticipantStatus.ADMIN;
-        let hasAdmins = voiceChatData.speakers?.some(
-            (x) => x.status === VoiceChatParticipantStatus.ADMIN,
-        );
-
-        if (hasPrevAdmins && !hasAdmins && !isPrevAdmin) {
-            Toast.build({
-                text: 'The last room admin left, the room will be closed now',
-                duration: 2000,
-            }).show();
-            setTimeout(() => {
-                closeCall();
-            }, 2500);
-        } else {
-            let isLeft =
-                prevVoiceChat.current.me?.status !== VoiceChatParticipantStatus.LEFT &&
-                voiceChatData.me?.status === VoiceChatParticipantStatus.LEFT;
-            let isKicked =
-                prevVoiceChat.current.me?.status !== VoiceChatParticipantStatus.KICKED &&
-                voiceChatData.me?.status === VoiceChatParticipantStatus.KICKED;
-            if (isLeft || isKicked) {
-                closeCall();
-            }
-        }
-        prevVoiceChat.current = voiceChatData;
-    }, [voiceChatData]);
 
     const [connecting, setConnecting] = React.useState(false);
 
@@ -1209,12 +1183,10 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
         .map((speaker) => {
             let speakerPeers = (conference?.peers || []).filter((p) => p.user.id === speaker.user.id);
             let speakerStates = speakerPeers.map(peer => {
-                let isLocal = peer?.id === state?.sender.id;
-                let isLoading = false;
-                let isMuted = !!peer?.mediaState.audioPaused;
-                if (!isLocal) {
-                    isLoading = !state?.receivers[peer.id]?.audioTrack;
-                }
+                const isLocal = peer?.id === state?.sender.id;
+                const isLoading = isLocal ? false : !state?.receivers[peer.id]?.audioTrack;
+                const isMuted = isLocal ? !state?.sender.audioEnabled : !!peer?.mediaState.audioPaused;
+
                 return { isMuted, isLoading };
             }).reduce((acc, peerState) => {
                 return {
@@ -1281,7 +1253,7 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
                         onLeave={handleLeave}
                         onMutePress={handleMute}
                         reportUserError={reportUserError}
-                        raisedHandUsers={voiceChatData.raisedHands?.map((i) => i.user) || []}
+                        raisedHandUsers={voiceChatData.handRaisedCount}
                     />
                 </>
             )}
@@ -1289,28 +1261,36 @@ const RoomView = React.memo((props: RoomViewInnerProps) => {
     );
 });
 
+const RoomView = React.memo((props: any) => {
+    const voiceChat = getMessenger().engine.voiceChat.useVoiceChat();
+    if (!voiceChat) {
+        return (
+            <View style={{ height: 200, alignItems: 'center', justifyContent: 'center' }}>
+                <LoaderSpinner size="large" />
+            </View>
+        );
+    }
+    return <RoomViewInner {...props} voiceChatData={voiceChat} />;
+});
+
 export const RoomViewPage = withApp(
     ({ router }: { router: SRouter }) => (
-        <VoiceChatProvider roomId={router.params.roomId}>
-            <RoomView
-                roomId={router.params.roomId}
-                router={router}
-                ctx={{ hide: () => router.back() }}
-            />
-        </VoiceChatProvider>
+        <RoomView
+            roomId={router.params.roomId}
+            router={router}
+            ctx={{ hide: () => router.back() }}
+        />
     ),
     { navigationAppearance: 'small-hidden' },
 );
 
 export const showRoomView = (roomId: string, router: SRouter, onHide?: () => void) => {
     if (isPad) {
-        router.push('RoomViewPage', { roomId });
+        router.push('RoomViewPage', { roomId, hideConnectionStatus: true });
     } else {
         showBottomSheet({
             view: (ctx) => (
-                <VoiceChatProvider roomId={roomId}>
-                    <RoomView roomId={roomId} ctx={ctx} router={router} />
-                </VoiceChatProvider>
+                <RoomView roomId={roomId} ctx={ctx} router={router} />
             ),
             containerStyle: {
                 borderBottomLeftRadius: 0,

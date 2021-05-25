@@ -10,7 +10,7 @@ import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { DownloadState } from '../../files/DownloadManagerInterface';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { isVideo } from 'openland-mobile/utils/isVideo';
+import { isVideo } from 'openland-y-utils/mediaExtension';
 
 export interface AsyncMessageMediaViewProps {
     theme: ThemeGlobal;

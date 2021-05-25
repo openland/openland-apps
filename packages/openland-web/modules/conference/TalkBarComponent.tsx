@@ -2,16 +2,15 @@ import * as React from 'react';
 import { useTalkWatch } from './useTalkWatch';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
-import { UserSmall, RoomChat_room, RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
+import { RoomChat_room, RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
 import { useVideoCallModal } from './CallModal';
 import { UTopBar } from 'openland-web/components/unicorn/UTopBar';
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
 import MicIcon from 'openland-icons/s/ic-mic-24.svg';
 import ChevronIcon from 'openland-icons/s/ic-chevron-16.svg';
-import { OthersPopper } from 'openland-web/fragments/chat/messenger/message/content/OthersPopper';
 import { useJoinRoom } from 'openland-web/fragments/rooms/joinRoom';
 
-const getSubtitle = (users: UserSmall[]) => {
+const getSubtitle = (users: { name: string }[]) => {
     return users.length === 0 ? (
         ''
     ) : users.length === 1 ? (
@@ -22,10 +21,7 @@ const getSubtitle = (users: UserSmall[]) => {
         `${users[0].name}, ${users[1].name} and ${users[2].name}`
     ) : (
         <span>
-            {users[0].name}, {users[1].name} and{' '}
-            <OthersPopper users={users.slice(2)} noStyling={true}>
-                {users.length - 2} others
-            </OthersPopper>
+            {users[0].name}, {users[1].name} and{' '}{users.length - 2} others
         </span>
     );
 };
@@ -34,22 +30,23 @@ export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
     const messenger = React.useContext(MessengerContext);
     const calls = messenger.calls;
     const currentSession = calls.useCurrentSession();
+    const voiceChat = messenger.voiceChat.useVoiceChat();
     const client = useClient();
     const joinRoom = useJoinRoom();
     const { chat } = props;
 
     let sharedRoom = chat.__typename === 'SharedRoom' ? chat as RoomChat_room_SharedRoom : null;
 
-    let data = client.useConference(
+    let data = client.useConferenceMeta(
         { id: sharedRoom?.activeVoiceChat?.id || chat.id },
         { fetchPolicy: 'network-only', suspense: false },
     );
     const openVideoModal = useVideoCallModal({ chatId: chat.id });
-    const callDisabled = props.chat.__typename === 'PrivateRoom' && !!currentSession && currentSession.callType === 'voice-chat';
+    const callDisabled = props.chat.__typename === 'PrivateRoom' && !!currentSession && !!voiceChat;
     const isVoiceChat = data?.conference.parent?.__typename === 'VoiceChat';
 
     const joinCall = () => {
-        calls.joinCall(chat.id, 'call');
+        calls.joinCall(chat.id);
         openVideoModal();
     };
 

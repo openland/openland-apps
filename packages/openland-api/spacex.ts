@@ -79,6 +79,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryConferenceMedia(variables: Types.ConferenceMediaVariables, params?: QueryParameters): Promise<Types.ConferenceMedia> {
         return this.query('ConferenceMedia', variables, params);
     }
+    queryConferenceMeta(variables: Types.ConferenceMetaVariables, params?: QueryParameters): Promise<Types.ConferenceMeta> {
+        return this.query('ConferenceMeta', variables, params);
+    }
     queryCreatedStickerPacks(params?: QueryParameters): Promise<Types.CreatedStickerPacks> {
         return this.query('CreatedStickerPacks', undefined, params);
     }
@@ -391,8 +394,14 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryVoiceChatFull(variables: Types.VoiceChatFullVariables, params?: QueryParameters): Promise<Types.VoiceChatFull> {
         return this.query('VoiceChatFull', variables, params);
     }
+    queryVoiceChatHandRaised(variables: Types.VoiceChatHandRaisedVariables, params?: QueryParameters): Promise<Types.VoiceChatHandRaised> {
+        return this.query('VoiceChatHandRaised', variables, params);
+    }
     queryVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params?: QueryParameters): Promise<Types.VoiceChatListeners> {
         return this.query('VoiceChatListeners', variables, params);
+    }
+    queryVoiceChatPrefetch(variables: Types.VoiceChatPrefetchVariables, params?: QueryParameters): Promise<Types.VoiceChatPrefetch> {
+        return this.query('VoiceChatPrefetch', variables, params);
     }
     queryVoiceChatUser(variables: Types.VoiceChatUserVariables, params?: QueryParameters): Promise<Types.VoiceChatUser> {
         return this.query('VoiceChatUser', variables, params);
@@ -465,6 +474,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchConferenceMedia(variables: Types.ConferenceMediaVariables, params?: QueryParameters): Promise<Types.ConferenceMedia> {
         return this.refetch('ConferenceMedia', variables, params);
+    }
+    refetchConferenceMeta(variables: Types.ConferenceMetaVariables, params?: QueryParameters): Promise<Types.ConferenceMeta> {
+        return this.refetch('ConferenceMeta', variables, params);
     }
     refetchCreatedStickerPacks(params?: QueryParameters): Promise<Types.CreatedStickerPacks> {
         return this.refetch('CreatedStickerPacks', undefined, params);
@@ -778,8 +790,14 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchVoiceChatFull(variables: Types.VoiceChatFullVariables, params?: QueryParameters): Promise<Types.VoiceChatFull> {
         return this.refetch('VoiceChatFull', variables, params);
     }
+    refetchVoiceChatHandRaised(variables: Types.VoiceChatHandRaisedVariables, params?: QueryParameters): Promise<Types.VoiceChatHandRaised> {
+        return this.refetch('VoiceChatHandRaised', variables, params);
+    }
     refetchVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params?: QueryParameters): Promise<Types.VoiceChatListeners> {
         return this.refetch('VoiceChatListeners', variables, params);
+    }
+    refetchVoiceChatPrefetch(variables: Types.VoiceChatPrefetchVariables, params?: QueryParameters): Promise<Types.VoiceChatPrefetch> {
+        return this.refetch('VoiceChatPrefetch', variables, params);
     }
     refetchVoiceChatUser(variables: Types.VoiceChatUserVariables, params?: QueryParameters): Promise<Types.VoiceChatUser> {
         return this.refetch('VoiceChatUser', variables, params);
@@ -852,6 +870,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateConferenceMedia(variables: Types.ConferenceMediaVariables, updater: (data: Types.ConferenceMedia) => Types.ConferenceMedia | null): Promise<boolean> {
         return this.updateQuery(updater, 'ConferenceMedia', variables);
+    }
+    updateConferenceMeta(variables: Types.ConferenceMetaVariables, updater: (data: Types.ConferenceMeta) => Types.ConferenceMeta | null): Promise<boolean> {
+        return this.updateQuery(updater, 'ConferenceMeta', variables);
     }
     updateCreatedStickerPacks(updater: (data: Types.CreatedStickerPacks) => Types.CreatedStickerPacks | null): Promise<boolean> {
         return this.updateQuery(updater, 'CreatedStickerPacks', undefined);
@@ -1165,8 +1186,14 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateVoiceChatFull(variables: Types.VoiceChatFullVariables, updater: (data: Types.VoiceChatFull) => Types.VoiceChatFull | null): Promise<boolean> {
         return this.updateQuery(updater, 'VoiceChatFull', variables);
     }
+    updateVoiceChatHandRaised(variables: Types.VoiceChatHandRaisedVariables, updater: (data: Types.VoiceChatHandRaised) => Types.VoiceChatHandRaised | null): Promise<boolean> {
+        return this.updateQuery(updater, 'VoiceChatHandRaised', variables);
+    }
     updateVoiceChatListeners(variables: Types.VoiceChatListenersVariables, updater: (data: Types.VoiceChatListeners) => Types.VoiceChatListeners | null): Promise<boolean> {
         return this.updateQuery(updater, 'VoiceChatListeners', variables);
+    }
+    updateVoiceChatPrefetch(variables: Types.VoiceChatPrefetchVariables, updater: (data: Types.VoiceChatPrefetch) => Types.VoiceChatPrefetch | null): Promise<boolean> {
+        return this.updateQuery(updater, 'VoiceChatPrefetch', variables);
     }
     updateVoiceChatUser(variables: Types.VoiceChatUserVariables, updater: (data: Types.VoiceChatUser) => Types.VoiceChatUser | null): Promise<boolean> {
         return this.updateQuery(updater, 'VoiceChatUser', variables);
@@ -1285,6 +1312,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useConferenceMedia(variables: Types.ConferenceMediaVariables, params?: SpaceQueryWatchParameters): Types.ConferenceMedia;
     useConferenceMedia(variables: Types.ConferenceMediaVariables, params?: SpaceQueryWatchParameters): Types.ConferenceMedia | null {
         return this.useQuery('ConferenceMedia', variables, params);
+    }
+    useConferenceMeta(variables: Types.ConferenceMetaVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ConferenceMeta | null;
+    useConferenceMeta(variables: Types.ConferenceMetaVariables, params?: SpaceQueryWatchParameters): Types.ConferenceMeta;
+    useConferenceMeta(variables: Types.ConferenceMetaVariables, params?: SpaceQueryWatchParameters): Types.ConferenceMeta | null {
+        return this.useQuery('ConferenceMeta', variables, params);
     }
     useCreatedStickerPacks(params: SpaceQueryWatchParameters & { suspense: false }): Types.CreatedStickerPacks | null;
     useCreatedStickerPacks(params?: SpaceQueryWatchParameters): Types.CreatedStickerPacks;
@@ -1806,10 +1838,20 @@ export class OpenlandClient extends BaseSpaceXClient {
     useVoiceChatFull(variables: Types.VoiceChatFullVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatFull | null {
         return this.useQuery('VoiceChatFull', variables, params);
     }
+    useVoiceChatHandRaised(variables: Types.VoiceChatHandRaisedVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.VoiceChatHandRaised | null;
+    useVoiceChatHandRaised(variables: Types.VoiceChatHandRaisedVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatHandRaised;
+    useVoiceChatHandRaised(variables: Types.VoiceChatHandRaisedVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatHandRaised | null {
+        return this.useQuery('VoiceChatHandRaised', variables, params);
+    }
     useVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.VoiceChatListeners | null;
     useVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatListeners;
     useVoiceChatListeners(variables: Types.VoiceChatListenersVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatListeners | null {
         return this.useQuery('VoiceChatListeners', variables, params);
+    }
+    useVoiceChatPrefetch(variables: Types.VoiceChatPrefetchVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.VoiceChatPrefetch | null;
+    useVoiceChatPrefetch(variables: Types.VoiceChatPrefetchVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatPrefetch;
+    useVoiceChatPrefetch(variables: Types.VoiceChatPrefetchVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatPrefetch | null {
+        return this.useQuery('VoiceChatPrefetch', variables, params);
     }
     useVoiceChatUser(variables: Types.VoiceChatUserVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.VoiceChatUser | null;
     useVoiceChatUser(variables: Types.VoiceChatUserVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatUser;

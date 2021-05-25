@@ -1297,6 +1297,7 @@ type MediaStream {
   """ICE Candidates"""
   ice: [String!]!
   iceTransportPolicy: IceTransportPolicy!
+  needCandidates: Boolean!
 
   """Tracks"""
   receivers: [MediaReceiver!]!
@@ -3812,6 +3813,7 @@ type VoiceChat {
   adminsCount: Int!
   listenersCount: Int!
   speakersCount: Int!
+  handRaisedCount: Int!
   active: Boolean!
   speakers: [VoiceChatParticipant!]!
   listeners: [VoiceChatParticipant!]!

@@ -586,9 +586,9 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                 >
                     {pages}
                     {header}
-                    <ConnectionStatusComponent k={this.headerKey} />
+                    <ConnectionStatusComponent k={this.headerKey} route={this.state.routes.find(r => r.key === this.state.current)} />
                     <SRouterContext.Provider value={this.state.routes[this.state.routes.length - 1].router}>
-                        <RoomMinimized/>
+                        <RoomMinimized />
                     </SRouterContext.Provider>
                 </ASSafeAreaProvider>
             </View>

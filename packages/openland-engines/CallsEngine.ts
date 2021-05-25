@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessengerEngine } from './MessengerEngine';
 import { OpenlandClient } from 'openland-api/spacex';
-import { CallType, MediaSessionManager } from './media/MediaSessionManager';
+import { MediaSessionManager } from './media/MediaSessionManager';
 // import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
 
 // export type CallStatus = 'initial' | 'connecting' | 'connected' | 'end' | 'waiting';
@@ -33,7 +33,7 @@ export class CallsEngine {
         return this._mediaSession;
     }
 
-    joinCall = (conversationId: string, callType: CallType, audioEnabled: boolean = callType === 'call') => {
+    joinCall = (conversationId: string, audioEnabled?: boolean) => {
         if (this._mediaSession) {
             if (this._mediaSession.conversationId === conversationId) {
                 return;
@@ -43,7 +43,7 @@ export class CallsEngine {
             }
         }
 
-        let manager = new MediaSessionManager(this.messenger, conversationId, callType, audioEnabled);
+        let manager = new MediaSessionManager(this.messenger, conversationId, audioEnabled);
         manager.onDestoy = () => {
             if (this._mediaSession === manager) {
                 this._mediaSession = null;

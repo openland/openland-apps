@@ -91,6 +91,7 @@ export interface ZButtonProps extends ViewStyle {
     style?: ZButtonStyle;
     enabled?: boolean;
     loading?: boolean;
+    textColor?: string;
     onPressIn?: () => void;
     onPressOut?: () => void;
 }
@@ -158,7 +159,7 @@ const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) 
         pay: theme.foregroundContrast,
         positive: theme.foregroundContrast,
     };
-    const textColor = textColors[style];
+    const textColor = props.textColor || textColors[style];
 
     const underlayColors: StyleBasedMap = {
         primary: theme.accentPrimaryActive,
@@ -174,7 +175,7 @@ const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) 
 
     let staticViewColor = inverted ? backgroundColor : underlayColor;
     let staticViewOpacity = 1;
-    let dynamicViewColor = inverted ? underlayColor : backgroundColor;
+    let dynamicViewColor = props.backgroundColor || (inverted ? underlayColor : backgroundColor);
     let dynamicViewOpacity = inverted ? 0 : 1;
 
     if (props.enabled === false) {
