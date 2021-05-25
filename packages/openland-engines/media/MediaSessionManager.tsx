@@ -63,7 +63,7 @@ export class MediaSessionManager {
     private conferenceId!: string;
     private peerId!: string;
     private kickDetectorSubscription: (() => void) | null = null;
-    private ownPeerDetected = false;
+    // private ownPeerDetected = false;
     private destroyed = false;
 
     constructor(messenger: MessengerEngine, conversationId: string, audioEnabled: boolean = true) {
