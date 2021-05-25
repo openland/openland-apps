@@ -402,7 +402,7 @@ export class MediaSessionManager {
                     id: conferenceId,
                     input: {
                         capabilities,
-                        media: { supportsVideo: true, supportsAudio: true, wantSendVideo: false, wantSendAudio: true, wantSendScreencast: false }
+                        media: { supportsVideo: true, supportsAudio: true, wantSendVideo: false, wantSendAudio: this.audioEnabled, wantSendScreencast: false }
                     }
                 })).conferenceJoin;
             }))!;
@@ -446,8 +446,6 @@ export class MediaSessionManager {
 
             // Start Media
             await this.startMedia();
-
-            this.setAudioEnabled(this.audioEnabled);
 
             return;
         })();
