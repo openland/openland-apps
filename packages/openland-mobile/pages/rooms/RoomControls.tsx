@@ -386,7 +386,7 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
 
     const buttons = getButtons(props);
     return (
-        <View onLayout={onLayout}>
+        <View onLayout={onLayout} style={{ paddingTop: 16 }}>
             {/* <RoomDonationBar /> */}
             <View
                 style={{

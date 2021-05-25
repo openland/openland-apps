@@ -62,8 +62,8 @@ export class MediaSessionManager {
     // Lifecycle
     private conferenceId!: string;
     private peerId!: string;
-    private kickDetectorSubscription: (() => void) | null = null;
-    private ownPeerDetected = false;
+    private conferenceSubscription: (() => void) | null = null;
+    // private ownPeerDetected = false;
     private destroyed = false;
 
     constructor(messenger: MessengerEngine, conversationId: string, audioEnabled: boolean = true) {
@@ -201,9 +201,9 @@ export class MediaSessionManager {
         }
 
         // Kick detector
-        if (this.kickDetectorSubscription) {
-            this.kickDetectorSubscription();
-            this.kickDetectorSubscription = null;
+        if (this.conferenceSubscription) {
+            this.conferenceSubscription();
+            this.conferenceSubscription = null;
         }
 
         // Notify about leave
@@ -225,7 +225,7 @@ export class MediaSessionManager {
 
         // Subscribe for media streams
         this.connectionsSubscription = reliableWatcher<ConferenceMediaWatch>((handler) => this.client.subscribeConferenceMediaWatch({ peerId: this.peerId, id: this.conferenceId }, handler), (src) => {
-            console.log('[WEBRTC]: Update');
+            // console.log('[WEBRTC]: Update');
             let streams = src.media.streams;
             this.connectionConfigs = streams;
             this.localMediaConfig = src.media.localMedia;
@@ -240,12 +240,12 @@ export class MediaSessionManager {
         if (this.destroyed) {
             return;
         }
-        console.log('[WEBRTC]: Apply');
+        // console.log('[WEBRTC]: Apply');
 
         // Detect deletions
         for (let s of this.connections.keys()) {
             if (!this.connectionConfigs.find((v) => v.id === s)) {
-                console.log('[WEBRTC]: ' + s + ': Destroy stream');
+                // console.log('[WEBRTC]: ' + s + ': Destroy stream');
                 let stream = this.connections.get(s);
                 this.connections.delete(s);
                 if (stream) {
@@ -258,10 +258,10 @@ export class MediaSessionManager {
         for (let s of this.connectionConfigs) {
             let ms = this.connections.get(s.id);
             if (ms) {
-                console.log('[WEBRTC]: ' + s.id + ': Update stream');
+                // console.log('[WEBRTC]: ' + s.id + ': Update stream');
                 ms.dispatch(s);
             } else {
-                console.log('[WEBRTC]: ' + s.id + ': Add Stream');
+                // console.log('[WEBRTC]: ' + s.id + ': Add Stream');
                 ms = new MediaConnectionManager(s.id, this.peerId, s, this);
                 ms.setAudioTrack(this.audioTrack);
                 ms.setVideoTrack(this.videoTrack);
@@ -402,7 +402,7 @@ export class MediaSessionManager {
                     id: conferenceId,
                     input: {
                         capabilities,
-                        media: { supportsVideo: true, supportsAudio: true, wantSendVideo: false, wantSendAudio: true, wantSendScreencast: false }
+                        media: { supportsVideo: true, supportsAudio: true, wantSendVideo: false, wantSendAudio: this.audioEnabled, wantSendScreencast: false }
                     }
                 })).conferenceJoin;
             }))!;
@@ -430,15 +430,15 @@ export class MediaSessionManager {
             // this.onStatusChange(this.isPrivate ? 'waiting' : 'connected', !this.isPrivate ? joinConference.conference.startTime : undefined);
 
             // Start kick detection
-            this.kickDetectorSubscription = reliableWatcher<ConferenceWatch>((handler) => this.client.subscribeConferenceWatch({ id: this.conferenceId }, handler), (src) => {
-                let ownPeerDetected = !!(src.alphaConferenceWatch.peers).find(p => p.id === this.peerId);
-                if (this.ownPeerDetected && !ownPeerDetected) {
-                    this.destroy();
-                    if (this.onDestoy) {
-                        this.onDestoy();
-                    }
-                }
-                this.ownPeerDetected = ownPeerDetected;
+            this.conferenceSubscription = reliableWatcher<ConferenceWatch>((handler) => this.client.subscribeConferenceWatch({ id: this.conferenceId }, handler), (src) => {
+                //     let ownPeerDetected = !!(src.alphaConferenceWatch.peers).find(p => p.id === this.peerId);
+                //     if (this.ownPeerDetected && !ownPeerDetected) {
+                //         this.destroy();
+                //         if (this.onDestoy) {
+                //             this.onDestoy();
+                //         }
+                //     }
+                //     this.ownPeerDetected = ownPeerDetected;
             });
 
             // Start keep alive
@@ -446,8 +446,6 @@ export class MediaSessionManager {
 
             // Start Media
             await this.startMedia();
-
-            this.setAudioEnabled(this.audioEnabled);
 
             return;
         })();
@@ -460,7 +458,7 @@ export class MediaSessionManager {
             // this will be executed once after 10 seconds
             // even when app is the the background
             if (!this.destroyed) {
-                console.log('[WEBRTC]: Keep Alive sent');
+                // console.log('[WEBRTC]: Keep Alive sent');
                 this.client.mutateConferenceKeepAlive({
                     id: confId,
                     peerId,

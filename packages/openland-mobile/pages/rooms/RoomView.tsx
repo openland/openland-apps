@@ -1286,7 +1286,7 @@ export const RoomViewPage = withApp(
 
 export const showRoomView = (roomId: string, router: SRouter, onHide?: () => void) => {
     if (isPad) {
-        router.push('RoomViewPage', { roomId });
+        router.push('RoomViewPage', { roomId, hideConnectionStatus: true });
     } else {
         showBottomSheet({
             view: (ctx) => (

@@ -18,7 +18,7 @@ import { SDevice } from 'react-native-s/SDevice';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SShareButton } from 'react-native-s/SShareButton';
 import { SStatusBar } from 'react-native-s/SStatusBar';
-import { isAudio, isPlayableMedia, isVideo } from 'openland-mobile/utils/mediaExtension';
+import { isAudio, isPlayableMedia, isVideo } from 'openland-y-utils/mediaExtension';
 
 export interface ZFileModalConfig {
     uuid: string;

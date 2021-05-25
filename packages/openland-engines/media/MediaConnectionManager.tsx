@@ -140,7 +140,6 @@ export class MediaConnectionManager {
         }
         this.audioTrack = track;
         if (this.audioTransceiver) {
-            console.log(track);
             this.audioTransceiver.sender.replaceTrack(track);
         }
     }
@@ -218,14 +217,10 @@ export class MediaConnectionManager {
                 await this.configureSenders(config);
 
                 // Create Offer
-                console.log('[WEBRTC]: Creating offer');
+                console.log('[WEBRTC]: ' + this.id + ': Creating offer...');
                 let offer = await this.peerConnection.createOffer();
+                console.log('[WEBRTC]: ' + this.id + ': Offer');
                 console.log(offer.sdp);
-                await this.peerConnection.setLocalDescription(offer);
-                this.localDescriptionSet = true;
-                this.localOffer = offer;
-
-                // Log mids
                 if (this.audioTransceiver) {
                     console.log('[WEBRTC]: ' + this.id + ': Send Audio MID: ' + this.audioTransceiver.mid);
                 }
@@ -235,13 +230,16 @@ export class MediaConnectionManager {
                 if (this.screencastTransceiver) {
                     console.log('[WEBRTC]: ' + this.id + ': Send Screencast MID: ' + this.screencastTransceiver.mid);
                 }
-
                 for (let peerId of this.receivers.keys()) {
                     let refs = this.receivers.get(peerId)!;
                     for (let kind of refs.keys()) {
                         console.log('[WEBRTC]: ' + this.id + ': Receive ' + peerId + ':' + kind + ':' + refs.get(kind)!.mid);
                     }
                 }
+
+                await this.peerConnection.setLocalDescription(offer);
+                this.localDescriptionSet = true;
+                this.localOffer = offer;
             }
 
             if (!this.localOfferSent) {
@@ -326,8 +324,9 @@ export class MediaConnectionManager {
 
             // Apply remote description
             if (!this.remoteOffer) {
-                console.log('[WEBRTC]: ' + this.id + ': Got offer');
                 let offer = JSON.parse(config.sdp!);
+                console.log('[WEBRTC]: ' + this.id + ': Got offer');
+                console.log(offer.sdp);
                 await this.peerConnection.setRemoteDescription(offer);
                 this.remoteDescriptionSet = true;
                 this.remoteOffer = offer;
@@ -346,6 +345,7 @@ export class MediaConnectionManager {
             if (!this.localAnswer) {
                 console.log('[WEBRTC]: ' + this.id + ': Creating answer');
                 let answer = await this.peerConnection.createAnswer();
+                console.log('[WEBRTC]: ' + this.id + ': Answer');
                 console.log(answer.sdp);
                 await this.peerConnection.setLocalDescription(answer);
                 this.localDescriptionSet = true;
