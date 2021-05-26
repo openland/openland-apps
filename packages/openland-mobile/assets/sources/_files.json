@@ -8,6 +8,13 @@
             ]
         },
         {
+            "name": "ic-dollar",
+            "src": "ic-dollar-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-pro",
             "src": "ic-pro-24.svg",
             "sizes": [

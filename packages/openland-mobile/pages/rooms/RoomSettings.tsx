@@ -15,8 +15,9 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { showRaisedHands } from './RaisedHands';
 import { ReportCallErrorType } from 'openland-mobile/utils/voiceChatErrorNotifier';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
 
-const KeyboardHandlerContainer = React.memo((props: { children: JSX.Element | JSX.Element[] }) => {
+const KeyboardHandlerContainer = React.memo((props: { children: JSX.Element | (JSX.Element | null)[] }) => {
     const [keyboardHeight, setKeyboardHeight] = React.useState(0);
     const isIos = Platform.OS === 'ios';
 
@@ -197,6 +198,101 @@ export const showEditPinnedMessage = (props: EditPinnedMessageProps) => {
     });
 };
 
+interface MonetizationModalProps {
+    enabled: boolean;
+    text: string | undefined;
+    description: string | undefined;
+    goalAmount: number | undefined;
+}
+
+const MonetizationModal = React.memo((props: MonetizationModalProps & { hide: () => void }) => {
+    const shakerRef = React.useRef<{ shake: () => void }>(null);
+    // const client = useClient();
+    const form = useForm();
+    const [enabled, setEnabled] = React.useState(props.enabled);
+    const [goalEnabled, setGoalEnabled] = React.useState(!!props.goalAmount);
+    const textField = useField('donation.text', props.text || 'Donate', form, [
+        { checkIsValid: (value) => value.length <= 20, text: 'Up to 20 characters' }
+    ]);
+    const descriptionField = useField('donation.description', props.description || '', form, [
+        { checkIsValid: (value) => value.length <= 60, text: 'Up to 60 characters' }
+    ]);
+    const goalField = useField('donation.goal', props.goalAmount ? String(props.goalAmount) : '500', form, [
+        { checkIsValid: (value) => !!value && (parseInt(value, 10) > 0), text: 'The goal should be more than zero' }
+    ]);
+
+    const onCancel = () => {
+        props.hide();
+    };
+    const onConfirm = async () => {
+        let textValue = textField.value.trim();
+        if (enabled && textValue.length === 0) {
+            shakerRef.current?.shake();
+            return;
+        }
+
+        if (!textField.input.invalid || !descriptionField.input.invalid) {
+            return;
+        }
+
+        if (goalEnabled && goalField.input.invalid) {
+            return;
+        }
+        // await Promise.all([
+        //     client.mutateVoiceChatSetPinnedMessage({ id: props.id, message: messageValue }),
+        //     client.refetchVoiceChat({ id: props.id }),
+        // ]);
+        props.hide();
+    };
+
+    return (
+        <KeyboardHandlerContainer>
+            <ZListItem
+                text="Enable donations"
+                toggle={enabled}
+                onToggle={() => setEnabled(x => !x)}
+            />
+            {enabled ? (
+                <>
+                    <View style={{ marginTop: 16 }}>
+                        <ZShaker ref={shakerRef}>
+                            <ZInput placeholder="Action text" field={textField} />
+                        </ZShaker>
+                        <ZInput placeholder="Description" field={descriptionField} multiline={true} />
+                    </View>
+                    <View style={{ marginBottom: 16 }}>
+                        <ZListItem
+                            text="Goal"
+                            toggle={goalEnabled}
+                            onToggle={() => setGoalEnabled(x => !x)}
+                        />
+                    </View>
+                    {goalEnabled && (
+                        <ZInput placeholder="Goal, $" field={goalField} />
+                    )}
+                </>
+            ) : null}
+            <View style={{ flexDirection: 'row', flex: 1, marginHorizontal: 16 }}>
+                <View style={{ flex: 1, marginRight: 16 }}>
+                    <ZButton style="secondary" size="large" title="Cancel" onPress={onCancel} />
+                </View>
+                <View style={{ flex: 1 }}>
+                    <ZButton size="large" title="Save" action={onConfirm} />
+                </View>
+            </View>
+        </KeyboardHandlerContainer>
+    );
+});
+
+export const showMonetization = (props: MonetizationModalProps) => {
+    showBottomSheet({
+        title: 'Pinned message',
+        cancelable: true,
+        scrollViewProps: { keyboardShouldPersistTaps: 'handled' },
+        view: (ctx) => <MonetizationModal {...props} hide={ctx.hide} />,
+    });
+};
+
 const showReportProblem = (onSelect: (type: ReportCallErrorType) => void) => {
     const builder = new ActionSheetBuilder();
     builder.action('I can’t hear anyone', () => onSelect('report-self-speaker'));
@@ -245,6 +341,12 @@ export const showRoomSettings = (props: {
                 textColor={props.theme.foregroundInverted}
             />,
         );
+        // builder.action(
+        //     'Monetization',
+        //     () => showMonetization({ enabled: true, text: undefined, description: undefined, goalAmount: undefined }),
+        //     false,
+        //     require('assets/ic-dollar-24.png'),
+        // );
         builder.action(
             'Close room',
             () => getClient().mutateVoiceChatEnd({ id: props.roomId }),
