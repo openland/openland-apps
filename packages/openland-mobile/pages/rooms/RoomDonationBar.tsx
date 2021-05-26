@@ -1,25 +1,25 @@
 import * as React from 'react';
-import { TouchableOpacity, View, Image, Text, Animated } from 'react-native';
+import { TouchableOpacity, View, Image, Text, Animated, FlatList } from 'react-native';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { ZAvatar } from 'openland-mobile/components/ZAvatar';
+import { GoalBar } from './GoalBar';
 
-const DonateButton = React.memo(() => {
+const DonateButton = React.memo((props: { small: boolean, onPress?: () => void }) => {
     const theme = useTheme();
-    const [animation] = React.useState(new Animated.Value(1));
-    const showTextRef = React.useRef(true);
-    const onPress = () => {
-        let nextValue = showTextRef.current ? 0 : 1;
+    const [animation] = React.useState(new Animated.Value(props.small ? 0 : 1));
+    React.useEffect(() => {
+        let nextValue = props.small ? 0 : 1;
         Animated.timing(animation, {
             duration: 150,
             toValue: nextValue,
             useNativeDriver: false,
         }).start();
-        showTextRef.current = !showTextRef.current;
-    };
+    }, [props.small]);
     return (
         <TouchableOpacity
             activeOpacity={0.8}
-            onPress={onPress}
+            onPress={props.onPress}
         >
             <Animated.View
                 style={{
@@ -68,14 +68,95 @@ const DonateButton = React.memo(() => {
     );
 });
 
-export const RoomDonationBar = React.memo(() => {
+const useColorByAmount = (amount: number) => {
+    const theme = useTheme();
+    if (amount <= 4) {
+        return theme.tintCyan;
+    } else if (amount <= 9) {
+        return theme.tintBlue;
+    } else if (amount <= 24) {
+        return theme.tintPurple;
+    } else if (amount <= 49) {
+        return theme.tintRed;
+    } else {
+        return theme.tintOrange;
+    }
+};
 
+const DonationBadge = React.memo((props: { amount: number, photo: string | null, name: string, id: string }) => {
+    const theme = useTheme();
+    const bgColor = useColorByAmount(props.amount);
     return (
-        <View style={{ paddingTop: 12, paddingBottom: 16, flexDirection: 'row' }}>
-            <View style={{ paddingHorizontal: 16, flexGrow: 0 }}>
-                <DonateButton />
+        <View
+            style={{
+                paddingVertical: 4,
+                paddingLeft: 4,
+                paddingRight: 12,
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: bgColor,
+                borderRadius: 16,
+            }}
+        >
+            <ZAvatar size="x-small" id={props.id} title={props.name} photo={props.photo} />
+            <Text
+                style={{
+                    ...TextStyles.Label2,
+                    color: theme.foregroundContrast,
+                    marginLeft: 8,
+                }}
+            >
+                ${props.amount}
+            </Text>
+        </View>
+    );
+});
+
+export const RoomDonationBar = React.memo(() => {
+    const amounts = [
+        { amount: 1 },
+        { amount: 5 },
+        { amount: 25 },
+        { amount: 50 },
+        { amount: 1 },
+        { amount: 5 },
+        { amount: 25 },
+        { amount: 50 },
+        { amount: 1 },
+        { amount: 5 },
+        { amount: 25 },
+        { amount: 50 },
+        { amount: 1 },
+        { amount: 5 },
+        { amount: 25 },
+        { amount: 50 },
+        { amount: 1 },
+        { amount: 5 },
+        { amount: 25 },
+        { amount: 50 },
+    ];
+    const [small, setSmall] = React.useState(false);
+    return (
+        <View style={{ marginTop: -4, marginBottom: 16 }}>
+            <View style={{ flexDirection: 'row' }}>
+                <View style={{ paddingHorizontal: 16, flexGrow: 0 }}>
+                    <DonateButton small={small} onPress={() => setSmall(x => !x)} />
+                </View>
+
+                <FlatList
+                    data={amounts}
+                    horizontal={true}
+                    renderItem={({ item }) => (
+                        <View style={{ marginRight: 8 }}>
+                            <DonationBadge amount={item.amount} id="1" name="Alex" photo={null} />
+                        </View>
+                    )}
+                    style={{ paddingBottom: 16, flexGrow: 1 }}
+                />
             </View>
-            <View style={{ flexGrow: 1 }} />
+            <View style={{ paddingHorizontal: 16 }}>
+                <GoalBar currentAmount={220} totalAmount={500} />
+            </View>
         </View >
     );
 });
