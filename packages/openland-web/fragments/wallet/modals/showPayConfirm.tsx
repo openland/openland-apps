@@ -172,6 +172,9 @@ const CheckLock = React.memo((props: { ctx: XModalController; onContinue?: () =>
     builder.width(480);
     return (
         <XView>
+            <XView marginHorizontal={24} marginVertical={20} {...TextStyles.Title1}>
+                Update payment method
+            </XView>
             <AlertBlanketComponent builder={builder} controller={props.ctx} />
         </XView>
     );
@@ -201,7 +204,7 @@ export function showPayConfirm(props: PaymentProps) {
 }
 
 export function showCheckLock(props?: { onContinue?: () => void }) {
-    showModalBox({ title: 'Update payment method' }, (ctx) => {
+    showModalBox({}, (ctx) => {
         return <CheckLock ctx={ctx} {...props} />;
     });
 }
