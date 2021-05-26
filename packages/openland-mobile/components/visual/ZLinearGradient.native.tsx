@@ -1,8 +1,8 @@
 import * as React from 'react';
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient, { LinearGradientProps } from 'react-native-linear-gradient';
 import { ZFlexStyle } from './ZFlexStyle';
 
-export interface ZLinearGradientProps extends ZFlexStyle {
+export type ZLinearGradientProps = {
     fallbackColor: string;
     colors: string[];
     start: { x: number, y: number };
@@ -14,7 +14,7 @@ export interface ZLinearGradientProps extends ZFlexStyle {
     borderTopRightRadius?: number;
     width?: number;
     height?: number;
-}
+} & LinearGradientProps & ZFlexStyle;
 
 export class ZLinearGradient extends React.Component<ZLinearGradientProps> {
     render() {
