@@ -6,7 +6,7 @@ import {
     MessageSender,
 } from 'openland-api/spacex.types';
 import { useImageViewer, ImageViewerCb } from 'openland-x-utils/imageViewer';
-import { layoutMedia, uploadcareOptions } from 'openland-y-utils/MediaLayout';
+import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -128,6 +128,23 @@ const imgContainer = css`
     }
 `;
 
+const previewContainer = css`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    max-width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+    z-index: 1;
+`;
+
 const imgPreviewClass = css`
     position: absolute;
     top: 0;
@@ -136,7 +153,6 @@ const imgPreviewClass = css`
     bottom: 0;
     margin: auto;
     max-width: 100%;
-    z-index: 0;
     filter: blur(5px);
     background: transparent;
     transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -144,7 +160,6 @@ const imgPreviewClass = css`
 
 const imgAppearClass = css`
     opacity: 0;
-    transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
     position: absolute;
     top: 0;
     left: 0;
@@ -283,12 +298,16 @@ const ModalController = React.memo((props: ModalControllerProps) => {
 });
 
 type ViewerState = {
-    loaded: boolean,
-    cursor: string | undefined,
-    index: number | undefined,
+    loaded: boolean;
+    cursor: string | undefined;
+    index: number | undefined;
 } & ImageViewerCb;
 
-type ViewerAction = { type: 'back' } | { type: 'forward' } | { type: 'image-loaded' } | { type: 'state-changed', newState: Partial<ViewerState> };
+type ViewerAction =
+    | { type: 'back' }
+    | { type: 'forward' }
+    | { type: 'image-loaded' }
+    | { type: 'state-changed'; newState: Partial<ViewerState> };
 
 interface ModalProps {
     fileId: string;
@@ -329,7 +348,8 @@ const reducer = (state: ViewerState, action: ViewerAction) => {
         }
     }
     if (action.type === 'forward') {
-        const hasNextAttach = state.index !== undefined ? state.index < state.current.length - 1 : false;
+        const hasNextAttach =
+            state.index !== undefined ? state.index < state.current.length - 1 : false;
         if (hasNextAttach) {
             return {
                 ...state,
@@ -361,7 +381,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const isMobile = useIsMobile();
     const messenger = React.useContext(MessengerContext);
     const imgRef = React.useRef<HTMLImageElement>(null);
-    const loaderRef = React.useRef<HTMLDivElement>(null);
+    const prevRef = React.useRef<HTMLDivElement>(null);
 
     const [forwardToast, setForwardToast] = React.useState<{ title: string; show: boolean }>({
         title: 'Forwarded',
@@ -384,24 +404,28 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     });
     const { current, index, loaded, cursor } = state;
 
-    const currentItem = current.length && index !== undefined
-        ? current[index]
-        : ({
-            fileId: props.fileId,
-            imageWidth: props.imageWidth,
-            imageHeight: props.imageHeight,
-            filePreview: props.preview!,
-            date: props.date!,
-            senderName: (props.senderNameEmojify
-                ? props.senderNameEmojify
-                : props.sender
-                    ? emoji(props.sender.name)
-                    : '') as string
-        });
+    const currentItem =
+        current.length && index !== undefined
+            ? current[index]
+            : {
+                  fileId: props.fileId,
+                  imageWidth: props.imageWidth,
+                  imageHeight: props.imageHeight,
+                  filePreview: props.preview!,
+                  date: props.date!,
+                  senderName: (props.senderNameEmojify
+                      ? props.senderNameEmojify
+                      : props.sender
+                      ? emoji(props.sender.name)
+                      : '') as string,
+              };
 
     React.useEffect(() => {
         if (index === undefined && current.length > 0) {
-            dispatch({ type: 'state-changed', newState: { index: current.findIndex(x => x.fileId === props.fileId) } });
+            dispatch({
+                type: 'state-changed',
+                newState: { index: current.findIndex((x) => x.fileId === props.fileId) },
+            });
         }
     }, [current]);
 
@@ -413,21 +437,19 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     ]);
 
     const onLoad = React.useCallback(() => {
-        if (imgRef.current && loaderRef.current) {
+        if (imgRef.current && prevRef.current) {
             imgRef.current.style.opacity = '1';
             imgRef.current.style.visibility = 'visible';
-            loaderRef.current.style.opacity = '0';
-            loaderRef.current.style.display = 'none';
+            prevRef.current.style.opacity = '0';
             dispatch({ type: 'image-loaded' });
         }
     }, []);
 
     React.useLayoutEffect(() => {
-        if (imgRef.current && loaderRef.current && !loaded) {
+        if (imgRef.current && prevRef.current && !loaded) {
             imgRef.current.style.opacity = '0';
             imgRef.current.style.visibility = 'hidden';
-            loaderRef.current.style.opacity = '1';
-            loaderRef.current.style.display = 'flex';
+            prevRef.current.style.opacity = '1';
         }
     }, [state, loaded]);
 
@@ -466,18 +488,19 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const layoutModal = layoutMedia(
         currentItem.imageWidth,
         currentItem.imageHeight,
-        window.innerWidth,
-        window.innerHeight,
+        680,
+        360,
         32,
         32,
     );
 
-    const modalOps = uploadcareOptions(layoutModal);
-
-    const src = url + modalOps[0];
-    const srcSet = url + modalOps[1];
     const width = layoutModal.width;
     const height = layoutModal.height;
+
+    const ops = `scale_crop/${width}x${height}/`;
+    const opsRetina = `scale_crop/${width * 2}x${height * 2}/center/ 2x`;
+    const src = url + ops;
+    const srcSet = url + opsRetina;
 
     const preview = currentItem.filePreview;
 
@@ -515,7 +538,9 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                         <ModalController
                             cId={props.chatId}
                             cursor={cursor || ''}
-                            setViewerState={data => dispatch({ type: 'state-changed', newState: data })}
+                            setViewerState={(data) =>
+                                dispatch({ type: 'state-changed', newState: data })
+                            }
                             hide={props.hide}
                             onPrevClick={onPrevClick}
                             onNextClick={onNextClick}
@@ -554,41 +579,38 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     </div>
                 </div>
             </div>
-            <div className={modalImgContent} style={{ maxWidth: width }}>
+            <div className={modalImgContent} style={{ maxWidth: width * 2 }}>
                 <div
                     className={imgSpacer}
                     style={
                         {
-                            width: width,
+                            width: width * 2,
                             maxWidth: '100%',
                             margin: 'auto',
-                            '--ratio': (height / width) * 100 + '%',
+                            '--ratio': ((height * 2) / (width * 2)) * 100 + '%',
                         } as React.CSSProperties
                     }
                 />
-                {preview && (
-                    <img
-                        className={imgPreviewClass}
-                        src={preview}
-                        width={width}
-                        height={height}
-                        style={{ cursor: 'default' }}
-                    />
-                )}
-                <XLoader
-                    loading={true}
-                    transparentBackground={true}
-                    ref={loaderRef}
-                    contrast={true}
-                />
+                <div className={previewContainer} ref={prevRef}>
+                    {preview && (
+                        <img
+                            className={imgPreviewClass}
+                            src={preview}
+                            width={width * 2}
+                            height={height * 2}
+                            style={{ cursor: 'default' }}
+                        />
+                    )}
+                    <XLoader loading={true} transparentBackground={true} contrast={true} />
+                </div>
                 <ImgWithRetry
                     ref={imgRef}
                     onLoad={onLoad}
                     src={src}
                     srcSet={srcSet}
                     className={imgAppearClass}
-                    width={width}
-                    height={height}
+                    width={width * 2}
+                    height={height * 2}
                     style={{ objectFit: 'contain', cursor: 'default' }}
                 />
             </div>
@@ -625,89 +647,96 @@ export const showImageModal = (props: ModalProps) => {
     );
 };
 
-const GifContent = React.memo(
-    (props: { file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile }) => {
-        const gifRef = React.useRef<HTMLVideoElement>(null);
-        const [isLoad, setIsLoad] = React.useState(false);
-        const onLoad = React.useCallback(() => {
-            if (gifRef.current) {
-                gifRef.current.style.opacity = '1';
-                setIsLoad(true);
-            }
-        }, []);
+interface GifContentProps {
+    file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
+}
 
-        const layout = layoutMedia(
-            props.file.fileMetadata.imageWidth || 0,
-            props.file.fileMetadata.imageHeight || 0,
-            680,
-            360,
-            32,
-            32,
-        );
+const GifContent = React.memo((props: GifContentProps) => {
+    const gifRef = React.useRef<HTMLVideoElement>(null);
+    const prevRef = React.useRef<HTMLDivElement>(null);
+    const [isLoad, setIsLoad] = React.useState(false);
 
-        const layoutWidth = layout.width;
-        const layoutHeight = layout.height;
+    const onLoad = React.useCallback(() => {
+        let timer: any;
+        if (prevRef.current && gifRef.current) {
+            prevRef.current.style.opacity = '0';
+            gifRef.current.style.opacity = '1';
+        }
+        timer = setTimeout(() => {
+            setIsLoad(true);
+        }, 200);
+        return () => clearTimeout(timer);
+    }, [isLoad, prevRef]);
 
-        const imgPositionLeft = layoutWidth < 72 ? `calc(50% - ${layoutWidth / 2}px)` : '0';
-        const imgPositionTop = layoutHeight < 72 ? `calc(50% - ${layoutHeight / 2}px)` : '0';
+    const layout = layoutMedia(
+        props.file.fileMetadata.imageWidth || 0,
+        props.file.fileMetadata.imageHeight || 0,
+        680,
+        360,
+        32,
+        32,
+    );
 
-        const webm =
-            'https://ucarecdn.com/' + props.file.fileId + '/gif2video/-/format/webm/image.gif';
-        const mp4 =
-            'https://ucarecdn.com/' + props.file.fileId + '/gif2video/-/format/mp4/image.gif';
-        const [srcWebm, setSrcWebm] = React.useState<string | undefined>(webm);
-        const [srcMp4, setSrcMp4] = React.useState<string | undefined>(mp4);
+    const layoutWidth = layout.width;
+    const layoutHeight = layout.height;
 
-        const onContinue = React.useCallback(() => {
-            setSrcWebm(webm);
-            setSrcMp4(mp4);
-        }, [webm, mp4]);
-        const onStop = React.useCallback(() => {
-            setSrcWebm(undefined);
-            setSrcMp4(undefined);
-        }, [webm, mp4]);
+    const imgPositionLeft = layoutWidth < 72 ? `calc(50% - ${layoutWidth / 2}px)` : '0';
+    const imgPositionTop = layoutHeight < 72 ? `calc(50% - ${layoutHeight / 2}px)` : '0';
 
-        return (
-            <div className={imgContainer} style={{ width: layoutWidth }}>
-                <div
-                    className={imgSpacer}
-                    style={
-                        {
-                            width: layoutWidth,
-                            '--ratio': (layoutHeight / layoutWidth) * 100 + '%',
-                        } as React.CSSProperties
-                    }
-                />
-                {!isLoad && (
-                    <>
-                        <img
-                            className={imgPreviewClass}
-                            width={layoutWidth}
-                            height={layoutHeight}
-                            src={props.file.filePreview || undefined}
-                            style={{ top: imgPositionTop, left: imgPositionLeft }}
-                        />
-                        <MediaLoader onContinue={onContinue} onStop={onStop} />
-                    </>
-                )}
-                <video
-                    key={`${srcWebm}${srcMp4}`}
-                    ref={gifRef}
-                    onLoadedData={onLoad}
-                    width={layoutWidth}
-                    height={layoutHeight}
-                    autoPlay={true}
-                    loop={true}
-                    muted={true}
-                    className={imgAppearClass}
-                >
-                    <source src={srcWebm} type="video/webm" />
-                    <source src={srcMp4} type="video/mp4" />
-                </video>
-            </div>
-        );
-    },
-);
+    const webm = 'https://ucarecdn.com/' + props.file.fileId + '/gif2video/-/format/webm/image.gif';
+    const mp4 = 'https://ucarecdn.com/' + props.file.fileId + '/gif2video/-/format/mp4/image.gif';
+    const [srcWebm, setSrcWebm] = React.useState<string | undefined>(webm);
+    const [srcMp4, setSrcMp4] = React.useState<string | undefined>(mp4);
+
+    const onContinue = React.useCallback(() => {
+        setSrcWebm(webm);
+        setSrcMp4(mp4);
+    }, [webm, mp4]);
+    const onStop = React.useCallback(() => {
+        setSrcWebm(undefined);
+        setSrcMp4(undefined);
+    }, [webm, mp4]);
+
+    return (
+        <div className={imgContainer} style={{ width: layoutWidth }}>
+            <div
+                className={imgSpacer}
+                style={
+                    {
+                        width: layoutWidth,
+                        '--ratio': (layoutHeight / layoutWidth) * 100 + '%',
+                    } as React.CSSProperties
+                }
+            />
+            {!isLoad && (
+                <div className={previewContainer} ref={prevRef}>
+                    <img
+                        className={imgPreviewClass}
+                        width={layoutWidth}
+                        height={layoutHeight}
+                        src={props.file.filePreview || undefined}
+                        style={{ top: imgPositionTop, left: imgPositionLeft }}
+                    />
+                    <MediaLoader onContinue={onContinue} onStop={onStop} />
+                </div>
+            )}
+            <video
+                ref={gifRef}
+                key={`${srcWebm}${srcMp4}`}
+                onLoadedData={onLoad}
+                width={layoutWidth}
+                height={layoutHeight}
+                autoPlay={true}
+                loop={true}
+                muted={true}
+                className={imgAppearClass}
+            >
+                <source src={srcWebm} type="video/webm" />
+                <source src={srcMp4} type="video/mp4" />
+            </video>
+        </div>
+    );
+});
 
 interface ImageContentProps {
     file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
@@ -725,9 +754,10 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
         return <GifContent file={props.file} />;
     }
 
-    const [isLoad, setIsLoad] = React.useState(false);
+    const [isLoad, setIsLoad] = React.useState(!!props.progress || true);
 
     const imgRef = React.useRef<HTMLImageElement>(null);
+    const prevRef = React.useRef<HTMLDivElement>(null);
 
     const layout = layoutMedia(
         props.file.fileMetadata.imageWidth || 0,
@@ -754,6 +784,13 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
     const [previewSrc] = React.useState(props.file.filePreview);
 
     React.useEffect(() => {
+        if (imgRef.current && imgRef.current.complete) {
+            setIsLoad(false);
+            imgRef.current.style.opacity = '1';
+        }
+    }, [isLoad, imgRef]);
+
+    React.useEffect(() => {
         if (!props.isPending) {
             setSrc(url + ops);
             setSrcSet(url + opsRetina);
@@ -770,18 +807,16 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
     }, [props.file.fileId]);
 
     const onLoad = React.useCallback(() => {
-        if (imgRef.current) {
+        let timer: any;
+        if (prevRef.current && imgRef.current) {
+            prevRef.current.style.opacity = '0';
             imgRef.current.style.opacity = '1';
-            setIsLoad(true);
+            timer = setTimeout(() => {
+                setIsLoad(false);
+            }, 200);
         }
-    }, []);
-
-    const isUpload = !!props.progress && props.progress >= 0 && props.progress < 1;
-
-    let uploadProgress = 90;
-    if (isUpload) {
-        uploadProgress = Math.round(props.progress! * 100);
-    }
+        return () => clearTimeout(timer);
+    }, [isLoad, prevRef, imgRef]);
 
     return (
         <div
@@ -789,7 +824,7 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
             style={{ width: layoutWidth }}
             onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
-                if (isUpload) {
+                if (isLoad) {
                     return;
                 }
                 showImageModal({
@@ -814,25 +849,21 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
                     } as React.CSSProperties
                 }
             />
-            {(!isLoad || isUpload) && (
-                <>
+            {isLoad && (
+                <div className={previewContainer} ref={prevRef}>
                     <ImgWithRetry
                         className={imgPreviewClass}
                         width={layoutWidth}
                         height={layoutHeight}
                         src={previewSrc || undefined}
                     />
-                    <MediaLoader
-                        onContinue={onContinue}
-                        onStop={onStop}
-                        progress={uploadProgress}
-                    />
-                </>
+                    <MediaLoader onContinue={onContinue} onStop={onStop} />
+                </div>
             )}
             <ImgWithRetry
                 ref={imgRef}
                 key={src}
-                onLoad={onLoad}
+                onLoad={!!props.progress ? undefined : onLoad}
                 className={imgAppearClass}
                 width={layoutWidth}
                 height={layoutHeight}
