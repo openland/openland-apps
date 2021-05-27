@@ -144,13 +144,12 @@ async function handleUser(userNo: number, config: { voiceChatHolderShortName: st
 }
 
 async function main() {
-    let fromUserNo = await promtNumber('From user number:\n');
+    const fromUserNo = await promtNumber('From user number:\n');
     const toUserNo = await promtNumber('To user number:\n');
     const username = await promt('User shortname with chat\n');
 
-    for (let i = 0; i < toUserNo; i++) {
-        handleUser(fromUserNo, { voiceChatHolderShortName: username });
-        fromUserNo++;
+    for (let i = fromUserNo; i < toUserNo; i++) {
+        handleUser(i, { voiceChatHolderShortName: username });
     }
 }
 
