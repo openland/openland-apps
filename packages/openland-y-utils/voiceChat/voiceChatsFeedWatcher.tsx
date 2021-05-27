@@ -3,15 +3,10 @@ import { useClient } from 'openland-api/useClient';
 import { ActiveVoiceChatsEvents, VoiceChatShort } from 'openland-api/spacex.types';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
-const VoiceChatsFeedContext = React.createContext<{
-    chats: VoiceChatShort[];
-    modalOpen: boolean;
-    setModalOpen: (flag: boolean) => void;
-}>({ chats: [], modalOpen: false, setModalOpen: () => {/**/ } });
+const VoiceChatsFeedContext = React.createContext<VoiceChatShort[]>([]);
 
 export const VoiceChatsFeedProvider = React.memo((props: { children: any }) => {
     const [voiceChatsFeed, setVoiceChatsFeed] = React.useState<VoiceChatShort[]>([]);
-    const [modalOpen, setModalOpen] = React.useState(false);
     const client = useClient();
     const subscribeRef = React.useRef<any>(null);
 
@@ -59,7 +54,7 @@ export const VoiceChatsFeedProvider = React.memo((props: { children: any }) => {
 
     return (
         <VoiceChatsFeedContext.Provider
-            value={{ chats: voiceChatsFeed, modalOpen, setModalOpen }}
+            value={voiceChatsFeed}
         >
             {props.children}
         </VoiceChatsFeedContext.Provider>

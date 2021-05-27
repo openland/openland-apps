@@ -19,6 +19,7 @@ import { showRoomSettings } from './RoomSettings';
 import { ReportCallErrorType } from 'openland-mobile/utils/voiceChatErrorNotifier';
 import { showRoomInvite } from './showRoomInvite';
 // import { RoomDonationBar } from './RoomDonationBar';
+import { SRouter } from 'react-native-s/SRouter';
 
 const ControlItem = React.memo(
     (props: {
@@ -317,6 +318,7 @@ interface RoomControlsProps {
     onMutePress: () => void;
     reportUserError: (type: ReportCallErrorType) => void;
     raisedHandUsers: number;
+    router: SRouter;
 }
 
 const getButtons = (props: RoomControlsProps) => {
@@ -387,7 +389,7 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
     const buttons = getButtons(props);
     return (
         <View onLayout={onLayout} style={{ paddingTop: 16 }}>
-            {/* <RoomDonationBar /> */}
+            {/* <RoomDonationBar router={props.router} /> */}
             <View
                 style={{
                     paddingHorizontal: 16,

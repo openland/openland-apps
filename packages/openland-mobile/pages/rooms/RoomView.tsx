@@ -1254,6 +1254,7 @@ const RoomViewInner = React.memo((props: RoomViewInnerProps) => {
                         onMutePress={handleMute}
                         reportUserError={reportUserError}
                         raisedHandUsers={voiceChatData.handRaisedCount}
+                        router={props.router}
                     />
                 </>
             )}

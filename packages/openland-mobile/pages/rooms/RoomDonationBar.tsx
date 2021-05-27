@@ -4,6 +4,8 @@ import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { GoalBar } from './GoalBar';
+import { showRoomDonate } from './RoomDonateModal';
+import { SRouter } from 'react-native-s/SRouter';
 
 const DonateButton = React.memo((props: { small: boolean, onPress?: () => void }) => {
     const theme = useTheme();
@@ -112,7 +114,8 @@ const DonationBadge = React.memo((props: { amount: number, photo: string | null,
     );
 });
 
-export const RoomDonationBar = React.memo(() => {
+export const RoomDonationBar = React.memo((props: { router: SRouter }) => {
+    const { router } = props;
     const amounts = [
         { amount: 1 },
         { amount: 5 },
@@ -135,12 +138,11 @@ export const RoomDonationBar = React.memo(() => {
         { amount: 25 },
         { amount: 50 },
     ];
-    const [small, setSmall] = React.useState(false);
     return (
         <View style={{ marginTop: -4, marginBottom: 16 }}>
             <View style={{ flexDirection: 'row' }}>
                 <View style={{ paddingHorizontal: 16, flexGrow: 0 }}>
-                    <DonateButton small={small} onPress={() => setSmall(x => !x)} />
+                    <DonateButton small={false} onPress={() => showRoomDonate({ description: 'For new Opneland logo', currentAmount: 100, totalAmount: 500, router })} />
                 </View>
 
                 <FlatList
