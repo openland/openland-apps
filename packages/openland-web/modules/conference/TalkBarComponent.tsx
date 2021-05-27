@@ -26,7 +26,7 @@ const getSubtitle = (users: { name: string }[]) => {
     );
 };
 
-export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
+export const TalkBarComponent = (props: { padded?: boolean; chat: RoomChat_room }) => {
     const messenger = React.useContext(MessengerContext);
     const calls = messenger.calls;
     const currentSession = calls.useCurrentSession();
@@ -80,6 +80,7 @@ export const TalkBarComponent = (props: { chat: RoomChat_room }) => {
             disabled={callDisabled}
             rightIcon={<ChevronIcon />}
             onClick={onJoinClick}
+            padded={props.padded}
         />
     ) : null;
 };
