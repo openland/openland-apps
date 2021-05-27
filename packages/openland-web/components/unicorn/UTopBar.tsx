@@ -5,8 +5,35 @@ import { UIcon } from './UIcon';
 import { defaultHover } from 'openland-web/utils/Styles';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 
-const barContainer = css`
+const barPad = css`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    z-index: 1;
+`;
+
+const barPadPadded = css`
+    top: 40px;
+`;
+
+const barPadLight = css`
+    background-color: var(--backgroundTertiary);
+`;
+
+const barPadPositive = css`
+    background-color: var(--accentPositive);
+`;
+
+const barContainer = css`
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-shrink: 0;
     flex-direction: row;
@@ -37,7 +64,7 @@ const lightContainerHover = css`
 
 const positiveContainerHover = css`
     &:hover {
-        background-color: #52CC66;
+        background-color: #52cc66;
     }
 `;
 
@@ -152,45 +179,55 @@ interface UTopBarProps {
     rightText?: JSX.Element | string;
     disabled?: boolean;
     onRightClick?: (e: React.MouseEvent) => void;
+    padded?: boolean;
 }
 
 export const UTopBar = (props: UTopBarProps) => {
     const isMobile = useIsMobile();
 
     return (
-        <div
-            className={cx(
-                barContainer,
-                props.type === 'light' ? lightContainer : positiveContainer,
-                props.type === 'light' ? lightContainerHover : positiveContainerHover,
-                props.disabled && barContainerDisabled
-            )}
-            onClick={props.disabled ? undefined : props.onClick}
-        >
-            <div className={cx(barContent, !isMobile && desktopBarContent)}>
-                <div className={barMainContent}>
-                    <div className={iconContainer}>
-                        <UIcon
-                            icon={props.leftIcon}
-                            color={props.type === 'light' ? 'var(--foregroundSecondary)' : 'var(--foregroundContrast)'}
-                        />
-                    </div>
-                    <div className={cx(barTitle, props.type === 'light' ? lightTitle : positiveTitle)}>{props.title}</div>
-                    <div className={cx(barSubtitle, props.type === 'light' ? lightSubtitle : positiveSubtitle)}>{props.subtitle}</div>
-                </div>
-                {(props.rightText || props.rightIcon) && (
-                    <div className={cx(rigthContainer, props.onRightClick && defaultHover, props.type === 'light' ? lightRightContainer : positiveRightContainer)} onClick={props.onRightClick}>
-                        {props.rightText ? <div className={cx(TextLabel1, rightTextContainer)}>{props.rightText}</div> : null}
-                        {props.rightIcon && (
+        <div className={cx(barPad, props.padded && barPadPadded, props.type === 'light' ? barPadLight : barPadPositive)}>
+            <div
+                className={cx(
+                    barContainer,
+                    props.type === 'light' ? lightContainer : positiveContainer,
+                    props.type === 'light' ? lightContainerHover : positiveContainerHover,
+                    props.disabled && barContainerDisabled,
+                )}
+                onClick={props.disabled ? undefined : props.onClick}
+            >
+                <div className={cx(barContent, !isMobile && desktopBarContent)}>
+                    <div className={barMainContent}>
+                        <div className={iconContainer}>
                             <UIcon
-                                className={rightIconContainer}
-                                size={16}
-                                icon={props.rightIcon}
+                                icon={props.leftIcon}
                                 color={props.type === 'light' ? 'var(--foregroundSecondary)' : 'var(--foregroundContrast)'}
                             />
-                        )}
+                        </div>
+                        <div className={cx(barTitle, props.type === 'light' ? lightTitle : positiveTitle)}>{props.title}</div>
+                        <div className={cx(barSubtitle, props.type === 'light' ? lightSubtitle : positiveSubtitle)}>{props.subtitle}</div>
                     </div>
-                )}
+                    {(props.rightText || props.rightIcon) && (
+                        <div
+                            className={cx(
+                                rigthContainer,
+                                props.onRightClick && defaultHover,
+                                props.type === 'light' ? lightRightContainer : positiveRightContainer,
+                            )}
+                            onClick={props.onRightClick}
+                        >
+                            {props.rightText ? <div className={cx(TextLabel1, rightTextContainer)}>{props.rightText}</div> : null}
+                            {props.rightIcon && (
+                                <UIcon
+                                    className={rightIconContainer}
+                                    size={16}
+                                    icon={props.rightIcon}
+                                    color={props.type === 'light' ? 'var(--foregroundSecondary)' : 'var(--foregroundContrast)'}
+                                />
+                            )}
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

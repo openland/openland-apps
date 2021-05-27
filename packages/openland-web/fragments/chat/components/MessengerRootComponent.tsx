@@ -114,6 +114,7 @@ const messengerContainer = css`
     flex-shrink: 1;
     contain: content;
     overflow: hidden;
+    position: relative;
 `;
 
 const messagesListContainer = css`
@@ -522,7 +523,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                 engine={this.conversation}
                             />
                         )}
-                        <TalkBarComponent chat={this.props.room} />
+                        <TalkBarComponent chat={this.props.room} padded={!!pin} />
                         <div className={messagesListContainer}>
                             <MessageListComponent
                                 ref={this.messagesList}
