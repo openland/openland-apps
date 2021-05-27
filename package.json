@@ -313,6 +313,7 @@
     "scripts": {
         "pptr": "node ppttr/calls.js",
         "pptr:local": "NODE_ENV=dev node ppttr/calls.js",
+        "calls-stress-test": "./node_modules/.bin/ts-node --project tsnode.tsconfig.json ./benchmarking/callsStressTest.ts",
         "format-web": "prettier --write \"./packages/openland-web/**/*.tsx\" \"./packages/openland-web/**/*.ts\" \"./packages/openland-web/**/*.js\"",
         "dev": "BABEL_ENV=default API_WS_ENDPOINT=\"wss://api.openland.com/api\" API_ENDPOINT=\"https://api.openland.com\" nodemon ./packages/openland-web/server.ts",
         "prod-local:start": "BABEL_ENV=default NODE_ENV=production API_WS_ENDPOINT=\"wss://api.openland.com/api\" API_ENDPOINT=\"https://api.openland.com\" nodemon ./dist/server.js",
