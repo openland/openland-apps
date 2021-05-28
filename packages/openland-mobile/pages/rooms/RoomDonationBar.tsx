@@ -6,6 +6,7 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { GoalBar } from './GoalBar';
 import { showRoomDonate } from './RoomDonateModal';
 import { SRouter } from 'react-native-s/SRouter';
+import { useColorByAmount } from 'openland-mobile/utils/useColorByAmount';
 
 const DonateButton = React.memo((props: { small: boolean, onPress?: () => void }) => {
     const theme = useTheme();
@@ -69,21 +70,6 @@ const DonateButton = React.memo((props: { small: boolean, onPress?: () => void }
         </TouchableOpacity>
     );
 });
-
-const useColorByAmount = (amount: number) => {
-    const theme = useTheme();
-    if (amount <= 4) {
-        return theme.tintCyan;
-    } else if (amount <= 9) {
-        return theme.tintBlue;
-    } else if (amount <= 24) {
-        return theme.tintPurple;
-    } else if (amount <= 49) {
-        return theme.tintRed;
-    } else {
-        return theme.tintOrange;
-    }
-};
 
 const DonationBadge = React.memo((props: { amount: number, photo: string | null, name: string, id: string }) => {
     const theme = useTheme();

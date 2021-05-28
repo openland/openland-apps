@@ -20,6 +20,7 @@ import { ReportCallErrorType } from 'openland-mobile/utils/voiceChatErrorNotifie
 import { showRoomInvite } from './showRoomInvite';
 // import { RoomDonationBar } from './RoomDonationBar';
 import { SRouter } from 'react-native-s/SRouter';
+// import { DonationNotifications } from './DonationNotifications';
 
 const ControlItem = React.memo(
     (props: {
@@ -388,8 +389,11 @@ export const RoomControls = React.memo((props: RoomControlsProps) => {
 
     const buttons = getButtons(props);
     return (
-        <View onLayout={onLayout} style={{ paddingTop: 16 }}>
-            {/* <RoomDonationBar router={props.router} /> */}
+        <View onLayout={onLayout} style={{ paddingTop: 16, position: 'relative' }}>
+            {/* <View style={{ position: 'absolute', bottom: '100%', width: '100%' }}>
+                <DonationNotifications />
+            </View>
+            <RoomDonationBar router={props.router} /> */}
             <View
                 style={{
                     paddingHorizontal: 16,
