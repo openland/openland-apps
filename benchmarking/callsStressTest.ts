@@ -37,7 +37,7 @@ async function apiCall(method: string, params: any) {
     let res = await fetch(API_BASE + method, {
         method: 'POST',
         body: JSON.stringify(params),
-        headers: {'Content-Type': 'application/json'}
+        headers: { 'Content-Type': 'application/json' },
     });
     return await res.json();
 }
@@ -48,18 +48,18 @@ async function fetchToken(userNo: number) {
     const userName = `test${userEmailCode}`;
     const userEmail = `${userName}@openland.com`;
 
-    let {session} = await apiCall('auth/sendCode', {
-        email: userEmail
+    let { session } = await apiCall('auth/sendCode', {
+        email: userEmail,
     });
 
-    let {authToken} = await apiCall('auth/checkCode', {
+    let { authToken } = await apiCall('auth/checkCode', {
         session,
-        code: authCode
+        code: authCode,
     });
 
-    let {accessToken} = await apiCall('auth/getAccessToken', {
+    let { accessToken } = await apiCall('auth/getAccessToken', {
         session,
-        authToken
+        authToken,
     });
 
     return accessToken as string;
@@ -76,8 +76,8 @@ async function getClientForUser(userNo: number) {
             await client.mutateProfileCreate({
                 input: {
                     firstName: 'Test',
-                    lastName: 'User'
-                }
+                    lastName: 'User',
+                },
             });
         });
     }
@@ -129,18 +129,20 @@ async function handleUser(userNo: number, config: { voiceChatHolderShortName: st
 
     let voiceChatId = chatHolder.user.currentVoiceChat.id;
 
-    await backoff(() =>  client.mutateVoiceChatJoin({ id: voiceChatId }));
+    await backoff(() => client.mutateVoiceChatJoin({ id: voiceChatId }));
     let conference = await backoff(() => client.queryConference({ id: voiceChatId }));
     let conferenceId = conference.conference.id;
-    let conferenceJoinRes = await backoff(() =>  client.mutateConferenceJoin({ id: conferenceId }));
+    let conferenceJoinRes = await backoff(() => client.mutateConferenceJoin({ id: conferenceId }));
     let peerId = conferenceJoinRes.conferenceJoin.peerId;
+    console.log('joined', ++joinedCount);
 
     asyncRun(async () => {
-        await backoff(() =>  client.mutateConferenceKeepAlive({ id: conferenceId, peerId: peerId }));
-        await delay(5000);
+        while (true) {
+            await backoff(() => client.mutateConferenceKeepAlive({ id: conferenceId, peerId: peerId }));
+            await delay(5000);
+        }
     });
 
-    console.log('joined', ++joinedCount);
 }
 
 async function main() {
