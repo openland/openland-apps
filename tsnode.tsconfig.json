@@ -112,5 +112,5 @@
     "./packages/openland-video",
     "./packages/openland-pegasus",
     "./packages/openland-powerups"
-  ],
+  ]
 }

@@ -24,7 +24,7 @@ const VoiceCallButton = React.memo((props: {
             roomId = room.chat.id;
         }
         if (roomId) {
-            joinRoom(roomId, !props.sharedRoom.activeVoiceChat?.active);
+            await joinRoom(roomId, !props.sharedRoom.activeVoiceChat?.active);
         }
     }, [props.sharedRoom, props.sharedRoom.activeVoiceChat]);
 
@@ -46,7 +46,10 @@ export const CallHeaderButton = React.memo((props: {
     const mediaSession = getMessenger().engine.calls.useCurrentSession();
     const voiceChat = getMessenger().engine.voiceChat.useVoiceChat();
     const disabled = !!mediaSession && !!voiceChat;
-    const isAdmin = props.sharedRoom?.role === RoomMemberRole.ADMIN || props.sharedRoom?.role === RoomMemberRole.OWNER;
+    const isSecret = props.sharedRoom && props.sharedRoom.kind === 'GROUP';
+    const showStartRoom = isSecret
+        ? props.sharedRoom && props.sharedRoom.membersCount <= 15
+        : props.sharedRoom?.role === RoomMemberRole.ADMIN || props.sharedRoom?.role === RoomMemberRole.OWNER;
 
     if (!props.sharedRoom) {
         return (
@@ -60,7 +63,7 @@ export const CallHeaderButton = React.memo((props: {
         );
     }
 
-    if (isAdmin) {
+    if (showStartRoom) {
         return (
             <VoiceCallButton
                 disabled={disabled}
