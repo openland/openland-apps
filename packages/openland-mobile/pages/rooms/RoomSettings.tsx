@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform, LayoutAnimation, Keyboard, DeviceEventEmitter } from 'react-native';
+import { View } from 'react-native';
 import { useClient } from 'openland-api/useClient';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { VoiceChatParticipantStatus } from 'openland-api/spacex.types';
@@ -16,61 +16,7 @@ import { showRaisedHands } from './RaisedHands';
 import { ReportCallErrorType } from 'openland-mobile/utils/voiceChatErrorNotifier';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-
-const KeyboardHandlerContainer = React.memo((props: { children: JSX.Element | (JSX.Element | null)[] }) => {
-    const [keyboardHeight, setKeyboardHeight] = React.useState(0);
-    const isIos = Platform.OS === 'ios';
-
-    const keyboardWillShow = (e: any) => {
-        if (e.duration > 0) {
-            LayoutAnimation.configureNext(
-                LayoutAnimation.create(e.duration, LayoutAnimation.Types[e.easing]),
-            );
-        }
-        setKeyboardHeight(e?.endCoordinates?.height);
-    };
-
-    const keyboardWillHide = (e: any) => {
-        if (e.duration > 0) {
-            LayoutAnimation.configureNext(
-                LayoutAnimation.create(e.duration, LayoutAnimation.Types[e.easing]),
-            );
-        }
-        setKeyboardHeight(0);
-    };
-
-    const keyboardHeightChange = (e: any) => {
-        setKeyboardHeight(e?.height ? Math.ceil(e.height) : 0);
-    };
-
-    React.useEffect(() => {
-        if (isIos) {
-            Keyboard.addListener('keyboardWillShow', keyboardWillShow);
-            Keyboard.addListener('keyboardWillHide', keyboardWillHide);
-        } else {
-            DeviceEventEmitter.addListener('async_keyboard_height', keyboardHeightChange);
-        }
-        return () => {
-            if (isIos) {
-                Keyboard.removeListener('keyboardWillShow', keyboardWillShow);
-                Keyboard.removeListener('keyboardWillHide', keyboardWillHide);
-            } else {
-                DeviceEventEmitter.removeListener('async_keyboard_height', keyboardHeightChange);
-            }
-        };
-    }, []);
-
-    return (
-        <View
-            style={{
-                marginTop: 15,
-                marginBottom: keyboardHeight,
-            }}
-        >
-            {props.children}
-        </View>
-    );
-});
+import { KeyboardHandlerContainer } from 'openland-mobile/components/KeyboardHandlerContainer';
 
 type EditRoomModalProps = {
     id: string;
@@ -100,7 +46,7 @@ const EditRoomModal = React.memo((props: EditRoomModalProps & { hide: () => void
     };
 
     return (
-        <KeyboardHandlerContainer>
+        <KeyboardHandlerContainer style={{ marginTop: 15 }}>
             <ZShaker ref={shakerRef}>
                 <ZInput placeholder="Room name" field={titleField} multiline={true} />
             </ZShaker>
@@ -169,7 +115,7 @@ const EditPinnedMessage = React.memo((props: EditPinnedMessageProps & { hide: ()
     };
 
     return (
-        <KeyboardHandlerContainer>
+        <KeyboardHandlerContainer style={{ marginTop: 15 }}>
             <ZShaker ref={shakerRef}>
                 <ZInput placeholder="Pinned message" field={messageField} multiline={true} />
             </ZShaker>
@@ -246,7 +192,7 @@ const MonetizationModal = React.memo((props: MonetizationModalProps & { hide: ()
     };
 
     return (
-        <KeyboardHandlerContainer>
+        <KeyboardHandlerContainer style={{ marginTop: 15 }}>
             <ZListItem
                 text="Enable donations"
                 toggle={enabled}

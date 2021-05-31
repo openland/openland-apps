@@ -149,14 +149,14 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
                     <SHeaderButton title="New room" onPress={pushRoom} />
                     <SFlatList
                         scrollRef={scrollRef}
-                        data={voiceChats.chats}
+                        data={voiceChats}
                         renderItem={({ item }) => <RoomFeedItem room={item} theme={theme} router={router} />}
                         keyExtractor={(item) => item.id}
-                        ItemSeparatorComponent={() => voiceChats.chats.length > 0 ? <View style={{ height: 8 }} /> : null}
+                        ItemSeparatorComponent={() => voiceChats.length > 0 ? <View style={{ height: 8 }} /> : null}
                         ListHeaderComponent={upcomingHeader}
                         ListFooterComponent={() => (
                             <>
-                                {voiceChats.chats.length > 0 ? (
+                                {voiceChats.length > 0 ? (
                                     <>
                                         <View style={{ height: 8, backgroundColor: theme.backgroundPrimary }} />
                                         <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} />

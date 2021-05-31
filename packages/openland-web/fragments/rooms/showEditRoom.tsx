@@ -12,9 +12,14 @@ import { useShake } from 'openland-web/pages/auth/components/authComponents';
 import { useClient } from 'openland-api/useClient';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { showPinnedMessageSettingsModal } from './showPinnedMessageSettingsModal';
-import IcPin from 'openland-icons/s/ic-pin-24.svg';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
+
+import IcDonation from 'openland-icons/s/ic-donation-24.svg';
+import IcPin from 'openland-icons/s/ic-pin-24.svg';
+
+import { showPinnedMessageSettingsModal } from './showPinnedMessageSettingsModal';
+import { showMonetizationSettingsModal } from './showMonetizationSettingsModal';
 
 const formTitle = css`
     height: 48px;
@@ -33,6 +38,7 @@ const EditRoom = React.memo((props: { hide: () => void }) => {
     const [loading, setLoading] = React.useState(false);
     const [shakeClassName, shake] = useShake();
     const pinnedMessage = voiceChatData?.pinnedMessage?.message;
+    const monetizationEnabled = false;
 
     const handleSave = React.useCallback(async () => {
         if (!voiceChatData) {
@@ -65,6 +71,15 @@ const EditRoom = React.memo((props: { hide: () => void }) => {
                 </div>
                 <div className={cx(formTitle, TextTitle3)}>Settings</div>
             </XView>
+            <XWithRole role="super-admin">
+                <UListItem
+                    title="Monetization"
+                    icon={<IcDonation />}
+                    paddingHorizontal={24}
+                    onClick={() => showMonetizationSettingsModal(voiceChatData.id)}
+                    textRight={monetizationEnabled ? 'On' : 'Off'}
+                />
+            </XWithRole>
             <UListItem
                 title="Pinned message"
                 icon={<IcPin />}

@@ -10,12 +10,17 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
+import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
+import { SRouter } from 'react-native-s/SRouter';
+import { View } from 'react-native';
+import { ZButton } from 'openland-mobile/components/ZButton';
+import { KeyboardHandlerContainer } from 'openland-mobile/components/KeyboardHandlerContainer';
 
 let loader = Toast.loader();
-const AddCardComponent = React.memo<PageProps>((props) => {
+
+const useAddCard = (props: { router: SRouter }) => {
     let client = useClient();
     let ref = React.useRef<StripeInputViewInstance>(null);
-
     let submit = React.useCallback(() => {
         (async () => {
             loader.show();
@@ -52,15 +57,51 @@ const AddCardComponent = React.memo<PageProps>((props) => {
         })();
     }, []);
 
+    const content = (
+        <StripeInputView ref={ref} />
+    );
+
+    return {
+        submit,
+        content
+    };
+};
+
+const AddCardComponent = React.memo<PageProps>((props) => {
+    const { submit, content } = useAddCard({ router: props.router });
     return (
         <>
             <SHeader title="New card" />
             <SHeaderButton title="Add" onPress={submit} />
             <SScrollView style={{ flexDirection: 'column', alignSelf: 'stretch', padding: 16 }} contentContainerStyle={{ alignItems: 'stretch' }}>
-                <StripeInputView ref={ref} />
+                {content}
             </SScrollView>
         </>
     );
 });
 
 export const AddCard = withApp(AddCardComponent, { navigationAppearance: 'small' });
+
+const AddCardModal = React.memo((props: { router: SRouter, hide: () => void }) => {
+    const { submit, content } = useAddCard({ router: props.router });
+
+    return (
+        <KeyboardHandlerContainer>
+            <View style={{ padding: 16 }}>
+                {content}
+            </View>
+            <View style={{ flex: 1, marginHorizontal: 16, marginTop: 16 }}>
+                <ZButton size="large" title="Add" action={submit} />
+            </View>
+        </KeyboardHandlerContainer>
+    );
+});
+
+export const showAddCard = (props: { router: SRouter }) => {
+    showBottomSheet({
+        title: 'New card',
+        cancelable: true,
+        scrollViewProps: { keyboardShouldPersistTaps: 'handled' },
+        view: (ctx) => <AddCardModal router={props.router} hide={ctx.hide} />,
+    });
+};

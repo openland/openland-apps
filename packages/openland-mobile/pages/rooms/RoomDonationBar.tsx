@@ -4,6 +4,9 @@ import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { GoalBar } from './GoalBar';
+import { showRoomDonate } from './RoomDonateModal';
+import { SRouter } from 'react-native-s/SRouter';
+import { useColorByAmount } from 'openland-mobile/utils/useColorByAmount';
 
 const DonateButton = React.memo((props: { small: boolean, onPress?: () => void }) => {
     const theme = useTheme();
@@ -68,21 +71,6 @@ const DonateButton = React.memo((props: { small: boolean, onPress?: () => void }
     );
 });
 
-const useColorByAmount = (amount: number) => {
-    const theme = useTheme();
-    if (amount <= 4) {
-        return theme.tintCyan;
-    } else if (amount <= 9) {
-        return theme.tintBlue;
-    } else if (amount <= 24) {
-        return theme.tintPurple;
-    } else if (amount <= 49) {
-        return theme.tintRed;
-    } else {
-        return theme.tintOrange;
-    }
-};
-
 const DonationBadge = React.memo((props: { amount: number, photo: string | null, name: string, id: string }) => {
     const theme = useTheme();
     const bgColor = useColorByAmount(props.amount);
@@ -112,7 +100,8 @@ const DonationBadge = React.memo((props: { amount: number, photo: string | null,
     );
 });
 
-export const RoomDonationBar = React.memo(() => {
+export const RoomDonationBar = React.memo((props: { router: SRouter }) => {
+    const { router } = props;
     const amounts = [
         { amount: 1 },
         { amount: 5 },
@@ -135,12 +124,11 @@ export const RoomDonationBar = React.memo(() => {
         { amount: 25 },
         { amount: 50 },
     ];
-    const [small, setSmall] = React.useState(false);
     return (
         <View style={{ marginTop: -4, marginBottom: 16 }}>
             <View style={{ flexDirection: 'row' }}>
                 <View style={{ paddingHorizontal: 16, flexGrow: 0 }}>
-                    <DonateButton small={small} onPress={() => setSmall(x => !x)} />
+                    <DonateButton small={false} onPress={() => showRoomDonate({ description: 'For new Opneland logo', currentAmount: 100, totalAmount: 500, router })} />
                 </View>
 
                 <FlatList

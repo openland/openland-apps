@@ -111,41 +111,44 @@ const ChatOnlinesTitle = (props: { id: string }) => {
 };
 
 const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) => {
+    const { chat, messenger } = props;
     const client = useClient();
-    const calls = props.messenger.calls;
-    const callSettings =
-        props.chat.__typename === 'SharedRoom' ? props.chat.callSettings : undefined;
+    const calls = messenger.calls;
+    const privateRoom = chat.__typename === 'PrivateRoom' ? chat : undefined;
+    const sharedRoom = chat.__typename === 'SharedRoom' ? chat : undefined;
+    const isSecret = sharedRoom && sharedRoom.kind === 'GROUP';
+    const callSettings = sharedRoom ? sharedRoom.callSettings : undefined;
     const currentSession = calls.useCurrentSession();
     const showVideoCallModal = useVideoCallModal({ chatId: props.chat.id });
     const voiceChat = props.messenger.voiceChat.useVoiceChat();
     const callDisabled = !!currentSession && !!voiceChat;
-    const isAdmin = props.chat.__typename === 'SharedRoom' && (props.chat.role === RoomMemberRole.ADMIN || props.chat.role === RoomMemberRole.OWNER);
-    const showStartRoom = callSettings && callSettings.mode === RoomCallsMode.STANDARD && isAdmin;
-    const showClassicCallButton = props.chat.__typename === 'PrivateRoom' || useRole('super-admin');
+    const isAdmin = sharedRoom && (sharedRoom.role === RoomMemberRole.ADMIN || sharedRoom.role === RoomMemberRole.OWNER);
+    const showStartRoom = isSecret ? sharedRoom && sharedRoom.membersCount <= 15 : isAdmin;
+    const showClassicCallButton = privateRoom || useRole('super-admin');
     const joinRoom = useJoinRoom();
 
     const startRoom = React.useCallback(async () => {
-        if (props.chat.__typename === 'SharedRoom' && !props.chat.activeVoiceChat) {
+        if (sharedRoom && !sharedRoom.activeVoiceChat) {
             const room = (
                 await client.mutateVoiceChatCreateInChat({
                     input: {
-                        title: props.chat.title,
-                        isPrivate: props.chat.kind === SharedRoomKind.GROUP,
+                        title: sharedRoom.title,
+                        isPrivate: sharedRoom.kind === SharedRoomKind.GROUP,
                     },
                     cid: props.chat.id,
                 })
             ).voiceChatCreateInChat;
-            joinRoom(room.chat.id, true);
+            await joinRoom(room.chat.id, true);
             await client.refetchRoomChat({ id: props.chat.id });
-        } else if (props.chat.__typename === 'SharedRoom' && props.chat.activeVoiceChat) {
-            joinRoom(props.chat.activeVoiceChat.id, !props.chat.activeVoiceChat.active);
+        } else if (sharedRoom && sharedRoom.activeVoiceChat) {
+            await joinRoom(sharedRoom.activeVoiceChat.id, !sharedRoom.activeVoiceChat.active);
         }
-    }, [props.chat]);
+    }, [chat]);
 
     return (
         <div
             className={cx(
-                currentSession && currentSession.conversationId === props.chat.id && disabledBtn,
+                currentSession && currentSession.conversationId === chat.id && disabledBtn,
             )}
         >
             {callSettings && callSettings.mode === RoomCallsMode.LINK && (
@@ -158,7 +161,7 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
                 />
             )}
             <XView flexDirection="row">
-                {showStartRoom && (
+                {!!(callSettings && callSettings.mode === RoomCallsMode.STANDARD && showStartRoom) && (
                     <UIconButton
                         cursor="pointer"
                         icon={<MicIcon />}
@@ -176,7 +179,7 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
                             if (callDisabled) {
                                 return;
                             }
-                            calls.joinCall(props.chat.id);
+                            calls.joinCall(chat.id);
                             showVideoCallModal();
                         }}
                         size="large"

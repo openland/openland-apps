@@ -18,6 +18,7 @@ import uuid from 'uuid';
 import { ModalProvider } from 'openland-mobile/components/ZModal';
 import { SRouterMountedContext } from 'react-native-s/SRouterContext';
 import { RoomMinimized } from 'openland-mobile/pages/rooms/RoomMinimized';
+import { hideModals } from 'react-native-fast-modal';
 
 const styles = StyleSheet.create({
     fill: {
@@ -109,6 +110,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         if (ModalProvider) {
             ModalProvider.hideModals();
         }
+        hideModals();
 
         // Resolve current page
         let underlay = this.currentHistory.history[this.currentHistory.history.length - 1].key;
@@ -225,6 +227,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         if (ModalProvider) {
             ModalProvider.hideModals();
         }
+        hideModals();
 
         // Update internal state
         let underlayKey = state.history[state.history.length - 1].key;

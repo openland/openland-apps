@@ -234,7 +234,7 @@ const HomeMenu = (props: {
 };
 
 export const RoomsFragment = React.memo(() => {
-    const voiceChats = useVoiceChatsFeed().chats;
+    const voiceChats = useVoiceChatsFeed();
     const [activeHomePage, setActiveHomePage] = React.useState<ActivePageType>('Rooms');
     const router = React.useContext(XRouterContext)!;
 
