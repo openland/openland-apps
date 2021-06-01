@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const COLORS = ['#96BBF8', '#F2F3F5', '#E94A47', '#2F7FEA', '#F1B505', '#64BD73', '#FFFFFF', '#F8D196'];
+const COLORS = ['#96BBF8', '#F2F3F5', '#E94A47', '#2F7FEA', '#F1B505'];
 
 const ELEMENTS = 4;
 const SIZEBAUHAUS = 80;
