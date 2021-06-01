@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+const COLORS = ['#96BBF8', '#F2F3F5', '#E94A47', '#2F7FEA', '#F1B505', '#64BD73', '#FFFFFF', '#F8D196'];
+
 const ELEMENTS = 4;
 const SIZEBAUHAUS = 80;
 
@@ -43,12 +45,12 @@ const getContrast = (hexcolor: string) => {
     }
 
     // Convert to RGB value
-    var r = parseInt(hexcolor.substr(0, 2), 16);
-    var g = parseInt(hexcolor.substr(2, 2), 16);
-    var b = parseInt(hexcolor.substr(4, 2), 16);
+    let r = parseInt(hexcolor.substr(0, 2), 16);
+    let g = parseInt(hexcolor.substr(2, 2), 16);
+    let b = parseInt(hexcolor.substr(4, 2), 16);
 
     // Get YIQ ratio
-    var yiq = (r * 299 + g * 587 + b * 114) / 1000;
+    let yiq = (r * 299 + g * 587 + b * 114) / 1000;
 
     // Check contrast
     return yiq >= 128 ? 'black' : 'white';
@@ -69,8 +71,8 @@ function generateColors(name: string, colors: string[]) {
     return elementsProperties;
 }
 
-export const AvatarBauhaus = (props: { name: string; colors: string[]; size: number | string }) => {
-    const properties = generateColors(props.name, props.colors);
+export const AvatarBauhaus = (props: { name: string; size: number | string }) => {
+    const properties = generateColors(props.name, COLORS);
 
     return (
         <svg
@@ -190,8 +192,8 @@ function generateData(name: string, colors: string[]) {
     return data;
 }
 
-export const AvatarBeam = (props: { name: string; colors: string[]; size: number | string }) => {
-    const data = generateData(props.name, props.colors);
+export const AvatarBeam = (props: { name: string; size: number | string }) => {
+    const data = generateData(props.name, COLORS);
 
     return (
         <svg

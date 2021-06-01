@@ -9,7 +9,7 @@ import { useReloadImage } from 'openland-web/components/ImgWithRetry';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { UIcon } from './UIcon';
 import { useRole } from 'openland-x-permissions/XWithRole';
-import { AvatarBeam } from './UAvatarNew';
+import { AvatarBauhaus } from './UAvatarNew';
 import BookmarkIcon from 'openland-icons/s/ic-bookmark-filled-24.svg';
 
 export type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'xxx-large';
@@ -287,7 +287,7 @@ export const UAvatar = React.memo((props: UAvatarProps) => {
             if (!isAdmin) {
                 content = <AvatarPlaceholder {...props} fontSize={sizes.placeholder} index={phIndex} />;
             } else {
-                content = <AvatarBeam name={props.id} colors={['#96BBF8', '#F2F3F5', '#E94A47', '#2F7FEA', '#F1B505']} size="100%" />;
+                content = <AvatarBauhaus name={props.id} size="100%" />;
             }
         } else {
             content = <AvatarImage {...props} boxSize={sizes.size} />;
@@ -297,7 +297,7 @@ export const UAvatar = React.memo((props: UAvatarProps) => {
         if (!isAdmin) {
             content = <AvatarPlaceholder {...props} fontSize={sizes.placeholder} index={phIndex} />;
         } else {
-            content = <AvatarBeam name={props.id} colors={['#96BBF8', '#F2F3F5', '#E94A47', '#2F7FEA', '#F1B505']} size="100%" />;
+            content = <AvatarBauhaus name={props.id} size="100%" />;
         }
     }
 
