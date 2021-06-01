@@ -1,4 +1,3 @@
-
 export function extractPlaceholder(src: string) {
     let s = src.trim();
     if (s.length === 0) {

@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView, XImage, XViewProps } from 'react-mental';
-
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { emoji } from 'openland-y-utils/emoji';
 import { PlaceholderColors } from 'openland-y-utils/themes/placeholders';
 import { useReloadImage } from 'openland-web/components/ImgWithRetry';
 import { TextStyles } from 'openland-web/utils/TextStyles';
-import BookmarkIcon from 'openland-icons/s/ic-bookmark-filled-24.svg';
-
 import { UIcon } from './UIcon';
+import { useRole } from 'openland-x-permissions/XWithRole';
+import { AvatarBeam } from './UAvatarNew';
+import BookmarkIcon from 'openland-icons/s/ic-bookmark-filled-24.svg';
 
 export type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'xxx-large';
 
@@ -242,6 +242,10 @@ const OnlineDot = (props: { size: UAvatarSize }) => {
 const colorProvider = css`
     display: flex;
     flex-grow: 1;
+    & svg {
+      width: 100%;
+      height: 100%;
+    }
 `;
 
 const badgeBoxStyle = {
@@ -272,20 +276,29 @@ export const UAvatar = React.memo((props: UAvatarProps) => {
         customSizes,
         ...other
     } = props;
-    let content: any = undefined;
+    const isAdmin = useRole('super-admin');
+    let content: JSX.Element | undefined = undefined;
     let sizes = customSizes || AvatarSizes[size];
     if (savedMessages) {
         content = <AvatarSavedMessages squared={squared} bookmarkSize={sizes.placeholder} />;
     } else if (photo || uuid) {
         if (photo && photo.startsWith('ph://')) {
             const phIndex = parseInt(photo.substr(5), 10) || 0;
-            content = <AvatarPlaceholder {...props} fontSize={sizes.placeholder} index={phIndex} />;
+            if (!isAdmin) {
+                content = <AvatarPlaceholder {...props} fontSize={sizes.placeholder} index={phIndex} />;
+            } else {
+                content = <AvatarBeam name={props.id} colors={['#96BBF8', '#F2F3F5', '#E94A47', '#2F7FEA', '#F1B505']} size="100%" />;
+            }
         } else {
             content = <AvatarImage {...props} boxSize={sizes.size} />;
         }
     } else {
         const phIndex = getPlaceholderIndex(id);
-        content = <AvatarPlaceholder {...props} fontSize={sizes.placeholder} index={phIndex} />;
+        if (!isAdmin) {
+            content = <AvatarPlaceholder {...props} fontSize={sizes.placeholder} index={phIndex} />;
+        } else {
+            content = <AvatarBeam name={props.id} colors={['#96BBF8', '#F2F3F5', '#E94A47', '#2F7FEA', '#F1B505']} size="100%" />;
+        }
     }
 
     const boxSize = sizes.size;
