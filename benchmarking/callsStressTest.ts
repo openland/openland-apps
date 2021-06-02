@@ -178,15 +178,13 @@ async function handleUser(userNo: number, config: { voiceChatHolderShortName: st
 }
 
 async function main() {
-    // const fromUserNo = await promtNumber('From user number:\n');
-    // const toUserNo = await promtNumber('To user number:\n');
-    // const username = await promt('User shortname with chat\n');
-    //
-    // for (let i = fromUserNo; i < toUserNo; i++) {
-    //     handleUser(i, { voiceChatHolderShortName: username });
-    // }
+    const fromUserNo = await promtNumber('From user number:\n');
+    const toUserNo = await promtNumber('To user number:\n');
+    const username = await promt('User shortname with chat\n');
 
-    handleUser(1, { voiceChatHolderShortName: 'nar' });
+    for (let i = fromUserNo; i < toUserNo; i++) {
+        handleUser(i, { voiceChatHolderShortName: username });
+    }
 }
 
 main();

@@ -181,6 +181,8 @@ declare module 'wrtc' {
         private _registerEvents(): void;
 
         createDataChannel(label: string, dataChannelDict?: any): void;
+
+        addTransceiver(trackOrKind: MediaStreamTrack | string, init?: RTCRtpTransceiverInit): RTCRtpTransceiver;
     }
 
     export class RTCIceCandidateType {
