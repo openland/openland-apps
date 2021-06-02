@@ -303,7 +303,8 @@
         "tslint-config-prettier": "1.18.0",
         "tslint-react": "^3.5.1",
         "typescript": "3.8.3",
-        "watchman": "^1.0.0"
+        "watchman": "^1.0.0",
+        "wrtc": "^0.4.7"
     },
     "resolutions": {
         "**/@types/react": "16.8.8",

@@ -3,6 +3,9 @@ import { WebEngine } from '@openland/spacex';
 import { Definitions } from '../packages/openland-api/spacex.web';
 import fetch from 'node-fetch';
 import * as readline from 'readline';
+import { reliableWatcher } from '../packages/openland-api/reliableWatcher';
+import { ConferenceMediaWatch } from '../packages/openland-api/spacex.types';
+import { MediaStreamController } from './MediaStreamController';
 
 const asyncRun = (cb: () => Promise<void>) => {
     (async () => {
@@ -143,16 +146,47 @@ async function handleUser(userNo: number, config: { voiceChatHolderShortName: st
         }
     });
 
+    let streams = new Map<string, MediaStreamController>();
+
+    reliableWatcher<ConferenceMediaWatch>((handler) => client.subscribeConferenceMediaWatch({ id: conferenceId, peerId: peerId }, handler), async (update) => {
+        let existingStreamIds = update.media.streams.map(s => s.id);
+
+        // Detect deletions
+        for (let id of streams.keys()) {
+            if (!existingStreamIds.includes(id)) {
+                let ex = streams.get(id);
+                streams.delete(id);
+                if (ex) {
+                    ex.destroy();
+                }
+            }
+        }
+
+        // Handle new & old ones
+        for (let stream of update.media.streams) {
+            console.dir(stream, {depth: null});
+            let ex = streams.get(stream.id);
+            if (ex) {
+                await ex.update(stream);
+            } else {
+                let newStream = new MediaStreamController(client, peerId, stream);
+                // newStream.update(stream);
+                streams.set(stream.id, newStream);
+            }
+        }
+    });
 }
 
 async function main() {
-    const fromUserNo = await promtNumber('From user number:\n');
-    const toUserNo = await promtNumber('To user number:\n');
-    const username = await promt('User shortname with chat\n');
+    // const fromUserNo = await promtNumber('From user number:\n');
+    // const toUserNo = await promtNumber('To user number:\n');
+    // const username = await promt('User shortname with chat\n');
+    //
+    // for (let i = fromUserNo; i < toUserNo; i++) {
+    //     handleUser(i, { voiceChatHolderShortName: username });
+    // }
 
-    for (let i = fromUserNo; i < toUserNo; i++) {
-        handleUser(i, { voiceChatHolderShortName: username });
-    }
+    handleUser(1, { voiceChatHolderShortName: 'nar' });
 }
 
 main();

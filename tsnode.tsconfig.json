@@ -71,7 +71,11 @@
     "packages/openland-web/src/less",
     "**/*.spec.ts"
   ],
-  "files": ["./packages/openland-web/typings.d.ts", "./packages/openland-mobile/typings.d.ts"],
+  "files": [
+    "./packages/openland-web/typings.d.ts",
+    "./packages/openland-mobile/typings.d.ts",
+    "./benchmarking/typings.d.ts"
+  ],
   "include": [
     "./packages/openland-apps",
     "./packages/openland-web",
