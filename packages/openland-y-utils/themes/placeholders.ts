@@ -30,11 +30,6 @@ export const PlaceholderPurple: PlaceholderGlobal = {
     end: '#4624F2',
 };
 
-export const PlaceholderPink: PlaceholderGlobal = {
-    start: '#F23CD4',
-    end: '#D9366C',
-};
-
 export const PlaceholderColors = [
     PlaceholderOrange,
     PlaceholderRed,

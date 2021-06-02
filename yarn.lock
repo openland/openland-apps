@@ -13338,10 +13338,10 @@ mixpanel-browser@^2.19.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/mixpanel-browser/-/mixpanel-browser-2.24.0.tgz#b9a5fa7fa6eff4a54b5777097e0996bc7c7e4315"
 
-mixpanel-react-native@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/mixpanel-react-native/-/mixpanel-react-native-1.2.0.tgz#bf904aa7fdc678c47a89db125d9c8e77dc4df98f"
-  integrity sha512-dHu8liHaocd1jQ4O7tqnVAPLSHjPjyh3xxz9XY9i+AZneLqZ/rb/H6AImk1xNYTyQ0oQK17u6ep7s6whvqohlg==
+mixpanel-react-native@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/mixpanel-react-native/-/mixpanel-react-native-1.2.3.tgz#db64df3671bf20f43526bc6aca3c08507e88dff1"
+  integrity sha512-s8r81RJPqBN4WWWdwIgUqF3DVdonulCHLtPlSzkF4wUDXK19jAD5YKlkmB/nva2cmNDSSH9Xwdf9yGZw/zRITw==
 
 mkdirp-classic@^0.5.2:
   version "0.5.3"
