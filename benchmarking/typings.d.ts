@@ -237,4 +237,6 @@ declare module 'wrtc' {
     // }
 
     export function registerGlobals(): void;
+
+    export function getUserMedia(args: any): any;
 }

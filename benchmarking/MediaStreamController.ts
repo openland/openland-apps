@@ -2,6 +2,11 @@ import { ConferenceMediaWatch_media_streams } from '../packages/openland-api/spa
 import { RTCPeerConnection } from 'wrtc';
 import { OpenlandClient } from '../packages/openland-api/spacex';
 
+export interface AppSessionDescription {
+    type: 'offer' | 'answer';
+    sdp: string;
+}
+
 function resolveIceTransportPolicy(state: ConferenceMediaWatch_media_streams) {
     let iceTransportPolicy: 'relay' | 'all' | undefined = undefined;
     if (state.iceTransportPolicy === 'ALL') {
@@ -21,6 +26,9 @@ export class MediaStreamController {
     seq: number;
     currentState: ConferenceMediaWatch_media_streams | undefined;
     connection: RTCPeerConnection;
+    localAnswerSent = false;
+    localAnswer: AppSessionDescription | null = null;
+    remoteOffer: AppSessionDescription | null = null;
 
     constructor(client: OpenlandClient, peerId: string, initialState: ConferenceMediaWatch_media_streams) {
         this.client = client;
@@ -50,23 +58,39 @@ export class MediaStreamController {
         if (state.state === 'WAIT_OFFER') {
             // noop
         } else if (state.state === 'NEED_ANSWER') {
-            let offer = JSON.parse(state.sdp!);
-            console.log('[WEBRTC]: ' + this.id + ': Got offer');
-            console.log(offer.sdp);
-            await this.connection.setRemoteDescription(offer);
+            if (state.seq > this.seq) {
+                this.localAnswerSent = false;
+                this.localAnswer = null;
+                this.remoteOffer = null;
+            }
 
-            console.log('[WEBRTC]: ' + this.id + ': Creating answer');
-            let answer = await this.connection.createAnswer();
-            console.log('[WEBRTC]: ' + this.id + ': Answer');
-            console.log(answer.sdp);
-            await this.connection.setLocalDescription(answer);
+            if (!this.remoteOffer) {
+                let offer = JSON.parse(state.sdp!);
+                // console.log('[WEBRTC]: ' + this.id + ': Got offer');
+                // console.log(offer.sdp);
+                await this.connection.setRemoteDescription(offer);
+                this.remoteOffer = offer;
+            }
 
-            await this.client.mutateMediaAnswer({
-                id: this.id,
-                peerId: this.peerId,
-                answer: JSON.stringify(answer),
-                seq: state.seq
-            });
+            if (!this.localAnswer) {
+                // console.log('[WEBRTC]: ' + this.id + ': Creating answer');
+                let answer = await this.connection.createAnswer();
+                // console.log('[WEBRTC]: ' + this.id + ': Answer');
+                // console.log(answer.sdp);
+                await this.connection.setLocalDescription(answer);
+                this.localAnswer = answer;
+            }
+
+            if (!this.localAnswerSent) {
+                await this.client.mutateMediaAnswer({
+                    id: this.id,
+                    peerId: this.peerId,
+                    answer: JSON.stringify(this.localAnswer),
+                    seq: state.seq
+                });
+                this.localAnswerSent = true;
+            }
+
         } else if (state.state === 'READY') {
             // noop
         }
