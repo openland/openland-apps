@@ -17,6 +17,8 @@ PODS:
     - UMImageLoaderInterface
   - EXInAppPurchases (10.1.1):
     - UMCore
+  - EXLocalization (10.1.0):
+    - UMCore
   - EXPermissions (12.0.1):
     - UMCore
     - UMPermissionsInterface
@@ -54,7 +56,7 @@ PODS:
   - Mixpanel-swift (2.9.3):
     - Mixpanel-swift/Complete (= 2.9.3)
   - Mixpanel-swift/Complete (2.9.3)
-  - MixpanelReactNative (1.2.0):
+  - MixpanelReactNative (1.2.3):
     - Mixpanel-swift (= 2.9.3)
     - React
   - ObjectiveRocks (0.11.0)
@@ -377,8 +379,8 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
-  - RNLocalize (1.4.0):
-    - React
+  - RNLocalize (2.1.0):
+    - React-Core
   - RNRate (1.2.4):
     - React
   - RNShare (2.0.0):
@@ -449,6 +451,7 @@ DEPENDENCIES:
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
   - EXInAppPurchases (from `../node_modules/expo-in-app-purchases/ios`)
+  - EXLocalization (from `../node_modules/expo-localization/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
@@ -562,6 +565,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-image-loader/ios"
   EXInAppPurchases:
     :path: "../node_modules/expo-in-app-purchases/ios"
+  EXLocalization:
+    :path: "../node_modules/expo-localization/ios"
   EXPermissions:
     :path: "../node_modules/expo-permissions/ios"
   FBLazyVector:
@@ -724,6 +729,7 @@ SPEC CHECKSUMS:
   EXFileSystem: dcf2273f49431e5037347c733a2dc5d08e0d0a9e
   EXImageLoader: da941c9399e01ec28f2d5b270bdd21f2c8ca596c
   EXInAppPurchases: 781153434a138c7c5d20706f47c4003e3d76b5a1
+  EXLocalization: f139efe4a06be1041815879959346e3d437a6e93
   EXPermissions: 8f8c1c05580c4e02d4ee2c8dd74bfe173ff6a723
   FBLazyVector: 3bb422f41b18121b71783a905c10e58606f7dc3e
   FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
@@ -733,7 +739,7 @@ SPEC CHECKSUMS:
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: 4dff8fe8d10ddef9e7880e770080f4a56121397e
   Mixpanel-swift: 05ab116526c72e0e66a6a2feb9005e933c414347
-  MixpanelReactNative: 119808d469cc1dae94e7eb7cf6c2e805ec21cc58
+  MixpanelReactNative: 71b366d8c93f107bfac08fd534388a1d44f50cac
   ObjectiveRocks: 464f1d38a77847be0acc3dda268bec52486ec02d
   PINCache: 7a8fc1a691173d21dbddbf86cd515de6efa55086
   PINOperation: 00c935935f1e8cf0d1e2d6b542e75b88fc3e5e20
@@ -785,7 +791,7 @@ SPEC CHECKSUMS:
   RNFastImage: 9b0c22643872bb7494c8d87bbbb66cc4c0d9e7a2
   RNGestureHandler: 02905abe54e1f6e59c081a10b4bd689721e17aa6
   RNImageCropPicker: 82f4caef16a37c07cbb0171be95aa5584f99bd9d
-  RNLocalize: b6df30cc25ae736d37874f9bce13351db2f56796
+  RNLocalize: 7e199e96411dce0611e07e0496b049afa882c31d
   RNRate: 15b861025a7821730761fce7f44561ce7e0b2de0
   RNShare: 8b171d4b43c1d886917fdd303bf7a4b87167b05c
   RNThumbnail: ac78ef4deb457fcb4f2dfe4b613e35d710d8ba2d

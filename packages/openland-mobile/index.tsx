@@ -17,6 +17,8 @@ import { ZLoader } from './components/ZLoader';
 import './utils/installAndroidFonts';
 // Start notifications ASAP
 import 'openland-y-runtime/AppNotifications';
+// Init i18n
+import './text/init.ts';
 
 // Disable annoying yellow box
 (console as any).disableYellowBox = true;

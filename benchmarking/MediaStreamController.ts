@@ -19,6 +19,18 @@ function resolveIceTransportPolicy(state: ConferenceMediaWatch_media_streams) {
     return iceTransportPolicy;
 }
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+async function backoff<T>(callback: () => Promise<T>): Promise<T> {
+    while (true) {
+        try {
+            return await callback();
+        } catch (e) {
+            await delay(100);
+        }
+    }
+}
+
 export class MediaStreamController {
     client: OpenlandClient;
     peerId: string;
@@ -82,12 +94,12 @@ export class MediaStreamController {
             }
 
             if (!this.localAnswerSent) {
-                await this.client.mutateMediaAnswer({
+                await backoff(() => this.client.mutateMediaAnswer({
                     id: this.id,
                     peerId: this.peerId,
                     answer: JSON.stringify(this.localAnswer),
                     seq: state.seq
-                });
+                }));
                 this.localAnswerSent = true;
             }
 
