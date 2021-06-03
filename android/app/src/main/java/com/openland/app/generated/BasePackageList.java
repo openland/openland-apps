@@ -11,6 +11,7 @@ public class BasePackageList {
         new expo.modules.filesystem.FileSystemPackage(),
         new expo.modules.imageloader.ImageLoaderPackage(),
         new expo.modules.inapppurchases.InAppPurchasesPackage(),
+        new expo.modules.localization.LocalizationPackage(),
         new expo.modules.permissions.PermissionsPackage()
     );
   }
