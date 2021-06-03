@@ -190,6 +190,12 @@
                         }
                     }
                 ],
+                // ["i18next-extract", {
+                //     "customUseTranslationHooks": [
+                //         ["./packages/openland-mobile/text/useTranlsation", "useTranlsation"]
+                //     ],
+                //     "outputPath": "./packages/openland-mobile/text/extractedLangs/{{locale}}.json"
+                //   }],
                 // "@babel/plugin-transform-react-constant-elements",
                 "./packages/react-native-async-view-babel/lib"
                 // "@babel/plugin-transform-react-inline-elements"

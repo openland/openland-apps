@@ -19,6 +19,7 @@ import { GlobalSearchEntryKind, User_conversation_PrivateRoom } from 'openland-a
 import { SetTabContext } from './Home';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { useClient } from 'openland-api/useClient';
+import { useText } from 'openland-mobile/text/useText';
 
 type DialogType = 'all' | 'unread' | 'groups' | 'private';
 
@@ -89,16 +90,16 @@ const DefaultDialogs = React.memo(
         const dialogs =
             props.router.params.share || props.router.params.pressCallback
                 ? new ASDataView(messenger.engine.dialogList.dataSource, (item) => {
-                      return (
-                          <DialogItemViewAsync
-                              item={item}
-                              onPress={(id, i) =>
-                                  props.handlePress(id, (i as DialogDataSourceItem).title)
-                              }
-                              showDiscover={() => false}
-                          />
-                      );
-                  })
+                    return (
+                        <DialogItemViewAsync
+                            item={item}
+                            onPress={(id, i) =>
+                                props.handlePress(id, (i as DialogDataSourceItem).title)
+                            }
+                            showDiscover={() => false}
+                        />
+                    );
+                })
                 : messenger.getDialogs(setTab);
 
         return <DialogListComponent dialogs={dialogs} />;
@@ -109,6 +110,7 @@ const DialogsComponent = React.memo((props: PageProps) => {
     const [dialogFilter, setDialogFilter] = React.useState<DialogType>('all');
     const messenger = getMessenger();
     const client = useClient();
+    const { t } = useText();
 
     const handlePress = React.useCallback(
         async (id: string, title: string, isUser?: boolean) => {
@@ -167,15 +169,15 @@ const DialogsComponent = React.memo((props: PageProps) => {
         dialogFilter === 'unread'
             ? 'Unread'
             : dialogFilter === 'groups'
-            ? 'Groups'
-            : dialogFilter === 'private'
-            ? 'Direct'
-            : 'Chats';
+                ? 'Groups'
+                : dialogFilter === 'private'
+                    ? 'Direct'
+                    : t('headerTitle.Chats', 'Chats');
 
     const enableExperimental = false;
-        // !props.router.params.title ||
-        // !props.router.params.share ||
-        // messenger.engine.experimentalUpdates;
+    // !props.router.params.title ||
+    // !props.router.params.share ||
+    // messenger.engine.experimentalUpdates;
 
     return (
         <ZTrack event="mail_view">
@@ -183,10 +185,10 @@ const DialogsComponent = React.memo((props: PageProps) => {
                 titleAction={
                     enableExperimental
                         ? {
-                              title: headerTitle,
-                              active: true,
-                              action: () => showFilters(dialogFilter, setDialogFilter),
-                          }
+                            title: headerTitle,
+                            active: true,
+                            action: () => showFilters(dialogFilter, setDialogFilter),
+                        }
                         : undefined
                 }
                 title={
