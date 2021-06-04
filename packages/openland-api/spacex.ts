@@ -1858,421 +1858,421 @@ export class OpenlandClient extends BaseSpaceXClient {
     useVoiceChatPrefetch(variables: Types.VoiceChatPrefetchVariables, params?: SpaceQueryWatchParameters): Types.VoiceChatPrefetch | null {;
         return this.useQuery('VoiceChatPrefetch', variables, params);
     }
-    mutateCreateOrganization(variables: Types.CreateOrganization, params?: MutationParameters): Promise<Types.CreateOrganization> {
+    mutateCreateOrganization(variables: Types.CreateOrganizationVariables, params?: MutationParameters): Promise<Types.CreateOrganization> {
         return this.mutate('CreateOrganization', variables, params)
     }
-    mutateAccountInviteJoin(variables: Types.AccountInviteJoin, params?: MutationParameters): Promise<Types.AccountInviteJoin> {
+    mutateAccountInviteJoin(variables: Types.AccountInviteJoinVariables, params?: MutationParameters): Promise<Types.AccountInviteJoin> {
         return this.mutate('AccountInviteJoin', variables, params)
     }
-    mutateReportOnline(variables: Types.ReportOnline, params?: MutationParameters): Promise<Types.ReportOnline> {
+    mutateReportOnline(variables: Types.ReportOnlineVariables, params?: MutationParameters): Promise<Types.ReportOnline> {
         return this.mutate('ReportOnline', variables, params)
     }
-    mutateRegisterPush(variables: Types.RegisterPush, params?: MutationParameters): Promise<Types.RegisterPush> {
+    mutateRegisterPush(variables: Types.RegisterPushVariables, params?: MutationParameters): Promise<Types.RegisterPush> {
         return this.mutate('RegisterPush', variables, params)
     }
-    mutateRegisterWebPush(variables: Types.RegisterWebPush, params?: MutationParameters): Promise<Types.RegisterWebPush> {
+    mutateRegisterWebPush(variables: Types.RegisterWebPushVariables, params?: MutationParameters): Promise<Types.RegisterWebPush> {
         return this.mutate('RegisterWebPush', variables, params)
     }
-    mutateCreateApp(variables: Types.CreateApp, params?: MutationParameters): Promise<Types.CreateApp> {
+    mutateCreateApp(variables: Types.CreateAppVariables, params?: MutationParameters): Promise<Types.CreateApp> {
         return this.mutate('CreateApp', variables, params)
     }
-    mutateUpdateApp(variables: Types.UpdateApp, params?: MutationParameters): Promise<Types.UpdateApp> {
+    mutateUpdateApp(variables: Types.UpdateAppVariables, params?: MutationParameters): Promise<Types.UpdateApp> {
         return this.mutate('UpdateApp', variables, params)
     }
-    mutateRefreshAppToken(variables: Types.RefreshAppToken, params?: MutationParameters): Promise<Types.RefreshAppToken> {
+    mutateRefreshAppToken(variables: Types.RefreshAppTokenVariables, params?: MutationParameters): Promise<Types.RefreshAppToken> {
         return this.mutate('RefreshAppToken', variables, params)
     }
-    mutateAddAppToChat(variables: Types.AddAppToChat, params?: MutationParameters): Promise<Types.AddAppToChat> {
+    mutateAddAppToChat(variables: Types.AddAppToChatVariables, params?: MutationParameters): Promise<Types.AddAppToChat> {
         return this.mutate('AddAppToChat', variables, params)
     }
-    mutateUserStorageSet(variables: Types.UserStorageSet, params?: MutationParameters): Promise<Types.UserStorageSet> {
+    mutateUserStorageSet(variables: Types.UserStorageSetVariables, params?: MutationParameters): Promise<Types.UserStorageSet> {
         return this.mutate('UserStorageSet', variables, params)
     }
-    mutateSendPhonePairCode(variables: Types.SendPhonePairCode, params?: MutationParameters): Promise<Types.SendPhonePairCode> {
+    mutateSendPhonePairCode(variables: Types.SendPhonePairCodeVariables, params?: MutationParameters): Promise<Types.SendPhonePairCode> {
         return this.mutate('SendPhonePairCode', variables, params)
     }
-    mutatePairPhone(variables: Types.PairPhone, params?: MutationParameters): Promise<Types.PairPhone> {
+    mutatePairPhone(variables: Types.PairPhoneVariables, params?: MutationParameters): Promise<Types.PairPhone> {
         return this.mutate('PairPhone', variables, params)
     }
-    mutateSendEmailPairCode(variables: Types.SendEmailPairCode, params?: MutationParameters): Promise<Types.SendEmailPairCode> {
+    mutateSendEmailPairCode(variables: Types.SendEmailPairCodeVariables, params?: MutationParameters): Promise<Types.SendEmailPairCode> {
         return this.mutate('SendEmailPairCode', variables, params)
     }
-    mutatePairEmail(variables: Types.PairEmail, params?: MutationParameters): Promise<Types.PairEmail> {
+    mutatePairEmail(variables: Types.PairEmailVariables, params?: MutationParameters): Promise<Types.PairEmail> {
         return this.mutate('PairEmail', variables, params)
     }
-    mutateBanUser(variables: Types.BanUser, params?: MutationParameters): Promise<Types.BanUser> {
+    mutateBanUser(variables: Types.BanUserVariables, params?: MutationParameters): Promise<Types.BanUser> {
         return this.mutate('BanUser', variables, params)
     }
-    mutateUnBanUser(variables: Types.UnBanUser, params?: MutationParameters): Promise<Types.UnBanUser> {
+    mutateUnBanUser(variables: Types.UnBanUserVariables, params?: MutationParameters): Promise<Types.UnBanUser> {
         return this.mutate('UnBanUser', variables, params)
     }
-    mutatePinMessage(variables: Types.PinMessage, params?: MutationParameters): Promise<Types.PinMessage> {
+    mutatePinMessage(variables: Types.PinMessageVariables, params?: MutationParameters): Promise<Types.PinMessage> {
         return this.mutate('PinMessage', variables, params)
     }
-    mutateUnpinMessage(variables: Types.UnpinMessage, params?: MutationParameters): Promise<Types.UnpinMessage> {
+    mutateUnpinMessage(variables: Types.UnpinMessageVariables, params?: MutationParameters): Promise<Types.UnpinMessage> {
         return this.mutate('UnpinMessage', variables, params)
     }
-    mutateMessageSetReaction(variables: Types.MessageSetReaction, params?: MutationParameters): Promise<Types.MessageSetReaction> {
+    mutateMessageSetReaction(variables: Types.MessageSetReactionVariables, params?: MutationParameters): Promise<Types.MessageSetReaction> {
         return this.mutate('MessageSetReaction', variables, params)
     }
-    mutateMessageUnsetReaction(variables: Types.MessageUnsetReaction, params?: MutationParameters): Promise<Types.MessageUnsetReaction> {
+    mutateMessageUnsetReaction(variables: Types.MessageUnsetReactionVariables, params?: MutationParameters): Promise<Types.MessageUnsetReaction> {
         return this.mutate('MessageUnsetReaction', variables, params)
     }
-    mutateMessageSetDonationReaction(variables: Types.MessageSetDonationReaction, params?: MutationParameters): Promise<Types.MessageSetDonationReaction> {
+    mutateMessageSetDonationReaction(variables: Types.MessageSetDonationReactionVariables, params?: MutationParameters): Promise<Types.MessageSetDonationReaction> {
         return this.mutate('MessageSetDonationReaction', variables, params)
     }
-    mutateSendMessage(variables: Types.SendMessage, params?: MutationParameters): Promise<Types.SendMessage> {
+    mutateSendMessage(variables: Types.SendMessageVariables, params?: MutationParameters): Promise<Types.SendMessage> {
         return this.mutate('SendMessage', variables, params)
     }
-    mutateRoomRead(variables: Types.RoomRead, params?: MutationParameters): Promise<Types.RoomRead> {
+    mutateRoomRead(variables: Types.RoomReadVariables, params?: MutationParameters): Promise<Types.RoomRead> {
         return this.mutate('RoomRead', variables, params)
     }
-    mutateRoomCreate(variables: Types.RoomCreate, params?: MutationParameters): Promise<Types.RoomCreate> {
+    mutateRoomCreate(variables: Types.RoomCreateVariables, params?: MutationParameters): Promise<Types.RoomCreate> {
         return this.mutate('RoomCreate', variables, params)
     }
-    mutateBuyPremiumChatSubscription(variables: Types.BuyPremiumChatSubscription, params?: MutationParameters): Promise<Types.BuyPremiumChatSubscription> {
+    mutateBuyPremiumChatSubscription(variables: Types.BuyPremiumChatSubscriptionVariables, params?: MutationParameters): Promise<Types.BuyPremiumChatSubscription> {
         return this.mutate('BuyPremiumChatSubscription', variables, params)
     }
-    mutateBuyPremiumChatPass(variables: Types.BuyPremiumChatPass, params?: MutationParameters): Promise<Types.BuyPremiumChatPass> {
+    mutateBuyPremiumChatPass(variables: Types.BuyPremiumChatPassVariables, params?: MutationParameters): Promise<Types.BuyPremiumChatPass> {
         return this.mutate('BuyPremiumChatPass', variables, params)
     }
-    mutateSetTyping(variables: Types.SetTyping, params?: MutationParameters): Promise<Types.SetTyping> {
+    mutateSetTyping(variables: Types.SetTypingVariables, params?: MutationParameters): Promise<Types.SetTyping> {
         return this.mutate('SetTyping', variables, params)
     }
-    mutateUnsetTyping(variables: Types.UnsetTyping, params?: MutationParameters): Promise<Types.UnsetTyping> {
+    mutateUnsetTyping(variables: Types.UnsetTypingVariables, params?: MutationParameters): Promise<Types.UnsetTyping> {
         return this.mutate('UnsetTyping', variables, params)
     }
-    mutateRoomAddMembers(variables: Types.RoomAddMembers, params?: MutationParameters): Promise<Types.RoomAddMembers> {
+    mutateRoomAddMembers(variables: Types.RoomAddMembersVariables, params?: MutationParameters): Promise<Types.RoomAddMembers> {
         return this.mutate('RoomAddMembers', variables, params)
     }
-    mutateRoomKick(variables: Types.RoomKick, params?: MutationParameters): Promise<Types.RoomKick> {
+    mutateRoomKick(variables: Types.RoomKickVariables, params?: MutationParameters): Promise<Types.RoomKick> {
         return this.mutate('RoomKick', variables, params)
     }
-    mutateRoomChangeRole(variables: Types.RoomChangeRole, params?: MutationParameters): Promise<Types.RoomChangeRole> {
+    mutateRoomChangeRole(variables: Types.RoomChangeRoleVariables, params?: MutationParameters): Promise<Types.RoomChangeRole> {
         return this.mutate('RoomChangeRole', variables, params)
     }
-    mutateRoomLeave(variables: Types.RoomLeave, params?: MutationParameters): Promise<Types.RoomLeave> {
+    mutateRoomLeave(variables: Types.RoomLeaveVariables, params?: MutationParameters): Promise<Types.RoomLeave> {
         return this.mutate('RoomLeave', variables, params)
     }
-    mutateChatDelete(variables: Types.ChatDelete, params?: MutationParameters): Promise<Types.ChatDelete> {
+    mutateChatDelete(variables: Types.ChatDeleteVariables, params?: MutationParameters): Promise<Types.ChatDelete> {
         return this.mutate('ChatDelete', variables, params)
     }
-    mutateRoomSettingsUpdate(variables: Types.RoomSettingsUpdate, params?: MutationParameters): Promise<Types.RoomSettingsUpdate> {
+    mutateRoomSettingsUpdate(variables: Types.RoomSettingsUpdateVariables, params?: MutationParameters): Promise<Types.RoomSettingsUpdate> {
         return this.mutate('RoomSettingsUpdate', variables, params)
     }
-    mutateRoomAlterFeatured(variables: Types.RoomAlterFeatured, params?: MutationParameters): Promise<Types.RoomAlterFeatured> {
+    mutateRoomAlterFeatured(variables: Types.RoomAlterFeaturedVariables, params?: MutationParameters): Promise<Types.RoomAlterFeatured> {
         return this.mutate('RoomAlterFeatured', variables, params)
     }
-    mutateRoomJoin(variables: Types.RoomJoin, params?: MutationParameters): Promise<Types.RoomJoin> {
+    mutateRoomJoin(variables: Types.RoomJoinVariables, params?: MutationParameters): Promise<Types.RoomJoin> {
         return this.mutate('RoomJoin', variables, params)
     }
-    mutateRoomsJoin(variables: Types.RoomsJoin, params?: MutationParameters): Promise<Types.RoomsJoin> {
+    mutateRoomsJoin(variables: Types.RoomsJoinVariables, params?: MutationParameters): Promise<Types.RoomsJoin> {
         return this.mutate('RoomsJoin', variables, params)
     }
-    mutateRoomsInviteUser(variables: Types.RoomsInviteUser, params?: MutationParameters): Promise<Types.RoomsInviteUser> {
+    mutateRoomsInviteUser(variables: Types.RoomsInviteUserVariables, params?: MutationParameters): Promise<Types.RoomsInviteUser> {
         return this.mutate('RoomsInviteUser', variables, params)
     }
-    mutateRoomJoinInviteLink(variables: Types.RoomJoinInviteLink, params?: MutationParameters): Promise<Types.RoomJoinInviteLink> {
+    mutateRoomJoinInviteLink(variables: Types.RoomJoinInviteLinkVariables, params?: MutationParameters): Promise<Types.RoomJoinInviteLink> {
         return this.mutate('RoomJoinInviteLink', variables, params)
     }
-    mutateRoomRenewInviteLink(variables: Types.RoomRenewInviteLink, params?: MutationParameters): Promise<Types.RoomRenewInviteLink> {
+    mutateRoomRenewInviteLink(variables: Types.RoomRenewInviteLinkVariables, params?: MutationParameters): Promise<Types.RoomRenewInviteLink> {
         return this.mutate('RoomRenewInviteLink', variables, params)
     }
-    mutateRoomUpdate(variables: Types.RoomUpdate, params?: MutationParameters): Promise<Types.RoomUpdate> {
+    mutateRoomUpdate(variables: Types.RoomUpdateVariables, params?: MutationParameters): Promise<Types.RoomUpdate> {
         return this.mutate('RoomUpdate', variables, params)
     }
-    mutateRoomDeleteMessage(variables: Types.RoomDeleteMessage, params?: MutationParameters): Promise<Types.RoomDeleteMessage> {
+    mutateRoomDeleteMessage(variables: Types.RoomDeleteMessageVariables, params?: MutationParameters): Promise<Types.RoomDeleteMessage> {
         return this.mutate('RoomDeleteMessage', variables, params)
     }
-    mutateRoomDeleteMessages(variables: Types.RoomDeleteMessages, params?: MutationParameters): Promise<Types.RoomDeleteMessages> {
+    mutateRoomDeleteMessages(variables: Types.RoomDeleteMessagesVariables, params?: MutationParameters): Promise<Types.RoomDeleteMessages> {
         return this.mutate('RoomDeleteMessages', variables, params)
     }
-    mutateRoomDeleteUrlAugmentation(variables: Types.RoomDeleteUrlAugmentation, params?: MutationParameters): Promise<Types.RoomDeleteUrlAugmentation> {
+    mutateRoomDeleteUrlAugmentation(variables: Types.RoomDeleteUrlAugmentationVariables, params?: MutationParameters): Promise<Types.RoomDeleteUrlAugmentation> {
         return this.mutate('RoomDeleteUrlAugmentation', variables, params)
     }
-    mutateRoomDelete(variables: Types.RoomDelete, params?: MutationParameters): Promise<Types.RoomDelete> {
+    mutateRoomDelete(variables: Types.RoomDeleteVariables, params?: MutationParameters): Promise<Types.RoomDelete> {
         return this.mutate('RoomDelete', variables, params)
     }
-    mutateEditMessage(variables: Types.EditMessage, params?: MutationParameters): Promise<Types.EditMessage> {
+    mutateEditMessage(variables: Types.EditMessageVariables, params?: MutationParameters): Promise<Types.EditMessage> {
         return this.mutate('EditMessage', variables, params)
     }
-    mutateUpdateWelcomeMessage(variables: Types.UpdateWelcomeMessage, params?: MutationParameters): Promise<Types.UpdateWelcomeMessage> {
+    mutateUpdateWelcomeMessage(variables: Types.UpdateWelcomeMessageVariables, params?: MutationParameters): Promise<Types.UpdateWelcomeMessage> {
         return this.mutate('UpdateWelcomeMessage', variables, params)
     }
-    mutateDeleteComment(variables: Types.DeleteComment, params?: MutationParameters): Promise<Types.DeleteComment> {
+    mutateDeleteComment(variables: Types.DeleteCommentVariables, params?: MutationParameters): Promise<Types.DeleteComment> {
         return this.mutate('DeleteComment', variables, params)
     }
-    mutateCommentSetReaction(variables: Types.CommentSetReaction, params?: MutationParameters): Promise<Types.CommentSetReaction> {
+    mutateCommentSetReaction(variables: Types.CommentSetReactionVariables, params?: MutationParameters): Promise<Types.CommentSetReaction> {
         return this.mutate('CommentSetReaction', variables, params)
     }
-    mutateCommentUnsetReaction(variables: Types.CommentUnsetReaction, params?: MutationParameters): Promise<Types.CommentUnsetReaction> {
+    mutateCommentUnsetReaction(variables: Types.CommentUnsetReactionVariables, params?: MutationParameters): Promise<Types.CommentUnsetReaction> {
         return this.mutate('CommentUnsetReaction', variables, params)
     }
-    mutateDeleteNotification(variables: Types.DeleteNotification, params?: MutationParameters): Promise<Types.DeleteNotification> {
+    mutateDeleteNotification(variables: Types.DeleteNotificationVariables, params?: MutationParameters): Promise<Types.DeleteNotification> {
         return this.mutate('DeleteNotification', variables, params)
     }
-    mutateSubscribeToComments(variables: Types.SubscribeToComments, params?: MutationParameters): Promise<Types.SubscribeToComments> {
+    mutateSubscribeToComments(variables: Types.SubscribeToCommentsVariables, params?: MutationParameters): Promise<Types.SubscribeToComments> {
         return this.mutate('SubscribeToComments', variables, params)
     }
-    mutateUnSubscribeFromComments(variables: Types.UnSubscribeFromComments, params?: MutationParameters): Promise<Types.UnSubscribeFromComments> {
+    mutateUnSubscribeFromComments(variables: Types.UnSubscribeFromCommentsVariables, params?: MutationParameters): Promise<Types.UnSubscribeFromComments> {
         return this.mutate('UnSubscribeFromComments', variables, params)
     }
-    mutateAddComment(variables: Types.AddComment, params?: MutationParameters): Promise<Types.AddComment> {
+    mutateAddComment(variables: Types.AddCommentVariables, params?: MutationParameters): Promise<Types.AddComment> {
         return this.mutate('AddComment', variables, params)
     }
-    mutateEditComment(variables: Types.EditComment, params?: MutationParameters): Promise<Types.EditComment> {
+    mutateEditComment(variables: Types.EditCommentVariables, params?: MutationParameters): Promise<Types.EditComment> {
         return this.mutate('EditComment', variables, params)
     }
-    mutateCommentDeleteUrlAugmentation(variables: Types.CommentDeleteUrlAugmentation, params?: MutationParameters): Promise<Types.CommentDeleteUrlAugmentation> {
+    mutateCommentDeleteUrlAugmentation(variables: Types.CommentDeleteUrlAugmentationVariables, params?: MutationParameters): Promise<Types.CommentDeleteUrlAugmentation> {
         return this.mutate('CommentDeleteUrlAugmentation', variables, params)
     }
-    mutateConferenceJoin(variables: Types.ConferenceJoin, params?: MutationParameters): Promise<Types.ConferenceJoin> {
+    mutateConferenceJoin(variables: Types.ConferenceJoinVariables, params?: MutationParameters): Promise<Types.ConferenceJoin> {
         return this.mutate('ConferenceJoin', variables, params)
     }
-    mutateconferenceAddScreenShare(variables: Types.conferenceAddScreenShare, params?: MutationParameters): Promise<Types.conferenceAddScreenShare> {
+    mutateconferenceAddScreenShare(variables: Types.conferenceAddScreenShareVariables, params?: MutationParameters): Promise<Types.conferenceAddScreenShare> {
         return this.mutate('conferenceAddScreenShare', variables, params)
     }
-    mutateconferenceRemoveScreenShare(variables: Types.conferenceRemoveScreenShare, params?: MutationParameters): Promise<Types.conferenceRemoveScreenShare> {
+    mutateconferenceRemoveScreenShare(variables: Types.conferenceRemoveScreenShareVariables, params?: MutationParameters): Promise<Types.conferenceRemoveScreenShare> {
         return this.mutate('conferenceRemoveScreenShare', variables, params)
     }
-    mutateconferenceAlterMediaState(variables: Types.conferenceAlterMediaState, params?: MutationParameters): Promise<Types.conferenceAlterMediaState> {
+    mutateconferenceAlterMediaState(variables: Types.conferenceAlterMediaStateVariables, params?: MutationParameters): Promise<Types.conferenceAlterMediaState> {
         return this.mutate('conferenceAlterMediaState', variables, params)
     }
-    mutateconferenceRequestLocalMediaChange(variables: Types.conferenceRequestLocalMediaChange, params?: MutationParameters): Promise<Types.conferenceRequestLocalMediaChange> {
+    mutateconferenceRequestLocalMediaChange(variables: Types.conferenceRequestLocalMediaChangeVariables, params?: MutationParameters): Promise<Types.conferenceRequestLocalMediaChange> {
         return this.mutate('conferenceRequestLocalMediaChange', variables, params)
     }
-    mutateConferenceLeave(variables: Types.ConferenceLeave, params?: MutationParameters): Promise<Types.ConferenceLeave> {
+    mutateConferenceLeave(variables: Types.ConferenceLeaveVariables, params?: MutationParameters): Promise<Types.ConferenceLeave> {
         return this.mutate('ConferenceLeave', variables, params)
     }
-    mutateConferenceKeepAlive(variables: Types.ConferenceKeepAlive, params?: MutationParameters): Promise<Types.ConferenceKeepAlive> {
+    mutateConferenceKeepAlive(variables: Types.ConferenceKeepAliveVariables, params?: MutationParameters): Promise<Types.ConferenceKeepAlive> {
         return this.mutate('ConferenceKeepAlive', variables, params)
     }
-    mutateMediaOffer(variables: Types.MediaOffer, params?: MutationParameters): Promise<Types.MediaOffer> {
+    mutateMediaOffer(variables: Types.MediaOfferVariables, params?: MutationParameters): Promise<Types.MediaOffer> {
         return this.mutate('MediaOffer', variables, params)
     }
-    mutateMediaAnswer(variables: Types.MediaAnswer, params?: MutationParameters): Promise<Types.MediaAnswer> {
+    mutateMediaAnswer(variables: Types.MediaAnswerVariables, params?: MutationParameters): Promise<Types.MediaAnswer> {
         return this.mutate('MediaAnswer', variables, params)
     }
-    mutateMediaCandidate(variables: Types.MediaCandidate, params?: MutationParameters): Promise<Types.MediaCandidate> {
+    mutateMediaCandidate(variables: Types.MediaCandidateVariables, params?: MutationParameters): Promise<Types.MediaCandidate> {
         return this.mutate('MediaCandidate', variables, params)
     }
-    mutateMediaFailed(variables: Types.MediaFailed, params?: MutationParameters): Promise<Types.MediaFailed> {
+    mutateMediaFailed(variables: Types.MediaFailedVariables, params?: MutationParameters): Promise<Types.MediaFailed> {
         return this.mutate('MediaFailed', variables, params)
     }
-    mutatePhonebookAdd(variables: Types.PhonebookAdd, params?: MutationParameters): Promise<Types.PhonebookAdd> {
+    mutatePhonebookAdd(variables: Types.PhonebookAddVariables, params?: MutationParameters): Promise<Types.PhonebookAdd> {
         return this.mutate('PhonebookAdd', variables, params)
     }
-    mutateAddToContacts(variables: Types.AddToContacts, params?: MutationParameters): Promise<Types.AddToContacts> {
+    mutateAddToContacts(variables: Types.AddToContactsVariables, params?: MutationParameters): Promise<Types.AddToContacts> {
         return this.mutate('AddToContacts', variables, params)
     }
-    mutateRemoveFromContacts(variables: Types.RemoveFromContacts, params?: MutationParameters): Promise<Types.RemoveFromContacts> {
+    mutateRemoveFromContacts(variables: Types.RemoveFromContactsVariables, params?: MutationParameters): Promise<Types.RemoveFromContacts> {
         return this.mutate('RemoveFromContacts', variables, params)
     }
     mutatePostCreateDraft(params?: MutationParameters): Promise<Types.PostCreateDraft> {
         return this.mutate('PostCreateDraft', undefined, params)
     }
-    mutatePostDraftUpdate(variables: Types.PostDraftUpdate, params?: MutationParameters): Promise<Types.PostDraftUpdate> {
+    mutatePostDraftUpdate(variables: Types.PostDraftUpdateVariables, params?: MutationParameters): Promise<Types.PostDraftUpdate> {
         return this.mutate('PostDraftUpdate', variables, params)
     }
-    mutatePostPublish(variables: Types.PostPublish, params?: MutationParameters): Promise<Types.PostPublish> {
+    mutatePostPublish(variables: Types.PostPublishVariables, params?: MutationParameters): Promise<Types.PostPublish> {
         return this.mutate('PostPublish', variables, params)
     }
-    mutateBetaSubmitNextDiscover(variables: Types.BetaSubmitNextDiscover, params?: MutationParameters): Promise<Types.BetaSubmitNextDiscover> {
+    mutateBetaSubmitNextDiscover(variables: Types.BetaSubmitNextDiscoverVariables, params?: MutationParameters): Promise<Types.BetaSubmitNextDiscover> {
         return this.mutate('BetaSubmitNextDiscover', variables, params)
     }
-    mutateBetaDiscoverSkip(variables: Types.BetaDiscoverSkip, params?: MutationParameters): Promise<Types.BetaDiscoverSkip> {
+    mutateBetaDiscoverSkip(variables: Types.BetaDiscoverSkipVariables, params?: MutationParameters): Promise<Types.BetaDiscoverSkip> {
         return this.mutate('BetaDiscoverSkip', variables, params)
     }
-    mutateDiscoverCollectionsCreate(variables: Types.DiscoverCollectionsCreate, params?: MutationParameters): Promise<Types.DiscoverCollectionsCreate> {
+    mutateDiscoverCollectionsCreate(variables: Types.DiscoverCollectionsCreateVariables, params?: MutationParameters): Promise<Types.DiscoverCollectionsCreate> {
         return this.mutate('DiscoverCollectionsCreate', variables, params)
     }
-    mutateDiscoverCollectionsUpdate(variables: Types.DiscoverCollectionsUpdate, params?: MutationParameters): Promise<Types.DiscoverCollectionsUpdate> {
+    mutateDiscoverCollectionsUpdate(variables: Types.DiscoverCollectionsUpdateVariables, params?: MutationParameters): Promise<Types.DiscoverCollectionsUpdate> {
         return this.mutate('DiscoverCollectionsUpdate', variables, params)
     }
-    mutateDiscoverCollectionSetShortname(variables: Types.DiscoverCollectionSetShortname, params?: MutationParameters): Promise<Types.DiscoverCollectionSetShortname> {
+    mutateDiscoverCollectionSetShortname(variables: Types.DiscoverCollectionSetShortnameVariables, params?: MutationParameters): Promise<Types.DiscoverCollectionSetShortname> {
         return this.mutate('DiscoverCollectionSetShortname', variables, params)
     }
-    mutateDiscoverCollectionsDelete(variables: Types.DiscoverCollectionsDelete, params?: MutationParameters): Promise<Types.DiscoverCollectionsDelete> {
+    mutateDiscoverCollectionsDelete(variables: Types.DiscoverCollectionsDeleteVariables, params?: MutationParameters): Promise<Types.DiscoverCollectionsDelete> {
         return this.mutate('DiscoverCollectionsDelete', variables, params)
     }
-    mutateDiscoverEditorsChoiceCreate(variables: Types.DiscoverEditorsChoiceCreate, params?: MutationParameters): Promise<Types.DiscoverEditorsChoiceCreate> {
+    mutateDiscoverEditorsChoiceCreate(variables: Types.DiscoverEditorsChoiceCreateVariables, params?: MutationParameters): Promise<Types.DiscoverEditorsChoiceCreate> {
         return this.mutate('DiscoverEditorsChoiceCreate', variables, params)
     }
-    mutateDiscoverEditorsChoiceUpdate(variables: Types.DiscoverEditorsChoiceUpdate, params?: MutationParameters): Promise<Types.DiscoverEditorsChoiceUpdate> {
+    mutateDiscoverEditorsChoiceUpdate(variables: Types.DiscoverEditorsChoiceUpdateVariables, params?: MutationParameters): Promise<Types.DiscoverEditorsChoiceUpdate> {
         return this.mutate('DiscoverEditorsChoiceUpdate', variables, params)
     }
-    mutateDiscoverEditorsChoiceDelete(variables: Types.DiscoverEditorsChoiceDelete, params?: MutationParameters): Promise<Types.DiscoverEditorsChoiceDelete> {
+    mutateDiscoverEditorsChoiceDelete(variables: Types.DiscoverEditorsChoiceDeleteVariables, params?: MutationParameters): Promise<Types.DiscoverEditorsChoiceDelete> {
         return this.mutate('DiscoverEditorsChoiceDelete', variables, params)
     }
-    mutateCreateCardSetupIntent(variables: Types.CreateCardSetupIntent, params?: MutationParameters): Promise<Types.CreateCardSetupIntent> {
+    mutateCreateCardSetupIntent(variables: Types.CreateCardSetupIntentVariables, params?: MutationParameters): Promise<Types.CreateCardSetupIntent> {
         return this.mutate('CreateCardSetupIntent', variables, params)
     }
-    mutateCommitCardSetupIntent(variables: Types.CommitCardSetupIntent, params?: MutationParameters): Promise<Types.CommitCardSetupIntent> {
+    mutateCommitCardSetupIntent(variables: Types.CommitCardSetupIntentVariables, params?: MutationParameters): Promise<Types.CommitCardSetupIntent> {
         return this.mutate('CommitCardSetupIntent', variables, params)
     }
-    mutateRemoveCard(variables: Types.RemoveCard, params?: MutationParameters): Promise<Types.RemoveCard> {
+    mutateRemoveCard(variables: Types.RemoveCardVariables, params?: MutationParameters): Promise<Types.RemoveCard> {
         return this.mutate('RemoveCard', variables, params)
     }
-    mutateMakeCardDefault(variables: Types.MakeCardDefault, params?: MutationParameters): Promise<Types.MakeCardDefault> {
+    mutateMakeCardDefault(variables: Types.MakeCardDefaultVariables, params?: MutationParameters): Promise<Types.MakeCardDefault> {
         return this.mutate('MakeCardDefault', variables, params)
     }
-    mutateCreateDepositIntent(variables: Types.CreateDepositIntent, params?: MutationParameters): Promise<Types.CreateDepositIntent> {
+    mutateCreateDepositIntent(variables: Types.CreateDepositIntentVariables, params?: MutationParameters): Promise<Types.CreateDepositIntent> {
         return this.mutate('CreateDepositIntent', variables, params)
     }
-    mutatePaymentIntentCommit(variables: Types.PaymentIntentCommit, params?: MutationParameters): Promise<Types.PaymentIntentCommit> {
+    mutatePaymentIntentCommit(variables: Types.PaymentIntentCommitVariables, params?: MutationParameters): Promise<Types.PaymentIntentCommit> {
         return this.mutate('PaymentIntentCommit', variables, params)
     }
-    mutatePaymentIntentCancel(variables: Types.PaymentIntentCancel, params?: MutationParameters): Promise<Types.PaymentIntentCancel> {
+    mutatePaymentIntentCancel(variables: Types.PaymentIntentCancelVariables, params?: MutationParameters): Promise<Types.PaymentIntentCancel> {
         return this.mutate('PaymentIntentCancel', variables, params)
     }
-    mutateCancelSubscription(variables: Types.CancelSubscription, params?: MutationParameters): Promise<Types.CancelSubscription> {
+    mutateCancelSubscription(variables: Types.CancelSubscriptionVariables, params?: MutationParameters): Promise<Types.CancelSubscription> {
         return this.mutate('CancelSubscription', variables, params)
     }
-    mutateSendDonation(variables: Types.SendDonation, params?: MutationParameters): Promise<Types.SendDonation> {
+    mutateSendDonation(variables: Types.SendDonationVariables, params?: MutationParameters): Promise<Types.SendDonation> {
         return this.mutate('SendDonation', variables, params)
     }
     mutateOnLogout(params?: MutationParameters): Promise<Types.OnLogout> {
         return this.mutate('OnLogout', undefined, params)
     }
-    mutateMyNotificationCenterMarkSeqRead(variables: Types.MyNotificationCenterMarkSeqRead, params?: MutationParameters): Promise<Types.MyNotificationCenterMarkSeqRead> {
+    mutateMyNotificationCenterMarkSeqRead(variables: Types.MyNotificationCenterMarkSeqReadVariables, params?: MutationParameters): Promise<Types.MyNotificationCenterMarkSeqRead> {
         return this.mutate('MyNotificationCenterMarkSeqRead', variables, params)
     }
-    mutateReadNotification(variables: Types.ReadNotification, params?: MutationParameters): Promise<Types.ReadNotification> {
+    mutateReadNotification(variables: Types.ReadNotificationVariables, params?: MutationParameters): Promise<Types.ReadNotification> {
         return this.mutate('ReadNotification', variables, params)
     }
-    mutateUpdateOrganization(variables: Types.UpdateOrganization, params?: MutationParameters): Promise<Types.UpdateOrganization> {
+    mutateUpdateOrganization(variables: Types.UpdateOrganizationVariables, params?: MutationParameters): Promise<Types.UpdateOrganization> {
         return this.mutate('UpdateOrganization', variables, params)
     }
-    mutateOrganizationChangeMemberRole(variables: Types.OrganizationChangeMemberRole, params?: MutationParameters): Promise<Types.OrganizationChangeMemberRole> {
+    mutateOrganizationChangeMemberRole(variables: Types.OrganizationChangeMemberRoleVariables, params?: MutationParameters): Promise<Types.OrganizationChangeMemberRole> {
         return this.mutate('OrganizationChangeMemberRole', variables, params)
     }
-    mutateOrganizationAddMember(variables: Types.OrganizationAddMember, params?: MutationParameters): Promise<Types.OrganizationAddMember> {
+    mutateOrganizationAddMember(variables: Types.OrganizationAddMemberVariables, params?: MutationParameters): Promise<Types.OrganizationAddMember> {
         return this.mutate('OrganizationAddMember', variables, params)
     }
-    mutateOrganizationCreatePublicInvite(variables: Types.OrganizationCreatePublicInvite, params?: MutationParameters): Promise<Types.OrganizationCreatePublicInvite> {
+    mutateOrganizationCreatePublicInvite(variables: Types.OrganizationCreatePublicInviteVariables, params?: MutationParameters): Promise<Types.OrganizationCreatePublicInvite> {
         return this.mutate('OrganizationCreatePublicInvite', variables, params)
     }
-    mutateDeleteOrganization(variables: Types.DeleteOrganization, params?: MutationParameters): Promise<Types.DeleteOrganization> {
+    mutateDeleteOrganization(variables: Types.DeleteOrganizationVariables, params?: MutationParameters): Promise<Types.DeleteOrganization> {
         return this.mutate('DeleteOrganization', variables, params)
     }
-    mutateOrganizationMemberRemove(variables: Types.OrganizationMemberRemove, params?: MutationParameters): Promise<Types.OrganizationMemberRemove> {
+    mutateOrganizationMemberRemove(variables: Types.OrganizationMemberRemoveVariables, params?: MutationParameters): Promise<Types.OrganizationMemberRemove> {
         return this.mutate('OrganizationMemberRemove', variables, params)
     }
-    mutateOrganizationRequestMembersExport(variables: Types.OrganizationRequestMembersExport, params?: MutationParameters): Promise<Types.OrganizationRequestMembersExport> {
+    mutateOrganizationRequestMembersExport(variables: Types.OrganizationRequestMembersExportVariables, params?: MutationParameters): Promise<Types.OrganizationRequestMembersExport> {
         return this.mutate('OrganizationRequestMembersExport', variables, params)
     }
-    mutateDebugMails(variables: Types.DebugMails, params?: MutationParameters): Promise<Types.DebugMails> {
+    mutateDebugMails(variables: Types.DebugMailsVariables, params?: MutationParameters): Promise<Types.DebugMails> {
         return this.mutate('DebugMails', variables, params)
     }
-    mutateSuperAdminAdd(variables: Types.SuperAdminAdd, params?: MutationParameters): Promise<Types.SuperAdminAdd> {
+    mutateSuperAdminAdd(variables: Types.SuperAdminAddVariables, params?: MutationParameters): Promise<Types.SuperAdminAdd> {
         return this.mutate('SuperAdminAdd', variables, params)
     }
-    mutateSuperAdminRemove(variables: Types.SuperAdminRemove, params?: MutationParameters): Promise<Types.SuperAdminRemove> {
+    mutateSuperAdminRemove(variables: Types.SuperAdminRemoveVariables, params?: MutationParameters): Promise<Types.SuperAdminRemove> {
         return this.mutate('SuperAdminRemove', variables, params)
     }
-    mutateReportContent(variables: Types.ReportContent, params?: MutationParameters): Promise<Types.ReportContent> {
+    mutateReportContent(variables: Types.ReportContentVariables, params?: MutationParameters): Promise<Types.ReportContent> {
         return this.mutate('ReportContent', variables, params)
     }
-    mutateProfileUpdate(variables: Types.ProfileUpdate, params?: MutationParameters): Promise<Types.ProfileUpdate> {
+    mutateProfileUpdate(variables: Types.ProfileUpdateVariables, params?: MutationParameters): Promise<Types.ProfileUpdate> {
         return this.mutate('ProfileUpdate', variables, params)
     }
-    mutateProfileCreate(variables: Types.ProfileCreate, params?: MutationParameters): Promise<Types.ProfileCreate> {
+    mutateProfileCreate(variables: Types.ProfileCreateVariables, params?: MutationParameters): Promise<Types.ProfileCreate> {
         return this.mutate('ProfileCreate', variables, params)
     }
-    mutateSettingsUpdate(variables: Types.SettingsUpdate, params?: MutationParameters): Promise<Types.SettingsUpdate> {
+    mutateSettingsUpdate(variables: Types.SettingsUpdateVariables, params?: MutationParameters): Promise<Types.SettingsUpdate> {
         return this.mutate('SettingsUpdate', variables, params)
     }
-    mutateSetOrgShortname(variables: Types.SetOrgShortname, params?: MutationParameters): Promise<Types.SetOrgShortname> {
+    mutateSetOrgShortname(variables: Types.SetOrgShortnameVariables, params?: MutationParameters): Promise<Types.SetOrgShortname> {
         return this.mutate('SetOrgShortname', variables, params)
     }
-    mutateSetUserShortname(variables: Types.SetUserShortname, params?: MutationParameters): Promise<Types.SetUserShortname> {
+    mutateSetUserShortname(variables: Types.SetUserShortnameVariables, params?: MutationParameters): Promise<Types.SetUserShortname> {
         return this.mutate('SetUserShortname', variables, params)
     }
-    mutateSetFeedChannelShortname(variables: Types.SetFeedChannelShortname, params?: MutationParameters): Promise<Types.SetFeedChannelShortname> {
+    mutateSetFeedChannelShortname(variables: Types.SetFeedChannelShortnameVariables, params?: MutationParameters): Promise<Types.SetFeedChannelShortname> {
         return this.mutate('SetFeedChannelShortname', variables, params)
     }
-    mutateSetRoomShortname(variables: Types.SetRoomShortname, params?: MutationParameters): Promise<Types.SetRoomShortname> {
+    mutateSetRoomShortname(variables: Types.SetRoomShortnameVariables, params?: MutationParameters): Promise<Types.SetRoomShortname> {
         return this.mutate('SetRoomShortname', variables, params)
     }
-    mutateStickerPackAddToCollection(variables: Types.StickerPackAddToCollection, params?: MutationParameters): Promise<Types.StickerPackAddToCollection> {
+    mutateStickerPackAddToCollection(variables: Types.StickerPackAddToCollectionVariables, params?: MutationParameters): Promise<Types.StickerPackAddToCollection> {
         return this.mutate('StickerPackAddToCollection', variables, params)
     }
-    mutateStickerPackRemoveFromCollection(variables: Types.StickerPackRemoveFromCollection, params?: MutationParameters): Promise<Types.StickerPackRemoveFromCollection> {
+    mutateStickerPackRemoveFromCollection(variables: Types.StickerPackRemoveFromCollectionVariables, params?: MutationParameters): Promise<Types.StickerPackRemoveFromCollection> {
         return this.mutate('StickerPackRemoveFromCollection', variables, params)
     }
-    mutateSendSticker(variables: Types.SendSticker, params?: MutationParameters): Promise<Types.SendSticker> {
+    mutateSendSticker(variables: Types.SendStickerVariables, params?: MutationParameters): Promise<Types.SendSticker> {
         return this.mutate('SendSticker', variables, params)
     }
-    mutateAddStickerComment(variables: Types.AddStickerComment, params?: MutationParameters): Promise<Types.AddStickerComment> {
+    mutateAddStickerComment(variables: Types.AddStickerCommentVariables, params?: MutationParameters): Promise<Types.AddStickerComment> {
         return this.mutate('AddStickerComment', variables, params)
     }
-    mutateStickerPackCreate(variables: Types.StickerPackCreate, params?: MutationParameters): Promise<Types.StickerPackCreate> {
+    mutateStickerPackCreate(variables: Types.StickerPackCreateVariables, params?: MutationParameters): Promise<Types.StickerPackCreate> {
         return this.mutate('StickerPackCreate', variables, params)
     }
-    mutateStickerPackUpdate(variables: Types.StickerPackUpdate, params?: MutationParameters): Promise<Types.StickerPackUpdate> {
+    mutateStickerPackUpdate(variables: Types.StickerPackUpdateVariables, params?: MutationParameters): Promise<Types.StickerPackUpdate> {
         return this.mutate('StickerPackUpdate', variables, params)
     }
-    mutateAddSticker(variables: Types.AddSticker, params?: MutationParameters): Promise<Types.AddSticker> {
+    mutateAddSticker(variables: Types.AddStickerVariables, params?: MutationParameters): Promise<Types.AddSticker> {
         return this.mutate('AddSticker', variables, params)
     }
-    mutateRemoveSticker(variables: Types.RemoveSticker, params?: MutationParameters): Promise<Types.RemoveSticker> {
+    mutateRemoveSticker(variables: Types.RemoveStickerVariables, params?: MutationParameters): Promise<Types.RemoveSticker> {
         return this.mutate('RemoveSticker', variables, params)
     }
     mutateMarkStickersViewed(params?: MutationParameters): Promise<Types.MarkStickersViewed> {
         return this.mutate('MarkStickersViewed', undefined, params)
     }
-    mutatePersistEvents(variables: Types.PersistEvents, params?: MutationParameters): Promise<Types.PersistEvents> {
+    mutatePersistEvents(variables: Types.PersistEventsVariables, params?: MutationParameters): Promise<Types.PersistEvents> {
         return this.mutate('PersistEvents', variables, params)
     }
-    mutateDeleteUser(variables: Types.DeleteUser, params?: MutationParameters): Promise<Types.DeleteUser> {
+    mutateDeleteUser(variables: Types.DeleteUserVariables, params?: MutationParameters): Promise<Types.DeleteUser> {
         return this.mutate('DeleteUser', variables, params)
     }
     mutateBetaNextDiscoverReset(params?: MutationParameters): Promise<Types.BetaNextDiscoverReset> {
         return this.mutate('BetaNextDiscoverReset', undefined, params)
     }
-    mutateSocialFollow(variables: Types.SocialFollow, params?: MutationParameters): Promise<Types.SocialFollow> {
+    mutateSocialFollow(variables: Types.SocialFollowVariables, params?: MutationParameters): Promise<Types.SocialFollow> {
         return this.mutate('SocialFollow', variables, params)
     }
-    mutateSocialUnfollow(variables: Types.SocialUnfollow, params?: MutationParameters): Promise<Types.SocialUnfollow> {
+    mutateSocialUnfollow(variables: Types.SocialUnfollowVariables, params?: MutationParameters): Promise<Types.SocialUnfollow> {
         return this.mutate('SocialUnfollow', variables, params)
     }
-    mutateVoiceChatCreate(variables: Types.VoiceChatCreate, params?: MutationParameters): Promise<Types.VoiceChatCreate> {
+    mutateVoiceChatCreate(variables: Types.VoiceChatCreateVariables, params?: MutationParameters): Promise<Types.VoiceChatCreate> {
         return this.mutate('VoiceChatCreate', variables, params)
     }
-    mutateVoiceChatCreateInChat(variables: Types.VoiceChatCreateInChat, params?: MutationParameters): Promise<Types.VoiceChatCreateInChat> {
+    mutateVoiceChatCreateInChat(variables: Types.VoiceChatCreateInChatVariables, params?: MutationParameters): Promise<Types.VoiceChatCreateInChat> {
         return this.mutate('VoiceChatCreateInChat', variables, params)
     }
-    mutateVoiceChatJoin(variables: Types.VoiceChatJoin, params?: MutationParameters): Promise<Types.VoiceChatJoin> {
+    mutateVoiceChatJoin(variables: Types.VoiceChatJoinVariables, params?: MutationParameters): Promise<Types.VoiceChatJoin> {
         return this.mutate('VoiceChatJoin', variables, params)
     }
-    mutateVoiceChatUpdate(variables: Types.VoiceChatUpdate, params?: MutationParameters): Promise<Types.VoiceChatUpdate> {
+    mutateVoiceChatUpdate(variables: Types.VoiceChatUpdateVariables, params?: MutationParameters): Promise<Types.VoiceChatUpdate> {
         return this.mutate('VoiceChatUpdate', variables, params)
     }
-    mutateVoiceChatEnd(variables: Types.VoiceChatEnd, params?: MutationParameters): Promise<Types.VoiceChatEnd> {
+    mutateVoiceChatEnd(variables: Types.VoiceChatEndVariables, params?: MutationParameters): Promise<Types.VoiceChatEnd> {
         return this.mutate('VoiceChatEnd', variables, params)
     }
-    mutateVoiceChatLeave(variables: Types.VoiceChatLeave, params?: MutationParameters): Promise<Types.VoiceChatLeave> {
+    mutateVoiceChatLeave(variables: Types.VoiceChatLeaveVariables, params?: MutationParameters): Promise<Types.VoiceChatLeave> {
         return this.mutate('VoiceChatLeave', variables, params)
     }
-    mutateVoiceChatUpdateAdmin(variables: Types.VoiceChatUpdateAdmin, params?: MutationParameters): Promise<Types.VoiceChatUpdateAdmin> {
+    mutateVoiceChatUpdateAdmin(variables: Types.VoiceChatUpdateAdminVariables, params?: MutationParameters): Promise<Types.VoiceChatUpdateAdmin> {
         return this.mutate('VoiceChatUpdateAdmin', variables, params)
     }
-    mutateVoiceChatKick(variables: Types.VoiceChatKick, params?: MutationParameters): Promise<Types.VoiceChatKick> {
+    mutateVoiceChatKick(variables: Types.VoiceChatKickVariables, params?: MutationParameters): Promise<Types.VoiceChatKick> {
         return this.mutate('VoiceChatKick', variables, params)
     }
-    mutateVoiceChatPromote(variables: Types.VoiceChatPromote, params?: MutationParameters): Promise<Types.VoiceChatPromote> {
+    mutateVoiceChatPromote(variables: Types.VoiceChatPromoteVariables, params?: MutationParameters): Promise<Types.VoiceChatPromote> {
         return this.mutate('VoiceChatPromote', variables, params)
     }
-    mutateVoiceChatDemote(variables: Types.VoiceChatDemote, params?: MutationParameters): Promise<Types.VoiceChatDemote> {
+    mutateVoiceChatDemote(variables: Types.VoiceChatDemoteVariables, params?: MutationParameters): Promise<Types.VoiceChatDemote> {
         return this.mutate('VoiceChatDemote', variables, params)
     }
-    mutateVoiceChatRaiseHand(variables: Types.VoiceChatRaiseHand, params?: MutationParameters): Promise<Types.VoiceChatRaiseHand> {
+    mutateVoiceChatRaiseHand(variables: Types.VoiceChatRaiseHandVariables, params?: MutationParameters): Promise<Types.VoiceChatRaiseHand> {
         return this.mutate('VoiceChatRaiseHand', variables, params)
     }
-    mutateVoiceChatSetPinnedMessage(variables: Types.VoiceChatSetPinnedMessage, params?: MutationParameters): Promise<Types.VoiceChatSetPinnedMessage> {
+    mutateVoiceChatSetPinnedMessage(variables: Types.VoiceChatSetPinnedMessageVariables, params?: MutationParameters): Promise<Types.VoiceChatSetPinnedMessage> {
         return this.mutate('VoiceChatSetPinnedMessage', variables, params)
     }
-    mutateVoiceChatDeletePinnedMessage(variables: Types.VoiceChatDeletePinnedMessage, params?: MutationParameters): Promise<Types.VoiceChatDeletePinnedMessage> {
+    mutateVoiceChatDeletePinnedMessage(variables: Types.VoiceChatDeletePinnedMessageVariables, params?: MutationParameters): Promise<Types.VoiceChatDeletePinnedMessage> {
         return this.mutate('VoiceChatDeletePinnedMessage', variables, params)
     }
     subscribeSettingsWatch(handler: GraphqlSubscriptionHandler<Types.SettingsWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.SettingsWatch> {
