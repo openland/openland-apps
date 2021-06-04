@@ -3422,10 +3422,10 @@
   resolved "https://registry.yarnpkg.com/@openland/spacex-cli/-/spacex-cli-3.1.1.tgz#1a187c68a8dcc646a9126edf7bd29e56bc992839"
   integrity sha512-IUNOBqGqR5qD2S5/AbFw/d7RdmKTgVNSVKD5DTLtP89oGoao9rMT0Q8Q1QHb1UwkQ5z3kiKut5RNBcrYn7fM2Q==
 
-"@openland/spacex-cli@^4.1.2":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@openland/spacex-cli/-/spacex-cli-4.1.2.tgz#799f2ab3cae693cdc90993057b2c115987705ae3"
-  integrity sha512-Uyri0+wo0a0aasFg8BEyCO5jIjYAR1LciH3hwrPVDKhnSjk9z8xby/7r0UBR1iSe0GQC032GR8nWve4RZ+92GQ==
+"@openland/spacex-cli@^4.1.3":
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/@openland/spacex-cli/-/spacex-cli-4.1.3.tgz#837a7599589a77cd3000a8a4feff0eafaea100f8"
+  integrity sha512-ospNeRXYQElIFQn8IeOebMzXdXpkU6pyJo4D+9V9a6lcqxgSHGrP01pAyw9SnZtQwzXVn72ounk2O/lNYecxlA==
   dependencies:
     "@graphql-tools/optimize" "1.0.1"
     "@graphql-tools/relay-operation-optimizer" "6.3.0"
@@ -3436,12 +3436,12 @@
     ora "5.4.0"
     prompts "2.4.1"
 
-"@openland/spacex@4.1.2":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@openland/spacex/-/spacex-4.1.2.tgz#2cf356cc3fee5c3950833ceb106e91c125c097ec"
-  integrity sha512-kkK5CgXtEj3yPiv6vn13PWbak63UeqvY5Sl3/dAqGWki2siBoT0IuwDi7HLfrbcbSW1BUxKRRRdaZ8yY7AepTA==
+"@openland/spacex@4.1.3":
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/@openland/spacex/-/spacex-4.1.3.tgz#fe1a97e1462c85413357f6620cd258e4b7648b4f"
+  integrity sha512-COWEF82VBQTeR76PpZLENOuvnPEM7O6n+ssKuSqX8SicqrtaQSUVyAML90hzU+NOYljeP1b/bJNtL0p7ODtYbA==
   dependencies:
-    "@openland/spacex-cli" "^4.1.2"
+    "@openland/spacex-cli" "^4.1.3"
     isomorphic-ws "4.0.1"
     uuid "3.4.0"
     ws "7.2.1"
