@@ -8,10 +8,10 @@ export const createEngineWeb = (endpoint: string, generation: number, token?: st
     let persistence: PersistenceProvider | undefined = undefined;
 
     // Enable experimental persistence
-    // if (token && (canUseDOM || isWebWorker)) {
-    //     let storage = openWebStorage('graphql', generation);
-    //     persistence = createPersistenceProvider(storage);
-    // }
+    if (token && (canUseDOM || isWebWorker)) {
+        let storage = openWebStorage('graphql', generation);
+        persistence = createPersistenceProvider(storage);
+    }
 
     return new WebEngine({
         definitions: require('./spacex.descriptor.json'),
