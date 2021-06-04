@@ -172,7 +172,7 @@ const DialogsComponent = React.memo((props: PageProps) => {
                 ? 'Groups'
                 : dialogFilter === 'private'
                     ? 'Direct'
-                    : t('headerTitle.Chats', 'Chats');
+                    : t('chat_plural', 'Chats');
 
     const enableExperimental = false;
     // !props.router.params.title ||

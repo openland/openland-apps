@@ -9,6 +9,7 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import Version from 'react-native-version-number';
 import { SRouterContext } from 'react-native-s/SRouterContext';
+import { useText } from 'openland-mobile/text/useText';
 
 const styles = StyleSheet.create({
     image: {
@@ -37,6 +38,7 @@ const styles = StyleSheet.create({
 const SettingsAboutComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const router = React.useContext(SRouterContext)!;
+    const { t } = useText();
 
     const buildNumber = Version.appVersion;
 
@@ -45,32 +47,32 @@ const SettingsAboutComponent = React.memo((props: PageProps) => {
             <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]}>
                 <View style={styles.hero}>
                     <Image style={styles.image} source={require('assets/ic-app-icon-192.png')} />
-                    <Text style={[styles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>Openland</Text>
-                    <Text style={[styles.subtitle, { color: theme.foregroundTertiary }]} allowFontScaling={false}>Version {buildNumber}</Text>
+                    <Text style={[styles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>{t('openland', 'Openland')}</Text>
+                    <Text style={[styles.subtitle, { color: theme.foregroundTertiary }]} allowFontScaling={false}>{t('version', 'Version')} {buildNumber}</Text>
                 </View>
             </LinearGradient>
             <View style={{ marginTop: 16 }}>
                 <ZListItem
                     leftIcon={require('assets/ic-info-24.png')}
-                    text='About Openland'
+                    text={t('aboutOpenland', 'About Openland')}
                     small={true}
                     onPress={() => Linking.openURL('https://openland.com/about')}
                 />
                 <ZListItem
                     leftIcon={require('assets/ic-terms-24.png')}
-                    text='Terms of service'
+                    text={t('termsOfService', 'Terms of service')}
                     small={true}
                     onPress={() => Linking.openURL('https://openland.com/terms')}
                 />
                 <ZListItem
                     leftIcon={require('assets/ic-lock-24.png')}
-                    text='Privacy policy'
+                    text={t('privacyPolicy', 'Privacy policy')}
                     small={true}
                     onPress={() => Linking.openURL('https://openland.com/privacy')}
                 />
                 <ZListItem
                     leftIcon={require('assets/ic-copyright-24.png')}
-                    text='Licenses'
+                    text={t('licenses', 'Licenses')}
                     small={true}
                     onPress={() => router.push('SettingsLicenses')}
                 />

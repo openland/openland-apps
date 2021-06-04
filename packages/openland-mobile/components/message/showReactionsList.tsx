@@ -19,6 +19,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ZUserView } from '../ZUserView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZLoader } from '../ZLoader';
+import { useText } from 'openland-mobile/text/useText';
 
 interface ReactionsListProps {
     ctx: ZModalController;
@@ -26,14 +27,20 @@ interface ReactionsListProps {
     isComment?: boolean;
 }
 
-const ReactionLabel: { [key in MessageReactionType]: string } = {
-    ANGRY: 'Angry',
-    CRYING: 'Sad',
-    JOY: 'Haha',
-    LIKE: 'Love',
-    SCREAM: 'Wow',
-    THUMB_UP: 'Thumbs Up',
-    DONATE: 'Donate',
+const useReactionLabel = () => {
+    const { t } = useText();
+    const ReactionLabel: { [key in MessageReactionType]: string } = {
+        ANGRY: t('angry', 'Angry'),
+        CRYING: t('sad', 'Sad'),
+        JOY: t('haha', 'Haha'),
+        LIKE: t('love', 'Love'),
+        SCREAM: t('wow', 'Wow'),
+        THUMB_UP: t('thumbsUp', 'Thumbs Up'),
+        DONATE: t('donate', 'Donate'),
+    };
+    return (k: string): string => {
+        return ReactionLabel[k] || '';
+    };
 };
 
 type DataType = CommentFullReactions | MessageFullReactions | null;
@@ -43,6 +50,7 @@ const ReactionsList = (props: ReactionsListProps) => {
     const { ctx, mId, isComment } = props;
     const theme = React.useContext(ThemeContext);
     const client = useClient();
+    const getLabel = useReactionLabel();
     const [loading, setLoading] = React.useState(true);
     const [message, setMessage] = React.useState<MessageType>(null);
 
@@ -123,7 +131,7 @@ const ReactionsList = (props: ReactionsListProps) => {
                                     style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}
                                     allowFontScaling={false}
                                 >
-                                    {ReactionLabel[r]}
+                                    {getLabel(r)}
                                     {'  '}
                                     <Text
                                         style={{

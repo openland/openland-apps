@@ -14,16 +14,18 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { LoaderSpinnerWrapped } from 'openland-mobile/components/LoaderSpinner';
+import { useText } from 'openland-mobile/text/useText';
 
 const UserSearchComponent = React.memo((props: PageProps & { query: string, useScroll: boolean }) => {
     let theme = React.useContext(ThemeContext);
     let search = getClient().useExplorePeople({ query: props.query });
+    const { t } = useText();
 
     if (search.items.edges.length === 0) {
         return (
             <KeyboardSafeAreaView>
                 <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 22, textAlignVertical: 'center', color: theme.foregroundPrimary }}>{'Nothing found' + randomEmptyPlaceholderEmoji()}</Text>
+                    <Text style={{ fontSize: 22, textAlignVertical: 'center', color: theme.foregroundPrimary }}>{t('nothingFound', 'Nothing found') + randomEmptyPlaceholderEmoji()}</Text>
                 </View>
             </KeyboardSafeAreaView>
         );

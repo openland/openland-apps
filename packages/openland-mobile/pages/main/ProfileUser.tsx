@@ -14,7 +14,6 @@ import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { formatPhone } from 'openland-y-utils/auth/formatPhone';
 import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
 import { ZHero } from 'openland-mobile/components/ZHero';
-import { plural, pluralForm } from 'openland-y-utils/plural';
 import { SHeader } from 'react-native-s/SHeader';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 import { useLastSeenShort } from 'openland-y-utils/LastSeen';
@@ -37,10 +36,12 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import { UserPhotoUploaderNew } from './components/UserPhotoUploaderNew';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { CurrentVoiceChat } from './components/CurrentVoiceChat';
+import { useText } from 'openland-mobile/text/useText';
 
 const ProfileUserComponent = React.memo((props: PageProps) => {
     const client = getClient();
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const { router } = props;
     const userId = router.params.id;
     const data = client.useUser({ userId }, { fetchPolicy: 'cache-and-network' });
@@ -110,11 +111,11 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
         return <ProfileDeleted photo={user.photo} id={user.id} title={user.name} />;
     }
 
-    let messageButtonTitle = 'Message';
+    let messageButtonTitle = t('message', 'Message');
     if (profileType === 'my') {
-        messageButtonTitle = 'Edit profile';
+        messageButtonTitle = t('editProfile', 'Edit profile');
     } else if (profileType === 'bot') {
-        messageButtonTitle = 'View messages';
+        messageButtonTitle = t('viewMessages', 'View messages');
     }
 
     const onMessageButtonPress = React.useCallback(() => {
@@ -136,9 +137,9 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
     const onFollowButtonPress = React.useCallback(async () => {
         if (user.followedByMe) {
             Alert.builder()
-                .title(`Unfollow ${user.name}`)
-                .button('Cancel', 'cancel')
-                .action('Unfollow', 'destructive', async () => {
+                .title(t('unfollow', 'Unfollow') + ` ${user.name}`)
+                .button(t('cancel', 'Cancel'), 'cancel')
+                .action(t('unfollow', 'Unfollow'), 'destructive', async () => {
                     await client.mutateSocialUnfollow({ uid: userId });
                     await client.refetchUser({ userId });
                 })
@@ -147,7 +148,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
             await client.mutateSocialFollow({ uid: userId });
             await client.refetchUser({ userId });
         }
-    }, [user.followedByMe, userId]);
+    }, [user.followedByMe, userId, t]);
 
     const onBannedClick = React.useCallback(async () => {
         if (isBanned) {
@@ -171,7 +172,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
         if (profileType === 'my') {
             builder.view(() => <UserPhotoUploaderNew />);
             builder.action(
-                'Saved messages',
+                t('savedMessages', 'Saved messages'),
                 () => router.push('Conversation', { id: conversation.id }),
                 false,
                 require('assets/ic-bookmark-24.png'),
@@ -179,10 +180,10 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
         } else {
             if (SUPER_ADMIN) {
                 builder.action(
-                    'Add to groups',
+                    t('addToGroups', 'Add to groups'),
                     () => {
                         Modals.showGroupMuptiplePicker(router, {
-                            title: 'Add',
+                            title: t('add', 'Add'),
                             action: async (groups) => {
                                 if (groups.length > 0) {
                                     const loader = Toast.loader();
@@ -208,33 +209,33 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
             }
             if (profileType === 'user') {
                 builder.action(
-                    inContacts ? 'Remove from contacts' : 'Save to contacts',
+                    inContacts ? t('removeContact', 'Remove from contacts') : t('saveContact', 'Save to contacts'),
                     handleContactPress,
                     false,
                     inContacts ? require('assets/ic-user-remove-24.png') : require('assets/ic-user-add-24.png'),
                 );
             }
             builder.action(
-                isBanned ? 'Unblock person' : 'Block person',
+                isBanned ? t('unblockPerson', 'Unblock person') : t('blockPerson', 'Block person'),
                 onBannedClick,
                 false,
                 isBanned ? require('assets/ic-unblock-24.png') : require('assets/ic-block-24.png'),
             );
             builder.action(
-                'Report spam',
+                t('reportSpam', 'Report spam'),
                 () => Modals.showReportSpam({ router, userId }),
                 false,
                 require('assets/ic-flag-24.png'),
             );
             if (SUPER_ADMIN) {
                 builder.action(
-                    'Delete person',
+                    t('deletePerson', 'Delete person'),
                     () => {
                         Alert.builder()
-                            .title(`Delete user?`)
-                            .message(`This cannot be undone`)
-                            .button('Cancel', 'cancel')
-                            .action('Delete', 'destructive', async () => {
+                            .title(t('deleteUser', 'Delete user') + `?`)
+                            .message(t('noUndoneOperation', 'This cannot be undone'))
+                            .button(t('cancel', 'Cancel'), 'cancel')
+                            .action(t('delete', 'Delete'), 'destructive', async () => {
                                 await client.mutateDeleteUser({ id: userId });
                                 await client.refetchUser({ userId });
                                 setTimeout(() => {
@@ -249,13 +250,13 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
             }
         }
         builder.action(
-            'Share',
+            t('share', 'Share'),
             handleSharePress,
             false,
             require('assets/ic-share-24.png'),
         );
 
-        builder.title('More');
+        builder.title(t('more', 'More'));
         builder.show(true, { disableBottomSafeArea: true, disableMargins: true });
     }, [userId]);
 
@@ -265,13 +266,13 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                 <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>
                     {user.followingCount}
                 </Text>
-                <Text> following</Text>
+                <Text> {t('following', 'following').toLowerCase()}</Text>
             </Text>
             <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary }} onPress={onFollowersPress}>
                 <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>
                     {user.followersCount}
                 </Text>
-                <Text> {pluralForm(user.followersCount, ['follower', 'followers'])}</Text>
+                <Text> {t('follower', { count: user.followersCount, defaultValue: 'followers' })}</Text>
             </Text>
         </View>
     );
@@ -293,7 +294,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                 />
             )}
             <SHeaderButton
-                title="More"
+                title={t('more', 'More')}
                 priority={1}
                 icon={require('assets/ic-more-h-24.png')}
                 onPress={onMorePress}
@@ -306,7 +307,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                     title={user.name}
                     userFollowers={userFollowers}
                     badge={lastseen}
-                    subtitle={profileType === 'bot' ? 'Bot' : undefined}
+                    subtitle={profileType === 'bot' ? t('bot', 'Bot') : undefined}
                     titleIconRightElement={
                         !!user.systemBadge ? (
                             <View
@@ -329,7 +330,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                     />
                     {profileType === 'user' && (
                         <ZButton
-                            title={user.followedByMe ? 'Following' : 'Follow'}
+                            title={user.followedByMe ? t('following', 'Following') : t('follow', 'Follow')}
                             size="xlarge"
                             marginLeft={16}
                             style={user.followedByMe ? 'secondary' : 'primary'}
@@ -449,14 +450,14 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
 
                 {profileType === 'user' && (
                     <ZListGroup
-                        header="Mutual groups"
+                        header={t('mutualGroups', 'Mutual groups')}
                         counter={mutualGroups.count}
                         actionRight={
                             mutualGroups.count > 3
                                 ? {
-                                      title: 'See all',
-                                      onPress: () => router.push('UserMutualGroups', { userId }),
-                                  }
+                                    title: t('seeAll', 'See all'),
+                                    onPress: () => router.push('UserMutualGroups', { userId }),
+                                }
                                 : undefined
                         }
                         useSpacer={true}
@@ -466,7 +467,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                                 key={`group-${item.id}`}
                                 leftAvatar={{ photo: item.photo, id: item.id, title: item.title }}
                                 text={item.title}
-                                subTitle={plural(item.membersCount, ['member', 'members'])}
+                                subTitle={t('member', { count: item.membersCount, defaultValue: 'member' })}
                                 path="Conversation"
                                 pathParams={{ id: item.id }}
                             />
@@ -480,7 +481,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                         <View style={{ paddingVertical: 4 }}>
                             <ZListItem
                                 leftIcon={require('assets/ic-attach-glyph-24.png')}
-                                text="Media, files, links"
+                                text={t('sharedMediaTitle', 'Media, files, links')}
                                 path="SharedMedia"
                                 pathParams={{ chatId: conversation.id }}
                             />

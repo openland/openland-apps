@@ -7,6 +7,7 @@ import { TextStyles } from '../styles/AppStyles';
 import { ThemeContext } from '../themes/ThemeContext';
 import ActionSheet from './ActionSheet';
 import Toast from './Toast';
+import { useText } from 'openland-mobile/text/useText';
 
 const MAX_CHARACTERS = 190;
 const MAX_LINE_BREAKS = 5;
@@ -21,6 +22,7 @@ export const ZShowMoreText = React.memo<ZShowMoreProps>((props) => {
     const { text, maxCharacters = MAX_CHARACTERS, maxLineBreaks = MAX_LINE_BREAKS } = props;
     const [fullLength, setFullLength] = React.useState(false);
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
 
     const handleLongPress = React.useCallback(() => {
         ActionSheet.builder()
@@ -46,13 +48,13 @@ export const ZShowMoreText = React.memo<ZShowMoreProps>((props) => {
                 style={{ ...TextStyles.Body, paddingHorizontal: 16, color: theme.foregroundPrimary }}
             >
                 <ZText text={getShortText(text, maxCharacters, maxLineBreaks)} linkify={true} />
-                    <Text
-                        allowFontScaling={false}
-                        onPress={() => setFullLength(true)}
-                        style={{ ...TextStyles.Label1, color: theme.accentPrimary }}
-                    >
-                        Show more
-                    </Text>
+                <Text
+                    allowFontScaling={false}
+                    onPress={() => setFullLength(true)}
+                    style={{ ...TextStyles.Label1, color: theme.accentPrimary }}
+                >
+                    {t('showMore', 'Show more')}
+                </Text>
             </Text>
         );
     }

@@ -10,7 +10,7 @@ import { Image, Linking, Text, View } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { UserView } from './components/UserView';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { ThemeContext, useTheme } from 'openland-mobile/themes/ThemeContext';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { SFlatList } from 'react-native-s/SFlatList';
@@ -19,15 +19,16 @@ import { ZButton } from 'openland-mobile/components/ZButton';
 import Toast from 'openland-mobile/components/Toast';
 import { MyContacts_myContacts_items_user } from 'openland-api/spacex.types';
 import { useLocalContacts } from 'openland-y-utils/contacts/LocalContacts';
-import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { GlobalSearchContacts } from './components/globalSearch/GlobalSearchContacth';
 import { ComponentRefContext } from './Home';
 import { getContactsExporter } from '../../components/PhonebookExporter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useText } from 'openland-mobile/text/useText';
 
 const ContactsWasImportStub = React.memo(() => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const imgSrc = theme.type === 'Light' ? require('assets/art-empty.png') : require('assets/art-empty-dark.png');
     return (
         <ASSafeAreaView
@@ -51,7 +52,7 @@ const ContactsWasImportStub = React.memo(() => {
                     marginBottom: 4,
                 }}
             >
-                No contacts yet
+                {t('noContacts', 'No contacts yet')}
             </Text>
             <Text
                 allowFontScaling={false}
@@ -61,49 +62,54 @@ const ContactsWasImportStub = React.memo(() => {
                     textAlign: 'center',
                 }}
             >
-                Invite your contacts to Openland or add people manually from their profiles,and they
-                will appear here
+                {t('inviteContacts', 'Invite your contacts to Openland or add people manually from their profiles,and they will appear here')}
             </Text>
         </ASSafeAreaView>
     );
 });
 
-const handleImportPress = (cb: () => void, theme: ThemeGlobal) => {
+const useAllowContactsAlert = (cb: () => void) => {
+    const theme = useTheme();
+    const { t } = useText();
     const handleContactsAllow = async () => {
         const contactsExporter = getContactsExporter();
         await contactsExporter.init(cb);
     };
-    const builder = Alert.builder();
-    builder.title('Allow Openland access to your contacts');
-    builder.view(
-        <View>
-            <Text
-                style={{ ...TextStyles.Body, marginBottom: 16, color: theme.foregroundPrimary }}
-                allowFontScaling={false}
-            >
-                Find people you already know by allowing Openland to upload and store a copy of your
-                contacts. Privacy policy is at{' '}
+    return () => {
+
+        const builder = Alert.builder();
+        builder.title(t('allowContacts', 'Allow Openland access to your contacts'));
+        builder.view(
+            <View>
                 <Text
-                    style={{
-                        color: theme.accentPrimary,
-                    }}
-                    onPress={() => Linking.openURL('https://openland.com/privacy')}
+                    style={{ ...TextStyles.Body, marginBottom: 16, color: theme.foregroundPrimary }}
                     allowFontScaling={false}
                 >
-                    https://openland.com/privacy
+                    {t('allowContactsDescription', 'Find people you already know by allowing Openland to upload and store a copy of your contacts. Privacy policy is at')}
+                    {' '}
+                    <Text
+                        style={{
+                            color: theme.accentPrimary,
+                        }}
+                        onPress={() => Linking.openURL('https://openland.com/privacy')}
+                        allowFontScaling={false}
+                    >
+                        https://openland.com/privacy
+                    </Text>
                 </Text>
-            </Text>
-        </View>,
-    );
-    builder.cancelable(true);
-    builder.button('Allow', 'default', () => handleContactsAllow());
-    builder.show();
+            </View>,
+        );
+        builder.cancelable(true);
+        builder.button(t('allow', 'Allow'), 'default', () => handleContactsAllow());
+        builder.show();
+    };
 };
 
 const ContactsNoImportStub = React.memo((props: { cb: () => void }) => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const imgSrc = theme.type === 'Light' ? require('assets/art-crowd.png') : require('assets/art-crowd-dark.png');
-
+    const showAlert = useAllowContactsAlert(props.cb);
     return (
         <ASSafeAreaView
             style={{
@@ -126,7 +132,7 @@ const ContactsNoImportStub = React.memo((props: { cb: () => void }) => {
                 }}
                 allowFontScaling={false}
             >
-                Find your friends
+                {t('findFriends', 'Find your friends')}
             </Text>
             <Text
                 style={{
@@ -137,16 +143,15 @@ const ContactsNoImportStub = React.memo((props: { cb: () => void }) => {
                 }}
                 allowFontScaling={false}
             >
-                Import contacts from your deviceto find people you know on Openland
+                {t('importContacts', 'Import contacts from your device to find people you know on Openland')}
             </Text>
-            <ZButton title="Import contacts" onPress={() => handleImportPress(props.cb, theme)} />
+            <ZButton title="Import contacts" onPress={() => showAlert()} />
         </ASSafeAreaView>
     );
 });
 
 const ContactsPage = React.memo((props: PageProps) => {
     const contactsExporter = getContactsExporter();
-    const theme = React.useContext(ThemeContext);
     const client = useClient();
     const onlines = getMessenger().engine.getOnlines();
     const scrollRef = React.useContext(ComponentRefContext);
@@ -163,6 +168,7 @@ const ContactsPage = React.memo((props: PageProps) => {
     const [loading, setLoading] = React.useState(false);
     const [haveContactsPermission, setHaveContactsPermission] = React.useState(false);
     const { listenUpdates } = useLocalContacts();
+    const showAlert = useAllowContactsAlert(() => setHaveContactsPermission(true));
 
     let hasContacts = items.length > 0;
 
@@ -268,18 +274,13 @@ const ContactsPage = React.memo((props: PageProps) => {
                                 ListHeaderComponent={
                                     !haveContactsPermission
                                         ? () => (
-                                              <ZListItem
-                                                  text="Import contacts"
-                                                  leftIcon={require('assets/ic-cycle-glyph-24.png')}
-                                                  small={false}
-                                                  onPress={() =>
-                                                      handleImportPress(
-                                                          () => setHaveContactsPermission(true),
-                                                          theme,
-                                                      )
-                                                  }
-                                              />
-                                          )
+                                            <ZListItem
+                                                text="Import contacts"
+                                                leftIcon={require('assets/ic-cycle-glyph-24.png')}
+                                                small={false}
+                                                onPress={() => showAlert()}
+                                            />
+                                        )
                                         : undefined
                                 }
                                 keyExtractor={(item, index) => index + '-' + item.id}

@@ -27,6 +27,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZShaker } from 'openland-mobile/components/ZShaker';
 import { useResendTimer } from 'openland-y-utils/auth/useResendTimer';
 import { PrivacyText } from '../../components/PrivacyText';
+import { useText } from 'openland-mobile/text/useText';
 
 interface CodeInputProps extends TextInputProps {
     initialFocused?: boolean;
@@ -83,6 +84,7 @@ const CodeInput = React.forwardRef((props: CodeInputProps, ref: React.RefObject<
 
 const AuthCodeHeader = React.memo((props: { resendCode: () => void; formData: string }) => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const textStyle = [
         TextStyles.Body,
         {
@@ -94,11 +96,13 @@ const AuthCodeHeader = React.memo((props: { resendCode: () => void; formData: st
     return (
         <View style={{ marginBottom: 32 }}>
             <Text style={[textStyle, { paddingHorizontal: 16 }]} allowFontScaling={false}>
-                We just sent it to {props.formData}.
+                {t('submitCodeSent', { receiver: props.formData, defaultValue: 'We just sent it to {{receiver}}.' })}
             </Text>
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={textStyle} allowFontScaling={false}>
-                    Haven’t received?{' '}{seconds > 0 && `Wait for ${seconds} sec`}
+                    {t('submitCodeNotReceived', 'Haven’t received?')}
+                    {' '}
+                    {seconds > 0 && t('submitCodeWait', { seconds, defaultValue: 'Wait for {{seconds}} sec' })}
                 </Text>
                 {seconds <= 0 && (
                     <TouchableOpacity onPress={handleResend} activeOpacity={0.24}>
@@ -106,7 +110,7 @@ const AuthCodeHeader = React.memo((props: { resendCode: () => void; formData: st
                             style={[TextStyles.Body, { color: theme.accentPrimary }]}
                             allowFontScaling={false}
                         >
-                            Resend
+                            {t('resend', 'Resend')}
                         </Text>
                     </TouchableOpacity>
                 )}
@@ -247,7 +251,7 @@ export const SubmitCodeForm = React.memo((props: SubmitCodeFormProps) => {
                             justifyContent: 'center'
                         }}
                     >
-                        <ZAvatar size="x-large" title={avatarPlaceholder.initials} pictureHash={avatarPlaceholder.hash}/>
+                        <ZAvatar size="x-large" title={avatarPlaceholder.initials} pictureHash={avatarPlaceholder.hash} />
                     </View>
                 )}
                 {avatarSrc && (

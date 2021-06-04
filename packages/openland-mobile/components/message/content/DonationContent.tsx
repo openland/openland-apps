@@ -4,6 +4,7 @@ import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { View, Text } from 'react-native';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
+import { useText } from 'openland-mobile/text/useText';
 
 interface DonationContentProps {
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase;
@@ -12,6 +13,7 @@ interface DonationContentProps {
 
 export const DonationContent = (props: DonationContentProps) => {
     let theme = useTheme();
+    const { t } = useText();
     let { attach, hasText } = props;
     let { amount, state } = attach.purchase;
 
@@ -32,7 +34,7 @@ export const DonationContent = (props: DonationContentProps) => {
                 {formatMoney(amount)}
             </Text>
             {state === PurchaseState.PENDING && (
-                <Text style={{ ...TextStyles.Caption, color: theme.payForegroundSecondary }}>Pending</Text>
+                <Text style={{ ...TextStyles.Caption, color: theme.payForegroundSecondary }}>{t('pending', 'Pending')}</Text>
             )}
         </View>
     );

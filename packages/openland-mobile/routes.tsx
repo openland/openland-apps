@@ -17,7 +17,6 @@ import { SRoutesBuilder } from 'react-native-s/SRoutes';
 import { NewOrganization } from './pages/main/NewOrganization';
 import { EditOrganization } from './pages/main/EditOrganization';
 import { SignupUser } from './pages/auth/SignupUser';
-import { Waitlist } from './pages/auth/Waitlist';
 import { Compose } from './pages/main/Compose';
 import { CreateGroupAttrs } from './pages/compose/CreateGroupAttrs';
 import { ProfileOrganizationLink } from './pages/main/ProfileOrganizationLink';
@@ -132,7 +131,6 @@ export const Routes = new SRoutesBuilder()
 
   .addRoute('SignupUser', SignupUser)
 
-  .addRoute('Waitlist', Waitlist)
   .addRoute('Login', Login)
   .addRoute('AuthStart', AuthStart)
   .addRoute('AuthCode', AuthCode)

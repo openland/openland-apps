@@ -8,6 +8,7 @@ import { plural } from 'openland-y-utils/plural';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { useJoinRoom } from 'openland-mobile/pages/rooms/joinRoom';
+import { useText } from 'openland-mobile/text/useText';
 
 export const CallBarComponent = React.memo((props: { id: string, showCallModal: () => void }) => {
     let conference = getClient().useConferenceMeta({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
@@ -16,6 +17,7 @@ export const CallBarComponent = React.memo((props: { id: string, showCallModal: 
     const voiceChat = getMessenger().engine.voiceChat.useVoiceChat();
     const isVoiceChat = conference?.conference.parent?.__typename === 'VoiceChat';
     const disabled = !!mediaSession && !!voiceChat && !isVoiceChat;
+    const { t } = useText();
     const joinRoom = useJoinRoom();
     const handlePress = React.useCallback(() => {
         if (isVoiceChat) {
@@ -29,6 +31,7 @@ export const CallBarComponent = React.memo((props: { id: string, showCallModal: 
 
     if (conference && conference.conference && conference.conference.peers.length > 0) {
         let [firstPeer, ...otherPeers] = conference.conference.peers;
+        // TODO: PLURAL
         let othersText = otherPeers.length === 0
             ? ''
             : ` and ${plural(otherPeers.length, ['other', 'others'])}`;
@@ -59,8 +62,8 @@ export const CallBarComponent = React.memo((props: { id: string, showCallModal: 
                     </View>
                     <View style={{ marginLeft: 8, flexShrink: 0, justifyContent: 'center' }}>
                         <Text style={{ ...TextStyles.Label2, color: theme.foregroundContrast }} numberOfLines={1} allowFontScaling={false}>
-                            Join
-                    </Text>
+                            {t('join', 'Join')}
+                        </Text>
                     </View>
                 </View>
             </TouchableHighlight>

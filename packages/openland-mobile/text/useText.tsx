@@ -1,12 +1,14 @@
 // import * as React from 'react';
-import { useTranslation as useTranslationLib } from 'react-i18next';
+import { useTranslation as useTranslationLib, Trans } from 'react-i18next';
 // import { LocalizedResources, LocalizedPluralsResources } from './schema.ts';
 
 export const useText = () => {
-    const { t, i18n } = useTranslationLib();
+    const { t, i18n, } = useTranslationLib();
 
     return {
         t,
+        Trans,
+        lang: i18n.language,
         changeLanguage: async (lng: string) => {
             return await i18n.changeLanguage(lng);
         }

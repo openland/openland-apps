@@ -31,6 +31,7 @@ import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { getRandomSeed } from './DiscoverListing';
 import { ComponentRefContext } from './Home';
 import { DiscoverCreateList } from './components/discover/DiscoverCreateList';
+import { useText } from 'openland-mobile/text/useText';
 // import { ZListItem } from 'openland-mobile/components/ZListItem';
 // import { useVoiceChatsFeed } from 'openland-y-utils/voiceChat/voiceChatsFeedWatcher';
 
@@ -62,6 +63,7 @@ import { DiscoverCreateList } from './components/discover/DiscoverCreateList';
 export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) => {
     const theme = useTheme();
     const client = useClient();
+    const { t } = useText();
     const discoverSeed = getRandomSeed();
     const rooms = client.useExploreRooms(
         { seed: discoverSeed },
@@ -228,49 +230,49 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
                     <View style={{ height: 32 }} />
                 </>
             ) : (
-                    <>
-                        <LinearGradient
-                            colors={[theme.gradient0to100End, theme.gradient0to100Start]}
+                <>
+                    <LinearGradient
+                        colors={[theme.gradient0to100End, theme.gradient0to100Start]}
+                        style={{
+                            paddingVertical: 16,
+                            paddingHorizontal: 32,
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Image
+                            source={require('assets/art-discover.png')}
+                            style={{ width: 240, height: 150, marginBottom: 16 }}
+                        />
+                        <Text
                             style={{
-                                paddingVertical: 16,
-                                paddingHorizontal: 32,
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'center',
+                                ...TextStyles.Title2,
+                                color: theme.foregroundPrimary,
+                                marginBottom: 4,
                             }}
                         >
-                            <Image
-                                source={require('assets/art-discover.png')}
-                                style={{ width: 240, height: 150, marginBottom: 16 }}
-                            />
-                            <Text
-                                style={{
-                                    ...TextStyles.Title2,
-                                    color: theme.foregroundPrimary,
-                                    marginBottom: 4,
-                                }}
-                            >
-                                Get chat recommendations
-                            </Text>
-                            <Text
-                                style={{
-                                    ...TextStyles.Body,
-                                    color: theme.foregroundSecondary,
-                                    marginBottom: 16,
-                                }}
-                            >
-                                Find the right chats for you
-                            </Text>
-                            <ZButton
-                                title="Start"
-                                onPress={() => {
-                                    props.router.push('Discover');
-                                }}
-                            />
-                        </LinearGradient>
-                        <View style={{ height: 16 }} />
-                    </>
-                )}
+                            {t('chatRecommendations', 'Get chat recommendations')}
+                        </Text>
+                        <Text
+                            style={{
+                                ...TextStyles.Body,
+                                color: theme.foregroundSecondary,
+                                marginBottom: 16,
+                            }}
+                        >
+                            {t('findChats', 'Find the right chats for you')}
+                        </Text>
+                        <ZButton
+                            title="Start"
+                            onPress={() => {
+                                props.router.push('Discover');
+                            }}
+                        />
+                    </LinearGradient>
+                    <View style={{ height: 16 }} />
+                </>
+            )}
         </>
     );
 };
