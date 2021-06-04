@@ -25,9 +25,11 @@ import {
 import { formatPhone } from 'openland-y-utils/auth/formatPhone';
 import { UserView } from './components/UserView';
 import { useBlackList } from 'openland-y-utils/blacklist/LocalBlackList';
+import { useText } from 'openland-mobile/text/useText';
 
 const ChangeLoginMethodComponent = React.memo((props: PageProps) => {
     const client = useClient();
+    const { t } = useText();
     const phoneDataRef = React.useRef('');
     const formDataRef = React.useRef('');
     const sessionIdRef = React.useRef('');
@@ -65,11 +67,12 @@ const ChangeLoginMethodComponent = React.memo((props: PageProps) => {
             isPhone={isPhone}
             countryShortname={countryShortname}
             eventTitle={isPhone ? 'change_phone_view' : 'change_email_view'}
-            title={isPhone ? 'Your phone' : 'Your email'}
+            title={isPhone ? t('yourPhone', 'Your phone') : t('yourEmail', 'Your email')}
             subtitle={
-                isPhone
-                    ? 'You can pair your account to any phone number and use it for login'
-                    : 'You can pair your account to any email address and use it for login'
+                t('pairAccount', {
+                    defaultValue: 'You can pair your account to any {{source}} and use it for login',
+                    source: isPhone ? 'phone number' : 'email address'
+                })
             }
             router={props.router}
             onSubmit={handleSubmit}
@@ -86,6 +89,7 @@ export const ChangeLoginMethod = withApp(ChangeLoginMethodComponent, {
 
 const ChangeLoginMethodCodeComponent = React.memo((props: PageProps) => {
     const client = useClient();
+    const { t } = useText();
     const isPhone = !!props.router.params.phone;
     const formData = props.router.params.formData as string;
     const phoneData = props.router.params.phoneData as string;
@@ -120,9 +124,9 @@ const ChangeLoginMethodCodeComponent = React.memo((props: PageProps) => {
 
     return (
         <SubmitCodeForm
-            title="Enter code"
+            title={t('enterCode', 'Enter code')}
             formData={isPhone ? phoneData : formData}
-            buttonTitle="Done"
+            buttonTitle={t('done', 'Done')}
             onSubmit={handleSubmit}
             onResend={handleResend}
         />
@@ -135,23 +139,34 @@ export const ChangeLoginMethodCode = withApp(ChangeLoginMethodCodeComponent, {
 
 type SettingLabel = 'Everyone' | 'Nobody' | 'Correspondents';
 
-const labelBySettingWhoCanSee: { [setting in PrivacyWhoCanSee]: SettingLabel } = {
-    [PrivacyWhoCanSee.EVERYONE]: 'Everyone',
-    [PrivacyWhoCanSee.NOBODY]: 'Nobody',
-};
+const useLabels = () => {
+    const { t } = useText();
 
-const labelBySettingWhoCanAdd: { [setting in PrivacyWhoCanAddToGroups]: SettingLabel } = {
-    [PrivacyWhoCanAddToGroups.EVERYONE]: 'Everyone',
-    [PrivacyWhoCanAddToGroups.NOBODY]: 'Nobody',
-    [PrivacyWhoCanAddToGroups.CORRESPONDENTS]: 'Correspondents',
+    const labelBySettingWhoCanSee: { [setting in PrivacyWhoCanSee]: SettingLabel } = {
+        [PrivacyWhoCanSee.EVERYONE]: t('everyone', 'Everyone'),
+        [PrivacyWhoCanSee.NOBODY]: t('nobody', 'Nobody'),
+    };
+
+    const labelBySettingWhoCanAdd: { [setting in PrivacyWhoCanAddToGroups]: SettingLabel } = {
+        [PrivacyWhoCanAddToGroups.EVERYONE]: t('everyone', 'Everyone'),
+        [PrivacyWhoCanAddToGroups.NOBODY]: t('nobody', 'Nobody'),
+        [PrivacyWhoCanAddToGroups.CORRESPONDENTS]: t('correspondents', 'Correspondents'),
+    };
+
+    return {
+        getSeeLabel: (setting: string) => labelBySettingWhoCanSee[setting] || '',
+        getAddLabel: (setting: string) => labelBySettingWhoCanAdd[setting] || '',
+    };
 };
 
 type BooleanSetting = 'Allowed' | 'Disallowed';
 
 const SettingsPrivacyContent = (props: PageProps) => {
     const theme = useTheme();
+    const { t } = useText();
     const client = useClient();
     const form = useForm({ disableAppLoader: true });
+    const { getSeeLabel, getAddLabel } = useLabels();
     const blackListInfo = useBlackList();
     const blackList = Array.from(blackListInfo.myBans.values());
     const { phone, email } = client.useAuthPoints({ fetchPolicy: 'cache-and-network' }).authPoints;
@@ -163,26 +178,27 @@ const SettingsPrivacyContent = (props: PageProps) => {
     } = client.useSettings({ fetchPolicy: 'cache-and-network' }).settings;
     const countryCode = client.useIpLocation({ fetchPolicy: 'cache-and-network' })?.ipLocation
         ?.countryCode;
-    const emailStr = email || 'Not paired';
-    const phoneStr = phone ? formatPhone(phone) : 'Not paired';
+    const notPairedText = t('notPaired', 'Not paired');
+    const emailStr = email || notPairedText;
+    const phoneStr = phone ? formatPhone(phone) : notPairedText;
     const phonePrivacyField = useField<SettingLabel>(
         'phone-privacy',
-        labelBySettingWhoCanSee[whoCanSeePhone],
+        getSeeLabel(whoCanSeePhone),
         form,
     );
     const emailPrivacyField = useField<SettingLabel>(
         'email-privacy',
-        labelBySettingWhoCanSee[whoCanSeeEmail],
+        getSeeLabel(whoCanSeeEmail),
         form,
     );
     const addToGroupsPrivacyField = useField<SettingLabel>(
         'add-to-groups-privacy',
-        labelBySettingWhoCanAdd[whoCanAddToGroups],
+        getAddLabel(whoCanAddToGroups),
         form,
     );
     const communityAdminsContactsPrivacyField = useField<BooleanSetting>(
         'community-admins-contacts-privacy',
-        communityAdminsCanSeeContactInfo ? 'Allowed' : 'Disallowed',
+        communityAdminsCanSeeContactInfo ? t('allowed', 'Allowed') : t('disallowed', 'Disallowed'),
         form,
     );
 
@@ -236,17 +252,17 @@ const SettingsPrivacyContent = (props: PageProps) => {
     const handleBlockedLongPress = React.useCallback((user: UserShort) => {
         const builder = new ActionSheetBuilder();
         builder.action(
-            'Unblock person',
+            t('unblockPerson', 'Unblock person'),
             () => onUnbannedClick(user.id),
             false,
             require('assets/ic-unblock-24.png'),
         );
         builder.show();
-    }, []);
+    }, [t]);
 
     return (
         <SScrollView>
-            <ZListGroup header="Sign-in methods">
+            <ZListGroup header={t('signinMethods', 'Sign-in methods')}>
                 <View style={{ marginVertical: 8, paddingHorizontal: 16 }}>
                     <View
                         style={{
@@ -263,7 +279,7 @@ const SettingsPrivacyContent = (props: PageProps) => {
                                 style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}
                                 allowFontScaling={false}
                             >
-                                Phone
+                                {t('phone', 'Phone')}
                             </Text>
                             <Text
                                 style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}
@@ -277,12 +293,12 @@ const SettingsPrivacyContent = (props: PageProps) => {
                             {phone ? (
                                 <ZButton
                                     style="secondary"
-                                    title="Edit"
+                                    title={t('edit', 'Edit')}
                                     onPress={initiatePhonePair}
                                 />
                             ) : (
-                                    <ZButton style="primary" title="Add" onPress={initiatePhonePair} />
-                                )}
+                                <ZButton style="primary" title={t('add', 'Add')} onPress={initiatePhonePair} />
+                            )}
                         </View>
                     </View>
                     <View
@@ -301,7 +317,7 @@ const SettingsPrivacyContent = (props: PageProps) => {
                                 style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}
                                 allowFontScaling={false}
                             >
-                                Email
+                                {t('email', 'Email')}
                             </Text>
                             <Text
                                 style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}
@@ -315,31 +331,31 @@ const SettingsPrivacyContent = (props: PageProps) => {
                             {email ? (
                                 <ZButton
                                     style="secondary"
-                                    title="Edit"
+                                    title={t('edit', 'Edit')}
                                     onPress={initiateEmailPair}
                                 />
                             ) : (
-                                    <ZButton style="primary" title="Add" onPress={initiateEmailPair} />
-                                )}
+                                <ZButton style="primary" title={t('add', 'Add')} onPress={initiateEmailPair} />
+                            )}
                         </View>
                     </View>
                 </View>
             </ZListGroup>
-            <ZListGroup header="Privacy">
+            <ZListGroup header={t('privacy', 'Privacy')}>
                 <ZListItem
-                    text="Who can see my phone"
+                    text={t('privacyPhone', 'Who can see my phone')}
                     small={true}
                     description={phonePrivacyField.value}
                     onPress={() =>
                         showEditFieldModal(
-                            'Who can see my phone',
+                            t('privacyPhone', 'Who can see my phone'),
                             [
                                 {
-                                    label: 'Everyone',
+                                    label: t('everyone', 'Everyone'),
                                     newSettings: { whoCanSeePhone: PrivacyWhoCanSee.EVERYONE },
                                 },
                                 {
-                                    label: 'Nobody',
+                                    label: t('nobody', 'Nobody'),
                                     newSettings: { whoCanSeePhone: PrivacyWhoCanSee.NOBODY },
                                 },
                             ],
@@ -348,19 +364,19 @@ const SettingsPrivacyContent = (props: PageProps) => {
                     }
                 />
                 <ZListItem
-                    text="Who can see my email"
+                    text={t('privacyEmail', 'Who can see my email')}
                     small={true}
                     description={emailPrivacyField.value}
                     onPress={() =>
                         showEditFieldModal(
-                            'Who can see my email',
+                            t('privacyEmail', 'Who can see my email'),
                             [
                                 {
-                                    label: 'Everyone',
+                                    label: t('everyone', 'Everyone'),
                                     newSettings: { whoCanSeeEmail: PrivacyWhoCanSee.EVERYONE },
                                 },
                                 {
-                                    label: 'Nobody',
+                                    label: t('nobody', 'Nobody'),
                                     newSettings: { whoCanSeeEmail: PrivacyWhoCanSee.NOBODY },
                                 },
                             ],
@@ -369,27 +385,27 @@ const SettingsPrivacyContent = (props: PageProps) => {
                     }
                 />
                 <ZListItem
-                    text="Who can add me to groups"
+                    text={t('privacyAddToGroups', 'Who can add me to groups')}
                     small={true}
                     description={addToGroupsPrivacyField.value}
                     onPress={() =>
                         showEditFieldModal(
-                            'Who can add me to groups',
+                            t('privacyAddToGroups', 'Who can add me to groups'),
                             [
                                 {
-                                    label: 'Everyone',
+                                    label: t('everyone', 'Everyone'),
                                     newSettings: {
                                         whoCanAddToGroups: PrivacyWhoCanAddToGroups.EVERYONE,
                                     },
                                 },
                                 {
-                                    label: 'Correspondents',
+                                    label: t('correspondents', 'Correspondents'),
                                     newSettings: {
                                         whoCanAddToGroups: PrivacyWhoCanAddToGroups.CORRESPONDENTS,
                                     },
                                 },
                                 {
-                                    label: 'Nobody',
+                                    label: t('nobody', 'Nobody'),
                                     newSettings: {
                                         whoCanAddToGroups: PrivacyWhoCanAddToGroups.NOBODY,
                                     },
@@ -400,19 +416,19 @@ const SettingsPrivacyContent = (props: PageProps) => {
                     }
                 />
                 <ZListItem
-                    text="Admins can see my contacts"
+                    text={t('privacyAdminsRight', 'Admins can see my contacts')}
                     small={true}
                     description={communityAdminsContactsPrivacyField.value}
                     onPress={() =>
                         showEditFieldModal(
-                            'Admins can see my contacts',
+                            t('privacyAdminsRight', 'Admins can see my contacts'),
                             [
                                 {
-                                    label: 'Allowed',
+                                    label: t('allowed', 'Allowed'),
                                     newSettings: { communityAdminsCanSeeContactInfo: true },
                                 },
                                 {
-                                    label: 'Disallowed',
+                                    label: t('disallowed', 'Disallowed'),
                                     newSettings: { communityAdminsCanSeeContactInfo: false },
                                 },
                             ],
@@ -422,7 +438,7 @@ const SettingsPrivacyContent = (props: PageProps) => {
                 />
             </ZListGroup>
             {!!blackList.length && (
-                <ZListGroup header="Blocked">
+                <ZListGroup header={t('blocked', 'Blocked')}>
                     {blackList.map((u) => (
                         <UserView
                             key={u.id}
@@ -437,15 +453,14 @@ const SettingsPrivacyContent = (props: PageProps) => {
     );
 };
 
-class SettingsPrivacyComponent extends React.Component<PageProps> {
-    render() {
-        return (
-            <>
-                <SHeader title="Account and privacy" />
-                <SettingsPrivacyContent {...this.props} />
-            </>
-        );
-    }
-}
+const SettingsPrivacyComponent = React.memo((props: PageProps) => {
+    const { t } = useText();
+    return (
+        <>
+            <SHeader title={t('accountPrivacy', 'Account and privacy')} />
+            <SettingsPrivacyContent {...props} />
+        </>
+    );
+});
 
 export const SettingsPrivacy = withApp(SettingsPrivacyComponent);

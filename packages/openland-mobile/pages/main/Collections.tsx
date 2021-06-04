@@ -5,7 +5,6 @@ import { SFlatList } from 'react-native-s/SFlatList';
 import { View, TouchableWithoutFeedback, Text, PixelRatio, Platform, Animated } from 'react-native';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
-import { plural } from 'openland-y-utils/plural';
 import { DiscoverChatsCollectionShort } from 'openland-api/spacex.types';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { SRouterContext } from 'react-native-s/SRouterContext';
@@ -13,6 +12,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { useClient } from 'openland-api/useClient';
 import { usePressableView } from './components/discover/usePressableView';
 import { DiscoverCover } from './components/discover/DiscoverCover';
+import { useText } from 'openland-mobile/text/useText';
 
 export const layoutCollection = () => ({
     width: Math.round(167 * PixelRatio.get()),
@@ -26,6 +26,7 @@ interface CollectionProps {
 
 const Collection = (props: CollectionProps) => {
     let theme = useTheme();
+    const { t } = useText();
     const { image } = props.item;
     const [path, setPath] = React.useState('');
     const { styles, delayPressIn, handlePressIn, handlePressOut } = usePressableView();
@@ -54,7 +55,7 @@ const Collection = (props: CollectionProps) => {
                     <View style={{ flexGrow: 1, flexShrink: 1, flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, flexGrow: 1, flexShrink: 1 }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{props.item.title}</Text>
                         <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
-                            {plural(props.item.chatsCount, ['group', 'groups'])}
+                            {t('group', { count: props.item.chatsCount, defaultValue: 'group' })}
                         </Text>
                     </View>
                 </View>

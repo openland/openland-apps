@@ -5,6 +5,7 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { useText } from 'openland-mobile/text/useText';
 
 const Link = React.memo((props: { path: string, children: any }) => {
     const theme = useTheme();
@@ -21,16 +22,17 @@ const Link = React.memo((props: { path: string, children: any }) => {
 
 const SettingsLicensesComponent = React.memo(() => {
     const theme = useTheme();
+    const { t } = useText();
     return (
         <>
             <SHeader title="Licenses" />
             <SScrollView>
                 <View style={{ paddingHorizontal: 16, marginTop: 16 }}>
                     <Text style={{ ...TextStyles.Body, color: theme.foregroundPrimary }}>
-                        Product illustrations by <Link path="https://icons8.com/">Icons 8</Link>
+                        {t('illustrationsBy', 'Product illustrations by')} <Link path="https://icons8.com/">Icons 8</Link>
                     </Text>
                     <Text style={{ ...TextStyles.Body, color: theme.foregroundPrimary, marginTop: 16 }}>
-                        Editors’ choice and collections covers by <Link path="https://freepik.com/stories">stories</Link> and <Link path="https://freepik.com/pikisuperstar">pikisuperstar</Link>
+                        {t('collectionsCoversBy', 'Editors’ choice and collections covers by')} <Link path="https://freepik.com/stories">stories</Link> and <Link path="https://freepik.com/pikisuperstar">pikisuperstar</Link>
                     </Text>
                 </View>
             </SScrollView>

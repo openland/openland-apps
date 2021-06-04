@@ -192,7 +192,7 @@
                 ],
                 // ["i18next-extract", {
                 //     "customUseTranslationHooks": [
-                //         ["./packages/openland-mobile/text/useTranlsation", "useTranlsation"]
+                //         ["./packages/openland-mobile/text/useText", "useText"]
                 //     ],
                 //     "outputPath": "./packages/openland-mobile/text/extractedLangs/{{locale}}.json"
                 //   }],

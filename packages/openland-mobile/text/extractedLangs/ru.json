@@ -1,6 +1,5 @@
 {
-    "headerTitle": {
-      "Chats": "Чаты"
-    }
+    "chat": "Чата",
+    "chat_plural": "Чаты"
   }
   

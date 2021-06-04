@@ -8,6 +8,7 @@ import { ZButton } from 'openland-mobile/components/ZButton';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { API_HOST } from 'openland-y-utils/api';
+import { useText } from 'openland-mobile/text/useText';
 
 const fetchCountry = async (): Promise<string | undefined> => {
     return fetch('https://' + API_HOST + '/graphql', {
@@ -50,6 +51,7 @@ const styles = StyleSheet.create({
 
 const Logo = React.memo(() => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
 
     return (
         <View style={styles.logoWrapper}>
@@ -70,7 +72,7 @@ const Logo = React.memo(() => {
                     color: theme.foregroundSecondary,
                 }}
             >
-                Modern social network{'\n'}built for you, not advertisers
+                {t('loginTitle', 'Modern social network\nbuilt for you, not advertisers')}
             </Text>
         </View>
     );

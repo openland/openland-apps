@@ -19,6 +19,7 @@ import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SShareButton } from 'react-native-s/SShareButton';
 import { SStatusBar } from 'react-native-s/SStatusBar';
 import { isAudio, isPlayableMedia, isVideo } from 'openland-y-utils/mediaExtension';
+import { useText } from 'openland-mobile/text/useText';
 
 export interface ZFileModalConfig {
     uuid: string;
@@ -49,6 +50,7 @@ interface FilePreviewInnerProps extends ZFileModal {
     onClose: () => void;
     style: 'default' | 'playable';
     theme: ThemeGlobal;
+    headerTexts: { audio: string, video: string, document: string };
     router?: SRouter;
 }
 
@@ -140,7 +142,13 @@ class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePr
             >
                 <SCloseButton tintColor={iconColor} onPress={this.props.onClose} />
                 <Text style={{ ...TextStyles.Headline, flexGrow: 1, textAlign: 'center', color: textColor }} allowFontScaling={false}>
-                    {this.content === 'video' ? 'Video' : this.content === 'audio' ? 'Audio' : 'Document'}
+                    {
+                        this.content === 'video'
+                            ? this.props.headerTexts.video
+                            : this.content === 'audio'
+                                ? this.props.headerTexts.audio
+                                : this.props.headerTexts.document
+                    }
                 </Text>
                 <SShareButton tintColor={iconColor} onPress={this.handleOpen} />
             </View>
@@ -191,12 +199,19 @@ class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePr
 export const ZFileModal = React.memo((props: ZFileModal) => {
     const theme = React.useContext(ThemeContext);
     const router = React.useContext(SRouterContext);
+    const { t, lang } = useText();
+    const headerTexts = React.useMemo(() => ({
+        video: t('video', 'Video'),
+        audio: t('audio', 'Audio'),
+        document: t('document', 'Document'),
+    }), [lang]);
 
     return (
         <FilePreviewInner
             {...props}
             theme={theme}
             router={router}
+            headerTexts={headerTexts}
             style={isPlayableMedia(props.config.name) ? 'playable' : 'default'}
         />
     );
