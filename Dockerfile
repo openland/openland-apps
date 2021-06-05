@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:14
 
 RUN apk add --no-cache tini git
 ENTRYPOINT ["/sbin/tini", "--"]

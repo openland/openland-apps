@@ -3422,10 +3422,10 @@
   resolved "https://registry.yarnpkg.com/@openland/spacex-cli/-/spacex-cli-3.1.1.tgz#1a187c68a8dcc646a9126edf7bd29e56bc992839"
   integrity sha512-IUNOBqGqR5qD2S5/AbFw/d7RdmKTgVNSVKD5DTLtP89oGoao9rMT0Q8Q1QHb1UwkQ5z3kiKut5RNBcrYn7fM2Q==
 
-"@openland/spacex-cli@^4.1.5":
-  version "4.1.5"
-  resolved "https://registry.yarnpkg.com/@openland/spacex-cli/-/spacex-cli-4.1.5.tgz#f39de7b9d30b59ea568e04b20f9ffacf40e7a26d"
-  integrity sha512-vKzeqfMgVYlhct/O2A+aVqM0xkaVqBdbK8yaR9XbymhCZU0cUDNpbqnc76EGYzlKbiYomSvJdTzjepN8zDdyOw==
+"@openland/spacex-cli@^4.1.6":
+  version "4.1.6"
+  resolved "https://registry.yarnpkg.com/@openland/spacex-cli/-/spacex-cli-4.1.6.tgz#1129bd71976e06cae519e695a5e4d9d73cd86b5c"
+  integrity sha512-n9h30+Mrhu5M6DzvcQ8htRfCiG2spwLiFH007knOwiu0DPRXZ0Tne9wZyFmmwq5/QRhBNY/hPDUIJdinBWgJJQ==
   dependencies:
     "@graphql-tools/optimize" "1.0.1"
     "@graphql-tools/relay-operation-optimizer" "6.3.0"
@@ -3437,12 +3437,12 @@
     prompts "2.4.1"
     relay-compiler "10.1.0"
 
-"@openland/spacex@4.1.5":
-  version "4.1.5"
-  resolved "https://registry.yarnpkg.com/@openland/spacex/-/spacex-4.1.5.tgz#0253692ab76bed927b7438e46e1b6933e7108f79"
-  integrity sha512-uoAFcbEBgbWs4pf8nRFSAjCccRZL0DI3+aSuHkaMsUTHmlosw+aUdwZb55ifPINX9n3KoJVRgb/Y/qtKVDqvEA==
+"@openland/spacex@4.1.6":
+  version "4.1.6"
+  resolved "https://registry.yarnpkg.com/@openland/spacex/-/spacex-4.1.6.tgz#fb942b8dbbbddfcf70f68ad9a65ebbb6af0bb056"
+  integrity sha512-V2mnC8AJSkvPfNwHJcKV62Vq0rKCqJrPi+dLH1qHYpYx25i1W0oaIpJG26MFy3ZlOIYDMh7594emgi7SyCxLJw==
   dependencies:
-    "@openland/spacex-cli" "^4.1.5"
+    "@openland/spacex-cli" "^4.1.6"
     isomorphic-ws "4.0.1"
     uuid "3.4.0"
     ws "7.2.1"
