@@ -1,6 +1,6 @@
-FROM node:14
+FROM node:14-alpine
 
-RUN apk add --no-cache tini git
+RUN apk add --no-cache tini git python
 ENTRYPOINT ["/sbin/tini", "--"]
 
 WORKDIR /app
