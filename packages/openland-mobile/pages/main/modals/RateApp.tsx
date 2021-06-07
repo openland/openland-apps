@@ -69,10 +69,10 @@ const RateApp = (props: { ctx: ModalProps }) => {
                 }}
             />
             <View style={{ paddingHorizontal: 32, marginTop: 16 }}>
-                <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, textAlign: 'center' }}>
+                <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, textAlign: 'center' }} allowFontScaling={false}>
                     Enjoying Openland?
                 </Text>
-                <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginTop: 6 }}>
+                <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginTop: 6 }} allowFontScaling={false}>
                     Rate the app on {Platform.select({ ios: 'App Store', android: 'Google Play' })}
                 </Text>
             </View>

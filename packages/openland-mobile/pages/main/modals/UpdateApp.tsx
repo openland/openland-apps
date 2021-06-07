@@ -56,6 +56,7 @@ const UpdateApp = (props: { ctx: ModalProps; newVersion: string }) => {
                         color: theme.foregroundPrimary,
                         textAlign: 'center',
                     }}
+                    allowFontScaling={false}
                 >
                     Update available
                 </Text>
@@ -66,6 +67,7 @@ const UpdateApp = (props: { ctx: ModalProps; newVersion: string }) => {
                         textAlign: 'center',
                         marginTop: 6,
                     }}
+                    allowFontScaling={false}
                 >
                     Upgrade your app to get great new features
                 </Text>

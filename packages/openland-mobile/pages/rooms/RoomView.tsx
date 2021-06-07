@@ -885,6 +885,7 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                             ...(isListener ? TextStyles.Label3 : TextStyles.Label2),
                             color: theme.foregroundPrimary,
                         }}
+                        allowFontScaling={false}
                     >
                         {user.firstName}
                     </Text>

@@ -64,7 +64,7 @@ const AuthInput = React.forwardRef((props: AuthInputProps, ref: React.RefObject<
     return (
         <View
             style={{
-                height: 45,
+                height: 48,
                 width,
                 borderRadius: 12,
                 backgroundColor: theme.backgroundTertiaryTrans
@@ -73,6 +73,7 @@ const AuthInput = React.forwardRef((props: AuthInputProps, ref: React.RefObject<
             <TextInput
                 style={[{
                     ...TextStyles.Densed,
+                    lineHeight: 20,
                     height: 48,
                     borderRadius: 12,
                     paddingVertical: 13,
@@ -107,7 +108,7 @@ const AuthPicker = (props: { value: string, onPress: () => void }) => {
             }}
             onPress={props.onPress}
         >
-            <Text style={{ ...TextStyles.Densed, flexGrow: 1, color: theme.foregroundPrimary }}>{props.value}</Text>
+            <Text style={{ ...TextStyles.Densed, flexGrow: 1, color: theme.foregroundPrimary }} allowFontScaling={false}>{props.value}</Text>
             <Image style={{ tintColor: theme.foregroundTertiary }} source={require('assets/ic-dropdown-16.png')} />
         </TouchableOpacity>
     );

@@ -164,8 +164,8 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
                                 ) : null}
                                 <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginVertical: 16, alignItems: 'center' }}>
                                     <Image source={imgSrc} style={{ width: 240, height: 150 }} />
-                                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 16, marginBottom: 6 }}>Talk about anything!</Text>
-                                    <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 24 }}>Create a new room and invite friends!</Text>
+                                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 16, marginBottom: 6 }} allowFontScaling={false}>Talk about anything!</Text>
+                                    <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 24 }} allowFontScaling={false}>Create a new room and invite friends!</Text>
                                     <ZButton title="Start room" path="CreateRoom" />
                                 </View>
                             </>

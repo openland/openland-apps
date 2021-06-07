@@ -127,6 +127,7 @@ export class ZTagView extends React.PureComponent<
                                             opacity: 0.6,
                                             textAlignVertical: 'center',
                                         }}
+                                        allowFontScaling={false}
                                     >
                                         {this.props.title}
                                     </Text>
@@ -158,6 +159,7 @@ export class ZTagView extends React.PureComponent<
                                                 textAlignVertical: 'center',
                                                 fontSize: 15,
                                             }}
+                                            allowFontScaling={false}
                                             numberOfLines={1}
                                             ellipsizeMode="middle"
                                         >
@@ -190,6 +192,7 @@ export class ZTagView extends React.PureComponent<
                                 value={this.state.query}
                                 spellCheck={false}
                                 autoFocus={this.props.autoFocus}
+                                allowFontScaling={false}
                             />
                         </View>
                     </TouchableWithoutFeedback>

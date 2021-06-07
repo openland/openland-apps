@@ -77,7 +77,7 @@ const RoomInviteContent = React.memo(
                             <ZLoader />
                         </View>
                     ) : (
-                        <Text style={{ ...TextStyles.Body, color: props.theme.foregroundPrimary }}>
+                        <Text style={{ ...TextStyles.Body, color: props.theme.foregroundPrimary }} allowFontScaling={false}>
                             {link}
                         </Text>
                     )}

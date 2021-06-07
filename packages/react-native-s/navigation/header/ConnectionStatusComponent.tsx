@@ -76,7 +76,7 @@ export const ConnectionStatusComponent = (props: { k: string, route: NavigationP
                 }}
                 pointerEvents="none"
             >
-                <LoaderSpinner color={theme.foregroundContrast} size="small" /><Text style={{ ...TextStyles.Label2, marginLeft: 8, color: theme.foregroundContrast }} >Connecting</Text>
+                <LoaderSpinner color={theme.foregroundContrast} size="small" /><Text style={{ ...TextStyles.Label2, marginLeft: 8, color: theme.foregroundContrast }} allowFontScaling={false}>Connecting</Text>
             </SAnimated.View>
         </SAnimated.View >
     );

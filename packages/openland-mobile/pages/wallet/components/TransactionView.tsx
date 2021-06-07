@@ -159,6 +159,7 @@ export const TransactionView = (props: TransactionViewProps) => {
                                 ...TextStyles.Subhead,
                                 color: theme.foregroundTertiary,
                             }}
+                            allowFontScaling={false}
                         >
                             Need help?
                         </Text>
@@ -168,6 +169,7 @@ export const TransactionView = (props: TransactionViewProps) => {
                                 color: theme.accentPrimary,
                                 marginLeft: 6,
                             }}
+                            allowFontScaling={false}
                             onPress={() => router.push('ProfileUser', { id: 'zoebp1bZA0F5P5oL5ZgrFwEMA4' })}
                         >
                             Contact us

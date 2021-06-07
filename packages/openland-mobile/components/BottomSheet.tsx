@@ -44,7 +44,7 @@ export function showBottomSheet(config: BottomSheetConfig) {
                                 alignItems: 'center'
                             }}
                         >
-                            <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} numberOfLines={2}>{config.title}</Text>
+                            <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} numberOfLines={2} allowFontScaling={false}>{config.title}</Text>
                         </View>
                     </>
                 )}

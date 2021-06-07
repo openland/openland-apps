@@ -47,7 +47,7 @@ const CreateRoomComponent = React.memo(() => {
                     <ZShaker ref={shakerRef}>
                         <ZInput placeholder="Room name" field={nameField} autoFocus={true} noWrapper={true} />
                     </ZShaker>
-                    <Text style={{ ...TextStyles.Caption, color: theme.foregroundTertiary, paddingHorizontal: 16, marginTop: 8 }}>
+                    <Text style={{ ...TextStyles.Caption, color: theme.foregroundTertiary, paddingHorizontal: 16, marginTop: 8 }} allowFontScaling={false}>
                         Tell everyone about the topic of conversation
                     </Text>
                 </View>

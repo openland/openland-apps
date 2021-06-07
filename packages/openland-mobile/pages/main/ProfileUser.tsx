@@ -262,13 +262,13 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
 
     const userFollowers = (
         <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 12 }}>
-            <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, marginRight: 20 }} onPress={onFollowingPress}>
+            <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, marginRight: 20 }} onPress={onFollowingPress} allowFontScaling={false}>
                 <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>
                     {user.followingCount}
                 </Text>
                 <Text> {t('following', 'following').toLowerCase()}</Text>
             </Text>
-            <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary }} onPress={onFollowersPress}>
+            <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary }} onPress={onFollowersPress} allowFontScaling={false}>
                 <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>
                     {user.followersCount}
                 </Text>

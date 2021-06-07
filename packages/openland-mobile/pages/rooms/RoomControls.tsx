@@ -52,7 +52,7 @@ const ControlItem = React.memo(
         let iconContent = loading ? (
             <LoaderSpinner color={iconColor} size="x-large" />
         ) : typeof icon === 'string' ? (
-            <Text style={{ fontSize: iconSize, color: iconColor }}>{icon}</Text>
+            <Text style={{ fontSize: iconSize, color: iconColor }} allowFontScaling={false}>{icon}</Text>
         ) : (
             <Image
                 source={icon}
@@ -106,6 +106,7 @@ const ControlItem = React.memo(
                                     ...TextStyles.Detail,
                                     textAlign: 'center',
                                 }}
+                                allowFontScaling={false}
                             >
                                 {counter}
                             </Text>
@@ -119,6 +120,7 @@ const ControlItem = React.memo(
                             color: theme.foregroundPrimary,
                             textAlign: 'center',
                         }}
+                        allowFontScaling={false}
                     >
                         {text}
                     </Text>

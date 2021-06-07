@@ -94,6 +94,7 @@ const WalletComponent = React.memo<PageProps>((props) => {
                             color: theme.foregroundSecondary,
                             marginTop: 8,
                         }}
+                        allowFontScaling={false}
                     >
                         No earnings yet
                     </Text>
@@ -111,7 +112,7 @@ const WalletComponent = React.memo<PageProps>((props) => {
                             borderRadius: 12,
                         }}
                     >
-                        <Text style={{ ...TextStyles.Title1, color: theme.foregroundPrimary }}>
+                        <Text style={{ ...TextStyles.Title1, color: theme.foregroundPrimary }} allowFontScaling={false}>
                             <Money amount={balance} />
                         </Text>
                     </View>
