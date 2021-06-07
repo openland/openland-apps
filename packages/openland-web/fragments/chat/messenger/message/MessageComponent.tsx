@@ -14,7 +14,6 @@ import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyl
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { defaultHover } from 'openland-web/utils/Styles';
-import { isPendingAttach } from 'openland-engines/messenger/ConversationEngine';
 import { buildBaseImageUrl } from 'openland-y-utils/photoRefUtils';
 import { useChatMessagesSelected } from 'openland-y-utils/MessagesActionsState';
 import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
@@ -531,7 +530,6 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             sender={message.sender}
             senderNameEmojify={message.senderNameEmojify}
             date={message.date}
-            isPending={isPendingAttach(message)}
         />
     );
 

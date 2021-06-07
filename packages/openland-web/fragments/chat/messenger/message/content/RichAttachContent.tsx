@@ -9,7 +9,7 @@ import { useClient } from 'openland-api/useClient';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { InternalAttachContent } from './InternalAttachContent';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
-import { showImageModal } from './ImageContent';
+import { showImageModal } from './ImageModal';
 import DeleteIcon from 'openland-icons/s/ic-close-16.svg';
 import ZoomIcon from 'openland-icons/s/ic-zoom-16.svg';
 import PlayIcon from 'openland-icons/s/ic-play-glyph-24.svg';
@@ -369,12 +369,16 @@ export const RichAttachContent = React.memo((props: RichAttachContentProps) => {
                     onClick={(e: React.MouseEvent) => {
                         e.stopPropagation();
                         showImageModal({
-                            fileId: attach
-                                .image!!.url.split('https://ucarecdn.com/')
-                                .pop()!
-                                .slice(0, -1),
-                            imageWidth: attach.image!!.metadata!!.imageWidth!! * 2 || 0,
-                            imageHeight: attach.image!!.metadata!!.imageHeight!! * 2 || 0,
+                            file: {
+                                fileId: attach
+                                    .image!!.url.split('https://ucarecdn.com/')
+                                    .pop()!
+                                    .slice(0, -1),
+                                fileMetadata: {
+                                    imageWidth: attach.image!!.metadata!!.imageWidth!! * 2 || 0,
+                                    imageHeight: attach.image!!.metadata!!.imageHeight!! * 2 || 0,
+                                },
+                            },
                         });
                     }}
                 >

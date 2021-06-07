@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XViewRouterContext } from 'react-mental';
 import { css, cx } from 'linaria';
-import { isPendingAttach } from 'openland-engines/messenger/ConversationEngine';
 import { buildBaseImageUrl } from 'openland-y-utils/photoRefUtils';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { DataSourceWebMessageItem } from '../messenger/data/WebMessageItemDataSource';
@@ -243,7 +242,6 @@ export const ChatSearchMessage = React.memo((props: MessageComponentProps) => {
             sender={message.sender}
             senderNameEmojify={message.senderNameEmojify}
             date={message.date}
-            isPending={isPendingAttach(message)}
         />
     );
 

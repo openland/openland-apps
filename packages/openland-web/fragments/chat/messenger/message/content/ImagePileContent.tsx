@@ -1,8 +1,11 @@
 import * as React from 'react';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, MessageSender } from 'openland-api/spacex.types';
+import {
+    FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
+    MessageSender,
+} from 'openland-api/spacex.types';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { cx, css } from 'linaria';
-import { showImageModal } from './ImageContent';
+import { showImageModal } from './ImageModal';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { MediaLoader } from './MediaLoader';
 
@@ -41,7 +44,29 @@ const halfImgContainer = css`
     }
 `;
 
+const previewContainer = css`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    max-width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+    z-index: 1;
+`;
+
 const imgPreviewClass = css`
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
     z-index: 0;
     filter: blur(5px);
     background: transparent;
@@ -49,11 +74,6 @@ const imgPreviewClass = css`
     height: 100%;
     width: 100%;
     transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
 `;
 
 const imgAppearClass = css`
@@ -66,60 +86,57 @@ const imgAppearClass = css`
     width: 100%;
 `;
 
-const GifContent = React.memo(
-    (props: { file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile, isHalf?: boolean }) => {
-        const gifRef = React.useRef<HTMLVideoElement>(null);
-        const [isLoad, setIsLoad] = React.useState(false);
-        const onLoad = React.useCallback(() => {
-            if (gifRef.current) {
-                gifRef.current.style.opacity = '1';
-                setIsLoad(true);
-            }
-        }, []);
+interface GifContentProps {
+    file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
+    isHalf?: boolean;
+}
 
-        const webm =
-            'https://ucarecdn.com/' + props.file.fileId + '/gif2video/-/format/webm/image.gif';
-        const mp4 =
-            'https://ucarecdn.com/' + props.file.fileId + '/gif2video/-/format/mp4/image.gif';
-        const [srcWebm, setSrcWebm] = React.useState<string | undefined>(webm);
-        const [srcMp4, setSrcMp4] = React.useState<string | undefined>(mp4);
+const GifContent = React.memo((props: GifContentProps) => {
+    const gifRef = React.useRef<HTMLVideoElement>(null);
+    const prevRef = React.useRef<HTMLDivElement>(null);
 
-        const onContinue = React.useCallback(() => {
-            setSrcWebm(webm);
-            setSrcMp4(mp4);
-        }, [webm, mp4]);
-        const onStop = React.useCallback(() => {
-            setSrcWebm(undefined);
-            setSrcMp4(undefined);
-        }, [webm, mp4]);
+    const [isLoad, setIsLoad] = React.useState(false);
 
-        return (
-            <div className={cx(imgContainer, props.isHalf && halfImgContainer)}>
-                {!isLoad && (
-                    <>
-                        <img
-                            className={imgPreviewClass}
-                            src={props.file.filePreview || undefined}
-                        />
-                        <MediaLoader onContinue={onContinue} onStop={onStop} />
-                    </>
-                )}
-                <video
-                    key={`${srcWebm}${srcMp4}`}
-                    ref={gifRef}
-                    onLoadedData={onLoad}
-                    autoPlay={true}
-                    loop={true}
-                    muted={true}
-                    className={imgAppearClass}
-                >
-                    <source src={srcWebm} type="video/webm" />
-                    <source src={srcMp4} type="video/mp4" />
-                </video>
-            </div>
-        );
-    },
-);
+    const onLoad = React.useCallback(() => {
+        let timer: any;
+        if (prevRef.current && gifRef.current) {
+            prevRef.current.style.opacity = '0';
+            gifRef.current.style.opacity = '1';
+        }
+        timer = setTimeout(() => {
+            setIsLoad(true);
+        }, 200);
+        return () => clearTimeout(timer);
+    }, [isLoad, prevRef]);
+
+    const webm = 'https://ucarecdn.com/' + props.file.fileId + '/gif2video/-/format/webm/image.gif';
+    const mp4 = 'https://ucarecdn.com/' + props.file.fileId + '/gif2video/-/format/mp4/image.gif';
+    const srcWebm = webm;
+    const srcMp4 = mp4;
+
+    return (
+        <div className={cx(imgContainer, props.isHalf && halfImgContainer)}>
+            {!isLoad && (
+                <div className={previewContainer} ref={prevRef}>
+                    <img className={imgPreviewClass} src={props.file.filePreview || undefined} />
+                    <MediaLoader cancelable={false} />
+                </div>
+            )}
+            <video
+                key={`${srcWebm}${srcMp4}`}
+                ref={gifRef}
+                onLoadedData={onLoad}
+                autoPlay={true}
+                loop={true}
+                muted={true}
+                className={imgAppearClass}
+            >
+                <source src={srcWebm} type="video/webm" />
+                <source src={srcMp4} type="video/mp4" />
+            </video>
+        </div>
+    );
+});
 
 interface ImagePileContentProps {
     file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
@@ -128,7 +145,6 @@ interface ImagePileContentProps {
     date?: number;
     chatId?: string;
     mId?: string;
-    isPending?: boolean;
     progress?: number;
     isHalf?: boolean;
 }
@@ -138,9 +154,10 @@ export const ImagePileContent = React.memo((props: ImagePileContentProps) => {
         return <GifContent file={props.file} isHalf={props.isHalf} />;
     }
 
-    const [isLoad, setIsLoad] = React.useState(false);
+    const [isLoad, setIsLoad] = React.useState(!!props.progress || true);
 
     const imgRef = React.useRef<HTMLImageElement>(null);
+    const prevRef = React.useRef<HTMLDivElement>(null);
 
     const layout = layoutMedia(
         props.file.fileMetadata.imageWidth || 0,
@@ -155,60 +172,42 @@ export const ImagePileContent = React.memo((props: ImagePileContentProps) => {
     const layoutHeight = layout.height;
 
     const url = `https://ucarecdn.com/${props.file.fileId}/-/format/auto/-/`;
-    const ops = `scale_crop/${layoutWidth}x${layoutHeight}/`;
-    const opsRetina = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/center/ 2x`;
+    const ops = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/`;
+    const opsRetina = `scale_crop/${layoutWidth * 4}x${layoutHeight * 4}/center/ 2x`;
 
-    const [src, setSrc] = React.useState<string | undefined>(
-        props.file.fileId ? url + ops : undefined,
-    );
-    const [srcSet, setSrcSet] = React.useState<string | undefined>(
-        props.file.fileId ? url + opsRetina : undefined,
-    );
-    const [previewSrc] = React.useState(props.file.filePreview);
+    const src = props.file.fileId ? url + ops : undefined;
+    const srcSet = props.file.fileId ? url + opsRetina : undefined;
+    const previewSrc = props.file.filePreview;
 
     React.useEffect(() => {
-        if (!props.isPending) {
-            setSrc(url + ops);
-            setSrcSet(url + opsRetina);
+        if (imgRef.current && imgRef.current.complete) {
+            setIsLoad(false);
+            imgRef.current.style.opacity = '1';
         }
-    }, [props.file.fileId, props.file.id]);
-
-    const onContinue = React.useCallback(() => {
-        setSrc(url + ops);
-        setSrcSet(url + opsRetina);
-    }, [props.file.fileId]);
-    const onStop = React.useCallback(() => {
-        setSrc(undefined);
-        setSrcSet(undefined);
-    }, [props.file.fileId]);
+    }, [isLoad, imgRef]);
 
     const onLoad = React.useCallback(() => {
-        if (imgRef.current) {
+        let timer: any;
+        if (prevRef.current && imgRef.current) {
+            prevRef.current.style.opacity = '0';
             imgRef.current.style.opacity = '1';
-            setIsLoad(true);
+            timer = setTimeout(() => {
+                setIsLoad(false);
+            }, 200);
         }
-    }, []);
-
-    const isUpload = !!props.progress && props.progress >= 0 && props.progress < 1;
-
-    let uploadProgress = 90;
-    if (isUpload) {
-        uploadProgress = Math.round(props.progress! * 100);
-    }
+        return () => clearTimeout(timer);
+    }, [isLoad, prevRef, imgRef]);
 
     return (
         <div
             className={cx(imgContainer, props.isHalf && halfImgContainer)}
             onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
-                if (isUpload) {
+                if (isLoad) {
                     return;
                 }
                 showImageModal({
-                    fileId: props.file.fileId,
-                    imageWidth: props.file.fileMetadata.imageWidth || 0,
-                    imageHeight: props.file.fileMetadata.imageHeight || 0,
-                    preview: props.file.filePreview,
+                    file: props.file,
                     sender: props.sender,
                     senderNameEmojify: props.senderNameEmojify,
                     date: props.date,
@@ -217,25 +216,21 @@ export const ImagePileContent = React.memo((props: ImagePileContentProps) => {
                 });
             }}
         >
-            {(!isLoad || isUpload) && (
-                <>
+            {isLoad && (
+                <div className={previewContainer} ref={prevRef}>
                     <ImgWithRetry
                         className={imgPreviewClass}
                         width={layoutWidth}
                         height={layoutHeight}
                         src={previewSrc || undefined}
                     />
-                    <MediaLoader
-                        onContinue={onContinue}
-                        onStop={onStop}
-                        progress={uploadProgress}
-                    />
-                </>
+                    <MediaLoader cancelable={false} />
+                </div>
             )}
             <ImgWithRetry
                 ref={imgRef}
                 key={src}
-                onLoad={onLoad}
+                onLoad={!!props.progress ? undefined : onLoad}
                 className={imgAppearClass}
                 src={src}
                 srcSet={srcSet}
