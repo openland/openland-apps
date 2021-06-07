@@ -108,3 +108,71 @@ export function useImageViewer(data: dataT, currentId: string, inverted?: boolea
         current: (current as any) as currentT[],
     };
 }
+
+export type ViewerState = {
+    loaded: boolean;
+    cursor: string | undefined;
+    index: number | undefined;
+} & ImageViewerCb;
+
+export type ViewerAction =
+    | { type: 'back' }
+    | { type: 'forward' }
+    | { type: 'image-loaded' }
+    | { type: 'state-changed'; newState: Partial<ViewerState> };
+
+export const viewerReducer = (state: ViewerState, action: ViewerAction) => {
+    if (action.type === 'image-loaded') {
+        return {
+            ...state,
+            loaded: true,
+        };
+    }
+    if (action.type === 'back') {
+        const hasPrevAttach = state.index! > 0;
+        if (hasPrevAttach) {
+            return {
+                ...state,
+                loaded: false,
+                index: state.index !== undefined ? state.index - 1 : state.index,
+            };
+        }
+        if (state.prevCursor) {
+            return {
+                ...state,
+                loaded: false,
+                cursor: state.prevCursor,
+                current: state.prev || state.current,
+                index: state.prev?.length ? state.prev.length - 1 : 0,
+            };
+        }
+    }
+    if (action.type === 'forward') {
+        const hasNextAttach =
+            state.index !== undefined ? state.index < state.current.length - 1 : false;
+        if (hasNextAttach) {
+            return {
+                ...state,
+                loaded: false,
+                index: state.index !== undefined ? state.index + 1 : state.index,
+            };
+        }
+
+        if (state.nextCursor) {
+            return {
+                ...state,
+                cursor: state.nextCursor,
+                loaded: false,
+                current: state.next || state.current,
+                index: 0,
+            };
+        }
+    }
+    if (action.type === 'state-changed') {
+        return {
+            ...state,
+            ...action.newState,
+        };
+    }
+    return state;
+};

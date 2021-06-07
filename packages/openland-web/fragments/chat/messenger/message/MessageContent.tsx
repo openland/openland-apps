@@ -99,7 +99,6 @@ interface MessageContentProps {
     sender?: MessageSender;
     senderNameEmojify?: string | JSX.Element;
     date?: number;
-    isPending?: boolean;
     isComment?: boolean;
 }
 
@@ -116,7 +115,6 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
         isOut = false,
         chatId,
         attachTop = false,
-        isPending,
         isComment = false,
     } = props;
 
@@ -155,7 +153,6 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
                     date={props.date}
                     chatId={props.chatId}
                     mId={id}
-                    isPending={isPending}
                     progress={file.progress}
                 />
             ));
@@ -172,7 +169,6 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
                                 date={props.date}
                                 chatId={props.chatId}
                                 mId={id}
-                                isPending={isPending}
                                 progress={file.progress}
                                 isHalf={imageAttaches.length === 3 && i === 1 || imageAttaches.length === 4}
                             />
@@ -187,7 +183,6 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
                                 date={props.date}
                                 chatId={props.chatId}
                                 mId={id}
-                                isPending={isPending}
                                 progress={file.progress}
                                 isHalf={true}
                             />

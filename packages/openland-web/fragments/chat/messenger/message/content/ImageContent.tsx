@@ -1,106 +1,13 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { XViewRouteContext } from 'react-mental';
 import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     MessageSender,
 } from 'openland-api/spacex.types';
-import { useImageViewer, ImageViewerCb } from 'openland-x-utils/imageViewer';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
-import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
-import { showModalBox } from 'openland-x/showModalBox';
-import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import { formatDateTime } from 'openland-y-utils/formatTime';
-import { TextCaption } from 'openland-web/utils/TextStyles';
-import { useIsMobile } from 'openland-web/hooks/useIsMobile';
-import { XLoader } from 'openland-x/XLoader';
-import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
-import { emoji } from 'openland-y-utils/emoji';
-import { useClient } from 'openland-api/useClient';
-import { UToast } from 'openland-web/components/unicorn/UToast';
-import IcDownload from 'openland-icons/s/ic-download-24.svg';
-import IcForward from 'openland-icons/s/ic-forward-24.svg';
-import IcClose from 'openland-icons/s/ic-close-24.svg';
-import IcLeft from 'openland-icons/s/ic-back-24.svg';
-import IcRight from 'openland-icons/s/ic-next-24.svg';
+import { showImageModal } from './ImageModal';
 import { MediaLoader } from './MediaLoader';
-import moment from 'moment';
-
-const modalImgContainer = css`
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    user-select: none;
-`;
-
-const fadeoutStyle = css`
-    opacity: 0 !important;
-    transition: 500ms opacity ease !important;
-`;
-
-const modalToolbarContainer = css`
-    width: 100%;
-    height: 56px;
-    position: absolute;
-    left: 0;
-    top: 0;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    z-index: 1;
-    transition: 200ms opacity ease;
-    opacity: 0.56;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0) 100%);
-    :hover {
-        opacity: 1;
-    }
-`;
-
-const modalImgContent = css`
-    position: relative;
-    flex-grow: 1;
-    flex-shrink: 1;
-    overflow: hidden;
-    max-height: 100%;
-`;
-
-const modalInfoContainer = css`
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    pointer-events: none;
-    margin-right: auto;
-    white-space: nowrap;
-`;
-
-const modalSecondaryText = css`
-    color: var(--foregroundContrast);
-    margin-right: 12px;
-`;
-
-const modalButtonsContainer = css`
-    display: flex;
-    align-items: center;
-`;
-
-const modalButtonStyle = css`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    width: 48px;
-    height: 48px;
-    opacity: 0.72;
-    cursor: pointer;
-    &:hover {
-        opacity: 1;
-    }
-`;
 
 const imgContainer = css`
     position: relative;
@@ -183,470 +90,6 @@ const imgSpacer = css`
     }
 `;
 
-const cursorContainer = css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    position: absolute;
-    cursor: pointer;
-    padding-top: 56px;
-    padding-left: 12px;
-    padding-right: 12px;
-    justify-content: center;
-    top: 0;
-    bottom: 0;
-    width: 64px;
-    transition: 200ms opacity ease;
-    opacity: 0.56;
-    & > div {
-        flex-grow: 0;
-        width: 40px;
-        height: 40px;
-        transition: 200ms all ease;
-        border-radius: 100%;
-    }
-    :hover {
-        opacity: 1;
-    }
-    :hover > div {
-        background-color: rgba(0, 0, 0, 0.48);
-    }
-`;
-
-const prevCursorContent = css`
-    left: 0;
-`;
-
-const nextCursorContent = css`
-    right: 0;
-`;
-
-const forwardToastClassName = css`
-    position: absolute;
-    z-index: 1;
-    top: 65px;
-`;
-
-interface ModalControllerProps {
-    cId: string;
-    cursor: string;
-    setViewerState: (data: ImageViewerCb) => void;
-    hide: () => void;
-    onPrevClick: () => void;
-    onNextClick: () => void;
-}
-
-const ModalController = React.memo((props: ModalControllerProps) => {
-    const client = useClient();
-    const router = React.useContext(XViewRouteContext);
-    const invertedControl = router?.path.endsWith('/shared');
-
-    const sharedInfo = client.usePicSharedMedia(
-        {
-            chatId: props.cId,
-            first: 1,
-            around: props.cursor,
-        },
-        { fetchPolicy: 'cache-and-network' },
-    ).chatSharedMedia;
-
-    useShortcuts([
-        {
-            keys: ['Escape'],
-            callback: () => props.hide(),
-        },
-        {
-            keys: ['ArrowLeft'],
-            callback: props.onPrevClick,
-        },
-        {
-            keys: ['ArrowRight'],
-            callback: props.onNextClick,
-        },
-    ]);
-
-    React.useEffect(() => {
-        (async () => {
-            await client.refetchPicSharedMedia({
-                chatId: props.cId,
-                first: 1,
-                around: props.cursor,
-            });
-            let viewerData;
-            if (sharedInfo) {
-                viewerData = useImageViewer(sharedInfo, props.cursor, invertedControl);
-                props.setViewerState(viewerData);
-            }
-            if (viewerData && viewerData.prevCursor) {
-                await client.refetchPicSharedMedia({
-                    chatId: props.cId,
-                    first: 1,
-                    around: viewerData.prevCursor,
-                });
-            }
-            if (viewerData && viewerData.nextCursor) {
-                await client.refetchPicSharedMedia({
-                    chatId: props.cId,
-                    first: 1,
-                    around: viewerData.nextCursor,
-                });
-            }
-        })();
-    }, [sharedInfo]);
-
-    return null;
-});
-
-type ViewerState = {
-    loaded: boolean;
-    cursor: string | undefined;
-    index: number | undefined;
-} & ImageViewerCb;
-
-type ViewerAction =
-    | { type: 'back' }
-    | { type: 'forward' }
-    | { type: 'image-loaded' }
-    | { type: 'state-changed'; newState: Partial<ViewerState> };
-
-interface ModalProps {
-    fileId: string;
-    imageWidth: number;
-    imageHeight: number;
-    preview?: string | null;
-    sender?: MessageSender;
-    senderNameEmojify?: string | JSX.Element;
-    date?: number;
-    chatId?: string;
-    mId?: string;
-}
-
-const reducer = (state: ViewerState, action: ViewerAction) => {
-    if (action.type === 'image-loaded') {
-        return {
-            ...state,
-            loaded: true,
-        };
-    }
-    if (action.type === 'back') {
-        const hasPrevAttach = state.index! > 0;
-        if (hasPrevAttach) {
-            return {
-                ...state,
-                loaded: false,
-                index: state.index !== undefined ? state.index - 1 : state.index,
-            };
-        }
-        if (state.prevCursor) {
-            return {
-                ...state,
-                loaded: false,
-                cursor: state.prevCursor,
-                current: state.prev || state.current,
-                index: state.prev?.length ? state.prev.length - 1 : 0,
-            };
-        }
-    }
-    if (action.type === 'forward') {
-        const hasNextAttach =
-            state.index !== undefined ? state.index < state.current.length - 1 : false;
-        if (hasNextAttach) {
-            return {
-                ...state,
-                loaded: false,
-                index: state.index !== undefined ? state.index + 1 : state.index,
-            };
-        }
-
-        if (state.nextCursor) {
-            return {
-                ...state,
-                cursor: state.nextCursor,
-                loaded: false,
-                current: state.next || state.current,
-                index: 0,
-            };
-        }
-    }
-    if (action.type === 'state-changed') {
-        return {
-            ...state,
-            ...action.newState,
-        };
-    }
-    return state;
-};
-
-const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
-    const isMobile = useIsMobile();
-    const messenger = React.useContext(MessengerContext);
-    const imgRef = React.useRef<HTMLImageElement>(null);
-    const prevRef = React.useRef<HTMLDivElement>(null);
-
-    const [forwardToast, setForwardToast] = React.useState<{ title: string; show: boolean }>({
-        title: 'Forwarded',
-        show: false,
-    });
-    const [fadeout, setFadeout] = React.useState(false);
-    const [cursorData, setCursorData] = React.useState({ x: 0, y: 0 });
-
-    const [state, dispatch] = React.useReducer<React.Reducer<ViewerState, ViewerAction>>(reducer, {
-        loaded: false,
-        cursor: props.mId,
-        current: [],
-        prev: undefined,
-        prevCursor: null,
-        nextCursor: null,
-        next: undefined,
-        index: undefined,
-        hasNextPage: false,
-        hasPrevPage: false,
-    });
-    const { current, index, loaded, cursor } = state;
-
-    const currentItem =
-        current.length && index !== undefined
-            ? current[index]
-            : {
-                  fileId: props.fileId,
-                  imageWidth: props.imageWidth,
-                  imageHeight: props.imageHeight,
-                  filePreview: props.preview!,
-                  date: props.date!,
-                  senderName: (props.senderNameEmojify
-                      ? props.senderNameEmojify
-                      : props.sender
-                      ? emoji(props.sender.name)
-                      : '') as string,
-              };
-
-    React.useEffect(() => {
-        if (index === undefined && current.length > 0) {
-            dispatch({
-                type: 'state-changed',
-                newState: { index: current.findIndex((x) => x.fileId === props.fileId) },
-            });
-        }
-    }, [current]);
-
-    useShortcuts([
-        {
-            keys: ['Escape'],
-            callback: () => props.hide(),
-        },
-    ]);
-
-    const onLoad = React.useCallback(() => {
-        if (imgRef.current && prevRef.current) {
-            imgRef.current.style.opacity = '1';
-            imgRef.current.style.visibility = 'visible';
-            prevRef.current.style.opacity = '0';
-            dispatch({ type: 'image-loaded' });
-        }
-    }, []);
-
-    React.useLayoutEffect(() => {
-        if (imgRef.current && prevRef.current && !loaded) {
-            imgRef.current.style.opacity = '0';
-            imgRef.current.style.visibility = 'hidden';
-            prevRef.current.style.opacity = '1';
-        }
-    }, [state, loaded]);
-
-    const hasPrevAttach = index! > 0;
-    const hasNextAttach = index! < current.length - 1;
-    const onPrevClick = () => {
-        dispatch({ type: 'back' });
-    };
-    const onNextClick = () => {
-        dispatch({ type: 'forward' });
-    };
-
-    const forwardCallback = React.useCallback(() => {
-        showChatPicker((id: string) => {
-            messenger.sender.shareFile(id, currentItem.fileId);
-            if (messenger.user.id === id) {
-                setForwardToast({ title: 'Added to saved messages', show: true });
-            } else {
-                setForwardToast({ title: 'Forwarded', show: true });
-            }
-        });
-    }, [state]);
-
-    const sender = currentItem.senderName;
-
-    const date = currentItem.date;
-    const downloadLink =
-        'https://ucarecdn.com/' +
-        currentItem.fileId +
-        '/-/format/jpg/-/inline/no/Openland-' +
-        moment(date).format('YYYY-MM-DD-HH-mm-ss') +
-        '.jpg';
-
-    const url = `https://ucarecdn.com/${currentItem.fileId}/-/format/auto/-/`;
-
-    const layoutModal = layoutMedia(
-        currentItem.imageWidth,
-        currentItem.imageHeight,
-        680,
-        360,
-        32,
-        32,
-    );
-
-    const width = layoutModal.width;
-    const height = layoutModal.height;
-
-    const ops = `scale_crop/${width}x${height}/`;
-    const opsRetina = `scale_crop/${width * 2}x${height * 2}/center/ 2x`;
-    const src = url + ops;
-    const srcSet = url + opsRetina;
-
-    const preview = currentItem.filePreview;
-
-    const mouseMove = React.useCallback(
-        (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-            const data = { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY };
-            setFadeout(false);
-            setCursorData(data);
-        },
-        [fadeout, cursorData],
-    );
-
-    React.useLayoutEffect(() => {
-        const timer = setTimeout(() => {
-            setFadeout(true);
-        }, 2000);
-        return () => clearTimeout(timer);
-    }, [cursorData]);
-
-    return (
-        <div className={modalImgContainer} onMouseMove={mouseMove} onClick={props.hide}>
-            <UToast
-                isVisible={forwardToast.show}
-                type="success"
-                text={forwardToast.title}
-                className={forwardToastClassName}
-                closeCb={() => setForwardToast({ title: 'Forwarded', show: false })}
-            />
-            <div
-                className={cx(modalToolbarContainer, fadeout && fadeoutStyle)}
-                onClick={(e) => e.preventDefault()}
-            >
-                {cursor && props.chatId && (
-                    <React.Suspense fallback={null}>
-                        <ModalController
-                            cId={props.chatId}
-                            cursor={cursor || ''}
-                            setViewerState={(data) =>
-                                dispatch({ type: 'state-changed', newState: data })
-                            }
-                            hide={props.hide}
-                            onPrevClick={onPrevClick}
-                            onNextClick={onNextClick}
-                        />
-                    </React.Suspense>
-                )}
-                {sender && date && (
-                    <div className={modalInfoContainer}>
-                        {!isMobile && (
-                            <div className={cx(TextCaption, modalSecondaryText)}>{sender}</div>
-                        )}
-                        <div className={cx(TextCaption, modalSecondaryText)}>
-                            {formatDateTime(date)}
-                        </div>
-                    </div>
-                )}
-                <div className={modalButtonsContainer}>
-                    <a
-                        className={modalButtonStyle}
-                        href={downloadLink}
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <UIcon icon={<IcDownload />} color="var(--foregroundContrast)" />
-                    </a>
-                    <div
-                        className={modalButtonStyle}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            forwardCallback();
-                        }}
-                    >
-                        <UIcon icon={<IcForward />} color="var(--foregroundContrast)" />
-                    </div>
-                    <div className={modalButtonStyle} onClick={props.hide}>
-                        <UIcon icon={<IcClose />} color="var(--foregroundContrast)" />
-                    </div>
-                </div>
-            </div>
-            <div className={modalImgContent} style={{ maxWidth: width * 2 }}>
-                <div
-                    className={imgSpacer}
-                    style={
-                        {
-                            width: width * 2,
-                            maxWidth: '100%',
-                            margin: 'auto',
-                            '--ratio': ((height * 2) / (width * 2)) * 100 + '%',
-                        } as React.CSSProperties
-                    }
-                />
-                <div className={previewContainer} ref={prevRef}>
-                    {preview && (
-                        <img
-                            className={imgPreviewClass}
-                            src={preview}
-                            width={width * 2}
-                            height={height * 2}
-                            style={{ cursor: 'default' }}
-                        />
-                    )}
-                    <XLoader loading={true} transparentBackground={true} contrast={true} />
-                </div>
-                <ImgWithRetry
-                    ref={imgRef}
-                    onLoad={onLoad}
-                    src={src}
-                    srcSet={srcSet}
-                    className={imgAppearClass}
-                    width={width * 2}
-                    height={height * 2}
-                    style={{ objectFit: 'contain', cursor: 'default' }}
-                />
-            </div>
-            {(state.hasPrevPage || hasPrevAttach) && (
-                <div
-                    className={cx(cursorContainer, prevCursorContent, fadeout && fadeoutStyle)}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onPrevClick();
-                    }}
-                >
-                    <UIcon icon={<IcLeft />} color={'var(--foregroundContrast)'} />
-                </div>
-            )}
-            {(state.hasNextPage || hasNextAttach) && (
-                <div
-                    className={cx(cursorContainer, nextCursorContent, fadeout && fadeoutStyle)}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onNextClick();
-                    }}
-                >
-                    <UIcon icon={<IcRight />} color={'var(--foregroundContrast)'} />
-                </div>
-            )}
-        </div>
-    );
-});
-
-export const showImageModal = (props: ModalProps) => {
-    showModalBox(
-        { fullScreen: true, darkOverlay: true, useTopCloser: false, hideOnEsc: false },
-        (ctx) => <ModalContent {...props} hide={ctx.hide} />,
-    );
-};
-
 interface GifContentProps {
     file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
 }
@@ -685,17 +128,8 @@ const GifContent = React.memo((props: GifContentProps) => {
 
     const webm = 'https://ucarecdn.com/' + props.file.fileId + '/gif2video/-/format/webm/image.gif';
     const mp4 = 'https://ucarecdn.com/' + props.file.fileId + '/gif2video/-/format/mp4/image.gif';
-    const [srcWebm, setSrcWebm] = React.useState<string | undefined>(webm);
-    const [srcMp4, setSrcMp4] = React.useState<string | undefined>(mp4);
-
-    const onContinue = React.useCallback(() => {
-        setSrcWebm(webm);
-        setSrcMp4(mp4);
-    }, [webm, mp4]);
-    const onStop = React.useCallback(() => {
-        setSrcWebm(undefined);
-        setSrcMp4(undefined);
-    }, [webm, mp4]);
+    const srcWebm = webm;
+    const srcMp4 = mp4;
 
     return (
         <div className={imgContainer} style={{ width: layoutWidth }}>
@@ -717,7 +151,7 @@ const GifContent = React.memo((props: GifContentProps) => {
                         src={props.file.filePreview || undefined}
                         style={{ top: imgPositionTop, left: imgPositionLeft }}
                     />
-                    <MediaLoader onContinue={onContinue} onStop={onStop} />
+                    <MediaLoader cancelable={false} />
                 </div>
             )}
             <video
@@ -745,7 +179,6 @@ interface ImageContentProps {
     date?: number;
     chatId?: string;
     mId?: string;
-    isPending?: boolean;
     progress?: number;
 }
 
@@ -772,16 +205,12 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
     const layoutHeight = layout.height;
 
     const url = `https://ucarecdn.com/${props.file.fileId}/-/format/auto/-/`;
-    const ops = `scale_crop/${layoutWidth}x${layoutHeight}/`;
-    const opsRetina = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/center/ 2x`;
+    const ops = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/`;
+    const opsRetina = `scale_crop/${layoutWidth * 4}x${layoutHeight * 4}/center/ 2x`;
 
-    const [src, setSrc] = React.useState<string | undefined>(
-        props.file.fileId ? url + ops : undefined,
-    );
-    const [srcSet, setSrcSet] = React.useState<string | undefined>(
-        props.file.fileId ? url + opsRetina : undefined,
-    );
-    const [previewSrc] = React.useState(props.file.filePreview);
+    const src = props.file.fileId ? url + ops : undefined;
+    const srcSet = props.file.fileId ? url + opsRetina : undefined;
+    const previewSrc = props.file.filePreview;
 
     React.useEffect(() => {
         if (imgRef.current && imgRef.current.complete) {
@@ -789,22 +218,6 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
             imgRef.current.style.opacity = '1';
         }
     }, [isLoad, imgRef]);
-
-    React.useEffect(() => {
-        if (!props.isPending) {
-            setSrc(url + ops);
-            setSrcSet(url + opsRetina);
-        }
-    }, [props.file.fileId, props.file.id]);
-
-    const onContinue = React.useCallback(() => {
-        setSrc(url + ops);
-        setSrcSet(url + opsRetina);
-    }, [props.file.fileId]);
-    const onStop = React.useCallback(() => {
-        setSrc(undefined);
-        setSrcSet(undefined);
-    }, [props.file.fileId]);
 
     const onLoad = React.useCallback(() => {
         let timer: any;
@@ -828,10 +241,7 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
                     return;
                 }
                 showImageModal({
-                    fileId: props.file.fileId,
-                    imageWidth: props.file.fileMetadata.imageWidth || 0,
-                    imageHeight: props.file.fileMetadata.imageHeight || 0,
-                    preview: props.file.filePreview,
+                    file: props.file,
                     sender: props.sender,
                     senderNameEmojify: props.senderNameEmojify,
                     date: props.date,
@@ -857,7 +267,7 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
                         height={layoutHeight}
                         src={previewSrc || undefined}
                     />
-                    <MediaLoader onContinue={onContinue} onStop={onStop} />
+                    <MediaLoader cancelable={false} />
                 </div>
             )}
             <ImgWithRetry

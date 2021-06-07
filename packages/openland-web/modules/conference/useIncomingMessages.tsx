@@ -14,7 +14,7 @@ import { emoji } from 'openland-y-utils/emoji';
 import { SpannedView } from 'openland-web/fragments/chat/messenger/message/content/SpannedView';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
-import { showImageModal } from 'openland-web/fragments/chat/messenger/message/content/ImageContent';
+import { showImageModal } from 'openland-web/fragments/chat/messenger/message/content/ImageModal';
 import { SpanType } from 'openland-y-utils/spans/Span';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 
@@ -98,10 +98,7 @@ export const MediaContent = React.memo((props: MediaContentProps) => {
         showImageModal({
             chatId: props.chatId,
             mId: props.messageId,
-            fileId: props.attach.fileId,
-            imageWidth: props.attach.fileMetadata.imageWidth || 0,
-            imageHeight: props.attach.fileMetadata.imageHeight || 0,
-            preview: props.attach.filePreview,
+            file: props.attach,
             senderNameEmojify: props.senderNameEmojify,
             date: props.messageDate,
         });

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { emoji } from 'openland-y-utils/emoji';
 import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage } from 'openland-api/spacex.types';
-import { showImageModal } from 'openland-web/fragments/chat/messenger/message/content/ImageContent';
+import { showImageModal } from '../messenger/message/content/ImageModal';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { SharedItemFile } from './SharedMediaFragment';
 
@@ -48,7 +48,6 @@ const MediaItemContentClass = css`
     position: absolute;
     top: 1px;
     left: 1px;
-
     display: block;
     width: calc(100% - 2px);
     opacity: 0;
@@ -71,55 +70,59 @@ const ImgPreviewContainerClass = css`
     left: 1px;
     bottom: 1px;
     right: 1px;
-
     overflow: hidden;
-
     transition: opacity 450ms cubic-bezier(0.4, 0, 0.2, 1);
     will-change: opacity;
 `;
-export const MediaContent = React.memo((props: { item: SharedItemFile; chatId: string, profileView?: boolean }) => {
+
+interface MediaContentProps {
+    item: SharedItemFile;
+    chatId: string;
+    profileView?: boolean;
+}
+
+export const MediaContent = React.memo((props: MediaContentProps) => {
     const imgRef = React.useRef<HTMLImageElement>(null);
-    const placeholderRef = React.useRef<HTMLDivElement>(null);
-    const onClick = React.useCallback(() => {
-        showImageModal({
-            chatId: props.chatId,
-            mId: (props.item.message as generalM).id,
-            fileId: props.item.attach.fileId,
-            imageWidth: props.item.attach.fileMetadata.imageWidth || 0,
-            imageHeight: props.item.attach.fileMetadata.imageHeight || 0,
-            preview: props.item.attach.filePreview,
-            senderNameEmojify: emoji(props.item.sender.name),
-            date: parseInt(props.item.dateRaw, 10),
-        });
-    }, []);
+    const prevRef = React.useRef<HTMLDivElement>(null);
+    const [isLoad, setIsLoad] = React.useState(true);
 
     const onLoad = React.useCallback(() => {
-        if (imgRef.current && placeholderRef.current) {
+        let timer: any;
+        if (prevRef.current && imgRef.current) {
+            prevRef.current.style.opacity = '0';
             imgRef.current.style.opacity = '1';
-            placeholderRef.current.style.opacity = '0';
+            timer = setTimeout(() => {
+                setIsLoad(false);
+            }, 200);
         }
-    }, []);
+        return () => clearTimeout(timer);
+    }, [isLoad, prevRef, imgRef]);
 
-    const mediaItemClassNames = cx(
-        MediaItemClass,
-        props.profileView && MediaItemClassProfileView,
-    );
+    const mediaItemClassNames = cx(MediaItemClass, props.profileView && MediaItemClassProfileView);
 
     return (
-        <div className={mediaItemClassNames} onClick={onClick}>
-            <div className={ImgPreviewContainerClass} ref={placeholderRef}>
-                <ImgWithRetry
-                    className={ImgPreviewClass}
-                    src={props.item.attach.filePreview || undefined}
-                />
-            </div>
-
+        <div
+            className={mediaItemClassNames}
+            onClick={() => showImageModal({
+                chatId: props.chatId,
+                file: props.item.attach,
+                mId: (props.item.message as generalM).id,
+                senderNameEmojify: emoji(props.item.sender.name),
+                date: parseInt(props.item.dateRaw, 10),
+            })}
+        >
+            {isLoad && (
+                <div className={ImgPreviewContainerClass} ref={prevRef}>
+                    <ImgWithRetry
+                        className={ImgPreviewClass}
+                        src={props.item.attach.filePreview || undefined}
+                    />
+                </div>
+            )}
             <ImgWithRetry
                 ref={imgRef}
                 className={MediaItemContentClass}
-                src={`https://ucarecdn.com/${
-                    props.item.attach.fileId
-                }/-/format/auto/-/scale_crop/138x138/smart/`}
+                src={`https://ucarecdn.com/${props.item.attach.fileId}/-/format/auto/-/scale_crop/138x138/smart/`}
                 onLoad={onLoad}
             />
         </div>
