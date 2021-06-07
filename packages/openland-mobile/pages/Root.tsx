@@ -13,7 +13,7 @@ import { HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 
 import { rateAppIfNeeded } from './main/modals/RateApp';
-import { checkForUpdates, showUpdateAppModal } from './main/modals/UpdateApp';
+import { checkForUpdates } from './main/modals/UpdateApp';
 
 export interface RootProps {
     width: number;

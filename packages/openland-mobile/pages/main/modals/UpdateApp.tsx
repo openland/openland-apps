@@ -17,28 +17,6 @@ const STORAGE_KEY = 'last-skipped-release';
 
 const getLastSkippedRelease = async () => await AppStorage.readKey<string>(STORAGE_KEY);
 
-export const checkForUpdates = async () => {
-    try {
-        const currentVersion = Version.appVersion;
-        const currentMinorVersion = Number(currentVersion.split('.').reverse()[0]);
-        const isTestBuild = currentVersion.split('.')[0] === '999';
-        const platform = (isTestBuild ? 'TEST' : Platform.OS.toUpperCase()) as ReleasePlatform;
-
-        const latestAppRelease = await getClient().queryLatestAppReleaseCheck({ platform });
-        const latestVersion = latestAppRelease.latestAppRelease!.version;
-        const latestMinorVersion = Number(latestVersion.split('.').reverse()[0]);
-
-        if (
-            latestMinorVersion > currentMinorVersion &&
-            latestVersion !== await getLastSkippedRelease()
-        ) {
-            showUpdateAppModal(latestVersion);
-        }
-    } catch (e) {
-        console.log(e);
-    }
-};
-
 const UpdateApp = (props: { ctx: ModalProps; newVersion: string }) => {
     const theme = useTheme();
 
@@ -116,4 +94,26 @@ const UpdateApp = (props: { ctx: ModalProps; newVersion: string }) => {
 
 export const showUpdateAppModal = (newVersion: string) => {
     showBottomSheet({ view: (ctx) => <UpdateApp ctx={ctx} newVersion={newVersion} /> });
+};
+
+export const checkForUpdates = async () => {
+    try {
+        const currentVersion = Version.appVersion;
+        const currentMinorVersion = Number(currentVersion.split('.').reverse()[0]);
+        const isTestBuild = currentVersion.split('.')[0] === '999';
+        const platform = (isTestBuild ? 'TEST' : Platform.OS.toUpperCase()) as ReleasePlatform;
+
+        const latestAppRelease = await getClient().queryLatestAppReleaseCheck({ platform });
+        const latestVersion = latestAppRelease.latestAppRelease!.version;
+        const latestMinorVersion = Number(latestVersion.split('.').reverse()[0]);
+
+        if (
+            latestMinorVersion > currentMinorVersion &&
+            latestVersion !== await getLastSkippedRelease()
+        ) {
+            showUpdateAppModal(latestVersion);
+        }
+    } catch (e) {
+        console.log(e);
+    }
 };

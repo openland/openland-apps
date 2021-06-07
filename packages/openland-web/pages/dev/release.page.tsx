@@ -55,6 +55,7 @@ const AppReleasesFragment = React.memo(() => {
                 version: versionField.value,
                 notes: notesField.value,
             });
+            await client.refetchAppReleases({ platform: platformField.value });
         });
     }, [platformField.value, versionField.value, notesField.value]);
 
