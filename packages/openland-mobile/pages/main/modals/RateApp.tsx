@@ -2,11 +2,13 @@ import * as React from 'react';
 import { View, Image, Text, Platform } from 'react-native';
 import Rate, { IConfig } from 'react-native-rate';
 import { ModalProps } from 'react-native-fast-modal';
+
 import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { AppStorage } from 'openland-y-runtime-native/AppStorage';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 
 export type RateAppInfo = {
     appOpenedCount: number;
@@ -98,4 +100,36 @@ const RateApp = (props: { ctx: ModalProps }) => {
 
 export const showRateAppModal = () => {
     showBottomSheet({ view: (ctx) => <RateApp ctx={ctx} /> });
+};
+
+export const rateAppIfNeeded = async () => {
+    try {
+        let [rateAppMeta, { shouldAskForAppReview }] = await Promise.all([
+            getRateAppInfo(),
+            getClient().queryShouldAskForAppReview({ fetchPolicy: 'network-only' })
+        ]);
+
+        if (rateAppMeta.stopShowingRating || !shouldAskForAppReview) {
+            return;
+        }
+
+        if (rateAppMeta.appOpenedCount === 2) {
+            setTimeout(() => {
+                showRateAppModal();
+                setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, firstSeenTimestamp: Date.now() }));
+            }, 5000);
+            return;
+        }
+
+        let twoDaysInMs = 48 * 3.6e6;
+        if (rateAppMeta.firstSeenTimestamp && (Date.now() - rateAppMeta.firstSeenTimestamp > twoDaysInMs)) {
+            setTimeout(() => {
+                showRateAppModal();
+                setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, stopShowingRating: true }));
+            }, 5000);
+            return;
+        }
+
+        await setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1 }));
+    } catch (e) { /**/ }
 };

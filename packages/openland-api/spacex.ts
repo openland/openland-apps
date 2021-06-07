@@ -34,6 +34,15 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryUserStorage(variables: Types.UserStorageVariables, params?: QueryParameters): Promise<Types.UserStorage> {
         return this.query('UserStorage', variables, params);
     }
+    queryLatestAppReleaseFull(variables: Types.LatestAppReleaseFullVariables, params?: QueryParameters): Promise<Types.LatestAppReleaseFull> {
+        return this.query('LatestAppReleaseFull', variables, params);
+    }
+    queryLatestAppReleaseCheck(variables: Types.LatestAppReleaseCheckVariables, params?: QueryParameters): Promise<Types.LatestAppReleaseCheck> {
+        return this.query('LatestAppReleaseCheck', variables, params);
+    }
+    queryAppReleases(variables: Types.AppReleasesVariables, params?: QueryParameters): Promise<Types.AppReleases> {
+        return this.query('AppReleases', variables, params);
+    }
     queryAuthPoints(params?: QueryParameters): Promise<Types.AuthPoints> {
         return this.query('AuthPoints', undefined, params);
     }
@@ -430,6 +439,15 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchUserStorage(variables: Types.UserStorageVariables, params?: QueryParameters): Promise<Types.UserStorage> {
         return this.refetch('UserStorage', variables, params);
     }
+    refetchLatestAppReleaseFull(variables: Types.LatestAppReleaseFullVariables, params?: QueryParameters): Promise<Types.LatestAppReleaseFull> {
+        return this.refetch('LatestAppReleaseFull', variables, params);
+    }
+    refetchLatestAppReleaseCheck(variables: Types.LatestAppReleaseCheckVariables, params?: QueryParameters): Promise<Types.LatestAppReleaseCheck> {
+        return this.refetch('LatestAppReleaseCheck', variables, params);
+    }
+    refetchAppReleases(variables: Types.AppReleasesVariables, params?: QueryParameters): Promise<Types.AppReleases> {
+        return this.refetch('AppReleases', variables, params);
+    }
     refetchAuthPoints(params?: QueryParameters): Promise<Types.AuthPoints> {
         return this.refetch('AuthPoints', undefined, params);
     }
@@ -825,6 +843,15 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateUserStorage(variables: Types.UserStorageVariables, updater: (data: Types.UserStorage) => Types.UserStorage | null): Promise<boolean> {
         return this.updateQuery(updater, 'UserStorage', variables);
+    }
+    updateLatestAppReleaseFull(variables: Types.LatestAppReleaseFullVariables, updater: (data: Types.LatestAppReleaseFull) => Types.LatestAppReleaseFull | null): Promise<boolean> {
+        return this.updateQuery(updater, 'LatestAppReleaseFull', variables);
+    }
+    updateLatestAppReleaseCheck(variables: Types.LatestAppReleaseCheckVariables, updater: (data: Types.LatestAppReleaseCheck) => Types.LatestAppReleaseCheck | null): Promise<boolean> {
+        return this.updateQuery(updater, 'LatestAppReleaseCheck', variables);
+    }
+    updateAppReleases(variables: Types.AppReleasesVariables, updater: (data: Types.AppReleases) => Types.AppReleases | null): Promise<boolean> {
+        return this.updateQuery(updater, 'AppReleases', variables);
     }
     updateAuthPoints(updater: (data: Types.AuthPoints) => Types.AuthPoints | null): Promise<boolean> {
         return this.updateQuery(updater, 'AuthPoints', undefined);
@@ -1237,6 +1264,21 @@ export class OpenlandClient extends BaseSpaceXClient {
     useUserStorage(variables: Types.UserStorageVariables, params?: SpaceQueryWatchParameters): Types.UserStorage;
     useUserStorage(variables: Types.UserStorageVariables, params?: SpaceQueryWatchParameters): Types.UserStorage | null {;
         return this.useQuery('UserStorage', variables, params);
+    }
+    useLatestAppReleaseFull(variables: Types.LatestAppReleaseFullVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.LatestAppReleaseFull | null;
+    useLatestAppReleaseFull(variables: Types.LatestAppReleaseFullVariables, params?: SpaceQueryWatchParameters): Types.LatestAppReleaseFull;
+    useLatestAppReleaseFull(variables: Types.LatestAppReleaseFullVariables, params?: SpaceQueryWatchParameters): Types.LatestAppReleaseFull | null {;
+        return this.useQuery('LatestAppReleaseFull', variables, params);
+    }
+    useLatestAppReleaseCheck(variables: Types.LatestAppReleaseCheckVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.LatestAppReleaseCheck | null;
+    useLatestAppReleaseCheck(variables: Types.LatestAppReleaseCheckVariables, params?: SpaceQueryWatchParameters): Types.LatestAppReleaseCheck;
+    useLatestAppReleaseCheck(variables: Types.LatestAppReleaseCheckVariables, params?: SpaceQueryWatchParameters): Types.LatestAppReleaseCheck | null {;
+        return this.useQuery('LatestAppReleaseCheck', variables, params);
+    }
+    useAppReleases(variables: Types.AppReleasesVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.AppReleases | null;
+    useAppReleases(variables: Types.AppReleasesVariables, params?: SpaceQueryWatchParameters): Types.AppReleases;
+    useAppReleases(variables: Types.AppReleasesVariables, params?: SpaceQueryWatchParameters): Types.AppReleases | null {;
+        return this.useQuery('AppReleases', variables, params);
     }
     useAuthPoints(params: SpaceQueryWatchParameters & { suspense: false }): Types.AuthPoints | null;
     useAuthPoints(params?: SpaceQueryWatchParameters): Types.AuthPoints;
@@ -1887,6 +1929,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateUserStorageSet(variables: Types.UserStorageSetVariables, params?: MutationParameters): Promise<Types.UserStorageSet> {
         return this.mutate('UserStorageSet', variables, params)
+    }
+    mutateAddAppRelease(variables: Types.AddAppReleaseVariables, params?: MutationParameters): Promise<Types.AddAppRelease> {
+        return this.mutate('AddAppRelease', variables, params)
     }
     mutateSendPhonePairCode(variables: Types.SendPhonePairCodeVariables, params?: MutationParameters): Promise<Types.SendPhonePairCode> {
         return this.mutate('SendPhonePairCode', variables, params)

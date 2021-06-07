@@ -2358,6 +2358,16 @@ private let ActiveVoiceChatsSelector = obj(
                         )))))
                 )))
         )
+private let AppReleasesSelector = obj(
+            field("appReleases", "appReleases", arguments(fieldValue("platform", refValue("platform"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("platform", "platform", notNull(scalar("String"))),
+                    field("version", "version", notNull(scalar("String"))),
+                    field("notes", "notes", scalar("String")),
+                    field("date", "date", notNull(scalar("Date")))
+                )))))
+        )
 private let AuthPointsSelector = obj(
             field("authPoints", "authPoints", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -3200,6 +3210,23 @@ private let IpLocationSelector = obj(
             field("ipLocation", "ipLocation", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("countryCode", "countryCode", scalar("String"))
+                ))
+        )
+private let LatestAppReleaseCheckSelector = obj(
+            field("latestAppRelease", "latestAppRelease", arguments(fieldValue("platform", refValue("platform"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("version", "version", notNull(scalar("String")))
+                ))
+        )
+private let LatestAppReleaseFullSelector = obj(
+            field("latestAppRelease", "latestAppRelease", arguments(fieldValue("platform", refValue("platform"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("platform", "platform", notNull(scalar("String"))),
+                    field("version", "version", notNull(scalar("String"))),
+                    field("notes", "notes", scalar("String")),
+                    field("date", "date", notNull(scalar("Date")))
                 ))
         )
 private let MessageSelector = obj(
@@ -4562,6 +4589,12 @@ private let VoiceChatUserSelector = obj(
 private let AccountInviteJoinSelector = obj(
             field("alphaJoinInvite", "alphaJoinInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
         )
+private let AddAppReleaseSelector = obj(
+            field("superAddAppRelease", "superAddAppRelease", arguments(fieldValue("platform", refValue("platform")), fieldValue("version", refValue("version")), fieldValue("notes", refValue("notes"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
+                )))
+        )
 private let AddAppToChatSelector = obj(
             field("addAppToChat", "addAppToChat", arguments(fieldValue("appId", refValue("appId")), fieldValue("chatId", refValue("chatId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5747,6 +5780,12 @@ class Operations {
         "query ActiveVoiceChats($first:Int!,$after:String){activeVoiceChats(first:$first,after:$after){__typename cursor items{__typename ...VoiceChatShort}}}fragment VoiceChatShort on VoiceChat{__typename id active title speakersCount listenersCount parentRoom{__typename id title photo}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id photo firstName name}}",
         ActiveVoiceChatsSelector
     )
+    let AppReleases = OperationDefinition(
+        "AppReleases",
+        .query, 
+        "query AppReleases($platform:ReleasePlatform!){appReleases(platform:$platform){__typename id platform version notes date}}",
+        AppReleasesSelector
+    )
     let AuthPoints = OperationDefinition(
         "AuthPoints",
         .query, 
@@ -6034,6 +6073,18 @@ class Operations {
         .query, 
         "query IpLocation{ipLocation{__typename countryCode}}",
         IpLocationSelector
+    )
+    let LatestAppReleaseCheck = OperationDefinition(
+        "LatestAppReleaseCheck",
+        .query, 
+        "query LatestAppReleaseCheck($platform:ReleasePlatform!){latestAppRelease(platform:$platform){__typename id version}}",
+        LatestAppReleaseCheckSelector
+    )
+    let LatestAppReleaseFull = OperationDefinition(
+        "LatestAppReleaseFull",
+        .query, 
+        "query LatestAppReleaseFull($platform:ReleasePlatform!){latestAppRelease(platform:$platform){__typename id platform version notes date}}",
+        LatestAppReleaseFullSelector
     )
     let Message = OperationDefinition(
         "Message",
@@ -6514,6 +6565,12 @@ class Operations {
         .mutation, 
         "mutation AccountInviteJoin($inviteKey:String!){alphaJoinInvite(key:$inviteKey)}",
         AccountInviteJoinSelector
+    )
+    let AddAppRelease = OperationDefinition(
+        "AddAppRelease",
+        .mutation, 
+        "mutation AddAppRelease($platform:ReleasePlatform!,$version:String!,$notes:String!){superAddAppRelease(platform:$platform,version:$version,notes:$notes){__typename id}}",
+        AddAppReleaseSelector
     )
     let AddAppToChat = OperationDefinition(
         "AddAppToChat",
@@ -7452,6 +7509,7 @@ class Operations {
         if name == "AccountAppInviteInfo" { return AccountAppInviteInfo }
         if name == "AccountInviteInfo" { return AccountInviteInfo }
         if name == "ActiveVoiceChats" { return ActiveVoiceChats }
+        if name == "AppReleases" { return AppReleases }
         if name == "AuthPoints" { return AuthPoints }
         if name == "AuthResolveShortName" { return AuthResolveShortName }
         if name == "BlackListUpdatesState" { return BlackListUpdatesState }
@@ -7500,6 +7558,8 @@ class Operations {
         if name == "GlobalCounter" { return GlobalCounter }
         if name == "GlobalSearch" { return GlobalSearch }
         if name == "IpLocation" { return IpLocation }
+        if name == "LatestAppReleaseCheck" { return LatestAppReleaseCheck }
+        if name == "LatestAppReleaseFull" { return LatestAppReleaseFull }
         if name == "Message" { return Message }
         if name == "MessageFullReactions" { return MessageFullReactions }
         if name == "MessageMultiSpan" { return MessageMultiSpan }
@@ -7580,6 +7640,7 @@ class Operations {
         if name == "VoiceChatPrefetch" { return VoiceChatPrefetch }
         if name == "VoiceChatUser" { return VoiceChatUser }
         if name == "AccountInviteJoin" { return AccountInviteJoin }
+        if name == "AddAppRelease" { return AddAppRelease }
         if name == "AddAppToChat" { return AddAppToChat }
         if name == "AddComment" { return AddComment }
         if name == "AddSticker" { return AddSticker }

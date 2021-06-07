@@ -1,0 +1,32 @@
+mutation AddAppRelease($platform: ReleasePlatform!, $version: String!, $notes: String!) {
+    superAddAppRelease(platform: $platform, version: $version, notes: $notes) {
+        id
+    }
+}
+
+query LatestAppReleaseFull($platform: ReleasePlatform!) {
+    latestAppRelease(platform: $platform) {
+        id
+        platform
+        version
+        notes
+        date
+    }
+}
+
+query LatestAppReleaseCheck($platform: ReleasePlatform!) {
+    latestAppRelease(platform: $platform) {
+        id
+        version
+    }
+}
+
+query AppReleases($platform: ReleasePlatform!) {
+    appReleases(platform: $platform) {
+        id
+        platform
+        version
+        notes
+        date
+    }
+}
