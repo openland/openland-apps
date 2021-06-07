@@ -25,6 +25,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryActiveVoiceChats(variables: Types.ActiveVoiceChatsVariables, params?: QueryParameters): Promise<Types.ActiveVoiceChats> {
         return this.query('ActiveVoiceChats', variables, params);
     }
+    queryAppReleases(variables: Types.AppReleasesVariables, params?: QueryParameters): Promise<Types.AppReleases> {
+        return this.query('AppReleases', variables, params);
+    }
     queryAuthPoints(params?: QueryParameters): Promise<Types.AuthPoints> {
         return this.query('AuthPoints', undefined, params);
     }
@@ -168,6 +171,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryIpLocation(params?: QueryParameters): Promise<Types.IpLocation> {
         return this.query('IpLocation', undefined, params);
+    }
+    queryLatestAppReleaseCheck(variables: Types.LatestAppReleaseCheckVariables, params?: QueryParameters): Promise<Types.LatestAppReleaseCheck> {
+        return this.query('LatestAppReleaseCheck', variables, params);
+    }
+    queryLatestAppReleaseFull(variables: Types.LatestAppReleaseFullVariables, params?: QueryParameters): Promise<Types.LatestAppReleaseFull> {
+        return this.query('LatestAppReleaseFull', variables, params);
     }
     queryMessage(variables: Types.MessageVariables, params?: QueryParameters): Promise<Types.Message> {
         return this.query('Message', variables, params);
@@ -421,6 +430,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchActiveVoiceChats(variables: Types.ActiveVoiceChatsVariables, params?: QueryParameters): Promise<Types.ActiveVoiceChats> {
         return this.refetch('ActiveVoiceChats', variables, params);
     }
+    refetchAppReleases(variables: Types.AppReleasesVariables, params?: QueryParameters): Promise<Types.AppReleases> {
+        return this.refetch('AppReleases', variables, params);
+    }
     refetchAuthPoints(params?: QueryParameters): Promise<Types.AuthPoints> {
         return this.refetch('AuthPoints', undefined, params);
     }
@@ -564,6 +576,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchIpLocation(params?: QueryParameters): Promise<Types.IpLocation> {
         return this.refetch('IpLocation', undefined, params);
+    }
+    refetchLatestAppReleaseCheck(variables: Types.LatestAppReleaseCheckVariables, params?: QueryParameters): Promise<Types.LatestAppReleaseCheck> {
+        return this.refetch('LatestAppReleaseCheck', variables, params);
+    }
+    refetchLatestAppReleaseFull(variables: Types.LatestAppReleaseFullVariables, params?: QueryParameters): Promise<Types.LatestAppReleaseFull> {
+        return this.refetch('LatestAppReleaseFull', variables, params);
     }
     refetchMessage(variables: Types.MessageVariables, params?: QueryParameters): Promise<Types.Message> {
         return this.refetch('Message', variables, params);
@@ -817,6 +835,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateActiveVoiceChats(variables: Types.ActiveVoiceChatsVariables, updater: (data: Types.ActiveVoiceChats) => Types.ActiveVoiceChats | null): Promise<boolean> {
         return this.updateQuery(updater, 'ActiveVoiceChats', variables);
     }
+    updateAppReleases(variables: Types.AppReleasesVariables, updater: (data: Types.AppReleases) => Types.AppReleases | null): Promise<boolean> {
+        return this.updateQuery(updater, 'AppReleases', variables);
+    }
     updateAuthPoints(updater: (data: Types.AuthPoints) => Types.AuthPoints | null): Promise<boolean> {
         return this.updateQuery(updater, 'AuthPoints', undefined);
     }
@@ -960,6 +981,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateIpLocation(updater: (data: Types.IpLocation) => Types.IpLocation | null): Promise<boolean> {
         return this.updateQuery(updater, 'IpLocation', undefined);
+    }
+    updateLatestAppReleaseCheck(variables: Types.LatestAppReleaseCheckVariables, updater: (data: Types.LatestAppReleaseCheck) => Types.LatestAppReleaseCheck | null): Promise<boolean> {
+        return this.updateQuery(updater, 'LatestAppReleaseCheck', variables);
+    }
+    updateLatestAppReleaseFull(variables: Types.LatestAppReleaseFullVariables, updater: (data: Types.LatestAppReleaseFull) => Types.LatestAppReleaseFull | null): Promise<boolean> {
+        return this.updateQuery(updater, 'LatestAppReleaseFull', variables);
     }
     updateMessage(variables: Types.MessageVariables, updater: (data: Types.Message) => Types.Message | null): Promise<boolean> {
         return this.updateQuery(updater, 'Message', variables);
@@ -1223,6 +1250,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useActiveVoiceChats(variables: Types.ActiveVoiceChatsVariables, params?: SpaceQueryWatchParameters): Types.ActiveVoiceChats | null {
         return this.useQuery('ActiveVoiceChats', variables, params);
     }
+    useAppReleases(variables: Types.AppReleasesVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.AppReleases | null;
+    useAppReleases(variables: Types.AppReleasesVariables, params?: SpaceQueryWatchParameters): Types.AppReleases;
+    useAppReleases(variables: Types.AppReleasesVariables, params?: SpaceQueryWatchParameters): Types.AppReleases | null {
+        return this.useQuery('AppReleases', variables, params);
+    }
     useAuthPoints(params: SpaceQueryWatchParameters & { suspense: false }): Types.AuthPoints | null;
     useAuthPoints(params?: SpaceQueryWatchParameters): Types.AuthPoints;
     useAuthPoints(params?: SpaceQueryWatchParameters): Types.AuthPoints | null {
@@ -1462,6 +1494,16 @@ export class OpenlandClient extends BaseSpaceXClient {
     useIpLocation(params?: SpaceQueryWatchParameters): Types.IpLocation;
     useIpLocation(params?: SpaceQueryWatchParameters): Types.IpLocation | null {
         return this.useQuery('IpLocation', undefined, params);
+    }
+    useLatestAppReleaseCheck(variables: Types.LatestAppReleaseCheckVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.LatestAppReleaseCheck | null;
+    useLatestAppReleaseCheck(variables: Types.LatestAppReleaseCheckVariables, params?: SpaceQueryWatchParameters): Types.LatestAppReleaseCheck;
+    useLatestAppReleaseCheck(variables: Types.LatestAppReleaseCheckVariables, params?: SpaceQueryWatchParameters): Types.LatestAppReleaseCheck | null {
+        return this.useQuery('LatestAppReleaseCheck', variables, params);
+    }
+    useLatestAppReleaseFull(variables: Types.LatestAppReleaseFullVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.LatestAppReleaseFull | null;
+    useLatestAppReleaseFull(variables: Types.LatestAppReleaseFullVariables, params?: SpaceQueryWatchParameters): Types.LatestAppReleaseFull;
+    useLatestAppReleaseFull(variables: Types.LatestAppReleaseFullVariables, params?: SpaceQueryWatchParameters): Types.LatestAppReleaseFull | null {
+        return this.useQuery('LatestAppReleaseFull', variables, params);
     }
     useMessage(variables: Types.MessageVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.Message | null;
     useMessage(variables: Types.MessageVariables, params?: SpaceQueryWatchParameters): Types.Message;
@@ -1860,6 +1902,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateAccountInviteJoin(variables: Types.AccountInviteJoinVariables, params?: MutationParameters): Promise<Types.AccountInviteJoin> {
         return this.mutate('AccountInviteJoin', variables, params);
+    }
+    mutateAddAppRelease(variables: Types.AddAppReleaseVariables, params?: MutationParameters): Promise<Types.AddAppRelease> {
+        return this.mutate('AddAppRelease', variables, params);
     }
     mutateAddAppToChat(variables: Types.AddAppToChatVariables, params?: MutationParameters): Promise<Types.AddAppToChat> {
         return this.mutate('AddAppToChat', variables, params);

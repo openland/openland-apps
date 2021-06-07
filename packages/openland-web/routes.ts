@@ -152,6 +152,8 @@ routes.add('/super/admins', '/dev/admins');
 routes.add('/super/admins/', '/dev/admins');
 routes.add('/super/stickers', '/dev/stickers');
 routes.add('/super/stickers/', '/dev/stickers');
+routes.add('/super/release', '/dev/release');
+routes.add('/super/release/', '/dev/release');
 routes.add('/performance', '/perf/perf');
 
 //

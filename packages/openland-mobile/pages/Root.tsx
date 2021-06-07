@@ -3,15 +3,17 @@ import { SRouting } from 'react-native-s/SRouting';
 import { Platform, View } from 'react-native';
 import { SNavigationView, SNavigationViewStyle } from 'react-native-s/SNavigationView';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
-import { randomKey } from 'react-native-s/utils/randomKey';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SDevice } from 'react-native-s/SDevice';
+import { randomKey } from 'react-native-s/utils/randomKey';
+
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { hexToRgba } from 'openland-y-utils/hexToRgba';
 import { HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { getRateAppInfo, setRateAppInfo, showRateAppModal } from './main/modals/RateApp';
-import { getClient } from 'openland-mobile/utils/graphqlClient';
+
+import { rateAppIfNeeded } from './main/modals/RateApp';
+import { checkForUpdates, showUpdateAppModal } from './main/modals/UpdateApp';
 
 export interface RootProps {
     width: number;
@@ -79,7 +81,6 @@ class RootContainer extends React.PureComponent<RootProps & { theme: ThemeGlobal
         };
 
         if (this.isIPad && this.props.width > 375 * 2) {
-
             let sideWidth = 320;
             if (this.props.width > 1000) {
                 console.log(this.props.width);
@@ -132,40 +133,9 @@ export const Root = React.memo<RootProps>((props) => {
     // });
 
     React.useEffect(() => {
-        (async () => {
-            try {
-                let [rateAppMeta, { shouldAskForAppReview }] = await Promise.all([
-                    getRateAppInfo(),
-                    getClient().queryShouldAskForAppReview({ fetchPolicy: 'network-only' })
-                ]);
-
-                if (rateAppMeta.stopShowingRating || !shouldAskForAppReview) {
-                    return;
-                }
-
-                if (rateAppMeta.appOpenedCount === 2) {
-                    setTimeout(() => {
-                        showRateAppModal();
-                        setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, firstSeenTimestamp: Date.now() }));
-                    }, 5000);
-                    return;
-                }
-
-                let twoDaysInMs = 48 * 3.6e6;
-                if (rateAppMeta.firstSeenTimestamp && (Date.now() - rateAppMeta.firstSeenTimestamp > twoDaysInMs)) {
-                    setTimeout(() => {
-                        showRateAppModal();
-                        setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1, stopShowingRating: true }));
-                    }, 5000);
-                    return;
-                }
-
-                setRateAppInfo(prevInfo => ({ appOpenedCount: prevInfo.appOpenedCount + 1 }));
-            } catch (e) { /**/ }
-        })();
+        checkForUpdates();
+        rateAppIfNeeded();
     }, []);
 
-    return (
-        <RootContainer {...props} theme={theme} />
-    );
+    return <RootContainer {...props} theme={theme} />;
 });

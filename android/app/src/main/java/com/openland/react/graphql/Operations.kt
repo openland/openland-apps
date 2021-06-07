@@ -12,6 +12,7 @@ object Operations {
         if (name == "AccountAppInviteInfo") return AccountAppInviteInfo
         if (name == "AccountInviteInfo") return AccountInviteInfo
         if (name == "ActiveVoiceChats") return ActiveVoiceChats
+        if (name == "AppReleases") return AppReleases
         if (name == "AuthPoints") return AuthPoints
         if (name == "AuthResolveShortName") return AuthResolveShortName
         if (name == "BlackListUpdatesState") return BlackListUpdatesState
@@ -60,6 +61,8 @@ object Operations {
         if (name == "GlobalCounter") return GlobalCounter
         if (name == "GlobalSearch") return GlobalSearch
         if (name == "IpLocation") return IpLocation
+        if (name == "LatestAppReleaseCheck") return LatestAppReleaseCheck
+        if (name == "LatestAppReleaseFull") return LatestAppReleaseFull
         if (name == "Message") return Message
         if (name == "MessageFullReactions") return MessageFullReactions
         if (name == "MessageMultiSpan") return MessageMultiSpan
@@ -140,6 +143,7 @@ object Operations {
         if (name == "VoiceChatPrefetch") return VoiceChatPrefetch
         if (name == "VoiceChatUser") return VoiceChatUser
         if (name == "AccountInviteJoin") return AccountInviteJoin
+        if (name == "AddAppRelease") return AddAppRelease
         if (name == "AddAppToChat") return AddAppToChat
         if (name == "AddComment") return AddComment
         if (name == "AddSticker") return AddSticker

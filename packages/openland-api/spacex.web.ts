@@ -2365,6 +2365,16 @@ const ActiveVoiceChatsSelector = obj(
                         )))))
                 )))
         );
+const AppReleasesSelector = obj(
+            field('appReleases', 'appReleases', args(fieldValue("platform", refValue('platform'))), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('platform', 'platform', args(), notNull(scalar('String'))),
+                    field('version', 'version', args(), notNull(scalar('String'))),
+                    field('notes', 'notes', args(), scalar('String')),
+                    field('date', 'date', args(), notNull(scalar('Date')))
+                )))))
+        );
 const AuthPointsSelector = obj(
             field('authPoints', 'authPoints', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -3207,6 +3217,23 @@ const IpLocationSelector = obj(
             field('ipLocation', 'ipLocation', args(), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('countryCode', 'countryCode', args(), scalar('String'))
+                ))
+        );
+const LatestAppReleaseCheckSelector = obj(
+            field('latestAppRelease', 'latestAppRelease', args(fieldValue("platform", refValue('platform'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('version', 'version', args(), notNull(scalar('String')))
+                ))
+        );
+const LatestAppReleaseFullSelector = obj(
+            field('latestAppRelease', 'latestAppRelease', args(fieldValue("platform", refValue('platform'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('platform', 'platform', args(), notNull(scalar('String'))),
+                    field('version', 'version', args(), notNull(scalar('String'))),
+                    field('notes', 'notes', args(), scalar('String')),
+                    field('date', 'date', args(), notNull(scalar('Date')))
                 ))
         );
 const MessageSelector = obj(
@@ -4569,6 +4596,12 @@ const VoiceChatUserSelector = obj(
 const AccountInviteJoinSelector = obj(
             field('alphaJoinInvite', 'alphaJoinInvite', args(fieldValue("key", refValue('inviteKey'))), notNull(scalar('ID')))
         );
+const AddAppReleaseSelector = obj(
+            field('superAddAppRelease', 'superAddAppRelease', args(fieldValue("platform", refValue('platform')), fieldValue("version", refValue('version')), fieldValue("notes", refValue('notes'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID')))
+                )))
+        );
 const AddAppToChatSelector = obj(
             field('addAppToChat', 'addAppToChat', args(fieldValue("appId", refValue('appId')), fieldValue("chatId", refValue('chatId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5750,6 +5783,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query ActiveVoiceChats($first:Int!,$after:String){activeVoiceChats(first:$first,after:$after){__typename cursor items{__typename ...VoiceChatShort}}}fragment VoiceChatShort on VoiceChat{__typename id active title speakersCount listenersCount parentRoom{__typename id title photo}speakers{__typename ...VoiceChatParticipant}}fragment VoiceChatParticipant on VoiceChatParticipant{__typename id user{__typename id photo firstName name}}',
         selector: ActiveVoiceChatsSelector
     },
+    AppReleases: {
+        kind: 'query',
+        name: 'AppReleases',
+        body: 'query AppReleases($platform:ReleasePlatform!){appReleases(platform:$platform){__typename id platform version notes date}}',
+        selector: AppReleasesSelector
+    },
     AuthPoints: {
         kind: 'query',
         name: 'AuthPoints',
@@ -6037,6 +6076,18 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'IpLocation',
         body: 'query IpLocation{ipLocation{__typename countryCode}}',
         selector: IpLocationSelector
+    },
+    LatestAppReleaseCheck: {
+        kind: 'query',
+        name: 'LatestAppReleaseCheck',
+        body: 'query LatestAppReleaseCheck($platform:ReleasePlatform!){latestAppRelease(platform:$platform){__typename id version}}',
+        selector: LatestAppReleaseCheckSelector
+    },
+    LatestAppReleaseFull: {
+        kind: 'query',
+        name: 'LatestAppReleaseFull',
+        body: 'query LatestAppReleaseFull($platform:ReleasePlatform!){latestAppRelease(platform:$platform){__typename id platform version notes date}}',
+        selector: LatestAppReleaseFullSelector
     },
     Message: {
         kind: 'query',
@@ -6517,6 +6568,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'AccountInviteJoin',
         body: 'mutation AccountInviteJoin($inviteKey:String!){alphaJoinInvite(key:$inviteKey)}',
         selector: AccountInviteJoinSelector
+    },
+    AddAppRelease: {
+        kind: 'mutation',
+        name: 'AddAppRelease',
+        body: 'mutation AddAppRelease($platform:ReleasePlatform!,$version:String!,$notes:String!){superAddAppRelease(platform:$platform,version:$version,notes:$notes){__typename id}}',
+        selector: AddAppReleaseSelector
     },
     AddAppToChat: {
         kind: 'mutation',

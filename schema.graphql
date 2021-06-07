@@ -364,6 +364,7 @@ enum ConferenceStrategy {
   MESH
   SFU
   ASYNC
+  SCALABLE
 }
 
 type Contact {
@@ -1829,6 +1830,7 @@ type Mutation {
   debugKickAllFromVoiceChats: Boolean!
   debugMigrateChatCounters: Boolean!
   debugActivateUser(id: ID!): Boolean!
+  debugIncrementSequence(id: String!, by: Int!): Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2769,6 +2771,8 @@ type Query {
   debugUnreadChatsAsync(user: ID): [String!]!
   debugUnreadChatsDirect(user: ID): [String!]!
   debugUserAuthPoints(id: ID!): AuthPoint
+  debugGeo: String!
+  debugUserSettings(uid: ID!): Settings!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!
@@ -2877,6 +2881,7 @@ type Query {
 
   """Deprecated"""
   alphaProfiles(query: String, first: Int!, after: String, page: Int, sort: String): UserConnection!
+  superUserInfo(uid: ID!): UserInfo
   voiceChat(id: ID!): VoiceChat!
   voiceChatEventsState(id: ID!): VoiceChatEventsState!
   conference(id: ID!): Conference!
@@ -3786,6 +3791,16 @@ type UserEdge {
 
 type UserEventBusMessage {
   message: String!
+}
+
+type UserInfo {
+  user: User!
+  info: [UserInfoTuple!]!
+}
+
+type UserInfoTuple {
+  name: String!
+  value: String!
 }
 
 type UserStickers {
