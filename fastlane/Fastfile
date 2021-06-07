@@ -48,8 +48,8 @@ lane :build_android do
 end
 
 lane :build_ios do
-    get_provisioning_profile(app_identifier: 'com.openland.app')
-    get_provisioning_profile(app_identifier: 'com.openland.app.openland-share-ex')
+    get_provisioning_profile(app_identifier: 'com.openland.app', username: 'steve@openland.com')
+    get_provisioning_profile(app_identifier: 'com.openland.app.openland-share-ex', username: 'steve@openland.com')
     build_app(
         scheme: 'Production', 
         clean: true,
@@ -60,9 +60,9 @@ lane :build_ios do
 end
 
 lane :build do
-    build_bundle
-    build_android
     build_ios
+    build_android
+    build_bundle
 end
 
 #
@@ -70,11 +70,11 @@ end
 #
 
 lane :upload_ios do
-    upload_to_testflight(ipa: './fastlane/build/Openland.ipa', skip_waiting_for_build_processing: true)
+    upload_to_testflight(ipa: './fastlane/build/Openland.ipa', skip_waiting_for_build_processing: true, username: 'steve@openland.com')
 end
 
 lane :upload_android do
-   upload_to_play_store(aab: './android/app/build/outputs/bundle/release/app-release.aab', track: 'internal')
+   upload_to_play_store(aab: './android/app/build/outputs/bundle/release/app-release.aab', track: 'internal', username: 'steve@openland.com')
 end
 
 lane :upload_bundle do
