@@ -99,12 +99,12 @@ const AppReleasesFragment = React.memo(() => {
                 onClick={onSave}
                 loading={form.loading}
             />
-            <XView flexDirection="row" marginTop={16} {...TextStyles.Title3}>
+            <XView flexDirection="row" marginTop={16} {...TextStyles.Title3} color="var(--foregroundPrimary)">
                 <XView width={90}>Version</XView>
                 <XView width={130}>Date</XView>
                 <XView>Notes</XView>
             </XView>
-            <XScrollView3>
+            <XScrollView3 color="var(--foregroundPrimary)" marginTop={4}>
                 {releases.slice().reverse().map((appRelease) => (
                     <XView flexDirection="row" {...TextStyles.Body}>
                         <XView width={90}>{appRelease.version}</XView>
