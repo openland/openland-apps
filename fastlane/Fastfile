@@ -48,8 +48,14 @@ lane :build_android do
 end
 
 lane :build_ios do
-    get_provisioning_profile(app_identifier: 'com.openland.app', username: 'steve@openland.com')
-    get_provisioning_profile(app_identifier: 'com.openland.app.openland-share-ex', username: 'steve@openland.com')
+    app_store_connect_api_key(
+        key_id: "K4298MS236",
+        issuer_id: "27367f4b-7361-4d45-8058-3aec7ff7b3e9",
+        key_filepath: "/Users/openland/Develop/keys/apple.p8",
+        in_house: false
+    )
+    get_provisioning_profile(app_identifier: 'com.openland.app')
+    get_provisioning_profile(app_identifier: 'com.openland.app.openland-share-ex')
     build_app(
         scheme: 'Production', 
         clean: true,
@@ -70,11 +76,17 @@ end
 #
 
 lane :upload_ios do
-    upload_to_testflight(ipa: './fastlane/build/Openland.ipa', skip_waiting_for_build_processing: true, username: 'steve@openland.com')
+    app_store_connect_api_key(
+        key_id: "K4298MS236",
+        issuer_id: "27367f4b-7361-4d45-8058-3aec7ff7b3e9",
+        key_filepath: "/Users/openland/Develop/keys/apple.p8",
+        in_house: false
+    )
+    upload_to_testflight(ipa: './fastlane/build/Openland.ipa', skip_waiting_for_build_processing: true)
 end
 
 lane :upload_android do
-   upload_to_play_store(aab: './android/app/build/outputs/bundle/release/app-release.aab', track: 'internal', username: 'steve@openland.com')
+   upload_to_play_store(aab: './android/app/build/outputs/bundle/release/app-release.aab', track: 'internal')
 end
 
 lane :upload_bundle do
