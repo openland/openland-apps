@@ -19,6 +19,7 @@ import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { HighlightAlpha, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { useText } from 'openland-mobile/text/useText';
 
 // remove after adding isDeleted flag in API
 const isMessageDeleted = (message: Message_message) => {
@@ -32,30 +33,35 @@ const isMessageDeleted = (message: Message_message) => {
     return false;
 };
 
-const getChatLink = (
-    chat:
-        | Message_message_GeneralMessage_source_MessageSourceChat_chat_PrivateRoom
-        | Message_message_GeneralMessage_source_MessageSourceChat_chat_SharedRoom,
-) => {
-    if (chat.__typename === 'SharedRoom') {
-        return (
-            <>
-                From{' '}
-                <Text style={{ ...TextStyles.Label2 }} allowFontScaling={false}>
-                    {chat.title}
-                </Text>
-            </>
-        );
-    } else {
-        return (
-            <>
-                From chat with{' '}
-                <Text style={{ ...TextStyles.Label2 }} allowFontScaling={false}>
-                    {chat.user.name}
-                </Text>
-            </>
-        );
-    }
+const useChatLink = () => {
+    const { t } = useText();
+    return (
+        chat:
+            | Message_message_GeneralMessage_source_MessageSourceChat_chat_PrivateRoom
+            | Message_message_GeneralMessage_source_MessageSourceChat_chat_SharedRoom
+    ) => {
+        if (chat.__typename === 'SharedRoom') {
+            return (
+                <>
+                    {t('fromChat', 'From')}
+                    {' '}
+                    <Text style={{ ...TextStyles.Label2 }} allowFontScaling={false}>
+                        {chat.title}
+                    </Text>
+                </>
+            );
+        } else {
+            return (
+                <>
+                    {t('fromChatWith', 'From chat with')}
+                    {' '}
+                    <Text style={{ ...TextStyles.Label2 }} allowFontScaling={false}>
+                        {chat.user.name}
+                    </Text>
+                </>
+            );
+        }
+    };
 };
 
 const MessageMenu = React.memo((props: { message: Message_message; isSubscribed: boolean }) => {
@@ -81,6 +87,7 @@ const MessageComponent = React.memo((props: PageProps) => {
     const client = getClient();
     const messageData = client.useMessage({ messageId }, { fetchPolicy: 'cache-and-network' });
     const message = messageData.message;
+    const getChatLink = useChatLink();
 
     if (!message) {
         return null;

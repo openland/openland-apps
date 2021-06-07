@@ -5,6 +5,7 @@ import { View, Image, Text, TouchableWithoutFeedback } from 'react-native';
 import { reactionsImagesMap } from 'openland-mobile/messenger/components/AsyncMessageReactionsView';
 import { showReactionsList } from '../showReactionsList';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { useText } from 'openland-mobile/text/useText';
 
 interface ReactionsViewProps {
     reactionCounters: MessageReactionCounter[];
@@ -14,6 +15,7 @@ interface ReactionsViewProps {
 export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
     const theme = React.useContext(ThemeContext);
     const { reactionCounters, mId } = props;
+    const { t } = useText();
 
     if (reactionCounters.length === 0) {
         return null;
@@ -22,6 +24,7 @@ export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
     const count = reactionCounters.reduce((sum, r) => sum + r.count, 0);
     const likedByMe = !!reactionCounters.find((r) => r.setByMe);
     const otherLikes = !!reactionCounters.find((r) => (r.setByMe && r.count !== 1) || (!r.setByMe));
+    const youTxt = t('you', 'You');
 
     return (
         <View style={{ marginBottom: -10 }}>
@@ -54,7 +57,7 @@ export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
                             numberOfLines={1}
                             allowFontScaling={false}
                         >
-                            {likedByMe && !otherLikes ? 'You' : likedByMe && otherLikes ? `You + ${count - 1}` : count}
+                            {likedByMe && !otherLikes ? youTxt : likedByMe && otherLikes ? `${youTxt} + ${count - 1}` : count}
                         </Text>
                     )}
                 </View>

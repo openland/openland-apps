@@ -10,6 +10,7 @@ import { ZDocumentExt } from 'openland-mobile/components/file/ZDocumentExt';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { PreviewWrapper } from 'openland-mobile/components/message/content/PreviewWrapper';
 import { StickerContent } from 'openland-mobile/components/message/content/StickerContent';
+import { useText } from 'openland-mobile/text/useText';
 
 interface ForwardReplyViewProps {
     messages: FullMessage[];
@@ -21,6 +22,7 @@ interface ForwardReplyViewProps {
 export const ForwardReplyView = (props: ForwardReplyViewProps) => {
     const { messages, onClearPress, action } = props;
     const theme = useTheme();
+    const { t } = useText();
     const [imageState, setImageState] = React.useState<DownloadState>();
     let title;
     let text;
@@ -33,11 +35,12 @@ export const ForwardReplyView = (props: ForwardReplyViewProps) => {
         isGif: boolean,
     } | undefined;
     if (messages.length !== 1) {
+        // TODO: PLURAL
         text = messages.length + ' messages';
         if (action === 'reply') {
-            title = 'Reply messages';
+            title = t('replyMessages', 'Reply messages');
         } else {
-            title = 'Forward messages';
+            title = t('forwardMessages', 'Forward messages');
         }
         textColor = theme.foregroundSecondary;
     } else {
@@ -123,11 +126,11 @@ export const ForwardReplyView = (props: ForwardReplyViewProps) => {
                         {renderedImage}
                     </PreviewWrapper>
                 ) : (
-                        renderedImage
-                    )
+                    renderedImage
+                )
             ) : (
-                    <View style={{ width: 40, height: 40, borderRadius: 8, backgroundColor: theme.backgroundTertiaryTrans }} />
-                );
+                <View style={{ width: 40, height: 40, borderRadius: 8, backgroundColor: theme.backgroundTertiaryTrans }} />
+            );
         }
     }
 

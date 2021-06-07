@@ -21,5 +21,8 @@ i18n
             // ru: {
             //     translation: ru
             // }
+        },
+        react: {
+            transSupportBasicHtmlNodes: true,
         }
     });

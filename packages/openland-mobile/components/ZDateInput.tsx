@@ -8,6 +8,7 @@ import { ZInput } from './ZInput';
 import { ZSelectBasic } from './ZSelect';
 import { HighlightAlpha, TextStyles } from '../styles/AppStyles';
 import { ThemeContext } from '../themes/ThemeContext';
+import { useText } from 'openland-mobile/text/useText';
 
 const styles = StyleSheet.create({
     errorContainer: {
@@ -64,6 +65,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
     const [month, setMonth] = React.useState<SelectedMonth | null>();
     const [year, setYear] = React.useState<string>();
     const { value, noWrapper, invalid, onChange } = props;
+    const { t } = useText();
 
     React.useEffect(() => {
         if (!day && !month && !year) {
@@ -107,14 +109,14 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
 
     const errorText = React.useMemo(() => {
         if (!day && month) {
-            return 'Please enter day';
+            return t('enterDay', 'Please enter day');
         }
 
         if (!month && day) {
-            return 'Please select month';
+            return t('selectMonth', 'Please select month');
         }
 
-        return 'Please enter valid date';
+        return t('enterValidDate', 'Please enter valid date');
     }, [day, month, year]);
 
     return (
@@ -158,7 +160,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
                 <TouchableOpacity onPress={onClear} activeOpacity={HighlightAlpha} style={styles.box}>
                     <Image source={require('assets/ic-delete-16.png')} style={{ tintColor: theme.foregroundTertiary, marginRight: 8 }} />
                     <Text style={[{ color: theme.foregroundTertiary }, styles.title]} allowFontScaling={false}>
-                        Clear
+                        {t('clear', 'Clear')}
                     </Text>
                 </TouchableOpacity>
             )}

@@ -15,48 +15,76 @@ protocol PersistenceProvier: class {
   func close()
 }
 
-class RocksDBPersistenceProvider: PersistenceProvier {
-  private let db: RocksDB
+//class RocksDBPersistenceProvider: PersistenceProvier {
+//  private let db: RocksDB
+//  init(name: String) {
+//    let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+//    self.db = RocksDB.database(atPath: path + "/" + name + ".rdb") { (opt) in
+//      opt.createIfMissing = true
+//    }!
+//  }
+//
+//  func close() {
+//    self.db.close()
+//  }
+//
+//  func saveRecords(records: [String: String]) {
+//    let _ = measure("[SpaceX-RocksDB]: save") {
+//      for k in records {
+//        NSLog("[SpaceX-Persistence]: Save \(k)")
+//      }
+//      let b = self.db.writeBatch()
+//      for k in records {
+//        b.setData(k.key.data(using: .utf8)!, forKey: k.value.data(using: .utf8)!)
+//      }
+//      try! db.applyWriteBatch(b, writeOptions: { (opt) in
+//        // Nothing to customize
+//      })
+//    }
+//  }
+//
+//  func loadRecords(keys: Set<String>) -> [String: String] {
+//    var res: [String: String] = [:]
+//    let _ = measure("[SpaceX-RocksDB]: load") {
+//      for k in keys {
+//        do {
+//          let e = try self.db.data(forKey: k.data(using: .utf8)!)
+//          let e2 = String(data: e, encoding: .utf8)!
+//          if !e2.isEmpty {
+//            NSLog("[SpaceX-Persistence]: Loaded \(k)")
+//            res[k] = e2
+//          }
+//        } catch {
+//          // Nothing to do
+//        }
+//      }
+//    }
+//    return res
+//  }
+//}
+
+class MMKVPersistenceProvider: PersistenceProvier {
+  private let db: MMKV
   init(name: String) {
-    let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-    self.db = RocksDB.database(atPath: path + "/" + name + ".rdb") { (opt) in
-      opt.createIfMissing = true
-    }!
+    self.db = MMKV(mmapID: name, mode: MMKVMode.singleProcess)!
   }
-  
+
   func close() {
     self.db.close()
   }
-  
+
   func saveRecords(records: [String: String]) {
-    let _ = measure("[SpaceX-RocksDB]: save") {
-      for k in records {
-        NSLog("[SpaceX-Persistence]: Save \(k)")
-      }
-      let b = self.db.writeBatch()
-      for k in records {
-        b.setData(k.key.data(using: .utf8)!, forKey: k.value.data(using: .utf8)!)
-      }
-      try! db.applyWriteBatch(b, writeOptions: { (opt) in
-        // Nothing to customize
-      })
+    for k in records {
+      self.db.setValue(k.value, forKey: k.key)
     }
   }
-  
+
   func loadRecords(keys: Set<String>) -> [String: String] {
     var res: [String: String] = [:]
-    let _ = measure("[SpaceX-RocksDB]: load") {
-      for k in keys {
-        do {
-          let e = try self.db.data(forKey: k.data(using: .utf8)!)
-          let e2 = String(data: e, encoding: .utf8)!
-          if !e2.isEmpty {
-            NSLog("[SpaceX-Persistence]: Loaded \(k)")
-            res[k] = e2
-          }
-        } catch {
-          // Nothing to do
-        }
+    for k in keys {
+      let ex = self.db.string(forKey: k)
+      if ex != nil {
+        res[k] = ex
       }
     }
     return res
@@ -84,7 +112,7 @@ class SpaceXPersistence {
   
   init(name: String?) {
     if name != nil {
-      self.provider = RocksDBPersistenceProvider(name: name!)
+      self.provider = MMKVPersistenceProvider(name: name!)
     } else {
       self.provider = EmptyPersistenceProvier()
     }

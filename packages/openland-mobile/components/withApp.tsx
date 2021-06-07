@@ -12,9 +12,11 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 import { QueryCacheProvider } from '@openland/spacex';
 import { ZSuspense } from './ZSuspense';
+import { useText } from 'openland-mobile/text/useText';
 
 function PageError(props: { refresh: () => void }) {
     let theme = React.useContext(ThemeContext);
+    const { t } = useText();
     return (
         <>
             <HeaderConfigRegistrator config={{ appearance: 'small' }} />
@@ -22,10 +24,14 @@ function PageError(props: { refresh: () => void }) {
             <ASSafeAreaView style={{ flexGrow: 1, alignContent: 'center', justifyContent: 'center' }}>
                 <View style={{ alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32, paddingVertical: 16 }}>
                     <Image source={require('assets/art-error.png')} style={{ width: 240, height: 150, marginBottom: 4 }} />
-                    <Text style={{ ...TextStyles.Title2, textAlign: 'center', color: theme.foregroundPrimary, marginBottom: 4, }} allowFontScaling={false}>Content is unavailable</Text>
-                    <Text style={{ ...TextStyles.Body, textAlign: 'center', color: theme.foregroundSecondary, marginBottom: 16 }} allowFontScaling={false}>This content doesn’t exist or you don’t have an access</Text>
+                    <Text style={{ ...TextStyles.Title2, textAlign: 'center', color: theme.foregroundPrimary, marginBottom: 4, }} allowFontScaling={false}>
+                        {t('contentUnavailable', 'Content is unavailable')}
+                    </Text>
+                    <Text style={{ ...TextStyles.Body, textAlign: 'center', color: theme.foregroundSecondary, marginBottom: 16 }} allowFontScaling={false}>
+                        {t('contentMissingOrRestricted', 'This content doesn’t exist or you don’t have an access')}
+                    </Text>
                     <ZButton
-                        title="Try again"
+                        title={t('tryAgain', 'Try again')}
                         onPress={props.refresh}
                     />
                 </View>

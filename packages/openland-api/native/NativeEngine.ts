@@ -100,4 +100,11 @@ export class NativeEngine extends GraphqlBridgedEngine {
     protected postWriteQuery(id: string, data: any, query: string, vars: any) {
         NativeGraphQL.write(this.key, id, data, query, vars ? vars : {});
     }
+
+    protected postReadFragment(id: string, key: string, fragment: string) {
+        throw Error('Unsupported');
+    }
+    protected postWriteFragment(id: string, key: string, data: any, fragment: string) {
+        throw Error('Unsupported');
+    }
 }

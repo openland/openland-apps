@@ -3,9 +3,11 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { Image, Text } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { useText } from 'openland-mobile/text/useText';
 
 export const NotificationCenterEmpty = React.memo(() => {
     let theme = React.useContext(ThemeContext);
+    let { t } = useText();
 
     return (
         <ASSafeAreaView
@@ -33,7 +35,7 @@ export const NotificationCenterEmpty = React.memo(() => {
                 }}
                 allowFontScaling={false}
             >
-                No notifications yet
+                {t('noNotifications', 'No notifications yet')}
             </Text>
             <Text
                 style={{
@@ -43,7 +45,7 @@ export const NotificationCenterEmpty = React.memo(() => {
                 }}
                 allowFontScaling={false}
             >
-                Comments in threads you are involved in will be right here
+                {t('noNotificationsDescripiton', 'Comments in threads you are involved in will be right here')}
             </Text>
         </ASSafeAreaView>
     );

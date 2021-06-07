@@ -1,9 +1,11 @@
 platform :ios, '13.2'
+
+# use_frameworks!
+inhibit_all_warnings!
+
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
-
-inhibit_all_warnings!
 
 target 'openland' do
   
@@ -19,6 +21,7 @@ target 'openland' do
   pod 'Starscream', '~> 3.0.2'
   pod 'ReachabilitySwift'
   pod 'Stripe'
+  pod 'MMKV'
 
 #   pod 'AppCenter', '~> 1.14.0'
 #   pod 'AppCenter/Crashes', '~> 1.14.0'
@@ -63,7 +66,6 @@ target 'openland' do
   pod 'react-native-background-timer', :path => '../node_modules/react-native-background-timer'
 
   pod 'react-native-pdf', :path => '../node_modules/react-native-pdf'
-pod 'ObjectiveRocks', '~> 0.11'
 #   pod 'react-native-video', :path => '../node_modules/react-native-video/react-native-video.podspec'
 
   pod 'RNThumbnail', :path => '../node_modules/react-native-thumbnail'
@@ -86,7 +88,7 @@ end
 
 target 'openlandTests' do
     pod 'SwiftyJSON', '~> 4.0'
-    pod 'ObjectiveRocks', '~> 0.11'
+    pod 'MMKV'
     pod 'Starscream', '~> 3.0.2'
     pod 'Stripe'
 end

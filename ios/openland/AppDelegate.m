@@ -7,6 +7,7 @@
 #import <UMCore/UMModuleRegistry.h>
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
+#import <MMKV/MMKV.h>
 
 @import Stripe;
 #import "AppDelegate.h"
@@ -26,6 +27,9 @@
 
   // Stripe
   [StripeAPI setDefaultPublishableKey: @"pk_live_eLENsh8Ten2AoOcJhfxUkTfD"];
+  
+  // MMKV
+  [MMKV initializeMMKV:nil];
   
   // Expo
   self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];

@@ -16,6 +16,7 @@ import { useField } from 'openland-form/useField';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 import { RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { useText } from 'openland-mobile/text/useText';
 
 const RemarkText = (props: { text: string; error: boolean }) => {
     const theme = React.useContext(ThemeContext);
@@ -44,6 +45,7 @@ interface ContentProps {
 
 const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const [error, setError] = React.useState<string | undefined>(undefined);
 
     const minLength = SUPER_ADMIN ? 3 : 5;
@@ -87,7 +89,7 @@ const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
 
     return (
         <>
-            <SHeaderButton title="Save" onPress={handleSave} />
+            <SHeaderButton title={t('save', 'Save')} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]}>
                     <View
@@ -126,7 +128,7 @@ const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
                             }}
                             allowFontScaling={false}
                         >
-                            Shortname
+                            {t('shortname', 'Shortname')}
                         </Text>
                         <Text
                             style={{
@@ -138,22 +140,23 @@ const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
                             }}
                             allowFontScaling={false}
                         >
-                            {`Choose a shortname so other people can find and mention your ${
-                                props.isChannel
+                            {t('chooseShortname', {
+                                defaultValue: 'Choose a shortname so other people can find and mention your {{entityType}}',
+                                entityType: props.isChannel
                                     ? 'channel'
                                     : props.isGroup
                                         ? 'group'
                                         : props.isCommunity
                                             ? 'community'
                                             : 'organization'
-                                }`}
+                            })}
                         </Text>
                     </View>
                 </LinearGradient>
                 <ZListGroup header={null}>
                     <View style={{ paddingHorizontal: 16 }}>
                         <ZInput
-                            placeholder="Shortname"
+                            placeholder={t('shortname', 'Shortname')}
                             prefix="@"
                             field={shortnameField}
                             autoCapitalize="none"
@@ -165,7 +168,7 @@ const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
                     {!error && shortnameError && <RemarkText text={shortnameError} error={true} />}
                     {!error && !shortnameError && (
                         <RemarkText
-                            text={`Only a-z, 0-9 and underscores, at least 3 chars`}
+                            text={t('shortnameDescription', 'Only a-z, 0-9 and underscores, at least 3 chars')}
                             error={false}
                         />
                     )}
