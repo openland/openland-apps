@@ -265,15 +265,6 @@ export const RoomsFragment = React.memo(() => {
                 <NewRoomButton />
             </USideHeader>
             <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>
-                <UButton
-                    text="🔥 Upcoming rooms"
-                    size="large"
-                    style="secondary"
-                    marginTop={8}
-                    marginBottom={12}
-                    marginHorizontal={16}
-                    onClick={() => window.open('https://www.notion.so/openland/Openland-Upcoming-Rooms-e2b80f28693c4fc788b9f269cc3346b0 ', '_blank')}
-                />
                 <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
                     {voiceChats.map(voiceChat => <RoomsFeedItem key={voiceChat.id} voiceChat={voiceChat} />)}
                     <StartRoomItem />
