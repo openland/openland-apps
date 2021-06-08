@@ -5,6 +5,7 @@ import { View, Text, Image } from 'react-native';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { useText } from 'openland-mobile/text/useText';
 
 interface GroupViewProps {
     item: Omit<SharedRoomView, 'photo'>;
@@ -16,6 +17,7 @@ interface GroupViewProps {
 
 export const GroupView = React.memo<GroupViewProps>((props) => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const { item, photo, paddingRight, onPress, onLongPress } = props;
     const membersCount = item.membersCount || 0;
 
@@ -60,7 +62,7 @@ export const GroupView = React.memo<GroupViewProps>((props) => {
                     }}
                     allowFontScaling={false}
                 >
-                    {membersCount + (membersCount > 1 ? ' members' : ' member')}
+                    {membersCount} {t('member', { count: membersCount })}
                 </Text>
             </View>
         </ZListItemBase>

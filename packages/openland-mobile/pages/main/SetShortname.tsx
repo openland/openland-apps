@@ -8,7 +8,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import LinearGradient from 'react-native-linear-gradient';
-import { validateShortname, getErrorByShortname } from './SetUserShortname';
+import { validateShortname, useErrorByShortname } from './SetUserShortname';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { SUPER_ADMIN } from '../Init';
 import { useForm } from 'openland-form/useForm';
@@ -47,6 +47,7 @@ const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
     const theme = React.useContext(ThemeContext);
     const { t } = useText();
     const [error, setError] = React.useState<string | undefined>(undefined);
+    const getError = useErrorByShortname();
 
     const minLength = SUPER_ADMIN ? 3 : 5;
     const maxLength = 16;
@@ -76,7 +77,7 @@ const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
         }
     };
 
-    let shortnameError = getErrorByShortname(
+    let shortnameError = getError(
         shortnameField.value,
         'Shortname',
         minLength,

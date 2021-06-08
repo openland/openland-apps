@@ -17,11 +17,13 @@ import Toast from 'openland-mobile/components/Toast';
 import { RoomCallsMode } from 'openland-api/spacex.types';
 import { matchLinks } from 'openland-y-utils/TextProcessor';
 import { EditPageHeader } from '../EditPageHeader';
+import { useText } from 'openland-mobile/text/useText';
 
 const EditGroupCallsComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const roomId = props.router.params.id;
     const client = getClient();
+    const { t } = useText();
     const group = client.useRoomChat({ id: roomId }).room;
 
     if (!group || group.__typename === 'PrivateRoom') {
@@ -31,7 +33,7 @@ const EditGroupCallsComponent = React.memo((props: PageProps) => {
     const form = useForm();
     const customLinkField = useField('custom-link', group.callSettings.callLink || '', form, [
         {
-            text: 'Enter a valid link',
+            text: t('validationLink', 'Enter a valid link'),
             checkIsValid: (str) => {
                 if (mode === RoomCallsMode.LINK) {
                     let match = matchLinks(str);
@@ -71,31 +73,31 @@ const EditGroupCallsComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeaderButton title="Save" onPress={() => handleSave()} />
+            <SHeaderButton title={t('save', 'Save')} onPress={() => handleSave()} />
             <KeyboardAvoidingScrollView>
                 <EditPageHeader
                     icon={require('assets/ic-call-glyph-48.png')}
                     tint={theme.tintGreen}
-                    title="Group calls"
-                    description="Choose what calls to use"
+                    title={t('groupCalls', 'Group calls')}
+                    description={t('groupCallsChoose', 'Choose what calls to use')}
                 />
                 <React.Suspense fallback={null}>
                     <ZListGroup header={null}>
                         <CheckListBoxWraper isRadio={true} checked={mode === RoomCallsMode.STANDARD}>
                             <ZListItem
-                                text="Standard Openland rooms"
+                                text={t('groupCallsStandard', 'Standard Openland rooms')}
                                 onPress={() => setMode(RoomCallsMode.STANDARD)}
                             />
                         </CheckListBoxWraper>
                         <CheckListBoxWraper isRadio={true} checked={mode === RoomCallsMode.LINK}>
                             <ZListItem
-                                text="Custom call link"
+                                text={t('groupCallsCustom', 'Custom call link')}
                                 onPress={() => setMode(RoomCallsMode.LINK)}
                             />
                         </CheckListBoxWraper>
                         <CheckListBoxWraper isRadio={true} checked={mode === RoomCallsMode.DISABLED}>
                             <ZListItem
-                                text="No calls"
+                                text={t('groupCallsNone', 'No calls')}
                                 onPress={() => setMode(RoomCallsMode.DISABLED)}
                             />
                         </CheckListBoxWraper>
@@ -103,7 +105,7 @@ const EditGroupCallsComponent = React.memo((props: PageProps) => {
                     {mode === RoomCallsMode.LINK && (
                         <View style={{ marginTop: 16, paddingHorizontal: 16 }}>
                             <ZInput
-                                placeholder="Call link"
+                                placeholder={t('callLink', 'Call link')}
                                 field={customLinkField}
                                 noWrapper={true}
                                 autoFocus={true}
@@ -116,8 +118,7 @@ const EditGroupCallsComponent = React.memo((props: PageProps) => {
                                     paddingHorizontal: 16,
                                 }}
                             >
-                                A link to external call room, e.g. on Zoom, Google Meet, or any other
-                                service
+                                {t('groupCallsExternal', 'A link to external call room, e.g. on Zoom, Google Meet, or any other service')}
                             </Text>
                         </View>
                     )}

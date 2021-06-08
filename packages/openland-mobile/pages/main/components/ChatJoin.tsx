@@ -30,6 +30,7 @@ import { showPayConfirm } from '../modals/PayConfirm';
 import { SRouter } from 'react-native-s/SRouter';
 import { OpenlandClient } from 'openland-api/spacex';
 import { isSmallText } from 'openland-y-utils/isSmallText';
+import { useText } from 'openland-mobile/text/useText';
 
 const styles = StyleSheet.create({
     container: {
@@ -193,7 +194,8 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
         isChannel,
         featured,
     } = room;
-    const typeStr = isChannel ? 'channel' : 'group';
+    const { t } = useText();
+    // const typeStr = isChannel ? t('channel', 'channel') : t('group', 'group');
     const paddingBottom = Platform.OS === 'ios' ? area.bottom || 16 : area.bottom + 16;
 
     const avatars = previewMembers
@@ -253,7 +255,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                     style={[styles.members, { color: theme.foregroundSecondary }]}
                     allowFontScaling={false}
                 >
-                    {membersCount} members
+                    {membersCount} {t('member', { count: membersCount, defaultValue: 'members' })}
                 </Text>
             </View>
         </>
@@ -273,7 +275,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
     let button = (
         <View style={styles.buttonWrapper}>
             <ZButton
-                title={`Join ${typeStr}`}
+                title={isChannel ? t('joinChannel', 'Join channel') : t('joinGroup', 'Join group')}
                 size="large"
                 loading={loading}
                 onPress={handleButtonPress}
@@ -288,7 +290,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
             button = (
                 <View style={styles.buttonWrapper}>
                     <ZButton
-                        title={`Open wallet`}
+                        title={t('openWallet', 'Open wallet')}
                         size="large"
                         loading={loading}
                         onPress={() => props.router.push('Wallet')}
@@ -296,9 +298,9 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                 </View>
             );
             showMembers = false;
-            joinTitle = `Your access to “${room.title}” is suspended`;
+            joinTitle = t('accessSuspended', { title: room.title, defaultValue: 'Your access to “{{title}}” is suspended' });
             description =
-                'To keep your access to the group by subscription you need to complete payment';
+                t('accessSuspendedDescription', 'To keep your access to the group by subscription you need to complete payment');
         } else {
             button = (
                 <BuyPaidChatPassButton
@@ -360,7 +362,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                             style={[styles.members, { color: theme.foregroundSecondary }]}
                             allowFontScaling={false}
                         >
-                            New {typeStr}
+                            {isChannel ? t('newChannel', 'New channel') : t('newGroup', 'New group')}
                         </Text>
                     </View>
                 )}

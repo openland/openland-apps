@@ -15,6 +15,10 @@ export const useText = () => {
     };
 };
 
+export const capitalize = (s: string) =>
+    s.charAt(0).toUpperCase() + s.slice(1);
+
+export const lowercase = (s: string) => s.toLowerCase();
 // export function t(source: any, options?: any): string {
 //     return i18n.t(source, options);
 // }

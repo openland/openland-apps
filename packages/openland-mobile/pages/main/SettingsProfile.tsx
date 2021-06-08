@@ -20,21 +20,24 @@ import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardA
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { formatPhone } from 'openland-y-utils/auth/formatPhone';
 import { isValidDate } from 'openland-y-utils/wallet/dateTime';
+import { useText } from 'openland-mobile/text/useText';
 
 const PrivacyLink = React.memo((props: { router: SRouter }) => {
     const theme = useTheme();
+    const { t } = useText();
     const onPress = React.useCallback(() => {
         props.router.push('SettingsPrivacy');
     }, []);
     return (
         <TouchableWithoutFeedback onPress={onPress}>
-            <Text style={{ color: theme.accentPrimary }}>Account and privacy</Text>
+            <Text style={{ color: theme.accentPrimary }}>{t('accountPrivacy')}</Text>
         </TouchableWithoutFeedback>
     );
 });
 
 const SettingsProfileContent = React.memo((props: PageProps) => {
     const theme = useTheme();
+    const { t } = useText();
     const isIos = Platform.OS === 'ios';
     const { user, profile } = getClient().useProfile({ fetchPolicy: 'network-only' });
     const { phone, email } = getClient().useAuthPoints({ fetchPolicy: 'network-only' }).authPoints;
@@ -57,7 +60,7 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
     const birthDayField = useField('input.birthDay', birthDay || null, form, [
         {
             checkIsValid: (value) => !value || isValidDate(value),
-            text: 'Please enter valid date',
+            text: t('validationDate', 'Please enter valid date'),
         },
     ]);
     const locationField = useField('location', profile.location || '', form);
@@ -86,42 +89,44 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                     birthDay: birthDayField.value?.getTime() || null,
                 },
             });
-            await getClient().refetchAccount();
-            await getClient().refetchUser({ userId: user.id });
+            await Promise.all([
+                getClient().refetchAccount(),
+                getClient().refetchUser({ userId: user.id }),
+            ]);
 
             props.router.back();
         });
 
     return (
         <>
-            <SHeaderButton title="Save" onPress={handleSave} />
+            <SHeaderButton title={t('save', 'Save')} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <ZListGroup header={null} alignItems="center">
                     <ZAvatarPicker size="xx-large" field={photoField} />
                 </ZListGroup>
 
-                <ZListGroup header="Info" headerMarginTop={0}>
-                    <ZInput placeholder="First name" field={firstNameField} />
-                    <ZInput placeholder="Last name" field={lastNameField} />
-                    <ZInput placeholder="About" field={aboutField} multiline={true} />
-                    <ZInput placeholder="Location" field={locationField} />
+                <ZListGroup header={t('info', 'Info')} headerMarginTop={0}>
+                    <ZInput placeholder={t('firstName', 'First name')} field={firstNameField} />
+                    <ZInput placeholder={t('lastName', 'Last name')} field={lastNameField} />
+                    <ZInput placeholder={t('about', 'About')} field={aboutField} multiline={true} />
+                    <ZInput placeholder={t('location', 'Location')} field={locationField} />
                 </ZListGroup>
 
-                <ZListGroup header="Username" headerMarginTop={0}>
+                <ZListGroup header={t('username', 'Username')} headerMarginTop={0}>
                     <ZPickField
-                        label="Username"
+                        label={t('username', 'Username')}
                         value={user.shortname ? '@' + user.shortname : undefined}
                         path="SetUserShortname"
                     />
                 </ZListGroup>
 
-                <ZListGroup header="Birthday" headerMarginTop={0}>
+                <ZListGroup header={t('birthday', 'Birthday')} headerMarginTop={0}>
                     <ZDateInputField field={birthDayField} />
                 </ZListGroup>
 
-                <ZListGroup header="Contacts" headerMarginTop={16}>
-                    <ZInput placeholder="Phone" field={phoneField} disabled={true} />
-                    <ZInput placeholder="Email" field={emailField} disabled={true} />
+                <ZListGroup header={t('contacts', 'Contacts')} headerMarginTop={16}>
+                    <ZInput placeholder={t('phone', 'Phone')} field={phoneField} disabled={true} />
+                    <ZInput placeholder={t('email', 'Email')} field={emailField} disabled={true} />
                     <Text
                         style={{
                             ...TextStyles.Caption,
@@ -130,14 +135,14 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                             color: theme.foregroundTertiary,
                         }}
                     >
-                        {'Edit phone/email and their visibility \nin '}
+                        {t('editPersonalVisibility', 'Edit phone/email and their visibility \nin ')}
                         <PrivacyLink router={props.router} />
                     </Text>
-                    <ZInput placeholder="Website" field={websiteField} />
-                    <ZInput placeholder="Instagram" field={instagramField} />
-                    <ZInput placeholder="Twitter" field={twitterField} />
-                    <ZInput placeholder="Facebook" field={facebookField} />
-                    <ZInput placeholder="LinkedIn" field={linkedinField} />
+                    <ZInput placeholder={t('website', 'Website')} field={websiteField} />
+                    <ZInput placeholder={t('instagram', 'Instagram')} field={instagramField} />
+                    <ZInput placeholder={t('twitter', 'Twitter')} field={twitterField} />
+                    <ZInput placeholder={t('facebook', 'Facebook')} field={facebookField} />
+                    <ZInput placeholder={t('linkedIn', 'LinkedIn')} field={linkedinField} />
                     {isIos && theme.type !== 'Light' && <View style={{ height: 88 }} />}
                 </ZListGroup>
             </KeyboardAvoidingScrollView>
@@ -145,15 +150,14 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
     );
 });
 
-class SettingsProfileComponent extends React.Component<PageProps> {
-    render() {
-        return (
-            <>
-                <SHeader title="Edit profile" />
-                <SettingsProfileContent {...this.props} />
-            </>
-        );
-    }
-}
+const SettingsProfileComponent = React.memo((props: PageProps) => {
+    const { t } = useText();
+    return (
+        <>
+            <SHeader title={t('editEntity', { entity: '$t(profile)' })} />
+            <SettingsProfileContent {...props} />
+        </>
+    );
+});
 
 export const SettingsProfile = withApp(SettingsProfileComponent, { navigationAppearance: 'small' });

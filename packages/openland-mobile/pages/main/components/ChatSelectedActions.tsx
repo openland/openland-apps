@@ -13,14 +13,15 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 import { SHeaderView } from 'react-native-s/SHeaderView';
 import { SCloseButton } from 'react-native-s/SCloseButton';
-import { plural } from 'openland-y-utils/plural';
 import { useChatMessagesActionsState, useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
+import { useText } from 'openland-mobile/text/useText';
 
 export const ChatSelectedActionsHeader = (props: { messagesCount: number; cancel: () => void }) => {
+    const { t } = useText();
     const messagesText =
         props.messagesCount > 0
-            ? `${plural(props.messagesCount, ['message', 'messages'])} selected`
-            : 'Select messages';
+            ? `${props.messagesCount} ${t('selectedMessage', { count: props.messagesCount, defaultValue: 'message selected' })}`
+            : t('selectedMessageDefault', 'Select messages');
     const theme = React.useContext(ThemeContext);
     const height = Platform.OS === 'android' ? 56 : 44;
 
@@ -59,6 +60,7 @@ interface ChatSelectedActionsProps {
 
 export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const state = useChatMessagesActionsState(props.chat.id);
 
     const { clear } = useChatMessagesActionsMethods(props.chat.id);
@@ -67,12 +69,12 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
             return;
         }
         const messagesCount = state.messages.length;
-        const messagesText = plural(messagesCount, ['message', 'messages']);
+        const messagesText = t('message', { count: messagesCount, defaultValue: 'message' });
         Alert.builder()
-            .title(`Delete ${messagesText}?`)
-            .message('Messages will be deleted for everyone. This cannot be undone')
-            .button('Cancel', 'cancel')
-            .action('Delete', 'destructive', async () => {
+            .title(`${t('delete', 'Delete')} ${messagesText}?`)
+            .message(t('deleteMessagesDescription', 'Messages will be deleted for everyone. This cannot be undone'))
+            .button(t('cancel', 'Cancel'), 'cancel')
+            .action(t('delete', 'Delete'), 'destructive', async () => {
                 await getMessenger().engine.client.mutateRoomDeleteMessages({
                     mids: state.messages.map((m) => m.id!),
                 });

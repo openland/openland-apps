@@ -15,6 +15,7 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { SHeader } from 'react-native-s/SHeader';
 import Toast from 'openland-mobile/components/Toast';
 import { showStickerPackModal } from './components/stickers/showStickerPackModal';
+import { capitalize, useText } from 'openland-mobile/text/useText';
 
 interface StickerCatalogProps {
     pack: StickerPackCatalog_stickers;
@@ -25,7 +26,7 @@ interface StickerCatalogProps {
 
 const StickerCatalog = React.memo((props: StickerCatalogProps) => {
     const { pack, stickersPerRow, stickerSize, theme } = props;
-
+    const { t } = useText();
     const haveIt = pack.added;
 
     const client = useClient();
@@ -94,13 +95,15 @@ const StickerCatalog = React.memo((props: StickerCatalogProps) => {
                                     paddingVertical: 2
                                 }}
                             >
-                                <Text style={{ ...TextStyles.Detail, color: theme.foregroundContrast }}>
-                                    NEW
-                            </Text>
+                                <Text style={{ ...TextStyles.Detail, color: theme.foregroundContrast, textTransform: 'uppercase' }}>
+                                    {t('new', 'new')}
+                                </Text>
                             </View>
                         )}
                     </View>
-                    <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>{pack.stickers.length} {pack.stickers.length === 1 ? 'sticker' : 'stickers'}</Text>
+                    <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>
+                        {pack.stickers.length} {t('sticker', { count: pack.stickers.length, defaultValue: 'sticker' })}
+                    </Text>
                 </View>
                 <TouchableOpacity
                     style={{
@@ -118,11 +121,11 @@ const StickerCatalog = React.memo((props: StickerCatalogProps) => {
                     {buttonLoading ? (
                         <LoaderSpinner color={theme.foregroundTertiary} />
                     ) : (
-                            <Image
-                                source={haveIt ? require('assets/ic-done-24.png') : require('assets/ic-add-24.png')}
-                                style={{ tintColor: haveIt ? theme.foregroundTertiary : theme.foregroundInverted, width: 24, height: 24 }}
-                            />
-                        )}
+                        <Image
+                            source={haveIt ? require('assets/ic-done-24.png') : require('assets/ic-add-24.png')}
+                            style={{ tintColor: haveIt ? theme.foregroundTertiary : theme.foregroundInverted, width: 24, height: 24 }}
+                        />
+                    )}
                 </TouchableOpacity>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -145,6 +148,7 @@ const StickerCatalog = React.memo((props: StickerCatalogProps) => {
 
 const StickersCatalogContent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const client = useClient();
     const stickersCatalog = client.useStickerPackCatalog({ fetchPolicy: 'network-only' }).stickers;
 
@@ -154,7 +158,7 @@ const StickersCatalogContent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title="Stickers" />
+            <SHeader title={capitalize(t('sticker_plural'))} />
             <View style={{ backgroundColor: theme.backgroundPrimary, justifyContent: 'center' }} onLayout={handleLayoutChange}>
                 {stickersPerRow > 0 && stickerSize > 0 && (
                     <SFlatList

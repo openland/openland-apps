@@ -16,6 +16,7 @@ import {
 } from 'openland-api/spacex.types';
 
 import { UserFollowersItem } from './components/UserFollowersItem';
+import { capitalize, useText } from 'openland-mobile/text/useText';
 
 export enum Tabs {
     FOLLOWING = 'FOLLOWING',
@@ -26,6 +27,7 @@ const UserFollowersComponent = React.memo<PageProps>((props) => {
     const { uid, initialTab } = props.router.params;
     const client = useClient();
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const [selectedTab, setSelectedTab] = React.useState<Tabs>(initialTab || Tabs.FOLLOWING);
     const [following, setFollowing] = React.useState<SocialUserFollowing_socialUserFollowing_items[] | null>(null);
     const [followingCursor, setFollowingCursor] = React.useState<string | null>(null);
@@ -72,37 +74,41 @@ const UserFollowersComponent = React.memo<PageProps>((props) => {
                         selected={selectedTab === Tabs.FOLLOWING}
                         onPress={() => setSelectedTab(Tabs.FOLLOWING)}
                     >
-                        <Text>Following </Text>
+                        <Text>{t('following', 'Following')} </Text>
                         <Text style={{ color: theme.foregroundTertiary }}>
-                            {getCounterValue(followingCount, 10000)}
+                            {getCounterValue({ count: followingCount, suffix: t('shortThousand', 'K'), cutoff: 10000 })}
                         </Text>
                     </ZTab>
                     <ZTab
                         selected={selectedTab === Tabs.FOLLOWERS}
                         onPress={() => setSelectedTab(Tabs.FOLLOWERS)}
                     >
-                        <Text>Followers </Text>
+                        <Text>{capitalize(t('follower_plural', 'Followers'))} </Text>
                         <Text style={{ color: theme.foregroundTertiary }}>
-                            {getCounterValue(followersCount, 10000)}
+                            {getCounterValue({ count: followersCount, suffix: t('shortThousand', 'K'), cutoff: 10000 })}
                         </Text>
                     </ZTab>
                 </View>
                 {selectedTab === Tabs.FOLLOWING && following && following.length === 0 && (
                     <View style={{ justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                         <Image source={imgSrc} />
-                        <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, textAlign: 'center' }}>No following yet</Text>
+                        <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, textAlign: 'center' }}>
+                            {t('noFollowing', 'No following yet')}
+                        </Text>
                     </View>
                 )}
                 {selectedTab === Tabs.FOLLOWERS && followers && followers.length === 0 && (
                     <View style={{ justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                         <Image source={imgSrc} />
-                        <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, textAlign: 'center' }}>No followers yet</Text>
+                        <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, textAlign: 'center' }}>
+                            {t('noFollowers', 'No followers yet')}
+                        </Text>
                     </View>
                 )}
                 {selectedTab === Tabs.FOLLOWING && following && following.length > 0 && (
                     <SFlatList
                         data={following}
-                        renderItem={(item) => <UserFollowersItem {...item.item} hideButton={true}/>}
+                        renderItem={(item) => <UserFollowersItem {...item.item} hideButton={true} />}
                         contentContainerStyle={{ paddingTop: 0, paddingBottom: 0 }}
                         onEndReached={handleLoadMoreFollowing}
                     />
@@ -110,7 +116,7 @@ const UserFollowersComponent = React.memo<PageProps>((props) => {
                 {selectedTab === Tabs.FOLLOWERS && (
                     <SFlatList
                         data={followers}
-                        renderItem={(item) => <UserFollowersItem {...item.item}/>}
+                        renderItem={(item) => <UserFollowersItem {...item.item} />}
                         contentContainerStyle={{ paddingTop: 0, paddingBottom: 0 }}
                         onEndReached={handleLoadMoreFollowers}
                     />

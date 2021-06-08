@@ -3,7 +3,6 @@ import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { View, ScrollView, Text, TouchableWithoutFeedback, Platform, Animated } from 'react-native';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
-import { plural } from 'openland-y-utils/plural';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { DiscoverChatsCollectionShort } from 'openland-api/spacex.types';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
@@ -11,6 +10,7 @@ import { layoutCollection } from 'openland-mobile/pages/main/Collections';
 import { useClient } from 'openland-api/useClient';
 import { usePressableView } from './usePressableView';
 import { DiscoverCover } from './DiscoverCover';
+import { useText } from 'openland-mobile/text/useText';
 
 interface DiscoverCollectionsItem {
     item: DiscoverChatsCollectionShort;
@@ -18,6 +18,7 @@ interface DiscoverCollectionsItem {
 
 const DiscoverCollectionsItem = (props: DiscoverCollectionsItem) => {
     const theme = useTheme();
+    const { t } = useText();
     const router = React.useContext(SRouterContext)!;
     const onPress = React.useCallback(() => {
         router.push('DiscoverListing', {
@@ -48,7 +49,7 @@ const DiscoverCollectionsItem = (props: DiscoverCollectionsItem) => {
                     <View style={{ flexGrow: 1, flexShrink: 1, flexDirection: 'column' }}>
                         <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{props.item.title}</Text>
                         <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
-                            {plural(props.item.chatsCount, ['group', 'groups'])}
+                            {props.item.chatsCount} {t('group', { count: props.item.chatsCount, defaultValue: 'group' })}
                         </Text>
                     </View>
                 </View>
@@ -59,6 +60,7 @@ const DiscoverCollectionsItem = (props: DiscoverCollectionsItem) => {
 
 export const DiscoverCollectionsList = () => {
     let router = React.useContext(SRouterContext)!;
+    const { t } = useText();
     let client = useClient();
     let { discoverCollections } = client.useDiscoverCollectionsShort({ first: 10 }, { fetchPolicy: 'cache-and-network' });
     let items = discoverCollections && discoverCollections.items || [];
@@ -66,9 +68,9 @@ export const DiscoverCollectionsList = () => {
 
     return (
         <ZListGroup
-            header="Collections"
+            header={t('collections', 'Collections')}
             actionRight={items.length === 10 ? {
-                title: 'See all', onPress: () => router.push('Collections', {
+                title: t('seeAll', 'See all'), onPress: () => router.push('Collections', {
                     initialCollections: items,
                     initialAfter: cursor,
                 })

@@ -5,14 +5,14 @@ import { getCounterValue } from 'openland-y-utils/getCounterValue';
 import { pluralForm } from 'openland-y-utils/plural';
 
 interface UUserFollowerViewProps {
-  user: UserFollower;
+    user: UserFollower;
 }
 
 export const UUserFollowerView = React.memo((props: UUserFollowerViewProps & Partial<UListItemProps>) => {
     const { user, rightElement, onClick, ...other } = props;
     const [hovered, setHovered] = React.useState(false);
     const { id, name, photo, shortname, about, followersCount } = user;
-    const description = about || `${getCounterValue(followersCount, 10000)} ${pluralForm(followersCount, ['follower', 'followers'])}`;
+    const description = about || `${getCounterValue({ count: followersCount, cutoff: 10000 })} ${pluralForm(followersCount, ['follower', 'followers'])}`;
 
     const onMouseEnter = React.useCallback(() => {
         if (!hovered) {

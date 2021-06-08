@@ -10,6 +10,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { CommentEntryFragment, CommentEntryFragment_comment, RoomMemberRole } from 'openland-api/spacex.types';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import Toast from 'openland-mobile/components/Toast';
+import { useText } from 'openland-mobile/text/useText';
 
 interface CommentsListProps {
     comments: CommentEntryFragment[];
@@ -24,6 +25,7 @@ interface CommentsListProps {
 export const CommentsList = (props: CommentsListProps) => {
     const { comments, role, highlightedId, onReplyPress, onEditPress, scrollRef } = props;
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
 
     const handleLongPress = React.useCallback((comment: CommentEntryFragment_comment) => {
         let engine = getMessenger().engine;
@@ -33,12 +35,12 @@ export const CommentsList = (props: CommentsListProps) => {
 
             if (comment.message) {
                 if (comment.sender.id === engine.user.id) {
-                    builder.action('Edit', () => {
+                    builder.action(t('edit', 'Edit'), () => {
                         onEditPress(comment);
                     }, false, require('assets/ic-edit-24.png'));
                 }
 
-                builder.action('Copy', () => {
+                builder.action(t('copy', 'Copy'), () => {
                     Clipboard.setString(comment.message!!);
                     Toast.showCopied();
                 }, false, require('assets/ic-copy-24.png'));
@@ -46,13 +48,13 @@ export const CommentsList = (props: CommentsListProps) => {
             const canDelete = comment.sender.id === engine.user.id || role === RoomMemberRole.ADMIN || role === RoomMemberRole.OWNER || SUPER_ADMIN;
 
             if (canDelete) {
-                builder.action('Delete', async () => {
+                builder.action(t('delete', 'Delete'), async () => {
                     try {
                         Alert.builder()
-                            .title('Delete comment')
-                            .message('Delete this comment for everyone? This cannot be undone.')
-                            .button('Cancel', 'cancel')
-                            .action('Delete', 'destructive', async () => {
+                            .title(t('commentDelete', 'Delete comment'))
+                            .message(t('commentDeleteDescription', 'Delete this comment for everyone? This cannot be undone.'))
+                            .button(t('cancel', 'Cancel'), 'cancel')
+                            .action(t('delete', 'Delete'), 'destructive', async () => {
                                 await engine.client.mutateDeleteComment({ id: comment.id! });
                             }).show();
                     } catch (e) {
@@ -81,7 +83,7 @@ export const CommentsList = (props: CommentsListProps) => {
         <>
             <View style={{ height: 48, justifyContent: 'center', paddingHorizontal: 16 }}>
                 <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
-                    Comments{'  '}
+                    {t('comments', 'Comments')}{'  '}
                     <Text style={{ ...TextStyles.Label1, color: theme.foregroundTertiary }} allowFontScaling={false}>
                         {comments.length}
                     </Text>

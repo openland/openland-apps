@@ -23,8 +23,8 @@ import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
 import { useClient } from 'openland-api/useClient';
 import { showNoiseWarning } from 'openland-mobile/messenger/components/showNoiseWarning';
-import { plural } from 'openland-y-utils/plural';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
+import { useText } from 'openland-mobile/text/useText';
 
 interface CommentsWrapperProps {
     peerView: JSX.Element;
@@ -39,6 +39,7 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { hasNewStickers: bo
     const inputRef = React.createRef<TextInput>();
     const scrollRef = React.createRef<ScrollView>();
     const area = React.useContext(ASSafeAreaContext);
+    const { t } = useText();
 
     const { peerView, peerId, comments, chat, highlightId, isDeleted, autofocus, hasNewStickers } = props;
 
@@ -70,12 +71,14 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { hasNewStickers: bo
             } else {
                 if (chat && chat.__typename === 'SharedRoom' && mentionsPrepared.filter(m => m.all === true).length) {
                     try {
-                        const chatType = chat.isChannel ? 'channel' : 'group';
-                        const membersType = chat.isChannel ? ['follower', 'followers'] : ['member', 'members'];
+                        const chatType = chat.isChannel ? t('channel', 'channel') : t('group', 'group');
+                        const membersType = chat.isChannel
+                            ? t('follower', { count: chat.membersCount, defaultValue: 'follower' })
+                            : t('member', { count: chat.membersCount, defaultValue: 'member' });
 
                         await showNoiseWarning(
-                            `Notify all ${!!chat.membersCount ? plural(chat.membersCount, membersType) : membersType[1]}?`,
-                            `By using @All, you’re about to notify all ${chatType} ${membersType[1]} even when they muted this chat. Please use it only for important messages`
+                            t('noiseTitle', { membersType, defaultValue: `Notify all {{membersType}}?` }),
+                            t('noiseDescription', { membersType, chatType, defaultValue: `By using @All, you’re about to notify all {{chatType}} {{membersType}} even when they muted this chat. Please use it only for important messages` })
                         );
                     } catch {
                         setSending(false);
@@ -160,12 +163,12 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { hasNewStickers: bo
                     onFail: () => {
                         setSending(false);
 
-                        Alert.alert('Error while uploading file');
+                        Alert.alert(t('errorFileUpload', 'Error while uploading file'));
                     }
                 },
             );
         });
-    }, [inputText, mentions, replied, edited]);
+    }, [inputText, mentions, replied, edited, t]);
 
     const handleReplyPress = React.useCallback((comment: CommentEntryFragment_comment) => {
         setReplied(comment);
@@ -299,7 +302,7 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { hasNewStickers: bo
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
                         text={inputText}
-                        placeholder="Comment"
+                        placeholder={t('comment', 'Comment')}
                         suggestions={suggestions}
                         topView={quoted}
                         showLoader={sending}
