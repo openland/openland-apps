@@ -5,7 +5,7 @@ import { buildBaseImageUrl } from 'openland-y-utils/photoRefUtils';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { DataSourceWebMessageItem } from '../messenger/data/WebMessageItemDataSource';
 import { MessageContent } from '../messenger/message/MessageContent';
-import { MAvatar } from '../messenger/message/MAvatar';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { MessageSenderContent, MessageTimeShort } from '../messenger/message/MessageComponent';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { XLoader } from 'openland-x/XLoader';
@@ -203,15 +203,13 @@ export const ChatSearchMessage = React.memo((props: MessageComponentProps) => {
 
         return (
             <div className={messageAvatarWrapper} onMouseEnter={show}>
-                <MAvatar
-                    senderPhoto={
-                        message.overrideAvatar
-                            ? buildBaseImageUrl(message.overrideAvatar)
-                            : message.sender.photo
-                    }
-                    senderNameEmojify={message.senderNameEmojify}
-                    senderName={message.overrideName || message.sender.name}
-                    senderId={message.sender.id}
+                <UAvatar
+                    id={message.sender.id}
+                    photo={message.overrideAvatar
+                        ? buildBaseImageUrl(message.overrideAvatar)
+                        : message.sender.photo}
+                    title={message.overrideName || message.sender.name}
+                    titleEmoji={message.senderNameEmojify}
                 />
             </div>
         );

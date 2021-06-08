@@ -4,7 +4,6 @@ import { XViewRouterContext } from 'react-mental';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { MessageReactions } from './reactions/MessageReactions';
 import { MessageContent } from './MessageContent';
-import { MAvatar } from './MAvatar';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
 import { formatTime, formatDateAtTime } from 'openland-y-utils/formatTime';
@@ -22,6 +21,7 @@ import { MessageLikeButton } from './reactions/MessageLikeButton';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { XLoader } from 'openland-x/XLoader';
 import { MentionedUserPopperContent } from 'openland-web/components/EntityPopperContent';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import IcPending from 'openland-icons/s/ic-pending-16.svg';
 import IcSuccess from 'openland-icons/s/ic-success-16.svg';
 
@@ -491,15 +491,13 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
 
         return (
             <div className={messageAvatarWrapper} onMouseEnter={show}>
-                <MAvatar
-                    senderPhoto={
-                        message.overrideAvatar
-                            ? buildBaseImageUrl(message.overrideAvatar)
-                            : message.sender.photo
-                    }
-                    senderNameEmojify={message.senderNameEmojify}
-                    senderName={message.overrideName || message.sender.name}
-                    senderId={message.sender.id}
+                <UAvatar
+                    id={message.sender.id}
+                    photo={message.overrideAvatar
+                        ? buildBaseImageUrl(message.overrideAvatar)
+                        : message.sender.photo}
+                    title={message.overrideName || message.sender.name}
+                    titleEmoji={message.senderNameEmojify}
                 />
             </div>
         );
