@@ -1,23 +1,23 @@
 import * as React from 'react';
-import { MessageContent } from '../../chat/messenger/message/MessageContent';
-import { MAvatar } from 'openland-web/fragments/chat/messenger/message/MAvatar';
 import { css } from 'linaria';
+import { XView } from 'react-mental';
+import { MessageContent } from '../../chat/messenger/message/MessageContent';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { DataSourceWebMessageItem } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { NotificationSender } from './NotificationSender';
 import { RoomNano_SharedRoom, CommentSubscriptionType } from 'openland-api/spacex.types';
 import { UIconLabeled } from 'openland-web/components/unicorn/UIconLabeled';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
+import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
+import { usePopper } from 'openland-web/components/unicorn/usePopper';
+import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
+import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import ReplyIcon from 'openland-icons/s/ic-reply-24.svg';
 import ClearIcon from 'openland-icons/s/ic-delete-24.svg';
 import FollowIcon from 'openland-icons/s/ic-follow-24.svg';
 import UnfollowIcon from 'openland-icons/s/ic-follow-off-24.svg';
-import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import MoreHIcon from 'openland-icons/s/ic-more-h-24.svg';
-import { usePopper } from 'openland-web/components/unicorn/usePopper';
-import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
-import { UPopperController } from 'openland-web/components/unicorn/UPopper';
-import { XView } from 'react-mental';
 
 const wrapper = css`
     display: flex;
@@ -145,11 +145,11 @@ export const NotificationCommentView = React.memo((props: NotificationViewProps)
     return (
         <div className={wrapper}>
             <div className={avatarWrapper}>
-                <MAvatar
-                    senderId={sender.id}
-                    senderName={sender.name}
-                    senderNameEmojify={senderNameEmojify}
-                    senderPhoto={sender.photo}
+                <UAvatar
+                    id={sender.id}
+                    title={sender.name}
+                    titleEmoji={senderNameEmojify}
+                    photo={sender.photo}
                 />
             </div>
             <div className={content}>
