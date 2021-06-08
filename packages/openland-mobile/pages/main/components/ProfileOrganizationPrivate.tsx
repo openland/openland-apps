@@ -9,21 +9,22 @@ import { ZButton } from 'openland-mobile/components/ZButton';
 import { resolveInternalLink } from 'openland-mobile/utils/resolveInternalLink';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
-import { plural } from 'openland-y-utils/plural';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
+import { useText } from 'openland-mobile/text/useText';
 
 interface ProfileOrganizationPrivateProps {
     organization: Organization_organization;
 }
 
 export const ProfileOrganizationPrivate = React.memo((props: ProfileOrganizationPrivateProps) => {
+    const { t } = useText();
     const { id, photo, name, about, isCommunity, applyLink, applyLinkEnabled, owner, membersCount, featured } = props.organization;
     const isIos = Platform.OS === 'ios';
     const isXGen = isIos && Dimensions.get('window').height > 800;
     const defaultIosPadding = isXGen ? 34 : 16;
     const theme = React.useContext(ThemeContext);
     const area = React.useContext(ASSafeAreaContext);
-    const typeString = isCommunity ? 'Community' : 'Organization';
+    const typeString = isCommunity ? t('community', 'Community') : t('organization', 'Organization');
     const link = findSocialShortname.site(applyLink);
     const canApply = applyLinkEnabled && link;
 
@@ -86,7 +87,7 @@ export const ProfileOrganizationPrivate = React.memo((props: ProfileOrganization
                         }}
                         allowFontScaling={false}
                     >
-                        {plural(membersCount, ['member', 'members'])}
+                        {membersCount} {t('member', { count: membersCount })}
                     </Text>
                 </View>
             </SScrollView>
@@ -103,7 +104,7 @@ export const ProfileOrganizationPrivate = React.memo((props: ProfileOrganization
             >
                 {canApply && (
                     <ZButton
-                        title="Apply to join"
+                        title={t('applyToJoin', 'Apply to join')}
                         onPress={resolveInternalLink(link!.url, async () => await Linking.openURL(link!.url))}
                         size="large"
                     />
@@ -111,7 +112,7 @@ export const ProfileOrganizationPrivate = React.memo((props: ProfileOrganization
                 {!canApply && (
                     <>
                         <ZButton
-                            title="Message admin"
+                            title={t('messageAdmin', 'Message admin')}
                             path="Conversation"
                             pathParams={{ flexibleId: owner.id }}
                             size="large"
@@ -129,7 +130,7 @@ export const ProfileOrganizationPrivate = React.memo((props: ProfileOrganization
                                 }}
                                 allowFontScaling={false}
                             >
-                                This {typeString.toLowerCase()} is invite-only
+                                {t('privateEntityDescription', { title: typeString.toLowerCase(), defaultValue: 'This {{title}} is invite-only' })}
                             </Text>
                         </View>
                     </>

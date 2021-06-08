@@ -36,7 +36,7 @@ const ASCounter = (props: { value: number | string; muted?: boolean; theme: Them
                 fontWeight={FontStyles.Weight.Bold}
                 letterSpacing={-0.08}
             >
-                {getCounterValue(Number(props.value))}
+                {getCounterValue({ count: Number(props.value) })}
             </ASText>
         </ASFlex>
     </ASFlex>

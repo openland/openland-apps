@@ -12,6 +12,7 @@ import { useLastSeen } from 'openland-y-utils/LastSeen';
 import { TextStyles, CompensationAlpha } from 'openland-mobile/styles/AppStyles';
 import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
 import Lottie from 'lottie-react-native';
+import { useText } from 'openland-mobile/text/useText';
 
 const styles = StyleSheet.create({
     title: {
@@ -26,6 +27,7 @@ const styles = StyleSheet.create({
 const SharedChatHeaderContent = React.memo((props: { room: RoomChat_room_SharedRoom, typing?: string, typingType?: string, theme: ThemeGlobal, muted: boolean }) => {
     const { room, typing, typingType, theme } = props;
     const [onlineCount, setOnlineCount] = React.useState<number>(0);
+    const { t } = useText();
 
     getChatOnlinesCount(room.id, useClient(), (count) => setOnlineCount(count));
 
@@ -159,7 +161,11 @@ const SharedChatHeaderContent = React.memo((props: { room: RoomChat_room_SharedR
                 )}
                 <Text style={[styles.subTitle, { color: accent ? theme.accentPrimary : theme.foregroundSecondary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
                     {subtitle}
-                    {onlineCount > 0 && (!typing) && (<Text style={{ color: theme.accentPrimary }} allowFontScaling={false}>{'  '}{onlineCount} online</Text>)}
+                    {onlineCount > 0 && (!typing) && (
+                        <Text style={{ color: theme.accentPrimary }} allowFontScaling={false}>
+                            {'  '}{onlineCount} {t('online', 'online')}
+                        </Text>
+                    )}
                 </Text>
             </View>
         </View>
@@ -168,7 +174,7 @@ const SharedChatHeaderContent = React.memo((props: { room: RoomChat_room_SharedR
 
 const PrivateChatHeaderContent = React.memo((props: { room: RoomChat_room_PrivateRoom, typing?: string, typingType?: string, theme: ThemeGlobal, muted: boolean }) => {
     const { room, typing, theme, typingType } = props;
-
+    const { t } = useText();
     let [subtitle, accent] = useLastSeen(room.user);
 
     let title = room.user.name;
@@ -176,14 +182,15 @@ const PrivateChatHeaderContent = React.memo((props: { room: RoomChat_room_Privat
     if (typing) {
         accent = true;
 
-        switch (typingType) {
-            case TypingType.TEXT: subtitle = 'typing'; break;
-            case TypingType.FILE: subtitle = 'sending a file'; break;
-            case TypingType.PHOTO: subtitle = 'sending a photo'; break;
-            case TypingType.STICKER: subtitle = 'picking a sticker'; break;
-            case TypingType.VIDEO: subtitle = 'uploading a video'; break;
-            default: subtitle = 'typing'; break;
-        }
+        const typingsByType: { [k in TypingType]: string } = {
+            [TypingType.TEXT]: t('typing', 'typing'),
+            [TypingType.FILE]: t('typingFile', 'sending a file'),
+            [TypingType.PHOTO]: t('typingPhoto', 'sending a photo'),
+            [TypingType.STICKER]: t('typingSticker', 'picking a sticker'),
+            [TypingType.VIDEO]: t('typingVideo', 'uploading a video'),
+        };
+
+        subtitle = typingType && typingsByType[typingType] || t('typing', 'typing');
     }
 
     const isSavedMessages = room.user.id === getMessenger().engine.user.id;

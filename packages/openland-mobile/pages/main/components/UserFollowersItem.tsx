@@ -5,11 +5,11 @@ import { SRouterContext } from 'react-native-s/SRouterContext';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { getCounterValue } from 'openland-y-utils/getCounterValue';
-import { pluralForm } from 'openland-y-utils/plural';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZFollowButton } from 'openland-mobile/components/ZFollowButton';
+import { useText } from 'openland-mobile/text/useText';
 
 interface UserFollowerItemProps {
     id: string;
@@ -25,8 +25,10 @@ export const UserFollowersItem = React.memo<UserFollowerItemProps>((props) => {
     const theme = React.useContext(ThemeContext);
     const router = React.useContext(SRouterContext);
     const client = getClient();
+    const { t } = useText();
     const { id, name, photo, about, followersCount, followedByMe, hideButton } = props;
-    const subtitle = about || `${getCounterValue(followersCount, 10000)} ${pluralForm(followersCount, ['follower', 'followers'])}`;
+    const counterStr = getCounterValue({ count: followersCount, suffix: t('shortThousand'), cutoff: 10000 });
+    const subtitle = about || `${counterStr} ${t('follower', { count: followersCount })}`;
     const isMe = getMessenger().engine.user.id === id;
 
     const onFollowPress = React.useCallback(() => client.mutateSocialFollow({ uid: id }), [id, client]);

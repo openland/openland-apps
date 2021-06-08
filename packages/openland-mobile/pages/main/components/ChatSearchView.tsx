@@ -13,6 +13,7 @@ import { debounce } from 'openland-y-utils/timer';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 
 import { androidMessageInputListOverlap } from './ConversationView';
+import { useText } from 'openland-mobile/text/useText';
 
 interface ChatMessagesSearchProps {
     query: string;
@@ -81,9 +82,10 @@ const ChatSearchDataList = React.memo(({ engine, chatId }: { engine: ChatSearchE
 
 export const ChatSearchView = React.memo((props: ChatMessagesSearchProps) => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
 
     if (props.query.length < 3) {
-        return <EmptyView theme={theme}>Start typing message text you’re looking for</EmptyView>;
+        return <EmptyView theme={theme}>{t('searchEmpty', 'Start typing message text you’re looking for')}</EmptyView>;
     }
 
     const { chatId } = props.router.params;
@@ -109,7 +111,7 @@ export const ChatSearchView = React.memo((props: ChatMessagesSearchProps) => {
     }
 
     if (!queryInProgress && engine.dataSource.getSize() === 0) {
-        return <EmptyView theme={theme}>Nothing found</EmptyView>;
+        return <EmptyView theme={theme}>{t('nothingFound', 'Nothing found')}</EmptyView>;
     }
 
     return <ChatSearchDataList engine={engine} chatId={chatId} />;

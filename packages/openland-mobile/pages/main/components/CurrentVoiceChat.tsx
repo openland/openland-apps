@@ -7,6 +7,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { XPAvatarWithPreview } from 'openland-mobile/components/XPAvatarWithPreview';
 import { useJoinRoom } from 'openland-mobile/pages/rooms/joinRoom';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { useText } from 'openland-mobile/text/useText';
 
 interface CurrentVoiceChatProps {
     currentVoiceChat: VoiceChatWithSpeakers;
@@ -14,6 +15,7 @@ interface CurrentVoiceChatProps {
 
 export const CurrentVoiceChat = React.memo<CurrentVoiceChatProps>((props) => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const { id, title, speakers, speakersCount, listenersCount } = props.currentVoiceChat;
 
     const firstSpeakers = speakers.slice(0, 5);
@@ -75,7 +77,7 @@ export const CurrentVoiceChat = React.memo<CurrentVoiceChatProps>((props) => {
                         )}
                     </View>
                     <ZButton
-                        title="Join room"
+                        title={t('joinRoom', 'Join room')}
                         size="large"
                         style="positive"
                         onPress={handlePress}

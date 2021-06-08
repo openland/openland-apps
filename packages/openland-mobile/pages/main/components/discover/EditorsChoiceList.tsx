@@ -4,13 +4,13 @@ import { View, ScrollView, Text, TouchableWithoutFeedback, PixelRatio, Platform,
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
-import { plural } from 'openland-y-utils/plural';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { useClient } from 'openland-api/useClient';
 import { DiscoverSharedRoom, DiscoverEditorsChoice_discoverEditorsChoice_image } from 'openland-api/spacex.types';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { usePressableView } from './usePressableView';
 import { DiscoverCover } from './DiscoverCover';
+import { useText } from 'openland-mobile/text/useText';
 
 interface EditorsChoiceItemProps {
     item: {
@@ -23,6 +23,7 @@ interface EditorsChoiceItemProps {
 const EditorsChoiceItem = (props: EditorsChoiceItemProps) => {
     const theme = useTheme();
     const router = React.useContext(SRouterContext)!;
+    const { t } = useText();
     const { image, chat } = props.item;
     const { id, title, membersCount, photo, featured } = chat;
     const [path, setPath] = React.useState('');
@@ -63,7 +64,7 @@ const EditorsChoiceItem = (props: EditorsChoiceItemProps) => {
                                 )}
                             </View>
                             <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
-                                {plural(membersCount, ['member', 'members'])}
+                                {membersCount} {t('member', { count: membersCount, defaultValue: 'member' })}
                             </Text>
                         </View>
                     </View>

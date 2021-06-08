@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { TextStyle, Text, TextProps } from 'react-native';
 import { formatLastSeen } from 'openland-y-utils/formatTime';
+import { useText } from 'openland-mobile/text/useText';
 
 interface PresenceComponentProps extends TextProps {
     uid: string;
@@ -11,16 +12,17 @@ interface PresenceComponentProps extends TextProps {
 }
 
 export const PresenceComponent = React.memo((props: PresenceComponentProps) => {
+    const { t } = useText();
     const { uid, isBot, lastSeen, online, onlineStyle, style, ...other } = props;
     if (isBot) {
-        return (<Text style={[style, onlineStyle]} {...other}>bot</Text>);
+        return (<Text style={[style, onlineStyle]} {...other}>{t('bot', 'bot')}</Text>);
     }
     let sub = undefined;
     let isOnline = false;
     if (!online && lastSeen) {
         sub = formatLastSeen(lastSeen);
     } else if (online) {
-        sub = 'online';
+        sub = t('online', 'online');
         isOnline = true;
     }
     return (

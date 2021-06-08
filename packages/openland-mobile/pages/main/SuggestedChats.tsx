@@ -16,6 +16,7 @@ import { useClient } from 'openland-api/useClient';
 import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import Toast from 'openland-mobile/components/Toast';
+import { useText } from 'openland-mobile/text/useText';
 
 interface ChatProps {
     item: RoomShort_SharedRoom;
@@ -25,6 +26,7 @@ interface ChatProps {
 
 const Chat = React.memo((props: ChatProps) => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const onPress = React.useCallback(
         () => {
             props.onPress(props.item);
@@ -74,8 +76,7 @@ const Chat = React.memo((props: ChatProps) => {
                         color: theme.foregroundSecondary,
                     }}
                 >
-                    {props.item.membersCount +
-                        (props.item.membersCount === 1 ? ' members' : ' members')}
+                    {props.item.membersCount} {t('member', { count: props.item.membersCount, defaultValue: 'member' })}
                 </Text>
             </View>
 
@@ -114,6 +115,7 @@ interface SuggestedChatsProps {
 export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
     const [selected, setSelected] = React.useState(new Set<string>(props.chats.map(c => c.id)));
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const area = React.useContext(ASSafeAreaContext);
 
     const isIos = Platform.OS === 'ios';
@@ -172,8 +174,8 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
 
     return (
         <>
-            {isIos && <SHeader title="What to join" />}
-            <SHeaderButton title="Skip" onPress={skip} />
+            {isIos && <SHeader title={t('whatToJoin', 'What to join')} />}
+            <SHeaderButton title={t('skip', 'Skip')} onPress={skip} />
             <SScrollView style={{ flex: 1, paddingTop: 16 }}>
                 <Text
                     allowFontScaling={false}
@@ -185,7 +187,7 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
                         color: theme.foregroundPrimary,
                     }}
                 >
-                    What to join
+                    {t('whatToJoin', 'What to join')}
                 </Text>
                 <Text
                     allowFontScaling={false}
@@ -197,7 +199,7 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
                         color: theme.foregroundSecondary,
                     }}
                 >
-                    Here some chats we suggested for you
+                    {t('suggestedChats', 'Here some chats we suggested for you')}
                 </Text>
                 {props.chats.map(
                     item =>
@@ -215,10 +217,9 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
             <View style={{ padding: 16, paddingBottom: isIos ? defaultIosPadding : area.bottom + 16 }}>
                 <ZButton
                     size="large"
-                    title={`   ${
-                        selected.size === 0
-                            ? 'Skip'
-                            : 'Join' + (selected.size === props.chats.length ? ' all' : '')
+                    title={`   ${selected.size === 0
+                        ? t('skip', 'Skip')
+                        : selected.size === props.chats.length ? t('joinAll', 'Join all') : t('join', 'Join')
                         }   `}
                     onPress={onAdd}
                 />

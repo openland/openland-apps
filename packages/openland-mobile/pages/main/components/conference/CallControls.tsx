@@ -7,8 +7,8 @@ import { showBottomSheet, BottomSheetConfig } from 'openland-mobile/components/B
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { AppUserMediaStreamTrackNative } from 'openland-y-runtime-native/AppUserMedia';
-import { plural } from 'openland-y-utils/plural';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
+import { useText } from 'openland-mobile/text/useText';
 
 const CallControlItem = (props: { label: string, icon: NodeRequire, backgroundColor?: string, disabled?: boolean, onPress?: () => void, onLongPress?: () => void }) => {
     let theme = React.useContext(ThemeContext);
@@ -40,6 +40,7 @@ interface CallControlsProps {
 
 export const CallControls = (props: CallControlsProps) => {
     let calls = getMessenger().engine.calls;
+    const { t } = useText();
     let mediaSession = calls.useCurrentSession();
     let [state, setState] = React.useState<MediaSessionState | undefined>(mediaSession?.state.value);
 
@@ -78,7 +79,9 @@ export const CallControls = (props: CallControlsProps) => {
         : room?.__typename === 'SharedRoom' ? room?.title
             : 'Call';
 
-    const subtitle = room?.__typename === 'SharedRoom' ? `${plural(peers.length, ['member', 'members'])} on call` : 'On call';
+    const subtitle = room?.__typename === 'SharedRoom'
+        ? t('callMembers', { count: peers.length, defaultValue: '$t(member) on call' })
+        : t('callMembersDefault', 'On call');
 
     return (
         <View style={{ borderRadius: 18, overflow: 'hidden' }}>
@@ -102,31 +105,31 @@ export const CallControls = (props: CallControlsProps) => {
                         <CallControlItem
                             onPress={props.onCallEnd}
                             icon={require('assets/ic-call-end-glyph-24.png')}
-                            label="End"
+                            label={t('end', 'End')}
                             backgroundColor="#F23051"
                         />
                         <CallControlItem
                             onPress={handleSpeaker}
                             icon={require('assets/ic-speaker-glyph-24.png')}
-                            label="Speaker"
+                            label={t('speaker', 'Speaker')}
                             backgroundColor={speaker ? '#248BF2' : undefined}
                         />
                         <CallControlItem
                             onPress={handleMute}
                             icon={require('assets/ic-mute-glyph-24.png')}
-                            label="Mute"
+                            label={t('mute', 'Mute')}
                             backgroundColor={mute ? '#FF9F1A' : undefined}
                         />
                         <CallControlItem
                             onPress={handleCamera}
                             icon={require('assets/ic-camera-video-glyph-24.png')}
-                            label="Camera"
+                            label={t('camera', 'Camera')}
                             backgroundColor={camera ? '#248BF2' : undefined}
                         />
                         <CallControlItem
                             icon={require('assets/ic-cycle-glyph-24.png')}
                             onPress={handleFlip}
-                            label="Flip"
+                            label={t('flip', 'Flip')}
                             disabled={!camera}
                         />
                     </View>

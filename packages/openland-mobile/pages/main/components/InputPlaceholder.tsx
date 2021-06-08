@@ -6,6 +6,7 @@ import { SDevice } from 'react-native-s/SDevice';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { useText } from 'openland-mobile/text/useText';
 
 interface ChannelMuteButtonProps {
     id: string;
@@ -17,6 +18,7 @@ export const ChannelMuteButton = React.memo((props: ChannelMuteButtonProps) => {
     const { muted, onMutedChange } = props;
     const notifications = !muted;
     const client = getClient();
+    const { t } = useText();
 
     const theme = React.useContext(ThemeContext);
 
@@ -42,7 +44,7 @@ export const ChannelMuteButton = React.memo((props: ChannelMuteButtonProps) => {
                             }}
                             allowFontScaling={false}
                         >
-                            {notifications ? 'Mute' : 'Unmute'}
+                            {notifications ? t('mute', 'Mute') : t('unmute', 'Unmute')}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -62,7 +64,7 @@ export const ChannelMuteButton = React.memo((props: ChannelMuteButtonProps) => {
                         }}
                         allowFontScaling={false}
                     >
-                        {notifications ? 'Mute' : 'Unmute'}
+                        {notifications ? t('mute', 'Mute') : t('unmute', 'Unmute')}
                     </Text>
                 </View>
             </TouchableOpacity>
@@ -116,6 +118,7 @@ export const ChatInputPlaceholder = React.memo((props: { onPress?: () => void; t
 export const ChatInputBlockPlaceholder = React.memo(
     (props: { banInfo: { isBanned: boolean; isMeBanned: boolean } }) => {
         const theme = React.useContext(ThemeContext);
+        const { t } = useText();
         if (Platform.OS === 'ios') {
             return (
                 <ZKeyboardAwareBar>
@@ -140,7 +143,11 @@ export const ChatInputBlockPlaceholder = React.memo(
                             style={{ ...TextStyles.Body, color: theme.foregroundSecondary }}
                             allowFontScaling={false}
                         >
-                            {props.banInfo.isBanned ? 'You blocked this person' : 'You are blocked'}
+                            {
+                                props.banInfo.isBanned
+                                    ? t('blockedByYou', 'You blocked this person')
+                                    : t('blockedSelf', 'You are blocked')
+                            }
                         </Text>
                     </View>
                 </ZKeyboardAwareBar>
@@ -170,7 +177,11 @@ export const ChatInputBlockPlaceholder = React.memo(
                         style={{ ...TextStyles.Body, color: theme.foregroundSecondary }}
                         allowFontScaling={false}
                     >
-                        {props.banInfo.isBanned ? 'You blocked this person' : 'You are blocked'}
+                        {
+                            props.banInfo.isBanned
+                                ? t('blockedByYou', 'You blocked this person')
+                                : t('blockedSelf', 'You are blocked')
+                        }
                     </Text>
                 </View>
             </View>

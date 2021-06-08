@@ -7,6 +7,7 @@ import { usePressableView } from './usePressableView';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { capitalize, useText } from 'openland-mobile/text/useText';
 
 interface CreateItemProps {
     title: string;
@@ -45,32 +46,33 @@ const CreateItem = (props: CreateItemProps) => {
 export const DiscoverCreateList = () => {
     const router = React.useContext(SRouterContext)!;
     const theme = useTheme();
+    const { t } = useText();
 
     return (
-        <ZListGroup header="Create">
+        <ZListGroup header={t('create', 'Create')}>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{ paddingLeft: 16, paddingVertical: 8 }} pagingEnabled={true} decelerationRate="fast" snapToInterval={351}>
                 <CreateItem
-                    title="Chat"
-                    description="Public, secret, or paid group chat"
-                    buttonText="New chat"
+                    title={t('chat', 'Chat')}
+                    description={t('discoverChat', 'Public, secret, or paid group chat')}
+                    buttonText={t('newChat', 'New chat')}
                     image={require('assets/art-create-chat.png')}
                     bgColor={theme.type === 'Light' ? '#E1EEF8' : '#453D3B'}
                     theme={theme}
                     onPress={() => router.push('CreateGroupAttrs')}
                 />
                 <CreateItem
-                    title="Channel"
-                    description="Only admins write, others comment"
-                    buttonText="New channel"
+                    title={capitalize(t('channel', 'Channel'))}
+                    description={t('discoverChannel', 'Only admins write, others comment')}
+                    buttonText={t('newChannel', 'New channel')}
                     image={require('assets/art-create-channel.png')}
                     bgColor={theme.type === 'Light' ? '#F4ECF5' : '#343746'}
                     theme={theme}
                     onPress={() => router.push('CreateGroupAttrs', { isChannel: true })}
                 />
                 <CreateItem
-                    title="Community"
-                    description="A hub for your chats and channels"
-                    buttonText="New community"
+                    title={t('community', 'Community')}
+                    description={t('discoverCommunity', 'A hub for your chats and channels')}
+                    buttonText={t('newCommunity', 'New community')}
                     image={require('assets/art-create-community.png')}
                     bgColor={theme.type === 'Light' ? '#F8F2E1' : '#453440'}
                     theme={theme}

@@ -36,7 +36,7 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import { UserPhotoUploaderNew } from './components/UserPhotoUploaderNew';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { CurrentVoiceChat } from './components/CurrentVoiceChat';
-import { useText } from 'openland-mobile/text/useText';
+import { capitalize, useText } from 'openland-mobile/text/useText';
 
 const ProfileUserComponent = React.memo((props: PageProps) => {
     const client = getClient();
@@ -111,7 +111,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
         return <ProfileDeleted photo={user.photo} id={user.id} title={user.name} />;
     }
 
-    let messageButtonTitle = t('message', 'Message');
+    let messageButtonTitle = capitalize(t('message', 'Message'));
     if (profileType === 'my') {
         messageButtonTitle = t('editProfile', 'Edit profile');
     } else if (profileType === 'bot') {

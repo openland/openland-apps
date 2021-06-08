@@ -50,7 +50,7 @@ const XCounterBig = (props: XCounterProps) => (
             props.active && activeStyle,
         )}
     >
-        {getCounterValue(props.count)}
+        {getCounterValue({ count: props.count })}
     </div>
 );
 
@@ -73,7 +73,7 @@ const XCounterSmall = (props: XCounterProps) => (
             props.active && activeStyle,
         )}
     >
-        {getCounterValue(props.count)}
+        {getCounterValue({ count: props.count })}
     </div>
 );
 

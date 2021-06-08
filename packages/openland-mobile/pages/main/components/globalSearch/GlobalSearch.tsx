@@ -24,6 +24,7 @@ import { InvalidateSync } from '@openland/patterns';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { handleGlobalInvitePress } from '../../Settings';
+import { capitalize, useText } from 'openland-mobile/text/useText';
 
 export interface GlobalSearchProps {
     query: string;
@@ -36,44 +37,48 @@ export interface GlobalSearchProps {
     onMessagePress?: (id: string) => void;
 }
 
-export const EmptyView = React.memo((props: { theme: ThemeGlobal }) => (
-    <View
-        style={{
-            flexDirection: 'column',
-            width: '100%',
-            height: '100%',
-            flexGrow: 1,
-            justifyContent: 'center',
-            padding: 32
-        }}
-    >
-        <Text
+export const EmptyView = React.memo((props: { theme: ThemeGlobal }) => {
+    const { t } = useText();
+
+    return (
+        <View
             style={{
-                ...TextStyles.Title2,
-                textAlign: 'center',
-                color: props.theme.foregroundPrimary,
-                marginBottom: 4
+                flexDirection: 'column',
+                width: '100%',
+                height: '100%',
+                flexGrow: 1,
+                justifyContent: 'center',
+                padding: 32
             }}
-            allowFontScaling={false}
         >
-            Nothing found
-        </Text>
-        <Text
-            style={{
-                ...TextStyles.Body,
-                textAlign: 'center',
-                color: props.theme.foregroundSecondary,
-                marginBottom: 16
-            }}
-            allowFontScaling={false}
-        >
-            Didn’t find your friends at Openland? Let’s invite them to stay in touch
-        </Text>
-        <View style={{ alignItems: 'center' }}>
-            <ZButton title="Invite friends" onPress={handleGlobalInvitePress} />
+            <Text
+                style={{
+                    ...TextStyles.Title2,
+                    textAlign: 'center',
+                    color: props.theme.foregroundPrimary,
+                    marginBottom: 4
+                }}
+                allowFontScaling={false}
+            >
+                {t('nothingFound', 'Nothing found')}
+            </Text>
+            <Text
+                style={{
+                    ...TextStyles.Body,
+                    textAlign: 'center',
+                    color: props.theme.foregroundSecondary,
+                    marginBottom: 16
+                }}
+                allowFontScaling={false}
+            >
+                {t('inviteFriendsDescription', 'Didn’t find your friends at Openland? Let’s invite them to stay in touch')}
+            </Text>
+            <View style={{ alignItems: 'center' }}>
+                <ZButton title={t('inviteFriends', 'Invite friends')} onPress={handleGlobalInvitePress} />
+            </View>
         </View>
-    </View>
-));
+    );
+});
 
 const GlobalSearchInner = (props: GlobalSearchProps) => {
     const theme = React.useContext(ThemeContext);
@@ -111,6 +116,7 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
     const theme = React.useContext(ThemeContext);
     const client = getClient();
     const area = React.useContext(ASSafeAreaContext);
+    const { t } = useText();
 
     const [messagesInvalidator] = React.useState<InvalidateSync>(new InvalidateSync(async () => {
         await client.refetchGlobalSearch({ query: props.query }, { fetchPolicy: 'network-only' });
@@ -180,7 +186,7 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
                         <LoaderSpinner />
                     </View> :
                     <>
-                        {messages.length > 0 && <ZListHeader text="Messages" marginTop={items.length === 0 ? 0 : undefined} />}
+                        {messages.length > 0 && <ZListHeader text={capitalize(t('message_plural', 'Messages'))} marginTop={items.length === 0 ? 0 : undefined} />}
                     </>
             }
         </>

@@ -18,9 +18,11 @@ import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SUPER_ADMIN } from '../../../Init';
+import { useText } from 'openland-mobile/text/useText';
 
 const SecretLabel = React.memo((props: { isChannel: boolean }) => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     return (
         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 16, marginBottom: 16 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 8 }}>
@@ -33,21 +35,16 @@ const SecretLabel = React.memo((props: { isChannel: boolean }) => {
                 allowFontScaling={false}
                 style={{ ...TextStyles.Label2, color: theme.foregroundTertiary }}
             >
-                It’s a secret {props.isChannel ? 'channel' : 'group'}
+                {t('secretLabel', { entity: props.isChannel ? '$t(channel)' : '$t(channel)', defaultValue: 'It’s a secret {{entity}}' })}
             </Text>
         </View>
     );
 });
 
-const callSettingsLabels: { [mode in RoomCallsMode]: string } = {
-    [RoomCallsMode.STANDARD]: 'Standard',
-    [RoomCallsMode.LINK]: 'Custom',
-    [RoomCallsMode.DISABLED]: 'Off',
-};
-
 const EditGroupComponent = React.memo((props: PageProps) => {
     const router = React.useContext(SRouterContext)!;
     const client = getClient();
+    const { t } = useText();
     const group = client.useRoomChat(
         { id: props.router.params.id },
         { fetchPolicy: 'network-only' },
@@ -57,7 +54,6 @@ const EditGroupComponent = React.memo((props: PageProps) => {
         return null;
     }
 
-    const typeString = group.isChannel ? 'channel' : 'group';
     const isShared = group.kind === SharedRoomKind.PUBLIC;
     const form = useForm();
 
@@ -70,11 +66,16 @@ const EditGroupComponent = React.memo((props: PageProps) => {
     const serviceMessageLabel =
         group.serviceMessageSettings.joinsMessageEnabled &&
             group.serviceMessageSettings.leavesMessageEnabled
-            ? 'On'
+            ? t('on', 'On')
             : group.serviceMessageSettings.joinsMessageEnabled ||
                 group.serviceMessageSettings.leavesMessageEnabled
-                ? 'Custom'
-                : 'Off';
+                ? t('custom', 'Custom')
+                : t('off', 'Off');
+    const callSettingsLabels: { [mode in RoomCallsMode]: string } = {
+        [RoomCallsMode.STANDARD]: t('standard', 'Standard'),
+        [RoomCallsMode.LINK]: t('custom', 'Custom'),
+        [RoomCallsMode.DISABLED]: t('off', 'Off'),
+    };
     const callSettingsLabel = callSettingsLabels[group.callSettings.mode];
 
     const handleSave = () =>
@@ -104,25 +105,25 @@ const EditGroupComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title={`Edit ${typeString}`} />
-            <SHeaderButton title="Save" onPress={handleSave} />
+            <SHeader title={t('editEntity', { entity: group.isChannel ? '$t(channel)' : '$t(group)', defaultValue: `Edit {{entity}}` })} />
+            <SHeaderButton title={t('save', 'Save')} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <View style={{ paddingBottom: 32 }}>
                     <ZListGroup header={null} alignItems="center">
                         <ZAvatarPicker size="xx-large" field={photoField} />
                     </ZListGroup>
-                    <ZListGroup header="Info" headerMarginTop={0}>
-                        <ZInput placeholder="Name" field={titleField} />
-                        <ZInput field={descriptionField} placeholder="Description" multiline={true} />
+                    <ZListGroup header={t('info', 'Info')} headerMarginTop={0}>
+                        <ZInput placeholder={t('name', 'Name')} field={titleField} />
+                        <ZInput field={descriptionField} placeholder={t('description', 'Description')} multiline={true} />
                         {!isShared && <SecretLabel isChannel={group.isChannel} />}
                     </ZListGroup>
-                    <ZListGroup header="Settings" headerMarginTop={0}>
+                    <ZListGroup header={t('settings', 'Settings')} headerMarginTop={0}>
                         {isShared && (
                             <ZListItem
                                 leftIcon={require('assets/ic-at-24.png')}
-                                text="Shortname"
+                                text={t('shortname', 'Shortname')}
                                 small={true}
-                                description={group.shortname ? group.shortname : 'None'}
+                                description={group.shortname ? group.shortname : t('none', 'None')}
                                 onPress={() =>
                                     router.push('SetShortname', { id: group.id, isGroup: true })
                                 }
@@ -131,32 +132,32 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                         {SUPER_ADMIN && (
                             <ZListItem
                                 leftIcon={require('assets/ic-wallet-24.png')}
-                                text="Payments"
+                                text={t('payments', 'Payments')}
                                 small={true}
                                 onPress={() => router.push('EditGroupPrice', { id: group.id })}
                                 description={
                                     group.premiumSettings
                                         ? formatMoneyInterval(
-                                        group.premiumSettings.price,
-                                        group.premiumSettings.interval,
+                                            group.premiumSettings.price,
+                                            group.premiumSettings.interval,
                                         )
-                                        : 'Free'
+                                        : t('free', 'Free')
                                 }
                             />
                         )}
                         <ZListItem
                             leftIcon={require('assets/ic-gallery-24.png')}
-                            text="Social sharing image"
+                            text={t('socialSharingImage', 'Social sharing image')}
                             small={true}
-                            description={!!group.socialImage ? 'On' : 'None'}
+                            description={!!group.socialImage ? t('on', 'On') : t('none', 'None')}
                             onPress={() => router.push('EditGroupSocialImage', { id: group.id })}
                         />
                         {group.welcomeMessage && (
                             <ZListItem
                                 leftIcon={require('assets/ic-message-24.png')}
-                                text="Welcome message"
+                                text={t('welcomeMessage', 'Welcome message')}
                                 small={true}
-                                description={group.welcomeMessage.isOn ? 'On' : 'Off'}
+                                description={group.welcomeMessage.isOn ? t('on', 'On') : t('off', 'Off')}
                                 onPress={() => router.push('EditGroupWelcomeMessage', { id: group.id })}
                             />
                         )}
@@ -164,7 +165,7 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                             <>
                                 <ZListItem
                                     leftIcon={require('assets/ic-megaphone-24.png')}
-                                    text="Service messages"
+                                    text={t('serviceMessages', 'Service messages')}
                                     small={true}
                                     description={serviceMessageLabel}
                                     onPress={() =>
@@ -173,7 +174,7 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                                 />
                                 <ZListItem
                                     leftIcon={require('assets/ic-call-24.png')}
-                                    text="Group calls"
+                                    text={t('groupCalls', 'Group calls')}
                                     small={true}
                                     description={callSettingsLabel}
                                     onPress={() => router.push('EditGroupCalls', { id: group.id })}
@@ -183,9 +184,9 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                         {SUPER_ADMIN && (
                             <ZListItem
                                 leftIcon={require('assets/ic-lock-24.png')}
-                                text="Superadmin settings"
+                                text={t('superadminSettings', 'Superadmin settings')}
                                 small={true}
-                                description="Custom"
+                                description={t('custom', 'Custom')}
                                 onPress={() =>
                                     props.router.push('EditGroupSuperadmin', { id: group.id })
                                 }
