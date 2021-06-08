@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Image, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useClient } from 'openland-api/useClient';
 import { VoiceChatShort } from 'openland-api/spacex.types';
 import { PageProps } from 'openland-mobile/components/PageProps';
