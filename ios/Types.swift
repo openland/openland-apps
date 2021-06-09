@@ -14,6 +14,16 @@ enum OperationKind {
   case mutation
 }
 
+class FragmentDefinition {
+  let name: String
+  let selector: OutputType.Object
+  
+  init(_ name: String, _ selector: OutputType.Object) {
+    self.name = name
+    self.selector = selector
+  }
+}
+
 class OperationDefinition {
   let name: String
   let kind: OperationKind
@@ -322,6 +332,10 @@ func obj(_ selectors: Selector...) -> OutputType.Object {
   return OutputType.Object(selectors: selectors)
 }
 
+func obj(_ selectors: [Selector]) -> OutputType.Object {
+  return OutputType.Object(selectors: selectors)
+}
+
 func arguments(_ src: (String, InputValue)...) -> [String: InputValue] {
   var res: [String: InputValue] = [:]
   for s in src {
@@ -350,11 +364,19 @@ func floatValue(_ v: Double) -> InputValue.FloatValue {
   return InputValue.FloatValue(value: v)
 }
 
+func nullValue() -> InputValue.NullValue {
+  return InputValue.NullValue()
+}
+
 func stringValue(_ v: String) -> InputValue.StringValue {
   return InputValue.StringValue(value: v)
 }
 
 func listValue(_ values: InputValue...) -> InputValue.ListValue {
+  return InputValue.ListValue(items: values)
+}
+
+func listValue(_ values: [InputValue]) -> InputValue.ListValue {
   return InputValue.ListValue(items: values)
 }
 
@@ -365,6 +387,11 @@ func objectValue(_ src: (String, InputValue)...) -> InputValue.ObjectValue {
   }
   return InputValue.ObjectValue(fields: res)
 }
+
+func objectValue(_ src: [String: InputValue]) -> InputValue.ObjectValue {
+  return InputValue.ObjectValue(fields: src)
+}
+
 
 func field(_ name: String, _ alias: String, _ type: OutputType) -> Selector.Field {
   return Selector.Field(name: name, alias: alias, arguments:[:], type: type)
