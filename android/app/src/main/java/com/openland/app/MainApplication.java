@@ -12,14 +12,18 @@ import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.openland.lmdb.LMDB;
 import com.stripe.android.PaymentConfiguration;
+
 import cl.json.ShareApplication;
 
 import com.openland.react.RNSPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
+
 import java.util.List;
+
 import com.bugsnag.android.Bugsnag;
+import com.tencent.mmkv.MMKV;
 
 import java.util.Arrays;
 
@@ -71,7 +75,7 @@ public class MainApplication extends Application implements ShareApplication, Re
         Log.d("Native", "BOOTSTRAP: soloader done");
         Fresco.initialize(this);
         Log.d("Native", "BOOTSTRAP: fresco done");
-        LMDB.INSTANCE.loadLibrary(this);
+        MMKV.initialize(this);
         Log.d("Native", "BOOTSTRAP: lmdb done");
 
         // Hack Status Bar color

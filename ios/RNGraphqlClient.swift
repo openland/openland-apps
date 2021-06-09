@@ -49,10 +49,12 @@ class RNGraphqlClient {
   var subscriptions: [String: AbortFunc] = [:]
   var connected: Bool = false
   var live = true
+  let descriptor: SpaceXOperations
   
-  init(key: String, endpoint: String, token: String?, storage: String?, module: RNGraphQL) {
+  init(key: String, endpoint: String, descriptor: String, token: String?, storage: String?, module: RNGraphQL) {
     self.module = module
     self.key = key
+    self.descriptor = SpaceXOperationDescriptor(raw: JSON(parseJSON: descriptor))
     self.client = SpaceXClient(url: "wss:" + endpoint, token: token, storage: storage)
     self.client.onConnected = { [weak self] in
       if let s = self {
@@ -78,7 +80,7 @@ class RNGraphqlClient {
     let fetchMode = self.resolveFetchPolicy(parameters: parameters)
     
     self.client.query(
-      operation: Operations.shared.operationByName(query),
+      operation: self.descriptor.operationByName(query),
       variables: JSON(arguments),
       fetchMode: fetchMode
     ) { [weak self] res in
@@ -100,7 +102,7 @@ class RNGraphqlClient {
     }
     
     self.client.mutate(
-      operation: Operations.shared.operationByName(mutation),
+      operation: self.descriptor.operationByName(mutation),
       variables: JSON(arguments)
     ) { [weak self] res in
       if let s = self {
@@ -125,7 +127,7 @@ class RNGraphqlClient {
     }
     let fetchMode = self.resolveFetchPolicy(parameters: parameters)
     let cancel = self.client.watch(
-      operation: Operations.shared.operationByName(query),
+      operation: self.descriptor.operationByName(query),
       variables: JSON(arguments),
       fetchMode: fetchMode
     ) { [weak self] res in
@@ -158,7 +160,7 @@ class RNGraphqlClient {
       return
     }
     let s = self.client.subscribe(
-      operation: Operations.shared.operationByName(subscription),
+      operation: self.descriptor.operationByName(subscription),
       variables: JSON(arguments)
     ) { [weak self] res in
       if let s = self {
@@ -190,7 +192,7 @@ class RNGraphqlClient {
       return
     }
     self.client.readQuery(
-      operation: Operations.shared.operationByName(query),
+      operation: self.descriptor.operationByName(query),
       variables: JSON(arguments)
     ) { [weak self] res in
       if let s = self {
@@ -210,7 +212,7 @@ class RNGraphqlClient {
     }
     
     self.client.writeQuery(
-      operation: Operations.shared.operationByName(query),
+      operation: self.descriptor.operationByName(query),
       variables: JSON(arguments),
       data: JSON(data)
     ) { [weak self] in

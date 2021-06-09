@@ -41,10 +41,10 @@
 		AA23655B2244EBFF000AA3A7 /* RNGraphqlModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA23655A2244EBFF000AA3A7 /* RNGraphqlModule.swift */; };
 		AA23655D2244EE47000AA3A7 /* RNGraphqlClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA23655C2244EE47000AA3A7 /* RNGraphqlClient.swift */; };
 		AA2365772247CE87000AA3A7 /* RNGraphQL-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2365762247CE87000AA3A7 /* RNGraphQL-Bridge.m */; };
+		AA25B1522670E1600068004F /* SpaceXOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA25B1512670E1600068004F /* SpaceXOperations.swift */; };
 		AA2FBA2922247CA4000915F7 /* RNSDevice-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2FBA2822247CA4000915F7 /* RNSDevice-Bridge.m */; };
 		AA2FBA2B22247D0E000915F7 /* RNSDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FBA2A22247D0E000915F7 /* RNSDevice.swift */; };
 		AA300DC7220186A400C54930 /* RNBackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA300DC6220186A400C54930 /* RNBackgroundTask.swift */; };
-		AA3DDA0F2284E0AD0078A762 /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3DDA042284E0AC0078A762 /* Operations.swift */; };
 		AA3DDA112284E14E0078A762 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3DDA102284E14E0078A762 /* Types.swift */; };
 		AA6281AB2151C8BD007C8200 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = AA6281AA2151C8BC007C8200 /* VERSION */; };
 		AA6D99872171A2E100E04A29 /* RNLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6D99862171A2E100E04A29 /* RNLoadingCell.swift */; };
@@ -80,7 +80,6 @@
 		AAB181762284EC06008D3603 /* NormalizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB181752284EC06008D3603 /* NormalizerTests.swift */; };
 		AAC113B2213EA154002E0D18 /* RNAsyncTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */; };
 		AAC1E0CA23F5CF9B00F25B7B /* WrappedWebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC1E0C923F5CF9B00F25B7B /* WrappedWebSocket.swift */; };
-		AACC2C21266A827900B6843B /* RNGraphqlDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACC2C20266A827900B6843B /* RNGraphqlDescriptor.swift */; };
 		AAD8F14A2208A5DF007C4FE3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F1492208A5DF007C4FE3 /* AVFoundation.framework */; };
 		AAD8F14C2208A5E5007C4FE3 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F14B2208A5E5007C4FE3 /* AudioToolbox.framework */; };
 		AAD8F14E2208A5EA007C4FE3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F14D2208A5EA007C4FE3 /* CoreGraphics.framework */; };
@@ -279,11 +278,11 @@
 		AA23655C2244EE47000AA3A7 /* RNGraphqlClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphqlClient.swift; sourceTree = "<group>"; };
 		AA2365752247CE78000AA3A7 /* RNGraphQL-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNGraphQL-Bridge.h"; sourceTree = "<group>"; };
 		AA2365762247CE87000AA3A7 /* RNGraphQL-Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNGraphQL-Bridge.m"; sourceTree = "<group>"; };
+		AA25B1512670E1600068004F /* SpaceXOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceXOperations.swift; sourceTree = "<group>"; };
 		AA2FBA2722247C8F000915F7 /* RNSDevice-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNSDevice-Bridge.h"; sourceTree = "<group>"; };
 		AA2FBA2822247CA4000915F7 /* RNSDevice-Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNSDevice-Bridge.m"; sourceTree = "<group>"; };
 		AA2FBA2A22247D0E000915F7 /* RNSDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSDevice.swift; sourceTree = "<group>"; };
 		AA300DC6220186A400C54930 /* RNBackgroundTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNBackgroundTask.swift; sourceTree = "<group>"; };
-		AA3DDA042284E0AC0078A762 /* Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operations.swift; sourceTree = "<group>"; };
 		AA3DDA102284E14E0078A762 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		AA6281AA2151C8BC007C8200 /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION; sourceTree = "<group>"; };
 		AA6D99862171A2E100E04A29 /* RNLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNLoadingCell.swift; sourceTree = "<group>"; };
@@ -323,7 +322,6 @@
 		AAB181772284EDE6008D3603 /* normalizeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = normalizeData.swift; sourceTree = "<group>"; };
 		AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncTextNode.swift; sourceTree = "<group>"; };
 		AAC1E0C923F5CF9B00F25B7B /* WrappedWebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedWebSocket.swift; sourceTree = "<group>"; };
-		AACC2C20266A827900B6843B /* RNGraphqlDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNGraphqlDescriptor.swift; sourceTree = "<group>"; };
 		AACFC575210778FE00225C86 /* openland.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = openland.entitlements; path = openland/openland.entitlements; sourceTree = "<group>"; };
 		AAD8F1492208A5DF007C4FE3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AAD8F14B2208A5E5007C4FE3 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -446,7 +444,6 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				AAE56DC02129F9B8003706B3 /* openland-Bridging-Header.h */,
 				AA6281AA2151C8BC007C8200 /* VERSION */,
-				AA3DDA042284E0AC0078A762 /* Operations.swift */,
 			);
 			name = openland;
 			sourceTree = "<group>";
@@ -559,7 +556,6 @@
 			isa = PBXGroup;
 			children = (
 				AA23655A2244EBFF000AA3A7 /* RNGraphqlModule.swift */,
-				AACC2C20266A827900B6843B /* RNGraphqlDescriptor.swift */,
 				AA23655C2244EE47000AA3A7 /* RNGraphqlClient.swift */,
 				AA2365752247CE78000AA3A7 /* RNGraphQL-Bridge.h */,
 				AA2365762247CE87000AA3A7 /* RNGraphQL-Bridge.m */,
@@ -586,6 +582,7 @@
 				AA3DDA102284E14E0078A762 /* Types.swift */,
 				AA7B7BF922860E00001AA400 /* SpaceXClient.swift */,
 				AA2281CB228B3C9200810848 /* SpaceXUtils.swift */,
+				AA25B1512670E1600068004F /* SpaceXOperations.swift */,
 			);
 			name = SpaceX;
 			sourceTree = "<group>";
@@ -1183,6 +1180,7 @@
 				AA2281CC228B3C9200810848 /* SpaceXUtils.swift in Sources */,
 				AA2281CE228B3EF600810848 /* NetworkingDelegate.swift in Sources */,
 				AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */,
+				AA25B1522670E1600068004F /* SpaceXOperations.swift in Sources */,
 				AA2FBA2B22247D0E000915F7 /* RNSDevice.swift in Sources */,
 				AA181CC823D774F400B8C633 /* RNStripe.swift in Sources */,
 				AA148B4C23F1F73F00B0EC77 /* Thruster.swift in Sources */,
@@ -1205,7 +1203,6 @@
 				AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */,
 				AAAA1DBA2289E2260023A28F /* SpaceXTransport.swift in Sources */,
 				AAB0219421429D8800927CF0 /* RNAsyncCell.swift in Sources */,
-				AACC2C21266A827900B6843B /* RNGraphqlDescriptor.swift in Sources */,
 				AA23655D2244EE47000AA3A7 /* RNGraphqlClient.swift in Sources */,
 				AAAA1DC22289FD8A0023A28F /* selectorKey.swift in Sources */,
 				AAC1E0CA23F5CF9B00F25B7B /* WrappedWebSocket.swift in Sources */,
@@ -1216,7 +1213,6 @@
 				AA2365772247CE87000AA3A7 /* RNGraphQL-Bridge.m in Sources */,
 				AA2281BC228A1DD100810848 /* readFromStore.swift in Sources */,
 				AA3DDA112284E14E0078A762 /* Types.swift in Sources */,
-				AA3DDA0F2284E0AD0078A762 /* Operations.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				AAAA1DAE2289E0C50023A28F /* TransportSocket.swift in Sources */,
 				AAB0EF89213719DB00FBCB75 /* RNAsyncViewNode.swift in Sources */,

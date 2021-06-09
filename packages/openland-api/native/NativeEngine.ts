@@ -5,7 +5,8 @@ import { API_HOST } from 'openland-y-utils/api';
 import { GraphqlUnknownError, GraphqlError } from '@openland/spacex';
 
 const NativeGraphQL = NativeModules.RNGraphQL as {
-    createClient: (key: string, endpoint: string, token?: string, storage?: string) => void
+
+    createClient: (key: string, endpoint: string, descriptor: string, token?: string, storage?: string) => void
     closeClient: (key: string) => void;
 
     query: (key: string, id: string, query: string, vars: any, params: any) => void;
@@ -27,7 +28,7 @@ const RNGraphQLEmitter = new NativeEventEmitter(NativeModules.RNGraphQL);
 export class NativeEngine extends GraphqlBridgedEngine {
     private key: string = randomKey();
 
-    constructor(storageKey?: string, token?: string) {
+    constructor(descriptor: any, storageKey?: string, token?: string) {
         super();
         if (Platform.OS === 'ios') {
             RNGraphQLEmitter.addListener('graphql_client', (src) => {
@@ -63,9 +64,9 @@ export class NativeEngine extends GraphqlBridgedEngine {
             });
         }
         if (storageKey) {
-            NativeGraphQL.createClient(this.key, '//' + API_HOST + '/api', token, 'gql-' + storageKey);
+            NativeGraphQL.createClient(this.key, '//' + API_HOST + '/api', JSON.stringify(descriptor), token, 'gql-' + storageKey);
         } else {
-            NativeGraphQL.createClient(this.key, '//' + API_HOST + '/api', token, undefined);
+            NativeGraphQL.createClient(this.key, '//' + API_HOST + '/api', JSON.stringify(descriptor), token, undefined);
         }
     }
 

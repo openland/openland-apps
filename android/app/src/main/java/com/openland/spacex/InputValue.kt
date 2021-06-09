@@ -5,7 +5,7 @@ sealed class InputValue {
     class Int(val value: kotlin.Int) : InputValue()
     class Float(val value: kotlin.Double) : InputValue()
     class Boolean(val value: kotlin.Boolean) : InputValue()
-    object Null : InputValue()
+    class Null : InputValue()
 
     class List(val items: Array<InputValue>) : InputValue()
     class Object(val fields: Map<kotlin.String, InputValue>) : InputValue()
