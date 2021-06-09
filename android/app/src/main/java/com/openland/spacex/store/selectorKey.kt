@@ -47,7 +47,7 @@ private fun selectorKey(value: InputValue, arguments: JSONObject): String? {
         return value.value.toString()
     } else if (value is InputValue.String) {
         return "\"" + value.value + "\""
-    } else if (value == InputValue.Null) {
+    } else if (value is InputValue.Null) {
         return "null"
     } else if (value is InputValue.List) {
         return "[" + value.items.map { selectorKey(it, arguments) }.joinToString(",") + "]"
