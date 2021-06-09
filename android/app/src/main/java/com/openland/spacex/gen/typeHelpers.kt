@@ -24,6 +24,10 @@ fun obj(vararg selector: Selector): OutputType.Object {
     return OutputType.Object(selector.asList())
 }
 
+fun obj(selector: List<Selector>): OutputType.Object {
+    return OutputType.Object(selector)
+}
+
 fun field(name: String, alias: String, type: OutputType): Selector.Field {
     return Selector.Field(name, alias, type, emptyMap())
 }
@@ -52,8 +56,12 @@ fun intValue(value: Int): InputValue.Int {
     return InputValue.Int(value)
 }
 
-fun floadValue(value: Double): InputValue.Float {
+fun floatValue(value: Double): InputValue.Float {
     return InputValue.Float(value)
+}
+
+fun nullValue(): InputValue.Null {
+    return InputValue.Null()
 }
 
 fun stringValue(value: String): InputValue.String {
@@ -68,7 +76,15 @@ fun listValue(vararg inputValue: InputValue): InputValue.List {
     return InputValue.List(inputValue as Array<InputValue>)
 }
 
+fun listValue(inputValue: List<InputValue>): InputValue.List {
+    return InputValue.List(inputValue.toTypedArray())
+}
+
 fun objectValue(vararg args: Pair<String, InputValue>): InputValue.Object {
+    return InputValue.Object(args.toMap())
+}
+
+fun objectValue(args: Map<String, InputValue>): InputValue.Object {
     return InputValue.Object(args.toMap())
 }
 

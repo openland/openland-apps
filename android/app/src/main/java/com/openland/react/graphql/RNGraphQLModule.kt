@@ -16,13 +16,13 @@ class RNGraphQL(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
     }
 
     @ReactMethod
-    fun createClient(key: String, endpoint: String, token: String?, storage: String?) {
+    fun createClient(key: String, endpoint: String, descriptor: String, token: String?, storage: String?) {
         Log.d("RNGraphQLModule", "createClient")
         if (this.clients.containsKey(key)) {
             throw Error("Client with key $key already exists")
         }
 
-        this.clients[key] = NativeGraphqlClient(key, this.reactApplicationContext, endpoint, token, storage)
+        this.clients[key] = NativeGraphqlClient(key, this.reactApplicationContext, endpoint, descriptor, token, storage)
     }
 
     @ReactMethod

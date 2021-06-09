@@ -19,7 +19,7 @@ class SpaceXPersistence(val context: Context, val name: String?) {
 
 
     private val persistenceProvider = if (name != null)
-        PersistenceProviderLMDB(context, name)
+        PersistenceProviderMMKV(context, name)
     else
         EmptyPersistenceProvider()
 

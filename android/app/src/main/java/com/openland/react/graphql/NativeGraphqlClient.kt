@@ -7,12 +7,20 @@ import com.openland.spacex.utils.trace
 import org.json.JSONArray
 import org.json.JSONObject
 
-class NativeGraphqlClient(val key: String, val context: ReactApplicationContext, endpoint: String, token: String?, storage: String?) {
+class NativeGraphqlClient(
+        val key: String,
+        val context: ReactApplicationContext,
+        endpoint: String,
+        descriptor: String,
+        token: String?,
+        storage: String?
+) {
 
     private var connected = false
     private val client = SpaceXClient("wss:$endpoint", token, context, storage ?: "storage")
     private val watches = mutableMapOf<String, () -> Unit>()
     private val subscriptions = mutableMapOf<String, () -> Unit>()
+    private val operations = SpaceXOperationDescriptor(JSONObject(descriptor))
 
     //
     // Init and Destroy
@@ -37,7 +45,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
             it.value()
         }
         subscriptions.clear()
-        watches.forEach{ it.value() }
+        watches.forEach { it.value() }
         watches.clear()
     }
 
@@ -57,7 +65,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
             "no-cache" -> throw Error("no-cache is unsupported on Android")
         }
 
-        client.query(Operations.operationByName(query), arguments.toKotlinX(), policy, object : OperationCallback {
+        client.query(this.operations.operationByName(query), arguments.toKotlinX(), policy, object : OperationCallback {
             override fun onResult(result: JSONObject) {
                 val res = trace("toReact") { result.toReact() }
 
@@ -100,7 +108,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
             "no-cache" -> throw Error("no-cache is unsupported on Android")
         }
 
-        val res = client.watch(Operations.operationByName(query), arguments.toKotlinX(), policy, object : OperationCallback {
+        val res = client.watch(this.operations.operationByName(query), arguments.toKotlinX(), policy, object : OperationCallback {
             override fun onResult(result: JSONObject) {
                 val res = trace("toReact") { result.toReact() }
 
@@ -138,7 +146,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     //
 
     fun mutate(id: String, query: String, arguments: ReadableMap) {
-        client.mutation(Operations.operationByName(query), arguments.toKotlinX(), object : OperationCallback {
+        client.mutation(this.operations.operationByName(query), arguments.toKotlinX(), object : OperationCallback {
             override fun onResult(result: JSONObject) {
                 val res = trace("toReact") { result.toReact() }
 
@@ -172,7 +180,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     //
 
     fun subscribe(id: String, query: String, arguments: ReadableMap) {
-        subscriptions[id] = client.subscribe(Operations.operationByName(query), arguments.toKotlinX(), object : OperationCallback {
+        subscriptions[id] = client.subscribe(this.operations.operationByName(query), arguments.toKotlinX(), object : OperationCallback {
             override fun onResult(result: JSONObject) {
                 val res = trace("toReact") { result.toReact() }
 
@@ -210,7 +218,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     //
 
     fun read(id: String, query: String, arguments: ReadableMap) {
-        client.read(Operations.operationByName(query), arguments.toKotlinX(), object : StoreReadCallback {
+        client.read(this.operations.operationByName(query), arguments.toKotlinX(), object : StoreReadCallback {
             override fun onResult(result: JSONObject?) {
                 val res = trace("toReact") { result?.toReact() }
                 val map = WritableNativeMap()
@@ -231,7 +239,7 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     }
 
     fun write(id: String, data: ReadableMap, query: String, arguments: ReadableMap) {
-        client.write(Operations.operationByName(query), arguments.toKotlinX(), data.toKotlinX(), object : StoreWriteCallback {
+        client.write(this.operations.operationByName(query), arguments.toKotlinX(), data.toKotlinX(), object : StoreWriteCallback {
             override fun onResult() {
                 val map = WritableNativeMap()
                 map.putString("key", key)
