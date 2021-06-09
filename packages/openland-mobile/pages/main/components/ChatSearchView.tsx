@@ -84,16 +84,12 @@ export const ChatSearchView = React.memo((props: ChatMessagesSearchProps) => {
     const theme = React.useContext(ThemeContext);
     const { t } = useText();
 
-    if (props.query.length < 3) {
-        return <EmptyView theme={theme}>{t('searchEmpty', 'Start typing message text you’re looking for')}</EmptyView>;
-    }
-
     const { chatId } = props.router.params;
     const [engine] = React.useState(() => new ChatSearchEngine(getMessenger().engine, chatId, false));
     const [queryInProgress, setQueryInProgress] = React.useState(true);
 
     const loadQuery = React.useCallback(debounce(async (query: string) => {
-        if (props.query.length > 2) {
+        if (query.length > 2) {
             await engine.loadQuery(query);
 
             setQueryInProgress(false);
@@ -105,6 +101,10 @@ export const ChatSearchView = React.memo((props: ChatMessagesSearchProps) => {
 
         (async () => await loadQuery(props.query))();
     }, [props.query]);
+
+    if (props.query.length < 3) {
+        return <EmptyView theme={theme}>{t('searchEmpty', 'Start typing message text you’re looking for')}</EmptyView>;
+    }
 
     if (queryInProgress) {
         return <ZLoader />;
