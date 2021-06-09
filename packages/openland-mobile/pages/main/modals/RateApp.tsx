@@ -9,6 +9,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { AppStorage } from 'openland-y-runtime-native/AppStorage';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
+import { useText } from 'openland-mobile/text/useText';
 
 export type RateAppInfo = {
     appOpenedCount: number;
@@ -50,6 +51,7 @@ export const rateApp = (options: IConfig = {}, cb: (success: boolean) => void = 
 
 const RateApp = (props: { ctx: ModalProps }) => {
     const theme = useTheme();
+    const { t } = useText();
     const handleRatePress = React.useCallback(() => {
         setRateAppInfo({ stopShowingRating: true });
         rateApp({}, () => props.ctx.hide());
@@ -70,16 +72,19 @@ const RateApp = (props: { ctx: ModalProps }) => {
             />
             <View style={{ paddingHorizontal: 32, marginTop: 16 }}>
                 <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, textAlign: 'center' }} allowFontScaling={false}>
-                    Enjoying Openland?
+                    {t('rateAppTitle', 'Enjoying Openland?')}
                 </Text>
                 <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginTop: 6 }} allowFontScaling={false}>
-                    Rate the app on {Platform.select({ ios: 'App Store', android: 'Google Play' })}
+                    {t('rateAppDescription', {
+                        store: Platform.select({ ios: 'App Store', android: 'Google Play' }),
+                        defaultValue: 'Rate the app on {{store}}'
+                    })}
                 </Text>
             </View>
             <View style={{ paddingHorizontal: 16, marginTop: 32, flexDirection: 'row' }}>
                 <View style={{ flex: 1 }}>
                     <ZButton
-                        title="Maybe later"
+                        title={t('maybeLater', 'Maybe later')}
                         style="secondary"
                         size="large"
                         onPress={() => props.ctx.hide()}
@@ -87,7 +92,7 @@ const RateApp = (props: { ctx: ModalProps }) => {
                 </View>
                 <View style={{ flex: 1, marginLeft: 16 }}>
                     <ZButton
-                        title="Rate now"
+                        title={t('rateNow', 'Rate now')}
                         style="primary"
                         size="large"
                         onPress={handleRatePress}

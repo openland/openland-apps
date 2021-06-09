@@ -11,6 +11,7 @@ import { AddCardItem } from 'openland-mobile/pages/wallet/components/AddCardItem
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { ModalProps } from 'react-native-fast-modal';
+import { useText } from 'openland-mobile/text/useText';
 
 const StripeModule = NativeModules.RNStripe as { confirmPayment(paymentId: string, clientSecret: string, paymentMethod: string): void };
 const StripeModuleEmitter = new NativeEventEmitter(NativeModules.RNStripe);
@@ -63,6 +64,7 @@ const awaitForCompletePayment = async (id: string) => {
 const CompletePaymentComponent = React.memo((props: { id: string, clientSecret: string, router: SRouter, ctx: ModalProps }) => {
     const client = useClient();
     const theme = useTheme();
+    const { t } = useText();
     const [selected, setSelected] = React.useState<string>();
     const [loading, setLoading] = React.useState<boolean>(false);
     const onSubmit = React.useCallback(async () => {
@@ -100,14 +102,16 @@ const CompletePaymentComponent = React.memo((props: { id: string, clientSecret: 
 
     return (
         <View style={{ flexDirection: 'column' }}>
-            <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 7, marginBottom: 11, textAlign: 'center', paddingHorizontal: 32 }}>Complete transaction</Text>
+            <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 7, marginBottom: 11, textAlign: 'center', paddingHorizontal: 32 }}>
+                {t('payCompleteTransaction', 'Complete transaction')}
+            </Text>
             <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', paddingHorizontal: 32, marginBottom: 16 }}>
-                Choose correct payment method or add a new one to complete transaction
+                {t('payChoosePaymentMethod', 'Choose correct payment method or add a new one to complete transaction')}
             </Text>
             {cards.map(card => <CardView key={card.id} item={card} selected={selected === card.pmid} onPress={() => setSelected(card.pmid)} />)}
             <AddCardItem onPress={handleAdd} />
             <View style={{ marginTop: 16, paddingHorizontal: 16 }}>
-                <ZButton enabled={!!selected} title="Try again" action={onSubmit} style="primary" size="large" loading={loading} />
+                <ZButton enabled={!!selected} title={t('tryAgain', 'Try again')} action={onSubmit} style="primary" size="large" loading={loading} />
             </View>
         </View>
     );

@@ -9,7 +9,7 @@ import { ZButton } from 'openland-mobile/components/ZButton';
 import { StickerFragment } from 'openland-api/spacex.types';
 import { ZImage } from 'openland-mobile/components/ZImage';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
-import { plural } from 'openland-y-utils/plural';
+import { useText } from 'openland-mobile/text/useText';
 
 const StickerRows = React.memo((props: { stickers: StickerFragment[], stickerLayout: StickerLayout }) => {
     const { stickers, stickerLayout } = props;
@@ -45,6 +45,7 @@ const StickerRows = React.memo((props: { stickers: StickerFragment[], stickerLay
 
 const StickerPackModalContent = React.memo((props: { id: string, hide: () => void }) => {
     const { id, hide } = props;
+    const { t } = useText();
 
     const client = useClient();
     const stickerPack = client.useStickerPack({ id }, { fetchPolicy: 'cache-and-network' }).stickerPack;
@@ -80,8 +81,12 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
         return (
             <View style={{ alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32, paddingVertical: 16, marginTop: 16 }}>
                 <Image source={require('assets/art-error.png')} style={{ width: 240, height: 150, marginBottom: 16 }} />
-                <Text style={{ ...TextStyles.Title2, textAlign: 'center', color: theme.foregroundPrimary, marginBottom: 6, }} allowFontScaling={false}>Sticker pack is unavailable</Text>
-                <Text style={{ ...TextStyles.Body, textAlign: 'center', color: theme.foregroundSecondary }} allowFontScaling={false}>Sticker pack removed or temporary unavailable</Text>
+                <Text style={{ ...TextStyles.Title2, textAlign: 'center', color: theme.foregroundPrimary, marginBottom: 6, }} allowFontScaling={false}>
+                    {t('stickerPackUnavailable', 'Sticker pack is unavailable')}
+                </Text>
+                <Text style={{ ...TextStyles.Body, textAlign: 'center', color: theme.foregroundSecondary }} allowFontScaling={false}>
+                    {t('stickerPackRemoved', 'Sticker pack removed or temporary unavailable')}
+                </Text>
             </View>
         );
     }
@@ -127,19 +132,25 @@ const StickerPackModalContent = React.memo((props: { id: string, hide: () => voi
                         backgroundColor: theme.backgroundTertiary
                     }}
                 >
-                    <Text style={{ textAlign: 'center', color: theme.foregroundSecondary, ...TextStyles.Body }}>This sticker pack is private</Text>
+                    <Text style={{ textAlign: 'center', color: theme.foregroundSecondary, ...TextStyles.Body }}>
+                        {t('stickerPackPrivate', 'This sticker pack is private')}
+                    </Text>
                 </View>
             ) : (
-                    <View style={{ paddingHorizontal: 8, marginTop: 16 }}>
-                        <ZButton
-                            size='large'
-                            title={`${haveIt ? 'Delete' : 'Add'} ${plural(stickerPack.stickers.length, ['sticker', 'stickers'])}`}
-                            onPress={handleButtonPressed}
-                            style={haveIt ? 'secondary' : 'primary'}
-                            loading={loading}
-                        />
-                    </View>
-                )}
+                <View style={{ paddingHorizontal: 8, marginTop: 16 }}>
+                    <ZButton
+                        size='large'
+                        title={`${stickerPack.stickers.length} ${haveIt ? t('stickerDelete', { count: stickerPack.stickers.length, defaultValue: 'Delete $t(sticker)' })
+                                : t('stickerAdd', {
+                                    count: stickerPack.stickers.length, defaultValue: 'Add $t(sticker)'
+                                })}`
+                        }
+                        onPress={handleButtonPressed}
+                        style={haveIt ? 'secondary' : 'primary'}
+                        loading={loading}
+                    />
+                </View>
+            )}
         </View>
     );
 });

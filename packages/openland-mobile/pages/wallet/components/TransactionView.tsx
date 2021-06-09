@@ -10,6 +10,7 @@ import { showTransactionInfo } from 'openland-mobile/pages/main/modals/Transacti
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { convertTransaction } from 'openland-y-utils/wallet/transaction';
 import { ZButton } from 'openland-mobile/components/ZButton';
+import { useText } from 'openland-mobile/text/useText';
 
 interface TransactionViewProps {
     item: WalletTransactionFragment;
@@ -18,6 +19,7 @@ interface TransactionViewProps {
 export const TransactionView = (props: TransactionViewProps) => {
     const theme = React.useContext(ThemeContext);
     const router = React.useContext(SRouterContext)!;
+    const { t } = useText();
 
     const { avatar, title, type, dateTime, status, amount, source, group } = convertTransaction(
         props.item,
@@ -28,8 +30,8 @@ export const TransactionView = (props: TransactionViewProps) => {
         actionRequired || status === 'canceled'
             ? theme.accentNegative
             : source.operation.amount > 0
-            ? theme.accentPositive
-            : theme.foregroundPrimary;
+                ? theme.accentPositive
+                : theme.foregroundPrimary;
     const subtitleTime = dateTime.isToday ? dateTime.time : dateTime.date;
     const groupTitle = group ? `, ${group.title}` : '';
     const subtitleStatus = status !== 'success' ? `, ${status}` : '';
@@ -139,11 +141,11 @@ export const TransactionView = (props: TransactionViewProps) => {
                                         }}
                                         allowFontScaling={false}
                                     >
-                                        Transaction failed
+                                        {t('transacitonFailed', 'Transaction failed')}
                                     </Text>
                                 </View>
                                 <ZButton
-                                    title="Try again"
+                                    title={t('tryAgain', 'Try again')}
                                     size="large"
                                     marginTop={12}
                                     backgroundColor="#fff"
@@ -161,7 +163,7 @@ export const TransactionView = (props: TransactionViewProps) => {
                             }}
                             allowFontScaling={false}
                         >
-                            Need help?
+                            {t('needHelp', 'Need help?')}
                         </Text>
                         <Text
                             style={{
@@ -172,7 +174,7 @@ export const TransactionView = (props: TransactionViewProps) => {
                             allowFontScaling={false}
                             onPress={() => router.push('ProfileUser', { id: 'zoebp1bZA0F5P5oL5ZgrFwEMA4' })}
                         >
-                            Contact us
+                            {t('contactUs', 'Contact us')}
                         </Text>
                     </View>
                 </View>

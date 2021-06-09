@@ -20,10 +20,12 @@ import { CardView } from './components/CardView';
 import { TransactionView } from './components/TransactionView';
 import { AddCardItem } from './components/AddCardItem';
 import { showWithdrawFunds } from './components/showWithdrawFunds';
+import { useText } from 'openland-mobile/text/useText';
 
 const WalletComponent = React.memo<PageProps>((props) => {
     const client = useClient();
     const theme = useTheme();
+    const { t } = useText();
     const router = React.useContext(SRouterContext)!;
     const walletEngine = getMessenger().engine.wallet;
     const walletState = walletEngine.state.useState();
@@ -43,9 +45,9 @@ const WalletComponent = React.memo<PageProps>((props) => {
         <>
             <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]}>
                 <ZListGroup
-                    header="Payment methods"
+                    header={t('paymentMethods', 'Payment methods')}
                     actionRight={
-                        cards.length > 0 ? { title: 'Add card', onPress: handleAddCard } : undefined
+                        cards.length > 0 ? { title: t('addCard', 'Add card'), onPress: handleAddCard } : undefined
                     }
                 >
                     {cards.length === 0 && <AddCardItem onPress={handleAddCard} />}
@@ -62,7 +64,7 @@ const WalletComponent = React.memo<PageProps>((props) => {
                     }}
                 >
                     <ZButton
-                        title="Payments FAQ"
+                        title={t('paymentsFaq', 'Payments FAQ')}
                         size="large"
                         flexGrow={1}
                         marginRight={16}
@@ -70,7 +72,7 @@ const WalletComponent = React.memo<PageProps>((props) => {
                         onPress={onFaqPress}
                     />
                     <ZButton
-                        title="Payments help"
+                        title={t('paymentsHelp', 'Payments help')}
                         size="large"
                         flexGrow={1}
                         style="secondary"
@@ -79,10 +81,10 @@ const WalletComponent = React.memo<PageProps>((props) => {
                 </View>
             </LinearGradient>
             <ZListGroup
-                header="Your balance"
+                header={t('yourBalance', 'Your balance')}
                 actionRight={
                     balance !== 0
-                        ? { title: 'Withdraw', onPress: () => showWithdrawFunds(router) }
+                        ? { title: t('withdraw', 'Withdraw'), onPress: () => showWithdrawFunds(router) }
                         : undefined
                 }
             >
@@ -96,7 +98,7 @@ const WalletComponent = React.memo<PageProps>((props) => {
                         }}
                         allowFontScaling={false}
                     >
-                        No earnings yet
+                        {t('walletEmpty', 'No earnings yet')}
                     </Text>
                 )}
                 {balance !== 0 && (
@@ -118,13 +120,13 @@ const WalletComponent = React.memo<PageProps>((props) => {
                     </View>
                 )}
             </ZListGroup>
-            {transactions.length > 0 && <ZListHeader text="Transactions" />}
+            {transactions.length > 0 && <ZListHeader text={t('transactions', 'Transactions')} />}
         </>
     );
 
     return (
         <>
-            <SHeader title="Wallet" />
+            <SHeader title={t('wallet', 'Wallet')} />
             <SFlatList
                 data={transactions}
                 renderItem={({ item }) => <TransactionView item={item} />}

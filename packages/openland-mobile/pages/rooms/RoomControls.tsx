@@ -20,6 +20,7 @@ import { ReportCallErrorType } from 'openland-mobile/utils/voiceChatErrorNotifie
 import { showRoomInvite } from './showRoomInvite';
 // import { RoomDonationBar } from './RoomDonationBar';
 import { SRouter } from 'react-native-s/SRouter';
+import { useText } from 'openland-mobile/text/useText';
 // import { DonationNotifications } from './DonationNotifications';
 
 const ControlItem = React.memo(
@@ -162,6 +163,7 @@ const ControlMute = React.memo(
 const RaiseModalView = React.memo(
     ({ onCancel, onConfirm }: { onCancel: () => void; onConfirm: () => Promise<void> }) => {
         const theme = useTheme();
+        const { t } = useText();
 
         return (
             <>
@@ -190,7 +192,7 @@ const RaiseModalView = React.memo(
                         marginBottom: 6,
                     }}
                 >
-                    Raise hand?
+                    {t('raiseHandQuestion', 'Raise hand?')}
                 </Text>
                 <Text
                     style={{
@@ -201,7 +203,7 @@ const RaiseModalView = React.memo(
                         marginBottom: 32,
                     }}
                 >
-                    Room admins will see that{'\u00A0'}you{'\u00A0'}want{'\u00A0'}to{'\u00A0'}speak
+                    {t('raiseHandQuesitonDescription', 'Room admins will see that\u00A0you\u00A0want\u00A0to\u00A0speak')}
                 </Text>
                 <View
                     style={{
@@ -213,13 +215,13 @@ const RaiseModalView = React.memo(
                     <ZButton
                         style="secondary"
                         size="large"
-                        title="Maybe later"
+                        title={t('maybeLater', 'Maybe later')}
                         onPress={onCancel}
                     />
                     <ZButton
                         style="positive"
                         size="large"
-                        title="Raise hand 🖐"
+                        title={t('raiseHand', 'Raise hand') + ' 🖐'}
                         action={onConfirm}
                     />
                 </View>
@@ -284,13 +286,14 @@ interface RoomSettingsButtonProps {
 
 const RoomSettingsButton = React.memo((props: RoomSettingsButtonProps) => {
     const { theme, raisedCount, roomId, status, roomTitle, reportUserError, roomMessage } = props;
+    const { t } = useText();
 
     return (
         <ControlItem
             theme={theme}
             icon={require('assets/ic-settings-24.png')}
             iconColor={theme.foregroundSecondary}
-            text="Settings"
+            text={t('settings', 'Settings')}
             bgColor={theme.backgroundTertiaryTrans}
             counter={status === VoiceChatParticipantStatus.ADMIN ? raisedCount : undefined}
             onPress={() => showRoomSettings({
@@ -324,14 +327,15 @@ interface RoomControlsProps {
     router: SRouter;
 }
 
-const getButtons = (props: RoomControlsProps) => {
+const useButtons = (props: RoomControlsProps) => {
     const { theme, id, title, message, muted, selfStatus, showInviteButton, handRaised, connecting, onLeave, onMutePress, raisedHandUsers, reportUserError } = props;
+    const { t } = useText();
 
     const leaveBtn = (
         <ControlItem
             key="leave-btn"
             theme={theme}
-            text="Leave"
+            text={t('leave', 'Leave')}
             icon={require('assets/ic-leave-24.png')}
             iconColor={theme.foregroundSecondary}
             bgColor={theme.backgroundTertiaryTrans}
@@ -342,7 +346,7 @@ const getButtons = (props: RoomControlsProps) => {
         <ControlItem
             theme={theme}
             key="invite-btn"
-            text="Invite"
+            text={t('invite', 'Invite')}
             icon={require('assets/ic-add-24.png')}
             iconColor={theme.foregroundSecondary}
             bgColor={theme.backgroundTertiaryTrans}
@@ -389,7 +393,7 @@ const getButtons = (props: RoomControlsProps) => {
 export const RoomControls = React.memo((props: RoomControlsProps) => {
     const { onLayout } = props;
 
-    const buttons = getButtons(props);
+    const buttons = useButtons(props);
     return (
         <View onLayout={onLayout} style={{ paddingTop: 16, position: 'relative' }}>
             {/* <View style={{ position: 'absolute', bottom: '100%', width: '100%' }}>

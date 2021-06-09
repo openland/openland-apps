@@ -13,6 +13,7 @@ import { StickerLayout, useStickerLayout } from './stickerLayout';
 import FastImage from 'react-native-fast-image';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
+import { useText } from 'openland-mobile/text/useText';
 
 const RECENT_ID = 'recent';
 
@@ -167,6 +168,7 @@ interface StickerPickerComponentProps {
 
 const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & { stickerLayout: StickerLayout, height: number }) => {
     const { onStickerSent, theme, stickerLayout, height } = props;
+    const { t } = useText();
 
     const { stickerSize, stickersPerRow } = stickerLayout;
 
@@ -182,7 +184,7 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
     const myStickers = client.useMyStickers({ fetchPolicy: 'cache-and-network' }).stickers;
     const { packs: clientStickers } = myStickers;
     const stickers: StickerPackFragment[] = recentStickers.length > 0 && stickersPerRow > 0 ? [
-        { id: RECENT_ID, title: 'Recent', stickers: recentStickers.slice(0, stickersPerRow * 2), isRecent: true },
+        { id: RECENT_ID, title: t('recent', 'Recent'), stickers: recentStickers.slice(0, stickersPerRow * 2), isRecent: true },
         ...clientStickers
     ] : clientStickers;
     const [selected, setSelected] = React.useState(stickers[0]?.id);
@@ -209,9 +211,11 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
 
     const handleDeletePackPressed = React.useCallback((pack: MyStickers_stickers_packs | 'recent') => {
         Alert.builder()
-            .title(pack === 'recent' ? 'Clear recent stickers?' : `Delete ${pack.title} stickerpack?`)
-            .button('Cancel', 'cancel')
-            .action('Delete', 'destructive', async () => {
+            .title(pack === 'recent'
+                ? t('stickersClearRecent', 'Clear recent stickers?')
+                : t('stickerPackDelete', { title: pack.title, defaultValue: 'Delete {{title}} stickerpack?' }))
+            .button(t('cancel', 'Cancel'), 'cancel')
+            .action(t('delete', 'Delete'), 'destructive', async () => {
                 if (pack === 'recent') {
                     setRecentStickers([]);
                     await AsyncStorage.setItem('recentStickers', '[]');
@@ -284,11 +288,13 @@ const StickerPickerComponent = React.memo((props: StickerPickerComponentProps & 
                     }}
                 />
             ) : (
-                    <View style={{ justifyContent: 'center', alignItems: 'center', flexGrow: 1, flexDirection: 'column' }}>
-                        <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, marginBottom: 16 }}>Your stickers will be displayed here</Text>
-                        <ZButton title="Discover stickers" style="secondary" onPress={() => router?.push('StickersCatalog')} />
-                    </View>
-                )}
+                <View style={{ justifyContent: 'center', alignItems: 'center', flexGrow: 1, flexDirection: 'column' }}>
+                    <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, marginBottom: 16 }}>
+                        {t('stickersDiscoverDescription', 'Your stickers will be displayed here')}
+                    </Text>
+                    <ZButton title={t('stickersDiscover', 'Discover stickers')} style="secondary" onPress={() => router?.push('StickersCatalog')} />
+                </View>
+            )}
             <FlatList
                 ref={stickerPackButtonListRef}
                 horizontal={true}

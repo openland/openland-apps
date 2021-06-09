@@ -14,6 +14,7 @@ import { useForm } from 'openland-form/useForm';
 import Toast from 'openland-mobile/components/Toast';
 import { ZShaker } from 'openland-mobile/components/ZShaker';
 import { useClient } from 'openland-api/useClient';
+import { useText } from 'openland-mobile/text/useText';
 
 interface PriceInputProps {
     value: string;
@@ -54,7 +55,7 @@ const PriceInput = React.forwardRef((props: PriceInputProps, ref: React.RefObjec
 
 const MessageInput = (props: { value: string, onChange: (s: string) => void }) => {
     let theme = useTheme();
-
+    let { t } = useText();
     return (
         <View
             style={{
@@ -67,7 +68,7 @@ const MessageInput = (props: { value: string, onChange: (s: string) => void }) =
             }}
         >
             <TextInput
-                placeholder="Your message"
+                placeholder={t('yourMessaage', 'Your message')}
                 placeholderTextColor={hexToRgba(theme.foregroundContrast, 0.48)}
                 keyboardAppearance={theme.keyboardAppearance}
                 value={props.value}
@@ -91,6 +92,7 @@ const MessageInput = (props: { value: string, onChange: (s: string) => void }) =
 const DonationComponent = (props: PageProps) => {
     let theme = useTheme();
     let client = useClient();
+    let { t } = useText();
     let initialPrice = props.router.params.initialPrice ? String(props.router.params.initialPrice) : '';
     let chatId = props.router.params.chatId as string;
     let userId = props.router.params.userId as string;
@@ -104,19 +106,25 @@ const DonationComponent = (props: PageProps) => {
             checkIsValid: x => {
                 return /^[0-9]*$/.test(x);
             },
-            text: 'Numbers only',
+            text: t('validationNumbersOnly', 'Numbers only'),
         },
         {
             checkIsValid: x => {
                 return Number(x) <= 1000;
             },
-            text: '$1000 maximum',
+            text: t('validationAmountMax', {
+                amount: 1000,
+                defaultValue: '${{amount}} maximum'
+            }),
         },
         {
             checkIsValid: x => {
                 return Number(x) >= 1;
             },
-            text: '$1 minimum',
+            text: t('validationAmountMin', {
+                amount: 1,
+                defaultValue: '${{amount}} minimum'
+            }),
         },
     ]);
     let messageField = useField('message', '', form);
@@ -173,7 +181,7 @@ const DonationComponent = (props: PageProps) => {
 
     return (
         <>
-            <SHeader title={name ? `Donate to ${name}` : 'Donate'} />
+            <SHeader title={name ? t('donateToUser', { name, defaultValue: 'Donate to {{name}}' }) : t('donate', 'Donate')} />
             <SScrollView style={{ flexDirection: 'column', alignSelf: 'stretch', alignItems: 'stretch', padding: 16 }}>
                 <ZShaker ref={wrapperRef}>
                     <View
@@ -197,7 +205,7 @@ const DonationComponent = (props: PageProps) => {
                             <MessageInput value={messageField.value} onChange={messageField.input.onChange} />
                         </View>
                         <View style={{ marginTop: 4 }}>
-                            <ZButton title="Donate" style="pay" size="large" onPress={handleSubmit} />
+                            <ZButton title={t('donate', 'Donate')} style="pay" size="large" onPress={handleSubmit} />
                         </View>
                     </View>
                 </ZShaker>

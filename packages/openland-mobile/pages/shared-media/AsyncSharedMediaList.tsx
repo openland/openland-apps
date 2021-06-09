@@ -6,6 +6,7 @@ import { View, Image, Text, ViewStyle, ImageStyle, TextStyle, StyleSheet } from 
 import { ASDataView } from 'react-native-async-view/ASDataView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
+import { capitalize, useText } from 'openland-mobile/text/useText';
 
 const emptyTab = StyleSheet.create({
     wrapper: {
@@ -32,6 +33,7 @@ const emptyTab = StyleSheet.create({
 });
 
 const EmptyTab = React.memo(({ type }: { type: SharedMediaItemType }) => {
+    const { t } = useText();
     const texts = {
         [SharedMediaItemType.MEDIA]: 'media',
         [SharedMediaItemType.DOCUMENT]: 'files',
@@ -47,10 +49,17 @@ const EmptyTab = React.memo(({ type }: { type: SharedMediaItemType }) => {
                 style={emptyTab.image}
             />
             <View style={emptyTab.textWrapper}>
-                <Text style={[emptyTab.title, { color: theme.foregroundPrimary }]}>No {texts[type]} yet</Text>
+                <Text style={[emptyTab.title, { color: theme.foregroundPrimary }]}>
+                    {t('sharedMediaEmpty', {
+                        mediaType: texts[type],
+                        defaultValue: 'No {{mediaType}} yet'
+                    })}
+                </Text>
                 <Text style={[emptyTab.subtitle, { color: theme.foregroundSecondary }]}>
-                    <Text style={{ textTransform: 'capitalize' }}>{texts[type]} </Text>
-                    you’ll send and receive in this chat will appear here
+                    {t('sharedMediaEmptyDescription', {
+                        mediaType: capitalize(texts[type]),
+                        defaultValue: '{{mediaType}} you’ll send and receive in this chat will appear here',
+                    })}
                 </Text>
             </View>
         </View >

@@ -11,6 +11,7 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SharedMediaItemType } from 'openland-engines/messenger/SharedMediaEngine';
 import { ZTab } from 'openland-mobile/components/ZTab';
+import { useText } from 'openland-mobile/text/useText';
 
 interface Tab {
     name: string;
@@ -61,13 +62,14 @@ const Tabs = ({ activeTab, tabs }: TabsProps) => {
 
 const SharedMediaInner = React.memo(({ chatId }: { chatId: string }) => {
     const client = useClient();
+    const { t } = useText();
     const { counters } = client.useSharedMediaCounters({ chatId }, { fetchPolicy: 'network-only' });
     const [activeTab, setActiveTab] = React.useState<SharedMediaItemType>(SharedMediaItemType.MEDIA);
     const tabs = React.useMemo(() => [
-        { type: SharedMediaItemType.MEDIA, name: 'Media', count: counters.images, onPress: () => setActiveTab(SharedMediaItemType.MEDIA) },
-        { type: SharedMediaItemType.DOCUMENT, name: 'Files', count: counters.documents + counters.videos, onPress: () => setActiveTab(SharedMediaItemType.DOCUMENT) },
-        { type: SharedMediaItemType.LINK, name: 'Links', count: counters.links, onPress: () => setActiveTab(SharedMediaItemType.LINK) },
-    ], [counters.images, counters.videos, counters.documents, counters.links]);
+        { type: SharedMediaItemType.MEDIA, name: t('media', 'Media'), count: counters.images, onPress: () => setActiveTab(SharedMediaItemType.MEDIA) },
+        { type: SharedMediaItemType.DOCUMENT, name: t('files', 'Files'), count: counters.documents + counters.videos, onPress: () => setActiveTab(SharedMediaItemType.DOCUMENT) },
+        { type: SharedMediaItemType.LINK, name: t('links', 'Links'), count: counters.links, onPress: () => setActiveTab(SharedMediaItemType.LINK) },
+    ], [counters.images, counters.videos, counters.documents, counters.links, t]);
     const currentCount = tabs.find(({ type }) => type === activeTab)!!.count;
     const [wrapperWidth, setWrapperWidth] = React.useState(0);
     const handleLayout = React.useCallback((e: LayoutChangeEvent) => {
@@ -87,9 +89,10 @@ const SharedMediaInner = React.memo(({ chatId }: { chatId: string }) => {
 });
 
 export const SharedMedia = withApp(({ router }: PageProps) => {
+    const { t } = useText();
     return (
         <>
-            <SHeader title="Shared" />
+            <SHeader title={t('shared', 'Shared')} />
             <React.Suspense fallback={<ZLoader />}>
                 <SharedMediaInner chatId={router.params.chatId} />
             </React.Suspense>

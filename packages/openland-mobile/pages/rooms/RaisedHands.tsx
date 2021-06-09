@@ -11,6 +11,7 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { usePagination } from 'openland-y-utils/usePagination';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { FlatList } from 'react-native-gesture-handler';
+import { t } from 'openland-mobile/text/useText';
 
 interface RaisedHandsProps {
     hide: () => void;
@@ -42,7 +43,7 @@ const EmptyView = React.memo((props: { theme: ThemeGlobal }) => {
                     marginBottom: 6,
                 }}
             >
-                All quiet
+                {t('raisedHandsEmpty', 'All quiet')}
             </Text>
             <Text
                 allowFontScaling={false}
@@ -52,7 +53,7 @@ const EmptyView = React.memo((props: { theme: ThemeGlobal }) => {
                     textAlign: 'center',
                 }}
             >
-                Noone raised their hand
+                {t('raisedHandsEmptyDescription', 'Noone raised their hand')}
             </Text>
         </View>
     );
@@ -79,7 +80,7 @@ const RaisedHandUserView = React.memo(
                         style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}
                         numberOfLines={1}
                     >
-                        {user.followersCount} followers
+                        {user.followersCount} {t('follower', { count: user.followersCount, defaultValue: 'follower' })}
                     </Text>
                 </View>
                 <ZFollowButton isFollowing={false} onPress={promoteUser} />
@@ -139,7 +140,7 @@ const RaisedHandsContent = React.memo((props: RaisedHandsProps) => {
 
 export const showRaisedHands = (roomId: string) => {
     showBottomSheet({
-        title: 'Raised hands',
+        title: t('raisedHands', 'Raised hands'),
         cancelable: true,
         view: ({ hide }) => {
             return <RaisedHandsContent hide={hide} roomId={roomId} />;

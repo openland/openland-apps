@@ -11,6 +11,7 @@ import { BrandLogo } from './BrandLogo';
 import { useClient } from 'openland-api/useClient';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
+import { useText } from 'openland-mobile/text/useText';
 
 interface CardViewProps {
     item: MyCards_myCards;
@@ -25,16 +26,19 @@ const isCardExpired = (month: number, year: number) => {
 
 export const CardView = (props: CardViewProps) => {
     const { id, brand, last4, expMonth, expYear, isDefault } = props.item;
+    const { t } = useText();
     const selected = props.selected;
     const month = expMonth <= 9 ? `0${expMonth}` : expMonth;
     const year = expYear.toString().slice(-2);
     const monthYear = `${month}/${year}`;
     const theme = React.useContext(ThemeContext);
     const client = useClient();
-    let subtitle = isCardExpired(expMonth, expYear) ? `Expired on ${monthYear}` : `Valid to ${monthYear}`;
+    let subtitle = isCardExpired(expMonth, expYear)
+        ? t('cardExpired', { expireDate: monthYear, defaultValue: `Expired on {{expireDate}}` })
+        : t('cardValid', { validDate: monthYear, defaultValue: `Valid to {{validDate}}` });
 
     if (isDefault && selected === undefined) {
-        subtitle += ', primary';
+        subtitle += ', ' + t('primary', 'primary');
     }
 
     const handlePress = React.useCallback(() => {
@@ -49,8 +53,8 @@ export const CardView = (props: CardViewProps) => {
 
                     {isDefault && (
                         <View style={{ position: 'absolute', top: 50, left: 24 }}>
-                            <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} allowFontScaling={false}>
-                                Primary
+                            <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary, textTransform: 'uppercase' }} allowFontScaling={false}>
+                                {t('primary', 'primary')}
                             </Text>
                         </View>
                     )}
@@ -69,7 +73,7 @@ export const CardView = (props: CardViewProps) => {
         ));
 
         if (!isDefault) {
-            builder.action('Make primary', async () => {
+            builder.action(t('makePrimary', 'Make primary'), async () => {
                 const loader = Toast.loader();
                 loader.show();
 
@@ -84,12 +88,12 @@ export const CardView = (props: CardViewProps) => {
             }, false, require('assets/ic-star-24.png'));
         }
 
-        builder.action('Delete card', async () => {
+        builder.action(t('deleteCard', 'Delete card'), async () => {
             AlertBlanket.builder()
-                .title('Delete card?')
-                .message('It cannot be undone')
-                .button('Cancel', 'cancel')
-                .action('Delete', 'destructive', async () => {
+                .title(t('deleteCardQuestion', 'Delete card?'))
+                .message(t('deleteCardDescription', 'It cannot be undone'))
+                .button(t('cancel', 'Cancel'), 'cancel')
+                .action(t('delete', 'Delete'), 'destructive', async () => {
                     try {
                         await client.mutateRemoveCard({ id });
                         await client.refetchMyCards();

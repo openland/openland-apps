@@ -13,8 +13,10 @@ import { SRouterContext } from 'react-native-s/SRouterContext';
 import { useClient } from 'openland-api/useClient';
 import { ZShaker } from 'openland-mobile/components/ZShaker';
 import { useJoinRoom } from './joinRoom';
+import { useText } from 'openland-mobile/text/useText';
 
 const CreateRoomComponent = React.memo(() => {
+    const { t } = useText();
     const form = useForm();
     const nameField = useField('room.name', '', form);
     const shakerRef = React.useRef<{ shake: () => void }>(null);
@@ -40,15 +42,15 @@ const CreateRoomComponent = React.memo(() => {
 
     return (
         <>
-            <SHeader title="New room" />
-            <SHeaderButton title="Start" onPress={createRoom} />
+            <SHeader title={t('newRoom', 'New room')} />
+            <SHeaderButton title={t('start', 'Start')} onPress={createRoom} />
             <KeyboardAvoidingScrollView>
                 <View style={{ paddingHorizontal: 16, marginTop: 16 }}>
                     <ZShaker ref={shakerRef}>
-                        <ZInput placeholder="Room name" field={nameField} autoFocus={true} noWrapper={true} />
+                        <ZInput placeholder={t('roomName', 'Room name')} field={nameField} autoFocus={true} noWrapper={true} />
                     </ZShaker>
                     <Text style={{ ...TextStyles.Caption, color: theme.foregroundTertiary, paddingHorizontal: 16, marginTop: 8 }} allowFontScaling={false}>
-                        Tell everyone about the topic of conversation
+                        {t('roomCreateDescription', 'Tell everyone about the topic of conversation')}
                     </Text>
                 </View>
             </KeyboardAvoidingScrollView>

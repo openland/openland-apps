@@ -11,6 +11,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { showBlanketModal } from 'openland-mobile/components/showBlanketModal';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
+import { useText } from 'openland-mobile/text/useText';
 
 interface DeleteChatComponentProps {
     chatId: string;
@@ -20,6 +21,7 @@ interface DeleteChatComponentProps {
 
 const DeleteChatComponent = React.memo((props: DeleteChatComponentProps) => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const [oneSide, setOneSide] = React.useState(true);
     const [state, setState] = React.useState<'initial' | 'done' | 'error'>('initial');
     const [isActionInProgress, setActionInProgress] = React.useState(false);
@@ -94,7 +96,7 @@ const DeleteChatComponent = React.memo((props: DeleteChatComponentProps) => {
                         }}
                         allowFontScaling={false}
                     >
-                        Delete conversation
+                        {t('conversationDelete', 'Delete conversation')}
                     </Text>
                     <Text
                         style={{
@@ -103,12 +105,12 @@ const DeleteChatComponent = React.memo((props: DeleteChatComponentProps) => {
                         }}
                         allowFontScaling={false}
                     >
-                        Are you sure you want to delete conversation? This cannot be undone.
+                        {t('conversationDeleteDescription', 'Are you sure you want to delete conversation? This cannot be undone.')}
                     </Text>
                 </View>
                 <View style={{ paddingHorizontal: 8 }}>
                     <ZListItem
-                        text={`Delete for me and ${props.userName}`}
+                        text={t('conversationDeleteBoth', { username: props.userName, defaultValue: 'Delete for me and {{username}}' })}
                         checkmark={oneSide}
                         checkmarkType="checkbox"
                         onPress={() => setOneSide(!oneSide)}
@@ -127,7 +129,7 @@ const DeleteChatComponent = React.memo((props: DeleteChatComponentProps) => {
                     <View style={{ width: 8 }} />
                     <ZButton
                         style="secondary"
-                        title="Cancel"
+                        title={t('cancel', 'Cancel')}
                         enabled={!isActionInProgress}
                         onPress={async () => {
                             props.hide();
@@ -136,7 +138,7 @@ const DeleteChatComponent = React.memo((props: DeleteChatComponentProps) => {
                     <View style={{ width: 8 }} />
                     <ZButton
                         style="danger"
-                        title="Delete"
+                        title={t('delete', 'Delete')}
                         enabled={!isActionInProgress}
                         action={onDelete}
                         onActionStart={() => setActionInProgress(true)}

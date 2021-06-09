@@ -10,6 +10,7 @@ import { ZButton } from 'openland-mobile/components/ZButton';
 import { AppStorage } from 'openland-y-runtime-native/AppStorage';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ReleasePlatform } from 'openland-api/spacex.types';
+import { useText } from 'openland-mobile/text/useText';
 
 const APPLE_APP_ID = '1435537685';
 const GOOGLE_PACKAGE_NAME = 'com.openland.app';
@@ -19,6 +20,7 @@ const getLastSkippedRelease = async () => await AppStorage.readKey<string>(STORA
 
 const UpdateApp = (props: { ctx: ModalProps; newVersion: string }) => {
     const theme = useTheme();
+    const { t } = useText();
 
     const handleSkipPress = React.useCallback(async () => {
         await AppStorage.writeKey<string>(STORAGE_KEY, props.newVersion);
@@ -58,7 +60,7 @@ const UpdateApp = (props: { ctx: ModalProps; newVersion: string }) => {
                     }}
                     allowFontScaling={false}
                 >
-                    Update available
+                    {t('updateAppTitle', 'Update available')}
                 </Text>
                 <Text
                     style={{
@@ -69,13 +71,13 @@ const UpdateApp = (props: { ctx: ModalProps; newVersion: string }) => {
                     }}
                     allowFontScaling={false}
                 >
-                    Upgrade your app to get great new features
+                    {t('updateAppDescription', 'Upgrade your app to get great new features')}
                 </Text>
             </View>
             <View style={{ paddingHorizontal: 16, marginTop: 32, flexDirection: 'row' }}>
                 <View style={{ flex: 1 }}>
                     <ZButton
-                        title="Maybe later"
+                        title={t('maybeLater', 'Maybe later')}
                         style="secondary"
                         size="large"
                         onPress={handleSkipPress}
@@ -83,7 +85,7 @@ const UpdateApp = (props: { ctx: ModalProps; newVersion: string }) => {
                 </View>
                 <View style={{ flex: 1, marginLeft: 16 }}>
                     <ZButton
-                        title="Update now"
+                        title={t('updateNow', 'Update now')}
                         style="primary"
                         size="large"
                         onPress={handleUpdatePress}

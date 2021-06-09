@@ -8,9 +8,9 @@ import { SAnimated } from 'react-native-fast-animations';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SBackButton } from 'react-native-s/SBackButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { HeaderTitleViewProps } from './HeaderTitleView.ios';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { useText } from 'openland-mobile/text/useText';
 
 const styles = StyleSheet.create({
     root: {
@@ -45,9 +45,16 @@ const styles = StyleSheet.create({
     } as TextStyle
 });
 
-export class HeaderTitleView extends React.PureComponent<{ manager: NavigationManager, page: HeaderPage, current: boolean, style: SNavigationViewStyle }, { searchText: string }> {
+interface HeaderTitleViewProps {
+    manager: NavigationManager;
+    page: HeaderPage;
+    current: boolean;
+    style: SNavigationViewStyle;
+}
 
-    constructor(props: { manager: NavigationManager, page: HeaderPage, current: boolean, style: SNavigationViewStyle }) {
+class HeaderTitleViewInner extends React.PureComponent<HeaderTitleViewProps & { t: any }, { searchText: string }> {
+
+    constructor(props: HeaderTitleViewProps & { t: any }) {
         super(props);
         this.state = { searchText: '' };
     }
@@ -104,6 +111,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
 
     render() {
         let v = this.props.page;
+        let t = this.props.t;
         let title = <Text style={[styles.title, { color: this.props.style.textColor }, this.props.page.page.startIndex === 0 ? styles.rootFirst : {}]}>{v.config.title}</Text>;
         title = (v.config.titleView && <View style={{ flexGrow: 1, flexShrink: 1, minWidth: 0, flexBasis: 0, alignItems: 'stretch' }}>{v.config.titleView()}</View>) || title;
         if (v.config.titleAction) {
@@ -156,7 +164,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                                         value={this.state.searchText}
                                         onChangeText={this.handleTextChange}
                                         autoFocus={true}
-                                        placeholder={v.config.searchPlaceholder ? v.config.searchPlaceholder : 'Groups, people, and more'}
+                                        placeholder={v.config.searchPlaceholder ? v.config.searchPlaceholder : t('searchDefault', 'Groups, people, and more')}
                                         selectionColor={this.props.style.selectionColor}
                                         placeholderTextColor={this.props.style.searchColor}
                                         returnKeyType="search"
@@ -174,7 +182,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                             {!v.config.searchActive && title}
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'center', paddingRight: 2 }}>
-                            {v.config.search && !v.config.searchActive && <SHeaderButton title={v.config.searchPlaceholder ? v.config.searchPlaceholder : 'Groups, people, and more'} icon={require('assets/ic-search-24.png')} onPress={v.config.searchPress} style={this.props.style} />}
+                            {v.config.search && !v.config.searchActive && <SHeaderButton title={v.config.searchPlaceholder ? v.config.searchPlaceholder : t('searchDefault', 'Groups, people, and more')} icon={require('assets/ic-search-24.png')} onPress={v.config.searchPress} style={this.props.style} />}
                             {v.config.buttons && !v.config.searchActive && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
                         </View>
                     </View>
@@ -183,3 +191,10 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
         );
     }
 }
+
+export const HeaderTitleView = React.memo((props: HeaderTitleViewProps) => {
+    const t = useText();
+    return (
+        <HeaderTitleViewInner {...props} t={t} />
+    );
+});

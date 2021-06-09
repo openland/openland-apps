@@ -53,6 +53,7 @@ import { useVoiceChatErrorNotifier } from 'openland-mobile/utils/voiceChatErrorN
 import { Equalizer } from './Equalizer';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 import { VoiceChatT } from 'openland-engines/VoiceChatEngine';
+import { capitalize, t } from 'openland-mobile/text/useText';
 
 const useWakeLock = Platform.OS === 'android' ? require('react-native-wake-lock').useWakeLock : undefined;
 
@@ -82,7 +83,7 @@ const PinnedMessageView = React.memo((props: PinnedMessageViewProps) => {
                     <ZListItem
                         leftIcon={require('assets/ic-edit-24.png')}
                         small={true}
-                        text="Edit message"
+                        text={t('editMessage', 'Edit message')}
                         onPress={() => {
                             ctx.hide();
                             showEditPinnedMessage({ id: roomId, message });
@@ -101,7 +102,7 @@ const showPinnedMessage = (
     theme: ThemeGlobal,
 ) => {
     showBottomSheet({
-        title: 'Pinned message',
+        title: t('pinnedMessage', 'Pinned message'),
         cancelable: true,
         view: (ctx) => (
             <PinnedMessageView
@@ -255,7 +256,7 @@ const UserAvatar = React.memo((props: UserAvatarProps) => {
                                     opacity: 0.72,
                                 }}
                             >
-                                {followersCount} followers
+                                {followersCount} {t('follower', { count: followersCount, default: 'follower' })}
                             </Text>
                             {followedByMe && (
                                 <Image
@@ -385,7 +386,7 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                             <ZListItem
                                 leftIcon={require('assets/ic-listener-24.png')}
                                 small={true}
-                                text="Make listener"
+                                text={t('makeListener', 'Make listener')}
                                 onPress={demoteUser}
                             />
                         )}
@@ -393,7 +394,7 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                             <ZListItem
                                 leftIcon={require('assets/ic-mic-24.png')}
                                 small={true}
-                                text="Make speaker"
+                                text={t('makeSpeaker', 'Make speaker')}
                                 onPress={promoteUser}
                             />
                         )}
@@ -401,14 +402,14 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                             <ZListItem
                                 leftIcon={require('assets/ic-pro-off-24.png')}
                                 small={true}
-                                text="Remove admin"
+                                text={t('removeAdmin', 'Remove admin')}
                                 onPress={removeAdmin}
                             />
                         ) : props.userStatus === VoiceChatParticipantStatus.SPEAKER ? (
                             <ZListItem
                                 leftIcon={require('assets/ic-pro-24.png')}
                                 small={true}
-                                text="Make admin"
+                                text={t('makeAdmin', 'Make admin')}
                                 onPress={makeAdmin}
                             />
                         ) : null}
@@ -416,7 +417,7 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                             <ZListItem
                                 leftIcon={require('assets/ic-leave-24.png')}
                                 small={true}
-                                text="Remove"
+                                text={t('remove', 'Remove')}
                                 onPress={removeUser}
                             />
                         )}
@@ -426,25 +427,25 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                     <ZListItem
                         leftIcon={require('assets/ic-listener-24.png')}
                         small={true}
-                        text="Become listener"
+                        text={t('becomeListener', 'Become listener')}
                         onPress={demoteUser}
                     />
                 )}
                 <View style={{ marginTop: 16, paddingHorizontal: 16, flexDirection: 'row' }}>
                     {isSelf ? (
                         <View style={{ flex: 1 }}>
-                            <ZButton size="large" title="View profile" onPress={handleUserView} />
+                            <ZButton size="large" title={t('viewProfile', 'View profile')} onPress={handleUserView} />
                         </View>
                     ) : !followedByMe ? (
                         <>
                             <View style={{ flex: 1 }}>
-                                <ZButton size="large" title="Follow" action={followUser} />
+                                <ZButton size="large" title={t('follow', 'Follow')} action={followUser} />
                             </View>
                             <View style={{ width: 16 }} />
                             <View style={{ flex: 1 }}>
                                 <ZButton
                                     size="large"
-                                    title="Message"
+                                    title={capitalize(t('message', 'Message'))}
                                     style="secondary"
                                     onPress={handleUserMessage}
                                 />
@@ -452,7 +453,7 @@ const UserModalContent = React.memo((props: RoomUserViewProps & { hide: () => vo
                         </>
                     ) : (
                         <View style={{ flex: 1 }}>
-                            <ZButton size="large" title="Message" onPress={handleUserMessage} />
+                            <ZButton size="large" title={capitalize(t('message', 'Message'))} onPress={handleUserMessage} />
                         </View>
                     )}
                 </View>
@@ -582,8 +583,10 @@ const RoomHeader = React.memo(
                                         }, 1000);
                                     } catch (e) {
                                         Toast.failure({
-                                            text: e.message || `Couldn't join ${parentRoom.isChannel ? 'channel' : 'group'
-                                                }`,
+                                            text: e.message || t('errorJoinChat', {
+                                                chatType: parentRoom.isChannel ? 'channel' : 'group',
+                                                defaultValue: `Couldn't join {{chatType}}`
+                                            }),
                                             duration: 4000,
                                         }).show();
                                         setJoinState('initial');
@@ -607,10 +610,11 @@ const RoomHeader = React.memo(
                                         ...TextStyles.Detail,
                                         color: theme.accentPrimary,
                                         opacity: joinState === 'initial' ? 1 : 0,
+                                        textTransform: 'uppercase',
                                     }}
                                     allowFontScaling={false}
                                 >
-                                    JOIN {parentRoom.isChannel ? 'CHANNEL' : 'GROUP'}
+                                    {t('joinChat', { chatType: parentRoom.isChannel ? 'channel' : 'group', defaultValue: 'Join {{chatType}}' })}
                                 </Text>
                                 <View
                                     style={{
@@ -761,7 +765,7 @@ const RoomHeader = React.memo(
                                 numberOfLines={1}
                                 allowFontScaling={false}
                             >
-                                Waiting for network…
+                                {t('waitingForNetwork', 'Waiting for network…')}
                             </Text>
                             <LoaderSpinner size="small" color={theme.foregroundTertiary} />
                         </View>
@@ -1030,7 +1034,7 @@ const RoomUsersList = React.memo((props: RoomUsersListProps) => {
                     ellipsizeMode="tail"
                     allowFontScaling={false}
                 >
-                    Listeners
+                    {t('listeners', 'Listeners')}
                 </Text>
             ) : null}
         </>
@@ -1114,7 +1118,7 @@ const RoomViewInner = React.memo((props: RoomViewInnerProps) => {
         return getMessenger().engine.voiceChat.onLeave(({ closedByAdmin }) => {
             if (closedByAdmin) {
                 Toast.build({
-                    text: 'The last room admin left, the room will be closed now',
+                    text: t('roomsAdminLeft', 'The last room admin left, the room will be closed now'),
                     duration: 2000,
                 }).show();
             }
@@ -1135,11 +1139,11 @@ const RoomViewInner = React.memo((props: RoomViewInnerProps) => {
         ) {
             let builder = AlertBlanket.builder();
             builder
-                .title('End room')
+                .title(t('endRoom', 'End room'))
                 .message(
-                    'Leaving as the last admin will end the room. Return and make new admins if you want to keep the room going',
+                    t('endRoomDescription', 'Leaving as the last admin will end the room. Return and make new admins if you want to keep the room going'),
                 )
-                .action('Leave', 'destructive', () => closeCall())
+                .action(t('leave', 'Leave'), 'destructive', () => closeCall())
                 .show();
         } else {
             closeCall();

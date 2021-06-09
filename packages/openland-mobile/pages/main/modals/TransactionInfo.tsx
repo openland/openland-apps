@@ -9,6 +9,7 @@ import { WalletTransactionFragment } from 'openland-api/spacex.types';
 import { convertTransaction, TransactionConvertedStatus } from 'openland-y-utils/wallet/transaction';
 import { SRouter } from 'react-native-s/SRouter';
 import { ModalProps } from 'react-native-fast-modal';
+import { t } from 'openland-mobile/text/useText';
 
 const InfoItem = React.memo<{ name: string, secondary?: boolean, value?: string, status?: TransactionConvertedStatus }>((props) => {
     const theme = useTheme();
@@ -77,21 +78,21 @@ const TransactionInfo = React.memo<TransactionInfoProps & { ctx: ModalProps }>((
                 </Text>
             </LinearGradient>
             <View>
-                <InfoItem name="Total amount" value={amount} />
+                <InfoItem name={t('totalAmount', 'Total amount')} value={amount} />
                 {hasSplittedAmount && (
                     <>
-                        <InfoItem name="Your balance" value={walletAmount} secondary={true} />
+                        <InfoItem name={t('yourBalance', 'Your balance')} value={walletAmount} secondary={true} />
                         <InfoItem name={paymentMethod!} value={chargeAmount} secondary={true} />
                     </>
                 )}
-                {paymentMethod && !hasSplittedAmount && <InfoItem name="Payment method" value={paymentMethod} />}
-                <InfoItem name="Date and time" value={`${dateTime.date}, ${dateTime.time}`} />
-                <InfoItem name="Status" status={status} />
+                {paymentMethod && !hasSplittedAmount && <InfoItem name={t('paymentMethod', 'Payment method')} value={paymentMethod} />}
+                <InfoItem name={t('dateTime', 'Date and time')} value={`${dateTime.date}, ${dateTime.time}`} />
+                <InfoItem name={t('status', 'Status')} status={status} />
             </View>
         </View>
     );
 });
 
 export const showTransactionInfo = (props: TransactionInfoProps) => {
-    showBottomSheet({ buttonTitle: 'Done', cancelable: true, view: (ctx) => <TransactionInfo {...props} ctx={ctx} /> });
+    showBottomSheet({ buttonTitle: t('done', 'Done'), cancelable: true, view: (ctx) => <TransactionInfo {...props} ctx={ctx} /> });
 };

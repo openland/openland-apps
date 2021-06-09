@@ -8,12 +8,14 @@ import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { TintOrange } from 'openland-y-utils/themes/tints';
 import { NavigationPage } from '../NavigationPage';
+import { useText } from 'openland-mobile/text/useText';
 
 export const ConnectionStatusComponent = (props: { k: string, route: NavigationPage | undefined }) => {
     let animate = new SAnimatedShadowView(`header-connecting-status-content-${props.k}`, { opacity: 0, translateY: -8, scale: 0.84 });
 
     const client = useClient();
     const theme = useTheme();
+    const { t } = useText();
     React.useEffect(() => {
         if (!client) {
             return;
@@ -76,7 +78,10 @@ export const ConnectionStatusComponent = (props: { k: string, route: NavigationP
                 }}
                 pointerEvents="none"
             >
-                <LoaderSpinner color={theme.foregroundContrast} size="small" /><Text style={{ ...TextStyles.Label2, marginLeft: 8, color: theme.foregroundContrast }} allowFontScaling={false}>Connecting</Text>
+                <LoaderSpinner color={theme.foregroundContrast} size="small" />
+                <Text style={{ ...TextStyles.Label2, marginLeft: 8, color: theme.foregroundContrast }} allowFontScaling={false}>
+                    {t('connecting', 'Connecting')}
+                </Text>
             </SAnimated.View>
         </SAnimated.View >
     );
