@@ -8,6 +8,7 @@ import { TabRouterContextProps } from 'openland-unicorn/components/TabLayout';
 import { showModalBox } from 'openland-x/showModalBox';
 import {
     RoomChat_room_SharedRoom,
+    RoomChat_room_SharedRoom_premiumSubscription,
     RoomChat_room_SharedRoom_welcomeMessage,
     SharedRoomKind,
     UserShort,
@@ -735,6 +736,7 @@ export const showLeaveChatConfirmation = (
     isPremium?: boolean,
     isPublic?: boolean,
     isChannel?: boolean,
+    premiumSubscription?:  RoomChat_room_SharedRoom_premiumSubscription | null,
 ) => {
     const builder = new AlertBlanketBuilder();
 
@@ -742,7 +744,7 @@ export const showLeaveChatConfirmation = (
         .title(isChannel ? 'Leave channel' : 'Leave group')
         .message(
             isPremium
-                ? 'Leaving the group only removes it from your chat list. To cancel the associated subscription, visit Subscriptions section in your Account tab and cancel it from there.'
+                ? 'Leaving the group will cancel your subscription to it. Are you sure?'
                 : isPublic
                 ? 'Are you sure you want to leave?'
                 : 'Are you sure you want to leave? You will need to request access to join it again in the future.',
@@ -752,6 +754,10 @@ export const showLeaveChatConfirmation = (
             async () => {
                 await client.mutateRoomLeave({ roomId: chatId });
                 await client.refetchRoomChat({ id: chatId });
+                if (isPremium && premiumSubscription) {
+                    await client.mutateCancelSubscription({ id: premiumSubscription.id });
+                    await client.refetchSubscriptions();
+                }
                 if (tabRouter.router.currentTab === 0) {
                     tabRouter.router.reset('/discover');
                 } else {
