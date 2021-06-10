@@ -13,6 +13,7 @@ import { UserView } from '../UserView';
 import { RoomMemberType, OrgMemberType, RoomLongPressHanlder, OrgLongPressHanlder } from '../../modals/MembersSearch';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { RoomMemberRole, OrganizationMemberRole } from 'openland-api/spacex.types';
+import { useText } from 'openland-mobile/text/useText';
 
 const useSearchKeyboardHeight = () => {
     const area = React.useContext(ASSafeAreaContext);
@@ -35,6 +36,7 @@ const useSearchKeyboardHeight = () => {
 };
 
 const EmptyView = React.memo((props: { theme: ThemeGlobal, keyboardHeight: number; }) => {
+    const { t } = useText();
     return (
         <View
             style={{
@@ -53,7 +55,7 @@ const EmptyView = React.memo((props: { theme: ThemeGlobal, keyboardHeight: numbe
                     color: props.theme.foregroundSecondary,
                 }}
             >
-                Nobody found
+                {t('nobodyFound', 'Nobody found')}
             </Text>
         </View>
     );

@@ -19,13 +19,15 @@ import { convertSubscription, SubscriptionConverted, displaySubscriptionDate } f
 import { SRouter } from 'react-native-s/SRouter';
 import { TouchableOpacity } from 'react-native';
 import { SRouterContext } from 'react-native-s/SRouterContext';
+import { useText } from 'openland-mobile/text/useText';
 
 const SubscriptionView = React.memo((props: SubscriptionConverted & { router?: SRouter }) => {
     const theme = React.useContext(ThemeContext);
     const client = useClient();
+    const { t } = useText();
 
     const showModal = React.useCallback(() => {
-        const builder = new ActionSheetBuilder('Done');
+        const builder = new ActionSheetBuilder(t('done', 'Done'));
         const cancelable = ![WalletSubscriptionState.EXPIRED, WalletSubscriptionState.CANCELED].includes(props.state);
 
         const WrapComponent = cancelable ? (LinearGradient as any & typeof ViewComponent) : View;
@@ -94,7 +96,7 @@ const SubscriptionView = React.memo((props: SubscriptionConverted & { router?: S
                         }}
                     >
                         <ZButton
-                            title="Cancel subscription"
+                            title={t('subscriptionCancel', 'Cancel subscription')}
                             style="secondary"
                             action={async () => {
                                 await client.mutateCancelSubscription({ id: props.subscriptionId });
@@ -105,7 +107,10 @@ const SubscriptionView = React.memo((props: SubscriptionConverted & { router?: S
                         />
                         <View style={{ marginTop: 16 }}>
                             <Text allowFontScaling={false} style={{ ...TextStyles.Caption, color: theme.foregroundSecondary, textAlign: 'center' }}>
-                                If you cancel now, you can still access {"\n"} the group until {displaySubscriptionDate(props.expires)}
+                                {t('subscriptionCancelDescription', {
+                                    expireDate: displaySubscriptionDate(props.expires),
+                                    defaultValue: 'If you cancel now, you can still access\nthe group until {{expireDate}}'
+                                })}
                             </Text>
                         </View>
                     </View>
@@ -114,7 +119,7 @@ const SubscriptionView = React.memo((props: SubscriptionConverted & { router?: S
         ));
 
         builder.show();
-    }, [props.state]);
+    }, [props.state, t]);
 
     return props.state === WalletSubscriptionState.GRACE_PERIOD || props.state === WalletSubscriptionState.RETRYING ? (
         <ZListItem
@@ -124,17 +129,18 @@ const SubscriptionView = React.memo((props: SubscriptionConverted & { router?: S
             path="Wallet"
         />
     ) : (
-            <ZListItem
-                text={props.title}
-                subTitle={props.subtitle}
-                leftAvatar={{ photo: props.photo, id: props.id, title: props.title }}
-                onPress={showModal}
-            />
-        );
+        <ZListItem
+            text={props.title}
+            subTitle={props.subtitle}
+            leftAvatar={{ photo: props.photo, id: props.id, title: props.title }}
+            onPress={showModal}
+        />
+    );
 });
 
 const SubscriptionsComponent = React.memo<PageProps>((props) => {
     const client = useClient();
+    const { t } = useText();
     const theme = React.useContext(ThemeContext);
     const router = React.useContext(SRouterContext);
     const subscriptions = client.useSubscriptions({ fetchPolicy: 'cache-and-network' }).subscriptions;
@@ -162,7 +168,7 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
     return (
         <View style={{ flexGrow: 1 }}>
 
-            <SHeader title="Subscriptions" />
+            <SHeader title={t('subscriptions', 'Subscriptions')} />
 
             {activeSubscriptions.length === 0 && expiredSubscriptions.length === 0 && (
                 <ASSafeAreaView style={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
@@ -184,16 +190,16 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
                         />
                         <View style={{ marginTop: 4 }}>
                             <Text allowFontScaling={false} style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>
-                                No subscriptions yet
+                                {t('subscriptionsEmpty', 'No subscriptions yet')}
                             </Text>
                         </View>
                         <View style={{ marginTop: 4 }}>
                             <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center' }}>
-                                Join any premium groups, and they will appear here
+                                {t('subscriptionsEmptyDescription', 'Join any premium groups, and they will appear here')}
                             </Text>
                         </View>
                         <View style={{ marginTop: 16 }}>
-                            <ZButton title='Discover groups' path="Explore" />
+                            <ZButton title={t('discoverGroups', 'Discover groups')} path="Explore" />
                         </View>
                     </View>
                 </ASSafeAreaView>
@@ -223,25 +229,25 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
                             />
                             <View style={{ marginTop: 4 }}>
                                 <Text allowFontScaling={false} style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>
-                                    Billing problem
-                            </Text>
+                                    {t('billingProblem', 'Billing problem')}
+                                </Text>
                             </View>
                             <View style={{ marginTop: 4 }}>
                                 <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center' }}>
-                                    A payment for some of your recent purchases or subscriptions has recently failed. Please update your payment method to keep your paid group memberships.
-                            </Text>
+                                    {t('billingProblemDescription', 'A payment for some of your recent purchases or subscriptions has recently failed. Please update your payment method to keep your paid group memberships.')}
+                                </Text>
                             </View>
                             <View style={{ marginTop: 16 }}>
-                                <ZButton title='Update payment method' path="Wallet" />
+                                <ZButton title={t('paymentMethodUpdate', 'Update payment method')} path="Wallet" />
                             </View>
                         </LinearGradient>
                     )}
 
-                    <ZListGroup header="Active">
+                    <ZListGroup header={t('active', 'Active')}>
                         {activeSubscriptions.map(subscription => <SubscriptionView key={subscription.id} {...subscription} router={router} />)}
                     </ZListGroup>
 
-                    <ZListGroup header="Expired">
+                    <ZListGroup header={t('expired', 'Expired')}>
                         {expiredSubscriptions.map(subscription => <SubscriptionView key={subscription.id} {...subscription} router={router} />)}
                     </ZListGroup>
 

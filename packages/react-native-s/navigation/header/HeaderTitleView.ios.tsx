@@ -10,6 +10,7 @@ import { SEquisiteCentered } from '../../SExquisiteCentered';
 import { SCloseButton } from '../../SCloseButton';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { useText } from 'openland-mobile/text/useText';
 
 const styles = StyleSheet.create({
     title: {
@@ -49,8 +50,8 @@ export interface HeaderTitleViewProps {
     style: SNavigationViewStyle;
 }
 
-export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, { searchText: string }> {
-    constructor(props: HeaderTitleViewProps) {
+class HeaderTitleViewInner extends React.PureComponent<HeaderTitleViewProps & { t: any }, { searchText: string }> {
+    constructor(props: HeaderTitleViewProps & { t: any }) {
         super(props);
         this.state = {
             searchText: ''
@@ -85,6 +86,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
     }
 
     render() {
+        let t = this.props.t;
         let v = this.props.page;
         const showBackButton = (!this.props.manager.parent && !this.props.page.config.backButtonRootFallback) || this.props.page.page.startIndex !== 0;
         const showCloseButton = !!this.props.manager.parent && this.props.page.page.startIndex === 0;
@@ -153,7 +155,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                                                 <TouchableHighlight style={styles.passiveSearchInput} underlayColor={theme.backgroundTertiaryActive} delayPressIn={0} onPress={v.config.searchPress}>
                                                     <View style={{ flexDirection: 'row', height: 36, alignItems: 'center', flexGrow: 1 }}>
                                                         <Image source={require('assets/ic-search-16.png')} style={{ width: 16, height: 16, marginLeft: 12, marginRight: 8, tintColor: this.props.style.searchColor }} />
-                                                        <Text style={{ fontSize: 17, marginTop: -1, color: this.props.style.searchColor, lineHeight: 22 }} allowFontScaling={false}>{v.config.searchPlaceholder ? v.config.searchPlaceholder : 'Groups, people, and more'}</Text>
+                                                        <Text style={{ fontSize: 17, marginTop: -1, color: this.props.style.searchColor, lineHeight: 22 }} allowFontScaling={false}>{v.config.searchPlaceholder ? v.config.searchPlaceholder : t('searchDefault', 'Groups, people, and more')}</Text>
                                                     </View>
                                                 </TouchableHighlight>
                                             )}
@@ -167,7 +169,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                                                 onChangeText={this.handleTextChange}
                                                 autoFocus={true}
                                                 style={{ fontSize: 17, height: 24, flexGrow: 1, flexBasis: 0, marginRight: 6, color: this.props.style.textColor }}
-                                                placeholder={v.config.searchPlaceholder ? v.config.searchPlaceholder : 'Groups, people, and more'}
+                                                placeholder={v.config.searchPlaceholder ? v.config.searchPlaceholder : t('searchDefault', 'Groups, people, and more')}
                                                 placeholderTextColor={this.props.style.searchColor}
                                                 keyboardAppearance={this.props.style.keyboardAppearance}
                                                 returnKeyType="search"
@@ -197,7 +199,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                                         <View style={{ height: '100%', width: '100%' }} pointerEvents={this.props.page.config.searchActive ? 'box-none' : 'none'}>
                                             <TouchableOpacity onPress={() => v.config.searchClosed!(true)} style={{ height: '100%', width: '100%' }}>
                                                 <View style={{ height: '100%', width: '100%' }}>
-                                                    <Text style={{ color: this.props.style.accentColor, fontSize: 17, height: 36, lineHeight: 36 }} allowFontScaling={false}>Cancel</Text>
+                                                    <Text style={{ color: this.props.style.accentColor, fontSize: 17, height: 36, lineHeight: 36 }} allowFontScaling={false}>{t('cancel', 'Cancel')}</Text>
                                                 </View>
                                             </TouchableOpacity>
                                         </View>
@@ -211,3 +213,10 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
         );
     }
 }
+
+export const HeaderTitleView = React.memo((props: HeaderTitleViewProps) => {
+    const { t } = useText();
+    return (
+        <HeaderTitleViewInner {...props} t={t} />
+    );
+});

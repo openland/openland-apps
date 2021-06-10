@@ -10,7 +10,6 @@ import com.openland.app.generated.BasePackageList;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.openland.lmdb.LMDB;
 import com.stripe.android.PaymentConfiguration;
 
 import cl.json.ShareApplication;

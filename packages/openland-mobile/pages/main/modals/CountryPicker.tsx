@@ -12,6 +12,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { CountryItem } from 'openland-y-utils/auth/constants';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { useText } from 'openland-mobile/text/useText';
 
 type GroupItem = {
     title: string;
@@ -22,6 +23,7 @@ type GroupItem = {
 export const CountryPickerComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const safeArea = React.useContext(ASSafeAreaContext);
+    const { t } = useText();
     const [query, setQuery] = React.useState('');
     const [keyboardHeight, setKeyboardHeight] = React.useState(0);
     const [countriesData, setCountriesData] = React.useState<GroupItem[] | null>(null);
@@ -78,7 +80,7 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title="Country" />
+            <SHeader title={t('country', 'Country')} />
             <ASSafeAreaView style={{ marginBottom: sortCountries && sortCountries.length === 0 ? 0 : 20, flexGrow: 1, flexDirection: 'column' }}>
                 <View style={{ alignItems: 'center', marginHorizontal: 16, marginTop: 8, marginBottom: 16 }}>
                     <View
@@ -94,7 +96,7 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                         <TextInput
                             value={query}
                             onChangeText={setQuery}
-                            placeholder="Search"
+                            placeholder={t('search', 'Search')}
                             allowFontScaling={false}
                             autoFocus={true}
                             keyboardAppearance={theme.keyboardAppearance}
@@ -141,13 +143,13 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                                             <View style={{ height: 16 }} />
                                         </>
                                     ) : (
-                                            <ZListItem
-                                                text={item.label}
-                                                description={item.value}
-                                                onPress={() => action(item)}
-                                                small={true}
-                                            />
-                                        )
+                                        <ZListItem
+                                            text={item.label}
+                                            description={item.value}
+                                            onPress={() => action(item)}
+                                            small={true}
+                                        />
+                                    )
                                 )}
                                 renderSectionHeader={({ section: { title } }) => (
                                     <View
@@ -218,7 +220,7 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                                             color: theme.foregroundTertiary,
                                         }}
                                     >
-                                        Nothing found
+                                        {t('nothingFound', 'Nothing found')}
                                     </Text>
                                 </View>
                             </View>

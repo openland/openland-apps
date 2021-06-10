@@ -1,5 +1,5 @@
 import { RecordSet } from '@openland/spacex/lib/web/store/RecordStore';
-import { PersistenceProvider } from '@openland/spacex';
+import { PersistenceProvider } from '@openland/spacex-web';
 import { KeyValueStore } from 'openland-y-utils/KeyValueStore';
 
 export function createPersistenceProvider(store: KeyValueStore): PersistenceProvider {

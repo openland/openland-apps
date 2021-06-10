@@ -6,6 +6,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { MessagesSearch_messagesSearch_edges_node } from 'openland-api/spacex.types';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { useText } from 'openland-mobile/text/useText';
 
 interface GlobalSearchMessageProps {
     item: MessagesSearch_messagesSearch_edges_node;
@@ -15,14 +16,15 @@ interface GlobalSearchMessageProps {
 export const GlobalSearchMessage = React.memo<GlobalSearchMessageProps>((props) => {
     const theme = React.useContext(ThemeContext);
     const messenger = getMessenger();
+    const { t } = useText();
     const { chat, message } = props.item;
     const isSavedMessages = chat.__typename === 'PrivateRoom' && chat.user.id === messenger.engine.user.id;
-    const title = isSavedMessages ? 'Saved messages' : (chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title);
+    const title = isSavedMessages ? t('savedMessages', 'Saved messages') : (chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title);
     const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
     const highlightGroup = chat.__typename === 'PrivateRoom' ? false : chat.kind === 'GROUP';
     const featured = chat.__typename === 'SharedRoom' && chat.featured;
     const date = parseInt(message.date, 10);
-    const sender = isSavedMessages ? '' : (message.sender.id === messenger.engine.user.id ? 'You' : message.sender.name) + ': ';
+    const sender = isSavedMessages ? '' : (message.sender.id === messenger.engine.user.id ? t('you', 'You') : message.sender.name) + ': ';
 
     return (
         <TouchableHighlight activeOpacity={1} underlayColor={theme.backgroundPrimaryActive} onPress={props.onPress}>

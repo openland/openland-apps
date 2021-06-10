@@ -24,6 +24,7 @@ import { ComponentRefContext } from '../main/Home';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SDeferred } from 'react-native-s/SDeferred';
+import { useText } from 'openland-mobile/text/useText';
 
 function showFilters(selected: 'voice' | 'explore', onSelect: (d: 'voice' | 'explore') => void) {
     const actionSheet = ActionSheet.builder();
@@ -49,9 +50,10 @@ function showFilters(selected: 'voice' | 'explore', onSelect: (d: 'voice' | 'exp
 
 const RoomFeedItem = React.memo((props: { room: VoiceChatShort, theme: ThemeGlobal, router: SRouter }) => {
     let { room, theme } = props;
+    let { t } = useText();
     let joinRoom = useJoinRoom();
     let speakers = room.speakers.slice(0, room.parentRoom ? 3 : 4);
-    let title = room.title?.trim() || 'Room';
+    let title = room.title?.trim() || t('room', 'Room');
     return (
         <TouchableOpacity style={{ paddingHorizontal: 16, paddingVertical: 8, backgroundColor: theme.backgroundPrimary }} activeOpacity={0.6} onPress={() => joinRoom(room.id)}>
             <Text
@@ -97,6 +99,7 @@ const RoomFeedItem = React.memo((props: { room: VoiceChatShort, theme: ThemeGlob
 
 const RoomsFeedPage = React.memo((props: PageProps) => {
     const client = useClient();
+    const { t } = useText();
     const [page, setPage] = React.useState<'voice' | 'explore'>('voice');
     const voiceChats = useVoiceChatsFeed();
     const theme = useTheme();
@@ -105,6 +108,7 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
     const joinRoom = useJoinRoom();
     const imgSrc = theme.type === 'Light' ? require('assets/art-crowd.png') : require('assets/art-crowd-dark.png');
+    const titleText = page === 'voice' ? t('rooms', 'Rooms') : t('discover', 'Discover');
 
     const pushRoom = React.useCallback(() => {
         router.push('CreateRoom');
@@ -121,16 +125,16 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
     return (
         <>
             <SHeader
-                title={page === 'voice' ? 'Rooms' : 'Discover'}
+                title={titleText}
                 titleAction={{
-                    title: page === 'voice' ? 'Rooms' : 'Discover',
+                    title: titleText,
                     active: true,
                     action: () => showFilters(page, setPage),
                 }}
             />
             {page === 'voice' && (
                 <>
-                    <SHeaderButton title="New room" onPress={pushRoom} />
+                    <SHeaderButton title={t('newRoom', 'New room')} onPress={pushRoom} />
                     <SFlatList
                         scrollRef={scrollRef}
                         data={voiceChats}
@@ -147,9 +151,13 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
                                 ) : null}
                                 <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginVertical: 16, alignItems: 'center' }}>
                                     <Image source={imgSrc} style={{ width: 240, height: 150 }} />
-                                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 16, marginBottom: 6 }} allowFontScaling={false}>Talk about anything!</Text>
-                                    <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 24 }} allowFontScaling={false}>Create a new room and invite friends!</Text>
-                                    <ZButton title="Start room" path="CreateRoom" />
+                                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 16, marginBottom: 6 }} allowFontScaling={false}>
+                                        {t('roomsFeedEmpty', 'Talk about anything!')}
+                                    </Text>
+                                    <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', marginBottom: 24 }} allowFontScaling={false}>
+                                        {t('roomsFeedEmptyDescription', 'Create a new room and invite friends!')}
+                                    </Text>
+                                    <ZButton title={t('startRoom', 'Start room')} path="CreateRoom" />
                                 </View>
                             </>
                         )}
@@ -160,7 +168,7 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
                 <>
                     <SHeaderButton />
                     <SSearchControler
-                        searchPlaceholder="Groups, communities, and more"
+                        searchPlaceholder={t('searchDiscover', 'Groups, communities, and more')}
                         searchRender={(p) => (
                             <GlobalSearch
                                 query={p.query}

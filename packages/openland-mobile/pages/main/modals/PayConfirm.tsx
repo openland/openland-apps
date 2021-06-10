@@ -12,6 +12,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { AddCardItem } from 'openland-mobile/pages/wallet/components/AddCardItem';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ModalProps } from 'react-native-fast-modal';
+import { t } from 'openland-mobile/text/useText';
 
 const ConfirmPaymentComponent = React.memo((props: PaymentProps & { ctx: ModalProps }) => {
     const client = useClient();
@@ -41,11 +42,15 @@ const ConfirmPaymentComponent = React.memo((props: PaymentProps & { ctx: ModalPr
             </View>}
             {props.productView}
             <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginBottom: 4, marginTop: 24 }}>{`${formatMoney(props.amount)} ${props.type === 'payment' ? '' : props.interval === WalletSubscriptionInterval.MONTH ? ' / mo.' : props.interval === WalletSubscriptionInterval.WEEK ? ' / w.' : ' / /?'}`}</Text>
-            {props.productDescription && <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>Amount</Text>}
+            {props.productDescription && <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>
+                {t('amount', 'Amount')}
+            </Text>}
 
             {(cards.length === 0) && (
                 <View style={{ marginTop: 24 }}>
-                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginBottom: 8 }}>Payment method</Text>
+                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginBottom: 8 }}>
+                        {t('paymentMethod', 'Payment method')}
+                    </Text>
                     <View style={{ marginHorizontal: -16 }}>
                         <AddCardItem
                             onPress={() => {
@@ -57,7 +62,7 @@ const ConfirmPaymentComponent = React.memo((props: PaymentProps & { ctx: ModalPr
                 </View>
             )}
             <View style={{ marginTop: cards.length === 0 ? 16 : 32 }}>
-                <ZButton enabled={cards.length !== 0} title="Confirm" action={onSubmit} style="primary" size="large" loading={loading} />
+                <ZButton enabled={cards.length !== 0} title={t('confirm', 'Confirm')} action={onSubmit} style="primary" size="large" loading={loading} />
             </View>
         </View >
     );
@@ -66,8 +71,8 @@ const ConfirmPaymentComponent = React.memo((props: PaymentProps & { ctx: ModalPr
 export const showCheckLock = (props: { onSuccess: () => void }) => {
     const builder = new AlertBlanketBuilder();
 
-    builder.title('Update payment method');
-    builder.message('Update payment method to complete previously failed transactions and enable new purchases');
+    builder.title(t('paymentMethodUpdate', 'Update payment method'));
+    builder.message(t('paymentMethodUpdateDescription', 'Update payment method to complete previously failed transactions and enable new purchases'));
 
     builder.view(
         <ThemeContext.Consumer>
@@ -91,8 +96,8 @@ export const showCheckLock = (props: { onSuccess: () => void }) => {
         </ThemeContext.Consumer>,
     );
 
-    builder.button('Cancel', 'cancel');
-    builder.button('Continue', 'default', () => props.onSuccess());
+    builder.button(t('cancel', 'Cancel'), 'cancel');
+    builder.button(t('continue', 'Continue'), 'default', () => props.onSuccess());
     builder.show();
 };
 
@@ -109,7 +114,7 @@ type PaymentProps = {
 export const showPayConfirm = (props: PaymentProps) => {
     const locked = getMessenger().engine.wallet.state.get().isLocked;
     if (!locked) {
-        showBottomSheet({ cancelable: false, view: (ctx) => <ConfirmPaymentComponent {...props} ctx={ctx} />, title: 'Payment' });
+        showBottomSheet({ cancelable: false, view: (ctx) => <ConfirmPaymentComponent {...props} ctx={ctx} />, title: t('payment', 'Payment') });
     } else {
         showCheckLock({ onSuccess: () => props.router.push('Wallet') });
     }

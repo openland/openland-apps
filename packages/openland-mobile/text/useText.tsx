@@ -1,12 +1,13 @@
 // import * as React from 'react';
-import { useTranslation as useTranslationLib, Trans } from 'react-i18next';
+import { useTranslation as useTranslationLib, Trans, } from 'react-i18next';
+import i18next from 'i18next';
 // import { LocalizedResources, LocalizedPluralsResources } from './schema.ts';
 
 export const useText = () => {
-    const { t, i18n, } = useTranslationLib();
+    const { t: tLib, i18n, } = useTranslationLib();
 
     return {
-        t,
+        t: tLib,
         Trans,
         lang: i18n.language,
         changeLanguage: async (lng: string) => {
@@ -14,6 +15,8 @@ export const useText = () => {
         }
     };
 };
+
+export const t = i18next.t.bind(i18next);
 
 export const capitalize = (s: string) =>
     s.charAt(0).toUpperCase() + s.slice(1);

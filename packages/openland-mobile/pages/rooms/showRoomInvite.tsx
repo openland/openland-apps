@@ -9,6 +9,7 @@ import { SharedRoomKind } from 'openland-api/spacex.types';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { t } from 'openland-mobile/text/useText';
 
 const RoomInviteContent = React.memo(
     (props: { theme: ThemeGlobal }) => {
@@ -85,13 +86,13 @@ const RoomInviteContent = React.memo(
                 <ZListItem
                     leftIcon={require('assets/ic-copy-24.png')}
                     onPress={handleCopy}
-                    text="Copy link"
+                    text={t('copyLink', 'Copy link')}
                     small={true}
                 />
                 <ZListItem
                     leftIcon={require('assets/ic-share-24.png')}
                     onPress={handleShare}
-                    text="Share link"
+                    text={t('shareLink', 'Share link')}
                     small={true}
                 />
             </View>
@@ -101,7 +102,7 @@ const RoomInviteContent = React.memo(
 export const showRoomInvite = ({ roomId, theme }: { roomId: string; theme: ThemeGlobal }) => {
     const builder = new ActionSheetBuilder();
     builder
-        .title('Invite friends')
+        .title(t('inviteFriends', 'Invite friends'))
         .view(() => (
             <RoomInviteContent theme={theme} />
         ))
