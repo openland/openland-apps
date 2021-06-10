@@ -105,6 +105,10 @@ type BlackListUpdatesState {
   state: String!
 }
 
+type CallStartedServiceMetadata {
+  speedOfLight: Int!
+}
+
 type CardSetupIntent {
   id: ID!
   clientSecret: String!
@@ -138,6 +142,10 @@ enum ChannelType {
   PERSONAL
   PUBLIC
   SECRET
+}
+
+type ChatCreatedServiceMetadata {
+  speedOfLight: Int!
 }
 
 type ChatLostAccess {
@@ -1460,6 +1468,10 @@ input MessageKeyboardInput {
   buttons: [[ModernMessageButtonInput!]]!
 }
 
+type MessagePinnedServiceMetadata {
+  message: ModernMessage!
+}
+
 type MessageReaction {
   user: User!
   reaction: String!
@@ -2434,6 +2446,10 @@ input PhonebookRecordInput {
   phones: [String!]!
 }
 
+type PhoneBookUserJoinedServiceMetadata {
+  user: User!
+}
+
 type PhotoChangeServiceMetadata {
   photo: String
   photoRef: ImageRef
@@ -3126,7 +3142,7 @@ type ServiceMessage implements ModernMessage {
   overrideName: String
 }
 
-union ServiceMetadata = InviteServiceMetadata | KickServiceMetadata | TitleChangeServiceMetadata | PhotoChangeServiceMetadata | PostRespondServiceMetadata
+union ServiceMetadata = InviteServiceMetadata | KickServiceMetadata | TitleChangeServiceMetadata | PhotoChangeServiceMetadata | PostRespondServiceMetadata | VoiceChatStartedServiceMetadata | VoiceChatEndedServiceMetadata | CallStartedServiceMetadata | MessagePinnedServiceMetadata | ChatCreatedServiceMetadata | PhoneBookUserJoinedServiceMetadata
 
 type Session {
   id: ID!
@@ -3842,6 +3858,12 @@ type VoiceChatConnection {
   cursor: String
 }
 
+type VoiceChatEndedServiceMetadata {
+  duration: Int!
+  membersCount: Int!
+  lastMember: User
+}
+
 union VoiceChatEvent = VoiceChatParticipantUpdatedEvent | VoiceChatUpdatedEvent
 
 type VoiceChatEventsContainer {
@@ -3896,6 +3918,10 @@ type VoiceChatPinnedMessage {
   id: ID!
   message: String
   spans: [MessageSpan!]!
+}
+
+type VoiceChatStartedServiceMetadata {
+  speedOfLight: Int
 }
 
 type VoiceChatUpdatedEvent {

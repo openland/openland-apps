@@ -11469,6 +11469,72 @@
         "possibleTypes": null
       },
       {
+        "kind": "UNION",
+        "name": "ServiceMetadata",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "InviteServiceMetadata",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "KickServiceMetadata",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "TitleChangeServiceMetadata",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "PhotoChangeServiceMetadata",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "PostRespondServiceMetadata",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "VoiceChatStartedServiceMetadata",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "VoiceChatEndedServiceMetadata",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "CallStartedServiceMetadata",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "MessagePinnedServiceMetadata",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "ChatCreatedServiceMetadata",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "PhoneBookUserJoinedServiceMetadata",
+            "ofType": null
+          }
+        ]
+      },
+      {
         "kind": "OBJECT",
         "name": "InviteServiceMetadata",
         "description": null,
@@ -11680,6 +11746,192 @@
         "possibleTypes": null
       },
       {
+        "kind": "OBJECT",
+        "name": "VoiceChatStartedServiceMetadata",
+        "description": null,
+        "fields": [
+          {
+            "name": "speedOfLight",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "VoiceChatEndedServiceMetadata",
+        "description": null,
+        "fields": [
+          {
+            "name": "duration",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "membersCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "lastMember",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CallStartedServiceMetadata",
+        "description": null,
+        "fields": [
+          {
+            "name": "speedOfLight",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "MessagePinnedServiceMetadata",
+        "description": null,
+        "fields": [
+          {
+            "name": "message",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "INTERFACE",
+                "name": "ModernMessage",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ChatCreatedServiceMetadata",
+        "description": null,
+        "fields": [
+          {
+            "name": "speedOfLight",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "PhoneBookUserJoinedServiceMetadata",
+        "description": null,
+        "fields": [
+          {
+            "name": "user",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "UNION",
         "name": "UrlAugmentationExtra",
         "description": null,
@@ -11875,42 +12127,6 @@
         "interfaces": [],
         "enumValues": null,
         "possibleTypes": null
-      },
-      {
-        "kind": "UNION",
-        "name": "ServiceMetadata",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": [
-          {
-            "kind": "OBJECT",
-            "name": "InviteServiceMetadata",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "KickServiceMetadata",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "TitleChangeServiceMetadata",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "PhotoChangeServiceMetadata",
-            "ofType": null
-          },
-          {
-            "kind": "OBJECT",
-            "name": "PostRespondServiceMetadata",
-            "ofType": null
-          }
-        ]
       },
       {
         "kind": "OBJECT",

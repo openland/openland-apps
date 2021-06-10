@@ -4,7 +4,7 @@ disableAll();
 disableTag('GraphQL-Direct');
 
 import { throwFatalError } from 'openland-y-utils/throwFatalError';
-import { WorkerInterface, WorkerHost } from '@openland/spacex';
+import { WorkerInterface, WorkerHost } from '@openland/spacex-web';
 // import { buildSpaceXPersistenceProvider } from './spacex.persistance.web';
 // import sha256 from 'crypto-js/sha256';
 // import { isElectronWorker } from '../openland-y-utils/isElectron';

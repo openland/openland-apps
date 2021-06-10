@@ -1,4 +1,4 @@
-import { WorkerInterface, WorkerEngine } from '@openland/spacex';
+import { WorkerInterface, WorkerEngine } from '@openland/spacex-web';
 
 const W = require('./spacex.worker');
 
