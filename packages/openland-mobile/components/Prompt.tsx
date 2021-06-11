@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { showBlanketModal } from './showBlanketModal';
 import { PromptComponent } from './PromptComponent';
+import { t } from 'openland-mobile/text/useText';
 
 type BlanketButtonsStyle = 'destructive' | 'cancel' | 'default';
 
@@ -31,8 +32,8 @@ export class PromptBuilder {
 
     show() {
         if (this._actions.length === 0) {
-            this._actions.push({ name: 'Cancel', style: 'cancel' });
-            this._actions.push({ name: 'Save', callback: this._callback });
+            this._actions.push({ name: t('cancel', 'Cancel'), style: 'cancel' });
+            this._actions.push({ name: t('save', 'Save'), callback: this._callback });
         }
 
         showBlanketModal((ctx) => {

@@ -264,7 +264,7 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
                             {t('findChats', 'Find the right chats for you')}
                         </Text>
                         <ZButton
-                            title="Start"
+                            title={t('start', 'Start')}
                             onPress={() => {
                                 props.router.push('Discover');
                             }}

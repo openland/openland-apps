@@ -130,6 +130,7 @@ const BuyPaidChatPassButton = (props: {
     router: SRouter;
 }) => {
     const client = useClient();
+    const { t } = useText();
     const [loading, setLoading] = React.useState(false);
     const buyPaidChatPass = React.useCallback(async () => {
         joinPaidGroup({
@@ -144,13 +145,26 @@ const BuyPaidChatPassButton = (props: {
         });
     }, []);
 
-    let buttonText = 'Join for ' + formatMoney(props.premiumSettings.price);
+    let buttonText;
+    let periodShort;
     if (props.premiumSettings.interval) {
         if (props.premiumSettings.interval === WalletSubscriptionInterval.WEEK) {
-            buttonText += ' / wk';
+            periodShort = t('periodShortWeek', 'wk');
         } else if (props.premiumSettings.interval === WalletSubscriptionInterval.MONTH) {
-            buttonText += ' / mo';
+            periodShort = t('periodShortMonth', 'mo');
         }
+    }
+    if (periodShort) {
+        buttonText = t('joinPaidChatWithPeriod', {
+            amount: formatMoney(props.premiumSettings.price),
+            periodShort,
+            defaultValue: 'Join for {{amount}} / {{periodShort}}',
+        });
+    } else {
+        buttonText = t('joinPaidChat', {
+            amount: formatMoney(props.premiumSettings.price),
+            defaultValue: 'Join for {{amount}}',
+        });
     }
 
     return (
@@ -165,7 +179,7 @@ const BuyPaidChatPassButton = (props: {
             {props.ownerId && (
                 <View style={{ marginTop: 16 }}>
                     <ZButton
-                        title="Get help"
+                        title={t('getHelp', 'Get help')}
                         onPress={() => props.router.push('Conversation', { id: props.ownerId })}
                         size="large"
                         style="secondary"

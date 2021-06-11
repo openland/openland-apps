@@ -8,13 +8,14 @@ import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { OthersUsersWrapper } from 'openland-mobile/messenger/components/content/OthersUsersWrapper';
+import { t } from 'openland-mobile/text/useText';
 
 const openLinkContextMenu = (link: string) => {
     let builder = new ActionSheetBuilder();
 
-    builder.action('Copy', () => Clipboard.setString(link), false, require('assets/ic-copy-24.png'));
-    builder.action('Share', () => Share.share({ message: link }), false, require('assets/ic-share-24.png'));
-    builder.action('Open', resolveInternalLink(link, async () => await Linking.openURL(link)), false, require('assets/ic-discover-24.png'));
+    builder.action(t('copy', 'Copy'), () => Clipboard.setString(link), false, require('assets/ic-copy-24.png'));
+    builder.action(t('share', 'Share'), () => Share.share({ message: link }), false, require('assets/ic-share-24.png'));
+    builder.action(t('open', 'Open'), resolveInternalLink(link, async () => await Linking.openURL(link)), false, require('assets/ic-discover-24.png'));
 
     builder.show(true);
 };

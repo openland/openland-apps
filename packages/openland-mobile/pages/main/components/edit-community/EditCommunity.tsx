@@ -14,13 +14,14 @@ import { PageProps } from 'openland-mobile/components/PageProps';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { withApp } from 'openland-mobile/components/withApp';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { plural } from 'openland-y-utils/plural';
+import { useText } from 'openland-mobile/text/useText';
 
 const Loader = Toast.loader();
 
 const EditCommunityComponent = React.memo((props: PageProps) => {
     const organizationId = props.router.params.id;
     const client = getClient();
+    const { t } = useText();
     const organization = getClient().useOrganization({ organizationId }, { fetchPolicy: 'network-only' }).organization;
     const profile = getClient().useOrganizationProfile({ organizationId }, { fetchPolicy: 'network-only' }).organizationProfile;
 
@@ -66,52 +67,52 @@ const EditCommunityComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title="Edit community" />
-            <SHeaderButton title="Save" onPress={handleSave} />
+            <SHeader title={t('editCommunity', 'Edit community')} />
+            <SHeaderButton title={t('save', 'Save')} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <ZListGroup header={null} alignItems="center">
                     <ZAvatarPicker size="xx-large" field={photoField} />
                 </ZListGroup>
 
-                <ZListGroup header="Info" headerMarginTop={0}>
+                <ZListGroup header={t('info', 'Info')} headerMarginTop={0}>
                     <ZInput
-                        placeholder="Name"
+                        placeholder={t('name', 'Name')}
                         field={nameField}
                     />
                     <ZInput
                         field={aboutField}
-                        placeholder="Description"
+                        placeholder={t('description', 'Description')}
                         multiline={true}
-                        description="Publicly describe this community for all to see see"
+                        description={t('communityDescription', 'Publicly describe this community for all to see')}
                     />
                     <ZSelect
-                        label="Type"
+                        label={t('type', 'Type')}
                         defaultValue={profile.private}
                         disabled={!organization.isOwner}
                         onChange={async (option: { label: string; value: boolean }) => {
                             await changeType(option.value);
                         }}
                         options={[
-                            { label: 'Private', value: true, icon: require('assets/ic-lock-24.png') },
-                            { label: 'Public', value: false, icon: require('assets/ic-invite-24.png') }
+                            { label: t('private', 'Private'), value: true, icon: require('assets/ic-lock-24.png') },
+                            { label: t('public', 'Public'), value: false, icon: require('assets/ic-invite-24.png') }
                         ]}
-                        description="Set by creator"
+                        description={t('communityTypeDescription', 'Set by creator')}
                     />
                 </ZListGroup>
 
-                <ZListGroup header="Settings" headerMarginTop={0}>
+                <ZListGroup header={t('settings', 'Settings')} headerMarginTop={0}>
                     <ZListItem
                         leftIcon={require('assets/ic-at-24.png')}
-                        text="Shortname"
+                        text={t('shortname', 'Shortname')}
                         small={true}
-                        description={profile.shortname ? profile.shortname : 'None'}
+                        description={profile.shortname ? profile.shortname : t('none', 'None')}
                         path="SetShortname"
                         pathParams={{ id: organization.id, isGroup: false }}
                     />
                     {organization.private && (
                         <ZListItem
                             leftIcon={require('assets/ic-user-add-24.png')}
-                            text="Members can invite people"
+                            text={t('communityPrivateDescription', 'Members can invite people')}
                             toggle={canInviteField.value}
                             onToggle={canInviteField.input.onChange}
                             small={true}
@@ -119,18 +120,20 @@ const EditCommunityComponent = React.memo((props: PageProps) => {
                     )}
                     <ZListItem
                         leftIcon={require('assets/ic-group-24.png')}
-                        text="Default groups"
+                        text={t('defaultGroups', 'Default groups')}
                         small={true}
-                        description={profile.autosubscribeRooms.length ? plural(profile.autosubscribeRooms.length, ['group', 'groups']) : 'None'}
+                        description={profile.autosubscribeRooms.length
+                            ? `${profile.autosubscribeRooms.length} ${t('group', { count: profile.autosubscribeRooms.length, defaultValue: 'group' })}`
+                            : t('none', 'None')}
                         path="EditCommunityDefaultGroups"
                         pathParams={{ id: organization.id }}
                     />
                     {organization.private && (
                         <ZListItem
                             leftIcon={require('assets/ic-link-24.png')}
-                            text="Apply link"
+                            text={t('applyLink', 'Apply link')}
                             small={true}
-                            description={profile.applyLinkEnabled ? 'On' : 'Off'}
+                            description={profile.applyLinkEnabled ? t('on', 'On') : t('off', 'Off')}
                             path="EditCommunityApplyLink"
                             pathParams={{ id: organization.id }}
                         />

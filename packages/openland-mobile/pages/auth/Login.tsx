@@ -85,6 +85,7 @@ interface ButtonProps {
 }
 
 const Buttons = React.memo((props: ButtonProps) => {
+    const { t } = useText();
     const isIos = Platform.OS === 'ios';
     const isXGen = isIos && Dimensions.get('window').height > 800;
     const isPad = !!(Platform.OS === 'ios' && (Platform as any).isPad);
@@ -92,10 +93,15 @@ const Buttons = React.memo((props: ButtonProps) => {
 
     return (
         <View style={[styles.buttons, { paddingBottom: isIos && !isPad ? defaultIosPadding : 16 }]}>
-            <ZButton title="Continue with phone" onPress={props.onPhonePress} loading={props.phoneLoading} size="large" />
+            <ZButton
+                title={t('continueWithPhone', 'Continue with phone')}
+                onPress={props.onPhonePress}
+                loading={props.phoneLoading}
+                size="large"
+            />
             <View style={{ height: 16 }} />
             <ZButton
-                title="Continue with email"
+                title={t('continueWithEmail', 'Continue with email')}
                 onPress={props.onMailPress}
                 style="secondary"
                 size="large"

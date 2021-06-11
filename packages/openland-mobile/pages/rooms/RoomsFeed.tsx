@@ -26,11 +26,11 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { useText } from 'openland-mobile/text/useText';
 
-function showFilters(selected: 'voice' | 'explore', onSelect: (d: 'voice' | 'explore') => void) {
+function showFilters(selected: 'voice' | 'explore', onSelect: (d: 'voice' | 'explore') => void, t: any) {
     const actionSheet = ActionSheet.builder();
     actionSheet.cancelable(false);
     actionSheet.action(
-        'Rooms',
+        t('rooms', 'Rooms'),
         () => onSelect('voice'),
         false,
         require('assets/ic-room-24.png'),
@@ -38,7 +38,7 @@ function showFilters(selected: 'voice' | 'explore', onSelect: (d: 'voice' | 'exp
         selected === 'voice',
     );
     actionSheet.action(
-        'Discover',
+        t('discover', 'Discover'),
         () => onSelect('explore'),
         false,
         require('assets/ic-discover-24.png'),
@@ -129,7 +129,7 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
                 titleAction={{
                     title: titleText,
                     active: true,
-                    action: () => showFilters(page, setPage),
+                    action: () => showFilters(page, setPage, t),
                 }}
             />
             {page === 'voice' && (

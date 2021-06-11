@@ -3,6 +3,7 @@ import { ZListGroup, ZListGroupProps } from 'openland-mobile/components/ZListGro
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { View } from 'react-native';
 import { SRouterContext } from 'react-native-s/SRouterContext';
+import { useText } from 'openland-mobile/text/useText';
 
 interface ProfileDonationGroupProps extends ZListGroupProps {
     name: string;
@@ -13,10 +14,11 @@ interface ProfileDonationGroupProps extends ZListGroupProps {
 
 export const ProfileDonationGroup = (props: ProfileDonationGroupProps) => {
     let router = React.useContext(SRouterContext)!;
+    let { t } = useText();
     let { name, userId, chatId, shouldHide } = props;
 
     return !shouldHide ? (
-        <ZListGroup header="Make donation">
+        <ZListGroup header={t('makeDonation', 'Make donation')}>
             <View style={{ paddingHorizontal: 16, marginTop: 8, flexDirection: 'row' }}>
                 {[1, 3, 5].map(price => (
                     <View style={{ marginRight: 8 }}>
@@ -27,7 +29,7 @@ export const ProfileDonationGroup = (props: ProfileDonationGroupProps) => {
                         />
                     </View>
                 ))}
-                <ZButton title="Other" style="secondary" onPress={() => router.push('Donation', { name, chatId, userId })} />
+                <ZButton title={t('other', 'Other')} style="secondary" onPress={() => router.push('Donation', { name, chatId, userId })} />
             </View>
         </ZListGroup>
     ) : null;

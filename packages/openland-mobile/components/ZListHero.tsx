@@ -3,8 +3,7 @@ import { View, Text, StyleSheet, TextStyle, ViewStyle, Image, Dimensions } from 
 import { ZButton } from './ZButton';
 import { XPAvatarWithPreview } from './XPAvatarWithPreview';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
-import { ZReach } from './ZReach';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZListItemBase } from './ZListItemBase';
 
 const styles = StyleSheet.create({
@@ -67,10 +66,6 @@ export interface ZListHeroProps {
         path?: string;
         onPress?: () => void;
     };
-    score?: {
-        value: number;
-        onPress?: () => void;
-    };
     path?: string;
     pathParams?: any;
     verticalMargin?: 'both' | 'bottom';
@@ -78,7 +73,7 @@ export interface ZListHeroProps {
 
 export const ZListHero = React.memo<ZListHeroProps>((props) => {
     const theme = React.useContext(ThemeContext);
-    const { photo, id, title, titleIcon, titleIconElement, titleIconRightElement, titleColor, subtitle, subtitleColor, action, score, path, pathParams, verticalMargin = 'both' } = props;
+    const { photo, id, title, titleIcon, titleIconElement, titleIconRightElement, titleColor, subtitle, subtitleColor, action, path, pathParams, verticalMargin = 'both' } = props;
     const colorTitle = titleColor ? titleColor : theme.foregroundPrimary;
     const colorSubtitle = subtitleColor ? subtitleColor : theme.foregroundTertiary;
     const wrapperStyles = verticalMargin === 'both' ? styles.wrapper : styles.wrapperBottomed;
@@ -87,13 +82,6 @@ export const ZListHero = React.memo<ZListHeroProps>((props) => {
         <View style={styles.container}>
             <View style={styles.avatar}>
                 <XPAvatarWithPreview size="x-large" photo={photo} id={id} title={title} />
-                {score && (
-                    <View style={{ position: 'absolute', bottom: -7, left: 0, right: 0, alignItems: 'center' }}>
-                        <View style={{ borderWidth: 3, borderColor: theme.backgroundPrimary, borderRadius: RadiusStyles.Large }}>
-                            <ZReach value={score.value} onPress={score.onPress} />
-                        </View>
-                    </View>
-                )}
             </View>
             <View style={styles.body}>
                 <View style={[styles.header, { justifyContent: !action ? 'center' : undefined }]}>

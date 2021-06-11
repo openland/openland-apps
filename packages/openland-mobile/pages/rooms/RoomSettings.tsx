@@ -221,10 +221,10 @@ const MonetizationModal = React.memo((props: MonetizationModalProps & { hide: ()
             ) : null}
             <View style={{ flexDirection: 'row', flex: 1, marginHorizontal: 16 }}>
                 <View style={{ flex: 1, marginRight: 16 }}>
-                    <ZButton style="secondary" size="large" title="Cancel" onPress={onCancel} />
+                    <ZButton style="secondary" size="large" title={t('cancel', 'Cancel')} onPress={onCancel} />
                 </View>
                 <View style={{ flex: 1 }}>
-                    <ZButton size="large" title="Save" action={onConfirm} />
+                    <ZButton size="large" title={t('save', 'Save')} action={onConfirm} />
                 </View>
             </View>
         </KeyboardHandlerContainer>

@@ -26,7 +26,7 @@ export const ZShowMoreText = React.memo<ZShowMoreProps>((props) => {
 
     const handleLongPress = React.useCallback(() => {
         ActionSheet.builder()
-            .action('Copy', () => {
+            .action(t('copy', 'Copy'), () => {
                 Clipboard.setString(text);
                 Toast.showCopied();
             }, undefined, require('assets/ic-copy-24.png'))

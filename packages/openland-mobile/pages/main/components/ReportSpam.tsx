@@ -11,24 +11,25 @@ import Toast from 'openland-mobile/components/Toast';
 import { useField } from 'openland-form/useField';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { CheckListBoxWraper } from '../modals/UserMultiplePicker';
-
-const ReportSpamOptions = [
-    'Spam',
-    'Offensive behaviour',
-    'Harmful content',
-    'Clone of my profile',
-    'Other',
-];
+import { useText } from 'openland-mobile/text/useText';
 
 const ReportSpamComponent = React.memo((props: PageProps) => {
     const client = getClient();
     const form = useForm();
+    const { t } = useText();
+    const ReportSpamOptions = {
+        'Spam': t('reportsSpam', 'Spam'),
+        'Offensive behaviour': t('reportsOffensive', 'Offensive behaviour'),
+        'Harmful content': t('reportsHarmful', 'Harmful content'),
+        'Clone of my profile': t('reportsClone', 'Clone of my profile'),
+        'Other': t('reportsOther', 'Other'),
+    };
     const [selected, setSelected] = React.useState('Spam');
     const userId = props.router.params.userId;
 
     const otherMessageField = useField('otherMessage', '', form, [
         {
-            text: 'Your description should be less than 120 characters',
+            text: t('validationDescriptionMaxChars', { num: 120, defaultValue: 'Your description should be less than {{num}} characters' }),
             checkIsValid: (value) => value?.length < 120
         },
     ]);
@@ -43,30 +44,30 @@ const ReportSpamComponent = React.memo((props: PageProps) => {
                     type: selected,
                     message: otherMessageField.value,
                 });
-                Toast.success({ duration: 1000, text: 'Report sent' }).show();
+                Toast.success({ duration: 1000, text: t('reportSent', 'Report sent') }).show();
                 props.router.back();
             } catch (e) {
-                Toast.failure({ text: 'Something went wrong', duration: 1000 });
+                Toast.failure({ text: t('errorAbstract', 'Something went wrong'), duration: 1000 });
             }
         });
     };
 
     return (
         <>
-            <SHeader title="Report" />
+            <SHeader title={t('report', 'Report')} />
             <SHeaderButton
-                title="Send"
+                title={t('send', 'Send')}
                 onPress={handleSend}
                 key={`report-${validMessage}`}
                 disabled={!validMessage}
             />
             <KeyboardAvoidingScrollView>
-                {ReportSpamOptions.map((option) => (
+                {Object.entries(ReportSpamOptions).map(([option, text]) => (
                     <CheckListBoxWraper isRadio={true} checked={selected === option}>
-                        <ZListItem text={option} onPress={() => setSelected(option)} />
+                        <ZListItem text={text} onPress={() => setSelected(option)} />
                     </CheckListBoxWraper>
                 ))}
-                <ZInput placeholder="Add details (optional)" field={otherMessageField} style={{ marginTop: 16 }} />
+                <ZInput placeholder={t('addDetailsOptional', 'Add details (optional)')} field={otherMessageField} style={{ marginTop: 16 }} />
             </KeyboardAvoidingScrollView>
         </>
     );

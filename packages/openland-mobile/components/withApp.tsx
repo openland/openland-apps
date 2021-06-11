@@ -20,7 +20,7 @@ function PageError(props: { refresh: () => void }) {
     return (
         <>
             <HeaderConfigRegistrator config={{ appearance: 'small' }} />
-            <SHeader title="Error" />
+            <SHeader title={t('error', 'Error')} />
             <ASSafeAreaView style={{ flexGrow: 1, alignContent: 'center', justifyContent: 'center' }}>
                 <View style={{ alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32, paddingVertical: 16 }}>
                     <Image source={require('assets/art-error.png')} style={{ width: 240, height: 150, marginBottom: 4 }} />

@@ -222,7 +222,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                 isBanned ? require('assets/ic-unblock-24.png') : require('assets/ic-block-24.png'),
             );
             builder.action(
-                t('reportSpam', 'Report spam'),
+                t('reportSpamTitle', 'Report spam'),
                 () => Modals.showReportSpam({ router, userId }),
                 false,
                 require('assets/ic-flag-24.png'),

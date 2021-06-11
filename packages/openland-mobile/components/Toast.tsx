@@ -13,6 +13,7 @@ import { ZModalController } from './ZModal';
 import { LoaderSpinner } from './LoaderSpinner';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { t } from 'openland-mobile/text/useText';
 
 const styles = StyleSheet.create({
     modalWrapper: {
@@ -161,11 +162,11 @@ function showSuccess(text: string) {
 }
 
 function showCopied() {
-    success({ text: 'Copied', duration: 1000 }).show();
+    success({ text: t('copied', 'Copied'), duration: 1000 }).show();
 }
 
 function showCopiedLink() {
-    success({ text: 'Link copied', duration: 1000 }).show();
+    success({ text: t('linkCopied', 'Link copied'), duration: 1000 }).show();
 }
 
 const handle = async (

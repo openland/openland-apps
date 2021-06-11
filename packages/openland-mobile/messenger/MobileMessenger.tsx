@@ -399,7 +399,7 @@ export class MobileMessenger {
                 loader.show();
                 await this.engine.client.mutateMessageSetDonationReaction({ messageId: message.id! });
                 loader.hide();
-                Toast.success({ text: 'You’ve donated $1', duration: 1000 }).show();
+                Toast.success({ text: t('premiumReactionDonated', 'You’ve donated $1'), duration: 1000 }).show();
             } catch (e) {
                 loader.hide();
                 if (this.engine.wallet.state.get().isLocked) {

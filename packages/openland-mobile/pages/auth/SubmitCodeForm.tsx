@@ -134,6 +134,7 @@ interface SubmitCodeFormProps {
 export const SubmitCodeForm = React.memo((props: SubmitCodeFormProps) => {
     const { photoSrc, photoCrop, title, buttonTitle, formData, profileExists, avatarPlaceholder, onSubmit, onResend } = props;
     const shakerRef = React.useRef<{ shake: () => void }>(null);
+    const { t } = useText();
     const codeRefs = React.useRef<React.RefObject<TextInput>[]>(
         new Array(6).fill(undefined).map(() => React.createRef())
     );
@@ -235,7 +236,7 @@ export const SubmitCodeForm = React.memo((props: SubmitCodeFormProps) => {
                 subtitle={<AuthCodeHeader resendCode={resendCode} formData={formData} />}
                 floatContent={
                     <ZButton
-                        title={buttonTitle || 'Next'}
+                        title={buttonTitle || t('next', 'Next')}
                         size="large"
                         onPress={submitForm}
                         loading={loading}
