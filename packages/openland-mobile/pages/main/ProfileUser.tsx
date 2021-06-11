@@ -209,7 +209,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
             }
             if (profileType === 'user') {
                 builder.action(
-                    inContacts ? t('removeContact', 'Remove from contacts') : t('saveContact', 'Save to contacts'),
+                    inContacts ? t('contactsRemove', 'Remove from contacts') : t('contactsSave', 'Save to contacts'),
                     handleContactPress,
                     false,
                     inContacts ? require('assets/ic-user-remove-24.png') : require('assets/ic-user-add-24.png'),

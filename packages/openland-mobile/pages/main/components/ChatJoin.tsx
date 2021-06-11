@@ -195,7 +195,6 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
         featured,
     } = room;
     const { t } = useText();
-    // const typeStr = isChannel ? t('channel', 'channel') : t('group', 'group');
     const paddingBottom = Platform.OS === 'ios' ? area.bottom || 16 : area.bottom + 16;
 
     const avatars = previewMembers
@@ -275,7 +274,9 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
     let button = (
         <View style={styles.buttonWrapper}>
             <ZButton
-                title={isChannel ? t('joinChannel', 'Join channel') : t('joinGroup', 'Join group')}
+                title={isChannel
+                    ? t('joinChannel', 'Join channel')
+                    : t('joinGroup', 'Join group')}
                 size="large"
                 loading={loading}
                 onPress={handleButtonPress}

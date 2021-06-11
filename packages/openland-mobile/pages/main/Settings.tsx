@@ -19,6 +19,7 @@ import { ComponentRefContext } from './Home';
 import { rateApp } from './modals/RateApp';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
+import { useText } from 'openland-mobile/text/useText';
 
 export const handleGlobalInvitePress = async () => {
     const loader = Toast.loader();
@@ -45,15 +46,16 @@ const SettingsContent = ((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const client = getClient();
     const messenger = getMessenger();
+    const { t } = useText();
     const me = messenger.engine.user;
 
     const wallet = getClient().useMyWallet({ suspense: false });
     const handleSignOut = React.useCallback(() => {
         AlertBlanket.builder()
-            .title('Sign out from app')
-            .message('Are you sure you want to sign out?')
-            .button('Cancel', 'cancel')
-            .action('Yes, I am sure', 'destructive', async () => {
+            .title(t('signOutFromApp', 'Sign out from app'))
+            .message(t('signOutDescription', 'Are you sure you want to sign out?'))
+            .button(t('cancel', 'Cancel'), 'cancel')
+            .action(t('yesSure', 'Yes, I am sure'), 'destructive', async () => {
                 await client.mutateOnLogout();
                 await logout();
             })
@@ -89,54 +91,54 @@ const SettingsContent = ((props: PageProps) => {
             <ZListItem
                 leftIconColor={theme.tintPurple}
                 leftIcon={require('assets/ic-edit-glyph-24.png')}
-                text="Edit profile"
+                text={t('editProfile', 'Edit profile')}
                 path="SettingsProfile"
             />
             <ZListItem
                 leftIconColor={theme.tintOrange}
                 leftIcon={require('assets/ic-invite-glyph-24.png')}
-                text="Invite friends"
+                text={t('inviteFriends', 'Invite friends')}
                 onPress={handleGlobalInvitePress}
             />
             <ZListItem
                 leftIconColor={theme.tintCyan}
                 leftIcon={require('assets/ic-community-glyph-24.png')}
-                text="Communities"
+                text={t('community_plural', 'Communities')}
                 path="SettingsCommunities"
             />
 
-            <ZListGroup header="Preferences">
+            <ZListGroup header={t('preferences', 'Preferences')}>
                 <ZListItem
                     leftIconColor={theme.tintGrey}
                     leftIcon={require('assets/ic-access-glyph-24.png')}
-                    text="Account and privacy"
+                    text={t('accountPrivacy', 'Account and privacy')}
                     path="SettingsPrivacy"
                 />
                 <ZListItem
                     leftIconColor={theme.tintBlue}
                     leftIcon={require('assets/ic-notifications-glyph-24.png')}
-                    text="Notifications"
+                    text={t('notifications', 'Notifications')}
                     path="SettingsNotifications"
                 />
                 <ZListItem
                     leftIconColor={theme.tintGreen}
                     leftIcon={require('assets/ic-mail-glyph-24.png')}
-                    text="Email preferences"
+                    text={t('emailPreferences', 'Email preferences')}
                     path="SettingsEmail"
                 />
                 <ZListItem
                     leftIconColor={theme.tintRed}
                     leftIcon={require('assets/ic-appearance-glyph-24.png')}
-                    text="Appearance"
+                    text={t('appearance', 'Appearance')}
                     path="SettingsAppearance"
                 />
             </ZListGroup>
 
-            <ZListGroup header="Billing">
+            <ZListGroup header={t('billing', 'Billing')}>
                 <ZListItem
                     leftIconColor={theme.tintPurple}
                     leftIcon={require('assets/ic-wallet-glyph-24.png')}
-                    text="Wallet"
+                    text={t('wallet', 'Wallet')}
                     path="Wallet"
                     rightElement={wallet && wallet.myWallet.isLocked ? (
                         <ZCounter theme={theme} value={wallet.myWallet.failingPaymentsCount} size="medium" />
@@ -145,7 +147,7 @@ const SettingsContent = ((props: PageProps) => {
                 <ZListItem
                     leftIconColor={theme.tintPink}
                     leftIcon={require('assets/ic-subscriptions-glyph-24.png')}
-                    text="Subscriptions"
+                    text={t('subscriptions', 'Subscriptions')}
                     path="Subscriptions"
                 />
             </ZListGroup>
@@ -154,34 +156,34 @@ const SettingsContent = ((props: PageProps) => {
                 <ZListItem
                     leftIconColor={theme.tintOrange}
                     leftIcon={require('assets/ic-star-glyph-24.png')}
-                    text="Rate the app"
+                    text={t('rateApp', 'Rate the app')}
                     onPress={() => rateApp({ preferInApp: false })}
                 />
                 <ZListItem
                     leftIconColor={theme.tintGreen}
                     leftIcon={require('assets/ic-read-glyph-24.png')}
-                    text="User guide"
+                    text={t('userGuide', 'User guide')}
                     onPress={() => Linking.openURL('https://notion.so/openland/Openland-User-Guide-2af553fb409a42c296651e708d5561f3')}
                 />
                 <ZListItem
                     leftIconColor={theme.tintCyan}
                     leftIcon={require('assets/ic-help-glyph-24.png')}
-                    text="Help and feedback"
+                    text={t('helpAndFeedback', 'Help and feedback')}
                     onPress={() => props.router.push('Conversation', { flexibleId: '9KkDvyowQgcYAn0WvYgXFrdqAp' })}
                 />
                 <ZListItem
                     leftIconColor={theme.tintBlue}
                     leftIcon={require('assets/ic-info-glyph-24.png')}
-                    text="About us"
+                    text={t('aboutUs', 'About us')}
                     path="SettingsAbout"
                 />
             </ZListGroup>
 
-            <ZListGroup header="Other">
+            <ZListGroup header={t('other', 'Other')}>
                 <ZListItem
                     leftIconColor={theme.tintGrey}
                     leftIcon={require('assets/ic-leave-glyph-24.png')}
-                    text="Sign out"
+                    text={t('signOut', 'Sign out')}
                     onPress={handleSignOut}
                 />
             </ZListGroup>
@@ -197,17 +199,15 @@ const SettingsContent = ((props: PageProps) => {
     );
 });
 
-class SettingsComponent extends React.Component<PageProps> {
-
-    render() {
-        return (
-            <>
-                <SHeader title="Settings" />
-                <SettingsContent {...this.props} />
-            </>
-        );
-    }
-}
+const SettingsComponent = React.memo((props: PageProps) => {
+    const { t } = useText();
+    return (
+        <>
+            <SHeader title={t('settings', 'Settings')} />
+            <SettingsContent {...props} />
+        </>
+    );
+});
 
 export const Settings = withApp(SettingsComponent);
 Settings.displayName = 'Settings';

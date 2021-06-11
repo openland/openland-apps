@@ -23,12 +23,13 @@ import { SRouter } from 'react-native-s/SRouter';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 import { trackEvent } from 'openland-mobile/analytics';
 import { View } from 'react-native';
+import { t } from 'openland-mobile/text/useText';
 
 const showMembersModal = (router: SRouter, res: RoomCreate) => {
     Modals.showUserMuptiplePicker(
         router,
         {
-            title: 'Add',
+            title: t('add', 'Add'),
             action: async (users) => {
                 const loader = Toast.loader();
                 loader.show();
@@ -48,14 +49,14 @@ const showMembersModal = (router: SRouter, res: RoomCreate) => {
                 loader.hide();
             },
 
-            titleEmpty: 'Skip',
+            titleEmpty: t('skip', 'Skip'),
             actionEmpty: () => {
                 router.pushAndReset('Conversation', { id: res.room.id });
             },
         },
         res.room.id,
         true,
-        'Add people',
+        t('addPeople', 'Add people'),
         // [],
         // [getMessenger().engine.user.id],
         {
@@ -111,24 +112,24 @@ export const GroupPriceSettings = React.memo((props: GroupPriceSettings) => {
     return (
         <>
             <ZSelect
-                label="Payments"
-                modalTitle="Payments"
+                label={t('payments', 'Payments')}
+                modalTitle={t('payments', 'Payments')}
                 field={distributionField}
                 options={[
                     {
                         value: DistributionType.FREE,
-                        label: 'Free',
-                        subtitle: 'Members join for free',
+                        label: t('createGroupFree', 'Free'),
+                        subtitle: t('createGroupFreeDescription', 'Members join for free'),
                     },
                     {
                         value: DistributionType.PAID,
-                        label: 'One-time payment',
-                        subtitle: 'Members pay once to join',
+                        label: t('createGroupPaid', 'One-time payment'),
+                        subtitle: t('createGroupPaidDescription', 'Members pay once to join'),
                     },
                     {
                         value: DistributionType.SUBSCRIPTION,
-                        label: 'Subscription',
-                        subtitle: 'Recurrent membership fee',
+                        label: t('createGroupSubscription', 'Subscription'),
+                        subtitle: t('createGroupSubscriptionDescription', 'Recurrent membership fee'),
                     },
                 ]}
             />
@@ -151,7 +152,7 @@ export const GroupPriceSettings = React.memo((props: GroupPriceSettings) => {
                             }}
                         >
                             <ZInput
-                                placeholder="Price"
+                                placeholder={t('price', 'Price')}
                                 prefix="$"
                                 field={priceField}
                                 keyboardType="numeric"
@@ -162,17 +163,17 @@ export const GroupPriceSettings = React.memo((props: GroupPriceSettings) => {
                             <View style={{ flexGrow: 1, flexShrink: 0, flexBasis: 0, marginLeft: 8 }}>
                                 <ZSelect
                                     noWrapper={true}
-                                    label="Period"
-                                    modalTitle="Period"
+                                    label={t('period', 'Period')}
+                                    modalTitle={t('period', 'Period')}
                                     field={intervalField}
                                     options={[
                                         {
                                             value: WalletSubscriptionInterval.WEEK,
-                                            label: 'Week',
+                                            label: t('week', 'Week'),
                                         },
                                         {
                                             value: WalletSubscriptionInterval.MONTH,
-                                            label: 'Month',
+                                            label: t('month', 'Month'),
                                         },
                                     ]}
                                 />
@@ -188,7 +189,6 @@ export const GroupPriceSettings = React.memo((props: GroupPriceSettings) => {
 const CreateGroupComponent = React.memo((props: PageProps) => {
     const isChannel = !!props.router.params.isChannel;
     const orgIdFromRouter = props.router.params.organizationId;
-    const chatTypeString = isChannel ? 'Channel' : 'Group';
 
     const form = useForm();
     const photoField = useField('photoRef', null, form);
@@ -204,19 +204,19 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
             checkIsValid: (x) => {
                 return /^[0-9]*$/.test(x);
             },
-            text: 'Numbers only',
+            text: t('validationNumbersOnly', 'Numbers only'),
         },
         {
             checkIsValid: (x) => {
                 return Number(x) <= 1000;
             },
-            text: '$1000 maximum',
+            text: t('validationAmountMax', { amount: 1000, defaultValue: '${{amount}} maximum' }),
         },
         {
             checkIsValid: (x) => {
                 return Number(x) >= 1;
             },
-            text: '$1 minimum',
+            text: t('validationAmountMin', { amount: 1, defaultValue: '${{amount}} minimum' }),
         },
     ]);
     const intervalField = useField<WalletSubscriptionInterval | null>('interval', null, form);
@@ -237,16 +237,16 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
     const handleSave = () => {
         if (titleField.value === '') {
             Alert.builder()
-                .title(`Please enter a name for this ${chatTypeString.toLowerCase()}`)
-                .button('Got it!')
+                .title(t('validationEnterName', 'Please enter a name'))
+                .button(t('gotIt', 'Got it!'))
                 .show();
             return;
         }
 
         if (priceField.input.invalid) {
             Alert.builder()
-                .title(`Please enter a valid price for this ${chatTypeString.toLowerCase()}`)
-                .button('Got it!')
+                .title(t('validationEnterPrice', 'Please enter a valid price'))
+                .button(t('gotIt', 'Got it!'))
                 .show();
             return;
         }
@@ -281,14 +281,14 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title={`New ${chatTypeString.toLowerCase()}`} />
-            <SHeaderButton title="Next" onPress={handleSave} />
+            <SHeader title={isChannel ? t('newChannel', 'New channel') : t('newGroup', 'New group')} />
+            <SHeaderButton title={t('next', 'Next')} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <ZListGroup header={null} alignItems="center">
                     <ZAvatarPicker size="xx-large" field={photoField} />
                 </ZListGroup>
                 <ZListGroup header={null}>
-                    <ZInput placeholder="Name" field={titleField} autoFocus={true} />
+                    <ZInput placeholder={t('name', 'Name')} field={titleField} autoFocus={true} />
                     <GroupPriceSettings
                         distributionField={distributionField}
                         priceField={priceField}
@@ -296,18 +296,18 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                     />
                     {!orgIdFromRouter && (
                         <ZSelect
-                            label="Visibility"
-                            modalTitle="Visibility"
+                            label={t('visibility', 'Visibility')}
+                            modalTitle={t('visibility', 'Visibility')}
                             field={kindField}
                             options={[
                                 {
-                                    label: 'Public',
-                                    subtitle: 'Visible in group search',
+                                    label: t('visibilityPublic', 'Public'),
+                                    subtitle: t('visibilityPublicDescription', 'Visible in group search'),
                                     value: SharedRoomKind.PUBLIC,
                                 },
                                 {
-                                    label: 'Secret',
-                                    subtitle: 'Only people with invite link can see it',
+                                    label: t('visibilitySecret', 'Secret'),
+                                    subtitle: t('visibilitySecretDescription', 'Only people with invite link can see it'),
                                     value: SharedRoomKind.GROUP,
                                 },
                             ]}

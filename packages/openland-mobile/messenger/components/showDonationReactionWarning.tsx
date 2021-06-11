@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { View, Image } from 'react-native';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { t } from 'openland-mobile/text/useText';
 
 export const showDonationReactionWarning = async () => {
     return new Promise((resolve, reject) => {
         const builder = new AlertBlanketBuilder();
 
-        builder.title('Premium reaction');
+        builder.title(t('warningPremiumReaction', 'Premium reaction'));
         // android doesn't support line separator
-        builder.message(`Express your support with a\u00a0donation\u00a0to\u00a0the\u00a0author`);
+        builder.message(t('warningPremiumReactionDescription', `Express your support with a\u00a0donation\u00a0to\u00a0the\u00a0author`));
 
         builder.view(
             <View style={{ marginBottom: 24, paddingTop: 8 }}>
@@ -24,8 +25,8 @@ export const showDonationReactionWarning = async () => {
             </View>
         );
 
-        builder.button('Cancel', 'cancel', reject);
-        builder.button('Donate $1', 'pay', resolve);
+        builder.button(t('cancel', 'Cancel'), 'cancel', reject);
+        builder.button(t('donatePremiumReaction', 'Donate $1'), 'pay', resolve);
         builder.onCancel(reject);
         builder.show();
     });

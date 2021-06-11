@@ -26,8 +26,8 @@ import { parsePhoneNumberFromString, formatIncompletePhoneNumber, CountryCode } 
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { SRouter } from 'react-native-s/SRouter';
 import { validateEmail } from 'openland-y-utils/validateEmail';
+import { t } from 'openland-mobile/text/useText';
 
-const INVALID_COUNTRY = 'Select country';
 const SPACE_REGEX = /\s/g;
 const US_LABEL = 'United States';
 const RUSSIA_LABEL = 'Russia';
@@ -46,9 +46,9 @@ const showConfirmModal = ({ phone }: { phone: string }): Promise<boolean> => {
     return new Promise((resolve) => {
         const builder = new AlertBlanketBuilder();
         builder.title(`${phone}?`);
-        builder.message('Is this phone number correct?');
-        builder.button('Change', 'cancel', () => resolve(false));
-        builder.button('Confirm', 'default', () => resolve(true));
+        builder.message(t('loginPhoneConfirm', 'Is this phone number correct?'));
+        builder.button(t('change', 'Change'), 'cancel', () => resolve(false));
+        builder.button(t('confirm', 'Confirm'), 'default', () => resolve(true));
         builder.onCancel(() => resolve(false));
         builder.show();
     });
@@ -235,7 +235,7 @@ export const SubmitLoginForm = React.memo((props: SubmitLoginFormProps) => {
                 }
             }
         } else {
-            userCodeField.input.onChange({ value: v, label: INVALID_COUNTRY, shortname: '' });
+            userCodeField.input.onChange({ value: v, label: t('selectCountry', 'Select country'), shortname: '' });
         }
     };
 
@@ -275,7 +275,7 @@ export const SubmitLoginForm = React.memo((props: SubmitLoginFormProps) => {
                 autoScrollToTop={Platform.OS !== 'ios'}
                 floatContent={
                     <ZButton
-                        title="Next"
+                        title={t('next', 'Next')}
                         size="large"
                         onPress={submitForm}
                         loading={loading}
@@ -335,7 +335,7 @@ export const SubmitLoginForm = React.memo((props: SubmitLoginFormProps) => {
                                 ref={inputDataRef}
                                 value={userDataField.value}
                                 onChangeText={onUserDataChange}
-                                placeholder={isPhone ? 'Phone number' : 'Email'}
+                                placeholder={isPhone ? t('phoneNumber', 'Phone number') : t('email', 'Email')}
                                 autoCapitalize="none"
                                 keyboardType={isPhone ? 'number-pad' : 'email-address'}
                                 autoFocus={true}

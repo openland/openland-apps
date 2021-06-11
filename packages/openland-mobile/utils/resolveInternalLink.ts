@@ -13,6 +13,21 @@ import { AppLoader } from 'openland-y-runtime/AppLoader';
 import { isInternalLink } from 'openland-y-utils/isInternalLink';
 import { ModalProvider as ZModalProvider } from 'openland-mobile/components/ZModal';
 import { hideModals } from 'react-native-fast-modal';
+import { t } from 'openland-mobile/text/useText';
+
+const showInviteAlert = ({ title, name, action }: { title: string, name: string, action: () => Promise<void> }) => {
+    Alert.builder()
+        .title(t('inviteTo', { title, defaultValue: 'Invite to {{title}}' }))
+        .message(
+            t('inviteByUser', {
+                name,
+                title,
+                defaultValue: '{{name}} invites you to join {{title}}'
+            }))
+        .button(t('cancel', 'Cancel'), 'cancel')
+        .action(t('inviteAccept', 'Accept invitation'), 'default', action)
+        .show();
+};
 
 export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?: boolean) => {
     return async () => {
@@ -86,7 +101,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
                         navigate('GroupInvite', { invite: invite, inviteId: key });
                     }
                 } else {
-                    Alert.alert('Invite not found');
+                    Alert.alert(t('errorNoInvite', 'Invite not found'));
                 }
             } catch (e) {
                 Alert.alert(e.message);
@@ -94,17 +109,16 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         };
 
         let joinOraganizaion = async (invite: Partial<AccountInviteInfo_invite> | null, key: string) => {
-            if (invite) {
-                Alert.builder()
-                    .title('Invite to ' + invite.title)
-                    .message((invite.creator ? invite.creator.name : 'someone') + ' invites you to join ' + invite.title)
-                    .button('Cancel', 'cancel')
-                    .action('Accept invitation', 'default', async () => {
+            if (invite && invite.title) {
+                showInviteAlert({
+                    name: invite.creator ? invite.creator.name : t('someone', 'someone'),
+                    title: invite.title,
+                    action: async () => {
                         await getMessenger().engine.client.mutateAccountInviteJoin({ inviteKey: key });
-                    })
-                    .show();
+                    },
+                });
             } else {
-                Alert.alert('Invite not found');
+                Alert.alert(t('errorNoInvite', 'Invite not found'));
             }
         };
 
@@ -129,7 +143,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
                             await joinOraganizaion(info.invite, genericInviteMatch.invite);
                         }
                     } else {
-                        Alert.alert('This invitation has been revoked');
+                        Alert.alert(t('inviteRevoked', 'This invitation has been revoked'));
                     }
                 } catch (e) {
                     Alert.alert(e.message);
@@ -322,10 +336,10 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
                             collectionId: info.item.id,
                         });
                     } else {
-                        Toast.failure({ text: 'Nothing found', duration: 1000 }).show();
+                        Toast.failure({ text: t('nothingFound', 'Nothing found'), duration: 1000 }).show();
                     }
                 } else {
-                    Toast.failure({ text: 'Nothing found', duration: 1000 }).show();
+                    Toast.failure({ text: t('nothingFound', 'Nothing found'), duration: 1000 }).show();
                 }
             } catch (e) {
                 Toast.failure({ text: e.message, duration: 1000 }).show();
@@ -348,7 +362,10 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
 
                     getMessenger().history.navigationManager.pushAndReset('HomeDialogs', { share: data });
                 } else {
-                    Alert.alert('Nothing to share ' + randomEmptyPlaceholderEmoji());
+                    Alert.alert(t('shareNothing', {
+                        emoji: randomEmptyPlaceholderEmoji(),
+                        defaultValue: 'Nothing to share {{emoji}}',
+                    }));
                 }
 
             } catch (e) {
@@ -426,33 +443,31 @@ export const joinInviteIfHave = async () => {
 
     let joinRoom = async (invite: Partial<ResolvedInvite_invite_RoomInvite> | null, key: string) => {
         if (invite && invite.room && invite.invitedByUser) {
-            Alert.builder()
-                .title('Invite to ' + invite.room.title)
-                .message(invite.invitedByUser.name + ' invites you to join ' + invite.room.title)
-                .button('Cancel', 'cancel')
-                .action('Accept invitation', 'default', async () => {
+            showInviteAlert({
+                name: invite.invitedByUser.name,
+                title: invite.room.title,
+                action: async () => {
                     await getMessenger().engine.client.mutateRoomJoinInviteLink({ invite: key });
                     await next(getMessenger().history.navigationManager);
-                })
-                .show();
+                },
+            });
         } else {
-            Alert.alert('Invite not found');
+            Alert.alert(t('errorNoInvite', 'Invite not found'));
         }
     };
 
     let joinOraganizaion = async (invite: Partial<AccountInviteInfo_invite> | null, key: string) => {
-        if (invite) {
-            Alert.builder()
-                .title('Invite to ' + invite.title)
-                .message((invite.creator ? invite.creator.name : 'someone') + ' invites you to join ' + invite.title)
-                .button('Cancel', 'cancel')
-                .action('Accept invitation', 'default', async () => {
-                    await getMessenger().engine.client.mutateAccountInviteJoin({ inviteKey: key });
+        if (invite && invite.title) {
+            showInviteAlert({
+                name: invite.creator ? invite.creator.name : t('someone', 'someone'),
+                title: invite.title,
+                action: async () => {
+                    await getMessenger().engine.client.mutateRoomJoinInviteLink({ invite: key });
                     await next(getMessenger().history.navigationManager);
-                })
-                .show();
+                },
+            });
         } else {
-            Alert.alert('Invite not found');
+            Alert.alert(t('errorNoInvite', 'Invite not found'));
         }
     };
 

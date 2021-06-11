@@ -10,6 +10,7 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
 import Toast from 'openland-mobile/components/Toast';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
+import { useText } from 'openland-mobile/text/useText';
 
 interface ConversationManageButtonProps {
     muted: boolean;
@@ -21,6 +22,7 @@ interface ConversationManageButtonProps {
 
 const useSharedHandlers = (room: RoomChat_room_SharedRoom, router: SRouter) => {
     const client = useClient();
+    const { t } = useText();
     const userId = getMessenger().engine.user.id;
 
     let hideOwnerLink = false;
@@ -33,7 +35,7 @@ const useSharedHandlers = (room: RoomChat_room_SharedRoom, router: SRouter) => {
             Modals.showUserMuptiplePicker(
                 router,
                 {
-                    title: 'Add',
+                    title: t('add', 'Add'),
                     action: async (users) => {
                         try {
                             await client.mutateRoomAddMembers({
@@ -52,7 +54,7 @@ const useSharedHandlers = (room: RoomChat_room_SharedRoom, router: SRouter) => {
                 },
                 room.id,
                 true,
-                room.isPremium ? 'Add people for free' : 'Add people',
+                room.isPremium ? t('addPeopleFree', 'Add people for free') : t('addPeople', 'Add people'),
                 // [],
                 // [userId],
                 hideOwnerLink ? undefined : { path: 'ProfileGroupLink', pathParams: { room } },
@@ -64,14 +66,16 @@ const useSharedHandlers = (room: RoomChat_room_SharedRoom, router: SRouter) => {
 
     const onLeavePress = React.useCallback(() => {
         Alert.builder()
-            .title(`Leave ${room.isChannel ? 'channel' : 'group'}?`)
+            .title(room.isChannel
+                ? t('leaveChannelQuestion', 'Leave channel?')
+                : t('leaveGroupQuestion', 'Leave group?'))
             .message(
                 room.isPremium
-                    ? 'Leaving the group only removes it from your chat list. To cancel the associated subscription, visit Subscriptions section in your Account tab and cancel it from there.'
-                    : 'You may not be able to join it again',
+                    ? t('leaveChatPremiumDescription', 'Leaving the group only removes it from your chat list. To cancel the associated subscription, visit Subscriptions section in your Account tab and cancel it from there.')
+                    : t('leaveChatDescription', 'You may not be able to join it again'),
             )
-            .button('Cancel', 'cancel')
-            .action('Leave', 'destructive', async () => {
+            .button(t('cancel', 'Cancel'), 'cancel')
+            .action(t('leave', 'Leave'), 'destructive', async () => {
                 await client.mutateRoomLeave({ roomId: room.id });
                 await client.refetchRoomChat({ id: room.id });
                 setTimeout(() => {
@@ -79,7 +83,7 @@ const useSharedHandlers = (room: RoomChat_room_SharedRoom, router: SRouter) => {
                 }, 100);
             })
             .show();
-    }, [room.id]);
+    }, [room.id, t]);
 
     return { onInvitePress, onLeavePress };
 };
@@ -87,6 +91,7 @@ const useSharedHandlers = (room: RoomChat_room_SharedRoom, router: SRouter) => {
 export const ConversationManageButton = React.memo((props: ConversationManageButtonProps) => {
     const { muted, onMutedChange, room, router, isBanned } = props;
     const client = useClient();
+    const { t } = useText();
     const myID = getMessenger().engine.user.id;
 
     const isUser = room.__typename === 'PrivateRoom' && room.user;
@@ -145,11 +150,11 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(room);
 
         if (canAddDirectly || canGetInviteLink) {
-            builder.action('Add people', onInvitePress, false, require('assets/ic-invite-24.png'));
+            builder.action(t('addPeople', 'Add people'), onInvitePress, false, require('assets/ic-invite-24.png'));
         }
 
         if (!isUser || (isUser && isUser.id !== myID)) {
-            const notificationsTitle = `${muted ? 'Unmute' : 'Mute'} notifications`;
+            const notificationsTitle = muted ? t('notificationsUnmute', 'Unmute notifications') : t('notificationsMute', 'Mute notifications');
             const notificationsIcon = muted
                 ? require('assets/ic-notifications-24.png')
                 : require('assets/ic-notifications-off-24.png');
@@ -157,15 +162,15 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         }
 
         if (!isBanned) {
-            builder.action('Media, files, links', onSharedPress, false, require('assets/ic-attach-24.png'));
+            builder.action(t('sharedMediaTitle', 'Media, files, links'), onSharedPress, false, require('assets/ic-attach-24.png'));
         }
 
-        builder.action('Search messages', onSearchPress, false, require('assets/ic-search-24.png'));
+        builder.action(t('searchMessages', 'Search messages'), onSearchPress, false, require('assets/ic-search-24.png'));
 
         if (sharedRoom) {
             if ((room as RoomChat_room_SharedRoom).canEdit) {
                 builder.action(
-                    (room as RoomChat_room_SharedRoom).isChannel ? 'Edit channel' : 'Edit group',
+                    (room as RoomChat_room_SharedRoom).isChannel ? t('editChannel', 'Edit channel') : t('editGroup', 'Edit group'),
                     () => props.router.push('EditGroup', { id: room.id }),
                     false,
                     require('assets/ic-edit-24.png'),
@@ -174,13 +179,18 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         }
 
         if (sharedRoom) {
-            builder.action(sharedRoom.isChannel ? 'Leave channel' : 'Leave group', onLeavePress, false, require('assets/ic-leave-24.png'));
+            builder.action(
+                sharedRoom.isChannel ? t('leaveChannel', 'Leave channel') : t('leaveGroup', 'Leave group'),
+                onLeavePress,
+                false,
+                require('assets/ic-leave-24.png')
+            );
         }
 
         if (isUser) {
             if (!isContact && isUser.id !== myID && !isUser.isBot) {
                 builder.action(
-                    'Add to contacts',
+                    t('contactsAdd', 'Add to contacts'),
                     handleAddMemberToContacts,
                     false,
                     require('assets/ic-invite-24.png'),
@@ -189,7 +199,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
 
             if (isContact && isUser.id !== myID && !isUser.isBot) {
                 builder.action(
-                    'Remove from contacts',
+                    t('contactsRemove', 'Remove from contacts'),
                     handleRemoveMemberFromContacts,
                     false,
                     require('assets/ic-invite-off-24.png'),
@@ -198,7 +208,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         }
 
         builder.show();
-    }, [muted, onNotificationsPress, onInvitePress, onLeavePress, isContact, isBanned]);
+    }, [muted, onNotificationsPress, onInvitePress, onLeavePress, isContact, isBanned, t]);
 
     return <ZManageButton onPress={onPress} />;
 });

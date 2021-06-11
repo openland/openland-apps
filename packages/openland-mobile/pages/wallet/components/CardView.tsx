@@ -53,7 +53,7 @@ export const CardView = (props: CardViewProps) => {
 
                     {isDefault && (
                         <View style={{ position: 'absolute', top: 50, left: 24 }}>
-                            <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary, textTransform: 'uppercase' }} allowFontScaling={false}>
+                            <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary, textTransform: 'capitalize' }} allowFontScaling={false}>
                                 {t('primary', 'primary')}
                             </Text>
                         </View>

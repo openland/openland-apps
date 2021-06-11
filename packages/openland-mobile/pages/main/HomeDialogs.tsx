@@ -23,10 +23,10 @@ import { useText } from 'openland-mobile/text/useText';
 
 type DialogType = 'all' | 'unread' | 'groups' | 'private';
 
-function showFilters(selected: DialogType, onSelect: (d: DialogType) => void) {
+function showFilters(selected: DialogType, onSelect: (d: DialogType) => void, t: any) {
     const actionSheet = ActionSheet.builder();
     actionSheet.action(
-        'All chats',
+        t('dialogAllChats', 'All chats'),
         () => onSelect('all'),
         false,
         require('assets/ic-message-24.png'),
@@ -34,7 +34,7 @@ function showFilters(selected: DialogType, onSelect: (d: DialogType) => void) {
         selected === 'all',
     );
     actionSheet.action(
-        'Unread',
+        t('dialogUnread', 'Unread'),
         () => onSelect('unread'),
         false,
         require('assets/ic-unread-24.png'),
@@ -42,7 +42,7 @@ function showFilters(selected: DialogType, onSelect: (d: DialogType) => void) {
         selected === 'unread',
     );
     actionSheet.action(
-        'Direct',
+        t('dialogDirect', 'Direct'),
         () => onSelect('private'),
         false,
         require('assets/ic-user-24.png'),
@@ -50,7 +50,7 @@ function showFilters(selected: DialogType, onSelect: (d: DialogType) => void) {
         selected === 'private',
     );
     actionSheet.action(
-        'Groups',
+        t('dialogGroups', 'Groups'),
         () => onSelect('groups'),
         false,
         require('assets/ic-group-24.png'),
@@ -122,9 +122,12 @@ const DialogsComponent = React.memo((props: PageProps) => {
                     entityId = data.id;
                 }
                 Alert.builder()
-                    .title(`Share with ${title}?`)
-                    .button('Cancel', 'cancel')
-                    .button('Share', 'default', async () => {
+                    .title(t('shareWithQuestion', {
+                        title,
+                        defaultValue: 'Share with {{title}}?',
+                    }))
+                    .button(t('cancel', 'Cancel'), 'cancel')
+                    .button(t('share', 'Share'), 'default', async () => {
                         if (props.router.params.share.files) {
                             let filesMeta: { name: string; path: string }[] = [];
                             for (let attach of props.router.params.share.files) {
@@ -167,12 +170,12 @@ const DialogsComponent = React.memo((props: PageProps) => {
 
     const headerTitle =
         dialogFilter === 'unread'
-            ? 'Unread'
+            ? t('dialogUnread', 'Unread')
             : dialogFilter === 'groups'
-                ? 'Groups'
+                ? t('dialogGroups', 'Groups')
                 : dialogFilter === 'private'
-                    ? 'Direct'
-                    : t('chat_plural', 'Chats');
+                    ? t('dialogDirect', 'Direct')
+                    : t('dialogChats', 'Chats');
 
     const enableExperimental = false;
     // !props.router.params.title ||
@@ -187,19 +190,19 @@ const DialogsComponent = React.memo((props: PageProps) => {
                         ? {
                             title: headerTitle,
                             active: true,
-                            action: () => showFilters(dialogFilter, setDialogFilter),
+                            action: () => showFilters(dialogFilter, setDialogFilter, t),
                         }
                         : undefined
                 }
                 title={
                     props.router.params.title ||
-                    (props.router.params.share ? 'Share with' : headerTitle)
+                    (props.router.params.share ? t('shareWith', 'Share with') : headerTitle)
                 }
-                searchPlaceholder="Chats, messages, and more"
+                searchPlaceholder={t('searchDialogs', 'Chats, messages, and more')}
             />
             {!props.router.params.share && !props.router.params.title && (
                 <SHeaderButton
-                    title="New"
+                    title={t('new', 'New')}
                     icon={require('assets/ic-add-24.png')}
                     onPress={() => props.router.push('Compose')}
                 />
