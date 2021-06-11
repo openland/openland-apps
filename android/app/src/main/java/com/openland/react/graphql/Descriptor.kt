@@ -48,7 +48,10 @@ fun resolveOutputObject(data: JSONObject, ctx: ResolveContext): OutputType.Objec
         throw Error("Invalid schema")
     }
     val selectors = mutableListOf<Selector>()
-
+    val raw = data.getJSONArray("selectors")
+    for (i in 0 until raw.length()) {
+        selectors.add(resolveSelector(raw.getJSONObject(i), ctx))
+    }
     return obj(selectors)
 }
 
@@ -150,6 +153,6 @@ class SpaceXOperationDescriptor(raw: JSONObject) : SpaceXOperations {
     }
 
     override fun operationByName(name: String): OperationDefinition {
-        throw Error("Unknown operation $name")
+        return operations[name] ?: throw Error("Unknown operation $name")
     }
 }
