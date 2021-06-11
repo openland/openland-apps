@@ -61,6 +61,7 @@ export const GroupActions = React.memo(({ group }: GroupActions) => {
                 group.__typename === 'SharedRoom' && group.isPremium,
                 group.kind === 'PUBLIC',
                 group.isChannel,
+                group.premiumSubscription,
             ),
         [group],
     );

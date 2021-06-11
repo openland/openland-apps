@@ -65,10 +65,11 @@ const avatarsContainer = css`
 `;
 
 const startRoomContainer = css`
-    background: var(--gradient100to0);
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    flex-grow: 1;
     padding: 30px;
 `;
 
@@ -120,8 +121,7 @@ const RoomsFeedItem = React.memo((props: { voiceChat: VoiceChatShort }) => {
     return (
         <XView
             selected={session?.conversationId === id}
-            paddingHorizontal={16}
-            paddingVertical={12}
+            padding={16}
             cursor="pointer"
             hoverBackgroundColor="var(--backgroundPrimaryHover)"
             selectedBackgroundColor="var(--accentMuted)"
