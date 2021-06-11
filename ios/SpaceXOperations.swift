@@ -7,46 +7,44 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 protocol SpaceXOperations: AnyObject {
   func operationByName(_ name: String) -> OperationDefinition
 }
 
 fileprivate class ResolveContext {
-  var raw: JSON
+  var raw: Schema
   var fragments: [String: FragmentDefinition]
   
-  init(raw: JSON, fragments: [String: FragmentDefinition]) {
+  init(raw: Schema, fragments: [String: FragmentDefinition]) {
     self.raw = raw;
     self.fragments = fragments
   }
 }
 
-fileprivate func resolveInputType(data: JSON,  ctx: ResolveContext) -> InputValue {
-  let type = data["type"].stringValue
-  if (type == "string") {
-    return stringValue(data["value"].stringValue)
-  } else if (type == "int") {
-    return intValue(data["value"].intValue)
-  } else if (type == "float") {
-    return floatValue(data["value"].doubleValue)
-  } else if (type == "boolean") {
-    return boolValue(data["value"].boolValue)
-  } else if (type == "null") {
+fileprivate func resolveInputType(data: SchemaInput,  ctx: ResolveContext) -> InputValue {
+  if (data.type == "string") {
+    return stringValue(data.str!)
+  } else if (data.type == "int") {
+    return intValue(data.int!)
+  } else if (data.type == "float") {
+    return floatValue(data.float!)
+  } else if (data.type == "boolean") {
+    return boolValue(data.bool!)
+  } else if (data.type == "null") {
     return nullValue()
-  } else if (type == "reference"){
-    return refValue(data["name"].stringValue)
-  } else if (type == "list") {
+  } else if (data.type == "reference"){
+    return refValue(data.name!)
+  } else if (data.type == "list") {
     var items: [InputValue] = []
-    data["items"].arrayValue.forEach { data in
+    data.items!.forEach { data in
       items.append(resolveInputType(data: data, ctx: ctx))
     }
     return listValue(items)
-  } else if (type == "object") {
+  } else if (data.type == "object") {
     var fields: [String: InputValue] = [:]
-    for (name,field):(String, JSON) in data["fields"] {
-      fields[name] = resolveInputType(data: field, ctx: ctx)
+    data.fields!.forEach { (key: String, value: SchemaInput) in
+      fields[key] = resolveInputType(data: value, ctx: ctx)
     }
     return objectValue(fields)
   }
@@ -54,58 +52,56 @@ fileprivate func resolveInputType(data: JSON,  ctx: ResolveContext) -> InputValu
   fatalError("Invalid schema")
 }
 
-fileprivate func resolveOutputObject(data: JSON, ctx: ResolveContext) -> OutputType.Object {
-  if (data["type"].stringValue != "object") {
+fileprivate func resolveOutputObject(data: SchemaOutput, ctx: ResolveContext) -> OutputType.Object {
+  if (data.type != "object") {
     fatalError("Invalid schema")
   }
   
   var selectors: [Selector] = []
-  data["selectors"].arrayValue.forEach { selector in
+  data.selectors?.forEach({ selector in
     selectors.append(resolveSelector(selector: selector, ctx: ctx))
-  }
+  })
   return obj(selectors)
 }
 
-fileprivate func resolveOutputType(data: JSON, ctx: ResolveContext) -> OutputType {
-  let type = data["type"].stringValue
-  if (type == "object") {
+fileprivate func resolveOutputType(data: SchemaOutput, ctx: ResolveContext) -> OutputType {
+  if (data.type == "object") {
     return resolveOutputObject(data: data, ctx: ctx)
   }
-  if (type == "notNull") {
-    return notNull(resolveOutputType(data: data["inner"], ctx: ctx))
+  if (data.type == "notNull") {
+    return notNull(resolveOutputType(data: data.inner!, ctx: ctx))
   }
-  if (type == "list") {
-    return list(resolveOutputType(data: data["inner"], ctx: ctx))
+  if (data.type == "list") {
+    return list(resolveOutputType(data: data.inner!, ctx: ctx))
   }
-  if (type == "scalar") {
-    return scalar(data["name"].stringValue)
+  if (data.type == "scalar") {
+    return scalar(data.name!)
   }
   fatalError("Invalid schema")
 }
 
-fileprivate func resolveSelector(selector: JSON, ctx: ResolveContext) -> Selector {
-  let type = selector["type"].stringValue
-  if (type == "field") {
-    let name = selector["name"].stringValue
-    let alias = selector["alias"].stringValue
-    let output = resolveOutputType(data: selector["fieldType"], ctx: ctx)
+fileprivate func resolveSelector(selector: SchemaSelector, ctx: ResolveContext) -> Selector {
+  if (selector.type == "field") {
+    let name = selector.name
+    let alias = selector.alias!
+    let output = resolveOutputType(data: selector.fieldType!, ctx: ctx)
     var arguments: [String:InputValue] = [:]
-    for (n,v):(String, JSON) in selector["arguments"] {
-      arguments[n] = resolveInputType(data: v, ctx: ctx)
-    }
+    selector.arguments?.forEach({ (key: String, value: SchemaInput) in
+      arguments[key] = resolveInputType(data: value, ctx: ctx)
+    })
     return field(name, alias, arguments, output)
-  } else if (type == "type-condition") {
-    let name = selector["name"].stringValue
-    let obj = resolveOutputObject(data: selector["fragmentType"], ctx: ctx)
+  } else if (selector.type == "type-condition") {
+    let name = selector.name
+    let obj = resolveOutputObject(data: selector.fragmentType!, ctx: ctx)
     return inline(name, obj)
-  } else if (type == "fragment") {
-    let name = selector["name"].stringValue
-    return fragment(name, getOrCreateFragment(fragment: ctx.raw["fragments"][name], ctx: ctx))
+  } else if (selector.type == "fragment") {
+    let name = selector.name
+    return fragment(name, getOrCreateFragment(fragment: ctx.raw.fragments[name]!, ctx: ctx))
   }
   fatalError("Invalid schema")
 }
 
-fileprivate func getOrCreateFragment(fragment: JSON, ctx: ResolveContext) -> OutputType.Object {
+fileprivate func getOrCreateFragment(fragment: SchemaFragment, ctx: ResolveContext) -> OutputType.Object {
   
   //
   // NOTE: GraphQL doesnt have cycles in fragments and therefore this method couldn't be called
@@ -113,7 +109,7 @@ fileprivate func getOrCreateFragment(fragment: JSON, ctx: ResolveContext) -> Out
   //
   
   // Check if already exist
-  let name = fragment["name"].stringValue
+  let name = fragment.name
   let existing = ctx.fragments[name]
   if (existing != nil ){
     return existing!.selector
@@ -121,9 +117,53 @@ fileprivate func getOrCreateFragment(fragment: JSON, ctx: ResolveContext) -> Out
   
   // Create new
   print("Fragment: " + name)
-  let selector = resolveOutputObject(data: fragment["selector"], ctx: ctx)
+  let selector = resolveOutputObject(data: fragment.selector, ctx: ctx)
   ctx.fragments[name] = FragmentDefinition(name, selector)
   return selector
+}
+
+fileprivate struct SchemaFragment: Codable {
+  var name: String
+  var selector: SchemaOutput
+}
+
+fileprivate struct SchemaOperation: Codable {
+  var name: String
+  var body: String
+  var kind: String
+  var selector: SchemaOutput
+}
+
+fileprivate class SchemaOutput: Codable {
+  var type: String
+  var name: String?
+  var inner: SchemaOutput?
+  var selectors: [SchemaSelector]?
+}
+
+fileprivate class SchemaInput: Codable {
+  var type: String
+  var str: String?
+  var bool: Bool?
+  var int: Int?
+  var float: Double?
+  var name: String?
+  var items: [SchemaInput]?
+  var fields: [String: SchemaInput]?
+}
+
+fileprivate class SchemaSelector: Codable {
+  var type: String
+  var name: String
+  var alias: String?
+  var fieldType: SchemaOutput?
+  var fragmentType: SchemaOutput?
+  var arguments: [String: SchemaInput]?
+}
+
+fileprivate class Schema: Codable {
+  var fragments: [String:SchemaFragment]
+  var operations: [String: SchemaOperation]
 }
 
 class SpaceXOperationDescriptor: SpaceXOperations {
@@ -131,32 +171,29 @@ class SpaceXOperationDescriptor: SpaceXOperations {
   var fragments: [String: FragmentDefinition]
   var operations: [String: OperationDefinition] = [:]
   
-  init(raw: JSON) {
-    
-    let ctx = ResolveContext(raw: raw, fragments: [:])
+  init(raw: String) {
+    let decoded = try! JSONDecoder().decode(Schema.self, from: raw.data(using: .utf8)!)
+    let ctx = ResolveContext(raw: decoded, fragments: [:])
     
     // Resolve fragments
-    for (_,fragment):(String, JSON) in raw["fragments"] {
-      let _ = getOrCreateFragment(fragment: fragment, ctx: ctx)
+    decoded.fragments.forEach { (key: String, value: SchemaFragment) in
+      let _ = getOrCreateFragment(fragment: value, ctx: ctx)
     }
     
     // Resolve operations
-    for (_,operation):(String, JSON) in raw["operations"] {
-      let name = operation["name"].stringValue;
-      let kind = operation["kind"].stringValue;
+    for (key, value) in decoded.operations {
       let kindParsed: OperationKind
-      if (kind == "query") {
+      if (value.kind == "query") {
         kindParsed = .query
-      } else if (kind == "mutation") {
+      } else if (value.kind == "mutation") {
         kindParsed = .mutation
-      } else if (kind == "subscription") {
+      } else if (value.kind == "subscription") {
         kindParsed = .subscription
       } else {
         fatalError("Invalid schema")
       }
-      let body = operation["body"].stringValue;
-      let selector = resolveOutputObject(data: operation["selector"], ctx: ctx)
-      self.operations[name] = OperationDefinition(name, kindParsed, body, selector)
+      let selector = resolveOutputObject(data: value.selector, ctx: ctx)
+      self.operations[key] = OperationDefinition(value.name, kindParsed, value.body, selector)
     }
 
     // Save fragments

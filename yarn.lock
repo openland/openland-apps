@@ -3417,10 +3417,10 @@
   resolved "https://registry.yarnpkg.com/@openland/patterns/-/patterns-0.0.2.tgz#ada0417c4e72aeeb461bf9d8759ecd9ca1ebf51d"
   integrity sha512-ttgJELwtG8cIER1JeWjkIMg3e+MlAL6n4wFPSNPoBCl+5t3G/HIz9kolvxBmN5/3RXEgh68NnePzGiUBaUHmRQ==
 
-"@openland/spacex-cli@5.0.3":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@openland/spacex-cli/-/spacex-cli-5.0.3.tgz#9be7b69f0bd1e0b26a62ff5e24703451293b5848"
-  integrity sha512-YIV5bcQJb+dpnHZ3D75VEgCZTMyhbFr/SKxT2j067PJRn4aUMQ09OSrNA5TJ/z4MEK5x/L6w2wvppzc00axCog==
+"@openland/spacex-cli@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@openland/spacex-cli/-/spacex-cli-6.0.0.tgz#6f112d4b500c612b30be574d896f667d0459e10d"
+  integrity sha512-cSpJhJ1B+0Kf0UJy7avavrsAkhGVAz7EiwCvzR/BaLRbbyHIAwPtOqtfkItSwOm4KLhNe/Ol5NFuDdRkdHKD6w==
   dependencies:
     "@graphql-tools/optimize" "1.0.1"
     "@graphql-tools/relay-operation-optimizer" "6.3.0"
@@ -3432,20 +3432,20 @@
     prompts "2.4.1"
     relay-compiler "10.1.0"
 
-"@openland/spacex-web@5.0.3":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@openland/spacex-web/-/spacex-web-5.0.3.tgz#683570502570d4757144da15c56ca5cb0399f661"
-  integrity sha512-iSq8JxIomZsECF3g0//Dx/bamFnkIlUTesRw17g+aZGwL3DUKvdlpTVb3teJ5ddUDgdlkCQAw8VsHvlr/QULFw==
+"@openland/spacex-web@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@openland/spacex-web/-/spacex-web-6.0.0.tgz#4587196847b3db52aa4f08960615bcd414c3927c"
+  integrity sha512-9RtQSK7hdHG7SoA1Ap8MvoqrG7DYvOMSUsltm1h0yk3WSkbzfPbUn1MJq6Uf+T04iFpAFMSJFiZWRCmbIiLYhA==
   dependencies:
-    "@openland/spacex" "^5.0.3"
+    "@openland/spacex" "^6.0.0"
     isomorphic-ws "4.0.1"
     uuid "3.4.0"
     ws "7.2.1"
 
-"@openland/spacex@5.0.3", "@openland/spacex@^5.0.3":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@openland/spacex/-/spacex-5.0.3.tgz#a7570ea5b65f0a70747b6eb015d18fe05018a25b"
-  integrity sha512-IA4F6PKN1gxwpMCQtxhiTutGmidikED+VnA7StttzhfsO3vMEESoEyTIK5dqfRtb4cbwFPzWvyPNcxRbAi3CJA==
+"@openland/spacex@6.0.0", "@openland/spacex@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@openland/spacex/-/spacex-6.0.0.tgz#b27b64a9d15bad1ccaeff3998aecc8947e250443"
+  integrity sha512-3S4ZCPfUB8iwW4vGN0iTx2qJFhPz/+rNiLltMMTz1B0Am0PDwEAa4eneHbAXF5yMzWPZcZpjjrVun2gPumhmRw==
   dependencies:
     isomorphic-ws "4.0.1"
     uuid "3.4.0"
