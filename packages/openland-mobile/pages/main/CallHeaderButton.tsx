@@ -47,9 +47,12 @@ export const CallHeaderButton = React.memo((props: {
     const voiceChat = getMessenger().engine.voiceChat.useVoiceChat();
     const disabled = !!mediaSession && !!voiceChat;
     const isSecret = props.sharedRoom && props.sharedRoom.kind === 'GROUP';
+
+    const isAdmin = props.sharedRoom?.role === RoomMemberRole.ADMIN || props.sharedRoom?.role === RoomMemberRole.OWNER;
+
     const showStartRoom = isSecret
-        ? props.sharedRoom && props.sharedRoom.membersCount <= 15
-        : props.sharedRoom?.role === RoomMemberRole.ADMIN || props.sharedRoom?.role === RoomMemberRole.OWNER;
+        ? (isAdmin || (props.sharedRoom && props.sharedRoom.membersCount <= 15))
+        : isAdmin;
 
     if (!props.sharedRoom) {
         return (
