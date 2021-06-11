@@ -123,7 +123,7 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
     const voiceChat = props.messenger.voiceChat.useVoiceChat();
     const callDisabled = !!currentSession && !!voiceChat;
     const isAdmin = sharedRoom && (sharedRoom.role === RoomMemberRole.ADMIN || sharedRoom.role === RoomMemberRole.OWNER);
-    const showStartRoom = isSecret ? sharedRoom && sharedRoom.membersCount <= 15 : isAdmin;
+    const showStartRoom = isSecret ? (isAdmin || (sharedRoom && sharedRoom.membersCount <= 15)) : isAdmin;
     const showClassicCallButton = privateRoom || useRole('super-admin');
     const joinRoom = useJoinRoom();
 
