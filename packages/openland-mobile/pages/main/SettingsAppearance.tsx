@@ -13,9 +13,11 @@ import { AccentCircle } from './components/appearance/AccentCircle';
 import { ZTab } from 'openland-mobile/components/ZTab';
 import { SUPER_ADMIN } from '../Init';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
+import { useText } from 'openland-mobile/text/useText';
 
 const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const handleChange = React.useCallback((appearance: ThemeGlobalKind) => {
         ThemeController.appearance = appearance;
     }, []);
@@ -31,21 +33,21 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
 
     return (
         <>
-            <SHeader title="Appearance" />
+            <SHeader title={t('appearance', 'Appearance')} />
             <SScrollView>
                 <ThemePreview />
 
-                <ZListGroup header="Theme">
+                <ZListGroup header={t('theme', 'Theme')}>
                     <View style={{ flexDirection: 'row', paddingHorizontal: 16, paddingVertical: 8 }}>
-                        <ZTab selected={currentTheme === 'System'} onPress={() => handleChange({ theme: 'System' })}>System</ZTab>
-                        <ZTab selected={currentTheme === 'Light'} onPress={() => handleChange({ theme: 'Light' })}>Light</ZTab>
-                        <ZTab selected={currentTheme === 'Dark'} onPress={() => handleChange({ theme: 'Dark' })}>Dark</ZTab>
+                        <ZTab selected={currentTheme === 'System'} onPress={() => handleChange({ theme: 'System' })}>{t('themeSystem', 'System')}</ZTab>
+                        <ZTab selected={currentTheme === 'Light'} onPress={() => handleChange({ theme: 'Light' })}>{t('themeLight', 'Light')}</ZTab>
+                        <ZTab selected={currentTheme === 'Dark'} onPress={() => handleChange({ theme: 'Dark' })}>{t('themeDark', 'Dark')}</ZTab>
 
-                        {SUPER_ADMIN && <ZTab selected={currentTheme === 'TrueDark'} onPress={() => handleChange({ theme: 'TrueDark' })}>True Dark</ZTab>}
+                        {SUPER_ADMIN && <ZTab selected={currentTheme === 'TrueDark'} onPress={() => handleChange({ theme: 'TrueDark' })}>{t('themeTrueDark', 'True Dark')}</ZTab>}
                     </View>
                 </ZListGroup>
 
-                <ZListGroup header="Accent">
+                <ZListGroup header={t('themeAccent', 'Accent')}>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start', flexWrap: 'wrap', paddingHorizontal: 8 }}>
                         {theme.supportedAccents.map(accent => (
                             <AccentCircle
@@ -58,9 +60,9 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                     </View>
                 </ZListGroup>
 
-                <ZListGroup header="Other">
+                <ZListGroup header={t('other', 'Other')}>
                     <ZListItem
-                        text="Show large emoji"
+                        text={t('themeLargeEmoji', 'Show large emoji')}
                         onToggle={(value) => {
                             setLargeEmoji(x => !x);
                             handleChange({ theme: currentTheme, largeEmoji: value });
@@ -68,7 +70,7 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                         toggle={largeEmoji}
                     />
                     <ZListItem
-                        text="Show featured mark"
+                        text={t('themeFeaturedMark', 'Show featured mark')}
                         onToggle={(value) => {
                             setDisplayFeaturedIcon(x => !x);
                             handleChange({ theme: currentTheme, displayFeaturedIcon: value });

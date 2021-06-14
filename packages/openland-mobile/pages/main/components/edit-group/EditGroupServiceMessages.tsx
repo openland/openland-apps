@@ -51,22 +51,22 @@ const EditGroupServiceMessagesComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeaderButton title="Save" onPress={handleSave} />
+            <SHeaderButton title={t('save', 'Save')} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <EditPageHeader
                     icon={require('assets/ic-megaphone-glyph-48.png')}
                     tint={theme.tintPink}
-                    title="Service messages"
-                    description="Choose what messages to get"
+                    title={t('serviceMessages', 'Service messages')}
+                    description={t('serviceMessagesDescription', 'Choose what messages to get')}
                 />
                 <ZListGroup header={null}>
                     <ZListItem
-                        text="New member joins"
+                        text={t('serviceMessagesJoins', 'New member joins')}
                         toggle={joinsEnabled}
                         onToggle={(value) => setJoinsEnabled(value)}
                     />
                     <ZListItem
-                        text="Member leaves"
+                        text={t('serviceMessagesLeaves', 'Member leaves')}
                         toggle={leavesEnabled}
                         onToggle={(value) => setLeavesEnabled(value)}
                     />

@@ -10,10 +10,12 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { EditPageHeader } from '../EditPageHeader';
+import { useText } from 'openland-mobile/text/useText';
 
 const EditCommunityDefaultGroupsComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const client = getClient();
+    const { t } = useText();
     const organizationId = props.router.params.id;
     const profile = getClient().useOrganizationProfile({ organizationId }, { fetchPolicy: 'network-only' }).organizationProfile;
     const publicRooms = client.useOrganizationPublicRooms({ organizationId, first: 100 }, { fetchPolicy: 'network-only' }).organizationPublicRooms;
@@ -42,13 +44,13 @@ const EditCommunityDefaultGroupsComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeaderButton title="Save" onPress={handleSave} />
+            <SHeaderButton title={t('save', 'Save')} onPress={handleSave} />
             <SScrollView>
                 <EditPageHeader
                     icon={require('assets/ic-group-glyph-48.png')}
                     tint={theme.tintCyan}
-                    title="Default groups"
-                    description="Select groups that will be automatically joined by all new community members"
+                    title={t('defaultGroups', 'Default groups')}
+                    description={t('defaultGroupsDescription', 'Select groups that will be automatically joined by all new community members')}
                 />
                 <ZListGroup header={null}>
                     {publicRooms.items.map((group) => (

@@ -5,10 +5,11 @@ import { SHeader } from 'react-native-s/SHeader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { plural } from 'openland-y-utils/plural';
+import { useText } from 'openland-mobile/text/useText';
 
 const UserMutualGroupsComponent = React.memo((props: PageProps) => {
     const client = getClient();
+    const { t } = useText();
     const { userId } = props.router.params;
     const mutualGroups = client.useCommonChatsWithUser({ uid: userId, first: 3 }, { fetchPolicy: 'cache-and-network' }).commonChatsWithUser;
 
@@ -29,14 +30,14 @@ const UserMutualGroupsComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title="Mutual groups" />
+            <SHeader title={t('mutualGroups', 'Mutual groups')} />
             <SFlatList
                 data={groups}
                 renderItem={({ item }) => (
                     <ZListItem
                         leftAvatar={{ photo: item.photo, id: item.id, title: item.title }}
                         text={item.title}
-                        subTitle={plural(item.membersCount, ['member', 'members'])}
+                        subTitle={`${item.membersCount} ${t('member', { count: item.membersCount })}`}
                         path="Conversation"
                         pathParams={{ id: item.id }}
                     />

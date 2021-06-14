@@ -13,10 +13,12 @@ import { ZPickField } from 'openland-mobile/components/ZPickField';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
+import { useText } from 'openland-mobile/text/useText';
 
 const EditOrganizationComponent = React.memo((props: PageProps) => {
     const organizationId = props.router.params.id;
     const client = getClient();
+    const { t } = useText();
     const profile = client.useOrganizationProfile({ organizationId }, { fetchPolicy: 'network-only' }).organizationProfile;
 
     const form = useForm();
@@ -52,37 +54,37 @@ const EditOrganizationComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title="Edit organization" />
-            <SHeaderButton title="Save" onPress={handleSave} />
+            <SHeader title={t('editOrganization', 'Edit organization')} />
+            <SHeaderButton title={t('save', 'Save')} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <ZListGroup header={null} alignItems="center">
                     <ZAvatarPicker size="xx-large" field={photoField} />
                 </ZListGroup>
-                <ZListGroup header="Info" headerMarginTop={0}>
+                <ZListGroup header={t('info', 'Info')} headerMarginTop={0}>
                     <ZInput
-                        placeholder="Name"
+                        placeholder={t('name', 'Name')}
                         field={nameField}
                     />
                     <ZInput
                         field={aboutField}
-                        placeholder="Description"
+                        placeholder={t('description', 'Description')}
                         multiline={true}
-                        description="Publicly describe this organization for all to see"
+                        description={t('organizationDescription', 'Publicly describe this organization for all to see')}
                     />
                 </ZListGroup>
                 <View style={{ height: 15 }} />
-                <ZListGroup header="Shortname" headerMarginTop={0}>
+                <ZListGroup header={t('shortname', 'Shortname')} headerMarginTop={0}>
                     <ZPickField
-                        label="Shortname"
+                        label={t('shortname', 'Shortname')}
                         value={profile.shortname ? '@' + profile.shortname : undefined}
                         path="SetShortname"
                         pathParams={{ id: organizationId, isGroup: false }}
-                        description="People will be able to find your organization by this shortname"
+                        description={t('organizationShortname', 'People will be able to find your organization by this shortname')}
                     />
                 </ZListGroup>
-                <ZListGroup header="Contacts" headerMarginTop={0}>
+                <ZListGroup header={t('contacts', 'Contacts')} headerMarginTop={0}>
                     <ZInput
-                        placeholder="Website"
+                        placeholder={t('website', 'Website')}
                         field={websiteField}
                     />
                     <ZInput

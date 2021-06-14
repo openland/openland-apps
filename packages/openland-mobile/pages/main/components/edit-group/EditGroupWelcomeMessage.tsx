@@ -14,9 +14,11 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
 import { Modals } from '../../modals/Modals';
 import { EditPageHeader } from '../EditPageHeader';
+import { capitalize, useText } from 'openland-mobile/text/useText';
 
 const EditGroupWelcomeMessageComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const roomId = props.router.params.id;
     const client = getClient();
     const group = client.useRoomChat({ id: roomId }, { fetchPolicy: 'network-only' }).room;
@@ -63,17 +65,17 @@ const EditGroupWelcomeMessageComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeaderButton title="Save" onPress={handleSave} />
+            <SHeaderButton title={t('save', 'Save')} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <EditPageHeader
                     icon={require('assets/ic-message-glyph-48.png')}
                     tint={theme.tintCyan}
-                    title="Welcome message"
-                    description="Send automatic tet-a-tet message to every new member of the group"
+                    title={t('welcomeMessage', 'Welcome message')}
+                    description={t('welcomeMessageDescription', 'Send automatic tet-a-tet message to every new member of the group')}
                 />
                 <ZListGroup header={null}>
                     <ZListItem
-                        text="Allow welcome message"
+                        text={t('welcomeMessageAllow', 'Allow welcome message')}
                         toggle={welcomeMessageEnabled}
                         onToggle={(value) => setWelcomeMessageEnabled(value)}
                     />
@@ -81,7 +83,7 @@ const EditGroupWelcomeMessageComponent = React.memo((props: PageProps) => {
                         <View style={{ paddingHorizontal: 16, marginTop: 16, flexGrow: 1 }}>
                             <ZPickField
                                 noWrapper={true}
-                                label="Sender"
+                                label={t('sender', 'Sender')}
                                 value={welcomeMessageSender ? welcomeMessageSender.name : undefined}
                                 onPress={() => {
                                     Modals.showUserPicker(
@@ -92,7 +94,7 @@ const EditGroupWelcomeMessageComponent = React.memo((props: PageProps) => {
                                             props.router.back();
                                         },
                                         roomAdmins.map((u) => u.user),
-                                        'Choose sender',
+                                        t('chooseSender', 'Choose sender'),
                                         welcomeMessageSender ? welcomeMessageSender.id : undefined,
                                     );
                                 }}
@@ -101,7 +103,7 @@ const EditGroupWelcomeMessageComponent = React.memo((props: PageProps) => {
                                 <ZInput
                                     noWrapper={true}
                                     multiline={true}
-                                    placeholder="Message"
+                                    placeholder={capitalize(t('message', 'Message'))}
                                     field={welcomeMessageField}
                                 />
                             </View>

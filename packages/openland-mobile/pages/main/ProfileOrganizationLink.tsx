@@ -15,9 +15,11 @@ import { Organization_organization } from 'openland-api/spacex.types';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { trackEvent } from 'openland-mobile/analytics';
 import { InviteLinkView } from './components/InviteLinkView';
+import { useText } from 'openland-mobile/text/useText';
 
 const OrganizationInviteLinkContent = React.memo((props: PageProps) => {
     const { id, isCommunity } = props.router.params.organization as Organization_organization;
+    const { t } = useText();
     const invite = getClient().useOrganizationPublicInvite({ organizationId: id }, { fetchPolicy: 'network-only' }).publicInvite!;
     const link = 'https://openland.com/join/' + invite.key;
     const orgType = isCommunity ? 'community' : 'organization';
@@ -64,26 +66,28 @@ const OrganizationInviteLinkContent = React.memo((props: PageProps) => {
             <InviteLinkView
                 link={link}
                 onPress={handleShareClick}
-                footer={`People can join ${orgType} by following this link. You can renew the link at any time`}
+                footer={isCommunity
+                    ? t('inviteLinkCommunityDescription', `People can join community by following this link. You can renew the link at any time`)
+                    : t('inviteLinkOrganizationDescription', `People can join organization by following this link. You can renew the link at any time`)}
             />
 
             <ZListGroup>
                 <ZListItem
                     leftIcon={require('assets/ic-copy-24.png')}
                     small={true}
-                    text="Copy link"
+                    text={t('copyLink', 'Copy link')}
                     onPress={handleCopyClick}
                 />
                 <ZListItem
                     leftIcon={require('assets/ic-share-24.png')}
                     small={true}
-                    text="Share link"
+                    text={t('shareLink', 'Share link')}
                     onPress={handleShareClick}
                 />
                 <ZListItem
                     leftIcon={require('assets/ic-refresh-24.png')}
                     small={true}
-                    text="Revoke link"
+                    text={t('revokeLink', 'Revoke link')}
                     onPress={handleRevokeClick}
                 />
             </ZListGroup>
@@ -91,19 +95,18 @@ const OrganizationInviteLinkContent = React.memo((props: PageProps) => {
     );
 });
 
-class OrganizationInviteLinkModalComponent extends React.PureComponent<PageProps> {
-    render() {
-        const { isCommunity } = this.props.router.params.organization as Organization_organization;
+const OrganizationInviteLinkModalComponent = React.memo((props: PageProps) => {
+    const { t } = useText();
+    const { isCommunity } = props.router.params.organization as Organization_organization;
 
-        return (
-            <>
-                <SHeader title={(isCommunity ? 'Community' : 'Organization') + ' invite link'} />
-                <SScrollView>
-                    <OrganizationInviteLinkContent {...this.props} />
-                </SScrollView>
-            </>
-        );
-    }
-}
+    return (
+        <>
+            <SHeader title={(isCommunity ? t('inviteLinkCommunity', 'Community invite link') : t('inviteLinkOrganization', 'Organization invite link'))} />
+            <SScrollView>
+                <OrganizationInviteLinkContent {...props} />
+            </SScrollView>
+        </>
+    );
+});
 
 export const ProfileOrganizationLink = withApp(OrganizationInviteLinkModalComponent, { navigationAppearance: 'small' });

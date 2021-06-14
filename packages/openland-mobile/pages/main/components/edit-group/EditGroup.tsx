@@ -105,7 +105,7 @@ const EditGroupComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title={t('editEntity', { entity: group.isChannel ? '$t(channel)' : '$t(group)', defaultValue: `Edit {{entity}}` })} />
+            <SHeader title={group.isChannel ? t('editChannel', `Edit channel`) : t('editGroup', `Edit group`)} />
             <SHeaderButton title={t('save', 'Save')} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <View style={{ paddingBottom: 32 }}>

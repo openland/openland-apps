@@ -12,10 +12,12 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { EditPageHeader } from '../EditPageHeader';
+import { useText } from 'openland-mobile/text/useText';
 
 const EditCommunityApplyLinkComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const client = getClient();
+    const { t } = useText();
     const organizationId = props.router.params.id;
     const organization = getClient().useOrganization({ organizationId }, { fetchPolicy: 'network-only' }).organization;
 
@@ -50,17 +52,17 @@ const EditCommunityApplyLinkComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeaderButton title="Save" onPress={handleSave} />
+            <SHeaderButton title={t('save', 'Save')} onPress={handleSave} />
             <SScrollView>
                 <EditPageHeader
                     icon={require('assets/ic-link-glyph-48.png')}
                     tint={theme.tintPink}
-                    title="Apply link"
-                    description="A link to application form or info"
+                    title={t('applyLink', 'Apply link')}
+                    description={t('applyLinkDescription', 'A link to application form or info')}
                 />
                 <ZListGroup header={null}>
                     <ZListItem
-                        text="Use apply link"
+                        text={t('applyLinkUse', 'Use apply link')}
                         toggle={applyLinkEnabledField.value}
                         onToggle={applyLinkEnabledField.input.onChange}
                         small={true}
@@ -68,7 +70,7 @@ const EditCommunityApplyLinkComponent = React.memo((props: PageProps) => {
                     <View style={{ height: 16 }} />
                     {applyLinkEnabledField.value && (
                         <ZInput
-                            placeholder="Apply link"
+                            placeholder={t('applyLink', 'Apply link')}
                             field={applyLinkField}
                         />
                     )}

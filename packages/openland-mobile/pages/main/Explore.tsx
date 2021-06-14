@@ -84,11 +84,11 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
             {/*<ActiveVoiceChats {...props} />*/}
             <DiscoverCreateList />
             <ZListGroup
-                header="Popular now"
+                header={t('discoverPopular', 'Popular now')}
                 actionRight={
                     popularRooms.length === 3
                         ? {
-                            title: 'See all',
+                            title: t('seeAll', 'See all'),
                             onPress: () =>
                                 props.router.push('DiscoverListing', {
                                     initialRooms: popularRooms,
@@ -104,11 +104,11 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
                 ))}
             </ZListGroup>
             <ZListGroup
-                header="Top communities"
+                header={t('discoverTopCommunities', 'Top communities')}
                 actionRight={
                     popularOrgs.length === 3
                         ? {
-                            title: 'See all',
+                            title: t('seeAll', 'See all'),
                             onPress: () =>
                                 props.router.push('DiscoverListing', {
                                     initialOrgs: popularOrgs,
@@ -124,11 +124,11 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
                 ))}
             </ZListGroup>
             <ZListGroup
-                header="Top groups"
+                header={t('discoverTopGroups', 'Top groups')}
                 actionRight={
                     topFreeRooms.length === 3
                         ? {
-                            title: 'See all',
+                            title: t('seeAll', 'See all'),
                             onPress: () =>
                                 props.router.push('DiscoverListing', {
                                     initialRooms: topFreeRooms,
@@ -145,11 +145,11 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
             </ZListGroup>
             <DiscoverCollectionsList />
             <ZListGroup
-                header="New communities"
+                header={t('discoverNewCommunities', 'New communities')}
                 actionRight={
                     newOrgs.length === 3
                         ? {
-                            title: 'See all',
+                            title: t('seeAll', 'See all'),
                             onPress: () =>
                                 props.router.push('DiscoverListing', {
                                     initialOrgs: newOrgs,
@@ -165,11 +165,11 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
                 ))}
             </ZListGroup>
             <ZListGroup
-                header="New groups"
+                header={t('discoverNewGroups', 'New groups')}
                 actionRight={
                     newRooms.length === 3
                         ? {
-                            title: 'See all',
+                            title: t('seeAll', 'See all'),
                             onPress: () =>
                                 props.router.push('DiscoverListing', {
                                     initialRooms: newRooms,
@@ -186,11 +186,11 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
             </ZListGroup>
             <EditorsChoiceList />
             <ZListGroup
-                header="Top premium"
+                header={t('discoverTopPremium', 'Top premium')}
                 actionRight={
                     topPremiumRooms.length === 3
                         ? {
-                            title: 'See all',
+                            title: t('seeAll', 'See all'),
                             onPress: () =>
                                 props.router.push('DiscoverListing', {
                                     initialRooms: topPremiumRooms,
@@ -209,11 +209,11 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
             {props.isDiscoverDone ? (
                 <>
                     <ZListGroup
-                        header="Recommendations"
+                        header={t('discoverRecommendations', 'Recommendations')}
                         actionRight={
                             suggestedRooms.length > 5
                                 ? {
-                                    title: 'See all',
+                                    title: t('seeAll', 'See all'),
                                     onPress: () =>
                                         props.router.push('DiscoverListing', {
                                             initialRooms: suggestedRooms,
@@ -279,15 +279,16 @@ export const RoomsList = (props: { router: SRouter; isDiscoverDone: boolean }) =
 
 const ExplorePage = (props: PageProps) => {
     const client = useClient();
+    const { t } = useText();
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
     const scrollRef = React.useContext(ComponentRefContext);
 
     return (
         <>
-            <SHeader title="Discover" />
+            <SHeader title={t('discover', 'Discover')} />
             <SHeaderButton />
             <SSearchControler
-                searchPlaceholder="Groups, communities, and more"
+                searchPlaceholder={t('searchDiscover', 'Groups, communities, and more')}
                 searchRender={(p) => (
                     <GlobalSearch
                         query={p.query}

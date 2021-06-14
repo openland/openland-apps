@@ -343,7 +343,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                     <CurrentVoiceChat currentVoiceChat={currentVoiceChat} />
                 )}
 
-                <ZListGroup header="About" useSpacer={true}>
+                <ZListGroup header={t('about', 'About')} useSpacer={true}>
                     {!!user.about && <ZShowMoreText text={user.about} />}
                     {!!user.shortname && (
                         <ZListItem

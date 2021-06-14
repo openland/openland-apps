@@ -76,10 +76,11 @@ const EditorsChoiceItem = (props: EditorsChoiceItemProps) => {
 
 export const EditorsChoiceList = () => {
     const client = useClient();
+    const { t } = useText();
     const { discoverEditorsChoice } = client.useDiscoverEditorsChoice({ fetchPolicy: 'network-only' });
 
     return (
-        <ZListGroup header="Featured">
+        <ZListGroup header={t('featured', 'Featured')}>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{ paddingLeft: 16 }} pagingEnabled={true} decelerationRate="fast" snapToInterval={351}>
                 {discoverEditorsChoice.map((item, i) => <EditorsChoiceItem key={i} item={item} />)}
                 <View style={{ width: 24 }} />

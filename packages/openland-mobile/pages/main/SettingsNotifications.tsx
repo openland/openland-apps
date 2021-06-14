@@ -9,6 +9,7 @@ import { NotificationPreview, UpdateSettingsInput } from 'openland-api/spacex.ty
 import { ZCheckmarkGroup } from 'openland-mobile/components/ZCheckmarkGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { backoff, debounce } from 'openland-y-utils/timer';
+import { useText } from 'openland-mobile/text/useText';
 
 let isMountedSettingsPage = false;
 
@@ -72,6 +73,7 @@ interface SettingsState {
 }
 
 const SettingsNotificationsContent = React.memo(() => {
+    const { t } = useText();
     const settingsData = getClient().useSettings({ fetchPolicy: 'network-only' }).settings;
     const [settings, setSettings] = React.useState<SettingsState>({
         excludeMutedChats: settingsData.excludeMutedChats,
@@ -111,92 +113,92 @@ const SettingsNotificationsContent = React.memo(() => {
 
     return (
         <SScrollView>
-            <ZListGroup header="Direct messages">
+            <ZListGroup header={t('directMessages', 'Direct messages')}>
                 <ZListItem
-                    text="Show notifications"
+                    text={t('notificationsShow', 'Show notifications')}
                     onToggle={value => handleSave('directShowNotification', value)}
                     toggle={settings.directShowNotification}
                 />
                 <ZListItem
-                    text="Sound"
+                    text={t('sound', 'Sound')}
                     onToggle={value => handleSave('directSound', value)}
                     toggle={settings.directSound}
                 />
             </ZListGroup>
 
-            <ZListGroup header="Secret groups messages">
+            <ZListGroup header={t('notificationsSecretGroups', 'Secret groups messages')}>
                 <ZListItem
-                    text="Show notifications"
+                    text={t('notificationsShow', 'Show notifications')}
                     onToggle={value => handleSave('secretChatShowNotification', value)}
                     toggle={settings.secretChatShowNotification}
                 />
                 <ZListItem
-                    text="Sound"
+                    text={t('sound', 'Sound')}
                     onToggle={value => handleSave('secretChatSound', value)}
                     toggle={settings.secretChatSound}
                 />
             </ZListGroup>
 
-            <ZListGroup header="Community groups messages">
+            <ZListGroup header={t('notificationsCommunityGroups', 'Community groups messages')}>
                 <ZListItem
-                    text="Show notifications"
+                    text={t('notificationsShow', 'Show notifications')}
                     onToggle={value => handleSave('communityChatShowNotification', value)}
                     toggle={settings.communityChatShowNotification}
                 />
                 <ZListItem
-                    text="Sound"
+                    text={t('sound', 'Sound')}
                     onToggle={value => handleSave('communityChatSound', value)}
                     toggle={settings.communityChatSound}
                 />
             </ZListGroup>
 
-            <ZListGroup header="Channels">
+            <ZListGroup header={t('notificationsChannels', 'Channels')}>
                 <ZListItem
-                    text="Show notifications"
+                    text={t('notificationsShow', 'Show notifications')}
                     onToggle={value => handleSave('channelsShowNotification', value)}
                     toggle={settings.channelsShowNotification}
                 />
                 <ZListItem
-                    text="Sound"
+                    text={t('sound', 'Sound')}
                     onToggle={value => handleSave('channelsSound', value)}
                     toggle={settings.channelsSound}
                 />
             </ZListGroup>
 
-            <ZListGroup header="New comments">
+            <ZListGroup header={t('notificationsComments', 'New comments')}>
                 <ZListItem
-                    text="Show notifications"
+                    text={t('notificationsShow', 'Show notifications')}
                     onToggle={value => handleSave('commentsShowNotification', value)}
                     toggle={settings.commentsShowNotification}
                 />
                 <ZListItem
-                    text="Sound"
+                    text={t('sound', 'Sound')}
                     onToggle={value => handleSave('commentsSound', value)}
                     toggle={settings.commentsSound}
                 />
             </ZListGroup>
 
             <ZCheckmarkGroup
-                header="Notifications preview"
+                header={t('notificationsPreview', 'Notifications preview')}
                 value={settings.notificationPreview}
                 onChange={item => handleSave('notificationPreview', item.value)}
                 items={[
-                    { label: 'Show name and text', value: NotificationPreview.NAME_TEXT },
-                    { label: 'Show name only', value: NotificationPreview.NAME },
+                    { label: t('notificationsNameAndText', 'Show name and text'), value: NotificationPreview.NAME_TEXT },
+                    { label: t('notificationsNameOnly', 'Show name only'), value: NotificationPreview.NAME },
                 ]}
             />
 
             <ZListGroup
-                header="Badge counter"
-                footer="Push notification settings apply to all your mobile devices and don't affect desktop. Badge settings affect all your devices"
+                header={t('notificationsBadgeCounter', 'Badge counter')}
+                footer={t('notificationsBadgeCounterDescription', `Push notification settings apply to all your mobile devices and don't affect desktop. Badge settings affect all your devices`)}
             >
                 <ZListItem
-                    text="Include muted chats"
+                    text={t('notificationsIncludeMuted', 'Include muted chats')}
                     onToggle={value => handleSave('excludeMutedChats', !value)}
                     toggle={!settings.excludeMutedChats}
                 />
                 <ZListItem
-                    text="Count chats instead of messages"
+                    text={t('notificationsCountChats', 'Count chats instead of messages')}
                     onToggle={value => handleSave('countUnreadChats', value)}
                     toggle={settings.countUnreadChats}
                 />
@@ -205,15 +207,14 @@ const SettingsNotificationsContent = React.memo(() => {
     );
 });
 
-class SettingsNotifciationsComponent extends React.Component<PageProps> {
-    render() {
-        return (
-            <>
-                <SHeader title="Notifications" />
-                <SettingsNotificationsContent />
-            </>
-        );
-    }
-}
+const SettingsNotifciationsComponent = React.memo((props: PageProps) => {
+    const { t } = useText();
+    return (
+        <>
+            <SHeader title={t('notifications', 'Notifications')} />
+            <SettingsNotificationsContent />
+        </>
+    );
+});
 
 export const SettingsNotifications = withApp(SettingsNotifciationsComponent);

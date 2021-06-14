@@ -14,9 +14,11 @@ import { RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
 import { trackEvent } from 'openland-mobile/analytics';
 import { InviteLinkView } from './components/InviteLinkView';
 import { formatError } from 'openland-y-forms/errorHandling';
+import { useText } from 'openland-mobile/text/useText';
 
 const ProfileGroupLinkContent = React.memo((props: PageProps) => {
     const { id, isChannel } = props.router.params.room as RoomChat_room_SharedRoom;
+    const { t } = useText();
     const invite = getClient().useRoomInviteLink({ roomId: id }, { fetchPolicy: 'network-only' })
         .link;
     const link = 'https://openland.com/invite/' + invite;
@@ -61,30 +63,30 @@ const ProfileGroupLinkContent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title={isChannel ? 'Channel link' : 'Group link'} />
+            <SHeader title={isChannel ? t('inviteLinkChannel', 'Channel link') : t('inviteLinkGroup', 'Group link')} />
             <ZTrack event="invite_view" params={{ invite_type: chatType }}>
                 <InviteLinkView
                     link={link}
                     onPress={handleShareClick}
-                    footer="Anyone with link can join as group member"
+                    footer={t('inviteLinkDescription', 'Anyone with link can join as group member')}
                 />
                 <ZListGroup>
                     <ZListItem
                         leftIcon={require('assets/ic-copy-24.png')}
                         small={true}
-                        text="Copy link"
+                        text={t('copyLink', 'Copy link')}
                         onPress={handleCopyClick}
                     />
                     <ZListItem
                         leftIcon={require('assets/ic-share-24.png')}
                         small={true}
-                        text="Share link"
+                        text={t('shareLink', 'Share link')}
                         onPress={handleShareClick}
                     />
                     <ZListItem
                         leftIcon={require('assets/ic-refresh-24.png')}
                         small={true}
-                        text="Revoke link"
+                        text={t('revokeLink', 'Revoke link')}
                         onPress={handleRevokeClick}
                     />
                 </ZListGroup>
