@@ -64,7 +64,7 @@ const NewOrganizationComponent = (props: PageProps) => {
             <SHeaderButton title={t('create', 'Create')} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <ZListGroup header={null} alignItems="center">
-                    <ZAvatarPicker field={photoField} size="xx-large" />
+                    <ZAvatarPicker id={''} field={photoField} size="xx-large" />
                 </ZListGroup>
 
                 <ZListGroup header={null}>

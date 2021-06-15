@@ -27,7 +27,7 @@ export const showPremiumPayConfirm = (
         productTitle: props.group.title,
         productDescription: premiumSettings.interval ? 'Subscription' : 'Payment',
         productPicture: (
-            <UAvatar title={props.group.title} id={props.group.id} photo={props.group.photo} />
+            <UAvatar id={props.group.id} photo={props.group.photo} />
         ),
         action: async () => {
             let passIsActive = false;

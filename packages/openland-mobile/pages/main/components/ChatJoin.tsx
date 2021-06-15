@@ -94,7 +94,7 @@ export const joinPaidGroup = (props: JoinPaidGroupProps) => {
         productTitle: props.title,
         productDescription: props.premiumSettings.interval ? 'Subscription' : 'Payment',
         productPicture: (
-            <ZAvatar size="medium" title={props.title} id={props.id} photo={props.photo} />
+            <ZAvatar size="medium" id={props.id} photo={props.photo} />
         ),
         action: async () => {
             try {
@@ -245,7 +245,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
     //             title={title}
     //         />
     //     );
-    const joinAvatars = <ZAvatar photo={photo} size="xx-large" id={id} title={title} />;
+    const joinAvatars = <ZAvatar photo={photo} size="xx-large" id={id} />;
 
     const membersContent = (
         <>
@@ -259,7 +259,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                             borderWidth: 2,
                         }}
                     >
-                        <ZAvatar photo={src} size="small" />
+                        <ZAvatar id={id} photo={src} size="small" />
                     </View>
                 ))}
             </View>

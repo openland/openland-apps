@@ -25,7 +25,6 @@ export const DiscoverListItem = ({ item, rightElement, onJoin }: DiscoverListIte
             leftAvatar={{
                 photo: item.photo,
                 id: item.id,
-                title: item.title,
             }}
             subTitle={
                 item.newMessages
@@ -57,7 +56,6 @@ export const DiscoverListItemOrg = ({ item, rightElement }: DiscoverListItemOrgP
             leftAvatar={{
                 photo: item.photo,
                 id: item.id,
-                title: item.name,
             }}
             subTitle={
                 item.membersCount ? `${item.membersCount} ${t('member', { count: item.membersCount, defaultValue: 'member' })}` : undefined
@@ -89,7 +87,6 @@ export const DiscoverListItemVoice = ({ item }: DiscoverListItemVoiceProps) => {
             leftAvatar={{
                 photo: admin?.user.photo,
                 id: admin?.user.id || item.id,
-                title: item.title || undefined,
             }}
             subTitle={`${membersCount} ${t('member', { count: membersCount, defaultValue: 'member' })}`}
             onPress={handlePress}

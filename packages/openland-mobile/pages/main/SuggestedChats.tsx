@@ -40,7 +40,6 @@ const Chat = React.memo((props: ChatProps) => {
                     photo={props.item.photo}
                     size="medium"
                     id={props.item.id}
-                    title={props.item.title}
                 />
             </View>
             <View

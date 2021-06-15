@@ -23,7 +23,6 @@ class XPAvatarWithPreviewComponent extends React.PureComponent<ZAvatarProps & XV
 
         view.measure((x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
             showPictureModal({
-                title: this.props.title || undefined,
                 url,
                 width: 1024,
                 height: 1024,

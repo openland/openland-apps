@@ -86,7 +86,7 @@ const DonationBadge = React.memo((props: { amount: number, photo: string | null,
                 borderRadius: 16,
             }}
         >
-            <ZAvatar size="x-small" id={props.id} title={props.name} photo={props.photo} />
+            <ZAvatar size="x-small" id={props.id} photo={props.photo} />
             <Text
                 style={{
                     ...TextStyles.Label2,

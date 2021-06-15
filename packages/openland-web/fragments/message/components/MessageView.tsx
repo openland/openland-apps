@@ -128,7 +128,6 @@ export const MessageView = React.memo((props: MessageViewProps) => {
             <div className={avatarWrapper}>
                 <UAvatar
                     id={sender.id}
-                    title={sender.name}
                     photo={sender.photo}
                     onClick={() => {
                         if (router) {

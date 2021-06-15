@@ -53,7 +53,7 @@ export const EntityHeader = React.memo((props: AuthorHeaderProps) => {
     return (
         <TouchableOpacity onPress={onPress} activeOpacity={0.6}>
             <View style={styles.box}>
-                <ZAvatar size="small" photo={avatar.photo} id={avatar.id} title={avatar.title} />
+                <ZAvatar size="small" photo={avatar.photo} id={avatar.id} />
                 <View style={styles.info}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text

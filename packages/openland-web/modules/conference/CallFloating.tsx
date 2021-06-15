@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { UAvatar, getPlaceholderColorById } from 'openland-web/components/unicorn/UAvatar';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
+import { getPlaceholderColorById } from 'openland-y-utils/extractPlaceholder';
 import { useTalkWatch } from './useTalkWatch';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
@@ -259,7 +260,6 @@ const AvatarCover = React.memo((props: { photo?: string | null, id: string, titl
                 <UAvatar
                     size="large"
                     id={props.id}
-                    title={props.title}
                     photo={props.photo}
                 />
             </XView>
@@ -602,7 +602,6 @@ const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession
         <UAvatar
             key={user.id}
             id={user.id}
-            title={user.name}
             photo={user.photo}
             customSizes={avatarSizeByLength[arr.length]}
         />

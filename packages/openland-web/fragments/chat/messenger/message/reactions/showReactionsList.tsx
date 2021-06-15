@@ -76,7 +76,6 @@ export const ReactionItemUser = (props: {
         <div className={userContainer} onClick={props.onClick}>
             <UAvatar
                 id={props.user.id}
-                title={props.user.name}
                 photo={props.user.photo}
                 size="x-small"
             />

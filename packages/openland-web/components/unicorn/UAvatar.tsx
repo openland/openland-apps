@@ -1,14 +1,9 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView, XImage, XViewProps } from 'react-mental';
-import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
-import { doSimpleHash } from 'openland-y-utils/hash';
-import { emoji } from 'openland-y-utils/emoji';
-import { PlaceholderColors } from 'openland-y-utils/themes/placeholders';
 import { useReloadImage } from 'openland-web/components/ImgWithRetry';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { UIcon } from './UIcon';
-import { useRole } from 'openland-x-permissions/XWithRole';
 import { AvatarBauhaus } from './UAvatarNew';
 import BookmarkIcon from 'openland-icons/s/ic-bookmark-filled-24.svg';
 
@@ -22,8 +17,6 @@ type AvatarSizesRecord = {
     dotBorderWidth: number;
 };
 export interface UAvatarProps extends XViewProps {
-    title: string;
-    titleEmoji?: any;
     id: string;
     photo?: string | null;
     uuid?: string | null;
@@ -37,18 +30,6 @@ export interface UAvatarProps extends XViewProps {
     customSizes?: AvatarSizesRecord;
 }
 
-export const getPlaceholderIndex = (id: string) => Math.abs(doSimpleHash(id)) % PlaceholderColors.length;
-
-export const getPlaceholderColorByIndex = (index: number) => {
-    let color = PlaceholderColors[index];
-    return `linear-gradient(138deg, ${color.start}, ${color.end})`;
-};
-
-export const getPlaceholderColorById = (id: string) => {
-    let color = PlaceholderColors[getPlaceholderIndex(id)];
-    return `linear-gradient(138deg, ${color.start}, ${color.end})`;
-};
-
 export const AvatarSizes: {
     [key in UAvatarSize]: AvatarSizesRecord;
 } = {
@@ -60,35 +41,6 @@ export const AvatarSizes: {
     'xx-large': { size: 96, placeholder: 40, dotSize: 16, dotPosition: 6, dotBorderWidth: 2 },
     'xxx-large': { size: 128, placeholder: 40, dotSize: 16, dotPosition: 6, dotBorderWidth: 2 },
 };
-
-const avatarPlaceholderStyle = css`
-    -webkit-user-select: none;
-    white-space: nowrap;
-`;
-
-export const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: number, fontSize: number }) => {
-    const { title, titleEmoji, index, squared, ...other } = props;
-    const ph = extractPlaceholder(title);
-
-    return (
-        <XView
-            width="100%"
-            height="100%"
-            alignItems="center"
-            justifyContent="center"
-            borderRadius={squared ? 0 : 50}
-            backgroundImage={getPlaceholderColorByIndex(index)}
-            color="white"
-            overflow="hidden"
-            hoverTextDecoration="none"
-            {...other}
-        >
-            <span className={avatarPlaceholderStyle}>
-                {titleEmoji || emoji(ph)}
-            </span>
-        </XView>
-    );
-});
 
 export const AvatarSavedMessages = (props: { squared?: boolean, bookmarkSize: number }) => {
     return (
@@ -261,8 +213,6 @@ const badgeBoxStyle = {
 
 export const UAvatar = React.memo((props: UAvatarProps) => {
     const {
-        title,
-        titleEmoji,
         id,
         photo,
         uuid,
@@ -276,35 +226,26 @@ export const UAvatar = React.memo((props: UAvatarProps) => {
         customSizes,
         ...other
     } = props;
-    const isAdmin = useRole('super-admin');
-    let content: JSX.Element | undefined = undefined;
+    let content: JSX.Element;
     let sizes = customSizes || AvatarSizes[size];
     if (savedMessages) {
         content = <AvatarSavedMessages squared={squared} bookmarkSize={sizes.placeholder} />;
     } else if (photo || uuid) {
         if (photo && photo.startsWith('ph://')) {
-            const phIndex = parseInt(photo.substr(5), 10) || 0;
-            if (!isAdmin) {
-                content = <AvatarPlaceholder {...props} fontSize={sizes.placeholder} index={phIndex} />;
-            } else {
-                content = <AvatarBauhaus name={props.id} size="100%" />;
-            }
+            content = <AvatarBauhaus name={props.id} size="100%" />;
         } else {
             content = <AvatarImage {...props} boxSize={sizes.size} />;
         }
     } else {
-        const phIndex = getPlaceholderIndex(id);
-        if (!isAdmin) {
-            content = <AvatarPlaceholder {...props} fontSize={sizes.placeholder} index={phIndex} />;
-        } else {
-            content = <AvatarBauhaus name={props.id} size="100%" />;
-        }
+        content = <AvatarBauhaus name={props.id} size="100%" />;
     }
 
     const boxSize = sizes.size;
 
     const dotBorder = selected ? 'var(--accentMuted)' : 'var(--backgroundPrimary)';
     const dotBackground = dotColor ? dotColor : selected ? 'var(--foregroundContrast)' : 'var(--accentPrimary)';
+
+    const isRealSquared = squared && (photo || uuid) && !photo?.startsWith('ph://');
 
     return (
         <XView height={boxSize} width={boxSize} cursor={props.onClick || props.path ? 'pointer' : undefined} {...other}>
@@ -323,7 +264,7 @@ export const UAvatar = React.memo((props: UAvatarProps) => {
                 <XView
                     width="100%"
                     height="100%"
-                    borderRadius={squared ? 0 : boxSize / 2}
+                    borderRadius={isRealSquared ? 0 : boxSize / 2}
                     overflow="hidden"
                 >
                     {content}

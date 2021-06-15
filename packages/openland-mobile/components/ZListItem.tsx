@@ -12,7 +12,7 @@ import Toast from 'openland-mobile/components/Toast';
 import { t } from 'openland-mobile/text/useText';
 
 export interface ZListItemProps {
-    leftAvatar?: { photo?: string | null, id?: string, title?: string };
+    leftAvatar?: { photo?: string | null, id: string };
     leftIcon?: any | null;
     leftIconColor?: string;
     leftIconView?: JSX.Element;

@@ -106,7 +106,6 @@ const DonationItem = React.memo(({
                     <ZAvatar
                         photo={user.photo}
                         id={user.id}
-                        title={user.name}
                         size="x-small"
                     />
                     <View

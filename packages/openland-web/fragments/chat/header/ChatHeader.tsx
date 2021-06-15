@@ -409,7 +409,6 @@ export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
                 <XView paddingTop={8} paddingRight={16}>
                     <UAvatar
                         size="medium"
-                        title={title}
                         photo={photo}
                         id={privateRoom ? privateRoom.user.id : sharedRoom!.id}
                         savedMessages={isSavedMessages}

@@ -55,7 +55,7 @@ export interface AsyncMessageViewProps {
 type SendingIndicatorT = 'pending' | 'sending' | 'sent' | 'hide';
 
 const AsyncMessageViewAvatar = (props: { message: DataSourceMessageItem, handleUserPress: (id: string) => void }) => {
-    const { isOut, attachBottom, sender, overrideAvatar, overrideName } = props.message;
+    const { isOut, attachBottom, sender, overrideAvatar } = props.message;
 
     if (isOut || attachBottom) {
         return null;
@@ -64,9 +64,8 @@ const AsyncMessageViewAvatar = (props: { message: DataSourceMessageItem, handleU
             <ASFlex marginRight={12} onPress={() => props.handleUserPress(sender.id)} alignItems="flex-end">
                 <AsyncAvatar
                     size="small"
-                    src={overrideAvatar ? buildBaseImageUrl(overrideAvatar) : sender.photo}
-                    placeholderKey={sender.id}
-                    placeholderTitle={overrideName || sender.name}
+                    id={sender.id}
+                    photo={overrideAvatar ? buildBaseImageUrl(overrideAvatar) : sender.photo}
                 />
             </ASFlex>
         );

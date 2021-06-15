@@ -32,7 +32,6 @@ export const GroupView = React.memo<GroupViewProps>((props) => {
                     photo={photo}
                     size="medium"
                     id={item.id}
-                    title={item.title}
                 />
             </View>
             <View style={{ paddingRight: paddingRight || 10, flexDirection: 'column', flexGrow: 1, flexBasis: 0, justifyContent: 'center' }}>

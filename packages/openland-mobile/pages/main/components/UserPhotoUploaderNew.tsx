@@ -45,6 +45,7 @@ export const UserPhotoUploaderNew = React.memo(() => {
 
     return (
         <ZAvatarPicker
+            id={myID}
             render={(props: ZAvatarPickerRenderProps) => <Renderer {...props} onLoadingStart={() => loader.show()} />}
             onChanged={handleSave}
         />

@@ -61,7 +61,6 @@ const UserProfileCard = React.memo(() => {
                 <UAvatar
                     size="large"
                     photo={data.photo}
-                    title={data.name}
                     id={data.id}
                     marginRight={16}
                 />

@@ -417,7 +417,6 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                         leftAvatar={{
                             photo: group.organization.photo,
                             id: group.organization.id,
-                            title: group.organization.name,
                         }}
                         path="ProfileOrganization"
                         pathParams={{ id: group.organization.id }}

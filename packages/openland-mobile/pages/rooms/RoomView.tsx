@@ -541,7 +541,6 @@ const RoomHeader = React.memo(
                                 <ZAvatar
                                     size="x-small"
                                     id={parentRoom.id}
-                                    title={parentRoom.title}
                                     photo={parentRoom.photo}
                                 />
                                 <Text
@@ -843,7 +842,6 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                     <ZAvatar
                         size={isListener ? 'x-large' : 'xx-large'}
                         photo={user.photo}
-                        title={user.name}
                         id={user.id}
                     />
                     {(state === 'muted' || state === 'loading') && (

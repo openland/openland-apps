@@ -22,7 +22,7 @@ const Item = React.memo((props: { community: MyCommunities_myCommunities, router
         <ZListItem
             text={name}
             subTitle={`${membersCount} ${t('member', { count: membersCount, defaultValue: 'member' })}`}
-            leftAvatar={{ photo, id, title: name }}
+            leftAvatar={{ photo, id }}
             onPress={() => props.router.push('ProfileOrganization', { id })}
             {...featured && props.theme.displayFeaturedIcon ? { descriptionIcon: require('assets/ic-verified-16.png'), descriptionColor: '#3DA7F2' } : {}}
         />

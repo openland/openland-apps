@@ -4,7 +4,8 @@ import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { VideoComponent, VideoModal } from './ScreenShareModal';
 import { css, cx } from 'linaria';
-import { UAvatar, getPlaceholderColorById } from 'openland-web/components/unicorn/UAvatar';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
+import { getPlaceholderColorById } from 'openland-y-utils/extractPlaceholder';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
 import SpeakerIcon from 'openland-icons/s/ic-speaking-bold-16.svg';
 import MutedIcon from 'openland-icons/s/ic-muted-bold-16.svg';
@@ -190,7 +191,6 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
                         <UAvatar
                             size={props.compact ? 'large' : 'xx-large'}
                             id={props.peer.user.id}
-                            title={props.peer.user.name}
                             photo={props.peer.user.photo}
                         />
                     </div>

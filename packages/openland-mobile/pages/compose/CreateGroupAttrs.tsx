@@ -285,7 +285,7 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
             <SHeaderButton title={t('next', 'Next')} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <ZListGroup header={null} alignItems="center">
-                    <ZAvatarPicker size="xx-large" field={photoField} />
+                    <ZAvatarPicker id={''} size="xx-large" field={photoField} />
                 </ZListGroup>
                 <ZListGroup header={null}>
                     <ZInput placeholder={t('name', 'Name')} field={titleField} autoFocus={true} />

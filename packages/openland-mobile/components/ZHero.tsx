@@ -118,8 +118,7 @@ export const ZHero = React.memo<ZHeroProps>((props) => {
                     <XPAvatarWithPreview
                         size="xxx-large"
                         photo={photo}
-                        id={id}
-                        title={title}
+                        id={id || ''}
                         online={online}
                     />
                     {!!badge && badge.length > 0 && (

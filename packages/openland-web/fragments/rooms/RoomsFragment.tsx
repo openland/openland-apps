@@ -155,7 +155,6 @@ const RoomsFeedItem = React.memo((props: { voiceChat: VoiceChatShort }) => {
                             <UAvatar
                                 id={speaker.user.id}
                                 key={speaker.id}
-                                title={speaker.user.name}
                                 size="small"
                                 photo={speaker.user.photo}
                             />

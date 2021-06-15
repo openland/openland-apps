@@ -60,7 +60,6 @@ const EditCommunityDefaultGroupsComponent = React.memo((props: PageProps) => {
                             leftAvatar={{
                                 photo: group.photo,
                                 id: group.id,
-                                title: group.title
                             }}
                             checkmark={autosubscribeRoomsField.value.includes(group.id)}
                             checkmarkType="checkbox"

@@ -151,7 +151,6 @@ interface InviteLandingComponentLayoutProps {
     whereToInvite: 'channel' | 'group' | 'organization' | 'community' | 'Openland';
     photo: string | null;
     title: string;
-    entityTitle: string;
     id: string;
     membersCount?: number | null;
     description?: string | null;
@@ -173,7 +172,6 @@ export const InviteLandingComponentLayout = React.memo(
             whereToInvite,
             photo,
             title,
-            entityTitle,
             id,
             membersCount,
             description,
@@ -210,7 +208,7 @@ export const InviteLandingComponentLayout = React.memo(
             <Page padded={false} flexGrow={1}>
                 <div className={container2} ref={contentRef}>
                     <div className={avatarsContainer}>
-                        <UAvatar photo={photo} title={entityTitle} id={id} size="xx-large" />
+                        <UAvatar photo={photo} id={id} size="xx-large" />
                     </div>
                     <div className={titleWrapperStyle}>
                         <div className={cx(TextTitle1, titleStyle)}>
@@ -251,7 +249,6 @@ export const InviteLandingComponentLayout = React.memo(
                                         className={cx(bigAvatarWrapper, smallAvatarWrapper)}
                                     >
                                         <UAvatar
-                                            title={i.name}
                                             id={i.id}
                                             photo={i.photo}
                                             size="small"
@@ -297,7 +294,6 @@ export const SharedRoomPlaceholder = React.memo((props: SharedRoomPlaceholderPro
             photo={room.photo}
             title={premiumSuspended ? `Your access to “${room.title}” is suspended` : room.title}
             featured={room.featured}
-            entityTitle={room.title}
             id={room.id}
             membersCount={room.membersCount}
             description={
@@ -410,7 +406,6 @@ export const InviteLandingComponent = React.memo((props: InviteLandingComponentP
                     title={`Your access to “${
                         room ? room.title : organization!.name
                     }” is suspended`}
-                    entityTitle={room ? room.title : organization!.name}
                     id={room ? room.id : organization!.id}
                     description={
                         'To keep your access to the group by subscription you need to complete payment'
@@ -425,7 +420,6 @@ export const InviteLandingComponent = React.memo((props: InviteLandingComponentP
                     whereToInvite={whereToInvite}
                     photo={room ? room.photo : app ? app.photo : organization!.photo}
                     title={room ? room.title : app ? app.name : organization!.name}
-                    entityTitle={room ? room.title : app ? app.name : organization!.name}
                     id={room ? room.id : app ? app.id : organization!.id}
                     membersCount={
                         room ? room.membersCount : app ? undefined : organization!.membersCount

@@ -37,11 +37,12 @@ export const SubscriptionView = React.memo((props: SubscriptionConverted) => {
                 : showSubscription(props, client, router)
             }
         >
-            {props.id && props.title && <UAvatar
-                id={props.id}
-                title={props.title}
-                photo={props.photo}
-            />}
+            {props.id && props.title && (
+                <UAvatar
+                    id={props.id}
+                    photo={props.photo}
+                />
+            )}
             <XView marginLeft={16} flexDirection="column" color="var(--foregroundPrimary)">
                 <span className={TextLabel1}>
                     {props.title}

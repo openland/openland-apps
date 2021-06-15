@@ -67,9 +67,8 @@ const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterI
                 <ASFlex onPress={() => messenger.handleUserPress(item.sender.id)} alignItems="center">
                     <AsyncAvatar
                         size="xx-small"
-                        src={item.sender.photo}
-                        placeholderKey={item.sender.id}
-                        placeholderTitle={item.sender.name}
+                        photo={item.sender.photo}
+                        id={item.sender.id}
                     />
 
                     <ASText
@@ -89,9 +88,8 @@ const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterI
                         <ASFlex onPress={() => messenger.handleGroupPress(sharedRoom.id)} marginLeft={7}>
                             <AsyncAvatar
                                 size="xx-small"
-                                src={sharedRoom.photo}
-                                placeholderKey={sharedRoom.id}
-                                placeholderTitle={sharedRoom.title}
+                                photo={sharedRoom.photo}
+                                id={sharedRoom.id}
                             />
 
                             <ASText

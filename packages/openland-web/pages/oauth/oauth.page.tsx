@@ -97,7 +97,6 @@ const OauthFragment = React.memo(() => {
             <div className={contentStyle}>
                 <div className={avatarsContainer}>
                     <UAvatar
-                        title={userInfo.name}
                         id={userInfo.id}
                         photo={userInfo.photo}
                         size="x-large"
@@ -107,7 +106,6 @@ const OauthFragment = React.memo(() => {
                         borderColor="#fff"
                     />
                     <UAvatar
-                        title={app.title}
                         id={app.id}
                         uuid={!!app.image ? app.image.uuid : undefined}
                         size="x-large"

@@ -321,7 +321,6 @@ const IncomingMessage = React.memo(React.forwardRef((props: IncomingMessageProps
             <XView marginRight={16} paddingTop={4}>
                 <UAvatar
                     id={message.sender.id}
-                    title={message.sender.name}
                     photo={message.sender.photo}
                     onClick={(e) => {
                         e.stopPropagation();

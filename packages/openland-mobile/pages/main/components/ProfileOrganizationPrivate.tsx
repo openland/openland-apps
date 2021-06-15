@@ -44,7 +44,6 @@ export const ProfileOrganizationPrivate = React.memo((props: ProfileOrganization
                         size="xx-large"
                         photo={photo}
                         id={id}
-                        title={name}
                     />
                     <View
                         style={{ flexDirection: 'row', marginTop: 32 }}

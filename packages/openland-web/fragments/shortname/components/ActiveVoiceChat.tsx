@@ -50,7 +50,6 @@ export const ActiveVoiceChat = React.memo<CurrentVoiceChatProps>(props => {
                 <XView flexDirection="row" alignItems="center">
                     {firstSpeakers.map(item => (
                         <UAvatar
-                            title={item.user.name}
                             id={item.user.id}
                             size="small"
                             key={item.user.id}

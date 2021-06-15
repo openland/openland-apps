@@ -263,7 +263,6 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
                 <UAvatar
                     size="large"
                     photo={image.url}
-                    title={title || ''}
                     id={id}
                 />
             </div>
@@ -274,7 +273,6 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
                 <UAvatar
                     size="large"
                     photo={imageFallback.photo}
-                    title={imageFallback.text}
                     id={id}
                 />
             </div>

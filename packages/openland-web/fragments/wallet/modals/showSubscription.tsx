@@ -60,12 +60,13 @@ export const showSubscription = (props: SubscriptionConverted, client: OpenlandC
         return (
             <>
                 <div onClick={() => onProductClick(props.product, router, ctx)} className={props.state === WalletSubscriptionState.STARTED ? gradientModalBody : modalBody}>
-                    {props.id && props.title && <UAvatar
-                        id={props.id}
-                        title={props.title}
-                        photo={props.photo}
-                        size='xx-large'
-                    />}
+                    {props.id && props.title && (
+                        <UAvatar
+                            id={props.id}
+                            photo={props.photo}
+                            size='xx-large'
+                        />
+                    )}
                     <XView marginTop={16} color="var(--foregroundPrimary)">
                         <h2 className={TextTitle2}>
                             {props.title}

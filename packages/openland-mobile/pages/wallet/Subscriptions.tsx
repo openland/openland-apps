@@ -58,8 +58,7 @@ const SubscriptionView = React.memo((props: SubscriptionConverted & { router?: S
                         <View style={{ alignItems: 'center' }}>
                             <ZAvatar
                                 photo={props.photo}
-                                title={props.title}
-                                id={props.id}
+                                id={props.id || ''}
                                 size='xx-large'
                             />
                             <View style={{ marginTop: 16 }}>
@@ -125,14 +124,14 @@ const SubscriptionView = React.memo((props: SubscriptionConverted & { router?: S
         <ZListItem
             text={props.title}
             subTitle={props.subtitle}
-            leftAvatar={{ photo: props.photo, id: props.id, title: props.title }}
+            leftAvatar={{ photo: props.photo, id: props.id || '' }}
             path="Wallet"
         />
     ) : (
         <ZListItem
             text={props.title}
             subTitle={props.subtitle}
-            leftAvatar={{ photo: props.photo, id: props.id, title: props.title }}
+            leftAvatar={{ photo: props.photo, id: props.id || '' }}
             onPress={showModal}
         />
     );

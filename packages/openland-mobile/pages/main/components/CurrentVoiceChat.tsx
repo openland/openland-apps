@@ -43,7 +43,6 @@ export const CurrentVoiceChat = React.memo<CurrentVoiceChatProps>((props) => {
                                     size="small"
                                     photo={item.user.photo}
                                     id={item.user.id}
-                                    title={item.user.name}
                                 />
                             </View>
                         ))}

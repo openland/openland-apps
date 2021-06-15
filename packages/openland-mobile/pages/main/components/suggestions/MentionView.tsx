@@ -33,7 +33,6 @@ export const MentionView = React.memo((props: MentionViewProps) => {
                             photo={mention.user.photo}
                             size="x-small"
                             id={mention.user.id}
-                            title={mention.user.name}
                         />
                     )}
                     {mention.__typename === 'MentionSearchOrganization' && (
@@ -41,7 +40,6 @@ export const MentionView = React.memo((props: MentionViewProps) => {
                             photo={mention.organization.photo}
                             size="x-small"
                             id={mention.organization.id}
-                            title={mention.organization.name}
                         />
                     )}
                     {mention.__typename === 'MentionSearchSharedRoom' && (
@@ -49,7 +47,6 @@ export const MentionView = React.memo((props: MentionViewProps) => {
                             photo={mention.room.photo}
                             size="x-small"
                             id={mention.room.id}
-                            title={mention.room.title}
                         />
                     )}
                     {mention.__typename === 'AllMention' && (

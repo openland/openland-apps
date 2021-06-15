@@ -465,7 +465,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                         {mutualGroups.items.map((item) => (
                             <ZListItem
                                 key={`group-${item.id}`}
-                                leftAvatar={{ photo: item.photo, id: item.id, title: item.title }}
+                                leftAvatar={{ photo: item.photo, id: item.id }}
                                 text={item.title}
                                 subTitle={t('member', { count: item.membersCount, defaultValue: 'member' })}
                                 path="Conversation"

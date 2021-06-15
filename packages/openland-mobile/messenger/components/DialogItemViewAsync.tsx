@@ -88,19 +88,17 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                     >
                         {!isUser && (
                             <ASAvatar
-                                src={item.photo}
+                                photo={item.photo}
+                                id={item.key}
                                 size={avatarSize}
-                                placeholderKey={item.key}
-                                placeholderTitle={item.title}
                                 theme={theme}
                             />
                         )}
                         {isUser && (
                             <UserAvatar
-                                src={item.photo}
+                                photo={item.photo}
+                                id={item.flexibleId}
                                 size={avatarSize}
-                                placeholderKey={item.flexibleId}
-                                placeholderTitle={item.title}
                                 online={item.online}
                                 theme={theme}
                                 savedMessages={isSavedMessages}

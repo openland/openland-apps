@@ -51,7 +51,7 @@ const EditorsChoiceItem = (props: EditorsChoiceItemProps) => {
                     <DiscoverCover path={path} width={343} height={192} marginBottom={14} />
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ paddingTop: 2 }}>
-                            <ZAvatar size="medium" photo={photo} id={id} title={title} />
+                            <ZAvatar size="medium" photo={photo} id={id} />
                         </View>
                         <View style={{ marginHorizontal: 16, flexGrow: 1, flexShrink: 1, flexDirection: 'column' }}>
                             <View style={{ flexDirection: 'row' }}>

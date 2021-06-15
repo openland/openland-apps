@@ -74,6 +74,7 @@ const EditGroupSocialImageComponent = React.memo((props: PageProps) => {
                 />
                 <ZListGroup header={null} alignItems="center">
                     <ZAvatarPicker
+                        id={props.router.params.id}
                         field={socialImageField}
                         render={ZSocialPickerRender}
                         pickSize={{ width: 1200, height: 630 }}

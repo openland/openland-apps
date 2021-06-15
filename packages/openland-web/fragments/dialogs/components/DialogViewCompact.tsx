@@ -31,7 +31,6 @@ export const DialogViewCompact = React.memo(
                 cursor="pointer"
             >
                 <UAvatar
-                    title={dialog.title}
                     id={dialog.flexibleId}
                     photo={dialog.photo}
                     size="x-small"

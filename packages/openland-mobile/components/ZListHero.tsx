@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
 
 export interface ZListHeroProps {
     photo?: string | null;
-    id?: string;
+    id: string;
     title?: string | null;
     titleIcon?: NodeRequire;
     titleIconElement?: JSX.Element;
@@ -81,7 +81,7 @@ export const ZListHero = React.memo<ZListHeroProps>((props) => {
     const content = (
         <View style={styles.container}>
             <View style={styles.avatar}>
-                <XPAvatarWithPreview size="x-large" photo={photo} id={id} title={title} />
+                <XPAvatarWithPreview size="x-large" photo={photo} id={id} />
             </View>
             <View style={styles.body}>
                 <View style={[styles.header, { justifyContent: !action ? 'center' : undefined }]}>

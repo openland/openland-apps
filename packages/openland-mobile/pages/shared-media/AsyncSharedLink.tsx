@@ -43,7 +43,7 @@ export const AsyncSharedLink = React.memo(({ item, chatId, onLongPress }: AsyncS
     const url = attachment.image && attachment.image.url || attachment.imageFallback && attachment.imageFallback.photo || attachment.imagePreview;
     let image = null;
     if (isAvatar(url)) {
-        image = <ASAvatar src={url} placeholderTitle={attachment.title} size="large" theme={theme} borderRadius={8} />;
+        image = <ASAvatar id={message.sender.id} photo={url} size="large" theme={theme} borderRadius={8} />;
     } else if (url) {
         image = (
             <ASImage

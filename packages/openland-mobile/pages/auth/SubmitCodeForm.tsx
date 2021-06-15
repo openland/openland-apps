@@ -252,7 +252,7 @@ export const SubmitCodeForm = React.memo((props: SubmitCodeFormProps) => {
                             justifyContent: 'center'
                         }}
                     >
-                        <ZAvatar size="x-large" title={avatarPlaceholder.initials} pictureHash={avatarPlaceholder.hash} />
+                        <ZAvatar size="x-large" id={String(avatarPlaceholder.hash)} />
                     </View>
                 )}
                 {avatarSrc && (
@@ -264,7 +264,7 @@ export const SubmitCodeForm = React.memo((props: SubmitCodeFormProps) => {
                             justifyContent: 'center'
                         }}
                     >
-                        <ZAvatar size="x-large" photo={avatarSrc} />
+                        <ZAvatar size="x-large" photo={avatarSrc} id={''} />
                     </View>
                 )}
                 <View>

@@ -83,12 +83,12 @@ const RoomFeedItem = React.memo((props: { room: VoiceChatShort, theme: ThemeGlob
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-end', flexWrap: 'wrap', maxWidth: 88 }}>
                     {room.parentRoom && (
                         <View key={room.parentRoom.id} style={{ marginLeft: 12, marginBottom: 12 }}>
-                            <ZAvatar size="small" photo={room.parentRoom.photo} title={room.parentRoom.title} id={room.parentRoom.id} />
+                            <ZAvatar size="small" photo={room.parentRoom.photo} id={room.parentRoom.id} />
                         </View>
                     )}
                     {speakers.map(speaker => (
                         <View key={speaker.id} style={{ marginLeft: 12, marginBottom: 12 }}>
-                            <ZAvatar size="small" photo={speaker.user.photo} title={speaker.user.name} id={speaker.user.id} />
+                            <ZAvatar size="small" photo={speaker.user.photo} id={speaker.user.id} />
                         </View>
                     ))}
                 </View>

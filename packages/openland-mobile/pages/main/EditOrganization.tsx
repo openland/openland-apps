@@ -58,7 +58,7 @@ const EditOrganizationComponent = React.memo((props: PageProps) => {
             <SHeaderButton title={t('save', 'Save')} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <ZListGroup header={null} alignItems="center">
-                    <ZAvatarPicker size="xx-large" field={photoField} />
+                    <ZAvatarPicker id={organizationId} size="xx-large" field={photoField} />
                 </ZListGroup>
                 <ZListGroup header={t('info', 'Info')} headerMarginTop={0}>
                     <ZInput

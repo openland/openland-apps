@@ -35,7 +35,7 @@ const UserMutualGroupsComponent = React.memo((props: PageProps) => {
                 data={groups}
                 renderItem={({ item }) => (
                     <ZListItem
-                        leftAvatar={{ photo: item.photo, id: item.id, title: item.title }}
+                        leftAvatar={{ photo: item.photo, id: item.id }}
                         text={item.title}
                         subTitle={`${item.membersCount} ${t('member', { count: item.membersCount })}`}
                         path="Conversation"

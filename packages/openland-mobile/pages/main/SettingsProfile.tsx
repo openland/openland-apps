@@ -102,7 +102,7 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
             <SHeaderButton title={t('save', 'Save')} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <ZListGroup header={null} alignItems="center">
-                    <ZAvatarPicker size="xx-large" field={photoField} />
+                    <ZAvatarPicker id={user.id} size="xx-large" field={photoField} />
                 </ZListGroup>
 
                 <ZListGroup header={t('info', 'Info')} headerMarginTop={0}>

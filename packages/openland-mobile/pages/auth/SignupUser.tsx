@@ -92,6 +92,7 @@ const SignupUserComponent = React.memo((props: PageProps) => {
             >
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                     <ZAvatarPicker
+                        id={profile.user?.id || ''}
                         field={photoField}
                         initialUrl={(prefill && prefill.picture) || undefined}
                         size="xx-large"
