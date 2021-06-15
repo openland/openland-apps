@@ -8,6 +8,7 @@ import { API_HOST } from 'openland-y-utils/api';
 import { AppStorage as Storage } from 'openland-y-runtime-native/AppStorage';
 import { SubmitLoginForm } from './SubmitLoginForm';
 import { SubmitCodeForm } from './SubmitCodeForm';
+import { useText } from 'openland-mobile/text/useText';
 
 let userAuthData = '';
 let userPhoneData = '';
@@ -56,6 +57,7 @@ const requestActivationCode = async (isPhone: boolean) => {
 };
 
 const AuthStartComponent = React.memo((props: PageProps) => {
+    const { t } = useText();
     const isPhoneAuth = !!props.router.params.phone;
     const countryShortname = props.router.params.countryShortname as string;
 
@@ -73,8 +75,8 @@ const AuthStartComponent = React.memo((props: PageProps) => {
             isPhone={isPhoneAuth}
             countryShortname={countryShortname}
             eventTitle={isPhoneAuth ? 'signup_phone_view' : 'signup_email_view'}
-            title={isPhoneAuth ? 'What’s your phone?' : 'What’s your email?'}
-            subtitle="We’ll send you a sign-in code"
+            title={isPhoneAuth ? t('loginPhoneQuestion', 'What’s your phone?') : t('loginEmailQuestion', 'What’s your email?')}
+            subtitle={t('loginCodeDescription', 'We’ll send you a sign-in code')}
             router={props.router}
             onSubmit={handleSubmit}
             onSuccess={handleSuccess}
@@ -87,6 +89,7 @@ export const AuthStart = withApp(AuthStartComponent, {
 });
 
 const AuthCodeComponent = React.memo((props: PageProps) => {
+    const { t } = useText();
     const isPhoneAuth = !!props.router.params.phone;
 
     const handleResend = React.useCallback(async () => {
@@ -123,11 +126,13 @@ const AuthCodeComponent = React.memo((props: PageProps) => {
 
     return (
         <SubmitCodeForm
-            title={`Enter sign-${profileExists ? 'in' : 'up'} code`}
+            title={profileExists
+                ? t('loginSigninCode', 'Enter sign-in code')
+                : t('loginSignupCode', 'Enter sign-up code')}
             formData={isPhoneAuth ? userPhoneData : userAuthData}
             photoSrc={photoSrc}
             photoCrop={photoCrop}
-            buttonTitle={profileExists ? 'Next' : 'Create account'}
+            buttonTitle={profileExists ? t('next', 'Next') : t('createAccount', 'Create account')}
             avatarPlaceholder={avatarPlaceholder}
             profileExists={profileExists}
             onSubmit={handleSubmit}

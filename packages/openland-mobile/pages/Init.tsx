@@ -275,6 +275,8 @@ export class Init extends React.Component<
                     } else {
                         this.setState({ state: 'signup' });
                     }
+                    let lang = getLocale() === 'ru' ? Language.RU : Language.EN;
+                    getClient().mutateSessionLanguageSet({ lang });
                 } else {
                     let res: Account | undefined;
                     let authenticated = false;
@@ -346,8 +348,6 @@ export class Init extends React.Component<
                     }
                 }
                 await Storage.writeKey('user_refetch_needed', false);
-                let lang = getLocale() === 'ru' ? Language.RU : Language.EN;
-                getClient().mutateSessionLanguageSet({ lang });
             } catch (e) {
                 Alert.alert(e.message);
             }

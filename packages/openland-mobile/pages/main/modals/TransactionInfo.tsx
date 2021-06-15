@@ -6,10 +6,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { WalletTransactionFragment } from 'openland-api/spacex.types';
-import { convertTransaction, TransactionConvertedStatus } from 'openland-y-utils/wallet/transaction';
+import { TransactionConvertedStatus } from 'openland-y-utils/wallet/transaction';
 import { SRouter } from 'react-native-s/SRouter';
 import { ModalProps } from 'react-native-fast-modal';
 import { t } from 'openland-mobile/text/useText';
+import { useConvertedTransaction } from 'openland-mobile/utils/useConvertedTransaction';
 
 const InfoItem = React.memo<{ name: string, secondary?: boolean, value?: string, status?: TransactionConvertedStatus }>((props) => {
     const theme = useTheme();
@@ -46,7 +47,7 @@ interface TransactionInfoProps {
 
 const TransactionInfo = React.memo<TransactionInfoProps & { ctx: ModalProps }>((props) => {
     const theme = React.useContext(ThemeContext);
-    const { avatar, title, type, dateTime, amount, walletAmount, chargeAmount, paymentMethod, interval, status, group } = convertTransaction(props.item);
+    const { avatar, title, type, dateTime, amount, walletAmount, chargeAmount, paymentMethod, interval, status, group } = useConvertedTransaction(props.item);
     const hasSplittedAmount = !!walletAmount && !!chargeAmount;
     const productPress = React.useCallback(() => {
         if (group) {

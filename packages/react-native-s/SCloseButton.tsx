@@ -1,3 +1,4 @@
+import { useText } from 'openland-mobile/text/useText';
 import * as React from 'react';
 import { ActionButton } from './navigation/buttons/ActionButton';
 
@@ -6,6 +7,9 @@ interface SCloseButtonProps {
     onPress?: () => void;
 }
 
-export const SCloseButton = React.memo((props: SCloseButtonProps) => (
-    <ActionButton icon={require('assets/ic-close-24.png')} iconColor={props.tintColor} onPress={props.onPress} title="Close" />
-));
+export const SCloseButton = React.memo((props: SCloseButtonProps) => {
+    const { t } = useText();
+    return (
+        <ActionButton icon={require('assets/ic-close-24.png')} iconColor={props.tintColor} onPress={props.onPress} title={t('close', 'Close')} />
+    );
+});

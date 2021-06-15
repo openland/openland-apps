@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { WalletSubscriptionInterval } from 'openland-api/spacex.types';
+import { t } from 'openland-mobile/text/useText';
 
 export const formatMoney = (amount: number, showPositiveSign?: boolean) => {
     let a = amount < 0 ? -amount : amount; // Division of incorrect numbers is incorrect in CPU
@@ -19,12 +20,12 @@ export const formatMoney = (amount: number, showPositiveSign?: boolean) => {
 export const formatMoneyInterval = (amount: number, interval: WalletSubscriptionInterval | null, fullText?: boolean): string => {
     let res = formatMoney(amount);
     if (interval) {
-        const weekText = fullText ? ' per week' : ' / wk';
-        const monthText = fullText ? ' per month' : ' / mo';
+        const weekText = fullText ? t('periodLongPerWeek', 'per week') : `/ ${t('periodShortWeek', 'wk')}`;
+        const monthText = fullText ? t('periodLongPerMonth', 'per month') : `/ ${t('periodShortMonth', 'mo')}`;
         if (interval === WalletSubscriptionInterval.WEEK) {
-            res += weekText;
+            res += ' ' + weekText;
         } else if (interval === WalletSubscriptionInterval.MONTH) {
-            res += monthText;
+            res += ' ' + monthText;
         }
     }
 

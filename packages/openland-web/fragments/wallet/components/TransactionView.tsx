@@ -9,8 +9,8 @@ import { css } from 'linaria';
 import FailureIcon from 'openland-icons/s/ic-failure-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { DepositAvatar } from './DepositAvatar';
-import { convertTransaction } from 'openland-y-utils/wallet/transaction';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { useConvertedTransaction } from 'openland-web/utils/useConvertedTransaction';
 
 const arrowBox = css`
     position: absolute;
@@ -58,7 +58,7 @@ export const TransactionView = React.memo((props: TransactionViewProps) => {
         interval,
         source,
         group,
-    } = convertTransaction(props.item);
+    } = useConvertedTransaction(props.item);
     const router = React.useContext(XViewRouterContext)!;
     const payment = source.operation.payment;
     const actionRequired = status === 'failing';
@@ -66,8 +66,8 @@ export const TransactionView = React.memo((props: TransactionViewProps) => {
         actionRequired || status === 'canceled'
             ? 'var(--accentNegative)'
             : source.operation.amount > 0
-            ? 'var(--accentPositive)'
-            : 'var(--foregroundPrimary)';
+                ? 'var(--accentPositive)'
+                : 'var(--foregroundPrimary)';
     const donationDescription = group ? `, ${group.title}` : '';
     return (
         <>
