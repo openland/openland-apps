@@ -23,7 +23,7 @@ import { MobileMessenger } from '../messenger/MobileMessenger';
 import { SRouting } from 'react-native-s/SRouting';
 import { Root } from './Root';
 import { PageProps } from '../components/PageProps';
-import { Account_sessionState, Account } from 'openland-api/spacex.types';
+import { Account_sessionState, Account, Language } from 'openland-api/spacex.types';
 import { resolveNextPage } from './auth/signup';
 import {
     resolveInternalLink,
@@ -55,6 +55,7 @@ import { VoiceChatsFeedProvider } from 'openland-y-utils/voiceChat/voiceChatsFee
 import { MessagesActionsStateProvider } from 'openland-y-runtime/MessagesActionsState';
 import { PersistenceVersion } from 'openland-engines/PersitenceVersion';
 import { initMixpanel, tracker } from 'openland-mobile/tracker';
+import { getLocale } from 'openland-mobile/text/utils';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(
@@ -151,7 +152,7 @@ export class Init extends React.Component<
         sessionState?: Account_sessionState;
         dimensions?: { width: number; height: number };
     }
-    > {
+> {
     private history: any;
     private pendingDeepLink?: string;
     private resolving = false;
@@ -345,6 +346,8 @@ export class Init extends React.Component<
                     }
                 }
                 await Storage.writeKey('user_refetch_needed', false);
+                let lang = getLocale() === 'ru' ? Language.RU : Language.EN;
+                getClient().mutateSessionLanguageSet({ lang });
             } catch (e) {
                 Alert.alert(e.message);
             }

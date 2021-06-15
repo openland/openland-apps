@@ -1177,6 +1177,11 @@ type KickServiceMetadata {
   kickedBy: User!
 }
 
+enum Language {
+  EN
+  RU
+}
+
 input LocalMediaInput {
   supportsVideo: Boolean!
   supportsAudio: Boolean!
@@ -1987,6 +1992,7 @@ type Mutation {
   debugSendAppleDataPush(uid: ID!, message: String!): Boolean!
   terminateSession(id: ID!): Boolean!
   terminateAllSessionsExcept(id: ID!): Boolean!
+  setSessionLanguage(lang: Language!): Boolean!
   betaDiscoverSkip(selectedTagsIds: [String!]!): DiscoverPage
   betaNextDiscoverReset: Boolean!
   betaNextDiscoverPageOrChats(selectedTagsIds: [String!]!, excudedGroupsIds: [String!]!): DiscoverPage
