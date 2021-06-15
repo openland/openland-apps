@@ -14,13 +14,14 @@ import { RoomNano_SharedRoom } from 'openland-api/spacex.types';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { NotificationCenterHandlers } from './NotificationCenterHandlers';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { useText } from 'openland-mobile/text/useText';
 
 interface NotificationCenterItemAsyncProps {
     item: NotificationsDataSourceItem;
 }
 
-const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterItemAsyncProps & { theme: ThemeGlobal }) => {
-    const { theme, item } = props;
+const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterItemAsyncProps & { theme: ThemeGlobal, t: any }) => {
+    const { theme, t, item } = props;
     const messenger = getMessenger();
     const maxWidth = Dimensions.get('screen').width - 32 - (isPad ? 320 : 0);
 
@@ -38,6 +39,7 @@ const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterI
 
     const { topContent, bottomContent } = extractContent({
         theme,
+        t,
         message: item,
         onUserPress: messenger.handleUserPress,
         onGroupPress: messenger.handleGroupPress,
@@ -149,7 +151,7 @@ const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterI
                             lineHeight={20}
                             marginLeft={6}
                         >
-                            Reply
+                            {t('reply', 'Reply')}
                         </ASText>
                     </ASFlex>
                 </ASFlex>
@@ -160,6 +162,7 @@ const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterI
 
 export const NotificationCenterItemAsync = React.memo((props: NotificationCenterItemAsyncProps) => {
     let theme = useThemeGlobal();
+    let { t } = useText();
 
-    return <NotificationCenterItemAsyncRender theme={theme} {...props} />;
+    return <NotificationCenterItemAsyncRender theme={theme} t={t} {...props} />;
 });

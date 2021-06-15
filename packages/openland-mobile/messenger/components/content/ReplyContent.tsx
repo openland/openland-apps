@@ -14,6 +14,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { StickerContent } from './StickerContent';
 import { AsyncReplyMessageRichAttach } from '../AsyncReplyMessageRichAttach';
 import { isVideo } from 'openland-y-utils/mediaExtension';
+import { useText } from 'openland-mobile/text/useText';
 
 const getAttachFile = (message: DataSourceMessageItem) => {
     return message.attachments && message.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
@@ -62,254 +63,252 @@ interface ReplyContentProps {
     theme: ThemeGlobal;
     isForward?: boolean;
 }
-export class ReplyContent extends React.PureComponent<ReplyContentProps> {
+export const ReplyContent = React.memo((props: ReplyContentProps) => {
+    const { t } = useText();
+    let { message, maxWidth, width, compensateBubble, theme, isForward, onPress, onContentPress, onLongPress } = props;
 
-    render() {
-        let { message, maxWidth, width, compensateBubble, theme, isForward, onPress, onContentPress, onLongPress } = this.props;
+    let lineBackgroundPatch: any;
+    let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
 
-        let lineBackgroundPatch: any;
-        let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
+    if (message.reply) {
+        // for left accent line
+        let image = require('assets/chat-link-line-my.png');
+        lineBackgroundPatch = Image.resolveAssetSource(image);
+    }
 
-        if (message.reply) {
-            // for left accent line
-            let image = require('assets/chat-link-line-my.png');
-            lineBackgroundPatch = Image.resolveAssetSource(image);
+    const bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
+    const bubbleForegroundSecondary = message.isOut ? theme.outgoingForegroundSecondary : theme.incomingForegroundSecondary;
+    const bubbleForegroundTertiary = message.isOut ? theme.outgoingForegroundTertiary : theme.incomingForegroundTertiary;
+    const forwardColor = message.isOut ? theme.tintInverted : theme.foregroundTertiary;
+
+    const handleForwardTextPress = () => {
+        if (!isForward && onPress && message.reply) {
+            onPress(message.reply[0]);
         }
+        if (onContentPress) {
+            onContentPress();
+        }
+    };
 
-        const bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
-        const bubbleForegroundSecondary = message.isOut ? theme.outgoingForegroundSecondary : theme.incomingForegroundSecondary;
-        const bubbleForegroundTertiary = message.isOut ? theme.outgoingForegroundTertiary : theme.incomingForegroundTertiary;
-        const forwardColor = message.isOut ? theme.tintInverted : theme.foregroundTertiary;
+    return (
+        <>
+            {message.reply && isForward && (
+                <ASText {...TextStylesAsync.Densed} color={forwardColor} onPress={handleForwardTextPress}>
+                    {message.reply.length} {t('forwardedMessage', { count: message.reply.length, defaultValue: 'forwarded message' })}
+                </ASText>
+            )}
+            {message.reply && (
+                message.reply.map((m, i) => {
+                    const hasAttachments = m.attachments && m.attachments.length > 0;
+                    const needPaddedText = !m.isService && !!m.text && !hasAttachments && (i + 1 === message.reply!.length);
+                    const repliedMessage = !m.isService ? m : undefined;
+                    const paddedMargin = needPaddedText && !isForward && !message.text;
 
-        const handleForwardTextPress = () => {
-            if (!isForward && onPress && message.reply) {
-                onPress(message.reply[0]);
-            }
-            if (onContentPress) {
-                onContentPress();
-            }
-        };
+                    const handlePress = () => {
+                        if (!isForward && onPress) {
+                            onPress(m);
+                        }
+                        if (onContentPress) {
+                            onContentPress();
+                        }
+                    };
 
-        return (
-            <>
-                {message.reply && isForward && (
-                    <ASText {...TextStylesAsync.Densed} color={forwardColor} onPress={handleForwardTextPress}>
-                        {message.reply.length} forwarded {message.reply.length === 1 ? 'message' : 'messages'}
-                    </ASText>
-                )}
-                {message.reply && (
-                    message.reply.map((m, i) => {
-                        const hasAttachments = m.attachments && m.attachments.length > 0;
-                        const needPaddedText = !m.isService && !!m.text && !hasAttachments && (i + 1 === message.reply!.length);
-                        const repliedMessage = !m.isService ? m : undefined;
-                        const paddedMargin = needPaddedText && !isForward && !message.text;
+                    if (repliedMessage) {
+                        const attachFiles = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageAttachmentFile') as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] | undefined;
+                        const attachRich = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
+                        const sticker = m.sticker && m.sticker.__typename === 'ImageSticker' ? m.sticker : undefined;
+                        const attachPurchase = getAttachPurchase(repliedMessage);
+                        const imageFiles = attachFiles?.filter(x => x.fileMetadata.isImage);
+                        const videoFiles = attachFiles?.filter(x => isVideo(x.fileMetadata.name) && (x.filePreview || x.previewFileId));
+                        let hasVideoFiles = videoFiles && videoFiles.length > 0;
+                        let miniContent = null;
+                        let miniContentSubtitle = null;
+                        let miniContentColor = bubbleForegroundSecondary;
 
-                        const handlePress = () => {
-                            if (!isForward && onPress) {
-                                onPress(m);
-                            }
-                            if (onContentPress) {
-                                onContentPress();
-                            }
-                        };
+                        if (sticker) {
+                            miniContent = <StickerContent sticker={sticker} message={m} padded={needPaddedText} width={40} height={40} />;
+                            miniContentSubtitle = repliedMessage.fallback;
+                        } else if (imageFiles && imageFiles?.length > 0 && !isForward) {
+                            miniContent = (
+                                <AsyncReplyMessageMediaView
+                                    attachments={imageFiles}
+                                    onPress={props.onMediaPress}
+                                    message={repliedMessage}
+                                    theme={theme}
+                                />
+                            );
+                            miniContentSubtitle = repliedMessage.fallback;
+                        } else if (hasVideoFiles && !isForward) {
+                            miniContent = (
+                                <AsyncReplyMessageMediaView
+                                    attachments={videoFiles!}
+                                    onPress={() => props.onDocumentPress(repliedMessage)}
+                                    message={repliedMessage}
+                                    theme={theme}
+                                />
+                            );
+                            miniContentSubtitle = repliedMessage.fallback;
+                        } else if (!hasVideoFiles && attachFiles && attachFiles.some(x => !x.fileMetadata.isImage)) {
+                            miniContent = (
+                                <AsyncReplyMessageDocumentView
+                                    attach={attachFiles[0]}
+                                    message={repliedMessage}
+                                    onPress={() => props.onDocumentPress(repliedMessage)}
+                                    onLongPress={onLongPress}
+                                />
+                            );
+                            miniContentSubtitle = attachFiles[0].fileMetadata.name;
+                        } else if (attachRich && !isForward) {
+                            miniContent = (
+                                <AsyncReplyMessageRichAttach
+                                    attach={attachRich}
+                                    onPress={props.onMediaPress}
+                                    message={repliedMessage}
+                                    theme={theme}
+                                />
+                            );
+                            miniContentSubtitle = repliedMessage.text;
+                            miniContentColor = bubbleForegroundPrimary;
+                        } else if (attachPurchase) {
+                            miniContentSubtitle = attachPurchase.fallback;
+                        }
 
-                        if (repliedMessage) {
-                            const attachFiles = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageAttachmentFile') as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] | undefined;
-                            const attachRich = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
-                            const sticker = m.sticker && m.sticker.__typename === 'ImageSticker' ? m.sticker : undefined;
-                            const attachPurchase = getAttachPurchase(repliedMessage);
-                            const imageFiles = attachFiles?.filter(x => x.fileMetadata.isImage);
-                            const videoFiles = attachFiles?.filter(x => isVideo(x.fileMetadata.name) && (x.filePreview || x.previewFileId));
-                            let hasVideoFiles = videoFiles && videoFiles.length > 0;
-                            let miniContent = null;
-                            let miniContentSubtitle = null;
-                            let miniContentColor = bubbleForegroundSecondary;
-
-                            if (sticker) {
-                                miniContent = <StickerContent sticker={sticker} message={m} padded={needPaddedText} width={40} height={40} />;
-                                miniContentSubtitle = repliedMessage.fallback;
-                            } else if (imageFiles && imageFiles?.length > 0 && !isForward) {
-                                miniContent = (
-                                    <AsyncReplyMessageMediaView
-                                        attachments={imageFiles}
-                                        onPress={this.props.onMediaPress}
-                                        message={repliedMessage}
-                                        theme={theme}
-                                    />
-                                );
-                                miniContentSubtitle = repliedMessage.fallback;
-                            } else if (hasVideoFiles && !isForward) {
-                                miniContent = (
-                                    <AsyncReplyMessageMediaView
-                                        attachments={videoFiles!}
-                                        onPress={() => this.props.onDocumentPress(repliedMessage)}
-                                        message={repliedMessage}
-                                        theme={theme}
-                                    />
-                                );
-                                miniContentSubtitle = repliedMessage.fallback;
-                            } else if (!hasVideoFiles && attachFiles && attachFiles.some(x => !x.fileMetadata.isImage)) {
-                                miniContent = (
-                                    <AsyncReplyMessageDocumentView
-                                        attach={attachFiles[0]}
-                                        message={repliedMessage}
-                                        onPress={() => this.props.onDocumentPress(repliedMessage)}
-                                        onLongPress={onLongPress}
-                                    />
-                                );
-                                miniContentSubtitle = attachFiles[0].fileMetadata.name;
-                            } else if (attachRich && !isForward) {
-                                miniContent = (
-                                    <AsyncReplyMessageRichAttach
-                                        attach={attachRich}
-                                        onPress={this.props.onMediaPress}
-                                        message={repliedMessage}
-                                        theme={theme}
-                                    />
-                                );
-                                miniContentSubtitle = repliedMessage.text;
-                                miniContentColor = bubbleForegroundPrimary;
-                            } else if (attachPurchase) {
-                                miniContentSubtitle = attachPurchase.fallback;
-                            }
-
-                            return (
+                        return (
+                            <ASFlex
+                                key={'reply-' + m.id}
+                                flexDirection="column"
+                                alignItems="stretch"
+                                marginTop={6}
+                                marginBottom={3}
+                                backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }}
+                                backgroundPatchTintColor={bubbleForegroundTertiary}
+                                onPress={handlePress}
+                                onLongPress={onLongPress}
+                            >
                                 <ASFlex
-                                    key={'reply-' + m.id}
-                                    flexDirection="column"
+                                    key={'mini-context-' + m.id}
+                                    flexDirection="row"
                                     alignItems="stretch"
-                                    marginTop={6}
-                                    marginBottom={3}
-                                    backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }}
-                                    backgroundPatchTintColor={bubbleForegroundTertiary}
-                                    onPress={handlePress}
+                                    marginLeft={9}
+                                    flexShrink={1}
                                     onLongPress={onLongPress}
                                 >
+                                    {miniContent && (
+                                        <ASFlex marginRight={8}>
+                                            {miniContent}
+                                        </ASFlex>
+                                    )}
                                     <ASFlex
-                                        key={'mini-context-' + m.id}
-                                        flexDirection="row"
-                                        alignItems="stretch"
-                                        marginLeft={9}
+                                        flexGrow={1}
                                         flexShrink={1}
+                                        flexDirection="column"
+                                        key={'reply-author-' + m.id}
+                                        marginTop={-3}
+                                        maxWidth={(message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 92}
+                                    >
+                                        <ASText
+                                            {...TextStylesAsync.Label2}
+                                            height={20}
+                                            color={bubbleForegroundPrimary}
+                                            numberOfLines={1}
+                                            onPress={() => props.onUserPress(repliedMessage!.sender.id)}
+                                        >
+                                            {repliedMessage.sender.name || ''}
+                                        </ASText>
+                                        {miniContentSubtitle && (
+                                            <ASText
+                                                {...TextStylesAsync.Subhead}
+                                                height={20}
+                                                color={miniContentColor}
+                                                marginTop={2}
+                                                numberOfLines={1}
+                                                flexGrow={1}
+                                                onPress={handlePress}
+                                            >
+                                                {miniContentSubtitle}
+                                            </ASText>
+                                        )}
+                                    </ASFlex>
+                                </ASFlex>
+                                {imageFiles && imageFiles?.length > 0 && isForward && (
+                                    <AsyncReplyMessageMediaView
+                                        attachments={imageFiles}
+                                        onPress={props.onMediaPress}
+                                        message={repliedMessage}
+                                        theme={theme}
+                                        isForward={true}
+                                    />
+                                )}
+                                {hasVideoFiles && isForward && (
+                                    <AsyncReplyMessageMediaView
+                                        attachments={videoFiles!}
+                                        onPress={() => props.onDocumentPress(repliedMessage)}
+                                        message={repliedMessage}
+                                        theme={theme}
+                                        isForward={true}
+                                    />
+                                )}
+                                {!miniContent && repliedMessage.textSpans.length > 0 && (
+                                    <ASFlex
+                                        key={'reply-spans-' + m.id}
+                                        marginTop={2}
+                                        flexDirection="row"
+                                        marginLeft={9}
+                                        marginRight={paddedMargin ? 65 : undefined}
+                                        onPress={handlePress}
                                         onLongPress={onLongPress}
                                     >
-                                        {miniContent && (
-                                            <ASFlex marginRight={8}>
-                                                {miniContent}
-                                            </ASFlex>
-                                        )}
-                                        <ASFlex
-                                            flexGrow={1}
-                                            flexShrink={1}
-                                            flexDirection="column"
-                                            key={'reply-author-' + m.id}
-                                            marginTop={-3}
-                                            maxWidth={(message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 92}
-                                        >
-                                            <ASText
-                                                {...TextStylesAsync.Label2}
-                                                height={20}
-                                                color={bubbleForegroundPrimary}
-                                                numberOfLines={1}
-                                                onPress={() => this.props.onUserPress(repliedMessage!.sender.id)}
-                                            >
-                                                {repliedMessage.sender.name || ''}
-                                            </ASText>
-                                            {miniContentSubtitle && (
-                                                <ASText
-                                                    {...TextStylesAsync.Subhead}
-                                                    height={20}
-                                                    color={miniContentColor}
-                                                    marginTop={2}
-                                                    numberOfLines={1}
-                                                    flexGrow={1}
-                                                    onPress={handlePress}
-                                                >
-                                                    {miniContentSubtitle}
-                                                </ASText>
-                                            )}
-                                        </ASFlex>
+                                        <RenderSpans
+                                            spans={repliedMessage.textSpans}
+                                            message={message}
+                                            padded={compensateBubble && isForward ? needPaddedText : false}
+                                            theme={theme}
+                                            maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - (paddedMargin ? 95 : 70)}
+                                            width={width}
+                                            insetLeft={8}
+                                            insetRight={paddedMargin ? 0 : contentInsetsHorizontal}
+                                            insetVertical={4}
+                                            numberOfLines={isForward ? undefined : 1}
+                                            ignoreMarkdown={true}
+
+                                            onUserPress={props.onUserPress}
+                                            onGroupPress={props.onGroupPress}
+                                            onOrganizationPress={props.onOrganizationPress}
+                                            onHashtagPress={props.onHashtagPress}
+                                        />
                                     </ASFlex>
-                                    {imageFiles && imageFiles?.length > 0 && isForward && (
-                                        <AsyncReplyMessageMediaView
-                                            attachments={imageFiles}
-                                            onPress={this.props.onMediaPress}
-                                            message={repliedMessage}
+                                )}
+                            </ASFlex>
+                        );
+                    } else {
+                        return (
+                            <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={bubbleForegroundTertiary}>
+                                {m.textSpans.length > 0 && (
+                                    <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10}>
+                                        <RenderSpans
+                                            spans={m.textSpans}
+                                            message={m}
+                                            padded={compensateBubble ? needPaddedText : false}
                                             theme={theme}
-                                            isForward={true}
-                                        />
-                                    )}
-                                    {hasVideoFiles && isForward && (
-                                        <AsyncReplyMessageMediaView
-                                            attachments={videoFiles!}
-                                            onPress={() => this.props.onDocumentPress(repliedMessage)}
-                                            message={repliedMessage}
-                                            theme={theme}
-                                            isForward={true}
-                                        />
-                                    )}
-                                    {!miniContent && repliedMessage.textSpans.length > 0 && (
-                                        <ASFlex
-                                            key={'reply-spans-' + m.id}
-                                            marginTop={2}
-                                            flexDirection="row"
-                                            marginLeft={9}
-                                            marginRight={paddedMargin ? 65 : undefined}
-                                            onPress={handlePress}
-                                            onLongPress={onLongPress}
-                                        >
-                                            <RenderSpans
-                                                spans={repliedMessage.textSpans}
-                                                message={message}
-                                                padded={compensateBubble && isForward ? needPaddedText : false}
-                                                theme={theme}
-                                                maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - (paddedMargin ? 95 : 70)}
-                                                width={width}
-                                                insetLeft={8}
-                                                insetRight={paddedMargin ? 0 : contentInsetsHorizontal}
-                                                insetVertical={4}
-                                                numberOfLines={isForward ? undefined : 1}
-                                                ignoreMarkdown={true}
+                                            maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 70}
+                                            width={width}
+                                            insetLeft={8}
+                                            insetRight={contentInsetsHorizontal}
+                                            insetVertical={4}
+                                            ignoreMarkdown={true}
 
-                                                onUserPress={this.props.onUserPress}
-                                                onGroupPress={this.props.onGroupPress}
-                                                onOrganizationPress={this.props.onOrganizationPress}
-                                                onHashtagPress={this.props.onHashtagPress}
-                                            />
-                                        </ASFlex>
-                                    )}
-                                </ASFlex>
-                            );
-                        } else {
-                            return (
-                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={bubbleForegroundTertiary}>
-                                    {m.textSpans.length > 0 && (
-                                        <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10}>
-                                            <RenderSpans
-                                                spans={m.textSpans}
-                                                message={m}
-                                                padded={compensateBubble ? needPaddedText : false}
-                                                theme={theme}
-                                                maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 70}
-                                                width={width}
-                                                insetLeft={8}
-                                                insetRight={contentInsetsHorizontal}
-                                                insetVertical={4}
-                                                ignoreMarkdown={true}
-
-                                                onUserPress={this.props.onUserPress}
-                                                onGroupPress={this.props.onGroupPress}
-                                                onOrganizationPress={this.props.onOrganizationPress}
-                                                onHashtagPress={this.props.onHashtagPress}
-                                            />
-                                        </ASFlex>
-                                    )}
-                                </ASFlex>
-                            );
-                        }
-                    })
-                )}
-            </>
-        );
-    }
-}
+                                            onUserPress={props.onUserPress}
+                                            onGroupPress={props.onGroupPress}
+                                            onOrganizationPress={props.onOrganizationPress}
+                                            onHashtagPress={props.onHashtagPress}
+                                        />
+                                    </ASFlex>
+                                )}
+                            </ASFlex>
+                        );
+                    }
+                })
+            )}
+        </>
+    );
+});

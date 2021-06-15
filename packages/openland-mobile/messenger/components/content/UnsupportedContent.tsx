@@ -10,16 +10,16 @@ import { AsyncBubbleView, bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsH
 import { TextContent } from './TextContent';
 import { createSimpleSpan } from 'openland-y-utils/spans/processSpans';
 
-const text = 'Message is not supported on your version of Openland.\nPlease update the app to view it.';
-
 interface UnsupportedContentProps {
     message: DataSourceMessageItem;
     theme: ThemeGlobal;
+    t: any;
 }
 
 export const UnsupportedContent = React.memo((props: UnsupportedContentProps) => {
-    const { message, theme } = props;
+    const { message, theme, t } = props;
     const { isOut, attachTop, attachBottom, } = message;
+    const text = t('unsupportedMessage', 'Message is not supported on your version of Openland.\nPlease update the app to view it.');
 
     const bubbleBackgroundPrimary = message.isOut ? theme.outgoingBackgroundPrimary : theme.incomingBackgroundPrimary;
 

@@ -15,6 +15,7 @@ import { ChatMessagesActions, MessagesAction } from 'openland-y-utils/MessagesAc
 import { useForward } from '../MobileMessenger';
 import { useChatMessagesActionsMethods, useChatMessagesSelected, useChatMessagesSelectionMode } from 'openland-y-utils/MessagesActionsState';
 import { showStickerPackModal } from 'openland-mobile/pages/main/components/stickers/showStickerPackModal';
+import { useText } from 'openland-mobile/text/useText';
 
 const SelectCheckbox = React.memo((props: { selected: boolean, theme: ThemeGlobal, onPress: () => void }) => {
     const { selected, onPress, theme } = props;
@@ -74,6 +75,7 @@ const AsyncMessageViewAvatar = (props: { message: DataSourceMessageItem, handleU
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const theme = useThemeGlobal(false);
+    const { t } = useText();
     const { conversationId, canReply, hideReactions, message, engine, onMessagePress, onMessageDoublePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress, onHashtagPress } = props;
     const {
         isOut,
@@ -202,6 +204,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
             <AsyncMessageContentView
                 conversationId={conversationId}
                 theme={theme}
+                t={t}
                 key={'message-content'}
                 message={message}
                 onMediaPress={handleMediaPress}
@@ -218,7 +221,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     }
 
     if (!res) {
-        res = <UnsupportedContent message={message} theme={theme} />;
+        res = <UnsupportedContent message={message} theme={theme} t={t} />;
     }
 
     const showReactions = ((engine.isChannel || commentsCount > 0) || reactionCounters.length > 0) && !isSending && !hideReactions;
