@@ -111,6 +111,7 @@
         "@openland/patterns": "0.0.2",
         "libphonenumber-js": "^1.7.52",
         "idb": "6.0.0",
-        "crypto-js": "4.0.0"
+        "crypto-js": "4.0.0",
+        "react-i18next": "11.10.0"
     }
 }
