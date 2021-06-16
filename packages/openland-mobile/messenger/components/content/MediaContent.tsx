@@ -55,7 +55,7 @@ export class MediaContent extends React.PureComponent<
         downloadStates: Record<string, DownloadState>,
         uploadStates: Record<string, DownloadState>
     }
-    > {
+> {
     mounted = false;
     serverDownloadManager = false;
     constructor(props: MediaContentProps) {
@@ -300,14 +300,16 @@ export class MediaContent extends React.PureComponent<
                                         width={width}
                                         height={height}
                                     >
-                                        <ASImage
-                                            key={file.fileId}
-                                            source={{ uri }}
-                                            isGif={file.fileMetadata.imageFormat === 'GIF'}
-                                            maxWidth={width}
-                                            width={width}
-                                            height={height}
-                                        />
+                                        {uri ? (
+                                            <ASImage
+                                                key={file.fileId}
+                                                source={{ uri }}
+                                                isGif={file.fileMetadata.imageFormat === 'GIF'}
+                                                maxWidth={width}
+                                                width={width}
+                                                height={height}
+                                            />
+                                        ) : null}
                                         {loadingOverlay ? (
                                             <ASFlex
                                                 overlay={true}
