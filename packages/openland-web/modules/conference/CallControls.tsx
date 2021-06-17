@@ -16,7 +16,7 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import MinimizeIcon from 'openland-icons/s/ic-size-down-glyph-24.svg';
 import EndIcon from 'openland-icons/s/ic-call-end-glyph-24.svg';
 import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
-import CameraIcon from 'openland-icons/s/ic-camera-video-glyph-24.svg';
+// import CameraIcon from 'openland-icons/s/ic-camera-video-glyph-24.svg';
 import ScreenIcon from 'openland-icons/s/ic-screen-glyph-24.svg';
 import SettingsIcon from 'openland-icons/s/ic-settings-glyph-24.svg';
 import MessageIcon from 'openland-icons/s/ic-message-glyph-24.svg';
@@ -378,19 +378,19 @@ export const CallControls = (props: CallControlsProps) => {
                         }
                         onClick={props.onMute}
                     />
-                    <ControlItem
-                        text="Camera"
-                        icon={
-                            <UIconButton
-                                icon={<CameraIcon />}
-                                color="var(--foregroundContrast)"
-                                rippleColor="var(--tintBlue)"
-                                active={props.cameraEnabled}
-                                disableHover={true}
-                            />
-                        }
-                        onClick={props.onCameraClick}
-                    />
+                    {/*<ControlItem*/}
+                    {/*    text="Camera"*/}
+                    {/*    icon={*/}
+                    {/*        <UIconButton*/}
+                    {/*            icon={<CameraIcon />}*/}
+                    {/*            color="var(--foregroundContrast)"*/}
+                    {/*            rippleColor="var(--tintBlue)"*/}
+                    {/*            active={props.cameraEnabled}*/}
+                    {/*            disableHover={true}*/}
+                    {/*        />*/}
+                    {/*    }*/}
+                    {/*    onClick={props.onCameraClick}*/}
+                    {/*/>*/}
                     {!isSafari &&
                         <ControlItem
                             text="Screen"

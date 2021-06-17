@@ -60,7 +60,7 @@ export const CallControls = (props: CallControlsProps) => {
     let mute = !state?.sender.audioEnabled;
     let camera = !!state?.sender.videoEnabled;
     let handleMute = () => mediaSession?.setAudioEnabled(!state?.sender.audioEnabled);
-    let handleCamera = () => mediaSession?.setVideoEnabled(!state?.sender.videoEnabled);
+    // let handleCamera = () => mediaSession?.setVideoEnabled(!state?.sender.videoEnabled);
     let handleFlip = () => {
         ((state?.sender.videoTrack as AppUserMediaStreamTrackNative)?.track as any)?._switchCamera();
         props.onFlip();
@@ -120,12 +120,12 @@ export const CallControls = (props: CallControlsProps) => {
                             label={t('mute', 'Mute')}
                             backgroundColor={mute ? '#FF9F1A' : undefined}
                         />
-                        <CallControlItem
-                            onPress={handleCamera}
-                            icon={require('assets/ic-camera-video-glyph-24.png')}
-                            label={t('camera', 'Camera')}
-                            backgroundColor={camera ? '#248BF2' : undefined}
-                        />
+                        {/*<CallControlItem*/}
+                        {/*    onPress={handleCamera}*/}
+                        {/*    icon={require('assets/ic-camera-video-glyph-24.png')}*/}
+                        {/*    label={t('camera', 'Camera')}*/}
+                        {/*    backgroundColor={camera ? '#248BF2' : undefined}*/}
+                        {/*/>*/}
                         <CallControlItem
                             icon={require('assets/ic-cycle-glyph-24.png')}
                             onPress={handleFlip}

@@ -354,10 +354,10 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
                 callback();
             },
             onDataSourceScrollToKeyRequested(key: string) {
-                //
+                callback();
             },
             onDataSourceScrollToTop() {
-                //
+                callback();
             }
         });
     }

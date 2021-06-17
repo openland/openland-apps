@@ -2,7 +2,6 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { View, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextInput, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine, convertMessageBack } from 'openland-engines/messenger/ConversationEngine';
 import { MessageInputBar } from './components/MessageInputBar';
 import { ConversationView } from './components/ConversationView';
@@ -46,6 +45,7 @@ import { showNoiseWarning } from 'openland-mobile/messenger/components/showNoise
 import { plural } from 'openland-y-utils/plural';
 import { SRouterMountedContext } from 'react-native-s/SRouterContext';
 import { SUPER_ADMIN } from '../Init';
+import { MobileMessenger } from 'openland-mobile/messenger/MobileMessenger';
 import { ChatMessagesActionsMethods, ConversationActionsState, setMessagesActionsUserChat } from 'openland-y-utils/MessagesActionsState';
 import { useChatMessagesActionsState, useChatMessagesActionsMethods } from 'openland-y-utils/MessagesActionsState';
 import { matchLinks } from 'openland-y-utils/TextProcessor';
@@ -55,7 +55,7 @@ import { getCachedKeyboardHeight } from 'react-native-s/navigation/containers/Pa
 import { CallHeaderButton } from './CallHeaderButton';
 
 interface ConversationRootProps extends PageProps {
-    engine: MessengerEngine;
+    messenger: MobileMessenger;
     chat: RoomChat_room;
     theme: ThemeGlobal;
     showCallModal: () => void;
@@ -101,7 +101,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     constructor(props: ConversationRootProps) {
         super(props);
-        this.engine = this.props.engine.getConversation(this.props.chat.id);
+        this.engine = this.props.messenger.engine.getConversation(this.props.chat.id);
         this.state = {
             text: '',
             selection: {
@@ -272,6 +272,9 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             }
 
             this.engine.sendMessage(tx, this.state.mentions, messagesActionsMethods.prepareToSend());
+            setTimeout(() => {
+                this.props.messenger.getConversation(this.props.chat.id).onDataSourceScrollToTop();
+            }, 100);
         }
         messagesActionsMethods.clear();
 
@@ -288,7 +291,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             ? this.props.chat.user
             : this.props.chat.owner;
         let isChannel = this.props.chat.__typename === 'SharedRoom' && this.props.chat.isChannel;
-        let donationCb = user && user.id === this.props.engine.user.id || isChannel
+        let donationCb = user && user.id === this.props.messenger.engine.user.id || isChannel
             ? undefined
             : () => {
                 if (user) {
@@ -464,7 +467,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     render() {
         let { messagesActionsState } = this.props;
 
-        let isSavedMessages = this.props.chat.__typename === 'PrivateRoom' && this.props.engine.user.id === this.props.chat.user.id;
+        let isSavedMessages = this.props.chat.__typename === 'PrivateRoom' && this.props.messenger.engine.user.id === this.props.chat.user.id;
 
         let path = resolveConversationProfilePath(this.props.chat);
         let header = (
@@ -743,7 +746,7 @@ const ConversationComponent = React.memo((props: PageProps) => {
             <ConversationRoot
                 key={(sharedRoom || privateRoom)!.id}
                 router={props.router}
-                engine={messenger.engine}
+                messenger={messenger}
                 chat={(sharedRoom || privateRoom)!}
                 showCallModal={showCallModal}
                 theme={theme}
