@@ -95,12 +95,12 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             )
             .button(t('cancel', 'Cancel'), 'cancel')
             .action(t('leave', 'Leave'), 'destructive', async () => {
-                await client.mutateRoomLeave({ roomId });
-                await client.refetchRoomChat({ id: roomId });
                 if (shouldCancelSubscription) {
                     await client.mutateCancelSubscription({ id: group.premiumSubscription!.id });
                     await client.refetchSubscriptions();
                 }
+                await client.mutateRoomLeave({ roomId });
+                await client.refetchRoomChat({ id: roomId });
                 setTimeout(() => {
                     props.router.pushAndResetRoot('Home');
                 }, 100);

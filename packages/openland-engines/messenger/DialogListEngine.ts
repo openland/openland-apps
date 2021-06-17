@@ -21,7 +21,6 @@ import {
     RoomPico_room_SharedRoom,
     TypingType,
     SharedRoomMembershipStatus,
-    DialogFragment_premiumSubscription,
 } from 'openland-api/spacex.types';
 
 const log = createLogger('Engine-Dialogs');
@@ -37,7 +36,6 @@ export interface DialogDataSourceItemStored {
     isChannel?: boolean;
     isPremium?: boolean;
     photo?: string;
-    premiumSubscription: DialogFragment_premiumSubscription | null;
 
     // Chat State
     unread: number;
@@ -95,7 +93,6 @@ const extractDialog = (dialog: DialogFragment, uid: string): DialogDataSourceIte
         photo: dialog.photo,
         key: dialog.cid,
         flexibleId: dialog.fid,
-        premiumSubscription: dialog.premiumSubscription,
         unread: dialog.unreadCount,
         message: kicked ? 'you were kicked' : dialog.topMessage && dialog.topMessage.message ? msg : undefined,
         fallback: kicked ? 'you were kicked' : msg,
@@ -330,7 +327,6 @@ export class DialogListEngine {
                     membership: existing.membership as SharedRoomMembershipStatus,
                     hasActiveCall: !!existing.hasActiveCall,
                     hasActiveVoiceChat: !!existing.hasActiveVoiceChat,
-                    premiumSubscription: existing.premiumSubscription,
                     featured: !!existing.featured
                 }, this.engine.user.id));
             }
@@ -460,7 +456,6 @@ export class DialogListEngine {
                     kind: sharedRoom ? sharedRoom.kind : 'PRIVATE',
                     isChannel: sharedRoom ? sharedRoom.isChannel : false,
                     isPremium: sharedRoom ? sharedRoom.isPremium : false,
-                    premiumSubscription: sharedRoom ? sharedRoom.premiumSubscription : null,
                     featured: sharedRoom ? sharedRoom.featured : false,
                     title: sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '',
                     photo:

@@ -84,12 +84,13 @@ const useSharedHandlers = (room: RoomChat_room_SharedRoom, router: SRouter) => {
             )
             .button(t('cancel', 'Cancel'), 'cancel')
             .action(t('leave', 'Leave'), 'destructive', async () => {
-                await client.mutateRoomLeave({ roomId: room.id });
-                await client.refetchRoomChat({ id: room.id });
                 if (shouldCancelSubscription) {
                     await client.mutateCancelSubscription({ id: room.premiumSubscription!.id });
                     await client.refetchSubscriptions();
                 }
+
+                await client.mutateRoomLeave({ roomId: room.id });
+                await client.refetchRoomChat({ id: room.id });
                 setTimeout(() => {
                     router.pushAndResetRoot('Home');
                 }, 100);

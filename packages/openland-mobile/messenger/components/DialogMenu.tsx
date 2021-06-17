@@ -88,8 +88,6 @@ export const showDialogMenu = (item: DialogDataSourceItem) => {
 
     if (item.kind !== 'PRIVATE') {
         const muted = item.isMuted;
-        const shouldCancelSubscription = item.isPremium && item.premiumSubscription &&
-            ![WalletSubscriptionState.CANCELED, WalletSubscriptionState.EXPIRED].includes(item.premiumSubscription.state);
 
         builder.action(
             muted ? t('notificationsUnmute', 'Unmute notifications') : t('notificationsMute', 'Mute notifications'), () => {
@@ -113,13 +111,21 @@ export const showDialogMenu = (item: DialogDataSourceItem) => {
                 )
                 .button(t('cancel', 'Cancel'), 'cancel')
                 .action(t('leave', 'Leave'), 'destructive', async () => {
+                    if (item.isPremium) {
+                        const subscriptions = await client.querySubscriptions();
+                        const itemSubscription = subscriptions.subscriptions.find(({ product }) => {
+                            return product.__typename === 'WalletProductGroup' && product.group.id === item.key;
+                        });
+
+                        if (itemSubscription && ![WalletSubscriptionState.CANCELED, WalletSubscriptionState.EXPIRED].includes(itemSubscription.state)) {
+                            await client.mutateCancelSubscription({ id: itemSubscription.id });
+                            await client.refetchSubscriptions();
+                        }
+                    }
+
                     await client.mutateRoomLeave({ roomId: item.key });
                     await client.refetchRoomChat({ id: item.key });
-                    if (shouldCancelSubscription) {
-                        await client.mutateCancelSubscription({ id: item.premiumSubscription!.id });
-                        await client.refetchSubscriptions();
-                    }
-                })
+                 })
                 .show();
         }, false, require('assets/ic-leave-24.png'));
     } else {

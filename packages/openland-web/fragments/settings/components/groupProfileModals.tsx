@@ -754,12 +754,12 @@ export const showLeaveChatConfirmation = (
         .action(
             'Leave',
             async () => {
-                await client.mutateRoomLeave({ roomId: chatId });
-                await client.refetchRoomChat({ id: chatId });
                 if (shouldCancelSubscription) {
                     await client.mutateCancelSubscription({ id: premiumSubscription!.id });
                     await client.refetchSubscriptions();
                 }
+                await client.mutateRoomLeave({ roomId: chatId });
+                await client.refetchRoomChat({ id: chatId });
                 if (tabRouter.router.currentTab === 0) {
                     tabRouter.router.reset('/discover');
                 } else {
