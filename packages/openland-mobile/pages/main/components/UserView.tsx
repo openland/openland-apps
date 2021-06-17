@@ -60,7 +60,6 @@ export const UserView = (props: UserViewProps) => {
                     size="medium"
                     photo={user.photo}
                     id={user.id}
-                    title={user.name}
                     online={user.online}
                 />
             </View>

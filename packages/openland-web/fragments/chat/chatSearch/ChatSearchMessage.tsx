@@ -208,8 +208,6 @@ export const ChatSearchMessage = React.memo((props: MessageComponentProps) => {
                     photo={message.overrideAvatar
                         ? buildBaseImageUrl(message.overrideAvatar)
                         : message.sender.photo}
-                    title={message.overrideName || message.sender.name}
-                    titleEmoji={message.senderNameEmojify}
                 />
             </div>
         );

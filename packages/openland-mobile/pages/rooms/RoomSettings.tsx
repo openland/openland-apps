@@ -17,6 +17,7 @@ import { ReportCallErrorType } from 'openland-mobile/utils/voiceChatErrorNotifie
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { KeyboardHandlerContainer } from 'openland-mobile/components/KeyboardHandlerContainer';
+import { t } from 'openland-mobile/text/useText';
 
 type EditRoomModalProps = {
     id: string;
@@ -48,14 +49,14 @@ const EditRoomModal = React.memo((props: EditRoomModalProps & { hide: () => void
     return (
         <KeyboardHandlerContainer style={{ marginTop: 15 }}>
             <ZShaker ref={shakerRef}>
-                <ZInput placeholder="Room name" field={titleField} multiline={true} />
+                <ZInput placeholder={t('roomName', 'Room name')} field={titleField} multiline={true} />
             </ZShaker>
             <View style={{ flexDirection: 'row', flex: 1, marginHorizontal: 16 }}>
                 <View style={{ flex: 1, marginRight: 16 }}>
-                    <ZButton style="secondary" size="large" title="Cancel" onPress={onCancel} />
+                    <ZButton style="secondary" size="large" title={t('cancel', 'Cancel')} onPress={onCancel} />
                 </View>
                 <View style={{ flex: 1 }}>
-                    <ZButton size="large" title="Save" action={onConfirm} />
+                    <ZButton size="large" title={t('save', 'Save')} action={onConfirm} />
                 </View>
             </View>
         </KeyboardHandlerContainer>
@@ -64,7 +65,7 @@ const EditRoomModal = React.memo((props: EditRoomModalProps & { hide: () => void
 
 const showEditRoom = (props: EditRoomModalProps) => {
     showBottomSheet({
-        title: 'Edit room',
+        title: t('editRoom', 'Edit room'),
         cancelable: true,
         scrollViewProps: { keyboardShouldPersistTaps: 'handled' },
         view: (ctx) => <EditRoomModal {...props} hide={ctx.hide} />,
@@ -109,26 +110,26 @@ const EditPinnedMessage = React.memo((props: EditPinnedMessageProps & { hide: ()
     const onDeleteClick = () => {
         const builder = new AlertBlanketBuilder();
 
-        builder.title('Delete pinned message?');
-        builder.action('Delete', 'destructive', () => onDelete());
+        builder.title(t('deletePinnedMessageQuestion', 'Delete pinned message?'));
+        builder.action(t('delete', 'Delete'), 'destructive', () => onDelete());
         builder.show();
     };
 
     return (
         <KeyboardHandlerContainer style={{ marginTop: 15 }}>
             <ZShaker ref={shakerRef}>
-                <ZInput placeholder="Pinned message" field={messageField} multiline={true} />
+                <ZInput placeholder={t('pinnedMessage', 'Pinned message')} field={messageField} multiline={true} />
             </ZShaker>
             <View style={{ flexDirection: 'row', flex: 1, marginHorizontal: 16 }}>
                 <View style={{ flex: 1, marginRight: 16 }}>
                     {props.message ? (
-                        <ZButton style="danger" size="large" title="Delete" action={onDeleteClick} />
+                        <ZButton style="danger" size="large" title={t('delete', 'Delete')} action={onDeleteClick} />
                     ) : (
-                        <ZButton style="secondary" size="large" title="Cancel" onPress={onCancel} />
+                        <ZButton style="secondary" size="large" title={t('cancel', 'Cancel')} onPress={onCancel} />
                     )}
                 </View>
                 <View style={{ flex: 1 }}>
-                    <ZButton size="large" title="Save" action={onConfirm} />
+                    <ZButton size="large" title={t('save', 'Save')} action={onConfirm} />
                 </View>
             </View>
         </KeyboardHandlerContainer>
@@ -137,7 +138,7 @@ const EditPinnedMessage = React.memo((props: EditPinnedMessageProps & { hide: ()
 
 export const showEditPinnedMessage = (props: EditPinnedMessageProps) => {
     showBottomSheet({
-        title: 'Pinned message',
+        title: t('pinnedMessage', 'Pinned message'),
         cancelable: true,
         scrollViewProps: { keyboardShouldPersistTaps: 'handled' },
         view: (ctx) => <EditPinnedMessage {...props} hide={ctx.hide} />,
@@ -220,10 +221,10 @@ const MonetizationModal = React.memo((props: MonetizationModalProps & { hide: ()
             ) : null}
             <View style={{ flexDirection: 'row', flex: 1, marginHorizontal: 16 }}>
                 <View style={{ flex: 1, marginRight: 16 }}>
-                    <ZButton style="secondary" size="large" title="Cancel" onPress={onCancel} />
+                    <ZButton style="secondary" size="large" title={t('cancel', 'Cancel')} onPress={onCancel} />
                 </View>
                 <View style={{ flex: 1 }}>
-                    <ZButton size="large" title="Save" action={onConfirm} />
+                    <ZButton size="large" title={t('save', 'Save')} action={onConfirm} />
                 </View>
             </View>
         </KeyboardHandlerContainer>
@@ -232,21 +233,21 @@ const MonetizationModal = React.memo((props: MonetizationModalProps & { hide: ()
 
 export const showMonetization = (props: MonetizationModalProps) => {
     showBottomSheet({
-        title: 'Pinned message',
+        title: 'Monetization',
         cancelable: true,
         scrollViewProps: { keyboardShouldPersistTaps: 'handled' },
         view: (ctx) => <MonetizationModal {...props} hide={ctx.hide} />,
     });
 };
 
-const showReportProblem = (onSelect: (type: ReportCallErrorType) => void) => {
-    const builder = new ActionSheetBuilder();
-    builder.action('I can’t hear anyone', () => onSelect('report-self-speaker'));
-    builder.action('Others can’t hear me', () => onSelect('report-self-micro'));
-    builder.action('I can’t connect to the call', () => onSelect('report-self-loading'));
-    builder.action('Other user can’t connect to the call', () => onSelect('report-user-loading'));
-    return builder.show();
-};
+// const showReportProblem = (onSelect: (type: ReportCallErrorType) => void) => {
+//     const builder = new ActionSheetBuilder();
+//     builder.action('I can’t hear anyone', () => onSelect('report-self-speaker'));
+//     builder.action('Others can’t hear me', () => onSelect('report-self-micro'));
+//     builder.action('I can’t connect to the call', () => onSelect('report-self-loading'));
+//     builder.action('Other user can’t connect to the call', () => onSelect('report-user-loading'));
+//     return builder.show();
+// };
 
 export const showRoomSettings = (props: {
     roomId: string;
@@ -258,22 +259,22 @@ export const showRoomSettings = (props: {
     reportUserError: (type: ReportCallErrorType) => void;
 }) => {
     const builder = new ActionSheetBuilder();
-    builder.title('Settings');
+    builder.title(t('settings', 'Settings'));
     if (props.status === VoiceChatParticipantStatus.ADMIN) {
         builder.action(
-            'Edit room',
+            t('editRoom', 'Edit room'),
             () => showEditRoom({ id: props.roomId, title: props.roomTitle }),
             false,
             require('assets/ic-edit-24.png'),
         );
         builder.action(
-            'Pinned message',
+            t('pinnedMessage', 'Pinned message'),
             () => showEditPinnedMessage({ id: props.roomId, message: props.roomMessage }),
             false,
             require('assets/ic-pin-24.png'),
         );
         builder.action(
-            'Raised hands',
+            t('raisedHands', 'Raised hands'),
             () => showRaisedHands(props.roomId),
             false,
             require('assets/ic-hand-2-24.png'),
@@ -294,17 +295,11 @@ export const showRoomSettings = (props: {
         //     require('assets/ic-dollar-24.png'),
         // );
         builder.action(
-            'Close room',
+            t('closeRoom', 'Close room'),
             () => getClient().mutateVoiceChatEnd({ id: props.roomId }),
             false,
             require('assets/ic-door-leave-24.png'),
         );
     }
-    builder.action(
-        'Report a problem',
-        () => showReportProblem(props.reportUserError),
-        false,
-        require('assets/ic-flag-24.png'),
-    );
     builder.show();
 };

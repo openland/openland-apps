@@ -112,7 +112,7 @@ const BuyPaidChatPassButton = (props: {
                 : { type: 'payment' }),
             productTitle: props.title,
             productDescription: props.premiumSettings.interval ? 'Subscription' : 'Payment',
-            productPicture: <UAvatar title={props.title} id={props.id} photo={props.photo} />,
+            productPicture: <UAvatar id={props.id} photo={props.photo} />,
             action: async () => {
                 try {
                     let passIsActive;

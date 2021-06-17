@@ -68,7 +68,7 @@ const RaisedHandUserView = React.memo(
         }, []);
         return (
             <View style={{ flexDirection: 'row', paddingVertical: 8, alignItems: 'center' }}>
-                <ZAvatar id={user.id} title={user.name} photo={user.photo} size="medium" />
+                <ZAvatar id={user.id} photo={user.photo} size="medium" />
                 <View style={{ marginLeft: 16, width: '100%', flexShrink: 1, paddingLeft: 5 }}>
                     <Text
                         style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}

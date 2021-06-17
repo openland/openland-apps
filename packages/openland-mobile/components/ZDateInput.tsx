@@ -124,7 +124,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
             <View style={{ flexDirection: 'row', marginHorizontal: noWrapper ? 0 : 16 }}>
                 <View style={{ flexShrink: 0, marginRight: 16, minWidth: 72 }}>
                     <ZInput
-                        placeholder="Day"
+                        placeholder={t('day', 'Day')}
                         keyboardType="numeric"
                         value={day}
                         invalid={getInvalid('day')}
@@ -135,10 +135,10 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
                 </View>
                 <View style={{ flexGrow: 1 }}>
                     <ZSelectBasic
-                        label="Month"
+                        label={t('month', 'Month')}
                         options={OPTIONS}
                         value={month?.value}
-                        modalTitle="Month"
+                        modalTitle={t('month', 'Month')}
                         invalid={getInvalid('month')}
                         noWrapper={true}
                         onChange={(val: SelectedMonth) => setMonth(val)}
@@ -146,7 +146,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
                 </View>
                 <View style={{ flexShrink: 0, marginLeft: 16, minWidth: 90 }}>
                     <ZInput
-                        placeholder="Year"
+                        placeholder={t('year', 'Year')}
                         keyboardType="decimal-pad"
                         value={year}
                         invalid={getInvalid('year')}

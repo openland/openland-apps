@@ -8,9 +8,9 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { showTransactionInfo } from 'openland-mobile/pages/main/modals/TransactionInfo';
 import { SRouterContext } from 'react-native-s/SRouterContext';
-import { convertTransaction } from 'openland-y-utils/wallet/transaction';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { useText } from 'openland-mobile/text/useText';
+import { useConvertedTransaction } from 'openland-mobile/utils/useConvertedTransaction';
 
 interface TransactionViewProps {
     item: WalletTransactionFragment;
@@ -21,7 +21,7 @@ export const TransactionView = (props: TransactionViewProps) => {
     const router = React.useContext(SRouterContext)!;
     const { t } = useText();
 
-    const { avatar, title, type, dateTime, status, amount, source, group } = convertTransaction(
+    const { avatar, title, type, dateTime, status, amount, source, group } = useConvertedTransaction(
         props.item,
     );
     const payment = source.operation.payment;

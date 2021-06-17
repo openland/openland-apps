@@ -9,6 +9,7 @@ import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import { FileMeta } from './UploadManager';
 import { isVideo } from 'openland-y-utils/mediaExtension';
+import { t } from 'openland-mobile/text/useText';
 
 type PickerMedia = {
     type: 'document' | 'photo' | 'video',
@@ -67,7 +68,7 @@ export const showAttachMenu = (fileCallback?: (
 ) => {
     let builder = new ActionSheetBuilder();
 
-    builder.action('Take photo', async () => {
+    builder.action(t('attachTakePhoto', 'Take photo'), async () => {
         if (await checkPermissions('camera')) {
 
             try {
@@ -95,7 +96,7 @@ export const showAttachMenu = (fileCallback?: (
     }, false, require('assets/ic-camera-24.png'));
 
     if (Platform.OS === 'android') {
-        builder.action('Record video', async () => {
+        builder.action(t('attachRecordVideo', 'Record video'), async () => {
             if (await checkPermissions('camera')) {
                 try {
                     const response = await Picker.openCamera({
@@ -120,7 +121,10 @@ export const showAttachMenu = (fileCallback?: (
         }, false, require('assets/ic-camera-video-24.png'));
     }
 
-    builder.action(Platform.select({ ios: 'Choose from library', default: 'Photo gallery' }), async () => {
+    builder.action(Platform.select({
+        ios: t('attachPhotoIOS', 'Choose from library'),
+        default: t('attachPhotoAndroid', 'Photo gallery')
+    }), async () => {
         if (await checkPermissions('gallery')) {
             try {
                 const pickerResponse = await Picker.openPicker({
@@ -153,7 +157,7 @@ export const showAttachMenu = (fileCallback?: (
     }, false, require('assets/ic-gallery-24.png'));
 
     if (Platform.OS === 'android') {
-        builder.action('Video gallery', async () => {
+        builder.action(t('attachVideo', 'Video gallery'), async () => {
             if (await checkPermissions('gallery')) {
 
                 try {
@@ -186,7 +190,10 @@ export const showAttachMenu = (fileCallback?: (
         }, false, require('assets/ic-video-24.png'));
     }
 
-    builder.action(Platform.select({ ios: 'Send document', default: 'Document' }), () => {
+    builder.action(Platform.select({
+        ios: t('attachDocumentIOS', 'Send document'),
+        default: t('attachDocumentAndroid', 'Document'),
+    }), () => {
         DocumentPicker.show({ filetype: [DocumentPickerUtil.allFiles()] },
             (error, response) => {
                 if (!response) {
@@ -221,7 +228,10 @@ export const showAttachMenu = (fileCallback?: (
     }, false, require('assets/ic-document-24.png'));
 
     if (donationCb && Platform.OS !== 'ios') {
-        builder.action(Platform.select({ ios: 'Make donation', default: 'Donation' }), () => {
+        builder.action(Platform.select({
+            ios: t('attachDontaionIOS', 'Make donation'),
+            default: t('attachDonationAndroid', 'Donation'),
+        }), () => {
             donationCb();
         }, false, require('assets/ic-donation-24.png'));
     }

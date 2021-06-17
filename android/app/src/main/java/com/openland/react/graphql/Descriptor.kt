@@ -13,13 +13,13 @@ data class ResolveContext(val raw: JSONObject, val fragments: MutableMap<String,
 fun resolveInputType(data: JSONObject, ctx: ResolveContext): InputValue {
     val type = data.getString("type")
     if (type == "string") {
-        return stringValue(data.getString("value"))
+        return stringValue(data.getString("str"))
     } else if (type == "int") {
-        return intValue(data.getInt("value"))
+        return intValue(data.getInt("int"))
     } else if (type == "float") {
-        return floatValue(data.getDouble("value"))
+        return floatValue(data.getDouble("float"))
     } else if (type == "boolean") {
-        return boolValue(data.getBoolean("value"))
+        return boolValue(data.getBoolean("bool"))
     } else if (type == "null") {
         return nullValue()
     } else if (type == "reference") {
@@ -33,7 +33,7 @@ fun resolveInputType(data: JSONObject, ctx: ResolveContext): InputValue {
         return listValue(items)
     } else if (type == "object") {
         val fields = mutableMapOf<String, InputValue>()
-        val d = data.getJSONObject("items")
+        val d = data.getJSONObject("fields")
         for (key in d.keys()) {
             fields[key] = resolveInputType(d.getJSONObject(key), ctx)
         }
@@ -48,7 +48,10 @@ fun resolveOutputObject(data: JSONObject, ctx: ResolveContext): OutputType.Objec
         throw Error("Invalid schema")
     }
     val selectors = mutableListOf<Selector>()
-
+    val raw = data.getJSONArray("selectors")
+    for (i in 0 until raw.length()) {
+        selectors.add(resolveSelector(raw.getJSONObject(i), ctx))
+    }
     return obj(selectors)
 }
 
@@ -150,6 +153,6 @@ class SpaceXOperationDescriptor(raw: JSONObject) : SpaceXOperations {
     }
 
     override fun operationByName(name: String): OperationDefinition {
-        throw Error("Unknown operation $name")
+        return operations[name] ?: throw Error("Unknown operation $name")
     }
 }

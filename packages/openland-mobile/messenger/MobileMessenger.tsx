@@ -50,6 +50,7 @@ import { ReactionsPicker } from './components/ReactionsPicker';
 import { NotificationCenterHandlers } from 'openland-mobile/notificationCenter/NotificationCenterHandlers';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { AsyncInvitePeopleBlock } from './components/AsyncInvitePeopleBlock';
+import { t } from 'openland-mobile/text/useText';
 
 export const useForward = (sourceId: string, disableSource?: boolean) => {
     const messenger = getMessenger().engine;
@@ -58,7 +59,7 @@ export const useForward = (sourceId: string, disableSource?: boolean) => {
 
     return (messages?: DataSourceMessageItem[]) => {
         getMessenger().history.navigationManager.push('HomeDialogs', {
-            title: 'Forward to', pressCallback: async (id: string) => {
+            title: t('forwardTo', 'Forward to'), pressCallback: async (id: string) => {
                 const room = await messenger.client.queryRoomChat({ id });
                 if (room.room && room.room.__typename === 'PrivateRoom' && messenger.user.id === room.room.user.id) {
                     let forwardIds = prepareForward({ targetId: id, messages }).map(e => e.id!);
@@ -72,7 +73,7 @@ export const useForward = (sourceId: string, disableSource?: boolean) => {
                 } else {
                     if (disableSource && room.room && room.room.id === sourceId) {
                         Toast.failure({
-                            text: 'Replies are disabled for this chat',
+                            text: t('errorRepliesDisabled', 'Replies are disabled for this chat'),
                             duration: 1000
                         }).show();
                         getMessenger().history.navigationManager.pop();
@@ -258,12 +259,12 @@ export class MobileMessenger {
         ({ filePath, message, chatId }: { chatId: string, filePath?: string, message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage, }) => {
             let builder = new ActionSheetBuilder();
 
-            builder.action('Forward', () => {
+            builder.action(t('forward', 'Forward'), () => {
                 const fullMessage = convertPartialMessage(message, chatId, this.engine);
                 forward([fullMessage]);
             }, false, require('assets/ic-forward-24.png'));
 
-            builder.action('Share', async () => {
+            builder.action(t('share', 'Share'), async () => {
                 const attachment = message.attachments[0];
                 if (attachment.__typename === 'MessageRichAttachment') {
                     Share.share({ message: attachment.titleLink!! });
@@ -398,7 +399,7 @@ export class MobileMessenger {
                 loader.show();
                 await this.engine.client.mutateMessageSetDonationReaction({ messageId: message.id! });
                 loader.hide();
-                Toast.success({ text: 'You’ve donated $1', duration: 1000 }).show();
+                Toast.success({ text: t('premiumReactionDonated', 'You’ve donated $1'), duration: 1000 }).show();
             } catch (e) {
                 loader.hide();
                 if (this.engine.wallet.state.get().isLocked) {
@@ -445,10 +446,10 @@ export class MobileMessenger {
     handleDeleteMessage = (messageId: string, onDelete?: () => void) => {
         try {
             Alert.builder()
-                .title('Delete message?')
-                .message('The message will be deleted for everyone. This cannot be undone')
-                .button('Cancel', 'cancel')
-                .action('Delete', 'destructive', async () => {
+                .title(t('deleteMessageQuestion', 'Delete message?'))
+                .message(t('deleteMessageDescription', 'The message will be deleted for everyone. This cannot be undone'))
+                .button(t('cancel', 'Cancel'), 'cancel')
+                .action(t('delete', 'Delete'), 'destructive', async () => {
                     await this.engine.client.mutateRoomDeleteMessage({ messageId });
 
                     if (onDelete) {
@@ -473,7 +474,7 @@ export class MobileMessenger {
                 chatId: savedMessages.id,
             });
 
-            Toast.showSuccess('Saved');
+            Toast.showSuccess(t('saved', 'Saved'));
         } else {
             Toast.failure({ duration: 1000 }).show();
         }
@@ -514,28 +515,28 @@ export class MobileMessenger {
         ));
 
         builder.action(
-            isSubscribed ? 'Unfollow thread' : 'Follow thread',
+            isSubscribed ? t('threadUnfollow', 'Unfollow thread') : t('threadFollow', 'Follow thread'),
             () => NotificationCenterHandlers.toggleSubscription(message.id, isSubscribed),
             false,
             isSubscribed ? require('assets/ic-follow-off-24.png') : require('assets/ic-follow-24.png')
         );
 
         if (canSendMessage && repliesEnabled) {
-            builder.action('Reply', () => {
+            builder.action(t('reply', 'Reply'), () => {
                 reply(convertedMessage);
 
                 this.handleMessageSourcePress(chat.id, () => this.resetConversation(chat.id));
             }, false, require('assets/ic-reply-24.png'));
         }
 
-        builder.action('Forward', () => forward([convertedMessage]), false, require('assets/ic-forward-24.png'));
+        builder.action(t('forward', 'Forward'), () => forward([convertedMessage]), false, require('assets/ic-forward-24.png'));
 
         if (!isSavedMessages) {
-            builder.action('Save', () => this.handleSaveMessages([message.id]), false, require('assets/ic-bookmark-24.png'));
+            builder.action(t('save', 'Save'), () => this.handleSaveMessages([message.id]), false, require('assets/ic-bookmark-24.png'));
         }
 
         if (convertedMessage.text) {
-            builder.action('Copy', () => {
+            builder.action(t('copy', 'Copy'), () => {
                 Clipboard.setString(convertedMessage.text!!);
                 Toast.showCopied();
             }, false, require('assets/ic-copy-24.png'));
@@ -544,7 +545,7 @@ export class MobileMessenger {
         if (canPin && convertedMessage.id) {
             const toUnpin = chat.pinnedMessage && chat.pinnedMessage.id === convertedMessage.id;
 
-            builder.action(toUnpin ? 'Unpin' : 'Pin', async () => {
+            builder.action(toUnpin ? t('unpin', 'Unpin') : t('pin', 'Pin'), async () => {
                 const loader = Toast.loader();
                 loader.show();
                 try {
@@ -553,7 +554,7 @@ export class MobileMessenger {
                     } else {
                         await this.engine.client.mutatePinMessage({ chatId: chat.id, messageId: message.id });
                     }
-                    Toast.showSuccess(toUnpin ? 'Unpinned' : 'Pinned');
+                    Toast.showSuccess(toUnpin ? t('unpinned', 'Unpinned') : t('pinned', 'Pinned'));
                 } finally {
                     loader.hide();
                 }
@@ -563,7 +564,7 @@ export class MobileMessenger {
         if (convertedMessage.text) {
             let hasPurchase = convertedMessage.attachments && convertedMessage.attachments.some(a => a.__typename === 'MessageAttachmentPurchase');
             if (convertedMessage.sender.id === this.engine.user.id && !hasPurchase) {
-                builder.action('Edit', () => {
+                builder.action(t('edit', 'Edit'), () => {
                     clear();
                     edit(convertedMessage);
 
@@ -573,7 +574,7 @@ export class MobileMessenger {
         }
 
         if (message.sender.id === this.engine.user.id || SUPER_ADMIN || role === 'ADMIN' || role === 'OWNER') {
-            builder.action('Delete', () => {
+            builder.action(t('delete', 'Delete'), () => {
                 this.handleDeleteMessage(message.id, () => {
                     if (convertedMessage.commentsCount <= 0) {
                         this.routerSuitable.pop();
@@ -607,7 +608,7 @@ export class MobileMessenger {
 
         if (message.isSending) {
             if (message.text) {
-                builder.action('Copy', () => {
+                builder.action(t('copy', 'Copy'), () => {
                     Clipboard.setString(message.text!!);
                     Toast.showCopied();
                 }, false, require('assets/ic-copy-24.png'));
@@ -633,27 +634,27 @@ export class MobileMessenger {
 
         const hideSelect = action === 'reply' || action === 'forward';
         if (!hideSelect) {
-            builder.action('Select', () => toggleSelect(message), false, require('assets/ic-select-24.png'));
+            builder.action(t('select', 'Select'), () => toggleSelect(message), false, require('assets/ic-select-24.png'));
         }
 
         if (conversation.canSendMessage && conversation.canReply && !conversation.isBanned) {
-            builder.action('Reply', () => reply(message), false, require('assets/ic-reply-24.png'));
+            builder.action(t('reply', 'Reply'), () => reply(message), false, require('assets/ic-reply-24.png'));
         }
 
-        builder.action('Forward', () => forward([message]), false, require('assets/ic-forward-24.png'));
+        builder.action(t('forward', 'Forward'), () => forward([message]), false, require('assets/ic-forward-24.png'));
 
         if (!conversation.isSavedMessage) {
-            builder.action('Save', () => this.handleSaveMessages([message.id!]), false, require('assets/ic-bookmark-24.png'));
+            builder.action(t('save', 'Save'), () => this.handleSaveMessages([message.id!]), false, require('assets/ic-bookmark-24.png'));
         }
 
         if (!conversation.isBanned) {
-            builder.action('Comment', () => {
+            builder.action(t('comment', 'Comment'), () => {
                 this.routerSuitable.push('Message', { messageId: message.id });
             }, false, require('assets/ic-message-24.png'));
         }
 
         if (message.text) {
-            builder.action('Copy', () => {
+            builder.action(t('copy', 'Copy'), () => {
                 Clipboard.setString(message.text!!);
                 Toast.showCopied();
             }, false, require('assets/ic-copy-24.png'));
@@ -662,7 +663,7 @@ export class MobileMessenger {
         if (conversation.canPin && message.id && !conversation.isBanned) {
             const toUnpin = conversation.pinId && conversation.pinId === message.id;
 
-            builder.action(toUnpin ? 'Unpin' : 'Pin', async () => {
+            builder.action(toUnpin ? t('unpin', 'Unpin') : t('pin', 'Pin'), async () => {
                 const loader = Toast.loader();
                 loader.show();
                 try {
@@ -680,14 +681,14 @@ export class MobileMessenger {
         if (message.text) {
             let hasPurchase = message.attachments && message.attachments.some(a => a.__typename === 'MessageAttachmentPurchase');
             if (message.sender.id === this.engine.user.id && !hasPurchase && !conversation.isBanned) {
-                builder.action('Edit', () => {
+                builder.action(t('edit', 'Edit'), () => {
                     edit(message);
                 }, false, require('assets/ic-edit-24.png'));
             }
         }
 
         if (message.id && message.sender.id === this.engine.user.id || SUPER_ADMIN || role === 'ADMIN' || role === 'OWNER') {
-            builder.action('Delete', () => {
+            builder.action(t('delete', 'Delete'), () => {
                 this.handleDeleteMessage(message.id!);
             }, false, require('assets/ic-delete-24.png'));
         }

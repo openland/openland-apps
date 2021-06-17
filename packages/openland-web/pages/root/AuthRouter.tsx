@@ -53,7 +53,6 @@ const ShortnameResolver = React.memo(
                         title={shortnameItem.name}
                         id={shortnameItem.id}
                         photo={shortnameItem.photo}
-                        entityTitle={shortnameItem.name}
                         description={shortnameItem.about}
                         hideFakeDescription={true}
                         featured={shortnameItem.featured}

@@ -209,7 +209,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
             }
             if (profileType === 'user') {
                 builder.action(
-                    inContacts ? t('removeContact', 'Remove from contacts') : t('saveContact', 'Save to contacts'),
+                    inContacts ? t('contactsRemove', 'Remove from contacts') : t('contactsSave', 'Save to contacts'),
                     handleContactPress,
                     false,
                     inContacts ? require('assets/ic-user-remove-24.png') : require('assets/ic-user-add-24.png'),
@@ -222,7 +222,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                 isBanned ? require('assets/ic-unblock-24.png') : require('assets/ic-block-24.png'),
             );
             builder.action(
-                t('reportSpam', 'Report spam'),
+                t('reportSpamTitle', 'Report spam'),
                 () => Modals.showReportSpam({ router, userId }),
                 false,
                 require('assets/ic-flag-24.png'),
@@ -343,7 +343,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                     <CurrentVoiceChat currentVoiceChat={currentVoiceChat} />
                 )}
 
-                <ZListGroup header="About" useSpacer={true}>
+                <ZListGroup header={t('about', 'About')} useSpacer={true}>
                     {!!user.about && <ZShowMoreText text={user.about} />}
                     {!!user.shortname && (
                         <ZListItem
@@ -465,7 +465,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                         {mutualGroups.items.map((item) => (
                             <ZListItem
                                 key={`group-${item.id}`}
-                                leftAvatar={{ photo: item.photo, id: item.id, title: item.title }}
+                                leftAvatar={{ photo: item.photo, id: item.id }}
                                 text={item.title}
                                 subTitle={t('member', { count: item.membersCount, defaultValue: 'member' })}
                                 path="Conversation"

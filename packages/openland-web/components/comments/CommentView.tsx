@@ -179,7 +179,6 @@ export const CommentView = React.memo((props: CommentViewProps) => {
             <div className={avatarWrapper}>
                 <UAvatar
                     id={sender.id}
-                    title={sender.name}
                     photo={sender.photo}
                     size={depth > 0 ? 'x-small' : 'medium'}
                     onClick={() => {

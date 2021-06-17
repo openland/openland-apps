@@ -8,6 +8,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import Toast from 'openland-mobile/components/Toast';
 import { showAddCard } from '../wallet/AddCard';
+import { t } from 'openland-mobile/text/useText';
 
 type ChoosePaymentMethodProps = {
     router: SRouter;
@@ -52,7 +53,7 @@ const ChoosePaymentMethod = React.memo((props: ChoosePaymentMethodProps & { hide
             {cards.map(card => <CardView key={card.id} item={card} selected={selectedId === card.id} onPress={() => setSelectedId(card.id)} />)}
             <AddCardItem onPress={handleAdd} />
             <View style={{ flex: 1, marginHorizontal: 16, marginTop: 16 }}>
-                <ZButton size="large" title="Confirm" action={onConfirm} />
+                <ZButton size="large" title={t('confirm', 'Confirm')} action={onConfirm} />
             </View>
         </View>
     );
@@ -60,7 +61,7 @@ const ChoosePaymentMethod = React.memo((props: ChoosePaymentMethodProps & { hide
 
 export const showChoosePaymentMethod = (props: ChoosePaymentMethodProps) => {
     showBottomSheet({
-        title: 'Payment method',
+        title: t('paymentMethod', 'Payment method'),
         cancelable: true,
         view: (ctx) => <ChoosePaymentMethod {...props} hide={ctx.hide} />,
     });

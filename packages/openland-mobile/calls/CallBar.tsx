@@ -4,7 +4,6 @@ import { View, Text, Image } from 'react-native';
 import { useWatchCall } from './useWatchCall';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
-import { plural } from 'openland-y-utils/plural';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { useJoinRoom } from 'openland-mobile/pages/rooms/joinRoom';
@@ -31,11 +30,10 @@ export const CallBarComponent = React.memo((props: { id: string, showCallModal: 
 
     if (conference && conference.conference && conference.conference.peers.length > 0) {
         let [firstPeer, ...otherPeers] = conference.conference.peers;
-        // TODO: PLURAL
         let othersText = otherPeers.length === 0
             ? ''
-            : ` and ${plural(otherPeers.length, ['other', 'others'])}`;
-        let text = `${firstPeer.user.name}${othersText}`;
+            : t('andOthers', { num: otherPeers.length, defaultValue: `and {{num}} others` });
+        let text = `${firstPeer.user.name} ${othersText}`;
         return (
             <TouchableHighlight
                 activeOpacity={1}

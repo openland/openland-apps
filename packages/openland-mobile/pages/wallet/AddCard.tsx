@@ -15,6 +15,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { View } from 'react-native';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { KeyboardHandlerContainer } from 'openland-mobile/components/KeyboardHandlerContainer';
+import { t } from 'openland-mobile/text/useText';
 
 let loader = Toast.loader();
 
@@ -34,7 +35,7 @@ const useAddCard = (props: { router: SRouter }) => {
                 if (res.status !== 'success') {
                     if (res.message) {
                         if (res.message.startsWith('Missing required param')) {
-                            AlertBlanket.alert('Invalid card number');
+                            AlertBlanket.alert(t('errorCardInvalid', 'Invalid card number'));
                         } else {
                             AlertBlanket.alert(res.message);
                         }
@@ -50,7 +51,7 @@ const useAddCard = (props: { router: SRouter }) => {
                 props.router.back();
             } catch (e) {
                 console.warn(e);
-                AlertBlanket.alert('Unknown error');
+                AlertBlanket.alert(t('errorUnknown', 'Unknown error'));
             } finally {
                 loader.hide();
             }
@@ -71,8 +72,8 @@ const AddCardComponent = React.memo<PageProps>((props) => {
     const { submit, content } = useAddCard({ router: props.router });
     return (
         <>
-            <SHeader title="New card" />
-            <SHeaderButton title="Add" onPress={submit} />
+            <SHeader title={t('newCard', 'New card')} />
+            <SHeaderButton title={t('add', 'Add')} onPress={submit} />
             <SScrollView style={{ flexDirection: 'column', alignSelf: 'stretch', padding: 16 }} contentContainerStyle={{ alignItems: 'stretch' }}>
                 {content}
             </SScrollView>
@@ -91,7 +92,7 @@ const AddCardModal = React.memo((props: { router: SRouter, hide: () => void }) =
                 {content}
             </View>
             <View style={{ flex: 1, marginHorizontal: 16, marginTop: 16 }}>
-                <ZButton size="large" title="Add" action={submit} />
+                <ZButton size="large" title={t('add', 'Add')} action={submit} />
             </View>
         </KeyboardHandlerContainer>
     );
@@ -99,7 +100,7 @@ const AddCardModal = React.memo((props: { router: SRouter, hide: () => void }) =
 
 export const showAddCard = (props: { router: SRouter }) => {
     showBottomSheet({
-        title: 'New card',
+        title: t('newCard', 'New card'),
         cancelable: true,
         scrollViewProps: { keyboardShouldPersistTaps: 'handled' },
         view: (ctx) => <AddCardModal router={props.router} hide={ctx.hide} />,

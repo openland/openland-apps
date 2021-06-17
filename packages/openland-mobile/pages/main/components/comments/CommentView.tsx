@@ -129,7 +129,6 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                             size="x-small"
                             photo={sender.photo}
                             id={sender.id}
-                            title={sender.name}
                         />
                     </View>
                 </TouchableOpacity>

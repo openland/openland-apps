@@ -6,16 +6,14 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { RadiusStyles, TextStylesAsync, TextStyles, CompensationAlpha } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { hexToRgba } from 'openland-y-utils/hexToRgba';
-import { useText } from 'openland-mobile/text/useText';
 
 export const PremiumBadge = React.memo(() => {
     const theme = React.useContext(ThemeContext);
-    const { t } = useText();
 
     return (
         <View style={{ paddingTop: 1.5, paddingBottom: 2.5, paddingHorizontal: 4, backgroundColor: hexToRgba(theme.accentPay, CompensationAlpha), borderRadius: RadiusStyles.XSmall }}>
             <Text style={[TextStyles.Detail, { color: theme.foregroundContrast, textTransform: 'uppercase' }]} allowFontScaling={false}>
-                {t('pro', 'pro')}
+                PRO
             </Text>
         </View>
     );

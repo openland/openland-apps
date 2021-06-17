@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-// import * as Localization from 'expo-localization';
 import en from 'openland-mobile/text/extractedLangs/en.json';
+// import { getLocale } from './utils';
 // import ru from 'openland-mobile/text/extractedLangs/ru.json';
 
 i18n
@@ -12,7 +12,7 @@ i18n
         interpolation: {
             escapeValue: false,
         },
-        // lng: Localization.locale.startsWith('ru') ? 'ru' : 'en',
+        // lng: getLocale(),
         lng: 'en',
         resources: {
             en: {

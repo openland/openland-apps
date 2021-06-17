@@ -657,7 +657,6 @@ const RoomUser = React.memo(({
                         isSpeaker || isAdmin ? speakerAvatarSizes : listenerAvatarSizes
                     }
                     id={id}
-                    title={name}
                     photo={photo}
                 />
                 {(state === 'muted' || state === 'loading') && (
@@ -947,7 +946,6 @@ const RoomViewInner = React.memo((props: { roomId: string, voiceChatData: VoiceC
                             <div className={headerParentRoomClass}>
                                 <div className={parentRoomTitle} onClick={handleParentRoomClick}>
                                     <UAvatar
-                                        title={voiceChatData.parentRoom.title}
                                         id={voiceChatData.parentRoom.id}
                                         photo={voiceChatData.parentRoom.photo}
                                         size="small"

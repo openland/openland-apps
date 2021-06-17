@@ -20,6 +20,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SuggestedChats as SuggestedChatsPage } from './SuggestedChats';
 import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
+import { useText } from 'openland-mobile/text/useText';
 
 export type Tag = { id: string; title: string };
 export type TagGroup = { id: string; title?: string | null; subtitle?: string | null; tags: Tag[] };
@@ -145,6 +146,7 @@ interface TagsGroupPageProps {
 const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
     const area = React.useContext(ASSafeAreaContext);
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const isIos = Platform.OS === 'ios';
     const isXGen = isIos && Dimensions.get('window').height > 800;
     const defaultIosPadding = isXGen ? 34 : 16;
@@ -221,7 +223,7 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
                 }}
                 intensity="normal"
             >
-                <ZButton size="large" title="Next" enabled={enabled} onPress={next} />
+                <ZButton size="large" title={t('next', 'Next')} enabled={enabled} onPress={next} />
             </ZBlurredView>
         </>
     );

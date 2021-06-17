@@ -99,7 +99,7 @@ const AvatarVideoView = (props: { user: Conference_conference_peers_user }) => {
                 }}
             />
             <View style={{ alignSelf: 'stretch', flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <ZAvatar size="x-large" id={props.user.id} title={props.user.name} photo={props.user.photo} />
+                <ZAvatar size="x-large" id={props.user.id} photo={props.user.photo} />
             </View>
         </>
     );

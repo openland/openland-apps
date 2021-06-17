@@ -4,6 +4,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { CommentSubscriptionType } from 'openland-api/spacex.types';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import Toast from 'openland-mobile/components/Toast';
+import { t } from 'openland-mobile/text/useText';
 
 class NotificationCenterHandlersClass {
     handlePress = (id: string, item: NotificationsDataSourceItem) => {
@@ -26,7 +27,7 @@ class NotificationCenterHandlersClass {
             } else {
                 await client.mutateSubscribeToComments({ peerId: peerRootId, type: CommentSubscriptionType.ALL });
             }
-            Toast.showSuccess(isSubscribed ? 'Unfollowed' : 'Followed');
+            Toast.showSuccess(isSubscribed ? t('unfollowed', 'Unfollowed') : t('followed', 'Followed'));
         } catch (e) {
             console.warn(e);
         } finally {
@@ -39,14 +40,14 @@ class NotificationCenterHandlersClass {
 
         if (item.notificationType !== 'unsupported' && item.peerRootId) {
             builder.action(
-                item.isSubscribedMessageComments ? 'Unfollow thread' : 'Follow thread',
+                item.isSubscribedMessageComments ? t('threadUnfollow', 'Unfollow thread') : t('threadFollow', 'Follow thread'),
                 () => this.toggleSubscription(item.peerRootId!, item.isSubscribedMessageComments),
                 false,
                 item.isSubscribedMessageComments ? require('assets/ic-follow-off-24.png') : require('assets/ic-follow-24.png')
             );
         }
 
-        builder.action('Clear', async () => {
+        builder.action(t('clear', 'Clear'), async () => {
             await this.deleteNotifications([id]);
         }, false, require('assets/ic-delete-24.png'));
 

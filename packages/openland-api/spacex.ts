@@ -1930,6 +1930,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateUserStorageSet(variables: Types.UserStorageSetVariables, params?: MutationParameters): Promise<Types.UserStorageSet> {
         return this.mutate('UserStorageSet', variables, params)
     }
+    mutateSessionLanguageSet(variables: Types.SessionLanguageSetVariables, params?: MutationParameters): Promise<Types.SessionLanguageSet> {
+        return this.mutate('SessionLanguageSet', variables, params)
+    }
     mutateAddAppRelease(variables: Types.AddAppReleaseVariables, params?: MutationParameters): Promise<Types.AddAppRelease> {
         return this.mutate('AddAppRelease', variables, params)
     }

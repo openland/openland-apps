@@ -15,9 +15,9 @@ import {
     useShake,
     textClassName,
 } from './components/authComponents';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { completeAuth } from './completeAuth';
-import { XImage } from 'react-mental';
 import { AuthHeaderConfig } from './root.page';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { checkCode, AuthError, trackError } from './utils/checkCode';
@@ -25,8 +25,6 @@ import { TextCaption, TextTitle1 } from 'openland-web/utils/TextStyles';
 import { usePreviousState } from 'openland-y-utils/usePreviousState';
 import { css, cx } from 'linaria';
 import { useResendTimer } from 'openland-y-utils/auth/useResendTimer';
-import { AvatarPlaceholder, AvatarSizes } from 'openland-web/components/unicorn/UAvatar';
-import { PlaceholderColors } from 'openland-y-utils/themes/placeholders';
 
 const codeWrapperStyle = css`
     margin-top: 32px;
@@ -159,9 +157,6 @@ const WebSignUpActivationCode = (
 
     const errorText = (codeField.input.invalid && codeField.input.errorText) || codeError;
     const isInvalid = !!errorText;
-    const ops = '-/format/auto/-/scale_crop/72x72/center/-/quality/best/-/progressive/yes/';
-    const opsRetina =
-        '-/format/auto/-/scale_crop/144x144/center/-/quality/best/-/progressive/yes/ 2x';
 
     React.useEffect(() => {
         let indexToFocus = codeField.input.value.findIndex(value => !value);
@@ -234,28 +229,10 @@ const WebSignUpActivationCode = (
                     {<ResendSubtitle onResend={handleResend} />}
                 </Subtitle>
                 {isExistingUser && !avatarId && avatarPlaceholder && (
-                    <AvatarPlaceholder
-                        id={avatarPlaceholder.initials}
-                        alignSelf="center"
-                        marginTop={16}
-                        width={72}
-                        height={72}
-                        borderRadius="100%"
-                        title={avatarPlaceholder.initials}
-                        fontSize={AvatarSizes['x-large'].placeholder}
-                        index={Math.abs(avatarPlaceholder.hash) % PlaceholderColors.length}
-                    />
+                    <UAvatar size="x-large" id={String(avatarPlaceholder)} marginTop={16} />
                 )}
                 {!!avatarId && (
-                    <XImage
-                        alignSelf="center"
-                        marginTop={16}
-                        width={72}
-                        height={72}
-                        borderRadius="100%"
-                        src={`https://ucarecdn.com/${avatarId}/${ops}`}
-                        srcSet={`https://ucarecdn.com/${avatarId}/${opsRetina}`}
-                    />
+                    <UAvatar size="x-large" uuid={avatarId} id={avatarId} marginTop={16} />
                 )}
                 <AuthInputWrapper className={cx(codeWrapperStyle, shakeClassName)}>
                     {codeField.input.value.map((value, i) => (

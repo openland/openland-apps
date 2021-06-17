@@ -13,9 +13,11 @@ import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 import { ZSelect } from 'openland-mobile/components/ZSelect';
+import { useText } from 'openland-mobile/text/useText';
 
 const NewOrganizationComponent = (props: PageProps) => {
     const isCommunity = props.router.params.isCommunity;
+    const { t } = useText();
 
     const form = useForm();
     const nameField = useField('name', '', form);
@@ -25,7 +27,10 @@ const NewOrganizationComponent = (props: PageProps) => {
 
     const handleSave = () => {
         if (nameField.value === '') {
-            Alert.builder().title('Please enter a name for this ' + (isCommunity ? 'community' : 'organization')).button('GOT IT!').show();
+            Alert.builder()
+                .title(t('validationEnterName', 'Please enter a name'))
+                .button(t('gotIt', 'Got it!'))
+                .show();
             return;
         }
 
@@ -55,40 +60,40 @@ const NewOrganizationComponent = (props: PageProps) => {
 
     return (
         <ZTrack event={isCommunity ? 'navigate_new_community' : 'navigate_new_org'}>
-            <SHeader title={isCommunity ? 'New community' : 'New organization'} />
-            <SHeaderButton title="Create" onPress={handleSave} />
+            <SHeader title={isCommunity ? t('newCommunity', 'New community') : t('newOrganization', 'New organization')} />
+            <SHeaderButton title={t('create', 'Create')} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <ZListGroup header={null} alignItems="center">
-                    <ZAvatarPicker field={photoField} size="xx-large" />
+                    <ZAvatarPicker id={''} field={photoField} size="xx-large" />
                 </ZListGroup>
 
                 <ZListGroup header={null}>
                     {!isCommunity && (
                         <ZInput
-                            placeholder="Name"
+                            placeholder={t('name', 'Name')}
                             field={nameField}
                             autoFocus={true}
-                            description="Please, provide organization name and optional logo"
+                            description={t('createOrganizationDescription', 'Please, provide organization name and optional logo')}
                         />
                     )}
 
                     {isCommunity && (
                         <>
-                            <ZInput placeholder="Name" field={nameField} autoFocus={true} />
-                            <ZInput placeholder="Description" field={aboutField} multiline={true} />
+                            <ZInput placeholder={t('name', 'Name')} field={nameField} autoFocus={true} />
+                            <ZInput placeholder={t('description', 'Description')} field={aboutField} multiline={true} />
                             <ZSelect
-                                label="Visibility"
-                                modalTitle="Visibility"
+                                label={t('visibility', 'Visibility')}
+                                modalTitle={t('visibility', 'Visibility')}
                                 field={privacyField}
                                 options={[
                                     {
-                                        label: 'Public',
-                                        subtitle: 'Visible in search',
+                                        label: t('createOrganizationPublic', 'Public'),
+                                        subtitle: t('createOrganizationPublicDescription', 'Visible in search'),
                                         value: 'public',
                                     },
                                     {
-                                        label: 'Secret',
-                                        subtitle: 'Only people with invite link can see it',
+                                        label: t('createOrganizationSecret', 'Secret'),
+                                        subtitle: t('createOrganizationSecretDescription', 'Only people with invite link can see it'),
                                         value: 'secret',
                                     },
                                 ]}

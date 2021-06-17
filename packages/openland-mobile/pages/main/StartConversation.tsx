@@ -27,7 +27,6 @@ const Chat = (props: { item: DialogDataSourceItem, onPress: (key: string) => voi
                 photo={props.item.photo}
                 size="medium"
                 id={props.item.key}
-                title={props.item.title}
             />
         </View>
         <View style={{ marginRight: 10, marginTop: 10, marginBottom: 10, flexDirection: 'column', flexGrow: 1, flexBasis: 0, alignItems: 'stretch', justifyContent: 'center' }}>

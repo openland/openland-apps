@@ -74,8 +74,7 @@ export const PrivateCommunityView = React.memo((props: PrivateCommunityViewProps
         <Page flexGrow={1}>
             <div className={container}>
                 <UAvatar
-                    photo={photo || undefined}
-                    title={name}
+                    photo={photo}
                     id={id}
                     size="xx-large"
                     marginBottom={32}

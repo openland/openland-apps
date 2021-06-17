@@ -71,10 +71,9 @@ const GlobalSearchItemSharedRoom = React.memo((props: ItemRoomProps) => {
             featured={item.featured}
             avatar={
                 <ASAvatar
-                    src={item.roomPhoto}
+                    id={item.id}
+                    photo={item.roomPhoto}
                     size="medium"
-                    placeholderKey={item.id}
-                    placeholderTitle={item.title}
                     theme={theme}
                 />
             }
@@ -99,10 +98,9 @@ const GlobalSearchItemOrganization = React.memo((props: ItemOrganizationProps) =
             featured={item.featured}
             avatar={
                 <ASAvatar
-                    src={item.photo}
+                    id={item.id}
+                    photo={item.photo}
                     size="medium"
-                    placeholderKey={item.id}
-                    placeholderTitle={item.name}
                     theme={theme}
                 />
             }
@@ -130,10 +128,9 @@ export const GlobalSearchItemUser = React.memo((props: ItemUserProps) => {
             proBadge={isSavedMessages ? false : !!item.systemBadge}
             avatar={
                 <UserAvatar
-                    src={item.photo}
+                    id={item.id}
+                    photo={item.photo}
                     size="medium"
-                    placeholderKey={item.id}
-                    placeholderTitle={item.name}
                     online={item.online}
                     theme={theme}
                     savedMessages={isSavedMessages}

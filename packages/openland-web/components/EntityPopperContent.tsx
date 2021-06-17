@@ -163,7 +163,6 @@ const UserPopperContent = React.memo(
                             }}
                         >
                             <UAvatar
-                                title={user.name}
                                 id={user.id}
                                 photo={user.photo}
                                 size="xxx-large"
@@ -333,7 +332,6 @@ export const EntityPopperContent = React.memo(
                         }}
                     >
                         <UAvatar
-                            title={title}
                             id={id}
                             photo={photo}
                             size="xx-large"

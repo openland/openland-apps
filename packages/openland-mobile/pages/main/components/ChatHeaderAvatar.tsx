@@ -45,7 +45,6 @@ const ChatHeaderAvatarContent = React.memo((props: { conversationId: string, rou
                     photo={privateRoom ? privateRoom.user.photo : sharedRoom!.photo}
                     size="small"
                     id={privateRoom ? privateRoom.user.id : sharedRoom!.id}
-                    title={privateRoom ? privateRoom.user.name : sharedRoom!.title}
                     savedMessages={privateRoom ? privateRoom.user.id === getMessenger().engine.user.id : false}
                 />
             </View>

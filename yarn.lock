@@ -3417,10 +3417,10 @@
   resolved "https://registry.yarnpkg.com/@openland/patterns/-/patterns-0.0.2.tgz#ada0417c4e72aeeb461bf9d8759ecd9ca1ebf51d"
   integrity sha512-ttgJELwtG8cIER1JeWjkIMg3e+MlAL6n4wFPSNPoBCl+5t3G/HIz9kolvxBmN5/3RXEgh68NnePzGiUBaUHmRQ==
 
-"@openland/spacex-cli@5.0.3":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@openland/spacex-cli/-/spacex-cli-5.0.3.tgz#9be7b69f0bd1e0b26a62ff5e24703451293b5848"
-  integrity sha512-YIV5bcQJb+dpnHZ3D75VEgCZTMyhbFr/SKxT2j067PJRn4aUMQ09OSrNA5TJ/z4MEK5x/L6w2wvppzc00axCog==
+"@openland/spacex-cli@6.0.4":
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/@openland/spacex-cli/-/spacex-cli-6.0.4.tgz#5d6b2a1a90148058382dc4f30645ff0cbdd2b89c"
+  integrity sha512-V8/ODHQKXNS0+huDjjN1wDj7hRNlR1OwnYgCeBO6NSRAMWvt3+ilsxFLrv+pPt/M7O3XudFWUnVFLfFNnaI/Jg==
   dependencies:
     "@graphql-tools/optimize" "1.0.1"
     "@graphql-tools/relay-operation-optimizer" "6.3.0"
@@ -3432,20 +3432,20 @@
     prompts "2.4.1"
     relay-compiler "10.1.0"
 
-"@openland/spacex-web@5.0.3":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@openland/spacex-web/-/spacex-web-5.0.3.tgz#683570502570d4757144da15c56ca5cb0399f661"
-  integrity sha512-iSq8JxIomZsECF3g0//Dx/bamFnkIlUTesRw17g+aZGwL3DUKvdlpTVb3teJ5ddUDgdlkCQAw8VsHvlr/QULFw==
+"@openland/spacex-web@6.0.4":
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/@openland/spacex-web/-/spacex-web-6.0.4.tgz#839118529dba21ceb46bd2e7dc259e273d282950"
+  integrity sha512-vVo/iF+hdm8s9w+xsg38DzR18eGXmU83pmDj345ah6pyJ9lkPt2dKJCjIwMobv8tE0neMkaShJlB5XaAjURB1g==
   dependencies:
-    "@openland/spacex" "^5.0.3"
+    "@openland/spacex" "^6.0.4"
     isomorphic-ws "4.0.1"
     uuid "3.4.0"
     ws "7.2.1"
 
-"@openland/spacex@5.0.3", "@openland/spacex@^5.0.3":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@openland/spacex/-/spacex-5.0.3.tgz#a7570ea5b65f0a70747b6eb015d18fe05018a25b"
-  integrity sha512-IA4F6PKN1gxwpMCQtxhiTutGmidikED+VnA7StttzhfsO3vMEESoEyTIK5dqfRtb4cbwFPzWvyPNcxRbAi3CJA==
+"@openland/spacex@6.0.4", "@openland/spacex@^6.0.4":
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/@openland/spacex/-/spacex-6.0.4.tgz#871d98b0b6719c3d304e61ca3bcf185c502f0ad3"
+  integrity sha512-UWtX0AvtMC0nsV5LlBExLTPw+ra0aIqaHx68XyMcXm/iBK0SFpTgcPEQNhSyvWAyLg3zgbU+ssz0t2UdVlDNyw==
   dependencies:
     isomorphic-ws "4.0.1"
     uuid "3.4.0"
@@ -16539,7 +16539,7 @@ react-hot-loader@4.0.1:
     prop-types "^15.6.1"
     shallowequal "^1.0.2"
 
-react-i18next@^11.10.0:
+react-i18next@11.10.0:
   version "11.10.0"
   resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.10.0.tgz#f34257447e18e710e36d8fd3f721dd7d37c7004f"
   integrity sha512-Vn0Xw2MczBZHKciWdayx4J+P3S9Im2FWIzUPV2O7iUVFqIOhMv6o9mVTJN1gEi/MA2FZzorjvaEijglCMeehZQ==

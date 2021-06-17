@@ -33,7 +33,6 @@ export const GlobalSearchMessage = React.memo<GlobalSearchMessageProps>((props) 
                     <ZAvatar
                         size="large"
                         photo={photo}
-                        title={title}
                         id={chat.id}
                         savedMessages={isSavedMessages}
                     />

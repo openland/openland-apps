@@ -347,8 +347,6 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                     {active => (
                         <div className={cx(dialogContainer, !props.disableHover && dialogContainerWithHover, props.hovered && dialogHoveredContainer, active && dialogActiveContainer)}>
                             <UAvatar
-                                title={dialog.title}
-                                titleEmoji={dialog.titlePlaceholderEmojify}
                                 id={dialog.kind === 'PRIVATE' ? dialog.flexibleId : dialog.key}
                                 photo={dialog.photo}
                                 online={dialog.online}

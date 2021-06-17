@@ -7,6 +7,7 @@ import { ASImage } from 'react-native-async-view/ASImage';
 import { MessageReactionType } from 'openland-api/spacex.types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
+import { useText } from 'openland-mobile/text/useText';
 
 export const reactionsImagesMap: { [key in MessageReactionType]: NodeRequire } = {
     'LIKE': require('assets/reactions/ic-reaction-like-36.png'),
@@ -29,6 +30,7 @@ interface AsyncMessageReactionsViewProps {
 }
 
 export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewProps>((props) => {
+    const { t } = useText();
     const { theme, message, isChannel, onLikePress, onCommentsPress, onReactionsPress } = props;
     const {
         reactionCounters,
@@ -61,7 +63,7 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
 
                             {!!count && (
                                 <ASText key={'users'} fontWeight={FontStyles.Weight.Medium} marginLeft={4} fontSize={13} color={theme.foregroundTertiary}>
-                                    {likedByMe && !otherLikes ? 'You' : likedByMe && otherLikes ? `You + ${count - 1}` : count}
+                                    {likedByMe && !otherLikes ? t('you', 'You') : likedByMe && otherLikes ? t('you', 'You') + ` + ${count - 1}` : count}
                                 </ASText>
                             )}
                         </ASFlex>

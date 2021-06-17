@@ -123,7 +123,7 @@ const CallButton = (props: { chat: RoomChat_room; messenger: MessengerEngine }) 
     const voiceChat = props.messenger.voiceChat.useVoiceChat();
     const callDisabled = !!currentSession && !!voiceChat;
     const isAdmin = sharedRoom && (sharedRoom.role === RoomMemberRole.ADMIN || sharedRoom.role === RoomMemberRole.OWNER);
-    const showStartRoom = isSecret ? sharedRoom && sharedRoom.membersCount <= 15 : isAdmin;
+    const showStartRoom = isSecret ? (isAdmin || (sharedRoom && sharedRoom.membersCount <= 15)) : isAdmin;
     const showClassicCallButton = privateRoom || useRole('super-admin');
     const joinRoom = useJoinRoom();
 
@@ -409,7 +409,6 @@ export const ChatHeader = React.memo((props: { chat: RoomChat_room }) => {
                 <XView paddingTop={8} paddingRight={16}>
                     <UAvatar
                         size="medium"
-                        title={title}
                         photo={photo}
                         id={privateRoom ? privateRoom.user.id : sharedRoom!.id}
                         savedMessages={isSavedMessages}

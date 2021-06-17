@@ -17,6 +17,8 @@ export const createEngineWeb = (endpoint: string, generation: number, token?: st
     const transport = createCommonTransport({
         url: endpoint,
         mode: 'openland',
+        thruster: true,
+        thrusterBuckets: [1000, 3000, 10000],
         connectionParams: { ['x-openland-token']: token }
     });
 

@@ -31,14 +31,15 @@ import { RoomMemberType } from './modals/MembersSearch';
 import { EntityMembersManager, EntityMembersManagerRef, GroupMember } from 'openland-y-utils/members/EntityMembersManager';
 import { ZHero } from 'openland-mobile/components/ZHero';
 import { ZHeroAction } from 'openland-mobile/components/ZHeroAction';
-import { plural } from 'openland-y-utils/plural';
 import { SHeader } from 'react-native-s/SHeader';
 import { ChatJoin } from './components/ChatJoin';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 import { ZShowMoreText } from 'openland-mobile/components/ZShowMoreText';
+import { capitalize, useText } from 'openland-mobile/text/useText';
 
 const ProfileGroupComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const client = useClient();
     const roomId = props.router.params.id;
 
@@ -46,7 +47,6 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
 
     const group = client.useRoomChat({ id: roomId }, { fetchPolicy: 'cache-and-network' }).room as RoomChat_room_SharedRoom;
     const onlines = getMessenger().engine.getOnlines();
-    const typeString = group.isChannel ? 'channel' : 'group';
     const [members, setMembers] = React.useState<GroupMember[]>([]);
     const [loading, setLoading] = React.useState(false);
     const [muted, setMuted] = React.useState(group.settings.mute);
@@ -85,14 +85,16 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             ![WalletSubscriptionState.CANCELED, WalletSubscriptionState.EXPIRED].includes(group.premiumSubscription.state);
 
         Alert.builder()
-            .title(`Leave ${typeString}?`)
+            .title(group.isChannel
+                ? t('leaveChannelQuestion', `Leave channel?`)
+                : t('leaveGroupQuestion', `Leave group?`))
             .message(
                 group.isPremium
-                    ? 'Leaving the group will cancel your subscription to it. Are you sure?'
-                    : 'You may not be able to join it again',
+                    ? t('leaveChatPremiumDescription', 'Leaving the group will cancel your subscription to it. Are you sure?')
+                    : t('leaveChatDescription', 'You may not be able to join it again'),
             )
-            .button('Cancel', 'cancel')
-            .action(`Leave`, 'destructive', async () => {
+            .button(t('cancel', 'Cancel'), 'cancel')
+            .action(t('leave', 'Leave'), 'destructive', async () => {
                 await client.mutateRoomLeave({ roomId });
                 await client.refetchRoomChat({ id: roomId });
                 if (shouldCancelSubscription) {
@@ -109,9 +111,15 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     const handleKick = React.useCallback(
         (user: UserShort, onKick?: (memberId: string) => void) => {
             Alert.builder()
-                .title(`Remove ${user.name} from ${typeString}?`)
-                .button('Cancel', 'cancel')
-                .action('Remove', 'destructive', async () => {
+                .title(group.isChannel ? t('kickUserFromChannel', {
+                    name: user.name,
+                    defaultValue: `Remove {{name}} from channel?`
+                }) : t('kickUserFromGroup', {
+                    name: user.name,
+                    defaultValue: `Remove {{name}} from group?`
+                }))
+                .button(t('cancel', 'Cancel'), 'cancel')
+                .action(t('remove', 'Remove'), 'destructive', async () => {
                     await client.mutateRoomKick({ userId: user.id, roomId });
                     await client.refetchRoomChat({ id: roomId });
 
@@ -122,15 +130,18 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 })
                 .show();
         },
-        [roomId],
+        [roomId, t],
     );
 
     const handleMakeAdmin = React.useCallback(
         (user: UserShort, onRoleChange?: (memberId: string, role: RoomMemberRole) => void) => {
             Alert.builder()
-                .title(`Make ${user.name} admin?`)
-                .button('Cancel', 'cancel')
-                .action('Make', undefined, async () => {
+                .title(t('makeAdminQuestion', {
+                    name: user.name,
+                    defaultValue: `Make {{name}} admin?`
+                }))
+                .button(t('cancel', 'Cancel'), 'cancel')
+                .action(t('make', 'Make'), undefined, async () => {
                     await client.mutateRoomChangeRole({
                         userId: user.id,
                         roomId,
@@ -149,9 +160,12 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     const handleRevokeAdmin = React.useCallback(
         (user: UserShort, onRoleChange?: (memberId: string, role: RoomMemberRole) => void) => {
             Alert.builder()
-                .title(`Dismiss ${user.name} as admin?`)
-                .button('Cancel', 'cancel')
-                .action('Dismiss', 'destructive', async () => {
+                .title(t('removeAdminQuestion', {
+                    name: user.name,
+                    defaultValue: `Dismiss {{name}} as admin?`,
+                }))
+                .button(t('cancel', 'Cancel'), 'cancel')
+                .action(t('dismiss', 'Dismiss'), 'destructive', async () => {
                     await client.mutateRoomChangeRole({
                         userId: user.id,
                         roomId,
@@ -164,7 +178,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 })
                 .show();
         },
-        [roomId],
+        [roomId, t],
     );
 
     const handleMemberLongPress = React.useCallback(
@@ -183,7 +197,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
 
             if (user.id !== getMessenger().engine.user.id) {
                 builder.action(
-                    'Send message',
+                    t('sendMessage', 'Send message'),
                     () => props.router.push('Conversation', { id: user.id }),
                     false,
                     require('assets/ic-message-24.png'),
@@ -192,14 +206,14 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 if (canEdit) {
                     if (member.role === RoomMemberRole.MEMBER) {
                         builder.action(
-                            'Make admin',
+                            t('makeAdmin', 'Make admin'),
                             () => handleMakeAdmin(user, callbacks?.onRoleChange),
                             false,
                             require('assets/ic-pro-24.png'),
                         );
                     } else if (member.role === RoomMemberRole.ADMIN) {
                         builder.action(
-                            'Dismiss as admin',
+                            t('dismissAdmin', 'Dismiss as admin'),
                             () => handleRevokeAdmin(user, callbacks?.onRoleChange),
                             false,
                             require('assets/ic-pro-24.png'),
@@ -207,16 +221,18 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                     }
                 }
                 if (canKick) {
-                    builder.action(
-                        `Remove from ${typeString}`,
+                    builder.action(group.isChannel
+                        ? t('removeFromChannel', `Remove from channel`)
+                        : t('removeFromGroup', `Remove from group`),
                         () => handleKick(user, callbacks?.onKick),
                         false,
                         require('assets/ic-leave-24.png'),
                     );
                 }
             } else {
-                builder.action(
-                    `Leave ${typeString}`,
+                builder.action(group.isChannel
+                    ? t('leaveChannel', `Leave channel`)
+                    : t('leaveGroup', `Leave group`),
                     handleLeave,
                     false,
                     require('assets/ic-leave-24.png'),
@@ -225,7 +241,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
 
             builder.show(true);
         },
-        [roomId],
+        [roomId, t],
     );
 
     const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(group);
@@ -235,7 +251,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
         Modals.showUserMuptiplePicker(
             props.router,
             {
-                title: 'Add',
+                title: t('add', 'Add'),
                 action: async (users) => {
                     const loader = Toast.loader();
                     loader.show();
@@ -260,7 +276,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             },
             group.id,
             true,
-            group.isPremium ? 'Add people for free' : 'Add people',
+            group.isPremium ? t('addPeopleFree', 'Add people for free') : t('addPeople', 'Add people'),
             canGetInviteLink ? { path: 'ProfileGroupLink', pathParams: { room: group } } : undefined,
         );
     }, [members]);
@@ -274,29 +290,33 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
 
         if (group.canEdit) {
             builder.action(
-                group.isChannel ? 'Edit channel' : 'Edit group',
+                group.isChannel ? t('editChannel', 'Edit channel') : t('editGroup', 'Edit group'),
                 () => props.router.push('EditGroup', { id: group.id }),
                 false,
                 require('assets/ic-edit-24.png'),
             );
         }
 
-        builder.action(
-            `Leave ${typeString}`,
+        builder.action(group.isChannel
+            ? t('leaveChannel', `Leave channel`)
+            : t('leaveGroup', `Leave group`),
             handleLeave,
             false,
             require('assets/ic-leave-24.png'),
         );
 
         if (SUPER_ADMIN) {
-            builder.action(
-                `Delete ${typeString}`,
+            builder.action(group.isChannel
+                ? t('deleteChannel', `Delete channel`)
+                : t('deleteGroup', `Delete group`),
                 () => {
                     Alert.builder()
-                        .title(`Delete ${typeString}?`)
-                        .message(`This cannot be undone`)
-                        .button('Cancel', 'cancel')
-                        .action('Delete', 'destructive', async () => {
+                        .title(group.isChannel
+                            ? t('deleteChannelQuestion', `Delete channel?`)
+                            : t('deleteGroupQuestion', `Delete group?`))
+                        .message(t('noUndoneOperation', `This cannot be undone`))
+                        .button(t('cancel', 'Cancel'), 'cancel')
+                        .action(t('delete', 'Delete'), 'destructive', async () => {
                             await client.mutateRoomDelete({
                                 chatId: roomId,
                             });
@@ -355,15 +375,15 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 titleIconRight={group.featured && theme.displayFeaturedIcon ? require('assets/ic-verified-16.png') : undefined}
                 titleIconRightColor={'#3DA7F2' /* special: verified/featured color */}
                 titleColor={highlightGroup ? theme.accentPositive : undefined}
-                subtitle={plural(group.membersCount, ['member', 'members'])}
+                subtitle={`${group.membersCount} ${t('member', { count: group.membersCount, defaultValue: 'member' })}`}
                 actionPrimary={{
-                    title: group.isChannel ? 'View channel' : 'View group',
+                    title: group.isChannel ? t('viewChannel', 'View channel') : t('viewGroup', 'View group'),
                     onPress: handleSend
                 }}
             >
                 <ZHeroAction
                     icon={muted ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-off-24.png')}
-                    title={muted ? 'Unmute' : 'Mute'}
+                    title={muted ? t('unmute', 'Unmute') : t('mute', 'Mute')}
                     onPress={() => {
                         setMuted(!muted);
                         client.mutateRoomSettingsUpdate({ roomId: group.id, settings: { mute: !muted } });
@@ -372,18 +392,18 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 {group.kind === SharedRoomKind.PUBLIC && (
                     <ZHeroAction
                         icon={require('assets/ic-share-24.png')}
-                        title="Share"
+                        title={t('share', 'Share')}
                         onPress={handleSharePress}
                     />
                 )}
                 <ZHeroAction
                     icon={require('assets/ic-more-h-24.png')}
-                    title="More"
+                    title={t('more', 'More')}
                     onPress={handleManageClick}
                 />
             </ZHero>
 
-            <ZListGroup header="About" useSpacer={true}>
+            <ZListGroup header={t('about', 'About')} useSpacer={true}>
                 {!!group.description && <ZShowMoreText text={group.description} />}
                 {!!group.shortname && (
                     <ZListItem
@@ -404,14 +424,13 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             </ZListGroup>
 
             {!!group.organization && (
-                <ZListGroup header={group.organization.isCommunity ? 'Community' : 'Organization'} useSpacer={true}>
+                <ZListGroup header={group.organization.isCommunity ? t('community', 'Community') : t('organization', 'Organization')} useSpacer={true}>
                     <ZListItem
                         text={group.organization.name}
                         subTitle={group.organization.about}
                         leftAvatar={{
                             photo: group.organization.photo,
                             id: group.organization.id,
-                            title: group.organization.name,
                         }}
                         path="ProfileOrganization"
                         pathParams={{ id: group.organization.id }}
@@ -423,15 +442,15 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             <View style={{ paddingVertical: 4 }}>
                 <ZListItem
                     leftIcon={require('assets/ic-attach-glyph-24.png')}
-                    text="Media, files, links"
+                    text={t('sharedMediaTitle', 'Media, files, links')}
                     onPress={onSharedPress}
                 />
             </View>
 
-            <ZListHeader text="Members" counter={group.membersCount} useSpacer={true} />
+            <ZListHeader text={capitalize(t('member_plural', 'Members'))} counter={group.membersCount} useSpacer={true} />
             {canAddDirectly && (
                 <ZListItem
-                    text="Add people"
+                    text={t('addPeople', 'Add people')}
                     leftIcon={require('assets/ic-add-glyph-24.png')}
                     onPress={handleAddMember}
                 />
@@ -439,12 +458,12 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             {canGetInviteLink && (
                 <ZListItem
                     leftIcon={require('assets/ic-link-glyph-24.png')}
-                    text={`Invite with link`}
+                    text={t('inviteWithLink', 'Invite with link')}
                     onPress={() => props.router.push('ProfileGroupLink', { room: group })}
                 />
             )}
             <ZListItem
-                text="Search members"
+                text={t('searchMembers', 'Search members')}
                 leftIcon={require('assets/ic-search-glyph-24.png')}
                 onPress={() => Modals.showRoomMembersSearch({
                     router: props.router,
@@ -473,7 +492,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title={Platform.OS === 'android' ? 'Info' : group.title} />
+            <SHeader title={Platform.OS === 'android' ? t('info', 'Info') : group.title} />
 
             <SFlatList
                 data={members}

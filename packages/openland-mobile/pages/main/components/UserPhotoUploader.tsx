@@ -5,8 +5,10 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { ZAvatarPicker, ZAvatarPickerRenderProps } from 'openland-mobile/components/ZAvatarPicker';
 import Toast from 'openland-mobile/components/Toast';
+import { useText } from 'openland-mobile/text/useText';
 
 const Renderer = React.memo((props: ZAvatarPickerRenderProps & { onLoadingStart: () => void }) => {
+    const { t } = useText();
     React.useEffect(() => {
         if (props.loading) {
             props.onLoadingStart();
@@ -16,7 +18,7 @@ const Renderer = React.memo((props: ZAvatarPickerRenderProps & { onLoadingStart:
     return (
         <ZHeroAction
             icon={require('assets/ic-camera-24.png')}
-            title="Upload"
+            title={t('upload', 'Upload')}
             onPress={props.showPicker}
         />
     );
@@ -42,6 +44,7 @@ export const UserPhotoUploader = React.memo(() => {
 
     return (
         <ZAvatarPicker
+            id={myID}
             render={(props: ZAvatarPickerRenderProps) => <Renderer {...props} onLoadingStart={() => loader.show()} />}
             onChanged={handleSave}
         />

@@ -10,6 +10,7 @@ import { SAnimated } from 'react-native-fast-animations';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { AlertBlanketBuilder } from './AlertBlanket';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { t } from 'openland-mobile/text/useText';
 
 export const AlertBlanketComponent = React.memo((props: { builder: AlertBlanketBuilder, modalController: ZModalController }) => {
     let theme = React.useContext(ThemeContext);
@@ -88,7 +89,7 @@ export const AlertBlanketComponent = React.memo((props: { builder: AlertBlanketB
                             <ZButton
                                 key={'cancel-ac'}
                                 style="secondary"
-                                title="Cancel"
+                                title={t('cancel', 'Cancel')}
                                 enabled={!isActionInProgress}
                                 onPress={async () => {
                                     props.modalController.hide();

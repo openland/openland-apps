@@ -40,7 +40,6 @@ const SpeakerPhotoView = React.memo<SpeakerPhotoViewProps>((props) => {
                 size="medium"
                 photo={speakingPeer.user.photo}
                 id={speakingPeer.user.id}
-                title={speakingPeer.user.name}
             />
         );
     } else if (firstSpeakers.length === 1) {
@@ -49,7 +48,6 @@ const SpeakerPhotoView = React.memo<SpeakerPhotoViewProps>((props) => {
                 size="medium"
                 photo={firstSpeakers[0].user.photo}
                 id={firstSpeakers[0].user.id}
-                title={firstSpeakers[0].user.name}
             />
         );
     } else if (firstSpeakers.length === 2) {
@@ -60,7 +58,6 @@ const SpeakerPhotoView = React.memo<SpeakerPhotoViewProps>((props) => {
                         size="x-small"
                         photo={firstSpeakers[0].user.photo}
                         id={firstSpeakers[0].user.id}
-                        title={firstSpeakers[0].user.name}
                     />
                 </View>
                 <View
@@ -77,7 +74,6 @@ const SpeakerPhotoView = React.memo<SpeakerPhotoViewProps>((props) => {
                         size="x-small"
                         photo={firstSpeakers[1].user.photo}
                         id={firstSpeakers[1].user.id}
-                        title={firstSpeakers[1].user.name}
                     />
                 </View>
             </>
@@ -89,7 +85,6 @@ const SpeakerPhotoView = React.memo<SpeakerPhotoViewProps>((props) => {
                     size="xx-small"
                     photo={speaker.user.photo}
                     id={speaker.user.id}
-                    title={speaker.user.name}
                 />
             </View>
         ));

@@ -26,11 +26,11 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { useText } from 'openland-mobile/text/useText';
 
-function showFilters(selected: 'voice' | 'explore', onSelect: (d: 'voice' | 'explore') => void) {
+function showFilters(selected: 'voice' | 'explore', onSelect: (d: 'voice' | 'explore') => void, t: any) {
     const actionSheet = ActionSheet.builder();
     actionSheet.cancelable(false);
     actionSheet.action(
-        'Rooms',
+        t('rooms', 'Rooms'),
         () => onSelect('voice'),
         false,
         require('assets/ic-room-24.png'),
@@ -38,7 +38,7 @@ function showFilters(selected: 'voice' | 'explore', onSelect: (d: 'voice' | 'exp
         selected === 'voice',
     );
     actionSheet.action(
-        'Discover',
+        t('discover', 'Discover'),
         () => onSelect('explore'),
         false,
         require('assets/ic-discover-24.png'),
@@ -83,12 +83,12 @@ const RoomFeedItem = React.memo((props: { room: VoiceChatShort, theme: ThemeGlob
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-end', flexWrap: 'wrap', maxWidth: 88 }}>
                     {room.parentRoom && (
                         <View key={room.parentRoom.id} style={{ marginLeft: 12, marginBottom: 12 }}>
-                            <ZAvatar size="small" photo={room.parentRoom.photo} title={room.parentRoom.title} id={room.parentRoom.id} />
+                            <ZAvatar size="small" photo={room.parentRoom.photo} id={room.parentRoom.id} />
                         </View>
                     )}
                     {speakers.map(speaker => (
                         <View key={speaker.id} style={{ marginLeft: 12, marginBottom: 12 }}>
-                            <ZAvatar size="small" photo={speaker.user.photo} title={speaker.user.name} id={speaker.user.id} />
+                            <ZAvatar size="small" photo={speaker.user.photo} id={speaker.user.id} />
                         </View>
                     ))}
                 </View>
@@ -129,7 +129,7 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
                 titleAction={{
                     title: titleText,
                     active: true,
-                    action: () => showFilters(page, setPage),
+                    action: () => showFilters(page, setPage, t),
                 }}
             />
             {page === 'voice' && (

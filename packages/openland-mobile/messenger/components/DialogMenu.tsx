@@ -11,6 +11,7 @@ import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { showDeleteChatConfirmation } from 'openland-mobile/pages/main/modals/deleteChatModal';
 import Toast from 'openland-mobile/components/Toast';
 import { View } from 'react-native';
+import { t } from 'openland-mobile/text/useText';
 import { WalletSubscriptionState } from 'openland-api/spacex.types';
 
 interface DialogMenuProps {
@@ -31,14 +32,16 @@ const DialogMenuPrivate = React.memo((props: DialogMenuProps) => {
     const muted = item.isMuted;
 
     if (!isSavedMessages) {
-        builder.action(`${muted ? 'Unmute' : 'Mute'} notifications`, () => {
-            client.mutateRoomSettingsUpdate({ roomId: item.key, settings: { mute: !muted } });
-            client.refetchRoomChat({ id: item.key });
-        }, false, muted ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-off-24.png'));
+        builder.action(
+            muted ? t('notificationsUnmute', 'Unmute notifications') : t('notificationsMute', 'Mute notifications'),
+            () => {
+                client.mutateRoomSettingsUpdate({ roomId: item.key, settings: { mute: !muted } });
+                client.refetchRoomChat({ id: item.key });
+            }, false, muted ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-off-24.png'));
     }
 
     if (!isBanned) {
-        builder.action('Media, files, links', () => {
+        builder.action(t('sharedMediaTitle', 'Media, files, links'), () => {
             messenger.history.navigationManager.push('SharedMedia', { chatId: item.key });
         }, false, require('assets/ic-attach-24.png'));
     }
@@ -47,7 +50,7 @@ const DialogMenuPrivate = React.memo((props: DialogMenuProps) => {
 
     if (!isSavedMessages) {
         builder.action(
-            isContact ? 'Remove from contacts' : 'Add to contacts',
+            isContact ? t('contactsRemove', 'Remove from contacts') : t('contactsSave', 'Save to contacts'),
             async () => {
                 const loader = Toast.loader();
                 loader.show();
@@ -64,7 +67,7 @@ const DialogMenuPrivate = React.memo((props: DialogMenuProps) => {
         );
         if (deleteChat) {
             builder.action(
-                'Delete conversation',
+                t('conversationDelete', 'Delete conversation'),
                 () => showDeleteChatConfirmation(item.key, user.name),
                 false,
                 require('assets/ic-delete-24.png'),
@@ -81,32 +84,35 @@ export const showDialogMenu = (item: DialogDataSourceItem) => {
     const client = messenger.engine.client;
     const isSavedMessages = item.flexibleId === messenger.engine.user.id;
 
-    builder.title(isSavedMessages ? 'Saved messages' : item.title, 'left');
+    builder.title(isSavedMessages ? t('savedMessages', 'Saved messages') : item.title, 'left');
 
     if (item.kind !== 'PRIVATE') {
         const muted = item.isMuted;
         const shouldCancelSubscription = item.isPremium && item.premiumSubscription &&
             ![WalletSubscriptionState.CANCELED, WalletSubscriptionState.EXPIRED].includes(item.premiumSubscription.state);
 
-        builder.action(`${muted ? 'Unmute' : 'Mute'} notifications`, () => {
-            client.mutateRoomSettingsUpdate({ roomId: item.key, settings: { mute: !muted } });
-            client.refetchRoomChat({ id: item.key });
-        }, false, muted ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-off-24.png'));
+        builder.action(
+            muted ? t('notificationsUnmute', 'Unmute notifications') : t('notificationsMute', 'Mute notifications'), () => {
+                client.mutateRoomSettingsUpdate({ roomId: item.key, settings: { mute: !muted } });
+                client.refetchRoomChat({ id: item.key });
+            }, false, muted ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-off-24.png'));
 
-        builder.action('Media, files, links', () => {
+        builder.action(t('sharedMediaTitle', 'Media, files, links'), () => {
             messenger.history.navigationManager.push('SharedMedia', { chatId: item.key });
         }, false, require('assets/ic-attach-24.png'));
 
-        builder.action('Leave group', () => {
+        builder.action(t('leaveGroup', 'Leave group'), () => {
             Alert.builder()
-                .title(`Leave ${item.isChannel ? 'channel' : 'group'}?`)
+                .title(item.isChannel
+                    ? t('leaveChannelQuestion', `Leave channel?`)
+                    : t('leaveGroupQuestion', `Leave group?`))
                 .message(
                     item.isPremium
-                        ? 'Leaving the group will cancel your subscription to it. Are you sure'
-                        : 'You may not be able to join it again',
+                        ? t('leaveChatPremiumDescription', 'Leaving the group will cancel your subscription to it. Are you sure?')
+                        : t('leaveChatDescription', 'You may not be able to join it again'),
                 )
-                .button('Cancel', 'cancel')
-                .action('Leave', 'destructive', async () => {
+                .button(t('cancel', 'Cancel'), 'cancel')
+                .action(t('leave', 'Leave'), 'destructive', async () => {
                     await client.mutateRoomLeave({ roomId: item.key });
                     await client.refetchRoomChat({ id: item.key });
                     if (shouldCancelSubscription) {

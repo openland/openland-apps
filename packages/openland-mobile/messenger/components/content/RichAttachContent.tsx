@@ -31,6 +31,7 @@ interface UrlAugmentationContentProps {
     padded?: boolean;
     hasPurchase?: boolean;
     theme: ThemeGlobal;
+    t: any;
 }
 
 export let isInvite = (attach?: FullMessage_GeneralMessage_attachments_MessageRichAttachment) => {
@@ -132,7 +133,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
     }
 
     render() {
-        let { theme, message, hasPurchase } = this.props;
+        let { theme, message, hasPurchase, t } = this.props;
         let isOut = message.isOut;
         // let link = this.props.attach!.titleLink || '';
         let { text, subTitle, keyboard, titleLink } = this.props.attach;
@@ -210,7 +211,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                                     alignItems="center"
                                 >
                                     <ASFlex backgroundColor={loadingBackground} borderRadius={20}>
-                                        <ASText color={loadingForeground} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.largeDownloadState.progress * 100)}</ASText>
+                                        <ASText color={loadingForeground} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{t('loading', 'Loading') + ' ' + Math.round(this.state.largeDownloadState.progress * 100)}</ASText>
                                     </ASFlex>
                                 </ASFlex>
                             ) : isYtbLink ? (

@@ -32,6 +32,7 @@ export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSi
 interface AsyncMessageTextViewProps {
     conversationId?: string;
     theme: ThemeGlobal;
+    t: any;
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
@@ -122,7 +123,7 @@ export let renderPreprocessedText = (
 };
 
 export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number, compensateBubble?: boolean) => {
-    const { conversationId, theme, message, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress, onMediaPress, onDocumentPress, onLongPress, onReplyPress, onPress } = props;
+    const { conversationId, theme, t, message, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress, onMediaPress, onDocumentPress, onLongPress, onReplyPress, onPress } = props;
 
     // todo: handle multiple attaches
     const attaches = (message.attachments || []);
@@ -231,7 +232,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
 
     let bottomContent: any[] = [];
     if (hasUrlAug) {
-        bottomContent.push(<RichAttachContent key="msg-rich" theme={theme} padded={!topContent.length} compensateBubble={compensateBubble} hasPurchase={hasPurchase} attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} socialImageLayout={richAttachSocialImageLayout} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onLongPress={onLongPress} />);
+        bottomContent.push(<RichAttachContent key="msg-rich" theme={theme} t={t} padded={!topContent.length} compensateBubble={compensateBubble} hasPurchase={hasPurchase} attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} socialImageLayout={richAttachSocialImageLayout} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onLongPress={onLongPress} />);
     }
 
     if (!topContent.length && bottomContent.length) {

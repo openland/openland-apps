@@ -37,7 +37,7 @@ export const UserFollowersItem = React.memo<UserFollowerItemProps>((props) => {
     return (
         <TouchableOpacity onPress={onPress} activeOpacity={0.6}>
             <View style={{ flexDirection: 'row', paddingVertical: 6, alignItems: 'center' }}>
-                <ZAvatar id={id} title={name} photo={photo} size={'small'} />
+                <ZAvatar id={id} photo={photo} size={'small'} />
                 <View style={{ marginLeft: 16, width: '100%', flexShrink: 1, paddingLeft: 5 }}>
                     <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>{name}</Text>
                     <Text

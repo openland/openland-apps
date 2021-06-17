@@ -31,17 +31,18 @@ import {
     OrgMember,
 } from 'openland-y-utils/members/EntityMembersManager';
 import { ZHero } from 'openland-mobile/components/ZHero';
-import { plural } from 'openland-y-utils/plural';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 import { ProfileDeleted } from './components/ProfileDeleted';
 import { ProfileOrganizationPrivate } from './components/ProfileOrganizationPrivate';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZShowMoreText } from 'openland-mobile/components/ZShowMoreText';
+import { capitalize, useText } from 'openland-mobile/text/useText';
 
 const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const client = getClient();
+    const { t } = useText();
     const onlines = getMessenger().engine.getOnlines();
     const organization = client.useOrganization(
         { organizationId: props.router.params.id },
@@ -67,7 +68,6 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     const canEdit = organization.isOwner || organization.isAdmin;
     const canLeave = organization.isMine;
     const showManageBtn = canEdit || canLeave;
-    const typeString = organization.isCommunity ? 'community' : 'organization';
 
     const [members, setMembers] = React.useState<OrgMember[]>([]);
     const [loading, setLoading] = React.useState(false);
@@ -106,7 +106,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
         Modals.showUserMuptiplePicker(
             props.router,
             {
-                title: 'Add',
+                title: t('add', 'Add'),
                 action: async (users) => {
                     const loader = Toast.loader();
                     loader.show();
@@ -127,7 +127,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
             },
             organization.id,
             false,
-            'Add people',
+            t('addPeople', 'Add people'),
             { path: 'OrganizationInviteLinkModal', pathParams: { organization } },
         );
     }, [organization, members]);
@@ -135,10 +135,10 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     const handleCreatePress = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
 
-        builder.action('New group', () =>
+        builder.action(t('newGroup', 'New group'), () =>
             props.router.push('CreateGroupAttrs', { organizationId: organization.id }),
         );
-        builder.action('New channel', () =>
+        builder.action(t('newChannel', 'New channel'), () =>
             props.router.push('CreateGroupAttrs', {
                 organizationId: organization.id,
                 isChannel: true,
@@ -153,7 +153,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
 
         if (canEdit) {
             builder.action(
-                'Edit info',
+                t('editInfo', 'Edit info'),
                 () =>
                     props.router.push(
                         organization.isCommunity ? 'EditCommunity' : 'EditOrganization',
@@ -166,7 +166,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
 
         if (SUPER_ADMIN) {
             builder.action(
-                'Super edit',
+                t('superEdit', 'Super edit'),
                 () => props.router.push('EditCommunitySuperAdmin', { id: props.router.params.id }),
                 false,
                 require('assets/ic-edit-24.png'),
@@ -175,13 +175,17 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
 
         if (canLeave) {
             builder.action(
-                'Leave ' + typeString,
+                organization.isCommunity
+                    ? t('leaveCommunity', 'Leave community')
+                    : t('leaveOrganization', 'Leave organization'),
                 () => {
                     Alert.builder()
-                        .title(`Leave ${typeString}?`)
+                        .title(organization.isCommunity
+                            ? t('leaveCommunityQuestion', 'Leave community?')
+                            : t('leaveOrganizationQuestion', 'Leave organization?'))
                         .message('You may not be able to join it again')
-                        .button('Cancel', 'cancel')
-                        .action('Leave', 'destructive', async () => {
+                        .button(t('cancel', 'Cancel'), 'cancel')
+                        .action(t('leave', 'Leave'), 'destructive', async () => {
                             await client.mutateOrganizationMemberRemove({
                                 userId: myUserID,
                                 organizationId: props.router.params.id,
@@ -199,13 +203,17 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
 
         if (canEdit) {
             builder.action(
-                `Delete ${typeString}`,
+                organization.isCommunity
+                    ? t('deleteCommunity', `Delete community`)
+                    : t('deleteOrganization', `Delete organization`),
                 () => {
                     Alert.builder()
-                        .title(`Delete ${typeString}?`)
-                        .message(`This cannot be undone`)
-                        .button('Cancel', 'cancel')
-                        .action('Delete', 'destructive', async () => {
+                        .title(organization.isCommunity
+                            ? t('deleteCommunityQuestion', 'Delete community?')
+                            : t('deleteOrganizationQuestion', 'Delete organization?'))
+                        .message(t('noUndoneOperation', 'This cannot be undone'))
+                        .button(t('cancel', 'Cancel'), 'cancel')
+                        .action(t('delete', 'Delete'), 'destructive', async () => {
                             await client.mutateDeleteOrganization({
                                 organizationId: organization.id,
                             });
@@ -247,7 +255,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
 
             if (user.id !== myUserID) {
                 builder.action(
-                    'Send message',
+                    t('sendMessage', 'Send message'),
                     () => props.router.push('Conversation', { id: user.id }),
                     false,
                     require('assets/ic-message-24.png'),
@@ -256,22 +264,25 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
 
             if (user.id !== myUserID && adminPermissions) {
                 builder.action(
-                    member.role === 'MEMBER' ? 'Make admin' : 'Dismiss as admin',
+                    member.role === 'MEMBER' ? t('makeAdmin', 'Make admin') : t('dismissAdmin', 'Dismiss as admin'),
                     () => {
                         Alert.builder()
                             .title(
-                                member.role === 'MEMBER'
-                                    ? `Make ${user.name} admin?`
-                                    : `Dismiss ${user.name} as admin?`,
-                            )
+                                member.role === 'MEMBER' ? t('makeAdminQuestion', {
+                                    name: user.name,
+                                    defaultValue: `Make {{name}} admin?`
+                                }) : t('dismissAdminQuestion', {
+                                    name: user.name,
+                                    defaultValue: `Dismiss {{name}} as admin?`
+                                }))
                             .message(
                                 member.role === 'MEMBER'
-                                    ? `Admins have full control over the ${typeString} account`
-                                    : `They will only be able to participate in the ${typeString}'s chats`,
+                                    ? `Admins have full control over the account`
+                                    : `They will only be able to participate in the chats`,
                             )
-                            .button('Cancel', 'cancel')
+                            .button(t('cancel', 'Cancel'), 'cancel')
                             .action(
-                                member.role === 'MEMBER' ? 'Make' : 'Dismiss',
+                                member.role === 'MEMBER' ? t('make', 'Make') : t('dismiss', 'Dismiss'),
                                 member.role === 'MEMBER' ? 'default' : 'destructive',
                                 async () => {
                                     const newRole =
@@ -299,13 +310,18 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
 
             if (user.id === myUserID) {
                 builder.action(
-                    `Leave ${typeString}`,
+                    organization.isCommunity
+                        ? t('leaveCommunity', 'Leave community')
+                        : t('leaveOrganization', 'Leave organization'),
                     () => {
                         Alert.builder()
-                            .title(`Leave ${typeString}?`)
-                            .message('You may not be able to join it again')
-                            .button('Cancel', 'cancel')
-                            .action('Leave', 'destructive', async () => {
+                            .title(
+                                organization.isCommunity
+                                    ? t('leaveCommunityQuestion', 'Leave community?')
+                                    : t('leaveOrganizationQuestion', 'Leave organization?'))
+                            .message(t('leaveWarning', 'You may not be able to join it again'))
+                            .button(t('cancel', 'Cancel'), 'cancel')
+                            .action(t('leave', 'Leave'), 'destructive', async () => {
                                 await client.mutateOrganizationMemberRemove({
                                     userId: user.id,
                                     organizationId: props.router.params.id,
@@ -322,13 +338,19 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
 
             if (user.id !== myUserID && adminPermissions) {
                 builder.action(
-                    `Remove from ${typeString}`,
+                    organization.isCommunity
+                        ? t('kickCommunity', `Remove from community`)
+                        : t('kickOrganization', `Remove from organization`),
                     () => {
                         Alert.builder()
-                            .title(`Remove ${user.name} from ${typeString}?`)
-                            .message(`They will be removed from all internal chats`)
-                            .button('Cancel', 'cancel')
-                            .action('Remove', 'destructive', async () => {
+                            .title(
+                                organization.isCommunity
+                                    ? t('kickCommunityQuestion', { name: user.name, defaultValue: `Remove {{name}} from community?` })
+                                    : t('kickOrganizationQuestion', { name: user.name, defaultValue: `Remove {{name}} from organization?` })
+                            )
+                            .message(t('kickWarning', `They will be removed from all internal chats`))
+                            .button(t('cancel', 'Cancel'), 'cancel')
+                            .action(t('remove', 'Remove'), 'destructive', async () => {
                                 await client.mutateOrganizationMemberRemove({
                                     userId: user.id,
                                     organizationId: props.router.params.id,
@@ -417,13 +439,17 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 titleIconRight={organization.featured && theme.displayFeaturedIcon ? require('assets/ic-verified-16.png') : undefined}
                 titleIconRightColor={'#3DA7F2' /* special: verified/featured color */}
                 subtitle={
-                    (organization.isCommunity ? 'Community' : 'Organization') +
-                    '  ·  ' +
-                    plural(organization.membersCount, ['member', 'members'])
+                    organization.isCommunity ? t('communityWithMember', {
+                        count: organization.membersCount,
+                        defaultValue: 'Community   ·  {{count}} t(member)',
+                    }) : t('organizationWithMember', {
+                        count: organization.membersCount,
+                        defaultValue: 'Organization   ·  {{count}} t(member)',
+                    })
                 }
             />
 
-            <ZListGroup header="About" useSpacer={true}>
+            <ZListGroup header={t('about', 'About')} useSpacer={true}>
                 {!!organization.about && <ZShowMoreText text={organization.about} />}
                 {!!organization.shortname && (
                     <ZListItem
@@ -487,13 +513,13 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
             </ZListGroup>
 
             <ZListGroup
-                header="Groups"
+                header={t('groups', 'Groups')}
                 counter={organization.roomsCount}
                 useSpacer={true}
                 actionRight={
                     organization.roomsCount > 3
                         ? {
-                            title: 'See all',
+                            title: t('seeAll', 'See all'),
                             onPress: () =>
                                 props.router.push('ProfileOrganizationGroups', {
                                     organizationId: organization.id,
@@ -506,7 +532,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 {organization.isMine && (
                     <ZListItem
                         leftIcon={require('assets/ic-add-glyph-24.png')}
-                        text="Create new"
+                        text={t('createNew', 'Create new')}
                         onPress={handleCreatePress}
                     />
                 )}
@@ -520,16 +546,16 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 ))}
             </ZListGroup>
 
-            <ZListHeader text="Members" counter={organization.membersCount} useSpacer={true} />
+            <ZListHeader text={capitalize(t('member_plural', 'Members'))} counter={organization.membersCount} useSpacer={true} />
             {shouldShowAddButton && (
                 <ZListItem
                     leftIcon={require('assets/ic-add-glyph-24.png')}
-                    text="Add people"
+                    text={t('addPeople', 'Add people')}
                     onPress={handleAddMember}
                 />
             )}
             <ZListItem
-                text="Search members"
+                text={t('searchMembers', 'Search members')}
                 leftIcon={require('assets/ic-search-glyph-24.png')}
                 onPress={() =>
                     Modals.showOrgMembersSearch({
@@ -548,7 +574,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title={Platform.OS === 'android' ? 'Info' : organization.name} />
+            <SHeader title={Platform.OS === 'android' ? t('info', 'Info') : organization.name} />
 
             {showManageBtn && (
                 <ZManageButton key={'manage-btn-' + showManageBtn} onPress={handleManageClick} />

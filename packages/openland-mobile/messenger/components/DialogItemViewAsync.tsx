@@ -15,32 +15,37 @@ import { PremiumBadgeAsync } from 'openland-mobile/components/PremiumBadge';
 import { getCounterValue } from 'openland-y-utils/getCounterValue';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { showDialogMenu } from './DialogMenu';
+import { useText } from 'openland-mobile/text/useText';
 
-const ASCounter = (props: { value: number | string; muted?: boolean; theme: ThemeGlobal }) => (
-    <ASFlex
-        borderRadius={11}
-        backgroundColor={props.muted ? props.theme.foregroundQuaternary : props.theme.accentPrimary}
-        height={22}
-        minWidth={22}
-        marginLeft={6}
-        justifyContent="center"
-        alignItems="center"
-    >
-        <ASFlex justifyContent="center" alignItems="center" marginLeft={7} marginRight={7}>
-            <ASText
-                color={
-                    props.muted ? props.theme.foregroundContrast : props.theme.foregroundInverted
-                }
-                fontSize={13}
-                textAlign="center"
-                fontWeight={FontStyles.Weight.Bold}
-                letterSpacing={-0.08}
-            >
-                {getCounterValue({ count: Number(props.value) })}
-            </ASText>
+const ASCounter = (props: { value: number | string; muted?: boolean; theme: ThemeGlobal }) => {
+    const { t } = useText();
+
+    return (
+        <ASFlex
+            borderRadius={11}
+            backgroundColor={props.muted ? props.theme.foregroundQuaternary : props.theme.accentPrimary}
+            height={22}
+            minWidth={22}
+            marginLeft={6}
+            justifyContent="center"
+            alignItems="center"
+        >
+            <ASFlex justifyContent="center" alignItems="center" marginLeft={7} marginRight={7}>
+                <ASText
+                    color={
+                        props.muted ? props.theme.foregroundContrast : props.theme.foregroundInverted
+                    }
+                    fontSize={13}
+                    textAlign="center"
+                    fontWeight={FontStyles.Weight.Bold}
+                    letterSpacing={-0.08}
+                >
+                    {getCounterValue({ count: Number(props.value), suffix: t('shortThousand', 'K') })}
+                </ASText>
+            </ASFlex>
         </ASFlex>
-    </ASFlex>
-);
+    );
+};
 
 interface DialogItemViewAsyncProps {
     item: DialogDataSourceItem;
@@ -52,6 +57,7 @@ interface DialogItemViewAsyncProps {
 
 const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme: ThemeGlobal }>(
     (props) => {
+        const { t } = useText();
         const { item, theme, showDiscover } = props;
         const isUser = item.kind === 'PRIVATE';
         const highlightGroup = item.kind === 'GROUP' && !item.isPremium;
@@ -88,19 +94,17 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                     >
                         {!isUser && (
                             <ASAvatar
-                                src={item.photo}
+                                photo={item.photo}
+                                id={item.key}
                                 size={avatarSize}
-                                placeholderKey={item.key}
-                                placeholderTitle={item.title}
                                 theme={theme}
                             />
                         )}
                         {isUser && (
                             <UserAvatar
-                                src={item.photo}
+                                photo={item.photo}
+                                id={item.flexibleId}
                                 size={avatarSize}
-                                placeholderKey={item.flexibleId}
-                                placeholderTitle={item.title}
                                 online={item.online}
                                 theme={theme}
                                 savedMessages={isSavedMessages}
@@ -143,7 +147,7 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                                     highlightGroup ? theme.accentPositive : theme.foregroundPrimary
                                 }
                             >
-                                {isSavedMessages ? 'Saved messages' : item.title}
+                                {isSavedMessages ? t('savedMessages', 'Saved messages') : item.title}
                             </ASText>
                             {/*TODO: uncomment pro*/}
                             {/*{isUser && (*/}
@@ -333,14 +337,14 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                                 {...TextStylesAsync.Title2}
                                 color={props.theme.foregroundPrimary}
                             >
-                                Find more chats
+                                {t('discoverFindChats', 'Find more chats')}
                             </ASText>
                             <ASText
                                 marginBottom={16}
                                 {...TextStylesAsync.Body}
                                 color={props.theme.foregroundSecondary}
                             >
-                                Get recommendations for your interests
+                                {t('discoverGetRecommendations', 'Get recommendations for your interests')}
                             </ASText>
                             <ASFlex
                                 height={36}
@@ -358,7 +362,7 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                                     {...TextStylesAsync.Label1}
                                     color={theme.foregroundSecondary}
                                 >
-                                    Discover chats
+                                    {t('discoverChats', 'Discover chats')}
                                 </ASText>
                             </ASFlex>
                         </ASFlex>

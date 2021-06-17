@@ -13,8 +13,10 @@ import { RegistrationContainer } from './RegistrationContainer';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { logout } from 'openland-mobile/utils/logout';
 import { ZShaker } from 'openland-mobile/components/ZShaker';
+import { useText } from 'openland-mobile/text/useText';
 
 const SignupUserComponent = React.memo((props: PageProps) => {
+    const { t } = useText();
     const ref = React.useRef<{ shake: () => void }>(null);
     const prefill = getClient().useProfilePrefill().prefill;
     const profile = getClient().useProfile();
@@ -76,12 +78,12 @@ const SignupUserComponent = React.memo((props: PageProps) => {
     return (
         <ZTrack event="signup_profile_view">
             <RegistrationContainer
-                title="Introduce yourself"
-                subtitle="Help others recognize you"
+                title={t('signupTitle', 'Introduce yourself')}
+                subtitle={t('signupSubtitle', 'Help others recognize you')}
                 autoScrollToBottom={true}
                 floatContent={
                     <ZButton
-                        title="Save"
+                        title={t('save', 'Save')}
                         size="large"
                         onPress={handleSave}
                         loading={form.loading}
@@ -90,6 +92,7 @@ const SignupUserComponent = React.memo((props: PageProps) => {
             >
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                     <ZAvatarPicker
+                        id={profile.user?.id || ''}
                         field={photoField}
                         initialUrl={(prefill && prefill.picture) || undefined}
                         size="xx-large"
@@ -97,12 +100,12 @@ const SignupUserComponent = React.memo((props: PageProps) => {
                 </View>
                 <View style={{ marginTop: 16 }}>
                     <ZShaker ref={ref}>
-                        <ZInput field={firstNameField} placeholder="First name" />
+                        <ZInput field={firstNameField} placeholder={t('firstName', 'First name')} />
                     </ZShaker>
                     <ZInput
                         field={lastNameField}
-                        placeholder="Last name"
-                        description="Please, provide your name. This information is part of your public profile."
+                        placeholder={t('lastName', 'Last name')}
+                        description={t('validationProfileName', 'Please, provide your name. This information is part of your public profile.')}
                     />
                 </View>
             </RegistrationContainer>

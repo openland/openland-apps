@@ -7,6 +7,7 @@ import { Settings_settings, EmailFrequency } from 'openland-api/spacex.types';
 import { ZCheckmarkGroup } from 'openland-mobile/components/ZCheckmarkGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { backoff, debounce } from 'openland-y-utils/timer';
+import { useText } from 'openland-mobile/text/useText';
 
 const sendMutate = debounce(async (state: Settings_settings) => {
     const input = {
@@ -19,6 +20,7 @@ const sendMutate = debounce(async (state: Settings_settings) => {
 }, 3000);
 
 const SettingsEmailContent = React.memo(() => {
+    const { t } = useText();
     const settingsData = getClient().useSettings({ fetchPolicy: 'network-only' }).settings;
     const [settings, setSettings] = React.useState<Settings_settings>(settingsData);
 
@@ -33,34 +35,35 @@ const SettingsEmailContent = React.memo(() => {
     return (
         <SScrollView>
             <ZCheckmarkGroup
-                header="Messages notifications"
+                header={t('notificationsMessages', 'Messages notifications')}
                 footer={
-                    'When you’re busy or not online, Openland can send you email notifications about new messages. We will use ' +
-                    settings.primaryEmail +
-                    ' for notifications'
+                    t('notificationsEmailDescription', {
+                        email: settings.primaryEmail,
+                        defaultValue: 'When you’re busy or not online, Openland can send you email notifications about new messages. We will use {{email}} for notifications'
+                    })
                 }
                 value={settings.emailFrequency}
                 onChange={item => handleSave('emailFrequency', item.value)}
                 items={[
                     {
                         value: EmailFrequency.MIN_15,
-                        label: `Every 15 minutes`,
+                        label: t('notificationsMin15', 'Every 15 minutes'),
                     },
                     {
                         value: EmailFrequency.HOUR_1,
-                        label: `Once an hour`,
+                        label: t('notificationsHour', 'Once an hour'),
                     },
                     {
                         value: EmailFrequency.HOUR_24,
-                        label: `Once a day`,
+                        label: t('notificationsDay', `Once a day`),
                     },
                     {
                         value: EmailFrequency.WEEK_1,
-                        label: `Once a week`,
+                        label: t('notificationsWeek', `Once a week`),
                     },
                     {
                         value: EmailFrequency.NEVER,
-                        label: `Never`,
+                        label: t('notificationsNever', `Never`),
                     },
                 ]}
             />
@@ -68,15 +71,14 @@ const SettingsEmailContent = React.memo(() => {
     );
 });
 
-class SettingsEmailComponent extends React.Component<PageProps> {
-    render() {
-        return (
-            <>
-                <SHeader title="Email preferences" />
-                <SettingsEmailContent />
-            </>
-        );
-    }
-}
+const SettingsEmailComponent = React.memo((props: PageProps) => {
+    const { t } = useText();
+    return (
+        <>
+            <SHeader title={t('notificationsEmail', 'Email preferences')} />
+            <SettingsEmailContent />
+        </>
+    );
+});
 
 export const SettingsEmail = withApp(SettingsEmailComponent);

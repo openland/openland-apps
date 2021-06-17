@@ -105,12 +105,12 @@ const EditGroupComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title={t('editEntity', { entity: group.isChannel ? '$t(channel)' : '$t(group)', defaultValue: `Edit {{entity}}` })} />
+            <SHeader title={group.isChannel ? t('editChannel', `Edit channel`) : t('editGroup', `Edit group`)} />
             <SHeaderButton title={t('save', 'Save')} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <View style={{ paddingBottom: 32 }}>
                     <ZListGroup header={null} alignItems="center">
-                        <ZAvatarPicker size="xx-large" field={photoField} />
+                        <ZAvatarPicker id={props.router.params.id} size="xx-large" field={photoField} />
                     </ZListGroup>
                     <ZListGroup header={t('info', 'Info')} headerMarginTop={0}>
                         <ZInput placeholder={t('name', 'Name')} field={titleField} />

@@ -8,6 +8,7 @@ import { showBottomSheet } from './BottomSheet';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { isPad } from 'openland-mobile/pages/Root';
 import { ModalConfiguration, ModalProps } from 'react-native-fast-modal';
+import { t } from 'openland-mobile/text/useText';
 
 interface ActionSheetBuilderActionItem {
     __typename: "ActionItem";
@@ -39,7 +40,7 @@ export class ActionSheetBuilder {
     private _titleAlign: 'left' | undefined;
     private _items: (ActionSheetBuilderActionItem | ActionSheetBuilderViewItem)[] = [];
     private _cancelable: boolean;
-    private _buttonTitle: string = 'Cancel';
+    private _buttonTitle: string = t('cancel', 'Cancel');
 
     constructor(buttonTitle?: string) {
         this._cancelable = Platform.OS === 'ios';

@@ -94,7 +94,7 @@ export const joinPaidGroup = (props: JoinPaidGroupProps) => {
         productTitle: props.title,
         productDescription: props.premiumSettings.interval ? 'Subscription' : 'Payment',
         productPicture: (
-            <ZAvatar size="medium" title={props.title} id={props.id} photo={props.photo} />
+            <ZAvatar size="medium" id={props.id} photo={props.photo} />
         ),
         action: async () => {
             try {
@@ -130,6 +130,7 @@ const BuyPaidChatPassButton = (props: {
     router: SRouter;
 }) => {
     const client = useClient();
+    const { t } = useText();
     const [loading, setLoading] = React.useState(false);
     const buyPaidChatPass = React.useCallback(async () => {
         joinPaidGroup({
@@ -144,13 +145,26 @@ const BuyPaidChatPassButton = (props: {
         });
     }, []);
 
-    let buttonText = 'Join for ' + formatMoney(props.premiumSettings.price);
+    let buttonText;
+    let periodShort;
     if (props.premiumSettings.interval) {
         if (props.premiumSettings.interval === WalletSubscriptionInterval.WEEK) {
-            buttonText += ' / wk';
+            periodShort = t('periodShortWeek', 'wk');
         } else if (props.premiumSettings.interval === WalletSubscriptionInterval.MONTH) {
-            buttonText += ' / mo';
+            periodShort = t('periodShortMonth', 'mo');
         }
+    }
+    if (periodShort) {
+        buttonText = t('joinPaidChatWithPeriod', {
+            amount: formatMoney(props.premiumSettings.price),
+            periodShort,
+            defaultValue: 'Join for {{amount}} / {{periodShort}}',
+        });
+    } else {
+        buttonText = t('joinPaidChat', {
+            amount: formatMoney(props.premiumSettings.price),
+            defaultValue: 'Join for {{amount}}',
+        });
     }
 
     return (
@@ -165,7 +179,7 @@ const BuyPaidChatPassButton = (props: {
             {props.ownerId && (
                 <View style={{ marginTop: 16 }}>
                     <ZButton
-                        title="Get help"
+                        title={t('getHelp', 'Get help')}
                         onPress={() => props.router.push('Conversation', { id: props.ownerId })}
                         size="large"
                         style="secondary"
@@ -195,7 +209,6 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
         featured,
     } = room;
     const { t } = useText();
-    // const typeStr = isChannel ? t('channel', 'channel') : t('group', 'group');
     const paddingBottom = Platform.OS === 'ios' ? area.bottom || 16 : area.bottom + 16;
 
     const avatars = previewMembers
@@ -232,7 +245,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
     //             title={title}
     //         />
     //     );
-    const joinAvatars = <ZAvatar photo={photo} size="xx-large" id={id} title={title} />;
+    const joinAvatars = <ZAvatar photo={photo} size="xx-large" id={id} />;
 
     const membersContent = (
         <>
@@ -246,7 +259,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                             borderWidth: 2,
                         }}
                     >
-                        <ZAvatar photo={src} size="small" />
+                        <ZAvatar id={id} photo={src} size="small" />
                     </View>
                 ))}
             </View>
@@ -275,7 +288,9 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
     let button = (
         <View style={styles.buttonWrapper}>
             <ZButton
-                title={isChannel ? t('joinChannel', 'Join channel') : t('joinGroup', 'Join group')}
+                title={isChannel
+                    ? t('joinChannel', 'Join channel')
+                    : t('joinGroup', 'Join group')}
                 size="large"
                 loading={loading}
                 onPress={handleButtonPress}

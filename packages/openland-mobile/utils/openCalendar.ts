@@ -1,6 +1,7 @@
 import { Platform, Linking, Clipboard } from 'react-native';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import Toast from 'openland-mobile/components/Toast';
+import { t } from 'openland-mobile/text/useText';
 
 export const openCalendar = (date: string | number) => {
     return async () => {
@@ -23,12 +24,12 @@ export const openCalendar = (date: string | number) => {
 export const openCalendarContextMenu = (date: string, text: string) => {
     let builder = new ActionSheetBuilder();
 
-    builder.action('Copy', () => {
+    builder.action(t('copy', 'Copy'), () => {
         Clipboard.setString(text);
         Toast.showCopied();
     }, false, require('assets/ic-copy-24.png'));
 
-    builder.action('Open in Calendar', openCalendar(date), false, require('assets/ic-calendar-24.png'));
+    builder.action(t('calendarOpen', 'Open in Calendar'), openCalendar(date), false, require('assets/ic-calendar-24.png'));
 
     builder.show();
 };

@@ -23,7 +23,6 @@ export const ZUserView = React.memo((props: ZUserViewProps) => {
                 <ZAvatar
                     size="x-small"
                     photo={props.user.photo}
-                    title={props.user.name}
                     id={props.user.id}
                 />
                 <View style={{ flexGrow: 1, flexShrink: 1, paddingLeft: 16 }}>

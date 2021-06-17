@@ -9,9 +9,10 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { preprocessText } from 'openland-y-utils/TextProcessor';
 import Toast from 'openland-mobile/components/Toast';
+import { t } from 'openland-mobile/text/useText';
 
 export interface ZListItemProps {
-    leftAvatar?: { photo?: string | null, id?: string, title?: string };
+    leftAvatar?: { photo?: string | null, id: string };
     leftIcon?: any | null;
     leftIconColor?: string;
     leftIconView?: JSX.Element;
@@ -95,7 +96,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { theme: T
         const textToCopy = this.props.textToCopy || this.props.text;
         if (this.props.copy && textToCopy) {
             ActionSheet.builder()
-                .action('Copy', () => {
+                .action(t('copy', 'Copy'), () => {
                     Clipboard.setString(textToCopy);
                     Toast.showCopied();
                 }, undefined, require('assets/ic-copy-24.png'))

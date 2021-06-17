@@ -102,7 +102,7 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
             <SHeaderButton title={t('save', 'Save')} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <ZListGroup header={null} alignItems="center">
-                    <ZAvatarPicker size="xx-large" field={photoField} />
+                    <ZAvatarPicker id={user.id} size="xx-large" field={photoField} />
                 </ZListGroup>
 
                 <ZListGroup header={t('info', 'Info')} headerMarginTop={0}>
@@ -139,10 +139,10 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                         <PrivacyLink router={props.router} />
                     </Text>
                     <ZInput placeholder={t('website', 'Website')} field={websiteField} />
-                    <ZInput placeholder={t('instagram', 'Instagram')} field={instagramField} />
-                    <ZInput placeholder={t('twitter', 'Twitter')} field={twitterField} />
-                    <ZInput placeholder={t('facebook', 'Facebook')} field={facebookField} />
-                    <ZInput placeholder={t('linkedIn', 'LinkedIn')} field={linkedinField} />
+                    <ZInput placeholder={'Instagram'} field={instagramField} />
+                    <ZInput placeholder={'Twitter'} field={twitterField} />
+                    <ZInput placeholder={'Facebook'} field={facebookField} />
+                    <ZInput placeholder={'LinkedIn'} field={linkedinField} />
                     {isIos && theme.type !== 'Light' && <View style={{ height: 88 }} />}
                 </ZListGroup>
             </KeyboardAvoidingScrollView>
@@ -154,7 +154,7 @@ const SettingsProfileComponent = React.memo((props: PageProps) => {
     const { t } = useText();
     return (
         <>
-            <SHeader title={t('editEntity', { entity: '$t(profile)' })} />
+            <SHeader title={t('editProfile', 'Edit profile')} />
             <SettingsProfileContent {...props} />
         </>
     );

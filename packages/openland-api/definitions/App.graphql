@@ -66,3 +66,6 @@ mutation UserStorageSet($namespace: String!, $data: [AppStorageValueInput!]!) {
         value
     }
 }
+mutation SessionLanguageSet($lang: Language!) {
+    setSessionLanguage(lang: $lang)
+}

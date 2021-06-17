@@ -7,9 +7,10 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextTitle2, TextBody, TextStyles } from 'openland-web/utils/TextStyles';
 import SuccessIcon from 'openland-icons/s/ic-success-16.svg';
 import { DepositAvatar } from '../components/DepositAvatar';
-import { convertTransaction, TransactionConvertedStatus } from 'openland-y-utils/wallet/transaction';
+import { TransactionConvertedStatus } from 'openland-y-utils/wallet/transaction';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { cx, css } from 'linaria';
+import { useConvertedTransaction } from 'openland-web/utils/useConvertedTransaction';
 
 const titleBox = css`
     text-align: center;
@@ -52,7 +53,7 @@ const StatusColor: { [key in TransactionConvertedStatus]: string } = {
 };
 
 const TransactionComponent = React.memo((props: { ctx: XModalController, transaction: WalletTransactionFragment }) => {
-    const { avatar, title, type, dateTime, status, amount, walletAmount, chargeAmount, interval, paymentMethod, group } = convertTransaction(props.transaction);
+    const { avatar, title, type, dateTime, status, amount, walletAmount, chargeAmount, interval, paymentMethod, group } = useConvertedTransaction(props.transaction);
     const hasSplittedAmount = !!walletAmount && !!chargeAmount;
 
     return (
@@ -99,4 +100,4 @@ export function showTransaction(transaction: WalletTransactionFragment) {
             <TransactionComponent ctx={ctx} transaction={transaction} />
         );
     });
-} 
+}

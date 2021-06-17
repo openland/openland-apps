@@ -37,9 +37,9 @@ const StickerCatalog = React.memo((props: StickerCatalogProps) => {
     const handleButtonPress = async () => {
         if (haveIt) {
             Alert.builder()
-                .title(`Delete ${pack.title} stickers?`)
-                .button('Cancel', 'cancel')
-                .button('Delete', 'destructive', () => {
+                .title(t('stickersDeletePack', { title: pack.title, defaultValue: `Delete {{title}} stickers?` }))
+                .button(t('cancel', 'Cancel'), 'cancel')
+                .button(t('delete', 'Delete'), 'destructive', () => {
                     (async () => {
                         setButtonLoading(true);
                         try {

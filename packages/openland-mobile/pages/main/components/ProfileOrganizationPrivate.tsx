@@ -44,7 +44,6 @@ export const ProfileOrganizationPrivate = React.memo((props: ProfileOrganization
                         size="xx-large"
                         photo={photo}
                         id={id}
-                        title={name}
                     />
                     <View
                         style={{ flexDirection: 'row', marginTop: 32 }}
@@ -130,7 +129,10 @@ export const ProfileOrganizationPrivate = React.memo((props: ProfileOrganization
                                 }}
                                 allowFontScaling={false}
                             >
-                                {t('privateEntityDescription', { title: typeString.toLowerCase(), defaultValue: 'This {{title}} is invite-only' })}
+                                {isCommunity
+                                    ? t('privateCommunityDescription', 'This community is invite-only')
+                                    : t('privateOrganizationDescription', 'This organization is invite-only')
+                                }
                             </Text>
                         </View>
                     </>

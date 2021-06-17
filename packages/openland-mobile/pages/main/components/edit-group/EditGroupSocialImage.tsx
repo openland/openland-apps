@@ -11,10 +11,12 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZSocialPickerRender } from 'openland-mobile/components/ZSocialPickerRender';
 import { EditPageHeader } from '../EditPageHeader';
+import { useText } from 'openland-mobile/text/useText';
 
 const EditGroupSocialImageComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const client = getClient();
+    const { t } = useText();
     const group = client.useRoomChat(
         { id: props.router.params.id },
         { fetchPolicy: 'network-only' },
@@ -62,16 +64,17 @@ const EditGroupSocialImageComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeaderButton title="Save" onPress={handleSave} />
+            <SHeaderButton title={t('save', 'Save')} onPress={handleSave} />
             <SScrollView>
                 <EditPageHeader
                     icon={require('assets/ic-gallery-glyph-48.png')}
                     tint={theme.tintGreen}
-                    title="Social sharing image"
-                    description="Choose an image for sharing invite to the group on social networks"
+                    title={t('socialSharingImage', 'Social sharing image')}
+                    description={t('socialSharingImageDescription', 'Choose an image for sharing invite to the group on social networks')}
                 />
                 <ZListGroup header={null} alignItems="center">
                     <ZAvatarPicker
+                        id={props.router.params.id}
                         field={socialImageField}
                         render={ZSocialPickerRender}
                         pickSize={{ width: 1200, height: 630 }}

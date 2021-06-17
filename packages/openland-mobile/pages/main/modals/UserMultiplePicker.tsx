@@ -17,6 +17,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { showMembersWarning } from 'openland-mobile/messenger/components/showMembersWarning';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { useText } from 'openland-mobile/text/useText';
 
 export const CheckListBoxWraper = React.memo(
     (props: { checked?: boolean; isRadio?: boolean; children: any }) => {
@@ -42,30 +43,30 @@ export const CheckListBoxWraper = React.memo(
                         }}
                     />
                 ) : (
-                        <View
-                            style={{
-                                position: 'absolute',
-                                alignSelf: 'center',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                right: 17,
-                                backgroundColor: props.checked ? theme.accentPrimary : theme.backgroundPrimary,
-                                borderColor: props.checked ? theme.accentPrimary : theme.foregroundQuaternary,
-                                borderWidth: 2,
-                                borderRadius: RadiusStyles.Medium,
-                                width: 22,
-                                height: 22
-                            }}
-                            pointerEvents="none"
-                        >
-                            {props.checked && (
-                                <Image
-                                    source={require('assets/ic-checkmark-11.png')}
-                                    style={{ marginRight: 1, tintColor: theme.foregroundInverted }}
-                                />
-                            )}
-                        </View>
-                    )}
+                    <View
+                        style={{
+                            position: 'absolute',
+                            alignSelf: 'center',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            right: 17,
+                            backgroundColor: props.checked ? theme.accentPrimary : theme.backgroundPrimary,
+                            borderColor: props.checked ? theme.accentPrimary : theme.foregroundQuaternary,
+                            borderWidth: 2,
+                            borderRadius: RadiusStyles.Medium,
+                            width: 22,
+                            height: 22
+                        }}
+                        pointerEvents="none"
+                    >
+                        {props.checked && (
+                            <Image
+                                source={require('assets/ic-checkmark-11.png')}
+                                style={{ marginRight: 1, tintColor: theme.foregroundInverted }}
+                            />
+                        )}
+                    </View>
+                )}
             </View>
         );
     },
@@ -80,6 +81,7 @@ interface UserSearchData {
 
 const UsersList = React.memo(
     (props: PageProps & { query: string; users: any; onAdd: (user: UserShort) => void }) => {
+        const { t } = useText();
         const inGroup = props.router.params.inGroup;
         const entityId = props.router.params.entityId;
 
@@ -97,7 +99,7 @@ const UsersList = React.memo(
                     <View>
                         <ZListItem
                             leftIcon={require('assets/ic-link-glyph-24.png')}
-                            text="Invite with a link"
+                            text={t('inviteWithLink', 'Invite with a link')}
                             onPress={
                                 props.router.params.inviteLinkButton.onPress
                                     ? props.router.params.inviteLinkButton.onPress
@@ -133,6 +135,7 @@ const UsersList = React.memo(
 
 const UserMultiplePickerComponent = React.memo((props: PageProps) => {
     let theme = React.useContext(ThemeContext);
+    let { t } = useText();
 
     let [users, setUsers] = React.useState([] as { id: string; name: string }[]);
     let [query, setQuery] = React.useState('');
@@ -187,7 +190,7 @@ const UserMultiplePickerComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title={props.router.params.title || 'Pick members'} />
+            <SHeader title={props.router.params.title || t('pickMembers', 'Pick members')} />
             <SHeaderButton
                 key={'bk-' + users.length}
                 title={buttonTitle}
@@ -240,7 +243,7 @@ const UserMultiplePickerComponent = React.memo((props: PageProps) => {
                             items={users.map((v) => ({ id: v.id, text: v.name }))}
                             onChange={handleChange}
                             onRemoved={handleRemoveUser}
-                            title="Members:"
+                            title={t('membersColon', 'Members:')}
                             theme={theme}
                         />
                     </ZBlurredView>

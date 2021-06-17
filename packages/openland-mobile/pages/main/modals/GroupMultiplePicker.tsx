@@ -14,6 +14,7 @@ import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { GroupView } from '../components/GroupView';
 import { CheckListBoxWraper } from './UserMultiplePicker';
+import { useText } from 'openland-mobile/text/useText';
 
 interface PickedItems {
     id: string;
@@ -75,6 +76,7 @@ const GroupsSearchList = React.memo((props: GroupsListProps) => {
 
 const GroupMultiplePickerComponent = React.memo((props: PageProps) => {
     let theme = React.useContext(ThemeContext);
+    let { t } = useText();
 
     let [groups, setGroups] = React.useState<PickedItems[]>([]);
     let [query, setQuery] = React.useState('');
@@ -102,7 +104,7 @@ const GroupMultiplePickerComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title={props.router.params.title || 'Add to groups'} />
+            <SHeader title={props.router.params.title || t('addToGroups', 'Add to groups')} />
             <SHeaderButton
                 key={'bk-' + groups.length}
                 title={buttonTitle}
@@ -127,7 +129,7 @@ const GroupMultiplePickerComponent = React.memo((props: PageProps) => {
                             items={groups.map((v) => ({ id: v.id, text: v.title }))}
                             onChange={setQuery}
                             onRemoved={handleRemoveGroup}
-                            title="Groups:"
+                            title={t('groupsColon', 'Groups:')}
                             theme={theme}
                         />
                         <View style={{ height: 1, backgroundColor: theme.border }} />

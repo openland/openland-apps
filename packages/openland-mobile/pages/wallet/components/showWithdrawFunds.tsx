@@ -3,12 +3,13 @@ import { View, Image } from 'react-native';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { SRouter } from 'react-native-s/SRouter';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { t } from 'openland-mobile/text/useText';
 
 export const showWithdrawFunds = async (router: SRouter) => {
     const builder = new AlertBlanketBuilder();
 
-    builder.title('Withdraw funds');
-    builder.message('To request funds withdrawal ($50 minimum) message Openland support for instructions');
+    builder.title(t('withdrawFunds', 'Withdraw funds'));
+    builder.message(t('withdrawFundsDescription', 'To request funds withdrawal ($50 minimum) message Openland support for instructions'));
 
     builder.view(
         <ThemeContext.Consumer>
@@ -32,7 +33,7 @@ export const showWithdrawFunds = async (router: SRouter) => {
         </ThemeContext.Consumer>,
     );
 
-    builder.button('Cancel', 'cancel');
-    builder.button('Continue', 'default', () => router.push('Conversation', { id: 'LOaDEWDj9zsVv999DDpJiEj05K' }));
+    builder.button(t('cancel', 'Cancel'), 'cancel');
+    builder.button(t('continue', 'Continue'), 'default', () => router.push('Conversation', { id: 'LOaDEWDj9zsVv999DDpJiEj05K' }));
     builder.show();
 };

@@ -25,6 +25,7 @@ export interface ZAvatarPickerRenderProps {
 }
 
 export interface ZAvatarPickerProps {
+    id: string;
     size?: ZAvatarSize;
     initialUrl?: string;
     field?: FormField<AvatarImageRef | null>;
@@ -181,7 +182,7 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
                     )}
                     {!!valueUrl && props.hidePhotoIndicator !== true && (
                         <View style={{ width: size, height: size }}>
-                            <ZAvatar photo={valueUrl} size={props.size || 'x-large'} />
+                            <ZAvatar id={props.id} photo={valueUrl} size={props.size || 'x-large'} />
 
                             {!loading && (
                                 <View

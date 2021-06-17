@@ -143,9 +143,9 @@ const ContactsNoImportStub = React.memo((props: { cb: () => void }) => {
                 }}
                 allowFontScaling={false}
             >
-                {t('importContacts', 'Import contacts from your device to find people you know on Openland')}
+                {t('contactsImportDescription', 'Import contacts from your device to find people you know on Openland')}
             </Text>
-            <ZButton title="Import contacts" onPress={() => showAlert()} />
+            <ZButton title={t('contactsImport', 'Import contacts')} onPress={() => showAlert()} />
         </ASSafeAreaView>
     );
 });
@@ -153,6 +153,7 @@ const ContactsNoImportStub = React.memo((props: { cb: () => void }) => {
 const ContactsPage = React.memo((props: PageProps) => {
     const contactsExporter = getContactsExporter();
     const client = useClient();
+    const { t } = useText();
     const onlines = getMessenger().engine.getOnlines();
     const scrollRef = React.useContext(ComponentRefContext);
     const { items: initialItems, cursor: initialAfter } = client.useMyContacts(
@@ -194,21 +195,21 @@ const ContactsPage = React.memo((props: PageProps) => {
         const builder = ActionSheet.builder();
         builder.title(user.name, 'left');
         builder.action(
-            'Send message',
+            t('sendMessage', 'Send message'),
             () => props.router.push('Conversation', { id: user.id }),
             false,
             require('assets/ic-message-24.png'),
         );
 
         builder.action(
-            'Remove from contacts',
+            t('contactsRemove', 'Remove from contacts'),
             () => handleRemoveMemberFromContacts(user.id),
             false,
             require('assets/ic-invite-off-24.png'),
         );
 
         builder.show(true);
-    }, []);
+    }, [t]);
 
     const handleLoadMore = async () => {
         if (!loading && after) {
@@ -253,7 +254,7 @@ const ContactsPage = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title="Contacts" searchPlaceholder="Search" />
+            <SHeader title={t('contacts', 'Contacts')} searchPlaceholder={t('search', 'Search')} />
             {!hasContacts && haveContactsPermission && <ContactsWasImportStub />}
             {!hasContacts && !haveContactsPermission && (
                 <ContactsNoImportStub cb={() => setHaveContactsPermission(true)} />
@@ -275,7 +276,7 @@ const ContactsPage = React.memo((props: PageProps) => {
                                     !haveContactsPermission
                                         ? () => (
                                             <ZListItem
-                                                text="Import contacts"
+                                                text={t('contactsImport', 'Import contacts')}
                                                 leftIcon={require('assets/ic-cycle-glyph-24.png')}
                                                 small={false}
                                                 onPress={() => showAlert()}

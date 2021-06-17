@@ -147,8 +147,6 @@ export const NotificationCommentView = React.memo((props: NotificationViewProps)
             <div className={avatarWrapper}>
                 <UAvatar
                     id={sender.id}
-                    title={sender.name}
-                    titleEmoji={senderNameEmojify}
                     photo={sender.photo}
                 />
             </div>

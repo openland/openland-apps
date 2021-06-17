@@ -541,7 +541,6 @@ const RoomHeader = React.memo(
                                 <ZAvatar
                                     size="x-small"
                                     id={parentRoom.id}
-                                    title={parentRoom.title}
                                     photo={parentRoom.photo}
                                 />
                                 <Text
@@ -583,10 +582,7 @@ const RoomHeader = React.memo(
                                         }, 1000);
                                     } catch (e) {
                                         Toast.failure({
-                                            text: e.message || t('errorJoinChat', {
-                                                chatType: parentRoom.isChannel ? 'channel' : 'group',
-                                                defaultValue: `Couldn't join {{chatType}}`
-                                            }),
+                                            text: e.message || t('errorJoinChat', `Couldn't join`),
                                             duration: 4000,
                                         }).show();
                                         setJoinState('initial');
@@ -614,7 +610,9 @@ const RoomHeader = React.memo(
                                     }}
                                     allowFontScaling={false}
                                 >
-                                    {t('joinChat', { chatType: parentRoom.isChannel ? 'channel' : 'group', defaultValue: 'Join {{chatType}}' })}
+                                    {parentRoom.isChannel
+                                        ? t('joinChannel', 'Join channel')
+                                        : t('joinGroup', 'Join group')}
                                 </Text>
                                 <View
                                     style={{
@@ -844,7 +842,6 @@ const RoomUserView = React.memo((props: RoomUserViewProps) => {
                     <ZAvatar
                         size={isListener ? 'x-large' : 'xx-large'}
                         photo={user.photo}
-                        title={user.name}
                         id={user.id}
                     />
                     {(state === 'muted' || state === 'loading') && (
@@ -1148,7 +1145,7 @@ const RoomViewInner = React.memo((props: RoomViewInnerProps) => {
         } else {
             closeCall();
         }
-    }, [voiceChatData]);
+    }, [voiceChatData, t]);
 
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
 

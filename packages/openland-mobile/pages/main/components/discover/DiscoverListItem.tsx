@@ -4,10 +4,10 @@ import {
     DiscoverRoom,
     DiscoverOrganization,
 } from 'openland-y-utils/discover/normalizePopularItems';
-import { plural } from 'openland-y-utils/plural';
 import { RoomChat_room_SharedRoom, VoiceChatParticipantStatus, VoiceChatWithSpeakers } from 'openland-api/spacex.types';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { useJoinRoom } from 'openland-mobile/pages/rooms/joinRoom';
+import { useText } from 'openland-mobile/text/useText';
 
 interface DiscoverListItemProps {
     item: DiscoverRoom;
@@ -17,6 +17,7 @@ interface DiscoverListItemProps {
 
 export const DiscoverListItem = ({ item, rightElement, onJoin }: DiscoverListItemProps) => {
     const theme = useTheme();
+    const { t } = useText();
     return (
         <ZListItem
             key={item.id}
@@ -24,13 +25,12 @@ export const DiscoverListItem = ({ item, rightElement, onJoin }: DiscoverListIte
             leftAvatar={{
                 photo: item.photo,
                 id: item.id,
-                title: item.title,
             }}
             subTitle={
                 item.newMessages
-                    ? plural(item.newMessages, ['new message', 'new messages'])
+                    ? `${item.newMessages} ${t('newMessage', { count: item.newMessages, defaultValue: 'new message' })}`
                     : item.membersCount
-                        ? plural(item.membersCount, ['member', 'members'])
+                        ? `${item.membersCount} ${t('member', { count: item.membersCount, defaultValue: 'member' })}`
                         : undefined
             }
             rightElement={rightElement}
@@ -48,6 +48,7 @@ interface DiscoverListItemOrgProps {
 
 export const DiscoverListItemOrg = ({ item, rightElement }: DiscoverListItemOrgProps) => {
     const theme = useTheme();
+    const { t } = useText();
     return (
         <ZListItem
             key={item.id}
@@ -55,10 +56,9 @@ export const DiscoverListItemOrg = ({ item, rightElement }: DiscoverListItemOrgP
             leftAvatar={{
                 photo: item.photo,
                 id: item.id,
-                title: item.name,
             }}
             subTitle={
-                item.membersCount ? plural(item.membersCount, ['member', 'members']) : undefined
+                item.membersCount ? `${item.membersCount} ${t('member', { count: item.membersCount, defaultValue: 'member' })}` : undefined
             }
             rightElement={rightElement}
             path="ProfileOrganization"
@@ -73,11 +73,13 @@ interface DiscoverListItemVoiceProps {
 }
 
 export const DiscoverListItemVoice = ({ item }: DiscoverListItemVoiceProps) => {
+    const { t } = useText();
     const admin = item.speakers.find(x => x.status === VoiceChatParticipantStatus.ADMIN);
     const joinRoom = useJoinRoom();
     const handlePress = React.useCallback(() => {
         joinRoom(item.id);
     }, [item.id, joinRoom]);
+    const membersCount = item.speakersCount + item.listenersCount;
     return (
         <ZListItem
             key={item.id}
@@ -85,9 +87,8 @@ export const DiscoverListItemVoice = ({ item }: DiscoverListItemVoiceProps) => {
             leftAvatar={{
                 photo: admin?.user.photo,
                 id: admin?.user.id || item.id,
-                title: item.title || undefined,
             }}
-            subTitle={plural(item.speakersCount + item.listenersCount, ['member', 'members'])}
+            subTitle={`${membersCount} ${t('member', { count: membersCount, defaultValue: 'member' })}`}
             onPress={handlePress}
         />
     );

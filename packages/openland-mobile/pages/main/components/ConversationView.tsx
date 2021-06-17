@@ -143,7 +143,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                                     {!isSavedMessages && (
                                         <>
                                             <Text style={[styles.subtitle, { color: this.props.theme.foregroundSecondary }]} allowFontScaling={false}>
-                                                {t('conversationStart', { name: userName, defaultValue: 'Start a conversation with&nbsp;{{name}}' })}
+                                                {t('conversationStart', { name: userName, defaultValue: 'Start a conversation with {{name}}' })}
                                             </Text>
 
                                             <View style={{ marginBottom: 15, flexDirection: 'row' }}>

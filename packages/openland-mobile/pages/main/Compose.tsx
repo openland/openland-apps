@@ -14,7 +14,7 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { LoaderSpinnerWrapped } from 'openland-mobile/components/LoaderSpinner';
-import { useText } from 'openland-mobile/text/useText';
+import { capitalize, useText } from 'openland-mobile/text/useText';
 
 const UserSearchComponent = React.memo((props: PageProps & { query: string, useScroll: boolean }) => {
     let theme = React.useContext(ThemeContext);
@@ -54,9 +54,10 @@ const UserSearchComponent = React.memo((props: PageProps & { query: string, useS
 });
 
 const ComposeComponent = React.memo((props: PageProps) => {
+    const { t } = useText();
     return (
         <>
-            <SHeader title="New message" hairline="hidden" />
+            <SHeader title={capitalize(t('newMessage', 'New message'))} hairline="hidden" />
             <SSearchControler
                 searchRender={(p) => (
                     <>
@@ -69,7 +70,7 @@ const ComposeComponent = React.memo((props: PageProps) => {
                 <SScrollView keyboardDismissMode="interactive">
                     <SDeferred>
                         <ZListGroup>
-                            <ZListItem leftIcon={require('assets/ic-group-glyph-24.png')} text="Create group" path="CreateGroupAttrs" />
+                            <ZListItem leftIcon={require('assets/ic-group-glyph-24.png')} text={t('createGroup', 'Create group')} path="CreateGroupAttrs" />
                         </ZListGroup>
                         <React.Suspense fallback={<LoaderSpinnerWrapped />}>
                             <UserSearchComponent query="" router={props.router} useScroll={false} />

@@ -108,7 +108,7 @@ const featuredIcon = css`
 
 export const MentionItemComponent = (props: MentionItemComponentProps) => (
     <div className={mentionContainer}>
-        <UAvatar id={props.id} title={props.title} photo={props.photo} size="x-small" />
+        <UAvatar id={props.id} photo={props.photo} size="x-small" />
         <div className={mentionUserDataWrap}>
             <div className={cx(userName, TextLabel1)}>{props.title}</div>
             {props.featured && (

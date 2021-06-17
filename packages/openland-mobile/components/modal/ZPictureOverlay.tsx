@@ -16,6 +16,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles, SecondarinessAlpha } from 'openland-mobile/styles/AppStyles';
 import Toast from 'openland-mobile/components/Toast';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
+import { t } from 'openland-mobile/text/useText';
 
 export const ZPictureOverlay = React.memo((props: { config: ZPictureTransitionConfig, onClose: () => void }) => {
     let theme = React.useContext(ThemeContext);
@@ -106,11 +107,11 @@ export const ZPictureOverlay = React.memo((props: { config: ZPictureTransitionCo
         if (file) {
             let builder = new ActionSheetBuilder();
 
-            builder.action('Share photo', () => Share.open({
+            builder.action(t('sharePhoto', 'Share photo'), () => Share.open({
                 url: 'file://' + file
             }), false, require('assets/ic-share-24.png'));
 
-            builder.action(Platform.select({ ios: 'Save to camera roll', default: 'Save to gallery' }), async () => {
+            builder.action(Platform.select({ ios: t('savePhotoIOS', 'Save to camera roll'), default: t('savePhotoDefault', 'Save to gallery') }), async () => {
                 if (await checkPermissions('gallery')) {
                     await CameraRoll.saveToCameraRoll('file://' + file!);
                     Toast.success({ duration: 1000 }).show();

@@ -10,9 +10,11 @@ import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardA
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import Toast from 'openland-mobile/components/Toast';
 import { EditPageHeader } from '../EditPageHeader';
+import { useText } from 'openland-mobile/text/useText';
 
 const EditGroupServiceMessagesComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const roomId = props.router.params.id;
     const client = getClient();
     const group = client.useRoomChat({ id: roomId }).room;
@@ -43,28 +45,28 @@ const EditGroupServiceMessagesComponent = React.memo((props: PageProps) => {
                 Toast.success({ duration: 1000 }).show();
                 props.router.back();
             } catch (e) {
-                Toast.failure({ text: 'Something went wrong', duration: 1000 });
+                Toast.failure({ text: t('errorAbstract', 'Something went wrong'), duration: 1000 });
             }
         });
 
     return (
         <>
-            <SHeaderButton title="Save" onPress={handleSave} />
+            <SHeaderButton title={t('save', 'Save')} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <EditPageHeader
                     icon={require('assets/ic-megaphone-glyph-48.png')}
                     tint={theme.tintPink}
-                    title="Service messages"
-                    description="Choose what messages to get"
+                    title={t('serviceMessages', 'Service messages')}
+                    description={t('serviceMessagesDescription', 'Choose what messages to get')}
                 />
                 <ZListGroup header={null}>
                     <ZListItem
-                        text="New member joins"
+                        text={t('serviceMessagesJoins', 'New member joins')}
                         toggle={joinsEnabled}
                         onToggle={(value) => setJoinsEnabled(value)}
                     />
                     <ZListItem
-                        text="Member leaves"
+                        text={t('serviceMessagesLeaves', 'Member leaves')}
                         toggle={leavesEnabled}
                         onToggle={(value) => setLeavesEnabled(value)}
                     />

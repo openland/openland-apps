@@ -35,8 +35,7 @@ export const ForwardReplyView = (props: ForwardReplyViewProps) => {
         isGif: boolean,
     } | undefined;
     if (messages.length !== 1) {
-        // TODO: PLURAL
-        text = messages.length + ' messages';
+        text = messages.length + ' ' + t('message', { count: messages.length, defaultValue: 'message' });
         if (action === 'reply') {
             title = t('replyMessages', 'Reply messages');
         } else {

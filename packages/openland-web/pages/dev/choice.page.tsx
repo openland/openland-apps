@@ -227,7 +227,6 @@ const ChoiceFragment = React.memo(() => {
                     leftElement={
                         <UAvatar
                             photo={i.chat.photo}
-                            title={i.chat.title}
                             id={i.chat.id}
                             size="medium"
                         />

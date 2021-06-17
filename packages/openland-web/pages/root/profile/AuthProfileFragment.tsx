@@ -110,7 +110,7 @@ const dotSeparator = css`
 `;
 
 export const AuthProfileFragment = React.memo((props: { user: AuthResolveShortName_item_User }) => {
-    const { id, name, firstName, photo, online, currentVoiceChat } = props.user;
+    const { id, firstName, photo, online, currentVoiceChat } = props.user;
     const os = detectOS();
     const isMobile = os === 'iOS' || os === 'Android';
 
@@ -171,7 +171,6 @@ export const AuthProfileFragment = React.memo((props: { user: AuthResolveShortNa
         <AuthPageContainer>
             <div className={userInfoContainer}>
                 <UAvatar
-                    title={name}
                     id={id}
                     photo={photo}
                     size="xx-large"
@@ -200,7 +199,6 @@ export const AuthProfileFragment = React.memo((props: { user: AuthResolveShortNa
                             {currentVoiceChat.speakers.slice(0, 5).map((i) => (
                                 <UAvatar
                                     size="small"
-                                    title={i.user.name}
                                     id={i.user.id}
                                     photo={i.user.photo}
                                 />

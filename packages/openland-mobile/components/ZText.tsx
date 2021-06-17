@@ -5,6 +5,7 @@ import { Text, Linking, StyleProp, TextStyle, Clipboard } from 'react-native';
 import { resolveInternalLink } from '../utils/resolveInternalLink';
 import ActionSheet from './ActionSheet';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { t } from 'openland-mobile/text/useText';
 
 interface ZTextProps {
     text?: string | null;
@@ -21,7 +22,7 @@ export const ZText = (props: ZTextProps) => {
     const theme = React.useContext(ThemeContext);
 
     const openContextMenu = React.useCallback(async (link: string) => {
-        ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-copy-24.png')).show();
+        ActionSheet.builder().action(t('copy', 'Copy'), () => Clipboard.setString(link), false, require('assets/ic-copy-24.png')).show();
     }, []);
 
     const linkifyPressFallback = React.useCallback((link: string) => {

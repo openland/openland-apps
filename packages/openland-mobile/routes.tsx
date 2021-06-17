@@ -41,7 +41,6 @@ import { EditGroupPrice } from './pages/main/components/edit-group/EditGroupPric
 import { GroupInvite } from './pages/main/GroupInvite';
 import { UserPicker } from './pages/main/modals/UserPicker';
 import { CountryPicker } from './pages/main/modals/CountryPicker';
-import Tasks from './pages/apps/Tasks';
 import { Message } from './pages/main/Message';
 import { Colors } from './pages/dev/Colors';
 import { Discover } from './pages/main/Discover';
@@ -51,7 +50,6 @@ import { InstallApps } from './pages/main/InstallApps';
 import { StartConversation } from './pages/main/StartConversation';
 import { Buttons } from './pages/dev/Buttons';
 import { Inputs } from './pages/dev/Inputs';
-import { Avatars } from './pages/dev/Avatars';
 import { DocumentsExt } from './pages/dev/DocumentsExt';
 import { SharedMedia } from './pages/shared-media/SharedMedia';
 import { PowerUps } from './pages/dev/PowerUps';
@@ -146,7 +144,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevBottomSheet', BottomSheetPage)
   .addRoute('DevButtons', Buttons)
   .addRoute('DevInputs', Inputs)
-  .addRoute('DevAvatars', Avatars)
   .addRoute('DevDocumentsExt', DocumentsExt)
   .addRoute('DevPowerUps', PowerUps)
 
@@ -157,8 +154,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('StartConversation', StartConversation)
   .addRoute('Explore', Explore)
   .addRoute('Collections', Collections)
-
-  .addRoute('Apps/Tasks', Tasks)
 
   .addRoute('SharedMedia', SharedMedia)
   .addRoute('ChatSearch', ChatSearch)
