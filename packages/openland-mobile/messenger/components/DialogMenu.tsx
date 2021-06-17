@@ -11,6 +11,7 @@ import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { showDeleteChatConfirmation } from 'openland-mobile/pages/main/modals/deleteChatModal';
 import Toast from 'openland-mobile/components/Toast';
 import { View } from 'react-native';
+import { WalletSubscriptionState } from 'openland-api/spacex.types';
 
 interface DialogMenuProps {
     ctx: ZModalController;
@@ -84,6 +85,8 @@ export const showDialogMenu = (item: DialogDataSourceItem) => {
 
     if (item.kind !== 'PRIVATE') {
         const muted = item.isMuted;
+        const shouldCancelSubscription = item.isPremium && item.premiumSubscription &&
+            ![WalletSubscriptionState.CANCELED, WalletSubscriptionState.EXPIRED].includes(item.premiumSubscription.state);
 
         builder.action(`${muted ? 'Unmute' : 'Mute'} notifications`, () => {
             client.mutateRoomSettingsUpdate({ roomId: item.key, settings: { mute: !muted } });
@@ -99,13 +102,17 @@ export const showDialogMenu = (item: DialogDataSourceItem) => {
                 .title(`Leave ${item.isChannel ? 'channel' : 'group'}?`)
                 .message(
                     item.isPremium
-                        ? 'Leaving the group only removes it from your chat list. To cancel the associated subscription, visit Subscriptions section in your Account tab and cancel it from there.'
+                        ? 'Leaving the group will cancel your subscription to it. Are you sure'
                         : 'You may not be able to join it again',
                 )
                 .button('Cancel', 'cancel')
                 .action('Leave', 'destructive', async () => {
                     await client.mutateRoomLeave({ roomId: item.key });
                     await client.refetchRoomChat({ id: item.key });
+                    if (shouldCancelSubscription) {
+                        await client.mutateCancelSubscription({ id: item.premiumSubscription!.id });
+                        await client.refetchSubscriptions();
+                    }
                 })
                 .show();
         }, false, require('assets/ic-leave-24.png'));

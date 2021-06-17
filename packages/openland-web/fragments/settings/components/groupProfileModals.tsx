@@ -12,7 +12,7 @@ import {
     RoomChat_room_SharedRoom_welcomeMessage,
     SharedRoomKind,
     UserShort,
-    WalletSubscriptionInterval,
+    WalletSubscriptionInterval, WalletSubscriptionState,
 } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { useForm } from 'openland-form/useForm';
@@ -739,6 +739,8 @@ export const showLeaveChatConfirmation = (
     premiumSubscription?:  RoomChat_room_SharedRoom_premiumSubscription | null,
 ) => {
     const builder = new AlertBlanketBuilder();
+    const shouldCancelSubscription = isPremium && premiumSubscription &&
+        ![WalletSubscriptionState.CANCELED, WalletSubscriptionState.EXPIRED].includes(premiumSubscription.state);
 
     builder
         .title(isChannel ? 'Leave channel' : 'Leave group')
@@ -754,8 +756,8 @@ export const showLeaveChatConfirmation = (
             async () => {
                 await client.mutateRoomLeave({ roomId: chatId });
                 await client.refetchRoomChat({ id: chatId });
-                if (isPremium && premiumSubscription) {
-                    await client.mutateCancelSubscription({ id: premiumSubscription.id });
+                if (shouldCancelSubscription) {
+                    await client.mutateCancelSubscription({ id: premiumSubscription!.id });
                     await client.refetchSubscriptions();
                 }
                 if (tabRouter.router.currentTab === 0) {

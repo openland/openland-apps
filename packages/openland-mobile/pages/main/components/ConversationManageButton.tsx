@@ -5,7 +5,12 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { Modals } from '../modals/Modals';
 import { SRouter } from 'react-native-s/SRouter';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
-import { RoomChat_room, RoomMemberRole, RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
+import {
+    RoomChat_room,
+    RoomMemberRole,
+    RoomChat_room_SharedRoom,
+    WalletSubscriptionState,
+} from 'openland-api/spacex.types';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
 import Toast from 'openland-mobile/components/Toast';
@@ -63,17 +68,24 @@ const useSharedHandlers = (room: RoomChat_room_SharedRoom, router: SRouter) => {
     }, [room.id, userId]);
 
     const onLeavePress = React.useCallback(() => {
+        const shouldCancelSubscription = room.isPremium && room.premiumSubscription &&
+            ![WalletSubscriptionState.CANCELED, WalletSubscriptionState.EXPIRED].includes(room.premiumSubscription.state);
+
         Alert.builder()
             .title(`Leave ${room.isChannel ? 'channel' : 'group'}?`)
             .message(
                 room.isPremium
-                    ? 'Leaving the group only removes it from your chat list. To cancel the associated subscription, visit Subscriptions section in your Account tab and cancel it from there.'
+                    ? 'Leaving the group will cancel your subscription to it. Are you sure?'
                     : 'You may not be able to join it again',
             )
             .button('Cancel', 'cancel')
             .action('Leave', 'destructive', async () => {
                 await client.mutateRoomLeave({ roomId: room.id });
                 await client.refetchRoomChat({ id: room.id });
+                if (shouldCancelSubscription) {
+                    await client.mutateCancelSubscription({ id: room.premiumSubscription!.id });
+                    await client.refetchSubscriptions();
+                }
                 setTimeout(() => {
                     router.pushAndResetRoot('Home');
                 }, 100);

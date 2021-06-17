@@ -95,6 +95,10 @@ fragment RoomNano on Room {
         kind
         isChannel
         isPremium
+        premiumSubscription {
+            id
+            state
+        }
         title
         photo
         membersCount

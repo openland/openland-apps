@@ -578,6 +578,7 @@ type Dialog {
   kind: DialogKind!
   isChannel: Boolean!
   isPremium: Boolean!
+  premiumSubscription: WalletSubscription
   title: String!
   photo: String!
   featured: Boolean!
@@ -1175,6 +1176,11 @@ type JoinedOrganizationMembersConnection {
 type KickServiceMetadata {
   user: User!
   kickedBy: User!
+}
+
+enum Language {
+  EN
+  RU
 }
 
 input LocalMediaInput {
@@ -1987,6 +1993,7 @@ type Mutation {
   debugSendAppleDataPush(uid: ID!, message: String!): Boolean!
   terminateSession(id: ID!): Boolean!
   terminateAllSessionsExcept(id: ID!): Boolean!
+  setSessionLanguage(lang: Language!): Boolean!
   betaDiscoverSkip(selectedTagsIds: [String!]!): DiscoverPage
   betaNextDiscoverReset: Boolean!
   betaNextDiscoverPageOrChats(selectedTagsIds: [String!]!, excudedGroupsIds: [String!]!): DiscoverPage

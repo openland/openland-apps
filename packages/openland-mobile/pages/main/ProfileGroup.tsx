@@ -5,7 +5,14 @@ import { ZListGroup } from '../../components/ZListGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { Modals } from './modals/Modals';
 import { PageProps } from '../../components/PageProps';
-import { RoomMemberRole, UserShort, RoomChat_room_SharedRoom, SharedRoomKind, SharedRoomMembershipStatus } from 'openland-api/spacex.types';
+import {
+    RoomMemberRole,
+    UserShort,
+    RoomChat_room_SharedRoom,
+    SharedRoomKind,
+    SharedRoomMembershipStatus,
+    WalletSubscriptionState,
+} from 'openland-api/spacex.types';
 import { getMessenger } from '../../utils/messenger';
 import { UserView } from './components/UserView';
 import { useClient } from 'openland-api/useClient';
@@ -74,17 +81,24 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     }, [roomId]);
 
     const handleLeave = React.useCallback(() => {
+        const shouldCancelSubscription = group.isPremium && group.premiumSubscription &&
+            ![WalletSubscriptionState.CANCELED, WalletSubscriptionState.EXPIRED].includes(group.premiumSubscription.state);
+
         Alert.builder()
             .title(`Leave ${typeString}?`)
             .message(
                 group.isPremium
-                    ? 'Leaving the group only removes it from your chat list. To cancel the associated subscription, visit Subscriptions section in your Account tab and cancel it from there.'
+                    ? 'Leaving the group will cancel your subscription to it. Are you sure?'
                     : 'You may not be able to join it again',
             )
             .button('Cancel', 'cancel')
             .action(`Leave`, 'destructive', async () => {
                 await client.mutateRoomLeave({ roomId });
                 await client.refetchRoomChat({ id: roomId });
+                if (shouldCancelSubscription) {
+                    await client.mutateCancelSubscription({ id: group.premiumSubscription!.id });
+                    await client.refetchSubscriptions();
+                }
                 setTimeout(() => {
                     props.router.pushAndResetRoot('Home');
                 }, 100);

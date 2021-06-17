@@ -25,6 +25,10 @@ fragment DialogFragment on Dialog {
     photo
     unreadCount
     isMuted
+    premiumSubscription {
+        id
+        state
+    }
     hasActiveCall
     hasActiveVoiceChat
     haveMention
