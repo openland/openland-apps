@@ -279,7 +279,7 @@
   "leaveChannel": "Leave channel",
   "leaveChannelQuestion": "Leave channel?",
   "leaveChatDescription": "You may not be able to join it again",
-  "leaveChatPremiumDescription": "Leaving the group only removes it from your chat list. To cancel the associated subscription, visit Subscriptions section in your Account tab and cancel it from there.",
+  "leaveChatPremiumDescription": "Leaving the group will cancel your subscription to it. Are you sure?",
   "leaveCommunity": "Leave community",
   "leaveCommunityQuestion": "Leave community?",
   "leaveGroup": "Leave group",
