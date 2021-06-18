@@ -64,7 +64,8 @@ const getMenuContent = (
                     tabRouter,
                     group.__typename === 'SharedRoom' && group.isPremium,
                     group.kind === 'PUBLIC',
-                    group.isChannel
+                    group.isChannel,
+                    group.__typename === 'SharedRoom' ? group.premiumSubscription : undefined,
                 ),
         });
     }

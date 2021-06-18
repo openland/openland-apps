@@ -322,6 +322,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; isBanned: bo
                     sharedRoom && sharedRoom.isPremium,
                     sharedRoom.kind === 'PUBLIC',
                     sharedRoom.isChannel,
+                    sharedRoom && sharedRoom.premiumSubscription,
                 ),
         });
     }
