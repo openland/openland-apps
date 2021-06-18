@@ -19,11 +19,11 @@ import { GlobalSearchEntryKind, User_conversation_PrivateRoom } from 'openland-a
 import { SetTabContext } from './Home';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { useClient } from 'openland-api/useClient';
-import { useText } from 'openland-mobile/text/useText';
+import { TFn, useText } from 'openland-mobile/text/useText';
 
 type DialogType = 'all' | 'unread' | 'groups' | 'private';
 
-function showFilters(selected: DialogType, onSelect: (d: DialogType) => void, t: any) {
+function showFilters(selected: DialogType, onSelect: (d: DialogType) => void, t: TFn) {
     const actionSheet = ActionSheet.builder();
     actionSheet.action(
         t('dialogAllChats', 'All chats'),

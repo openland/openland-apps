@@ -14,13 +14,13 @@ import { RoomNano_SharedRoom } from 'openland-api/spacex.types';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { NotificationCenterHandlers } from './NotificationCenterHandlers';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { useText } from 'openland-mobile/text/useText';
+import { TFn, useText } from 'openland-mobile/text/useText';
 
 interface NotificationCenterItemAsyncProps {
     item: NotificationsDataSourceItem;
 }
 
-const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterItemAsyncProps & { theme: ThemeGlobal, t: any }) => {
+const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterItemAsyncProps & { theme: ThemeGlobal, t: TFn }) => {
     const { theme, t, item } = props;
     const messenger = getMessenger();
     const maxWidth = Dimensions.get('screen').width - 32 - (isPad ? 320 : 0);

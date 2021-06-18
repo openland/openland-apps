@@ -16,6 +16,7 @@ import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'op
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { isInternalLink } from 'openland-y-utils/isInternalLink';
 import { isYoutubeLink } from 'openland-y-utils/isYoutubeLink';
+import { TFn } from 'openland-mobile/text/useText';
 
 interface UrlAugmentationContentProps {
     message: DataSourceMessageItem;
@@ -31,7 +32,7 @@ interface UrlAugmentationContentProps {
     padded?: boolean;
     hasPurchase?: boolean;
     theme: ThemeGlobal;
-    t: any;
+    t: TFn;
 }
 
 export let isInvite = (attach?: FullMessage_GeneralMessage_attachments_MessageRichAttachment) => {

@@ -1,7 +1,9 @@
 // import * as React from 'react';
 import { useTranslation as useTranslationLib, Trans, } from 'react-i18next';
-import i18next from 'i18next';
+import i18next, { TFunction } from 'i18next';
 // import { LocalizedResources, LocalizedPluralsResources } from './schema.ts';
+
+export type TFn = TFunction;
 
 export const useText = () => {
     const { t: tLib, i18n, } = useTranslationLib();

@@ -11,7 +11,7 @@ import { ZButton } from 'openland-mobile/components/ZButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { useChatMessagesSelectionMode } from 'openland-y-utils/MessagesActionsState';
-import { useText } from 'openland-mobile/text/useText';
+import { TFn, useText } from 'openland-mobile/text/useText';
 
 export interface MessagesListProps {
     engine: ConversationEngine;
@@ -41,14 +41,13 @@ const styles = StyleSheet.create({
     } as TextStyle
 });
 
-class ConversationViewComponent extends React.PureComponent<MessagesListProps & { theme: ThemeGlobal, selectionMode: boolean, isBanned: boolean, t: any }, { conversation: ConversationState }> implements ConversationStateHandler {
+class ConversationViewComponent extends React.PureComponent<MessagesListProps & { theme: ThemeGlobal, selectionMode: boolean, isBanned: boolean, t: TFn }, { conversation: ConversationState }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
     // private listRef = React.createRef<ConversationMessagesView>();
     private rotation = new Animated.Value(0);
 
-    // TODO: TYPES
-    constructor(props: MessagesListProps & { theme: ThemeGlobal, selectionMode: boolean, isBanned: boolean, t: any }) {
+    constructor(props: MessagesListProps & { theme: ThemeGlobal, selectionMode: boolean, isBanned: boolean, t: TFn }) {
         super(props);
         let initialState = props.engine.getState();
 

@@ -9,11 +9,12 @@ import { SpanType } from 'openland-y-utils/spans/Span';
 import { AsyncBubbleView, bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from '../AsyncBubbleView';
 import { TextContent } from './TextContent';
 import { createSimpleSpan } from 'openland-y-utils/spans/processSpans';
+import { TFn } from 'openland-mobile/text/useText';
 
 interface UnsupportedContentProps {
     message: DataSourceMessageItem;
     theme: ThemeGlobal;
-    t: any;
+    t: TFn;
 }
 
 export const UnsupportedContent = React.memo((props: UnsupportedContentProps) => {
