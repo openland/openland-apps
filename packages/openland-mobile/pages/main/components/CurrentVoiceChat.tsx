@@ -32,6 +32,7 @@ export const CurrentVoiceChat = React.memo<CurrentVoiceChatProps>((props) => {
                 <Text
                     style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}
                     numberOfLines={2}
+                    allowFontScaling={false}
                 >
                     {title}
                 </Text>
@@ -46,7 +47,7 @@ export const CurrentVoiceChat = React.memo<CurrentVoiceChatProps>((props) => {
                                 />
                             </View>
                         ))}
-                        <Text style={{ color: theme.foregroundTertiary, marginLeft: 16 }}>
+                        <Text style={{ color: theme.foregroundTertiary, marginLeft: 16 }} allowFontScaling={false}>
                             {speakersCount}
                         </Text>
                         <Image
@@ -60,7 +61,7 @@ export const CurrentVoiceChat = React.memo<CurrentVoiceChatProps>((props) => {
                         />
                         {listenersCount > 0 && (
                             <>
-                                <Text style={{ color: theme.foregroundTertiary, marginLeft: 12 }}>
+                                <Text style={{ color: theme.foregroundTertiary, marginLeft: 12 }} allowFontScaling={false}>
                                     {listenersCount}
                                 </Text>
                                 <Image

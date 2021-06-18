@@ -134,6 +134,7 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                             marginBottom: 24,
                             color: theme.foregroundTertiary,
                         }}
+                        allowFontScaling={false}
                     >
                         {t('editPersonalVisibility', 'Edit phone/email and their visibility \nin ')}
                         <PrivacyLink router={props.router} />

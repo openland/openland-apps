@@ -59,22 +59,23 @@ const RoomFeedItem = React.memo((props: { room: VoiceChatShort, theme: ThemeGlob
             <Text
                 style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, marginBottom: 8, }}
                 numberOfLines={2}
+                allowFontScaling={false}
             >
                 {title}
             </Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View>
                     {speakers.map(speaker => (
-                        <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }}>
+                        <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} allowFontScaling={false}>
                             {speaker.user.name}
                         </Text>
                     ))}
                     <View style={{ marginTop: 12, flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }}>{room.speakersCount}</Text>
+                        <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} allowFontScaling={false}>{room.speakersCount}</Text>
                         <Image source={require('assets/ic-speaker-16.png')} style={{ width: 16, height: 16, marginLeft: 3, marginRight: 12, tintColor: theme.foregroundQuaternary }} />
                         {room.listenersCount > 0 && (
                             <>
-                                <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }}>{room.listenersCount}</Text>
+                                <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} allowFontScaling={false}>{room.listenersCount}</Text>
                                 <Image source={require('assets/ic-listener-16.png')} style={{ width: 16, height: 16, marginLeft: 6, tintColor: theme.foregroundQuaternary }} />
                             </>
                         )}
@@ -148,7 +149,9 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
                                         <View style={{ height: 8, backgroundColor: theme.backgroundPrimary }} />
                                         <View style={{ height: 16, backgroundColor: theme.backgroundTertiary }} />
                                     </>
-                                ) : null}
+                                ) : (
+                                    <View style={{ height: 100, backgroundColor: theme.backgroundPrimary }} />
+                                )}
                                 <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginVertical: 16, alignItems: 'center' }}>
                                     <Image source={imgSrc} style={{ width: 240, height: 150 }} />
                                     <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 16, marginBottom: 6 }} allowFontScaling={false}>
