@@ -4,11 +4,12 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import LinearGradient from 'react-native-linear-gradient';
 import { useText } from 'openland-mobile/text/useText';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 
 export const ThemePreview = React.memo(() => {
     const theme = React.useContext(ThemeContext);
-    // TODO: DATETIME
     const { t } = useText();
+    const time = DateTimeFormatter.formatTime(Date.now());
 
     return (
         <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} style={{ paddingTop: 8, paddingBottom: 25, paddingHorizontal: 16 }}>
@@ -18,7 +19,7 @@ export const ThemePreview = React.memo(() => {
                         {t('themePreviewQuestion', 'Hello! How are you?')}
                     </Text>
                     <Text style={[TextStyles.Caption, { color: theme.incomingForegroundSecondary, position: 'absolute', bottom: 4, right: 12 }]} allowFontScaling={false}>
-                        9:41 AM
+                        {time}
                     </Text>
                 </View>
             </View>
@@ -28,7 +29,7 @@ export const ThemePreview = React.memo(() => {
                         {t('themePreviewAnswer', 'I’m fine. Thanks!')}
                     </Text>
                     <Text style={[TextStyles.Caption, { color: theme.outgoingForegroundSecondary, position: 'absolute', bottom: 4, right: 12 }]} allowFontScaling={false}>
-                        9:41 AM
+                        {time}
                     </Text>
                 </View>
             </View>

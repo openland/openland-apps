@@ -10,7 +10,7 @@ import { SEquisiteCentered } from '../../SExquisiteCentered';
 import { SCloseButton } from '../../SCloseButton';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { useText } from 'openland-mobile/text/useText';
+import { TFn, useText } from 'openland-mobile/text/useText';
 
 const styles = StyleSheet.create({
     title: {
@@ -50,8 +50,8 @@ export interface HeaderTitleViewProps {
     style: SNavigationViewStyle;
 }
 
-class HeaderTitleViewInner extends React.PureComponent<HeaderTitleViewProps & { t: any }, { searchText: string }> {
-    constructor(props: HeaderTitleViewProps & { t: any }) {
+class HeaderTitleViewInner extends React.PureComponent<HeaderTitleViewProps & { t: TFn }, { searchText: string }> {
+    constructor(props: HeaderTitleViewProps & { t: TFn }) {
         super(props);
         this.state = {
             searchText: ''

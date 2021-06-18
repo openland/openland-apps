@@ -26,13 +26,14 @@ import { SenderContent } from './content/SenderContent';
 import { DonationContent } from './content/DonationContent';
 import { isAudio, isVideo } from 'openland-y-utils/mediaExtension';
 import { AudioContent } from './content/AudioContent';
+import { TFn } from 'openland-mobile/text/useText';
 
 export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={17}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 20 : 16, ios: edited ? 17 : 14 }))}</ASText>;
 
 interface AsyncMessageTextViewProps {
     conversationId?: string;
     theme: ThemeGlobal;
-    t: any;
+    t: TFn;
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;

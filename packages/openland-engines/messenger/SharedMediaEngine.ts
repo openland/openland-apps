@@ -1,7 +1,8 @@
 import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage, SharedMediaType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/spacex.types';
-import * as humanize from 'humanize';
+import moment from 'moment';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { OpenlandClient } from 'openland-api/spacex';
+import { capitalize } from 'openland-y-utils/capitalize';
 
 export enum SharedMediaItemType {
     MEDIA = 'MEDIA',
@@ -44,7 +45,7 @@ export type SharedMediaDataSourceItem = DataSourceSharedMediaDateItem | DataSour
 
 type MediaRowOrDateItem = DataSourceSharedMediaRow | DataSourceSharedMediaDateItem;
 
-const makeDateLabel = (date: string) => humanize.date('F Y', parseInt(date, 10) / 1000);
+const makeDateLabel = (date: string) => capitalize(moment(parseInt(date, 10)).format('MMMM YYYY'));
 
 export class SharedMediaEngine {
     readonly dataSource: DataSource<SharedMediaDataSourceItem>;

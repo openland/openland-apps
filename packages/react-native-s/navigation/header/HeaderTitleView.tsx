@@ -10,7 +10,7 @@ import { SBackButton } from 'react-native-s/SBackButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { useText } from 'openland-mobile/text/useText';
+import { TFn, useText } from 'openland-mobile/text/useText';
 
 const styles = StyleSheet.create({
     root: {
@@ -52,9 +52,9 @@ interface HeaderTitleViewProps {
     style: SNavigationViewStyle;
 }
 
-class HeaderTitleViewInner extends React.PureComponent<HeaderTitleViewProps & { t: any }, { searchText: string }> {
+class HeaderTitleViewInner extends React.PureComponent<HeaderTitleViewProps & { t: TFn }, { searchText: string }> {
 
-    constructor(props: HeaderTitleViewProps & { t: any }) {
+    constructor(props: HeaderTitleViewProps & { t: TFn }) {
         super(props);
         this.state = { searchText: '' };
     }
@@ -193,7 +193,7 @@ class HeaderTitleViewInner extends React.PureComponent<HeaderTitleViewProps & { 
 }
 
 export const HeaderTitleView = React.memo((props: HeaderTitleViewProps) => {
-    const t = useText();
+    const { t } = useText();
     return (
         <HeaderTitleViewInner {...props} t={t} />
     );

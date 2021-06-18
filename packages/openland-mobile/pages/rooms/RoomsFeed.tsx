@@ -24,9 +24,9 @@ import { ComponentRefContext } from '../main/Home';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SDeferred } from 'react-native-s/SDeferred';
-import { useText } from 'openland-mobile/text/useText';
+import { TFn, useText } from 'openland-mobile/text/useText';
 
-function showFilters(selected: 'voice' | 'explore', onSelect: (d: 'voice' | 'explore') => void, t: any) {
+function showFilters(selected: 'voice' | 'explore', onSelect: (d: 'voice' | 'explore') => void, t: TFn) {
     const actionSheet = ActionSheet.builder();
     actionSheet.cancelable(false);
     actionSheet.action(

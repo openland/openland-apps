@@ -1,9 +1,6 @@
-
 import * as humanize from 'humanize';
 import moment from 'moment';
-
-const capitalize = (s: string) =>
-    s.charAt(0).toUpperCase() + s.slice(1);
+import { capitalize } from './capitalize';
 
 const months = moment().localeData().monthsShort().map(capitalize);
 const monthsFull = moment().localeData().months().map(capitalize);
